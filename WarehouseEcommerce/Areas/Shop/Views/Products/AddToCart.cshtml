@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "AddToCart";
+    
+}
+
+    <div class="about bg-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 bg-white my-account login">
+                    <div class="about-cnt">
+                        <div class="content-wrapper select">
+                            <h2 class="text-uppercase">Cart</h2>
+                            <hr />
+                            <div id="updateCart">
+                                @Html.Action("_CartItemsPartial", "Products")
+                            </div>
+                            
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  

@@ -1,0 +1,98 @@
+﻿@model List<Ganedata.Core.Entities.Domain.PalletViewModel>
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+            new StyleSheet { ExtensionType = ExtensionType.PageControl, Theme = GaneStaticAppExtensions.DevexTheme },
+            new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+            )
+
+    @Html.DevExpress().GetScripts(
+            new Script { ExtensionType = ExtensionType.PageControl },
+            new Script { ExtensionType = ExtensionType.GridView }
+            )
+}
+
+@{
+    ViewBag.Title = "Pallets";
+}
+<script>
+    function OnPalletGridFocusedRowChanged(s, e) {
+        var selectedPallets = PalletsListGridView1.GetSelectedKeysOnPage();
+        if (selectedPallets.length > 0) {
+            $("#btnDispatchPallets").slideDown();
+        } else {
+            $("#btnDispatchPallets").slideUp();
+        }
+        //$("#GridSelectedPallets").val(selectedPallets.join());
+
+        //s.GetSelectedFieldValues("PalletNumber", GetSelectedFieldValuesCallback);
+
+    }
+    function OnPalletSelected(s, e) {
+
+        var selectedPallets = PalletsListGridView1.GetSelectedKeysOnPage();
+        if (selectedPallets.length > 0) {
+            $("#btnDispatchPallets").slideDown();
+        } else {
+            $("#btnDispatchPallets").slideUp();
+        }
+        $("#GridSelectedPallets").val(selectedPallets.join());
+
+        //s.GetSelectedFieldValues("PalletNumber", GetSelectedFieldValuesCallback);
+
+    };
+    function OnGridFocusedRowChanged(s, e) {
+       
+        var Id = s.GetRowKey(s.GetFocusedRowIndex());
+        $('#DeliveryGridFocusedRowValue').val(Id);
+
+    }
+
+</script>
+<h2><span>Pallets</span></h2>
+<input type="text" class="res" hidden/>
+@Html.Hidden("PalletGridFocusedRowValue")
+@Html.Hidden("PalletGridFocusedRowCompletedValue")
+@Html.Hidden("GridSelectedPallets")
+@Html.Hidden("GridSelectedPalletNumbers")
+@Html.Hidden("DeliveryGridFocusedRowValue")
+@Html.Hidden("consigment", true)
+<div id="tabs" style="visibility: hidden">
+    <ul>
+        <li><a href="#AD">Awaiting Dispatch</a></li>
+        <li><a href="#Dispatches">Dispatches</a></li>
+        <li><a href="#Pallets">Pallets</a></li>
+        @*<li><a href="#Completed">Completed</a></li>*@
+
+    </ul>
+    <div id="AD">
+
+        @Html.Action("_Consignments", "SalesOrders", new { consignmentId = 2 })
+        <div class="col-md-12">
+            <div class="col-md-offset-2 col-md-10 bottom-right">
+                @*<a class="btn btn-success" id="btnDispatchPallets" style="display:none">Dispatch Selected Pallets</a>*@
+                <a class="btn btn-primary Caction" id="lnkPalletGridFocusedRowValue">Proceed to Palleting</a>
+            </div>
+        </div>
+    </div>
+    <div id="Dispatches">
+        @Html.Action("_PalletsDispatch", new { type = 3 })
+    </div>
+    <div id="Pallets">
+        <div class="">
+            <small class="pallet-dispatch-warning">Select 1 or more pallets to dispatch</small>
+        </div>
+        @Html.Action("_Pallets", new { type = 1 })
+    </div>
+    @*<div id="Completed">
+            @Html.Action("_Pallets", new { type = 2 })
+        </div>*@
+
+
+
+
+</div>
+
+

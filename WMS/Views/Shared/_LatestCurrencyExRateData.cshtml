@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Ganedata.Core.Entities.Domain.TenantCurrenciesExRates>
+
+<div id="LatestCurrencyExRate">
+
+    @ViewBag.title
+    <div id="CurrencyExRate">
+        <h3>Latest Currency Exchange Rate</h3>
+        <h6>GBP is the base currency</h6>
+        @foreach (var item in Model.Take(1))
+        {
+            <div>
+                <strong>Last Updated: </strong>@item.DateUpdated
+            </div>
+        }
+        @foreach (var item in Model.Take(5))
+        {
+            <p>
+
+            </p>
+            <div>
+                <strong>@item.TenantCurrencies.GlobalCurrency.CurrencyName : <font color="darkorange">@item.Rate</font> </strong>
+            </div>
+            <p>
+
+            </p>
+        }
+
+    </div>
+</div>

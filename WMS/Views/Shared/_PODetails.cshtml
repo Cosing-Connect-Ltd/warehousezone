@@ -1,0 +1,111 @@
+﻿@using Ganedata.Core.Entities.Enums
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = ViewBag.setName;
+        settings.CallbackRouteValues = ViewBag.route;
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = false ;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.Settings.ShowGroupFooter = GridViewGroupFooterMode.VisibleAlways;
+        settings.Settings.ShowFooter = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+
+        settings.KeyFieldName = "OrderDetailID";
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.Columns.Add("ProductId");
+        settings.Columns.Add("ProductMaster.Name", "Product");
+        settings.Columns.Add("ProductMaster.SKUCode", "Sku Code");
+        settings.Columns.Add("Qty");
+        settings.Columns.Add("Price");
+        settings.Columns.Add("WarrantyAmount", "War Amt");
+        settings.Columns.Add("TaxName.PercentageOfAmount", "Tax %");
+        settings.Columns.Add("TaxAmount", "Tax Amt");
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "TotalAmount";
+            column.Caption = "Total Amt";
+        });
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "QtyReceived";
+
+        });
+        if ((ViewBag.PreventProcessing != null && !ViewBag.PreventProcessing) && (Request.Url.AbsolutePath.ToLower().Contains("purchaseorders/receivepo/") || (Request.Url.AbsolutePath.ToLower().Contains("purchaseorders/_podetails/") && Request.UrlReferrer.AbsolutePath.ToLower().Contains("purchaseorders/receivepo/"))))
+        {
+
+            settings.Columns.Add(column =>
+            {
+                column.Caption = "Receive";
+                column.Name = "rc";
+
+                column.SetDataItemTemplateContent(container =>
+                {
+                    bool directship = false;
+                    var DirectShip = DataBinder.Eval(container.DataItem, "DirectShip");
+                    if (DirectShip != null)
+                    {
+                        directship = (bool)DirectShip;
+                    }
+                    if (!directship)
+                    {
+                        var keyValue = container.KeyValue;
+                        var orderid = DataBinder.Eval(container.DataItem, "OrderID");
+                        var productid = DataBinder.Eval(container.DataItem, "ProductId");
+                        var ser = DataBinder.Eval(container.DataItem, "ProductMaster.Serialisable").ToString();
+                        var EnableGlobalProcessByPallet = DataBinder.Eval(container.DataItem, "EnableGlobalProcessByPallet").ToString();
+                        var processPallete = DataBinder.Eval(container.DataItem, "ProductMaster.ProcessByPallet").ToString();
+                        var processOrderType = (int)EnumProcessOrderType.Normal;
+                        if (ser == "True") { processOrderType = (int)EnumProcessOrderType.Serialize; }
+                        else if (processPallete == "True" && EnableGlobalProcessByPallet == "True")
+                        {
+
+                            processOrderType = (int)EnumProcessOrderType.PalleteProcess;
+
+                        }
+                        var qty = DataBinder.Eval(container.DataItem, "Qty");
+                        var rec_qty = DataBinder.Eval(container.DataItem, "QtyReceived");
+                        var type = (int)DataBinder.Eval(container.DataItem, "TransType");
+
+
+                        var scannableCodes = DataBinder.Eval(container.DataItem, "IdentifiersText").ToString();
+                        var directPostAllow = (((bool)DataBinder.Eval(container.DataItem, "DirectPostAllowed") && !(decimal.Parse(rec_qty.ToString()) >= decimal.Parse(qty.ToString())))).ToString();
+
+                        var functon = string.Format("addSerial({0},{1},{2},{3},{4},{5},{6})", keyValue, orderid, productid, processOrderType, qty, rec_qty, type);
+
+                        ViewContext.Writer.Write("<div class='sales-detail-actions' data-direct-post='" + directPostAllow + "' data-codes='" + scannableCodes + "' data-id='" + keyValue + "' data-pqty='" + rec_qty + "' data-productid='" + productid + "'><a  class='process-button fa fa-floppy-o' style='cursor:pointer' id='" + keyValue + "' href='#' onclick=" + functon + "></a></div>");
+                    }
+                });
+            });
+        }
+
+        settings.HtmlDataCellPrepared = (sender, e) =>
+        {
+            if (e.DataColumn.FieldName == "TotalAmount")
+            {
+                e.Cell.BackColor = System.Drawing.Color.LightBlue;
+                e.Cell.BorderColor = System.Drawing.Color.Black;
+            }
+
+        };
+
+        settings.TotalSummary.Add(DevExpress.Data.SummaryItemType.Sum, "TotalAmount").DisplayFormat = "Total = {0:n2}";
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+
+    });
+}
+@grid.Bind(Model).GetHtml()

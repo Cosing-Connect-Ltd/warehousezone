@@ -1,0 +1,160 @@
+﻿@model Ganedata.Core.Entities.Domain.ReceivePOVM
+@using Ganedata.Core.Entities.Helpers
+@using Ganedata.Core.Entities.Enums
+
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+            new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+            new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+            new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+            new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+            )
+
+    @Html.DevExpress().GetScripts(
+            new Script { ExtensionType = ExtensionType.GridView },
+            new Script { ExtensionType = ExtensionType.PopupControl },
+            new Script { ExtensionType = ExtensionType.SpinEdit },
+            new Script { ExtensionType = ExtensionType.DateEdit }
+            )
+}
+
+@{
+    ViewBag.Title = "Process Order";
+}
+<script type="text/javascript">
+
+    function OnGridFocusedRowChanged(s, e) {
+
+        var name = s.name;
+        if (name.indexOf("gvODetail") >= 0) {
+            $('#selkeyhdPrddet').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        }
+    }
+
+    function OnProcessedDetailsCallback() {
+
+    }
+
+</script>
+
+<h2><span>Process Order</span></h2>
+@Html.Hidden("prodId", null)
+@Html.Hidden("ser", null)
+@Html.Hidden("delivery", null)
+@Html.Hidden("order", Model.OrderID)
+@Html.Hidden("OrderID", Model.OrderID)
+@Html.Hidden("AccountID", Model.AccountID)
+@Html.Hidden("qty", null)
+@Html.Hidden("rec_qty", null)
+@Html.Hidden("line_id", null)
+@Html.Hidden("type", null)
+@Html.Hidden("QtyProcessed", null)
+@Html.Hidden("selkeyhdPrddet", null)
+@Html.HiddenFor(m => m.OrderID)
+@Html.HiddenFor(m => m.InventoryTransactionTypeId)
+
+@using (Html.BeginForm("Edit", "Locations", FormMethod.Post, new { @id = "frmProcessOrder" }))
+{
+    <div class="col-md-6 pull-left">
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.OrderNumber, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.OrderNumber)
+                @Html.ValidationMessageFor(model => model.OrderNumber)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.Account.AccountCode, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.Account.AccountCode)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.Account.AccountNameCode, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.Account.AccountNameCode)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(m => m.ConsignmentTypeId, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(m => m.ConsignmentTypeId, ViewBag.Consignments as SelectList, "Select Consignment Type", new { @class = "chosen-select form-control" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(m => m.DeliveryNumber, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(m => m.DeliveryNumber, new { placeholder = "Delivery Number", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.DeliveryNumber)
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 pull-left">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(m => m.ShipmentAddressLine1, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(m => m.ShipmentAddressLine1, new { placeholder = "Address Line1", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ShipmentAddressLine1)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(m => m.ShipmentAddressLine2, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(m => m.ShipmentAddressLine2, new { placeholder = "Address Line2", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ShipmentAddressLine2)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(m => m.ShipmentAddressLine3, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(m => m.ShipmentAddressLine3, new { placeholder = "Address Line3", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ShipmentAddressLine3)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(m => m.ShipmentAddressLine4, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(m => m.ShipmentAddressLine4, new { placeholder = "Address Line4", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ShipmentAddressLine4)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(m => m.ShipmentAddressPostcode, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(m => m.ShipmentAddressPostcode, new { placeholder = "Postcode", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ShipmentAddressPostcode)
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 process-textbox-scan">
+        @if (ViewBag.PreventProcessing != true && Request.Url.AbsolutePath.ToLower().Contains("salesorders/processorder/") || (Request.Url.AbsolutePath.ToLower().Contains("salesorders/_salesorderdetails/") && Request.UrlReferrer.AbsolutePath.ToLower().Contains("salesorders/processorder/")))
+        {
+            <div class="col-11 pull-left pt-2 pb-2">
+                @Html.TextBox("ProcessBarcode", null, new { @class = "form-control", placeholder = "Scan or enter product/case sku/barcode" })
+            </div>
+            <div class="col-1 pull-left pt-1">
+                <b class="btn fa fa-search"></b>
+            </div>
+        }
+    </div>
+    <div>
+        @Html.Action("_SalesOrderDetails", new { Id = Model.OrderID })
+    </div>
+
+    <div class="col-md-offset-2 col-md-10 bottom-right">
+        @if (ViewBag.PreventProcessing != true)
+        {
+            <input type="button" id="OrderDetailadd" class="btn btn-primary orddet" value="Add">
+            @Html.ActionLink("Finish Processing", "Index", ViewBag.RController as string, null, null, ViewBag.Fragment as string, null, new { @class = "btn btn-primary" })
+            if (Model.OrderStatusID != (int)OrderStatusEnum.Complete)
+            {
+                <a href="javascript:void(0)" class="btn btn-primary" onclick="completeOrder()">Complete Order</a>
+            }
+        }
+        <div class="btn btn-default"> @Html.ActionLink("Back to List", "Index", ViewBag.RController as string, null, null, ViewBag.Fragment as string, null, null)</div>
+    </div>
+
+}

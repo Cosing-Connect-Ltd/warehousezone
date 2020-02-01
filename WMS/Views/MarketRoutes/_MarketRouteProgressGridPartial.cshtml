@@ -1,0 +1,87 @@
+﻿@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "MarketRouteProgressGridView";
+        settings.CallbackRouteValues = new { Controller = "MarketRoutes", Action = "_MarketRouteProgressGridView" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.CustomBindingRouteValuesCollection.Add(
+            GridViewOperationType.Paging,
+            new { Controller = "MarketRoutes", Action = "_MarketRouteProgressPaging" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Filtering,
+        new { Controller = "MarketRoutes", Action = "_MarketRouteProgressFiltering" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Sorting,
+        new { Controller = "MarketRoutes", Action = "_MarketRouteProgressDataSorting" }
+        );
+
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+        settings.SettingsPager.PageSize = 10;
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+
+        settings.CommandColumn.Visible = true;
+
+        settings.KeyFieldName = "RouteProgressId";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.ClientSideEvents.BeginCallback = "function(s,e){ MRPBeginCallback(s,e); }";
+        settings.ClientSideEvents.FocusedRowChanged = "function(s,e){ OnMRPFocusedRowChanged(s,e); }";
+       
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "MarketName";
+            c.Caption = "Market Name";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "MarketRoute";
+            c.Caption = "Market Route";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "AccountName";
+            c.Caption = "Account";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Comment";
+            c.Caption = "Comment";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DateCreated";
+            c.Caption = "Date";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            c.ColumnType = MVCxGridViewColumnType.DateEdit;
+        });
+      
+    });
+    }
+    @grid.BindToCustomData(Model).GetHtml()

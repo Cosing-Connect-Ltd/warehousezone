@@ -1,0 +1,56 @@
+﻿@model Ganedata.Core.Entities.Domain.PriceGroupViewModel
+@using Ganedata.Core.Entities.Helpers
+
+
+@{
+    ViewBag.Title = "Price Group " + (Model.PriceGroupId > 0 ? "Edit" : "Create");
+}
+
+<form class="form-horizontal validate-popup-form" action="@Url.Action("SavePriceGroup","ProductSpecialPrice")" method="post" id="frmSaveProductGroup">
+    <div class="position-relative">
+        <div class="col-md-12">
+            <h2><span>@ViewBag.Title</span></h2>
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(c => c.PriceGroupId)
+            <div class="input-group row h-100 justify-content-center align-items-center">
+                <div class="col-md-7">
+                    @Html.ValidationSummary()
+                </div>
+            </div>
+            @if (ViewBag.Message != null)
+            {
+                <div class="alert-success col-md-12">
+                    @ViewBag.Message
+                </div>
+            }
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(c => c.Name, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(c => c.Name, new { @placeholder = "Price group name", @class = "form-control" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(c => c.Percent, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(c => c.Percent, new { @placeholder = "Discount Percent", @class = "form-control" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(c => c.ApplyDiscountOnTotal, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.EditorFor(c => c.ApplyDiscountOnTotal, new { @placeholder = "Discount Percent", @class = "form-control" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(c => c.ApplyDiscountOnSpecialPrice, new { @class = "col-md-6 control-label" })
+                <div class="col-md-6">
+                    @Html.EditorFor(c => c.ApplyDiscountOnSpecialPrice, new { @placeholder = "Discount Percent", @class = "form-control" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-offset-2 col-md-10 bottom-right-popup">
+        <input type="button" class="btn btn-primary" id="saveBtn_ProductGroup" onclick="SavePriceGroup()" value="Save" />
+        <a class="btn btn-default" href="javascript:ModalEditPriceGroup.Hide()">Cancel</a>
+    </div>
+</form>

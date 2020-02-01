@@ -1,0 +1,67 @@
+﻿@using System.Web.UI.WebControls
+@model IEnumerable<Ganedata.Core.Entities.Domain.MarketProductLevelViewModel>
+
+@{
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+}
+
+@Html.DevExpress().GridView(
+    settings =>
+    {
+        settings.Name = "marketStocksGridView";
+        settings.KeyFieldName = "ProductID";
+        settings.Width = Unit.Percentage(100);
+        settings.CallbackRouteValues = new { Controller = "Markets", Action = "_StockLevelsPartial", id = ViewBag.MarketId };
+        settings.SettingsEditing.BatchUpdateRouteValues = new { Controller = "Markets", Action = "UpdateProductLevels"};
+
+        settings.SettingsEditing.Mode = GridViewEditingMode.Batch;
+        settings.SettingsEditing.BatchEditSettings.EditMode = GridViewBatchEditMode.Cell;
+        settings.SettingsEditing.BatchEditSettings.StartEditAction = GridViewBatchStartEditAction.DblClick;
+        settings.Settings.ShowStatusBar = GridViewStatusBarMode.Hidden;
+        settings.EnableCallbackAnimation = false;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSize = 10;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.CommandColumn.Visible = false;
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "ProductName";
+            column.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "ReOrderQuantity";
+            column.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "MinStockQuantity";
+            column.EditorProperties().SpinEdit(p =>
+            {
+                p.MinValue = 0;
+                p.MaxValue = 000000000;
+                p.ClientSideEvents.LostFocus = "function(s,e){ OnQuantitiesChanged(s,e);}";
+            });
+        });
+
+        settings.CellEditorInitialize = (s, e) =>
+        {
+            ASPxEdit editor = (ASPxEdit)e.Editor;
+            editor.ValidationSettings.Display = Display.None;
+        };
+        settings.ClientSideEvents.BeginCallback = "OnBeginGridCallback";
+        settings.ClientSideEvents.FocusedCellChanging = "OnStockLevelsGridFocusChanged";
+        settings.ClientSideEvents.EndCallback = "OnEndGridCallback";
+    }).Bind(Model).GetHtml()

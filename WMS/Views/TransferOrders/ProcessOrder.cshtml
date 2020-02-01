@@ -1,0 +1,146 @@
+﻿@model WMS.VModels.TransferOrderVM
+@using Ganedata.Core.Entities.Helpers
+@using Ganedata.Core.Entities.Enums
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView },
+        new Script { ExtensionType = ExtensionType.PopupControl },
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+
+@{
+    ViewBag.Title = "Process Transfer Order";
+}
+<script type="text/javascript">
+
+    function OnGridFocusedRowChanged(s, e) {
+
+        //var name = s.name;
+        //if (name.indexOf("OrderListGridView") >= 0) {
+        //    $('#selkeyOrderList').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        //}
+        //else
+        //    $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+
+        // gvPODetail.batchEditApi.SetCellValue(s.GetFocusedRowIndex(), 'rc', 'Haris', 'Haris');
+
+    }
+
+    function addSerialTO(detid, orderid, pid, ser) {
+
+        if (IsValidForm('#frmRecPO')) {
+            $('#prodId').val(pid);
+            $('#ser').val(ser);
+            $('#delivery').val($('#DeliveryNumber').val());
+            $('#order').val(orderid);
+            if (ser == 1) {
+                ModelAddSerial.Show();
+            }
+            else
+                ModelRecProduct.Show();
+        }
+    }
+
+</script>
+@if (Model.Type == 3)
+{
+    <h2><span>Transfer In </span></h2>
+}
+
+else
+{
+    <h2><span>Transfer Out</span></h2>
+}
+
+@Html.Hidden("prodId", null)
+@Html.Hidden("ser", null)
+@Html.Hidden("delivery", null)
+@Html.Hidden("order", null)
+@Html.Hidden("qty", null)
+@Html.Hidden("rec_qty", null)
+@Html.Hidden("type", null)
+@Html.Hidden("line_id", null)
+@using (Html.BeginForm("Edit", "Locations", FormMethod.Post, new { @id = "frmProcessOrder" }))
+{
+    @Html.HiddenFor(m => m.OrderID)
+    @Html.HiddenFor(m => m.InventoryTransactionTypeId)
+    <div class="col-md-12">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.OrderNumber, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.OrderNumber)
+                @Html.ValidationMessageFor(model => model.OrderNumber)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(m => m.Warehouse, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.Warehouse)
+            </div>
+        </div>
+
+        @if (Model.Type == (int)InventoryTransactionTypeEnum.TransferOut)
+        {
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("Consignments", htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(m => m.ConsignmentTypeId, ViewBag.Consignments as SelectList, new { @class = "chosen-select" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.DeliveryNumber, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+
+                    @Html.EditorFor(m => m.DeliveryNumber)
+                    @Html.ValidationMessageFor(model => model.DeliveryNumber)
+                </div>
+            </div>
+
+        }
+        else if (Model.Type == 3)
+        {
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.DeliveryNumber, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+
+                    @Html.EditorFor(m => m.DeliveryNumber)
+                    @Html.ValidationMessageFor(model => model.DeliveryNumber)
+                </div>
+            </div>
+
+        }
+        <div class="col-md-12 process-textbox-scan">
+            @if ((ViewBag.PreventProcessing != null && !ViewBag.PreventProcessing) && Request.Url.AbsolutePath.ToLower().Contains("transferorders/processorder/") || (Request.Url.AbsolutePath.ToLower().Contains("transferorders/_transferorderdetails/") && Request.UrlReferrer.AbsolutePath.ToLower().Contains("transferorders/processorder/")))
+            {
+                <div class="col-md-10 pull-left">
+                    @Html.TextBox("ProcessBarcode", null, new { @class = "form-control mt-1 p-1", placeholder = "Scan or enter product/case sku/barcode" })
+                </div>
+                <div class="col-md-2 pull-left">
+                    <b class="btn fa fa-search"></b>
+                </div>
+            }
+        </div>
+
+        @Html.Action("_TransferOrderDetails", new { Id = Model.OrderID })
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            @*@Html.ActionLink("Complete Order", "Complete", "Order", new { @id = Model.OrderID }, new { @class = "btn btn-primary cComplete" })*@
+            <a href="javascript:void(0)" class="btn btn-primary" onclick="completeOrder()">Complete Order</a>
+            <div class="btn btn-default">
+                @Html.ActionLink("Back to List", "Index", "TransferOrders", null, null, ViewBag.Fragment as string, null, null)
+                @* @Html.ActionLink("Back to List", "AnchoredOrderIndex", new { id = "TO" })*@
+            </div>
+        </div>
+    </div>
+}

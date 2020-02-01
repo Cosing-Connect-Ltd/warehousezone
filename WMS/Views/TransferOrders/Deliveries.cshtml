@@ -1,0 +1,31 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+        var name = s.name;
+        if (name.indexOf("_stockListdetailsgv") >= 0) {
+            $('#selkeyMoveStock').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        }
+    }
+</script>
+
+@{
+    ViewBag.Title = "Deliveries";
+}
+
+<h2>Deliveries</h2>
+
+@Html.Action("_Deliveries")
+
+

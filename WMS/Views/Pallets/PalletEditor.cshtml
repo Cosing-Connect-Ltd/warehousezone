@@ -1,0 +1,95 @@
+﻿@model Ganedata.Core.Entities.Domain.PalletGenerateViewModel
+@using Ganedata.Core.Entities.Helpers
+
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.UploadControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView },
+        new Script { ExtensionType = ExtensionType.UploadControl },
+        new Script { ExtensionType = ExtensionType.PopupControl },
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Pallets - Loading Orders in to pallets";
+}
+
+@using (Html.BeginForm("AddProcessedProductsToPallet", "Pallets", FormMethod.Post, new { id = "frmPalletsEditor" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("selkey", 10000)
+    @Html.Hidden("orderprocessId", Model.SelectedOrderProcessId)
+    @Html.Hidden("DeliveryRefrenceNumber",(Model.OrderProcesses==null?"":Model.OrderProcesses.DeliveryNO))
+<div class="col-md-12 p-0 pull-left report-date-header mb-1">
+    <div class="col-md-4 mt-1 pull-left">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @if (Model.OrderProcesses != null)
+            {
+                <div class="col-md-12">
+                    <label><b>OrderNumber:</b> @Model.OrderProcesses.Order.OrderNumber  &nbsp;</label>
+                    <label><b>DeliverNo:</b> @Model.OrderProcesses.DeliveryNO</label><br />
+                </div>
+                <div class="col-md-12">
+                    <label><b>Account Name:</b> @Model.OrderProcesses.Order.Account.CompanyName &nbsp;</label>
+                    <label><b>Account Code:</b> @Model.OrderProcesses.Order.Account.AccountCode</label>
+                    </div>
+
+                    }
+
+                </div>
+            </div>
+
+
+    <div class="col-md-4 mt-1 pull-left">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Pallet", htmlAttributes: new { @class = "col-md-3" })
+            <div class="col-md-9">
+                @Html.DropDownListFor(m => m.SelectedPalletID, Model.AllCurrentPallets, new { @class = "chosen-select" })
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 pull-right">
+        <button type="button" class="btn btn-success col-md-12 pallet-editor-button fa fa-cart-plus" id="btnNewPallet"><span class="pl-2">Create New</span></button>
+    </div>
+</div>
+
+}
+
+<div class="col-md-12 p-0 pull-left" style="display: none" id="divPalletGenerator"></div>
+<div class="col-md-12 pull-left">
+    <div class="col-md-offset-2 col-md-10 bottom-right">
+        <a class="btn btn-success" id="btnDispatchPallets" style="display:none">Dispatch Selected Pallets</a>
+        @Html.ActionLink("Back to List", "Index", "SalesOrders", new { @class = "btn btn-primary" })
+    </div>
+</div>
+<script>
+    $(function () {
+        Gane.Pallets.PalletEditorInit();
+        if ($("#orderprocessId").val() > 0) {
+            Gane.Pallets.UpdatePalletGenerator();
+        }
+    });
+    function processDispatch()
+    {
+        if (UploadControl.GetSelectedFiles() == null || UploadControl.GetSelectedFiles().length < 1) {
+            $("#frmDispatchPallets").submit();
+        }
+        else {
+            LoadingPanel.SetText('Dispatching Pallet. Please wait...');
+            LoadingPanel.Show();
+            UploadControl.UploadFile();
+        }
+    }
+</script>

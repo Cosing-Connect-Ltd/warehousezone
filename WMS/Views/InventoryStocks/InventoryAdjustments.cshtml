@@ -1,0 +1,275 @@
+﻿@model Ganedata.Core.Entities.Domain.InventoryTransaction
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+         new StyleSheet { ExtensionType = ExtensionType.ComboBox, Theme = GaneStaticAppExtensions.DevexTheme }
+            )
+        
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.PopupControl },
+        new Script { ExtensionType = ExtensionType.DateEdit },
+          new Script { ExtensionType = ExtensionType.ComboBox }
+        )
+}
+
+<h2><span>Inventory Adjustments</span></h2>
+
+<div class="col-md-12 p-0">
+    <input type="checkbox" id="inventoryAdjustCheck" checked style="display:none;" />
+    <div class="col-md-12" id="frmInventoryStockAdjustment">
+        @using (Html.BeginForm("InventoryAdjustments", "InventoryStocks", FormMethod.Post, new { @class = "frmAdjust" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal col-md-6 pull-left">
+                <table class="table tdclear">
+                    <caption>
+                        @Html.ValidationSummary(true)
+                    </caption>
+                    <tr>
+                        <td style="width:30%" class="h3">
+                            @Html.Label("Product")
+                        </td>
+                        <td>
+                            @Html.Partial("~/Views/Shared/ProductLargeDataComboBoxPartial.cshtml")
+                            @*@Html.DropDownList("ProductId", null, string.Empty, new { @class = "chosen-select" })*@
+
+                           @Html.Hidden("ProductId")
+
+                            @Html.ValidationMessageFor(model => model.ProductId)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.InventoryTransactionTypeId)
+                        </td>
+                        <td>
+                            @Html.DropDownList("InventoryTransactionTypeId")
+                            @Html.ValidationMessageFor(model => model.InventoryTransactionTypeId)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.InventoryTransactionRef)
+                        </td>
+                        <td>
+                            @Html.EditorFor(model => model.InventoryTransactionRef)
+                            @Html.ValidationMessageFor(model => model.InventoryTransactionRef)
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.Label("Current Quantity")
+                        </td>
+                        <td>
+                            @ViewBag.CurrentQuantity
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.Quantity)
+                        </td>
+                        <td>
+                            @Html.EditorFor(model => model.Quantity)
+                            @Html.ValidationMessageFor(model => model.Quantity)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <div class="input-group h-100 justify-content-center align-items-center">
+                                <div class="col-md-12 bottom-right">
+                                    <input type="submit" value="Confirm Adjustment" class="btn btn-primary btn-adjst" />
+                                    <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+            </div><!--left-->
+            <div id="scanSerialsRowExistingSerials" class="hide">
+            </div>
+        }
+    </div>
+
+    <div id="divProd" class="mdl" style="width: 750px; z-index: 10; max-height: 400px; overflow: auto; ">
+        <p class="fixed-bottom">  <a href="#" id="selectprod">Select</a><button type='button' class='close'>×</button> </p>
+        <div class='alert alert-error'> </div>
+        <div class="col-md-12 p-0" style="width:700px">
+            <form action="" method="get" id="mdlsearch">
+
+                <table class="table table-bordered table-condensed">
+                    <tr>
+                        <td><input type="radio" name="searchby" class="searchby" id="pg" value="pg" checked> </td>
+                        <td> Products by ProductGroup  &nbsp;</td>
+                        <td>@Html.DropDownList("Groups", "Filter By ProductGroup")</td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="4"><input type="text" name="q" id="q" /></td>
+                        <td><input type="submit" value="Search" class="btn btn-primary btsearch" style="width:75px;" /></td>
+                    </tr>
+                </table>
+
+            </form>
+            <div id="productlistview">
+                <table class="table table-hover table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.Label("Select")
+
+                            </th>
+                            <th>
+                                @Html.Label("SKUCode")
+                            </th>
+                            <th>
+                                @Html.Label("Description")
+                            </th>
+                            <th>
+                                @Html.Label("UOM")
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="prodlist"> </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_InventorySerialAdjustPopup")
+
+<script type="text/javascript">
+
+    var palletProduct = false;
+   
+    $(function () {
+
+        var productId = prdid.GetValue();
+        if (productId< 1) return false;
+           $("#divCurrentProductName").text(prdid.GetText());
+                $.ajax({
+                    type: "GET",
+                    url: '/InventoryStocks/GetProductInformation/' + productId,
+                    data: { ProductId: productId },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.IsSerialised) {
+                            //$("#divSerialsContainer").slideDown();
+
+                            $("#frmInventoryStockAdjustment #InventoryTransactionTypeId").attr("disabled", "disabled");
+                            $("#frmInventoryStockAdjustment #Quantity").attr("disabled", "disabled");
+                            InventorySerialAdjustPopup.Show();
+                            $("#scanSerialsRowExistingSerials").html("");
+                            for (var i = 0; i < data.ExistingSerials.length; i++) {
+                                $("#scanSerialsRowExistingSerials").append("<input type='hidden' value='" + data.ExistingSerials[i].SerialNo + "' />");
+                            }
+                        }
+                        if (data.ProcessByPallet) {
+                            palletProduct = true;
+                            $("#inventoryAdjustCheck").prop('checked', true);
+                        }
+
+
+
+                        else {
+                            $("#divSerialsContainer").slideUp();
+                            $("#divExistingScannedSerialsTable").html("");
+                            InventorySerialAdjustPopup.Hide();
+                            $("#frmInventoryStockAdjustment #InventoryTransactionTypeId").removeAttr("disabled");
+                            $("#frmInventoryStockAdjustment #Quantity").removeAttr("disabled");
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        // alert(xhr.status);
+                        alert('Error' + textStatus + "/" + errorThrown);
+                    }
+                });
+            });
+
+ 
+    $(".frmAdjust").unbind().on("submit",function () {
+            if ($("#inventoryAdjustCheck").prop('checked')) {
+                if (value !== "") {
+                    var check = $('#Quantity').val();
+                    if (check === 0 || check === "") {
+                        $('#Quantity').val(value);
+                    }
+                }
+                if ($('#Quantity').val() === 0 || $('#Quantity').val() === "") {
+
+                    return false;
+                }
+
+                if ($("#inventoryAdjustCheck").prop('checked')) {
+                    ModelAddPallete.Show();
+                    value = $('#Quantity').val();
+                    return false;
+
+                }
+            }
+        });
+    function getprodlist() {
+        $.ajax({
+            type: "GET",
+            url: '/InventoryStocks/GetProductList',
+            data: $('#mdlsearch').serialize(),
+            dataType: 'json',
+            success: function (data) {
+                var result = $("#ProdTemplate").tmpl(data);
+                $("#prodlist").empty().append(result);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                // alert(xhr.status);
+                alert('Error' + textStatus + "/" + errorThrown);
+            }
+        });
+    }
+    function beginStockAdjustSerialCallback(s, e) {
+        e.customArgs["id"] = prdid.GetValue();
+        
+           // $("#ProductId option:selected").val();
+    }
+    var value = "";
+    $(".frmAdjust").unbind().on("submit",
+        function () {
+            if (palletProduct) {
+                if (value !== "") {
+                    var check = $('#Quantity').val();
+                    if (check === 0 || check === "") {
+                        $('#Quantity').val(value);
+                    }
+                }
+                if ($('#Quantity').val() === 0 || $('#Quantity').val() === "") {
+
+                    return false;
+                }
+
+                if ($("#inventoryAdjustCheck").prop('checked')) {
+                    ModelAddPallete.Show();
+                    value = $('#Quantity').val();
+                    return false;
+
+                }
+            }
+        });
+
+</script>
+<script id="ProdTemplate" type="text/x-jquery-tmpl">
+    <tr id="${ProductId}">
+        <td><input type="radio" name="pid" value="${ProductId}"></td>
+        <td>${SKUCode}</td>
+        <td>${ShortDesc}</td>
+        <td>${UOM}</td>
+    </tr>
+</script>

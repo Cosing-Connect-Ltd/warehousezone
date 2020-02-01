@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <metadata name="sqlDataSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="customSqlQuery1.Sql" xml:space="preserve">
+    <value>select "InvoiceDetail"."Price",
+       "InvoiceDetail"."Quantity",
+       "InvoiceDetail"."NetAmount" as InNetAmount,
+       "InvoiceDetail"."Tax",
+       "InvoiceDetail"."InvoiceMasterId",
+        "ProductMaster"."Name",
+       "ProductMaster"."Description",
+	   "gb"."PercentageOfAmount" as Rate,
+		"ProductMaster".SKUCode
+       from "dbo"."InvoiceDetail" "InvoiceDetail"
+   inner join "dbo"."ProductMaster" "ProductMaster"
+       on "ProductMaster"."ProductId" = "InvoiceDetail"."ProductId"
+	left join GlobalTax gb on InvoiceDetail.TaxId=gb.TaxID
+ WHERE (InvoiceDetail.IsDeleted=0 OR InvoiceDetail.IsDeleted IS NULL)
+order by "ProductMaster".SKUCode</value>
+  </data>
+  <data name="customSqlQuery2.Sql" xml:space="preserve">
+    <value>select "InvoiceMaster".*, 
+       "Tenants"."TenantAddress1", "Tenants"."TenantAddress2",
+       "Tenants"."TenantAddress3", "Tenants"."TenantCity",
+       "Tenants"."TenantStateCounty", "Tenants"."TenantPostalCode",
+       "Tenants"."TenantDayPhone", "Tenants"."TenantWebsite",
+       "Tenants"."TenantVatNo", "Tenants"."TenantName",
+       "Tenants"."TenantNo", "Tenants"."TenantFax",
+       "Tenants"."TenantEmail", "Orders"."OrderNumber",
+       "AccountAddresses"."AddressLine1",
+       "AccountAddresses"."AddressLine2",
+       "AccountAddresses"."AddressLine3", "OrderNotes"."Notes",
+       "AccountAddresses"."Telephone", "AccountAddresses"."County",
+       "AccountAddresses"."Town", "AccountAddresses"."PostCode",
+       "OrderProcesses"."ShipmentAddressLine1",
+       "OrderProcesses"."ShipmentAddressLine2",
+       "OrderProcesses"."ShipmentAddressLine3",
+       "OrderProcesses"."ShipmentAddressLine4",
+       "OrderProcesses"."ShipmentAddressPostcode",
+       "Account"."CreditTerms", "TenantConfigs"."IvReportFooterMsg1",
+       "InvoiceMaster"."InvoiceTotal","InvoiceMaster"."WarrantyAmount", "OrderProcesses"."DeliveryNO",
+       "Tenants"."TenantRegNo", "AccountAddresses"."AddressLine4",
+       "Account"."CompanyName", "Orders"."ExternalOrderNumber",
+       "GlobalCurrency"."Symbol", "GlobalCurrency"."CurrencyName"
+  from "dbo"."InvoiceMaster" "InvoiceMaster"
+  inner join "dbo"."Tenants" "Tenants"
+       on "Tenants"."TenantId" = "InvoiceMaster"."TenantId"
+  left join "dbo"."OrderProcesses" "OrderProcesses"
+       on "OrderProcesses"."OrderProcessID" = "InvoiceMaster"."OrderProcessId"
+  left join "dbo"."Orders" "Orders"
+       on "Orders"."OrderID" = "OrderProcesses"."OrderID"
+  left join "dbo"."Account" "Account"
+       on "Account"."AccountID" = "InvoiceMaster"."AccountId"
+  left
+  join "dbo"."AccountAddresses" "AccountAddresses"
+       on "AccountAddresses"."AccountID" = "Account"."AccountID" and "AccountAddresses"."AddressID" = (select top(1) "AddressID" from AccountAddresses 
+	 where AccountAddresses.AccountID = "Account"."AccountId" AND ("AddTypeBilling" = 1 or "AddTypeDefault" = 1))
+  left
+  join "dbo"."OrderNotes" "OrderNotes"
+       on "OrderNotes"."OrderID" = "Orders"."OrderID"
+  left join "dbo"."TenantConfigs" "TenantConfigs"
+       on "TenantConfigs"."TenantId" = "InvoiceMaster"."TenantId"
+  left join "dbo"."GlobalCurrency" "GlobalCurrency"
+       on "GlobalCurrency"."CurrencyID" = "InvoiceMaster"."CurrencyId"
+ where (InvoiceMaster.IsDeleted = 0 or InvoiceMaster.IsDeleted is null) AND ("InvoiceMaster"."InvoiceMasterId" IN (SELECT Item
+FROM dbo.SplitString(@invoiceMasterId)))</value>
+  </data>
+  <data name="sqlDataSource1.ResultSchemaSerializable" xml:space="preserve">
+    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9Ikludm9pY2VEZXRhaWwiPjxGaWVsZCBOYW1lPSJQcmljZSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iUXVhbnRpdHkiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkluTmV0QW1vdW50IiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJUYXgiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9Ikludm9pY2VNYXN0ZXJJZCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iTmFtZSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iRGVzY3JpcHRpb24iIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IlJhdGUiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IlNLVUNvZGUiIFR5cGU9IlVua25vd24iIC8+PC9WaWV3PjxWaWV3IE5hbWU9Ikludm9pY2VIZWFkZXIiPjxGaWVsZCBOYW1lPSJJbnZvaWNlTWFzdGVySWQiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJOZXRBbW91bnQiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IlRheEFtb3VudCIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0iQ2FyZENoYXJnZXMiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IlBvc3RhZ2VDaGFyZ2VzIiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJXYXJyYW50eUFtb3VudCIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0iSW52b2ljZVRvdGFsIiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJJbnZvaWNlTnVtYmVyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ikludm9pY2VBZGRyZXNzIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ikludm9pY2VDdXJyZW5jeSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbnZvaWNlRGF0ZSIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9Ik9yZGVyUHJvY2Vzc0lkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iQWNjb3VudElkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iVGVuYW50SWQiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJEYXRlQ3JlYXRlZCIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9IkRhdGVVcGRhdGVkIiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iQ3JlYXRlZEJ5IiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iVXBkYXRlZEJ5IiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iSXNEZWxldGVkIiBUeXBlPSJCb29sZWFuIiAvPjxGaWVsZCBOYW1lPSJJbnZvaWNlU3RhdHVzIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iQ3VycmVuY3lJZCIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9IlRlbmFudEFkZHJlc3MxIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlRlbmFudEFkZHJlc3MyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlRlbmFudEFkZHJlc3MzIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlRlbmFudENpdHkiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVGVuYW50U3RhdGVDb3VudHkiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVGVuYW50UG9zdGFsQ29kZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJUZW5hbnREYXlQaG9uZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJUZW5hbnRXZWJzaXRlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlRlbmFudFZhdE5vIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlRlbmFudE5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVGVuYW50Tm8iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVGVuYW50RmF4IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlRlbmFudEVtYWlsIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9yZGVyTnVtYmVyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkFkZHJlc3NMaW5lMSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJBZGRyZXNzTGluZTIiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQWRkcmVzc0xpbmUzIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik5vdGVzIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlRlbGVwaG9uZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDb3VudHkiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVG93biIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJQb3N0Q29kZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJTaGlwbWVudEFkZHJlc3NMaW5lMSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJTaGlwbWVudEFkZHJlc3NMaW5lMiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJTaGlwbWVudEFkZHJlc3NMaW5lMyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJTaGlwbWVudEFkZHJlc3NMaW5lNCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJTaGlwbWVudEFkZHJlc3NQb3N0Y29kZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDcmVkaXRUZXJtcyIgVHlwZT0iSW50MTYiIC8+PEZpZWxkIE5hbWU9Ikl2UmVwb3J0Rm9vdGVyTXNnMSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbnZvaWNlVG90YWxfMSIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0iV2FycmFudHlBbW91bnRfMSIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0iRGVsaXZlcnlOTyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJUZW5hbnRSZWdObyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJBZGRyZXNzTGluZTQiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQ29tcGFueU5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRXh0ZXJuYWxPcmRlck51bWJlciIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJTeW1ib2wiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQ3VycmVuY3lOYW1lIiBUeXBlPSJTdHJpbmciIC8+PC9WaWV3PjxSZWxhdGlvbiBNYXN0ZXI9Ikludm9pY2VEZXRhaWwiIERldGFpbD0iSW52b2ljZURldGFpbCI+PEtleUNvbHVtbiBNYXN0ZXI9Ikludm9pY2VNYXN0ZXJJZCIgRGV0YWlsPSJJbnZvaWNlTWFzdGVySWQiIC8+PC9SZWxhdGlvbj48UmVsYXRpb24gTWFzdGVyPSJJbnZvaWNlSGVhZGVyIiBEZXRhaWw9Ikludm9pY2VEZXRhaWwiPjxLZXlDb2x1bW4gTWFzdGVyPSJJbnZvaWNlTWFzdGVySWQiIERldGFpbD0iSW52b2ljZU1hc3RlcklkIiAvPjwvUmVsYXRpb24+PC9EYXRhU2V0Pg==</value>
+  </data>
+</root>

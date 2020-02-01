@@ -1,0 +1,344 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2A72DFBB-815C-4AA0-B132-268C8468F927}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ganedata.Core.Services</RootNamespace>
+    <AssemblyName>Ganedata.Core.Services</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+    <Use64BitIISExpress />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper, Version=9.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.9.0.0\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
+    </Reference>
+    <Reference Include="Elmah.Mvc, Version=2.1.2.1389, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elmah.Mvc.2.1.2\lib\net40\Elmah.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Threading.Thread">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Entity">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.ApplicationServices">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Extensions">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Configuration">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Services">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.EnterpriseServices">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Activity\ActivityServices.cs" />
+    <Compile Include="Activity\IActivityServices.cs" />
+    <Compile Include="Assets\AssetServices.cs" />
+    <Compile Include="Assets\IAssetServices.cs" />
+    <Compile Include="Core\Auth\caCurrent.cs" />
+    <Compile Include="Core\Auth\caError.cs" />
+    <Compile Include="Core\Auth\caSession.cs" />
+    <Compile Include="Core\Auth\caTenant.cs" />
+    <Compile Include="Core\Auth\caUser.cs" />
+    <Compile Include="Core\Barcoding\GS128Decoder.cs" />
+    <Compile Include="Core\Finance\Financials.cs" />
+    <Compile Include="Core\Inventory\Inventory.cs" />
+    <Compile Include="Emails\EmailServices.cs" />
+    <Compile Include="Emails\IEmailServices.cs" />
+    <Compile Include="Emails\EmailSender.cs" />
+    <Compile Include="Employees\ResourceHolidayServices.cs" />
+    <Compile Include="Helpers\GaneConfigurationsHelper.cs" />
+    <Compile Include="Helpers\IGaneConfigurationsHelper.cs" />
+    <Compile Include="Markets\IVanSalesService.cs" />
+    <Compile Include="Markets\IVehicleInspectionService.cs" />
+    <Compile Include="Markets\VehicleInspectionService.cs" />
+    <Compile Include="Orders\IInvoiceService.cs" />
+    <Compile Include="Orders\IMarketRouteScheduleService.cs" />
+    <Compile Include="Orders\InvoiceService.cs" />
+    <Compile Include="Orders\TransferOrderService.cs" />
+    <Compile Include="Pallets\IPalletingService.cs" />
+    <Compile Include="Pallets\PalletingService.cs" />
+    <Compile Include="TenantCurrencyExchange\ITenantsCurrencyRateServices.cs" />
+    <Compile Include="TenantCurrencyExchange\TenantsCurrencyRateServices.cs" />
+    <Compile Include="Users\IUserService.cs" />
+    <Compile Include="Address\AddressServices.cs" />
+    <Compile Include="Address\IAddressServices.cs" />
+    <Compile Include="Admin\AdminServices.cs" />
+    <Compile Include="Admin\IAdminServices.cs" />
+    <Compile Include="AttLogsStamps\AttLogsStampsServices.cs" />
+    <Compile Include="AttLogsStamps\IAttLogsStampsServices.cs" />
+    <Compile Include="AttLogs\AttLogsServices.cs" />
+    <Compile Include="AttLogs\IAttLogsServices.cs" />
+    <Compile Include="Employees\CommonDbServices.cs" />
+    <Compile Include="Employees\ICommonDbServices.cs" />
+    <Compile Include="Accounts\IAccountServices.cs" />
+    <Compile Include="Accounts\AccountServices.cs" />
+    <Compile Include="Users\UserService.cs" />
+    <Compile Include="Markets\EmailNotificationService.cs" />
+    <Compile Include="Markets\IEmailNotificationService.cs" />
+    <Compile Include="Markets\IMarketServices.cs" />
+    <Compile Include="Markets\MarketServices.cs" />
+    <Compile Include="Orders\AppointmentsService.cs" />
+    <Compile Include="Orders\CoreOrderService.cs" />
+    <Compile Include="Orders\IAppointmentsService.cs" />
+    <Compile Include="Orders\ICoreOrderService.cs" />
+    <Compile Include="Orders\IOrderService.cs" />
+    <Compile Include="Orders\ISalesOrderService.cs" />
+    <Compile Include="Orders\ITransferOrderService.cs" />
+    <Compile Include="Orders\SalesOrderService.cs" />
+    <Compile Include="Products\IProductLookupService.cs" />
+    <Compile Include="Lookups\LookupServices.cs" />
+    <Compile Include="Lookups\ILookupServices.cs" />
+    <Compile Include="Products\IProductPriceService.cs" />
+    <Compile Include="Property\IPropertyService.cs" />
+    <Compile Include="Orders\IPurchaseOrderService.cs" />
+    <Compile Include="Orders\IWorksOrderService.cs" />
+    <Compile Include="Orders\OrderService.cs" />
+    <Compile Include="Products\IStockTakeApiService.cs" />
+    <Compile Include="Products\ProductLookupService.cs" />
+    <Compile Include="Products\IProductServices.cs" />
+    <Compile Include="Products\ProductPriceService.cs" />
+    <Compile Include="Products\ProductServices.cs" />
+    <Compile Include="Property\PropertyService.cs" />
+    <Compile Include="Orders\PurchaseOrderService.cs" />
+    <Compile Include="Orders\WorksOrderService.cs" />
+    <Compile Include="Products\StockTakeApiService.cs" />
+    <Compile Include="Tenants\ITenantEmailConfigServices.cs" />
+    <Compile Include="Tenants\ITenantLocationServices.cs" />
+    <Compile Include="Tenants\TenantEmailConfigServices.cs" />
+    <Compile Include="Tenants\TenantLocationServices.cs" />
+    <Compile Include="Tenants\TenantsServices.cs" />
+    <Compile Include="Tenants\ITenantsServices.cs" />
+    <Compile Include="ContactNumbers\ContactNumbersServices.cs" />
+    <Compile Include="ContactNumbers\IContactNumberServices.cs" />
+    <Compile Include="EmployeeGroups\EmployeeGroupsServices.cs" />
+    <Compile Include="EmployeeGroups\IEmployeeGroupsServices.cs" />
+    <Compile Include="EmployeeRoles\EmployeeRolesServices.cs" />
+    <Compile Include="EmployeeRoles\IEmployeeRolesServices.cs" />
+    <Compile Include="EmployeeShifts\EmployeeShiftsServices.cs" />
+    <Compile Include="EmployeeShifts\IEmployeeShiftsServices.cs" />
+    <Compile Include="EmployeeShifts_Stores\EmployeeShiftsStoresServices.cs" />
+    <Compile Include="EmployeeShifts_Stores\IEmployeeShiftsStoresServicesInterface1.cs" />
+    <Compile Include="Employees\EmployeeServices.cs" />
+    <Compile Include="Employees\IEmployeeServices.cs" />
+    <Compile Include="Groups\GroupsServices.cs" />
+    <Compile Include="Groups\IGroupsServices.cs" />
+    <Compile Include="OperLogs\IOperLogsServices.cs" />
+    <Compile Include="OperLogs\OperLogsServices.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Roles\IRolesServices.cs" />
+    <Compile Include="Roles\RolesServices.cs" />
+    <Compile Include="Shifts\IShiftsServices.cs" />
+    <Compile Include="Shifts\ShiftsServices.cs" />
+    <Compile Include="Terminal\ITerminalServices.cs" />
+    <Compile Include="Terminal\TerminalServices.cs" />
+    <Compile Include="WarehouseSync\IWarehouseSyncService.cs" />
+    <Compile Include="WarehouseSync\WarehouseSyncService.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\GaneEcommerce.Data\Ganedata.Core.Data.csproj">
+      <Project>{CA155FC7-78E3-425C-A8B3-9F8BC17F1218}</Project>
+      <Name>Ganedata.Core.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GaneEcommerce.Entities\Ganedata.Core.Entities.csproj">
+      <Project>{706892f4-49d7-4efa-a414-44b5e1d74286}</Project>
+      <Name>Ganedata.Core.Entities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>52426</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:52426/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

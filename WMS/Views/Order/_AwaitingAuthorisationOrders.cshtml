@@ -1,0 +1,217 @@
+﻿@using System.Web.UI.WebControls
+@using Ganedata.Core.Entities.Helpers
+@using Ganedata.Core.Entities.Enums
+
+@model List<Ganedata.Core.Entities.Domain.AwaitingAuthorisationOrdersViewModel>
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "AwaitingAuthGridview";
+        settings.CallbackRouteValues = new
+        {
+            Controller = "Order",
+            Action = "_AwaitingAuthorisationOrders"
+        };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+        settings.KeyFieldName = "OrderID";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "OrderID";
+            c.Caption = "Order Id";
+            c.Visible = false;
+            c.Width = Unit.Pixel(50);
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "OrderNumber";
+            c.Caption = "Order Number";
+            c.Width = Unit.Pixel(150);
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Account";
+            c.Caption = "Account Code";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "AccountName";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DateCreated";
+            c.Caption = "Created";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            c.ColumnType = MVCxGridViewColumnType.DateEdit;
+            c.SetDataItemTemplateContent(m =>
+            {
+                var date = (DateTime?)DataBinder.Eval(m.DataItem, "DateCreated");
+                DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
+                ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
+            });
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "POStatus";
+            c.Caption = "Status";
+            c.Width = Unit.Pixel(150);
+            c.Settings.AllowAutoFilter = DefaultBoolean.False;
+
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "WarehouseName";
+            c.Caption = "Location";
+            c.Width = Unit.Pixel(150);
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "OrderTypeId";
+            c.Visible = false;
+
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Currecny";
+            c.Caption = "Currency";
+            c.Width = Unit.Pixel(50);
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "OrderTotal";
+            c.Caption = "Order Total";
+            c.Width = Unit.Pixel(80);
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DateUpdated";
+            c.Caption = "Date Updated";
+            c.Width = Unit.Pixel(80);
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            c.ColumnType = MVCxGridViewColumnType.DateEdit;
+            c.SetDataItemTemplateContent(m =>
+            {
+                var date = (DateTime?)DataBinder.Eval(m.DataItem, "DateUpdated");
+                DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
+                ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
+            });
+        });
+
+
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "OrderNotesListText";
+            c.Caption = "Notes";
+            c.Width = Unit.Percentage(20);
+            c.PropertiesEdit.EncodeHtml = false;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(column =>
+        {
+            column.Width = System.Web.UI.WebControls.Unit.Percentage(15);
+            column.Caption = "Actions";
+            column.SetDataItemTemplateContent(m =>
+            {
+                var orderId = (int)DataBinder.Eval(m.DataItem, "OrderID");
+                var statusId = (int)DataBinder.Eval(m.DataItem, "OrderStatusID");
+                if (statusId == (int)OrderStatusEnum.AwaitingAuthorisation)
+                {
+                    if (WMS.Helpers.LayoutHelpers.ActivityValidator("Order", "Index"))
+                    {
+                        var functon = string.Format("ApproveOrder({0})", orderId);
+
+                        ViewContext.Writer.Write("<a target='_blank' alt='Authorize Order' title='Authorize Order' class='btn fa fa-check' onclick=" + functon + "></a>");
+                    }
+                }
+                if (statusId == (int)OrderStatusEnum.AwaitingAuthorisation)
+                {
+                    if (WMS.Helpers.LayoutHelpers.ActivityValidator("DirectSales", "EditDirectSales"))
+
+                    {
+                        var EditAwOrder = string.Format("EditAwOrder({0})", orderId);
+                        ViewContext.Writer.Write("<a target='_blank' alt='Edit Awaiting Order' title='Edit Awaiting Order' class='btn fa fa-edit' onclick=" + EditAwOrder + "></a>");
+                    }
+                }
+                if (statusId == (int)OrderStatusEnum.Approved)
+                {
+                    var UnathorizeOrder = string.Format("UnathorizeOrder({0})", orderId);
+                    ViewContext.Writer.Write("<a target='_blank' alt='Unauthorize Order' title='Unauthorize Order' class='btn fa fa-ban' onclick=" + UnathorizeOrder + "></a>");
+                }
+
+                var function = string.Format("UpdateDate({0})", orderId);
+                ViewContext.Writer.Write("<a class='btn fa fa-refresh' alt='Resync' title='Resync' href='javascript:" + function + ";'></a>");
+                if (WMS.Helpers.LayoutHelpers.ActivityValidator("Order", "DeleteOrder"))
+                {
+                    ViewContext.Writer.Write("<a target='_blank' alt='Delete Order' title='Delete Order' data-type='AO' class='btn fa fa-times lnkDelete' data-target=" + orderId + "></a>");
+                }
+            });
+        });
+        settings.HtmlRowPrepared = (s, e) =>
+        {
+
+            if (e.RowType != GridViewRowType.Data) return;
+            var statusId = (int)e.GetValue("OrderStatusID");
+            if (statusId == (int)OrderStatusEnum.Cancelled)
+            {
+                e.Row.BackColor = System.Drawing.Color.LightCoral;
+                e.Row.ForeColor = System.Drawing.Color.Black;
+            }
+        };
+
+
+        settings.SettingsDetail.ShowDetailRow = true;
+
+        settings.SetDetailRowTemplateContent(c =>
+        {
+
+            Html.DevExpress().PageControl(s =>
+            {
+                s.EnableTabScrolling = true;
+                s.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                s.Name = DataBinder.Eval(c.DataItem, "OrderID").ToString();
+
+                s.TabPages.Add("Order Details").SetContent(() =>
+                {
+                    Html.RenderAction("_SalesOrderDetails", "Order", new { Id = DataBinder.Eval(c.DataItem, "OrderID") });
+                });
+
+            }).GetHtml();
+        });
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.BeginCallback = "OnBeginCallbackAW";
+        settings.ClientSideEvents.EndCallback = "OnGridFocusedRowChanged";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+        settings.SettingsPager.PageSize = 10;
+
+    });
+}
+@grid.Bind(Model).GetHtml()
+
+

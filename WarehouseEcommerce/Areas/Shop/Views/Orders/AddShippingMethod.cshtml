@@ -1,0 +1,48 @@
+﻿@using Ganedata.Core.Entities.Enums
+@{
+    ViewBag.Title = "AddShippingMethod";
+}
+
+<div class="about bg-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 bg-white my-account login">
+                <div class="about-cnt">
+                    <div class="content-wrapper select">
+                        <div class="row">
+                            @Html.Hidden("AccountAddressId", (int)ViewBag.AccountAddressId)
+                            <div class="col-md-6">
+                                <h2 class="text-uppercase">Select Payment Type</h2>
+                                <hr>
+                                <p>
+
+                                    @Html.DropDownList("PaymentType", EnumHelper.GetSelectList(typeof(AccountPaymentModeEnum)), "Select Payment Type", new { @class = "form-control" })
+
+
+                                </p>
+
+                            </div>
+                            <div class="col-md-6">
+                                <h2 class="text-uppercase">Select Shipping Type</h2>
+                                <hr>
+
+                                <p>
+                                    @Html.DropDownList("ShippingType", EnumHelper.GetSelectList(typeof(AccountPaymentModeEnum)), "Select Shipping Type", new { @class = "form-control" })
+
+                                </p>
+
+
+                            </div>
+
+                        </div>
+                        <div class="button-submit  ">
+                            <button type="Submit" name="submitNewsletter" class="btn btn-block" onclick="ConfirmOrder();">Proceed to Orders</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

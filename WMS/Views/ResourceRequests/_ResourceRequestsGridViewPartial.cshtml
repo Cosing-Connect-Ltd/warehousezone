@@ -1,0 +1,109 @@
+@using Ganedata.Core.Entities.Helpers
+@using Ganedata.Core.Entities.Enums
+@{
+
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "ResourceRequestsAwaitingGridView";
+        settings.CallbackRouteValues = new { Controller = "ResourceRequests", Action = "ResourceRequestsAwaitingGridViewPartial" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.CustomBindingRouteValuesCollection.Add(
+            GridViewOperationType.Paging,
+            new { Controller = "ResourceRequests", Action = "_ResourceRequestsAwaitingGridViewsPaging" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Filtering,
+        new { Controller = "ResourceRequests", Action = "_ResourceRequestsAwaitingGridViewFiltering" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Sorting,
+        new { Controller = "ResourceRequests", Action = "_ResourceRequestsAwaitingGridViewDataSorting" }
+        );
+
+        settings.KeyFieldName = "Id";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsPager.PageSize = 10;
+
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.ClientSideEvents.BeginCallback = "OnBeginCallback";
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.EndCallback = "OnGridFocusedRowChanged";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+
+        settings.Columns.Add("Id");
+
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "Resource";
+            column.Name = "Id";
+            column.SetDataItemTemplateContent(container =>
+            {
+                var resourceRequestId = (int)DataBinder.Eval(container.DataItem, "Id");
+
+                var acceptedDetails = DataBinder.Eval(container.DataItem, "ApprovedDetails") ?? "";
+                var resourceName = DataBinder.Eval(container.DataItem, "ResourceName").ToString();
+                var resourceNotes = DataBinder.Eval(container.DataItem, "Notes") ?? "";
+                var requestPeriod = DataBinder.Eval(container.DataItem, "RequestPeriod") ?? "";
+                ViewContext.Writer.Write(resourceName + Html.Hidden("ResourceRequestId" + resourceRequestId, resourceRequestId) + Html.Hidden("ApprovedDetails" + resourceRequestId, resourceRequestId));
+
+                ViewContext.Writer.Write("<div style='display:none' id='divResourceName" + resourceRequestId + "'>" + resourceName + "</div>");
+                ViewContext.Writer.Write("<div style='display:none' id='divRequestNotes" + resourceRequestId + "'>" + resourceNotes + "</div>");
+                ViewContext.Writer.Write("<div style='display:none' id='divRequestPeriod" + resourceRequestId + "'>" + requestPeriod + "</div>");
+            });
+        });
+
+      
+        settings.Columns.Add("HolidayReason");
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "RequestStatus";
+            column.Caption = "Request Status";
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            column.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var comboSettings = (ComboBoxProperties)column.PropertiesEdit;
+            comboSettings.DataSource = Enum.GetNames(typeof(ResourceRequestStatusEnum));
+            column.SetDataItemTemplateContent(columns =>
+            {
+                var Status = DataBinder.Eval(columns.DataItem, "RequestStatus");
+
+                ViewContext.Writer.Write(Status);
+
+            });
+
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "RequestType";
+            column.Caption = "Request Type";
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            column.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var comboSettings = (ComboBoxProperties)column.PropertiesEdit;
+            comboSettings.DataSource = Enum.GetNames(typeof(ResourceRequestTypesEnum));
+            column.SetDataItemTemplateContent(columns =>
+            {
+                var Status = DataBinder.Eval(columns.DataItem, "RequestType");
+
+                ViewContext.Writer.Write(Status);
+
+            });
+
+        });
+
+        settings.Columns.Add("Notes");
+    });
+}
+@grid.BindToCustomData(Model).GetHtml()

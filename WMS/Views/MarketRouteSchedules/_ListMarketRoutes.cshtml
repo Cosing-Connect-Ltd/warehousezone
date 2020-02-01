@@ -1,0 +1,22 @@
+﻿@model IEnumerable<Ganedata.Core.Entities.Domain.MarketRouteViewModel>
+@using Ganedata.Core.Entities.Enums;
+
+@ViewBag.title
+
+<h2><span>Market Routes</span></h2>
+<div class="alert alert-warning">
+    Drag routes from below and drop into calendar.
+</div>
+<div id="market-routes" class="market-routes">
+    @foreach (var route in Model)
+    {
+        <div class="market-route">
+            <ul>
+                <li style="background-color: aquamarine" value="@route.Id" class="draggable-route reallocation-parent" data-duration="@TimeSpan.FromMinutes(Convert.ToInt64(route.RouteDurationMins)).TotalMilliseconds"
+                    data-routeid="@route.Id" data-tid="@route.TenantId">
+                    <p>@route.Name (@route.MarketRouteMap.Count())</p>
+                </li>
+            </ul>
+        </div>
+    }
+</div>

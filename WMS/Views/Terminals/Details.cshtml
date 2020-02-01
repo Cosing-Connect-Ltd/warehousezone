@@ -1,0 +1,105 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@model Ganedata.Core.Entities.Domain.Terminals
+
+@{
+    ViewBag.Title = "Terminal Details";
+}
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+
+<div class="col-md-12">
+    <h2><span>Terminal Details</span></h2>
+    <div class ="col-md-4 pl-0 pull-left">
+        <h2><span>Details</span></h2>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.TenantWarehous.WarehouseName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TenantWarehous.WarehouseName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.TerminalName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TerminalName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.TermainlSerial)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TermainlSerial)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DateCreated)
+            </dt>
+
+            <dd>
+                @DateTimeToLocal.Convert(Model.DateCreated, ViewBag.TimeZone)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DateUpdated)
+            </dt>
+
+            <dd>
+                @DateTimeToLocal.Convert(Model.DateUpdated, ViewBag.TimeZone)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </dt>
+
+            <dd>
+                @LayoutHelpers.GetUserName(Model.CreatedBy)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.UpdatedBy)
+            </dt>
+
+            <dd>
+                @LayoutHelpers.GetUserName(Model.UpdatedBy)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.IsActive)
+            </dd>
+        </dl>
+    </div>
+
+
+    <div class="col-md-8 p-0 pull-left">
+        <h2><span>Sync Log</span></h2>
+        @Html.Action("_TermianlLog", new { id = Model.TerminalId })
+    </div>
+</div>
+
+<div class="input-group h-100 justify-content-center align-items-center">
+    <div class="col-md-offset-2 col-md-10 bottom-right">
+        @Html.ActionLink("Edit", "Edit", new { id = Model.TerminalId }, new { @class = "btn btn-primary" })
+        <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+    </div>
+</div>
+

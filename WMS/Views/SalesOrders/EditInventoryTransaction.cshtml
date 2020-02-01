@@ -1,0 +1,63 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "InventoryTransactionEditGrid";
+        settings.CallbackRouteValues = new { Controller = "SalesOrders", Action = "EditInventoryTransaction", OrderprocessDetailId = ViewBag.OrderprocessDetailId };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.SettingsPopup.HeaderFilter.MinWidth = 500;
+
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+
+        
+        settings.KeyFieldName = "InventoryTransactionId";
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add("Quantity");
+        settings.Columns.Add("Product.Name");
+        settings.Columns.Add("SerialID");
+        settings.Columns.Add("PalletTrackingId");
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DateCreated";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            c.ColumnType = MVCxGridViewColumnType.DateEdit;
+            c.SetDataItemTemplateContent(m =>
+            {
+                var date = (DateTime?)DataBinder.Eval(m.DataItem, "DateCreated");
+                DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
+                ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
+            });
+        });
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "Actions";
+            column.SetDataItemTemplateContent(m =>
+            {
+                var id = (int)DataBinder.Eval(m.DataItem, "InventoryTransactionId");
+                var update = string.Format("UpdateInventoryDetails({0})", id);
+                ViewContext.Writer.Write("<a title='Update' class='fa fa-pencil' style='cursor: pointer' href='#' onclick=" + update + "></a>");
+            });
+        });
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.BeginCallback = "InventoryTransactionBeginCallBack";
+
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+    });
+}
+

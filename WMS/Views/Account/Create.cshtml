@@ -1,0 +1,252 @@
+﻿@model Ganedata.Core.Entities.Domain.Account
+@using Ganedata.Core.Entities.Enums
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.PopupControl },
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Create New Account";
+}
+
+<h2><span>Create New Account</span></h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="col-md-6 pull-left">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.AccountCode, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.AccountCode)
+                @Html.ValidationMessageFor(model => model.AccountCode)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.CompanyName)
+                @Html.ValidationMessageFor(model => model.CompanyName)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.VATNo, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.VATNo)
+                @Html.ValidationMessageFor(model => model.VATNo)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.RegNo, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.RegNo)
+                @Html.ValidationMessageFor(model => model.RegNo)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Comments)
+                @Html.ValidationMessageFor(model => model.Comments)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.AccountEmail, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.AccountEmail)
+                @Html.ValidationMessageFor(model => model.AccountEmail)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.Telephone, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Telephone)
+                @Html.ValidationMessageFor(model => model.Telephone)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.Fax, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Fax)
+                @Html.ValidationMessageFor(model => model.Fax)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.Mobile, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Mobile)
+                @Html.ValidationMessageFor(model => model.Mobile)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.website, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.website)
+                @Html.ValidationMessageFor(model => model.website)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.FinalBalance, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.FinalBalance, new { htmlAttributes = new { @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.FinalBalance)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.TaxID, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownList("TaxID", null, String.Empty, new { @class = "chosen-select" })
+                @Html.ValidationMessageFor(model => model.TaxID)
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 pull-left">
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(m => m.CreditLimit, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DevExpress().SpinEditFor(m => m.CreditLimit, settings =>
+                   {
+                       settings.Name = "CreditLimit";
+                       settings.Properties.MinValue = 0;
+                       settings.Properties.MaxLength = 18;
+                       settings.ClientVisible = true;
+                       settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                       settings.ControlStyle.CssClass = "form-control";
+                   }).GetHtml()
+
+                @Html.ValidationMessageFor(model => model.CreditLimit)
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(m => m.CreditTerms, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DevExpress().SpinEditFor(m => m.CreditTerms, settings =>
+                   {
+                       settings.Name = "CreditTerms";
+                       settings.Properties.MinValue = 0;
+                       settings.Properties.MaxLength = 4;
+                       settings.ClientVisible = true;
+                       settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                       settings.ControlStyle.CssClass = "form-control";
+                   }).GetHtml()
+
+                @Html.ValidationMessageFor(model => model.CreditTerms)
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Country", htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownList("GlobalCountryIds", ViewBag.Countries as IEnumerable<SelectListItem>, new { @class = "chosen-select" })
+
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Currency", htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownList("GlobalCurrencyIds", ViewBag.Currencies as IEnumerable<SelectListItem>, new { @class = "chosen-select" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Account Status", htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownList("AccountStatusIds", ViewBag.AccountStatus as IEnumerable<SelectListItem>, new { @class = "chosen-select" })
+                @Html.TextArea("StopComment", "", 5, 50, new { placeholder = "Reason for stopping", style = "display:none", @class = "form-control" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Price Group", htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownList("PriceGroupId", ViewBag.PriceGroups as IEnumerable<SelectListItem>, new { @class = "chosen-select" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Owner User", htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownList("OwnerUserId", ViewBag.OwnerUsers as IEnumerable<SelectListItem>, new { @class = "chosen-select" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Customer", htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.AccountTypeCustomer)
+            </div>
+            @Html.Label("Supplier", htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.AccountTypeSupplier)
+            </div>
+            @Html.Label("End User", htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.AccountTypeEndUser)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Account Addresses", htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                <div>
+                    <div class="col-11 p-0 mt-1 pull-left">
+                        @Html.ListBox("AccountAddressIds",
+                  new MultiSelectList(ViewBag.AccountAddresses, "addressid", "name"),
+                  new { Multiple = "multiple", size = "5", @id = "AccountAddressIds", @class = "chosen-select", data_placeholder = "Choose Addresses" })
+                    </div>
+                    <div class="col-1 p-0 pull-left">
+                        <input type="button" onclick="javascript:ModalAccountAddress.Show()" id="AccountAddress" class="btn btn-primary" value="+">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Account Contacts", htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                <div>
+                    <div class="col-11 p-0 mt-1 pull-left">
+                        @Html.ListBox("AccountContactIds",
+                  new MultiSelectList(ViewBag.AccountContacts, "accountcontactid", "contactname"),
+                  new { Multiple = "multiple", size = "5", @id = "AccountContactIds", @class = "chosen-select", data_placeholder = "Choose Contacts" })
+                    </div>
+                    <div class="col-1 p-0 pull-left">
+                        <input type="button" onclick="javascript:ModalAccountContact.Show()" id="AccountAddress" class="btn btn-primary" value="+">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        <div class="col-md-offset-4 col-md-8 bottom-right">
+            <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+        </div>
+    </div>
+    <script>
+
+            var updateStopReasonVisibility = function() {
+                var accountStatusId = $("#AccountStatusIds").val();
+                if (accountStatusId == @((int) AccountStatusEnum.OnStop)) {
+                    $("#StopComment").slideDown();
+                } else {
+                    $("#StopComment").hide();
+                }
+            };
+
+            $("#AccountStatusIds").on("change", function() {
+                updateStopReasonVisibility();
+            });
+            updateStopReasonVisibility();
+
+    </script>
+}

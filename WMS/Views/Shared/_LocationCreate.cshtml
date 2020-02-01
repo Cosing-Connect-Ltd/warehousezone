@@ -1,0 +1,277 @@
+﻿@model Ganedata.Core.Entities.Domain.Locations
+
+@{
+    ViewBag.Title = "Create Location";
+}
+
+<h2><span>@ViewBag.Title</span></h2>
+
+
+@{
+    string controller = "";
+    string action = "";
+}
+@if (Request.Url.AbsolutePath.ToLower().Contains("/products/savelocation"))
+{
+    controller = "Products";
+    action = "SaveLocation";
+}
+else if (Request.Url.AbsolutePath.ToLower().Contains("/locations/create"))
+{
+    controller = "Locations";
+    action = "Create";
+}
+@using (Html.BeginForm(action, controller, FormMethod.Post, new { @id = "frmlocations" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.LocationId)
+    <div class="col-md-6 pull-left">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <label class ="col-md-4">Location Code<span style="color:red"> *</span></label>
+            <div class="col-md-8">
+                @Html.EditorFor(m => m.LocationCode)
+                @Html.ValidationMessageFor(model => model.LocationCode)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <label class ="col-md-4">Location Name<span style="color:red"> *</span></label>
+            <div class="col-md-8">
+                @Html.EditorFor(m => m.LocationName)
+                @Html.ValidationMessageFor(model => model.LocationName)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(m => m.Description)
+
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.LocationGroupId, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                <div class="col-11 p-0 mt-1 pull-left">
+                    @Html.DropDownListFor(x => x.LocationGroupId, new SelectList(ViewBag.LocationGroups, "Id", "Group"), new { @id = "drplgroup", @class = "chosen-select" })
+                </div>
+                <div class="col-1 p-0 pull-left">
+                    <input type="button" onclick="javascript: ModalLocationGroup.Show()" id="locGroupAdd" class="btn btn-primary" value="+">
+                </div>
+                @Html.ValidationMessageFor(model => model.LocationGroupId)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.LocationTypeId, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                <div class="col-11 p-0 mt-1 pull-left">
+                    @Html.DropDownListFor(x => x.LocationTypeId, new SelectList(ViewBag.LocationTypes, "LocationTypeId", "LocTypeName"), new { @id = "drpltype", @class = "chosen-select" })
+                </div>
+                <div class="col-1 p-0 pull-left">
+                    <input type="button" onclick="javascript: ModalLocationType.Show()" id="locTypeAdd" class="btn btn-primary" value="+">
+                </div>
+                @Html.ValidationMessageFor(model => model.LocationTypeId)
+            </div>
+        </div>
+        @if (!Request.Url.AbsolutePath.ToLower().Contains("/products/"))
+        {
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("Location Products", htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    <div>
+                        @Html.ListBox("ProductIds", new MultiSelectList(ViewBag.Products, "ProductId", "Name"), new { Multiple = "multiple", size = "5", @class = "chosen-select", data_placeholder = "Choose Products" })
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.DimensionUOMId, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(x => x.DimensionUOMId, new SelectList(ViewBag.DimensionUOMs, "Id", "DUOM"))
+
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.UOMId, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(x => x.UOMId, new SelectList(ViewBag.UOMs, "Id", "UOM"), new { @class = "chosen-select" })
+
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.LocationWeight, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DevExpress().SpinEditFor(m => m.LocationWeight,
+             settings =>
+             {
+                 settings.Name = "LocationWeight";
+                 settings.Properties.MinValue = 1;
+                 settings.Properties.MaxValue = 10;
+                 settings.Properties.NullText = "From 1 to 10...";
+                 settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                 settings.ControlStyle.CssClass = "form-control";
+
+             }).GetHtml()
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.LocationWidth, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DevExpress().SpinEditFor(m => m.LocationWidth,
+             settings =>
+             {
+                 settings.Name = "LocationWidth";
+                 settings.Properties.MinValue = 1;
+                 settings.Properties.MaxValue = 10;
+                 settings.Properties.NullText = "From 1 to 10...";
+                 settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                 settings.ControlStyle.CssClass = "form-control";
+
+             }).GetHtml()
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 pull-left">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.LocationDepth, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DevExpress().SpinEditFor(model => model.LocationDepth,
+             settings =>
+             {
+                 settings.Name = "LocationDepth";
+                 settings.Properties.MinValue = 1;
+                 settings.Properties.MaxValue = 10;
+                 settings.Properties.NullText = "From 1 to 10...";
+                 settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                 settings.ControlStyle.CssClass = "form-control";
+
+             }).GetHtml()
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.LocationHeight, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DevExpress().SpinEditFor(m => m.LocationHeight,
+             settings =>
+             {
+                 settings.Name = "LocationHeight";
+                 settings.Properties.MinValue = 1;
+                 settings.Properties.MaxValue = 10;
+                 settings.Properties.NullText = "From 1 to 10...";
+                 settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                 settings.ControlStyle.CssClass = "form-control";
+
+             }
+         ).GetHtml()
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.PickSeq, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DevExpress().SpinEditFor(m => m.PickSeq,
+             settings =>
+             {
+                 settings.Name = "PickSeq";
+                 settings.Properties.MinValue = 1;
+                 settings.Properties.MaxValue = 100;
+                 settings.Properties.NullText = "From 1 to 100...";
+                 settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                 settings.ControlStyle.CssClass = "form-control";
+
+             }
+         ).GetHtml()
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.PutAwaySeq, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DevExpress().SpinEditFor(m => m.PutAwaySeq,
+             settings =>
+             {
+                 settings.Name = "PutAwaySeq";
+                 settings.Properties.MinValue = 1;
+                 settings.Properties.MaxValue = 100;
+                 settings.Properties.NullText = "From 1 to 100...";
+                 settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                 settings.ControlStyle.CssClass = "form-control";
+
+             }
+         ).GetHtml()
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ReplenishSeq, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DevExpress().SpinEditFor(m => m.ReplenishSeq,
+             settings =>
+             {
+                 settings.Name = "ReplenishSeq";
+                 settings.Properties.MinValue = 1;
+                 settings.Properties.MaxValue = 100;
+                 settings.Properties.NullText = "From 1 to 100...";
+                 settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                 settings.ControlStyle.CssClass = "form-control";
+
+             }
+         ).GetHtml()
+
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.AllowPick, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.CheckBoxFor(model => model.AllowPick, new { @class = "form-control" })
+
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.AllowPutAway, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.CheckBoxFor(model => model.AllowPutAway, new { @class = "form-control" })
+
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.AllowReplenish, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.CheckBoxFor(model => model.AllowReplenish, new { @class = "form-control" })
+
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.MixContainer, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.CheckBoxFor(m => m.MixContainer, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.StagingLocation, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.CheckBoxFor(m => m.StagingLocation, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+
+    if (Request.Url.AbsolutePath.ToLower().Contains("/products/_locationcreate"))
+    {
+        <div class="col-md-offset-2 col-md-12 bottom-right-popup">
+            <input type="button" onclick="SubmitLocation()" value="Save" class="btn btn-primary" />
+            <input type="button" value="Cancel" onclick="javascript: pcModalLocations.Hide();" class="btn btn-default" />
+        </div>
+    }
+    else if (Request.Url.AbsolutePath.ToLower().Contains("/products/savelocation"))
+    {
+        <div class="col-md-offset-2 col-md-12 bottom-right-popup">
+            <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="btn btn-default"> @Html.ActionLink("Cancel", "Edit", null, null, null, "product-locations", new { @id = Session["pId"] }, null)</div>
+        </div>
+
+    }
+    else if (Request.Url.AbsolutePath.ToLower().Contains("/locations/create"))
+    {
+        <div class="col-md-offset-2 col-md-12 bottom-right">
+            <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="btn btn-default">@Html.ActionLink("Cancel", "Index")</div>
+        </div>
+    }
+
+}

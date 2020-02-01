@@ -1,0 +1,58 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+    @Html.DevExpress().GetStyleSheets(
+               new StyleSheet { ExtensionType = ExtensionType.PageControl, Theme = GaneStaticAppExtensions.DevexTheme },
+               new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+               )
+
+    @Html.DevExpress().GetScripts(
+                new Script { ExtensionType = ExtensionType.PageControl },
+                new Script { ExtensionType = ExtensionType.GridView }
+                )
+}
+
+@{
+    ViewBag.Title = "Awaiting Authorisation Orders";
+}
+
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+        var name = s.name;
+        if (name == "AwaitingAuthGridview") {
+            $('#selkeySalesOrderList').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        }
+    }
+
+    function UASelectedValueChanged() {
+        AwaitingAuthGridview.Refresh();
+    }
+    function OnBeginCallbackAW(s, e) {
+           e.customArgs['selectedStatus'] = $('#OrderStatus :selected').val();
+    }
+</script>
+<h2><span>@ViewBag.Title</span></h2>
+
+<div class="col-md-12 p-0">
+    <div class="col-md-12 p-0 report-date-header">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <div class="col-md-12 text-center">
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.Label("Filter By Status", htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-4">
+                        @Html.DropDownList("OrderStatus",
+                        new List<SelectListItem>
+                          {
+                            new SelectListItem{ Text = "ALL", Value = "0"},
+                           new SelectListItem{ Text = "Awaiting Authorisation", Value = "8", Selected=true},
+                            new SelectListItem{ Text = "Approved", Value = "12"},
+                             
+                         }, new { @class = "chosen-select", onchange = "UASelectedValueChanged(this);" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Action("_AwaitingAuthorisationOrders", "Order")
+</div>
+

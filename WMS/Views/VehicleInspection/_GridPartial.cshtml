@@ -1,0 +1,60 @@
+@model Ganedata.Core.Entities.Domain.ViewModels.InspectionsViewModel
+@using Ganedata.Core.Entities.Helpers
+@Html.DevExpress().GridView(
+    settings =>
+    {
+        settings.Name = "gridMaster";
+        settings.CallbackRouteValues = new { Controller = "VehicleInspection", Action = "InspectionsListPartial" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.SettingsPager.PageSize = 10;
+        settings.Styles.Header.CssClass = "";
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.KeyFieldName = "Id";
+        settings.Columns.Add("Id");
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "InspectionDateTime";
+            c.Caption = "Inspected Date";
+            //c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.PropertiesEdit.DisplayFormatString = "g";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            c.ColumnType = MVCxGridViewColumnType.DateEdit;
+            c.SetDataItemTemplateContent(m =>
+            {
+                var date = (DateTime?)DataBinder.Eval(m.DataItem, "InspectionDateTime");
+                DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
+                ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
+            });
+        });
+
+        settings.Columns.Add("DriverName", "Driver").Width = System.Web.UI.WebControls.Unit.Percentage(10);
+        settings.Columns.Add("VehicleName", "Vehicle").Width = System.Web.UI.WebControls.Unit.Percentage(15);
+        settings.Columns.Add("MileageReading", "Mileage").Width = System.Web.UI.WebControls.Unit.Percentage(10);
+        settings.Columns.Add("ReportedToName", "Report To").Width = System.Web.UI.WebControls.Unit.Percentage(10);
+        settings.Columns.Add("RectifiedUserName", "Rectified").Width = System.Web.UI.WebControls.Unit.Percentage(20);
+
+        settings.Columns.Add(column =>
+        {
+            column.Width = System.Web.UI.WebControls.Unit.Percentage(10);
+            column.Caption = "Actions";
+            column.SetDataItemTemplateContent(m =>
+            {
+                var id = (int)DataBinder.Eval(m.DataItem, "Id");
+                ViewContext.Writer.Write("<form class='form-horizontal' id='_deleteRoute'>" + Html.AntiForgeryToken() + "<a class='btn fa fa-pencil' href='/VehicleInspection/Edit/" + id + "' role='button'></a>" +
+                                         "<a class='btn  fa fa-trash' role='button' data-valueid='" + id + "' data-action='Delete' data-controller='VehicleInspection' id='deleteBtn' data-title='Delete Vehicle Inspection' data-message='This cannot be reversed, are you sure you want to delete this Vehicle Inspection?' data-toggle='modal' data-target='#confirm-delete'></a></form>");
+            });
+        });
+
+    }).Bind(Model.AllInspections).GetHtml()

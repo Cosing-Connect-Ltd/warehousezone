@@ -1,0 +1,259 @@
+﻿@using System.Web.UI.WebControls
+@using Ganedata.Core.Entities.Domain
+@using Ganedata.Core.Entities.Enums
+@{
+    string invUrllarge = new UrlHelper(HttpContext.Current.Request.RequestContext).Content("~/content/images/largebox.png");
+    string invUrlsmall = new UrlHelper(HttpContext.Current.Request.RequestContext).Content("~/content/images/smallbox.png");
+    var stopurl = new UrlHelper(HttpContext.Current.Request.RequestContext).Content("~/content/images/stop-red.png");
+    var holdurl = new UrlHelper(HttpContext.Current.Request.RequestContext).Content("~/content/images/hold-orange.png");
+
+    var worksIcon = new UrlHelper(HttpContext.Current.Request.RequestContext).Content("~/content/images/works-order-icon.png");
+    var salesIcon = new UrlHelper(HttpContext.Current.Request.RequestContext).Content("~/content/images/sales-order-icon.png");
+    var sampleIcon = new UrlHelper(HttpContext.Current.Request.RequestContext).Content("~/content/images/sample-order-icon.png");
+    var loanIcon = new UrlHelper(HttpContext.Current.Request.RequestContext).Content("~/content/images/loan-order-icon.png");
+
+
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "_PendingListGridView";
+        settings.CallbackRouteValues = new { Controller = "Order", Action = "_PendingProcessList" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Paging,
+        new { Controller = "Order", Action = "_PickListPaging" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Filtering,
+        new { Controller = "Order", Action = "_PickListFiltering" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Sorting,
+        new { Controller = "Order", Action = "_PickListSorting" }
+        );
+
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+        settings.KeyFieldName = "OrderID";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+
+        settings.SettingsCookies.Enabled = true;
+        settings.SettingsCookies.CookiesID = "PicklistProcess";
+        settings.SettingsCookies.StoreColumnsVisiblePosition = true;
+        settings.SettingsCookies.StoreColumnsWidth = true;
+        settings.SettingsCookies.StoreFiltering = true;
+        settings.SettingsCookies.StoreGroupingAndSorting = true;
+        settings.SettingsCookies.StorePaging = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+
+
+        settings.Columns.Add(c =>
+        {
+            c.CellStyle.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+
+            c.HeaderStyle.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+            c.Caption = "Ship";
+            c.SetDataItemTemplateContent(con =>
+            {
+
+
+                string rString = null;
+                var accountstatus = "";
+                accountstatus = DataBinder.Eval(con.DataItem, "AccountStatus").ToString();
+                var isStockAvailable = Boolean.Parse(DataBinder.Eval(con.DataItem, "FullShip").ToString()) == true;
+
+                bool? shipping = DataBinder.Eval(con.DataItem, "AddTypeShipping") != null && Boolean.Parse(DataBinder.Eval(con.DataItem, "AddTypeShipping").ToString());
+
+                if (shipping == false)
+                    rString = " R ";
+                if (accountstatus == "On Hold")
+                    rString = rString + String.Format(" <img  src=\"{0}\" /> ", holdurl);
+
+                if (accountstatus == "On Stop")
+                    rString = rString + String.Format(" <img  src=\"{0}\" /> ", stopurl);
+
+                if (!isStockAvailable)
+                {
+                    rString = rString + String.Format(" <img  src=\"{0}\" /> ", invUrlsmall);
+                }
+                else
+                {
+                    rString = rString + String.Format(" <img  src=\"{0}\" /> ", invUrllarge);
+                }
+
+                ViewContext.Writer.Write(rString);
+
+
+            });
+        });
+
+
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "OrderNumber";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add("Account");
+        //settings.Columns.Add("POStatus", "Status");
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "POStatus";
+            c.Caption = "Status";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var comboSettings = (ComboBoxProperties)c.PropertiesEdit;
+            comboSettings.DataSource = Enum.GetValues(typeof(OrderStatusEnum));
+        });
+
+
+        settings.Columns.Add(c =>
+        {
+            c.CellStyle.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+
+            c.HeaderStyle.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+            c.Caption = "Order Type";
+            c.SetDataItemTemplateContent(con =>
+            {
+
+                var typeId = (int)DataBinder.Eval(con.DataItem, "OrderTypeId");
+                var oString = "";
+                switch ((InventoryTransactionTypeEnum)typeId)
+                {
+                    case InventoryTransactionTypeEnum.SalesOrder:
+                        oString = string.Format(" <img  src=\"{0}\" alt='{1}' title='{1}'/> ", salesIcon, ((InventoryTransactionTypeEnum)typeId).ToString());
+                        break;
+                    case InventoryTransactionTypeEnum.WorksOrder:
+                        oString = string.Format(" <img  src=\"{0}\" alt='{1}' title='{1}'/> ", worksIcon, ((InventoryTransactionTypeEnum)typeId).ToString());
+                        break;
+                    case InventoryTransactionTypeEnum.Samples:
+                        oString = string.Format(" <img  src=\"{0}\" alt='{1}' title='{1}'/> ", sampleIcon, ((InventoryTransactionTypeEnum)typeId).ToString());
+                        break;
+                    case InventoryTransactionTypeEnum.Loan:
+                        oString = string.Format(" <img  src=\"{0}\" alt='{1}' title='{1}' /> ", loanIcon, ((InventoryTransactionTypeEnum)typeId).ToString());
+                        break;
+                }
+                ViewContext.Writer.Write(oString);
+            });
+        });
+
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Property";
+            c.Caption = "Property";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add("ResourceName");
+
+        settings.Columns.Add(c =>
+        {
+            c.Name = "Notes";
+            c.Caption = "Notes";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.Width = Unit.Percentage(40);
+            c.SetDataItemTemplateContent(container =>
+            {
+                var notelist = DataBinder.Eval(container.DataItem, "OrderNotesList") as IEnumerable<OrderNotesViewModel>;
+                var notes = "";
+                if (notelist != null)
+                {
+                    foreach (var m in notelist)
+                    {
+                        notes = notes + "<br/>" + m.Notes + " <small>(" + m.NotesByName + " : " + m.NotesDate.ToString("dd/MM/yyyy") + ")</small>";
+                    }
+                }
+                ViewContext.Writer.Write(notes);
+            });
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "OrderTypeId";
+            c.Visible = false;
+        });
+
+        settings.Columns.Add(m =>
+        {
+            m.CellStyle.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+
+            m.HeaderStyle.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+            m.Caption = "Process Order";
+
+            m.SetDataItemTemplateContent(c =>
+            {
+                var id = (int)DataBinder.Eval(c.DataItem, "OrderID");
+
+                var orderType = (int)DataBinder.Eval(c.DataItem, "OrderTypeId");
+
+                if (orderType == 2)
+                {
+                    ViewContext.Writer.Write(Html.ActionLink(" ", "ProcessOrder", "SalesOrders", new { id = id }, new { @class = "fa fa-arrow-circle-right fa-2x" }).ToHtmlString());
+                }
+
+                if (orderType == 8)
+                {
+                    ViewContext.Writer.Write(Html.ActionLink(" ", "ProcessOrder", "WorksOrders", new { id = id }, new { @class = "fa fa-arrow-circle-right fa-2x" }).ToHtmlString());
+                }
+            });
+
+        });
+
+        settings.HtmlRowPrepared = (s, e) =>
+        {
+            if (e.RowType != GridViewRowType.Data) return;
+
+            var total = double.Parse(e.GetValue("OrderTotal").ToString());
+            var limit = double.Parse(e.GetValue("CreditLimit").ToString());
+            if (limit < total)
+                e.Row.BackColor = System.Drawing.Color.LightGray;
+        };
+
+        settings.SettingsDetail.ShowDetailRow = true;
+
+        settings.SetDetailRowTemplateContent(c =>
+        {
+
+            Html.DevExpress().PageControl(s =>
+            {
+                s.EnableTabScrolling = true;
+                s.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                s.Name = DataBinder.Eval(c.DataItem, "OrderID").ToString();
+                s.TabPages.Add("Order Details").SetContent(() =>
+                {
+                    var orderType = (int)DataBinder.Eval(c.DataItem, "OrderTypeId");
+
+                    if (orderType == 2)
+                        Html.RenderAction("_SalesOrderDetails", "Order", new { Id = DataBinder.Eval(c.DataItem, "OrderID") });
+                    else if (orderType == 8)
+                        Html.RenderAction("_WorksOrderDetails", "Order", new { Id = DataBinder.Eval(c.DataItem, "OrderID") });
+                });
+
+            }).GetHtml();
+        });
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.EndCallback = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.BeginCallback = "OnBeginCallbackPicklistFilter";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+        settings.SettingsPager.PageSize = 10;
+
+    });
+}
+@grid.BindToCustomData(Model).GetHtml()

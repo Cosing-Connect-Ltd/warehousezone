@@ -1,0 +1,181 @@
+﻿@model WarehouseEcommerce.ViewModels.UsersViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = null;
+}
+
+<link href="~/Areas/Shop/Content/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+<link href="~/Areas/Shop/Content/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<link href="~/Areas/Shop/Content/plugins/swiper/css/swiper.min.css" type="text/css" rel="stylesheet" media="screen" />
+<link href="~/Areas/Shop/Content/plugins/owl.carousel/owl.carousel.css" type="text/css" rel="stylesheet" media="screen" />
+<link href="~/Areas/Shop/Content/plugins/owl.carousel/owl.theme.css" type="text/css" rel="stylesheet" media="screen" />
+<link href="~/Areas/Shop/Content/plugins/magnific-popup/dist/magnific-popup.css" type="text/css" rel="stylesheet" media="screen" />
+<link href="~/Areas/Shop/Content/app/css/app.css" rel="stylesheet">
+
+<div class="shipping">
+    <div class="container">
+        <div class="text-center">
+            <p>FREE SHIPPING OVER $12! MONEY BACK GUARANTEE</p>
+        </div>
+    </div>
+</div>
+<div class="login-head">
+    <div class="container">
+        <div class="position-relative">
+            <div class="row">
+                <div class="col-sm-3 col-xs-6 headlogo ex-center">
+                    <div id="logo">
+                        <a href="javascript:;">
+                            <img src="~/Areas/Shop/Content/app/img/logo.png" title="SmartShop Multistore" alt="SmartShop Multistore" class="img-responsive ex-center">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="register">
+                <div class="register-menu text-left">
+                    <a class="" href="#">Help</a> |
+
+                    <a class="" href="@Url.Action("Login","User")">Login</a>
+                </div>
+                <ul class="list-unstyled list-inline social">
+                    <li class="facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
+                    <li class="twitter"><a href="#"><i class="fa fa-twitter"></i></a></li>
+                    <li class="rss"><a href="#"><i class="fa fa-rss"></i></a></li>
+                    <li class="pinterest"><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                    <li class="vimeo"><a href="#"><i class="fa fa-vimeo"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="page-preloader" class="visible">
+    <div class="spinner">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+</div>
+<div id="common-home" class="container login">
+    <div class="row bg-white">
+        @using (Html.BeginForm("Create", "User", FormMethod.Post, new { @class = "formNewLestter", id = "formNewLestter" }))
+        {
+            @Html.HiddenFor(model=>model.PlaceOrder,(bool?)ViewBag.Placeorder)
+            <div class="col-md-5 col-sm-6 ex-left">
+                <div class="webi-newsletter  webi-newsletter leftprobg text-center" id="newsletter_5b2631bae1cb9" data-mode="default">
+
+                    @Html.AntiForgeryToken()
+
+                    <div class="inner">
+                        <h3>USER DETAIL</h3>
+                        <hr>
+                        <div class="form-group">
+                       
+                            @Html.EditorFor(model => model.FirstName, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Enter First Name" } })
+                            @Html.ValidationMessageFor(model => model.FirstName)
+                            @Html.EditorFor(model => model.LastName, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Enter Last Name" } })
+                            @Html.ValidationMessageFor(model => model.LastName)
+
+                            @Html.EditorFor(model => model.ContactNumber, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Enter Contact Number" } })
+                            @Html.ValidationMessageFor(model => model.ContactNumber)
+                            @Html.EditorFor(model => model.Email, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Enter Email" } })
+                            @Html.ValidationMessageFor(model => model.Email)
+
+                            @Html.PasswordFor(model => model.Password, new { @class = "form-control input-md inputNew", @placeholder = "Enter Password" })
+                            @Html.ValidationMessageFor(model => model.Password)
+                            @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control input-md inputNew", @placeholder = " Re Enter Password" })
+                            @Html.ValidationMessageFor(model => model.Password)
+
+
+                        </div>
+
+                        @*<div class="seperator position-relative">
+                                <span class="d-inline-block">OR</span>
+                            </div>
+                            <h3>Sign up with Social Media</h3>
+                            <hr>
+                            <div class="login-google">
+                                <button class="btn btn-primary btn-fb">
+                                    <i class="fa fa-facebook"></i>CONNECT WITH FACEBOOK
+                                </button>
+                                <button class="btn btn-primary btn-goggle">
+                                    <i class="fa fa-google-plus" aria-hidden="true"></i>CONNECT WITH GOOGLE
+                                </button>
+                            </div>*@
+                    </div>
+                    
+                 
+                </div>
+            </div>
+            <div class="col-md-5 col-sm-6 ex-right">
+                <div class="webi-newsletter  webi-newsletter leftprobg text-center" id="newsletter_5b2631bae1cb9" data-mode="default">
+
+
+
+                    <div class="inner">
+                        <h3>COMPANY DETAIL</h3>
+                        <hr>
+                        <div class="form-group">
+
+                            @Html.EditorFor(model => model.CompanyName, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Enter Company" } })
+                            @Html.ValidationMessageFor(model => model.ContactNumber)
+                            @Html.EditorFor(model => model.VATNumber, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Enter Vat Number" } })
+                            @Html.ValidationMessageFor(model => model.ContactNumber)
+                            @Html.EditorFor(model => model.RegNumber, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Enter Company Reg No." } })
+                            @Html.ValidationMessageFor(model => model.ContactNumber)
+
+                        </div>
+
+                        <div class="forgot-password">
+                            <div class="text-left">
+                                <p>
+                                    By creating and account you are agreeing to our <a class="forgot-password-link" href="forgot-password.html">
+                                        privacy policy
+                                    </a> and terms of use
+                                </p>
+                            </div>
+                        </div>
+                        <div class="button-submit">
+                            <button type="submit" name="submitNewsletter" class="btn btn-block btn-primary">Create an account</button>
+                        </div>
+                        @*<div class="seperator position-relative">
+                                <span class="d-inline-block">OR</span>
+                            </div>
+                            <h3>Sign up with Social Media</h3>
+                            <hr>
+                            <div class="login-google">
+                                <button class="btn btn-primary btn-fb">
+                                    <i class="fa fa-facebook"></i>CONNECT WITH FACEBOOK
+                                </button>
+                                <button class="btn btn-primary btn-goggle">
+                                    <i class="fa fa-google-plus" aria-hidden="true"></i>CONNECT WITH GOOGLE
+                                </button>
+                            </div>*@
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<footer class="footer-alter">
+    <div class="ui-footer text-center">
+        <div class="container">
+            <div class="ccopy">Powered By <a href="#">Bootstrap</a> SmartShop &copy; 2018</div>
+        </div>
+    </div>
+</footer>
+<a href="" id="scroll" title="Scroll to Top">
+    <span id="slidetop"></span>
+</a>
+<script src="~/Areas/Shop/Scripts/jquery-3.4.1.js"></script>
+<script src="~/Areas/Shop/Scripts/bootstrap.min.js"></script>
+<script src="~/Areas/Shop/Content/plugins/elevatezoom/jquery.elevateZoom-3.0.8.min.js"></script>
+<!-- blog image zoom -->
+<script src="~/Areas/Shop/Content/plugins/lightbox2/js/lightbox.min.js"></script>
+<link href="~/Areas/Shop/Content/plugins/lightbox2/css/lightbox.min.css" rel="stylesheet" type="text/css" />
+<!-- blog image zoom -->
+<script src="~/Areas/Shop/Content/app/js/app.js"></script>
+<script src="~/Areas/Shop/Content/plugins/swiper/js/swiper.min.js"></script>
+<script src="~/Areas/Shop/Content/plugins/owl.carousel/owl.carousel.min.js"></script>
+<script src="~/Areas/Shop/Content/plugins/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
+
+

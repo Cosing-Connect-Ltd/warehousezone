@@ -1,0 +1,98 @@
+﻿
+@model List<Ganedata.Core.Entities.Domain.OrderDetailSessionViewModel>
+<table class="order-details">
+    @if (ViewBag.CartModal == null)
+    {
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>
+                    <div class="ordered-items">Description</div>
+                </th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>tax</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+    }
+    @foreach (var item in Model)
+    {
+        <tbody>
+
+
+            <tr>
+
+                <td><a href=""><img src="/UploadedFiles/Products/no-image.png" alt="@(item?.ProductMaster?.Name)"></a></td>
+                <td>
+                    <div class="ordered-items">
+                        <p>
+                            <a href=""><strong>@(item.ProductMaster?.Name)</strong></a>
+
+                        </p>
+                        <ul>
+                            <li>
+                                Sku: <span>@(item.ProductMaster?.SKUCode)</span>
+                            </li>
+                            <li>Size: <span>M</span></li>
+                            @*<li>
+                                    Quantity: <span>@item.Qty</span>
+                                </li>*@
+                        </ul>
+                    </div>
+                </td>
+                @if (ViewBag.CartModal == null)
+                {
+                    <td>
+                        <div class="ordered-items ordered-items-spacing">
+                            <ul>
+                                <li>
+                                    Quantity:<br />
+                                    <span>
+                                        <input type="text" placeholder="Qty" onchange="UpdateCartItem(@item.ProductId,this)" value="@item.Qty" />
+                                    </span>
+                                </li>
+                            </ul>
+                            <a href="javascript:;" class="remove-btn" onclick="RemoveCartItem(@item.ProductId)"><i class="fa fa-trash-o" aria-hidden="true"></i> Remove</a>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="price-whlist"><b> @item.Price</b> </div>
+                    </td>
+
+                    <td>
+                        <div class="price-whlist"><b> @item.TaxAmount</b> </div>
+                    </td>
+                    <td>
+                        <div class="price-whlist"><b> @item.TotalAmount</b> </div>
+
+                    </td>
+                }
+            </tr>
+
+
+        </tbody>
+    }
+</table>
+@if (ViewBag.CartModal == null)
+{
+    if (Model.Count > 0)
+    {
+        <div class="button-submit">
+
+            <button type="Submit" name="submitNewsletter" class="btn btn-block" onclick="window.location.href='@Url.Action("GetAddress", "Orders")'">Proceed to Checkout</button>
+            <div class="pull-right"><label>Total: @(ViewBag.TotalQty == null ? 0 : ViewBag.TotalQty) </label></div>
+        </div>
+    }
+    else
+    {
+        <center><p><h4 style="text-align:center">Your shopping cart is empty!</h4></p></center>
+        <div class="button-submit">
+
+            <button type="Submit" name="submitNewsletter" class="btn btn-block" onclick="window.location.href='@Url.Action("Index", "Home")'">Back</button>
+        </div>
+    }
+
+}
+

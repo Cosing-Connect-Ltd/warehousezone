@@ -1,0 +1,258 @@
+﻿@using System.Web.UI.WebControls
+@model Ganedata.Core.Entities.Domain.InventoryTransaction
+@using Ganedata.Core.Entities.Domain
+@using Ganedata.Core.Entities.Enums
+<div class="col-md-12">
+
+    <input type="text" id="palletpercase" value="@(ViewBag.PalletPerCase??1)" hidden />
+    @if (Request.UrlReferrer.AbsolutePath.ToLower().Contains("purchaseorders") || (Request.UrlReferrer.AbsolutePath.ToLower().Contains("salesorders")) || Request.UrlReferrer.AbsolutePath.ToLower().Contains("worksorders") || Request.UrlReferrer.AbsolutePath.ToLower().Contains("goodsreturn")
+        || Request.UrlReferrer.AbsolutePath.ToLower().Contains("blindshipment") || Request.UrlReferrer.AbsolutePath.ToLower().Contains("wastedgoodsreturn") || Request.UrlReferrer.AbsolutePath.ToLower().Contains("inventoryadjustments"))
+
+    {
+        if (ViewBag.product != null)
+        {
+            var list = ViewBag.product as ProductMaster;
+
+
+
+
+            <div class="input-group  justify-content-center align-items-center">
+                @Html.Label("Prod Name", htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    <label>@list.Name</label>
+                </div>
+
+            </div>
+            <div class="input-group  justify-content-center align-items-center">
+                @Html.Label("Sku Code", htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    <label>@list.SKUCode</label>
+                </div>
+
+            </div>
+            <div class="input-group  justify-content-center align-items-center">
+                @Html.Label("Bar Code", htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    <label>@list.BarCode</label>
+                </div>
+
+            </div>
+        }
+
+        if (Request.UrlReferrer.AbsolutePath.ToLower().Contains("salesorders") || Request.UrlReferrer.AbsolutePath.ToLower().Contains("worksorders") || Request.UrlReferrer.AbsolutePath.ToLower().Contains("blindshipment"))
+        {
+            if (ViewBag.Serial != null || ViewBag.expDate != null)
+            {
+
+                <div class="input-group  justify-content-center align-items-center" style="font-weight:bold;">
+                    @Html.Label("Please Scan this Serial First", htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @if (ViewBag.MoYy != null)
+                        {
+                            <label class="updatedate">@ViewBag.MoYy</label>
+                            <label class="palletserial" style="display:none;">@ViewBag.expDate</label>
+                        }
+                        else
+                        {
+                            <label class="palletserial">@ViewBag.Serial</label>
+                        }
+
+
+                    </div>
+
+                </div>
+
+            }
+            else if (ViewBag.palletTrackingId == 0 || ViewBag.palletTrackingId == 5)
+            {
+                <div class="input-group col-md-8 pull-right">
+
+                    @Html.Label("You can  Scan any Serial Number", htmlAttributes: new { @style = "font-weight:bold;" })
+
+                </div>
+
+            }
+            else
+            {
+                <div class="input-group col-md-8 pull-right">
+
+                    @Html.Label("There is no serial to Scan", htmlAttributes: new { @style = "font-weight:bold;" })
+
+                </div>
+
+
+            }
+
+
+
+
+            if (ViewBag.palletTracking != null)
+            {
+                <div class="input-group  justify-content-center align-items-center">
+                    <label class="col-md-4">Pallet Tracking Scheme</label>
+                    <div class="col-md-8">
+                        @{
+
+                            <input type="text" value="@ViewBag.palletTrackingId" id="palletTrackingId" hidden />
+                            if (@ViewBag.palletTrackingId == 0)
+                            {
+                                <label>Dont Enforce</label>
+                            }
+                            else
+                            {
+                                <label> @ViewBag.palletTracking </label>
+                            }
+
+                        }
+                    </div>
+
+                </div>
+            }
+        }
+    }
+    <div id="serialWrapper">
+        <div class="input-group serial-popup-header h-100 justify-content-center align-items-center">
+            @if (!Request.UrlReferrer.AbsolutePath.ToLower().Contains("blindshipment"))
+            {
+                <div class="col-md-4">
+                    @if (!Request.UrlReferrer.AbsolutePath.ToLower().Contains("goodsreturn") || !Request.UrlReferrer.AbsolutePath.ToLower().Contains("wastedgoodsreturn")
+                       || !Request.UrlReferrer.AbsolutePath.ToLower().Contains("inventoryadjustments"))
+                    {
+                        @Html.Label("Quantity", htmlAttributes: new { @class = "col-md-4" })
+                    }
+                    else
+                    {
+                        @Html.Label("Return Cases", htmlAttributes: new { @class = "col-md-4" })
+                    }
+                    <div class="col-md-8">
+                        @Html.DevExpress().SpinEdit(settings =>
+                   {
+                       settings.Name = "QuantityP";
+                       settings.Enabled = ViewBag.QuantityEnabled;
+                       settings.Properties.MaxValue = 9999999999;
+                       settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                       settings.ControlStyle.CssClass = "form-control";
+                       settings.Properties.ClientSideEvents.LostFocus = "QunatitytoCases";
+
+                   }).Bind(ViewBag.RequiredQuantity).GetHtml()
+                        @Html.ValidationMessageFor(model => model.Quantity)
+
+                    </div>
+                </div>
+            }
+
+            <div class="col-md-4">
+
+                @Html.Label("Cases", htmlAttributes: new { @class = "col-md-4" })
+                @if (Request.UrlReferrer.AbsolutePath.ToLower().Contains("goodsreturn") || Request.UrlReferrer.AbsolutePath.ToLower().Contains("wastedgoodsreturn")
+                    || Request.UrlReferrer.AbsolutePath.ToLower().Contains("inventoryadjustments"))
+
+                {
+                <div class="col-md-8">
+                    <input type="text" class="cases" value="@((decimal?)ViewBag.cases??null)" hidden />
+                    <input type="text" class="casesReturns" value="@(ViewBag.RequiredQuantity==null?"": String.Format("{0:0.00}",(((decimal?)ViewBag.RequiredQuantity??null)/((decimal?)ViewBag.PalletPerCase??1))))" onchange="CasestoQunatity();" />
+                </div>
+
+                }
+                else
+                {
+                    <div class="col-md-8">
+                        <input type="text" class="cases" value="@(String.Format("{0:0.00}",(decimal?)ViewBag.cases??null))" disabled />
+                    </div>
+
+
+                }
+            </div>
+            <div class="col-md-4">
+                @Html.DevExpress().ProgressBar(m =>
+           {
+               m.Name = "SerialQuantityProgressBar";
+               m.Properties.Caption = "Progress";
+               if (ViewBag.RequiredQuantity != null && ViewBag.ProcessedQuantity != null)
+               {
+                   decimal maxPos = Math.Max(ViewBag.RequiredQuantity, ViewBag.ProcessedQuantity);
+                   m.Position = ViewBag.ProcessedQuantity;
+                   m.Properties.Maximum = maxPos;
+                   m.ToolTip = ViewBag.ProcessedQuantity + "/" + ViewBag.RequiredQuantity + " processed";
+               }
+               m.Width = Unit.Percentage(100);
+           }).GetHtml()
+
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <div class="col-md-8 col-md-offset-1 serial-range-init">
+                <div>
+                    @if (Request.UrlReferrer.AbsolutePath.ToLower().Contains("salesorders") || Request.UrlReferrer.AbsolutePath.ToLower().Contains("worksorders"))
+                    {
+                        <input type="text" placeholder='Scan/Enter Pallet Serial Number' class="serial scaned" onkeypress="VerifyPalletSalesOrder(event, this)" autofocus />
+
+                    }
+                    else if (Request.UrlReferrer.AbsolutePath.ToLower().Contains("goodsreturn") || Request.UrlReferrer.AbsolutePath.ToLower().Contains("wastedgoodsreturn") || Request.UrlReferrer.AbsolutePath.ToLower().Contains("inventoryadjustments"))
+                    {
+                        <input type="text" placeholder='Scan/Enter Pallet Serial Number' class="serial scaned" onkeypress="VerifyPalletReturns(event, this)" autofocus />
+
+                    }
+                    else if (Request.UrlReferrer.AbsolutePath.ToLower().Contains("blindshipment"))
+                    {
+                        <input type="text" id="bstext" placeholder='Scan/Enter Pallet Serial Number' class="serial scaned" onkeypress="VerifyPallete(event, this)" autofocus />
+
+                    }
+                    else
+                    {
+                        <input type="text" placeholder='Scan/Enter Pallet Serial Number' class="serial scaned" onkeypress="VerifyPallete(event, this)" autofocus />
+
+
+                    }
+                    @*</div>
+                             <a href="#" style="display: none" onclick="RemoveSerials(event, this)">Remove</a>
+                        </div>*@
+                </div>
+            </div>
+
+
+            @*<div class="input-group h-100 justify-content-center align-items-center">*@
+
+
+            @*</div>*@
+            <div class="input-group justify-content-center align-items-center">
+                <table class="table table-bordered tableSerial">
+                    <thead>
+                        <tr class="btn-default">
+                            <th>
+                                Scanned Pallets
+                            </th>
+                            <th>
+                                Cases
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<div class="col-md-offset-2 col-md-10 bottom-right-popup">
+    @if (Request.UrlReferrer.AbsolutePath.ToLower().Contains("goodsreturn") || Request.UrlReferrer.AbsolutePath.ToLower().Contains("WastedGoodsReturn") || Request.UrlReferrer.AbsolutePath.ToLower().Contains("inventoryadjustments"))
+    {
+        <input type="button" onclick="SavePalletReturns()" value="Save" class="btn btn-primary" />
+    }
+
+    else if (Request.UrlReferrer.AbsolutePath.ToLower().Contains("blindshipment"))
+    {
+        <input type="button" onclick="BScollectPalletSerial()" value="Save" class="btn btn-primary" />
+    }
+    else
+    {
+        <input type="button" onclick="SaveSerials()" value="Save" class="btn btn-primary" />
+    }
+    <input type="button" onclick="CloseModel();" value="Cancel" class="btn btn-default" />
+
+
+
+</div>

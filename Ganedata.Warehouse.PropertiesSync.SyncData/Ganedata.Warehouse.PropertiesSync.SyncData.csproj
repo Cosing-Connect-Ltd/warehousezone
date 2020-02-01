@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F586E7AE-4C1D-464D-9302-F68C29EF6593}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ganedata.Warehouse.PropertiesSync.SyncData</RootNamespace>
+    <AssemblyName>Ganedata.Warehouse.PropertiesSync.SyncData</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Core">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Entities\ContactInfo.cs" />
+    <Compile Include="Entities\PLandlord.cs" />
+    <Compile Include="Entities\PProperty.cs" />
+    <Compile Include="Entities\PSyncHistory.cs" />
+    <Compile Include="Entities\PTenant.cs" />
+    <Compile Include="ISyncDataDbContext.cs" />
+    <Compile Include="Migrations\201704041508024_InitialRun.cs" />
+    <Compile Include="Migrations\201704041508024_InitialRun.Designer.cs">
+      <DependentUpon>201704041508024_InitialRun.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704041549246__AddedSyncCompletionFlag.cs" />
+    <Compile Include="Migrations\201704041549246__AddedSyncCompletionFlag.Designer.cs">
+      <DependentUpon>201704041549246__AddedSyncCompletionFlag.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704041551067__RenamedSyncRequiredFlag.cs" />
+    <Compile Include="Migrations\201704041551067__RenamedSyncRequiredFlag.Designer.cs">
+      <DependentUpon>201704041551067__RenamedSyncRequiredFlag.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704051613445__AddedAuditEntitiesAndUpdatedEntities.cs" />
+    <Compile Include="Migrations\201704051613445__AddedAuditEntitiesAndUpdatedEntities.Designer.cs">
+      <DependentUpon>201704051613445__AddedAuditEntitiesAndUpdatedEntities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704051618345__AddedSyncHistoryEntity.cs" />
+    <Compile Include="Migrations\201704051618345__AddedSyncHistoryEntity.Designer.cs">
+      <DependentUpon>201704051618345__AddedSyncHistoryEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704051624161__UpdatedSyncHistoryEntity.cs" />
+    <Compile Include="Migrations\201704051624161__UpdatedSyncHistoryEntity.Designer.cs">
+      <DependentUpon>201704051624161__UpdatedSyncHistoryEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704281105410_AddedRelationshipsBetweenEntities.cs" />
+    <Compile Include="Migrations\201704281105410_AddedRelationshipsBetweenEntities.Designer.cs">
+      <DependentUpon>201704281105410_AddedRelationshipsBetweenEntities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705160843342_AddedNavigationProps.cs" />
+    <Compile Include="Migrations\201705160843342_AddedNavigationProps.Designer.cs">
+      <DependentUpon>201705160843342_AddedNavigationProps.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705161233193_AddedOrderIDForPProperty.cs" />
+    <Compile Include="Migrations\201705161233193_AddedOrderIDForPProperty.Designer.cs">
+      <DependentUpon>201705161233193_AddedOrderIDForPProperty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705161302372_AddedCurrentOrFutureTenantForTenants.cs" />
+    <Compile Include="Migrations\201705161302372_AddedCurrentOrFutureTenantForTenants.Designer.cs">
+      <DependentUpon>201705161302372_AddedCurrentOrFutureTenantForTenants.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706050826282_AddedHeadTenantInfoForPTenants.cs" />
+    <Compile Include="Migrations\201706050826282_AddedHeadTenantInfoForPTenants.Designer.cs">
+      <DependentUpon>201706050826282_AddedHeadTenantInfoForPTenants.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801222135104_AddedVacantDate.cs" />
+    <Compile Include="Migrations\201801222135104_AddedVacantDate.Designer.cs">
+      <DependentUpon>201801222135104_AddedVacantDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SyncDataDbContext.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201704041508024_InitialRun.resx">
+      <DependentUpon>201704041508024_InitialRun.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704041549246__AddedSyncCompletionFlag.resx">
+      <DependentUpon>201704041549246__AddedSyncCompletionFlag.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704041551067__RenamedSyncRequiredFlag.resx">
+      <DependentUpon>201704041551067__RenamedSyncRequiredFlag.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704051613445__AddedAuditEntitiesAndUpdatedEntities.resx">
+      <DependentUpon>201704051613445__AddedAuditEntitiesAndUpdatedEntities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704051618345__AddedSyncHistoryEntity.resx">
+      <DependentUpon>201704051618345__AddedSyncHistoryEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704051624161__UpdatedSyncHistoryEntity.resx">
+      <DependentUpon>201704051624161__UpdatedSyncHistoryEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704281105410_AddedRelationshipsBetweenEntities.resx">
+      <DependentUpon>201704281105410_AddedRelationshipsBetweenEntities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705160843342_AddedNavigationProps.resx">
+      <DependentUpon>201705160843342_AddedNavigationProps.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705161233193_AddedOrderIDForPProperty.resx">
+      <DependentUpon>201705161233193_AddedOrderIDForPProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705161302372_AddedCurrentOrFutureTenantForTenants.resx">
+      <DependentUpon>201705161302372_AddedCurrentOrFutureTenantForTenants.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706050826282_AddedHeadTenantInfoForPTenants.resx">
+      <DependentUpon>201706050826282_AddedHeadTenantInfoForPTenants.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801222135104_AddedVacantDate.resx">
+      <DependentUpon>201801222135104_AddedVacantDate.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

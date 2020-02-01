@@ -1,0 +1,51 @@
+﻿@using Ganedata.Core.Entities.Domain
+@model IEnumerable<ProductGroups>
+
+<aside id="column-left" class="col-md-3 col-sm-4">
+    <div class="hidden-xs">
+        <div id="ui-mega-menu">
+            <h3 class="wr-menu collapsed " data-toggle="collapse" data-target="#under-menu" aria-expanded="false">
+                <button class="btn-navbar navbar-toggle pull-left" type="button" data-toggle="collapse">
+                    <span class="ico-menu">
+                        <i class="bar"></i>
+                        <i class="bar"></i>
+                        <i class="bar"></i>
+                    </span>
+                </button>
+                <span class="cate">All Categories</span>
+            </h3>
+        </div>
+        <div class="cate-menu ">
+            <nav id="menu" class="navbar ui-main-menu">
+                <div class="navbar-header">
+                    <span id="category" class="visible-xs">All Categories</span>
+                    <button type="button" class="btn btn-navbar navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse"><i class="fa fa-bars"></i></button>
+                </div>
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav">
+                        @if (Model != null)
+                        {
+                            foreach (var item in Model)
+                            {
+                                <li class="ui-mega-menu-level">
+                                    <a href="@Url.Action("ProductCategories","Products",new { productGroupId=item.ProductGroupId })">
+                                        <div class="thumb_img pull-left">
+                                            @*<img src="@(ViewBag.BaseFilePath + item.IconPath)" alt="@item.ProductGroup">*@
+                                        </div>
+                                        @item.ProductGroup
+                                    </a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    @Html.Action("_BestSellerPartial")
+    @Html.Action("_SpecialProductPartial")
+    @Html.Action("_NewsLetterPartial")
+    @Html.Action("_ImageBlockPartial")
+
+
+</aside>

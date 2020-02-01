@@ -1,0 +1,34 @@
+﻿@using Ganedata.Core.Entities.Domain;
+@using Ganedata.Core.Data;
+@using WMS.CustomBindings
+
+
+@Html.DevExpress().TokenBox(settings =>
+{
+    settings.Name = "comboBox";
+    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+    settings.Height = System.Web.UI.WebControls.Unit.Pixel(20);
+    settings.Properties.AllowCustomTokens = false;
+    settings.Properties.TokenStyle.Border.BorderWidth = System.Web.UI.WebControls.Unit.Pixel(1);
+    settings.Properties.TokenStyle.Border.BorderColor = System.Drawing.Color.Black;
+
+    settings.CallbackRouteValues = new { Controller = "Products", Action = "_ProductKitCombobox" };
+    settings.Properties.CallbackPageSize = 15;
+    settings.Properties.ShowDropDownOnFocus = ShowDropDownOnFocusMode.Always;
+    
+    settings.Properties.TextField = "Name";
+    settings.Properties.FilterMinLength = 0;
+    settings.Properties.TextFormatString = "{0}";
+    settings.Properties.ValueField = "ProductId";
+    settings.Properties.ItemValueType = typeof(int);
+    settings.Properties.ClientSideEvents.LostFocus = "ProductKitChanges";
+
+
+}
+    ).BindToEF(string.Empty, string.Empty, (s, e) =>
+    {
+
+        e.QueryableSource = ProductComboboxCustomBinding.ProductMasters;
+        e.KeyExpression = "ProductId";
+
+    }).Bind(ViewBag.ProductKitIds).GetHtml()

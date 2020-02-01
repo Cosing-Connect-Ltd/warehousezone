@@ -1,0 +1,108 @@
+﻿@model IEnumerable<Ganedata.Core.Entities.Domain.AccountAddresses>
+
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = ViewData["accountid"] + "Addressgridview";
+        settings.CallbackRouteValues = new { Controller = "Account", Action = "_AddressesByAccount", AccountID = ViewData["accountid"] };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.SettingsPopup.HeaderFilter.MinWidth = 500;
+
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+
+
+        settings.KeyFieldName = "AddressID";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Name";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "AddressLine1";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "AddressLine2";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Telephone";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "PostCode";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Town";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "GlobalCountry.CountryName";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "AddTypeDefault";
+            c.Caption = "Address Type";
+            c.Settings.AllowAutoFilter = DefaultBoolean.False;
+
+            c.SetDataItemTemplateContent(m =>
+            {
+                var addressTypes = new List<string>();
+                if (DataBinder.Eval(m.DataItem, "AddTypeDefault") != null && DataBinder.Eval(m.DataItem, "AddTypeDefault").ToString().Equals("true", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    addressTypes.Add("Default");
+                }
+                if (DataBinder.Eval(m.DataItem, "AddTypeShipping") != null && DataBinder.Eval(m.DataItem, "AddTypeShipping").ToString().Equals("true", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    addressTypes.Add("Shipping");
+                }
+                if (DataBinder.Eval(m.DataItem, "AddTypeMarketing") != null && DataBinder.Eval(m.DataItem, "AddTypeMarketing").ToString().Equals("true", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    addressTypes.Add("Marketing");
+                }
+
+                ViewContext.Writer.Write("<b>" + string.Join(", ", addressTypes) + "</b>");
+            });
+
+        });
+
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+    });
+}
+@grid.Bind(Model).GetHtml()
+@if (Request.Url.AbsolutePath.ToLower().Contains("edit"))
+{
+    <div class="bottom-right">
+        @Html.ActionLink("Create New", "SaveAccountAddress", null, new { @class = "btn btn-primary  " })
+        @Html.ActionLink("Update", "SaveAccountAddress", null, new { @class = "btn btn-primary  Caction", @id = "lnksaveAddress" })
+        @Html.ActionLink("Delete", "DeleteAccountAddress", null, new { @class = "btn btn-primary  Caction", @id = "lnksaveAddress" })
+    </div>
+}

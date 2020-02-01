@@ -1,0 +1,70 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.WebDocumentViewer, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.WebDocumentViewer }
+        )
+}
+
+@{
+
+    ViewBag.Title = "ACCOUNT  STATEMENT";
+}
+<style type="text/css">
+    .Email
+    {
+        background-image: url(../../Content/images/Email.png);
+        background-repeat: no-repeat;
+    }
+</style>
+
+<script>
+   
+    function SendEmail(s, e) {
+        
+        var parameters = FinancialTransactionPrintDocumentViewer.GetPreviewModel().parametersModel;
+        if ((typeof parameters["AccountId"] !== 'undefined') && (typeof parameters["EndDate"] !== 'undefined')
+            && (typeof parameters["StartDate"] !== 'undefined')) {
+            parameters["AccountId"].subscribe(function (value) {
+                Ftaccountid = value;
+            });
+            var StartDate = formatDate(parameters["StartDate"]._latestValue);
+            var EndDate = formatDate(parameters["EndDate"]._latestValue);
+            var accountid = parameters["AccountId"]._latestValue;
+            if (accountid !== null) {
+                CustomEmailReports(accountid, StartDate, EndDate);
+            }
+            
+
+        }
+    }
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('/');
+    }
+</script>
+
+<h2><span>@ViewBag.Title</span></h2>
+@Html.Hidden("FTReport","FtRep")
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "FinancialTransactionPrintDocumentViewer";
+    settings.MenuItems.Add(new DevExpress.XtraReports.Web.WebDocumentViewer.WebDocumentViewerMenuItem
+    {
+        Text = "Send Email",
+        ImageClassName = "Email",
+        JSClickAction = "SendEmail"
+    });
+
+}).Bind(Model).GetHtml()

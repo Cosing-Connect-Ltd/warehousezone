@@ -1,0 +1,22 @@
+﻿@model Ganedata.Core.Entities.Domain.ProductMaster
+    <div class="col-md-12">
+        <div class="col-md-12 p-0" id="divSerialsContainer" style="height: 350px;max-height: 350px;overflow-y:scroll">
+            <div class="col-md-12 p-0">
+
+                @Html.Label("Scan the serials")
+
+                @Html.TextBox("txtInventoryStockSerials", null, new { @placeholder = "Scan product serials" })
+            </div>
+            <div class="col-md-12 p-0" id="divExistingScannedSerials">
+                <div class="alert alert-danger" id="divExistingScannedSerialsError" style="display:none"></div>
+                <table class="table table-bordered" id="tblBarcodeScannedStocks">
+                    <thead><tr><th>Serial</th><th>In Stock</th></tr></thead>
+                    <tbody id="divExistingScannedSerialsTable"></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-12 p-0">
+            <button type="button" class="btn btn-primary pull-right" id="btnConfirmAdjustStockSerials">Confirm Serials</button>
+            <button type="button" class="btn btn-warning pull-right" id="btnConfirmAdjustStockSerialsCancel">Cancel</button>
+        </div>
+    </div>

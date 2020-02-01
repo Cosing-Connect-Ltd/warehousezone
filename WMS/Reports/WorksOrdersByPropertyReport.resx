@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <metadata name="tenantLocationsTableAdapter1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="dbSet1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 56</value>
+  </metadata>
+  <metadata name="objectDataSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 368</value>
+  </metadata>
+  <metadata name="sqlDataSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 173</value>
+  </metadata>
+  <data name="customSqlQuery1.Sql" xml:space="preserve">
+    <value>SELECT        Appointments.StartTime AS OrderStartTime, Appointments.EndTime AS OrderEndTime, Appointments.OrderId, PProperties.PPropertyId AS OrderPropertyId, PProperties.AddressLine1 AS OrderPropertyAddr1, Orders.TenentId,
+                         PProperties.AddressLine2 AS OrderPropertyAddr2, PProperties.AddressLine3 AS OrderPropertyAddr3, PProperties.AddressLine4 AS OrderPropertyAddr4, PProperties.PropertyCode AS OrderPropertyCode, 
+                         PProperties.AddressPostcode AS OrderPropertyPostcode, PProperties.CurrentLandlordCode, Orders.OrderNumber, Orders.InventoryTransactionTypeId, SLAPriorits.SLAPriorityId, 
+                         SLAPriorits.Priority AS SLAPriorityName, Resources.ResourceId, CONCAT(Resources.FirstName, ' ', Resources.SurName) AS OrderResourceName
+FROM            Appointments INNER JOIN
+                         Orders ON Appointments.OrderId = Orders.OrderID LEFT OUTER JOIN
+                         PProperties ON Orders.OrderID = PProperties.Order_OrderID LEFT OUTER JOIN
+                         SLAPriorits ON Orders.SLAPriorityId = SLAPriorits.SLAPriorityId LEFT OUTER JOIN
+                         Resources ON Appointments.ResourceId = Resources.ResourceId
+WHERE        (Orders.InventoryTransactionTypeId = 8)  AND Orders.OrderStatusID!=2</value>
+  </data>
+  <data name="sqlDataSource1.ResultSchemaSerializable" xml:space="preserve">
+    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9IlF1ZXJ5Ij48RmllbGQgTmFtZT0iT3JkZXJTdGFydFRpbWUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJPcmRlckVuZFRpbWUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJPcmRlcklkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iT3JkZXJQcm9wZXJ0eUlkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iT3JkZXJQcm9wZXJ0eUFkZHIxIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9yZGVyUHJvcGVydHlBZGRyMiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJPcmRlclByb3BlcnR5QWRkcjMiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iT3JkZXJQcm9wZXJ0eUFkZHI0IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9yZGVyUHJvcGVydHlDb2RlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9yZGVyUHJvcGVydHlQb3N0Y29kZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDdXJyZW50TGFuZGxvcmRDb2RlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9yZGVyTnVtYmVyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkludmVudG9yeVRyYW5zYWN0aW9uVHlwZUlkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iU0xBUHJpb3JpdHlJZCIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9IlNMQVByaW9yaXR5TmFtZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJSZXNvdXJjZUlkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iT3JkZXJSZXNvdXJjZU5hbWUiIFR5cGU9IlN0cmluZyIgLz48L1ZpZXc+PC9EYXRhU2V0Pg==</value>
+  </data>
+  <data name="xrRichText2.SerializableRtfString" xml:space="preserve">
+    <value>ewBcAHIAdABmADEAXABhAG4AcwBpAGMAcABnADEAMgA1ADIADQAKAHsADQAKAFwAZgBvAG4AdAB0AGIAbAANAAoAewBcAGYAMAAgAFQAaQBtAGUAcwAgAE4AZQB3ACAAUgBvAG0AYQBuADsAfQANAAoAewBcAGYAMQAgAFYAZQByAGQAYQBuAGEAOwB9AA0ACgB9AA0ACgB7AA0ACgBcAGMAbwBsAG8AcgB0AGIAbAANAAoAOwANAAoAXAByAGUAZAAwAFwAZwByAGUAZQBuADAAXABiAGwAdQBlADIANQA1ADsADQAKAFwAcgBlAGQAMABcAGcAcgBlAGUAbgAwAFwAYgBsAHUAZQAwADsADQAKAH0ADQAKAFwAbgBvAHUAaQBjAG8AbQBwAGEAdABcAHMAcABsAHkAdAB3AG4AaQBuAGUAXABoAHQAbQBhAHUAdABzAHAAewBcAHAAYQByAGQAXABwAGwAYQBpAG4AXABxAGwAewBcAGYAMQBcAGYAcwAxADgAXABjAGYAMgAgAHgAcgBSAGkAYwBoAFQAZQB4AHQAMgB9AFwAZgBzADIANABcAHAAYQByAH0ADQAKAH0ADQAKAA==</value>
+  </data>
+  <metadata name="inventoryStocksTableAdapter.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 95</value>
+  </metadata>
+  <metadata name="lowStockTableTableAdapter1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 134</value>
+  </metadata>
+  <metadata name="sqlDataSource2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 212</value>
+  </metadata>
+  <data name="customSqlQuery2.Sql" xml:space="preserve">
+    <value>SELECT        Appointments.StartTime AS OrderStartTime, Appointments.EndTime AS OrderEndTime, Appointments.OrderId, PProperties.PPropertyId AS OrderPropertyId, PProperties.AddressLine1 AS OrderPropertyAddr1, Orders.TenentId,
+                         PProperties.AddressLine2 AS OrderPropertyAddr2, PProperties.AddressLine3 AS OrderPropertyAddr3, PProperties.AddressLine4 AS OrderPropertyAddr4, PProperties.PropertyCode AS OrderPropertyCode, 
+                         PProperties.AddressPostcode AS OrderPropertyPostcode, PProperties.CurrentLandlordCode, Orders.OrderNumber, Orders.InventoryTransactionTypeId, SLAPriorits.SLAPriorityId, 
+                         SLAPriorits.Priority AS SLAPriorityName, Resources.ResourceId, CONCAT(Resources.FirstName, ' ', Resources.SurName) AS OrderResourceName
+FROM            Appointments INNER JOIN
+                         Orders ON Appointments.OrderId = Orders.OrderID LEFT OUTER JOIN
+                         PProperties ON Orders.OrderID = PProperties.Order_OrderID LEFT OUTER JOIN
+                         SLAPriorits ON Orders.SLAPriorityId = SLAPriorits.SLAPriorityId LEFT OUTER JOIN
+                         Resources ON Appointments.ResourceId = Resources.ResourceId
+WHERE        (Orders.InventoryTransactionTypeId = 8)  AND Orders.OrderStatusID!=2</value>
+  </data>
+  <data name="sqlDataSource2.ResultSchemaSerializable" xml:space="preserve">
+    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTIiPjxWaWV3IE5hbWU9IlF1ZXJ5Ij48RmllbGQgTmFtZT0iT3JkZXJTdGFydFRpbWUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJPcmRlckVuZFRpbWUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJPcmRlcklkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iT3JkZXJQcm9wZXJ0eUlkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iT3JkZXJQcm9wZXJ0eUFkZHIxIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9yZGVyUHJvcGVydHlBZGRyMiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJPcmRlclByb3BlcnR5QWRkcjMiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iT3JkZXJQcm9wZXJ0eUFkZHI0IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9yZGVyUHJvcGVydHlDb2RlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9yZGVyUHJvcGVydHlQb3N0Y29kZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDdXJyZW50TGFuZGxvcmRDb2RlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9yZGVyTnVtYmVyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkludmVudG9yeVRyYW5zYWN0aW9uVHlwZUlkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iU0xBUHJpb3JpdHlJZCIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9IlNMQVByaW9yaXR5TmFtZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJSZXNvdXJjZUlkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iT3JkZXJSZXNvdXJjZU5hbWUiIFR5cGU9IlN0cmluZyIgLz48L1ZpZXc+PC9EYXRhU2V0Pg==</value>
+  </data>
+  <metadata name="sqlDataSource3.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 251</value>
+  </metadata>
+  <data name="customSqlQuery3.Sql" xml:space="preserve">
+    <value>SELECT        Appointments.StartTime AS OrderStartTime, Appointments.EndTime AS OrderEndTime, Appointments.OrderId, PProperties.PPropertyId AS OrderPropertyId, PProperties.AddressLine1 AS OrderPropertyAddr1, 
+                         PProperties.AddressLine2 AS OrderPropertyAddr2, PProperties.AddressLine3 AS OrderPropertyAddr3, PProperties.AddressLine4 AS OrderPropertyAddr4, PProperties.PropertyCode AS OrderPropertyCode, 
+                         PProperties.AddressPostcode AS OrderPropertyPostcode, PProperties.CurrentLandlordCode, Orders.OrderNumber, Orders.InventoryTransactionTypeId, SLAPriorits.SLAPriorityId, 
+                         SLAPriorits.Priority AS SLAPriorityName, Resources.ResourceId, CONCAT(Resources.FirstName, ' ', Resources.SurName) AS OrderResourceName
+FROM            Appointments INNER JOIN
+                         Orders ON Appointments.OrderId = Orders.OrderID LEFT OUTER JOIN
+                         PProperties ON Orders.OrderID = PProperties.Order_OrderID LEFT OUTER JOIN
+                         SLAPriorits ON Orders.SLAPriorityId = SLAPriorits.SLAPriorityId LEFT OUTER JOIN
+                         Resources ON Appointments.ResourceId = Resources.ResourceId
+WHERE        (Orders.InventoryTransactionTypeId = 8)  AND Orders.OrderStatusID!=2</value>
+  </data>
+  <data name="sqlDataSource3.ResultSchemaSerializable" xml:space="preserve">
+    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTMiPjxWaWV3IE5hbWU9IlF1ZXJ5Ij48RmllbGQgTmFtZT0iT3JkZXJTdGFydFRpbWUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJPcmRlckVuZFRpbWUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJPcmRlcklkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iT3JkZXJQcm9wZXJ0eUlkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iT3JkZXJQcm9wZXJ0eUFkZHIxIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9yZGVyUHJvcGVydHlBZGRyMiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJPcmRlclByb3BlcnR5QWRkcjMiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iT3JkZXJQcm9wZXJ0eUFkZHI0IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9yZGVyUHJvcGVydHlDb2RlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9yZGVyUHJvcGVydHlQb3N0Y29kZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDdXJyZW50TGFuZGxvcmRDb2RlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9yZGVyTnVtYmVyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkludmVudG9yeVRyYW5zYWN0aW9uVHlwZUlkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iU0xBUHJpb3JpdHlJZCIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9IlNMQVByaW9yaXR5TmFtZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJSZXNvdXJjZUlkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iT3JkZXJSZXNvdXJjZU5hbWUiIFR5cGU9IlN0cmluZyIgLz48L1ZpZXc+PC9EYXRhU2V0Pg==</value>
+  </data>
+  <metadata name="sqlDataSource4.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 290</value>
+  </metadata>
+  <data name="customSqlQuery4.Sql" xml:space="preserve">
+    <value>SELECT        Appointments.StartTime AS OrderStartTime, Appointments.EndTime AS OrderEndTime, Appointments.OrderId, PProperties.PPropertyId AS OrderPropertyId, PProperties.AddressLine1 AS OrderPropertyAddr1, Orders.TenentId,
+                         PProperties.AddressLine2 AS OrderPropertyAddr2, PProperties.AddressLine3 AS OrderPropertyAddr3, PProperties.AddressLine4 AS OrderPropertyAddr4, PProperties.PropertyCode AS OrderPropertyCode, 
+                         PProperties.AddressPostcode AS OrderPropertyPostcode, PProperties.CurrentLandlordCode, Orders.OrderNumber, Orders.InventoryTransactionTypeId, SLAPriorits.SLAPriorityId, 
+                         SLAPriorits.Priority AS SLAPriorityName, Resources.ResourceId, CONCAT(Resources.FirstName, ' ', Resources.SurName) AS OrderResourceName
+FROM            Appointments INNER JOIN
+                         Orders ON Appointments.OrderId = Orders.OrderID LEFT OUTER JOIN
+                         PProperties ON Orders.OrderID = PProperties.Order_OrderID LEFT OUTER JOIN
+                         SLAPriorits ON Orders.SLAPriorityId = SLAPriorits.SLAPriorityId LEFT OUTER JOIN
+                         Resources ON Appointments.ResourceId = Resources.ResourceId
+WHERE        (Orders.InventoryTransactionTypeId = 8)  AND Orders.OrderStatusID!=2</value>
+  </data>
+  <data name="sqlDataSource4.ResultSchemaSerializable" xml:space="preserve">
+    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTQiPjxWaWV3IE5hbWU9IlF1ZXJ5Ij48RmllbGQgTmFtZT0iT3JkZXJTdGFydFRpbWUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJPcmRlckVuZFRpbWUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJPcmRlcklkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iT3JkZXJQcm9wZXJ0eUlkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iT3JkZXJQcm9wZXJ0eUFkZHIxIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlRlbmVudElkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iT3JkZXJQcm9wZXJ0eUFkZHIyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9yZGVyUHJvcGVydHlBZGRyMyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJPcmRlclByb3BlcnR5QWRkcjQiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iT3JkZXJQcm9wZXJ0eUNvZGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iT3JkZXJQcm9wZXJ0eVBvc3Rjb2RlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkN1cnJlbnRMYW5kbG9yZENvZGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iT3JkZXJOdW1iZXIiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iSW52ZW50b3J5VHJhbnNhY3Rpb25UeXBlSWQiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJTTEFQcmlvcml0eUlkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iU0xBUHJpb3JpdHlOYW1lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlJlc291cmNlSWQiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJPcmRlclJlc291cmNlTmFtZSIgVHlwZT0iU3RyaW5nIiAvPjwvVmlldz48L0RhdGFTZXQ+</value>
+  </data>
+  <metadata name="sqlDataSource5.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 329</value>
+  </metadata>
+  <data name="customSqlQuery5.Sql" xml:space="preserve">
+    <value>SELECT * FROM 
+(
+SELECT       PProperties.PPropertyId AS OrderPropertyId, PProperties.AddressLine1 AS OrderPropertyAddr1,
+                         PProperties.AddressLine2 AS OrderPropertyAddr2, PProperties.AddressLine3 AS OrderPropertyAddr3, PProperties.AddressLine4 AS OrderPropertyAddr4, PProperties.PropertyCode AS OrderPropertyCode, PProperties.AddressPostcode AS OrderPropertyPostcode, 
+						 PProperties.CurrentLandlordId,  PLandlords.LandlordFullname, 
+						  PLandlords.AddressLine1 AS LandlordAddr1,
+                         PLandlords.AddressLine2 AS LandlordAddr2, PLandlords.AddressLine3 AS LandlordAddr3, PLandlords.AddressLine4 AS LandlordAddr4, PLandlords.AddressPostcode AS
+						 LandlordPostcode, (Select Count(1) from dbo.Orders o Where o.InventoryTransactionTypeId = 8 AND o.PPropertyId= PProperties.PPropertyId ) as TotalWorksOrders, (Select Sum(OrderTotal) from dbo.Orders o Where o.InventoryTransactionTypeId = 8 AND o.PPropertyId= PProperties.PPropertyId ) as TotalOrderCost
+						 
+FROM            dbo.PProperties LEFT OUTER JOIN dbo.PLandlords ON PProperties.CurrentLandlordId = dbo.PLandlords.PLandlordId) tb
+WHERE tb.TotalWorksOrders&gt;0
+ORDER BY tb.TotalWorksOrders DESC</value>
+  </data>
+  <data name="sqlDataSource5.ResultSchemaSerializable" xml:space="preserve">
+    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTUiPjxWaWV3IE5hbWU9IlF1ZXJ5Ij48RmllbGQgTmFtZT0iT3JkZXJQcm9wZXJ0eUlkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iT3JkZXJQcm9wZXJ0eUFkZHIxIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9yZGVyUHJvcGVydHlBZGRyMiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJPcmRlclByb3BlcnR5QWRkcjMiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iT3JkZXJQcm9wZXJ0eUFkZHI0IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9yZGVyUHJvcGVydHlDb2RlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9yZGVyUHJvcGVydHlQb3N0Y29kZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDdXJyZW50TGFuZGxvcmRJZCIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9IkxhbmRsb3JkRnVsbG5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iTGFuZGxvcmRBZGRyMSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJMYW5kbG9yZEFkZHIyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkxhbmRsb3JkQWRkcjMiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iTGFuZGxvcmRBZGRyNCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJMYW5kbG9yZFBvc3Rjb2RlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlRvdGFsV29ya3NPcmRlcnMiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJUb3RhbE9yZGVyQ29zdCIgVHlwZT0iRGVjaW1hbCIgLz48L1ZpZXc+PC9EYXRhU2V0Pg==</value>
+  </data>
+</root>

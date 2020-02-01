@@ -1,0 +1,30 @@
+﻿@{
+        var grid =
+    Html.DevExpress().DataView(
+        settings =>
+        {
+            settings.Name = "dataView" + ViewBag.productid;
+            settings.CallbackRouteValues = new { Controller = "Products", Action = "_ProductImages", ProductId = ViewBag.productid };
+            settings.SettingsTableLayout.RowsPerPage = 2;
+            settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+            settings.PagerAlign = DevExpress.Web.PagerAlign.Center;
+
+            settings.SetItemTemplateContent(
+                c =>
+                {
+
+                ViewContext.Writer.Write(
+                             "<a target='_new' href=\"" + Url.Content(DataBinder.Eval(c.DataItem, "FileUrl").ToString()) + "\"><img style='width:100%' src=\"" + Url.Content(DataBinder.Eval(c.DataItem, "FileUrl").ToString()) + "\" alt=\"\" /></a>"
+    
+                    );
+        }
+            );
+        settings.PagerSettings.ShowNumericButtons = true;
+        settings.PagerSettings.AllButton.Visible = false;
+        settings.PagerSettings.Summary.Visible = false;
+        settings.PagerSettings.PageSizeItemSettings.Visible = true;
+        settings.PagerSettings.PageSizeItemSettings.ShowAllItem = true;
+    }
+);
+}
+@grid.Bind(Model).GetHtml()

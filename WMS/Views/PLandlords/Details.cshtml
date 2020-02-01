@@ -1,0 +1,208 @@
+﻿@model Ganedata.Core.Entities.Domain.PLandlord
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2><span>Landlord Details</span></h2>
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.LandlordCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LandlordCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LandlordFullname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LandlordFullname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LandlordSalutation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LandlordSalutation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LandlordStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LandlordStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LandlordAdded)
+        </dt>
+
+        <dd>
+            @DateTimeToLocal.Convert(Model.LandlordAdded, ViewBag.TimeZone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LandlordNotes1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LandlordNotes1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LandlordNotes2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LandlordNotes2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserNotes1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserNotes1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserNotes2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserNotes2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SiteId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SiteId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SyncRequiredFlag)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SyncRequiredFlag)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AddressLine1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddressLine1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AddressLine2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddressLine2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AddressLine3)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddressLine3)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AddressLine4)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddressLine4)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AddressPostcode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddressPostcode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HomeTelephone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HomeTelephone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WorkTelephone1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WorkTelephone1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WorkTelephone2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WorkTelephone2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WorkTelephoneFax)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WorkTelephoneFax)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MobileNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MobileNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+    </dl>
+</div>
+
+
+<div class="col-md-offset-2 col-md-10 bottom-right">
+    @Html.ActionLink("Edit", "Edit", "PLandlords", new { id = Model.PLandlordId }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+</div>

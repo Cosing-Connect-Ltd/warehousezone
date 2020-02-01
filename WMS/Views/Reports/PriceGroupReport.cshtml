@@ -1,0 +1,25 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.WebDocumentViewer, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.WebDocumentViewer }
+        )
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout-no-header-left.cshtml";
+    ViewBag.Title = "Price Group Report";
+}
+
+<h2><span>@ViewBag.Title</span></h2>
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "PriceGroupReport";
+
+}).Bind(Model).GetHtml()

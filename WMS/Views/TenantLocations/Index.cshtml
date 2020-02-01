@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Ganedata.Core.Entities.Domain.TenantLocations>
+
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView },
+        new Script { ExtensionType = ExtensionType.PopupControl }
+        )
+}
+
+@{
+    ViewBag.Title = "Tenant Locations";
+}
+
+<h2><span>Tenant Locations</span></h2>
+
+<script type="text/javascript">
+
+    function OnGridFocusedRowChanged(s, e) {
+        $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+
+</script>
+
+@Html.Hidden("selkey", null, new { @class = "selkey" })
+
+
+<div class="col-md-12 p-0 View">
+    @Html.Action("_Whouse")
+
+</div>
+
+<div class="col-md-offset-2 col-md-10 bottom-right">
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Warehouse", "Create"))
+    {
+        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary  " })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Warehouse", "Details"))
+    {
+        @Html.ActionLink("View", "Details", null, new { @class = "btn btn-primary  Caction" })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Warehouse", "Edit"))
+    {
+        @Html.ActionLink("Update", "Edit", null, new { @class = "btn btn-primary  Caction" })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Warehouse", "Delete"))
+    {
+        @Html.ActionLink("Delete", "Delete", null, new { @class = "btn btn-primary  Caction" })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Warehouse", "EditStockLevels"))
+    {
+        @Html.ActionLink("Replenishment Levels", "EditStockLevels", null, new { @class = "btn btn-primary  Caction" })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Timelog", "Tindex"))
+    {
+        @Html.ActionLink("Timelog", "Tindex", "TimeLog", null, new { @class = "btn btn-primary Caction" })
+    }
+</div>
+
+
+

@@ -1,0 +1,68 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@model Ganedata.Core.Entities.Domain.Order
+@{
+    var defaultDestination = (ViewBag.IsShipmentToWarehouse != true && ViewBag.IsAccountAddressId != true && ViewBag.IsShipmentToProperty != true && ViewBag.IsShipmentToCustomAddress != true);
+}
+
+<div class="col-md-12 order-shipmentinfo-panes">
+    <h6>Do you want to receive the shipment to Warehouses or Property?</h6>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.ValidationMessage("TenantAddressID")
+        <div class="radio-inline col-md-12">
+
+            <label class="col-md-3 pull-left"><input type="radio" name="ShipmentDestination" id="radioShipToWarehouse" value="warehouse" @((defaultDestination || ViewBag.IsShipmentToWarehouse == true) ? "checked='checked'" : "") />Ship to Warehouses</label>
+            @if (ViewBag.IsWorksOrdersEnabled)
+            {
+                <label class="col-md-3 pull-left"><input type="radio" name="ShipmentDestination" id="radioShipToWorkProperty" value="property" @(ViewBag.IsShipmentToProperty == true ? "checked='checked'" : "") />Ship to Work Property</label>
+
+            }
+
+            <label class="col-md-3 pull-left" style="display: @(ViewBag.AllowAccountAddress == true ? "block" : "none")"><input type="radio" name="ShipmentDestination" id="radioShipToAccountAddress" value="account" @(ViewBag.IsAccountAddressId == true ? "checked='checked'" : "") />Ship to Account Address</label>
+            <label class="col-md-3 pull-left"><input type="radio" name="ShipmentDestination" id="radioShipToCollection" value="different" @(ViewBag.IsCollectionFromCustomerSide == true ? "checked='checked'" : "") />Collect from Supplier Premises</label>
+
+            <label class="col-md-3 pull-left"><input type="radio" name="ShipmentDestination" id="radioShipToCustomProperty" value="different" @(ViewBag.IsShipmentToCustomAddress == true ? "checked='checked'" : "") />Ship to Different Address</label>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12 order-shipmentinfo-panes" id="divDisplayTenantAddresses" style="visibility: @(ViewBag.IsShipmentToWarehouse == true ? "visible" : "hidden")">
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.Label("Pick Tenant Location for Delivery")
+        @Html.DropDownList("TenantAddressID", ViewBag.TenantAddresses as IEnumerable<SelectListItem>, new { @class = "chosen-select form-control" })
+    </div>
+</div>
+
+@if (ViewBag.IsWorksOrdersEnabled)
+{
+    <div class="col-md-12 order-shipmentinfo-panes" id="divDisplayPropertyAddresses" style="visibility: @(ViewBag.IsShipmentToProperty == true ? "visible" : "hidden")">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Pick Work Property for Delivery")
+            @Html.DropDownList("PPropertyId", ViewBag.PropertyAddresses as IEnumerable<SelectListItem>, new { @class = "chosen-select form-control" })
+        </div>
+    </div>
+}
+    <div class="col-md-12 order-shipmentinfo-panes" id="divDisplayAccountAddresses" style="visibility: @(ViewBag.IsShipmentToProperty == true ? "visible" : "hidden")">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Pick Account Address for Delivery")
+            @Html.DropDownList("AccountAddressId", ViewBag.AccountAddress as IEnumerable<SelectListItem>, new { @class = "chosen-select form-control" })
+        </div>
+    </div>
+    <div class="col-md-12 order-shipmentinfo-panes" id="divDisplaySupplierAddresses" style="visibility: @(ViewBag.IsCollectionFromCustomerSide == true ? "visible" : "hidden")">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Pick Supplier Address")
+            @Html.DropDownList("ShipmentAccountAddressId", ViewBag.AccountAddressByAccount as IEnumerable<SelectListItem>, new { @class = "chosen-select form-control" })
+        </div>
+    </div>
+
+<div class="col-md-12 order-shipmentinfo-panes" id="divFinalShipmentAddress" style="display:@(ViewBag.IsShipmentToCustomAddress == true?"block":"none")">
+    <h2><span>Shipment Address</span></h2>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.TextBoxFor(m => m.ShipmentAddressLine1, new { placeholder = "Address Line1", @class = "form-control" })
+        @Html.TextBoxFor(m => m.ShipmentAddressLine2, new { placeholder = "Address Line2", @class = "form-control" })
+        @Html.TextBoxFor(m => m.ShipmentAddressLine3, new { placeholder = "Address Line3", @class = "form-control" })
+        @Html.TextBoxFor(m => m.ShipmentAddressLine4, new { placeholder = "Address Line4", @class = "form-control" })
+        @Html.TextBoxFor(m => m.ShipmentAddressPostcode, new { placeholder = "Postcode", @class = "form-control" })
+        @Html.HiddenFor(model=>model.IsCollectionFromCustomerSide)
+    </div>
+</div>

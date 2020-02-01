@@ -1,0 +1,72 @@
+﻿@model PagedList.IPagedList<Ganedata.Core.Entities.Domain.InventoryStock>
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView },
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Stock List";
+}
+
+<h2><span>@ViewBag.Title</span></h2>
+
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+        $('#selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+
+    function OnInventoryBeginCallback(s, e) {
+        e.customArgs["id"] = $("#InventoryWarehouseId").val();
+    }
+
+    function OnInventoryLocationBeginCallback(s, e) {
+        //e.customArgs["id"] = $('#selkey').val();
+    }
+
+    $(document).ready(function () {
+        $("#InventoryWarehouseId").on("change", function () {
+            Inventory.Refresh();
+        });
+    });
+</script>
+
+@Html.Hidden("selkey", null)
+@Html.Hidden("prodId", null)
+@Html.Hidden("detail", null)
+
+
+<div class="col-md-12 p-0 View">
+    <div class="col-md-12 report-date-header">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Select Location", htmlAttributes: new { @class = "col-md-2" })
+            <div class="col-md-4 text-center pull-left">
+                @Html.DropDownList("InventoryWarehouseId", ViewBag.InventoryWarehouseId as SelectList, new { @class = "form-control" })
+            </div>
+        </div>
+
+    </div>
+    @Html.Action("_InventoryList")
+</div>
+
+<div class="p-0 col-md-offset-2 col-md-10 bottom-right">
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("InventoryStocks", "InventoryAdjustments"))
+    {
+        @Html.ActionLink("Adjust Stock", "InventoryAdjustments", null, new { @class = "btn btn-primary Caction" })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("InventoryStocks", "MoveStock"))
+    {
+        @Html.ActionLink("Move Stock", "MoveStock", null, new { @class = "btn btn-primary Caction" })
+    }
+</div>

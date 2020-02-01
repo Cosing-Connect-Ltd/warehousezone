@@ -1,0 +1,269 @@
+﻿@using Ganedata.Core.Entities.Domain
+
+<div class="headerMenu">
+    <div class="container hidden-xs">
+        <div class="row">
+            <div class="col-md-3 col-sm-4 stmenu"></div>
+            <div id="menu1" class="col-md-9 col-sm-8 stme2">
+                <div class="manun">
+                    <ul class="list-inline">
+                        @if (ViewBag.departments != null)
+                        {
+                            var department = ViewBag.departments as List<TenantDepartments>;
+
+                            foreach (var item in department)
+                            {
+                                <li class="li-mhp-menu"><a href="index.html">@item.DepartmentName</a>
+                                    @{
+                                        if (ViewBag.productGroup != null)
+                                        {
+                                            var groups = ViewBag.productGroup as List<ProductGroups>;
+                                            var groupDepartment = groups.Where(u => u.DepartmentId == item.DepartmentId).ToList();
+                                            if (groupDepartment.Count > 0)
+                                            {
+                                                <ul class="mhp-menu">
+                                                    @for (int i = 0; i < groupDepartment.Count; i += 3)
+                                                    {
+                                                        <div class="row">
+                                                            @if (groupDepartment.ElementAtOrDefault(i) != null)
+                                                            {
+                                                                <div class="col-md-4">
+                                                                    <li><a href="#">@groupDepartment[i].ProductGroup</a></li>
+
+                                                                </div>
+                                                            }
+                                                            @if (groupDepartment.ElementAtOrDefault(i + 1) != null)
+                                                            {
+                                                                <div class="col-md-4">
+                                                                    <li><a href="#">@groupDepartment[i + 1].ProductGroup</a></li>
+
+                                                                </div>
+                                                            }
+                                                            @if (groupDepartment.ElementAtOrDefault(i + 2) != null)
+                                                            {
+                                                                <div class="col-md-4">
+                                                                    <li><a href="#">@groupDepartment[i + 2].ProductGroup</a></li>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    }
+                                                </ul>
+                                            }
+                                        }
+                                    }
+                                </li>
+                            }
+                        }
+
+
+
+
+
+
+
+
+                        @*<li><a href="@Url.Action("ProductCategories","Products")">PRODUCTS</a></li>*@
+                        @*<li><a href="blog.html">BLOGS</a></li>*@
+                        @*<li><a href="@Url.Action("Contact","Home")">CONTACT US</a></li>*@
+                        @*<li><a href="@Url.Action("About","Home")">ABOUT US</a></li>*@
+                        @*<li class="li-mhp-menu">
+                                <a href="#">MHP</a>
+                                <ul class="mhp-menu">
+                                    <li><a href="block-animation.html">Block Animation</a></li>
+                                    <li><a href="gallery-mhp.html">Gallery</a></li>
+                                    <li><a href="thumb.html">Thumb</a></li>
+                                    <li><a href="links.html">Links</a></li>
+                                </ul>
+                            </li>*@
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="hidden-md hidden-lg hidden-sm horizontal-menu">
+    <div class="row">
+        <div class="col-xs-7">
+            <div class="navbar-header">
+                <!-- <span id="category" class="visible-xs">All Categories</span> -->
+                <button type="button" class="btn btn-navbar navbar-toggle" onclick="openNav()" data-toggle="collapse" data-target=".navbar-ex1-collapse"><i class="fa fa-bars"></i></button>
+            </div>
+            <div id="logo-mobile" class="ui-logo">
+                <a href="@Url.Action("Index","Home")">
+                    <img src="/Areas/Shop/Content/app/img/logo.png" title="SmartShop Multistore" alt="SmartShop Multistore" class="img-responsive" />
+                </a>
+            </div>
+        </div>
+        <div class="col-xs-5 ">
+            <div id="top-links-menu" class="text-right top-menu-links col-sm-2 col-lg-2">
+                <ul class="list-inline">
+                    <li class="dropdown user_menu">
+                        <a href="#" title="My Account" class="dropdown-toggle" data-toggle="dropdown">
+                            <svg width="24px" height="24px">
+                                <use xlink:href="/Areas/Shop/Content/app/img/icons/icons.svg#user"></use>
+                            </svg>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right user_account">
+                            <li><a href="signup.html"><i class="fa fa-user-plus"></i>Register</a></li>
+                            <li><a href="login.html"><i class="fa fa-lock"></i>Login</a></li>
+                            <li><a href="#" id="wishlist-total-mobile"><i class="fa fa-heart"></i>Wish List (0)</a></li>
+                        </ul>
+                    </li>
+                    <li id="cart-mobile" class="cart-menu">
+                        <button type="button" data-toggle="dropdown" data-loading-text="Loading..." class="btn btn-lg dropdown-toggle">
+                            <svg width="28px" height="26px">
+                                <use xlink:href="/Areas/Shop/Content/app/img/icons/icons.svg#hcart"></use>
+                            </svg>
+                            <span id="cart-total-mobile">0</span>
+                        </button>
+                        <ul class="dropdown-menu pull-right">
+                            <li>
+                                <p class="text-center">Your shopping cart is empty!</p>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="search-by-category" class="search-by-category">
+        <div class="search-container">
+            <div class="categories-container">
+                <div class="hover-cate">
+                    <p><span class="cate-selected" data-value="0">All Categories</span></p>
+                    <ul class="cate-items">
+                        <li class="item-search" data-value="0">All Categories</li>
+                        <li class="item-search">Hp Laptop</li>
+                        <li class="item-search">Smart phone</li>
+                        <li class="item-search">Smart Watch</li>
+                        <li class="item-search">Desktops</li>
+                        <li class="item-search l1">PC</li>
+                        <li class="item-search l2">Dell laptop</li>
+                        <li class="item-search l2">lenovo desktop</li>
+                        <li class="item-search l2">macbook</li>
+                        <li class="item-search l1">Mac</li>
+                        <li class="item-search l2">Apple Macbook</li>
+                        <li class="item-search l2">Asus macbook</li>
+                        <li class="item-search l2">dell macbook</li>
+                        <li class="item-search">Laptops</li>
+                        <li class="item-search l1">Macs</li>
+                        <li class="item-search l1">Windows</li>
+                        <li class="item-search l2">Scanners</li>
+                        <li class="item-search l2">Web Cameras</li>
+                        <li class="item-search">Components</li>
+                        <li class="item-search l1">Monitors</li>
+                        <li class="item-search l1">Printers</li>
+                        <li class="item-search l2">Canon printers</li>
+                        <li class="item-search l2">Epson Printer</li>
+                        <li class="item-search l2">HP Printers</li>
+                        <li class="item-search l1">Trackballs</li>
+                        <li class="item-search l2">Trackballs-new</li>
+                        <li class="item-search">Tablets</li>
+                        <li class="item-search">Software</li>
+                        <li class="item-search">Phones &amp; PDAs</li>
+                        <li class="item-search">Cameras</li>
+                        <li class="item-search">MP3 Players</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="search-box input-group">
+                <input type="text" name="search" id="text-search-mobile" value="" placeholder="Search" class="text-search" />
+                <div id="sp-btn-search" class="input-group-btn">
+                    <button type="button" id="btn-search-category" class="btn btn-search-category">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="mobileMenu" class="sidenav">
+        <div class="close-nav">
+            <span class="categories">Category</span>
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i class="fa fa-close"></i></a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="#">Smart phone</a></li>
+                <li><a href="#">Smart Watch</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle header-menu" data-toggle="dropdown">Desktops<i class="fa fa-angle-down pull-right"></i></a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-inner">
+                            <ul class="list-unstyled">
+                                <!--3rd level-->
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="submenu-title"> PC (0) </a>
+                                </li>
+                                <!--3rd level over-->
+                            </ul>
+                            <ul class="list-unstyled">
+                                <!--3rd level-->
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="submenu-title"> Mac (1) </a>
+                                </li>
+                                <!--3rd level over-->
+                            </ul>
+                        </div>
+                        <a href="#" class="see-all">Show All Desktops</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle header-menu" data-toggle="dropdown">Laptops<i class="fa fa-angle-down pull-right"></i></a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-inner">
+                            <ul class="list-unstyled">
+                                <!--3rd level-->
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="submenu-title"> Macs (0) </a>
+                                </li>
+                                <!--3rd level over-->
+                            </ul>
+                            <ul class="list-unstyled">
+                                <!--3rd level-->
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="submenu-title"> Windows (0) </a>
+                                </li>
+                                <!--3rd level over-->
+                            </ul>
+                        </div>
+                        <a href="#" class="see-all">Show All Laptops</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle header-menu" data-toggle="dropdown">Components<i class="fa fa-angle-down pull-right"></i></a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-inner">
+                            <ul class="list-unstyled">
+                                <!--3rd level-->
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="submenu-title"> Monitors (2) </a>
+                                </li>
+                                <!--3rd level over-->
+                            </ul>
+                            <ul class="list-unstyled">
+                                <!--3rd level-->
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="submenu-title"> Printers (0) </a>
+                                </li>
+                                <!--3rd level over-->
+                            </ul>
+                            <ul class="list-unstyled">
+                                <!--3rd level-->
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="submenu-title"> Trackballs (0) </a>
+                                </li>
+                                <!--3rd level over-->
+                            </ul>
+                        </div>
+                        <a href="#" class="see-all">Show All Components</a>
+                    </div>
+                </li>
+                <li><a href="#">Tablets</a></li>
+                <li><a href="#">Software</a></li>
+                <li><a href="#">Phones &amp; PDAs</a></li>
+                <li><a href="#">Cameras</a></li>
+                <li class="dropdown">
+                    <a href="#">MP3 Players</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+﻿@model Ganedata.Core.Entities.Domain.ProductAttributeValues
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Delete Attribute Value";
+}
+<h2><span>Delete Attribute Value</span></h2>
+<h3 class="alert alert-danger">Are you sure you want to delete this?</h3>
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductAttributes.AttributeName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProductAttributes.AttributeName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Value)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Value)
+        </dd>
+    </dl>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.AttributeValueId)
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <div class="col-md-offset-2 col-md-10 bottom-right">
+                <input type="submit" value="Delete" class="btn btn-primary" />
+                <div class="btn btn-default"> @Html.ActionLink("Cancel", "Edit", null, null, null, "product-attributes", new { @id = Session["pId"] }, null)</div>
+            </div>
+        </div>
+    }
+</div>

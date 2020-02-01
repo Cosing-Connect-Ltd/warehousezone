@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Ganedata.Core.Entities.Domain.MarketProductLevelViewModel>
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = (ViewBag.MarketName ?? "Market") + " - Stock Levels";
+}
+
+<h2><span> @(ViewBag.MarketName ?? "Market") - Replenishment Levels</span></h2>
+
+<script type="text/javascript">
+
+    MVCxClientGlobalEvents.AddControlsInitializedEventHandler(OnBeginGridCallback);
+
+    function OnBeginGridCallback(s, e) {
+        e.customArgs = MVCxClientUtils.GetSerializedEditorValuesInContainer("frmProductLocationLevels");
+        e.customArgs["MarketId"] = @ViewBag.MarketId;
+    }
+
+    function OnEndGridCallback(s, e) {
+        var lastIndex = parseInt($("#LastEditingRowIndex").val());
+        if (lastIndex >= 0) {
+            SetGridEditorToRowIndex(lastIndex);
+        }
+    }
+
+    function SetGridEditorToRowIndex(index) {
+        marketStocksGridView.StartEditRow(index);
+    }
+
+    function OnQuantitiesChanged(s, e) {
+        marketStocksGridView.UpdateEdit();
+    }
+
+    function OnStockLevelsGridFocusChanged(s, e) {
+        $("#LastEditingRowIndex").val(e.cellInfo.rowVisibleIndex);
+    }
+
+</script>
+@using (Html.BeginForm("UpdateProductLevels", "Markets", FormMethod.Post, new { @id = "frmProductLocationLevels" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("LastEditingRowIndex")
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.Partial("_StockLevelsPartial", Model)
+    </div>
+}
+
+
+<div class="col-md-offset-2 col-md-10 bottom-right">
+    <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+</div>
+
+
+

@@ -1,0 +1,283 @@
+﻿@model Ganedata.Core.Models.OrderProcessInvoicingViewModel
+@using Ganedata.Core.Entities.Helpers
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.PageControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView },
+        new Script { ExtensionType = ExtensionType.PageControl },
+        new Script { ExtensionType = ExtensionType.PopupControl }
+        )
+
+
+}
+@{
+    ViewBag.Title = "Generate Invoices";
+}
+<h2><span>Generate Invoices</span></h2>
+@Html.Hidden("selkey")
+@Html.Hidden("SelectedOrderProcessIds")
+@Html.Hidden("OrderProcessIds")
+<script>
+    var command;
+    var postcommand;
+    MVCxClientGlobalEvents.AddControlsInitializedEventHandler(OnProcessedDetailsEditCallback);
+    function OnProcessedDetailsEditCallback(s, e) {
+       e.customArgs = MVCxClientUtils.GetSerializedEditorValuesInContainer("frmPriceGroupPrices");
+        var gridValues = JSON.parse(JSON.stringify($("#frmPriceGroupPrices").serializeArray()));
+        var values = gridValues[gridValues.length - 1].value.split(',');
+        for (var i = 0; i < gridValues.length - 1; i++) {
+            if (gridValues[i].name == 'gridMasterAwaitingInvoicing$DXEditor5') {
+                e.customArgs["InvoiceDate"] = gridValues[i].value;
+            }
+
+        }
+        var rowIndex = parseInt($("#RowIndexForProductId").val()) || 0;
+        e.customArgs["OrderProcessID"] = gridMasterAwaitingInvoicing.GetRowKey(rowIndex);
+        if (e.command != undefined) {
+            command = e.command;
+        }
+    }
+    function gridMasterAwaitingInvoicingOnGridFocusChanged(s, e) {
+        if (e.cellInfo.rowVisibleIndex >= 0) {
+            var index = e.cellInfo.rowVisibleIndex;
+            $("#LastEditingRowIndex").val(index);
+            $("#RowIndexForProductId").val(index);
+        }
+        $("#LastEditingColIndex").val(e.cellInfo.column.fieldName);
+    }
+    function OnDetailRowExpanding(s, e) {
+        s.SetFocusedRowIndex(e.visibleIndex);
+        $('#selkey').val(s.GetRowKey(e.visibleIndex));
+        return false;
+    }
+    function EndCallbackInvoice(s, e) {
+        if (command == "REFRESH") {
+            s.UnselectRows();
+        }
+    }
+   function OnProcessedDetailsCallback(s, e) {
+        e.customArgs["id"] = $('#selkey').val();
+        e.customArgs["orderDetailID"] = $("#divPalletingInformation #CurrentOrderDetailID").val();
+    }
+
+    function OnDetailsRowExpanding(s, e) {
+        s.SetFocusedRowIndex(e.visibleIndex);
+
+        return false;
+    }
+
+    function OnProcessedDetailCallback(s, e) {
+        command = e.command;
+
+    }
+
+    function SelectionChanged(s, e) {
+        s.GetSelectedFieldValues("OrderProcessID", GetSelectedFieldValuesCallback);
+    }
+    function SelectionChangeds(s, e) {
+        s.GetSelectedFieldValues("InvoiceMasterId", GetSelectedFieldValuesCallback);
+    }
+
+
+    function GetSelectedFieldValuesCallback(values) {
+        $("#SelectedOrderProcessIds").val(values.join());
+    }
+
+    function GenerateInvoiceForSelected() {
+        
+        var selectedIds = $("#SelectedOrderProcessIds").val();
+        if (selectedIds.length <= 0) { alert("Please select order first, which you want to  process"); return; }
+
+        LoadingPanel.Show();
+
+
+        var obj = { OrderProcessIds: selectedIds };
+        var successCallback = function (data) {
+            gridMasterAwaitingInvoicing.Refresh();
+            gridMasterInvoices.Refresh();
+            InvoiceViewGridview.Refresh();
+
+            LoadingPanel.Hide();
+        }
+
+        var errorCallback = function () {
+            LoadingPanel.Hide();
+        }
+        Gane.Helpers.AjaxPost('/Invoice/GenerateBulkInvoice/', obj,null, successCallback, true, "Invoices Generated Successfully.", errorCallback);
+    }
+
+
+    function GenerateBulkInvoicesPrint() {
+        var selectedIds = $("#SelectedOrderProcessIds").val();
+        if (selectedIds.length <= 0) { alert("Please select order first, which you want to  process"); return; }
+        window.open('/Reports/InvoiceDetails/?InvoiceMasterIds=' + selectedIds, '_blank');
+        //LoadingPanel.Show();
+
+
+        //var obj = { InvoiceMasterIds: selectedIds };
+        //var successCallback = function (data) {
+           
+
+        //    LoadingPanel.Hide();
+        //}
+
+        //var errorCallback = function () {
+        //    LoadingPanel.Hide();
+        //}
+        //Gane.Helpers.AjaxPost('/Invoice/DownloadInvoice/', obj, null, successCallback, true, "Invoices Print Generated Successfully.", errorCallback);
+    }
+
+    function OnDetailsChanged(s, e) {
+        gridMasterAwaitingInvoicing.UpdateEdit();
+    }
+
+    function EmailInvoice() {
+        var selectedIds = $("#SelectedOrderProcessIds").val();
+        if (selectedIds.length <= 0) { alert("Please select order first, to sent email"); return; }
+        LoadingPanel.Show();
+        $.ajax({
+            type: "POST",
+            url: '/Invoice/GenerateInvoiceEmail/',
+            data: { OrderProcessIds: selectedIds },
+            dataType: 'json',
+            success: function (data) {
+                gridMasterAwaitingInvoicing.Refresh();
+                gridMasterInvoices.Refresh();
+                InvoiceViewGridview.Refresh();
+
+                LoadingPanel.Hide();
+                alert(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                LoadingPanel.Hide();
+                alert('Error' + textStatus + "/" + errorThrown);
+            }
+        });
+
+
+    }
+
+    function EndCallBackPostToAccount(s, e) {
+        if (postcommand == "REFRESH") {
+            s.UnselectRows();
+        }
+
+    }
+    function OnProcessedDetailPOSTCallback(s, e) {
+        postcommand = e.command;
+    }
+
+    function PostToInvoice()
+    {
+
+        filename = "";
+        var selectedIds = $("#SelectedOrderProcessIds").val();
+
+        if (selectedIds.length <= 0) { alert("Please select order first, which you want to  process"); return; }
+
+        else {
+            var data = []
+
+            var obj = {
+                InvoiceIds: selectedIds
+            };
+            LoadingPanel.Show();
+            $.get('/Invoice/Export/', obj,
+                function (result) {
+                    gridMasterAwaitingInvoicing.Refresh();
+                    gridMasterInvoices.Refresh();
+                    InvoiceViewGridview.Refresh();
+                    LoadingPanel.Hide();
+                    if (result.fileName != "") {
+                        filename = result.fileName;
+                        window.open("@Url.RouteUrl(new { Controller = "Invoice", Action = "Download"})/?file=" + filename, '_blank');
+
+
+                    }
+                    else {
+                       alert("Data Not Exported")
+                    }
+
+                });
+
+        }
+
+
+    }
+
+
+
+</script>
+<div id="tabs" style="visibility: hidden">
+    <ul>
+        <li><a href="#TI">To be Invoiced</a></li>
+        <li><a href="#TP">To be Posted</a></li>
+        <li><a href="#VI">View Invoices</a></li>
+    </ul>
+    <div id="TI">
+        @using (Html.BeginForm("SaveInvoiceNumber", "Invoice", FormMethod.Post, new { @id = "frmPriceGroupPrices" }))
+        {
+
+            @Html.AntiForgeryToken()
+            @Html.Hidden("LastEditingRowIndex")
+            @Html.Hidden("LastEditingColIndex")
+            @Html.Hidden("RowIndexForProductId")
+
+            @Html.Action("ProcessedOrdersPartial", new { type = "Active" })
+
+        }
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            <a type="button" class="btn btn-primary" href="@Url.Action("CreateInvoice")"><b class="fa fa-list"></b>New Custom Invoice</a>
+            <a type="button" class="btn btn-primary" href="javascript:GenerateInvoiceForSelected()"><b class="fa fa-print"></b>Generate Invoices</a>
+        </div>
+    </div>
+    <div id="TP">
+        @Html.Action("InvoicesListPartial", new { type = "Completed" })
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+
+            <a type="button" class="btn btn-primary" href="javascript:PostToInvoice()"><b class="fa fa-print"></b>Post to Accounts</a>
+            <a type="button" class="btn btn-primary" href="javascript:GenerateBulkInvoicesPrint()"><b class="fa fa-file"></b>Print Invoices</a>
+            <a type="button" class="btn btn-primary" href="javascript:EmailInvoice()"><b class="fa fa-envelope"></b>Email Invoice</a>
+        </div>
+
+    </div>
+    <div id="VI">
+        @Html.Action("InvoicesViewListPartial")
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+
+
+
+            <a type="button" class="btn btn-primary" href="javascript:EmailInvoice()"><b class="fa fa-envelope"></b>Email Invoice</a>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+@*@Html.DevExpress().PageControl(s =>
+    {
+        s.EnableTabScrolling = true;
+        s.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        s.Name = "ProcessedOrdersGrid";
+        s.TabPages.Add("To be invoiced").SetContent(() =>
+        {
+            Html.RenderAction("ProcessedOrdersPartial", new { type = "Active" });
+        });
+
+        s.TabPages.Add("Completed").SetContent(() =>
+        {
+            Html.RenderAction("InvoicesListPartial", new { type = "Completed" });
+        });
+
+    }).GetHtml()*@
+
+

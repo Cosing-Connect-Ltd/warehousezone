@@ -1,0 +1,55 @@
+﻿@model Ganedata.Core.Entities.Domain.PProperty
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+    @Html.DevExpress().GetScripts(
+                   new Script { ExtensionType = ExtensionType.GridView }
+                   )
+
+
+    @Html.DevExpress().GetStyleSheets(
+             new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+             )
+}
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<script type="text/javascript">
+
+    function OnBeginCallbackWO(s, e) {
+        e.customArgs['selectedStatus'] = $('#WorkOrderStatus :selected').val();
+    }
+
+</script>
+
+<h2><span>Property Details</span></h2>
+
+
+<div id="tabs" style="visibility: hidden">
+    <ul>
+        <li><a href="#TN">Tenants</a></li>
+        <li><a href="#AO">Active Orders</a></li>
+        <li><a href="#CO">Complete Orders</a></li>
+        <li><a href="#CNO">Create Orders</a></li>
+    </ul>
+
+    <div id="TN">
+        @Html.Action("PTenantsGridview", "PTenants", new { id = ViewBag.PropertyId, fragment = false })
+
+    </div>
+
+    <div id="AO">
+        @Html.Action("_WorksOrders", "Order", new { id = ViewBag.PropertyId });
+    </div>
+    <div id="CO">
+        @Html.Action("_WorksOrdersCompleted", "Order", new { propertyId = ViewBag.PropertyId });
+    </div>
+    <div id="CNO">
+
+        @{ Html.RenderAction("CreateBulkOrder", "WorksOrders", new { id = ViewBag.Guid, layout = true, returnViews = true }); }
+
+    </div>
+
+</div>

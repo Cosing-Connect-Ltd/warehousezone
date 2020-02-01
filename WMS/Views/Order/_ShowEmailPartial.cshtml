@@ -1,0 +1,59 @@
+﻿@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "showemailGrid";
+        settings.CallbackRouteValues = new{ Controller = "Order",Action = "_ShowEmailPartial",id= ViewBag.orderId, InvoiceMasterId= ViewBag.invoicemasterId};
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+
+        settings.KeyFieldName = "TenantEmailNotificationQueueId";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add("EmailSubject", "Email Subject");
+
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "Attachment";
+            column.SetDataItemTemplateContent(m =>
+            {
+
+                string path = (string)DataBinder.Eval(m.DataItem, "AttachmentVirtualPath");
+                if (!string.IsNullOrEmpty(path))
+                {
+
+                    var function = string.Format("showattachment('{0}')", path);
+                    ViewContext.Writer.Write("<a href='javascript:void(0)' alt='' class='fa fa-paperclip' onclick=" + function + " role='button'></a>");
+                }
+
+
+            });
+        });
+
+
+
+
+
+        settings.Columns.Add("ActualProcessingTime", "Actual Processing Time");
+        settings.Columns.Add("CustomRecipients", "Custom Recipients");
+        settings.Columns.Add("CustomCcRecipients", "CustomCcRecipients");
+        settings.Columns.Add("CustomBccRecipients", "CustomBccRecipients");
+        settings.Columns.Add("CustomEmailMessage", "CustomEmailMessage");
+        //settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+
+    });
+}
+@grid.Bind(Model).GetHtml()

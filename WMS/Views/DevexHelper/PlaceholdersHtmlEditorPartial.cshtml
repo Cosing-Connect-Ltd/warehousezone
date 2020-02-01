@@ -1,0 +1,39 @@
+﻿@using System.Web.UI.WebControls
+@model  Ganedata.Core.Services.HtmlEditorModel
+
+@Html.DevExpress().HtmlEditor(
+    settings => {
+        settings.Name = Model.EditorName;
+        settings.Width = Unit.Percentage(100);
+        settings.Height = Unit.Pixel(Model.Height);
+        settings.Settings.AllowPreview = false;
+
+        settings.CallbackRouteValues = new { Controller = "DevexHelper", Action = Model.CallbackAction};
+
+
+        settings.Placeholders.AddRange(LayoutHelpers.MailMergeVariablesList.Select(m=> new HtmlEditorPlaceholderItem(m.Text)));
+
+        var toolbar = new HtmlEditorToolbar();
+        toolbar.Items.Add(new ToolbarUndoButton());
+        toolbar.Items.Add(new ToolbarRedoButton());
+        var fontSizeEdit = new ToolbarFontSizeEdit(true);
+        fontSizeEdit.CreateDefaultItems();
+        toolbar.Items.Add(fontSizeEdit);
+        toolbar.Items.Add(new ToolbarBoldButton(true));
+        toolbar.Items.Add(new ToolbarItalicButton());
+        toolbar.Items.Add(new ToolbarUnderlineButton());
+        toolbar.Items.Add(new ToolbarStrikethroughButton());
+        toolbar.Items.Add(new ToolbarJustifyLeftButton(true));
+        toolbar.Items.Add(new ToolbarJustifyCenterButton());
+        toolbar.Items.Add(new ToolbarJustifyRightButton());
+        toolbar.Items.Add(new ToolbarBackColorButton(true));
+        toolbar.Items.Add(new ToolbarFontColorButton());
+       toolbar.Items.Add(new ToolbarInsertLinkDialogButton(true));
+
+        var tableOperationsButton = new ToolbarTableOperationsDropDownButton(true);
+        tableOperationsButton.CreateDefaultItems();
+        toolbar.Items.Add(tableOperationsButton);
+
+        toolbar.Items.Add(new ToolbarInsertPlaceholderDialogButton(true));
+        settings.Toolbars.Add(toolbar);
+    }).Bind(Model.HtmlContent).GetHtml()

@@ -1,0 +1,72 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = ViewBag.productId + "deliveriesgridview";
+        settings.CallbackRouteValues = new { Controller = "TransferOrders", Action = "_Deliveries" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.SettingsPopup.HeaderFilter.MinWidth = 500;
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "OrderProcessID";
+            col.Visible = false;
+
+
+        });
+        settings.KeyFieldName = "OrderProcessID";
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.Columns.Add("DeliveryNO");
+        settings.Columns.Add("OrderNumber");
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DateCreated";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            c.ColumnType = MVCxGridViewColumnType.DateEdit;
+            c.SetDataItemTemplateContent(m =>
+            {
+                var date = (DateTime?)DataBinder.Eval(m.DataItem, "DateCreated");
+                DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
+                ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
+            });
+        });
+
+        settings.SettingsDetail.ShowDetailRow = true;
+
+        settings.SetDetailRowTemplateContent(c =>
+        {
+            Html.DevExpress().PageControl(s =>
+            {
+                s.EnableTabScrolling = true;
+                s.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                s.Name = DataBinder.Eval(c.DataItem, "OrderProcessID").ToString();
+                s.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                s.TabPages.Add("Delivery Details").SetContent(() =>
+                {
+                    Html.RenderAction("_DeliveryDetails", new { ProcessId = DataBinder.Eval(c.DataItem, "OrderProcessID") });
+                });
+
+            }).GetHtml();
+        });
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+    });
+}
+@grid.Bind(Model).GetHtml()

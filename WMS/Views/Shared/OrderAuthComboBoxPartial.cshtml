@@ -1,0 +1,32 @@
+﻿@using WMS.CustomBindings
+
+    
+
+
+        @Html.DevExpress().ComboBox(settings =>
+   {
+       settings.Name = "OrderAuth";
+       settings.Width = 350;
+       settings.Properties.DropDownWidth = 350;
+       settings.Properties.DropDownStyle = DropDownStyle.DropDown;
+       settings.CallbackRouteValues = new { Controller = "PalletTracking", Action = "OrderAuthzComboBoxPartial" };
+       settings.Properties.CallbackPageSize = 15;
+       settings.Properties.TextField = "OrderNumber";
+       settings.Properties.TextFormatString = "{0},{1}";
+       settings.Properties.ValueField = "OrderID";
+       settings.ControlStyle.CssClass = "form-control";
+
+       settings.Properties.ValueType = typeof(int);
+       settings.Properties.FilterMinLength = 2;
+       settings.Properties.CallbackPageSize = 10;
+      
+
+
+
+
+   }).BindList(ProductComboboxCustomBinding.GetOrders, ProductComboboxCustomBinding.GetOrderByOrderId).Bind(ViewBag.productId ?? "").GetHtml()
+
+     
+      
+
+

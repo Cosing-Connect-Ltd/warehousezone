@@ -1,0 +1,76 @@
+﻿@using Ganedata.Core.Models;
+@model IEnumerable<Ganedata.Core.Models.SlaWorksOrderListViewModel>
+@using Ganedata.Core.Entities.Enums;
+
+<div id="JobTabs">
+    <ul>
+        <li><a href="#ByTrade">By Trade</a></li>
+        <li><a href="#ByPriority">By Priority</a></li>
+    </ul>
+    @ViewBag.title
+    <div id="ByTrade">
+        <div class="works-jobs" id="JobsByTrade">
+            <div id="works-jobs">
+                @foreach (var jobType in Model)
+                {
+                    <h3>@jobType.Name (@jobType.Orders.Count.ToString())</h3>
+                    <div>
+                        <ul>
+                            @foreach (var Order in jobType.Orders)
+                            {
+                                <li style="background-color: @Order.Colour" value="@Order.OrderID" class="draggable reallocation-parent" data-duration="@TimeSpan.FromMinutes(Convert.ToInt64(Order.ExpectedHours)).TotalMilliseconds"
+                                    data-orderid="@Order.OrderID" data-label="@(Order.SLAPriorityId -1)" data-tid="@Order.TenentId">
+                                    <p><a title="Click to view or modify Order" href="@Url.Action("Edit","WorksOrders", new { id= Order.OrderID })">  @Order.OrderNumber</a> : @Math.Round(TimeSpan.FromMinutes(Convert.ToInt64(Order.ExpectedHours)).TotalHours, 2) Hours : @Order.SlaPriorityName</p>
+                                    <p>@Order.AddressLine1</p>
+                                    <p>
+                                        <i>
+                                            @Order.JobSubTypeName
+                                        </i>
+                                    </p>
+                                    @if (Order.OrderNotes != null && Order.OrderNotes.Where(x => x.IsDeleted != true).Count() > 0)
+                                    {
+                                        <textarea title="@(string.Join("\r\n",Order.OrderNotes.Where(x => x.IsDeleted != true).Select(m=> m.Notes)))" readonly>  @(string.Join("\r\n", Order.OrderNotes.Where(x => x.IsDeleted != true).Select(m=> m.Notes)))</textarea>
+                                    }
+                                    @if (Order.OrderStatusID == (int)OrderStatusEnum.ReAllocationRequired)
+                                    {<p class="reallocation">(R)</p>}
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    @ViewBag.title
+    <div id="ByPriority">
+        <div class="works-jobs" id="JobsByPriority">
+            <div>
+                <ul>
+                    @foreach (var Order in (List<SlaWorksOrderViewModel>)ViewBag.orderByPriority)
+                    {
+                        <li style="background-color: @Order.Colour" value="@Order.OrderID" class="draggable reallocation-parent" data-duration="@TimeSpan.FromMinutes(Convert.ToInt64(Order.ExpectedHours)).TotalMilliseconds"
+                            data-orderid="@Order.OrderID" data-label="@(Order.SLAPriorityId -1)" data-tid="@Order.TenentId">
+                            <p> <a title="Click to view or modify Order" href="@Url.Action("Edit","WorksOrders", new { id= Order.OrderID })">  @Order.OrderNumber</a> : @Math.Round(TimeSpan.FromMinutes(Convert.ToInt64(Order.ExpectedHours)).TotalHours, 2) Hours : @Order.SlaPriorityName</p>
+                            <p>@Order.AddressLine1</p>
+                            <p><b>Job Type:</b> @(Order.JobTypeName)</p>
+                            <p>
+                                <i>@Order.JobSubTypeName</i>
+                            </p>
+                            @if (Order.OrderNotes != null && Order.OrderNotes.Where(x => x.IsDeleted != true).Count() > 0)
+                            {
+                                <textarea title="@(string.Join("\r\n", Order.OrderNotes.Where(x => x.IsDeleted != true).Select(m=> m.Notes)))" readonly>  @(string.Join("\r\n", Order.OrderNotes.Where(x => x.IsDeleted != true).Select(m=> m.Notes)))</textarea>
+                            }
+
+                            @if (Order.OrderStatusID == (int)OrderStatusEnum.ReAllocationRequired)
+                            {<p class="reallocation">(R)</p>}
+                        </li>
+                    }
+
+                    @ViewBag.title
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

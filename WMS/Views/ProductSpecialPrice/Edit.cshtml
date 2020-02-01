@@ -1,0 +1,96 @@
+﻿@model IEnumerable<Ganedata.Core.Entities.Domain.MarketProductLevelViewModel>
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+                new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+                )
+
+    @Html.DevExpress().GetScripts(
+                new Script { ExtensionType = ExtensionType.GridView }
+                )
+}
+
+@{
+    ViewBag.Title = (ViewBag.PriceGroupName ?? "Price Group") + " - Special Prices";
+}
+
+<h2><span>@ViewBag.Title</span></h2>
+
+<script type="text/javascript">
+
+    MVCxClientGlobalEvents.AddControlsInitializedEventHandler(OnBeginGridCallback);
+
+    function OnBeginGridCallback(s, e) {
+        e.customArgs = MVCxClientUtils.GetSerializedEditorValuesInContainer("frmPriceGroupPrices");
+        e.customArgs["PriceGroupId"] = @ViewBag.PriceGroupId;
+      
+        //WORKAROUND for BULK Update
+        var gridValues = JSON.parse(JSON.stringify($("#frmPriceGroupPrices").serializeArray()));
+        var values = gridValues[gridValues.length - 1].value.split(',');
+
+        for (var i = 0; i < gridValues.length - 1; i++) {
+            if (gridValues[i].name == 'SpecialPriceGroupsGridView$DXEditor2') {
+                e.customArgs["SpecialPrice"] = gridValues[i].value;
+            }
+            if (gridValues[i].name == 'SpecialPriceGroupsGridView$DXEditor3') {
+                e.customArgs["StartDate"] = gridValues[i].value;
+            }
+            if (gridValues[i].name == 'SpecialPriceGroupsGridView$DXEditor4') {
+                e.customArgs["EndDate"] = gridValues[i].value;
+            }
+        }
+
+        var rowIndex = parseInt($("#RowIndexForProductId").val()) || 0;
+
+        e.customArgs["ProductID"] = SpecialPriceGroupsGridView.GetRowKey(rowIndex);
+    }
+
+    function OnEndGridCallback(s, e) {
+        var lastIndex = parseInt($("#LastEditingRowIndex").val()) || 0;
+            SetGridEditorToRowIndex(lastIndex);
+    }
+
+    function SetGridEditorToRowIndex(index) {
+        SpecialPriceGroupsGridView.batchEditApi.StartEdit(index, SpecialPriceGroupsGridView.GetColumnByField($("#LastEditingColIndex").val()).index);
+    }
+
+    function OnDetailsChanged(s, e) {
+        SpecialPriceGroupsGridView.UpdateEdit();
+    }
+
+    function OnSpecialPricesGridFocusChanged(s, e) {
+
+        if (e.cellInfo.rowVisibleIndex > 0) {
+
+            $("#LastEditingRowIndex").val(e.cellInfo.rowVisibleIndex);
+        }
+
+        $("#RowIndexForProductId").val(e.cellInfo.rowVisibleIndex);
+        $("#LastEditingColIndex").val(e.cellInfo.column.fieldName);
+    }
+
+</script>
+@using (Html.BeginForm("SaveProductSpecialPrice", "ProductSpecialPrice", FormMethod.Post, new { @id = "frmPriceGroupPrices" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("LastEditingRowIndex")
+    @Html.Hidden("LastEditingColIndex")
+    @Html.Hidden("RowIndexForProductId")
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.Action("_GroupSpecialPrices", new { id = ViewBag.PriceGroupId })
+    </div>
+}
+
+
+    <div class="col-md-offset-2 col-md-10 bottom-right">
+        <a href="@Url.Action("ImportProductPriceCsv","TenantDataImport",new {PriceGroupId=ViewBag.PriceGroupId })" class="btn btn-success" target="_blank">Import</a>
+        <a href="@Url.Action("PriceGroupReport","Reports",new {PriceGroupId=ViewBag.PriceGroupId })" class="btn btn-primary" target="_blank">Print</a>
+        <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+
+    </div>
+
+
+

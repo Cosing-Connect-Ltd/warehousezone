@@ -1,0 +1,226 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@using Ganedata.Core.Entities.Enums
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "_PalletTrackingListGridView";
+        settings.CallbackRouteValues = new
+        {
+            Controller = "PalletTracking",
+            Action = "_PalletTrackingList"
+        };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.CustomBindingRouteValuesCollection.Add(
+            GridViewOperationType.Paging,
+            new { Controller = "PalletTracking", Action = "_PalletTrackingListPaging" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Filtering,
+        new { Controller = "PalletTracking", Action = "_PalletTrackingListFiltering" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Sorting,
+        new { Controller = "PalletTracking", Action = "_PalletTrackingGetDataSorting" }
+        );
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+
+        settings.KeyFieldName = "PalletTrackingId";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = true;
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "PalletTrackingId";
+            c.Caption = "Id";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Name";
+            c.Caption = "Product";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "SKUCode";
+            c.Caption = "SKU Code";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ProductGroup";
+            c.Caption = "Group";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DepartmentName";
+            c.Caption = "Department";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "PalletSerial";
+            c.Caption = "Pallet Serial";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "RemainingCases";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "TotalCases";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ExpiryDate";
+            c.Caption = "Expiry Date";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            c.ColumnType = MVCxGridViewColumnType.DateEdit;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "BatchNo";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DateCreated";
+            c.Caption = "Date";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            c.ColumnType = MVCxGridViewColumnType.DateEdit;
+            c.SetDataItemTemplateContent(m =>
+            {
+                var date = (DateTime?)DataBinder.Eval(m.DataItem, "DateCreated");
+                DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
+                ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
+            });
+        });
+
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DateUpdated";
+            c.Caption = "Updated Date";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            c.ColumnType = MVCxGridViewColumnType.DateEdit;
+            c.SetDataItemTemplateContent(m =>
+            {
+                var date = (DateTime?)DataBinder.Eval(m.DataItem, "DateUpdated");
+                DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
+                ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
+            });
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Comments";
+            c.Caption = "Comments";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "OrderId";
+            c.Caption = "Alloc to Ord.";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Status";
+            c.Caption = "Status";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var comboSettings = (ComboBoxProperties)c.PropertiesEdit;
+            comboSettings.DataSource = Enum.GetNames(typeof(PalletTrackingStatusEnum));
+            c.SetDataItemTemplateContent(columns =>
+            {
+                var Status = DataBinder.Eval(columns.DataItem, "Status");
+                if (Status.Equals("Created"))
+                {
+                    var palletTrackingId = (int)DataBinder.Eval(columns.DataItem, "PalletTrackingId");
+                    var function = string.Format("directAdjustmentIn({0})", palletTrackingId);
+                    ViewContext.Writer.Write(Status + "&nbsp;&nbsp;&nbsp;<a class='process-button fa fa-floppy-o' href='javascript:;' title='Bookin Pallet' onclick=" + function + "></a>");
+                }
+                else
+                {
+                    ViewContext.Writer.Write(Status);
+                }
+            });
+
+        });
+
+        settings.SettingsDetail.ShowDetailRow = true;
+
+        settings.SetDetailRowTemplateContent(c =>
+        {
+            Html.DevExpress().PageControl(s =>
+            {
+                s.EnableTabScrolling = true;
+                s.Name = DataBinder.Eval(c.DataItem, "PalletTrackingId").ToString();
+                s.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                s.TabPages.Add("Inventory Transactions").SetContent(() =>
+                {
+                    Html.RenderAction("_PalletTrackingInventoryTransactions", new { Id = DataBinder.Eval(c.DataItem, "PalletTrackingId") });
+                });
+
+            }).GetHtml();
+        });
+        settings.Columns.Add(c =>
+        {
+            c.Caption = "Action";
+
+            c.SetDataItemTemplateContent(m =>
+            {
+                var palletTrackingId = (int)DataBinder.Eval(m.DataItem, "PalletTrackingId");
+                var function = string.Format("UpdatePalletDate({0})", palletTrackingId);
+                var functions = string.Format("SearchSalesOrderPopup({0})", palletTrackingId);
+                ViewContext.Writer.Write("<a class='process-button fa fa fa-refresh' title='Update Date' href='javascript:" + function + ";'></a>");
+
+                var Status = DataBinder.Eval(m.DataItem, "Status");
+                if (!Status.Equals("Created"))
+                {
+                    ViewContext.Writer.Write("<a class='process-button fa fa-check-square' title='Hold Order' style='padding-left: 1em;' href='javascript:" + functions + ";'></a>");
+                }
+
+            });
+        });
+
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.EndCallback = "OnGridFocusedRowChanged";
+
+    });
+}
+@grid.BindToCustomData(Model).GetHtml()

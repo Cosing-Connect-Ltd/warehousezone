@@ -1,0 +1,25 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.WebDocumentViewer }
+        )
+
+@section scripts {
+
+    @Html.DevExpress().GetScripts(
+            new Script { ExtensionType = ExtensionType.WebDocumentViewer }
+            )
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout-no-header-left.cshtml";
+    ViewBag.Title = "Works Order Print";
+}
+
+<h2><span>Works Order Print</span></h2>
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "WorksOrderPrintDocumentViewer";
+
+}).Bind(Model).GetHtml()

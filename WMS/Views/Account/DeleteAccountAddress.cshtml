@@ -1,0 +1,130 @@
+﻿@model Ganedata.Core.Entities.Domain.AccountAddresses
+
+@{
+    ViewBag.Title = "Delete Account";
+}
+
+<h2><span>Delete Account Address</span></h2>
+
+<h3 class="alert alert-danger">Are you sure you want to delete this?</h3>
+<div>
+    <dl class="dl-horizontal col-md-6 pull-left">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AddressLine1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddressLine1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AddressLine2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddressLine2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AddressLine3)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddressLine3)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Telephone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Telephone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Town)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Town)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.County)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.County)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PostCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PostCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CountryID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GlobalCountry.CountryName)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AddTypeDefault)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddTypeDefault)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AddTypeShipping)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddTypeShipping)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AddTypeBilling)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddTypeBilling)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AddTypeMarketing)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddTypeMarketing)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.AddressID)
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <div class="col-md-offset-2 col-md-10 bottom-right">
+                <input type="submit" value="Delete" class="btn btn-default" />
+                <div class="btn btn-default"> @Html.ActionLink("Cancel", "Edit", null, null, null, "addresses", new { @id = Session["account"] }, null)</div>
+            </div>
+        </div>
+    }
+</div>
+    

@@ -1,0 +1,33 @@
+﻿@{
+
+    Html.DevExpress().PageControl(s =>
+    {
+        s.EnableTabScrolling = true;
+        s.Name = "filepage" + ViewBag.productId;
+        s.EnableTabScrolling = true;
+        s.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        s.TabPages.Add("Images").SetContent(() =>
+        {
+
+            Html.RenderAction("_ProductImages", new { ProductId = ViewBag.productid });
+
+        });
+        s.TabPages.Add("Videos").SetContent(() =>
+        {
+            Html.RenderAction("_ProductVideos", new { ProductId = ViewBag.productid });
+
+        });
+
+        s.TabPages.Add("Documents").SetContent(() =>
+        {
+            Html.RenderAction("_ProductDocuments", new { ProductId = ViewBag.productid });
+        });
+        s.TabPages.Add("Modify Files").SetContent(() =>
+        {
+            Html.RenderAction("ProductFilesDetail", new { ProductId = ViewBag.productid });
+
+        });
+
+
+    }).GetHtml();
+}

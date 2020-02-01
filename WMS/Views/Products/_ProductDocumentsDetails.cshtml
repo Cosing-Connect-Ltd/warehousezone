@@ -1,0 +1,93 @@
+﻿@using System.Web.UI.WebControls
+@model IEnumerable<Ganedata.Core.Entities.Domain.ProductFiles>
+
+@{
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+}
+
+@Html.DevExpress().GridView(
+    settings =>
+    {
+        settings.Name = "ProductFileDetailGridView" + ViewBag.productid;
+        settings.KeyFieldName = "Id";
+        settings.Width = Unit.Percentage(100);
+        settings.CallbackRouteValues = new { Controller = "Products", Action = "_ProductDocumentsDetails", id = ViewBag.productid };
+        settings.SettingsEditing.BatchUpdateRouteValues = new { Controller = "Products", Action = "SaveProductFiles" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.Batch;
+        settings.SettingsEditing.BatchEditSettings.EditMode = GridViewBatchEditMode.Cell;
+        settings.SettingsEditing.BatchEditSettings.StartEditAction = GridViewBatchStartEditAction.DblClick;
+        settings.Settings.ShowStatusBar = GridViewStatusBarMode.Hidden;
+
+        settings.EnableCallbackAnimation = false;
+        settings.SettingsPager.PageSize = 10;
+        settings.CommandColumn.Visible = false;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "ProductMaster.Name";
+            column.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "FilePath";
+            column.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "SortOrder";
+            column.EditorProperties().SpinEdit(p =>
+            {
+                p.MinValue = 0;
+                p.MaxValue = 1000000000;
+                p.ClientSideEvents.LostFocus = "function(s,e){ OnDetailsChanged(s,e);}";
+            });
+        });
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "DefaultImage";
+            column.EditorProperties().CheckBox(p =>
+            {
+                p.ClientSideEvents.CheckedChanged = "function(s,e){ OnDetailsChanged(s,e);}";
+            });
+        });
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "HoverImage";
+            column.EditorProperties().CheckBox(p =>
+            {
+                p.ClientSideEvents.CheckedChanged = "function(s,e){ OnDetailsChanged(s,e);}";
+            });
+        });
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "IsDeleted";
+            column.EditorProperties().CheckBox(p =>
+            {
+                p.ClientSideEvents.CheckedChanged = "function(s,e){ OnDetailsChanged(s,e);}";
+            });
+        });
+
+
+
+
+        settings.CellEditorInitialize = (s, e) =>
+        {
+            ASPxEdit editor = (ASPxEdit)e.Editor;
+            editor.ValidationSettings.Display = Display.None;
+        };
+
+        settings.ClientSideEvents.BeginCallback = "function(s,e){ OnBeginGridCallback(s, e); }";
+        settings.ClientSideEvents.FocusedCellChanging = "OnSpecialPricesGridFocusChanged";
+        settings.ClientSideEvents.EndCallback = "OnEndGridCallback";
+    }).Bind(Model).GetHtml()

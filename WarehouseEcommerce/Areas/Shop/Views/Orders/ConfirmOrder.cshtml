@@ -1,0 +1,246 @@
+﻿@model List<Ganedata.Core.Entities.Domain.OrderDetailSessionViewModel>
+@{
+    ViewBag.Title = "Confirm Order";
+    int j = 1;
+}
+@{var address = ViewBag.Addresses as List<Ganedata.Core.Entities.Domain.AccountAddresses>;}
+<style>
+    .shippingMethod {
+        background: #f7f7f9;
+        display: block;
+        border-bottom: 1px solid #ffffff;
+        padding: 20px 20px;
+        color: #434343;
+        position: relative;
+        text-transform: uppercase;
+    }
+</style>
+<div class="about bg-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-sm-8 bg-white my-account login">
+                <div class="about-cnt">
+                    <div class="content-wrapper select">
+                        @if (ViewBag.Addresses != null)
+                        {
+                            for (int i = 0; i < address.Count; i += 2)
+                            {
+                                <div class="row">
+                                    @if (address.ElementAtOrDefault(i) != null)
+                                    {
+                                        <div class="col-md-6">
+                                            <h2 class="text-uppercase"> Billing Address</h2>
+                                            <hr>
+                                            <p>
+                                                @if (!string.IsNullOrEmpty(address[i].AddressLine1))
+                                                {
+                                                    <b>@address[i].AddressLine1 </b> <br />
+                                                }
+                                                @if (!string.IsNullOrEmpty(address[i].AddressLine2))
+                                                {
+                                                    @address[i].AddressLine2 <br />
+                                                }
+                                                @if (!string.IsNullOrEmpty(address[i].PostCode) || !string.IsNullOrEmpty(address[i].PostCode))
+                                                {
+                                                    @address[i].AddressLine3 @address[i].PostCode <br />
+                                                }
+                                                @if (address[i].GlobalCountry != null)
+                                                {
+                                                    @address[i].GlobalCountry.CountryName <br />
+                                                }
+                                                @if (!string.IsNullOrEmpty(address[i].Telephone))
+                                                {
+
+                                                    <b> Phone:</b> @address[i].Telephone <br />
+                                                }
+                                            </p>
+
+                                        </div>
+                                    }
+                                    @if (address.ElementAtOrDefault(i + 1) != null)
+                                    {
+                                        <div class="col-md-6">
+                                            <h2 class="text-uppercase"> Shipping Address</h2>
+                                            <hr>
+                                            <div class="w-25 p-3">
+                                                <p>
+                                                    @if (!string.IsNullOrEmpty(address[i + 1].AddressLine1))
+                                                    {
+                                                        <b>@address[i + 1].AddressLine1 </b> <br />
+                                                    }
+                                                    @if (!string.IsNullOrEmpty(address[i + 1].AddressLine2))
+                                                    {
+                                                        @address[i + 1].AddressLine2 <br />
+                                                    }
+                                                    @if (!string.IsNullOrEmpty(address[i + 1].AddressLine3) || !string.IsNullOrEmpty(address[i + 1].PostCode))
+                                                    {
+                                                        @address[i + 1].AddressLine3 @address[i + 1].PostCode <br />
+                                                    }
+                                                    @if (address[i + 1].GlobalCountry != null)
+                                                    {
+                                                        @address[i + 1].GlobalCountry.CountryName <br />
+                                                    }
+                                                    @if (!string.IsNullOrEmpty(address[i + 1].Telephone))
+                                                    {
+                                                        <b> Phone:</b> @address[i + 1].Telephone <br />
+
+                                                    }
+                                                </p>
+                                            </div>
+
+                                        </div>
+                                    }
+                                </div>
+                                <br />
+                            }
+                            <br />
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4 bg-white my-account login">
+                <div class="about-cnt">
+                    <div class="content-wrapper select">
+                        <h2 class="text-uppercase"> Items Detail</h2>
+                        <hr>
+                        <table class="order-details" style="border-collapse:unset">
+                            @foreach (var item in Model)
+                            {
+                                <tbody>
+
+
+                                    <tr>
+
+                                        <td> <a href=""> <img src="/UploadedFiles/Products/no-image.png" alt="@(item?.ProductMaster?.Name)"> </a> </td>
+                                        <td>
+                                            <div class="ordered-items">
+                                                <p>
+                                                    <a href=""> <strong>@(item.ProductMaster?.Name) </strong> </a>
+
+                                                </p>
+                                                <ul>
+                                                    <li>
+                                                        Sku: <span>@(item.ProductMaster?.SKUCode) </span>
+                                                    </li>
+                                                    <li> Size: <span> M</span> </li>
+                                                    <li>
+                                                        Quantity: <span>@item.Qty </span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            }
+                        </table>
+                        <div class="button-submit">
+                            <div class="pull-right">
+                                @if (Model.ToList().Count > 0)
+                                {
+                                    <h3> Total Quantity: @(Model == null ? 0 : Model.ToList().Count) </h3>
+                                }
+                                @if (ViewBag.TotalQty != null && (int)ViewBag.TotalQty > 0)
+                                {
+                                    <h3> Total: @(ViewBag.TotalQty == null ? 0 : ViewBag.TotalQty) </h3>
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        @if (Model.ToList().Count > 0)
+        {
+            <div class="row">
+                <div class="col-md-8 col-sm-8 bg-white my-account login">
+                    <div class="about-cnt">
+                        <div class="content-wrapper select">    
+                            <div class="shippingMethod">
+                                @if ((int)ViewBag.ShipmentMethod == 2)
+                                {
+                                    <div class="form-check-inline">
+                                        <label class="control-label" for="radio2">
+                                            <input type="radio" class="form-check-input" id="radio2" name="optradio" value="2" checked> By Delivery
+                                        </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <label class="control-label">
+                                            Carrier
+                                        </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <label class="control-label">
+                                            $10
+                                        </label>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="form-check-inline">
+                                        <label class="control-label" for="radio1">
+                                            <input type="radio" class="form-check-input" id="radio1" name="optradio" value="1" checked> By Shop
+                                        </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <label class="control-label">
+                                            Pick up in-store
+                                        </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <label class="control-label">
+                                            Free
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+                            <h4 class="text-uppercase">Select Payment Method</h4>
+                            <hr>
+                            <div class="shippingMethod">
+                                <div class="form-check-inline">
+                                    <label class="control-label" for="radio2">
+                                        <input type="radio" class="form-check-input" id="Cash" name="paymentMethod" value="2">  Cash
+                                    </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <label class="control-label" for="radio1">
+                                        <input type="radio" class="form-check-input" id="PayPal" name="paymentMethod" value="1">  Paypal
+                                    </label>
+
+
+                                </div>
+                            </div>
+                            <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+                                <div class="row">
+
+                                    <fieldset>
+                                        <input class="full-width" type="hidden" name="business" value="shoaib@ganedata.co.uk">
+                                        <input type="hidden" name="cmd" value="_cart">
+                                        <input type="hidden" name="upload" value="1" />
+                                        <input type="hidden" name="return" value="@((string)ViewBag.RetUrl)">
+                                        <input type="hidden" name="notify_url" value="@((string)ViewBag.RetUrl)">
+                                        <input type="hidden" NAME="currency_code" value="GBP">
+                                        <input type="hidden" name="OrderId" value="@ViewBag.OrdersId" />
+
+                                    </fieldset>
+
+                                    @foreach (var item in Model)
+                                    {
+
+                                        <input type="hidden" name="item_name_@j" value="@item.ProductMaster.Name">
+                                        <input type="hidden" name="item_number_@j" value="@item.ProductMaster.SKUCode">
+                                        <input type="hidden" name="amount_@j" value="@item.Price">
+                                        <input type="hidden" name="quantity_@j" value="@item.Qty">
+
+                                    }
+
+                                </div>
+                                <div class="button-submit">
+                                    <button type="Submit" name="submitNewsletter" class="btn btn-block paypal-btn">Proceed To Payment</button>
+                                    <a href="@Url.Action("Index","Test")" class="btn btn-block cash-btn cashbtn" name="submitNewsletter"> Proceed To Payment</a>
+
+                                </div>
+
+                            </form>
+                    
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+

@@ -1,0 +1,80 @@
+﻿@model Ganedata.Core.Entities.Domain.MoveStockVM
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Move Stock";
+}
+
+<h2>Move Stock (@Model.Product.Name)</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Product.ProductId)
+    @Html.HiddenFor(m => m.Product.Serialisable)
+
+
+    <div class="col-md-6 pull-left">
+        @Html.ValidationSummary(true)
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.FromLocation, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(m => m.FromLocation, ViewBag.FromLocations as SelectList, new { @class = "chosen-select" })
+                @Html.ValidationMessageFor(model => model.FromLocation)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ToLocation, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(m => m.ToLocation, ViewBag.ToLocations as SelectList, new { @class = "chosen-select" })
+                @Html.ValidationMessageFor(model => model.ToLocation)
+            </div>
+        </div>
+        @if (!Model.Product.Serialisable)
+        {
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.Qty, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.DevExpress().SpinEditFor(m => m.Qty,
+                settings =>
+                {
+                    settings.Name = "Qty";
+                    settings.Properties.MinValue = 0;
+                    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                    settings.ControlStyle.CssClass = "form-control";
+
+
+
+                }
+            ).GetHtml()
+                    @Html.ValidationMessageFor(model => model.Qty)
+                </div>
+            </div>
+
+        }
+        else
+        {
+            <a style='cursor:pointer' href='#' onclick='functon'>Add Serial</a>
+        }
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        <div class="col-md-8">
+            <input type="submit" value="Adjust"  class="btn btn-default  " />
+            @Html.ActionLink("Back To List", "Index", null, new { @class = "btn btn-primary" })
+        </div>
+    </div>
+}
+

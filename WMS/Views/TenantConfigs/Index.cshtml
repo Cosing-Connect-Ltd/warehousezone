@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Ganedata.Core.Entities.Domain.TenantConfig>
+
+@{
+    ViewBag.Title = "Index";
+}
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView },
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+<h2>Index</h2>
+
+<div>
+    @Html.Partial("~/Views/TenantConfigs/_TenantConfigGridViewPartial.cshtml", Model);
+
+
+    <div class="col-md-12 p-0 bottom-right">
+
+        @if (WMS.Helpers.LayoutHelpers.ActivityValidator("EmailTemplates", "Create"))
+        {
+            @Html.ActionLink("Create New / Edit", "Create", "EmailTemplates", new { @class = "btn btn-primary caption" })
+        }
+    </div>
+</div>

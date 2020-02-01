@@ -1,0 +1,189 @@
+﻿@model Ganedata.Core.Models.ShiftsViewModel
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Manage Shifts";
+}
+<h2><span>@ViewBag.Title</span></h2>
+
+<form class="form-horizontal" action="/Shifts/Submit" method="post" id="shiftsDetailsForm">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(c => c.Id)
+
+    @if (Model != null)
+    {
+        @Html.HiddenFor(c => c.StoresId)
+    }
+    else
+    {
+        @Html.Hidden("EmployeeId", (int)ViewBag.EmployeeId)
+    }
+
+    <div class="col-md-12">
+        <div id="errorShifts" class="validation-summary-errors col-md-12 pull-left visibility-hidden" data-valmsg-summary="true"></div>
+        <div class="col-md-6 p-0 pull-left">
+            <div class="input-group h-100 justify-content-center align-items-center">
+                <label class="col-md-4 control-label">Employee</label>
+                <div class="col-md-8">
+                    @Html.DropDownListFor(c => c.EmployeeId, ViewBag.EmployeeId as List<SelectListItem>, new { @class = "form-control chosen-select" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                <label class="col-md-4 control-label">Weekday</label>
+                <div class="col-md-8">
+                    @Html.DropDownList("WeekDaysList", ViewBag.WeekDaysList as List<SelectListItem>, "Select Week", new { @class = "form-control chosen-select" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.DevExpress().DateEditFor(m => m.StartTime,
+                             settings =>
+                             {
+                                 settings.Name = "StartTime";
+                                 settings.Properties.DisplayFormatString = "dd-MM-yyyy HH:mm";
+                                 settings.ClientVisible = true;
+                                 settings.Properties.TimeSectionProperties.Visible = true;
+                                 settings.Properties.TimeSectionProperties.Adaptive = true;
+                                 settings.Properties.MinDate = DateTime.Today;
+                                 settings.Properties.MaxDate = DateTime.Today.AddHours(23).AddMinutes(59);
+                                 settings.Properties.TimeSectionProperties.TimeEditProperties.EditFormatString = "HH:mm";
+                                 settings.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
+                                 settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                                 settings.Properties.CalendarProperties.FastNavProperties.DisplayMode = FastNavigationDisplayMode.Inline;
+                                 settings.ControlStyle.CssClass = "form-control";
+                                 settings.Properties.ClientSideEvents.DateChanged = "function(s, e) {SetExpectedHours(s); }";
+                             }
+                             ).GetHtml()
+                    @Html.ValidationMessageFor(model => model.StartTime)
+
+                </div>
+
+
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DevExpress().DateEditFor(m => m.EndTime,
+                                 settings =>
+                                 {
+                                     settings.Name = "EndTime";
+                                     settings.Properties.DisplayFormatString = "dd-MM-yyyy HH:mm";
+                                     settings.ClientVisible = true;
+                                     settings.Properties.TimeSectionProperties.Visible = true;
+                                     settings.Properties.TimeSectionProperties.Adaptive = true;
+                                     settings.Properties.MinDate = DateTime.Today;
+                                     settings.Properties.MaxDate = DateTime.Today.AddHours(23).AddMinutes(59);
+                                     settings.Properties.TimeSectionProperties.TimeEditProperties.EditFormatString = "HH:mm";
+                                     settings.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
+                                     settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                                     settings.ControlStyle.CssClass = "form-control";
+                                     settings.Properties.ClientSideEvents.DateChanged = "function(s, e) { SetExpectedHours(s); }";
+                                 }
+                                 ).GetHtml()
+                        @Html.ValidationMessageFor(model => model.EndTime)
+
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(c => c.TimeBreaks, new { @class = "col-md-4 control-label" })
+                    <div class="col-md-8">
+                        @if (Model != null)
+                        {
+                            <select class="form-control chosen-select" name="TimeBreaks" id="TimeBreaks">
+                                <option value="00:00:00" @(Model.TimeBreaks == "00:00:00" ? "selected=selected" : null)>No Breaks</option>
+                                <option value="00:15:00" @(Model.TimeBreaks == "00:15:00" ? "selected=selected" : null)>15 minutes</option>
+                                <option value="00:30:00" @(Model.TimeBreaks == "00:30:00" ? "selected=selected" : null)>30 minutes</option>
+                                <option value="00:45:00" @(Model.TimeBreaks == "00:45:00" ? "selected=selected" : null)>45 minutes</option>
+                                <option value="01:00:00" @(Model.TimeBreaks == "01:00:00" ? "selected=selected" : null)>1 hour</option>
+                                <option value="01:15:00" @(Model.TimeBreaks == "01:15:00" ? "selected=selected" : null)>1 hour 15 mints</option>
+                                <option value="01:30:00" @(Model.TimeBreaks == "01:30:00" ? "selected=selected" : null)>1 hour 30 mints</option>
+                                <option value="01:15:00" @(Model.TimeBreaks == "01:45:00" ? "selected=selected" : null)>1 hour 45 mints</option>
+                                <option value="02:00:00" @(Model.TimeBreaks == "02:00:00" ? "selected=selected" : null)>2 hour 00 mints</option>
+                            </select>
+                        }
+                        else
+                        {
+                            <select class="form-control chosen-select" name="TimeBreaks" id="TimeBreaks">
+                                <option value="00:30:00">30 minutes</option>
+                                <option value="01:00:00">1 hour</option>
+                            </select>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 p-0 pull-left">
+            <div class="input-group bg-light mt-1 mb-2 ml-2 pt-3 pb-3 border font-weight-bold h-100 justify-content-center align-items-center">
+                @Html.LabelFor(c => c.ExpectedHours, new { @class = "col-md-4 control-label" })
+                <div class="col-md-4">
+                    <label class="control-label" for="ExpectedHours" id="ExpectedHoursValue">@Model.ExpectedHours</label>
+                </div>
+                <div class="col-md-6 visibility-hidden bg-light">
+                    @Html.TextBoxFor(c => c.ExpectedHours, new { @placeholder = "Expected Hours", @class = "form-control border-0 shadow-none bg-light" })
+                </div>
+            </div>
+            <div class="input-group bg-light m-2 pt-3 pb-3 border h-100 justify-content-center align-items-center">
+                <label class="col-md-4 control-label" for="HourlyRate">Repeat Shifts *</label>
+                <div class="col-md-8">
+                    <div class="col-md-12 pull-left">
+                        <div class="col-sm-6 pull-left">
+                            <input type="checkbox" class="col-sm-4" value="1" name="RepeatShifts" @(Model.WeekDay == 1 ? "checked=checked" : String.Empty) />
+                            <label class="col-sm-2">Monday</label>
+                        </div>
+                        <div class="col-sm-6 pull-left">
+                            <input type="checkbox" value="2" name="RepeatShifts" @(Model.WeekDay == 2 ? "checked=checked" : String.Empty) />
+                            <label class="col-sm-2">Tuesday</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12 pull-left">
+                        <div class="col-sm-6 pull-left">
+                            <input type="checkbox" value="3" name="RepeatShifts" @(Model.WeekDay == 3 ? "checked=checked" : String.Empty) />
+                            <label class="col-sm-2">Wednesday</label>
+                        </div>
+                        <div class="col-sm-6 pull-left">
+                            <input type="checkbox" value="4" name="RepeatShifts" @(Model.WeekDay == 4 ? "checked=checked" : String.Empty) />
+                            <label class="col-sm-2">Thursday</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12 pull-left">
+                        <div class="col-sm-6 pull-left">
+                            <input type="checkbox" value="5" name="RepeatShifts" @(Model.WeekDay == 5 ? "checked=checked" : String.Empty) />
+                            <label class="col-sm-2">Friday</label>
+                        </div>
+                        <div class="col-sm-6 pull-left">
+                            <input type="checkbox" value="6" name="RepeatShifts" @(Model.WeekDay == 6 ? "checked=checked" : String.Empty) />
+                            <label class="col-sm-2">Saturday</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12 pull-left">
+                        <div class="col-sm-6">
+                            <input type="checkbox" value="0" name="RepeatShifts" @(Model.WeekDay == 0 ? "checked=checked" : String.Empty) />
+                            <label class="col-sm-2">Sunday</label>
+                        </div>
+                        <div class="col-md-6"></div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-md-offset-2 col-md-10 bottom-right">
+        <button type="button" class="btn btn-primary" id="saveBtn">Save</button>
+        @Html.ActionLink("Cancel", "Index", "Shifts", new { @class = "btn btn-default" })
+    </div>
+
+</form>

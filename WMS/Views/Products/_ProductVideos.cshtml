@@ -1,0 +1,35 @@
+﻿@{
+    var grid =
+Html.DevExpress().DataView(
+    settings =>
+    {
+        settings.Name = "dataViewvideos" + ViewBag.productid;
+        settings.CallbackRouteValues = new { Controller = "Products", Action = "_ProductImages", ProductId = ViewBag.productid };
+        settings.SettingsTableLayout.RowsPerPage = 2;
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(50);
+        settings.PagerAlign = DevExpress.Web.PagerAlign.Center;
+
+        settings.SetItemTemplateContent(
+            c =>
+            {
+
+                ViewContext.Writer.Write(
+                    "<table>" +
+                        "<tr>" +
+                            "<td>" +
+                            "<video width = '320' height = '240' controls id = 'video' ><source src =\"" + Url.Content(DataBinder.Eval(c.DataItem, "FileUrl").ToString()) + "\"   ></video>" +
+                            "</td>" +
+                        "</tr>" +
+                    "</table>"
+                );
+            }
+        );
+        settings.PagerSettings.ShowNumericButtons = true;
+        settings.PagerSettings.AllButton.Visible = false;
+        settings.PagerSettings.Summary.Visible = false;
+        settings.PagerSettings.PageSizeItemSettings.Visible = true;
+        settings.PagerSettings.PageSizeItemSettings.ShowAllItem = true;
+    }
+);
+}
+@grid.Bind(Model).GetHtml()

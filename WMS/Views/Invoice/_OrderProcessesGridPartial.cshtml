@@ -1,0 +1,304 @@
+@Html.DevExpress().GridView(
+    settings =>
+    {
+        if (ViewBag.GridName != null && ViewBag.GridName == "VI")
+        {
+            settings.Name = "PurchaseViewInvoice";
+
+        }
+        else
+        {
+            settings.Name = "gridMasterAwaitingInvoicing";
+        }
+        settings.CallbackRouteValues = new { Controller = "Invoice", Action = "ProcessedOrdersPartial", type= ViewBag.GridName };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.CustomBindingRouteValuesCollection.Add(
+           GridViewOperationType.Paging,
+           new { Controller = "Invoice", Action = "_InvoiceGridViewsPaging", type = ViewBag.GridName }
+       );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Filtering,
+        new { Controller = "Invoice", Action = "_InvoiceGridViewFiltering", type = ViewBag.GridName }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Sorting,
+        new { Controller = "Invoice", Action = "_InvoiceGridViewDataSorting", type = ViewBag.GridName }
+        );
+
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.CommandColumn.SelectAllCheckboxMode = GridViewSelectAllCheckBoxMode.AllPages;
+        settings.Styles.Header.CssClass="";
+        settings.ClientSideEvents.DetailRowExpanding = "function(s,e){ OnDetailRowExpanding(s,e); }";
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+        settings.SettingsCookies.Enabled = false;
+
+        settings.KeyFieldName = "OrderProcessID";
+        //settings.Columns.Add("OrderProcessID").Width = System.Web.UI.WebControls.Unit.Pixel(15);
+        settings.Columns.Add(u =>
+        {
+            u.FieldName = "OrderProcessID";
+            u.Width = System.Web.UI.WebControls.Unit.Percentage(15);
+            u.EditFormSettings.Visible = DefaultBoolean.False;
+            u.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            u.ColumnType = MVCxGridViewColumnType.SpinEdit;
+        });
+
+
+
+
+        if (ViewBag.GridName != null && ViewBag.GridName == "PO")
+        {
+            settings.CommandColumn.ShowSelectCheckbox = true;
+            settings.CommandColumn.Visible = true;
+            settings.SettingsEditing.BatchUpdateRouteValues = new { Controller = "Invoice", Action = "SaveInvoiceNumber" };
+            settings.CustomActionRouteValues = new { Controller = "Invoice", Action = "CustomGridViewCallback" };
+
+            settings.SettingsEditing.Mode = GridViewEditingMode.Batch;
+            settings.SettingsEditing.BatchEditSettings.EditMode = GridViewBatchEditMode.Cell;
+            settings.SettingsEditing.BatchEditSettings.StartEditAction = GridViewBatchStartEditAction.DblClick;
+            settings.CommandColumn.SelectAllCheckboxMode = GridViewSelectAllCheckBoxMode.AllPages;
+            settings.Settings.ShowStatusBar = GridViewStatusBarMode.Hidden;
+
+            settings.Columns.Add(u =>
+            {
+                u.FieldName = "Supplier";
+                u.Caption = "Account";
+                u.Width = System.Web.UI.WebControls.Unit.Percentage(40);
+                u.EditFormSettings.Visible = DefaultBoolean.False;
+                u.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            });
+
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "InvoiceNumber";
+                column.Width = System.Web.UI.WebControls.Unit.Pixel(35);
+                column.EditorProperties().TextBox(p =>
+                {
+                    p.ClientSideEvents.LostFocus = "function(s,e){ OnDetailsChanged(s,e);}";
+
+                });
+            });
+            settings.Columns.Add(u =>
+            {
+                u.FieldName = "PONumber";
+                u.Caption = "Order Number";
+                u.Width = System.Web.UI.WebControls.Unit.Percentage(25);
+                u.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+                u.EditFormSettings.Visible = DefaultBoolean.False;
+            });
+
+            settings.Columns.Add(u =>
+            {
+                u.FieldName = "DeliveryNO";
+                u.Width = System.Web.UI.WebControls.Unit.Percentage(25);
+                u.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+                u.EditFormSettings.Visible = DefaultBoolean.False;
+
+            });
+            settings.Columns.Add(u =>
+            {
+                u.FieldName = "InvoiceDate";
+                u.Width = System.Web.UI.WebControls.Unit.Percentage(20);
+                u.EditFormSettings.Visible = DefaultBoolean.True;
+                u.ColumnType = MVCxGridViewColumnType.DateEdit;
+                u.EditorProperties().DateEdit(p =>
+                {
+                    p.ClientSideEvents.DateChanged = "function(s,e){ OnDetailsChanged(s,e);}";
+
+                });
+
+
+            });
+            settings.Columns.Add(u =>
+            {
+                u.FieldName = "InvoiceTotal";
+                u.Width = System.Web.UI.WebControls.Unit.Percentage(25);
+                u.PropertiesEdit.DisplayFormatString = "{0:0.00}";
+                u.EditFormSettings.Visible = DefaultBoolean.False;
+                u.Settings.AllowHeaderFilter = DefaultBoolean.False;
+
+                u.Settings.AllowAutoFilter = DefaultBoolean.False;
+            });
+            settings.Columns.Add(u =>
+            {
+                u.FieldName = "DateCreated";
+                u.Width = System.Web.UI.WebControls.Unit.Percentage(10);
+                u.EditFormSettings.Visible = DefaultBoolean.False;
+            });
+            settings.ClientSideEvents.BeginCallback = "function(s,e){ OnProcessedDetailsEditCallback(s,e); }";
+            settings.ClientSideEvents.FocusedCellChanging = "gridMasterAwaitingInvoicingOnGridFocusChanged";
+            settings.ClientSideEvents.SelectionChanged = "SelectionChanged";
+            settings.ClientSideEvents.EndCallback = "OnEndsGridCallback";
+
+            settings.CommandColumn.SetHeaderTemplateContent(c =>
+            {
+                c.Column.Width= System.Web.UI.WebControls.Unit.Pixel(10);
+                Html.DevExpress().CheckBox(selectAll =>
+                {
+                    selectAll.Name = "cbAll";
+                    selectAll.Text = "Select All";
+                    selectAll.Properties.AllowGrayed = true;
+                    selectAll.Properties.AllowGrayedByClick = false;
+                    selectAll.Properties.ClientSideEvents.Init = "Init";
+                    selectAll.Properties.ClientSideEvents.CheckedChanged = "CheckedChanged";
+                }).Render();
+            });
+            settings.BeforeGetCallbackResult = (s, e) =>
+            {
+                if (ViewData["select"] == null) return;
+                var gridview = s as MVCxGridView;
+                for (int i = 0; i < gridview.VisibleRowCount; i++)
+                {
+                    var value = gridview.GetRowValues(i, "InvoiceNumber");
+                    bool rowEnabled = true;
+                    if ( value ==null)
+                    {
+                        rowEnabled = false;
+                    }
+
+                    if (rowEnabled && (bool)ViewData["select"] == true)
+                        gridview.Selection.SelectRow(i);
+                    else
+                        gridview.Selection.UnselectRow(i);
+                }
+
+            };
+            settings.CustomJSProperties = (s, e) =>
+            {
+                MVCxGridView g = (MVCxGridView)s;
+                var selectableRowsCount = Enumerable.Range(0, g.VisibleRowCount).Count();
+                e.Properties["cpSelectableRowsCount"] = selectableRowsCount;
+            };
+            settings.CommandButtonInitialize = (s, e) =>
+            {
+                MVCxGridView Grid = s as MVCxGridView;
+                var value = Grid.GetRowValues(e.VisibleIndex, "InvoiceNumber");
+                if (e.ButtonType == ColumnCommandButtonType.SelectCheckbox && (value == null || string.IsNullOrEmpty(value.ToString())))
+                {
+                    e.Enabled = false;
+                }
+            };
+
+
+
+        }
+        else
+        {
+            settings.ClientSideEvents.BeginCallback = "function(s,e){ OnProcessedDetailsEditCallback(s,e); }";
+            settings.SettingsEditing.BatchUpdateRouteValues = new { Controller = "Invoice", Action = "SaveInvoiceNumber" };
+            //settings.CustomActionRouteValues = new { Controller = "Invoice", Action = "CustomGridViewCallback" };
+
+            settings.SettingsEditing.Mode = GridViewEditingMode.Batch;
+            settings.SettingsEditing.BatchEditSettings.EditMode = GridViewBatchEditMode.Cell;
+            settings.SettingsEditing.BatchEditSettings.StartEditAction = GridViewBatchStartEditAction.DblClick;
+            //settings.CommandColumn.SelectAllCheckboxMode = GridViewSelectAllCheckBoxMode.AllPages;
+            settings.Settings.ShowStatusBar = GridViewStatusBarMode.Hidden;
+
+            settings.Columns.Add(u =>
+            {
+                u.FieldName = "Supplier";
+                u.Caption = "Account";
+                u.Width = System.Web.UI.WebControls.Unit.Percentage(40);
+                u.EditFormSettings.Visible = DefaultBoolean.False;
+                u.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            });
+
+            settings.Columns.Add(u =>
+            {
+                u.FieldName = "PONumber";
+                u.Caption = "Order Number";
+                u.Width = System.Web.UI.WebControls.Unit.Percentage(25);
+                u.EditFormSettings.Visible = DefaultBoolean.False;
+                u.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            });
+
+            settings.Columns.Add(u =>
+            {
+                u.FieldName = "DeliveryNO";
+                u.Caption = "DeliveryNO";
+                u.Width = System.Web.UI.WebControls.Unit.Percentage(25);
+                u.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+                u.EditFormSettings.Visible = DefaultBoolean.False;
+            });
+            settings.Columns.Add(u =>
+            {
+                u.FieldName = "InvoiceDate";
+                u.Width = System.Web.UI.WebControls.Unit.Percentage(20);
+                u.EditFormSettings.Visible = DefaultBoolean.True;
+                u.ColumnType = MVCxGridViewColumnType.DateEdit;
+                u.EditorProperties().DateEdit(p =>
+                {
+                    p.ClientSideEvents.DateChanged = "function(s,e){ OnDetailsChanged(s,e);}";
+
+                });
+
+
+            });
+            settings.Columns.Add(u =>
+            {
+                u.FieldName = "InvoiceNumber";
+                u.Width = System.Web.UI.WebControls.Unit.Percentage(25);
+                u.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+                //u.PropertiesEdit.DisplayFormatString = "{0:0.00}";
+                u.ColumnType = MVCxGridViewColumnType.TextBox;
+                u.EditFormSettings.Visible = DefaultBoolean.False;
+                u.Settings.AllowAutoFilter = DefaultBoolean.True;
+            });
+            settings.Columns.Add(u =>
+            {
+                u.FieldName = "Email";
+                u.Width = System.Web.UI.WebControls.Unit.Percentage(15);
+                u.EditFormSettings.Visible = DefaultBoolean.False;
+                u.Settings.AllowAutoFilter = DefaultBoolean.False;
+                u.Settings.AllowSort = DefaultBoolean.False;
+
+            });
+
+
+
+            settings.Columns.Add(u =>
+            {
+                u.FieldName = "InvoiceTotal";
+                u.Width = System.Web.UI.WebControls.Unit.Percentage(25);
+                //u.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+                u.PropertiesEdit.DisplayFormatString = "{0:0.00}";
+                u.ColumnType = MVCxGridViewColumnType.SpinEdit;
+                u.EditFormSettings.Visible = DefaultBoolean.False;
+                u.Settings.AllowAutoFilter = DefaultBoolean.False;
+            });
+            settings.Columns.Add(u =>
+            {
+                u.FieldName = "DateCreated";
+                u.Width = System.Web.UI.WebControls.Unit.Percentage(10);
+                u.EditFormSettings.Visible = DefaultBoolean.False;
+                u.ColumnType = MVCxGridViewColumnType.DateEdit;
+
+            });
+            settings.SettingsDetail.ShowDetailRow = true;
+            settings.CommandColumn.Visible = true;
+            settings.CommandColumn.ShowSelectCheckbox = true;
+            settings.ClientSideEvents.SelectionChanged = "SelectionChanged";
+            settings.ClientSideEvents.EndCallback = "EndCallbackInvoice";
+            settings.ClientSideEvents.FocusedCellChanging = "gridMasterAwaitingInvoicingOnGridFocusChanged";
+        }
+
+
+
+        settings.SetDetailRowTemplateContent(c =>
+        {
+            var orderProcessId = (int)DataBinder.Eval(c.DataItem, "OrderProcessID");
+            Html.RenderAction("OrderProcessedDetails", new { id = orderProcessId });
+        });
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "30", "50","100","150","200" };
+
+    }).BindToCustomData(Model).GetHtml()

@@ -1,0 +1,28 @@
+﻿@model Ganedata.Core.Entities.Domain.LocationTypes
+<hgroup>
+    <h3><span>@Html.ValidationSummary("", new { @id = "vldLocationType" })</span></h3>
+</hgroup>
+@using (Html.BeginForm("SaveLocationType", "Locations", FormMethod.Post, new { @id = "frmltype" }))
+{
+    @Html.HiddenFor(m => m.LocationTypeId)
+    <div class="col-md-12 pull-left">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <label class ="col-md-4">Location Type<span style="color:red"> *</span></label>
+            <div class="col-md-8">
+                @Html.EditorFor(m => m.LocTypeName)
+                @Html.ValidationMessageFor(model => model.LocTypeName)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <label class ="col-md-4">Location Description</label>
+            <div class="col-md-8">
+                @Html.EditorFor(m => m.LocTypeDescription)
+                @Html.ValidationMessageFor(model => model.LocTypeDescription)
+            </div>
+        </div>
+    </div>
+    <div class="col-md-offset-2 col-md-10 bottom-right-popup">
+        <input type="button" onclick="locationTypePost()" value="Save" class="btn btn-primary" />
+        <input type="button" onclick="ModalLocationType.Hide()" value="Cancel" class="btn btn-default" />
+    </div>
+}

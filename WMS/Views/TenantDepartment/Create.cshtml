@@ -1,0 +1,55 @@
+﻿@model Ganedata.Core.Entities.Domain.TenantDepartments
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Add New Tenant Departments";
+}
+
+<h2><span> Tenant Departments</span></h2>
+<div class="col-md-12 p-0">
+    <div class="col-md-6">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.DepartmentName, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.DepartmentName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DepartmentName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("Enter or scan Account Code", htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.AccountID, ViewBag.AccountIDs as SelectList, "Select Account", new { @class = "chosen-select" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                <div class="col-md-offset-2 col-md-10 bottom-right">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+                </div>
+            </div>
+        </div>
+        }
+
+
+    </div>
+</div>

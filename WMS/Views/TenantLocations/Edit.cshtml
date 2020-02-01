@@ -1,0 +1,297 @@
+﻿@model Ganedata.Core.Entities.Domain.TenantLocations
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.PopupControl },
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Edit Tenant Location";
+}
+
+<h2><span>Edit Tenant Location</span></h2>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @id = "frmSaveTenantLocation" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.WarehouseId)
+    @Html.HiddenFor(model => model.TenantId)
+    @Html.HiddenFor(model => model.DateCreated)
+
+
+    <div class="col-md-6 pull-left">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.WarehouseName, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.WarehouseName)
+                @Html.ValidationMessageFor(model => model.WarehouseName)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.AddressLine1, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.AddressLine1)
+                @Html.ValidationMessageFor(model => model.AddressLine1)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.AddressLine2, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.AddressLine2)
+                @Html.ValidationMessageFor(model => model.AddressLine2)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.AddressLine3, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.AddressLine3)
+                @Html.ValidationMessageFor(model => model.AddressLine3)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.AddressLine4, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.AddressLine4)
+                @Html.ValidationMessageFor(model => model.AddressLine4)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <label class= "col-md-4"> Pallet Tracking Scheme</label>
+        
+            <div class="col-md-8">
+
+                @Html.EnumDropDownListFor(m => m.PalletTrackingScheme, new { @class = "chosen-select" })
+                @Html.ValidationMessageFor(model => model.PalletTrackingScheme)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.AllowStocktakeAddNew, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.AllowStocktakeAddNew)
+                @Html.ValidationMessageFor(model => model.AllowStocktakeAddNew)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ConsolidateOrderProcesses, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.ConsolidateOrderProcesses)
+                @Html.ValidationMessageFor(model => model.ConsolidateOrderProcesses)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.AutoAllowProcess, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.AutoAllowProcess)
+                @Html.ValidationMessageFor(model => model.AutoAllowProcess)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.AllowShipToAccountAddress, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.AllowShipToAccountAddress)
+                @Html.ValidationMessageFor(model => model.AllowShipToAccountAddress)
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+
+            @Html.LabelFor(model => model.IsMobile, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.IsMobile)
+                @Html.ValidationMessageFor(model => model.IsMobile)
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-6 pull-left">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.CountyState, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.CountyState)
+                @Html.ValidationMessageFor(model => model.CountyState)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.PostalCode, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.PostalCode)
+                @Html.ValidationMessageFor(model => model.PostalCode)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.City, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.City)
+                @Html.ValidationMessageFor(model => model.PostalCode)
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.CountryID, "Country", new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownList("CountryId", null, String.Empty, new { @class = "chosen-select required" })
+                @Html.ValidationMessageFor(model => model.CountryID)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.Description, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Description)
+                @Html.ValidationMessageFor(model => model.Description)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.EnableGlobalProcessByPallet, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.EnableGlobalProcessByPallet)
+                @Html.ValidationMessageFor(model => model.EnableGlobalProcessByPallet)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.AllowStocktakeEdit, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.AllowStocktakeEdit)
+                @Html.ValidationMessageFor(model => model.AllowStocktakeEdit)
+            </div>
+        </div>
+
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ShowTaxInBlindShipment, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.ShowTaxInBlindShipment)
+                @Html.ValidationMessageFor(model => model.ShowTaxInBlindShipment)
+            </div>
+        </div>
+
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ShowPriceInBlindShipment, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.ShowPriceInBlindShipment)
+                @Html.ValidationMessageFor(model => model.ShowPriceInBlindShipment)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ShowQtyInBlindShipment, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.ShowQtyInBlindShipment)
+                @Html.ValidationMessageFor(model => model.ShowQtyInBlindShipment)
+            </div>
+        </div>
+
+
+
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.IsActive, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.IsActive)
+                @Html.ValidationMessageFor(model => model.IsActive)
+            </div>
+        </div>
+
+    </div>
+  
+
+    <div class="col-md-12 pull-left" id="divMobileLocation" style="visibility: hidden">
+        <div class="col-md-6 pull-left">
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("Choose Vehicle", new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(m => m.MarketVehicleID, new SelectList(ViewBag.AllVehicles, "Value", "Text"), new { @class = "chosen-select" })
+                    @Html.ValidationMessageFor(model => model.MarketVehicleID)
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.AutoTransferOrders, new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.AutoTransferOrders)
+                    @Html.ValidationMessageFor(model => model.AutoTransferOrders)
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("Choose Terminal", new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(m => m.SalesTerminalId, new SelectList(ViewBag.AllTerminals, "Value", "Text"), new { @class = "chosen-select" })
+                    @Html.ValidationMessageFor(model => model.SalesTerminalId)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 pull-left">
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("Parent Warehouse", new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(m => m.ParentWarehouseId, new SelectList(ViewBag.TenantLocations, "Value", "Text"), new { @class = "chosen-select" })
+                    @Html.ValidationMessageFor(model => model.ParentWarehouseId)
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.MonitorStockVariance, new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.MonitorStockVariance)
+                    @Html.ValidationMessageFor(model => model.MonitorStockVariance)
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("Choose Driver", new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(m => m.SalesManUserId, new SelectList(ViewBag.AllDrivers, "Value", "Text"), new { @class = "chosen-select" })
+                    @Html.ValidationMessageFor(model => model.SalesManUserId)
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-md-offset-2 col-md-10 bottom-right">
+        <input type="submit" value="Save" class="btn btn-primary" />
+        <div class="btn btn-default"> @Html.ActionLink("Back to List", "Index")</div>
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        function updateMobileLocStatus() {
+            $("#divMobileLocation").removeAttr("style");
+            if ($("#IsMobile").prop("checked")) {
+                $("#divMobileLocation").slideDown();
+            } else {
+                $("#divMobileLocation").slideUp();
+                $("#MarketVehicleID").val(null);
+            }
+        }
+
+        updateMobileLocStatus();
+
+        $("#IsMobile").on("click", function () {
+            updateMobileLocStatus();
+        });
+
+        $("#frmSaveTenantLocation").on("submit", function () {
+            if ($("#IsMobile").prop("checked")) {
+                if ($("#MarketVehicleID").val() > 0) {
+                    return true;
+                } else {
+                    Gane.Helper.ShowPopupMessage("Please select a vehicle.");
+                    return false;
+                }
+            }
+            return true;
+        });
+
+    });
+
+</script>

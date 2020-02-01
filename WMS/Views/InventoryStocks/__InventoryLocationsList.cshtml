@@ -1,0 +1,39 @@
+@{
+    int? productId = (int?)null;
+    if (ViewBag.ProductId != null)
+    {
+        productId = (int?)ViewBag.ProductId;
+    }
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "InventoryLocations";
+        settings.CallbackRouteValues = new { Controller = "InventoryStocks", Action = "_InventoryLocationsList", id = productId };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsBehavior.AllowSort = false;
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.KeyFieldName = "WarehouseId";
+
+        settings.SettingsPager.Visible = false;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = false;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.Columns.Add("WarehouseName");
+        settings.Columns.Add("InStock");
+        settings.Columns.Add("Allocated");
+        settings.Columns.Add("Available");
+        settings.Columns.Add("OnOrder");
+
+        settings.ClientSideEvents.BeginCallback = "OnInventoryLocationBeginCallback";
+
+    });
+}
+@grid.Bind(Model).GetHtml()

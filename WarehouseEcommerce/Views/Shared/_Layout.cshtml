@@ -1,0 +1,114 @@
+﻿<!doctype html>
+<html class="no-js" lang="zxx">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>@ViewBag.Title</title>
+    <meta name="description" content="@ViewBag.Description">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Place favicon.ico in the root directory -->
+    <!-- all css here -->
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/css/pe-icon-7-stroke.css">
+    @*<link rel="stylesheet" href="~/css/owl.carousel.css">*@
+    <link rel="stylesheet" href="~/css/animate.css">
+    <link rel="stylesheet" href="~/css/magnific-popup.css">
+    <link rel="stylesheet" href="~/css/meanmenu.css">
+    <link rel="stylesheet" href="~/css/style.css">
+    <link rel="stylesheet" href="~/css/responsive.css">
+    <link href="~/Content/cookies_eu.css" rel="stylesheet" />
+    <style>
+        .video-banner {
+            position: relative;
+            background-color: black;
+            height: auto;
+            min-height: 25rem;
+            width: 100%;
+            overflow: hidden;
+            padding: 40px 0px 100px;
+        }
+
+            .video-banner video {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                min-width: 100%;
+                min-height: 100%;
+                width: auto;
+                height: auto;
+                z-index: 0;
+                -ms-transform: translateX(-50%) translateY(-50%);
+                -moz-transform: translateX(-50%) translateY(-50%);
+                -webkit-transform: translateX(-50%) translateY(-50%);
+                transform: translateX(-50%) translateY(-50%);
+            }
+
+            .video-banner .container {
+                position: relative;
+                z-index: 2;
+            }
+
+            .video-banner .overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+                background-color: black;
+                opacity: 0.2;
+                z-index: 1;
+            }
+
+        .background-banner {
+            background-color: rgba(0,0,0,0.5) !important;
+            padding: 35px;
+        }
+    </style>
+</head>
+<body>
+
+    @Html.Raw(EUCookies.Consent.Instance.Install(linkUrl: "privacy-policy",
+                messageText: "We use cookies to improve user experience and analyze website traffic. By clicking “Accept” you accept our privacy policy and consent to store cookies as described in Privacy and Cookie Policy.",
+                okText: "Accept",
+                learnMoreText: "Privacy and Cookie Policy"))
+
+    @Html.Partial("_HeaderPartial")
+
+    @RenderBody()
+
+    @Html.Partial("_FooterPartial")
+    <!-- all js here -->
+    <script src="~/js/jquery-3.4.1.min.js"></script>
+    <script src="~/js/modernizr-2.8.3.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/jquery.meanmenu.js"></script>
+    <script src="~/js/jquery.mixitup.min.js"></script>
+    <script src="~/js/jquery.magnific-popup.min.js"></script>
+    <script src="~/js/jquery.counterup.min.js"></script>
+    <script src="~/js/animate.js"></script>
+    <script src="~/js/plugins.js"></script>
+    <script src="~/js/main.js"></script>
+    <script>
+        window.onscroll = function () { myFunction() };
+
+        var navbar = document.getElementById("navbar");
+        var sticky = navbar.offsetTop;
+        var top_offset = $(window).scrollTop();
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky")
+            } else if (top_offset <= 207) {
+                navbar.classList.remove("sticky");
+            }
+        }
+    </script>
+    <script src="~/Scripts/jquery.cookie.js"></script>
+    <script src="~/Scripts/cookies_eu.js"></script>
+
+</body>
+</html>

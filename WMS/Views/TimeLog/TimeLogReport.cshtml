@@ -1,0 +1,32 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.WebDocumentViewer, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.WebDocumentViewer }
+        )
+}
+
+@{
+    ViewBag.Title = "TimeLog Report Print";
+    ViewBag.SectionTitle = "TimeLog Report Print";
+}
+
+<h2><span>TimeLog Report Print</span></h2>
+
+
+<div class="col-md-offset-2 col-md-10 bottom-right">
+    <a class="btn btn-primary alert-danger pull-right" href="~/timelog/tindex/@ViewData["storesId"]?weekNumber=@ViewData["weekNumber"]&YearsList=@ViewData["yearNumber"]">Back</a>
+</div>
+
+<div class="col-md-12 p-0">
+    @Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "WebDocumentViewer1";
+
+}).Bind(Model).GetHtml()
+</div>

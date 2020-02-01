@@ -1,0 +1,136 @@
+﻿@model Ganedata.Core.Entities.Domain.TenantEmailConfig
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>TenantEmailConfig</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Tenant.TenantName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tenant.TenantName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SmtpHost)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SmtpHost)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SmtpPort)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SmtpPort)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserEmail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserEmail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Password)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Password)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnableSsl)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnableSsl)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DailyEmailDispatchTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DailyEmailDispatchTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnableRelayEmailServer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnableRelayEmailServer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateCreated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateUpdated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateUpdated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UpdatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsDeleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsDeleted)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

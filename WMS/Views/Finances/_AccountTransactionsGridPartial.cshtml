@@ -1,0 +1,106 @@
+@using Ganedata.Core.Entities.Helpers
+@using System.Web.UI.WebControls
+@using Ganedata.Core.Entities.Enums
+@Html.DevExpress().GridView(
+settings =>
+{
+    settings.Name = "gridviewAccountTransactions" + ViewBag.accountId;
+    settings.CallbackRouteValues = new { Controller = "Finances", Action = "_AccountTransactionsGrid", accountId = ViewBag.accountId };
+
+    settings.CustomBindingRouteValuesCollection.Add(
+      GridViewOperationType.Paging,
+      new { Controller = "Finances", Action = "_AccountTransactionsListPaging", accountId = ViewBag.accountId }
+      );
+
+    settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Filtering,
+        new { Controller = "Finances", Action = "_AccountTransactionsListFiltering", accountId = ViewBag.accountId }
+        );
+
+    settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Sorting,
+        new { Controller = "Finances", Action = "_AccountTransactionsDataSorting", accountId = ViewBag.accountId }
+        );
+
+    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+    settings.KeyFieldName = "AccountTransactionId";
+    settings.SettingsPager.Visible = true;
+    settings.Settings.ShowGroupPanel = false;
+    settings.Settings.ShowFilterRow = true;
+    settings.Settings.ShowHeaderFilterButton = false;
+    settings.SettingsBehavior.AllowFocusedRow = true;
+    settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+    settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+    settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+    settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+    settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+    settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+    settings.Columns.Add("AccountTransactionId", "#ID").Width = System.Web.UI.WebControls.Unit.Percentage(5);
+
+    settings.Columns.Add(c =>
+    {
+        c.FieldName = "DateCreated";
+        c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        c.ColumnType = MVCxGridViewColumnType.DateEdit;
+        c.SortOrder = DevExpress.Data.ColumnSortOrder.Ascending;
+        c.PropertiesEdit.DisplayFormatString = "d";
+        c.Width=System.Web.UI.WebControls.Unit.Pixel(100);
+        c.SetDataItemTemplateContent(m =>
+        {
+            var date = (DateTime?)DataBinder.Eval(m.DataItem, "DateCreated");
+            DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
+            ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
+        });
+    });
+
+    settings.Columns.Add(c =>
+    {
+        c.FieldName = "AccountTransactionType";
+        c.Caption = "Type";
+        c.Width= System.Web.UI.WebControls.Unit.Percentage(5);
+        c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        c.ColumnType = MVCxGridViewColumnType.ComboBox;
+        var comboSettings = (ComboBoxProperties)c.PropertiesEdit;
+        comboSettings.DataSource = Enum.GetValues(typeof(AccountTransactionTypeEnum));
+    });
+
+    settings.Columns.Add(c =>
+    {
+        c.FieldName = "Notes";
+        c.Caption = "Notes";
+        c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+    });
+
+    settings.Columns.Add("Amount");
+    settings.Columns.Add("FinalBalance", "Balance");
+    settings.Columns.Add(column =>
+    {
+        column.FieldName = "AccountPaymentMode";
+        column.Caption = "Mode";
+        column.Width = System.Web.UI.WebControls.Unit.Pixel(100);
+        column.SetDataItemTemplateContent(container =>
+        {
+            var AccountPaymentMode = DataBinder.Eval(container.DataItem, "AccountPaymentMode");
+            if (AccountPaymentMode.ToString()== "Cheque")
+            {
+                var AccountTransactionId = (int)DataBinder.Eval(container.DataItem, "AccountTransactionId");
+                var function = string.Format("chequeDetail({0})", AccountTransactionId);
+
+                ViewContext.Writer.Write(AccountPaymentMode + "&nbsp;&nbsp;&nbsp;<a class='process-button fa fa-info-circle' style='cursor:pointer' id='" + AccountTransactionId + "' href='javascript:;' onclick=" + function + "></a>");
+            }
+            else
+            {
+                ViewContext.Writer.Write(AccountPaymentMode);
+            }
+        });
+    });
+
+
+
+    settings.Columns.Add("AccountName", "Account").Width = System.Web.UI.WebControls.Unit.Pixel(200);
+    settings.Columns.Add("AccountCode", "Account Code").Width = System.Web.UI.WebControls.Unit.Pixel(200);
+    settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+    settings.ClientSideEvents.EndCallback = "OnGridFocusedRowChanged";
+
+}).BindToCustomData(Model).GetHtml()

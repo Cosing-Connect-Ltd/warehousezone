@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SmartShop Electronic Shop</title>
+    <meta name="description" content="SmartShop" />
+    @Styles.Render("~/Content/app/css/styles")
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    @*<link href="/Content/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />*@
+    <link href="~/Areas/Shop/Content/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Areas/Shop/Content/plugins/swiper/css/swiper.min.css" type="text/css" rel="stylesheet" media="screen" />
+    <link href="~/Areas/Shop/Content/plugins/owl.carousel/owl.carousel.css" type="text/css" rel="stylesheet" media="screen" />
+    <link href="~/Areas/Shop/Content/plugins/owl.carousel/owl.theme.css" type="text/css" rel="stylesheet" media="screen" />
+    <link href="~/Areas/Shop/Content/plugins/magnific-popup/dist/magnific-popup.css" type="text/css" rel="stylesheet" media="screen" />
+    @*<link href="/Content/app/css/app.css" rel="stylesheet">*@
+    @Scripts.Render("~/bundles/modernizr")
+    <script type="text/javascript"> var basePath = '@ViewBag.BaseFilePath';</script>
+    <style>
+        .see-all {
+            line-height: 38px;
+            width: 100%;
+            text-decoration: none;
+            padding-left: 15px;
+            cursor: pointer;
+        }
+
+        .field-validation-error {
+            color: red !important;
+        }
+
+        .input-validation-error {
+            color: red !important;
+        }
+
+        .a.disabled {
+            pointer-events: none !important;
+            cursor: default !important;
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Added to Cart</h4>
+                </div>
+                <div class="modal-body" style="overflow:auto;max-height:430px;">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="CartItemCount();">Continue Shoping</button>
+                    <a href="@Url.Action("AddToCart","Products")" type="button" class="btn btn-default">Go to Cart</a>
+                </div>
+            </div>
+            Go
+        </div>
+    </div>
+    <div id="page-preloader" class="visible">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+    @Html.Action("_TopHeaderPartial", "Home")
+    @Html.Action("_HorizontalNavbarPartial", "Home")
+    @*@if (ViewBag.cart == null)
+        {
+            <div id="common-home" class="container">
+
+                <div class="row">
+                    @if (ViewBag.cart == null)
+                    {
+                        @Html.Action("_VerticalNavBarPartial", "Home")
+                    }
+                    @RenderBody()
+                </div>
+
+            </div>
+        }*@
+
+    @RenderBody()
+
+
+    @Html.Partial("_FooterPartial")
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="~/Areas/Shop/Content/plugins/elevatezoom/jquery.elevateZoom-3.0.8.min.js"></script>
+    <!-- blog image zoom -->
+    <script src="~/Areas/Shop/Content/plugins/lightbox2/js/lightbox.min.js"></script>
+    <link href="~/Areas/Shop/Content/plugins/lightbox2/css/lightbox.min.css" rel="stylesheet" type="text/css" />
+    <!-- blog image zoom -->
+    <script src="~/Areas/Shop/Content/app/js/app.js"></script>
+    <script src="~/Areas/Shop/Content/plugins/swiper/js/swiper.min.js"></script>
+    <script src="~/Areas/Shop/Content/plugins/owl.carousel/owl.carousel.min.js"></script>
+    <script src="~/Areas/Shop/Content/plugins/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
+    <script src="~/Areas/Shop/Scripts/javascript-searchproduct.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+        $("#cart").hover(function () {
+            $('#cart').addClass('open');
+        });
+        $("#cart").mouseleave(function () {
+            $('#cart').removeClass('open');
+        });
+        $("#cart").click(function () {
+            location.href = basePath + 'Shop/Products/AddToCart';
+        });
+    });
+</script>

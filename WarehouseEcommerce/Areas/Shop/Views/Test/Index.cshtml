@@ -1,0 +1,57 @@
+﻿@model List<OrderDetailSessionViewModel>
+@using Ganedata.Core.Entities.Domain;
+@{
+    ViewBag.Title = "Index";
+    int  i=1;
+}
+
+
+
+
+<div class="about bg-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 bg-white my-account login">
+                <div class="about-cnt">
+                    <div class="content-wrapper select">
+                        <h2 class="text-uppercase">Test PayPal</h2>
+                        <hr>
+                        <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+                            <div class="row">
+
+                                <fieldset>
+                                    <input class="full-width" type="hidden" name="business" value="shoaib@ganedata.co.uk">
+                                    <input type="hidden" name="cmd" value="_cart">
+                                    <input type="hidden" name="upload" value="1" />
+                                    <input type="hidden" name="return" value="@((string)ViewBag.RetUrl)">
+                                    <input type="hidden" name="notify_url" value="@((string)ViewBag.RetUrl)">
+                                    <input type="hidden" NAME="currency_code" value="GBP">
+
+                                </fieldset>
+                             
+                                @foreach (var item in Model)
+                                {
+
+                                    <input type="hidden" name="item_name_@i" value="@item.ProductMaster.Name">
+                                    <input type="hidden" name="item_number_@i" value="@item.ProductMaster.SKUCode">
+                                    <input type="hidden" name="amount_@i" value="@item.Price">
+                                    <input type="hidden" name="quantity_@i" value="@item.Qty">
+                                    break;
+                                }
+
+                            </div>
+                            <div class="button-submit  ">
+                                <button type="Submit" name="submitNewsletter" class="btn btn-block">Pay-$1</button>
+
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

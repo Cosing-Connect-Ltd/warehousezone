@@ -1,0 +1,136 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DataView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView },
+        new Script { ExtensionType = ExtensionType.DataView }
+        )
+}
+
+@{
+    ViewBag.Title = "Products List";
+}
+<h2><span>Products List</span></h2>
+
+<script type="text/javascript">
+    function OnDetailRowExpanding(s, e) {
+        s.SetFocusedRowIndex(e.visibleIndex);
+        return false;
+    }
+    function OnGridFocusedRowChanged(s, e) {
+        var name = s.name;
+        if (name.indexOf("ProductListGridView") >= 0) {
+            $('#selkeyProductList').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        }
+        else {
+            $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        }
+    }
+
+    </script>
+<script type="text/javascript">
+
+    //MVCxClientGlobalEvents.AddControlsInitializedEventHandler(OnBeginGridCallback);
+
+    function OnBeginGridCallback(s, e) {
+        e.customArgs = MVCxClientUtils.GetSerializedEditorValuesInContainer("frmProductFileDetail");
+        @*e.customArgs["PriceGroupId"] = @ViewBag.PriceGroupId;*@
+        
+        //WORKAROUND for BULK Update
+        var gridValues = JSON.parse(JSON.stringify($("#frmProductFileDetail").serializeArray()));
+        var values = gridValues[gridValues.length - 1].value.split(',');
+
+        for (var i = 0; i < gridValues.length - 1; i++) {
+            if (gridValues[i].name == 'ProductFileDetailGridView$DXEditor2') {
+                e.customArgs["SortOrder"] = gridValues[i].value;
+            }
+            if (gridValues[i].name == 'ProductFileDetailGridView$DXEditor3') {
+                var value = gridValues[i].value;
+                if (value === "C") {
+                    e.customArgs["DefaultImage"] = true;
+                }
+                else{
+                    e.customArgs["DefaultImage"]=false
+                }
+            }
+            if (gridValues[i].name == 'ProductFileDetailGridView$DXEditor4') {
+                var value = gridValues[i].value;
+                if (value === "C") {
+                    e.customArgs["HoverImage"] = true;
+                }
+                else {
+                    e.customArgs["HoverImage"] = false
+                }
+            }
+            if (gridValues[i].name == 'ProductFileDetailGridView$DXEditor5') {
+                var value = gridValues[i].value;
+                if (value === "C") {
+                    e.customArgs["IsDeleted"] = true;
+                }
+                else {
+                    e.customArgs["IsDeleted"] = false
+                }
+            }
+        }
+
+        var rowIndex = parseInt($("#RowIndexForProductId").val()) || 0;
+
+        e.customArgs["Id"] = ProductFileDetailGridView.GetRowKey(rowIndex);
+    }
+
+    function OnEndGridCallback(s, e) {
+        var lastIndex = parseInt($("#LastEditingRowIndex").val()) || 0;
+            SetGridEditorToRowIndex(lastIndex);
+    }
+
+    function SetGridEditorToRowIndex(index) {
+        ProductFileDetailGridView.batchEditApi.StartEdit(index, ProductFileDetailGridView.GetColumnByField($("#LastEditingColIndex").val()).index);
+    }
+
+    function OnDetailsChanged(s, e) {
+        ProductFileDetailGridView.UpdateEdit();
+    }
+
+    function OnSpecialPricesGridFocusChanged(s, e) {
+
+        if (e.cellInfo.rowVisibleIndex > 0) {
+
+            $("#LastEditingRowIndex").val(e.cellInfo.rowVisibleIndex);
+        }
+
+        $("#RowIndexForProductId").val(e.cellInfo.rowVisibleIndex);
+        $("#LastEditingColIndex").val(e.cellInfo.column.fieldName);
+    }
+
+</script>
+
+@Html.Hidden("selkey", null, new { @class = "selkey" })
+@Html.Hidden("selkeyProductList", null)
+
+@Html.Action("ProductList")
+
+<div class="col-md-offset-2 col-md-10 bottom-right">
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Products", "Create"))
+    {
+        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary  " })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Products", "Edit"))
+    {
+        @Html.ActionLink("Update", "Edit", null, new { @class = "btn btn-primary  Caction", @id = "lnkProductUpdate" })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Products", "Delete"))
+    {
+        @Html.ActionLink("Delete", "Delete", null, new { @class = "btn btn-primary  Caction", @id = "lnkProductUpdate" })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("InventoryStocks", "InventoryAdjustments"))
+    {
+        @Html.ActionLink("Adjust Stock", "InventoryAdjustments", "InventoryStocks", null, new { @class = "btn btn-primary  Caction", @id = "lnkProductUpdate" })
+    }
+
+</div>

@@ -1,0 +1,196 @@
+@using Ganedata.Core.Entities.Domain
+
+<div class="col-md-12 pull-left bg-info div-barcodescanner-content">
+    <input type="text" class="form-control m-1" placeholder="Scan Location Code (optional)" id="txtBarcodeLocation" />
+</div>
+<div class="col-md-12 pull-left div-barcodescanner-content" id="divProductsInputContainer">
+    <input type="text" class="form-control m-1" placeholder="Scan the Product codes" id="txtBarcodeScannerInputs" />
+</div>
+
+<div class="col-md-12 pull-left div-barcodescanner-content">
+    <div class="col-md-10 pull-left">
+        @Html.Partial("_StocktakeCurrentProductLookup", (List<StockTakeProductLookupRequest>)ViewBag.ProductsList)
+    </div>
+    <div class="col-md-2 pull-left">
+        @Html.DevExpress().Button(b =>
+   {
+       b.Name = "btnStocktakeProductLookup";
+       b.Text = " ";
+       b.Images.Image.Url = "/content/images/lookup.png";
+       b.ClientSideEvents.Click = "function(s,e){ addProductManually(); }";
+   }).GetHtml()
+    </div>
+</div>
+
+<div class="col-md-12 div-barcodescanner-content" id="divProductSerialsInputContainer" style="display: none;background-color: #043304">
+    <input type="text" class="form-control" placeholder="Scan Product Serials" id="txtBarcodeScannerSerialInputs" />
+    <div class="col-md-12">
+        <span><label class="h3" style="color: #fff;">SERIALISED PRODUCT</label></span>
+        @Html.DevExpress().Button(b =>
+   {
+       b.Name = "btnBackToProducts";
+       b.Text = "Go to Next Product";
+       b.Images.Image.Url = "/content/images/next.png";
+       b.ControlStyle.CssClass = "btn-stocktakedetails-buttons pull-right";
+       b.ClientSideEvents.Click = "function(s,e){ backToProductCodeScan(s,e);}";
+   }).GetHtml()
+    </div>
+</div>
+
+<div class="col-md-12 div-barcodescanner-content" id="divPalletSerialsInputContainer" style="display: none;background-color: #ffd800">
+    <input type="text" class="form-control" placeholder="Scan Pallet Serials" id="txtBarcodeScannerPalletsInputs" />
+    <div class="col-md-12">
+        <span><label class="h3" style="color: #fff;">PROCESS BY PALLET PRODUCT</label></span>
+        @Html.DevExpress().Button(b =>
+   {
+       b.Name = "btnBackToProducts2";
+       b.Text = "Go to Next Product";
+       b.Images.Image.Url = "/content/images/next.png";
+       b.ControlStyle.CssClass = "btn-stocktakedetails-buttons pull-right";
+       b.ClientSideEvents.Click = "function(s,e){ backToProductCodeScan(s,e);}";
+   }).GetHtml()
+    </div>
+</div>
+
+
+<div class="col-md-12 " id="divbatchInputContainer" style="display: none;background-color: #236dc6">
+
+        <div class="col-md-12" style="margin-top :3px">
+            <input type="text" class="form-control" placeholder="Add Batch Number" id="txtBatchNumber" />
+        </div>
+        <div class="col-md-12" style="margin-top :3px">
+            @{   var date= System.DateTime.UtcNow.AddDays(1).Date; }
+            @Html.DevExpress().DateEdit(settings =>
+       {
+           settings.Name = "ProcessExpiryDate1";
+           settings.Properties.DisplayFormatString = "MM/dd/yyyy";
+           settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+           settings.ControlStyle.CssClass = "form-control";
+           settings.Properties.MinDate = date;
+
+           settings.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
+           settings.Date = DateTime.UtcNow;
+       }).GetHtml()
+        </div>
+        <div class="col-md-12" style="margin-top :3px">
+            <input type="number" class="form-control" placeholder="Add qunatity" id="txtquantity" value="1" />
+        </div>
+        <div class="col-md-12" style="margin-top :3px">
+            <input type="button" class="form-control btn btn-primary add-btn" value="Add" onclick="BindStockBatchNumber()" />
+        </div>
+        <div class="col-md-12">
+        <span><label class="h3" style="color: #fff;">ADD BATCH OR EXIRAY DATE</label></span>
+        @Html.DevExpress().Button(b =>
+        {
+            b.Name = "btnBackToProducts3";
+            b.Text = "Go to Next Product";
+            b.Images.Image.Url = "/content/images/next.png";
+            b.ControlStyle.CssClass = "btn-stocktakedetails-buttons pull-right";
+            b.ClientSideEvents.Click = "function(s,e){ backToProductCodeScan(s,e);}";
+        }).GetHtml()
+    </div>
+</div>
+    <div class="text-center col-md-12">
+        <div class="col-md-12 pull-left" id="divStockTakeBarcodeErrors" style="display: none">
+        </div>
+    </div>
+
+    <div class='stocktake-create-product visibility-hidden' id="divStocktakeProductCreate">
+
+        <div id="stocktake-create-product-nonserial" class="col-md-12 pull-left" style='display: none'>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                <label class="col-md-4">Product Code</label>
+                <div class="col-md-8">
+                    <input type='text' class='form-control' id='txt-stocktake-product-code' value=''>
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                <label class="col-md-4">Product Name</label>
+                <div class="col-md-8">
+                    <input type='text' class='form-control' id='txt-stocktake-product-name' value=''>
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                <label class="col-md-4">Product Barcode</label>
+                <div class="col-md-8">
+                    <input type='text' class='form-control' id='txt-stocktake-product-barcode' value=''>
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                <label class="col-md-4">Product Outer Barcode</label>
+                <div class="col-md-8">
+                    <input type='text' class='form-control' id='txt-stocktake-product-outer-barcode' value=''>
+                </div>
+            </div>
+
+
+            <div class="col-md-12 single-check-select">
+                <div class="col-md-6 col-md-offset-3 stocktake-product-serialised-check">
+                    <label class="control-label"><input id="chkStockTakeProductSerialisedCreate" class="checkbox" type="checkbox" data-toggle="toggle" data-on="Yes" data-off="No">Serialised</label>
+                    <label class="control-label"><input id="chkStockTakeProductByPalletCreate" class="checkbox" type="checkbox" data-toggle="toggle" data-on="Yes" data-off="No">Process By Pallets</label>
+                    <label class="control-label"><input id="chkStockTakebatchCreate" class="checkbox" type="checkbox" data-toggle="toggle" data-on="Yes" data-off="No">Batch or Expiry</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center" id="product-list" style="visibility:hidden">
+            @Html.Label("Product", htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownList("ProductId", ViewBag.Products as IEnumerable<SelectListItem>, new { @class = "chosen-select", @id = "ProductId" })
+            </div>
+        </div>
+
+        <div id="Product-serials-pallets" style="display:none">
+
+            <div id="divSerialisedProductCreateMessage" class="text-center col-md-12" style="display: none">
+            </div>
+            <div id="divStockTakeProductSerialCreate" class="input-group" style="display: none">
+                <label class="col-md-4">Product Serial</label>
+                <div class="col-md-8">
+                    <input type='text' class='form-control' id='txt-stocktake-product-serial' value=''>
+                </div>
+            </div>
+            <div id="divStockTakePalletSerialCreate" class="input-group" style="display: none">
+                <label class="col-md-4">Pallet Serial</label>
+                <div class="col-md-8">
+                    <input type='text' class='form-control' id='txt-stocktake-pallet-serial' value=''>
+                </div>
+                <label class="col-md-4">Cases in Pallet</label>
+                <div class="col-md-8">
+                    <input type='number' min="1" class='form-control' id='txt-stocktake-pallet-qty' value="1">
+                </div>
+            </div>
+        </div>
+
+
+        <div style="float:right">
+            <button id="btnProductCreateConfirm"><i class='fa fa-floppy-o stocktake-glyph-icons'></i>Create</button>
+            <button id="btnProductCreateCancel"><i class='fa fa-trash-o stocktake-glyph-icons'></i>Cancel</button>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+    <div class='stocktake-editcontent' id="divStocktakeEditcontent" style='display: none'>
+        <input type='text' class='form-control' id='txt-stocktake-change-qty' value='1'>
+        <button id="btnUpdateQtyConfirm"><i class='fa fa-floppy-o stocktake-glyph-icons'></i>Confirm</button>
+        <button id="btnUpdateQtyCancel"><i class='fa fa-trash-o stocktake-glyph-icons'></i>Cancel</button>
+    </div>
+
+    <table class="table table-bordered table-striped" id="tblBarcodeScannedStocks">
+        <thead>
+            <tr>
+                <th>SKU Code</th>
+                <th>Product Name</th>
+                <th>Serial</th>
+                <th>Qty</th>
+                <th>Batch Number</th>
+                <th>Expiry Date</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>

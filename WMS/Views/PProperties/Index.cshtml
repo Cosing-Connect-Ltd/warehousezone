@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Ganedata.Core.Entities.Domain.PProperty>
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Manage Properties";
+}
+
+<h2><span>Manage Properties</span></h2>
+ 
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+        $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+</script>
+
+@Html.Hidden("selkey", null, new { @class = "selkey" })
+
+<div class="col-md-12 p-0">
+   <div class="col-md-12 p-0">
+    @Html.Action("PPropertiesGridview")
+   </div>
+   <div class="col-md-offset-2 col-md-10 bottom-right">
+       @if (WMS.Helpers.LayoutHelpers.ActivityValidator("PProperties", "Create"))
+       {
+           @Html.ActionLink("Details", "Details", null, new { @class = "btn btn-primary Caction", @id="lnkDetails" })
+       }
+
+       @if (WMS.Helpers.LayoutHelpers.ActivityValidator("PProperties", "Create"))
+       {
+           @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary  " })
+       }
+       @if (WMS.Helpers.LayoutHelpers.ActivityValidator("PProperties", "Edit"))
+       {
+           @Html.ActionLink("Update", "Edit", null, new { @class = "btn btn-primary  Caction", @id = "lnkPPropertyUpdate" })
+       }
+       @if (WMS.Helpers.LayoutHelpers.ActivityValidator("PProperties", "Delete"))
+       {
+           @Html.ActionLink("Delete", "Delete", null, new { @class = "btn btn-primary  Caction", @id = "lnkPPropertyDelete" })
+       }
+   </div>
+</div>
+

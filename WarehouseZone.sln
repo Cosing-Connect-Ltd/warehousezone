@@ -1,0 +1,196 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseZone", "WMS\WarehouseZone.csproj", "{581C39BE-03B4-4F4F-9F12-F1A44B288551}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Warehouse Sync", "Warehouse Sync", "{D9B2A580-B2FD-4606-9F7E-7703144961C7}"
+	ProjectSection(SolutionItems) = preProject
+		GaneEcommerce.Data\Helpers\DataImportFactory.cs = GaneEcommerce.Data\Helpers\DataImportFactory.cs
+		GaneEcommerce.Data\Web.config = GaneEcommerce.Data\Web.config
+		GaneEcommerce.Data\Web.Debug.config = GaneEcommerce.Data\Web.Debug.config
+		GaneEcommerce.Data\Web.Release.config = GaneEcommerce.Data\Web.Release.config
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ganedata.Warehouse.PropertiesSync.Data", "Ganedata.Warehouse.PropertiesSync.Data\Ganedata.Warehouse.PropertiesSync.Data.csproj", "{34A6549D-D0BC-4D9E-9A68-959D28D9974D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ganedata.Warehouse.PropertiesSync.SyncData", "Ganedata.Warehouse.PropertiesSync.SyncData\Ganedata.Warehouse.PropertiesSync.SyncData.csproj", "{F586E7AE-4C1D-464D-9302-F68C29EF6593}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ganedata.Warehouse.PropertiesSync.Services", "Ganedata.Warehouse.PropertiesSync.Services\Ganedata.Warehouse.PropertiesSync.Services.csproj", "{A04DF559-5A2E-4A6F-BEE7-41CBFD893E28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ganedata.Warehouse.PropertiesSync.SyncLibrary", "Ganedata.Warehouse.PropertiesSync.SyncLibrary\Ganedata.Warehouse.PropertiesSync.SyncLibrary.csproj", "{BBB13651-19E7-407E-A3B0-C48A0DE5F379}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ganedata.Warehouse.PropertiesSyncServiceTester", "Ganedata.Warehouse.PropertiesSyncServiceTester\Ganedata.Warehouse.PropertiesSyncServiceTester.csproj", "{91EA8CA1-9328-48E7-99A7-1FE3A89F0E4E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GanedataCore", "GanedataCore", "{95FDC0AA-E6FE-4CEB-9A0F-80C10A2A1F97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ganedata.Core.Data", "GaneEcommerce.Data\Ganedata.Core.Data.csproj", "{CA155FC7-78E3-425C-A8B3-9F8BC17F1218}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ganedata.Core.Services", "GaneEcommerce.Services\Ganedata.Core.Services.csproj", "{2A72DFBB-815C-4AA0-B132-268C8468F927}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ganedata.Core.Entities", "GaneEcommerce.Entities\Ganedata.Core.Entities.csproj", "{706892F4-49D7-4EFA-A414-44B5E1D74286}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseEcommerce", "WarehouseEcommerce\WarehouseEcommerce.csproj", "{0C205923-B232-4286-B3A7-8B79D078DB1C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{581C39BE-03B4-4F4F-9F12-F1A44B288551}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{581C39BE-03B4-4F4F-9F12-F1A44B288551}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{581C39BE-03B4-4F4F-9F12-F1A44B288551}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{581C39BE-03B4-4F4F-9F12-F1A44B288551}.Debug|x86.ActiveCfg = Debug|x86
+		{581C39BE-03B4-4F4F-9F12-F1A44B288551}.Debug|x86.Build.0 = Debug|x86
+		{581C39BE-03B4-4F4F-9F12-F1A44B288551}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{581C39BE-03B4-4F4F-9F12-F1A44B288551}.Release|Any CPU.Build.0 = Release|Any CPU
+		{581C39BE-03B4-4F4F-9F12-F1A44B288551}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{581C39BE-03B4-4F4F-9F12-F1A44B288551}.Release|x86.ActiveCfg = Release|x86
+		{581C39BE-03B4-4F4F-9F12-F1A44B288551}.Release|x86.Build.0 = Release|x86
+		{34A6549D-D0BC-4D9E-9A68-959D28D9974D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34A6549D-D0BC-4D9E-9A68-959D28D9974D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34A6549D-D0BC-4D9E-9A68-959D28D9974D}.Debug|x86.ActiveCfg = Debug|x86
+		{34A6549D-D0BC-4D9E-9A68-959D28D9974D}.Debug|x86.Build.0 = Debug|x86
+		{34A6549D-D0BC-4D9E-9A68-959D28D9974D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34A6549D-D0BC-4D9E-9A68-959D28D9974D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34A6549D-D0BC-4D9E-9A68-959D28D9974D}.Release|x86.ActiveCfg = Release|x86
+		{34A6549D-D0BC-4D9E-9A68-959D28D9974D}.Release|x86.Build.0 = Release|x86
+		{F586E7AE-4C1D-464D-9302-F68C29EF6593}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F586E7AE-4C1D-464D-9302-F68C29EF6593}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F586E7AE-4C1D-464D-9302-F68C29EF6593}.Debug|x86.ActiveCfg = Debug|x86
+		{F586E7AE-4C1D-464D-9302-F68C29EF6593}.Debug|x86.Build.0 = Debug|x86
+		{F586E7AE-4C1D-464D-9302-F68C29EF6593}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F586E7AE-4C1D-464D-9302-F68C29EF6593}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F586E7AE-4C1D-464D-9302-F68C29EF6593}.Release|x86.ActiveCfg = Release|x86
+		{F586E7AE-4C1D-464D-9302-F68C29EF6593}.Release|x86.Build.0 = Release|x86
+		{A04DF559-5A2E-4A6F-BEE7-41CBFD893E28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A04DF559-5A2E-4A6F-BEE7-41CBFD893E28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A04DF559-5A2E-4A6F-BEE7-41CBFD893E28}.Debug|x86.ActiveCfg = Debug|x86
+		{A04DF559-5A2E-4A6F-BEE7-41CBFD893E28}.Debug|x86.Build.0 = Debug|x86
+		{A04DF559-5A2E-4A6F-BEE7-41CBFD893E28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A04DF559-5A2E-4A6F-BEE7-41CBFD893E28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A04DF559-5A2E-4A6F-BEE7-41CBFD893E28}.Release|x86.ActiveCfg = Release|x86
+		{A04DF559-5A2E-4A6F-BEE7-41CBFD893E28}.Release|x86.Build.0 = Release|x86
+		{BBB13651-19E7-407E-A3B0-C48A0DE5F379}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBB13651-19E7-407E-A3B0-C48A0DE5F379}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBB13651-19E7-407E-A3B0-C48A0DE5F379}.Debug|x86.ActiveCfg = Debug|x86
+		{BBB13651-19E7-407E-A3B0-C48A0DE5F379}.Debug|x86.Build.0 = Debug|x86
+		{BBB13651-19E7-407E-A3B0-C48A0DE5F379}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBB13651-19E7-407E-A3B0-C48A0DE5F379}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBB13651-19E7-407E-A3B0-C48A0DE5F379}.Release|x86.ActiveCfg = Release|x86
+		{BBB13651-19E7-407E-A3B0-C48A0DE5F379}.Release|x86.Build.0 = Release|x86
+		{91EA8CA1-9328-48E7-99A7-1FE3A89F0E4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91EA8CA1-9328-48E7-99A7-1FE3A89F0E4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91EA8CA1-9328-48E7-99A7-1FE3A89F0E4E}.Debug|x86.ActiveCfg = Debug|x86
+		{91EA8CA1-9328-48E7-99A7-1FE3A89F0E4E}.Debug|x86.Build.0 = Debug|x86
+		{91EA8CA1-9328-48E7-99A7-1FE3A89F0E4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91EA8CA1-9328-48E7-99A7-1FE3A89F0E4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91EA8CA1-9328-48E7-99A7-1FE3A89F0E4E}.Release|x86.ActiveCfg = Release|x86
+		{91EA8CA1-9328-48E7-99A7-1FE3A89F0E4E}.Release|x86.Build.0 = Release|x86
+		{CA155FC7-78E3-425C-A8B3-9F8BC17F1218}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA155FC7-78E3-425C-A8B3-9F8BC17F1218}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA155FC7-78E3-425C-A8B3-9F8BC17F1218}.Debug|x86.ActiveCfg = Debug|x86
+		{CA155FC7-78E3-425C-A8B3-9F8BC17F1218}.Debug|x86.Build.0 = Debug|x86
+		{CA155FC7-78E3-425C-A8B3-9F8BC17F1218}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA155FC7-78E3-425C-A8B3-9F8BC17F1218}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA155FC7-78E3-425C-A8B3-9F8BC17F1218}.Release|x86.ActiveCfg = Release|x86
+		{CA155FC7-78E3-425C-A8B3-9F8BC17F1218}.Release|x86.Build.0 = Release|x86
+		{2A72DFBB-815C-4AA0-B132-268C8468F927}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A72DFBB-815C-4AA0-B132-268C8468F927}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A72DFBB-815C-4AA0-B132-268C8468F927}.Debug|x86.ActiveCfg = Debug|x86
+		{2A72DFBB-815C-4AA0-B132-268C8468F927}.Debug|x86.Build.0 = Debug|x86
+		{2A72DFBB-815C-4AA0-B132-268C8468F927}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A72DFBB-815C-4AA0-B132-268C8468F927}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A72DFBB-815C-4AA0-B132-268C8468F927}.Release|x86.ActiveCfg = Release|x86
+		{2A72DFBB-815C-4AA0-B132-268C8468F927}.Release|x86.Build.0 = Release|x86
+		{706892F4-49D7-4EFA-A414-44B5E1D74286}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{706892F4-49D7-4EFA-A414-44B5E1D74286}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{706892F4-49D7-4EFA-A414-44B5E1D74286}.Debug|x86.ActiveCfg = Debug|x86
+		{706892F4-49D7-4EFA-A414-44B5E1D74286}.Debug|x86.Build.0 = Debug|x86
+		{706892F4-49D7-4EFA-A414-44B5E1D74286}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{706892F4-49D7-4EFA-A414-44B5E1D74286}.Release|Any CPU.Build.0 = Release|Any CPU
+		{706892F4-49D7-4EFA-A414-44B5E1D74286}.Release|x86.ActiveCfg = Release|x86
+		{706892F4-49D7-4EFA-A414-44B5E1D74286}.Release|x86.Build.0 = Release|x86
+		{0C205923-B232-4286-B3A7-8B79D078DB1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C205923-B232-4286-B3A7-8B79D078DB1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C205923-B232-4286-B3A7-8B79D078DB1C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0C205923-B232-4286-B3A7-8B79D078DB1C}.Debug|x86.Build.0 = Debug|Any CPU
+		{0C205923-B232-4286-B3A7-8B79D078DB1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C205923-B232-4286-B3A7-8B79D078DB1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C205923-B232-4286-B3A7-8B79D078DB1C}.Release|x86.ActiveCfg = Release|Any CPU
+		{0C205923-B232-4286-B3A7-8B79D078DB1C}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{34A6549D-D0BC-4D9E-9A68-959D28D9974D} = {D9B2A580-B2FD-4606-9F7E-7703144961C7}
+		{F586E7AE-4C1D-464D-9302-F68C29EF6593} = {D9B2A580-B2FD-4606-9F7E-7703144961C7}
+		{A04DF559-5A2E-4A6F-BEE7-41CBFD893E28} = {D9B2A580-B2FD-4606-9F7E-7703144961C7}
+		{BBB13651-19E7-407E-A3B0-C48A0DE5F379} = {D9B2A580-B2FD-4606-9F7E-7703144961C7}
+		{91EA8CA1-9328-48E7-99A7-1FE3A89F0E4E} = {D9B2A580-B2FD-4606-9F7E-7703144961C7}
+		{CA155FC7-78E3-425C-A8B3-9F8BC17F1218} = {95FDC0AA-E6FE-4CEB-9A0F-80C10A2A1F97}
+		{2A72DFBB-815C-4AA0-B132-268C8468F927} = {95FDC0AA-E6FE-4CEB-9A0F-80C10A2A1F97}
+		{706892F4-49D7-4EFA-A414-44B5E1D74286} = {95FDC0AA-E6FE-4CEB-9A0F-80C10A2A1F97}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {429F5B44-FFEA-4E1C-A95E-3915404064CD}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 11
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://shoaibramay.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = WMS\\WarehouseZone.csproj
+		SccProjectName1 = WMS
+		SccLocalPath1 = WMS
+		SccProjectUniqueName2 = Ganedata.Warehouse.PropertiesSync.Data\\Ganedata.Warehouse.PropertiesSync.Data.csproj
+		SccProjectTopLevelParentUniqueName2 = WarehouseZone.sln
+		SccProjectName2 = Ganedata.Warehouse.PropertiesSync.Data
+		SccLocalPath2 = Ganedata.Warehouse.PropertiesSync.Data
+		SccProjectUniqueName3 = Ganedata.Warehouse.PropertiesSync.SyncData\\Ganedata.Warehouse.PropertiesSync.SyncData.csproj
+		SccProjectTopLevelParentUniqueName3 = WarehouseZone.sln
+		SccProjectName3 = Ganedata.Warehouse.PropertiesSync.SyncData
+		SccLocalPath3 = Ganedata.Warehouse.PropertiesSync.SyncData
+		SccProjectUniqueName4 = Ganedata.Warehouse.PropertiesSync.Services\\Ganedata.Warehouse.PropertiesSync.Services.csproj
+		SccProjectTopLevelParentUniqueName4 = WarehouseZone.sln
+		SccProjectName4 = Ganedata.Warehouse.PropertiesSync.Services
+		SccLocalPath4 = Ganedata.Warehouse.PropertiesSync.Services
+		SccProjectUniqueName5 = Ganedata.Warehouse.PropertiesSync.SyncLibrary\\Ganedata.Warehouse.PropertiesSync.SyncLibrary.csproj
+		SccProjectTopLevelParentUniqueName5 = WarehouseZone.sln
+		SccProjectName5 = Ganedata.Warehouse.PropertiesSync.SyncLibrary
+		SccLocalPath5 = Ganedata.Warehouse.PropertiesSync.SyncLibrary
+		SccProjectUniqueName6 = Ganedata.Warehouse.PropertiesSyncServiceTester\\Ganedata.Warehouse.PropertiesSyncServiceTester.csproj
+		SccProjectTopLevelParentUniqueName6 = WarehouseZone.sln
+		SccProjectName6 = Ganedata.Warehouse.PropertiesSyncServiceTester
+		SccLocalPath6 = Ganedata.Warehouse.PropertiesSyncServiceTester
+		SccProjectUniqueName7 = GaneEcommerce.Data\\Ganedata.Core.Data.csproj
+		SccProjectTopLevelParentUniqueName7 = WarehouseZone.sln
+		SccProjectName7 = GaneEcommerce.Data
+		SccLocalPath7 = GaneEcommerce.Data
+		SccProjectUniqueName8 = GaneEcommerce.Entities\\Ganedata.Core.Entities.csproj
+		SccProjectTopLevelParentUniqueName8 = WarehouseZone.sln
+		SccProjectName8 = GaneEcommerce.Entities
+		SccLocalPath8 = GaneEcommerce.Entities
+		SccProjectUniqueName9 = GaneEcommerce.Services\\Ganedata.Core.Services.csproj
+		SccProjectTopLevelParentUniqueName9 = WarehouseZone.sln
+		SccProjectName9 = GaneEcommerce.Services
+		SccLocalPath9 = GaneEcommerce.Services
+		SccProjectUniqueName10 = WarehouseEcommerce\\WarehouseEcommerce.csproj
+		SccProjectName10 = WarehouseEcommerce
+		SccLocalPath10 = WarehouseEcommerce
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
+EndGlobal

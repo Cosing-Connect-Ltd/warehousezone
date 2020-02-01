@@ -1,0 +1,98 @@
+﻿@using Ganedata.Core.Services
+@model Ganedata.Core.Entities.Domain.AuthActivity
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Activity Detail";
+}
+
+<h2><span>Activity Detail</span></h2>
+
+<div class="form-horizontal col-md-6 pull-left">
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ActivityName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActivityName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActivityController)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActivityController)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActivityAction)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActivityAction)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </dt>
+
+        <dd>
+            @DateTimeToLocal.Convert(Model.DateCreated, ViewBag.TimeZone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateUpdated)
+        </dt>
+
+        <dd>
+            @DateTimeToLocal.Convert(Model.DateUpdated, ViewBag.TimeZone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+
+        <dd>
+            @LayoutHelpers.GetUserName(Model.CreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdatedBy)
+        </dt>
+
+        <dd>
+            @LayoutHelpers.GetUserName(Model.UpdatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+
+    </dl>
+</div>
+
+<div class="input-group h-100 justify-content-center align-items-center">
+    <div class="col-md-offset-2 col-md-10 bottom-right">
+        <div class="back-list">@Html.ActionLink("Edit", "Edit", new { id = Model.ActivityId }, new { @class = "btn btn-primary" })</div>
+        <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+    </div>
+</div>

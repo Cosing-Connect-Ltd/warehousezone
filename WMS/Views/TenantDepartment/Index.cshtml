@@ -1,0 +1,47 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@{
+    ViewBag.Title = "Index";
+}
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DataView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView },
+        new Script { ExtensionType = ExtensionType.DataView }
+        )
+}
+
+<h2><span>Tenant Department</span></h2>
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+        $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+</script>
+
+@Html.Hidden("selkey", null, new { @class = "selkey" })
+
+@Html.Action("TenantDepartmentList")
+
+<div class="col-md-12 p-0">
+
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TenantDepartment", "Create"))
+    {
+        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary  " })
+    }
+
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TenantDepartment", "Edit"))
+    {
+        @Html.ActionLink("Update", "Edit", null, new { @class = "btn btn-primary  Caction" })
+    }
+
+
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TenantDepartment", "Delete"))
+    {
+        @Html.ActionLink("Delete", "Delete", null, new { @class = "btn btn-primary  Caction" })
+    }
+
+</div>

@@ -1,0 +1,66 @@
+﻿@model Ganedata.Core.Entities.Domain.MarketJobViewModel
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Random Job " + (Model.Id > 0 ? "Edit" : "Create");
+}
+
+<h2><span>@ViewBag.Title</span></h2>
+<div class="col-md-10">
+    <form class="form-horizontal" action="@Url.Action("SaveMarketJob","Markets")" method="post" id="frmSaveMarketJob">
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(c => c.Id)
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <div class="col-md-12">
+                @Html.ValidationSummary()
+            </div>
+        </div>
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert-success col-md-12">
+                @ViewBag.Message
+            </div>
+        }
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(c => c.Name, new { @class = "col-md-4 control-label" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(c => c.Name, new { @placeholder = "Job Title", @class = "form-control" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(c => c.Description, new { @class = "col-md-4 control-label" })
+            <div class="col-md-8">
+                @Html.TextAreaFor(c => c.Description, new { @placeholder = "Job Description", @class = "form-control" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(m => m.AccountID, new { @class = "col-md-4 control-label" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(m => m.AccountID, Model.AllCustomerAccounts, "-- Select Customer --", new { @class = "chosen-select" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(m => m.ResourceID, new { @class = "col-md-4 control-label" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(m => m.ResourceID, Model.AllResources, "-- Select Resource --", new { @class = "chosen-select" })
+            </div>
+        </div>
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            <input type="submit" class="btn btn-primary" id="saveBtn_MarketJobs" value="Save" />
+            <a type="button" class="btn btn-default" href="@Url.Action("MarketJobs","Markets")">Back to List</a>
+        </div>
+    </form>
+</div>

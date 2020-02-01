@@ -1,0 +1,221 @@
+ActivityId,ActivityName,ActivityController,ActivityAction,IsActive,RightNav,ExcludePermission,SuperAdmin,SortOrder,ModuleId,TenantId,DateCreated,DateUpdated,CreatedBy,UpdatedBy,IsDeleted
+1,Accounts List,Account,Index,1,1,0,0,1,14,1,2019-03-26 03:49:08.127,2019-03-26 03:49:08.127,1,1,0
+2,Create New Account,Account,Create,1,1,0,0,2,14,1,2019-03-26 03:49:08.173,2019-03-26 03:49:08.173,1,1,0
+3,Products List,Products,Index,1,1,0,0,3,15,1,2019-03-26 03:49:08.177,2019-03-26 03:49:08.177,1,1,0
+4,Create New Product,Products,Create,1,1,0,0,4,15,1,2019-03-26 03:49:08.177,2019-03-26 03:49:08.177,1,1,0
+5,Email Templates,EmailTemplates,Index,1,1,0,0,4,1,1,2019-03-26 03:49:08.177,2019-03-26 03:49:08.177,1,1,0
+6,Imports,TenantDataImport,Index,1,1,0,0,2,1,1,2019-03-26 03:49:08.180,2019-03-26 03:49:08.180,1,1,0
+7,Users,User,Index,1,1,0,0,1,1,1,2019-03-26 03:49:08.183,2019-03-26 03:49:08.183,1,1,0
+8,Create User,User,Create,1,0,0,0,24,1,1,2019-03-26 03:49:08.183,2019-03-26 03:49:08.183,1,1,0
+9,Edit User,User,Edit,1,0,0,0,25,1,1,2019-03-26 03:49:08.187,2019-03-26 03:49:08.187,1,1,0
+10,Update User,User,Delete,1,0,0,0,26,1,1,2019-03-26 03:49:08.187,2019-03-26 03:49:08.187,1,1,0
+11,User Permissions,User,UserPermissions,1,0,0,0,27,1,1,2019-03-26 03:49:08.187,2019-03-26 03:49:08.187,1,1,0
+12,Home,Home,Index,1,0,1,0,0,1,1,2019-03-26 03:49:08.190,2019-03-26 03:49:08.190,1,1,0
+13,User Login,User,Login,1,0,1,0,0,1,1,2019-03-26 03:49:08.193,2019-03-26 03:49:08.193,1,1,0
+14,Edit Account,Account,Edit,1,0,0,0,0,14,1,2019-03-26 03:49:08.193,2019-03-26 03:49:08.193,1,1,0
+15,Delete Account,Account,Delete,1,0,0,0,0,14,1,2019-03-26 03:49:08.197,2019-03-26 03:49:08.197,1,1,0
+16,Orders List,Order,Index,1,0,0,0,0,16,1,2019-03-26 03:49:08.197,2019-03-26 03:49:08.197,1,1,0
+17,Order Notification,Order,OrderNotification,1,0,0,0,0,16,1,2019-03-26 03:49:08.200,2019-03-26 03:49:08.200,1,1,0
+18,Account List Partial,Account,AccountList,1,0,1,0,0,14,1,2019-03-26 03:49:08.200,2019-03-26 03:49:08.200,1,1,0
+19,Delete Account Address,Account,DeleteAccountAddress,1,0,0,0,0,14,1,2019-03-26 03:49:08.207,2019-03-26 03:49:08.207,1,1,0
+20,Delete Account Contact,Account,DeleteAccountContact,1,0,0,0,0,14,1,2019-03-26 03:49:08.210,2019-03-26 03:49:08.210,1,1,0
+21,Edit Product,Products,Edit,1,0,0,0,0,15,1,2019-03-26 03:49:08.210,2019-03-26 03:49:08.210,1,1,0
+22,Delete Product,Products,Delete,1,0,0,0,0,15,1,2019-03-26 03:49:08.213,2019-03-26 03:49:08.213,1,1,0
+23,Save product Codes,Products,SaveSCCCode,1,0,0,0,0,15,1,2019-03-26 03:49:08.217,2019-03-26 03:49:08.217,1,1,0
+24,Save Product Account Codes,Products,SaveProductAccount,1,0,0,0,0,15,1,2019-03-26 03:49:08.217,2019-03-26 03:49:08.217,1,1,0
+25,Save Product Attributes,Products,SaveAttributeValue,1,0,0,0,0,15,1,2019-03-26 03:49:08.217,2019-03-26 03:49:08.217,1,1,0
+26,Save Product Location,Products,SaveLocation,1,0,0,0,0,15,1,2019-03-26 03:49:08.220,2019-03-26 03:49:08.220,1,1,0
+27,Delete Product Location,Products,DeleteLocation,1,0,0,0,0,15,1,2019-03-26 03:49:08.223,2019-03-26 03:49:08.223,1,1,0
+28,Complete Order,Order,Complete,1,0,0,0,0,16,1,2019-03-26 03:49:08.223,2019-03-26 03:49:08.223,1,1,0
+29,Tenant Locations,TenantLocations,Index,1,1,0,0,8,1,1,2019-03-26 03:49:08.227,2019-03-26 03:49:08.227,1,1,0
+30,Terminals,Terminals,Index,1,1,0,0,3,1,1,2019-03-26 03:49:08.227,2019-03-26 03:49:08.227,1,1,0
+31,Orders Report,Reports,OrdersReport,1,1,0,0,1,16,1,2019-03-26 03:49:08.230,2019-03-26 03:49:08.230,1,1,0
+32,Handheld AddonScan Permission,Handheld,AddProductsOnScan,1,0,0,0,0,7,1,2019-03-26 03:49:08.230,2019-03-26 03:49:08.230,2,2,0
+33,Delete Order,Order,DeleteOrder,1,0,0,0,0,16,1,2019-03-26 03:49:08.233,2019-03-26 03:49:08.233,1,1,0
+34,Purchase Orders,PurchaseOrders,index,1,1,0,0,5,2,1,2019-03-26 03:49:08.233,2019-03-26 03:49:08.233,1,1,0
+35,Create Purchase Order,PurchaseOrders,Create,1,0,0,0,0,2,1,2019-03-26 03:49:08.237,2019-03-26 03:49:08.237,1,1,0
+36,Edit Purchase Order,PurchaseOrders,Edit,1,0,0,0,0,2,1,2019-03-26 03:49:08.240,2019-03-26 03:49:08.240,1,1,0
+37,Process Purchase Order,PurchaseOrders,ReceivePo,1,0,0,0,0,2,1,2019-03-26 03:49:08.240,2019-03-26 03:49:08.240,1,1,0
+38,Print PO,Reports,PurchaseOrderPrint,1,0,0,0,0,2,1,2019-03-26 03:49:08.243,2019-03-26 03:49:08.243,1,1,0
+39,Handheld SO Permission,Handheld,SalesOrderPerm,1,0,0,0,0,2,1,2019-03-26 03:49:08.247,2019-03-26 03:49:08.247,2,2,0
+40,Sales Orders,SalesOrders,index,1,1,0,0,6,3,1,2019-03-26 03:49:08.247,2019-03-26 03:49:08.247,1,1,0
+41,Create Sales Order,SalesOrders,Create,1,0,0,0,0,3,1,2019-03-26 03:49:08.247,2019-03-26 03:49:08.247,1,1,0
+42,Edit Sales Order,SalesOrders,Edit,1,0,0,0,0,3,1,2019-03-26 03:49:08.250,2019-03-26 03:49:08.250,1,1,0
+43,Print Sales Order,Reports,SalesOrderPrint,1,0,0,0,0,3,1,2019-03-26 03:49:08.253,2019-03-26 03:49:08.253,1,1,0
+44,Process Sales Order,SalesOrders,ProcessOrder,1,0,0,0,0,3,1,2019-03-26 03:49:08.253,2019-03-26 03:49:08.253,1,1,0
+45,PurchaseOrderPerm,Handheld,GoodsIn,1,0,0,0,0,3,1,2019-03-26 03:49:08.257,2019-03-26 03:49:08.257,2,2,1
+46,Handheld PO Permission,Handheld,PurchaseOrderPerm,1,0,0,0,0,3,1,2019-03-26 03:49:08.257,2019-03-26 03:49:08.257,2,2,0
+47,Works Orders,WorksOrders,index,1,1,0,0,17,4,1,2019-03-26 03:49:08.260,2019-03-26 03:49:08.260,1,1,0
+48,Manage Landlords,PLandlords,Index,1,1,0,0,18,4,1,2019-03-26 03:49:08.263,2019-03-26 03:49:08.263,1,1,0
+49,Manage Properties,PProperties,Index,1,1,0,0,19,4,1,2019-03-26 03:49:08.263,2019-03-26 03:49:08.263,1,1,0
+50,Manage Tenants,PTenants,Index,1,1,0,0,20,4,1,2019-03-26 03:49:08.267,2019-03-26 03:49:08.267,1,1,0
+51,Expensive Properties Report,Reports,WorksOrderExpensiveProperties,1,1,0,0,21,4,1,2019-03-26 03:49:08.270,2019-03-26 03:49:08.270,1,1,0
+52,Outstanding Works Orders Report,Reports,SlaWorkOrderReport,1,1,0,0,22,4,1,2019-03-26 03:49:08.273,2019-03-26 03:49:08.273,1,1,0
+53,Works Order Scheduler,Appointments,Index,1,1,0,0,28,4,1,2019-03-26 03:49:08.273,2019-03-26 03:49:08.273,1,1,0
+54,Create Works Order,WorksOrders,Create,1,0,0,0,0,4,1,2019-03-26 03:49:08.277,2019-03-26 03:49:08.277,1,1,0
+55,Edit Works Order,WorksOrders,Edit,1,0,0,0,0,4,1,2019-03-26 03:49:08.277,2019-03-26 03:49:08.277,1,1,0
+56,Print Works Order,Report,WorksOrderPrint,1,0,0,0,0,4,1,2019-03-26 03:49:08.280,2019-03-26 03:49:08.280,1,1,0
+57,Process Works Order,WorksOrders,ProcessOrder,1,0,0,0,0,4,1,2019-03-26 03:49:08.283,2019-03-26 03:49:08.283,1,1,0
+58,Create Property Tenant,PTenants,Create,1,0,0,0,0,4,1,2019-03-26 03:49:08.287,2019-03-26 03:49:08.287,1,1,0
+59,Edit Property Tenant,PTenants,Edit,1,0,0,0,0,4,1,2019-03-26 03:49:08.290,2019-03-26 03:49:08.290,1,1,0
+60,Delete Property Tenant,PTenants,Delete,1,0,0,0,0,4,1,2019-03-26 03:49:08.290,2019-03-26 03:49:08.290,1,1,0
+61,Create Property,PProperties,Create,1,0,0,0,0,4,1,2019-03-26 03:49:08.293,2019-03-26 03:49:08.293,1,1,0
+62,Edit Property,PProperties,Edit,1,0,0,0,0,4,1,2019-03-26 03:49:08.297,2019-03-26 03:49:08.297,1,1,0
+63,Delete Property,PProperties,Delete,1,0,0,0,0,4,1,2019-03-26 03:49:08.297,2019-03-26 03:49:08.297,1,1,0
+64,Create Property Landlord,PLandlords,Create,1,0,0,0,0,4,1,2019-03-26 03:49:08.300,2019-03-26 03:49:08.300,1,1,0
+65,Edit Property Landlord,PLandlords,Edit,1,0,0,0,0,4,1,2019-03-26 03:49:08.303,2019-03-26 03:49:08.303,1,1,0
+66,Delete Property Landlord,PLandlords,Delete,1,0,0,0,0,4,1,2019-03-26 03:49:08.307,2019-03-26 03:49:08.307,1,1,0
+67,Print Day Works Order,Reports,WorksOrderDayPrint,1,1,0,0,4,4,1,2019-03-26 03:49:08.310,2019-03-26 03:49:08.310,1,1,0
+68,Job Types,JobTypes,Index,1,1,0,0,0,4,1,2019-03-26 03:49:08.310,2019-03-26 03:49:08.310,1,1,0
+69,Create New Job Type,JobTypes,Create,1,0,0,0,0,4,1,2019-03-26 03:49:08.313,2019-03-26 03:49:08.313,1,1,0
+70,Edit Job Type,JobTypes,Edit,1,0,0,0,0,4,1,2019-03-26 03:49:08.317,2019-03-26 03:49:08.317,1,1,0
+71,Delete Job Type,JobTypes,Delete,1,0,0,0,0,4,1,2019-03-26 03:49:08.317,2019-03-26 03:49:08.317,1,1,0
+72,Works Order Charges Report,Reports,WorksOrdersChargesReport,1,1,0,0,5,4,1,2019-03-26 03:49:08.320,2019-03-26 03:49:08.320,1,1,0
+73,Works Orders Bulk Create,WorksOrders,CreateBulkOrder,1,0,0,0,0,4,1,2019-03-26 03:49:08.323,2019-03-26 03:49:08.323,1,1,0
+74,Works Orders Single,WorksOrders,CreateBulkSingle,1,0,0,0,0,4,1,2019-03-26 03:49:08.323,2019-03-26 03:49:08.323,1,1,0
+75,Works Orders Print,Reports,WorksOrderPrint,1,0,0,0,0,4,1,2019-03-26 03:49:08.327,2019-03-26 03:49:08.327,1,1,0
+76,Works Orders Edit Single,WorksOrders,EditBulkSingle,1,0,1,0,0,4,1,2019-03-26 03:49:08.327,2019-03-26 03:49:08.327,1,1,0
+77,Handheld WO Permission,Handheld,WorksOrderPerm,1,0,0,0,0,4,1,2019-03-26 03:49:08.330,2019-03-26 03:49:08.330,2,2,0
+78,Work Appointment Create,Appointments,CreateAppointment,1,0,0,0,0,4,1,2019-03-26 03:49:08.333,2019-03-26 03:49:08.333,1,1,0
+79,Work Appointment Edit,Appointments,Edit,1,0,0,0,0,4,1,2019-03-26 03:49:08.333,2019-03-26 03:49:08.333,1,1,0
+80,Works Order KPI Report,Reports,WorksOrderKpiReport,1,1,0,0,0,4,1,2019-03-26 03:49:08.337,2019-03-26 03:49:08.337,1,1,0
+81,Transfer Orders,TransferOrders,index,1,1,0,0,7,5,1,2019-03-26 03:49:08.337,2019-03-26 03:49:08.337,1,1,0
+82,Locations,Locations,Index,1,1,0,0,8,5,1,2019-03-26 03:49:08.340,2019-03-26 03:49:08.340,1,1,0
+83,Deliveries,SalesOrders,Consignments,1,1,0,0,9,5,1,2019-03-26 03:49:08.343,2019-03-26 03:49:08.343,1,1,0
+84,Shipments,PurchaseOrders,Deliveries,1,1,0,0,10,5,1,2019-03-26 03:49:08.347,2019-03-26 03:49:08.347,1,1,0
+85,Stock	Take,StockTakes,Index,1,1,0,0,12,5,1,2019-03-26 03:49:08.350,2019-03-26 03:49:08.350,1,1,0
+86,Pick List,PickList,Index,1,1,0,0,11,5,1,2019-03-26 03:49:08.353,2019-03-26 03:49:08.353,1,1,0
+87,Inventory Report,Reports,Inventory,1,1,0,0,2,5,1,2019-03-26 03:49:08.357,2019-03-26 03:49:08.357,1,1,0
+88,Low Stock Report,Reports,LowStockItemsReport,1,1,0,0,3,5,1,2019-03-26 03:49:08.357,2019-03-26 03:49:08.357,1,1,0
+89,Create Transfer Order,TransferOrders,Create,1,0,0,0,0,5,1,2019-03-26 03:49:08.360,2019-03-26 03:49:08.360,1,1,0
+90,Edit Transfer Order,TransferOrders,Edit,1,0,0,0,0,5,1,2019-03-26 03:49:08.363,2019-03-26 03:49:08.363,1,1,0
+91,Process Transfer Order,TransferOrders,ProcessOrder,1,0,0,0,0,5,1,2019-03-26 03:49:08.367,2019-03-26 03:49:08.367,1,1,0
+92,Print Transfer Order,Reports,TransferOrderPrint,1,0,0,0,0,5,1,2019-03-26 03:49:08.367,2019-03-26 03:49:08.367,1,1,0
+93,Create New Location,Locations,Create,1,0,0,0,0,5,1,2019-03-26 03:49:08.370,2019-03-26 03:49:08.370,1,1,0
+94,Create Bulk Locations,Locations,BulkCreate,1,0,0,0,0,5,1,2019-03-26 03:49:08.373,2019-03-26 03:49:08.373,1,1,0
+95,Edit Location,Locations,Edit,1,0,0,0,0,5,1,2019-03-26 03:49:08.373,2019-03-26 03:49:08.373,1,1,0
+96,Delete Location,Locations,Delete,1,0,0,0,0,5,1,2019-03-26 03:49:08.377,2019-03-26 03:49:08.377,1,1,0
+97,Blind Shipment,PurchaseOrders,BlindShipment,1,0,0,0,0,5,1,2019-03-26 03:49:08.380,2019-03-26 03:49:08.380,1,1,0
+98,Create Stock Take,StockTakes,Create,1,0,0,0,0,5,1,2019-03-26 03:49:08.383,2019-03-26 03:49:08.383,1,1,0
+99,Stock Take Report,StockTakes,Details,1,0,0,0,0,5,1,2019-03-26 03:49:08.387,2019-03-26 03:49:08.387,1,1,0
+100,Stop Stock Take,StockTakes,Stop,1,0,0,0,0,5,1,2019-03-26 03:49:08.387,2019-03-26 03:49:08.387,1,1,0
+101,Stock Take Full Report,StockTakes,FullReport,1,0,0,0,0,5,1,2019-03-26 03:49:08.390,2019-03-26 03:49:08.390,1,1,0
+102,Stock Take variance Report,StockTakes,VarianceReport,1,0,0,0,0,5,1,2019-03-26 03:49:08.393,2019-03-26 03:49:08.393,1,1,0
+103,Goods Return,inventorytransaction,GoodReturnsIndex,1,1,0,0,1,5,1,2019-03-26 03:49:08.393,2019-03-26 03:49:08.393,1,1,0
+104,Inventory Transactions,inventorytransaction,Index,1,1,0,0,20,5,1,2019-03-26 03:49:08.397,2019-03-26 03:49:08.397,1,1,0
+105,Adjust Stock,InventoryStocks,InventoryAdjustments,1,0,0,0,0,5,1,2019-03-26 03:49:08.400,2019-03-26 03:49:08.400,1,1,0
+106,Stock List,InventoryStocks,Index,1,1,0,0,21,5,1,2019-03-26 03:49:08.403,2019-03-26 03:49:08.403,1,1,0
+107,Move Stock,InventoryStocks,MoveStock,1,0,0,0,0,5,1,2019-03-26 03:49:08.403,2019-03-26 03:49:08.403,1,1,0
+108,Handheld TO Permission,Handheld,TransferOrderPerm,1,0,0,0,0,5,1,2019-03-26 03:49:08.407,2019-03-26 03:49:08.407,2,2,0
+109,Handheld Returns Permission,Handheld,GoodsReturnPerm,1,0,0,0,0,5,1,2019-03-26 03:49:08.407,2019-03-26 03:49:08.407,2,2,0
+110,Handheld StockTake Permission,Handheld,StockTakePerm,1,0,0,0,0,5,1,2019-03-26 03:49:08.413,2019-03-26 03:49:08.413,2,2,0
+111,Handheld Stock Enquiry Permission,Handheld,StockEnquiryPerm,1,0,0,0,0,5,1,2019-03-26 03:49:08.417,2019-03-26 03:49:08.417,2,2,0
+112,Handheld Wastages Permission,Handheld,WastagesPerm,1,0,0,0,0,5,1,2019-03-26 03:49:08.417,2019-03-26 03:49:08.417,2,2,0
+113,Sales Invoices,Invoice,Index,1,1,0,0,1,12,1,2019-03-26 03:49:08.420,2019-03-26 03:49:08.420,1,1,0
+114,Wastage,inventorytransaction,WastageIndex,1,1,0,0,2,5,1,2019-03-26 03:49:08.423,2019-03-26 03:49:08.423,1,1,0
+115,Handheld Direct Sales Perm,Handheld,DirectSalesPerm,1,0,0,0,0,6,1,2019-03-26 03:49:08.427,2019-03-26 03:49:08.427,2,2,0
+116,Markets,Markets,Index,1,1,0,0,3,7,1,2019-03-26 03:49:08.430,2019-03-26 03:49:08.430,1,1,0
+117,Vehicles,Markets,Vehicles,1,1,0,0,1,7,1,2019-03-26 03:49:08.433,2019-03-26 03:49:08.433,1,1,0
+118,Vehicle Inspections,VehicleInspection,Index,1,1,0,0,2,7,1,2019-03-26 03:49:08.437,2019-03-26 03:49:08.437,1,1,0
+119,Route Scheduler,MarketRouteSchedules,Index,1,1,0,0,5,7,1,2019-03-26 03:49:08.437,2019-03-26 03:49:08.437,1,1,0
+120,MarketJob,Markets,MarketJobs,1,0,0,0,0,7,1,2019-03-26 03:49:08.440,2019-03-26 03:49:08.440,2,2,0
+121,MarketJobs Edit,MarketJobs,MarketJobsEdit,1,0,0,0,0,7,1,2019-03-26 03:49:08.443,2019-03-26 03:49:08.443,2,2,0
+122,Random Jobs,Markets,MarketJobs,1,1,0,0,6,7,1,2019-03-26 03:49:08.447,2019-03-26 03:49:08.447,2,2,0
+123,Handheld Market Route Permission,Handheld,MarketRoutesPerm,1,0,0,0,0,7,1,2019-03-26 03:49:08.450,2019-03-26 03:49:08.450,2,2,0
+124,Handheld Random Jobs Permission,Handheld,RandomJobsPerm,1,0,0,0,0,7,1,2019-03-26 03:49:08.453,2019-03-26 03:49:08.453,2,2,0
+125,Handheld End of Day Permission,Handheld,EndOfDayPerm,1,0,0,0,0,7,1,2019-03-26 03:49:08.457,2019-03-26 03:49:08.457,2,2,0
+126,Palleting,Pallets,Index,1,1,0,0,19,8,1,2019-03-26 03:49:08.457,2019-03-26 03:49:08.457,1,1,0
+127,Handheld Palleting Permission,Handheld,PalletingPerm,1,0,0,0,0,8,1,2019-03-26 03:49:08.460,2019-03-26 03:49:08.460,2,2,0
+128,Resources,Resources,Index,1,1,0,0,0,9,1,2019-03-26 03:49:08.463,2019-03-26 03:49:08.463,1,1,0
+129,Create New Resource,Resources,Create,1,0,0,0,0,9,1,2019-03-26 03:49:08.467,2019-03-26 03:49:08.467,1,1,0
+130,Edit Resource,Resources,Edit,1,0,0,0,0,9,1,2019-03-26 03:49:08.467,2019-03-26 03:49:08.467,1,1,0
+131,Delete Resource,Resources,Delete,1,0,0,0,0,9,1,2019-03-26 03:49:08.470,2019-03-26 03:49:08.470,1,1,0
+132,Resource Details,Resources,Details,1,0,0,0,0,9,1,2019-03-26 03:49:08.473,2019-03-26 03:49:08.473,1,1,0
+133,Groups,Groups,Index,1,1,0,0,3,9,1,2019-03-26 03:49:08.477,2019-03-26 03:49:08.477,1,1,0
+134,Roles,Roles,Index,1,1,0,0,4,9,1,2019-03-26 03:49:08.480,2019-03-26 03:49:08.480,1,1,0
+135,Create Resource Requests,ResourceRequests,Create,1,1,0,0,5,9,1,2019-03-26 03:49:08.483,2019-03-26 03:49:08.483,1,1,0
+136,Resource Requests,ResourceRequests,Index,1,1,0,0,5,9,1,2019-03-26 03:49:08.487,2019-03-26 03:49:08.487,1,1,0
+137,Handheld Holidays Permission,Handheld,HolidaysPerm,1,0,0,0,0,9,1,2019-03-26 03:49:08.490,2019-03-26 03:49:08.490,2,2,0
+138,In /Out,EmployeeShifts,Index,1,1,0,0,1,10,1,2019-03-26 03:49:08.493,2019-03-26 03:49:08.493,1,1,0
+139,TA Status Report,Reports,ReportListing,1,1,0,0,6,10,1,2019-03-26 03:49:08.493,2019-03-26 03:49:08.493,1,1,0
+140,Time Log,TimeLog,Tindex,1,1,0,0,2,10,1,2019-03-26 03:49:08.497,2019-03-26 03:49:08.497,2,2,0
+141,Awaiting Authorisation,Order,AwaitingAuthorisation,1,1,0,0,7,7,1,2019-03-26 03:49:08.500,2019-03-26 03:49:08.500,1,1,0
+142,Market Routes,MarketRoutes,Index,1,1,0,0,4,7,1,2019-03-26 03:49:08.503,2019-03-26 03:49:08.503,1,1,0
+143,End Of Day Reports,DirectSales,VanSalesCashReport,1,1,0,0,7,7,1,2019-03-26 03:49:08.507,2019-03-26 03:49:08.507,1,1,0
+144,Financial Transactions,Finances,Index,1,1,0,0,29,12,1,2019-03-26 03:49:08.507,2019-03-26 03:49:08.507,1,1,0
+145,Handheld POD Permission,Handheld,PODPerm,1,0,0,0,0,13,1,2019-03-26 03:49:08.510,2019-03-26 03:49:08.510,2,2,0
+146,Resource Shifts,Shifts,Index,1,1,0,0,2,9,1,2019-03-26 03:49:08.513,2019-03-26 03:49:08.513,1,1,0
+147,Create Resource Shift,Shifts,Add,1,0,0,0,0,9,1,2019-03-26 03:49:08.520,2019-03-26 03:49:08.520,1,1,0
+148,Resource Shift Edit,Shifts,Details,1,0,0,0,0,9,1,2019-03-26 03:49:08.523,2019-03-26 03:49:08.523,1,1,0
+149,Resource Edit Submit,Shifts,Submit,1,0,0,0,0,9,1,2019-03-26 03:49:08.527,2019-03-26 03:49:08.527,1,1,0
+150,Delete Resource Shift,Shifts,Delete,1,0,0,0,0,9,1,2019-03-26 03:49:08.530,2019-03-26 03:49:08.530,1,1,0
+151,Create Group,Groups,Add,1,0,0,0,0,9,1,2019-03-26 03:49:08.533,2019-03-26 03:49:08.533,1,1,0
+152,Edit Group,Groups,Details,1,0,0,0,0,9,1,2019-03-26 03:49:08.533,2019-03-26 03:49:08.533,1,1,0
+153,Submit Group,Groups,Submit,1,0,0,0,0,9,1,2019-03-26 03:49:08.537,2019-03-26 03:49:08.537,1,1,0
+154,Delete Group,Groups,Delete,1,0,0,0,0,9,1,2019-03-26 03:49:08.540,2019-03-26 03:49:08.540,1,1,0
+155,Create Role,Roles,Add,1,0,0,0,0,9,1,2019-03-26 03:49:08.543,2019-03-26 03:49:08.543,1,1,0
+156,Edit Role,Roles,Details,1,0,0,0,0,9,1,2019-03-26 03:49:08.547,2019-03-26 03:49:08.547,1,1,0
+157,Submit Role,Roles,Submit,1,0,0,0,0,9,1,2019-03-26 03:49:08.547,2019-03-26 03:49:08.547,1,1,0
+158,Delete Role,Roles,Delete,1,0,0,0,0,9,1,2019-03-26 03:49:08.553,2019-03-26 03:49:08.553,1,1,0
+159,Create Invoice,Invoice,CreateInvoice,1,0,0,0,0,12,2,2019-03-26 03:49:08.557,2019-03-26 03:49:08.557,2,2,0
+160,Save Invoice,Invoice,SaveInvoice,1,0,1,0,0,12,2,2019-03-26 03:49:08.557,2019-03-26 03:49:08.557,2,2,0
+161,Create Email Template,EmailTemplates,Create,1,0,0,0,0,1,2,2019-03-26 03:49:08.560,2019-03-26 03:49:08.560,2,2,0
+162,Edit Email Template,EmailTemplates,Edit,1,0,0,0,0,1,2,2019-03-26 03:49:08.563,2019-03-26 03:49:08.563,2,2,0
+163,Handheld Pallet Labels Permission,Handheld,GeneratePalletLabelsPerm,1,0,0,0,0,3,2,2019-03-26 03:49:08.567,2019-03-26 03:49:08.567,2,2,0
+164,Handheld Receive Count Permission,Handheld,GoodsReceiveCountPerm,1,0,0,0,0,3,2,2019-03-26 03:49:08.570,2019-03-26 03:49:08.570,2,2,0
+165,Handheld Override Permission,Handheld,HandheldOverridePerm,1,0,0,0,0,1,2,2019-03-26 03:49:08.573,2019-03-26 03:49:08.573,2,2,0
+166,Handheld EO Permission,Handheld,ExchangeOrdersPerm,1,0,0,0,0,2,2,2019-03-26 03:49:08.577,2019-03-26 03:49:08.577,2,2,0
+167,Market Replenishment Levels,Markets,EditStockLevels,1,0,0,0,0,7,2,2019-03-26 03:49:08.580,2019-03-26 03:49:08.580,2,2,0
+168,Price Groups,ProductSpecialPrice,Index,1,1,0,0,5,15,2,2019-03-26 03:49:08.583,2019-03-26 03:49:08.583,2,2,0
+169,Edit Product Group Prices,ProductSpecialPrice,Edit,1,0,0,0,0,15,2,2019-03-26 03:49:08.587,2019-03-26 03:49:08.587,2,2,0
+170,Create / Edit Price Group,ProductSpecialPrice,SavePriceGroup,1,0,0,0,0,15,2,2019-03-26 03:49:08.590,2019-03-26 03:49:08.590,2,2,0
+171,Delete Price Group,ProductSpecialPrice,DeletePriceGroup,1,0,0,0,0,15,2,2019-03-26 03:49:08.593,2019-03-26 03:49:08.593,2,2,0
+172,Goods Receive Notes,PurchaseOrders,GoodsReceiveNote,1,1,0,0,23,5,2,2019-03-26 03:49:08.597,2019-03-26 03:49:08.597,2,2,0
+173,Goods Receive Note Print,Reports,GoodsReceiveNotePrint,1,0,0,0,0,5,2,2019-03-26 03:49:08.597,2019-03-26 03:49:08.597,2,2,0
+174,Pallet Tracking List,PalletTracking,Index,1,1,0,0,22,5,1,2019-03-26 03:49:08.600,2019-03-26 03:49:08.600,1,1,0
+175,Create Terminal,Terminals,Create,1,0,0,0,0,1,1,2019-03-26 03:49:08.603,2019-03-26 03:49:08.603,1,1,0
+176,Edit Terminal,Terminals,Edit,1,0,0,0,0,1,1,2019-03-26 03:49:08.607,2019-03-26 03:49:08.607,1,1,0
+177,Terminal Details,Terminals,Details,1,0,0,0,0,1,1,2019-03-26 03:49:08.610,2019-03-26 03:49:08.610,1,1,0
+178,Delete Terminal,Terminals,Delete,1,0,0,0,0,1,1,2019-03-26 03:49:08.613,2019-03-26 03:49:08.613,1,1,0
+179,Create Time Log,EmployeeShifts,Create,1,0,0,0,0,10,1,2019-03-26 03:49:08.617,2019-03-26 03:49:08.617,1,1,0
+180,Edit Time Log,EmployeeShifts,Edit,1,0,0,0,0,10,1,2019-03-26 03:49:08.620,2019-03-26 03:49:08.620,1,1,0
+181,Delete Time Log,EmployeeShifts,Delete,1,0,0,0,0,10,1,2019-03-26 03:49:08.623,2019-03-26 03:49:08.623,1,1,0
+182,Direct Sales Orders,DirectSales,Index,1,1,0,0,8,6,2,2019-03-26 03:49:08.627,2019-03-26 03:49:08.627,2,2,0
+183,Create Direct Sales Order,DirectSales,CreateDirectSales,1,0,0,0,8,6,2,2019-03-26 03:49:08.630,2019-03-26 03:49:08.630,2,2,0
+184,Goods Book In Note Print,Reports,GoodsBookInNotePrint,1,0,0,0,0,5,1,2019-03-26 03:49:08.633,2019-03-26 03:49:08.633,1,1,0
+185,Delivery Note Print,Reports,DeliveryNotePrint,1,0,0,0,0,5,1,2019-03-26 03:49:08.637,2019-03-26 03:49:08.637,1,1,0
+186,Update Order Status,Order,UpdateOrderStatus,1,0,0,0,0,16,1,2019-03-26 03:49:08.640,2019-03-26 03:49:08.640,1,1,0
+187,Pallet Dispatch Print,Reports,PalleteReportPrint,1,0,0,0,0,5,1,2019-03-26 03:49:08.643,2019-03-26 03:49:08.643,1,1,0
+188,Palleting Editor,Pallets,PalletEditor,1,0,0,0,0,5,1,2019-03-26 03:49:08.647,2019-03-26 03:49:08.647,1,1,0
+189,Goods Return Create,InventoryTransaction,GoodsReturn,1,0,0,0,0,5,1,2019-03-29 12:25:24.700,2019-03-29 12:25:24.700,1,1,0
+190,Create Wastage,InventoryTransaction,WastedGoodsReturn,1,0,0,0,0,5,1,2019-04-09 14:33:51.450,2019-04-09 14:33:51.450,1,1,0
+191,Stock Value Report,Reports,StockValueReport,1,1,0,0,0,5,1,2019-04-09 14:36:50.170,2019-04-09 14:36:50.170,1,1,0
+192,Market Totals Report,Reports,MarketTotalReport,1,1,0,0,0,7,1,2019-04-09 14:33:51.450,2019-04-09 14:33:51.450,1,1,0
+193,Account Statement Report,Reports,FinancialTransactionReport,1,1,0,0,0,14,1,2019-04-09 14:36:50.170,2019-04-09 14:36:50.170,1,1,0
+194,Pending Orders Perm,Handheld,PendingOrdersPerm,1,0,0,0,0,7,2,2019-05-04 02:31:59.640,2019-05-04 02:31:59.640,2,2,0
+195,Allow Modify Price,Handheld,AllowModifyPriceInTerminal,1,0,0,0,0,15,2,2019-05-04 02:32:33.400,2019-05-04 02:32:33.400,2,2,0
+196,Market Routes Scheduler,marketroutes,routemarkets,1,0,0,0,0,7,2,2019-05-15 08:34:06.563,2019-05-15 08:34:06.563,2,2,0
+197,Market Route Edit,marketroutes,edit,1,0,0,0,0,7,2,2019-05-15 08:34:47.127,2019-05-15 08:34:47.127,2,2,0
+198,Market Route Print,Reports,MarketRoutePrint,1,0,0,0,0,7,2,2019-05-15 08:35:21.747,2019-05-15 08:35:21.747,2,2,0
+199,Vehicle Inspection Edit,VehicleInspection,Edit,1,0,0,0,0,7,2,2019-05-15 08:36:12.267,2019-05-15 08:36:12.267,2,2,0
+200,Edit Market,Markets,Edit,1,0,0,0,0,7,2,2019-05-15 08:46:26.393,2019-05-15 08:46:26.393,2,2,0
+201,Market Customer Scheduler,Markets,MarketCustomers,1,0,0,0,0,7,2,2019-05-15 08:47:00.800,2019-05-15 08:47:00.800,2,2,0
+202,Delete Market,Markets,Delete,1,0,0,0,0,7,2,2019-05-15 08:47:25.000,2019-05-15 08:47:25.000,2,2,0
+203,Product Groups,ProductGroup,Index,1,1,0,0,10,15,2,2019-05-16 01:15:47.133,2019-05-16 01:15:47.133,2,2,0
+204,Create Product Group,ProductGroup,Create,1,0,0,0,0,15,2,2019-05-16 01:16:10.987,2019-05-16 01:16:10.987,2,2,0
+205,Edit Product Group,ProductGroup,Edit,1,0,0,0,0,15,2,2019-05-16 01:16:30.213,2019-05-16 01:16:30.213,2,2,0
+206,Delete Product Group,ProductGroup,Delete,1,0,0,0,0,15,2,2019-05-16 01:16:59.420,2019-05-16 01:16:59.420,2,2,0
+207,Tenant Departments,TenantDepartment,Index,1,1,0,0,0,1,2,2019-05-16 01:19:56.553,2019-05-16 01:19:56.553,2,2,0
+208,Create Tenant Department,TenantDepartment,Create,1,0,0,0,0,1,2,2019-05-16 01:20:19.623,2019-05-16 01:20:19.623,2,2,0
+209,Edit Tenant Department,TenantDepartment,Edit,1,0,0,0,0,1,2,2019-05-16 01:20:41.797,2019-05-16 01:20:41.797,2,2,0
+210,Delete Tenant Department,TenantDepartment,Delete,1,0,0,0,0,1,2,2019-05-16 01:21:01.583,2019-05-16 01:21:01.583,2,2,0
+211,Create Market,Markets,Create,1,0,0,0,0,7,2,2019-05-17 08:08:13.263,2019-05-17 08:08:13.263,2,2,0
+212,Edit Direct Sales,DirectSales,EditDirectSales,1,0,0,0,0,7,1,2019-07-04 07:06:19.747,2019-07-04 07:06:19.747,1,1,0
+213,Print Collection Note,Reports,PurchaseOrderNotePrint,1,0,0,0,0,3,1,2019-07-04 07:09:27.010,2019-07-04 07:09:27.010,1,1,0
+214,Purchase Invoices,Invoice,PurchaseInvoiceIndex,1,1,0,0,0,3,1,2019-07-10 03:21:49.870,2019-07-10 03:24:11.913,1,1,0
+215,Invoice Print,Reports,InvoiceDetails,1,0,0,0,0,16,1,2019-07-11 08:48:02.160,2019-07-11 08:48:02.160,1,1,0
+216,Terminal / User Visibility,Users,ShowTerminalInventoryTransaction,1,0,0,0,0,1,1,2019-07-25 09:15:15.147,2019-07-25 09:15:15.147,1,1,0
+217,Mark Delivery Dispatched,Pallets,MarkedOrderProcessAsDispatch,1,0,0,0,0,5,1,2019-07-26 08:01:45.800,2019-07-26 08:01:45.800,1,1,0
+218,Invoice Profit Report,Reports,InvoiceProfitReport,1,1,0,0,0,14,1,2019-08-13 12:08:08.977,2019-08-13 12:08:08.977,1,1,0
+219,Product Sale By Sku,Reports,ProductSaleReportBySku,1,1,0,0,0,2,1,2019-08-13 12:10:19.873,2019-08-13 12:10:19.873,1,1,0
+220,Product Movement Report,Reports,ProductMovementReport,1,1,0,0,0,16,1,2019-08-13 12:10:44.913,2019-08-13 12:10:44.913,1,1,0

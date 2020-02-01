@@ -1,0 +1,322 @@
+﻿@model Ganedata.Core.Entities.Domain.TenantConfig
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>TenantConfig</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DefaultCashAccount.AccountCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DefaultCashAccount.AccountCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tenant.TenantName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tenant.TenantName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AlertMinimumProductPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AlertMinimumProductPrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnforceMinimumProductPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnforceMinimumProductPrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AlertMinimumPriceMessage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AlertMinimumPriceMessage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnforceMinimumPriceMessage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnforceMinimumPriceMessage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PoReportFooterMsg1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PoReportFooterMsg1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PoReportFooterMsg2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PoReportFooterMsg2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SoReportFooterMsg1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SoReportFooterMsg1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SoReportFooterMsg2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SoReportFooterMsg2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DnReportFooterMsg1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DnReportFooterMsg1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DnReportFooterMsg2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DnReportFooterMsg2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WorksOrderScheduleByMarginHours)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WorksOrderScheduleByMarginHours)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WorksOrderScheduleByAmPm)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WorksOrderScheduleByAmPm)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnableLiveEmails)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnableLiveEmails)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MiniProfilerEnabled)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MiniProfilerEnabled)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnablePalletingOnPick)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnablePalletingOnPick)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WarehouseLogEmailsToDefault)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WarehouseLogEmailsToDefault)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WarehouseScheduleStartTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WarehouseScheduleStartTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WarehouseScheduleEndTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WarehouseScheduleEndTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ErrorLogsForwardEmails)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ErrorLogsForwardEmails)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DefaultReplyToAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DefaultReplyToAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DefaultMailFromText)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DefaultMailFromText)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AutoTransferStockEnabled)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AutoTransferStockEnabled)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnableStockVarianceAlerts)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnableStockVarianceAlerts)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AuthorisationAdminEmail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AuthorisationAdminEmail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantReceiptPrintHeaderLine1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantReceiptPrintHeaderLine1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantReceiptPrintHeaderLine2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantReceiptPrintHeaderLine2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantReceiptPrintHeaderLine3)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantReceiptPrintHeaderLine3)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantReceiptPrintHeaderLine4)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantReceiptPrintHeaderLine4)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantLogo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantLogo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PrintLogoForReceipts)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PrintLogoForReceipts)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SessionTimeoutHours)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SessionTimeoutHours)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateCreated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateUpdated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateUpdated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UpdatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsDeleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsDeleted)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.TenantConfigId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

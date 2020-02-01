@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+    <div id="common-home" class="container-fluid">
+        <div class="row">
+            <div id="content" class="col-md-12">
+                @Html.Partial("_SliderPartial")
+                @Html.Partial("_DeliveryInfoPartial")
+                @Html.Action("_TopProductPartial")
+                @Html.Action("_OnSalePartial")
+                @Html.Action("_SpecialProductPartial")
+                @Html.Partial("_TopCategoryPartial")
+            </div>
+        </div>
+    </div>
+

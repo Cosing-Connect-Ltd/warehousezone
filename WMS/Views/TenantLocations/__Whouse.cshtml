@@ -1,0 +1,61 @@
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "Warehouse";
+        settings.CallbackRouteValues = new { Controller = "TenantLocations", Action = "_Whouse" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+
+
+        settings.KeyFieldName = "WarehouseId";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add("WarehouseName", "Location Name");
+        settings.Columns.Add("CountyState", "County");
+        settings.Columns.Add("PostalCode", "Post Code");
+
+        settings.Columns.Add(c =>
+        {
+
+            c.FieldName = "IsActive";
+            c.ColumnType = MVCxGridViewColumnType.CheckBox;
+            (c.PropertiesEdit as CheckBoxProperties).DisplayTextChecked = "True";
+            (c.PropertiesEdit as CheckBoxProperties).DisplayTextUnchecked = "False";
+
+        });
+        settings.Columns.Add(c =>
+        {
+
+            c.FieldName = "IsMobile";
+            c.ColumnType = MVCxGridViewColumnType.CheckBox;
+            (c.PropertiesEdit as CheckBoxProperties).DisplayTextChecked = "True";
+            (c.PropertiesEdit as CheckBoxProperties).DisplayTextUnchecked = "False";
+
+        });
+        
+        settings.Columns.Add("AutoTransferOrders");
+        settings.Columns.Add("MonitorStockVariance");
+
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSize = 10;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+
+    });
+}
+@grid.Bind(Model).GetHtml()

@@ -1,0 +1,253 @@
+﻿@model Ganedata.Core.Models.OrderProcessInvoicingViewModel
+@using Ganedata.Core.Entities.Helpers
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+            new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+            new StyleSheet { ExtensionType = ExtensionType.PageControl, Theme = GaneStaticAppExtensions.DevexTheme },
+            new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+             new StyleSheet { ExtensionType = ExtensionType.CheckBox, Theme = GaneStaticAppExtensions.DevexTheme }
+            )
+
+    @Html.DevExpress().GetScripts(
+            new Script { ExtensionType = ExtensionType.GridView },
+            new Script { ExtensionType = ExtensionType.PageControl },
+            new Script { ExtensionType = ExtensionType.PopupControl },
+            new Script { ExtensionType = ExtensionType.CheckBox }
+            )
+}
+<script>
+    var command;
+    MVCxClientGlobalEvents.AddControlsInitializedEventHandler(OnProcessedDetailsEditCallback);
+    function OnProcessedDetailsEditCallback(s, e) {
+
+        e.customArgs = MVCxClientUtils.GetSerializedEditorValuesInContainer("frmPriceGroupPrices");
+        var gridValues = JSON.parse(JSON.stringify($("#frmPriceGroupPrices").serializeArray()));
+        var values = gridValues[gridValues.length - 1].value.split(',');
+
+        for (var i = 0; i < gridValues.length - 1; i++) {
+            if (gridValues[i].name == 'gridMasterAwaitingInvoicing$DXEditor3') {
+                e.customArgs["InvoiceNumber"] = gridValues[i].value;
+            }
+            if (gridValues[i].name == 'gridMasterAwaitingInvoicing$DXEditor6') {
+                e.customArgs["InvoiceDate"] = gridValues[i].value;
+            }
+
+        }
+
+        var rowIndex = parseInt($("#RowIndexForProductId").val()) || 0;
+        e.customArgs["OrderProcessID"] = gridMasterAwaitingInvoicing.GetRowKey(rowIndex);
+        if (e.command != undefined) {
+            command = e.command;
+        }
+    }
+    function gridMasterAwaitingInvoicingOnGridFocusChanged(s, e) {
+        if(e.cellInfo.rowVisibleIndex >= 0)
+        {
+            var index = e.cellInfo.rowVisibleIndex;
+            $("#LastEditingRowIndex").val(index);
+            $("#RowIndexForProductId").val(index);
+        }
+
+
+        $("#LastEditingColIndex").val(e.cellInfo.column.fieldName);
+    }
+
+    function OnEndsGridCallback(s, e) {
+        if (command == "REFRESH") {
+            s.UnselectRows();
+        }
+    }
+
+    function SetGridEditorToRowIndex(index) {
+        gridMasterAwaitingInvoicing.batchEditApi.StartEdit(index, gridMasterAwaitingInvoicing.GetColumnByField($("#LastEditingColIndex").val()).index);
+    }
+
+
+
+    function OnDetailsChanged(s, e) {
+     gridMasterAwaitingInvoicing.UpdateEdit();
+   }
+    function OnDetailRowExpanding(s, e) {
+        s.SetFocusedRowIndex(e.visibleIndex);
+        $('#selkey').val(s.GetRowKey(e.visibleIndex));
+        return false;
+    }
+
+    function OnProcessedDetailsCallback(s, e) {
+        //e.customArgs["id"] = $('#selkey').val();
+        //e.customArgs["orderDetailID"] = $("#divPalletingInformation #CurrentOrderDetailID").val();
+    }
+
+    function OnDetailsRowExpanding(s, e) {
+        s.SetFocusedRowIndex(e.visibleIndex);
+
+        return false;
+    }
+
+    function OnProcessedDetailCallback(s, e) {
+
+    }
+
+
+    function SelectionChanged(s, e) {
+     s.GetSelectedFieldValues("OrderProcessID", GetSelectedFieldValuesCallback);
+    }
+
+    function SelectionChangds(s, e) {
+        s.GetSelectedFieldValues("InvoiceMasterId", GetSelectedFieldValuesCallback);
+    }
+
+
+    function GetSelectedFieldValuesCallback(values) {
+
+        $("#SelectedOrderProcessIds").val(values.join());
+    }
+
+    function GenerateInvoiceForSelected() {
+        var selectedIds = $("#SelectedOrderProcessIds").val();
+        if (selectedIds.length <= 0) { alert("Please select order first, which you want to  process"); return; }
+
+        LoadingPanel.Show();
+
+        var obj = { OrderProcessIds: selectedIds };
+        var successCallback = function (data) {
+            gridMasterAwaitingInvoicing.Refresh();
+            //gridMasterInvoices.Refresh();
+            InvoiceViewGridview.Refresh();
+            LoadingPanel.Hide();
+        }
+
+        var errorCallback = function () {
+            LoadingPanel.Hide();
+        }
+        Gane.Helpers.AjaxPost('/Invoice/GenerateBulkInvoice/', obj,null, successCallback, true, "Invoices Generated Successfully.", errorCallback);
+    }
+
+    function EndCallbackInvoice(s, e) {
+        if (command == "REFRESH") {
+            s.UnselectRows();
+        }
+    }
+
+    function PostToInvoice() {
+
+        filename = "";
+        var selectedIds = $("#SelectedOrderProcessIds").val();
+
+        if (selectedIds.length <= 0) { alert("Please select order first, which you want to  process"); return; }
+
+        else {
+            var data = []
+
+            var obj = {
+                orderProcessId: selectedIds
+            };
+            LoadingPanel.Show();
+            $.get('/Invoice/Export/', obj,
+                function (result) {
+                    $("#SelectedOrderProcessIds").empty();
+                    gridMasterAwaitingInvoicing.Refresh();
+                    //gridMasterInvoices.Refresh();
+                    PurchaseViewInvoice.Refresh();
+                    LoadingPanel.Hide();
+                    if (result.fileName != "") {
+                        filename = result.fileName;
+                        window.open("@Url.RouteUrl(new { Controller = "Invoice", Action = "Download" })/?file=" + filename, '_blank');
+
+
+                    }
+                    else {
+                       alert("Data Not Exported")
+                    }
+
+                });
+
+        }
+
+
+    }
+
+
+
+</script>
+
+
+
+<script>
+    function CheckedChanged(s, e) {
+        var cehck = s.GetChecked();
+        gridMasterAwaitingInvoicing.PerformCallback({ select: s.GetChecked() });
+    }
+
+    function Init(s, e) {
+        setGridHeaderCheckboxes();
+    }
+
+    function setGridHeaderCheckboxes() {
+        var selectableRows = gridMasterAwaitingInvoicing.cpSelectableRowsCount;
+        var selectedRows = gridMasterAwaitingInvoicing.GetSelectedRowCount();
+
+        if (selectedRows == 0) cbAll.SetCheckState(CheckBoxCheckState.Unchecked);
+        if (selectedRows > 0) cbAll.SetCheckState(CheckBoxCheckState.Indeterminate);
+        if (selectedRows == selectableRows) cbAll.SetCheckState(CheckBoxCheckState.Checked);
+    }
+
+    function OnGridEndCallback(s, e) {
+        setGridHeaderCheckboxes();
+    }
+
+    function OnGridSelectionChanged(s, e) {
+        setGridHeaderCheckboxes();
+    }
+
+    Object.size = function (obj) {
+        var size = 0, key;
+        for (key in obj) {
+            if (obj.hasOwnProperty(key)) size++;
+        }
+        return size;
+    };
+</script>
+
+@{
+    ViewBag.Title = "Purchase Invoice";
+
+}
+
+
+<h2><span>@ViewBag.Title</span></h2>
+@Html.Hidden("selkey")
+@Html.Hidden("SelectedOrderProcessIds")
+@Html.Hidden("OrderProcessIds")
+
+<div id="tabs" style="visibility: hidden">
+    <ul>
+        <li><a href="#TP">To be Posted</a></li>
+        <li><a href="#VI">View Invoices</a></li>
+    </ul>
+    <div id="TP">
+        @using (Html.BeginForm("SaveInvoiceNumber", "Invoice", FormMethod.Post, new { @id = "frmPriceGroupPrices" }))
+        {
+
+            @Html.AntiForgeryToken()
+            @Html.Hidden("LastEditingRowIndex")
+            @Html.Hidden("LastEditingColIndex")
+            @Html.Hidden("RowIndexForProductId")
+
+            @Html.Action("ProcessedOrdersPartial", new { type = "PO" })
+        }
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            <a type="button" class="btn btn-primary" href="javascript:PostToInvoice()"><b class="fa fa-print"></b>Post to Accounts</a>
+        </div>
+
+    </div>
+    <div id="VI">
+        @Html.Action("ProcessedOrdersPartial", new { type = "VI" })
+
+    </div>
+
+
+</div>
+
+

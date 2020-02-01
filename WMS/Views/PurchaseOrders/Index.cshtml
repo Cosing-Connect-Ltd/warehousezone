@@ -1,0 +1,118 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@model IEnumerable<Ganedata.Core.Entities.Domain.Order>
+@using Ganedata.Core.Entities.Helpers
+@using Ganedata.Core.Entities.Enums
+
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Purchase Orders";
+}
+
+<h2><span>@ViewBag.Title</span></h2>
+
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+
+        var name = s.name;
+        if (name === "_PurchaseOrderListGridView") {
+            $('#selkeyOrderList').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        }
+
+        else if (name === "_PurchaseOrderListGridView_Completed") {
+            $('#selkeyOrderCompleteList').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        }
+        else
+            $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+
+    function OnBeginCallbackPO(s, e) {
+        e.customArgs['selectedStatus'] = $('#PurchaseOrderStatus :selected').val();
+    }
+    function UASelectedValueChanged(e) {
+        _PurchaseOrderListGridView_Completed.Refresh();
+    }
+
+
+</script>
+
+@Html.Hidden("selkey", null, new { @class = "selkey" })
+@Html.Hidden("selkeyOrderList", null)
+@Html.Hidden("selkeyOrderCompleteList", null)
+@Html.Hidden("EmailTemplate", (int)WorksOrderNotificationTypeEnum.PurchaseOrderTemplate)
+<div id="tabs" style="visibility: hidden">
+    <ul>
+        <li><a href="#POA">Active</a></li>
+        <li><a href="#POC">Complete</a></li>
+    </ul>
+
+    <div id="POA">
+        @Html.Action("_PurchaseOrders", "Order", new { @type = 1 })
+
+        <div class='col-md-offset-2 col-md-10 bottom-right'>
+
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("PurchaseOrders", "Create"))
+            {
+                @Html.ActionLink("Create New", "Create", "PurchaseOrders", null, new { @class = "btn btn-primary  ", @id = "lnkOrderUpdate" })
+            }
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("PurchaseOrders", "Edit"))
+            {
+                @Html.ActionLink("Update", "Edit", "PurchaseOrders", null, new { @class = "btn btn-primary  Caction", @id = "lnkOrderUpdate" })
+            }
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Order", "DeleteOrder"))
+            {
+                <a class='btn btn-primary lnkDelete' data-type='PO' data-target='#selkeyOrderList'>Delete</a>
+            }
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("PurchaseOrders", "ReceivePO"))
+            {
+                @Html.ActionLink("Process Order", "ReceivePO", "PurchaseOrders", null, new { @class = "btn btn-primary  Caction", @id = "lnkOrderUpdate" })
+            }
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Reports", "PurchaseOrderPrint"))
+            {
+                @Html.ActionLink("Print Order", "PurchaseOrderPrint", "Reports", null, new { @class = "btn btn-primary Caction", @id = "lnkOrderUpdate", target = "_new" })
+            }
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Reports", "PurchaseOrderNotePrint"))
+            {
+                @Html.ActionLink("Print Collection Note", "PurchaseOrderNotePrint", "Reports", null, new { @class = "btn btn-primary Caction", @id = "lnkOrderUpdate", target = "_new" })
+            }
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Order", "OrderNotification"))
+            {
+                <a href="javascript:;" alt="Send Email" class="custom-email btn btn-primary">Email Order</a>
+            }
+
+        </div>
+    </div>
+
+    <div id="POC">
+        @Html.Partial("_FilterPOGridView")
+        @Html.Action("_PurchaseOrders", "Order", new { @type = 2 })
+
+        <div class='col-md-offset-2 col-md-10 bottom-right'>
+
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("PurchaseOrders", "Create"))
+            {
+                @Html.ActionLink("Create New", "Create", "PurchaseOrders", null, new { @class = "btn btn-primary", @id = "lnkOrderCompleteUpdate" })
+            }
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("PurchaseOrders", "Edit"))
+            {
+                @Html.ActionLink("Update", "Edit", "PurchaseOrders", null, new { @class = "btn btn-primary  Caction", @id = "lnkOrderCompleteUpdate" })
+            }
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Reports", "PurchaseOrderPrint"))
+            {
+                @Html.ActionLink("Print Order", "PurchaseOrderPrint", "Reports", null, new { @class = "btn btn-primary Caction", @id = "lnkOrderCompleteUpdate", target = "_new" })
+            }
+
+        </div>
+
+    </div>
+</div>

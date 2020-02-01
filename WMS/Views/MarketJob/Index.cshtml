@@ -1,0 +1,109 @@
+﻿@using Ganedata.Core.Entities.Enums
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Random Jobs";
+}
+
+<h2><span>@ViewBag.Title</span></h2>
+
+
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+        $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+
+    function OnJobAllocationBegincallBack(s, e) {
+        var jobId = $('.selkey').val();
+        e.customArgs["id"] = jobId;
+        e.customArgs["RequestType"] = $('#RequestType').val();
+    }
+
+    function AllocateJobToResource(id) {
+        $('.selkey').val(id);
+        ModalPopupAllocateMarketJob.Show();
+    }
+
+    function UpdateJobAllocation() {
+        var data = $("#frmAllocateMarketJob").serialize();
+
+        var url = '@Url.Action("AllocateMarketJob","Markets")';
+        var callback = function () {
+            for (var i = 1; i <= 6; i++) {
+                var dx = GetDevexControlByName('MarketJobsGrid');
+                if (dx != null) {
+                    dx.Refresh();
+                    AjaxCall();
+                }
+            }
+            ModalPopupAllocateMarketJob.Hide();
+        }
+        Gane.Helpers.AjaxPost(url, data,null,callback);
+    }
+    function SelectedValueChanged() {
+        MarketJobsGrid.Refresh();
+    }
+    function AjaxCall() {
+
+
+        $.ajax({
+            url: '@Url.Action("_MarketJobStatus")',
+            type: 'GET',
+            cache: false
+        }).done(function (result) {
+            $('#DynamicRefresh2').html("");
+            $('#DynamicRefresh2').html(result);
+
+        });
+    }
+
+</script>
+
+@Html.Hidden("selkey", null, new { @class = "selkey" })
+
+<div class="col-md-12 p-0">
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert-success col-md-12">
+            @Model.ResultsCount Results
+        </div>
+    }
+    <div class="col-md-12 p-0 legend-pane text-center">
+        <span class="text-center col-md-1"><label style="height:12px;width:24px;background-color:lightgreen;vertical-align:middle"></label> Low</span>
+        <span class="text-center col-md-1"><label style="height:12px;width:24px;background-color:yellow;vertical-align:middle"></label> Medium</span>
+        <span class="text-center col-md-1"><label style="height:12px;width:24px;background-color:coral;vertical-align:middle"></label> High</span>
+        <span class="text-center col-md-1"><span>(R)</span> Reallocation Required</span>
+        <span id="DynamicRefresh2">
+            @Html.Action("_MarketJobStatus")
+        </span>
+
+    </div>
+    <div class='col-md-12 report-date-header'>
+        <div class='form-group'>
+            <div class='col-md-12 text-center'>
+                <div class='input-group h-100 justify-content-center align-items-center'>
+                    @Html.Label("Status", htmlAttributes: new { @class = "col-md-2" })
+                    <div class='col-md-6'>
+                        @Html.DropDownList("RequestType", EnumHelper.GetSelectList(typeof(MarketJobStatusEnum)), "ALL", new { @class = "chosen-select", onchange = @"SelectedValueChanged(this);" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    @Html.Action("MarketJobsListPartial", "Markets")
+    <div class="col-md-offset-2 col-md-10 bottom-right">
+        <a class="btn btn-primary" href="/markets/MarketJobEdit"></b>Create Job</a>
+    </div>
+</div>

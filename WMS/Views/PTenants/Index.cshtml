@@ -1,0 +1,61 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Manage Tenants";
+}
+
+<h2><span>Manage Tenants</span></h2>
+
+@Html.Hidden("selkey", null, new { @class = "selkey" })
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+        $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+
+</script>
+<div class="col-md-12 p-0">
+    <div class="col-md-12 p-0">
+        @Html.Action("PTenantsGridview")
+    </div>
+    <div class="col-md-offset-2 col-md-10 bottom-right">
+
+        @if (WMS.Helpers.LayoutHelpers.ActivityValidator("PTenants", "Create"))
+        {
+            @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary  " })
+        }
+        @if (WMS.Helpers.LayoutHelpers.ActivityValidator("PTenants", "Edit"))
+        {
+            @Html.ActionLink("Update", "Edit", null, new { @class = "btn btn-primary  Caction", @id = "lnkTenantUpdate" })
+        }
+        @if (WMS.Helpers.LayoutHelpers.ActivityValidator("PTenants", "Delete"))
+        {
+            @Html.ActionLink("Delete", "Delete", null, new { @class = "btn btn-primary  Caction", @id = "lnkTenantDelete" })
+            <input type="button" class="btn btn-primary" id="btn-update-tenant-prop" value="Update Tenant Status" title="Clicking this button will sync the tenants to make sure they have properties to determine they are current tenants." />
+
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $("#btn-update-tenant-prop").on("click", function () {
+        $.get("/PTenants/UpdateTenantCurrentProperties",
+            function (data) {
+                if (data != null) {
+                    alert('Updated tenant property status.');
+                    PPropertiesGridview.Refresh();
+                }
+            });
+    });
+</script>

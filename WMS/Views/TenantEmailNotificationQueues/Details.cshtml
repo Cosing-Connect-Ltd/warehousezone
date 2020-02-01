@@ -1,0 +1,162 @@
+﻿@model Ganedata.Core.Entities.Domain.TenantEmailNotificationQueue
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>TenantEmailNotificationQueue</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Appointment.Subject)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Appointment.Subject)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Order.OrderNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Order.OrderNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantEmailTemplates.EventName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantEmailTemplates.EventName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EmailSubject)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmailSubject)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AttachmentVirtualPath)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AttachmentVirtualPath)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsNotificationCancelled)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsNotificationCancelled)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ScheduledProcessing)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ScheduledProcessing)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ScheduledProcessingTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ScheduledProcessingTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActualProcessingTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActualProcessingTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WorkOrderStartTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WorkOrderStartTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WorkOrderEndTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WorkOrderEndTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WorksOrderResourceName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WorksOrderResourceName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProcessedImmediately)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProcessedImmediately)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomRecipients)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomRecipients)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomCcRecipients)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomCcRecipients)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomBccRecipients)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomBccRecipients)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomEmailMessage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomEmailMessage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InvoiceMasterId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InvoiceMasterId)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.TenantEmailNotificationQueueId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

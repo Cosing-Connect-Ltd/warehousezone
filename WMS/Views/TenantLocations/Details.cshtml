@@ -1,0 +1,155 @@
+﻿@model Ganedata.Core.Entities.Domain.TenantLocations
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Tenant Location Detail";
+}
+
+<h2><span>Tenant Location Detail</span></h2>
+
+<div>
+
+    <dl class="dl-horizontal col-md-6 pull-left">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WarehouseName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WarehouseName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AddressLine1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddressLine1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AddressLine2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddressLine2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AddressLine3)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddressLine3)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AddressLine4)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddressLine4)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CountyState)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CountyState)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.City)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.City)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PostalCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PostalCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CountyState)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CountyState)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+
+    </dl>
+    <dl class="dl-horizontal col-md-6 pull-right">
+        <dt>
+            @Html.DisplayNameFor(model => model.PalletTrackingScheme)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PalletTrackingScheme)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EnableGlobalProcessByPallet)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnableGlobalProcessByPallet)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AllowStocktakeAddNew)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AllowStocktakeAddNew)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AllowStocktakeEdit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AllowStocktakeEdit)
+        </dd>
+
+    </dl>
+
+
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Warehouse", "Edit"))
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = Model.WarehouseId }, new { @class = "btn btn-primary" })
+            }
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+        </div>
+
+</div>

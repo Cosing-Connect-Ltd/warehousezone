@@ -1,0 +1,55 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@model Ganedata.Core.Entities.Domain.TenantCurrencies
+
+@{
+    ViewBag.Title = "Currency Exchange Rate Details";
+}
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+
+<div class="col-md-12">
+    <h2><span>Currency Exchange Rate Details</span></h2>
+    <div class="col-md-4 pl-0 pull-left">
+        <h2><span>Details</span></h2>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.TenantCurrencyID)
+            </dt>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.GlobalCurrency.Symbol)
+            </dt>
+            
+            <dd>
+                @Html.DisplayFor(model => model.TenantCurrenciesExRates)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.GlobalCurrency.CurrencyName)
+            </dt>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DateUpdated)
+            </dt>
+
+        </dl>
+    </div>
+</div>
+
+<div class="input-group h-100 justify-content-center align-items-center">
+    <div class="col-md-offset-2 col-md-10 bottom-right">
+        <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+    </div>
+</div>
+

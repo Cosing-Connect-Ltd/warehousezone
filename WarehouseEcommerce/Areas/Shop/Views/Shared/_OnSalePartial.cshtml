@@ -1,0 +1,138 @@
+﻿@model WarehouseEcommerce.ViewModels.ProductDetailViewModel
+<div class="tabpro">
+    <div class="tab-head">
+        <h1>
+            <span>
+                On Sale
+                <i></i>
+            </span>
+        </h1>
+    </div>
+    <div id="onsale" class="owl-theme owl-carousel">
+        @if (Model.productMasterList.Count > 0)
+        {
+            var product = Model.productMasterList;
+
+            for (int i = 0; i < product.Count; i += 2)
+            {
+
+
+                <div class="multi-row">
+                    <!-- writ code Here -->
+                    @if (product.ElementAtOrDefault(i) != null)
+                    {
+                        var defaulImage = Model.ProductFilesList.FirstOrDefault(u => (u.DefaultImage == true) && u.ProductId == product[i].ProductId)?.FilePath;
+                        var hover = Model.ProductFilesList.FirstOrDefault(u => u.HoverImage == true && u.ProductId == product[i].ProductId)?.FilePath;
+                        <div class="product-layout toppro">
+                            <div class="product-thumb1 transition">
+                                <div class="">
+                                    <div class="col-xs-12 topprom">
+                                        <div class="image col-lg-4 col-sm-5 col-xs-4">
+                                            <a href="@Url.Action("ProductDetails","Products", new { productId= product[i].ProductId })"><img src="@(!string.IsNullOrEmpty(defaulImage)?defaulImage :"/UploadedFiles/Products/no-image.png")" alt="@product[i].Name" title="@product[i].Name" class="img-responsive center-block" /></a>
+                                            <!-- Smartshop Images Start -->
+                                            <a href="@Url.Action("ProductDetails","Products", new { productId= product[i].ProductId })"><img src="@(!string.IsNullOrEmpty(hover)?hover :"/UploadedFiles/Products/no-image.png")" class="img-responsive second-img" alt="hover image" /></a>
+                                            <!-- Smartshop Images End -->
+                                            <div class="topbutton">
+                                                <button type="button" data-toggle="tooltip" title="Add to Wish List">
+                                                    <svg width="20px" height="20px">
+                                                        <use xlink:href="/Areas/Shop/Content/app/img/icons/icons.svg#wishlist"></use>
+                                                    </svg>
+                                                    <span class="hidden-xs"></span>
+                                                </button>
+                                                <button type="button" data-toggle="tooltip" title="Compare this Product" class="wishcom">
+                                                    <svg width="20px" height="20px">
+                                                        <use xlink:href="/Areas/Shop/Content/app/img/icons/icons.svg#pcom"></use>
+                                                    </svg>
+                                                    <span class="hidden-xs"></span>
+                                                </button>
+                                                <div class="bquickv" title="quickview" data-toggle="tooltip"></div>
+                                            </div>
+                                        </div>
+                                        <div class="caption col-lg-8 col-sm-7 col-xs-8">
+                                            <h4><a href="@Url.Action("ProductDetails","Products", new { productId= product[i].ProductId })"> @product[i].Name</a></h4>
+                                            <p class="price">
+                                                $@(product[i].SellPrice)
+
+                                            </p>
+                                            <div class="rating">
+                                                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                            </div>
+                                            <div class="button-group">
+                                                <button type="button" onclick="cart.add('43');" class="acart">
+                                                    <span>Add to Cart</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <!-- writ code Here End -->
+                    <!-- writ code Here -->
+                    @if (product.ElementAtOrDefault(i + 1) != null)
+                    {
+                        var defaulImage = Model.ProductFilesList.FirstOrDefault(u => (u.DefaultImage == true) && u.ProductId == product[i+1].ProductId)?.FilePath;
+                        var hover = Model.ProductFilesList.FirstOrDefault(u => u.HoverImage == true && u.ProductId == product[i + 1].ProductId)?.FilePath;
+                        <div class="product-layout toppro">
+                            <div class="product-thumb1 transition">
+                                <div class="">
+                                    <div class="col-xs-12 topprom">
+                                        <div class="image col-lg-4 col-sm-5 col-xs-4">
+                                            <a href="@Url.Action("ProductDetails","Products", new { productId= product[i+1].ProductId })"><img src="@(!string.IsNullOrEmpty(defaulImage)?defaulImage :"/UploadedFiles/Products/no-image.png")" alt="@product[i+1].Name" title="@product[i+1].Name" class="img-responsive center-block" /></a>
+                                            <!-- Smartshop Images Start -->
+                                            <a href="@Url.Action("ProductDetails","Products", new { productId= product[i+1].ProductId })"><img src="@(!string.IsNullOrEmpty(hover)?hover :"/UploadedFiles/Products/no-image.png")" class="img-responsive second-img" alt="hover image" /></a>
+                                            <!-- Smartshop Images End -->
+                                            <div class="topbutton">
+                                                <button type="button" data-toggle="tooltip" title="Add to Wish List">
+                                                    <svg width="20px" height="20px">
+                                                        <use xlink:href="/Areas/Shop/Content/app/img/icons/icons.svg#wishlist"></use>
+                                                    </svg>
+                                                    <span class="hidden-xs"></span>
+                                                </button>
+                                                <button type="button" data-toggle="tooltip" title="Compare this Product" class="wishcom">
+                                                    <svg width="20px" height="20px">
+                                                        <use xlink:href="/Areas/Shop/Content/app/img/icons/icons.svg#pcom"></use>
+                                                    </svg>
+                                                    <span class="hidden-xs"></span>
+                                                </button>
+                                                <div class="bquickv" title="quickview" data-toggle="tooltip"></div>
+                                            </div>
+                                        </div>
+                                        <div class="caption col-lg-8 col-sm-7 col-xs-8">
+                                            <h4><a href="@Url.Action("ProductDetails","Products", new { productId= product[i+1].ProductId })"> @product[i + 1].Name</a></h4>
+                                            <p class="price">
+                                                $@(product[i + 1].SellPrice)
+
+                                            </p>
+                                            <div class="rating">
+                                                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                            </div>
+                                            <div class="button-group">
+                                                <button type="button" onclick="cart.add('43');" class="acart">
+                                                    <span>Add to Cart</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <!-- writ code Here End -->
+                </div>
+
+
+
+            }
+        }
+    </div>
+</div>

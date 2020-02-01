@@ -1,0 +1,24 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@{
+    ViewBag.Title = "Stocktake Detail";
+}
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+<h2><span>@ViewBag.Title</span></h2>
+<div>
+
+    @Html.Action("_StocktakeDetailGridPartial", new { Id = ViewBag.StockID })
+
+</div>
+<div class="col-md-offset-2 col-md-10 bottom-right">
+    <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+
+</div>

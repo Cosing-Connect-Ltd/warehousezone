@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "IPN";
+}
+
+<div class="about bg-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 bg-white my-account login">
+                <div class="about-cnt">
+                    <div class="content-wrapper select">
+                        <h2 class="text-uppercase">IPN</h2>
+                        <hr>
+                        <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+                            <div class="row">
+
+                                <fieldset>
+                                    @Html.Hidden("cmd", "_xclick")
+                                    <input class="full-width" type="hidden" name="business" value="naveed_tariq1992@outlook.com">
+                                    <input type="hidden" name="cmd" value="_xclick">
+                                    <input type="hidden" name="item_name" value="products names">
+                                    <input type="hidden" name="ItemId" value="1">
+                                    <input type="hidden" name="item_number" value="">
+                                    <input type="hidden" name="amount" value="2.0">
+                                    <input type="hidden" name="no_shipping" value="1">
+                                    <input TYPE="hidden" NAME="return" value="@((string)ViewBag.RetUrl)">
+                                    <input type="hidden" name="notify_url" value="@((string)ViewBag.RetUrl)">
+                                    <INPUT TYPE="hidden" NAME="currency_code" value="GBP">
+                                </fieldset>
+
+                            </div>
+                            <div class="button-submit  ">
+                                <button type="Submit" name="submitNewsletter" class="btn btn-block">Pay now!</button>
+
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

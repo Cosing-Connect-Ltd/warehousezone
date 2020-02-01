@@ -1,0 +1,400 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{706892F4-49D7-4EFA-A414-44B5E1D74286}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ganedata.Core.Entities</RootNamespace>
+    <AssemblyName>Ganedata.Core.Entities</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+    <Use64BitIISExpress />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BCrypt.Net-Next, Version=3.2.1.0, Culture=neutral, PublicKeyToken=1e11be04b6288443, processorArchitecture=MSIL">
+      <HintPath>..\packages\BCrypt.Net-Next.3.2.1\lib\net472\BCrypt.Net-Next.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.Entity">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Threading.Thread">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.DynamicData">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Entity">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.ApplicationServices">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Extensions">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Configuration">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Services">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.EnterpriseServices">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CustomAttributes\CustomAttributes.cs" />
+    <Compile Include="Domain\Auth\caTenantBase.cs" />
+    <Compile Include="Domain\Employee\Address.cs" />
+    <Compile Include="Domain\AttLogs\AttLogsStamps.cs" />
+    <Compile Include="Domain\AttLogs\AttLogs.cs" />
+    <Compile Include="Domain\Auth\AuthActivity.cs" />
+    <Compile Include="Domain\Auth\AuthActivityGroup.cs" />
+    <Compile Include="Domain\Auth\AuthActivityGroupMap.cs" />
+    <Compile Include="Domain\Auth\AuthPermission.cs" />
+    <Compile Include="Domain\Auth\AuthUser.cs" />
+    <Compile Include="Domain\Auth\AuthUserLogin.cs" />
+    <Compile Include="Domain\Auth\AuthUserLoginActivity.cs" />
+    <Compile Include="Domain\Auth\AuthUserprofile.cs" />
+    <Compile Include="Domain\Auth\Module.cs" />
+    <Compile Include="Domain\Models\Account.cs" />
+    <Compile Include="Domain\Models\AccountAddresses.cs" />
+    <Compile Include="Domain\Models\AccountAddressesMapcs.cs" />
+    <Compile Include="Domain\Models\AccountContacts.cs" />
+    <Compile Include="Domain\Employee\Resources.cs" />
+    <Compile Include="Domain\Employee\Appointments.cs" />
+    <Compile Include="Domain\Models\CurrenciesRates.cs" />
+    <Compile Include="Domain\Models\Invoice.cs" />
+    <Compile Include="Domain\Models\MarketRouteProgress.cs" />
+    <Compile Include="Domain\Models\OrderConsignmentTypes.cs" />
+    <Compile Include="Domain\Global\GlobalAccountStatus.cs" />
+    <Compile Include="Domain\Models\OrderProcessDetail.cs" />
+    <Compile Include="Domain\Models\OrderProofOfDelivery.cs" />
+    <Compile Include="Domain\Models\OrderReceiveCount.cs" />
+    <Compile Include="Domain\Models\PalletTracking.cs" />
+    <Compile Include="Domain\Models\PalletType.cs" />
+    <Compile Include="Domain\Models\ProductFiles.cs" />
+    <Compile Include="Domain\Models\TerminalCommands.cs" />
+    <Compile Include="Domain\Models\TerminalCommandsQueue.cs" />
+    <Compile Include="Domain\Models\TerminalGeoLocation.cs" />
+    <Compile Include="Domain\Models\Assets.cs" />
+    <Compile Include="Domain\Models\AssetLog.cs" />
+    <Compile Include="Domain\Models\TerminalsTransactionsLog.cs" />
+    <Compile Include="Domain\Models\Translations.cs" />
+    <Compile Include="Domain\Shifts\Shifts.cs" />
+    <Compile Include="Domain\Tenants\TenantDepartments.cs" />
+    <Compile Include="Domain\Models\Pallets.cs" />
+    <Compile Include="Domain\Models\ProductGroups.cs" />
+    <Compile Include="Domain\Tenants\TenantWebsitesSyncLog.cs" />
+    <Compile Include="Domain\Tenants\TenantWebsites.cs" />
+    <Compile Include="Domain\Tenants\TenantLoanTypes.cs" />
+    <Compile Include="Domain\Tenants\TenantPriceGroups.cs" />
+    <Compile Include="Domain\Global\GlobalTax.cs" />
+    <Compile Include="Domain\Global\GlobalUOM.cs" />
+    <Compile Include="Domain\Global\GlobalUOMTypes.cs" />
+    <Compile Include="Domain\Tenants\TenantWarranty.cs" />
+    <Compile Include="Domain\Global\GlobalWeightGroups.cs" />
+    <Compile Include="Domain\Models\InventoryStock.cs" />
+    <Compile Include="Domain\Models\InventoryTransaction.cs" />
+    <Compile Include="Domain\Models\InventoryTransactionType.cs" />
+    <Compile Include="Domain\Models\JobSubType.cs" />
+    <Compile Include="Domain\Models\JobType.cs" />
+    <Compile Include="Domain\Models\LocationGroup.cs" />
+    <Compile Include="Domain\Models\Locations.cs" />
+    <Compile Include="Domain\Models\LocationTypes.cs" />
+    <Compile Include="Domain\Models\MoveStockVM.cs" />
+    <Compile Include="Domain\Models\Order.cs" />
+    <Compile Include="Domain\Models\OrderDetail.cs" />
+    <Compile Include="Domain\Models\OrderNotes.cs" />
+    <Compile Include="Domain\Models\OrderProcess.cs" />
+    <Compile Include="Domain\Models\OrderPTenantEmailRecipient.cs" />
+    <Compile Include="Domain\Models\OrderStatus.cs" />
+    <Compile Include="Domain\Models\PContactInfo.cs" />
+    <Compile Include="Domain\Models\PLandlord.cs" />
+    <Compile Include="Domain\Models\PProperty.cs" />
+    <Compile Include="Domain\Models\ProductAccountCodes.cs" />
+    <Compile Include="Domain\Models\ProductAttributes.cs" />
+    <Compile Include="Domain\Models\ProductAttributeValues.cs" />
+    <Compile Include="Domain\Models\ProductAttributeValuesMap.cs" />
+    <Compile Include="Domain\Models\ProductKitMap.cs" />
+    <Compile Include="Domain\Models\ProductLocations.cs" />
+    <Compile Include="Domain\Models\ProductLotOptionsCodes.cs" />
+    <Compile Include="Domain\Models\ProductLotProcessTypeCodes.cs" />
+    <Compile Include="Domain\Models\ProductMaster.cs" />
+    <Compile Include="Domain\Tenants\TenantConfig.cs" />
+    <Compile Include="Domain\ViewModels\AssetLogViewModel.cs" />
+    <Compile Include="Domain\ViewModels\CurrencyExRateViewModel.cs" />
+    <Compile Include="Domain\ViewModels\GlobalTaxViewModel.cs" />
+    <Compile Include="Domain\ViewModels\PrestaShopModel\PrestaShopProductViewModel.cs" />
+    <Compile Include="Domain\ViewModels\ScanSourceProductViewModel.cs" />
+    <Compile Include="Domain\ViewModels\UploadedFileViewModel.cs" />
+    <Compile Include="Domain\ViewModels\ApiModels\AccountSyncCollection.cs" />
+    <Compile Include="Domain\ViewModels\AccountViewModels.cs" />
+    <Compile Include="Domain\ViewModels\ActivityViewModels.cs" />
+    <Compile Include="Domain\ViewModels\AddressViewModel.cs" />
+    <Compile Include="Domain\ViewModels\ApiModels\MarketJobSync.cs" />
+    <Compile Include="Domain\ViewModels\ApiModels\MarketRouteScheduleSync.cs" />
+    <Compile Include="Domain\ViewModels\ApiModels\MarketVehiclesSyncCollection.cs" />
+    <Compile Include="Domain\ViewModels\ApiModels\OrderReceiveCountSync.cs" />
+    <Compile Include="Domain\ViewModels\ApiModels\PalletTrackingSync.cs" />
+    <Compile Include="Domain\ViewModels\ApiModels\ProductMarketReplenishModel.cs" />
+    <Compile Include="Domain\ViewModels\ApiModels\TerminalGeoLocationViewModel.cs" />
+    <Compile Include="Domain\ViewModels\ApiModels\VanSalesDailyCashSync.cs" />
+    <Compile Include="Domain\ViewModels\AttLogsStampsViewModel.cs" />
+    <Compile Include="Domain\ViewModels\AttLogsViewModel.cs" />
+    <Compile Include="Domain\ViewModels\AttLogs_EmployeeShiftsViewModel.cs" />
+    <Compile Include="Domain\ViewModels\AuthUserViewModels.cs" />
+    <Compile Include="Domain\ViewModels\AutoCompleteOrderViewModel.cs" />
+    <Compile Include="Domain\ViewModels\CommonLocationViewModel.cs" />
+    <Compile Include="Domain\ViewModels\ContactNumberViewModel.cs" />
+    <Compile Include="Domain\ViewModels\DevicesViewModel.cs" />
+    <Compile Include="Domain\ViewModels\DirectSalesViewModel.cs" />
+    <Compile Include="Domain\ViewModels\EmployeeGroupsViewModel.cs" />
+    <Compile Include="Domain\ViewModels\EmployeeRolesViewModel.cs" />
+    <Compile Include="Domain\ViewModels\EmployeeShifts_StoresViewModel.cs" />
+    <Compile Include="Domain\ViewModels\EmployeeShiftViewModel.cs" />
+    <Compile Include="Domain\ViewModels\EmployeesTimeLogsViewModel.cs" />
+    <Compile Include="Domain\ViewModels\ApiModels\GoodsReturnRequestSync.cs" />
+    <Compile Include="Domain\ViewModels\ApiModels\InventoryStockSyncCollection.cs" />
+    <Compile Include="Domain\ViewModels\InvoiceViewModel.cs" />
+    <Compile Include="Domain\ViewModels\ApiModels\OrderProcessesSyncCollection.cs" />
+    <Compile Include="Domain\ViewModels\OrderDetailSessionViewModel.cs" />
+    <Compile Include="Domain\ViewModels\OrderProcessViewModel.cs" />
+    <Compile Include="Domain\ViewModels\ApiModels\PalletSync.cs" />
+    <Compile Include="Domain\ViewModels\ApiModels\OrdersSyncCollection.cs" />
+    <Compile Include="Domain\ViewModels\ApiModels\ProductMasterSyncCollection.cs" />
+    <Compile Include="Domain\ViewModels\ApiModels\ProductSerialSyncCollection.cs" />
+    <Compile Include="Domain\ViewModels\PriceGroupViewModel.cs" />
+    <Compile Include="Domain\ViewModels\TenantPriceGroupDetailViewModel.cs" />
+    <Compile Include="Domain\ViewModels\PropertiesViewModels.cs" />
+    <Compile Include="Domain\ViewModels\MarketApiHelpers.cs" />
+    <Compile Include="Domain\ViewModels\PalletGenerateViewModel.cs" />
+    <Compile Include="Domain\ViewModels\ResourceRequestsViewModel.cs" />
+    <Compile Include="Domain\ViewModels\ResourcesViewModel.cs" />
+    <Compile Include="Domain\ViewModels\GroupsViewModel.cs" />
+    <Compile Include="Domain\ViewModels\LocationsViewModel.cs" />
+    <Compile Include="Domain\ViewModels\MarketListViewModel.cs" />
+    <Compile Include="Domain\ViewModels\OperLogsStampsViewModel.cs" />
+    <Compile Include="Domain\ViewModels\OperLogsViewModel.cs" />
+    <Compile Include="Domain\ViewModels\OrdersViewModels.cs" />
+    <Compile Include="Domain\ViewModels\OrderViewModel.cs" />
+    <Compile Include="Domain\ViewModels\ProductMasterViewModel.cs" />
+    <Compile Include="Domain\Models\ProductSCCCodes.cs" />
+    <Compile Include="Domain\Models\ProductSerialis.cs" />
+    <Compile Include="Domain\Models\PSyncHistory.cs" />
+    <Compile Include="Domain\Models\PTenant.cs" />
+    <Compile Include="Domain\Models\ReceivePOVM.cs" />
+    <Compile Include="Domain\Models\ReportType.cs" />
+    <Compile Include="Domain\Models\SLAPriority.cs" />
+    <Compile Include="Domain\Models\StockTake.cs" />
+    <Compile Include="Domain\Models\StockTakeDetail.cs" />
+    <Compile Include="Domain\Models\StockTakeDetailsSerial.cs" />
+    <Compile Include="Domain\Models\StockTakeScanLog.cs" />
+    <Compile Include="Domain\Models\StockTakeSerialSnapshot.cs" />
+    <Compile Include="Domain\Models\StockTakeSnapShot.cs" />
+    <Compile Include="Domain\Models\Terminals.cs" />
+    <Compile Include="Domain\Models\TerminalsLog.cs" />
+    <Compile Include="Domain\Models\TransferOrderVM.cs" />
+    <Compile Include="Domain\Tenants\Tenant.cs" />
+    <Compile Include="Domain\Employee\EmployeeGroups.cs" />
+    <Compile Include="Domain\Employee\EmployeeRoles.cs" />
+    <Compile Include="Domain\Employee\EmployeeShifts_Stores.cs" />
+    <Compile Include="Domain\Shifts\ResourceShifts.cs" />
+    <Compile Include="Domain\Employee\ContactNumber.cs" />
+    <Compile Include="Domain\Employee\ResourceRequests.cs" />
+    <Compile Include="Domain\Global\GlobalCountry.cs" />
+    <Compile Include="Domain\Global\GlobalCurrency.cs" />
+    <Compile Include="Domain\Employee\Groups.cs" />
+    <Compile Include="Domain\OperLogs\OperLogs.cs" />
+    <Compile Include="Domain\Base\PersistableEntity.cs" />
+    <Compile Include="Domain\Employee\Roles.cs" />
+    <Compile Include="Domain\Tenants\TenantLocations.cs" />
+    <Compile Include="Domain\Tenants\TenantContact.cs" />
+    <Compile Include="Domain\Tenants\TenantCurrencies.cs" />
+    <Compile Include="Domain\Tenants\TenantCurrenciesExRates.cs" />
+    <Compile Include="Domain\Tenants\TenantEmailConfig.cs" />
+    <Compile Include="Domain\Tenants\TenantEmailTemplates.cs" />
+    <Compile Include="Domain\Tenants\TenantProfile.cs" />
+    <Compile Include="Domain\ViewModels\ProductSaleQueryResponse.cs" />
+    <Compile Include="Domain\ViewModels\ReportViewModel.cs" />
+    <Compile Include="Domain\ViewModels\RolesViewModel.cs" />
+    <Compile Include="Domain\ViewModels\ShiftStatusViewModel.cs" />
+    <Compile Include="Domain\ViewModels\SlaWorksOrderListViewModel.cs" />
+    <Compile Include="Domain\ViewModels\ShiftsViewModel.cs" />
+    <Compile Include="Domain\ViewModels\StockApiHelpersViewModels.cs" />
+    <Compile Include="Domain\ViewModels\ApiModels\StockTakeSyncCollection.cs" />
+    <Compile Include="Domain\ViewModels\TenantEmailNotificationQueueViewModel.cs" />
+    <Compile Include="Domain\ViewModels\TenantsViewModel.cs" />
+    <Compile Include="Domain\ViewModels\TerminalViewModels.cs" />
+    <Compile Include="Domain\ViewModels\TimeLogsViewModel.cs" />
+    <Compile Include="Domain\ViewModels\TimesheetDetailsCommon.cs" />
+    <Compile Include="Domain\ViewModels\ApiModels\UsersSyncCollection.cs" />
+    <Compile Include="Domain\ViewModels\VehicleInspectionViewModel.cs" />
+    <Compile Include="Domain\ViewModels\ApiModels\WastedGoodsReturnRequestSync.cs" />
+    <Compile Include="Enums\AppEnums.cs" />
+    <Compile Include="Helpers\GaneStaticAppExtensions.cs" />
+    <Compile Include="Helpers\DateTimeToLocal.cs" />
+    <Compile Include="MarketEntities\Market.cs" />
+    <Compile Include="MarketEntities\TenantPriceGroupDetail.cs" />
+    <Compile Include="MarketEntities\VehicleInspection.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SqlServerTypes\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>52422</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:52422/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,109 @@
+﻿@model Ganedata.Core.Entities.Domain.ProductSCCCodes
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.PopupControl },
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Add SCC";
+}
+<h2><span>Product</span></h2>
+<div class="col-md-12 p-0">
+    <ul class="nav nav-tabs">
+        <li id="t1"><a href="@Url.Action("Edit", "ProductMaster", new { id = ViewBag.ProductId })#basic">Basic</a></li>
+        <li id="t2"><a href="@Url.Action("Edit", "ProductMaster", new { id = ViewBag.ProductId })#advanced">Advanced</a></li>
+        <li id="t3"><a href="@Url.Action("Edit", "ProductMaster", new { id = ViewBag.ProductId })#dimensions">Dimensions</a></li>
+        <li id="t4"><a href="@Url.Action("Edit", "ProductMaster", new { id = ViewBag.ProductId })#notes">Notes</a></li>
+        <li id="t5" class="active"><a href="#">Barcodes</a></li>
+        <li id="t6">@Html.ActionLink("Categories", "Index", "ProductCGMap", new { id = ViewBag.ProductId }, null)  </li>
+        <li id="t7">@Html.ActionLink("Locations", "Index", "ProductLocations", new { id = ViewBag.ProductId }, null)</li>
+        <li id="t8">@Html.ActionLink("Additional Attributes", "Index", "ProductAttributes", new { id = ViewBag.ProductId }, null)</li>
+        <li id="t9">@Html.ActionLink("Supplier Codes", "Create", "SupplierCodes", new { id = ViewBag.ProductId }, null) </li>
+    </ul>
+</div>
+
+<div class="col-md-12 p-0">
+    <h4>Product SCCCodes</h4>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.Hidden("ProductId")
+        <div class="col-md-8">
+            <table class="table tdclear">
+                <tr>
+                    <td> @Html.Label("SCC(14)", new { @class = "col-md-1" })</td>
+                    <td> @Html.EditorFor(model => model.SCC)              </td>
+                    <td> @Html.Label("Qty", new { @class = "col-md-1" })</td>
+                    <td><div class="col-md-6">  @Html.EditorFor(model => model.Quantity)</div></td>
+                    <td>
+                        <div class="col-md-offset-2 col-md-1">
+                            <input type="submit" value="+" class="btn btn-default" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>               </td>
+                    <td> @Html.ValidationMessageFor(model => model.SCC)</td>
+                    <td>               </td>
+                    <td>   @Html.ValidationMessageFor(model => model.Quantity)</td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    }
+
+</div>
+<hr />
+<div class="col-md-12 p-0">
+
+    <div class="col-md-8">
+        <table class="table table-striped table-bordered table-hover" style="width:70%">
+            <thead>
+                <tr>
+                    <th>Code </th>
+                    <th>Qty</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.SCC)
+                {
+                    <tr>
+                        <td>
+                            @item.SCC
+                        </td>
+                        <td>
+                            @item.Quantity
+                        </td>
+                        <td>
+                            @*@Html.ActionLink("Delete", "RemoveSCC", new { Id = item.ProductSCCCodeId, ProductId = ViewBag.ProductId }, new { @class = "deletepg" })*@
+                            <a class="deletepg" href="@Url.Action("RemoveSCC", "ProductSCC", new { Id = item.ProductSCCCodeId, ProductId = ViewBag.ProductId })"><i class="fa fa-trash"></i>   </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4">
+        @Html.ActionLink("Next", "Index", "ProductCGMap", new { id = ViewBag.ProductId }, new { @class = "btn btn-primary btn-next" })
+    </div>
+</div>
+<div class="col-md-12 p-0">
+    @Html.ActionLink("Back to List", "Index", "ProductMaster")
+</div>
+
+
+

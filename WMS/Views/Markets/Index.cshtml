@@ -1,0 +1,58 @@
+﻿@model  Ganedata.Core.Entities.Domain.MarketListViewModel
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Markets";
+}
+
+
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+        var name = s.name;
+        if (name.indexOf("gridMaster") >= 0) {
+            $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        }
+
+    }
+</script>
+
+@Html.Hidden("selkey", null, new { @class = "selkey" })
+
+<h2><span>@ViewBag.Title</span></h2>
+
+<div class="table-responsive col-md-12 p-0">
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert-success col-md-12">
+            @Model.ResultsCount Results
+        </div>
+    }
+
+    @Html.Action("MarketsListPartial", Model)
+
+</div>
+
+<div class="col-md-offset-2 col-md-10 bottom-right">
+
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Markets", "Create"))
+    {
+        <a class="btn btn-primary" href="/markets/create"><b class="fa fa-plus"></b> Add Market</a>
+    }
+
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Markets", "EditStockLevels"))
+    {
+        @Html.ActionLink("Replenishment Levels", "EditStockLevels", null, new { @class = "btn btn-primary  Caction" })
+    }
+
+</div>

@@ -1,0 +1,2470 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Winman_RentIncModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Host_Prop_inf">
+          <Key>
+            <PropertyRef Name="PCODE" />
+          </Key>
+          <Property Name="PCODE" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="PLCODE" Type="nvarchar" MaxLength="10" />
+          <Property Name="PADD1" Type="nvarchar" MaxLength="30" />
+          <Property Name="PADD2" Type="nvarchar" MaxLength="30" />
+          <Property Name="PADD3" Type="nvarchar" MaxLength="30" />
+          <Property Name="PADD4" Type="nvarchar" MaxLength="30" />
+          <Property Name="PADD5" Type="nvarchar" MaxLength="30" />
+          <Property Name="PPSTCD" Type="nvarchar" MaxLength="10" />
+          <Property Name="PSTATUS" Type="nvarchar" MaxLength="15" />
+          <Property Name="PVACANT" Type="bit" Nullable="false" />
+          <Property Name="PAVAIL" Type="datetime" />
+          <Property Name="PADDED" Type="datetime" />
+          <Property Name="PBRANCH" Type="nvarchar" MaxLength="10" />
+          <Property Name="PANTRT" Type="money" />
+          <Property Name="PRENTPER" Type="nvarchar" MaxLength="1" />
+          <Property Name="PTERM" Type="float" />
+          <Property Name="PTOTRENT" Type="money" />
+          <Property Name="PLETFEE" Type="money" />
+          <Property Name="PLETPCT" Type="float" />
+          <Property Name="PLETDATE" Type="datetime" />
+          <Property Name="PLETPER" Type="nvarchar" MaxLength="1" />
+          <Property Name="PMANFEE" Type="money" />
+          <Property Name="PMANPCT" Type="float" />
+          <Property Name="PCUSE" Type="bit" Nullable="false" />
+          <Property Name="PCCODE" Type="nvarchar" MaxLength="10" />
+          <Property Name="PCDATE" Type="datetime" />
+          <Property Name="PCTIME" Type="datetime" />
+          <Property Name="PTITLE" Type="nvarchar" MaxLength="255" />
+          <Property Name="PSHORT" Type="ntext" />
+          <Property Name="PMED" Type="ntext" />
+          <Property Name="PLONG" Type="ntext" />
+          <Property Name="PGASCHK" Type="datetime" />
+          <Property Name="PUSERD1" Type="datetime" />
+          <Property Name="PUSERD2" Type="datetime" />
+          <Property Name="PUSERD3" Type="datetime" />
+          <Property Name="PUSERD4" Type="datetime" />
+          <Property Name="PFCHK" Type="bit" Nullable="false" />
+          <Property Name="PINVENT" Type="ntext" />
+          <Property Name="PGASINV" Type="ntext" />
+          <Property Name="PELECINV" Type="ntext" />
+          <Property Name="PADVERT" Type="ntext" />
+          <Property Name="PNOTES" Type="ntext" />
+          <Property Name="PUSERNT1" Type="ntext" />
+          <Property Name="PUSERNT2" Type="ntext" />
+          <Property Name="PCONELECT" Type="nvarchar" MaxLength="10" />
+          <Property Name="PCONGAS" Type="nvarchar" MaxLength="10" />
+          <Property Name="PCONWATER" Type="nvarchar" MaxLength="10" />
+          <Property Name="PCONSEW" Type="nvarchar" MaxLength="10" />
+          <Property Name="PFDATE1" Type="datetime" />
+          <Property Name="PFDUEDAY1" Type="smallint" />
+          <Property Name="PFDESC1" Type="nvarchar" MaxLength="40" />
+          <Property Name="PFAMT1" Type="money" />
+          <Property Name="PFRS1" Type="nvarchar" MaxLength="1" />
+          <Property Name="PFPER1" Type="nvarchar" MaxLength="1" />
+          <Property Name="PFVAT1" Type="bit" Nullable="false" />
+          <Property Name="PFCAT1" Type="nvarchar" MaxLength="2" />
+          <Property Name="PFDATE2" Type="datetime" />
+          <Property Name="PFDUEDAY2" Type="smallint" />
+          <Property Name="PFDESC2" Type="nvarchar" MaxLength="40" />
+          <Property Name="PFAMT2" Type="money" />
+          <Property Name="PFRS2" Type="nvarchar" MaxLength="1" />
+          <Property Name="PFPER2" Type="nvarchar" MaxLength="1" />
+          <Property Name="PFVAT2" Type="bit" Nullable="false" />
+          <Property Name="PFCAT2" Type="nvarchar" MaxLength="2" />
+          <Property Name="PFDATE3" Type="datetime" />
+          <Property Name="PFDUEDAY3" Type="smallint" />
+          <Property Name="PFDESC3" Type="nvarchar" MaxLength="40" />
+          <Property Name="PFAMT3" Type="money" />
+          <Property Name="PFRS3" Type="nvarchar" MaxLength="1" />
+          <Property Name="PFPER3" Type="nvarchar" MaxLength="1" />
+          <Property Name="PFVAT3" Type="bit" Nullable="false" />
+          <Property Name="PFCAT3" Type="nvarchar" MaxLength="2" />
+          <Property Name="PFDATE4" Type="datetime" />
+          <Property Name="PFDUEDAY4" Type="smallint" />
+          <Property Name="PFDESC4" Type="nvarchar" MaxLength="40" />
+          <Property Name="PFAMT4" Type="money" />
+          <Property Name="PFRS4" Type="nvarchar" MaxLength="1" />
+          <Property Name="PFPER4" Type="nvarchar" MaxLength="1" />
+          <Property Name="PFVAT4" Type="bit" Nullable="false" />
+          <Property Name="PFCAT4" Type="nvarchar" MaxLength="2" />
+          <Property Name="PFDATE5" Type="datetime" />
+          <Property Name="PFDUEDAY5" Type="smallint" />
+          <Property Name="PFDESC5" Type="nvarchar" MaxLength="40" />
+          <Property Name="PFAMT5" Type="money" />
+          <Property Name="PFRS5" Type="nvarchar" MaxLength="1" />
+          <Property Name="PFPER5" Type="nvarchar" MaxLength="1" />
+          <Property Name="PFVAT5" Type="bit" Nullable="false" />
+          <Property Name="PFCAT5" Type="nvarchar" MaxLength="2" />
+          <Property Name="PFDATE6" Type="datetime" />
+          <Property Name="PFDUEDAY6" Type="smallint" />
+          <Property Name="PFDESC6" Type="nvarchar" MaxLength="40" />
+          <Property Name="PFAMT6" Type="money" />
+          <Property Name="PFRS6" Type="nvarchar" MaxLength="1" />
+          <Property Name="PFPER6" Type="nvarchar" MaxLength="1" />
+          <Property Name="PFVAT6" Type="bit" Nullable="false" />
+          <Property Name="PFCAT6" Type="nvarchar" MaxLength="2" />
+          <Property Name="LockID" Type="nvarchar" MaxLength="3" />
+          <Property Name="PMRent" Type="money" />
+          <Property Name="PMBeds" Type="smallint" />
+          <Property Name="PMFurnished" Type="nvarchar" MaxLength="15" />
+          <Property Name="PMSmoker" Type="nvarchar" MaxLength="15" />
+          <Property Name="PMPets" Type="nvarchar" MaxLength="15" />
+          <Property Name="PMChildren" Type="nvarchar" MaxLength="15" />
+          <Property Name="PMUser1" Type="nvarchar" MaxLength="15" />
+          <Property Name="PMUser2" Type="nvarchar" MaxLength="15" />
+          <Property Name="PMUser3" Type="nvarchar" MaxLength="15" />
+          <Property Name="PMUser4" Type="real" />
+          <Property Name="mPhotoText" Type="ntext" />
+          <Property Name="TXTADVERTISINGNAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="BROCHURE ITEM39" Type="bit" Nullable="false" />
+          <Property Name="BROCHURE ITEM40" Type="bit" Nullable="false" />
+          <Property Name="BROCHURE ITEM41" Type="bit" Nullable="false" />
+          <Property Name="PHOTO BITMAP 1" Type="nvarchar" MaxLength="255" />
+          <Property Name="PHOTO BITMAP 2" Type="nvarchar" MaxLength="255" />
+          <Property Name="PHOTO BITMAP 3" Type="nvarchar" MaxLength="255" />
+          <Property Name="PHOTO BITMAP 4" Type="nvarchar" MaxLength="255" />
+          <Property Name="PHOTO BITMAP 5" Type="nvarchar" MaxLength="255" />
+          <Property Name="PHOTO BITMAP 6" Type="nvarchar" MaxLength="255" />
+          <Property Name="PHOTO BITMAP 7" Type="nvarchar" MaxLength="255" />
+          <Property Name="PHOTO BITMAP 8" Type="nvarchar" MaxLength="255" />
+          <Property Name="PHOTO BITMAP 9" Type="nvarchar" MaxLength="255" />
+          <Property Name="mPhotoText2" Type="ntext" />
+          <Property Name="mPhotoText3" Type="ntext" />
+          <Property Name="mphototext4" Type="ntext" />
+          <Property Name="PCONCOUNC" Type="nvarchar" MaxLength="10" />
+          <Property Name="PINSAGENT" Type="nvarchar" MaxLength="40" />
+          <Property Name="PINSCO" Type="nvarchar" MaxLength="40" />
+          <Property Name="PINSPAIDTO" Type="nvarchar" MaxLength="40" />
+          <Property Name="PINSSUM" Type="money" />
+          <Property Name="PINSPOLICY" Type="nvarchar" MaxLength="20" />
+          <Property Name="PINSTEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="PINSRENEW" Type="datetime" />
+          <Property Name="PINSAGENT2" Type="nvarchar" MaxLength="40" />
+          <Property Name="PINSCO2" Type="nvarchar" MaxLength="40" />
+          <Property Name="PINSPAIDTO2" Type="nvarchar" MaxLength="40" />
+          <Property Name="PINSSUM2" Type="money" />
+          <Property Name="PINSPOLICY2" Type="nvarchar" MaxLength="20" />
+          <Property Name="PINSTEL2" Type="nvarchar" MaxLength="50" />
+          <Property Name="PINSRENEW2" Type="datetime" />
+          <Property Name="PShared" Type="bit" Nullable="false" />
+          <Property Name="PLCODE0" Type="nvarchar" MaxLength="10" />
+          <Property Name="PLPercent0" Type="real" />
+          <Property Name="PLCODE1" Type="nvarchar" MaxLength="10" />
+          <Property Name="PLPercent1" Type="real" />
+          <Property Name="PLCODE2" Type="nvarchar" MaxLength="10" />
+          <Property Name="PLPercent2" Type="real" />
+          <Property Name="PLCODE3" Type="nvarchar" MaxLength="10" />
+          <Property Name="PLPercent3" Type="real" />
+          <Property Name="PLCODE4" Type="nvarchar" MaxLength="10" />
+          <Property Name="PLPercent4" Type="real" />
+          <Property Name="PLCODE5" Type="nvarchar" MaxLength="10" />
+          <Property Name="PLPercent5" Type="real" />
+          <Property Name="PLCODE6" Type="nvarchar" MaxLength="10" />
+          <Property Name="PLPercent6" Type="real" />
+          <Property Name="PLCODE7" Type="nvarchar" MaxLength="10" />
+          <Property Name="PLPercent7" Type="real" />
+          <Property Name="PLCODE8" Type="nvarchar" MaxLength="10" />
+          <Property Name="PLPercent8" Type="real" />
+          <Property Name="PLCODE9" Type="nvarchar" MaxLength="10" />
+          <Property Name="PLPercent9" Type="real" />
+          <Property Name="PCCODE1" Type="nvarchar" MaxLength="10" />
+          <Property Name="PCCODE2" Type="nvarchar" MaxLength="10" />
+          <Property Name="PCCODE3" Type="nvarchar" MaxLength="10" />
+          <Property Name="PCCODE4" Type="nvarchar" MaxLength="10" />
+          <Property Name="PCNotes" Type="ntext" />
+          <Property Name="Match1" Type="nvarchar" MaxLength="15" />
+          <Property Name="Match2" Type="nvarchar" MaxLength="15" />
+          <Property Name="Match3" Type="nvarchar" MaxLength="15" />
+          <Property Name="Match4" Type="nvarchar" MaxLength="15" />
+          <Property Name="Match5" Type="nvarchar" MaxLength="15" />
+          <Property Name="Match6" Type="nvarchar" MaxLength="15" />
+          <Property Name="Match7" Type="nvarchar" MaxLength="15" />
+          <Property Name="Match8" Type="nvarchar" MaxLength="15" />
+          <Property Name="Match9" Type="nvarchar" MaxLength="15" />
+          <Property Name="Match10" Type="nvarchar" MaxLength="15" />
+          <Property Name="Numeric1" Type="real" />
+          <Property Name="Numeric2" Type="real" />
+          <Property Name="Numeric3" Type="real" />
+          <Property Name="Numeric4" Type="real" />
+          <Property Name="Numeric5" Type="real" />
+          <Property Name="Numeric6" Type="real" />
+          <Property Name="Numeric7" Type="real" />
+          <Property Name="Numeric8" Type="real" />
+          <Property Name="Numeric9" Type="real" />
+          <Property Name="Numeric10" Type="real" />
+          <Property Name="Fac1" Type="nvarchar" MaxLength="15" />
+          <Property Name="Fac2" Type="nvarchar" MaxLength="15" />
+          <Property Name="Fac3" Type="nvarchar" MaxLength="15" />
+          <Property Name="Fac4" Type="nvarchar" MaxLength="15" />
+          <Property Name="Fac5" Type="nvarchar" MaxLength="15" />
+          <Property Name="Fac6" Type="nvarchar" MaxLength="15" />
+          <Property Name="Fac7" Type="nvarchar" MaxLength="15" />
+          <Property Name="Fac8" Type="nvarchar" MaxLength="15" />
+          <Property Name="Fac9" Type="nvarchar" MaxLength="15" />
+          <Property Name="Fac10" Type="nvarchar" MaxLength="15" />
+          <Property Name="BROCHURE ITEM1" Type="int" />
+          <Property Name="BROCHURE ITEM2" Type="int" />
+          <Property Name="BROCHURE ITEM3" Type="int" />
+          <Property Name="BROCHURE ITEM4" Type="int" />
+          <Property Name="BROCHURE ITEM5" Type="int" />
+          <Property Name="BROCHURE ITEM6" Type="int" />
+          <Property Name="BROCHURE ITEM7" Type="int" />
+          <Property Name="BROCHURE ITEM8" Type="int" />
+          <Property Name="BROCHURE ITEM9" Type="int" />
+          <Property Name="BROCHURE ITEM10" Type="int" />
+          <Property Name="BROCHURE ITEM11" Type="int" />
+          <Property Name="BROCHURE ITEM12" Type="int" />
+          <Property Name="BROCHURE ITEM13" Type="int" />
+          <Property Name="BROCHURE ITEM14" Type="int" />
+          <Property Name="BROCHURE ITEM15" Type="int" />
+          <Property Name="BROCHURE ITEM16" Type="int" />
+          <Property Name="BROCHURE ITEM17" Type="int" />
+          <Property Name="BROCHURE ITEM18" Type="int" />
+          <Property Name="BROCHURE ITEM19" Type="int" />
+          <Property Name="BROCHURE ITEM20" Type="int" />
+          <Property Name="BROCHURE ITEM21" Type="int" />
+          <Property Name="BROCHURE ITEM22" Type="int" />
+          <Property Name="BROCHURE ITEM23" Type="int" />
+          <Property Name="BROCHURE ITEM24" Type="int" />
+          <Property Name="BROCHURE ITEM25" Type="int" />
+          <Property Name="BROCHURE ITEM26" Type="int" />
+          <Property Name="BROCHURE ITEM27" Type="int" />
+          <Property Name="BROCHURE ITEM28" Type="int" />
+          <Property Name="BROCHURE ITEM29" Type="int" />
+          <Property Name="BROCHURE ITEM30" Type="int" />
+          <Property Name="BROCHURE ITEM36" Type="bit" Nullable="false" />
+          <Property Name="BROCHURE ITEM37" Type="bit" Nullable="false" />
+          <Property Name="BROCHURE ITEM38" Type="bit" Nullable="false" />
+          <Property Name="PRICE" Type="money" />
+          <Property Name="cPriceStatus" Type="nvarchar" MaxLength="50" />
+          <Property Name="ADDRESSLINES" Type="nvarchar" MaxLength="255" />
+          <Property Name="mDIRECTIONS" Type="ntext" />
+          <Property Name="mREMARKS" Type="ntext" />
+          <Property Name="SHORT ADVERT" Type="ntext" />
+          <Property Name="cADDRESSON1" Type="nvarchar" MaxLength="255" />
+          <Property Name="Holarea" Type="nvarchar" MaxLength="40" />
+          <Property Name="District" Type="nvarchar" MaxLength="50" />
+          <Property Name="Town" Type="nvarchar" MaxLength="40" />
+          <Property Name="PropertyName" Type="nvarchar" MaxLength="50" />
+          <Property Name="PropKind" Type="nvarchar" MaxLength="50" />
+          <Property Name="PEXPORTFLAG" Type="bit" Nullable="false" />
+          <Property Name="PEXPORTDATE" Type="datetime" />
+          <Property Name="PIMPORTDATE" Type="datetime" />
+          <Property Name="PNEGID" Type="nvarchar" MaxLength="10" />
+          <Property Name="PDEPT" Type="nvarchar" MaxLength="50" />
+          <Property Name="PTAT" Type="int" />
+          <Property Name="PTATCOM" Type="int" />
+          <Property Name="IsHeadMarker" Type="bit" Nullable="false" />
+          <Property Name="HeadProperty" Type="nvarchar" MaxLength="10" />
+          <Property Name="PDateTimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PNegotiator" Type="nvarchar" MaxLength="3" />
+          <Property Name="exportable" Type="bit" Nullable="false" />
+          <Property Name="PropertyManager" Type="nvarchar" MaxLength="3" />
+          <Property Name="autoapplygroundrentincreases" Type="bit" Nullable="false" />
+          <Property Name="MOBranchDuplicate" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Host_Prop_inf2">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PCODE" Type="nvarchar" MaxLength="10" />
+          <Property Name="OzGSTExemption" Type="bit" Nullable="false" />
+          <Property Name="VatNo" Type="nvarchar" MaxLength="15" />
+          <Property Name="VATPeriodEndDate" Type="datetime" />
+          <Property Name="CashAccounting" Type="bit" Nullable="false" />
+          <Property Name="IncludeService" Type="bit" Nullable="false" />
+          <Property Name="VATPeriod" Type="nvarchar" MaxLength="1" />
+          <Property Name="TaxCategory1" Type="int" />
+          <Property Name="TaxCategory2" Type="int" />
+          <Property Name="TaxCategory3" Type="int" />
+          <Property Name="TaxCategory4" Type="int" />
+          <Property Name="TaxCategory5" Type="int" />
+          <Property Name="TaxCategory6" Type="int" />
+          <Property Name="TaxCategoryLetting" Type="int" />
+          <Property Name="TaxCategoryManagement" Type="int" />
+          <Property Name="FAPArea" Type="nvarchar" MaxLength="255" />
+          <Property Name="PTenTopUp" Type="bit" Nullable="false" />
+          <Property Name="BS7666_SAON" Type="nvarchar" MaxLength="100" />
+          <Property Name="BS7666_PAON" Type="nvarchar" MaxLength="100" />
+          <Property Name="BS7666_Street" Type="nvarchar" MaxLength="100" />
+          <Property Name="BS7666_Locality" Type="nvarchar" MaxLength="35" />
+          <Property Name="BS7666_Town" Type="nvarchar" MaxLength="30" />
+          <Property Name="BS7666_County" Type="nvarchar" MaxLength="30" />
+          <Property Name="BS7666_PstCd" Type="nvarchar" MaxLength="8" />
+          <Property Name="P2DateTimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="EnergyRatingCurrent" Type="nvarchar" MaxLength="3" />
+          <Property Name="EnergyRatingPotential" Type="nvarchar" MaxLength="3" />
+          <Property Name="CO2RatingCurrent" Type="nvarchar" MaxLength="3" />
+          <Property Name="CO2RatingPotential" Type="nvarchar" MaxLength="3" />
+          <Property Name="EPCOwner" Type="nvarchar" MaxLength="50" />
+          <Property Name="EPCUseScotCharts" Type="bit" Nullable="false" />
+          <Property Name="EPCUseCommercialChart" Type="bit" Nullable="false" />
+          <Property Name="lastmodified" Type="datetime" />
+          <Property Name="PLetType" Type="int" />
+          <Property Name="PDepositAmount" Type="money" />
+          <Property Name="LettingFeeAccountID" Type="int" />
+          <Property Name="AdditionalFee1AccountID" Type="int" />
+          <Property Name="AdditionalFee2AccountID" Type="int" />
+          <Property Name="AdditionalFee3AccountID" Type="int" />
+          <Property Name="AdditionalFee4AccountID" Type="int" />
+          <Property Name="AdditionalFee5AccountID" Type="int" />
+          <Property Name="AdditionalFee6AccountID" Type="int" />
+          <Property Name="LeaseDateNotUpdated" Type="bit" Nullable="false" />
+          <Property Name="Section153" Type="bit" Nullable="false" />
+          <Property Name="Section158" Type="bit" Nullable="false" />
+          <Property Name="Section166" Type="bit" Nullable="false" />
+          <Property Name="LeaseAmount" Type="money" />
+          <Property Name="LeaseDate" Type="datetime" />
+          <Property Name="LeasePeriod" Type="nvarchar" MaxLength="1" />
+          <Property Name="EnforcePeriodEndDate" Type="bit" Nullable="false" />
+          <Property Name="PeriodEndDate" Type="datetime" />
+          <Property Name="PeriodFrequency" Type="int" />
+          <Property Name="MOBranch" Type="int" Nullable="false" />
+          <Property Name="MOShared" Type="bit" Nullable="false" />
+          <Property Name="InitialInvoiceType" Type="int" />
+          <Property Name="RentChargePeriodType" Type="int" />
+          <Property Name="RentDescriptionType" Type="int" />
+          <Property Name="ElectricityMeterSerial" Type="nvarchar" MaxLength="25" />
+          <Property Name="GasMeterSerial" Type="nvarchar" MaxLength="25" />
+          <Property Name="ElectricitySupplyNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="GasMeterPointReference" Type="nvarchar" MaxLength="50" />
+          <Property Name="ElectricityPrepayment" Type="bit" Nullable="false" />
+          <Property Name="GasPrepayment" Type="bit" Nullable="false" />
+          <Property Name="Last_Used_Image_Location" Type="nvarchar" MaxLength="255" />
+          <Property Name="Last_Used_Floorplan_Location" Type="nvarchar" MaxLength="255" />
+          <Property Name="Last_Used_VT_Location" Type="nvarchar" MaxLength="255" />
+          <Property Name="PropertyManagedTemplate" Type="int" />
+          <Property Name="GasUtilityAvailable" Type="bit" Nullable="false" />
+          <Property Name="UploadProperty" Type="bit" Nullable="false" />
+          <Property Name="StreetViewLatitude" Type="float" />
+          <Property Name="StreetViewLongditude" Type="float" />
+          <Property Name="StreetViewPitch" Type="float" />
+          <Property Name="StreetViewYaw" Type="float" />
+          <Property Name="StreetViewZoom" Type="int" />
+          <Property Name="PURL" Type="nvarchar" MaxLength="500" />
+          <Property Name="AsbestosPresent" Type="bit" />
+        </EntityType>
+        <EntityType Name="Host_Ten_inf">
+          <Key>
+            <PropertyRef Name="TYCODE" />
+          </Key>
+          <Property Name="TYCODE" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="TYPCODE" Type="nvarchar" MaxLength="10" />
+          <Property Name="TYPLOCK" Type="bit" Nullable="false" />
+          <Property Name="TYNAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="TYSALU" Type="nvarchar" MaxLength="40" />
+          <Property Name="TYADD1" Type="nvarchar" MaxLength="30" />
+          <Property Name="TYADD2" Type="nvarchar" MaxLength="30" />
+          <Property Name="TYADD3" Type="nvarchar" MaxLength="30" />
+          <Property Name="TYADD4" Type="nvarchar" MaxLength="30" />
+          <Property Name="TYPSTCD" Type="nvarchar" MaxLength="10" />
+          <Property Name="TYTELHOME" Type="nvarchar" MaxLength="50" />
+          <Property Name="TYTELWK1" Type="nvarchar" MaxLength="50" />
+          <Property Name="TYTELWK2" Type="nvarchar" MaxLength="50" />
+          <Property Name="TYTELFAX" Type="nvarchar" MaxLength="50" />
+          <Property Name="TYTELMOBL" Type="nvarchar" MaxLength="50" />
+          <Property Name="TYE-MAIL" Type="nvarchar" MaxLength="255" />
+          <Property Name="TYSTATUS" Type="nvarchar" MaxLength="15" />
+          <Property Name="TYCATEG" Type="nvarchar" MaxLength="12" />
+          <Property Name="TYADDED" Type="datetime" />
+          <Property Name="TYSTART" Type="datetime" />
+          <Property Name="TYCurSTART" Type="datetime" />
+          <Property Name="TYBRANCH" Type="nvarchar" MaxLength="10" />
+          <Property Name="TYCONFIRM" Type="bit" Nullable="false" />
+          <Property Name="TYCLEARANCE" Type="int" />
+          <Property Name="TYCLEARANCEC" Type="int" />
+          <Property Name="TYCLEARANCES" Type="int" />
+          <Property Name="TYCLEARANCEA" Type="int" />
+          <Property Name="TYCLEARANCEB" Type="int" />
+          <Property Name="TYRECTYPE" Type="nvarchar" MaxLength="14" />
+          <Property Name="TYRENEW" Type="datetime" />
+          <Property Name="TYNTQ" Type="datetime" />
+          <Property Name="TYVAC" Type="datetime" />
+          <Property Name="TYPeriodic" Type="bit" Nullable="false" />
+          <Property Name="TYUSERD1" Type="datetime" />
+          <Property Name="TYUSERD2" Type="datetime" />
+          <Property Name="TYUSERD3" Type="datetime" />
+          <Property Name="TYUSERD4" Type="datetime" />
+          <Property Name="TYINSP" Type="datetime" />
+          <Property Name="TYINSPTXT" Type="nvarchar" MaxLength="40" />
+          <Property Name="TYTERMMTH" Type="float" />
+          <Property Name="TYTERMYR" Type="float" />
+          <Property Name="TYGASIN" Type="nvarchar" MaxLength="100" />
+          <Property Name="TYGASOUT" Type="nvarchar" MaxLength="100" />
+          <Property Name="TYELECIN" Type="nvarchar" MaxLength="100" />
+          <Property Name="TYELECOUT" Type="nvarchar" MaxLength="100" />
+          <Property Name="TYWATRIN" Type="nvarchar" MaxLength="100" />
+          <Property Name="TYWATROUT" Type="nvarchar" MaxLength="100" />
+          <Property Name="TYSEWIN" Type="nvarchar" MaxLength="100" />
+          <Property Name="TYSEWOUT" Type="nvarchar" MaxLength="100" />
+          <Property Name="TYRENT" Type="money" />
+          <Property Name="TYRENTMIN" Type="money" />
+          <Property Name="TYRENTMAX" Type="money" />
+          <Property Name="TYRENTWORDS" Type="nvarchar" MaxLength="255" />
+          <Property Name="TYPER" Type="nvarchar" MaxLength="1" />
+          <Property Name="TYPERWORDS" Type="nvarchar" MaxLength="24" />
+          <Property Name="TYRENTDAT" Type="datetime" />
+          <Property Name="TYRENTDAY" Type="nvarchar" MaxLength="27" />
+          <Property Name="TYRENTWK" Type="money" />
+          <Property Name="TYRENTMTH" Type="money" />
+          <Property Name="TYRENTAPP" Type="money" />
+          <Property Name="TYAppPost" Type="bit" Nullable="false" />
+          <Property Name="TYDEPHOLD" Type="money" />
+          <Property Name="TYFDEP3" Type="bit" Nullable="false" />
+          <Property Name="TYDEPFULL" Type="money" />
+          <Property Name="TYAGFEE" Type="money" />
+          <Property Name="TYUSERF" Type="money" />
+          <Property Name="TYUSERF2" Type="money" />
+          <Property Name="TYUSERF3" Type="money" />
+          <Property Name="TYUSERF4" Type="money" />
+          <Property Name="TYUSERF5" Type="money" />
+          <Property Name="TYFDESC1" Type="nvarchar" MaxLength="45" />
+          <Property Name="TYFDESC2" Type="nvarchar" MaxLength="45" />
+          <Property Name="TYFDESC3" Type="nvarchar" MaxLength="45" />
+          <Property Name="TYFDESC4" Type="nvarchar" MaxLength="45" />
+          <Property Name="TYFDESC5" Type="nvarchar" MaxLength="45" />
+          <Property Name="TYFDESC6" Type="nvarchar" MaxLength="45" />
+          <Property Name="TYFDESC7" Type="nvarchar" MaxLength="45" />
+          <Property Name="TYFDESC8" Type="nvarchar" MaxLength="45" />
+          <Property Name="TYFDESC9" Type="nvarchar" MaxLength="45" />
+          <Property Name="TYFPER5" Type="nvarchar" MaxLength="1" />
+          <Property Name="TYFPER6" Type="nvarchar" MaxLength="1" />
+          <Property Name="TYFPER7" Type="nvarchar" MaxLength="1" />
+          <Property Name="TYFPER8" Type="nvarchar" MaxLength="1" />
+          <Property Name="TYFPER9" Type="nvarchar" MaxLength="1" />
+          <Property Name="TYFPER10" Type="nvarchar" MaxLength="1" />
+          <Property Name="TYFVAT5" Type="bit" Nullable="false" />
+          <Property Name="TYFVAT6" Type="bit" Nullable="false" />
+          <Property Name="TYFVAT7" Type="bit" Nullable="false" />
+          <Property Name="TYFVAT8" Type="bit" Nullable="false" />
+          <Property Name="TYFVAT9" Type="bit" Nullable="false" />
+          <Property Name="TYFVAT10" Type="bit" Nullable="false" />
+          <Property Name="TYFCAT5" Type="nvarchar" MaxLength="2" />
+          <Property Name="TYFCAT6" Type="nvarchar" MaxLength="2" />
+          <Property Name="TYFCAT7" Type="nvarchar" MaxLength="2" />
+          <Property Name="TYFCAT8" Type="nvarchar" MaxLength="2" />
+          <Property Name="TYFCAT9" Type="nvarchar" MaxLength="2" />
+          <Property Name="TYFCAT10" Type="nvarchar" MaxLength="2" />
+          <Property Name="TYINVADDED" Type="bit" Nullable="false" />
+          <Property Name="TYTENANCY" Type="bit" Nullable="false" />
+          <Property Name="TYAGNAME" Type="ntext" />
+          <Property Name="TYUSERNT1" Type="ntext" />
+          <Property Name="TYUSERNT2" Type="ntext" />
+          <Property Name="TYUSERNT3" Type="ntext" />
+          <Property Name="TYUSERNT4" Type="ntext" />
+          <Property Name="TYINNAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="TYINADD1" Type="nvarchar" MaxLength="30" />
+          <Property Name="TYINADD2" Type="nvarchar" MaxLength="30" />
+          <Property Name="TYINADD3" Type="nvarchar" MaxLength="30" />
+          <Property Name="TYINADD4" Type="nvarchar" MaxLength="30" />
+          <Property Name="TYINPSTCD" Type="nvarchar" MaxLength="10" />
+          <Property Name="TYINTEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="TYREMTYPE" Type="float" />
+          <Property Name="TYREMARK" Type="nvarchar" MaxLength="80" />
+          <Property Name="TYINVDATE" Type="datetime" />
+          <Property Name="TYINVDESC0" Type="nvarchar" MaxLength="40" />
+          <Property Name="TYINVAMT0" Type="money" />
+          <Property Name="TYINVVAT0" Type="bit" Nullable="false" />
+          <Property Name="TYINVDESC1" Type="nvarchar" MaxLength="40" />
+          <Property Name="TYINVAMT1" Type="money" />
+          <Property Name="TYINVVAT1" Type="bit" Nullable="false" />
+          <Property Name="TYINVDESC2" Type="nvarchar" MaxLength="40" />
+          <Property Name="TYINVAMT2" Type="money" />
+          <Property Name="TYINVVAT2" Type="bit" Nullable="false" />
+          <Property Name="TYINVDESC3" Type="nvarchar" MaxLength="40" />
+          <Property Name="TYINVAMT3" Type="money" />
+          <Property Name="TYINVVAT3" Type="bit" Nullable="false" />
+          <Property Name="TYINVDESC4" Type="nvarchar" MaxLength="40" />
+          <Property Name="TYINVAMT4" Type="money" />
+          <Property Name="TYINVVAT4" Type="bit" Nullable="false" />
+          <Property Name="TYINVDESC5" Type="nvarchar" MaxLength="40" />
+          <Property Name="TYINVAMT5" Type="money" />
+          <Property Name="TYINVVAT5" Type="bit" Nullable="false" />
+          <Property Name="TYINVDESC6" Type="nvarchar" MaxLength="40" />
+          <Property Name="TYINVAMT6" Type="money" />
+          <Property Name="TYINVVAT6" Type="bit" Nullable="false" />
+          <Property Name="TYINVDESC7" Type="nvarchar" MaxLength="40" />
+          <Property Name="TYINVAMT7" Type="money" />
+          <Property Name="TYINVVAT7" Type="bit" Nullable="false" />
+          <Property Name="TYINVDESC8" Type="nvarchar" MaxLength="40" />
+          <Property Name="TYINVAMT8" Type="money" />
+          <Property Name="TYINVVAT8" Type="bit" Nullable="false" />
+          <Property Name="TYINVDESC9" Type="nvarchar" MaxLength="40" />
+          <Property Name="TYINVAMT9" Type="money" />
+          <Property Name="TYINVVAT9" Type="bit" Nullable="false" />
+          <Property Name="TYINVDESC10" Type="nvarchar" MaxLength="40" />
+          <Property Name="TYINVAMT10" Type="money" />
+          <Property Name="TYINVVAT10" Type="bit" Nullable="false" />
+          <Property Name="TYINVDESC11" Type="nvarchar" MaxLength="40" />
+          <Property Name="TYINVAMT11" Type="money" />
+          <Property Name="TYINVVAT11" Type="bit" Nullable="false" />
+          <Property Name="TYINVDESC12" Type="nvarchar" MaxLength="40" />
+          <Property Name="TYINVAMT12" Type="money" />
+          <Property Name="TYINVDESC13" Type="nvarchar" MaxLength="40" />
+          <Property Name="TYINVAMT13" Type="money" />
+          <Property Name="TYINVDESC14" Type="nvarchar" MaxLength="40" />
+          <Property Name="TYINVAMT14" Type="money" />
+          <Property Name="TYINVDESC15" Type="nvarchar" MaxLength="40" />
+          <Property Name="TYINVAMT15" Type="money" />
+          <Property Name="LockID" Type="nvarchar" MaxLength="3" />
+          <Property Name="TYRNTBFWD" Type="money" />
+          <Property Name="TYGRTBFWD" Type="money" />
+          <Property Name="TYDEPBFWD" Type="money" />
+          <Property Name="TYSTLBFWD" Type="money" />
+          <Property Name="TYSCGBFWD" Type="money" />
+          <Property Name="TYINSBFWD" Type="money" />
+          <Property Name="TYMANBFWD" Type="money" />
+          <Property Name="TYWRTBFWD" Type="money" />
+          <Property Name="TYSUNBFWD" Type="money" />
+          <Property Name="TYADPBFWD" Type="money" />
+          <Property Name="TYTENBFWD" Type="money" />
+          <Property Name="TYADMBFWD" Type="money" />
+          <Property Name="TYSTFBFWD" Type="money" />
+          <Property Name="TYDEPLAND" Type="money" />
+          <Property Name="TYELECLWIN" Type="nvarchar" MaxLength="100" />
+          <Property Name="TYELECLWOUT" Type="nvarchar" MaxLength="100" />
+          <Property Name="TYFIXEDAMOUNT" Type="money" />
+          <Property Name="TYFIXEDPER" Type="nvarchar" MaxLength="1" />
+          <Property Name="TYFIXEDDATE" Type="datetime" />
+          <Property Name="TYADDEDBFBAL" Type="bit" Nullable="false" />
+          <Property Name="TYPrintRec" Type="bit" Nullable="false" />
+          <Property Name="TYCalcRents" Type="bit" Nullable="false" />
+          <Property Name="TYCalcDate" Type="datetime" />
+          <Property Name="TYCalcPosted" Type="bit" Nullable="false" />
+          <Property Name="TYFirstInv" Type="bit" Nullable="false" />
+          <Property Name="TYInvDemHeader" Type="nvarchar" MaxLength="50" />
+          <Property Name="TYInvDemFooter" Type="nvarchar" MaxLength="50" />
+          <Property Name="TYPfInvDemHeader" Type="nvarchar" MaxLength="50" />
+          <Property Name="TYPfInvDemFooter" Type="nvarchar" MaxLength="50" />
+          <Property Name="TYEXPORTFLAG" Type="bit" Nullable="false" />
+          <Property Name="TYEXPORTDATE" Type="datetime" />
+          <Property Name="TYIMPORTDATE" Type="datetime" />
+          <Property Name="TYEMailPreferred" Type="bit" Nullable="false" />
+          <Property Name="TYSMSPreferred" Type="bit" Nullable="false" />
+          <Property Name="TYPostPreferred" Type="bit" Nullable="false" />
+          <Property Name="TYSMSMMS" Type="bit" Nullable="false" />
+          <Property Name="PayeeName" Type="nvarchar" MaxLength="40" />
+          <Property Name="ProFormaTextID" Type="int" />
+          <Property Name="ProFormaText" Type="nvarchar" MaxLength="255" />
+          <Property Name="CompanyName" Type="nvarchar" MaxLength="128" />
+          <Property Name="UnitTenancy" Type="bit" Nullable="false" />
+          <Property Name="DepositProtectionScheme" Type="bit" />
+          <Property Name="DepositProtectionSchemeID" Type="int" />
+          <Property Name="DepositProtectionSchemeNotes" Type="text" />
+          <Property Name="DepositProtectionSchemeNotesGeneral" Type="text" />
+          <Property Name="DepositProtectionSchemeAgreedDate" Type="datetime" />
+          <Property Name="DepositProtectionSchemeTargetDate" Type="datetime" />
+          <Property Name="DepositProtectionSchemeDisputeDate" Type="datetime" />
+          <Property Name="DepositProtectionSchemeDisputeAmt" Type="nvarchar" MaxLength="10" />
+          <Property Name="TyBkAct" Type="nvarchar" MaxLength="8" />
+          <Property Name="TyBkActName" Type="nvarchar" MaxLength="32" />
+          <Property Name="TyBkBDC" Type="nvarchar" MaxLength="5" />
+          <Property Name="TyBkRef" Type="nvarchar" MaxLength="18" />
+          <Property Name="TyBkSort" Type="nvarchar" MaxLength="8" />
+          <Property Name="TyPayType" Type="nvarchar" MaxLength="14" />
+          <Property Name="TYTERMDAY" Type="int" />
+          <Property Name="DepositProtectionSchemeRegistrationNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="DateUploadedToTDS" Type="datetime" />
+          <Property Name="TyDateTimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="DepositProtectionSchemeTDSRegistered" Type="bit" Nullable="false" />
+          <Property Name="DDProcessDay" Type="int" />
+          <Property Name="DDBankDetailsValidated" Type="bit" />
+          <Property Name="DDBankRef" Type="nvarchar" MaxLength="50" />
+          <Property Name="DailyRentalCalculation" Type="bit" />
+          <Property Name="TYTERMDAYS" Type="int" />
+          <Property Name="StopTDSUpload" Type="bit" />
+          <Property Name="ProtectionEndDate" Type="datetime" />
+          <Property Name="DepToTCY" Type="money" />
+          <Property Name="DepToLL" Type="money" />
+          <Property Name="DepToAcy" Type="money" />
+          <Property Name="DepToTcyDate" Type="datetime" />
+          <Property Name="DepToLLDate" Type="datetime" />
+          <Property Name="DepToAcyDate" Type="datetime" />
+          <Property Name="TDSEndType" Type="int" />
+          <Property Name="TcyTDSComplete" Type="bit" />
+          <Property Name="TYPASSWORD" Type="nvarchar" MaxLength="50" />
+          <Property Name="TYFNAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="TYFSALU" Type="nvarchar" MaxLength="40" />
+          <Property Name="TYFADD1" Type="nvarchar" MaxLength="30" />
+          <Property Name="TYFADD2" Type="nvarchar" MaxLength="30" />
+          <Property Name="TYFADD3" Type="nvarchar" MaxLength="30" />
+          <Property Name="TYFADD4" Type="nvarchar" MaxLength="30" />
+          <Property Name="TYFPSTCD" Type="nvarchar" MaxLength="10" />
+          <Property Name="TYUSEFWD" Type="bit" Nullable="false" />
+          <Property Name="StandingOrderReference" Type="nvarchar" MaxLength="50" />
+          <Property Name="InitialInvoiceType" Type="int" />
+          <Property Name="IncludeBankDetailsOnSwitchingForm" Type="bit" Nullable="false" />
+          <Property Name="MOBranch" Type="int" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NumberOfOccupants" Type="int" />
+          <Property Name="lastmodified" Type="datetime" Nullable="false" />
+          <Property Name="exportable" Type="bit" Nullable="false" />
+          <Property Name="RentReviewDate" Type="datetime" />
+          <Property Name="LeaseExpiryDate" Type="datetime" />
+          <Property Name="UtilitySwitchingOptOut" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Host_Tenants">
+          <Key>
+            <PropertyRef Name="TCODE" />
+          </Key>
+          <Property Name="TCODE" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="TTYCODE" Type="nvarchar" MaxLength="10" />
+          <Property Name="TTYLOCK" Type="bit" Nullable="false" />
+          <Property Name="TNAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="TSALU" Type="nvarchar" MaxLength="40" />
+          <Property Name="TADD1" Type="nvarchar" MaxLength="30" />
+          <Property Name="TADD2" Type="nvarchar" MaxLength="30" />
+          <Property Name="TADD3" Type="nvarchar" MaxLength="30" />
+          <Property Name="TADD4" Type="nvarchar" MaxLength="30" />
+          <Property Name="TPSTCD" Type="nvarchar" MaxLength="10" />
+          <Property Name="TTELHOME" Type="nvarchar" MaxLength="50" />
+          <Property Name="TTELWK1" Type="nvarchar" MaxLength="50" />
+          <Property Name="TTELWK2" Type="nvarchar" MaxLength="50" />
+          <Property Name="TTELFAX" Type="nvarchar" MaxLength="50" />
+          <Property Name="TTELMOBL" Type="nvarchar" MaxLength="50" />
+          <Property Name="TE-MAIL" Type="nvarchar" MaxLength="255" />
+          <Property Name="TSTATUS" Type="nvarchar" MaxLength="15" />
+          <Property Name="TTHEAD" Type="bit" Nullable="false" />
+          <Property Name="TTHDCODE" Type="nvarchar" MaxLength="10" />
+          <Property Name="TBRANCH" Type="nvarchar" MaxLength="10" />
+          <Property Name="TNOTES" Type="ntext" />
+          <Property Name="TUSERNT1" Type="ntext" />
+          <Property Name="TUSERNT2" Type="ntext" />
+          <Property Name="TUSERNT3" Type="ntext" />
+          <Property Name="TUSERNT4" Type="ntext" />
+          <Property Name="TADDED" Type="datetime" />
+          <Property Name="TCLEARANCE" Type="int" />
+          <Property Name="TCLEARANCEC" Type="int" />
+          <Property Name="TCLEARANCES" Type="int" />
+          <Property Name="TCLEARANCEA" Type="int" />
+          <Property Name="TCLEARANCEB" Type="int" />
+          <Property Name="TRECTYPE" Type="nvarchar" MaxLength="14" />
+          <Property Name="TBKCHK" Type="bit" Nullable="false" />
+          <Property Name="TBKNAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="TBKCONT" Type="nvarchar" MaxLength="40" />
+          <Property Name="TBKADD1" Type="nvarchar" MaxLength="30" />
+          <Property Name="TBKADD2" Type="nvarchar" MaxLength="30" />
+          <Property Name="TBKADD3" Type="nvarchar" MaxLength="30" />
+          <Property Name="TBKADD4" Type="nvarchar" MaxLength="30" />
+          <Property Name="TBKPSTCD" Type="nvarchar" MaxLength="10" />
+          <Property Name="TBKTEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="TBKSORT" Type="nvarchar" MaxLength="8" />
+          <Property Name="TBKACT" Type="nvarchar" MaxLength="8" />
+          <Property Name="TBKACTNAME" Type="nvarchar" MaxLength="32" />
+          <Property Name="TEMCHK" Type="bit" Nullable="false" />
+          <Property Name="TEMNAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="TEMSALU" Type="nvarchar" MaxLength="40" />
+          <Property Name="TEMADD1" Type="nvarchar" MaxLength="30" />
+          <Property Name="TEMADD2" Type="nvarchar" MaxLength="30" />
+          <Property Name="TEMADD3" Type="nvarchar" MaxLength="30" />
+          <Property Name="TEMADD4" Type="nvarchar" MaxLength="30" />
+          <Property Name="TEMPSTCD" Type="nvarchar" MaxLength="10" />
+          <Property Name="TEMTEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="TATCHK" Type="bit" Nullable="false" />
+          <Property Name="TATNAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="TATSALU" Type="nvarchar" MaxLength="40" />
+          <Property Name="TATADD1" Type="nvarchar" MaxLength="30" />
+          <Property Name="TATADD2" Type="nvarchar" MaxLength="30" />
+          <Property Name="TATADD3" Type="nvarchar" MaxLength="30" />
+          <Property Name="TATADD4" Type="nvarchar" MaxLength="30" />
+          <Property Name="TATPSTCD" Type="nvarchar" MaxLength="10" />
+          <Property Name="TATTEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="TKNCHK" Type="bit" Nullable="false" />
+          <Property Name="TKNNAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="TKNSALU" Type="nvarchar" MaxLength="40" />
+          <Property Name="TKNADD1" Type="nvarchar" MaxLength="30" />
+          <Property Name="TKNADD2" Type="nvarchar" MaxLength="30" />
+          <Property Name="TKNADD3" Type="nvarchar" MaxLength="30" />
+          <Property Name="TKNADD4" Type="nvarchar" MaxLength="30" />
+          <Property Name="TKNPSTCD" Type="nvarchar" MaxLength="10" />
+          <Property Name="TKNTEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="TCHCHK" Type="bit" Nullable="false" />
+          <Property Name="TCHNAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="TCHSALU" Type="nvarchar" MaxLength="40" />
+          <Property Name="TCHADD1" Type="nvarchar" MaxLength="30" />
+          <Property Name="TCHADD2" Type="nvarchar" MaxLength="30" />
+          <Property Name="TCHADD3" Type="nvarchar" MaxLength="30" />
+          <Property Name="TCHADD4" Type="nvarchar" MaxLength="30" />
+          <Property Name="TCHPSTCD" Type="nvarchar" MaxLength="10" />
+          <Property Name="TCHTEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="LockID" Type="nvarchar" MaxLength="3" />
+          <Property Name="TRNTBFWD" Type="money" />
+          <Property Name="TGRTBFWD" Type="money" />
+          <Property Name="TDEPBFWD" Type="money" />
+          <Property Name="TSTLBFWD" Type="money" />
+          <Property Name="TSCGBFWD" Type="money" />
+          <Property Name="TINSBFWD" Type="money" />
+          <Property Name="TMANBFWD" Type="money" />
+          <Property Name="TWRTBFWD" Type="money" />
+          <Property Name="TSUNBFWD" Type="money" />
+          <Property Name="TADPBFWD" Type="money" />
+          <Property Name="TTENBFWD" Type="money" />
+          <Property Name="TADMBFWD" Type="money" />
+          <Property Name="TSTFBFWD" Type="money" />
+          <Property Name="TSharedPer" Type="real" />
+          <Property Name="TMRentMin" Type="money" />
+          <Property Name="TMRentMax" Type="money" />
+          <Property Name="TMNum1Min" Type="int" />
+          <Property Name="TMNum1Max" Type="int" />
+          <Property Name="TMNum2Min" Type="int" />
+          <Property Name="TMNum2Max" Type="int" />
+          <Property Name="TMNum3Min" Type="int" />
+          <Property Name="TMNum3Max" Type="int" />
+          <Property Name="TMNum4Min" Type="int" />
+          <Property Name="TMNum4Max" Type="int" />
+          <Property Name="TEXPDATE" Type="datetime" />
+          <Property Name="TFIXEDAMOUNT" Type="money" />
+          <Property Name="TFIXEDPER" Type="nvarchar" MaxLength="1" />
+          <Property Name="TFIXEDDATE" Type="datetime" />
+          <Property Name="TADDEDBFBAL" Type="bit" Nullable="false" />
+          <Property Name="TPrintRec" Type="bit" Nullable="false" />
+          <Property Name="TCalcRents" Type="bit" Nullable="false" />
+          <Property Name="TFirstInv" Type="bit" Nullable="false" />
+          <Property Name="TReqBy" Type="datetime" />
+          <Property Name="TInvDemHeader" Type="nvarchar" MaxLength="50" />
+          <Property Name="TInvDemFooter" Type="nvarchar" MaxLength="50" />
+          <Property Name="TPfInvDemHeader" Type="nvarchar" MaxLength="50" />
+          <Property Name="TPfInvDemFooter" Type="nvarchar" MaxLength="50" />
+          <Property Name="TAgRent" Type="money" />
+          <Property Name="TAgDep" Type="money" />
+          <Property Name="InMatching" Type="bit" Nullable="false" />
+          <Property Name="TEXPORTFLAG" Type="bit" Nullable="false" />
+          <Property Name="TEXPORTDATE" Type="datetime" />
+          <Property Name="TIMPORTDATE" Type="datetime" />
+          <Property Name="TEMailPreferred" Type="bit" Nullable="false" />
+          <Property Name="TSMSPreferred" Type="bit" Nullable="false" />
+          <Property Name="TPostPreferred" Type="bit" Nullable="false" />
+          <Property Name="TSMSMMS" Type="bit" Nullable="false" />
+          <Property Name="PayeeName" Type="nvarchar" MaxLength="40" />
+          <Property Name="CompanyName" Type="nvarchar" MaxLength="50" />
+          <Property Name="EnquirySource" Type="nvarchar" MaxLength="40" />
+          <Property Name="TBKBDC" Type="nvarchar" MaxLength="5" />
+          <Property Name="TBKREF" Type="nvarchar" MaxLength="18" />
+          <Property Name="TPAYTYPE" Type="nvarchar" MaxLength="14" />
+          <Property Name="TDateTimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="DDProcessDay" Type="int" />
+          <Property Name="DDBankDetailsValidated" Type="bit" />
+          <Property Name="DDBankRef" Type="nvarchar" MaxLength="50" />
+          <Property Name="TFNAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="TFSALU" Type="nvarchar" MaxLength="40" />
+          <Property Name="TFADD1" Type="nvarchar" MaxLength="30" />
+          <Property Name="TFADD2" Type="nvarchar" MaxLength="30" />
+          <Property Name="TFADD3" Type="nvarchar" MaxLength="30" />
+          <Property Name="TFADD4" Type="nvarchar" MaxLength="30" />
+          <Property Name="TFPSTCD" Type="nvarchar" MaxLength="10" />
+          <Property Name="TUSEFWD" Type="bit" />
+          <Property Name="TINNAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="TINADD1" Type="nvarchar" MaxLength="30" />
+          <Property Name="TINADD2" Type="nvarchar" MaxLength="30" />
+          <Property Name="TINADD3" Type="nvarchar" MaxLength="30" />
+          <Property Name="TINADD4" Type="nvarchar" MaxLength="30" />
+          <Property Name="TINPSTCD" Type="nvarchar" MaxLength="10" />
+          <Property Name="TINTEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="StandingOrderReference" Type="nvarchar" MaxLength="50" />
+          <Property Name="TExclPropAvailBefore" Type="datetime" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MOAppBranch" Type="int" Nullable="false" />
+          <Property Name="MOAppShared" Type="bit" Nullable="false" />
+          <Property Name="MOBranch" Type="int" />
+          <Property Name="TRPNAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="TRPADD1" Type="nvarchar" MaxLength="30" />
+          <Property Name="TRPADD2" Type="nvarchar" MaxLength="30" />
+          <Property Name="TRPADD3" Type="nvarchar" MaxLength="30" />
+          <Property Name="TRPADD4" Type="nvarchar" MaxLength="30" />
+          <Property Name="TRPPSTCD" Type="nvarchar" MaxLength="10" />
+          <Property Name="TRPTEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="TPTADD1" Type="nvarchar" MaxLength="30" />
+          <Property Name="TPTADD2" Type="nvarchar" MaxLength="30" />
+          <Property Name="TPTADD3" Type="nvarchar" MaxLength="30" />
+          <Property Name="TPTADD4" Type="nvarchar" MaxLength="30" />
+          <Property Name="TPTPSTCD" Type="nvarchar" MaxLength="10" />
+          <Property Name="TPTTEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="TNegotiator" Type="nvarchar" MaxLength="3" />
+          <Property Name="TCategory" Type="int" />
+          <Property Name="LastModified" Type="datetime" Nullable="false" />
+          <Property Name="exportable" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblLandlordContractor">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="CCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="ntext" />
+        </EntityType>
+        <EntityType Name="tblLandlordExpenceRates">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KeyCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="Description" Type="nvarchar" MaxLength="255" />
+          <Property Name="TaxDeductable" Type="bit" Nullable="false" />
+          <Property Name="VatRate" Type="float" />
+        </EntityType>
+        <EntityContainer Name="Winman_RentIncModelStoreContainer">
+          <EntitySet Name="Host_Prop_inf" EntityType="Self.Host_Prop_inf" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Host_Prop_inf2" EntityType="Self.Host_Prop_inf2" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Host_Ten_inf" EntityType="Self.Host_Ten_inf" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Host_Tenants" EntityType="Self.Host_Tenants" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblLandlordContractor" EntityType="Self.tblLandlordContractor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblLandlordExpenceRates" EntityType="Self.tblLandlordExpenceRates" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Winman_RentIncModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Host_Prop_inf">
+          <Key>
+            <PropertyRef Name="PCODE" />
+          </Key>
+          <Property Name="PCODE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PLCODE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PADD1" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="PADD2" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="PADD3" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="PADD4" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="PADD5" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="PPSTCD" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PSTATUS" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="PVACANT" Type="Boolean" Nullable="false" />
+          <Property Name="PAVAIL" Type="DateTime" Precision="3" />
+          <Property Name="PADDED" Type="DateTime" Precision="3" />
+          <Property Name="PBRANCH" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PANTRT" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PRENTPER" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="PTERM" Type="Double" />
+          <Property Name="PTOTRENT" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PLETFEE" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PLETPCT" Type="Double" />
+          <Property Name="PLETDATE" Type="DateTime" Precision="3" />
+          <Property Name="PLETPER" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="PMANFEE" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PMANPCT" Type="Double" />
+          <Property Name="PCUSE" Type="Boolean" Nullable="false" />
+          <Property Name="PCCODE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PCDATE" Type="DateTime" Precision="3" />
+          <Property Name="PCTIME" Type="DateTime" Precision="3" />
+          <Property Name="PTITLE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PSHORT" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PMED" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PLONG" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PGASCHK" Type="DateTime" Precision="3" />
+          <Property Name="PUSERD1" Type="DateTime" Precision="3" />
+          <Property Name="PUSERD2" Type="DateTime" Precision="3" />
+          <Property Name="PUSERD3" Type="DateTime" Precision="3" />
+          <Property Name="PUSERD4" Type="DateTime" Precision="3" />
+          <Property Name="PFCHK" Type="Boolean" Nullable="false" />
+          <Property Name="PINVENT" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PGASINV" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PELECINV" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PADVERT" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PNOTES" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PUSERNT1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PUSERNT2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PCONELECT" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PCONGAS" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PCONWATER" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PCONSEW" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PFDATE1" Type="DateTime" Precision="3" />
+          <Property Name="PFDUEDAY1" Type="Int16" />
+          <Property Name="PFDESC1" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="PFAMT1" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PFRS1" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="PFPER1" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="PFVAT1" Type="Boolean" Nullable="false" />
+          <Property Name="PFCAT1" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="PFDATE2" Type="DateTime" Precision="3" />
+          <Property Name="PFDUEDAY2" Type="Int16" />
+          <Property Name="PFDESC2" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="PFAMT2" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PFRS2" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="PFPER2" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="PFVAT2" Type="Boolean" Nullable="false" />
+          <Property Name="PFCAT2" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="PFDATE3" Type="DateTime" Precision="3" />
+          <Property Name="PFDUEDAY3" Type="Int16" />
+          <Property Name="PFDESC3" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="PFAMT3" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PFRS3" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="PFPER3" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="PFVAT3" Type="Boolean" Nullable="false" />
+          <Property Name="PFCAT3" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="PFDATE4" Type="DateTime" Precision="3" />
+          <Property Name="PFDUEDAY4" Type="Int16" />
+          <Property Name="PFDESC4" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="PFAMT4" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PFRS4" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="PFPER4" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="PFVAT4" Type="Boolean" Nullable="false" />
+          <Property Name="PFCAT4" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="PFDATE5" Type="DateTime" Precision="3" />
+          <Property Name="PFDUEDAY5" Type="Int16" />
+          <Property Name="PFDESC5" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="PFAMT5" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PFRS5" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="PFPER5" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="PFVAT5" Type="Boolean" Nullable="false" />
+          <Property Name="PFCAT5" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="PFDATE6" Type="DateTime" Precision="3" />
+          <Property Name="PFDUEDAY6" Type="Int16" />
+          <Property Name="PFDESC6" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="PFAMT6" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PFRS6" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="PFPER6" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="PFVAT6" Type="Boolean" Nullable="false" />
+          <Property Name="PFCAT6" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="LockID" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="PMRent" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PMBeds" Type="Int16" />
+          <Property Name="PMFurnished" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="PMSmoker" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="PMPets" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="PMChildren" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="PMUser1" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="PMUser2" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="PMUser3" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="PMUser4" Type="Single" />
+          <Property Name="mPhotoText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TXTADVERTISINGNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BROCHURE_ITEM39" Type="Boolean" Nullable="false" />
+          <Property Name="BROCHURE_ITEM40" Type="Boolean" Nullable="false" />
+          <Property Name="BROCHURE_ITEM41" Type="Boolean" Nullable="false" />
+          <Property Name="PHOTO_BITMAP_1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PHOTO_BITMAP_2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PHOTO_BITMAP_3" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PHOTO_BITMAP_4" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PHOTO_BITMAP_5" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PHOTO_BITMAP_6" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PHOTO_BITMAP_7" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PHOTO_BITMAP_8" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PHOTO_BITMAP_9" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="mPhotoText2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="mPhotoText3" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="mphototext4" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PCONCOUNC" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PINSAGENT" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="PINSCO" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="PINSPAIDTO" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="PINSSUM" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PINSPOLICY" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="PINSTEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PINSRENEW" Type="DateTime" Precision="3" />
+          <Property Name="PINSAGENT2" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="PINSCO2" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="PINSPAIDTO2" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="PINSSUM2" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PINSPOLICY2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="PINSTEL2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PINSRENEW2" Type="DateTime" Precision="3" />
+          <Property Name="PShared" Type="Boolean" Nullable="false" />
+          <Property Name="PLCODE0" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PLPercent0" Type="Single" />
+          <Property Name="PLCODE1" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PLPercent1" Type="Single" />
+          <Property Name="PLCODE2" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PLPercent2" Type="Single" />
+          <Property Name="PLCODE3" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PLPercent3" Type="Single" />
+          <Property Name="PLCODE4" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PLPercent4" Type="Single" />
+          <Property Name="PLCODE5" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PLPercent5" Type="Single" />
+          <Property Name="PLCODE6" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PLPercent6" Type="Single" />
+          <Property Name="PLCODE7" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PLPercent7" Type="Single" />
+          <Property Name="PLCODE8" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PLPercent8" Type="Single" />
+          <Property Name="PLCODE9" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PLPercent9" Type="Single" />
+          <Property Name="PCCODE1" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PCCODE2" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PCCODE3" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PCCODE4" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PCNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Match1" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Match2" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Match3" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Match4" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Match5" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Match6" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Match7" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Match8" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Match9" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Match10" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Numeric1" Type="Single" />
+          <Property Name="Numeric2" Type="Single" />
+          <Property Name="Numeric3" Type="Single" />
+          <Property Name="Numeric4" Type="Single" />
+          <Property Name="Numeric5" Type="Single" />
+          <Property Name="Numeric6" Type="Single" />
+          <Property Name="Numeric7" Type="Single" />
+          <Property Name="Numeric8" Type="Single" />
+          <Property Name="Numeric9" Type="Single" />
+          <Property Name="Numeric10" Type="Single" />
+          <Property Name="Fac1" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Fac2" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Fac3" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Fac4" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Fac5" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Fac6" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Fac7" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Fac8" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Fac9" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Fac10" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="BROCHURE_ITEM1" Type="Int32" />
+          <Property Name="BROCHURE_ITEM2" Type="Int32" />
+          <Property Name="BROCHURE_ITEM3" Type="Int32" />
+          <Property Name="BROCHURE_ITEM4" Type="Int32" />
+          <Property Name="BROCHURE_ITEM5" Type="Int32" />
+          <Property Name="BROCHURE_ITEM6" Type="Int32" />
+          <Property Name="BROCHURE_ITEM7" Type="Int32" />
+          <Property Name="BROCHURE_ITEM8" Type="Int32" />
+          <Property Name="BROCHURE_ITEM9" Type="Int32" />
+          <Property Name="BROCHURE_ITEM10" Type="Int32" />
+          <Property Name="BROCHURE_ITEM11" Type="Int32" />
+          <Property Name="BROCHURE_ITEM12" Type="Int32" />
+          <Property Name="BROCHURE_ITEM13" Type="Int32" />
+          <Property Name="BROCHURE_ITEM14" Type="Int32" />
+          <Property Name="BROCHURE_ITEM15" Type="Int32" />
+          <Property Name="BROCHURE_ITEM16" Type="Int32" />
+          <Property Name="BROCHURE_ITEM17" Type="Int32" />
+          <Property Name="BROCHURE_ITEM18" Type="Int32" />
+          <Property Name="BROCHURE_ITEM19" Type="Int32" />
+          <Property Name="BROCHURE_ITEM20" Type="Int32" />
+          <Property Name="BROCHURE_ITEM21" Type="Int32" />
+          <Property Name="BROCHURE_ITEM22" Type="Int32" />
+          <Property Name="BROCHURE_ITEM23" Type="Int32" />
+          <Property Name="BROCHURE_ITEM24" Type="Int32" />
+          <Property Name="BROCHURE_ITEM25" Type="Int32" />
+          <Property Name="BROCHURE_ITEM26" Type="Int32" />
+          <Property Name="BROCHURE_ITEM27" Type="Int32" />
+          <Property Name="BROCHURE_ITEM28" Type="Int32" />
+          <Property Name="BROCHURE_ITEM29" Type="Int32" />
+          <Property Name="BROCHURE_ITEM30" Type="Int32" />
+          <Property Name="BROCHURE_ITEM36" Type="Boolean" Nullable="false" />
+          <Property Name="BROCHURE_ITEM37" Type="Boolean" Nullable="false" />
+          <Property Name="BROCHURE_ITEM38" Type="Boolean" Nullable="false" />
+          <Property Name="PRICE" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="cPriceStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ADDRESSLINES" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="mDIRECTIONS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="mREMARKS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SHORT_ADVERT" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="cADDRESSON1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Holarea" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="District" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Town" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="PropertyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PropKind" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PEXPORTFLAG" Type="Boolean" Nullable="false" />
+          <Property Name="PEXPORTDATE" Type="DateTime" Precision="3" />
+          <Property Name="PIMPORTDATE" Type="DateTime" Precision="3" />
+          <Property Name="PNEGID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PDEPT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PTAT" Type="Int32" />
+          <Property Name="PTATCOM" Type="Int32" />
+          <Property Name="IsHeadMarker" Type="Boolean" Nullable="false" />
+          <Property Name="HeadProperty" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PDateTimeStamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PNegotiator" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="exportable" Type="Boolean" Nullable="false" />
+          <Property Name="PropertyManager" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="autoapplygroundrentincreases" Type="Boolean" Nullable="false" />
+          <Property Name="MOBranchDuplicate" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Host_Prop_inf2">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PCODE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="OzGSTExemption" Type="Boolean" Nullable="false" />
+          <Property Name="VatNo" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="VATPeriodEndDate" Type="DateTime" Precision="3" />
+          <Property Name="CashAccounting" Type="Boolean" Nullable="false" />
+          <Property Name="IncludeService" Type="Boolean" Nullable="false" />
+          <Property Name="VATPeriod" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="TaxCategory1" Type="Int32" />
+          <Property Name="TaxCategory2" Type="Int32" />
+          <Property Name="TaxCategory3" Type="Int32" />
+          <Property Name="TaxCategory4" Type="Int32" />
+          <Property Name="TaxCategory5" Type="Int32" />
+          <Property Name="TaxCategory6" Type="Int32" />
+          <Property Name="TaxCategoryLetting" Type="Int32" />
+          <Property Name="TaxCategoryManagement" Type="Int32" />
+          <Property Name="FAPArea" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PTenTopUp" Type="Boolean" Nullable="false" />
+          <Property Name="BS7666_SAON" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="BS7666_PAON" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="BS7666_Street" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="BS7666_Locality" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="BS7666_Town" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="BS7666_County" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="BS7666_PstCd" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="P2DateTimeStamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="EnergyRatingCurrent" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="EnergyRatingPotential" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="CO2RatingCurrent" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="CO2RatingPotential" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="EPCOwner" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EPCUseScotCharts" Type="Boolean" Nullable="false" />
+          <Property Name="EPCUseCommercialChart" Type="Boolean" Nullable="false" />
+          <Property Name="lastmodified" Type="DateTime" Precision="3" />
+          <Property Name="PLetType" Type="Int32" />
+          <Property Name="PDepositAmount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="LettingFeeAccountID" Type="Int32" />
+          <Property Name="AdditionalFee1AccountID" Type="Int32" />
+          <Property Name="AdditionalFee2AccountID" Type="Int32" />
+          <Property Name="AdditionalFee3AccountID" Type="Int32" />
+          <Property Name="AdditionalFee4AccountID" Type="Int32" />
+          <Property Name="AdditionalFee5AccountID" Type="Int32" />
+          <Property Name="AdditionalFee6AccountID" Type="Int32" />
+          <Property Name="LeaseDateNotUpdated" Type="Boolean" Nullable="false" />
+          <Property Name="Section153" Type="Boolean" Nullable="false" />
+          <Property Name="Section158" Type="Boolean" Nullable="false" />
+          <Property Name="Section166" Type="Boolean" Nullable="false" />
+          <Property Name="LeaseAmount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="LeaseDate" Type="DateTime" Precision="3" />
+          <Property Name="LeasePeriod" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="EnforcePeriodEndDate" Type="Boolean" Nullable="false" />
+          <Property Name="PeriodEndDate" Type="DateTime" Precision="3" />
+          <Property Name="PeriodFrequency" Type="Int32" />
+          <Property Name="MOBranch" Type="Int32" Nullable="false" />
+          <Property Name="MOShared" Type="Boolean" Nullable="false" />
+          <Property Name="InitialInvoiceType" Type="Int32" />
+          <Property Name="RentChargePeriodType" Type="Int32" />
+          <Property Name="RentDescriptionType" Type="Int32" />
+          <Property Name="ElectricityMeterSerial" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="GasMeterSerial" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="ElectricitySupplyNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GasMeterPointReference" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ElectricityPrepayment" Type="Boolean" Nullable="false" />
+          <Property Name="GasPrepayment" Type="Boolean" Nullable="false" />
+          <Property Name="Last_Used_Image_Location" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Last_Used_Floorplan_Location" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Last_Used_VT_Location" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PropertyManagedTemplate" Type="Int32" />
+          <Property Name="GasUtilityAvailable" Type="Boolean" Nullable="false" />
+          <Property Name="UploadProperty" Type="Boolean" Nullable="false" />
+          <Property Name="StreetViewLatitude" Type="Double" />
+          <Property Name="StreetViewLongditude" Type="Double" />
+          <Property Name="StreetViewPitch" Type="Double" />
+          <Property Name="StreetViewYaw" Type="Double" />
+          <Property Name="StreetViewZoom" Type="Int32" />
+          <Property Name="PURL" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AsbestosPresent" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Host_Ten_inf">
+          <Key>
+            <PropertyRef Name="TYCODE" />
+          </Key>
+          <Property Name="TYCODE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TYPCODE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TYPLOCK" Type="Boolean" Nullable="false" />
+          <Property Name="TYNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TYSALU" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TYADD1" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TYADD2" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TYADD3" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TYADD4" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TYPSTCD" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TYTELHOME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TYTELWK1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TYTELWK2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TYTELFAX" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TYTELMOBL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TYE_MAIL" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TYSTATUS" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="TYCATEG" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+          <Property Name="TYADDED" Type="DateTime" Precision="3" />
+          <Property Name="TYSTART" Type="DateTime" Precision="3" />
+          <Property Name="TYCurSTART" Type="DateTime" Precision="3" />
+          <Property Name="TYBRANCH" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TYCONFIRM" Type="Boolean" Nullable="false" />
+          <Property Name="TYCLEARANCE" Type="Int32" />
+          <Property Name="TYCLEARANCEC" Type="Int32" />
+          <Property Name="TYCLEARANCES" Type="Int32" />
+          <Property Name="TYCLEARANCEA" Type="Int32" />
+          <Property Name="TYCLEARANCEB" Type="Int32" />
+          <Property Name="TYRECTYPE" Type="String" MaxLength="14" FixedLength="false" Unicode="true" />
+          <Property Name="TYRENEW" Type="DateTime" Precision="3" />
+          <Property Name="TYNTQ" Type="DateTime" Precision="3" />
+          <Property Name="TYVAC" Type="DateTime" Precision="3" />
+          <Property Name="TYPeriodic" Type="Boolean" Nullable="false" />
+          <Property Name="TYUSERD1" Type="DateTime" Precision="3" />
+          <Property Name="TYUSERD2" Type="DateTime" Precision="3" />
+          <Property Name="TYUSERD3" Type="DateTime" Precision="3" />
+          <Property Name="TYUSERD4" Type="DateTime" Precision="3" />
+          <Property Name="TYINSP" Type="DateTime" Precision="3" />
+          <Property Name="TYINSPTXT" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TYTERMMTH" Type="Double" />
+          <Property Name="TYTERMYR" Type="Double" />
+          <Property Name="TYGASIN" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TYGASOUT" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TYELECIN" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TYELECOUT" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TYWATRIN" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TYWATROUT" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TYSEWIN" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TYSEWOUT" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TYRENT" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYRENTMIN" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYRENTMAX" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYRENTWORDS" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TYPER" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="TYPERWORDS" Type="String" MaxLength="24" FixedLength="false" Unicode="true" />
+          <Property Name="TYRENTDAT" Type="DateTime" Precision="3" />
+          <Property Name="TYRENTDAY" Type="String" MaxLength="27" FixedLength="false" Unicode="true" />
+          <Property Name="TYRENTWK" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYRENTMTH" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYRENTAPP" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYAppPost" Type="Boolean" Nullable="false" />
+          <Property Name="TYDEPHOLD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYFDEP3" Type="Boolean" Nullable="false" />
+          <Property Name="TYDEPFULL" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYAGFEE" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYUSERF" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYUSERF2" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYUSERF3" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYUSERF4" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYUSERF5" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYFDESC1" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
+          <Property Name="TYFDESC2" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
+          <Property Name="TYFDESC3" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
+          <Property Name="TYFDESC4" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
+          <Property Name="TYFDESC5" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
+          <Property Name="TYFDESC6" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
+          <Property Name="TYFDESC7" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
+          <Property Name="TYFDESC8" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
+          <Property Name="TYFDESC9" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
+          <Property Name="TYFPER5" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="TYFPER6" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="TYFPER7" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="TYFPER8" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="TYFPER9" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="TYFPER10" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="TYFVAT5" Type="Boolean" Nullable="false" />
+          <Property Name="TYFVAT6" Type="Boolean" Nullable="false" />
+          <Property Name="TYFVAT7" Type="Boolean" Nullable="false" />
+          <Property Name="TYFVAT8" Type="Boolean" Nullable="false" />
+          <Property Name="TYFVAT9" Type="Boolean" Nullable="false" />
+          <Property Name="TYFVAT10" Type="Boolean" Nullable="false" />
+          <Property Name="TYFCAT5" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="TYFCAT6" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="TYFCAT7" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="TYFCAT8" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="TYFCAT9" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="TYFCAT10" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="TYINVADDED" Type="Boolean" Nullable="false" />
+          <Property Name="TYTENANCY" Type="Boolean" Nullable="false" />
+          <Property Name="TYAGNAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TYUSERNT1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TYUSERNT2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TYUSERNT3" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TYUSERNT4" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TYINNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TYINADD1" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TYINADD2" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TYINADD3" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TYINADD4" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TYINPSTCD" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TYINTEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TYREMTYPE" Type="Double" />
+          <Property Name="TYREMARK" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="TYINVDATE" Type="DateTime" Precision="3" />
+          <Property Name="TYINVDESC0" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TYINVAMT0" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYINVVAT0" Type="Boolean" Nullable="false" />
+          <Property Name="TYINVDESC1" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TYINVAMT1" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYINVVAT1" Type="Boolean" Nullable="false" />
+          <Property Name="TYINVDESC2" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TYINVAMT2" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYINVVAT2" Type="Boolean" Nullable="false" />
+          <Property Name="TYINVDESC3" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TYINVAMT3" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYINVVAT3" Type="Boolean" Nullable="false" />
+          <Property Name="TYINVDESC4" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TYINVAMT4" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYINVVAT4" Type="Boolean" Nullable="false" />
+          <Property Name="TYINVDESC5" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TYINVAMT5" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYINVVAT5" Type="Boolean" Nullable="false" />
+          <Property Name="TYINVDESC6" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TYINVAMT6" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYINVVAT6" Type="Boolean" Nullable="false" />
+          <Property Name="TYINVDESC7" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TYINVAMT7" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYINVVAT7" Type="Boolean" Nullable="false" />
+          <Property Name="TYINVDESC8" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TYINVAMT8" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYINVVAT8" Type="Boolean" Nullable="false" />
+          <Property Name="TYINVDESC9" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TYINVAMT9" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYINVVAT9" Type="Boolean" Nullable="false" />
+          <Property Name="TYINVDESC10" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TYINVAMT10" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYINVVAT10" Type="Boolean" Nullable="false" />
+          <Property Name="TYINVDESC11" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TYINVAMT11" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYINVVAT11" Type="Boolean" Nullable="false" />
+          <Property Name="TYINVDESC12" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TYINVAMT12" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYINVDESC13" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TYINVAMT13" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYINVDESC14" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TYINVAMT14" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYINVDESC15" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TYINVAMT15" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="LockID" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="TYRNTBFWD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYGRTBFWD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYDEPBFWD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYSTLBFWD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYSCGBFWD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYINSBFWD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYMANBFWD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYWRTBFWD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYSUNBFWD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYADPBFWD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYTENBFWD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYADMBFWD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYSTFBFWD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYDEPLAND" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYELECLWIN" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TYELECLWOUT" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TYFIXEDAMOUNT" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TYFIXEDPER" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="TYFIXEDDATE" Type="DateTime" Precision="3" />
+          <Property Name="TYADDEDBFBAL" Type="Boolean" Nullable="false" />
+          <Property Name="TYPrintRec" Type="Boolean" Nullable="false" />
+          <Property Name="TYCalcRents" Type="Boolean" Nullable="false" />
+          <Property Name="TYCalcDate" Type="DateTime" Precision="3" />
+          <Property Name="TYCalcPosted" Type="Boolean" Nullable="false" />
+          <Property Name="TYFirstInv" Type="Boolean" Nullable="false" />
+          <Property Name="TYInvDemHeader" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TYInvDemFooter" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TYPfInvDemHeader" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TYPfInvDemFooter" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TYEXPORTFLAG" Type="Boolean" Nullable="false" />
+          <Property Name="TYEXPORTDATE" Type="DateTime" Precision="3" />
+          <Property Name="TYIMPORTDATE" Type="DateTime" Precision="3" />
+          <Property Name="TYEMailPreferred" Type="Boolean" Nullable="false" />
+          <Property Name="TYSMSPreferred" Type="Boolean" Nullable="false" />
+          <Property Name="TYPostPreferred" Type="Boolean" Nullable="false" />
+          <Property Name="TYSMSMMS" Type="Boolean" Nullable="false" />
+          <Property Name="PayeeName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="ProFormaTextID" Type="Int32" />
+          <Property Name="ProFormaText" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UnitTenancy" Type="Boolean" Nullable="false" />
+          <Property Name="DepositProtectionScheme" Type="Boolean" />
+          <Property Name="DepositProtectionSchemeID" Type="Int32" />
+          <Property Name="DepositProtectionSchemeNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DepositProtectionSchemeNotesGeneral" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DepositProtectionSchemeAgreedDate" Type="DateTime" Precision="3" />
+          <Property Name="DepositProtectionSchemeTargetDate" Type="DateTime" Precision="3" />
+          <Property Name="DepositProtectionSchemeDisputeDate" Type="DateTime" Precision="3" />
+          <Property Name="DepositProtectionSchemeDisputeAmt" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TyBkAct" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="TyBkActName" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="TyBkBDC" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="TyBkRef" Type="String" MaxLength="18" FixedLength="false" Unicode="true" />
+          <Property Name="TyBkSort" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="TyPayType" Type="String" MaxLength="14" FixedLength="false" Unicode="true" />
+          <Property Name="TYTERMDAY" Type="Int32" />
+          <Property Name="DepositProtectionSchemeRegistrationNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateUploadedToTDS" Type="DateTime" Precision="3" />
+          <Property Name="TyDateTimeStamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="DepositProtectionSchemeTDSRegistered" Type="Boolean" Nullable="false" />
+          <Property Name="DDProcessDay" Type="Int32" />
+          <Property Name="DDBankDetailsValidated" Type="Boolean" />
+          <Property Name="DDBankRef" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DailyRentalCalculation" Type="Boolean" />
+          <Property Name="TYTERMDAYS" Type="Int32" />
+          <Property Name="StopTDSUpload" Type="Boolean" />
+          <Property Name="ProtectionEndDate" Type="DateTime" Precision="3" />
+          <Property Name="DepToTCY" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DepToLL" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DepToAcy" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DepToTcyDate" Type="DateTime" Precision="3" />
+          <Property Name="DepToLLDate" Type="DateTime" Precision="3" />
+          <Property Name="DepToAcyDate" Type="DateTime" Precision="3" />
+          <Property Name="TDSEndType" Type="Int32" />
+          <Property Name="TcyTDSComplete" Type="Boolean" />
+          <Property Name="TYPASSWORD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TYFNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TYFSALU" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TYFADD1" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TYFADD2" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TYFADD3" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TYFADD4" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TYFPSTCD" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TYUSEFWD" Type="Boolean" Nullable="false" />
+          <Property Name="StandingOrderReference" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InitialInvoiceType" Type="Int32" />
+          <Property Name="IncludeBankDetailsOnSwitchingForm" Type="Boolean" Nullable="false" />
+          <Property Name="MOBranch" Type="Int32" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NumberOfOccupants" Type="Int32" />
+          <Property Name="lastmodified" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="exportable" Type="Boolean" Nullable="false" />
+          <Property Name="RentReviewDate" Type="DateTime" Precision="3" />
+          <Property Name="LeaseExpiryDate" Type="DateTime" Precision="3" />
+          <Property Name="UtilitySwitchingOptOut" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Host_Tenants">
+          <Key>
+            <PropertyRef Name="TCODE" />
+          </Key>
+          <Property Name="TCODE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TTYCODE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TTYLOCK" Type="Boolean" Nullable="false" />
+          <Property Name="TNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TSALU" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TADD1" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TADD2" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TADD3" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TADD4" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TPSTCD" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TTELHOME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TTELWK1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TTELWK2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TTELFAX" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TTELMOBL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TE_MAIL" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TSTATUS" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="TTHEAD" Type="Boolean" Nullable="false" />
+          <Property Name="TTHDCODE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TBRANCH" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TNOTES" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TUSERNT1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TUSERNT2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TUSERNT3" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TUSERNT4" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TADDED" Type="DateTime" Precision="3" />
+          <Property Name="TCLEARANCE" Type="Int32" />
+          <Property Name="TCLEARANCEC" Type="Int32" />
+          <Property Name="TCLEARANCES" Type="Int32" />
+          <Property Name="TCLEARANCEA" Type="Int32" />
+          <Property Name="TCLEARANCEB" Type="Int32" />
+          <Property Name="TRECTYPE" Type="String" MaxLength="14" FixedLength="false" Unicode="true" />
+          <Property Name="TBKCHK" Type="Boolean" Nullable="false" />
+          <Property Name="TBKNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TBKCONT" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TBKADD1" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TBKADD2" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TBKADD3" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TBKADD4" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TBKPSTCD" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TBKTEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TBKSORT" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="TBKACT" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="TBKACTNAME" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="TEMCHK" Type="Boolean" Nullable="false" />
+          <Property Name="TEMNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TEMSALU" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TEMADD1" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TEMADD2" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TEMADD3" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TEMADD4" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TEMPSTCD" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TEMTEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TATCHK" Type="Boolean" Nullable="false" />
+          <Property Name="TATNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TATSALU" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TATADD1" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TATADD2" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TATADD3" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TATADD4" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TATPSTCD" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TATTEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TKNCHK" Type="Boolean" Nullable="false" />
+          <Property Name="TKNNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TKNSALU" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TKNADD1" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TKNADD2" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TKNADD3" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TKNADD4" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TKNPSTCD" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TKNTEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TCHCHK" Type="Boolean" Nullable="false" />
+          <Property Name="TCHNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TCHSALU" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TCHADD1" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TCHADD2" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TCHADD3" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TCHADD4" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TCHPSTCD" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TCHTEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LockID" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="TRNTBFWD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TGRTBFWD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TDEPBFWD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TSTLBFWD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TSCGBFWD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TINSBFWD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TMANBFWD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TWRTBFWD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TSUNBFWD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TADPBFWD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TTENBFWD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TADMBFWD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TSTFBFWD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TSharedPer" Type="Single" />
+          <Property Name="TMRentMin" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TMRentMax" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TMNum1Min" Type="Int32" />
+          <Property Name="TMNum1Max" Type="Int32" />
+          <Property Name="TMNum2Min" Type="Int32" />
+          <Property Name="TMNum2Max" Type="Int32" />
+          <Property Name="TMNum3Min" Type="Int32" />
+          <Property Name="TMNum3Max" Type="Int32" />
+          <Property Name="TMNum4Min" Type="Int32" />
+          <Property Name="TMNum4Max" Type="Int32" />
+          <Property Name="TEXPDATE" Type="DateTime" Precision="3" />
+          <Property Name="TFIXEDAMOUNT" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TFIXEDPER" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="TFIXEDDATE" Type="DateTime" Precision="3" />
+          <Property Name="TADDEDBFBAL" Type="Boolean" Nullable="false" />
+          <Property Name="TPrintRec" Type="Boolean" Nullable="false" />
+          <Property Name="TCalcRents" Type="Boolean" Nullable="false" />
+          <Property Name="TFirstInv" Type="Boolean" Nullable="false" />
+          <Property Name="TReqBy" Type="DateTime" Precision="3" />
+          <Property Name="TInvDemHeader" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TInvDemFooter" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TPfInvDemHeader" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TPfInvDemFooter" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TAgRent" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TAgDep" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="InMatching" Type="Boolean" Nullable="false" />
+          <Property Name="TEXPORTFLAG" Type="Boolean" Nullable="false" />
+          <Property Name="TEXPORTDATE" Type="DateTime" Precision="3" />
+          <Property Name="TIMPORTDATE" Type="DateTime" Precision="3" />
+          <Property Name="TEMailPreferred" Type="Boolean" Nullable="false" />
+          <Property Name="TSMSPreferred" Type="Boolean" Nullable="false" />
+          <Property Name="TPostPreferred" Type="Boolean" Nullable="false" />
+          <Property Name="TSMSMMS" Type="Boolean" Nullable="false" />
+          <Property Name="PayeeName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EnquirySource" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TBKBDC" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="TBKREF" Type="String" MaxLength="18" FixedLength="false" Unicode="true" />
+          <Property Name="TPAYTYPE" Type="String" MaxLength="14" FixedLength="false" Unicode="true" />
+          <Property Name="TDateTimeStamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="DDProcessDay" Type="Int32" />
+          <Property Name="DDBankDetailsValidated" Type="Boolean" />
+          <Property Name="DDBankRef" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TFNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TFSALU" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TFADD1" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TFADD2" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TFADD3" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TFADD4" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TFPSTCD" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TUSEFWD" Type="Boolean" />
+          <Property Name="TINNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TINADD1" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TINADD2" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TINADD3" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TINADD4" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TINPSTCD" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TINTEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StandingOrderReference" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TExclPropAvailBefore" Type="DateTime" Precision="3" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MOAppBranch" Type="Int32" Nullable="false" />
+          <Property Name="MOAppShared" Type="Boolean" Nullable="false" />
+          <Property Name="MOBranch" Type="Int32" />
+          <Property Name="TRPNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TRPADD1" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TRPADD2" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TRPADD3" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TRPADD4" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TRPPSTCD" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TRPTEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TPTADD1" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TPTADD2" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TPTADD3" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TPTADD4" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TPTPSTCD" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TPTTEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TNegotiator" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="TCategory" Type="Int32" />
+          <Property Name="LastModified" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="exportable" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblLandlordContractor">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblLandlordExpenceRate">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KeyCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TaxDeductable" Type="Boolean" Nullable="false" />
+          <Property Name="VatRate" Type="Double" />
+        </EntityType>
+        <EntityContainer Name="Winman_RentIncEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Host_Prop_inf" EntityType="Self.Host_Prop_inf" />
+          <EntitySet Name="Host_Prop_inf2" EntityType="Self.Host_Prop_inf2" />
+          <EntitySet Name="Host_Ten_inf" EntityType="Self.Host_Ten_inf" />
+          <EntitySet Name="Host_Tenants" EntityType="Self.Host_Tenants" />
+          <EntitySet Name="tblLandlordContractors" EntityType="Self.tblLandlordContractor" />
+          <EntitySet Name="tblLandlordExpenceRates" EntityType="Self.tblLandlordExpenceRate" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Winman_RentIncModelStoreContainer" CdmEntityContainer="Winman_RentIncEntities">
+          <EntitySetMapping Name="Host_Prop_inf">
+            <EntityTypeMapping TypeName="Winman_RentIncModel.Host_Prop_inf">
+              <MappingFragment StoreEntitySet="Host_Prop_inf">
+                <ScalarProperty Name="PCODE" ColumnName="PCODE" />
+                <ScalarProperty Name="PLCODE" ColumnName="PLCODE" />
+                <ScalarProperty Name="PADD1" ColumnName="PADD1" />
+                <ScalarProperty Name="PADD2" ColumnName="PADD2" />
+                <ScalarProperty Name="PADD3" ColumnName="PADD3" />
+                <ScalarProperty Name="PADD4" ColumnName="PADD4" />
+                <ScalarProperty Name="PADD5" ColumnName="PADD5" />
+                <ScalarProperty Name="PPSTCD" ColumnName="PPSTCD" />
+                <ScalarProperty Name="PSTATUS" ColumnName="PSTATUS" />
+                <ScalarProperty Name="PVACANT" ColumnName="PVACANT" />
+                <ScalarProperty Name="PAVAIL" ColumnName="PAVAIL" />
+                <ScalarProperty Name="PADDED" ColumnName="PADDED" />
+                <ScalarProperty Name="PBRANCH" ColumnName="PBRANCH" />
+                <ScalarProperty Name="PANTRT" ColumnName="PANTRT" />
+                <ScalarProperty Name="PRENTPER" ColumnName="PRENTPER" />
+                <ScalarProperty Name="PTERM" ColumnName="PTERM" />
+                <ScalarProperty Name="PTOTRENT" ColumnName="PTOTRENT" />
+                <ScalarProperty Name="PLETFEE" ColumnName="PLETFEE" />
+                <ScalarProperty Name="PLETPCT" ColumnName="PLETPCT" />
+                <ScalarProperty Name="PLETDATE" ColumnName="PLETDATE" />
+                <ScalarProperty Name="PLETPER" ColumnName="PLETPER" />
+                <ScalarProperty Name="PMANFEE" ColumnName="PMANFEE" />
+                <ScalarProperty Name="PMANPCT" ColumnName="PMANPCT" />
+                <ScalarProperty Name="PCUSE" ColumnName="PCUSE" />
+                <ScalarProperty Name="PCCODE" ColumnName="PCCODE" />
+                <ScalarProperty Name="PCDATE" ColumnName="PCDATE" />
+                <ScalarProperty Name="PCTIME" ColumnName="PCTIME" />
+                <ScalarProperty Name="PTITLE" ColumnName="PTITLE" />
+                <ScalarProperty Name="PSHORT" ColumnName="PSHORT" />
+                <ScalarProperty Name="PMED" ColumnName="PMED" />
+                <ScalarProperty Name="PLONG" ColumnName="PLONG" />
+                <ScalarProperty Name="PGASCHK" ColumnName="PGASCHK" />
+                <ScalarProperty Name="PUSERD1" ColumnName="PUSERD1" />
+                <ScalarProperty Name="PUSERD2" ColumnName="PUSERD2" />
+                <ScalarProperty Name="PUSERD3" ColumnName="PUSERD3" />
+                <ScalarProperty Name="PUSERD4" ColumnName="PUSERD4" />
+                <ScalarProperty Name="PFCHK" ColumnName="PFCHK" />
+                <ScalarProperty Name="PINVENT" ColumnName="PINVENT" />
+                <ScalarProperty Name="PGASINV" ColumnName="PGASINV" />
+                <ScalarProperty Name="PELECINV" ColumnName="PELECINV" />
+                <ScalarProperty Name="PADVERT" ColumnName="PADVERT" />
+                <ScalarProperty Name="PNOTES" ColumnName="PNOTES" />
+                <ScalarProperty Name="PUSERNT1" ColumnName="PUSERNT1" />
+                <ScalarProperty Name="PUSERNT2" ColumnName="PUSERNT2" />
+                <ScalarProperty Name="PCONELECT" ColumnName="PCONELECT" />
+                <ScalarProperty Name="PCONGAS" ColumnName="PCONGAS" />
+                <ScalarProperty Name="PCONWATER" ColumnName="PCONWATER" />
+                <ScalarProperty Name="PCONSEW" ColumnName="PCONSEW" />
+                <ScalarProperty Name="PFDATE1" ColumnName="PFDATE1" />
+                <ScalarProperty Name="PFDUEDAY1" ColumnName="PFDUEDAY1" />
+                <ScalarProperty Name="PFDESC1" ColumnName="PFDESC1" />
+                <ScalarProperty Name="PFAMT1" ColumnName="PFAMT1" />
+                <ScalarProperty Name="PFRS1" ColumnName="PFRS1" />
+                <ScalarProperty Name="PFPER1" ColumnName="PFPER1" />
+                <ScalarProperty Name="PFVAT1" ColumnName="PFVAT1" />
+                <ScalarProperty Name="PFCAT1" ColumnName="PFCAT1" />
+                <ScalarProperty Name="PFDATE2" ColumnName="PFDATE2" />
+                <ScalarProperty Name="PFDUEDAY2" ColumnName="PFDUEDAY2" />
+                <ScalarProperty Name="PFDESC2" ColumnName="PFDESC2" />
+                <ScalarProperty Name="PFAMT2" ColumnName="PFAMT2" />
+                <ScalarProperty Name="PFRS2" ColumnName="PFRS2" />
+                <ScalarProperty Name="PFPER2" ColumnName="PFPER2" />
+                <ScalarProperty Name="PFVAT2" ColumnName="PFVAT2" />
+                <ScalarProperty Name="PFCAT2" ColumnName="PFCAT2" />
+                <ScalarProperty Name="PFDATE3" ColumnName="PFDATE3" />
+                <ScalarProperty Name="PFDUEDAY3" ColumnName="PFDUEDAY3" />
+                <ScalarProperty Name="PFDESC3" ColumnName="PFDESC3" />
+                <ScalarProperty Name="PFAMT3" ColumnName="PFAMT3" />
+                <ScalarProperty Name="PFRS3" ColumnName="PFRS3" />
+                <ScalarProperty Name="PFPER3" ColumnName="PFPER3" />
+                <ScalarProperty Name="PFVAT3" ColumnName="PFVAT3" />
+                <ScalarProperty Name="PFCAT3" ColumnName="PFCAT3" />
+                <ScalarProperty Name="PFDATE4" ColumnName="PFDATE4" />
+                <ScalarProperty Name="PFDUEDAY4" ColumnName="PFDUEDAY4" />
+                <ScalarProperty Name="PFDESC4" ColumnName="PFDESC4" />
+                <ScalarProperty Name="PFAMT4" ColumnName="PFAMT4" />
+                <ScalarProperty Name="PFRS4" ColumnName="PFRS4" />
+                <ScalarProperty Name="PFPER4" ColumnName="PFPER4" />
+                <ScalarProperty Name="PFVAT4" ColumnName="PFVAT4" />
+                <ScalarProperty Name="PFCAT4" ColumnName="PFCAT4" />
+                <ScalarProperty Name="PFDATE5" ColumnName="PFDATE5" />
+                <ScalarProperty Name="PFDUEDAY5" ColumnName="PFDUEDAY5" />
+                <ScalarProperty Name="PFDESC5" ColumnName="PFDESC5" />
+                <ScalarProperty Name="PFAMT5" ColumnName="PFAMT5" />
+                <ScalarProperty Name="PFRS5" ColumnName="PFRS5" />
+                <ScalarProperty Name="PFPER5" ColumnName="PFPER5" />
+                <ScalarProperty Name="PFVAT5" ColumnName="PFVAT5" />
+                <ScalarProperty Name="PFCAT5" ColumnName="PFCAT5" />
+                <ScalarProperty Name="PFDATE6" ColumnName="PFDATE6" />
+                <ScalarProperty Name="PFDUEDAY6" ColumnName="PFDUEDAY6" />
+                <ScalarProperty Name="PFDESC6" ColumnName="PFDESC6" />
+                <ScalarProperty Name="PFAMT6" ColumnName="PFAMT6" />
+                <ScalarProperty Name="PFRS6" ColumnName="PFRS6" />
+                <ScalarProperty Name="PFPER6" ColumnName="PFPER6" />
+                <ScalarProperty Name="PFVAT6" ColumnName="PFVAT6" />
+                <ScalarProperty Name="PFCAT6" ColumnName="PFCAT6" />
+                <ScalarProperty Name="LockID" ColumnName="LockID" />
+                <ScalarProperty Name="PMRent" ColumnName="PMRent" />
+                <ScalarProperty Name="PMBeds" ColumnName="PMBeds" />
+                <ScalarProperty Name="PMFurnished" ColumnName="PMFurnished" />
+                <ScalarProperty Name="PMSmoker" ColumnName="PMSmoker" />
+                <ScalarProperty Name="PMPets" ColumnName="PMPets" />
+                <ScalarProperty Name="PMChildren" ColumnName="PMChildren" />
+                <ScalarProperty Name="PMUser1" ColumnName="PMUser1" />
+                <ScalarProperty Name="PMUser2" ColumnName="PMUser2" />
+                <ScalarProperty Name="PMUser3" ColumnName="PMUser3" />
+                <ScalarProperty Name="PMUser4" ColumnName="PMUser4" />
+                <ScalarProperty Name="mPhotoText" ColumnName="mPhotoText" />
+                <ScalarProperty Name="TXTADVERTISINGNAME" ColumnName="TXTADVERTISINGNAME" />
+                <ScalarProperty Name="BROCHURE_ITEM39" ColumnName="BROCHURE ITEM39" />
+                <ScalarProperty Name="BROCHURE_ITEM40" ColumnName="BROCHURE ITEM40" />
+                <ScalarProperty Name="BROCHURE_ITEM41" ColumnName="BROCHURE ITEM41" />
+                <ScalarProperty Name="PHOTO_BITMAP_1" ColumnName="PHOTO BITMAP 1" />
+                <ScalarProperty Name="PHOTO_BITMAP_2" ColumnName="PHOTO BITMAP 2" />
+                <ScalarProperty Name="PHOTO_BITMAP_3" ColumnName="PHOTO BITMAP 3" />
+                <ScalarProperty Name="PHOTO_BITMAP_4" ColumnName="PHOTO BITMAP 4" />
+                <ScalarProperty Name="PHOTO_BITMAP_5" ColumnName="PHOTO BITMAP 5" />
+                <ScalarProperty Name="PHOTO_BITMAP_6" ColumnName="PHOTO BITMAP 6" />
+                <ScalarProperty Name="PHOTO_BITMAP_7" ColumnName="PHOTO BITMAP 7" />
+                <ScalarProperty Name="PHOTO_BITMAP_8" ColumnName="PHOTO BITMAP 8" />
+                <ScalarProperty Name="PHOTO_BITMAP_9" ColumnName="PHOTO BITMAP 9" />
+                <ScalarProperty Name="mPhotoText2" ColumnName="mPhotoText2" />
+                <ScalarProperty Name="mPhotoText3" ColumnName="mPhotoText3" />
+                <ScalarProperty Name="mphototext4" ColumnName="mphototext4" />
+                <ScalarProperty Name="PCONCOUNC" ColumnName="PCONCOUNC" />
+                <ScalarProperty Name="PINSAGENT" ColumnName="PINSAGENT" />
+                <ScalarProperty Name="PINSCO" ColumnName="PINSCO" />
+                <ScalarProperty Name="PINSPAIDTO" ColumnName="PINSPAIDTO" />
+                <ScalarProperty Name="PINSSUM" ColumnName="PINSSUM" />
+                <ScalarProperty Name="PINSPOLICY" ColumnName="PINSPOLICY" />
+                <ScalarProperty Name="PINSTEL" ColumnName="PINSTEL" />
+                <ScalarProperty Name="PINSRENEW" ColumnName="PINSRENEW" />
+                <ScalarProperty Name="PINSAGENT2" ColumnName="PINSAGENT2" />
+                <ScalarProperty Name="PINSCO2" ColumnName="PINSCO2" />
+                <ScalarProperty Name="PINSPAIDTO2" ColumnName="PINSPAIDTO2" />
+                <ScalarProperty Name="PINSSUM2" ColumnName="PINSSUM2" />
+                <ScalarProperty Name="PINSPOLICY2" ColumnName="PINSPOLICY2" />
+                <ScalarProperty Name="PINSTEL2" ColumnName="PINSTEL2" />
+                <ScalarProperty Name="PINSRENEW2" ColumnName="PINSRENEW2" />
+                <ScalarProperty Name="PShared" ColumnName="PShared" />
+                <ScalarProperty Name="PLCODE0" ColumnName="PLCODE0" />
+                <ScalarProperty Name="PLPercent0" ColumnName="PLPercent0" />
+                <ScalarProperty Name="PLCODE1" ColumnName="PLCODE1" />
+                <ScalarProperty Name="PLPercent1" ColumnName="PLPercent1" />
+                <ScalarProperty Name="PLCODE2" ColumnName="PLCODE2" />
+                <ScalarProperty Name="PLPercent2" ColumnName="PLPercent2" />
+                <ScalarProperty Name="PLCODE3" ColumnName="PLCODE3" />
+                <ScalarProperty Name="PLPercent3" ColumnName="PLPercent3" />
+                <ScalarProperty Name="PLCODE4" ColumnName="PLCODE4" />
+                <ScalarProperty Name="PLPercent4" ColumnName="PLPercent4" />
+                <ScalarProperty Name="PLCODE5" ColumnName="PLCODE5" />
+                <ScalarProperty Name="PLPercent5" ColumnName="PLPercent5" />
+                <ScalarProperty Name="PLCODE6" ColumnName="PLCODE6" />
+                <ScalarProperty Name="PLPercent6" ColumnName="PLPercent6" />
+                <ScalarProperty Name="PLCODE7" ColumnName="PLCODE7" />
+                <ScalarProperty Name="PLPercent7" ColumnName="PLPercent7" />
+                <ScalarProperty Name="PLCODE8" ColumnName="PLCODE8" />
+                <ScalarProperty Name="PLPercent8" ColumnName="PLPercent8" />
+                <ScalarProperty Name="PLCODE9" ColumnName="PLCODE9" />
+                <ScalarProperty Name="PLPercent9" ColumnName="PLPercent9" />
+                <ScalarProperty Name="PCCODE1" ColumnName="PCCODE1" />
+                <ScalarProperty Name="PCCODE2" ColumnName="PCCODE2" />
+                <ScalarProperty Name="PCCODE3" ColumnName="PCCODE3" />
+                <ScalarProperty Name="PCCODE4" ColumnName="PCCODE4" />
+                <ScalarProperty Name="PCNotes" ColumnName="PCNotes" />
+                <ScalarProperty Name="Match1" ColumnName="Match1" />
+                <ScalarProperty Name="Match2" ColumnName="Match2" />
+                <ScalarProperty Name="Match3" ColumnName="Match3" />
+                <ScalarProperty Name="Match4" ColumnName="Match4" />
+                <ScalarProperty Name="Match5" ColumnName="Match5" />
+                <ScalarProperty Name="Match6" ColumnName="Match6" />
+                <ScalarProperty Name="Match7" ColumnName="Match7" />
+                <ScalarProperty Name="Match8" ColumnName="Match8" />
+                <ScalarProperty Name="Match9" ColumnName="Match9" />
+                <ScalarProperty Name="Match10" ColumnName="Match10" />
+                <ScalarProperty Name="Numeric1" ColumnName="Numeric1" />
+                <ScalarProperty Name="Numeric2" ColumnName="Numeric2" />
+                <ScalarProperty Name="Numeric3" ColumnName="Numeric3" />
+                <ScalarProperty Name="Numeric4" ColumnName="Numeric4" />
+                <ScalarProperty Name="Numeric5" ColumnName="Numeric5" />
+                <ScalarProperty Name="Numeric6" ColumnName="Numeric6" />
+                <ScalarProperty Name="Numeric7" ColumnName="Numeric7" />
+                <ScalarProperty Name="Numeric8" ColumnName="Numeric8" />
+                <ScalarProperty Name="Numeric9" ColumnName="Numeric9" />
+                <ScalarProperty Name="Numeric10" ColumnName="Numeric10" />
+                <ScalarProperty Name="Fac1" ColumnName="Fac1" />
+                <ScalarProperty Name="Fac2" ColumnName="Fac2" />
+                <ScalarProperty Name="Fac3" ColumnName="Fac3" />
+                <ScalarProperty Name="Fac4" ColumnName="Fac4" />
+                <ScalarProperty Name="Fac5" ColumnName="Fac5" />
+                <ScalarProperty Name="Fac6" ColumnName="Fac6" />
+                <ScalarProperty Name="Fac7" ColumnName="Fac7" />
+                <ScalarProperty Name="Fac8" ColumnName="Fac8" />
+                <ScalarProperty Name="Fac9" ColumnName="Fac9" />
+                <ScalarProperty Name="Fac10" ColumnName="Fac10" />
+                <ScalarProperty Name="BROCHURE_ITEM1" ColumnName="BROCHURE ITEM1" />
+                <ScalarProperty Name="BROCHURE_ITEM2" ColumnName="BROCHURE ITEM2" />
+                <ScalarProperty Name="BROCHURE_ITEM3" ColumnName="BROCHURE ITEM3" />
+                <ScalarProperty Name="BROCHURE_ITEM4" ColumnName="BROCHURE ITEM4" />
+                <ScalarProperty Name="BROCHURE_ITEM5" ColumnName="BROCHURE ITEM5" />
+                <ScalarProperty Name="BROCHURE_ITEM6" ColumnName="BROCHURE ITEM6" />
+                <ScalarProperty Name="BROCHURE_ITEM7" ColumnName="BROCHURE ITEM7" />
+                <ScalarProperty Name="BROCHURE_ITEM8" ColumnName="BROCHURE ITEM8" />
+                <ScalarProperty Name="BROCHURE_ITEM9" ColumnName="BROCHURE ITEM9" />
+                <ScalarProperty Name="BROCHURE_ITEM10" ColumnName="BROCHURE ITEM10" />
+                <ScalarProperty Name="BROCHURE_ITEM11" ColumnName="BROCHURE ITEM11" />
+                <ScalarProperty Name="BROCHURE_ITEM12" ColumnName="BROCHURE ITEM12" />
+                <ScalarProperty Name="BROCHURE_ITEM13" ColumnName="BROCHURE ITEM13" />
+                <ScalarProperty Name="BROCHURE_ITEM14" ColumnName="BROCHURE ITEM14" />
+                <ScalarProperty Name="BROCHURE_ITEM15" ColumnName="BROCHURE ITEM15" />
+                <ScalarProperty Name="BROCHURE_ITEM16" ColumnName="BROCHURE ITEM16" />
+                <ScalarProperty Name="BROCHURE_ITEM17" ColumnName="BROCHURE ITEM17" />
+                <ScalarProperty Name="BROCHURE_ITEM18" ColumnName="BROCHURE ITEM18" />
+                <ScalarProperty Name="BROCHURE_ITEM19" ColumnName="BROCHURE ITEM19" />
+                <ScalarProperty Name="BROCHURE_ITEM20" ColumnName="BROCHURE ITEM20" />
+                <ScalarProperty Name="BROCHURE_ITEM21" ColumnName="BROCHURE ITEM21" />
+                <ScalarProperty Name="BROCHURE_ITEM22" ColumnName="BROCHURE ITEM22" />
+                <ScalarProperty Name="BROCHURE_ITEM23" ColumnName="BROCHURE ITEM23" />
+                <ScalarProperty Name="BROCHURE_ITEM24" ColumnName="BROCHURE ITEM24" />
+                <ScalarProperty Name="BROCHURE_ITEM25" ColumnName="BROCHURE ITEM25" />
+                <ScalarProperty Name="BROCHURE_ITEM26" ColumnName="BROCHURE ITEM26" />
+                <ScalarProperty Name="BROCHURE_ITEM27" ColumnName="BROCHURE ITEM27" />
+                <ScalarProperty Name="BROCHURE_ITEM28" ColumnName="BROCHURE ITEM28" />
+                <ScalarProperty Name="BROCHURE_ITEM29" ColumnName="BROCHURE ITEM29" />
+                <ScalarProperty Name="BROCHURE_ITEM30" ColumnName="BROCHURE ITEM30" />
+                <ScalarProperty Name="BROCHURE_ITEM36" ColumnName="BROCHURE ITEM36" />
+                <ScalarProperty Name="BROCHURE_ITEM37" ColumnName="BROCHURE ITEM37" />
+                <ScalarProperty Name="BROCHURE_ITEM38" ColumnName="BROCHURE ITEM38" />
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="cPriceStatus" ColumnName="cPriceStatus" />
+                <ScalarProperty Name="ADDRESSLINES" ColumnName="ADDRESSLINES" />
+                <ScalarProperty Name="mDIRECTIONS" ColumnName="mDIRECTIONS" />
+                <ScalarProperty Name="mREMARKS" ColumnName="mREMARKS" />
+                <ScalarProperty Name="SHORT_ADVERT" ColumnName="SHORT ADVERT" />
+                <ScalarProperty Name="cADDRESSON1" ColumnName="cADDRESSON1" />
+                <ScalarProperty Name="Holarea" ColumnName="Holarea" />
+                <ScalarProperty Name="District" ColumnName="District" />
+                <ScalarProperty Name="Town" ColumnName="Town" />
+                <ScalarProperty Name="PropertyName" ColumnName="PropertyName" />
+                <ScalarProperty Name="PropKind" ColumnName="PropKind" />
+                <ScalarProperty Name="PEXPORTFLAG" ColumnName="PEXPORTFLAG" />
+                <ScalarProperty Name="PEXPORTDATE" ColumnName="PEXPORTDATE" />
+                <ScalarProperty Name="PIMPORTDATE" ColumnName="PIMPORTDATE" />
+                <ScalarProperty Name="PNEGID" ColumnName="PNEGID" />
+                <ScalarProperty Name="PDEPT" ColumnName="PDEPT" />
+                <ScalarProperty Name="PTAT" ColumnName="PTAT" />
+                <ScalarProperty Name="PTATCOM" ColumnName="PTATCOM" />
+                <ScalarProperty Name="IsHeadMarker" ColumnName="IsHeadMarker" />
+                <ScalarProperty Name="HeadProperty" ColumnName="HeadProperty" />
+                <ScalarProperty Name="PDateTimeStamp" ColumnName="PDateTimeStamp" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PNegotiator" ColumnName="PNegotiator" />
+                <ScalarProperty Name="exportable" ColumnName="exportable" />
+                <ScalarProperty Name="PropertyManager" ColumnName="PropertyManager" />
+                <ScalarProperty Name="autoapplygroundrentincreases" ColumnName="autoapplygroundrentincreases" />
+                <ScalarProperty Name="MOBranchDuplicate" ColumnName="MOBranchDuplicate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Host_Prop_inf2">
+            <EntityTypeMapping TypeName="Winman_RentIncModel.Host_Prop_inf2">
+              <MappingFragment StoreEntitySet="Host_Prop_inf2">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PCODE" ColumnName="PCODE" />
+                <ScalarProperty Name="OzGSTExemption" ColumnName="OzGSTExemption" />
+                <ScalarProperty Name="VatNo" ColumnName="VatNo" />
+                <ScalarProperty Name="VATPeriodEndDate" ColumnName="VATPeriodEndDate" />
+                <ScalarProperty Name="CashAccounting" ColumnName="CashAccounting" />
+                <ScalarProperty Name="IncludeService" ColumnName="IncludeService" />
+                <ScalarProperty Name="VATPeriod" ColumnName="VATPeriod" />
+                <ScalarProperty Name="TaxCategory1" ColumnName="TaxCategory1" />
+                <ScalarProperty Name="TaxCategory2" ColumnName="TaxCategory2" />
+                <ScalarProperty Name="TaxCategory3" ColumnName="TaxCategory3" />
+                <ScalarProperty Name="TaxCategory4" ColumnName="TaxCategory4" />
+                <ScalarProperty Name="TaxCategory5" ColumnName="TaxCategory5" />
+                <ScalarProperty Name="TaxCategory6" ColumnName="TaxCategory6" />
+                <ScalarProperty Name="TaxCategoryLetting" ColumnName="TaxCategoryLetting" />
+                <ScalarProperty Name="TaxCategoryManagement" ColumnName="TaxCategoryManagement" />
+                <ScalarProperty Name="FAPArea" ColumnName="FAPArea" />
+                <ScalarProperty Name="PTenTopUp" ColumnName="PTenTopUp" />
+                <ScalarProperty Name="BS7666_SAON" ColumnName="BS7666_SAON" />
+                <ScalarProperty Name="BS7666_PAON" ColumnName="BS7666_PAON" />
+                <ScalarProperty Name="BS7666_Street" ColumnName="BS7666_Street" />
+                <ScalarProperty Name="BS7666_Locality" ColumnName="BS7666_Locality" />
+                <ScalarProperty Name="BS7666_Town" ColumnName="BS7666_Town" />
+                <ScalarProperty Name="BS7666_County" ColumnName="BS7666_County" />
+                <ScalarProperty Name="BS7666_PstCd" ColumnName="BS7666_PstCd" />
+                <ScalarProperty Name="P2DateTimeStamp" ColumnName="P2DateTimeStamp" />
+                <ScalarProperty Name="EnergyRatingCurrent" ColumnName="EnergyRatingCurrent" />
+                <ScalarProperty Name="EnergyRatingPotential" ColumnName="EnergyRatingPotential" />
+                <ScalarProperty Name="CO2RatingCurrent" ColumnName="CO2RatingCurrent" />
+                <ScalarProperty Name="CO2RatingPotential" ColumnName="CO2RatingPotential" />
+                <ScalarProperty Name="EPCOwner" ColumnName="EPCOwner" />
+                <ScalarProperty Name="EPCUseScotCharts" ColumnName="EPCUseScotCharts" />
+                <ScalarProperty Name="EPCUseCommercialChart" ColumnName="EPCUseCommercialChart" />
+                <ScalarProperty Name="lastmodified" ColumnName="lastmodified" />
+                <ScalarProperty Name="PLetType" ColumnName="PLetType" />
+                <ScalarProperty Name="PDepositAmount" ColumnName="PDepositAmount" />
+                <ScalarProperty Name="LettingFeeAccountID" ColumnName="LettingFeeAccountID" />
+                <ScalarProperty Name="AdditionalFee1AccountID" ColumnName="AdditionalFee1AccountID" />
+                <ScalarProperty Name="AdditionalFee2AccountID" ColumnName="AdditionalFee2AccountID" />
+                <ScalarProperty Name="AdditionalFee3AccountID" ColumnName="AdditionalFee3AccountID" />
+                <ScalarProperty Name="AdditionalFee4AccountID" ColumnName="AdditionalFee4AccountID" />
+                <ScalarProperty Name="AdditionalFee5AccountID" ColumnName="AdditionalFee5AccountID" />
+                <ScalarProperty Name="AdditionalFee6AccountID" ColumnName="AdditionalFee6AccountID" />
+                <ScalarProperty Name="LeaseDateNotUpdated" ColumnName="LeaseDateNotUpdated" />
+                <ScalarProperty Name="Section153" ColumnName="Section153" />
+                <ScalarProperty Name="Section158" ColumnName="Section158" />
+                <ScalarProperty Name="Section166" ColumnName="Section166" />
+                <ScalarProperty Name="LeaseAmount" ColumnName="LeaseAmount" />
+                <ScalarProperty Name="LeaseDate" ColumnName="LeaseDate" />
+                <ScalarProperty Name="LeasePeriod" ColumnName="LeasePeriod" />
+                <ScalarProperty Name="EnforcePeriodEndDate" ColumnName="EnforcePeriodEndDate" />
+                <ScalarProperty Name="PeriodEndDate" ColumnName="PeriodEndDate" />
+                <ScalarProperty Name="PeriodFrequency" ColumnName="PeriodFrequency" />
+                <ScalarProperty Name="MOBranch" ColumnName="MOBranch" />
+                <ScalarProperty Name="MOShared" ColumnName="MOShared" />
+                <ScalarProperty Name="InitialInvoiceType" ColumnName="InitialInvoiceType" />
+                <ScalarProperty Name="RentChargePeriodType" ColumnName="RentChargePeriodType" />
+                <ScalarProperty Name="RentDescriptionType" ColumnName="RentDescriptionType" />
+                <ScalarProperty Name="ElectricityMeterSerial" ColumnName="ElectricityMeterSerial" />
+                <ScalarProperty Name="GasMeterSerial" ColumnName="GasMeterSerial" />
+                <ScalarProperty Name="ElectricitySupplyNumber" ColumnName="ElectricitySupplyNumber" />
+                <ScalarProperty Name="GasMeterPointReference" ColumnName="GasMeterPointReference" />
+                <ScalarProperty Name="ElectricityPrepayment" ColumnName="ElectricityPrepayment" />
+                <ScalarProperty Name="GasPrepayment" ColumnName="GasPrepayment" />
+                <ScalarProperty Name="Last_Used_Image_Location" ColumnName="Last_Used_Image_Location" />
+                <ScalarProperty Name="Last_Used_Floorplan_Location" ColumnName="Last_Used_Floorplan_Location" />
+                <ScalarProperty Name="Last_Used_VT_Location" ColumnName="Last_Used_VT_Location" />
+                <ScalarProperty Name="PropertyManagedTemplate" ColumnName="PropertyManagedTemplate" />
+                <ScalarProperty Name="GasUtilityAvailable" ColumnName="GasUtilityAvailable" />
+                <ScalarProperty Name="UploadProperty" ColumnName="UploadProperty" />
+                <ScalarProperty Name="StreetViewLatitude" ColumnName="StreetViewLatitude" />
+                <ScalarProperty Name="StreetViewLongditude" ColumnName="StreetViewLongditude" />
+                <ScalarProperty Name="StreetViewPitch" ColumnName="StreetViewPitch" />
+                <ScalarProperty Name="StreetViewYaw" ColumnName="StreetViewYaw" />
+                <ScalarProperty Name="StreetViewZoom" ColumnName="StreetViewZoom" />
+                <ScalarProperty Name="PURL" ColumnName="PURL" />
+                <ScalarProperty Name="AsbestosPresent" ColumnName="AsbestosPresent" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Host_Ten_inf">
+            <EntityTypeMapping TypeName="Winman_RentIncModel.Host_Ten_inf">
+              <MappingFragment StoreEntitySet="Host_Ten_inf">
+                <ScalarProperty Name="TYCODE" ColumnName="TYCODE" />
+                <ScalarProperty Name="TYPCODE" ColumnName="TYPCODE" />
+                <ScalarProperty Name="TYPLOCK" ColumnName="TYPLOCK" />
+                <ScalarProperty Name="TYNAME" ColumnName="TYNAME" />
+                <ScalarProperty Name="TYSALU" ColumnName="TYSALU" />
+                <ScalarProperty Name="TYADD1" ColumnName="TYADD1" />
+                <ScalarProperty Name="TYADD2" ColumnName="TYADD2" />
+                <ScalarProperty Name="TYADD3" ColumnName="TYADD3" />
+                <ScalarProperty Name="TYADD4" ColumnName="TYADD4" />
+                <ScalarProperty Name="TYPSTCD" ColumnName="TYPSTCD" />
+                <ScalarProperty Name="TYTELHOME" ColumnName="TYTELHOME" />
+                <ScalarProperty Name="TYTELWK1" ColumnName="TYTELWK1" />
+                <ScalarProperty Name="TYTELWK2" ColumnName="TYTELWK2" />
+                <ScalarProperty Name="TYTELFAX" ColumnName="TYTELFAX" />
+                <ScalarProperty Name="TYTELMOBL" ColumnName="TYTELMOBL" />
+                <ScalarProperty Name="TYE_MAIL" ColumnName="TYE-MAIL" />
+                <ScalarProperty Name="TYSTATUS" ColumnName="TYSTATUS" />
+                <ScalarProperty Name="TYCATEG" ColumnName="TYCATEG" />
+                <ScalarProperty Name="TYADDED" ColumnName="TYADDED" />
+                <ScalarProperty Name="TYSTART" ColumnName="TYSTART" />
+                <ScalarProperty Name="TYCurSTART" ColumnName="TYCurSTART" />
+                <ScalarProperty Name="TYBRANCH" ColumnName="TYBRANCH" />
+                <ScalarProperty Name="TYCONFIRM" ColumnName="TYCONFIRM" />
+                <ScalarProperty Name="TYCLEARANCE" ColumnName="TYCLEARANCE" />
+                <ScalarProperty Name="TYCLEARANCEC" ColumnName="TYCLEARANCEC" />
+                <ScalarProperty Name="TYCLEARANCES" ColumnName="TYCLEARANCES" />
+                <ScalarProperty Name="TYCLEARANCEA" ColumnName="TYCLEARANCEA" />
+                <ScalarProperty Name="TYCLEARANCEB" ColumnName="TYCLEARANCEB" />
+                <ScalarProperty Name="TYRECTYPE" ColumnName="TYRECTYPE" />
+                <ScalarProperty Name="TYRENEW" ColumnName="TYRENEW" />
+                <ScalarProperty Name="TYNTQ" ColumnName="TYNTQ" />
+                <ScalarProperty Name="TYVAC" ColumnName="TYVAC" />
+                <ScalarProperty Name="TYPeriodic" ColumnName="TYPeriodic" />
+                <ScalarProperty Name="TYUSERD1" ColumnName="TYUSERD1" />
+                <ScalarProperty Name="TYUSERD2" ColumnName="TYUSERD2" />
+                <ScalarProperty Name="TYUSERD3" ColumnName="TYUSERD3" />
+                <ScalarProperty Name="TYUSERD4" ColumnName="TYUSERD4" />
+                <ScalarProperty Name="TYINSP" ColumnName="TYINSP" />
+                <ScalarProperty Name="TYINSPTXT" ColumnName="TYINSPTXT" />
+                <ScalarProperty Name="TYTERMMTH" ColumnName="TYTERMMTH" />
+                <ScalarProperty Name="TYTERMYR" ColumnName="TYTERMYR" />
+                <ScalarProperty Name="TYGASIN" ColumnName="TYGASIN" />
+                <ScalarProperty Name="TYGASOUT" ColumnName="TYGASOUT" />
+                <ScalarProperty Name="TYELECIN" ColumnName="TYELECIN" />
+                <ScalarProperty Name="TYELECOUT" ColumnName="TYELECOUT" />
+                <ScalarProperty Name="TYWATRIN" ColumnName="TYWATRIN" />
+                <ScalarProperty Name="TYWATROUT" ColumnName="TYWATROUT" />
+                <ScalarProperty Name="TYSEWIN" ColumnName="TYSEWIN" />
+                <ScalarProperty Name="TYSEWOUT" ColumnName="TYSEWOUT" />
+                <ScalarProperty Name="TYRENT" ColumnName="TYRENT" />
+                <ScalarProperty Name="TYRENTMIN" ColumnName="TYRENTMIN" />
+                <ScalarProperty Name="TYRENTMAX" ColumnName="TYRENTMAX" />
+                <ScalarProperty Name="TYRENTWORDS" ColumnName="TYRENTWORDS" />
+                <ScalarProperty Name="TYPER" ColumnName="TYPER" />
+                <ScalarProperty Name="TYPERWORDS" ColumnName="TYPERWORDS" />
+                <ScalarProperty Name="TYRENTDAT" ColumnName="TYRENTDAT" />
+                <ScalarProperty Name="TYRENTDAY" ColumnName="TYRENTDAY" />
+                <ScalarProperty Name="TYRENTWK" ColumnName="TYRENTWK" />
+                <ScalarProperty Name="TYRENTMTH" ColumnName="TYRENTMTH" />
+                <ScalarProperty Name="TYRENTAPP" ColumnName="TYRENTAPP" />
+                <ScalarProperty Name="TYAppPost" ColumnName="TYAppPost" />
+                <ScalarProperty Name="TYDEPHOLD" ColumnName="TYDEPHOLD" />
+                <ScalarProperty Name="TYFDEP3" ColumnName="TYFDEP3" />
+                <ScalarProperty Name="TYDEPFULL" ColumnName="TYDEPFULL" />
+                <ScalarProperty Name="TYAGFEE" ColumnName="TYAGFEE" />
+                <ScalarProperty Name="TYUSERF" ColumnName="TYUSERF" />
+                <ScalarProperty Name="TYUSERF2" ColumnName="TYUSERF2" />
+                <ScalarProperty Name="TYUSERF3" ColumnName="TYUSERF3" />
+                <ScalarProperty Name="TYUSERF4" ColumnName="TYUSERF4" />
+                <ScalarProperty Name="TYUSERF5" ColumnName="TYUSERF5" />
+                <ScalarProperty Name="TYFDESC1" ColumnName="TYFDESC1" />
+                <ScalarProperty Name="TYFDESC2" ColumnName="TYFDESC2" />
+                <ScalarProperty Name="TYFDESC3" ColumnName="TYFDESC3" />
+                <ScalarProperty Name="TYFDESC4" ColumnName="TYFDESC4" />
+                <ScalarProperty Name="TYFDESC5" ColumnName="TYFDESC5" />
+                <ScalarProperty Name="TYFDESC6" ColumnName="TYFDESC6" />
+                <ScalarProperty Name="TYFDESC7" ColumnName="TYFDESC7" />
+                <ScalarProperty Name="TYFDESC8" ColumnName="TYFDESC8" />
+                <ScalarProperty Name="TYFDESC9" ColumnName="TYFDESC9" />
+                <ScalarProperty Name="TYFPER5" ColumnName="TYFPER5" />
+                <ScalarProperty Name="TYFPER6" ColumnName="TYFPER6" />
+                <ScalarProperty Name="TYFPER7" ColumnName="TYFPER7" />
+                <ScalarProperty Name="TYFPER8" ColumnName="TYFPER8" />
+                <ScalarProperty Name="TYFPER9" ColumnName="TYFPER9" />
+                <ScalarProperty Name="TYFPER10" ColumnName="TYFPER10" />
+                <ScalarProperty Name="TYFVAT5" ColumnName="TYFVAT5" />
+                <ScalarProperty Name="TYFVAT6" ColumnName="TYFVAT6" />
+                <ScalarProperty Name="TYFVAT7" ColumnName="TYFVAT7" />
+                <ScalarProperty Name="TYFVAT8" ColumnName="TYFVAT8" />
+                <ScalarProperty Name="TYFVAT9" ColumnName="TYFVAT9" />
+                <ScalarProperty Name="TYFVAT10" ColumnName="TYFVAT10" />
+                <ScalarProperty Name="TYFCAT5" ColumnName="TYFCAT5" />
+                <ScalarProperty Name="TYFCAT6" ColumnName="TYFCAT6" />
+                <ScalarProperty Name="TYFCAT7" ColumnName="TYFCAT7" />
+                <ScalarProperty Name="TYFCAT8" ColumnName="TYFCAT8" />
+                <ScalarProperty Name="TYFCAT9" ColumnName="TYFCAT9" />
+                <ScalarProperty Name="TYFCAT10" ColumnName="TYFCAT10" />
+                <ScalarProperty Name="TYINVADDED" ColumnName="TYINVADDED" />
+                <ScalarProperty Name="TYTENANCY" ColumnName="TYTENANCY" />
+                <ScalarProperty Name="TYAGNAME" ColumnName="TYAGNAME" />
+                <ScalarProperty Name="TYUSERNT1" ColumnName="TYUSERNT1" />
+                <ScalarProperty Name="TYUSERNT2" ColumnName="TYUSERNT2" />
+                <ScalarProperty Name="TYUSERNT3" ColumnName="TYUSERNT3" />
+                <ScalarProperty Name="TYUSERNT4" ColumnName="TYUSERNT4" />
+                <ScalarProperty Name="TYINNAME" ColumnName="TYINNAME" />
+                <ScalarProperty Name="TYINADD1" ColumnName="TYINADD1" />
+                <ScalarProperty Name="TYINADD2" ColumnName="TYINADD2" />
+                <ScalarProperty Name="TYINADD3" ColumnName="TYINADD3" />
+                <ScalarProperty Name="TYINADD4" ColumnName="TYINADD4" />
+                <ScalarProperty Name="TYINPSTCD" ColumnName="TYINPSTCD" />
+                <ScalarProperty Name="TYINTEL" ColumnName="TYINTEL" />
+                <ScalarProperty Name="TYREMTYPE" ColumnName="TYREMTYPE" />
+                <ScalarProperty Name="TYREMARK" ColumnName="TYREMARK" />
+                <ScalarProperty Name="TYINVDATE" ColumnName="TYINVDATE" />
+                <ScalarProperty Name="TYINVDESC0" ColumnName="TYINVDESC0" />
+                <ScalarProperty Name="TYINVAMT0" ColumnName="TYINVAMT0" />
+                <ScalarProperty Name="TYINVVAT0" ColumnName="TYINVVAT0" />
+                <ScalarProperty Name="TYINVDESC1" ColumnName="TYINVDESC1" />
+                <ScalarProperty Name="TYINVAMT1" ColumnName="TYINVAMT1" />
+                <ScalarProperty Name="TYINVVAT1" ColumnName="TYINVVAT1" />
+                <ScalarProperty Name="TYINVDESC2" ColumnName="TYINVDESC2" />
+                <ScalarProperty Name="TYINVAMT2" ColumnName="TYINVAMT2" />
+                <ScalarProperty Name="TYINVVAT2" ColumnName="TYINVVAT2" />
+                <ScalarProperty Name="TYINVDESC3" ColumnName="TYINVDESC3" />
+                <ScalarProperty Name="TYINVAMT3" ColumnName="TYINVAMT3" />
+                <ScalarProperty Name="TYINVVAT3" ColumnName="TYINVVAT3" />
+                <ScalarProperty Name="TYINVDESC4" ColumnName="TYINVDESC4" />
+                <ScalarProperty Name="TYINVAMT4" ColumnName="TYINVAMT4" />
+                <ScalarProperty Name="TYINVVAT4" ColumnName="TYINVVAT4" />
+                <ScalarProperty Name="TYINVDESC5" ColumnName="TYINVDESC5" />
+                <ScalarProperty Name="TYINVAMT5" ColumnName="TYINVAMT5" />
+                <ScalarProperty Name="TYINVVAT5" ColumnName="TYINVVAT5" />
+                <ScalarProperty Name="TYINVDESC6" ColumnName="TYINVDESC6" />
+                <ScalarProperty Name="TYINVAMT6" ColumnName="TYINVAMT6" />
+                <ScalarProperty Name="TYINVVAT6" ColumnName="TYINVVAT6" />
+                <ScalarProperty Name="TYINVDESC7" ColumnName="TYINVDESC7" />
+                <ScalarProperty Name="TYINVAMT7" ColumnName="TYINVAMT7" />
+                <ScalarProperty Name="TYINVVAT7" ColumnName="TYINVVAT7" />
+                <ScalarProperty Name="TYINVDESC8" ColumnName="TYINVDESC8" />
+                <ScalarProperty Name="TYINVAMT8" ColumnName="TYINVAMT8" />
+                <ScalarProperty Name="TYINVVAT8" ColumnName="TYINVVAT8" />
+                <ScalarProperty Name="TYINVDESC9" ColumnName="TYINVDESC9" />
+                <ScalarProperty Name="TYINVAMT9" ColumnName="TYINVAMT9" />
+                <ScalarProperty Name="TYINVVAT9" ColumnName="TYINVVAT9" />
+                <ScalarProperty Name="TYINVDESC10" ColumnName="TYINVDESC10" />
+                <ScalarProperty Name="TYINVAMT10" ColumnName="TYINVAMT10" />
+                <ScalarProperty Name="TYINVVAT10" ColumnName="TYINVVAT10" />
+                <ScalarProperty Name="TYINVDESC11" ColumnName="TYINVDESC11" />
+                <ScalarProperty Name="TYINVAMT11" ColumnName="TYINVAMT11" />
+                <ScalarProperty Name="TYINVVAT11" ColumnName="TYINVVAT11" />
+                <ScalarProperty Name="TYINVDESC12" ColumnName="TYINVDESC12" />
+                <ScalarProperty Name="TYINVAMT12" ColumnName="TYINVAMT12" />
+                <ScalarProperty Name="TYINVDESC13" ColumnName="TYINVDESC13" />
+                <ScalarProperty Name="TYINVAMT13" ColumnName="TYINVAMT13" />
+                <ScalarProperty Name="TYINVDESC14" ColumnName="TYINVDESC14" />
+                <ScalarProperty Name="TYINVAMT14" ColumnName="TYINVAMT14" />
+                <ScalarProperty Name="TYINVDESC15" ColumnName="TYINVDESC15" />
+                <ScalarProperty Name="TYINVAMT15" ColumnName="TYINVAMT15" />
+                <ScalarProperty Name="LockID" ColumnName="LockID" />
+                <ScalarProperty Name="TYRNTBFWD" ColumnName="TYRNTBFWD" />
+                <ScalarProperty Name="TYGRTBFWD" ColumnName="TYGRTBFWD" />
+                <ScalarProperty Name="TYDEPBFWD" ColumnName="TYDEPBFWD" />
+                <ScalarProperty Name="TYSTLBFWD" ColumnName="TYSTLBFWD" />
+                <ScalarProperty Name="TYSCGBFWD" ColumnName="TYSCGBFWD" />
+                <ScalarProperty Name="TYINSBFWD" ColumnName="TYINSBFWD" />
+                <ScalarProperty Name="TYMANBFWD" ColumnName="TYMANBFWD" />
+                <ScalarProperty Name="TYWRTBFWD" ColumnName="TYWRTBFWD" />
+                <ScalarProperty Name="TYSUNBFWD" ColumnName="TYSUNBFWD" />
+                <ScalarProperty Name="TYADPBFWD" ColumnName="TYADPBFWD" />
+                <ScalarProperty Name="TYTENBFWD" ColumnName="TYTENBFWD" />
+                <ScalarProperty Name="TYADMBFWD" ColumnName="TYADMBFWD" />
+                <ScalarProperty Name="TYSTFBFWD" ColumnName="TYSTFBFWD" />
+                <ScalarProperty Name="TYDEPLAND" ColumnName="TYDEPLAND" />
+                <ScalarProperty Name="TYELECLWIN" ColumnName="TYELECLWIN" />
+                <ScalarProperty Name="TYELECLWOUT" ColumnName="TYELECLWOUT" />
+                <ScalarProperty Name="TYFIXEDAMOUNT" ColumnName="TYFIXEDAMOUNT" />
+                <ScalarProperty Name="TYFIXEDPER" ColumnName="TYFIXEDPER" />
+                <ScalarProperty Name="TYFIXEDDATE" ColumnName="TYFIXEDDATE" />
+                <ScalarProperty Name="TYADDEDBFBAL" ColumnName="TYADDEDBFBAL" />
+                <ScalarProperty Name="TYPrintRec" ColumnName="TYPrintRec" />
+                <ScalarProperty Name="TYCalcRents" ColumnName="TYCalcRents" />
+                <ScalarProperty Name="TYCalcDate" ColumnName="TYCalcDate" />
+                <ScalarProperty Name="TYCalcPosted" ColumnName="TYCalcPosted" />
+                <ScalarProperty Name="TYFirstInv" ColumnName="TYFirstInv" />
+                <ScalarProperty Name="TYInvDemHeader" ColumnName="TYInvDemHeader" />
+                <ScalarProperty Name="TYInvDemFooter" ColumnName="TYInvDemFooter" />
+                <ScalarProperty Name="TYPfInvDemHeader" ColumnName="TYPfInvDemHeader" />
+                <ScalarProperty Name="TYPfInvDemFooter" ColumnName="TYPfInvDemFooter" />
+                <ScalarProperty Name="TYEXPORTFLAG" ColumnName="TYEXPORTFLAG" />
+                <ScalarProperty Name="TYEXPORTDATE" ColumnName="TYEXPORTDATE" />
+                <ScalarProperty Name="TYIMPORTDATE" ColumnName="TYIMPORTDATE" />
+                <ScalarProperty Name="TYEMailPreferred" ColumnName="TYEMailPreferred" />
+                <ScalarProperty Name="TYSMSPreferred" ColumnName="TYSMSPreferred" />
+                <ScalarProperty Name="TYPostPreferred" ColumnName="TYPostPreferred" />
+                <ScalarProperty Name="TYSMSMMS" ColumnName="TYSMSMMS" />
+                <ScalarProperty Name="PayeeName" ColumnName="PayeeName" />
+                <ScalarProperty Name="ProFormaTextID" ColumnName="ProFormaTextID" />
+                <ScalarProperty Name="ProFormaText" ColumnName="ProFormaText" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="UnitTenancy" ColumnName="UnitTenancy" />
+                <ScalarProperty Name="DepositProtectionScheme" ColumnName="DepositProtectionScheme" />
+                <ScalarProperty Name="DepositProtectionSchemeID" ColumnName="DepositProtectionSchemeID" />
+                <ScalarProperty Name="DepositProtectionSchemeNotes" ColumnName="DepositProtectionSchemeNotes" />
+                <ScalarProperty Name="DepositProtectionSchemeNotesGeneral" ColumnName="DepositProtectionSchemeNotesGeneral" />
+                <ScalarProperty Name="DepositProtectionSchemeAgreedDate" ColumnName="DepositProtectionSchemeAgreedDate" />
+                <ScalarProperty Name="DepositProtectionSchemeTargetDate" ColumnName="DepositProtectionSchemeTargetDate" />
+                <ScalarProperty Name="DepositProtectionSchemeDisputeDate" ColumnName="DepositProtectionSchemeDisputeDate" />
+                <ScalarProperty Name="DepositProtectionSchemeDisputeAmt" ColumnName="DepositProtectionSchemeDisputeAmt" />
+                <ScalarProperty Name="TyBkAct" ColumnName="TyBkAct" />
+                <ScalarProperty Name="TyBkActName" ColumnName="TyBkActName" />
+                <ScalarProperty Name="TyBkBDC" ColumnName="TyBkBDC" />
+                <ScalarProperty Name="TyBkRef" ColumnName="TyBkRef" />
+                <ScalarProperty Name="TyBkSort" ColumnName="TyBkSort" />
+                <ScalarProperty Name="TyPayType" ColumnName="TyPayType" />
+                <ScalarProperty Name="TYTERMDAY" ColumnName="TYTERMDAY" />
+                <ScalarProperty Name="DepositProtectionSchemeRegistrationNumber" ColumnName="DepositProtectionSchemeRegistrationNumber" />
+                <ScalarProperty Name="DateUploadedToTDS" ColumnName="DateUploadedToTDS" />
+                <ScalarProperty Name="TyDateTimeStamp" ColumnName="TyDateTimeStamp" />
+                <ScalarProperty Name="DepositProtectionSchemeTDSRegistered" ColumnName="DepositProtectionSchemeTDSRegistered" />
+                <ScalarProperty Name="DDProcessDay" ColumnName="DDProcessDay" />
+                <ScalarProperty Name="DDBankDetailsValidated" ColumnName="DDBankDetailsValidated" />
+                <ScalarProperty Name="DDBankRef" ColumnName="DDBankRef" />
+                <ScalarProperty Name="DailyRentalCalculation" ColumnName="DailyRentalCalculation" />
+                <ScalarProperty Name="TYTERMDAYS" ColumnName="TYTERMDAYS" />
+                <ScalarProperty Name="StopTDSUpload" ColumnName="StopTDSUpload" />
+                <ScalarProperty Name="ProtectionEndDate" ColumnName="ProtectionEndDate" />
+                <ScalarProperty Name="DepToTCY" ColumnName="DepToTCY" />
+                <ScalarProperty Name="DepToLL" ColumnName="DepToLL" />
+                <ScalarProperty Name="DepToAcy" ColumnName="DepToAcy" />
+                <ScalarProperty Name="DepToTcyDate" ColumnName="DepToTcyDate" />
+                <ScalarProperty Name="DepToLLDate" ColumnName="DepToLLDate" />
+                <ScalarProperty Name="DepToAcyDate" ColumnName="DepToAcyDate" />
+                <ScalarProperty Name="TDSEndType" ColumnName="TDSEndType" />
+                <ScalarProperty Name="TcyTDSComplete" ColumnName="TcyTDSComplete" />
+                <ScalarProperty Name="TYPASSWORD" ColumnName="TYPASSWORD" />
+                <ScalarProperty Name="TYFNAME" ColumnName="TYFNAME" />
+                <ScalarProperty Name="TYFSALU" ColumnName="TYFSALU" />
+                <ScalarProperty Name="TYFADD1" ColumnName="TYFADD1" />
+                <ScalarProperty Name="TYFADD2" ColumnName="TYFADD2" />
+                <ScalarProperty Name="TYFADD3" ColumnName="TYFADD3" />
+                <ScalarProperty Name="TYFADD4" ColumnName="TYFADD4" />
+                <ScalarProperty Name="TYFPSTCD" ColumnName="TYFPSTCD" />
+                <ScalarProperty Name="TYUSEFWD" ColumnName="TYUSEFWD" />
+                <ScalarProperty Name="StandingOrderReference" ColumnName="StandingOrderReference" />
+                <ScalarProperty Name="InitialInvoiceType" ColumnName="InitialInvoiceType" />
+                <ScalarProperty Name="IncludeBankDetailsOnSwitchingForm" ColumnName="IncludeBankDetailsOnSwitchingForm" />
+                <ScalarProperty Name="MOBranch" ColumnName="MOBranch" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NumberOfOccupants" ColumnName="NumberOfOccupants" />
+                <ScalarProperty Name="lastmodified" ColumnName="lastmodified" />
+                <ScalarProperty Name="exportable" ColumnName="exportable" />
+                <ScalarProperty Name="RentReviewDate" ColumnName="RentReviewDate" />
+                <ScalarProperty Name="LeaseExpiryDate" ColumnName="LeaseExpiryDate" />
+                <ScalarProperty Name="UtilitySwitchingOptOut" ColumnName="UtilitySwitchingOptOut" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Host_Tenants">
+            <EntityTypeMapping TypeName="Winman_RentIncModel.Host_Tenants">
+              <MappingFragment StoreEntitySet="Host_Tenants">
+                <ScalarProperty Name="TCODE" ColumnName="TCODE" />
+                <ScalarProperty Name="TTYCODE" ColumnName="TTYCODE" />
+                <ScalarProperty Name="TTYLOCK" ColumnName="TTYLOCK" />
+                <ScalarProperty Name="TNAME" ColumnName="TNAME" />
+                <ScalarProperty Name="TSALU" ColumnName="TSALU" />
+                <ScalarProperty Name="TADD1" ColumnName="TADD1" />
+                <ScalarProperty Name="TADD2" ColumnName="TADD2" />
+                <ScalarProperty Name="TADD3" ColumnName="TADD3" />
+                <ScalarProperty Name="TADD4" ColumnName="TADD4" />
+                <ScalarProperty Name="TPSTCD" ColumnName="TPSTCD" />
+                <ScalarProperty Name="TTELHOME" ColumnName="TTELHOME" />
+                <ScalarProperty Name="TTELWK1" ColumnName="TTELWK1" />
+                <ScalarProperty Name="TTELWK2" ColumnName="TTELWK2" />
+                <ScalarProperty Name="TTELFAX" ColumnName="TTELFAX" />
+                <ScalarProperty Name="TTELMOBL" ColumnName="TTELMOBL" />
+                <ScalarProperty Name="TE_MAIL" ColumnName="TE-MAIL" />
+                <ScalarProperty Name="TSTATUS" ColumnName="TSTATUS" />
+                <ScalarProperty Name="TTHEAD" ColumnName="TTHEAD" />
+                <ScalarProperty Name="TTHDCODE" ColumnName="TTHDCODE" />
+                <ScalarProperty Name="TBRANCH" ColumnName="TBRANCH" />
+                <ScalarProperty Name="TNOTES" ColumnName="TNOTES" />
+                <ScalarProperty Name="TUSERNT1" ColumnName="TUSERNT1" />
+                <ScalarProperty Name="TUSERNT2" ColumnName="TUSERNT2" />
+                <ScalarProperty Name="TUSERNT3" ColumnName="TUSERNT3" />
+                <ScalarProperty Name="TUSERNT4" ColumnName="TUSERNT4" />
+                <ScalarProperty Name="TADDED" ColumnName="TADDED" />
+                <ScalarProperty Name="TCLEARANCE" ColumnName="TCLEARANCE" />
+                <ScalarProperty Name="TCLEARANCEC" ColumnName="TCLEARANCEC" />
+                <ScalarProperty Name="TCLEARANCES" ColumnName="TCLEARANCES" />
+                <ScalarProperty Name="TCLEARANCEA" ColumnName="TCLEARANCEA" />
+                <ScalarProperty Name="TCLEARANCEB" ColumnName="TCLEARANCEB" />
+                <ScalarProperty Name="TRECTYPE" ColumnName="TRECTYPE" />
+                <ScalarProperty Name="TBKCHK" ColumnName="TBKCHK" />
+                <ScalarProperty Name="TBKNAME" ColumnName="TBKNAME" />
+                <ScalarProperty Name="TBKCONT" ColumnName="TBKCONT" />
+                <ScalarProperty Name="TBKADD1" ColumnName="TBKADD1" />
+                <ScalarProperty Name="TBKADD2" ColumnName="TBKADD2" />
+                <ScalarProperty Name="TBKADD3" ColumnName="TBKADD3" />
+                <ScalarProperty Name="TBKADD4" ColumnName="TBKADD4" />
+                <ScalarProperty Name="TBKPSTCD" ColumnName="TBKPSTCD" />
+                <ScalarProperty Name="TBKTEL" ColumnName="TBKTEL" />
+                <ScalarProperty Name="TBKSORT" ColumnName="TBKSORT" />
+                <ScalarProperty Name="TBKACT" ColumnName="TBKACT" />
+                <ScalarProperty Name="TBKACTNAME" ColumnName="TBKACTNAME" />
+                <ScalarProperty Name="TEMCHK" ColumnName="TEMCHK" />
+                <ScalarProperty Name="TEMNAME" ColumnName="TEMNAME" />
+                <ScalarProperty Name="TEMSALU" ColumnName="TEMSALU" />
+                <ScalarProperty Name="TEMADD1" ColumnName="TEMADD1" />
+                <ScalarProperty Name="TEMADD2" ColumnName="TEMADD2" />
+                <ScalarProperty Name="TEMADD3" ColumnName="TEMADD3" />
+                <ScalarProperty Name="TEMADD4" ColumnName="TEMADD4" />
+                <ScalarProperty Name="TEMPSTCD" ColumnName="TEMPSTCD" />
+                <ScalarProperty Name="TEMTEL" ColumnName="TEMTEL" />
+                <ScalarProperty Name="TATCHK" ColumnName="TATCHK" />
+                <ScalarProperty Name="TATNAME" ColumnName="TATNAME" />
+                <ScalarProperty Name="TATSALU" ColumnName="TATSALU" />
+                <ScalarProperty Name="TATADD1" ColumnName="TATADD1" />
+                <ScalarProperty Name="TATADD2" ColumnName="TATADD2" />
+                <ScalarProperty Name="TATADD3" ColumnName="TATADD3" />
+                <ScalarProperty Name="TATADD4" ColumnName="TATADD4" />
+                <ScalarProperty Name="TATPSTCD" ColumnName="TATPSTCD" />
+                <ScalarProperty Name="TATTEL" ColumnName="TATTEL" />
+                <ScalarProperty Name="TKNCHK" ColumnName="TKNCHK" />
+                <ScalarProperty Name="TKNNAME" ColumnName="TKNNAME" />
+                <ScalarProperty Name="TKNSALU" ColumnName="TKNSALU" />
+                <ScalarProperty Name="TKNADD1" ColumnName="TKNADD1" />
+                <ScalarProperty Name="TKNADD2" ColumnName="TKNADD2" />
+                <ScalarProperty Name="TKNADD3" ColumnName="TKNADD3" />
+                <ScalarProperty Name="TKNADD4" ColumnName="TKNADD4" />
+                <ScalarProperty Name="TKNPSTCD" ColumnName="TKNPSTCD" />
+                <ScalarProperty Name="TKNTEL" ColumnName="TKNTEL" />
+                <ScalarProperty Name="TCHCHK" ColumnName="TCHCHK" />
+                <ScalarProperty Name="TCHNAME" ColumnName="TCHNAME" />
+                <ScalarProperty Name="TCHSALU" ColumnName="TCHSALU" />
+                <ScalarProperty Name="TCHADD1" ColumnName="TCHADD1" />
+                <ScalarProperty Name="TCHADD2" ColumnName="TCHADD2" />
+                <ScalarProperty Name="TCHADD3" ColumnName="TCHADD3" />
+                <ScalarProperty Name="TCHADD4" ColumnName="TCHADD4" />
+                <ScalarProperty Name="TCHPSTCD" ColumnName="TCHPSTCD" />
+                <ScalarProperty Name="TCHTEL" ColumnName="TCHTEL" />
+                <ScalarProperty Name="LockID" ColumnName="LockID" />
+                <ScalarProperty Name="TRNTBFWD" ColumnName="TRNTBFWD" />
+                <ScalarProperty Name="TGRTBFWD" ColumnName="TGRTBFWD" />
+                <ScalarProperty Name="TDEPBFWD" ColumnName="TDEPBFWD" />
+                <ScalarProperty Name="TSTLBFWD" ColumnName="TSTLBFWD" />
+                <ScalarProperty Name="TSCGBFWD" ColumnName="TSCGBFWD" />
+                <ScalarProperty Name="TINSBFWD" ColumnName="TINSBFWD" />
+                <ScalarProperty Name="TMANBFWD" ColumnName="TMANBFWD" />
+                <ScalarProperty Name="TWRTBFWD" ColumnName="TWRTBFWD" />
+                <ScalarProperty Name="TSUNBFWD" ColumnName="TSUNBFWD" />
+                <ScalarProperty Name="TADPBFWD" ColumnName="TADPBFWD" />
+                <ScalarProperty Name="TTENBFWD" ColumnName="TTENBFWD" />
+                <ScalarProperty Name="TADMBFWD" ColumnName="TADMBFWD" />
+                <ScalarProperty Name="TSTFBFWD" ColumnName="TSTFBFWD" />
+                <ScalarProperty Name="TSharedPer" ColumnName="TSharedPer" />
+                <ScalarProperty Name="TMRentMin" ColumnName="TMRentMin" />
+                <ScalarProperty Name="TMRentMax" ColumnName="TMRentMax" />
+                <ScalarProperty Name="TMNum1Min" ColumnName="TMNum1Min" />
+                <ScalarProperty Name="TMNum1Max" ColumnName="TMNum1Max" />
+                <ScalarProperty Name="TMNum2Min" ColumnName="TMNum2Min" />
+                <ScalarProperty Name="TMNum2Max" ColumnName="TMNum2Max" />
+                <ScalarProperty Name="TMNum3Min" ColumnName="TMNum3Min" />
+                <ScalarProperty Name="TMNum3Max" ColumnName="TMNum3Max" />
+                <ScalarProperty Name="TMNum4Min" ColumnName="TMNum4Min" />
+                <ScalarProperty Name="TMNum4Max" ColumnName="TMNum4Max" />
+                <ScalarProperty Name="TEXPDATE" ColumnName="TEXPDATE" />
+                <ScalarProperty Name="TFIXEDAMOUNT" ColumnName="TFIXEDAMOUNT" />
+                <ScalarProperty Name="TFIXEDPER" ColumnName="TFIXEDPER" />
+                <ScalarProperty Name="TFIXEDDATE" ColumnName="TFIXEDDATE" />
+                <ScalarProperty Name="TADDEDBFBAL" ColumnName="TADDEDBFBAL" />
+                <ScalarProperty Name="TPrintRec" ColumnName="TPrintRec" />
+                <ScalarProperty Name="TCalcRents" ColumnName="TCalcRents" />
+                <ScalarProperty Name="TFirstInv" ColumnName="TFirstInv" />
+                <ScalarProperty Name="TReqBy" ColumnName="TReqBy" />
+                <ScalarProperty Name="TInvDemHeader" ColumnName="TInvDemHeader" />
+                <ScalarProperty Name="TInvDemFooter" ColumnName="TInvDemFooter" />
+                <ScalarProperty Name="TPfInvDemHeader" ColumnName="TPfInvDemHeader" />
+                <ScalarProperty Name="TPfInvDemFooter" ColumnName="TPfInvDemFooter" />
+                <ScalarProperty Name="TAgRent" ColumnName="TAgRent" />
+                <ScalarProperty Name="TAgDep" ColumnName="TAgDep" />
+                <ScalarProperty Name="InMatching" ColumnName="InMatching" />
+                <ScalarProperty Name="TEXPORTFLAG" ColumnName="TEXPORTFLAG" />
+                <ScalarProperty Name="TEXPORTDATE" ColumnName="TEXPORTDATE" />
+                <ScalarProperty Name="TIMPORTDATE" ColumnName="TIMPORTDATE" />
+                <ScalarProperty Name="TEMailPreferred" ColumnName="TEMailPreferred" />
+                <ScalarProperty Name="TSMSPreferred" ColumnName="TSMSPreferred" />
+                <ScalarProperty Name="TPostPreferred" ColumnName="TPostPreferred" />
+                <ScalarProperty Name="TSMSMMS" ColumnName="TSMSMMS" />
+                <ScalarProperty Name="PayeeName" ColumnName="PayeeName" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="EnquirySource" ColumnName="EnquirySource" />
+                <ScalarProperty Name="TBKBDC" ColumnName="TBKBDC" />
+                <ScalarProperty Name="TBKREF" ColumnName="TBKREF" />
+                <ScalarProperty Name="TPAYTYPE" ColumnName="TPAYTYPE" />
+                <ScalarProperty Name="TDateTimeStamp" ColumnName="TDateTimeStamp" />
+                <ScalarProperty Name="DDProcessDay" ColumnName="DDProcessDay" />
+                <ScalarProperty Name="DDBankDetailsValidated" ColumnName="DDBankDetailsValidated" />
+                <ScalarProperty Name="DDBankRef" ColumnName="DDBankRef" />
+                <ScalarProperty Name="TFNAME" ColumnName="TFNAME" />
+                <ScalarProperty Name="TFSALU" ColumnName="TFSALU" />
+                <ScalarProperty Name="TFADD1" ColumnName="TFADD1" />
+                <ScalarProperty Name="TFADD2" ColumnName="TFADD2" />
+                <ScalarProperty Name="TFADD3" ColumnName="TFADD3" />
+                <ScalarProperty Name="TFADD4" ColumnName="TFADD4" />
+                <ScalarProperty Name="TFPSTCD" ColumnName="TFPSTCD" />
+                <ScalarProperty Name="TUSEFWD" ColumnName="TUSEFWD" />
+                <ScalarProperty Name="TINNAME" ColumnName="TINNAME" />
+                <ScalarProperty Name="TINADD1" ColumnName="TINADD1" />
+                <ScalarProperty Name="TINADD2" ColumnName="TINADD2" />
+                <ScalarProperty Name="TINADD3" ColumnName="TINADD3" />
+                <ScalarProperty Name="TINADD4" ColumnName="TINADD4" />
+                <ScalarProperty Name="TINPSTCD" ColumnName="TINPSTCD" />
+                <ScalarProperty Name="TINTEL" ColumnName="TINTEL" />
+                <ScalarProperty Name="StandingOrderReference" ColumnName="StandingOrderReference" />
+                <ScalarProperty Name="TExclPropAvailBefore" ColumnName="TExclPropAvailBefore" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="MOAppBranch" ColumnName="MOAppBranch" />
+                <ScalarProperty Name="MOAppShared" ColumnName="MOAppShared" />
+                <ScalarProperty Name="MOBranch" ColumnName="MOBranch" />
+                <ScalarProperty Name="TRPNAME" ColumnName="TRPNAME" />
+                <ScalarProperty Name="TRPADD1" ColumnName="TRPADD1" />
+                <ScalarProperty Name="TRPADD2" ColumnName="TRPADD2" />
+                <ScalarProperty Name="TRPADD3" ColumnName="TRPADD3" />
+                <ScalarProperty Name="TRPADD4" ColumnName="TRPADD4" />
+                <ScalarProperty Name="TRPPSTCD" ColumnName="TRPPSTCD" />
+                <ScalarProperty Name="TRPTEL" ColumnName="TRPTEL" />
+                <ScalarProperty Name="TPTADD1" ColumnName="TPTADD1" />
+                <ScalarProperty Name="TPTADD2" ColumnName="TPTADD2" />
+                <ScalarProperty Name="TPTADD3" ColumnName="TPTADD3" />
+                <ScalarProperty Name="TPTADD4" ColumnName="TPTADD4" />
+                <ScalarProperty Name="TPTPSTCD" ColumnName="TPTPSTCD" />
+                <ScalarProperty Name="TPTTEL" ColumnName="TPTTEL" />
+                <ScalarProperty Name="TNegotiator" ColumnName="TNegotiator" />
+                <ScalarProperty Name="TCategory" ColumnName="TCategory" />
+                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+                <ScalarProperty Name="exportable" ColumnName="exportable" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblLandlordContractors">
+            <EntityTypeMapping TypeName="Winman_RentIncModel.tblLandlordContractor">
+              <MappingFragment StoreEntitySet="tblLandlordContractor">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="LCode" ColumnName="LCode" />
+                <ScalarProperty Name="CCode" ColumnName="CCode" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblLandlordExpenceRates">
+            <EntityTypeMapping TypeName="Winman_RentIncModel.tblLandlordExpenceRate">
+              <MappingFragment StoreEntitySet="tblLandlordExpenceRates">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="KeyCode" ColumnName="KeyCode" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="TaxDeductable" ColumnName="TaxDeductable" />
+                <ScalarProperty Name="VatRate" ColumnName="VatRate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,76 @@
+@using Ganedata.Core.Entities.Enums
+
+@Html.DevExpress().GridView(
+    settings =>
+    {
+        settings.Name = "MarketJobsGrid";
+        settings.CallbackRouteValues = new { Controller = "Markets", Action = "MarketJobsListPartial" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.CustomBindingRouteValuesCollection.Add(
+            GridViewOperationType.Paging,
+            new { Controller = "Markets", Action = "_MarketGridViewsPaging" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Filtering,
+        new { Controller = "Markets", Action = "_MarketGridViewFiltering" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Sorting,
+        new { Controller = "Markets", Action = "_MarketGridViewDataSorting" }
+        );
+
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.Styles.Header.CssClass = "";
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.KeyFieldName = "Id";
+        settings.Columns.Add("Id").Width = System.Web.UI.WebControls.Unit.Percentage(5);
+        settings.Columns.Add("Name", "Title").Width = System.Web.UI.WebControls.Unit.Percentage(20);
+        settings.Columns.Add("Description", "Job Description").Width = System.Web.UI.WebControls.Unit.Percentage(20);
+     ;
+        settings.Columns.Add("MarketJobStatusEnum", "Status").Settings.AllowAutoFilter = DefaultBoolean.False;
+        settings.Columns.Add("DisplayText", "Market Route Vehicle").Width = System.Web.UI.WebControls.Unit.Percentage(15);
+        settings.Columns.Add(column =>
+        {
+            column.Width = System.Web.UI.WebControls.Unit.Percentage(15);
+            column.Caption = "Allocated Resource";
+            column.SetDataItemTemplateContent(m =>
+            {
+                var resourceName = DataBinder.Eval(m.DataItem, "ResourceName");
+                var id = (int)DataBinder.Eval(m.DataItem, "Id");
+                ViewContext.Writer.Write(resourceName);
+                ViewContext.Writer.Write("&nbsp;<b onclick='AllocateJobToResource(" + id + ")' class='fa fa-user-" + (id > 0 ? "times" : "plus") + "'></b>");
+            });
+        });
+
+        settings.Columns.Add("DateCreated", "Last Modified").Width = System.Web.UI.WebControls.Unit.Percentage(10);
+
+        settings.Columns.Add(column =>
+        {
+            column.Width = System.Web.UI.WebControls.Unit.Percentage(15);
+            column.Caption = "Actions";
+            column.SetDataItemTemplateContent(m =>
+            {
+                if (ViewBag.MarketJobStatus == (int)MarketJobStatusEnum.UnAllocated || ViewBag.MarketJobStatus == (int)MarketJobStatusEnum.Allocated || ViewBag.MarketJobStatus == (int)MarketJobStatusEnum.Accepted)
+                {
+                    var id = (int)DataBinder.Eval(m.DataItem, "Id");
+                    ViewContext.Writer.Write("<form class='form-horizontal' id='_deleteMarketJob'>" + Html.AntiForgeryToken() + "<a title='Edit Job' class='btn fa fa-pencil' href='/markets/MarketJobEdit/" + id + "' role='button'></a>" +
+                                             "<a class='btn  fa fa-trash' role='button' data-valueid='" + id + "' title='Cancel Job' data-action='DeleteMarketJob' data-controller='Markets' id='deleteBtn' data-title='Cancel Market Job' data-message='Are you sure you want to cancel this Job?' data-toggle='modal' data-target='#confirm-delete'></a></form>");
+                }
+            });
+        });
+        settings.ClientSideEvents.BeginCallback = "OnJobAllocationBegincallBack";
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.EndCallback = "OnGridFocusedRowChanged";
+
+    }).BindToCustomData(Model).GetHtml()

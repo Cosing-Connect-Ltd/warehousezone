@@ -1,0 +1,107 @@
+﻿@model Ganedata.Core.Entities.Domain.AuthActivity
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Delete Activity";
+}
+
+<h2><span>Delete Activity</span></h2>
+
+<h3 class="alert alert-danger">Are you sure you want to delete this?</h3>
+<div class="form-horizontal col-md-6 pull-left">
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ActivityName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActivityName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActivityController)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActivityController)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActivityAction)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActivityAction)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </dt>
+
+        <dd>
+            @DateTimeToLocal.Convert(Model.DateCreated, ViewBag.TimeZone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateUpdated)
+        </dt>
+
+        <dd>
+            @DateTimeToLocal.Convert(Model.DateUpdated, ViewBag.TimeZone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UpdatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+
+    </dl>
+
+    <div class="clear col-md-6 pull-left">
+        <br />
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                <div class="col-md-offset-2 col-md-10 bottom-right">
+                    <input type="submit" value="Delete" class="btn btn-primary" />
+                    <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>

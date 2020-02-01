@@ -1,0 +1,220 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@using Ganedata.Core.Entities.Enums
+@using System.Web.UI.WebControls
+
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "_InventoryTransListGridView";
+        settings.CallbackRouteValues = new { Controller = "InventoryTransaction", Action = "_InventoryTransList" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.CustomBindingRouteValuesCollection.Add(
+            GridViewOperationType.Paging,
+            new { Controller = "InventoryTransaction", Action = "_InventoryTransListPaging" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Filtering,
+        new { Controller = "InventoryTransaction", Action = "_InventoryTransListFiltering" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Sorting,
+        new { Controller = "InventoryTransaction", Action = "_InventoryGetDataSorting" }
+        );
+
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+
+
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+
+        settings.KeyFieldName = "InventoryTransactionId";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = true;
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.SettingsPager.PageSize = 10;
+
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "InventoryTransactionId";
+            c.Caption = "Id";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "InventoryTransactionTypeName";
+            c.Caption = "Transaction Type";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+            c.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var comboSettings = (ComboBoxProperties)c.PropertiesEdit;
+            comboSettings.DataSource = ViewData["TransactionTypesList"];
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Name";
+            c.Caption = "Product";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ProductGroup";
+            c.Caption = "Group";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DepartmentName";
+            c.Caption = "Department";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "SKU";
+            c.Caption = "SKU Code";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "SerialNo";
+            c.Caption = "Serial No";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "PalletSerial";
+            c.Caption = "Pallet";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Quantity";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DateCreated";
+            c.Caption = "Date";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            c.ColumnType = MVCxGridViewColumnType.DateEdit;
+            c.SetDataItemTemplateContent(m =>
+            {
+                var date = (DateTime?)DataBinder.Eval(m.DataItem, "DateCreated");
+                DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
+                ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
+            });
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ExpiryDate";
+            c.Caption = "Expiry Date";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            c.ColumnType = MVCxGridViewColumnType.DateEdit;
+            c.SetDataItemTemplateContent(m =>
+            {
+                var date = (DateTime?)DataBinder.Eval(m.DataItem, "ExpiryDate");
+                var date1 = (DateTime?)DataBinder.Eval(m.DataItem, "PalletExpiry");
+                var palletId = (int?)DataBinder.Eval(m.DataItem, "PalletId")??0;
+                if (palletId > 0)
+                {
+                    DateTime? localDate = DateTimeToLocal.Convert(date1, ViewBag.TimeZone);
+                    ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
+                }
+                else {
+                    DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
+                    ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
+                }
+            });
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "OrderNumber";
+            c.Caption = "OrderNumber";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "InStock";
+            c.Caption = "Last Qty";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        if (ViewBag.IsWorksOrdersEnabled)
+        {
+            settings.Columns.Add(c =>
+            {
+                c.FieldName = "Property";
+                c.Caption = "Property";
+                c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            });
+        }
+
+        if (WMS.Helpers.LayoutHelpers.ActivityValidator("Users", "ShowTerminalInventoryTransaction"))
+        {
+            settings.Columns.Add(c =>
+        {
+            c.FieldName = "TerminalName";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+            settings.Columns.Add(c =>
+        {
+            c.FieldName = "CreatedBy";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
+
+        }
+
+
+        settings.PreRender = (sender, e) =>
+        {
+            ((MVCxGridView)sender).DetailRows.ExpandRow(0);
+        };
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+
+        settings.ClientSideEvents.EndCallback = "OnGridFocusedRowChanged";
+        settings.HtmlRowPrepared = (s, e) =>
+        {
+            bool? flag;
+            if (e.RowType != GridViewRowType.Data) return;
+
+            flag = Convert.ToBoolean(e.GetValue("DontMonitorStock"));
+
+            if (flag == true)
+            {
+                e.Row.BackColor = System.Drawing.Color.LightCoral;
+                e.Row.ForeColor = System.Drawing.Color.Black;
+            }
+        };
+
+    });
+}
+@grid.BindToCustomData(Model).GetHtml()
+
+

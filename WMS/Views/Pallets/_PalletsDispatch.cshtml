@@ -1,0 +1,124 @@
+﻿@using System.Web.UI.WebControls
+@model List<Ganedata.Core.Entities.Domain.PalletsDispatch>
+@using Ganedata.Core.Entities.Helpers
+@using Ganedata.Core.Entities.Enums
+
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "PalletsDispatchGridView"+ ViewBag.ProcessId;
+        settings.CallbackRouteValues = new { Controller = "Pallets", Action = "_PalletsDispatch", type = ViewBag.Type, ProcessId=ViewBag.ProcessId };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+        settings.KeyFieldName = "PalletsDispatchID";
+
+        settings.SettingsPager.Mode = GridViewPagerMode.ShowPager;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.CommandColumn.ShowSelectCheckbox = false;
+        settings.CommandColumn.Visible = false;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DispatchReference";
+            c.Caption = "Dispatch Reference";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "VehicleDescription";
+            c.Caption = "Vehicle Description";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DateCompleted";
+            c.Caption = "Completed Date";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            c.ColumnType = MVCxGridViewColumnType.DateEdit;
+            c.SetDataItemTemplateContent(m =>
+            {
+                var date = (DateTime?)DataBinder.Eval(m.DataItem, "DateCompleted");
+                DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
+                ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
+            });
+        });
+
+        settings.Columns.Add("VehicleDriverResource.Name", "Driver Name");
+        settings.Columns.Add("Vehicle.Name", "Vehicle");
+        settings.Columns.Add("OrderProcess.DeliveryNO", "Delivery Ref NO");
+        settings.Columns.Add("OrderProcess.Order.Account.CompanyName", "Company Name");
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ReceiverName";
+            c.Caption = "Receiver Name";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+
+            c.Caption = "Status";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var comboSettings = (ComboBoxProperties)c.PropertiesEdit;
+            comboSettings.DataSource = Enum.GetNames(typeof(PalletDispatchStatusEnum));
+
+            c.SetDataItemTemplateContent(m =>
+            {
+                var OrderProcessStatusId = (PalletDispatchStatusEnum)DataBinder.Eval(m.DataItem, "DispatchStatus");
+                ViewContext.Writer.Write(OrderProcessStatusId);
+            });
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "Actions";
+            column.SetDataItemTemplateContent(m =>
+            {
+
+                var dispatchId = (int)DataBinder.Eval(m.DataItem, "PalletsDispatchID");
+                string receiverSign = (string)DataBinder.Eval(m.DataItem, "ReceiverSign");
+                var editDispatchFunction= string.Format("EditPalletDispatch('{0}')", dispatchId);
+                ViewContext.Writer.Write("<a target='_blank' alt='Print Delivery Note' class='btn fa fa-print' href='/Reports/PalleteReportPrint?dispatchId=" + dispatchId + "' role='button'></a>");
+                if (!receiverSign.IsNullOrEmpty())
+                {
+
+                    var function = string.Format("OnImageClick('{0}')", receiverSign);
+                    ViewContext.Writer.Write("<a href='javascript:void(0)' alt='Print Delivery Note' class='btn fa fa-picture-o' onclick=" + function + " role='button'></a>");
+                }
+                ViewContext.Writer.Write("<a target='javascript:void(0)' alt='Edit dispatches' title='Edit dispatch' class='btn fa fa-pencil' onclick=" + editDispatchFunction + " role='button'></a>");
+
+
+
+            });
+        });
+
+        settings.SettingsDetail.ShowDetailRow = true;
+
+        settings.SetDetailRowTemplateContent(c =>
+        {
+            var PalletsDispatchID = DataBinder.Eval(c.DataItem, "PalletsDispatchID").ToString();
+            Html.RenderAction("_Pallets", "Pallets", new {type=1, PalletsDispatchID = PalletsDispatchID });
+        });
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnPalletGridFocusedRowChanged";
+        settings.ClientSideEvents.SelectionChanged = "function(s,e){ OnPalletSelected(s,e);  }";
+        settings.SettingsPager.PageSizeItemSettings.Visible = false;
+
+
+    });
+}
+@grid.Bind(Model).GetHtml()

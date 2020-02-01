@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="xrRichText2.SerializableRtfString" xml:space="preserve">
+    <value>ewBcAHIAdABmADEAXABhAG4AcwBpAGMAcABnADEAMgA1ADIADQAKAHsADQAKAFwAZgBvAG4AdAB0AGIAbAANAAoAewBcAGYAMAAgAFQAaQBtAGUAcwAgAE4AZQB3ACAAUgBvAG0AYQBuADsAfQANAAoAewBcAGYAMQAgAFQAYQBoAG8AbQBhADsAfQANAAoAfQANAAoAewANAAoAXABjAG8AbABvAHIAdABiAGwADQAKADsADQAKAFwAcgBlAGQAMABcAGcAcgBlAGUAbgAwAFwAYgBsAHUAZQAyADUANQA7AA0ACgBcAHIAZQBkADAAXABnAHIAZQBlAG4AMABcAGIAbAB1AGUAMAA7AA0ACgB9AA0ACgBcAG4AbwB1AGkAYwBvAG0AcABhAHQAXABzAHAAbAB5AHQAdwBuAGkAbgBlAFwAaAB0AG0AYQB1AHQAcwBwAHsAXABwAGEAcgBkAFwAcABsAGEAaQBuAFwAcQBsAHsAXABiAFwAZgAxAFwAZgBzADEAOABcAGMAZgAyACAAeAByAFIAaQBjAGgAVABlAHgAdAAxAH0AXABmAHMAMgA0AFwAcABhAHIAfQANAAoAfQANAAoA</value>
+  </data>
+  <data name="xrRichText1.SerializableRtfString" xml:space="preserve">
+    <value>ewBcAHIAdABmADEAXABkAGUAZgBmADAAewBcAGYAbwBuAHQAdABiAGwAewBcAGYAMAAgAEMAYQBsAGkAYgByAGkAOwB9AHsAXABmADEAIABUAGkAbQBlAHMAIABOAGUAdwAgAFIAbwBtAGEAbgA7AH0AewBcAGYAMgAgAFQAYQBoAG8AbQBhADsAfQB9AHsAXABjAG8AbABvAHIAdABiAGwAIAA7AFwAcgBlAGQAMABcAGcAcgBlAGUAbgAwAFwAYgBsAHUAZQAyADUANQAgADsAXAByAGUAZAAwAFwAZwByAGUAZQBuADAAXABiAGwAdQBlADAAIAA7AH0AewBcACoAXABkAGUAZgBjAGgAcAAgAFwAZgAxAFwAZgBzADIANAB9AHsAXABzAHQAeQBsAGUAcwBoAGUAZQB0ACAAewBcAHEAbABcAGYAMQBcAGYAcwAyADQAIABOAG8AcgBtAGEAbAA7AH0AewBcACoAXABjAHMAMQBcAGYAMQBcAGYAcwAyADQAIABEAGUAZgBhAHUAbAB0ACAAUABhAHIAYQBnAHIAYQBwAGgAIABGAG8AbgB0ADsAfQB7AFwAKgBcAGMAcwAyAFwAcwBiAGEAcwBlAGQAbwBuADEAXABmADEAXABmAHMAMgA0ACAATABpAG4AZQAgAE4AdQBtAGIAZQByADsAfQB7AFwAKgBcAGMAcwAzAFwAdQBsAFwAZgAxAFwAZgBzADIANABcAGMAZgAxACAASAB5AHAAZQByAGwAaQBuAGsAOwB9AHsAXAAqAFwAdABzADQAXAB0AHMAcgBvAHcAZABcAGYAMQBcAGYAcwAyADQAXABxAGwAXAB0AHMAYwBlAGwAbABwAGEAZABkAGYAbAAzAFwAdABzAGMAZQBsAGwAcABhAGQAZABsADEAMAA4AFwAdABzAGMAZQBsAGwAcABhAGQAZABmAGIAMwBcAHQAcwBjAGUAbABsAHAAYQBkAGQAZgByADMAXAB0AHMAYwBlAGwAbABwAGEAZABkAHIAMQAwADgAXAB0AHMAYwBlAGwAbABwAGEAZABkAGYAdAAzAFwAdABzAHYAZQByAHQAYQBsAHQAXABjAGwAdAB4AGwAcgB0AGIAIABOAG8AcgBtAGEAbAAgAFQAYQBiAGwAZQA7AH0AewBcACoAXAB0AHMANQBcAHQAcwByAG8AdwBkAFwAcwBiAGEAcwBlAGQAbwBuADQAXABmADEAXABmAHMAMgA0AFwAcQBsAFwAdAByAGIAcgBkAHIAdABcAGIAcgBkAHIAcwBcAGIAcgBkAHIAdwAxADAAXAB0AHIAYgByAGQAcgBsAFwAYgByAGQAcgBzAFwAYgByAGQAcgB3ADEAMABcAHQAcgBiAHIAZAByAGIAXABiAHIAZAByAHMAXABiAHIAZAByAHcAMQAwAFwAdAByAGIAcgBkAHIAcgBcAGIAcgBkAHIAcwBcAGIAcgBkAHIAdwAxADAAXAB0AHIAYgByAGQAcgBoAFwAYgByAGQAcgBzAFwAYgByAGQAcgB3ADEAMABcAHQAcgBiAHIAZAByAHYAXABiAHIAZAByAHMAXABiAHIAZAByAHcAMQAwAFwAdABzAGMAZQBsAGwAcABhAGQAZABmAGwAMwBcAHQAcwBjAGUAbABsAHAAYQBkAGQAbAAxADAAOABcAHQAcwBjAGUAbABsAHAAYQBkAGQAZgByADMAXAB0AHMAYwBlAGwAbABwAGEAZABkAHIAMQAwADgAXAB0AHMAdgBlAHIAdABhAGwAdABcAGMAbAB0AHgAbAByAHQAYgAgAFQAYQBiAGwAZQAgAFMAaQBtAHAAbABlACAAMQA7AH0AfQB7AFwAKgBcAGwAaQBzAHQAbwB2AGUAcgByAGkAZABlAHQAYQBiAGwAZQB9AFwAbgBvAHUAaQBjAG8AbQBwAGEAdABcAHMAcABsAHkAdAB3AG4AaQBuAGUAXABoAHQAbQBhAHUAdABzAHAAXABwAGEAcgBkAFwAcABsAGEAaQBuAFwAcQBsAHsAXABmADIAXABmAHMAMQA2AFwAYwBmADIAIAB4AHIAUgBpAGMAaABUAGUAeAB0ADEAfQBcAGYAMgBcAGYAcwAxADYAXABwAGEAcgB9AA==</value>
+  </data>
+  <metadata name="sqlDataSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 134</value>
+  </metadata>
+  <data name="customSqlQuery1.Sql" xml:space="preserve">
+    <value>SELECT        Orders.PPropertyId, Tenants.TenantId, Tenants.TenantName, Tenants.TenantNo, Tenants.TenantVatNo, Tenants.TenantAccountReference, Tenants.TenantWebsite, Tenants.TenantDayPhone, Tenants.TenantEveningPhone, 
+                         Tenants.TenantMobilePhone, Tenants.TenantFax, Tenants.TenantAddress1, Tenants.TenantAddress2, Tenants.TenantAddress3, Tenants.TenantAddress4, Tenants.TenantCity, Tenants.TenantStateCounty, 
+                         Tenants.CurrencyID, Tenants.CountryID, GlobalCurrency.CurrencyName, GlobalCountries.CountryName, Accounts.AccountID, Accounts.AccountCode, Accounts.CompanyName AS AcCompanyName, 
+                         Accounts.CountryID AS AccountCountryId, Accounts.CurrencyID AS AccountCurrencyId, Accounts.AccountStatusID, Accounts.PriceGroupID, Accounts.VATNo, Accounts.RegNo, Accounts.AccountEmail AS AcEmail, 
+                         Accounts.Telephone AS AcTelephone, Accounts.Mobile AS AcMobile, Accounts.website AS AcWebsite, Accounts.CreditLimit AS AcLimit, Accounts.AccountTypeCustomer, Accounts.AccountTypeSupplier, 
+                         Accounts.AccountTypeEndUser, Orders.OrderID, Orders.OrderNumber, Orders.IssueDate, CAST(Orders.ExpectedDate AS date) AS Expr1, Orders.Note, Orders.ReportTypeChargeId, Orders.InventoryTransactionTypeId, 
+                         Orders.AccountID AS OrderAccountId, Orders.OrderTotal + COALESCE (CAST(Orders.OrderCost AS DECIMAL(9, 2)), 0) AS OrderGrandTotal, InventoryTransactionTypes.InventoryTransactionTypeName, 
+                         InventoryTransactionTypes.OrderType, AccountAddresses.AccountID AS AcAccountID, AccountAddresses.AddressLine1 AS AcAddressLine1, AccountAddresses.AddressLine2 AS AcAddressLine2, 
+                         AccountAddresses.AddressLine3 AS AcAddressLine3, AccountAddresses.CountryID AS AccountAddressCountry, AccountAddresses.AddressID, Tenants.TenantPostalCode, AccountAddresses.PostCode AS AcPostCode, 
+                         Orders.OrderTotal, SLAPriorits.Priority, SLAPriorits.Description, Orders.PPropertyId AS Expr2, Orders.ExpectedHours, 
+                         TenantLocations.WarehouseId AS TenantWarehouseId, TenantLocations.WarehouseName AS TenantWarehouseName, TenantLocations.AddressLine1 AS TenantWarehouseAddr1, 
+                         TenantLocations.AddressLine2 AS TenantWarehouseAddr2, TenantLocations.AddressLine3 AS TenantWarehouseAddr3, TenantLocations.CountyState AS TenantWarehouseCounty, 
+                         TenantLocations.PostalCode AS TenantWarehousePostcode, TenantWarehouse.WarehouseId AS ToWarehouseId, TenantWarehouse.WarehouseName AS ToWarehouseName, 
+                         TenantWarehouse.AddressLine1 AS ToWarehouseAddr1, TenantWarehouse.AddressLine2 AS ToWarehouseAddr2, TenantWarehouse.AddressLine3 AS ToWarehouseAddr3, 
+                         TenantWarehouse.CountyState AS ToWarehouseCounty, TenantWarehouse.PostalCode AS ToWarehousePostcode, ISNULL(Orders.ShipmentAddressLine1, '') AS ShipmentAddressLine1, ISNULL(Orders.ShipmentAddressLine2, 
+                         '') AS ShipmentAddressLine2, ISNULL(Orders.ShipmentAddressLine3, '') AS ShipmentAddressLine3, ISNULL(Orders.ShipmentAddressLine4, '') AS ShipmentAddressLine4, ISNULL(Orders.ShipmentAddressPostcode, '') 
+                         AS ShipmentAddressPostcode, Orders.ShipmentAccountAddressId, Orders.ConsignmentTypeId, ISNULL(JobTypes.Name, '') + ': ' + ISNULL(JobSubTypes.Name, '') AS JobDescription, 
+                         PProperties.AddressLine1 AS WorksPropertyAddress1, PProperties.AddressLine2 AS WorksPropertyAddress2, PProperties.AddressLine3 AS WorksPropertyAddress3, PProperties.AddressPostcode AS WorksPropertyPostcode, 
+                         PTenants.TenantFullName AS WorksTenantFullName, PTenants.MobileNumber AS WorksTenantMobileNumber, PTenants.HomeTelephone AS WorksTenantHomePhone, PTenants.WorkTelephone1 AS WorksTenantWorkphone, 
+                         Appointments.StartTime AS WorksStartTime, Appointments.EndTime AS WorksEndTime, Resources.FirstName + Resources.SurName AS WorksResourceName, PLandlords.LandlordFullname AS WorksLandlordName, 
+                         PLandlords.MobileNumber AS WorksLandlordMobile, PLandlords.HomeTelephone AS WorksLandlordHomephone, PLandlords.WorkTelephone1 AS WorksLandlordWorkphone, 
+                         Resources.ResourceId AS WorksAppointmentResourcesId,
+                             (SELECT        STUFF
+                                                             ((SELECT        '. ' + Notes AS 'data()'
+                                                                 FROM            OrderNotes
+                                                                 WHERE        (OrderID = Orders.OrderID) AND (IsDeleted IS NULL OR
+                                                                                          IsDeleted = 0) FOR XML PATH('')), 1, 1, '') AS Expr1) AS OrderNotes, CAST(Appointments.StartTime AS date) AS ScheduledDate, Orders.DateCreated, Orders.TransferWarehouseId
+FROM            Orders INNER JOIN
+                         Tenants ON Orders.TenentId = Tenants.TenantId LEFT OUTER JOIN
+                         Account AS Accounts ON Orders.AccountID = Accounts.AccountID LEFT OUTER JOIN
+                         GlobalCountry AS GlobalCountries ON Accounts.CountryID = GlobalCountries.CountryID AND Tenants.CountryID = GlobalCountries.CountryID LEFT OUTER JOIN
+                         GlobalCurrency ON Accounts.CurrencyID = GlobalCurrency.CurrencyID AND Tenants.CurrencyID = GlobalCurrency.CurrencyID AND GlobalCountries.CountryID = GlobalCurrency.CountryID LEFT OUTER JOIN
+                         InventoryTransactionTypes ON Orders.InventoryTransactionTypeId = InventoryTransactionTypes.InventoryTransactionTypeId LEFT OUTER JOIN
+                         TenantLocations ON TenantLocations.WarehouseId = Orders.WarehouseId LEFT OUTER JOIN
+                         TenantLocations AS TenantWarehouse ON Orders.TransferWarehouseId = TenantWarehouse.WarehouseId LEFT OUTER JOIN
+                         SLAPriorits ON Orders.SLAPriorityId = SLAPriorits.SLAPriorityId LEFT OUTER JOIN
+                         AccountAddresses ON Accounts.AccountID = AccountAddresses.AccountID AND AccountAddresses.AddTypeDefault = 1 LEFT OUTER JOIN
+                         JobTypes ON JobTypes.JobTypeId = Orders.JobTypeId LEFT OUTER JOIN
+                         JobSubTypes ON JobSubTypes.JobSubTypeId = Orders.JobSubTypeId LEFT OUTER JOIN
+                         PProperties ON PProperties.PPropertyId = Orders.PPropertyId LEFT OUTER JOIN
+                         PTenants ON PTenants.CurrentPropertyCode = PProperties.PropertyCode AND PTenants.PTenantId = PProperties.CurrentPTenentId LEFT OUTER JOIN
+                         PLandlords ON PLandlords.LandlordCode = PProperties.CurrentLandlordCode AND PLandlords.PLandlordId =
+                             (SELECT        TOP (1) PLandlordId
+                               FROM            PLandlords
+                               WHERE        (LandlordCode = PProperties.CurrentLandlordCode)) LEFT OUTER JOIN
+                         Appointments ON Appointments.OrderId = Orders.OrderID AND Appointments.IsCanceled = 0 AND Appointments.AppointmentId =
+                             (SELECT        TOP (1) AppointmentId
+                               FROM            Appointments
+                               WHERE        (OrderId = Orders.OrderID) AND (Status = 0) AND (IsCanceled = 0)
+                               ORDER BY StartTime DESC) LEFT OUTER JOIN
+                         Resources ON Resources.ResourceId = Appointments.ResourceId WHERE 
+("Orders"."OrderId" = @SqlParamOrderId)
+and(orders.IsDeleted=0 or orders.IsDeleted is null)
+</value>
+  </data>
+  <data name="customSqlQuery2.Sql" xml:space="preserve">
+    <value>SELECT        OrderDetails.OrderDetailID, OrderDetails.OrderID, OrderDetails.WarehouseId, OrderDetails.ProductId, OrderDetails.ProdAccCodeID, OrderDetails.Qty, OrderDetails.Price, OrderDetails.WarrantyID,
+                      OrderDetails.WarrantyAmount, OrderDetails.TaxID, OrderDetails.TaxAmount, OrderDetails.TotalAmount, ProductMaster.SKUCode, ProductMaster.Name, cast(ProductMaster.Description as varchar(500)),ProductMaster.BarCode,
+                      ProductMaster.UOMId, GlobalUOM.UOM, GlobalTax.TaxName, GlobalTax.TaxDescription, GlobalTax.PercentageOfAmount, OrderDetails.Notes as OrderDetailNotes,
+					  (select Sum(s.QtyProcessed) from dbo.OrderProcessDetails s Inner join dbo.orderProcesses p on p.OrderProcessID=s.OrderProcessId Where OrderDetailID = OrderDetails.OrderDetailID And p.InventoryTransactionTypeId=12 ) as QtyReturned
+                      FROM            OrderDetails INNER JOIN
+                      ProductMaster ON OrderDetails.ProductId = ProductMaster.ProductId LEFT OUTER JOIN
+					
+                      GlobalUOM ON ProductMaster.UOMId = GlobalUOM.UOMId LEFT OUTER JOIN
+                      GlobalTax ON OrderDetails.TaxID = GlobalTax.TaxID AND ProductMaster.TaxID = GlobalTax.TaxID LEFT OUTER JOIN
+                      TenantWarranties ON OrderDetails.WarrantyID = TenantWarranties.WarrantyID
+                      WHERE (OrderDetails.IsDeleted=0 OR OrderDetails.IsDeleted IS NULL)AND ("OrderDetails"."OrderId" = @SqlParamOrderId)</value>
+  </data>
+  <data name="sqlDataSource1.ResultSchemaSerializable" xml:space="preserve">
+    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9Ik9yZGVySGVhZGVyIj48RmllbGQgTmFtZT0iUFByb3BlcnR5SWQiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJUZW5hbnRJZCIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9IlRlbmFudE5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVGVuYW50Tm8iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVGVuYW50VmF0Tm8iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVGVuYW50QWNjb3VudFJlZmVyZW5jZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJUZW5hbnRXZWJzaXRlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlRlbmFudERheVBob25lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlRlbmFudEV2ZW5pbmdQaG9uZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJUZW5hbnRNb2JpbGVQaG9uZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJUZW5hbnRGYXgiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVGVuYW50QWRkcmVzczEiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVGVuYW50QWRkcmVzczIiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVGVuYW50QWRkcmVzczMiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVGVuYW50QWRkcmVzczQiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVGVuYW50Q2l0eSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJUZW5hbnRTdGF0ZUNvdW50eSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDdXJyZW5jeUlEIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iQ291bnRyeUlEIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iQ3VycmVuY3lOYW1lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkNvdW50cnlOYW1lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkFjY291bnRJRCIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9IkFjY291bnRDb2RlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkFjQ29tcGFueU5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQWNjb3VudENvdW50cnlJZCIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9IkFjY291bnRDdXJyZW5jeUlkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iQWNjb3VudFN0YXR1c0lEIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iUHJpY2VHcm91cElEIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iVkFUTm8iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iUmVnTm8iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQWNFbWFpbCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJBY1RlbGVwaG9uZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJBY01vYmlsZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJBY1dlYnNpdGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQWNMaW1pdCIgVHlwZT0iRG91YmxlIiAvPjxGaWVsZCBOYW1lPSJBY2NvdW50VHlwZUN1c3RvbWVyIiBUeXBlPSJCb29sZWFuIiAvPjxGaWVsZCBOYW1lPSJBY2NvdW50VHlwZVN1cHBsaWVyIiBUeXBlPSJCb29sZWFuIiAvPjxGaWVsZCBOYW1lPSJBY2NvdW50VHlwZUVuZFVzZXIiIFR5cGU9IkJvb2xlYW4iIC8+PEZpZWxkIE5hbWU9Ik9yZGVySUQiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJPcmRlck51bWJlciIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJc3N1ZURhdGUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJFeHByMSIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9Ik5vdGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iUmVwb3J0VHlwZUNoYXJnZUlkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iSW52ZW50b3J5VHJhbnNhY3Rpb25UeXBlSWQiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJPcmRlckFjY291bnRJZCIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9Ik9yZGVyR3JhbmRUb3RhbCIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0iSW52ZW50b3J5VHJhbnNhY3Rpb25UeXBlTmFtZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJPcmRlclR5cGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQWNBY2NvdW50SUQiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJBY0FkZHJlc3NMaW5lMSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJBY0FkZHJlc3NMaW5lMiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJBY0FkZHJlc3NMaW5lMyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJBY2NvdW50QWRkcmVzc0NvdW50cnkiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJBZGRyZXNzSUQiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJUZW5hbnRQb3N0YWxDb2RlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkFjUG9zdENvZGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iT3JkZXJUb3RhbCIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0iUHJpb3JpdHkiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRGVzY3JpcHRpb24iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRXhwcjIiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJFeHBlY3RlZEhvdXJzIiBUeXBlPSJJbnQxNiIgLz48RmllbGQgTmFtZT0iVGVuYW50V2FyZWhvdXNlSWQiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJUZW5hbnRXYXJlaG91c2VOYW1lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlRlbmFudFdhcmVob3VzZUFkZHIxIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlRlbmFudFdhcmVob3VzZUFkZHIyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlRlbmFudFdhcmVob3VzZUFkZHIzIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlRlbmFudFdhcmVob3VzZUNvdW50eSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJUZW5hbnRXYXJlaG91c2VQb3N0Y29kZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJUb1dhcmVob3VzZUlkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iVG9XYXJlaG91c2VOYW1lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlRvV2FyZWhvdXNlQWRkcjEiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVG9XYXJlaG91c2VBZGRyMiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJUb1dhcmVob3VzZUFkZHIzIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlRvV2FyZWhvdXNlQ291bnR5IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlRvV2FyZWhvdXNlUG9zdGNvZGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iU2hpcG1lbnRBZGRyZXNzTGluZTEiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iU2hpcG1lbnRBZGRyZXNzTGluZTIiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iU2hpcG1lbnRBZGRyZXNzTGluZTMiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iU2hpcG1lbnRBZGRyZXNzTGluZTQiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iU2hpcG1lbnRBZGRyZXNzUG9zdGNvZGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iU2hpcG1lbnRBY2NvdW50QWRkcmVzc0lkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iQ29uc2lnbm1lbnRUeXBlSWQiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJKb2JEZXNjcmlwdGlvbiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJXb3Jrc1Byb3BlcnR5QWRkcmVzczEiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iV29ya3NQcm9wZXJ0eUFkZHJlc3MyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IldvcmtzUHJvcGVydHlBZGRyZXNzMyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJXb3Jrc1Byb3BlcnR5UG9zdGNvZGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iV29ya3NUZW5hbnRGdWxsTmFtZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJXb3Jrc1RlbmFudE1vYmlsZU51bWJlciIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJXb3Jrc1RlbmFudEhvbWVQaG9uZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJXb3Jrc1RlbmFudFdvcmtwaG9uZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJXb3Jrc1N0YXJ0VGltZSIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9IldvcmtzRW5kVGltZSIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9IldvcmtzUmVzb3VyY2VOYW1lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IldvcmtzTGFuZGxvcmROYW1lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IldvcmtzTGFuZGxvcmRNb2JpbGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iV29ya3NMYW5kbG9yZEhvbWVwaG9uZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJXb3Jrc0xhbmRsb3JkV29ya3Bob25lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IldvcmtzQXBwb2ludG1lbnRSZXNvdXJjZXNJZCIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9Ik9yZGVyTm90ZXMiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iU2NoZWR1bGVkRGF0ZSIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9IkRhdGVDcmVhdGVkIiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iVHJhbnNmZXJXYXJlaG91c2VJZCIgVHlwZT0iSW50MzIiIC8+PC9WaWV3PjxWaWV3IE5hbWU9Ik9yZGVyRGV0YWlsIj48RmllbGQgTmFtZT0iT3JkZXJEZXRhaWxJRCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iT3JkZXJJRCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iV2FyZWhvdXNlSWQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IlByb2R1Y3RJZCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iUHJvZEFjY0NvZGVJRCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iUXR5IiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJQcmljZSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iV2FycmFudHlJRCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iV2FycmFudHlBbW91bnQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IlRheElEIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJUYXhBbW91bnQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IlRvdGFsQW1vdW50IiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJTS1VDb2RlIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJOYW1lIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJDb2x1bW4xNSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQmFyQ29kZSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iVU9NSWQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IlVPTSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iVGF4TmFtZSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iVGF4RGVzY3JpcHRpb24iIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IlBlcmNlbnRhZ2VPZkFtb3VudCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iT3JkZXJEZXRhaWxOb3RlcyIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iUXR5UmV0dXJuZWQiIFR5cGU9IlVua25vd24iIC8+PC9WaWV3PjxSZWxhdGlvbiBNYXN0ZXI9Ik9yZGVySGVhZGVyIiBEZXRhaWw9Ik9yZGVyRGV0YWlsIj48S2V5Q29sdW1uIE1hc3Rlcj0iT3JkZXJJRCIgRGV0YWlsPSJPcmRlcklEIiAvPjwvUmVsYXRpb24+PC9EYXRhU2V0Pg==</value>
+  </data>
+</root>

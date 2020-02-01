@@ -1,0 +1,38 @@
+﻿@using WMS.CustomBindings
+
+    @Html.DevExpress().ComboBox(settings =>
+{
+    settings.Name = "prdid";
+    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+    settings.Properties.DropDownWidth = System.Web.UI.WebControls.Unit.Percentage(100);
+    settings.Properties.DropDownStyle = DropDownStyle.DropDown;
+    settings.CallbackRouteValues = new { Controller = "OrderDetail", Action = "ProductLargeDataComboBoxPartial" };
+    settings.Properties.CallbackPageSize = 15;
+    settings.Properties.TextField = "SKUCode";
+    settings.Properties.TextFormatString = "{2}";
+    settings.Properties.ValueField = "ProductId";
+    settings.ControlStyle.CssClass = "form-control";
+    settings.Properties.NullText = "Select Product";
+    settings.Properties.NullTextDisplayMode = NullTextDisplayMode.UnfocusedAndFocused;
+    settings.Properties.ValueType = typeof(int);
+    settings.Properties.FilterMinLength = 2;
+    settings.Properties.CallbackPageSize = 10;
+    settings.Properties.Columns.Add("SKUCode", "SKU").Width = 15;
+    settings.Properties.Columns.Add("BarCode", "Barcode").Width = 20;
+    settings.Properties.Columns.Add("Name", "Product Name").Width = 50;
+    settings.Properties.Columns.Add("InventoryStocks", "Available").Width = 15;
+
+    settings.PreRender += (s, e) =>
+    {
+        MVCxComboBox cb = (MVCxComboBox)s;
+        cb.Items.Add(string.Empty, 0);
+    };
+
+    settings.Properties.ClientSideEvents.SelectedIndexChanged = "OnchangeDropdown";
+    //settings.Properties.ClientSideEvents.KeyUp = "GoodsReturnCheck";
+
+    settings.Properties.ClientSideEvents.BeginCallback = "OnStartCallback";
+    settings.Properties.ClientSideEvents.EndCallback = "OnEndCallbackDS";
+}).BindList(ProductComboboxCustomBinding.GetProducts, ProductComboboxCustomBinding.GetProductByID).Bind(ViewBag.productId ?? "").GetHtml()
+
+

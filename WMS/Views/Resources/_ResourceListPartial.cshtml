@@ -1,0 +1,176 @@
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "ResourceList";
+        settings.CallbackRouteValues = new
+        {
+            Controller = "Resources",
+            Action = "ResourceListPartial"
+        };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.CustomBindingRouteValuesCollection.Add(
+           GridViewOperationType.Paging,
+           new { Controller = "Resources", Action = "_ResourceListGridViewsPaging" }
+       );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Filtering,
+        new { Controller = "Resources", Action = "_ResourceListGridViewFiltering" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Sorting,
+        new { Controller = "Resources", Action = "_ResourceListGridViewDataSorting" }
+        );
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+
+        settings.Settings.ShowFilterBar =GridViewStatusBarMode.Visible;
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsPager.PageSize = 10;
+        settings.SettingsExport.ExcelExportMode = DevExpress.Export.ExportType.WYSIWYG;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.SettingsExport.EnableClientSideExportAPI = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Toolbars.Add(toolbar =>
+        {
+            toolbar.Position = GridToolbarPosition.Top;
+            toolbar.ItemAlign = GridToolbarItemAlign.Left;
+
+            toolbar.Items.Add(i =>
+            {
+                i.Text = "Export Type";
+                i.Image.IconID = DevExpress.Web.ASPxThemes.IconID.ActionsDownload16x16office2013;
+                i.BeginGroup = true;
+                i.Items.Add(GridViewToolbarCommand.ExportToCsv);
+                i.Items.Add(GridViewToolbarCommand.ExportToXls);
+                i.Items.Add(GridViewToolbarCommand.ExportToXlsx);
+                i.Items.Add(GridViewToolbarCommand.ExportToPdf);
+                i.Items.Add(GridViewToolbarCommand.ExportToDocx);
+                i.Items.Add(GridViewToolbarCommand.ExportToRtf);
+            });
+        });
+
+        if (ViewData["exportRowType"] != null)
+        {
+            settings.SettingsExport.ExportSelectedRowsOnly = ViewData["exportRowType"] as GridViewExportedRowType? == GridViewExportedRowType.Selected;
+        }
+
+        settings.KeyFieldName = "ResourceId";
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ResourceId";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "PayrollEmployeeNo";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "FirstName";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "SurName";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Gender";
+            c.Caption = "Gender";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ContactNumbers.HomeNumber";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ContactNumbers.MobileNumber";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ContactNumbers.Fax";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ContactNumbers.EmailAddress";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "InternalStaff";
+            c.Caption = "Internal Staff";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.ColumnType = MVCxGridViewColumnType.CheckBox;
+            (c.PropertiesEdit as CheckBoxProperties).DisplayTextChecked = "True";
+            (c.PropertiesEdit as CheckBoxProperties).DisplayTextUnchecked = "False";
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "IsActive";
+            c.Caption = "Is Active";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.ColumnType = MVCxGridViewColumnType.CheckBox;
+            (c.PropertiesEdit as CheckBoxProperties).DisplayTextChecked = "True";
+            (c.PropertiesEdit as CheckBoxProperties).DisplayTextUnchecked = "False";
+        });
+
+
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "Job Types";
+            column.Name = "Jtypes";
+
+            column.SetDataItemTemplateContent(container =>
+            {
+                var type = DataBinder.Eval(container.DataItem, "JobTypes") as IEnumerable<Ganedata.Core.Entities.Domain.JobType>;
+
+                var data = string.Join(",", type.Select(a => a.Name));
+                ViewContext.Writer.Write(data);
+            });
+        });
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.BeginCallback = "onBeginCallback";
+
+        settings.ClientSideEvents.EndCallback = "Stop";
+        settings.CustomJSProperties = (s, e) =>
+        {
+            ASPxGridView gridView = (ASPxGridView)s;
+            e.Properties["cpGridFilterExpression"] = gridView.FilterExpression;
+        };
+
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+
+
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+
+
+}
+
+@grid.BindToCustomData(Model).GetHtml()

@@ -1,0 +1,58 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Location List";
+}
+
+<h2><span>Locations List</span></h2>
+
+<script type="text/javascript">
+    function OnDetailRowExpanding(s, e) {
+        s.SetFocusedRowIndex(e.visibleIndex);
+        // $('.selkey').val(s.GetRowKey(e.visibleIndex));
+        return false;
+    }
+
+    function OnGridFocusedRowChanged(s, e) {
+        var name = s.name;
+        if (name.indexOf("Locations") >= 0) {
+            $('#locationList').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        }
+        else
+            $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+</script>
+
+@Html.Hidden("selkey", null, new { @class = "selkey" })
+@Html.Hidden("locationList", null)
+@Html.Action("_LocationsList")
+
+<div class="col-md-offset-2 col-md-10 bottom-right">
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Locations", "Create"))
+    {
+        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary  ", @id = "lnkOrderUpdate" })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Locations", "BulkCreate"))
+    {
+        @Html.ActionLink("Bulk Create", "BulkCreate", "Locations", null, new { @class = "btn btn-primary", @id = "lnkOrderUpdate" })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Locations", "Edit"))
+    {
+        @Html.ActionLink("Update", "Edit", "Locations", null, new { @class = "btn btn-primary Caction", @id = "lnkLocationUpdate" })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Locations", "Delete"))
+    {
+        @Html.ActionLink("Delete", "Delete", "Locations", null, new { @class = "btn btn-primary  Caction", @id = "lnkLocationDelete" })
+    }
+</div>

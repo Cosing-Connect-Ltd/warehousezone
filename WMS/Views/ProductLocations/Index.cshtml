@@ -1,0 +1,143 @@
+﻿@model Ganedata.Core.Entities.Domain.ProductMaster
+
+@{
+    ViewBag.Title = "Product Locations";
+}
+
+<h2><span>@ViewBag.Title</span></h2>
+
+<div class="col-md-12 p-0">
+    <ul class="nav nav-tabs">
+        <li id="t1"><a href="@Url.Action("Edit", "Products", new { id = Model.ProductId })#basic">Basic</a></li>
+        <li id="t2"><a href="@Url.Action("Edit", "Products", new { id = Model.ProductId })#advanced">Advanced</a></li>
+        <li id="t3"><a href="@Url.Action("Edit", "Products", new { id = Model.ProductId })#dimensions">Dimensions</a></li>
+        <li id="t4"><a href="@Url.Action("Edit", "Products", new { id = Model.ProductId })#notes">Notes</a></li>
+        <li id="t5">@Html.ActionLink("Barcodes", "Create", "ProductSCC", new { id = Model.ProductId }, null)  </li>
+        <li id="t6">@Html.ActionLink("Categories", "Index", "ProductCGMap", new { id = Model.ProductId }, null)  </li>
+        <li id="t7" class="active"><a href="#">Locations </a></li>
+        <li id="t8">@Html.ActionLink("Additional Attributes", "Index", "ProductAttributes", new { id = Model.ProductId }, null)</li>
+        <li id="t9">@Html.ActionLink("Supplier Codes", "Create", "SupplierCodes", new { id = Model.ProductId }, null) </li>
+    </ul>
+</div>
+<div style="position:relative">
+    <div class="col-md-12 p-0">
+        <div class="col-md-4">
+            <table class="table tdclear">
+                <tr>
+                    <td>@Html.Label("Warehouses")</td>
+                    <td>
+                        @using (Html.BeginForm("", "ProductLocations"))
+                        {
+                            @Html.HiddenFor(model => model.ProductId)
+                            @Html.DropDownList("Warehouse", null, "", new { @class = "chosen-select" })
+                        }
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="col-md-6">
+            @using (Html.BeginForm("AddLocation", "ProductLocations"))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.ProductId)
+
+                <table class="table tdclear">
+                    <tr>
+                        <td>@Html.Label("Locations") </td>
+                        <td>
+                            @if (ViewData["Locations"] != null)
+                            {
+                                @Html.DropDownList("Locations", null, "", new { @class = "chosen-select" })
+                            }
+                        </td>
+                        <td><a href="#" id="SearchLoc"><img src="~/Content/images/search.png" /> </a></td>
+                        <td><input type="submit" value="+" class="btn btn-primary" /></td>
+                    </tr>
+                </table>
+            }
+        </div><!-- end of col-->
+    </div><!-- end of row-->
+    <hr />
+    <div class="col-md-12 p-0">
+        <div class="col-md-6">
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>Warehouse </th>
+                        <th>Locations</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ProductLocationsMap)
+                    {
+                        <tr>
+                            <td>
+                                @item.Locations.LocationName
+                            </td>
+                            <td>
+                                @item.Locations.LocationCode
+                            <td>
+                                <a class="deletepg" href="@Url.Action("DeleteLocation", "ProductLocations", new { LocationId = item.LocationId, ProductId = Model.ProductId })"><i class="fa fa-trash"></i>   </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div><!-- col mod 6-->
+        <div class="col-md-4 col-md-offset-2">
+            @Html.ActionLink("Next", "Index", "ProductAttributes", new { id = Model.ProductId }, new { @class = "btn btn-primary btn-next" })
+        </div>
+    </div><!-- end of row-->
+    <div id="divLoc" class="mdl">
+        <div class=" row">  <p>Search Location</p> </div>
+        <div class="col-md-12 p-0">
+            <form id="LocsearchForm" action="" method="get">
+                <table>
+                    <tr>
+                        <td></td>
+                        <td><input type="text" name="q" id="q" /></td>
+                        <td><input type="image" src="~/Content/images/search.png" /></td>
+                    </tr>
+
+                </table>
+            </form>
+        </div>
+        <hr />
+        <div class="col-md-12 p-0">
+            @using (Html.BeginForm("AddLocationlist", "ProductLocations"))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.ProductId)
+                <table id="loclist" class="table table-bordered">    </table>
+                <table>
+                    <tr>
+                        <td><input type="reset" value="Reset" /></td>
+                        <td><input type="submit" value="Add" /></td>
+                        <td><input type="button" value="Close" class="close btn btn-default" /></td>
+                    </tr>
+                </table>
+            }
+        </div>
+    </div>
+</div><!-- end position-->
+
+
+<div class="col-md-12 p-0">
+    @Html.ActionLink("Back to Product List", "Index", "ProductMaster")
+</div>
+
+<script id="locTemplate" type="text/x-jquery-tmpl">
+    <option value="${LocationId}">${LocationCode} </option>
+</script>
+
+<script id="locsearchTemplate" type="text/x-jquery-tmpl">
+    <tr>
+        <td><input type="checkbox" name="pc" value=" ${LocationId}">   </td>
+        <td> ${LocationCode} </td>
+
+    </tr>
+</script>

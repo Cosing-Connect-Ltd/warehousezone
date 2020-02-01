@@ -1,0 +1,153 @@
+@{
+    int? warehouseId = (int?)null;
+    if (ViewBag.WarehouseId != null)
+    {
+        warehouseId = (int?)ViewBag.WarehouseId;
+    }
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "Inventory";
+        settings.CallbackRouteValues = new
+        {
+            Controller = "InventoryStocks",
+            Action = "_InventoryList",
+            id = warehouseId
+        };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.CustomBindingRouteValuesCollection.Add(
+       GridViewOperationType.Paging,
+       new { Controller = "InventoryStocks", Action = "_InventoryStocksPaging" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Filtering,
+        new { Controller = "InventoryStocks", Action = "_InventoryStocksFiltering" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Sorting,
+        new { Controller = "InventoryStocks", Action = "_InventoryStocksSorting" }
+        );
+
+
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+
+        settings.KeyFieldName = "ProductId";
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.SettingsPager.PageSize = 20;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ProductName";
+            c.Caption = "Product";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add("SkuCode");
+        settings.Columns.Add("Barcode");
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ProductGroup";
+            c.Caption = "Group";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DepartmentName";
+            c.Caption = "Department";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add("InStock");
+
+        settings.Columns.Add(c =>
+        {
+
+            c.FieldName = "Allocated";
+            c.Caption = "Allocated";
+
+            c.SetDataItemTemplateContent(container =>
+            {
+                var Allocated = DataBinder.Eval(container.DataItem, "Allocated");
+                if ((decimal)Allocated > 0)
+                {
+                    var productId = (int)DataBinder.Eval(container.DataItem, "ProductId");
+                    var function = string.Format("searchDetail({0},{1})", productId, 1);
+
+                    ViewContext.Writer.Write(Allocated + "&nbsp;&nbsp;&nbsp;<a class='process-button fa fa-info-circle' style='cursor:pointer' id='" + productId + "' href='javascript:;' onclick=" + function + "></a>");
+                }
+                else
+                {
+                    ViewContext.Writer.Write(Allocated + "&nbsp;&nbsp;&nbsp;&nbsp;");
+                }
+            });
+        });
+        settings.Columns.Add("Available");
+        settings.Columns.Add(c =>
+        {
+
+            c.FieldName = "OnOrder";
+            c.Caption = "OnOrder";
+            c.SetDataItemTemplateContent(container =>
+            {
+                var OnOrder = DataBinder.Eval(container.DataItem, "OnOrder");
+                if ((decimal)OnOrder > 0)
+                {
+                    var productId = (int)DataBinder.Eval(container.DataItem, "ProductId");
+                    var function = string.Format("searchDetail({0},{1})", productId, 2);
+
+                    ViewContext.Writer.Write(OnOrder + "&nbsp;&nbsp;&nbsp;<a class='process-button fa fa-info-circle' style='cursor:pointer' id='" + productId + "' href='javascript:;' onclick=" + function + "></a>");
+                }
+                else
+                {
+                    ViewContext.Writer.Write(OnOrder);
+                }
+            });
+        });
+        settings.Columns.Add(c =>
+        {
+
+            c.Caption = "Action";
+            c.SetDataItemTemplateContent(container =>
+            {
+                var StockIssues = (bool?)DataBinder.Eval(container.DataItem, "StockIssue");
+               
+                if (StockIssues == true)
+                {
+                    ViewContext.Writer.Write("<img src='/Content/images/error_28px.png'>");
+
+                }
+               
+
+            });
+        });
+
+
+        settings.SettingsDetail.ShowDetailRow = true;
+        settings.SetDetailRowTemplateContent(c =>
+        {
+            var productId = (int)DataBinder.Eval(c.DataItem, "ProductId");
+            Html.RenderAction("_InventoryLocationsList", new { productid = productId });
+        });
+
+        settings.SettingsDetail.AllowOnlyOneMasterRowExpanded = true;
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.EndCallback = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.BeginCallback = "OnInventoryBeginCallback";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+
+    });
+}
+@grid.BindToCustomData(Model).GetHtml()

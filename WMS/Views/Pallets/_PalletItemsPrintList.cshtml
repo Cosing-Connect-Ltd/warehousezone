@@ -1,0 +1,27 @@
+﻿@using WMS.Helpers.DevexHelpers
+@model Ganedata.Core.Entities.Domain.PalletOrderProductsCollection
+
+<div class="col-md-12 p-0">
+    <div class="col-md-12">
+        <div class="col-md-6 col-md-offset-6">
+            <div class="h2">@Model.PalletNumber</div>
+            <div class="h4">@Model.AccountName</div>
+            <div class="h4">@Model.CreatedBy</div>
+            <div class="h4">@Model.DispatchedBy</div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <table class="table table-bordered table-responsive">
+            <thead><tr><th>Product</th><th>Quantity</th></tr></thead>
+            <tbody>
+            @foreach (var item in Model.ProductItems)
+            {
+                <tr data-id="@item.ProductID">
+                    <td> @item.ProductNameWithCode </td>
+                    <td>@item.PalletQuantity</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
