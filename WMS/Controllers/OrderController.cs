@@ -1164,6 +1164,7 @@ namespace WMS.Controllers
                     ViewBag.RequiresExpiryDate = product.RequiresExpiryDateOnReceipt;
                 }
             }
+            ViewBag.quantity = quantity;
             return PartialView(new InventoryTransaction { ProductId = pid, InventoryTransactionTypeId = type, OrderID = orderid, Quantity = quantity });
         }
 

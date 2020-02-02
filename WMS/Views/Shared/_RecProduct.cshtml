@@ -37,14 +37,14 @@
             @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "col-md-4" })
             <div class="col-md-8">
                 @Html.DevExpress().SpinEditFor(m => m.Quantity,
-settings =>
-{
+    settings =>
+    {
     settings.Name = "Quantity";
     settings.Enabled = (ViewBag.QuantityEnabled != null && ViewBag.QuantityEnabled == true);
     settings.Properties.MaxValue = 9999999999;
     settings.Width = Unit.Percentage(100);
     settings.ControlStyle.CssClass = "form-control";
-}).Bind(ViewBag.quantity==null?"": ViewBag.quantity).GetHtml()
+    }).Bind(ViewBag.quantity == null ? "" : ViewBag.quantity).GetHtml()
                 @Html.ValidationMessageFor(model => model.Quantity)
             </div>
         </div>
@@ -71,7 +71,7 @@ settings =>
                 </div>
             </div>
 
-            @Html.Hidden("KeyId",(int?)ViewBag.Key)
+            @Html.Hidden("KeyId", (int?)ViewBag.Key)
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.Label("Fsc Percent", htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">

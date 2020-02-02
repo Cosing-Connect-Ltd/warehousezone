@@ -1162,18 +1162,24 @@ namespace Ganedata.Core.Services
         }
         public decimal GetInventoryTransactionsByPalletTrackingId(int PalletTrackingId, int OrderProcessDetailId)
         {
-            var salesOrdersTransactios= _currentDbContext.InventoryTransactions.Where(x => x.PalletTrackingId == PalletTrackingId
-            && x.OrderProcessDetailId==OrderProcessDetailId &&
-            x.IsDeleted != true && (x.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.AdjustmentIn || x.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.PurchaseOrder || x.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Returns
-                || x.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.TransferIn)).Select(u=>u.Quantity).DefaultIfEmpty(0).Sum();
+            var purchaseOrdersTransactios = _currentDbContext.InventoryTransactions.Where(x => x.PalletTrackingId == PalletTrackingId
+             && x.OrderProcessDetailId == OrderProcessDetailId &&
+             x.IsDeleted != true && (x.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.AdjustmentIn || x.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.PurchaseOrder || x.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Returns
+                 || x.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.TransferIn)).Select(u => u.Quantity).DefaultIfEmpty(0).Sum();
 
-            var purchaseOrderTransactios = _currentDbContext.InventoryTransactions.Where(x => x.PalletTrackingId == PalletTrackingId
+            var salesOrdersTransactios = _currentDbContext.InventoryTransactions.Where(x => x.PalletTrackingId == PalletTrackingId
              && x.OrderProcessDetailId == OrderProcessDetailId &&
              x.IsDeleted != true && (x.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.AdjustmentOut || x.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.DirectSales || x.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Loan
                 || x.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.SalesOrder || x.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Samples || x.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.TransferOut
                 || x.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.WorksOrder || x.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Wastage)).Select(u => u.Quantity).DefaultIfEmpty(0).Sum();
-
-            return (purchaseOrderTransactios - salesOrdersTransactios);
+            if (purchaseOrdersTransactios > salesOrdersTransactios)
+            {
+                return (purchaseOrdersTransactios - salesOrdersTransactios);
+            }
+            else
+            {
+                return (salesOrdersTransactios- purchaseOrdersTransactios);
+            }
 
         }
         public IQueryable<InventoryTransaction> GetInventoryTransactionsByProductSerialId(int Id)

@@ -3098,7 +3098,7 @@ namespace Ganedata.Core.Services
                         else
                         {
                             pallet.RemainingCases = (pallet.RemainingCases + newQty);
-                            Inventory.StockTransactionApi(inventorytranscation.ProductId, (int)InventoryTransactionTypeEnum.AdjustmentIn, Math.Round((newQty * product?.ProductsPerCase ?? 1), 2), inventorytranscation.OrderID, TenantId, caCurrent.CurrentWarehouse().WarehouseId, CurrentUserId, null, inventorytranscation.PalletTrackingId, null, null, inventorytranscation.OrderProcessId, inventorytranscation.OrderProcessDetailId);
+                            Inventory.StockTransactionApi(inventorytranscation.ProductId, (int)InventoryTransactionTypeEnum.AdjustmentIn, Math.Round((newQty * (product?.ProductsPerCase ?? 1)), 2), inventorytranscation.OrderID, TenantId, caCurrent.CurrentWarehouse().WarehouseId, CurrentUserId, null, inventorytranscation.PalletTrackingId, null, null, inventorytranscation.OrderProcessId, inventorytranscation.OrderProcessDetailId);
                             Quantity = orderProcessDetails.QtyProcessed + newQty;
 
                         }
@@ -3116,7 +3116,7 @@ namespace Ganedata.Core.Services
                         else
                         {
                             pallet.RemainingCases = (pallet.RemainingCases - newQty);
-                            Inventory.StockTransactionApi(inventorytranscation.ProductId, (int)InventoryTransactionTypeEnum.AdjustmentOut, Math.Round((newQty * product?.ProductsPerCase ?? 1), 2), inventorytranscation.OrderID, TenantId, caCurrent.CurrentWarehouse().WarehouseId, CurrentUserId, null, inventorytranscation.PalletTrackingId, null, null, inventorytranscation.OrderProcessId, inventorytranscation.OrderProcessDetailId);
+                            Inventory.StockTransactionApi(inventorytranscation.ProductId, (int)InventoryTransactionTypeEnum.AdjustmentOut, Math.Round((newQty * (product?.ProductsPerCase ?? 1)), 2), inventorytranscation.OrderID, TenantId, caCurrent.CurrentWarehouse().WarehouseId, CurrentUserId, null, inventorytranscation.PalletTrackingId, null, null, inventorytranscation.OrderProcessId, inventorytranscation.OrderProcessDetailId);
                             Quantity = orderProcessDetails.QtyProcessed + newQty;
                         }
                     }
@@ -3142,7 +3142,7 @@ namespace Ganedata.Core.Services
                         {
                             pallet.RemainingCases = pallet.RemainingCases - newQty;
                             Quantity = orderProcessDetails.QtyProcessed - newQty;
-                            Inventory.StockTransactionApi(inventorytranscation.ProductId, (int)InventoryTransactionTypeEnum.AdjustmentOut, Math.Round((newQty * product.ProductsPerCase ?? 1), 2), inventorytranscation.OrderID, TenantId, caCurrent.CurrentWarehouse().WarehouseId, CurrentUserId, null, inventorytranscation.PalletTrackingId, null, null, inventorytranscation.OrderProcessId, inventorytranscation.OrderProcessDetailId);
+                            Inventory.StockTransactionApi(inventorytranscation.ProductId, (int)InventoryTransactionTypeEnum.AdjustmentOut, Math.Round((newQty * (product?.ProductsPerCase ?? 1)), 2), inventorytranscation.OrderID, TenantId, caCurrent.CurrentWarehouse().WarehouseId, CurrentUserId, null, inventorytranscation.PalletTrackingId, null, null, inventorytranscation.OrderProcessId, inventorytranscation.OrderProcessDetailId);
 
                         }
 
@@ -3163,7 +3163,7 @@ namespace Ganedata.Core.Services
 
                         pallet.RemainingCases = (pallet.RemainingCases + newQty);
                         Quantity = orderProcessDetails.QtyProcessed - newQty;
-                        Inventory.StockTransactionApi(inventorytranscation.ProductId, (int)InventoryTransactionTypeEnum.AdjustmentIn, Math.Round((newQty * product.ProductsPerCase ?? 1), 2), inventorytranscation.OrderID, TenantId, caCurrent.CurrentWarehouse().WarehouseId, CurrentUserId, null, inventorytranscation.PalletTrackingId, null, null, inventorytranscation.OrderProcessId, inventorytranscation.OrderProcessDetailId);
+                        Inventory.StockTransactionApi(inventorytranscation.ProductId, (int)InventoryTransactionTypeEnum.AdjustmentIn, Math.Round((newQty * (product?.ProductsPerCase ?? 1)), 2), inventorytranscation.OrderID, TenantId, caCurrent.CurrentWarehouse().WarehouseId, CurrentUserId, null, inventorytranscation.PalletTrackingId, null, null, inventorytranscation.OrderProcessId, inventorytranscation.OrderProcessDetailId);
 
                     }
 
