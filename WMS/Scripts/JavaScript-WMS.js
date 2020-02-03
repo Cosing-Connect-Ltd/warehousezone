@@ -853,10 +853,12 @@ $(function () {
             var OrderId = ui.draggable[0].getAttribute('data-orderid');
             var joblabel = ui.draggable[0].getAttribute('data-label');
             var tid = ui.draggable[0].getAttribute('data-tid');
+            var dispatchId = ui.draggable[0].getAttribute('data-dpId');
+            if (isNaN(parseInt(EndTime))) { EndTime = 0; }
             // Initiate a scheduler callback to create an appointment based on a cell interval
             if (cell !== null) {
                 Scheduler.getCellInfoProvider().initializeCell(cell);
-                Scheduler.PerformCallback({ start: cell.interval.start.getTime(), end: cell.interval.start.getTime() + parseInt(EndTime), subject: ui.draggable[0].textContent, resourceId: cell.resource, orderId: OrderId, jobLabel: joblabel, tenantid: tid });
+                Scheduler.PerformCallback({ start: cell.interval.start.getTime(), end: cell.interval.start.getTime() + parseInt(EndTime), subject: ui.draggable[0].textContent, resourceId: cell.resource, orderId: OrderId, jobLabel: joblabel, tenantid: tid, dispatchId: dispatchId });
                 //ui.draggable[0].remove();
             } else
                 alert('Drop the dragged item on a specific time cell.');

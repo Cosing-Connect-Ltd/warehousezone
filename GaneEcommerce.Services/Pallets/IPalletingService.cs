@@ -32,5 +32,9 @@ namespace Ganedata.Core.Services
         PalletsDispatch GetPalletsDispatchByDispatchId(int palletDispatchId);
 
         bool MarkedOrderProcessAsDispatch(int OrderProcessId);
+
+        IEnumerable<PalletsDispatch> GetAllPalletsDispatch();
+        bool UpdatePalletsDispatchStatus(int dispatchId, int userID, bool Status=false);
+
     }
 }

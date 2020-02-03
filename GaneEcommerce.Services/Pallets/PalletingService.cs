@@ -249,6 +249,11 @@ namespace Ganedata.Core.Services
             return _currentDbContext.PalletsDispatches.Where(u => u.DateCompleted.HasValue && (!orderProcessID.HasValue || u.OrderProcessID == orderProcessID) && (!reqDate.HasValue || (u.DateUpdated ?? u.DateCreated) >= reqDate) && (!dispatchId.HasValue || u.PalletsDispatchID == dispatchId)).OrderByDescending(x => x.DateCreated).ToList();
         }
 
+        public IEnumerable<PalletsDispatch> GetAllPalletsDispatch()
+        {
+            return _currentDbContext.PalletsDispatches.Where(u => u.DispatchStatus == PalletDispatchStatusEnum.Created).OrderByDescending(u=>u.PalletsDispatchID);
+        }
+
         public IQueryable<PalletViewModel> GetAllPallets(int? lastXdays = null, PalletStatusEnum? palletStatusEnum = null, int? orderProcessId = null, DateTime? reqDate = null, int? filterByPalletDetail = null, int? dispatchId = null)
         {
             var results = _currentDbContext.Pallets.Where(m => (!lastXdays.HasValue || (m.DateCreated > DbFunctions.AddDays(DateTime.UtcNow, -lastXdays.Value))) && (!reqDate.HasValue || (m.DateUpdated ?? m.DateCreated) >= reqDate) && (!dispatchId.HasValue || (m.PalletsDispatchID ?? m.PalletsDispatchID) == dispatchId)
@@ -539,6 +544,22 @@ namespace Ganedata.Core.Services
         {
             return _currentDbContext.PalletsDispatches.FirstOrDefault(u => u.PalletsDispatchID == palletDispatchId);
         }
+
+        public bool UpdatePalletsDispatchStatus(int dispatchId, int userID, bool Status = false)
+        {
+            var palletDispatch = _currentDbContext.PalletsDispatches.FirstOrDefault(u => u.PalletsDispatchID == dispatchId);
+            if (palletDispatch != null)
+            {
+                palletDispatch.DispatchStatus = Status?PalletDispatchStatusEnum.Created: PalletDispatchStatusEnum.Scheduled;
+                palletDispatch.UpdatedBy = userID;
+                palletDispatch.DateUpdated = DateTime.UtcNow;
+               _currentDbContext.Entry(palletDispatch).State=EntityState.Modified;
+                _currentDbContext.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
 
     }
 }

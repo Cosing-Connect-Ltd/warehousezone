@@ -365,7 +365,8 @@ namespace Ganedata.Core.Entities.Enums
     {
         Created = 1,
         Loaded = 2,
-        Delivered = 3
+        Delivered = 3,
+        Scheduled= 4,
     }
 
     public enum TnALogsStampType
