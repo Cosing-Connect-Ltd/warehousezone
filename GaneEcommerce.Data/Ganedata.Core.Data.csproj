@@ -633,6 +633,10 @@
     <Compile Include="Migrations\202001281418332_ScanVehicleLicensePlate-added-in-TerminalMetadataSync.designer.cs">
       <DependentUpon>202001281418332_ScanVehicleLicensePlate-added-in-TerminalMetadataSync.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202002031416590_OrderSchedule-model-added.cs" />
+    <Compile Include="Migrations\202002031416590_OrderSchedule-model-added.designer.cs">
+      <DependentUpon>202002031416590_OrderSchedule-model-added.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1432,6 +1436,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202001281418332_ScanVehicleLicensePlate-added-in-TerminalMetadataSync.resx">
       <DependentUpon>202001281418332_ScanVehicleLicensePlate-added-in-TerminalMetadataSync.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002031416590_OrderSchedule-model-added.resx">
+      <DependentUpon>202002031416590_OrderSchedule-model-added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
