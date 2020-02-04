@@ -123,7 +123,9 @@ namespace WMS.CustomBindings
         private static void UpdateAppointments(SchedulerDataObject dataObject)
         {
             var currentTenant = caCurrent.CurrentTenant();
+            var currentUser = caCurrent.CurrentUser();
             var appointmentServices = DependencyResolver.Current.GetService<IAppointmentsService>();
+            var _palletingService = DependencyResolver.Current.GetService<IPalletingService>();
 
             var updAppointments = SchedulerExtension.GetAppointmentsToUpdate<OrderSchedule>("Scheduler", dataObject.FetchAppointments, dataObject.Resources,
                 AppointmentStorage, ResourceStorage);
@@ -164,7 +166,12 @@ namespace WMS.CustomBindings
 
                 }
 
-               appointmentServices.UpdateOrderScheduleAppointment(appointment);
+               var status=appointmentServices.UpdateOrderScheduleAppointment(appointment);
+                if (status)
+                {
+                    var order = _palletingService.UpdatePalletsDispatchStatus((appointment.PalletDispatchId.HasValue?appointment.PalletDispatchId.Value:0), (appointment.MarketVehicleId.HasValue? appointment.MarketVehicleId : 0), currentUser.UserId);
+
+                }
             }
 
         }
@@ -193,7 +200,7 @@ namespace WMS.CustomBindings
                 // set order status for rescheduling
                 if (palletdispatch != null)
                 {
-                    palletservice.UpdatePalletsDispatchStatus((appointment.PalletDispatchId ?? 0), currentUser.UserId, true);
+                    palletservice.UpdatePalletsDispatchStatus((appointment.PalletDispatchId ?? 0),null, currentUser.UserId, true);
                 }
 
                 //cancel notification queues

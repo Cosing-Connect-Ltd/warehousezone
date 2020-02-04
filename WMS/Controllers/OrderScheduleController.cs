@@ -81,7 +81,7 @@ namespace WMS.Controllers
             var appointment = _appointmentsService.CreateOrderScheduleAppointment(start, end, subject, resourceId,joblabel??0, tenantId,dispatchId);
             if (appointment != null)
             {
-                var order = _palletingService.UpdatePalletsDispatchStatus(dispatchId,CurrentUserId);
+                var order = _palletingService.UpdatePalletsDispatchStatus(dispatchId,Convert.ToInt32(string.IsNullOrEmpty(resourceId)?"0":resourceId), CurrentUserId);
 
             }
 

@@ -545,7 +545,7 @@ namespace Ganedata.Core.Services
             return _currentDbContext.PalletsDispatches.FirstOrDefault(u => u.PalletsDispatchID == palletDispatchId);
         }
 
-        public bool UpdatePalletsDispatchStatus(int dispatchId, int userID, bool Status = false)
+        public bool UpdatePalletsDispatchStatus(int dispatchId,int? reourceId, int userID, bool Status = false)
         {
             var palletDispatch = _currentDbContext.PalletsDispatches.FirstOrDefault(u => u.PalletsDispatchID == dispatchId);
             if (palletDispatch != null)
@@ -553,6 +553,7 @@ namespace Ganedata.Core.Services
                 palletDispatch.DispatchStatus = Status?PalletDispatchStatusEnum.Created: PalletDispatchStatusEnum.Scheduled;
                 palletDispatch.UpdatedBy = userID;
                 palletDispatch.DateUpdated = DateTime.UtcNow;
+                palletDispatch.MarketVehicleID = reourceId;
                _currentDbContext.Entry(palletDispatch).State=EntityState.Modified;
                 _currentDbContext.SaveChanges();
                 return true;
