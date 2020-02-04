@@ -46,7 +46,7 @@ namespace WMS.CustomBindings
                     appointmentStorage.Mappings.Status = "Status";
                     appointmentStorage.Mappings.ResourceId = "ResourceIDs";
                     appointmentStorage.CustomFieldMappings.Add(new ASPxAppointmentCustomFieldMapping("Canceled", "IsCanceled"));
-                    appointmentStorage.CustomFieldMappings.Add(new ASPxAppointmentCustomFieldMapping("OrderId", "OrderId"));
+                    appointmentStorage.CustomFieldMappings.Add(new ASPxAppointmentCustomFieldMapping("PalletDispatchId", "PalletDispatchId"));
                     appointmentStorage.CustomFieldMappings.Add(new ASPxAppointmentCustomFieldMapping("TenentId", "TenentId"));
 
                     // clear existing lables and create new ones
