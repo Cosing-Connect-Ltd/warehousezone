@@ -495,8 +495,8 @@
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="App_Start\UnityWebApiActivator.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\OrderScheduleController.cs" />
     <Compile Include="Controllers\AssetsController.cs" />
-    <Compile Include="Controllers\CurrencyExRateController.cs" />
     <Compile Include="Controllers\FinancesController.cs" />
     <Compile Include="Controllers\PalletTrackingController.cs" />
     <Compile Include="Controllers\MarketRoutesController.cs" />
@@ -520,10 +520,10 @@
     <Compile Include="Controllers\MarketRouteSchedulesController.cs" />
     <Compile Include="Controllers\WebAPI\ApiAssetController.cs" />
     <Compile Include="CustomBindings\ConsignmentCustomBinding.cs" />
-    <Compile Include="CustomBindings\CurrencyExRateCustomBinding.cs" />
     <Compile Include="CustomBindings\PalletsCustomBinding.cs" />
     <Compile Include="CustomBindings\ProductComboboxCustomBinding.cs" />
     <Compile Include="CustomBindings\ProductSerialListCustomBinding.cs" />
+    <Compile Include="CustomBindings\OrderSchedulerSettings.cs" />
     <Compile Include="CustomBindings\StockTakeDetailsCustomBinding.cs" />
     <Compile Include="CustomBindings\MarketRouteProgressCustomBinding.cs" />
     <Compile Include="CustomBindings\AssetListCustomBinding.cs" />
@@ -1880,6 +1880,9 @@
     <Content Include="Views\Shared\_LatestCurrencyExRateData.cshtml" />
     <Content Include="Views\ReturnOrders\Index.cshtml" />
     <Content Include="Views\ReturnOrders\_ReturnOrders.cshtml" />
+    <Content Include="Views\OrderSchedule\Index.cshtml" />
+    <Content Include="Views\OrderSchedule\_PalletToDispatch.cshtml" />
+    <Content Include="Views\OrderSchedule\_SchedulerPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
