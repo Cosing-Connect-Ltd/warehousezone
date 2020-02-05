@@ -11,6 +11,7 @@ var startDate;
 var endDate;
 var PORStatus;
 var editdelivery;
+
 function beginAddCustomEmailPopup(s, e) {
     var ftReport = $("#FTReport").val();
     if (ftReport !== undefined) {

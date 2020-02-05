@@ -948,7 +948,7 @@ namespace WMS.Controllers
                     PrepareDirectory("~/UploadedFiles/reports/AS/");
                     var reportPath = "~/UploadedFiles/reports/AS/ASR" + shipmentAndRecipientInfo.AccountId + ".pdf";
                     report.ExportToPdf(Server.MapPath(reportPath));
-                    var result = await GaneConfigurationsHelper.CreateTenantEmailNotificationQueue($"Account Statment Report ", null, reportPath, shipmentAndRecipientInfo: shipmentAndRecipientInfo,
+                    var result = await GaneConfigurationsHelper.CreateTenantEmailNotificationQueue($"Account Statement Report ", null, reportPath, shipmentAndRecipientInfo: shipmentAndRecipientInfo,
                         worksOrderNotificationType: WorksOrderNotificationTypeEnum.AccountStatementTemplate, TenantId: CurrentTenantId, accountId: shipmentAndRecipientInfo.AccountId);
                     return Json(result, JsonRequestBehavior.AllowGet);
 

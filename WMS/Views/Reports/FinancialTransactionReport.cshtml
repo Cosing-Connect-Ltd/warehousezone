@@ -15,33 +15,30 @@
     ViewBag.Title = "ACCOUNT  STATEMENT";
 }
 <style type="text/css">
-    .Email
-    {
+    .Email {
         background-image: url(../../Content/images/Email.png);
         background-repeat: no-repeat;
     }
 </style>
 
 <script>
-   
-    function SendEmail(s, e) {
-        
-        var parameters = FinancialTransactionPrintDocumentViewer.GetPreviewModel().parametersModel;
-        if ((typeof parameters["AccountId"] !== 'undefined') && (typeof parameters["EndDate"] !== 'undefined')
-            && (typeof parameters["StartDate"] !== 'undefined')) {
-            parameters["AccountId"].subscribe(function (value) {
-                Ftaccountid = value;
-            });
-            var StartDate = formatDate(parameters["StartDate"]._latestValue);
-            var EndDate = formatDate(parameters["EndDate"]._latestValue);
-            var accountid = parameters["AccountId"]._latestValue;
-            if (accountid !== null) {
-                CustomEmailReports(accountid, StartDate, EndDate);
-            }
-            
 
+    function SendEmail(s, e) {
+
+        var StartDate = formatDate(FinancialTransactionPrintDocumentViewer.GetParametersModel()["StartDate"]());
+        var EndDate = formatDate(FinancialTransactionPrintDocumentViewer.GetParametersModel()["EndDate"]());
+        var accountid = FinancialTransactionPrintDocumentViewer.GetParametersModel()["AccountId"]();
+
+        if ((StartDate !== 'undefined') && (EndDate !== 'undefined')
+            && (accountid !== 'undefined')) {
+            ftAccountId = accountid;
+        }
+
+        if (accountid !== null) {
+            CustomEmailReports(accountid, StartDate, EndDate);
         }
     }
+
     function formatDate(date) {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),
@@ -56,7 +53,7 @@
 </script>
 
 <h2><span>@ViewBag.Title</span></h2>
-@Html.Hidden("FTReport","FtRep")
+@Html.Hidden("FTReport", "FtRep")
 @Html.DevExpress().WebDocumentViewer(settings =>
 {
     settings.Name = "FinancialTransactionPrintDocumentViewer";
