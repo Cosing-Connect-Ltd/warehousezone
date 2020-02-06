@@ -2672,14 +2672,14 @@ namespace Ganedata.Core.Data.Helpers
                     dates = GetSyncRecored.RequestTime.ToString("yyyy-MM-dd-HH:mm:ss");
                 }
 
-                url = PrestashopUrl + "orders/products[date_upd]=>[" + dates + "]&date=1&display=full&output_format=JSON";
+                url = PrestashopUrl + "orders?filter[date_upd]=>[" + dates + "]&date=1&display=full&output_format=JSON";
                 List<PrestaShopOrderViewModel> orderSearch = new List<PrestaShopOrderViewModel>();
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                 httpWebRequest.Credentials = new NetworkCredential(PrestashopKey, "");
                 httpWebRequest.Method = "GET";
                 httpWebRequest.ContentType = "application/json";
                 requestTime = DateTime.UtcNow;
-                httpResponse = await httpWebRequest.GetResponseAsync();
+                httpResponse = httpWebRequest.GetResponse();
                 responseTime = DateTime.UtcNow;
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {

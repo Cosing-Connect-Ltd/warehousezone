@@ -43,6 +43,8 @@ namespace WMS.Controllers.WebAPI
         }
 
         // Get http://localhost:8005/api/sync/Import-PrestaShop-Orders/?TenatId=1&WarehouseId=1
+
+        [HttpGet]
         public IHttpActionResult ImportPrestaShopOrders(int TenatId, int WarehouseId)
         {
             var sites = _userService.GetTenantWebsites(TenatId, WarehouseId, TenantWebsiteTypes.PrestaShop);
@@ -53,7 +55,8 @@ namespace WMS.Controllers.WebAPI
             }
             return Ok("");
         }
-        //Post http://localhost:8005/api/sync/Import-PrestaShop-Orders/?TenatId=1&WarehouseId=1
+        [HttpGet]
+        //Post http://localhost:8005/api/sync/Post-PrestaShop-ProductStock/?TenatId=1&WarehouseId=1
         public async Task<IHttpActionResult> PrestaShopStockSync(int TenatId, int WarehouseId)
         {
             var sites = _userService.GetTenantWebsites(TenatId, WarehouseId, TenantWebsiteTypes.PrestaShop);
