@@ -1314,14 +1314,16 @@ function loadOrderDetailCommonEvents() {
     $('.orddet').click(function (e) {
 
         var id = e.target.id;
-        if (id == 'OrderDetailadd') {
+        if (id == 'OrderDetailadd')
+        {
+            debugger;
             var accounId = $(".orderactcnts :selected").val();
             var warehouseId = $("#TransferWarehouseId :selected").val();
             var transfertype = $("#inverntoryType").val();
 
             if (transfertype === "3" || transfertype === "4") {
-
-                if (warehouseId === "" || warehouseId === null) {
+                debugger;
+                if (warehouseId === "" || warehouseId === null || warehouseId == undefined) {
                     return alert("Please select Warehouse first!");
                 }
             }
