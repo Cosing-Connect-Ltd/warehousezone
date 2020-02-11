@@ -511,7 +511,8 @@ function DisableChosenDropdown(dropdownId, disable) {
         var filedCheck = $("#" + dropdownId).is('input');
         if (filedCheck === false) {
             $("#" + dropdownId).prop("disabled", true);
-            if ($("input[type=hidden][id=" + dropdownId + "]").length < 1) {
+            if ($("input[type=hidden][id=" + dropdownId + "]").length < 1)
+            {
                 $("<input type='hidden' id='" + dropdownId + "' name='" + dropdownId + "' value='" + $("#" + dropdownId).val() + "'/>").insertAfter($("#" + dropdownId));
             } else {
                 $("input[name=AccountId]").val($("select[name=AccountId]").val());
