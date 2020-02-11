@@ -248,7 +248,15 @@ namespace Ganedata.Core.Services
         public int SaveAssetLog(AssetLogViewModel assetLog, int terminalId, int tenantId)
         {
             var newAssetLog = new AssetLog();
+
             _mapper.Map(assetLog, newAssetLog);
+
+            var assetId = _currentDbContext.Assets.Where(x => x.AssetTag.ToLower() == newAssetLog.ClientMac.ToLower()).FirstOrDefault()?.AssetId;
+
+            if (assetId != null && assetId > 0)
+            {
+                newAssetLog.AssetId = assetId;
+            }
 
             newAssetLog.AssetLogId = Guid.NewGuid();
             newAssetLog.DateCreated = DateTime.UtcNow;

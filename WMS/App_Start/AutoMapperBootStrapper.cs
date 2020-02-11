@@ -1,5 +1,6 @@
 using AutoMapper;
 using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Domain.Models;
 using Ganedata.Core.Entities.Domain.ViewModels;
 using Ganedata.Core.Models;
 
@@ -87,6 +88,7 @@ namespace WMS
                 cfg.CreateMap<AssetLog, AssetLogViewModel>().ReverseMap();
                 cfg.CreateMap<GlobalTax, GlobalTaxViewModel>().ReverseMap();
                 cfg.CreateMap<PalletProductsSync, PalletProductAddViewModel>().ReverseMap();
+                cfg.CreateMap<AssetLogViewModel, Observation>().ReverseMap();
             });
 
             return config;

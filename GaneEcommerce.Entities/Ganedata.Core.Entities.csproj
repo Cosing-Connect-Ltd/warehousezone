@@ -179,7 +179,7 @@
     <Compile Include="Domain\Models\CurrenciesRates.cs" />
     <Compile Include="Domain\Models\Invoice.cs" />
     <Compile Include="Domain\Models\MarketRouteProgress.cs" />
-    <Compile Include="Domain\Models\MerakiScanningApiPayload.cs" />
+    <Compile Include="Domain\Models\MerakiScanningApiViewModel.cs" />
     <Compile Include="Domain\Models\OrderConsignmentTypes.cs" />
     <Compile Include="Domain\Global\GlobalAccountStatus.cs" />
     <Compile Include="Domain\Models\OrderProcessDetail.cs" />

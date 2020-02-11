@@ -639,6 +639,10 @@
     <Compile Include="Migrations\202002031416590_OrderSchedule-model-added.designer.cs">
       <DependentUpon>202002031416590_OrderSchedule-model-added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202002101310559_Meraki-Properties-Added-In-AssetLog.cs" />
+    <Compile Include="Migrations\202002101310559_Meraki-Properties-Added-In-AssetLog.designer.cs">
+      <DependentUpon>202002101310559_Meraki-Properties-Added-In-AssetLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1441,6 +1445,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202002031416590_OrderSchedule-model-added.resx">
       <DependentUpon>202002031416590_OrderSchedule-model-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002101310559_Meraki-Properties-Added-In-AssetLog.resx">
+      <DependentUpon>202002101310559_Meraki-Properties-Added-In-AssetLog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

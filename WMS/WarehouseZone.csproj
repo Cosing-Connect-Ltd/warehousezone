@@ -523,6 +523,7 @@
     <Compile Include="Controllers\InvoiceController.cs" />
     <Compile Include="Controllers\MarketRouteSchedulesController.cs" />
     <Compile Include="Controllers\WebAPI\ApiAssetController.cs" />
+    <Compile Include="Controllers\WebAPI\ApiMerakiScanningController.cs" />
     <Compile Include="CustomBindings\ConsignmentCustomBinding.cs" />
     <Compile Include="CustomBindings\PalletsCustomBinding.cs" />
     <Compile Include="CustomBindings\ProductComboboxCustomBinding.cs" />

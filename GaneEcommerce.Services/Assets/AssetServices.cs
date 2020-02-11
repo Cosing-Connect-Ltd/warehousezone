@@ -1,15 +1,7 @@
 ﻿using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Ganedata.Core.Entities.Helpers;
-using Ganedata.Core.Entities.Enums;
-using Ganedata.Core.Models;
-using Microsoft.Ajax.Utilities;
 
 namespace Ganedata.Core.Services
 {
@@ -32,12 +24,13 @@ namespace Ganedata.Core.Services
             return _currentDbContext.AssetLog.Where(u => u.AssetId == AssetId);
 
         }
-        public void SaveAsset(Assets assets) {
+        public void SaveAsset(Assets assets)
+        {
 
             _currentDbContext.Assets.Add(assets);
             _currentDbContext.Entry(assets).State = EntityState.Added;
             _currentDbContext.SaveChanges();
-            
+
 
         }
         public void RemoveAsset(int AssetId)
@@ -70,6 +63,11 @@ namespace Ganedata.Core.Services
         public Assets GetAssetById(int id)
         {
             return _currentDbContext.Assets.FirstOrDefault(u => u.AssetId == id && u.IsDeleted != true);
+        }
+
+        public Assets GetAssetByTag(string tag)
+        {
+            return _currentDbContext.Assets.FirstOrDefault(u => u.AssetTag == tag && u.IsDeleted != true);
         }
 
     }

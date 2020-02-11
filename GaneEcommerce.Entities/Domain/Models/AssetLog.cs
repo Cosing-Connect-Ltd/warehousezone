@@ -27,10 +27,19 @@ namespace Ganedata.Core.Entities.Domain
         public double accuracy { get; set; }
         public string proximity { get; set; }
         public string address { get; set; }
-
         [ForeignKey("AssetId")]
         public virtual Assets Assets { get; set; }
         [ForeignKey("TerminalId")]
         public virtual Terminals Terminals { get; set; }
+        public string Ipv4 { get; set; }
+        public object Ipv6 { get; set; }
+        public DateTime? SeenTime { get; set; }
+        public long SeenEpoch { get; set; }
+        public string Ssid { get; set; }
+        public string Os { get; set; }
+        public string ClientMac { get; set; }
+        public string Manufacturer { get; set; }
+
+
     }
 }
