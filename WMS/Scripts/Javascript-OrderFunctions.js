@@ -75,6 +75,7 @@ function deleteDetails(id) {
 }
 function addDetail(action) {
     var postProductValidationProcess = function (confirmedAck) {
+        debugger;
         checkIsdeleted = false;
         VerifyQunatity();
         var productid = prdid.GetValue();

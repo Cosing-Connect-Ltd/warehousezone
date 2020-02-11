@@ -876,19 +876,12 @@ namespace Ganedata.Core.Services
 
         public OrderDetail SaveOrderDetail(OrderDetail podetail, int tenantId, int userId)
         {
-            var po = _currentDbContext.Order.Find(podetail.OrderID);
-
-
-            po.DateUpdated = DateTime.UtcNow;
-            po.UpdatedBy = userId;
-            _currentDbContext.Order.Attach(po);
-            var entry1 = _currentDbContext.Entry(po);
-            entry1.Property(e => e.DateUpdated).IsModified = true;
-            entry1.Property(e => e.UpdatedBy).IsModified = true;
-
+            
+            
             podetail.DateUpdated = DateTime.UtcNow;
             podetail.TenentId = tenantId;
             podetail.UpdatedBy = userId;
+            decimal total = 0;
 
             if (podetail.OrderDetailID > 0)
             {
@@ -905,6 +898,9 @@ namespace Ganedata.Core.Services
                     detail.Notes = podetail.Notes;
                     detail.UpdatedBy = userId;
                     detail.DateUpdated = DateTime.UtcNow;
+                    detail.TaxAmount= podetail.TaxAmount;
+                    detail.TotalAmount = podetail.TotalAmount;
+                    
                 }
 
                 _currentDbContext.Entry(detail).State = EntityState.Modified;
@@ -917,11 +913,17 @@ namespace Ganedata.Core.Services
                 podetail.Warranty = null;
                 podetail.CreatedBy = userId;
                 podetail.DateCreated = DateTime.UtcNow;
+                total = podetail.TaxAmount;
                 _currentDbContext.OrderDetail.Add(podetail);
             }
-
             _currentDbContext.SaveChanges();
-
+            var po = _currentDbContext.Order.Find(podetail.OrderID);
+            po.DateUpdated = DateTime.UtcNow;
+            po.UpdatedBy = userId;
+            po.OrderTotal = _currentDbContext.OrderDetail.Where(u => u.OrderID == podetail.OrderID).Select(u => u.TotalAmount).DefaultIfEmpty(0).Sum();
+            po.OrderCost = po.OrderTotal;
+            _currentDbContext.Entry(po).State = EntityState.Modified;
+            _currentDbContext.SaveChanges();
             return podetail;
         }
 
