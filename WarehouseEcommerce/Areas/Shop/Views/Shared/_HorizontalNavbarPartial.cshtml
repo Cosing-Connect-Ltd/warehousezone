@@ -3,8 +3,8 @@
 <div class="headerMenu">
     <div class="container hidden-xs">
         <div class="row">
-            <div class="col-md-3 col-sm-4 stmenu"></div>
-            <div id="menu1" class="col-md-9 col-sm-8 stme2">
+            @*<div class="col-md-3 col-sm-4 stmenu"></div>*@
+            <div id="menu1" class="col-md-9 col-sm-8 stme2 nav-menue">
                 <div class="manun">
                     <ul class="list-inline">
                         @if (ViewBag.departments != null)
@@ -13,7 +13,7 @@
 
                             foreach (var item in department)
                             {
-                                <li class="li-mhp-menu"><a href="index.html">@item.DepartmentName</a>
+                                <li class="li-mhp-menu"><a href="#">@item.DepartmentName</a>
                                     @{
                                         if (ViewBag.productGroup != null)
                                         {
@@ -54,27 +54,6 @@
                                 </li>
                             }
                         }
-
-
-
-
-
-
-
-
-                        @*<li><a href="@Url.Action("ProductCategories","Products")">PRODUCTS</a></li>*@
-                        @*<li><a href="blog.html">BLOGS</a></li>*@
-                        @*<li><a href="@Url.Action("Contact","Home")">CONTACT US</a></li>*@
-                        @*<li><a href="@Url.Action("About","Home")">ABOUT US</a></li>*@
-                        @*<li class="li-mhp-menu">
-                                <a href="#">MHP</a>
-                                <ul class="mhp-menu">
-                                    <li><a href="block-animation.html">Block Animation</a></li>
-                                    <li><a href="gallery-mhp.html">Gallery</a></li>
-                                    <li><a href="thumb.html">Thumb</a></li>
-                                    <li><a href="links.html">Links</a></li>
-                                </ul>
-                            </li>*@
                     </ul>
                 </div>
             </div>
@@ -128,7 +107,7 @@
     </div>
     <div id="search-by-category" class="search-by-category">
         <div class="search-container">
-            <div class="categories-container">
+            @*<div class="categories-container">
                 <div class="hover-cate">
                     <p><span class="cate-selected" data-value="0">All Categories</span></p>
                     <ul class="cate-items">
@@ -165,7 +144,7 @@
                         <li class="item-search">MP3 Players</li>
                     </ul>
                 </div>
-            </div>
+            </div>*@
             <div class="search-box input-group">
                 <input type="text" name="search" id="text-search-mobile" value="" placeholder="Search" class="text-search" />
                 <div id="sp-btn-search" class="input-group-btn">
@@ -181,87 +160,28 @@
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                <li><a href="#">Smart phone</a></li>
-                <li><a href="#">Smart Watch</a></li>
+                <li><a href="#">Management</a></li>
+                <li><a href="#"></a>Sales</li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle header-menu" data-toggle="dropdown">Desktops<i class="fa fa-angle-down pull-right"></i></a>
+                    <a href="#" class="dropdown-toggle header-menu" data-toggle="dropdown">All Categories<i class="fa fa-angle-down pull-right"></i></a>
                     <div class="dropdown-menu">
                         <div class="dropdown-inner">
                             <ul class="list-unstyled">
                                 <!--3rd level-->
                                 <li class="dropdown-submenu">
-                                    <a href="#" class="submenu-title"> PC (0) </a>
+                                    <a href="#" class="submenu-title"> Category 1 </a>
                                 </li>
                                 <!--3rd level over-->
                             </ul>
                             <ul class="list-unstyled">
                                 <!--3rd level-->
                                 <li class="dropdown-submenu">
-                                    <a href="#" class="submenu-title"> Mac (1) </a>
+                                    <a href="#" class="submenu-title"> Category 2 </a>
                                 </li>
                                 <!--3rd level over-->
                             </ul>
                         </div>
-                        <a href="#" class="see-all">Show All Desktops</a>
                     </div>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle header-menu" data-toggle="dropdown">Laptops<i class="fa fa-angle-down pull-right"></i></a>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-inner">
-                            <ul class="list-unstyled">
-                                <!--3rd level-->
-                                <li class="dropdown-submenu">
-                                    <a href="#" class="submenu-title"> Macs (0) </a>
-                                </li>
-                                <!--3rd level over-->
-                            </ul>
-                            <ul class="list-unstyled">
-                                <!--3rd level-->
-                                <li class="dropdown-submenu">
-                                    <a href="#" class="submenu-title"> Windows (0) </a>
-                                </li>
-                                <!--3rd level over-->
-                            </ul>
-                        </div>
-                        <a href="#" class="see-all">Show All Laptops</a>
-                    </div>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle header-menu" data-toggle="dropdown">Components<i class="fa fa-angle-down pull-right"></i></a>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-inner">
-                            <ul class="list-unstyled">
-                                <!--3rd level-->
-                                <li class="dropdown-submenu">
-                                    <a href="#" class="submenu-title"> Monitors (2) </a>
-                                </li>
-                                <!--3rd level over-->
-                            </ul>
-                            <ul class="list-unstyled">
-                                <!--3rd level-->
-                                <li class="dropdown-submenu">
-                                    <a href="#" class="submenu-title"> Printers (0) </a>
-                                </li>
-                                <!--3rd level over-->
-                            </ul>
-                            <ul class="list-unstyled">
-                                <!--3rd level-->
-                                <li class="dropdown-submenu">
-                                    <a href="#" class="submenu-title"> Trackballs (0) </a>
-                                </li>
-                                <!--3rd level over-->
-                            </ul>
-                        </div>
-                        <a href="#" class="see-all">Show All Components</a>
-                    </div>
-                </li>
-                <li><a href="#">Tablets</a></li>
-                <li><a href="#">Software</a></li>
-                <li><a href="#">Phones &amp; PDAs</a></li>
-                <li><a href="#">Cameras</a></li>
-                <li class="dropdown">
-                    <a href="#">MP3 Players</a>
                 </li>
             </ul>
         </div>

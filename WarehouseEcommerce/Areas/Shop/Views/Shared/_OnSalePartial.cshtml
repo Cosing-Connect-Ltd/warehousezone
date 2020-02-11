@@ -23,14 +23,14 @@
                     {
                         var defaulImage = Model.ProductFilesList.FirstOrDefault(u => (u.DefaultImage == true) && u.ProductId == product[i].ProductId)?.FilePath;
                         var hover = Model.ProductFilesList.FirstOrDefault(u => u.HoverImage == true && u.ProductId == product[i].ProductId)?.FilePath;
-                        <div class="product-layout toppro">
+                        <div class="product-layout toppro" id="onsale-first-row">
                             <div class="product-thumb1 transition">
                                 <div class="">
-                                    <div class="col-xs-12 topprom">
-                                        <div class="image col-lg-4 col-sm-5 col-xs-4">
-                                            <a href="@Url.Action("ProductDetails","Products", new { productId= product[i].ProductId })"><img src="@(!string.IsNullOrEmpty(defaulImage)?defaulImage :"/UploadedFiles/Products/no-image.png")" alt="@product[i].Name" title="@product[i].Name" class="img-responsive center-block" /></a>
+                                    <div class="col-xs-12 topprom ">
+                                        <div class="image ">
+                                            <a href="@Url.Action("ProductDetails","Products", new { productId= product[i].ProductId })"><img src="@(!string.IsNullOrEmpty(defaulImage)?defaulImage :"/Areas/Shop/Content/app/img/product/no_image.jpg")" alt="@product[i].Name" title="@product[i].Name" class="img-responsive center-block" /></a>
                                             <!-- Smartshop Images Start -->
-                                            <a href="@Url.Action("ProductDetails","Products", new { productId= product[i].ProductId })"><img src="@(!string.IsNullOrEmpty(hover)?hover :"/UploadedFiles/Products/no-image.png")" class="img-responsive second-img" alt="hover image" /></a>
+                                            <a href="@Url.Action("ProductDetails","Products", new { productId= product[i].ProductId })"><img src="@(!string.IsNullOrEmpty(hover)?hover :"/Areas/Shop/Content/app/img/product/no_image.jpg")" class="img-responsive second-img" alt="hover image" /></a>
                                             <!-- Smartshop Images End -->
                                             <div class="topbutton">
                                                 <button type="button" data-toggle="tooltip" title="Add to Wish List">
@@ -48,7 +48,7 @@
                                                 <div class="bquickv" title="quickview" data-toggle="tooltip"></div>
                                             </div>
                                         </div>
-                                        <div class="caption col-lg-8 col-sm-7 col-xs-8">
+                                        <div class="caption ">
                                             <h4><a href="@Url.Action("ProductDetails","Products", new { productId= product[i].ProductId })"> @product[i].Name</a></h4>
                                             <p class="price">
                                                 $@(product[i].SellPrice)
@@ -78,14 +78,14 @@
                     {
                         var defaulImage = Model.ProductFilesList.FirstOrDefault(u => (u.DefaultImage == true) && u.ProductId == product[i+1].ProductId)?.FilePath;
                         var hover = Model.ProductFilesList.FirstOrDefault(u => u.HoverImage == true && u.ProductId == product[i + 1].ProductId)?.FilePath;
-                        <div class="product-layout toppro">
+                        <div class="product-layout toppro second-row">
                             <div class="product-thumb1 transition">
                                 <div class="">
-                                    <div class="col-xs-12 topprom">
-                                        <div class="image col-lg-4 col-sm-5 col-xs-4">
-                                            <a href="@Url.Action("ProductDetails","Products", new { productId= product[i+1].ProductId })"><img src="@(!string.IsNullOrEmpty(defaulImage)?defaulImage :"/UploadedFiles/Products/no-image.png")" alt="@product[i+1].Name" title="@product[i+1].Name" class="img-responsive center-block" /></a>
+                                    <div class="col-xs-12 topprom ">
+                                        <div class="image">
+                                            <a href="@Url.Action("ProductDetails","Products", new { productId= product[i+1].ProductId })"><img src="@(!string.IsNullOrEmpty(defaulImage)?defaulImage :"/Areas/Shop/Content/app/img/product/Apple-iPhone.jpg")" alt="@product[i+1].Name" title="@product[i+1].Name" class="img-responsive center-block first-img" /></a>
                                             <!-- Smartshop Images Start -->
-                                            <a href="@Url.Action("ProductDetails","Products", new { productId= product[i+1].ProductId })"><img src="@(!string.IsNullOrEmpty(hover)?hover :"/UploadedFiles/Products/no-image.png")" class="img-responsive second-img" alt="hover image" /></a>
+                                            <a href="@Url.Action("ProductDetails","Products", new { productId= product[i+1].ProductId })"><img src="@(!string.IsNullOrEmpty(hover)?hover :"/Areas/Shop/Content/app/img/product/no_image.jpg")" class="img-responsive second-img" alt="hover image" /></a>
                                             <!-- Smartshop Images End -->
                                             <div class="topbutton">
                                                 <button type="button" data-toggle="tooltip" title="Add to Wish List">
@@ -103,7 +103,7 @@
                                                 <div class="bquickv" title="quickview" data-toggle="tooltip"></div>
                                             </div>
                                         </div>
-                                        <div class="caption col-lg-8 col-sm-7 col-xs-8">
+                                        <div class="caption ">
                                             <h4><a href="@Url.Action("ProductDetails","Products", new { productId= product[i+1].ProductId })"> @product[i + 1].Name</a></h4>
                                             <p class="price">
                                                 $@(product[i + 1].SellPrice)

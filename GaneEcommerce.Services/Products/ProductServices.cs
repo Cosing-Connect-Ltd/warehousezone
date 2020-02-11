@@ -1020,7 +1020,7 @@ namespace Ganedata.Core.Services
 
         public IEnumerable<ProductMaster> GetProductByCategory(int tenantId, int NumberofProducts, bool TopProduct = false, bool BestSellerProduct = false, bool SpecialProduct = false, bool OnSaleProduct = false)
         {
-            return _currentDbContext.ProductMaster.Where(u => u.TenantId == tenantId && u.TopProduct == TopProduct && u.BestSellerProduct == BestSellerProduct && u.SpecialProduct == SpecialProduct && u.OnSaleProduct == OnSaleProduct && u.IsDeleted != true).Take(NumberofProducts);
+            return _currentDbContext.ProductMaster.Where(u => u.TenantId == tenantId && (u.TopProduct == TopProduct || u.BestSellerProduct == BestSellerProduct || u.SpecialProduct == SpecialProduct || u.OnSaleProduct == OnSaleProduct) && u.IsDeleted != true).Take(NumberofProducts);
         }
         public IQueryable<InventoryStock> GetAllInventoryStocks(int tenantId, int warehouseId, DateTime? reqDate = null)
         {

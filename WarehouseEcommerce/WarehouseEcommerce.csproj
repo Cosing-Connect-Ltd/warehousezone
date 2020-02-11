@@ -310,6 +310,9 @@
     <Content Include="Areas\Shop\Content\app\img\product\Canon-EOS-1300D-DSLR-Camera-Body-with-Single-Lens.jpg" />
     <Content Include="Areas\Shop\Content\app\img\product\Microware-CHARGING-DOCK-LED-Light-hover.jpg" />
     <Content Include="Areas\Shop\Content\app\img\product\Microware-CHARGING-DOCK-LED-Light.jpg" />
+    <Content Include="Areas\Shop\Content\app\img\product\no_image.jpg" />
+    <Content Include="Areas\Shop\Content\app\img\product\no_image.png" />
+    <Content Include="Areas\Shop\Content\app\img\product\no_product_image.png" />
     <Content Include="Areas\Shop\Content\app\img\slider\1.jpg" />
     <Content Include="Areas\Shop\Content\app\img\slider\2.jpg" />
     <Content Include="Areas\Shop\Content\app\js\app.js" />
