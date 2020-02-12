@@ -114,10 +114,11 @@ namespace WMS.CustomBindings
             var viewModel = new GridViewModel();
             viewModel.KeyFieldName = "AssetLogId";
             viewModel.Columns.Add("TerminalId");
+            viewModel.Columns.Add("TerminalName");
             viewModel.Columns.Add("AssetId");
+            viewModel.Columns.Add("AssetName");
             viewModel.Columns.Add("piAddress");
             viewModel.Columns.Add("DateCreated");
-            viewModel.Columns.Add("DateUpdated");
             viewModel.Columns.Add("uuid");
             viewModel.Columns.Add("major");
             viewModel.Columns.Add("minor");
@@ -125,11 +126,12 @@ namespace WMS.CustomBindings
             viewModel.Columns.Add("rssi");
             viewModel.Columns.Add("accuracy");
             viewModel.Columns.Add("proximity");
-            viewModel.Columns.Add("address");
+            viewModel.Columns.Add("ClientMac");
+            viewModel.Columns.Add("SeenTime");
             viewModel.Pager.PageSize = 10;
             return viewModel;
         }
-        public static void AssetLogListGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int AssetId)
+        public static void AssetLogListGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int? AssetId)
         {
 
 
@@ -149,7 +151,7 @@ namespace WMS.CustomBindings
             }
             else
             {
-                transactions = transactions.OrderBy("DateCreated Desc");
+                transactions = transactions.OrderBy("SeenTime Desc");
             }
             if (e.FilterExpression != string.Empty)
             {
@@ -162,13 +164,32 @@ namespace WMS.CustomBindings
 
         }
 
-        private static IQueryable<AssetLog> GetAssetLogListDataset(int AssetId)
+        private static IQueryable<object> GetAssetLogListDataset(int? AssetId)
         {
             var assetservices = DependencyResolver.Current.GetService<IAssetServices>();
-            var transactions = assetservices.GetAllAssetLog(AssetId);
+            var transactions = from p in assetservices.GetAllAssetLog(AssetId)
+                               select new
+                               {
+                                   TerminalId = p.TerminalId,
+                                   TerminalName = p.Terminals.TerminalName,
+                                   AssetId = p.AssetId,
+                                   AssetName = p.Assets.AssetName,
+                                   piAddress = p.piAddress,
+                                   uuid = p.uuid,
+                                   major = p.major,
+                                   minor = p.minor,
+                                   measuredPower = p.measuredPower,
+                                   rssi = p.rssi,
+                                   accuracy = p.accuracy,
+                                   proximity = p.proximity,
+                                   ClientMac = p.ClientMac,
+                                   DateCreated = p.DateCreated,
+                                   SeenTime = p.SeenTime
+                               };
+
             return transactions;
         }
-        public static void AssetLogListGetData(GridViewCustomBindingGetDataArgs e, int AssetId)
+        public static void AssetLogListGetData(GridViewCustomBindingGetDataArgs e, int? AssetId)
         {
             var transactions = GetAssetLogListDataset(AssetId);
 
@@ -185,7 +206,7 @@ namespace WMS.CustomBindings
             }
             else
             {
-                transactions = transactions.OrderBy("DateCreated Desc");
+                transactions = transactions.OrderBy("SeenTime Desc");
             }
 
 

@@ -2,7 +2,7 @@
 @{
     var grid = Html.DevExpress().GridView(settings =>
     {
-        settings.Name = "ALog";
+        settings.Name = "_AssetLog";
         settings.CallbackRouteValues = new { Controller = "Assets", Action = "_AssetLog", id = ViewData["id"] };
         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
         settings.CustomBindingRouteValuesCollection.Add(
@@ -19,6 +19,8 @@
         GridViewOperationType.Sorting,
         new { Controller = "Assets", Action = "_AssetLogListSorting" }
         );
+
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
         settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
 
 
@@ -36,8 +38,17 @@
         settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
 
         settings.Columns.Add("TerminalId");
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "TerminalName";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
         settings.Columns.Add("AssetId");
-
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "AssetName";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
         settings.Columns.Add("piAddress");
         settings.Columns.Add("uuid");
         settings.Columns.Add("major");
@@ -46,11 +57,11 @@
         settings.Columns.Add("rssi");
         settings.Columns.Add("accuracy");
         settings.Columns.Add("proximity");
-        settings.Columns.Add("address");
+        settings.Columns.Add("ClientMac");
         settings.Columns.Add(c =>
         {
             c.FieldName = "DateCreated";
-            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
             c.ColumnType = MVCxGridViewColumnType.DateEdit;
             c.SetDataItemTemplateContent(m =>
             {
@@ -61,12 +72,12 @@
         });
         settings.Columns.Add(c =>
         {
-            c.FieldName = "DateUpdated";
-            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            c.FieldName = "SeenTime";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
             c.ColumnType = MVCxGridViewColumnType.DateEdit;
             c.SetDataItemTemplateContent(m =>
             {
-                var date = (DateTime?)DataBinder.Eval(m.DataItem, "DateUpdated");
+                var date = (DateTime?)DataBinder.Eval(m.DataItem, "SeenTime");
                 DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
                 ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
             });

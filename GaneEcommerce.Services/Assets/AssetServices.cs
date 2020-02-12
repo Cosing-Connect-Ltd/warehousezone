@@ -19,10 +19,15 @@ namespace Ganedata.Core.Services
             return _currentDbContext.Assets.Where(u => u.TenantId == TenantId && u.IsDeleted != true);
 
         }
-        public IQueryable<AssetLog> GetAllAssetLog(int AssetId)
+        public IQueryable<AssetLog> GetAllAssetLog(int? AssetId)
         {
-            return _currentDbContext.AssetLog.Where(u => u.AssetId == AssetId);
+            var logs = _currentDbContext.AssetLog.AsQueryable();
+            if (AssetId != null)
+            {
+                logs = logs.Where(u => u.AssetId == AssetId);
+            }
 
+            return logs;
         }
         public void SaveAsset(Assets assets)
         {

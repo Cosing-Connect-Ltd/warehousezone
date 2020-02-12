@@ -21,7 +21,7 @@ namespace WMS.Controllers
         {
 
             _assetServices = assetServices;
-            
+
 
         }
 
@@ -79,23 +79,14 @@ namespace WMS.Controllers
         }
 
         // GET: Assets/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? id = null)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-             var assets=_assetServices.GetAssetById(id??0);
-                //db.Assets.Find(id);
-            if (assets == null)
-            {
-                return HttpNotFound();
-            }
+            var assets = _assetServices.GetAssetById(id ?? 0);
             return View(assets);
         }
 
         [ValidateInput(false)]
-        public ActionResult _AssetLog(int id)
+        public ActionResult _AssetLog(int? id)
         {
 
             ViewData["id"] = id;
@@ -103,7 +94,7 @@ namespace WMS.Controllers
             var viewModel = GridViewExtension.GetViewModel("_AssetLog");
 
             if (viewModel == null)
-                viewModel = TerminalLogListCustomBinding.CreateTerminalLogListGridViewModel();
+                viewModel = AssetListCustomBinding.CreateAssetListGridViewModel();
 
             return _AssetLogListGridActionCore(viewModel, id);
 
@@ -113,12 +104,12 @@ namespace WMS.Controllers
         }
         public ActionResult _AssetLogListPaging(GridViewPagerState pager)
         {
-            int AssetId = 0;
+            int? AssetId = null;
             if (Session["AssetId"] != null)
             {
                 AssetId = Convert.ToInt32(Session["AssetId"]);
             }
-            var viewModel = GridViewExtension.GetViewModel("ALog");
+            var viewModel = GridViewExtension.GetViewModel("_AssetLog");
             viewModel.Pager.Assign(pager);
             return _AssetLogListGridActionCore(viewModel, AssetId);
         }
@@ -126,12 +117,12 @@ namespace WMS.Controllers
 
         public ActionResult _AssetLogListFiltering(GridViewFilteringState filteringState)
         {
-            int AssetId = 0;
+            int? AssetId = null;
             if (Session["AssetId"] != null)
             {
                 AssetId = Convert.ToInt32(Session["AssetId"]);
             }
-            var viewModel = GridViewExtension.GetViewModel("ALog");
+            var viewModel = GridViewExtension.GetViewModel("_AssetLog");
 
             viewModel.ApplyFilteringState(filteringState);
             return _AssetLogListGridActionCore(viewModel, AssetId);
@@ -139,18 +130,18 @@ namespace WMS.Controllers
 
         public ActionResult _AssetLogListSorting(GridViewColumnState column, bool reset)
         {
-            int AssetId = 0;
+            int? AssetId = null;
             if (Session["AssetId"] != null)
             {
                 AssetId = Convert.ToInt32(Session["AssetId"]);
             }
-            var viewModel = GridViewExtension.GetViewModel("ALog");
+            var viewModel = GridViewExtension.GetViewModel("_AssetLog");
             viewModel.ApplySortingState(column, reset);
             return _AssetLogListGridActionCore(viewModel, AssetId);
         }
 
 
-        public ActionResult _AssetLogListGridActionCore(GridViewModel gridViewModel, int AssetId)
+        public ActionResult _AssetLogListGridActionCore(GridViewModel gridViewModel, int? AssetId)
         {
             gridViewModel.ProcessCustomBinding(new GridViewCustomBindingGetDataRowCountHandler(args => { AssetListCustomBinding.AssetLogListGetDataRowCount(args, AssetId); }),
 
@@ -186,7 +177,7 @@ namespace WMS.Controllers
                 assets.CreatedBy = CurrentUserId;
                 assets.DateCreated = DateTime.UtcNow;
                 _assetServices.SaveAsset(assets);
-                 return RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
 
             return View(assets);
@@ -199,7 +190,7 @@ namespace WMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Assets assets = _assetServices.GetAssetById(id??0);
+            Assets assets = _assetServices.GetAssetById(id ?? 0);
             if (assets == null)
             {
                 return HttpNotFound();
@@ -232,7 +223,7 @@ namespace WMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var assets=_assetServices.GetAssetById(id ?? 0);
+            var assets = _assetServices.GetAssetById(id ?? 0);
             //db.Assets.Find(id);
             if (assets == null)
             {

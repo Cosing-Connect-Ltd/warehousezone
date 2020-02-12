@@ -30,7 +30,7 @@ namespace Ganedata.Core.Entities.Domain
         [ForeignKey("AssetId")]
         public virtual Assets Assets { get; set; }
         [ForeignKey("TerminalId")]
-        public virtual Terminals Terminals { get; set; }
+        public virtual Terminals Terminals { get; set; }  
         public string Ipv4 { get; set; }
         public object Ipv6 { get; set; }
         public DateTime? SeenTime { get; set; }

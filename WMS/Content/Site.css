@@ -1945,6 +1945,12 @@ input[type=text].serial {
     line-height: 2em;
 }
 
+.dxeEditArea_MetropolisBlue {
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
+    margin-right: 2px !important
+}
+
 .export-combo .dxeButtonEdit_MetropolisBlue {
     padding: 5px;
 }
@@ -1962,11 +1968,13 @@ input[type=text].serial {
     font: bold;
     border: 1px solid #c0c0c0;
 }
+
 .payingtoday {
-    padding-top:0;
+    padding-top: 0;
 }
+
 .text-bold {
-    font-weight:bolder;
+    font-weight: bolder;
 }
 
 
