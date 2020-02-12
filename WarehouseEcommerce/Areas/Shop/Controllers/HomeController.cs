@@ -14,6 +14,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         private readonly ITenantsServices _tenantServices;
         private readonly ILookupServices _lookupServices;
         private readonly IProductServices _productServices;
+        private readonly IProductLookupService _productlookupServices;
         public HomeController(ICoreOrderService orderService,IMapper mapper, IProductServices productServices, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IUserService userService, IActivityServices activityServices, ITenantsServices tenantServices)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
@@ -113,6 +114,16 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
 
         }
 
+        public PartialViewResult _TopCategoryPartial()
+        {
+            var TopCategory  = _lookupServices.GetAllValidProductGroups((CurrentTenantId),6);
+           
+
+
+            return PartialView(TopCategory);
+        }
+        
+
 
         public PartialViewResult _BestSellerPartial()
         {
@@ -158,6 +169,10 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             return PartialView();
         }
 
+        public ActionResult _GetProductByGroupsAndDepartment(int? DepartmentId,int?productgroupId)
+        {
+            return RedirectToAction("ProductCategories", "Products",new { productGroupId=productgroupId, departmentId= DepartmentId});
+        }
 
         public ActionResult ReturnPath(int productId, bool status)
         {

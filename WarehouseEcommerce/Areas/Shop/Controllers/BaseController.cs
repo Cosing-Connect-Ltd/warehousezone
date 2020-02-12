@@ -38,9 +38,9 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             LookupServices = lookupServices;
         }
 
-        private TenantWebsites _CurrentTenantWebsite { get; set; }
+        private caTenantWebsites _CurrentTenantWebsite { get; set; }
 
-        protected TenantWebsites CurrentTenantWebsite
+        protected caTenantWebsites CurrentTenantWebsite
         {
             get
             {
@@ -194,10 +194,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             var Tenantwebiste = CurrentTenantWebsite;
             string timeZone = "GMT Standard Time";
 
-            if (Tenantwebiste?.Tenant != null && !string.IsNullOrEmpty(Tenantwebiste?.Tenant.TenantTimeZoneId))
-            {
-                timeZone = Tenantwebiste.Tenant.TenantTimeZoneId;
-            }
+            
 
             if (user != null && !string.IsNullOrEmpty(user.UserTimeZoneId))
             {
