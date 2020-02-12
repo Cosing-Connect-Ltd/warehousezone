@@ -185,6 +185,7 @@
     <Compile Include="Core\Auth\caError.cs" />
     <Compile Include="Core\Auth\caSession.cs" />
     <Compile Include="Core\Auth\caTenant.cs" />
+    <Compile Include="Core\Auth\caTenantWebsites.cs" />
     <Compile Include="Core\Auth\caUser.cs" />
     <Compile Include="Core\Barcoding\GS128Decoder.cs" />
     <Compile Include="Core\Finance\Financials.cs" />

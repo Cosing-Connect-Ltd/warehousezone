@@ -48,20 +48,27 @@ namespace Ganedata.Core.Services
             return Warehouse;
         }
 
-        public static TenantWebsites CurrentTenantWebSite()
+        public static caTenantWebsites CurrentTenantWebSite()
         {
             var context = DependencyResolver.Current.GetService<IApplicationContext>();
 
             int currentSiteId = int.Parse(string.IsNullOrEmpty(ConfigurationManager.AppSettings["SiteId"].ToString()) ? "0" : ConfigurationManager.AppSettings["SiteId"]);
-            TenantWebsites tenantWebsites = new TenantWebsites();
+            caTenantWebsites tenantWebsites = new caTenantWebsites();
+            
             if (HttpContext.Current.Session["CurrentTenantWebsites"] == null)
             {
-                tenantWebsites = context.TenantWebsites.FirstOrDefault(e => e.SiteID == currentSiteId && e.IsDeleted != true);
+                var tenantWeb = context.TenantWebsites.FirstOrDefault(e => e.SiteID == currentSiteId && e.IsDeleted != true);
+                tenantWebsites.ApiToken = tenantWeb.ApiToken;
+                tenantWebsites.SiteApiUrl = tenantWeb.SiteApiUrl;
+                tenantWebsites.TenantId = tenantWeb.TenantId;
+                tenantWebsites.WarehouseId = tenantWeb.WarehouseId;
+                tenantWebsites.SiteName = tenantWeb.SiteName;
+                tenantWebsites.SiteDescription = tenantWeb.SiteDescription;
                 HttpContext.Current.Session["CurrentTenantWebsites"] = tenantWebsites;
             }
             else
             {
-                tenantWebsites = (TenantWebsites)HttpContext.Current.Session["CurrentTenantWebsites"];
+                tenantWebsites = (caTenantWebsites)HttpContext.Current.Session["CurrentTenantWebsites"];
             }
             return tenantWebsites;
         }
