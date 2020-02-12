@@ -107,7 +107,7 @@ namespace Ganedata.Core.Services
         }
         public IQueryable<PalletTracking> GetAllPalletTrackings(int tenantId, int warehouseId, DateTime? lastUpdated = null, bool includeArchived = true)
         {
-            return _currentDbContext.PalletTracking.AsNoTracking().Where(a => a.TenantId == tenantId && (includeArchived || a.Status != PalletTrackingStatusEnum.Archived) && a.WarehouseId == warehouseId 
+            return _currentDbContext.PalletTracking.AsNoTracking().Where(a => a.TenantId == tenantId && (includeArchived || a.Status != PalletTrackingStatusEnum.Archived) && a.WarehouseId == warehouseId
             && (!lastUpdated.HasValue || (a.DateUpdated ?? a.DateCreated) >= lastUpdated));
         }
         public IQueryable<ProductSerialis> GetAllProductSerial(int tenantId, int warehouseId, DateTime? lastUpdated = null)
@@ -580,7 +580,7 @@ namespace Ganedata.Core.Services
                     foreach (var item in productAccountCodeIds)
                     {
                         int AccountCodeId = Convert.ToInt32(item.ToString());
-                        var accountToAdd = _currentDbContext.ProductAccountCodes.FirstOrDefault(u=>u.ProdAccCodeID== AccountCodeId);
+                        var accountToAdd = _currentDbContext.ProductAccountCodes.FirstOrDefault(u => u.ProdAccCodeID == AccountCodeId);
                         if (accountToAdd != null)
                         {
                             accountToAdd.ProductId = productMaster.ProductId;
@@ -589,7 +589,7 @@ namespace Ganedata.Core.Services
 
                         _currentDbContext.Entry(accountToAdd).State = EntityState.Modified;
                     }
-                   
+
                     ToDelete = _currentDbContext.ProductAccountCodes
                         .Where(x => x.ProductId == productMaster.ProductId && x.IsDeleted != true)
                         .Select(x => x.ProdAccCodeID)
@@ -778,7 +778,7 @@ namespace Ganedata.Core.Services
                         if (accountToAdd != null)
                         {
                             accountToAdd.ProductId = productMaster.ProductId;
-                            
+
                         }
 
                         _currentDbContext.Entry(accountToAdd).State = EntityState.Modified;
@@ -1020,7 +1020,25 @@ namespace Ganedata.Core.Services
 
         public IEnumerable<ProductMaster> GetProductByCategory(int tenantId, int NumberofProducts, bool TopProduct = false, bool BestSellerProduct = false, bool SpecialProduct = false, bool OnSaleProduct = false)
         {
-            return _currentDbContext.ProductMaster.Where(u => u.TenantId == tenantId && (u.TopProduct == TopProduct || u.BestSellerProduct == BestSellerProduct || u.SpecialProduct == SpecialProduct || u.OnSaleProduct == OnSaleProduct) && u.IsDeleted != true).Take(NumberofProducts);
+            if (TopProduct)
+            {
+                return _currentDbContext.ProductMaster.Where(u => u.TenantId == tenantId && u.TopProduct == TopProduct && u.IsDeleted != true).Take(NumberofProducts);
+            }
+            else if (BestSellerProduct)
+            {
+                return _currentDbContext.ProductMaster.Where(u => u.TenantId == tenantId && u.BestSellerProduct == BestSellerProduct && u.IsDeleted != true).Take(NumberofProducts);
+            }
+            else if (SpecialProduct)
+            {
+                return _currentDbContext.ProductMaster.Where(u => u.TenantId == tenantId && u.SpecialProduct == SpecialProduct && u.IsDeleted != true).Take(NumberofProducts);
+            }
+            else if (OnSaleProduct)
+            {
+                return _currentDbContext.ProductMaster.Where(u => u.TenantId == tenantId && u.OnSaleProduct == OnSaleProduct && u.IsDeleted != true).Take(NumberofProducts);
+            }
+            else {
+                return _currentDbContext.ProductMaster.Where(u => u.TenantId == tenantId && u.IsDeleted != true).Take(NumberofProducts);
+            }
         }
         public IQueryable<InventoryStock> GetAllInventoryStocks(int tenantId, int warehouseId, DateTime? reqDate = null)
         {
@@ -1056,8 +1074,8 @@ namespace Ganedata.Core.Services
                                WarehouseName = w.WarehouseName,
                                ProductGroup = p.ProductGroup.ProductGroup ?? null,
                                DepartmentName = p.TenantDepartment.DepartmentName ?? null,
-                               PalletProduct=p.ProcessByPallet,
-                                SerialProduct = p.Serialisable
+                               PalletProduct = p.ProcessByPallet,
+                               SerialProduct = p.Serialisable
                            });
             }
             else
@@ -1178,7 +1196,7 @@ namespace Ganedata.Core.Services
             }
             else
             {
-                return (salesOrdersTransactios- purchaseOrdersTransactios);
+                return (salesOrdersTransactios - purchaseOrdersTransactios);
             }
 
         }

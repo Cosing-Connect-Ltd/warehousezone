@@ -19,7 +19,7 @@ namespace Ganedata.Core.Services
 
         Locations GetLocationById(int locationId);
         ProductGroups GetProductGroupById(int productGroupId);
-        IQueryable<ProductMaster> GetAllValidProductGroupById(int? productGroupId);
+        IQueryable<ProductMaster> GetAllValidProductGroupById(int? productGroupId,int?departmentId=null);
         ProductGroups GetProductGroupByName(string groupName);
         PalletType GetPalletTypeByName(string palletType);
         ProductSCCCodes GetProductSccCodesById(int productSccCodesId);

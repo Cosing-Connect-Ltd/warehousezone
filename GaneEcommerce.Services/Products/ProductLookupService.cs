@@ -46,10 +46,10 @@ namespace Ganedata.Core.Services
             return _currentDbContext.ProductAttributeValuesMap
                 .Where(a => a.ProductId == productId && a.IsDeleted != true).Select(a => a.ProductAttributeValues);
         }
-        public IQueryable<ProductMaster> GetAllValidProductGroupById(int? productGroupId)
+        public IQueryable<ProductMaster> GetAllValidProductGroupById(int? productGroupId,int?departmentId=null)
         {
             return _currentDbContext.ProductMaster
-                .Where(a => (!productGroupId.HasValue || a.ProductGroupId == productGroupId) && a.IsDeleted != true);
+                .Where(a => ((!productGroupId.HasValue || a.ProductGroupId == productGroupId) && (!departmentId.HasValue || a.DepartmentId==departmentId)) && a.IsDeleted != true);
         }
         public IEnumerable<ProductAttributeValuesMap> GetAllValidProductAttributeValuesMap()
         {

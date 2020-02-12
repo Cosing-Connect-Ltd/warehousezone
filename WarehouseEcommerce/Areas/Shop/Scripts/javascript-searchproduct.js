@@ -5,11 +5,13 @@
 function searchPoducts() {
     var sortvalue = $("#SortedValues").val();
     var groupId = $("#ProductGroups").val();
+    if (groupId == "" || groupId == undefined || groupId == null) { groupId= $("#ProductGroupsId").val(); }
     var pagenumber = $("#pagenumber").val();
+    var departmentId = $("#departmentId").val();
     var currentFilter = $("#currentFiltervalue").val();
     var searchstring = $("#searchString").val();
     var pageSize = $("#input-limit :selected").val();
-    window.location.href = basePath + "shop/Products/ProductCategories?productGroupId=" + groupId + "&sortOrder=" + sortvalue + "&currentFilter=" + currentFilter + "&searchString=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize;
+    window.location.href = basePath + "shop/Products/ProductCategories?productGroupId=" + groupId + "&sortOrder=" + sortvalue + "&currentFilter=" + currentFilter + "&searchString=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&departmentId=" + departmentId;
 }
 
 function SearchProductCategory() {
@@ -27,7 +29,7 @@ $('#text-search').autocomplete({
         $.ajax({
             url: basePath + 'Products/searchProduct',
             method: 'post',
-            data: { searchkey: request.term },
+            data: { groupId: $("#ProductGroups").val(), searchkey: request.term },
             dataType: 'json',
             success: function (data) {
                 seeall = true;
@@ -54,7 +56,7 @@ $('#text-search').autocomplete({
         if (seeall) {
             var $li = $("<li>");
             var $link = $("<a>", {
-                href: basePath + "/Shop/Products/ProductCategories?productGroupId=null&searchString=" + searchvalues,
+                href: basePath + "/Shop/Products/ProductCategories?productGroupId="+$("#ProductGroups").val()+"&searchString=" + searchvalues,
                 class: "see-all"
             }).html("See All Results").appendTo($li);
             $li.appendTo($('.ui-autocomplete'));
@@ -66,7 +68,7 @@ $('#text-search').autocomplete({
 
     return $('<li>')
         .append("<img style='width: 65px; height:58px;' src=" + item.Path + " alt=" + item.Name + "/>")
-        .append("<a href=" + basePath + "/Shop/Products/ProductCategories?productGroupId=null&searchString=" + item.Name + ">" + item.Name + "</a>").appendTo(ul);
+        .append("<a href=" + basePath + "/Shop/Products/ProductCategories?productGroupId="+$("#ProductGroups").val() +"&searchString=" + item.Name + ">" + item.Name + "</a>").appendTo(ul);
 };
 
 function updateTextBox(event, ui) {

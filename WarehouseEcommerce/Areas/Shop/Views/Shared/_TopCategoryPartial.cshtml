@@ -1,5 +1,8 @@
-﻿
+﻿@using Ganedata.Core.Entities.Domain
+@model IEnumerable<ProductGroups>
 <div class="category-tab tabpro pro-nepr">
+
+
     <div class="tab-head">
         <h1>
             <span>
@@ -14,130 +17,56 @@
             <div class="tab-content col-md-12">
                 <div class="tab-pane fade active in" id="tab-1">
                     <div id="cattab" class="owl-theme owl-carousel">
-                        <div class="product-layout col-xs-12">
-                            <div class="product-thumb transition">
-                                <div class="image">
-                                    <a href="#"><img src="~/Areas/shop/content/app/img/product/Canon-EOS-1300D-DSLR-Camera-Body-with-Single-Lens.jpg" alt="" title="" class="img-responsive center-block" /></a>
-                                    <!-- Smartshop Images Start -->
-                                    <!-- End -->
-                                    <span class="salep">sale</span>
-                                    <div class="topbutton">
-                                        <button type="button" data-toggle="tooltip" title="Add to Wish List">
-                                            <svg width="20px" height="20px">
-                                                <use xlink:href="app/img/icons/icons.svg#wishlist"></use>
-                                            </svg>
-                                            <span class="hidden-xs"></span>
-                                        </button>
-                                        <button type="button" data-toggle="tooltip" title="Compare this Product" class="wishcom">
-                                            <svg width="20px" height="20px">
-                                                <use xlink:href="app/img/icons/icons.svg#pcom"></use>
-                                            </svg>
-                                            <span class="hidden-xs"></span>
-                                        </button>
-                                        <div class="bquickv" title="quickview" data-toggle="tooltip"></div>
+                        @if (Model != null)
+                        {
+                            foreach (var item in Model)
+                            {
+
+                               
+                                    <div class="product-layout col-xs-12">
+                                        <div class="product-thumb transition">
+                                            <div class="image">
+                                                <a href="@Url.Action("_GetProductByGroupsAndDepartment","Home", new { productgroupId= item.ProductGroupId })"><img src="/Areas/Shop/Content/app/img/product/no_image.jpg" alt="@item.ProductGroup" title="@item.ProductGroup" class="img-responsive center-block" /></a>
+                                                <!-- Smartshop Images Start -->
+                                                <!-- End -->
+                                                @*<span class="salep">sale</span>*@
+                                                <div class="topbutton">
+                                                    <button type="button" data-toggle="tooltip" title="Add to Wish List">
+                                                        <svg width="20px" height="20px">
+                                                            <use xlink:href="app/img/icons/icons.svg#wishlist"></use>
+                                                        </svg>
+                                                        <span class="hidden-xs"></span>
+                                                    </button>
+                                                    <button type="button" data-toggle="tooltip" title="Compare this Product" class="wishcom">
+                                                        <svg width="20px" height="20px">
+                                                            <use xlink:href="app/img/icons/icons.svg#pcom"></use>
+                                                        </svg>
+                                                        <span class="hidden-xs"></span>
+                                                    </button>
+                                                    <div class="bquickv" title="quickview" data-toggle="tooltip"></div>
+                                                </div>
+                                            </div>
+                                            <div class="caption">
+                                                <h4><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home", new { productgroupId= item.ProductGroupId })">@item.ProductGroup</a></h4>
+                                                <div class="rating pull-left">
+                                                    <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                    <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                    <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                    <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                    <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                </div>
+                                               @* <p class="pricedis price text-right"><span class="price-new"> $@items.SellPrice</span> <span class="price-old">$344.00</span></p>*@
+                                            </div>
+                                            @*<div class="button-group">
+                                                <button type="button" class="acart" onclick="AddToCart(@items.ProductId)">
+                                                    <span>Add to Cart</span>
+                                                </button>
+                                            </div>*@
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="caption">
-                                    <h4><a href="#">Canon EOS 1300D DSLR Camera Body with Single Lens</a></h4>
-                                    <div class="rating pull-left">
-                                        <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
-                                        <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
-                                        <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
-                                        <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
-                                        <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
-                                    </div>
-                                    <p class="pricedis price text-right"><span class="price-new">$98.00</span> <span class="price-old">$344.00</span></p>
-                                </div>
-                                <div class="button-group">
-                                    <button type="button" class="acart">
-                                        <span>Add to Cart</span>
-                                    </button>
-                                </div>
-                            </div>
+                                }
+                            }
                         </div>
-                        <div class="product-layout col-xs-12">
-                            <div class="product-thumb transition">
-                                <div class="image">
-                                    <a href="#"><img src="~/Areas/shop/content/app/img/product/Canon-CS100-Connect-Station.jpg" alt="" title="" class="img-responsive center-block" /></a>
-                                    <!-- Smartshop Images Start -->
-                                    <!-- End -->
-                                    <span class="salep">sale</span>
-                                    <div class="topbutton">
-                                        <button type="button" data-toggle="tooltip" title="Add to Wish List">
-                                            <svg width="20px" height="20px">
-                                                <use xlink:href="app/img/icons/icons.svg#wishlist"></use>
-                                            </svg>
-                                            <span class="hidden-xs"></span>
-                                        </button>
-                                        <button type="button" data-toggle="tooltip" title="Compare this Product" class="wishcom">
-                                            <svg width="20px" height="20px">
-                                                <use xlink:href="app/img/icons/icons.svg#pcom"></use>
-                                            </svg>
-                                            <span class="hidden-xs"></span>
-                                        </button>
-                                        <div class="bquickv" title="quickview" data-toggle="tooltip"></div>
-                                    </div>
-                                </div>
-                                <div class="caption">
-                                    <h4><a href="#">Canon CS100 Connect Station</a></h4>
-                                    <div class="rating pull-left">
-                                        <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
-                                        <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
-                                        <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
-                                        <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
-                                        <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
-                                    </div>
-                                    <p class="pricedis price text-right"><span class="price-new">$98.00</span> <span class="price-old">$344.00</span></p>
-                                </div>
-                                <div class="button-group">
-                                    <button type="button" class="acart">
-                                        <span>Add to Cart</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-layout col-xs-12">
-                            <div class="product-thumb transition">
-                                <div class="image">
-                                    <a href="#"><img src="~/Areas/shop/content/app/img/product/Apple-iPhone-hover.jpg" alt="" title="" class="img-responsive center-block" /></a>
-                                    <!-- Smartshop Images Start -->
-                                    <!-- End -->
-                                    <span class="salep">sale</span>
-                                    <div class="topbutton">
-                                        <button type="button" data-toggle="tooltip" title="Add to Wish List">
-                                            <svg width="20px" height="20px">
-                                                <use xlink:href="app/img/icons/icons.svg#wishlist"></use>
-                                            </svg>
-                                            <span class="hidden-xs"></span>
-                                        </button>
-                                        <button type="button" data-toggle="tooltip" title="Compare this Product" class="wishcom">
-                                            <svg width="20px" height="20px">
-                                                <use xlink:href="app/img/icons/icons.svg#pcom"></use>
-                                            </svg>
-                                            <span class="hidden-xs"></span>
-                                        </button>
-                                        <div class="bquickv" title="quickview" data-toggle="tooltip"></div>
-                                    </div>
-                                </div>
-                                <div class="caption">
-                                    <h4><a href="#">Apple iPhone 6 (Gold, 32GB)</a></h4>
-                                    <div class="rating pull-left">
-                                        <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
-                                        <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
-                                        <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
-                                        <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
-                                        <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
-                                    </div>
-                                    <p class="pricedis price text-right"><span class="price-new">$98.00</span> <span class="price-old">$344.00</span></p>
-                                </div>
-                                <div class="button-group">
-                                    <button type="button" class="acart">
-                                        <span>Add to Cart</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

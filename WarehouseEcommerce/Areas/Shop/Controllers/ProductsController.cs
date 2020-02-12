@@ -40,15 +40,20 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         }
         // GET: Products
 
-        public ActionResult ProductCategories(int? productGroupId, int? sortOrder, string currentFilter, string searchString, int? page, int? pagesize = 10)
+        public ActionResult ProductCategories(int? productGroupId, int? sortOrder, string currentFilter, string searchString, int? page, int? pagesize = 10,int? departmentId=null)
         {
             ViewBag.groupId = productGroupId;
+            ViewBag.departmentId = departmentId;
             ViewBag.CurrentSort = sortOrder;
             //ViewBag.ProductPath = uploadedProductfilePath;
             ViewBag.SortedValues = (sortOrder ?? 1);
             ViewBag.pageList = new SelectList(from d in Enumerable.Range(1, 5) select new SelectListItem { Text = (d * 10).ToString(), Value = (d * 10).ToString() }, "Value", "Text", pagesize);
             ViewBag.searchString = searchString;
             var product = _productlookupServices.GetAllValidProductGroupById(productGroupId);
+            if (departmentId.HasValue)
+            {
+                product = _productlookupServices.GetAllValidProductGroupById(null,departmentId);
+            }
             if (!string.IsNullOrEmpty(searchString))
             {
                 page = 1;
@@ -124,9 +129,9 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
 
         }
 
-        public JsonResult searchProduct(string searchkey)
+        public JsonResult searchProduct(int? groupId, string searchkey)
       {
-            var model = (from product in _productlookupServices.GetAllValidProductGroupById(null)
+            var model = (from product in _productlookupServices.GetAllValidProductGroupById(groupId)
                          where (product.Name.Contains(searchkey.Trim()) || product.SKUCode.Contains(searchkey.Trim()) || product.ManufacturerPartNo.Contains(searchkey.Trim())
                          || product.Description.Contains(searchkey.Trim()) || product.ProductGroup.ProductGroup.Contains(searchkey.Trim()))
                          select new ProductSearchResult

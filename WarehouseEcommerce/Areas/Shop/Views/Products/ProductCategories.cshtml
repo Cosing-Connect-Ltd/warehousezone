@@ -194,11 +194,14 @@
                         </div>
                     }
                 }
+                
+                <input type="hidden" id="departmentId" value="@ViewBag.departmentId" />
+                <input type="hidden" id="ProductGroupsId" value="@ViewBag.groupId" />
             </div>
             <div class="row pagi">
                 <div class="col-sm-6 col-xs-6 text-left pagination">
 
-                    @Html.PagedListPager(Model, page => Url.Action("ProductCategories", new { productGroupId = ViewBag.groupId ?? null, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, page = page, pagesize = Model.PageSize }))
+                    @Html.PagedListPager(Model, page => Url.Action("ProductCategories", new { productGroupId = ViewBag.groupId ?? null, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, page = page, pagesize = Model.PageSize,departmentId=ViewBag.departmentId }))
 
 
                 </div>
