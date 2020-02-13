@@ -993,38 +993,15 @@ $(function () {
                     if (!data) {
                         $.confirm({
                             title: 'Information!',
-                            content: "Not valid order number",
+                            content: "Not valid order number. Do you still want to return?",
                             buttons: {
                                 cancel: function () {
 
                                 },
                                 Return: function () {
-                                    LoadingPanel.Show();
-                                    var rst;
-                                    $.ajax({
-                                        type: "GET",
-                                        url: "/InventoryTransaction/_IsOrderInValid/",
-                                        success: function (data) {
-
-                                            if (data.Products !== null) {
-                                                var options = "";
                                                 prdid.SetEnabled(true);
-                                                //$.each(data.Products, function (i, v) {
-                                                //    var opt = "<option value='" + v.Id + "'>" + v.Name + "</option>";
-                                                //    options += opt;
-                                                //});
-                                                //$("#grProducts").html(options);
-                                                //$('#grProducts').prop('disabled', false).trigger("chosen:updated");
                                                 $("#btngrDrp").removeAttr("disabled");
-                                                LoadingPanel.Hide();
-                                            }
-
-
-                                        }
-                                    });
                                 }
-
-
                             }
                         });
                         //alert("Not valid order number");

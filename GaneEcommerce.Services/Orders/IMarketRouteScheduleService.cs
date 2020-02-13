@@ -45,7 +45,6 @@ namespace Ganedata.Core.Services
                 EndTime = ParseDate(end),
                 Subject = route.Name + " : " + route.Description,
                 RouteId = route.Id,
-                VehicleId = Convert.ToInt32(mobileLocationId),
                 WarehouseIDs = resIds,
                 TenentId = tenantId,
                 WarehouseId = mobileLocationId
@@ -56,7 +55,7 @@ namespace Ganedata.Core.Services
         }
 
         private DateTime ParseDate(string utcDateString)
-        {
+        {              
             DateTime utcDate = new DateTime(1970, 1, 1);
             utcDate = utcDate.AddMilliseconds(System.Convert.ToDouble(utcDateString));
             return TimeZoneInfo.ConvertTimeFromUtc(DateTime.SpecifyKind(utcDate, DateTimeKind.Utc), TimeZoneInfo.Local);

@@ -18,13 +18,14 @@
 @using (Html.BeginForm("SaveInvoice", "Invoice", FormMethod.Post, new { id = "frmInvoicesCreate" }))
 {
     @Html.Hidden("InventoryTransactionTypeId", 100)
-  
+
     @Html.HiddenFor(m => m.OrderProcessId)
     @Html.HiddenFor(m => m.NetAmount)
     @Html.HiddenFor(m => m.TaxAmount)
     @Html.HiddenFor(m => m.TaxDataHelper)
     @Html.HiddenFor(m => m.WarrantyDataHelper)
     @Html.HiddenFor(m => m.InvoiceMasterId)
+    @Html.Hidden("PercentMargin")
 
     @Html.Hidden("BuyPrice", (decimal?)ViewBag.BuyingPrice)
     @*@Html.HiddenFor(m=> m.CardCharges)
@@ -57,9 +58,9 @@
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.Label("Select Account", htmlAttributes: new { @class = "col-md-4" })
                     <div class="col-md-8">
-                     
-                            @Html.DropDownListFor(m => m.AccountId, Model.AllAccounts, new { @class = "chosen-select" })
-                        
+
+                        @Html.DropDownListFor(m => m.AccountId, Model.AllAccounts, new { @class = "chosen-select" })
+
                     </div>
                 </div>
             </div>
@@ -141,33 +142,33 @@
                 </div>
             </div>
             @*<div class="col-md-12 pull-left input-group">
-            @Html.Label("Postal Charge(£)", htmlAttributes: new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.DevExpress().SpinEdit(m =>
-                {
-                    m.Name = "PostageCharges";
-                    m.ControlStyle.CssClass = "form-control";
-                    m.Properties.MinValue = 0;
-                    m.Properties.MaxValue = 9999999999;
-                    m.Width = Unit.Percentage(100);
-                    m.Properties.ClientSideEvents.NumberChanged = "function(s,e){ updateInvoiceTotals(); }";
-                }).Bind(0).GetHtml()
-            </div>
-        </div>
-        <div class="col-md-12 pull-left input-group">
-            @Html.Label("Card Charge(£)", htmlAttributes: new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.DevExpress().SpinEdit(m =>
-                {
-                    m.Name = "CardCharges";
-                    m.ControlStyle.CssClass = "form-control";
-                    m.Properties.MinValue = 0;
-                    m.Properties.MaxValue = 9999999999;
-                    m.Width = Unit.Percentage(100);
-                    m.Properties.ClientSideEvents.NumberChanged = "function(s,e){ updateInvoiceTotals(); }";
-                }).Bind(0).GetHtml()
-            </div>
-        </div>*@
+                    @Html.Label("Postal Charge(£)", htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DevExpress().SpinEdit(m =>
+                        {
+                            m.Name = "PostageCharges";
+                            m.ControlStyle.CssClass = "form-control";
+                            m.Properties.MinValue = 0;
+                            m.Properties.MaxValue = 9999999999;
+                            m.Width = Unit.Percentage(100);
+                            m.Properties.ClientSideEvents.NumberChanged = "function(s,e){ updateInvoiceTotals(); }";
+                        }).Bind(0).GetHtml()
+                    </div>
+                </div>
+                <div class="col-md-12 pull-left input-group">
+                    @Html.Label("Card Charge(£)", htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DevExpress().SpinEdit(m =>
+                        {
+                            m.Name = "CardCharges";
+                            m.ControlStyle.CssClass = "form-control";
+                            m.Properties.MinValue = 0;
+                            m.Properties.MaxValue = 9999999999;
+                            m.Width = Unit.Percentage(100);
+                            m.Properties.ClientSideEvents.NumberChanged = "function(s,e){ updateInvoiceTotals(); }";
+                        }).Bind(0).GetHtml()
+                    </div>
+                </div>*@
             <div class="col-md-12 pull-left input-group WarrantyDetail" style="display:none;">
                 @Html.Label("Select Warranty", htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">

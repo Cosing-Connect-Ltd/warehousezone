@@ -19,7 +19,6 @@ var updateProductPrice = function () {
 
     $.get('/Invoice/GetProductPrice/', model)
         .done(function (data) {
-           
             pricealert = data.ShowPriceAlert;
             var buyPrice = data.minimumSalePrice;
             var margin = data.PercentMargin;

@@ -209,12 +209,6 @@ namespace WMS.Controllers
             return Json(model, JsonRequestBehavior.AllowGet);
 
         }
-        public JsonResult _IsOrderInValid()
-        {
-            var corder = OrderService.GetAllValidProduct(CurrentTenantId);
-            var model = new { Products = corder.Select(p => new { Id = p.ProductId, Name = p.Name }) };
-            return Json(model, JsonRequestBehavior.AllowGet);
-        }
 
         public JsonResult _IsQuantityValid(int order, int product, int quantity)
         {

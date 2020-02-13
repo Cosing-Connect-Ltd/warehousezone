@@ -73,7 +73,6 @@ namespace WMS.Controllers
         {
 
             var currencyExchangeRates = _tenantsCurrencyRateServices.GetTenantCurrenciesExRates(CurrentTenantId);
-            //var model = new CurrencyExRateViewModel();
             var getLastUpdated = currencyExchangeRates.OrderByDescending(i => i.DateUpdated);
             return PartialView("_LatestCurrencyExRateData", getLastUpdated);
         }

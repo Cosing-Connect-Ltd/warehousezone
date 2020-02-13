@@ -378,7 +378,6 @@ var pricealert;
 function endOrderDetailCallback() {
 
     var callback = function (result) {
-
         var prices = result.Price;
         percentageValue = result.percentageMargin;
         var perMargin = result.PercentMargin;
@@ -932,7 +931,6 @@ function ProcessCallbackFromProcessPost(result) {
 }
 
 function CollectSerials() {
-
     var type;
     var ordid = $('#order').val();
     var prid = $('#prodId').val();
@@ -3067,11 +3065,11 @@ function UpdateDate(orderId) {
 }
 
 function PriceAnalysis() {
-
     var buyPrice = parseFloat($("#BuyPrice").val());
     var DirectSalestranstype = $("#InventoryTransactionTypeId").val();
     if (percentageValue === undefined || percentageValue === null || percentageValue === "") {
-        percentageValue = parseFloat($("#PercentMargin").val());
+        percentageValue = $("#PercentMargin").val();
+        //perentageValue = 0;
     }
     if (DirectSalestranstype == 1) { return; }
 
