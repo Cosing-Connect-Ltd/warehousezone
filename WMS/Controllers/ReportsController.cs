@@ -1412,10 +1412,14 @@ namespace WMS.Controllers
             productSoldBySkuPrint.lbldate.Text = DateTime.UtcNow.ToShortDateString();
             productSoldBySkuPrint.TenantId.Value = CurrentTenantId;
             productSoldBySkuPrint.WarehouseId.Value = CurrentWarehouseId;
-
+            var accounts = _accountServices.GetAllValidAccounts(CurrentTenantId).ToList();
+            StaticListLookUpSettings accountSettings = (StaticListLookUpSettings)productSoldBySkuPrint.AccountId.LookUpSettings;
+            accountSettings.LookUpValues.AddRange(accounts.Select(m => new LookUpValue(m.AccountID, m.CompanyName)));
+            var users = OrderService.GetAllAuthorisedUsers(CurrentTenantId, true);
+            StaticListLookUpSettings ownerSettings = (StaticListLookUpSettings)productSoldBySkuPrint.paramOwnerID.LookUpSettings;
+            ownerSettings.LookUpValues.AddRange(users.Select(m => new LookUpValue(m.UserId, m.DisplayName)));
             IEnumerable<ProductMaster> products = _productServices.GetAllValidProductMasters(CurrentTenantId);
             StaticListLookUpSettings setting = (StaticListLookUpSettings)productSoldBySkuPrint.ProductsIds.LookUpSettings;
-
             foreach (var item in products)
             {
                 LookUpValue product = new LookUpValue();
@@ -1462,6 +1466,9 @@ namespace WMS.Controllers
             InvoiceProfitPrint report = new InvoiceProfitPrint();
             report.paramStartDate.Value = DateTime.Today.AddMonths(-1);
             report.paramEndDate.Value = DateTime.Today;
+            StaticListLookUpSettings accountsSettings = (StaticListLookUpSettings)report.paramAccountId.LookUpSettings;
+            var accounts = _accountServices.GetAllValidAccounts(CurrentTenantId).ToList();
+            accountsSettings.LookUpValues.AddRange(accounts.Select(m => new LookUpValue(m.AccountID, m.CompanyName)));
             report.DataSourceDemanded += ProfitInvoiceReport_DataSourceDemanded;
 
             // binding
@@ -1494,7 +1501,8 @@ namespace WMS.Controllers
             DateTime startDate = (DateTime)report.Parameters["paramStartDate"].Value;
             DateTime endDate = (DateTime)report.Parameters["paramEndDate"].Value;
             endDate = endDate.AddHours(24);
-            var InvoiceMaster = _invoiceService.GetAllInvoiceMastersWithAllStatus(CurrentTenantId).Where(x => x.InvoiceDate >= startDate && x.InvoiceDate < endDate).ToList();
+            int? AccountId= (int?)report.Parameters["paramAccountId"].Value;
+            var InvoiceMaster = _invoiceService.GetAllInvoiceMastersWithAllStatus(CurrentTenantId,AccountId).Where(x => x.InvoiceDate >= startDate && x.InvoiceDate < endDate).ToList();
 
             var dataSource = new List<InvoiceProfitReportViewModel>();
             foreach (var type in InvoiceMaster)

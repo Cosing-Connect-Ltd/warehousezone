@@ -10,7 +10,7 @@ namespace Ganedata.Core.Services
         InvoiceMaster CreateInvoiceForSalesOrder(InvoiceViewModel invoiceData, int tenantId, int userId);
         IQueryable<InvoiceMaster> GetAllInvoiceMasters(int TenantId);
         IQueryable<InvoiceMaster> GetAllInvoiceViews(int TenantId);
-        IQueryable<InvoiceMaster> GetAllInvoiceMastersWithAllStatus(int TenantId);
+        IQueryable<InvoiceMaster> GetAllInvoiceMastersWithAllStatus(int TenantId,int?AccountId);
 
 
         List<InvoiceDetailViewModel> GetAllInvoiceDetailByInvoiceId(int invoiceId);

@@ -136,17 +136,23 @@ MAX(OP.ORDERPROCESSID) AS ORDERPROCESSID,
 SUM(CASE WHEN OP.INVENTORYTRANSACTIONTYPEID=1 THEN QTYPROCESSED ELSE 0 END) AS QTYIN , 
 SUM(CASE WHEN OP.INVENTORYTRANSACTIONTYPEID=2 OR OP.INVENTORYTRANSACTIONTYPEID=15 THEN OPD.QTYPROCESSED ELSE 0 END) AS QTYOUT FROM ORDERPROCESSDETAILS OPD
 INNER JOIN  ORDERPROCESSES OP ON  OPD.ORDERPROCESSID=OP.ORDERPROCESSID
+LEFT JOIN  ORDERS ORD ON  ORD.OrderID=OP.OrderID
+LEFT JOIN ACCOUNT ACCT ON ORD.AccountID= ACCT.AccountID
+LEFT JOIN AuthUsers AU ON ACCT.OwnerUserId=AU.UserId
 LEFT JOIN ORDERDETAILS OD ON OPD.ORDERDETAILID=OD.ORDERDETAILID
 INNER JOIN PRODUCTMASTER PM ON OPD.PRODUCTID=PM.PRODUCTID
 LEFT JOIN TenantLocations TL ON TL.WarehouseId=OP.WarehouseId
 WHERE ((OP.ISDELETED = 0 OR OP.ISDELETED IS NULL)  OR (OPD.ISDELETED = 0 OR OPD.ISDELETED IS NULL)) 
 AND OPD.DATECREATED &gt;= @sqlStartDate  AND OPD.DATECREATED &lt; @sqlEndDate
-AND OPD.TenentId=@sqlTenantId and (OP.WarehouseId=@sqlWarehouseId or TL.ParentWarehouseId = @sqlWarehouseId) 
-AND (PM.PRODUCTID IN (SELECT Item
-FROM dbo.SplitString(@sqlProductIds)) OR PM.ProductGroupId In (SELECT Item
-FROM dbo.SplitString(@sqlProductGroups)) OR  PM.DepartmentId In (SELECT Item
+AND OPD.TenentId=@sqlTenantId
+And (OP.WarehouseId=@sqlWarehouseId or TL.ParentWarehouseId = @sqlWarehouseId) 
+AND ((@sqlProductIds='' or @sqlProductIds is null) or PM.PRODUCTID IN (SELECT Item FROM dbo.SplitString(@sqlProductIds)))
+AND((@sqlProductGroups='' or @sqlProductGroups is null) or PM.ProductGroupId In (SELECT Item FROM dbo.SplitString(@sqlProductGroups)))
+AND((@sqlProductDept='' or @sqlProductDept is null) or PM.DepartmentId In (SELECT Item
 FROM dbo.SplitString(@sqlProductDept)))
-GROUP BY PM.PRODUCTID,PM.Name, SKUCODE, PM.ProductGroupId,DepartmentId 
+AND ((@sqlAccountId='' or @sqlAccountId is null) or (ACCT.AccountID in (@sqlAccountId)))
+AND ((@sqlOwnerId='' or @sqlOwnerId is null) or (ACCT.OwnerUserId in (@sqlOwnerId)))
+GROUP BY PM.PRODUCTID,PM.Name, SKUCODE, PM.ProductGroupId,PM.DepartmentId 
 Order by SKUCODE</value>
   </data>
   <data name="sqlDataSource1.ResultSchemaSerializable" xml:space="preserve">

@@ -37,10 +37,14 @@
             DevExpress.DataAccess.Sql.QueryParameter queryParameter5 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter6 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter7 = new DevExpress.DataAccess.Sql.QueryParameter();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter8 = new DevExpress.DataAccess.Sql.QueryParameter();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter9 = new DevExpress.DataAccess.Sql.QueryParameter();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProductSoldBySkuPrint));
             DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings1 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
             DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings2 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
             DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings3 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
+            DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings4 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
+            DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings5 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
@@ -50,6 +54,10 @@
             this.xrLabel3 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel6 = new DevExpress.XtraReports.UI.XRLabel();
             this.ReportHeader = new DevExpress.XtraReports.UI.ReportHeaderBand();
+            this.lblOwner = new DevExpress.XtraReports.UI.XRLabel();
+            this.lblAcount = new DevExpress.XtraReports.UI.XRLabel();
+            this.username = new DevExpress.XtraReports.UI.XRLabel();
+            this.ComanyName = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel5 = new DevExpress.XtraReports.UI.XRLabel();
             this.lbldate = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel22 = new DevExpress.XtraReports.UI.XRLabel();
@@ -73,6 +81,8 @@
             this.TenantId = new DevExpress.XtraReports.Parameters.Parameter();
             this.WarehouseId = new DevExpress.XtraReports.Parameters.Parameter();
             this.paramProductDepartment = new DevExpress.XtraReports.Parameters.Parameter();
+            this.paramOwnerID = new DevExpress.XtraReports.Parameters.Parameter();
+            this.AccountId = new DevExpress.XtraReports.Parameters.Parameter();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // TopMargin
@@ -166,6 +176,10 @@
             // ReportHeader
             // 
             this.ReportHeader.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.lblOwner,
+            this.lblAcount,
+            this.username,
+            this.ComanyName,
             this.xrLabel5,
             this.lbldate,
             this.xrLabel22,
@@ -173,8 +187,70 @@
             this.xrLabel20,
             this.xrLabel21,
             this.xrLine1});
-            this.ReportHeader.HeightF = 103.625F;
+            this.ReportHeader.HeightF = 115.0834F;
             this.ReportHeader.Name = "ReportHeader";
+            // 
+            // lblOwner
+            // 
+            this.lblOwner.BackColor = System.Drawing.Color.Transparent;
+            this.lblOwner.CanShrink = true;
+            this.lblOwner.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblOwner.ForeColor = System.Drawing.Color.Black;
+            this.lblOwner.LocationFloat = new DevExpress.Utils.PointFloat(477.9168F, 82.08334F);
+            this.lblOwner.Name = "lblOwner";
+            this.lblOwner.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.lblOwner.SizeF = new System.Drawing.SizeF(76.58322F, 18.83335F);
+            this.lblOwner.StylePriority.UseBackColor = false;
+            this.lblOwner.StylePriority.UseFont = false;
+            this.lblOwner.StylePriority.UseForeColor = false;
+            this.lblOwner.StylePriority.UseTextAlignment = false;
+            this.lblOwner.Text = "Owner:";
+            this.lblOwner.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.lblOwner.Visible = false;
+            // 
+            // lblAcount
+            // 
+            this.lblAcount.BackColor = System.Drawing.Color.Transparent;
+            this.lblAcount.CanShrink = true;
+            this.lblAcount.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAcount.ForeColor = System.Drawing.Color.Black;
+            this.lblAcount.LocationFloat = new DevExpress.Utils.PointFloat(45.79198F, 82.08329F);
+            this.lblAcount.Name = "lblAcount";
+            this.lblAcount.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.lblAcount.SizeF = new System.Drawing.SizeF(123.458F, 18.83335F);
+            this.lblAcount.StylePriority.UseBackColor = false;
+            this.lblAcount.StylePriority.UseFont = false;
+            this.lblAcount.StylePriority.UseForeColor = false;
+            this.lblAcount.StylePriority.UseTextAlignment = false;
+            this.lblAcount.Text = "Account:";
+            this.lblAcount.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.lblAcount.Visible = false;
+            // 
+            // username
+            // 
+            this.username.CanShrink = true;
+            this.username.LocationFloat = new DevExpress.Utils.PointFloat(554.5F, 82.08329F);
+            this.username.Multiline = true;
+            this.username.Name = "username";
+            this.username.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.username.SizeF = new System.Drawing.SizeF(158.3333F, 18.83335F);
+            this.username.StylePriority.UseTextAlignment = false;
+            this.username.Text = "UserName";
+            this.username.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            this.username.Visible = false;
+            // 
+            // ComanyName
+            // 
+            this.ComanyName.CanShrink = true;
+            this.ComanyName.LocationFloat = new DevExpress.Utils.PointFloat(169.25F, 82.08329F);
+            this.ComanyName.Multiline = true;
+            this.ComanyName.Name = "ComanyName";
+            this.ComanyName.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.ComanyName.SizeF = new System.Drawing.SizeF(281.2083F, 18.83335F);
+            this.ComanyName.StylePriority.UseTextAlignment = false;
+            this.ComanyName.Text = "CompanyName";
+            this.ComanyName.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            this.ComanyName.Visible = false;
             // 
             // xrLabel5
             // 
@@ -278,7 +354,7 @@
             // 
             // xrLine1
             // 
-            this.xrLine1.LocationFloat = new DevExpress.Utils.PointFloat(1.000122F, 73.62514F);
+            this.xrLine1.LocationFloat = new DevExpress.Utils.PointFloat(1.000122F, 102.0834F);
             this.xrLine1.Name = "xrLine1";
             this.xrLine1.SizeF = new System.Drawing.SizeF(800.9998F, 12.99999F);
             // 
@@ -388,6 +464,12 @@
             queryParameter7.Name = "sqlProductDept";
             queryParameter7.Type = typeof(DevExpress.DataAccess.Expression);
             queryParameter7.Value = new DevExpress.DataAccess.Expression("JOIN(?paramProductDepartment)", typeof(string));
+            queryParameter8.Name = "sqlAccountId";
+            queryParameter8.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter8.Value = new DevExpress.DataAccess.Expression("?AccountId", typeof(int));
+            queryParameter9.Name = "sqlOwnerId";
+            queryParameter9.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter9.Value = new DevExpress.DataAccess.Expression("?paramOwnerID", typeof(int));
             customSqlQuery1.Parameters.Add(queryParameter1);
             customSqlQuery1.Parameters.Add(queryParameter2);
             customSqlQuery1.Parameters.Add(queryParameter3);
@@ -395,6 +477,8 @@
             customSqlQuery1.Parameters.Add(queryParameter5);
             customSqlQuery1.Parameters.Add(queryParameter6);
             customSqlQuery1.Parameters.Add(queryParameter7);
+            customSqlQuery1.Parameters.Add(queryParameter8);
+            customSqlQuery1.Parameters.Add(queryParameter9);
             customSqlQuery1.Sql = resources.GetString("customSqlQuery1.Sql");
             this.sqlDataSource1.Queries.AddRange(new DevExpress.DataAccess.Sql.SqlQuery[] {
             customSqlQuery1});
@@ -430,19 +514,19 @@
             // 
             this.ProductsIds.AllowNull = true;
             this.ProductsIds.Description = "Select Products";
-            this.ProductsIds.LookUpSettings = staticListLookUpSettings1;
             this.ProductsIds.MultiValue = true;
             this.ProductsIds.Name = "ProductsIds";
             this.ProductsIds.Type = typeof(int);
+            this.ProductsIds.ValueSourceSettings = staticListLookUpSettings1;
             // 
             // paramProductGroups
             // 
             this.paramProductGroups.AllowNull = true;
             this.paramProductGroups.Description = "Select Groups";
-            this.paramProductGroups.LookUpSettings = staticListLookUpSettings2;
             this.paramProductGroups.MultiValue = true;
             this.paramProductGroups.Name = "paramProductGroups";
             this.paramProductGroups.Type = typeof(int);
+            this.paramProductGroups.ValueSourceSettings = staticListLookUpSettings2;
             // 
             // TenantId
             // 
@@ -464,10 +548,26 @@
             // 
             this.paramProductDepartment.AllowNull = true;
             this.paramProductDepartment.Description = "Select Department";
-            this.paramProductDepartment.LookUpSettings = staticListLookUpSettings3;
             this.paramProductDepartment.MultiValue = true;
             this.paramProductDepartment.Name = "paramProductDepartment";
             this.paramProductDepartment.Type = typeof(int);
+            this.paramProductDepartment.ValueSourceSettings = staticListLookUpSettings3;
+            // 
+            // paramOwnerID
+            // 
+            this.paramOwnerID.AllowNull = true;
+            this.paramOwnerID.Description = "Owner";
+            this.paramOwnerID.Name = "paramOwnerID";
+            this.paramOwnerID.Type = typeof(int);
+            this.paramOwnerID.ValueSourceSettings = staticListLookUpSettings4;
+            // 
+            // AccountId
+            // 
+            this.AccountId.AllowNull = true;
+            this.AccountId.Description = "Account";
+            this.AccountId.Name = "AccountId";
+            this.AccountId.Type = typeof(int);
+            this.AccountId.ValueSourceSettings = staticListLookUpSettings5;
             // 
             // ProductSoldBySkuPrint
             // 
@@ -493,8 +593,10 @@
             this.paramProductGroups,
             this.TenantId,
             this.WarehouseId,
-            this.paramProductDepartment});
-            this.Version = "19.1";
+            this.paramProductDepartment,
+            this.AccountId,
+            this.paramOwnerID});
+            this.Version = "19.2";
             this.DataSourceDemanded += new System.EventHandler<System.EventArgs>(this.ProductSoldBySkuPrint_DataSourceDemanded);
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
@@ -534,5 +636,11 @@
         public DevExpress.XtraReports.Parameters.Parameter TenantId;
         public DevExpress.XtraReports.Parameters.Parameter WarehouseId;
         public DevExpress.XtraReports.Parameters.Parameter paramProductDepartment;
+        public DevExpress.XtraReports.Parameters.Parameter paramOwnerID;
+        public DevExpress.XtraReports.Parameters.Parameter AccountId;
+        public DevExpress.XtraReports.UI.XRLabel username;
+        public DevExpress.XtraReports.UI.XRLabel ComanyName;
+        public DevExpress.XtraReports.UI.XRLabel lblOwner;
+        public DevExpress.XtraReports.UI.XRLabel lblAcount;
     }
 }

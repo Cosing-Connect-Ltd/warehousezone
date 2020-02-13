@@ -27,92 +27,99 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="col-md-6 pull-left">
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.AccountCode, htmlAttributes: new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.AccountCode)
-                @Html.ValidationMessageFor(model => model.AccountCode)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.CompanyName)
-                @Html.ValidationMessageFor(model => model.CompanyName)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.VATNo, htmlAttributes: new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.VATNo)
-                @Html.ValidationMessageFor(model => model.VATNo)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.RegNo, htmlAttributes: new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.RegNo)
-                @Html.ValidationMessageFor(model => model.RegNo)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.Comments)
-                @Html.ValidationMessageFor(model => model.Comments)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.AccountEmail, htmlAttributes: new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.AccountEmail)
-                @Html.ValidationMessageFor(model => model.AccountEmail)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.Telephone, htmlAttributes: new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.Telephone)
-                @Html.ValidationMessageFor(model => model.Telephone)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.Fax, htmlAttributes: new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.Fax)
-                @Html.ValidationMessageFor(model => model.Fax)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.Mobile, htmlAttributes: new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.Mobile)
-                @Html.ValidationMessageFor(model => model.Mobile)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.website, htmlAttributes: new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.website)
-                @Html.ValidationMessageFor(model => model.website)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.FinalBalance, htmlAttributes: new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.FinalBalance, new { htmlAttributes = new { @readonly = "readonly" } })
-                @Html.ValidationMessageFor(model => model.FinalBalance)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.TaxID, htmlAttributes: new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.DropDownList("TaxID", null, String.Empty, new { @class = "chosen-select" })
-                @Html.ValidationMessageFor(model => model.TaxID)
-            </div>
+<div class="col-md-6 pull-left">
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.AccountCode, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.AccountCode)
+            @Html.ValidationMessageFor(model => model.AccountCode)
         </div>
     </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.CompanyName)
+            @Html.ValidationMessageFor(model => model.CompanyName)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.VATNo, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.VATNo)
+            @Html.ValidationMessageFor(model => model.VATNo)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.RegNo, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.RegNo)
+            @Html.ValidationMessageFor(model => model.RegNo)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.Comments)
+            @Html.ValidationMessageFor(model => model.Comments)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.AccountEmail, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.AccountEmail)
+            @Html.ValidationMessageFor(model => model.AccountEmail)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.Telephone, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.Telephone)
+            @Html.ValidationMessageFor(model => model.Telephone)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.Fax, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.Fax)
+            @Html.ValidationMessageFor(model => model.Fax)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.Mobile, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.Mobile)
+            @Html.ValidationMessageFor(model => model.Mobile)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.website, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.website)
+            @Html.ValidationMessageFor(model => model.website)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.FinalBalance, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.FinalBalance, new { htmlAttributes = new { @readonly = "readonly" } })
+            @Html.ValidationMessageFor(model => model.FinalBalance)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.TaxID, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.DropDownList("TaxID", null, String.Empty, new { @class = "chosen-select" })
+            @Html.ValidationMessageFor(model => model.TaxID)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.AcceptedShelfLife, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.AcceptedShelfLife)
+            @Html.ValidationMessageFor(model => model.AcceptedShelfLife)
+        </div>
+    </div>
+</div>
     <div class="col-md-6 pull-left">
 
         <div class="input-group h-100 justify-content-center align-items-center">

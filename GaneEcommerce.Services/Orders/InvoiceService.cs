@@ -28,10 +28,10 @@ namespace Ganedata.Core.Services
             return _currentDbContext.InvoiceMasters.Where(u => u.InvoiceStatus != InvoiceStatusEnum.PostedToAccounts && u.IsDeleted != true && u.TenantId == TenantId);
 
         }
-        public IQueryable<InvoiceMaster> GetAllInvoiceMastersWithAllStatus(int TenantId)
+        public IQueryable<InvoiceMaster> GetAllInvoiceMastersWithAllStatus(int TenantId, int? AccountId)
         {
 
-            return _currentDbContext.InvoiceMasters.Where(u => u.IsDeleted != true && u.TenantId == TenantId);
+            return _currentDbContext.InvoiceMasters.Where(u => u.IsDeleted != true && u.TenantId == TenantId && (!AccountId.HasValue || u.AccountId==AccountId));
 
         }
         public IQueryable<InvoiceMaster> GetAllInvoiceViews(int TenantId)

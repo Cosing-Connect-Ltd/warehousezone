@@ -96,6 +96,10 @@ namespace Ganedata.Core.Entities.Domain
 
         [Display(Name = "Account Owner")]
         public int OwnerUserId { get; set; }
+
+        [Display(Name = "Accepted Shelf Life")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Value should be greater than or equal to 1")]
+        public int? AcceptedShelfLife { get; set; }
         public virtual TenantPriceGroups TenantPriceGroups { get; set; }
         public virtual GlobalCountry GlobalCountry { get; set; }
         public virtual GlobalCurrency GlobalCurrency { get; set; }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings1 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
@@ -59,6 +60,7 @@
             this.TotalNetAmtS = new DevExpress.XtraReports.UI.XRLabel();
             this.TotalNetAmtB = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel5 = new DevExpress.XtraReports.UI.XRLabel();
+            this.paramAccountId = new DevExpress.XtraReports.Parameters.Parameter();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // TopMargin
@@ -435,6 +437,14 @@
             this.xrLabel5.Text = "Total";
             this.xrLabel5.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
+            // paramAccountId
+            // 
+            this.paramAccountId.AllowNull = true;
+            this.paramAccountId.Description = "Account";
+            this.paramAccountId.Name = "paramAccountId";
+            this.paramAccountId.Type = typeof(int);
+            this.paramAccountId.ValueSourceSettings = staticListLookUpSettings1;
+            // 
             // InvoiceProfitPrint
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -448,8 +458,9 @@
             this.Margins = new System.Drawing.Printing.Margins(28, 19, 1, 0);
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
             this.paramStartDate,
-            this.paramEndDate});
-            this.Version = "19.1";
+            this.paramEndDate,
+            this.paramAccountId});
+            this.Version = "19.2";
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
         }
@@ -487,5 +498,6 @@
         public DevExpress.XtraReports.UI.XRLabel TotalProfit;
         public DevExpress.XtraReports.UI.XRLabel TotalNetAmtS;
         public DevExpress.XtraReports.UI.XRLabel TotalNetAmtB;
+        public DevExpress.XtraReports.Parameters.Parameter paramAccountId;
     }
 }

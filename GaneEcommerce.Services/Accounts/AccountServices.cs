@@ -314,6 +314,8 @@ namespace Ganedata.Core.Services
                 account.PriceGroupID = model.PriceGroupID;
                 account.TaxID = model.TaxID;
                 account.CreditTerms = model.CreditTerms;
+                account.OwnerUserId = model.OwnerUserId;
+                account.AcceptedShelfLife = model.AcceptedShelfLife;
 
 
                 if (accountAddressIds == null)

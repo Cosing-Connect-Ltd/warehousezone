@@ -121,7 +121,7 @@ namespace WMS.Controllers
                 return HttpNotFound();
             }
 
-            AccountAddressSessionInit();
+            AccountAddressSessionInit(customer.OwnerUserId);
             Session["account"] = id;
             ViewBag.AccountAddresses = AccountServices.GetAllValidAccountAddressesByAccountId((int)id);
             ViewBag.AccountContacts = AccountServices.GetAllValidAccountContactsByAccountId((int)id, CurrentTenantId);
@@ -152,14 +152,14 @@ namespace WMS.Controllers
 
                 var newAddresses = Session["addresses"] as List<AccountAddresses>;
 
-                AccountServices.SaveAccount(model, AccountAddressIds, AccountContactIds, 0, 0, 0, 0, 0, newAddresses, newContacts, CurrentUserId, CurrentTenantId, StopComment);
+                AccountServices.SaveAccount(model, AccountAddressIds, AccountContactIds, 0, 0, 0, 0, model.OwnerUserId, newAddresses, newContacts, CurrentUserId, CurrentTenantId, StopComment);
                 Session["MarketId"] = MarketIds ?? 0;
                 return RedirectToAction("Index");
             }
 
             Account customer = AccountServices.GetAccountsById(model.AccountID);
             model.GlobalCurrency = customer.GlobalCurrency;
-            AccountAddressSessionInit();
+            AccountAddressSessionInit(customer.OwnerUserId);
             Session["account"] = model.AccountID;
             ViewBag.AccountAddresses = AccountServices.GetAllValidAccountAddressesByAccountId(model.AccountID);
             ViewBag.AccountContacts = AccountServices.GetAllValidAccountContactsByAccountId(model.AccountID, CurrentTenantId);
@@ -391,7 +391,7 @@ namespace WMS.Controllers
             lst.Add(contact);
         }
 
-        public void AccountAddressSessionInit()
+        public void AccountAddressSessionInit(int? owneruserId=null)
         {
             Session["addresses"] = null;
             Session["contacts"] = null;
@@ -414,8 +414,8 @@ namespace WMS.Controllers
             ViewBag.Currencies = new MultiSelectList(LookupServices.GetAllGlobalCurrencies().OrderBy(o => o.CurrencyID), "CurrencyId", "CurrencyName");
             ViewBag.AccountStatus = new SelectList(LookupServices.GetAllAccountStatuses(), "AccountStatusID", "AccountStatus");
             ViewBag.PriceGroups = new MultiSelectList(LookupServices.GetAllPriceGroups(CurrentTenantId), "PriceGroupID", "Name");
-            ViewBag.OwnerUsers = new SelectList(_userService.GetAllAuthUsers(CurrentTenantId), "UserId", "UserName");
-            ViewBag.OwnerUserId = user.UserId;
+            ViewBag.OwnerUsers = new SelectList(_userService.GetAllAuthUsers(CurrentTenantId), "UserId", "UserName", owneruserId);
+            ViewBag.OwnerUserId = owneruserId.HasValue?owneruserId : user.UserId;
 
         }
 
