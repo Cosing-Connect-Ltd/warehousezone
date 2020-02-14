@@ -647,6 +647,10 @@
     <Compile Include="Migrations\202002131650240_adding-AcceptedShelfLife-inaccounttable.designer.cs">
       <DependentUpon>202002131650240_adding-AcceptedShelfLife-inaccounttable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202002141023547_adding-account-owner-relation-withauthuser.cs" />
+    <Compile Include="Migrations\202002141023547_adding-account-owner-relation-withauthuser.designer.cs">
+      <DependentUpon>202002141023547_adding-account-owner-relation-withauthuser.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1455,6 +1459,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202002131650240_adding-AcceptedShelfLife-inaccounttable.resx">
       <DependentUpon>202002131650240_adding-AcceptedShelfLife-inaccounttable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002141023547_adding-account-owner-relation-withauthuser.resx">
+      <DependentUpon>202002141023547_adding-account-owner-relation-withauthuser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

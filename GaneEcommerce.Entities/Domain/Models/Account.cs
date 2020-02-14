@@ -111,6 +111,9 @@ namespace Ganedata.Core.Entities.Domain
         public virtual ICollection<AccountTransaction> AccountTransactions { get; set; }
         public virtual ICollection<AccountStatusAudit> AccountStatusAudits { get; set; }
         public virtual GlobalTax GlobalTax { get; set; }
+        [ForeignKey("OwnerUserId")]
+        public virtual AuthUser AccountOwner { get; set; }
+
         [Display(Name = "Account Name")]
         public string AccountNameCode
         {

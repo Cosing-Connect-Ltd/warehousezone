@@ -41,6 +41,7 @@ namespace WMS.CustomBindings
                         Currency = p.GlobalCurrency.CurrencyName,
                         AccountStatus = p.GlobalAccountStatus.AccountStatus,
                         Comments = p.Comments,
+                        OwnerName=p.AccountOwner==null? "": p.AccountOwner.UserLastName + ", " + p.AccountOwner.UserFirstName,
                         Fax = p.Fax,
                         Mobile = p.Mobile,
                         Web = p.website,
@@ -48,7 +49,7 @@ namespace WMS.CustomBindings
                         IsSupplier = p.AccountTypeSupplier,
                         IsEndUser = p.AccountTypeEndUser,
                         p.FinalBalance,
-                        MarketId = mid
+                        MarketId = mid,
                         
 
                     });
@@ -69,6 +70,7 @@ namespace WMS.CustomBindings
                                     Currency = p.GlobalCurrency.CurrencyName,
                                    AccountStatus = p.GlobalAccountStatus.AccountStatus,
                                    Comments = p.Comments,
+                                   OwnerName = p.AccountOwner == null ? "" : p.AccountOwner.UserLastName + ", " + p.AccountOwner.UserFirstName,
                                    Fax = p.Fax,
                                    Mobile = p.Mobile,
                                    Web = p.website,
@@ -177,7 +179,7 @@ namespace WMS.CustomBindings
             viewModel.Columns.Add("IsSupplier");
             viewModel.Columns.Add("IsEndUser");
             viewModel.Columns.Add("FinalBalance");
-
+            viewModel.Columns.Add("OwnerName");
             viewModel.Pager.PageSize = 10;
             return viewModel;
         }
