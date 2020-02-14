@@ -1432,7 +1432,7 @@ function submitProductProcessing(productId, orderDetailId, iscaseQty) {
 }
 
 var completeConfirmed = function (isWorksOrder, suffix) {
-
+    debugger;
 
     var deliverynumber = $('#DeliveryNumber').val();
     isWorksOrder = isWorksOrder || false;

@@ -112,9 +112,10 @@ public class DeliveryNotePrint : DevExpress.XtraReports.UI.XtraReport
     {
             this.components = new System.ComponentModel.Container();
             DevExpress.DataAccess.Sql.CustomSqlQuery customSqlQuery1 = new DevExpress.DataAccess.Sql.CustomSqlQuery();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter1 = new DevExpress.DataAccess.Sql.QueryParameter();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DeliveryNotePrint));
             DevExpress.DataAccess.Sql.CustomSqlQuery customSqlQuery2 = new DevExpress.DataAccess.Sql.CustomSqlQuery();
-            DevExpress.DataAccess.Sql.QueryParameter queryParameter1 = new DevExpress.DataAccess.Sql.QueryParameter();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter2 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.MasterDetailInfo masterDetailInfo1 = new DevExpress.DataAccess.Sql.MasterDetailInfo();
             DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo1 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
             DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings1 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
@@ -216,12 +217,16 @@ public class DeliveryNotePrint : DevExpress.XtraReports.UI.XtraReport
             this.sqlDataSource1.ConnectionName = "ApplicationContext";
             this.sqlDataSource1.Name = "sqlDataSource1";
             customSqlQuery1.Name = "OrderProcessDetails";
+            queryParameter1.Name = "sqlParamOrderProcessId";
+            queryParameter1.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter1.Value = new DevExpress.DataAccess.Expression("JOIN(?paramOrderProcessId)", typeof(int));
+            customSqlQuery1.Parameters.Add(queryParameter1);
             customSqlQuery1.Sql = resources.GetString("customSqlQuery1.Sql");
             customSqlQuery2.Name = "OrderProcesses_1";
-            queryParameter1.Name = "QueryParamId";
-            queryParameter1.Type = typeof(DevExpress.DataAccess.Expression);
-            queryParameter1.Value = new DevExpress.DataAccess.Expression("JOIN([Parameters.paramOrderProcessId])", typeof(int));
-            customSqlQuery2.Parameters.Add(queryParameter1);
+            queryParameter2.Name = "QueryParamId";
+            queryParameter2.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter2.Value = new DevExpress.DataAccess.Expression("JOIN([Parameters.paramOrderProcessId])", typeof(int));
+            customSqlQuery2.Parameters.Add(queryParameter2);
             customSqlQuery2.Sql = resources.GetString("customSqlQuery2.Sql");
             this.sqlDataSource1.Queries.AddRange(new DevExpress.DataAccess.Sql.SqlQuery[] {
             customSqlQuery1,
@@ -371,11 +376,11 @@ public class DeliveryNotePrint : DevExpress.XtraReports.UI.XtraReport
             // paramOrderProcessId
             // 
             this.paramOrderProcessId.Description = "Order Process";
-            this.paramOrderProcessId.LookUpSettings = staticListLookUpSettings1;
             this.paramOrderProcessId.MultiValue = true;
             this.paramOrderProcessId.Name = "paramOrderProcessId";
             this.paramOrderProcessId.Type = typeof(int);
             this.paramOrderProcessId.ValueInfo = "0";
+            this.paramOrderProcessId.ValueSourceSettings = staticListLookUpSettings1;
             this.paramOrderProcessId.Visible = false;
             // 
             // ReportFooter
@@ -1204,7 +1209,7 @@ public class DeliveryNotePrint : DevExpress.XtraReports.UI.XtraReport
             this.Margins = new System.Drawing.Printing.Margins(38, 50, 0, 30);
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
             this.paramOrderProcessId});
-            this.Version = "19.1";
+            this.Version = "19.2";
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
     }

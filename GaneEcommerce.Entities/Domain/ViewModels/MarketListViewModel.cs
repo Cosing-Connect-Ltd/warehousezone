@@ -197,7 +197,7 @@ namespace Ganedata.Core.Entities.Domain
         public DateTime? DateCancelled { get; set; }
         public string CancelledReason { get; set; }
         public DateTime? DateDeclined { get; set; }
-        public string DeclinedReason { get; set; }
+        public string Reason { get; set; }
         public string DeviceIdentifier { get; set; }
         public string DeviceUsername { get; set; }
         public string MarketName { get; set; }

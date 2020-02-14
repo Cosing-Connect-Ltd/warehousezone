@@ -110,7 +110,7 @@ namespace WMS.CustomBindings
                 {
                     model.ResourceName = jobAllocation.Resource.Name;
                     model.ResourceID = jobAllocation.ResourceId;
-
+                    model.Reason = jobAllocation.Reason;
                 }
                 results.Add(model);
             }
