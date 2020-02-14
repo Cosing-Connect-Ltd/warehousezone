@@ -22,18 +22,18 @@
                             var hover = Model.ProductFilesList.FirstOrDefault(u => u.HoverImage == true && u.ProductId == Model.productMasterList[i].ProductId)?.FilePath;
                             <div class="product-layout leftpro">
                                 <div class="product-thumb1 transition">
-                                    <div class="col-xs-12">
-                                        <div class="image col-sm-4 col-xs-4">
+                                    <div class="col-xs-12 speciaol-col">
+                                        <div class="image">
                                             <a href="@Url.Action("ProductDetails","Products", new { productId= Model.productMasterList[i].ProductId })">
-                                                <img src="@(!string.IsNullOrEmpty(defaulImage)? ViewBag.BaseFilePath + defaulImage :"/UploadedFiles/Products/no-image.png")" alt="@Model.productMasterList[i].Name" title="@Model.productMasterList[i].Name" class="img-responsive center-block" />
+                                                <img src="@(!string.IsNullOrEmpty(defaulImage)? ViewBag.BaseFilePath + defaulImage :"/Areas/Shop/Content/app/img/product/no_image.gif")" alt="@Model.productMasterList[i].Name" title="@Model.productMasterList[i].Name" class="img-responsive center-block" />
                                             </a>
                                             <!-- Smartshop Images Start -->
                                             <a href="@Url.Action("ProductDetails","Products", new { productId= Model.productMasterList[i].ProductId })">
-                                                <img src="@(!string.IsNullOrEmpty(hover)? ViewBag.BaseFilePath + hover :"/UploadedFiles/Products/no-image.png")" class="img-responsive second-img" alt="hover image" />
+                                                <img src="@(!string.IsNullOrEmpty(hover)? ViewBag.BaseFilePath + hover :"/Areas/Shop/Content/app/img/product/no_image.gif")" class="img-responsive second-img" alt="hover image" />
                                             </a>
                                             <!-- Smartshop Images End -->
                                         </div>
-                                        <div class="caption col-sm-8 col-xs-8">
+                                        <div class="caption">
                                             <h4>
                                                 <a href="@Url.Action("ProductDetails","Products", new { productId= Model.productMasterList[i].ProductId })">
                                                     @Model.productMasterList[i].Name
@@ -63,14 +63,14 @@
                             var hover = Model.ProductFilesList.FirstOrDefault(u => u.HoverImage == true && u.ProductId == Model.productMasterList[i + 1].ProductId)?.FilePath;
                             <div class="product-layout leftpro">
                                 <div class="product-thumb1 transition">
-                                    <div class="col-xs-12">
-                                        <div class="image col-sm-4 col-xs-4">
-                                            <a href="@Url.Action("ProductDetails","Products", new { productId= Model.productMasterList[i+1].ProductId })"><img src="@(!string.IsNullOrEmpty(defaulImage)? ViewBag.BaseFilePath + defaulImage :"/UploadedFiles/Products/no-image.png")" alt="@Model.productMasterList[i+1].Name" title="@Model.productMasterList[i+1].Name" class="img-responsive center-block" /></a>
+                                    <div class="col-xs-12 speciaol-col">
+                                        <div class="image">
+                                            <a href="@Url.Action("ProductDetails","Products", new { productId= Model.productMasterList[i+1].ProductId })"><img src="@(!string.IsNullOrEmpty(defaulImage)? ViewBag.BaseFilePath + defaulImage :"/Areas/Shop/Content/app/img/product/no_image.gif")" alt="@Model.productMasterList[i+1].Name" title="@Model.productMasterList[i+1].Name" class="img-responsive center-block" /></a>
                                             <!-- Smartshop Images Start -->
-                                            <a href="@Url.Action("ProductDetails","Products", new { productId= Model.productMasterList[i+1].ProductId })"><img src="@(!string.IsNullOrEmpty(hover)? ViewBag.BaseFilePath + hover :"/UploadedFiles/Products/no-image.png")" class="img-responsive second-img" alt="hover image" /></a>
+                                            <a href="@Url.Action("ProductDetails","Products", new { productId= Model.productMasterList[i+1].ProductId })"><img src="@(!string.IsNullOrEmpty(hover)? ViewBag.BaseFilePath + hover :"/Areas/Shop/Content/app/img/product/no_image.gif")" class="img-responsive second-img" alt="hover image" /></a>
                                             <!-- Smartshop Images End -->
                                         </div>
-                                        <div class="caption col-sm-8 col-xs-8">
+                                        <div class="caption">
                                             <h4><a href="@Url.Action("ProductDetails","Products", new { productId= Model.productMasterList[i+1].ProductId })"> @Model.productMasterList[i + 1].Name</a></h4>
                                             <p class="price">
                                                 $@Model.productMasterList[i + 1].SellPrice
@@ -95,14 +95,14 @@
                             var hover = Model.ProductFilesList.FirstOrDefault(u => u.HoverImage == true && u.ProductId == Model.productMasterList[i + 2].ProductId)?.FilePath;
                             <div class="product-layout leftpro">
                                 <div class="product-thumb1 transition">
-                                    <div class="col-xs-12">
-                                        <div class="image col-sm-4 col-xs-4">
-                                            <a href="@Url.Action("ProductDetails","Products", new { productId= Model.productMasterList[i+2].ProductId })"><img src="@(!string.IsNullOrEmpty(defaulImage)? ViewBag.BaseFilePath + defaulImage :"/UploadedFiles/Products/no-image.png")" alt="@Model.productMasterList[i + 2].Name" title="@Model.productMasterList[i + 2].Name" class="img-responsive center-block" /></a>
+                                    <div class="col-xs-12 speciaol-col">
+                                        <div class="image">
+                                            <a href="@Url.Action("ProductDetails","Products", new { productId= Model.productMasterList[i+2].ProductId })"><img src="@(!string.IsNullOrEmpty(defaulImage)? ViewBag.BaseFilePath + defaulImage :"/Areas/Shop/Content/app/img/product/no_image.gif")" alt="@Model.productMasterList[i + 2].Name" title="@Model.productMasterList[i + 2].Name" class="img-responsive center-block" /></a>
                                             <!-- Smartshop Images Start -->
-                                            <a href="@Url.Action("ProductDetails","Products", new { productId= Model.productMasterList[i+2].ProductId })"><img src="@(!string.IsNullOrEmpty(hover)? ViewBag.BaseFilePath + hover :"/UploadedFiles/Products/no-image.png")" class="img-responsive second-img" alt="hover image" /></a>
+                                            <a href="@Url.Action("ProductDetails","Products", new { productId= Model.productMasterList[i+2].ProductId })"><img src="@(!string.IsNullOrEmpty(hover)? ViewBag.BaseFilePath + hover :"/Areas/Shop/Content/app/img/product/no_image.gif")" class="img-responsive second-img" alt="hover image" /></a>
                                             <!-- Smartshop Images End -->
                                         </div>
-                                        <div class="caption col-sm-8 col-xs-8">
+                                        <div class="caption">
                                             <h4><a href="@Url.Action("ProductDetails","Products", new { productId= Model.productMasterList[i+2].ProductId })">@Model.productMasterList[i + 2].Name</a></h4>
                                             <p class="price">
                                                 $@Model.productMasterList[i + 2].SellPrice

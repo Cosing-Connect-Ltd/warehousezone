@@ -14,7 +14,19 @@
     <!--category-tab-->
     <div class="row">
         <div class="cat-tab">
-            <div class="tab-content col-md-12">
+            <div class="col-lg-2 col-md-2 home-cat" id="cat_tab">
+                  <ul class="nav nav-tabs">
+                    <li  class="active webTab"><a href="#tab-1" data-toggle="tab">Desktops</a></li>
+                    <li  class="webTab"><a href="#tab-2" data-toggle="tab">Web Cameras</a></li>
+                    <li  class="webTab"><a href="#tab-3" data-toggle="tab">Cameras</a></li>
+                    <li  class="webTab"><a href="#tab-4" data-toggle="tab">Components</a></li>
+                    <li  class="webTab"><a href="#tab-5" data-toggle="tab">Phones &amp; PDAs</a></li>
+                    <li  class="webTab"><a href="#tab-6" data-toggle="tab">Laptops</a></li>
+                    <li  class="webTab"><a href="#tab-7" data-toggle="tab">PC</a></li>
+                    <li  class="webTab"><a href="#tab-8" data-toggle="tab">Monitors</a></li>
+                  </ul>
+                </div>
+            <div class="tab-content col-lg-8 col-md-8 col-sm-12">
                 <div class="tab-pane fade active in" id="tab-1">
                     <div id="cattab" class="owl-theme owl-carousel">
                         @if (Model != null)
@@ -26,7 +38,7 @@
                                     <div class="product-layout col-xs-12">
                                         <div class="product-thumb transition">
                                             <div class="image">
-                                                <a href="@Url.Action("_GetProductByGroupsAndDepartment","Home", new { productgroupId= item.ProductGroupId })"><img src="/Areas/Shop/Content/app/img/product/no_image.jpg" alt="@item.ProductGroup" title="@item.ProductGroup" class="img-responsive center-block" /></a>
+                                                <a href="@Url.Action("_GetProductByGroupsAndDepartment","Home", new { productgroupId= item.ProductGroupId })"><img src="/Areas/Shop/Content/app/img/product/no_image.gif" alt="@item.ProductGroup" title="@item.ProductGroup" class="img-responsive center-block" /></a>
                                                 <!-- Smartshop Images Start -->
                                                 <!-- End -->
                                                 @*<span class="salep">sale</span>*@
@@ -55,13 +67,13 @@
                                                     <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
                                                     <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
                                                 </div>
-                                               @* <p class="pricedis price text-right"><span class="price-new"> $@items.SellPrice</span> <span class="price-old">$344.00</span></p>*@
+                                                <p class="pricedis price text-right"><span class="price-new"> $ items.SellPrice</span> <span class="price-old">$344.00</span></p>
                                             </div>
-                                            @*<div class="button-group">
-                                                <button type="button" class="acart" onclick="AddToCart(@items.ProductId)">
+                                            <div class="button-group">
+                                                <button type="button" class="acart" onclick="AddToCart(items.ProductId)">
                                                     <span>Add to Cart</span>
                                                 </button>
-                                            </div>*@
+                                            </div>
                                         </div>
                                     </div>
                                 }

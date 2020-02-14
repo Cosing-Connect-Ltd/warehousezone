@@ -26,11 +26,11 @@
                         <div class="product-layout toppro" id="onsale-first-row">
                             <div class="product-thumb1 transition">
                                 <div class="">
-                                    <div class="col-xs-12 topprom ">
+                                    <div class="col-xs-12 manage-width topprom ">
                                         <div class="image ">
-                                            <a href="@Url.Action("ProductDetails","Products", new { productId= product[i].ProductId })"><img src="@(!string.IsNullOrEmpty(defaulImage)?defaulImage :"/Areas/Shop/Content/app/img/product/no_image.jpg")" alt="@product[i].Name" title="@product[i].Name" class="img-responsive center-block" /></a>
+                                            <a href="@Url.Action("ProductDetails","Products", new { productId= product[i].ProductId })"><img src="@(!string.IsNullOrEmpty(defaulImage)?defaulImage :"/Areas/Shop/Content/app/img/product/no_image.gif")" alt="@product[i].Name" title="@product[i].Name" class="img-responsive center-block" /></a>
                                             <!-- Smartshop Images Start -->
-                                            <a href="@Url.Action("ProductDetails","Products", new { productId= product[i].ProductId })"><img src="@(!string.IsNullOrEmpty(hover)?hover :"/Areas/Shop/Content/app/img/product/no_image.jpg")" class="img-responsive second-img" alt="hover image" /></a>
+                                            <a href="@Url.Action("ProductDetails","Products", new { productId= product[i].ProductId })"><img src="@(!string.IsNullOrEmpty(hover)?hover :"/Areas/Shop/Content/app/img/product/no_image.gif")" class="img-responsive second-img" alt="hover image" /></a>
                                             <!-- Smartshop Images End -->
                                             <div class="topbutton">
                                                 <button type="button" data-toggle="tooltip" title="Add to Wish List">
@@ -83,9 +83,9 @@
                                 <div class="">
                                     <div class="col-xs-12 topprom ">
                                         <div class="image">
-                                            <a href="@Url.Action("ProductDetails","Products", new { productId= product[i+1].ProductId })"><img src="@(!string.IsNullOrEmpty(defaulImage)?defaulImage :"/Areas/Shop/Content/app/img/product/Apple-iPhone.jpg")" alt="@product[i+1].Name" title="@product[i+1].Name" class="img-responsive center-block first-img" /></a>
+                                            <a href="@Url.Action("ProductDetails","Products", new { productId= product[i+1].ProductId })"><img src="@(!string.IsNullOrEmpty(defaulImage)?defaulImage :"/Areas/Shop/Content/app/img/product/no_image.gif")" alt="@product[i+1].Name" title="@product[i+1].Name" class="img-responsive center-block first-img" /></a>
                                             <!-- Smartshop Images Start -->
-                                            <a href="@Url.Action("ProductDetails","Products", new { productId= product[i+1].ProductId })"><img src="@(!string.IsNullOrEmpty(hover)?hover :"/Areas/Shop/Content/app/img/product/no_image.jpg")" class="img-responsive second-img" alt="hover image" /></a>
+                                            <a href="@Url.Action("ProductDetails","Products", new { productId= product[i+1].ProductId })"><img src="@(!string.IsNullOrEmpty(hover)?hover :"/Areas/Shop/Content/app/img/product/no_image.gif")" class="img-responsive second-img" alt="hover image" /></a>
                                             <!-- Smartshop Images End -->
                                             <div class="topbutton">
                                                 <button type="button" data-toggle="tooltip" title="Add to Wish List">

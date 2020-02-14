@@ -11,7 +11,7 @@
                 <li><a href="#">@Model.Name</a></li>
             </ul>
             <div class="row product-bg">
-                <div class="col-lg-6 col-md-6 col-xs-12 sticky">
+                <div class="sticky">
                     <ul class="thumbnails">
                         @if (ViewBag.DetailImagesPath != null)
                         {
@@ -19,8 +19,8 @@
 
 
                             <li>
-                                <a class="thumbnail" href="@(!string.IsNullOrEmpty(productPath.FirstOrDefault()?.FilePath)?ViewBag.BaseFilePath + productPath.FirstOrDefault()?.FilePath:ViewBag.BaseFilePath + "/UploadedFiles/Products/no-image.png")" title="#">
-                                    <img data-zoom-image="@(!string.IsNullOrEmpty(productPath.FirstOrDefault()?.FilePath)?ViewBag.BaseFilePath + productPath.FirstOrDefault()?.FilePath:ViewBag.BaseFilePath + "/UploadedFiles/Products/no-image.png")" src="@(!string.IsNullOrEmpty(productPath.FirstOrDefault()?.FilePath)?ViewBag.BaseFilePath + productPath.FirstOrDefault()?.FilePath:ViewBag.BaseFilePath + "/UploadedFiles/Products/no-image.png")" id="zoom_03" class="img-responsive center-block" alt="image">
+                                <a class="thumbnail" href="@(!string.IsNullOrEmpty(productPath.FirstOrDefault()?.FilePath)?ViewBag.BaseFilePath + productPath.FirstOrDefault()?.FilePath:ViewBag.BaseFilePath + "/Areas/Shop/Content/app/img/product/no_image.png")" title="#">
+                                    <img data-zoom-image="@(!string.IsNullOrEmpty(productPath.FirstOrDefault()?.FilePath)?ViewBag.BaseFilePath + productPath.FirstOrDefault()?.FilePath:ViewBag.BaseFilePath + "/Areas/Shop/Content/app/img/product/no_image.png")" src="@(!string.IsNullOrEmpty(productPath.FirstOrDefault()?.FilePath)?ViewBag.BaseFilePath + productPath.FirstOrDefault()?.FilePath:ViewBag.BaseFilePath + "/Areas/Shop/Content/app/img/product/no_image.png")" id="zoom_03" class="img-responsive center-block" alt="image">
                                 </a>
                             </li>
 
@@ -36,8 +36,8 @@
                                             {
                                                 <div class="col-xs-12">
 
-                                                    <a data-zoom-image="@(!string.IsNullOrEmpty(productPath[i].FilePath)?ViewBag.BaseFilePath + productPath[i].FilePath:ViewBag.BaseFilePath + "/UploadedFiles/Products/no-image.png")" data-image="@(!string.IsNullOrEmpty(productPath[i].FilePath)?ViewBag.BaseFilePath + productPath[i].FilePath:ViewBag.BaseFilePath + "/UploadedFiles/Products/no-image.png")" href="@(!string.IsNullOrEmpty(productPath[i].FilePath)?ViewBag.BaseFilePath + productPath[i].FilePath:ViewBag.BaseFilePath + "/UploadedFiles/Products/no-image.png")">
-                                                        <img src="@(!string.IsNullOrEmpty(productPath[i].FilePath)?ViewBag.BaseFilePath + productPath[i].FilePath:ViewBag.BaseFilePath + "/UploadedFiles/Products/no-image.png")" class="img-responsive center-block" alt="additional image">
+                                                    <a data-zoom-image="@(!string.IsNullOrEmpty(productPath[i].FilePath)?ViewBag.BaseFilePath + productPath[i].FilePath:ViewBag.BaseFilePath + "/Areas/Shop/Content/app/img/product/no_image.png")" data-image="@(!string.IsNullOrEmpty(productPath[i].FilePath)?ViewBag.BaseFilePath + productPath[i].FilePath:ViewBag.BaseFilePath + "/Areas/Shop/Content/app/img/product/no_image.png")" href="@(!string.IsNullOrEmpty(productPath[i].FilePath)?ViewBag.BaseFilePath + productPath[i].FilePath:ViewBag.BaseFilePath + "/Areas/Shop/Content/app/img/product/no_image.png")">
+                                                        <img src="@(!string.IsNullOrEmpty(productPath[i].FilePath)?ViewBag.BaseFilePath + productPath[i].FilePath:ViewBag.BaseFilePath + "/Areas/Shop/Content/app/img/product/no_image.png")" class="img-responsive center-block" alt="additional image">
                                                     </a>
                                                 </div>
                                             }
@@ -50,7 +50,7 @@
                         }
                     </ul>
                 </div>
-                <div class="col-md-6 col-lg-6 col-xs-12 pro-content">
+                <div class="col-md-5 pro-content">
                     <h1>@Model.Name</h1>
                     <hr class="hr-line">
                     <ul class="list-unstyled">

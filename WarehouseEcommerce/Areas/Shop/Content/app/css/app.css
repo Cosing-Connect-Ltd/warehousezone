@@ -1964,8 +1964,8 @@ header {
 
 .topbutton {
   position: absolute;
-  top: 5px;
-  right: 15px;
+  top: 7px;
+  right: 25px;
 }
 
 .wishcom {
@@ -1973,7 +1973,7 @@ header {
 }
 
 .topbutton svg {
-    fill: #081e4f;
+    fill: gray;
     transition: all 0.3s ease-out 0s;
 }
 
@@ -1983,7 +1983,7 @@ header {
 }
 
 .acart {
-    background-color: #081e4f;
+    background-color: #1455a6;
     padding: 9px 30px 7px 30px;
     border-radius: 5px;
     font-size: 12px;
@@ -2109,15 +2109,10 @@ header {
 }
 
     .toppro .acart:hover {
-        border: 1px solid #081e4f;
-        background-color: #081e4f;
+        border: 1px solid #1455a6;
+        background-color: #1455a6;
         color: #fff;
     }
-
-.toppro .caption {
-    /*margin-top: 10px;*/
-    margin-right: 30px;
-}
 
 
 /* --------------------------
@@ -2494,7 +2489,7 @@ footer #contact li {
   color: #a7a3a3;
   line-height: 25px;
   font-size: 13px;
-  margin: 30px 0;
+  margin: 20px 0;
 }
 
 .f-left li {
@@ -3600,7 +3595,7 @@ footer #contact li {
   }
   .toppro .image,
   .toppro .caption {
-    width: 50%;
+    /*width: 50%;*/
   }
   .toppro .acart {
     display: none;
@@ -4816,20 +4811,10 @@ a.cashbtn {
 ul.mhp-menu{
   display: none;
 }
-ul.mhp-menu {
-    display: none;
-    background: #000;
-    position: absolute;
-    z-index: 999;
-    margin: 0 0 0 0;
-    left: 0;
-    right: 0;
-    padding: 3% 0;
-}
+
 .mhp-menu li {
     list-style: none;
-    padding: 5px 0 5px 25px;
-    text-align: left;
+    padding: 6px 20px 5px 20px;
 }
 ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
     display: block;

@@ -1104,10 +1104,6 @@ body {
     background-color: #ffffff;
 }
 
-.logo {
-    margin-top: 8px;
-}
-
 .main-menu {
 }
 
@@ -1284,11 +1280,14 @@ body {
     margin-bottom: 60px;
 }
 
-    .section-title p {
-        font-size: 16px;
-        text-align: justify;
+.section-title p {
+    text-align: center;
+    font-size: 17px;
+    font-family: sans-serif;
+}
+    .section-title p2 {
+        margin-bottom:unset;
     }
-
     .section-title h2 {
         font-size: 30px;
         font-weight: 700;
@@ -1328,7 +1327,7 @@ body {
     align-items: center;
 }
 
-.icon-box {
+/*.icon-box {
     color: #fff;
     font-size: 39px;
     margin-bottom: 15px;
@@ -1357,7 +1356,7 @@ body {
 
 .icon-box a {
     color: #fff;
-}
+}*/
 
 .service-hover {
     padding-top: 40px;
@@ -1375,7 +1374,8 @@ body {
 .What-wedo-text h3 {
     font-size: 16px;
     font-weight: 700;
-    margin-bottom: 12px;
+    margin-bottom: 9px;
+    margin-top: 7px;
     position: relative;
     text-transform: capitalize;
     color: #444;
@@ -3134,4 +3134,55 @@ img {
         padding-top: 7px !important;
     }
 }
+.first-img img {
+    width: 100%;
+    height: 550px;
+}
+.second-img {
+    display: flex;
+}
+.second-img img {
+    height: 400px;
+    width: 100%;
+}
+.its-width {
+    width: 50%;
+}
+.index-container {
+    width:80%;
+}
+.navbar-row {
+    display: flex;
+    align-items: center;
+}
+.logo-div {
+    margin-right:30px;
+}
+/*@media(max-width:991px){
+    #primary_nav_wrap {
+        display: none !important;
+    }
+    .mobile-menu-area a.meanmenu-reveal {
+        display: block !important;
+    }
+}*/
+/*.main-menu ul li a {
+    padding:unset!important;
+}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* css end */

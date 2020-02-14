@@ -82,12 +82,7 @@
                     <div class="search-container">
                         <div class="categories-container">
                             <div class="hover-cate">
-                                 <p><span class="cate-selected" data-value="0">All Categories</span></p>
-                                 <ul class="cate-items">
                                      @Html.DropDownList("ProductGroups", ViewBag.ProductGroups as SelectList, "All Categories", htmlAttributes: new { @class = "" })
-
-                                 </ul>
-
                             </div>
                         </div>
                         <div class="search-box input-group">

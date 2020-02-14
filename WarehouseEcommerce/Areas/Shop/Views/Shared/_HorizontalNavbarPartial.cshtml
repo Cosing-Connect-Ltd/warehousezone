@@ -5,12 +5,13 @@
         <div class="row">
             @*<div class="col-md-3 col-sm-4 stmenu"></div>*@
             <div id="menu1" class="col-md-9 col-sm-8 stme2 nav-menue">
+
                 <div class="manun">
                     <ul class="list-inline">
                         @if (ViewBag.departments != null)
                         {
                             var department = ViewBag.departments as List<TenantDepartments>;
-
+                            
                             foreach (var item in department)
                             {
                                 <li class="li-mhp-menu"><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home",new {DepartmentId=item.DepartmentId})">@item.DepartmentName</a>
@@ -24,26 +25,26 @@
                                                 <ul class="mhp-menu">
                                                     @for (int i = 0; i < groupDepartment.Count; i += 3)
                                                     {
-                                                        <div class="row">
+                                                        <div>
                                                             @if (groupDepartment.ElementAtOrDefault(i) != null)
                                                             {
-                                                                <div class="col-md-4">
+                                                                
                                                                     <li><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home",new {productgroupId=groupDepartment[i].ProductGroupId})">@groupDepartment[i].ProductGroup</a></li>
 
-                                                                </div>
+                                                            
                                                             }
                                                             @if (groupDepartment.ElementAtOrDefault(i + 1) != null)
                                                             {
-                                                                <div class="col-md-4">
+                                                                
                                                                     <li><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home",new {productgroupId=groupDepartment[i+1].ProductGroupId})">@groupDepartment[i + 1].ProductGroup</a></li>
 
-                                                                </div>
+                                                   
                                                             }
                                                             @if (groupDepartment.ElementAtOrDefault(i + 2) != null)
                                                             {
-                                                                <div class="col-md-4">
+                                                                
                                                                     <li><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home   ",new {productgroupId=groupDepartment[i+2].ProductGroupId})">@groupDepartment[i + 2].ProductGroup</a></li>
-                                                                </div>
+                                                              
                                                             }
                                                         </div>
                                                     }
@@ -161,7 +162,8 @@
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
                 <li><a href="#">Management</a></li>
-                <li><a href="#"></a>Sales</li>
+                <li><a href="#"></a>
+                s</li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle header-menu" data-toggle="dropdown">All Categories<i class="fa fa-angle-down pull-right"></i></a>
                     <div class="dropdown-menu">
