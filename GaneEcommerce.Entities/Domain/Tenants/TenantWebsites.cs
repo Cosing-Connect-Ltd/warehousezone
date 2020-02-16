@@ -2,6 +2,7 @@ namespace Ganedata.Core.Entities.Domain
 {
     using Ganedata.Core.Entities.Enums;
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,6 +10,11 @@ namespace Ganedata.Core.Entities.Domain
     [Serializable]
     public partial class TenantWebsites : PersistableEntity<int>
     {
+        public TenantWebsites()
+        {
+            ProductsWebsitesMap = new HashSet<ProductsWebsitesMap>();
+        }
+
         [Key]
         public int SiteID { get; set; }
         public string SiteName { get; set; }
@@ -21,5 +27,6 @@ namespace Ganedata.Core.Entities.Domain
         public virtual TenantLocations Warehouse { get; set; }
         [ForeignKey("TenantId")]
         public virtual Tenant Tenant { get; set; }
+        public virtual ICollection<ProductsWebsitesMap> ProductsWebsitesMap { get; set; }
     }
 }

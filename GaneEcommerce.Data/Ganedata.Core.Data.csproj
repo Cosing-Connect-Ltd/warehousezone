@@ -651,6 +651,10 @@
     <Compile Include="Migrations\202002141023547_adding-account-owner-relation-withauthuser.designer.cs">
       <DependentUpon>202002141023547_adding-account-owner-relation-withauthuser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202002161940028_Websites-Products-Relation-Table-Added.cs" />
+    <Compile Include="Migrations\202002161940028_Websites-Products-Relation-Table-Added.designer.cs">
+      <DependentUpon>202002161940028_Websites-Products-Relation-Table-Added.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1462,6 +1466,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202002141023547_adding-account-owner-relation-withauthuser.resx">
       <DependentUpon>202002141023547_adding-account-owner-relation-withauthuser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002161940028_Websites-Products-Relation-Table-Added.resx">
+      <DependentUpon>202002161940028_Websites-Products-Relation-Table-Added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

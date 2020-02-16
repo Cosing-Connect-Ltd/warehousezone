@@ -22,6 +22,7 @@ namespace Ganedata.Core.Entities.Domain
             ProductAccountCodes = new HashSet<ProductAccountCodes>();
             ProductSerialization = new HashSet<ProductSerialis>();
             ProductKitMap = new HashSet<ProductKitMap>();
+            ProductsWebsitesMap = new HashSet<ProductsWebsitesMap>();
         }
 
         [Key]
@@ -56,7 +57,6 @@ namespace Ganedata.Core.Entities.Domain
         public int UOMId { get; set; }
         [Display(Name = "Serialisable")]
         public bool Serialisable { get; set; }
-
         [Display(Name = "Allow Zero Sale")]
         public bool? AllowZeroSale { get; set; }
         [Display(Name = "Lot Option")]
@@ -126,7 +126,6 @@ namespace Ganedata.Core.Entities.Domain
         public int DepartmentId { get; set; }
         [Display(Name = "Group")]
         public int? ProductGroupId { get; set; }
-
         [Display(Name = " Product Pallet Type")]
         public int? PalletTypeId { get; set; }
         [Display(Name = "Case Quantity")]
@@ -167,13 +166,10 @@ namespace Ganedata.Core.Entities.Domain
         public string CountryOfOrigion { get; set; }
         [Display(Name = "Allow Modify Price")]
         public bool AllowModifyPrice { get; set; }
-
         [Display(Name = "Nominal Code")]
         public int? NominalCode { get; set; }
         [Display(Name = "Is Stock Item")]
         public bool IsStockItem { get; set; }
-
-
         public virtual GlobalUOM GlobalUOM { get; set; }
         public virtual GlobalWeightGroups GlobalWeightGroups { get; set; }
         public virtual ProductLotOptionsCodes ProductLotOptionsCodes { get; set; }
@@ -191,10 +187,10 @@ namespace Ganedata.Core.Entities.Domain
         public virtual ICollection<ProductKitMap> ProductKitMap { get; set; }
         public virtual TenantDepartments TenantDepartment { get; set; }
         public virtual ProductGroups ProductGroup { get; set; }
-
         public virtual PalletType PalletType { get; set; }
         public virtual ICollection<ProductFiles> ProductFiles { get; set; }
         public virtual List<ProductReceipeMaster> RecipeItemProducts { get; set; }
+        public virtual ICollection<ProductsWebsitesMap> ProductsWebsitesMap { get; set; }
     }
 
     public class ProductReceipeMaster : PersistableEntity<int>
