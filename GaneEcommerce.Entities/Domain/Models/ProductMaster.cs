@@ -102,7 +102,7 @@ namespace Ganedata.Core.Entities.Domain
         public int TaxID { get; set; }
         [Display(Name = "Buy Price")]
         public decimal? BuyPrice { get; set; }
-        [Display(Name = "Landing Cost (Base Cur.)")]
+        [Display(Name = "Landing Cost")]
         public decimal? LandedCost { get; set; }
         [Display(Name = "Sell Price")]
         public decimal? SellPrice { get; set; }

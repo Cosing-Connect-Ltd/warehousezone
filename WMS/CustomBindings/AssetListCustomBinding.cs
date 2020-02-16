@@ -151,7 +151,7 @@ namespace WMS.CustomBindings
             }
             else
             {
-                transactions = transactions.OrderBy("SeenTime Desc");
+                transactions = transactions.OrderBy("SeenTime desc, rssi desc");
             }
             if (e.FilterExpression != string.Empty)
             {
@@ -206,7 +206,7 @@ namespace WMS.CustomBindings
             }
             else
             {
-                transactions = transactions.OrderBy("SeenTime Desc");
+                transactions = transactions.OrderBy("SeenTime desc, rssi desc");
             }
 
 

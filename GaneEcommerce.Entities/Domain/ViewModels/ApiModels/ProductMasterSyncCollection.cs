@@ -54,5 +54,22 @@ namespace Ganedata.Core.Models
         public int TaxID { get; set; }
         public int TaxPercent { get; set; }
         public bool AllowModifyPrice { get; set; }
+        public List<ProductKitMapViewModel> ProductKitMapViewModelList { get; set; }
+    }
+
+
+    public class ProductKitMapViewModel
+
+    {
+        public int Id { get; set; }
+        public int ProductId { get; set; }
+        public int KitProductId { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime? DateUpdated { get; set; }
+        public int CreatedBy { get; set; }
+        public int? UpdatedBy { get; set; }
+        public bool? IsDeleted { get; set; }
+        public int TenantId { get; set; }
+        public decimal Quantity { get; set; }
     }
 }
