@@ -120,7 +120,6 @@ function addDetail(action) {
 
             data.push({ name: "ProductId", value: productid });
             data.push({ name: "PageSessionToken", value: sessionStorage["PageSessionToken"] });
-
             LoadingPanel.Show();
             $.post("/OrderDetail/_SaveDetail",
                 data,
@@ -223,7 +222,7 @@ function removeDetail(id) {
                 if ($("#gridViewOrdDet").length > 0) {
                     gridViewOrdDet.Refresh();
                 }
-              
+
             }
         });
     }
@@ -237,7 +236,7 @@ function ClearPageSessionData() {
 }
 
 function UpdateAccountDDForOrderDetails() {
-    
+
     if ($("#gridViewOrdDet").length > 0) {
         if (gridViewOrdDet.cpRowCount > 0) {
             DisableChosenDropdown('AccountID', true);
@@ -1470,6 +1469,11 @@ var completeConfirmed = function (isWorksOrder, suffix) {
                     processUrl = '/WorksOrders/ProcessOrder/' + frmdata.OrderID;
                     returnUrl = "/WorksOrders/Index";
                 }
+                if (result.Suffix === 'TO') {
+
+                    processUrl = '/TransferOrders/ProcessOrder/' + frmdata.OrderID;
+                    returnUrl = "/TransferOrders/Index";
+                }
 
                 var $popupContent = $("<div class='col-md-12 p-0 auto-complete-popup'><div class='col-md-12 h4'>There are still some items that are not dispatched for this order. What would you like to do?</div><div class='col-md-12 div-popup-actions'></div></div>");
                 var $dispatchAndConfirmLink = $("<a class='btn btn-primary pull-right bt-d'>Dispatch & Complete</a>");
@@ -1509,11 +1513,24 @@ var completeConfirmed = function (isWorksOrder, suffix) {
                     location.href = location.origin + returnUrl + '#' + result.Suffix;
 
                 }
-                else {
-                    if (result.Suffix === "SO" || result.Suffix === null || result.Suffix.length < 1) {
-                        result.Suffix = "SO";
-                        returnUrl = "/SalesOrders/Index";
-                    }
+                else if (result.Suffix === "TO" || result.Suffix === null || result.Suffix.length < 1) {
+                    result.Suffix = "TO";
+                    returnUrl = "/TransferOrders/Index";
+
+                    LoadingPanel.Hide();
+                    location.href = location.origin + returnUrl + '#' + result.Suffix;
+                }
+                else if (result.Suffix === "SO" || result.Suffix === null || result.Suffix.length < 1) {
+                    result.Suffix = "SO";
+                    returnUrl = "/SalesOrders/Index";
+
+                    LoadingPanel.Hide();
+                    location.href = location.origin + returnUrl + '#' + result.Suffix;
+                }
+                else if (result.Suffix === "PO" || result.Suffix === null || result.Suffix.length < 1) {
+                    result.Suffix = "PO";
+                    returnUrl = "/PurchaseOrders/Index";
+
                     LoadingPanel.Hide();
                     location.href = location.origin + returnUrl + '#' + result.Suffix;
                 }
@@ -1594,8 +1611,7 @@ function loadOrderDetailProcessPickEvents() {
 
 function RowsCount() {
     debugger;
-    if($("#gridViewOrdDetEdit").length > 0)
-    {
+    if ($("#gridViewOrdDetEdit").length > 0) {
         if (gridViewOrdDetEdit.cpRowCount > 0) {
             DisableChosenDropdown('AccountID', true);
         }

@@ -172,7 +172,7 @@ namespace Ganedata.Core.Services
                         }
                     }
                 }
-                if (accountId.HasValue)
+                if (accountId.HasValue && accountId > 0)
                 {
                     var account = _currentDbContext.Account.FirstOrDefault(u => u.AccountID == accountId);
                     if (account.GlobalTax?.PercentageOfAmount <= 0)
