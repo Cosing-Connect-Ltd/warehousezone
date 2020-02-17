@@ -125,8 +125,7 @@
         {
             c.FieldName = "Currecny";
             c.Caption = "Currency";
-             c.ColumnType = MVCxGridViewColumnType.SpinEdit;
-            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
         });
         settings.Columns.Add(c =>
         {

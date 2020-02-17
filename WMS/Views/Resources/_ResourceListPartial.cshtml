@@ -1,3 +1,5 @@
+@using Ganedata.Core.Entities.Enums
+
 @{
     var grid = Html.DevExpress().GridView(settings =>
     {
@@ -27,7 +29,7 @@
         settings.Settings.ShowHeaderFilterButton = true;
         settings.SettingsPopup.HeaderFilter.Height = 200;
 
-        settings.Settings.ShowFilterBar =GridViewStatusBarMode.Visible;
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
         settings.Settings.ShowHeaderFilterButton = false;
         settings.SettingsPager.Visible = true;
         settings.Settings.ShowGroupPanel = false;
@@ -72,7 +74,8 @@
         settings.Columns.Add(c =>
         {
             c.FieldName = "ResourceId";
-            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
         });
 
         settings.Columns.Add(c =>
@@ -96,6 +99,9 @@
             c.FieldName = "Gender";
             c.Caption = "Gender";
             c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var comboSettings = (ComboBoxProperties)c.PropertiesEdit;
+            comboSettings.DataSource = Enum.GetValues(typeof(GenderTypeEnum));
         });
         settings.Columns.Add(c =>
         {

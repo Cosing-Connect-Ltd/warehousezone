@@ -43,8 +43,13 @@
         settings.SettingsPager.PageSizeItemSettings.Visible = true;
         settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
 
-        settings.Columns.Add("Id");
 
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Id";
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
         settings.Columns.Add(column =>
         {
             column.Caption = "Resource";

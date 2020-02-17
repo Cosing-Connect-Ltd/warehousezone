@@ -34,7 +34,13 @@
         settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
 
         settings.KeyFieldName = "Id";
-        settings.Columns.Add("Id").Width = System.Web.UI.WebControls.Unit.Percentage(5);
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Id";
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            c.Width = System.Web.UI.WebControls.Unit.Percentage(5);
+        });
         settings.Columns.Add("Name", "Title").Width = System.Web.UI.WebControls.Unit.Percentage(20);
         settings.Columns.Add("Description", "Job Description").Width = System.Web.UI.WebControls.Unit.Percentage(20);
         settings.Columns.Add("Reason", "Reason").Width = System.Web.UI.WebControls.Unit.Percentage(20);
