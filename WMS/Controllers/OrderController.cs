@@ -699,7 +699,7 @@ namespace WMS.Controllers
         }
         public async Task<ActionResult> AuthoriseOrder(AuthoriseSalesOrderModel model)
         {
-            var authorised = OrderService.AuthoriseSalesOrder(model.OrderID, CurrentUserId, model.AuthorisedNotes,model.UnAuthorise);
+            var authorised = OrderService.AuthoriseSalesOrder(model.OrderID, CurrentUserId, model.AuthorisedNotes, model.UnAuthorise);
 
             if (authorised)
             {
@@ -707,7 +707,12 @@ namespace WMS.Controllers
                 var url = Request.Url.Scheme + "://" + Request.Url.Authority + "/orders/edit/" + order.OrderID;
                 var body = "The following order has been authorised successfully.<br/><b><a href='" + url + "'>Authorised Order #" + order.OrderNumber + "</a></b>";
                 var subject = "#" + order.OrderNumber + " - Order Authorised";
-                await GaneConfigurationsHelper.SendStandardMailNotification(order.TenentId, subject, body, null, null, true);
+                string result = await GaneConfigurationsHelper.SendStandardMailNotification(order.TenentId, subject, body, null, null, true);
+
+                if (result != "Success")
+                {
+                    ViewBag.Warning = result;
+                }
 
                 return Json(order.InventoryTransactionTypeId, JsonRequestBehavior.AllowGet);
             }
@@ -737,7 +742,7 @@ namespace WMS.Controllers
                 if (!string.IsNullOrEmpty(Request.Params["selectedStatus"].ToString()))
                 {
                     OrderStatusid = int.Parse(Request.Params["selectedStatus"].ToString());
-                    
+
                 }
             }
 
@@ -830,7 +835,7 @@ namespace WMS.Controllers
         public ActionResult _DeliveryProof(int id)
         {
 
-            var orderProof = OrderService.GetOrderProofsByOrderProcessId(id,CurrentTenantId);
+            var orderProof = OrderService.GetOrderProofsByOrderProcessId(id, CurrentTenantId);
             return PartialView("_deliveryProof", orderProof);
         }
 
@@ -1098,7 +1103,7 @@ namespace WMS.Controllers
             ViewBag.QuantityEnabled = true;
             var quantity = 0.0m;
 
-            var productOrderDetail = OrderService.GetOrderDetailsForProduct(orderid, pid,CurrentTenantId);
+            var productOrderDetail = OrderService.GetOrderDetailsForProduct(orderid, pid, CurrentTenantId);
             if (productOrderDetail != null && productOrderDetail.Any())
             {
                 var orderDetail = productOrderDetail.FirstOrDefault(m => m.OrderDetailID == orderDetailId);
@@ -1454,7 +1459,7 @@ namespace WMS.Controllers
 
         public ActionResult DeleteOrder(int id)
         {
-            if (!caSession.AuthoriseSession()) { return Json(false,JsonRequestBehavior.AllowGet); }
+            if (!caSession.AuthoriseSession()) { return Json(false, JsonRequestBehavior.AllowGet); }
 
             OrderService.DeleteOrderById(id, CurrentUserId);
 
@@ -1511,12 +1516,12 @@ namespace WMS.Controllers
             ViewBag.templateId = TemplateId;
             return View();
         }
-        public PartialViewResult _ShowEmailPartial(int Id, int InvoiceMasterId,int?TemplateId)
+        public PartialViewResult _ShowEmailPartial(int Id, int InvoiceMasterId, int? TemplateId)
         {
             ViewBag.orderId = Id;
             ViewBag.invoicemasterId = InvoiceMasterId;
             ViewBag.templateId = TemplateId;
-            var emailTenantqueue = _emailServices.GetAllTenantEmailNotificationQueuesbyOrderId(Id, InvoiceMasterId,CurrentTenantId,TemplateId);
+            var emailTenantqueue = _emailServices.GetAllTenantEmailNotificationQueuesbyOrderId(Id, InvoiceMasterId, CurrentTenantId, TemplateId);
             return PartialView(emailTenantqueue);
         }
 

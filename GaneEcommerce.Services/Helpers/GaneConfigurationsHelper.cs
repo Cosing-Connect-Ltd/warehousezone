@@ -31,7 +31,7 @@ namespace Ganedata.Core.Services
         private readonly ITenantsServices _tenantServices;
         private readonly ITerminalServices _terminalServices;
         private readonly IMapper _mapper;
-      
+
 
         public GaneConfigurationsHelper(IEmailServices emailServices, IAccountServices accountServices, IPropertyService propertyService, ITerminalServices terminalServices,
             IEmployeeServices employeeServices, IOrderService orderService, IStockTakeApiService stockTakeService, ITenantsServices tenantServices, IMapper mapper)
@@ -162,7 +162,7 @@ namespace Ganedata.Core.Services
         }
 
 
-        public async Task<string> DispatchMailNotification(TenantEmailNotificationQueue notification, int tenantId, WorksOrderNotificationTypeEnum worksOrderNotificationType = WorksOrderNotificationTypeEnum.WorksOrderLogTemplate, bool sendImmediately = true, int? accountId = null,int? UserId=null, string userEmail = null, string confrmationLink = null)
+        public async Task<string> DispatchMailNotification(TenantEmailNotificationQueue notification, int tenantId, WorksOrderNotificationTypeEnum worksOrderNotificationType = WorksOrderNotificationTypeEnum.WorksOrderLogTemplate, bool sendImmediately = true, int? accountId = null, int? UserId = null, string userEmail = null, string confrmationLink = null)
         {
 
             if (!sendImmediately) return "Email notification has been scheduled.";
@@ -171,7 +171,7 @@ namespace Ganedata.Core.Services
             var smtp = new SmtpClient();
             Attachment attachment = null;
             List<MailAddress> recipientEmails = new List<MailAddress>();
-            
+
 
             try
             {
@@ -180,7 +180,7 @@ namespace Ganedata.Core.Services
                 mailmsg = new MailMessage();
                 mailmsg.ReplyToList.Add(new MailAddress(tenantConfig.DefaultReplyToAddress));
                 var notificationItem = _emailServices.GetTenantEmailNotificationQueueById(notification.TenantEmailNotificationQueueId);
-                mailmsg.AlternateViews.Add(CreateAlternateView(notificationItem.EmailSubject + "<br/>" + TranslateEmailTemplateForOrder(notificationItem, tenantId, worksOrderNotificationType, accountId, UserId,confrmationLink)));
+                mailmsg.AlternateViews.Add(CreateAlternateView(notificationItem.EmailSubject + "<br/>" + TranslateEmailTemplateForOrder(notificationItem, tenantId, worksOrderNotificationType, accountId, UserId, confrmationLink)));
 
                 if (notificationItem.OrderId > 0 && notificationItem.Order == null)
                 {
@@ -205,8 +205,8 @@ namespace Ganedata.Core.Services
                 }
                 if (!string.IsNullOrEmpty(userEmail))
                 {
-                     recipientEmails.Add(new MailAddress(userEmail));
-                    
+                    recipientEmails.Add(new MailAddress(userEmail));
+
                 }
 
                 if (recipientEmails.Any() && tenantConfig.EnableLiveEmails == true)
@@ -302,7 +302,7 @@ namespace Ganedata.Core.Services
                 smtp.Port = emailconfig.SmtpPort;
                 smtp.EnableSsl = emailconfig.EnableSsl;
                 mailmsg.IsBodyHtml = true;
-                
+
 
                 if (emailconfig.EnableRelayEmailServer != true)
                 {
@@ -378,7 +378,7 @@ namespace Ganedata.Core.Services
                 var emailconfig = _emailServices.GetAllActiveTenantEmailConfigurations(tenantId).FirstOrDefault();
                 if (emailconfig == null)
                 {
-                    return "No email configuration found!";
+                    return "Could not send email, no email configuration found!";
                 }
 
                 if (salesRequiresAuthorisation && !string.IsNullOrEmpty(tenantConfig.AuthorisationAdminEmail))
@@ -387,6 +387,11 @@ namespace Ganedata.Core.Services
                 }
 
                 var template = _emailServices.GetSuitableEmailTemplate(WorksOrderNotificationTypeEnum.Standard, tenantId);
+                if (template == null)
+                {
+                    return "Could not send email, no suitable template found";
+                }
+
                 mailmsg.Body = template.Body.Replace("{EMAILBODY}", bodyHtml);
 
                 if (!string.IsNullOrEmpty(template.HtmlFooter))
@@ -471,10 +476,15 @@ namespace Ganedata.Core.Services
                     var emailconfig = _emailServices.GetAllActiveTenantEmailConfigurations(tenantId).FirstOrDefault();
                     if (emailconfig == null)
                     {
-                        return "No email configuration found!";
+                        return "Could not send email, no email configuration found";
                     }
 
                     var template = _emailServices.GetSuitableEmailTemplate(WorksOrderNotificationTypeEnum.ProductGroupTemplate, tenantId);
+                    if (template == null)
+                    {
+                        return "Could not send email, no suitable template found";
+                    }
+
                     var file = HttpContext.Current.Server.MapPath("~/UploadedFiles/Invoices/SO-00000001_23122018223354159.xlsx");
 
                     if (File.Exists(HttpContext.Current.Server.MapPath(file)))
@@ -531,7 +541,7 @@ namespace Ganedata.Core.Services
             await _propertyService.UpdateCurrentTenancyFlags();
         }
 
-        public string TranslateEmailTemplateForOrder(TenantEmailNotificationQueue notificationItem, int tenantId, WorksOrderNotificationTypeEnum worksOrderNotificationType = WorksOrderNotificationTypeEnum.WorksOrderLogTemplate, int? accountId = null, int? userId = null,string ConfirmatonLink=null)
+        public string TranslateEmailTemplateForOrder(TenantEmailNotificationQueue notificationItem, int tenantId, WorksOrderNotificationTypeEnum worksOrderNotificationType = WorksOrderNotificationTypeEnum.WorksOrderLogTemplate, int? accountId = null, int? userId = null, string ConfirmatonLink = null)
         {
 
             var order = _orderService.GetOrderById(notificationItem.OrderId ?? 0);
@@ -548,9 +558,9 @@ namespace Ganedata.Core.Services
 
             if (selectedTemplate != null)
             {
-                var emailHeader = GetTranslatedString(selectedTemplate.HtmlHeader, templateVariables, notificationItem, accountId,userId,ConfirmatonLink);
+                var emailHeader = GetTranslatedString(selectedTemplate.HtmlHeader, templateVariables, notificationItem, accountId, userId, ConfirmatonLink);
                 var emailBody = GetTranslatedString(selectedTemplate.Body, templateVariables, notificationItem, accountId, userId, ConfirmatonLink);
-                var emailFooter = GetTranslatedString(selectedTemplate.HtmlFooter, templateVariables, notificationItem, accountId,userId, ConfirmatonLink);
+                var emailFooter = GetTranslatedString(selectedTemplate.HtmlFooter, templateVariables, notificationItem, accountId, userId, ConfirmatonLink);
 
                 return emailHeader + "<br/>" + emailBody + "<br/>" + emailFooter;
 
@@ -595,7 +605,7 @@ namespace Ganedata.Core.Services
                 worksOrderNotificationType, appointment, emailconfig, dispatchTime, suitableTemplate.TemplateId);
             if (accountId.HasValue)
             {
-                var result = await DispatchMailNotification(notificationQueue, (order?.TenentId ?? TenantId), worksOrderNotificationType, sendImmediately, ((accountId.HasValue) ? accountId : null),userId,UserEmail,confirmationLink);
+                var result = await DispatchMailNotification(notificationQueue, (order?.TenentId ?? TenantId), worksOrderNotificationType, sendImmediately, ((accountId.HasValue) ? accountId : null), userId, UserEmail, confirmationLink);
                 return result;
             }
             else
@@ -687,12 +697,12 @@ namespace Ganedata.Core.Services
         }
 
 
-        public async Task<string> SendRegistrationEmail(int tenantId, WorksOrderNotificationTypeEnum worksOrderNotificationType, string subject, string ConfirmatonLink, string recipients, int? accountId, bool salesRequiresAuthorisation = true,int userID=0)
+        public async Task<string> SendRegistrationEmail(int tenantId, WorksOrderNotificationTypeEnum worksOrderNotificationType, string subject, string ConfirmatonLink, string recipients, int? accountId, bool salesRequiresAuthorisation = true, int userID = 0)
         {
             var mailmsg = new MailMessage();
             var smtp = new SmtpClient();
             Attachment attachment = null;
-            
+
 
             try
             {
@@ -742,9 +752,9 @@ namespace Ganedata.Core.Services
                     mailmsg.To.Add(tenantConfig.AuthorisationAdminEmail);
                 }
 
-                
+
                 ConfirmatonLink = "<a href='" + ConfirmatonLink + "'>Activate Account</a>";
-                mailmsg.Body = TranslateEmailTemplateForConfirmationEmail(tenantId, worksOrderNotificationType, accountId,userID);
+                mailmsg.Body = TranslateEmailTemplateForConfirmationEmail(tenantId, worksOrderNotificationType, accountId, userID);
                 mailmsg.Body = mailmsg.Body.Replace("{ConfirmationLink}", ConfirmatonLink);
                 mailmsg.IsBodyHtml = true;
                 mailmsg.From = new MailAddress(emailconfig.UserEmail, tenantConfig.DefaultMailFromText);
@@ -783,7 +793,7 @@ namespace Ganedata.Core.Services
 
 
 
-        private string GetTranslatedString(string htmlContent, List<TenantEmailTemplateVariable> templateVariables, TenantEmailNotificationQueue notification, int? accountID,int? userId= null,string confirmationLink=null)
+        private string GetTranslatedString(string htmlContent, List<TenantEmailTemplateVariable> templateVariables, TenantEmailNotificationQueue notification, int? accountID, int? userId = null, string confirmationLink = null)
         {
             var account = _accountServices.GetAccountsById(accountID ?? 0);
             if (string.IsNullOrEmpty(htmlContent)) return string.Empty;
@@ -922,12 +932,12 @@ namespace Ganedata.Core.Services
                         case "{ UserName }":
                         case "{UserName}":
                             replaceWith = GetMailMergeVariableValueFromOrder(order, account,
-                                    MailMergeVariableEnum.UserName,null,(userId??0));
+                                    MailMergeVariableEnum.UserName, null, (userId ?? 0));
                             break;
                         case "{ ConfirmationLink }":
                         case "{ConfirmationLink}":
                             replaceWith = GetMailMergeVariableValueFromOrder(order, account,
-                                    MailMergeVariableEnum.ConfirmationLink, null, (userId ?? 0),confirmationLink);
+                                    MailMergeVariableEnum.ConfirmationLink, null, (userId ?? 0), confirmationLink);
                             break;
 
                         default:
@@ -945,7 +955,7 @@ namespace Ganedata.Core.Services
             return translatedResult;
         }
 
-        public string GetMailMergeVariableValueFromOrder(Order order, Account account, MailMergeVariableEnum variableType, TenantEmailNotificationQueue notificationItem = null,int? UserId=null, string confirmationLink=null)
+        public string GetMailMergeVariableValueFromOrder(Order order, Account account, MailMergeVariableEnum variableType, TenantEmailNotificationQueue notificationItem = null, int? UserId = null, string confirmationLink = null)
         {
             TenantConfig config = null;
             if (order != null)
@@ -1114,7 +1124,7 @@ namespace Ganedata.Core.Services
 
 
 
-        public string TranslateEmailTemplateForConfirmationEmail(int tenantId, WorksOrderNotificationTypeEnum worksOrderNotificationType = WorksOrderNotificationTypeEnum.WorksOrderLogTemplate, int? accountId = null,int? UserId=0)
+        public string TranslateEmailTemplateForConfirmationEmail(int tenantId, WorksOrderNotificationTypeEnum worksOrderNotificationType = WorksOrderNotificationTypeEnum.WorksOrderLogTemplate, int? accountId = null, int? UserId = 0)
         {
 
 
@@ -1130,8 +1140,8 @@ namespace Ganedata.Core.Services
 
             if (selectedTemplate != null)
             {
-                var emailHeader = GetTranslatedString(selectedTemplate.HtmlHeader, templateVariables, null, accountId,(UserId??0));
-                var emailBody = GetTranslatedString(selectedTemplate.Body, templateVariables, null, accountId,(UserId ?? 0));
+                var emailHeader = GetTranslatedString(selectedTemplate.HtmlHeader, templateVariables, null, accountId, (UserId ?? 0));
+                var emailBody = GetTranslatedString(selectedTemplate.Body, templateVariables, null, accountId, (UserId ?? 0));
                 var emailFooter = GetTranslatedString(selectedTemplate.HtmlFooter, templateVariables, null, accountId, (UserId ?? 0));
 
                 return emailHeader + "<br/>" + emailBody + "<br/>" + emailFooter;
