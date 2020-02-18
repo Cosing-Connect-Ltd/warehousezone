@@ -52,6 +52,7 @@
         {
             c.FieldName = "PalletTrackingId";
             c.Caption = "Id";
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
             c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
         });
 
@@ -92,12 +93,14 @@
         settings.Columns.Add(c =>
         {
             c.FieldName = "RemainingCases";
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
             c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
         });
 
         settings.Columns.Add(c =>
         {
             c.FieldName = "TotalCases";
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
             c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
         });
 
@@ -153,6 +156,7 @@
         {
             c.FieldName = "OrderId";
             c.Caption = "Alloc to Ord.";
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
             c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
         });
 

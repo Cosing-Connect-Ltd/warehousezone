@@ -64,12 +64,37 @@
             column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
 
         });
-        settings.Columns.Add("NetAmount").Width = System.Web.UI.WebControls.Unit.Percentage(5);
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "NetAmount";
+            c.Width = System.Web.UI.WebControls.Unit.Percentage(5);
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "TaxAmount";
+            c.Width = System.Web.UI.WebControls.Unit.Percentage(5);
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
 
-        settings.Columns.Add("TaxAmount").Width = System.Web.UI.WebControls.Unit.Percentage(5);
         settings.Columns.Add("WarrantyAmount").Width = System.Web.UI.WebControls.Unit.Percentage(5);
-        settings.Columns.Add("CardCharges").Width = System.Web.UI.WebControls.Unit.Percentage(5);
-        settings.Columns.Add("PostageCharges").Width = System.Web.UI.WebControls.Unit.Percentage(5);
+        
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "CardCharges";
+            c.Width = System.Web.UI.WebControls.Unit.Percentage(5);
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "PostageCharges";
+            c.Width = System.Web.UI.WebControls.Unit.Percentage(5);
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
 
         settings.Columns.Add(u =>
         {

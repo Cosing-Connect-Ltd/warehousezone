@@ -1,3 +1,5 @@
+@using Ganedata.Core.Entities.Enums
+
 @{
     var grid = Html.DevExpress().GridView(settings =>
     {
@@ -24,9 +26,24 @@
         settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
         settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
 
-        settings.Columns.Add("WarehouseName", "Location Name");
-        settings.Columns.Add("CountyState", "County");
-        settings.Columns.Add("PostalCode", "Post Code");
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "WarehouseName";
+            c.Caption = "Location Name";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "CountyState";
+            c.Caption = "County";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "PostalCode";
+            c.Caption = "Post Code";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
 
         settings.Columns.Add(c =>
         {
@@ -46,9 +63,21 @@
             (c.PropertiesEdit as CheckBoxProperties).DisplayTextUnchecked = "False";
 
         });
-        
-        settings.Columns.Add("AutoTransferOrders");
-        settings.Columns.Add("MonitorStockVariance");
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "AutoTransferOrders";
+            c.ColumnType = MVCxGridViewColumnType.CheckBox;
+            (c.PropertiesEdit as CheckBoxProperties).DisplayTextChecked = "True";
+            (c.PropertiesEdit as CheckBoxProperties).DisplayTextUnchecked = "False";
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "MonitorStockVariance";
+            c.ColumnType = MVCxGridViewColumnType.CheckBox;
+            (c.PropertiesEdit as CheckBoxProperties).DisplayTextChecked = "True";
+            (c.PropertiesEdit as CheckBoxProperties).DisplayTextUnchecked = "False";
+        });
 
 
         settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";

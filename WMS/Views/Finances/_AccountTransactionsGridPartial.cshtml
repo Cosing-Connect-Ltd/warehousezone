@@ -72,8 +72,19 @@ settings =>
         c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
     });
 
-    settings.Columns.Add("Amount");
-    settings.Columns.Add("FinalBalance", "Balance");
+    settings.Columns.Add(c =>
+        {
+            c.FieldName = "Amount";
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
+    settings.Columns.Add(c =>
+        {
+            c.FieldName = "FinalBalance";
+            c.Caption = "Balance";
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
     settings.Columns.Add(column =>
     {
         column.FieldName = "AccountPaymentMode";

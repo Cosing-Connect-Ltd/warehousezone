@@ -28,7 +28,7 @@ namespace WMS.CustomBindings
             viewModel.Columns.Add("Property");
             viewModel.Columns.Add("ResourceName");
             viewModel.Columns.Add("Notes");
-            viewModel.Columns.Add("POStatus");
+            viewModel.Columns.Add("POStatus").ForceType(typeof(string));
             viewModel.Columns.Add("Account");
 
             viewModel.Pager.PageSize = 10;

@@ -208,7 +208,7 @@ namespace WMS.CustomBindings
             viewModel.Columns.Add("Account");
             viewModel.Columns.Add("DateCreated");
             viewModel.Columns.Add("DateUpdated");
-            viewModel.Columns.Add("POStatus");
+            viewModel.Columns.Add("POStatus").ForceType(typeof(string));
             viewModel.Columns.Add("AccountCode");
             viewModel.Columns.Add("CompanyName");
             viewModel.Columns.Add("Currecny");

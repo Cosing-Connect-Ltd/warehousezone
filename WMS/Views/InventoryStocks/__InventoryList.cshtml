@@ -69,14 +69,20 @@
             c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
         });
 
-        settings.Columns.Add("InStock");
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "InStock";
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
 
         settings.Columns.Add(c =>
         {
 
             c.FieldName = "Allocated";
             c.Caption = "Allocated";
-
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
             c.SetDataItemTemplateContent(container =>
             {
                 var Allocated = DataBinder.Eval(container.DataItem, "Allocated");
@@ -93,12 +99,19 @@
                 }
             });
         });
-        settings.Columns.Add("Available");
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Available";
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
         settings.Columns.Add(c =>
         {
 
             c.FieldName = "OnOrder";
             c.Caption = "OnOrder";
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
             c.SetDataItemTemplateContent(container =>
             {
                 var OnOrder = DataBinder.Eval(container.DataItem, "OnOrder");

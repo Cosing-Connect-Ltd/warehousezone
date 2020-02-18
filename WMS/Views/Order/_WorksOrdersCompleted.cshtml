@@ -111,7 +111,7 @@
         {
             c.FieldName = "POStatus";
             c.Caption = "Status";
-            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
             c.ColumnType = MVCxGridViewColumnType.ComboBox;
             var comboSettings = (ComboBoxProperties)c.PropertiesEdit;
             comboSettings.DataSource = Enum.GetValues(typeof(OrderStatusEnum));

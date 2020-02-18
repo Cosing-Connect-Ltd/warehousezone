@@ -54,6 +54,7 @@
         {
             c.FieldName = "InventoryTransactionId";
             c.Caption = "Id";
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
             c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
         });
 
@@ -112,6 +113,7 @@
         settings.Columns.Add(c =>
         {
             c.FieldName = "Quantity";
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
             c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
         });
 
@@ -162,7 +164,8 @@
         {
             c.FieldName = "InStock";
             c.Caption = "Last Qty";
-            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
         });
 
         if (ViewBag.IsWorksOrdersEnabled)
