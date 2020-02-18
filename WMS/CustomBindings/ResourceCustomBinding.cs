@@ -159,15 +159,34 @@ namespace WMS.CustomBindings
 
 
 
-        private static IQueryable<Resources> ResourceListDataset(int CurrentTenantId, int CurrentWarehouseId)
+        private static IQueryable<object> ResourceListDataset(int CurrentTenantId, int CurrentWarehouseId)
         {
 
             var employeeServices = DependencyResolver.Current.GetService<IEmployeeServices>();
 
             var transactions = employeeServices.GetAllActiveAppointmentResourceses(CurrentTenantId).Where(x => x.EmployeeShifts_Stores.Any(a => a.WarehouseId == CurrentWarehouseId) || x.EmployeeShifts_Stores.Count == 0);
 
+            var trans = from p in transactions
+                          select new
+                          {
+                              ResourceId = p.ResourceId,
+                              PayrollEmployeeNo = p.PayrollEmployeeNo,
+                              FirstName = p.FirstName,
+                              SurName = p.SurName,
+                              Gender = p.Gender,
+                              HomeNumber = p.ContactNumbers.HomeNumber,
+                              MobileNumber = p.ContactNumbers.MobileNumber,
+                              Fax = p.ContactNumbers.Fax,
+                              EmailAddress = p.ContactNumbers.EmailAddress,
+                              InternalStaff = p.InternalStaff,
+                              IsActive = p.IsActive,
+                              Jtypes = p.JobTypes,
+                              JobTypes = p.JobTypes
 
-            return transactions;
+                          };
+
+
+            return trans;
         }
 
 
