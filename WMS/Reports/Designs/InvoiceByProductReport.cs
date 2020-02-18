@@ -289,19 +289,19 @@ public class InvoiceByProductReport : DevExpress.XtraReports.UI.XtraReport
             // 
             this.paramProductsIds.AllowNull = true;
             this.paramProductsIds.Description = "Select Products";
-            this.paramProductsIds.LookUpSettings = staticListLookUpSettings1;
             this.paramProductsIds.MultiValue = true;
             this.paramProductsIds.Name = "paramProductsIds";
             this.paramProductsIds.Type = typeof(int);
+            this.paramProductsIds.ValueSourceSettings = staticListLookUpSettings1;
             // 
             // paramProductGroups
             // 
             this.paramProductGroups.AllowNull = true;
             this.paramProductGroups.Description = "Select Groups";
-            this.paramProductGroups.LookUpSettings = staticListLookUpSettings2;
             this.paramProductGroups.MultiValue = true;
             this.paramProductGroups.Name = "paramProductGroups";
             this.paramProductGroups.Type = typeof(int);
+            this.paramProductGroups.ValueSourceSettings = staticListLookUpSettings2;
             // 
             // sqlDataSource1
             // 
@@ -712,7 +712,7 @@ public class InvoiceByProductReport : DevExpress.XtraReports.UI.XtraReport
             this.paramProductGroups,
             this.TenantID,
             this.WarehouseId});
-            this.Version = "19.1";
+            this.Version = "19.2";
             this.DataSourceDemanded += new System.EventHandler<System.EventArgs>(this.InvoiceByProductReport_DataSourceDemanded);
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 

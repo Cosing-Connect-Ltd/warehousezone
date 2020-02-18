@@ -750,27 +750,27 @@ public class OrdersReport : DevExpress.XtraReports.UI.XtraReport
             // paramAccountIds
             // 
             this.paramAccountIds.Description = "Select Account";
-            this.paramAccountIds.LookUpSettings = staticListLookUpSettings1;
             this.paramAccountIds.MultiValue = true;
             this.paramAccountIds.Name = "paramAccountIds";
             this.paramAccountIds.Type = typeof(int);
+            this.paramAccountIds.ValueSourceSettings = staticListLookUpSettings1;
             this.paramAccountIds.Visible = false;
             // 
             // paramTransactionTypes
             // 
             this.paramTransactionTypes.Description = "Order Type";
-            this.paramTransactionTypes.LookUpSettings = staticListLookUpSettings2;
             this.paramTransactionTypes.MultiValue = true;
             this.paramTransactionTypes.Name = "paramTransactionTypes";
             this.paramTransactionTypes.Type = typeof(int);
+            this.paramTransactionTypes.ValueSourceSettings = staticListLookUpSettings2;
             // 
             // paramProperty
             // 
             this.paramProperty.Description = "Property";
-            this.paramProperty.LookUpSettings = staticListLookUpSettings3;
             this.paramProperty.MultiValue = true;
             this.paramProperty.Name = "paramProperty";
             this.paramProperty.Type = typeof(int);
+            this.paramProperty.ValueSourceSettings = staticListLookUpSettings3;
             this.paramProperty.Visible = false;
             // 
             // OrdersReport
@@ -794,7 +794,7 @@ public class OrdersReport : DevExpress.XtraReports.UI.XtraReport
             this.paramAccountIds,
             this.paramTransactionTypes,
             this.paramProperty});
-            this.Version = "19.1";
+            this.Version = "19.2";
             this.DataSourceDemanded += new System.EventHandler<System.EventArgs>(this.OrdersReport_DataSourceDemanded);
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 

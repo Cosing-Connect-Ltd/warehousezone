@@ -103,6 +103,10 @@
             DevExpress.DataAccess.Sql.Column column28 = new DevExpress.DataAccess.Sql.Column();
             DevExpress.DataAccess.Sql.ColumnExpression columnExpression28 = new DevExpress.DataAccess.Sql.ColumnExpression();
             DevExpress.DataAccess.Sql.Table table9 = new DevExpress.DataAccess.Sql.Table();
+            DevExpress.DataAccess.Sql.Column column29 = new DevExpress.DataAccess.Sql.Column();
+            DevExpress.DataAccess.Sql.ColumnExpression columnExpression29 = new DevExpress.DataAccess.Sql.ColumnExpression();
+            DevExpress.DataAccess.Sql.Table table10 = new DevExpress.DataAccess.Sql.Table();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter2 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.Join join3 = new DevExpress.DataAccess.Sql.Join();
             DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo3 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
             DevExpress.DataAccess.Sql.Join join4 = new DevExpress.DataAccess.Sql.Join();
@@ -113,8 +117,10 @@
             DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo6 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
             DevExpress.DataAccess.Sql.Join join7 = new DevExpress.DataAccess.Sql.Join();
             DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo7 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
-            DevExpress.DataAccess.Sql.MasterDetailInfo masterDetailInfo1 = new DevExpress.DataAccess.Sql.MasterDetailInfo();
+            DevExpress.DataAccess.Sql.Join join8 = new DevExpress.DataAccess.Sql.Join();
             DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo8 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
+            DevExpress.DataAccess.Sql.MasterDetailInfo masterDetailInfo1 = new DevExpress.DataAccess.Sql.MasterDetailInfo();
+            DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo9 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PalleteDispatchesReport));
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
@@ -587,7 +593,7 @@
             columnExpression16.Table = table5;
             column16.Expression = columnExpression16;
             columnExpression17.ColumnName = "OrderNumber";
-            table6.MetaSerializable = "<Meta X=\"390\" Y=\"40\" Width=\"125\" Height=\"1350\" />";
+            table6.MetaSerializable = "<Meta X=\"390\" Y=\"40\" Width=\"125\" Height=\"1369\" />";
             table6.Name = "Orders";
             columnExpression17.Table = table6;
             column17.Expression = columnExpression17;
@@ -630,6 +636,11 @@
             table9.Name = "TenantConfigs";
             columnExpression28.Table = table9;
             column28.Expression = columnExpression28;
+            columnExpression29.ColumnName = "PalletsDispatchID";
+            table10.MetaSerializable = "<Meta X=\"1010\" Y=\"30\" Width=\"125\" Height=\"400\" />";
+            table10.Name = "Pallets";
+            columnExpression29.Table = table10;
+            column29.Expression = columnExpression29;
             selectQuery2.Columns.Add(column10);
             selectQuery2.Columns.Add(column11);
             selectQuery2.Columns.Add(column12);
@@ -649,10 +660,16 @@
             selectQuery2.Columns.Add(column26);
             selectQuery2.Columns.Add(column27);
             selectQuery2.Columns.Add(column28);
-            selectQuery2.FilterString = "[PalletProducts.IsDeleted] <> True Or [PalletProducts.IsDeleted] Is Null";
+            selectQuery2.Columns.Add(column29);
+            selectQuery2.FilterString = "[PalletProducts.IsDeleted] <> True Or [PalletProducts.IsDeleted] Is Null Or [Pall" +
+    "ets.PalletsDispatchID] = ?dispatchId";
             selectQuery2.GroupFilterString = "";
             selectQuery2.MetaSerializable = "<Meta X=\"260\" Y=\"20\" Width=\"220\" Height=\"292\" />";
             selectQuery2.Name = "PalletProducts";
+            queryParameter2.Name = "dispatchId";
+            queryParameter2.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter2.Value = new DevExpress.DataAccess.Expression("?dispatchId", typeof(int));
+            selectQuery2.Parameters.Add(queryParameter2);
             relationColumnInfo3.NestedKeyColumn = "ProductId";
             relationColumnInfo3.ParentKeyColumn = "ProductID";
             join3.KeyColumns.Add(relationColumnInfo3);
@@ -681,24 +698,32 @@
             join7.Nested = table8;
             join7.Parent = table5;
             join7.Type = DevExpress.Xpo.DB.JoinType.LeftOuter;
+            relationColumnInfo8.NestedKeyColumn = "PalletID";
+            relationColumnInfo8.ParentKeyColumn = "PalletID";
+            join8.KeyColumns.Add(relationColumnInfo8);
+            join8.Nested = table10;
+            join8.Parent = table4;
+            join8.Type = DevExpress.Xpo.DB.JoinType.LeftOuter;
             selectQuery2.Relations.Add(join3);
             selectQuery2.Relations.Add(join4);
             selectQuery2.Relations.Add(join5);
             selectQuery2.Relations.Add(join6);
             selectQuery2.Relations.Add(join7);
+            selectQuery2.Relations.Add(join8);
             selectQuery2.Tables.Add(table4);
             selectQuery2.Tables.Add(table5);
             selectQuery2.Tables.Add(table6);
             selectQuery2.Tables.Add(table7);
             selectQuery2.Tables.Add(table8);
             selectQuery2.Tables.Add(table9);
+            selectQuery2.Tables.Add(table10);
             this.sqlDataSource1.Queries.AddRange(new DevExpress.DataAccess.Sql.SqlQuery[] {
             selectQuery1,
             selectQuery2});
             masterDetailInfo1.DetailQueryName = "PalletProducts";
-            relationColumnInfo8.NestedKeyColumn = "PalletID";
-            relationColumnInfo8.ParentKeyColumn = "PalletID";
-            masterDetailInfo1.KeyColumns.Add(relationColumnInfo8);
+            relationColumnInfo9.NestedKeyColumn = "PalletID";
+            relationColumnInfo9.ParentKeyColumn = "PalletID";
+            masterDetailInfo1.KeyColumns.Add(relationColumnInfo9);
             masterDetailInfo1.MasterQueryName = "Pallets";
             this.sqlDataSource1.Relations.AddRange(new DevExpress.DataAccess.Sql.MasterDetailInfo[] {
             masterDetailInfo1});
@@ -845,7 +870,7 @@
             this.PaperKind = System.Drawing.Printing.PaperKind.A4;
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
             this.dispatchId});
-            this.Version = "19.1";
+            this.Version = "19.2";
             this.BeforePrint += new System.Drawing.Printing.PrintEventHandler(this.PalleteDispatchesReport_BeforePrint);
             ((System.ComponentModel.ISupportInitialize)(this.xrTable1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable2)).EndInit();

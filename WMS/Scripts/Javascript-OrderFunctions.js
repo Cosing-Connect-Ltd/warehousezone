@@ -1311,8 +1311,7 @@ function loadOrderDetailCommonEvents() {
     $('.orddet').click(function (e) {
 
         var id = e.target.id;
-        if (id == 'OrderDetailadd')
-        {
+        if (id == 'OrderDetailadd') {
             debugger;
             var accounId = $(".orderactcnts :selected").val();
             var warehouseId = $("#TransferWarehouseId :selected").val();
@@ -2148,8 +2147,11 @@ function VerifyPallete(e, cnt) {
                         $(".scaned").val("").focus();
                         return;
                     }
-
-
+                    if (data == "Expired") {
+                        alert("The Serial number is Expired");
+                        $(".scaned").val("").focus();
+                        return;
+                    }
                     if (parseInt(data[2]) <= 0) {
                         alert("There is no remaining cases for this serial number");
                         return;
@@ -2364,12 +2366,17 @@ function VerifyPalletSalesOrder(e, cnt) {
             data: data,
             dataType: 'json',
             success: function (data) {
-
+                debugger;
                 LoadingPanel.Hide();
 
                 if (!data) {
                     $(cnt).css("border-color", "red");
                     alert("Serial number is not available to process");
+                    $(".scaned").val("").focus();
+                    return;
+                }
+                if (data == "Expired") {
+                    alert("The serial number is expired");
                     $(".scaned").val("").focus();
                     return;
                 }
@@ -2519,6 +2526,11 @@ function VerifyPalletReturns(e, cnt) {
                 if (!data) {
                     $(cnt).css("border-color", "red");
                     alert("Serial number is not available to process");
+                    $(".scaned").val("").focus();
+                    return;
+                }
+                if (data == "Expired") {
+                    alert("The serial number is expired");
                     $(".scaned").val("").focus();
                     return;
                 }

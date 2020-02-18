@@ -148,7 +148,6 @@ namespace WMS.Reports
             this.Detail.BorderWidth = 2F;
             this.Detail.Dpi = 96F;
             this.Detail.HeightF = 1.791138F;
-            this.Detail.HierarchyPrintOptions.Indent = 20F;
             this.Detail.Name = "Detail";
             this.Detail.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 96F);
             this.Detail.StylePriority.UseBorderColor = false;
@@ -448,7 +447,6 @@ namespace WMS.Reports
             this.xrLabel58});
             this.Detail1.Dpi = 96F;
             this.Detail1.HeightF = 49.68207F;
-            this.Detail1.HierarchyPrintOptions.Indent = 20F;
             this.Detail1.Name = "Detail1";
             // 
             // xrPanel5
@@ -1662,7 +1660,7 @@ namespace WMS.Reports
             this.ScriptsSource = "\r\nprivate void prodDelType_GetValue(object sender, DevExpress.XtraReports.UI.GetV" +
     "alueEventArgs e) {\r\n\r\n}\r\n";
             this.SnapGridSize = 12.5F;
-            this.Version = "19.1";
+            this.Version = "19.2";
             this.BeforePrint += new System.Drawing.Printing.PrintEventHandler(this.PurchaseOrderPrint_BeforePrint);
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();

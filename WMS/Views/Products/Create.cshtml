@@ -42,243 +42,252 @@
                 }
             }
         }
-        <div class="col-md-6 pull-left">
-            @Html.ValidationSummary(true)
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.SKUCode, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.SKUCode)
-                    <b id="btnGenerateNewProdCode" class="fa fa-retweet" title="Refresh latest auto generated code"></b>
-                    @Html.ValidationMessageFor(model => model.SKUCode)
-                </div>
+    <div class="col-md-6 pull-left">
+        @Html.ValidationSummary(true)
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.SKUCode, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.SKUCode)
+                <b id="btnGenerateNewProdCode" class="fa fa-retweet" title="Refresh latest auto generated code"></b>
+                @Html.ValidationMessageFor(model => model.SKUCode)
             </div>
-            <div class="input-group hidden h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.SecondCode, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.SecondCode)
-                    @Html.ValidationMessageFor(model => model.SecondCode)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.Name)
-                    @Html.ValidationMessageFor(model => model.Name)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.PackSize, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.PackSize)
-                    @Html.ValidationMessageFor(model => model.PackSize)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.CountryOfOrigion, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.CountryOfOrigion)
-                    @Html.ValidationMessageFor(model => model.CountryOfOrigion)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.Description)
-                    @Html.ValidationMessageFor(model => model.Description)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.BarCode, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.BarCode)
-                    @Html.ValidationMessageFor(model => model.BarCode)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.BarCode2, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.BarCode2)
-                    @Html.ValidationMessageFor(model => model.BarCode2)
-                </div>
-            </div>
-            <div class="single-check-select">
-                <div class="input-group h-100 justify-content-center align-items-center">
-                    @Html.LabelFor(model => model.Serialisable, htmlAttributes: new { @class = "col-md-4" })
-                    <div class="col-md-8">
-                        @Html.CheckBoxFor(model => model.Serialisable, htmlAttributes: new { @class = "checkbox form-control" })
-                        @Html.ValidationMessageFor(model => model.Serialisable)
-                    </div>
-                </div>
-                <div class="input-group h-100 justify-content-center align-items-center">
-                    @Html.LabelFor(model => model.ProcessByPallet, htmlAttributes: new { @class = "col-md-4" })
-                    <div class="col-md-8">
-                        @Html.CheckBoxFor(m => m.ProcessByPallet, htmlAttributes: new { @class = "chkprocessby checkbox form-control" })
-                        @Html.ValidationMessageFor(model => model.ProcessByPallet)
-                    </div>
-                </div>
-                <div class="input-group h-100 justify-content-center align-items-center">
-                    @Html.LabelFor(model => model.DontMonitorStock, htmlAttributes: new { @class = "col-md-4" })
-                    <div class="col-md-8">
-                        @Html.EditorFor(m => m.DontMonitorStock, new { @class = "checkbox" })
-                        @Html.ValidationMessageFor(model => model.DontMonitorStock)
-                    </div>
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.IsRawMaterial, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.IsRawMaterial)
-                    @Html.ValidationMessageFor(model => model.IsRawMaterial)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.IsStockItem, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.IsStockItem)
-                    @Html.ValidationMessageFor(model => model.IsStockItem)
-                </div>
-            </div>
-
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.LotOption, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.LotOption)
-                    @Html.ValidationMessageFor(model => model.LotOption)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.LotOptionCodeId, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.DropDownList("LotOptionCodeId", null, String.Empty, new { @class = "chosen-select" })
-                    @Html.ValidationMessageFor(model => model.LotOptionCodeId)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.LotProcessTypeCodeId, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.DropDownList("LotProcessTypeCodeId", null, String.Empty, new { @class = "chosen-select" })
-                    @Html.ValidationMessageFor(model => model.LotProcessTypeCodeId)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.ShelfLifeDays, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.ShelfLifeDays)
-
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.ReorderQty, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.ReorderQty)
-
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.ShipConditionCode, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.ShipConditionCode)
-                    @Html.ValidationMessageFor(model => model.ShipConditionCode)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.CommodityCode, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.CommodityCode)
-                    @Html.ValidationMessageFor(model => model.CommodityCode)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.CommodityClass, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.CommodityClass)
-                    @Html.ValidationMessageFor(model => model.CommodityClass)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.UOMId, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.DropDownList("UOMId", null, String.Empty, new { @class = "chosen-select" })
-                    @Html.ValidationMessageFor(model => model.UOMId)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.WeightGroupId, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.DropDownList("WeightGroupId", null, String.Empty, new { @class = "chosen-select" })
-                    @Html.ValidationMessageFor(model => model.WeightGroupId)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.DimensionUOMId, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.DropDownList("DimensionUOMId", null, String.Empty, new { @class = "chosen-select" })
-                    @Html.ValidationMessageFor(model => model.DimensionUOMId)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.Height, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.Height)
-                    @Html.ValidationMessageFor(model => model.Height)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.Width, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.Width)
-                    @Html.ValidationMessageFor(model => model.Width)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.Depth, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.Depth)
-                    @Html.ValidationMessageFor(model => model.Depth)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.Weight, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.Weight)
-                    @Html.ValidationMessageFor(model => model.Height)
-                </div>
-            </div>
-            @if (ViewBag.IsEcommerceEnabled)
-            {
-                <div class="input-group h-100 justify-content-center align-items-center">
-                    @Html.LabelFor(model => model.TopProduct, htmlAttributes: new { @class = "col-md-4" })
-                    <div class="col-md-8">
-                        @Html.EditorFor(model => model.TopProduct)
-                        @Html.ValidationMessageFor(model => model.TopProduct)
-                    </div>
-                </div>
-                <div class="input-group h-100 justify-content-center align-items-center">
-                    @Html.LabelFor(model => model.BestSellerProduct, htmlAttributes: new { @class = "col-md-4" })
-                    <div class="col-md-8">
-                        @Html.EditorFor(model => model.BestSellerProduct)
-                        @Html.ValidationMessageFor(model => model.BestSellerProduct)
-                    </div>
-                </div>
-                <div class="input-group h-100 justify-content-center align-items-center">
-                    @Html.LabelFor(model => model.SpecialProduct, htmlAttributes: new { @class = "col-md-4" })
-                    <div class="col-md-8">
-                        @Html.EditorFor(model => model.SpecialProduct)
-                        @Html.ValidationMessageFor(model => model.SpecialProduct)
-                    </div>
-                </div>
-
-                <div class="input-group h-100 justify-content-center align-items-center">
-                    @Html.LabelFor(model => model.OnSaleProduct, htmlAttributes: new { @class = "col-md-4" })
-                    <div class="col-md-8">
-                        @Html.EditorFor(model => model.OnSaleProduct)
-                        @Html.ValidationMessageFor(model => model.OnSaleProduct)
-                    </div>
-                </div>
-
-            }
-
         </div>
+        <div class="input-group hidden h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.SecondCode, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.SecondCode)
+                @Html.ValidationMessageFor(model => model.SecondCode)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.PackSize, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.PackSize)
+                @Html.ValidationMessageFor(model => model.PackSize)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.CountryOfOrigion, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.CountryOfOrigion)
+                @Html.ValidationMessageFor(model => model.CountryOfOrigion)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Description)
+                @Html.ValidationMessageFor(model => model.Description)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.BarCode, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.BarCode)
+                @Html.ValidationMessageFor(model => model.BarCode)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.BarCode2, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.BarCode2)
+                @Html.ValidationMessageFor(model => model.BarCode2)
+            </div>
+        </div>
+        <div class="single-check-select">
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.Serialisable, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.CheckBoxFor(model => model.Serialisable, htmlAttributes: new { @class = "checkbox form-control" })
+                    @Html.ValidationMessageFor(model => model.Serialisable)
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.ProcessByPallet, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.CheckBoxFor(m => m.ProcessByPallet, htmlAttributes: new { @class = "chkprocessby checkbox form-control" })
+                    @Html.ValidationMessageFor(model => model.ProcessByPallet)
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.DontMonitorStock, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(m => m.DontMonitorStock, new { @class = "checkbox" })
+                    @Html.ValidationMessageFor(model => model.DontMonitorStock)
+                </div>
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.IsRawMaterial, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.IsRawMaterial)
+                @Html.ValidationMessageFor(model => model.IsRawMaterial)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.IsStockItem, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.IsStockItem)
+                @Html.ValidationMessageFor(model => model.IsStockItem)
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.LotOption, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.LotOption)
+                @Html.ValidationMessageFor(model => model.LotOption)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.LotOptionCodeId, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownList("LotOptionCodeId", null, String.Empty, new { @class = "chosen-select" })
+                @Html.ValidationMessageFor(model => model.LotOptionCodeId)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.LotProcessTypeCodeId, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownList("LotProcessTypeCodeId", null, String.Empty, new { @class = "chosen-select" })
+                @Html.ValidationMessageFor(model => model.LotProcessTypeCodeId)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ShelfLifeDays, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.ShelfLifeDays)
+
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ReorderQty, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.ReorderQty)
+
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ShipConditionCode, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.ShipConditionCode)
+                @Html.ValidationMessageFor(model => model.ShipConditionCode)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.CommodityCode, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.CommodityCode)
+                @Html.ValidationMessageFor(model => model.CommodityCode)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.CommodityClass, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.CommodityClass)
+                @Html.ValidationMessageFor(model => model.CommodityClass)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.UOMId, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownList("UOMId", null, String.Empty, new { @class = "chosen-select" })
+                @Html.ValidationMessageFor(model => model.UOMId)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.WeightGroupId, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownList("WeightGroupId", null, String.Empty, new { @class = "chosen-select" })
+                @Html.ValidationMessageFor(model => model.WeightGroupId)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.DimensionUOMId, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownList("DimensionUOMId", null, String.Empty, new { @class = "chosen-select" })
+                @Html.ValidationMessageFor(model => model.DimensionUOMId)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.Height, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Height)
+                @Html.ValidationMessageFor(model => model.Height)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.Width, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Width)
+                @Html.ValidationMessageFor(model => model.Width)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.Depth, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Depth)
+                @Html.ValidationMessageFor(model => model.Depth)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.Weight, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Weight)
+                @Html.ValidationMessageFor(model => model.Height)
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Product Sites", htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+               @Html.ListBox("SiteIds", new MultiSelectList(ViewBag.WebsiteIds, "SiteID", "SiteName"), new { Multiple = "multiple", size = "5", @class = "chosen-select", data_placeholder = "Choose Site" })
+             
+            </div>
+        </div>
+
+        @if (ViewBag.IsEcommerceEnabled)
+        {
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.TopProduct, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.TopProduct)
+                    @Html.ValidationMessageFor(model => model.TopProduct)
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.BestSellerProduct, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.BestSellerProduct)
+                    @Html.ValidationMessageFor(model => model.BestSellerProduct)
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.SpecialProduct, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.SpecialProduct)
+                    @Html.ValidationMessageFor(model => model.SpecialProduct)
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.OnSaleProduct, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.OnSaleProduct)
+                    @Html.ValidationMessageFor(model => model.OnSaleProduct)
+                </div>
+            </div>
+
+        }
+
+    </div>
         <div class="col-md-6 pull-left">
 
             <div class="input-group h-100 justify-content-center align-items-center">

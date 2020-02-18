@@ -995,9 +995,6 @@ namespace Ganedata.Core.Services
 
         public PalletTracking GetVerifedPallet(string serial, int productId, int tenantId, int warehouseId, int? type = null, int? palletTrackingId = null, DateTime? dates = null, int? orderId = null)
         {
-            
-
-
             if (type.HasValue)
             {
                 switch (type)
@@ -1018,7 +1015,9 @@ namespace Ganedata.Core.Services
                 var days =  (expiryDate.Value - DateTime.Today).TotalDays;
                 if (days <= shelflife)
                 {
-                    return null;
+                    PalletTracking palletTracking = new PalletTracking();
+                    palletTracking.Comments = "[#Expired#]";
+                    return palletTracking;
                 }
                 if (palletTrackingId.HasValue && palletTrackingId == (int)PalletTrackingSchemeEnum.ByExpiryMonth)
                 {

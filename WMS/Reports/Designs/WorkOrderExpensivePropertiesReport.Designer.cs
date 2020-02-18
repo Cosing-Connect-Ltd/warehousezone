@@ -698,6 +698,7 @@
             selectQuery1.Groups.Add(group13);
             selectQuery1.Groups.Add(group14);
             selectQuery1.Groups.Add(group15);
+            selectQuery1.MetaSerializable = "<Meta X=\"1160\" Y=\"20\" Width=\"130\" Height=\"360\" />";
             selectQuery1.Name = "PropertySummary";
             queryParameter1.Name = "sqlParamTenantId";
             queryParameter1.Type = typeof(DevExpress.DataAccess.Expression);
@@ -1309,11 +1310,11 @@
             // paramPPropertyId
             // 
             this.paramPPropertyId.Description = "Property";
-            this.paramPPropertyId.LookUpSettings = staticListLookUpSettings1;
             this.paramPPropertyId.MultiValue = true;
             this.paramPPropertyId.Name = "paramPPropertyId";
             this.paramPPropertyId.Type = typeof(int);
             this.paramPPropertyId.ValueInfo = "0";
+            this.paramPPropertyId.ValueSourceSettings = staticListLookUpSettings1;
             // 
             // WorkOrderExpensivePropertiesReport
             // 
@@ -1336,7 +1337,7 @@
             this.paramPPropertyId,
             this.paramStartDate,
             this.paramEndDate});
-            this.Version = "19.1";
+            this.Version = "19.2";
             this.DataSourceDemanded += new System.EventHandler<System.EventArgs>(this.WorkOrderExpensivePropertiesReport_DataSourceDemanded);
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 

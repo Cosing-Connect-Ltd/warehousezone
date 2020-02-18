@@ -554,16 +554,14 @@ namespace Ganedata.Core.Services
 
         public ProductMaster SaveProduct(ProductMaster productMaster, List<string> productAccountCodeIds,
             List<int> productAttributesIds,
-            List<int> productLocationIds, List<int> productKitIds, int userId, int tenantId)
+            List<int> productLocationIds, List<int> productKitIds, int userId, int tenantId, List<int> SiteId)
         {
-
             if (productMaster.ProductId > 0)
             {
                 productMaster.UpdateCreatedInfo(userId);
                 productMaster.UpdateUpdatedInfo(userId);
                 productMaster.TenantId = tenantId;
                 _currentDbContext.Entry(productMaster).State = EntityState.Modified;
-
                 if (productAccountCodeIds == null)
                 {
                     foreach (var entity in _currentDbContext.ProductAccountCodes.Where(x => x.ProductId == productMaster.ProductId))
@@ -606,8 +604,6 @@ namespace Ganedata.Core.Services
                     }
 
                 }
-
-
                 if (productAttributesIds == null)
                 {
                     foreach (var entity in _currentDbContext.ProductAttributeValuesMap.Where(
@@ -759,6 +755,9 @@ namespace Ganedata.Core.Services
                     }
                     productMaster.Kit = false;
                 }
+               
+
+
 
                 _currentDbContext.SaveChanges();
             }
@@ -837,6 +836,46 @@ namespace Ganedata.Core.Services
 
                 }
                 _currentDbContext.SaveChanges();
+            }
+
+            if (SiteId != null && SiteId.Count > 0)
+            {
+                var isdeletedList = _currentDbContext.ProductsWebsitesMap.Where(u => u.ProductId == productMaster.ProductId && !SiteId.Contains(u.SiteID) && u.IsDeleted != true).ToList();
+                if (isdeletedList.Count > 0)
+                {
+                    isdeletedList.ForEach(u => u.IsDeleted = true);
+                    _currentDbContext.SaveChanges();
+                }
+
+                foreach (var item in SiteId)
+                {
+                    int siteId = Convert.ToInt32(item);
+                    var websiteslist = _currentDbContext.ProductsWebsitesMap.FirstOrDefault(u => u.ProductId == productMaster.ProductId && u.SiteID == siteId && u.IsDeleted != true);
+                    if (websiteslist != null)
+                    {
+                        websiteslist.TenantId = tenantId;
+                        websiteslist.UpdateUpdatedInfo(userId);
+                    }
+                    else
+                    {
+
+                        var list = new ProductsWebsitesMap();
+                        list.ProductId = productMaster.ProductId;
+                        list.SiteID = siteId;
+                        list.UpdateCreatedInfo(userId);
+                        productMaster.ProductsWebsitesMap.Add(list);
+                    }
+
+                }
+                _currentDbContext.SaveChanges();
+            }
+            else {
+                var isdeletedList = _currentDbContext.ProductsWebsitesMap.Where(u => u.ProductId == productMaster.ProductId && u.IsDeleted != true).ToList();
+                if (isdeletedList.Count > 0)
+                {
+                    isdeletedList.ForEach(u => u.IsDeleted = true);
+                    _currentDbContext.SaveChanges();
+                }
             }
             return productMaster;
         }

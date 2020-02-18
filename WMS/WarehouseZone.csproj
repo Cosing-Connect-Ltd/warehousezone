@@ -1888,6 +1888,8 @@
     <Content Include="Views\OrderSchedule\Index.cshtml" />
     <Content Include="Views\OrderSchedule\_PalletToDispatch.cshtml" />
     <Content Include="Views\OrderSchedule\_SchedulerPartial.cshtml" />
+    <Content Include="Views\Products\_EditableProductGrid.cshtml" />
+    <Content Include="Views\Products\EditProducts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

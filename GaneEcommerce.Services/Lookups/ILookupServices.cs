@@ -72,6 +72,8 @@ namespace Ganedata.Core.Services
 
         IEnumerable<object> GetProductGroups(int departmentId);
 
+        IEnumerable<object> GetAllValidWebsites(int currentTenantId);
+
         IQueryable<TenantEmailNotificationQueue> GetEmailNotifcationQueue(int tenantId);
 
         bool CheckStockIssue(int ProductId, decimal InStock,bool serialize, bool palletsPrdocut);

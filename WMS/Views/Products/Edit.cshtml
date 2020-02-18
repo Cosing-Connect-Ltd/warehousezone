@@ -329,6 +329,13 @@
                         @Html.ValidationMessageFor(model => model.Weight)
                     </div>
                 </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.Label("Product Sites", htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.ListBox("SiteIds", new MultiSelectList(ViewBag.WebsiteIds, "SiteID", "SiteName", ViewBag.linksiteIds), new { Multiple = "multiple", size = "5", @class = "chosen-select", data_placeholder = "Choose Site" })
+
+                    </div>
+                </div>
                 @if (ViewBag.IsEcommerceEnabled)
                 {
                     <div class="input-group h-100 justify-content-center align-items-center">

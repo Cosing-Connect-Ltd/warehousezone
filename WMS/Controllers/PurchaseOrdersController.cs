@@ -269,6 +269,10 @@ namespace WMS.Controllers
             var recored = OrderService.GetVerifedPallet(serial, pid ?? 0, CurrentTenantId, warehouseId);
             if (recored != null)
             {
+                if (recored.Comments == "[#Expired#]")
+                {
+                    return Json("Expired", JsonRequestBehavior.AllowGet);
+                }
                 List<string> values = new List<string>();
                 values.Add(recored.PalletTrackingId.ToString());
                 values.Add(recored.PalletSerial);

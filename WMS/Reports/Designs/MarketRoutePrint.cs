@@ -96,6 +96,7 @@ public class MarketRoutePrint : DevExpress.XtraReports.UI.XtraReport
             DevExpress.DataAccess.Sql.ColumnExpression columnExpression8 = new DevExpress.DataAccess.Sql.ColumnExpression();
             DevExpress.DataAccess.Sql.Column column9 = new DevExpress.DataAccess.Sql.Column();
             DevExpress.DataAccess.Sql.ColumnExpression columnExpression9 = new DevExpress.DataAccess.Sql.ColumnExpression();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter2 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.Join join1 = new DevExpress.DataAccess.Sql.Join();
             DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo1 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
             DevExpress.DataAccess.Sql.CustomSqlQuery customSqlQuery1 = new DevExpress.DataAccess.Sql.CustomSqlQuery();
@@ -165,7 +166,7 @@ public class MarketRoutePrint : DevExpress.XtraReports.UI.XtraReport
             selectQuery1.Parameters.Add(queryParameter1);
             selectQuery1.Tables.Add(table1);
             columnExpression4.ColumnName = "Name";
-            table2.MetaSerializable = "<Meta X=\"185\" Y=\"30\" Width=\"125\" Height=\"248\" />";
+            table2.MetaSerializable = "<Meta X=\"185\" Y=\"30\" Width=\"125\" Height=\"267\" />";
             table2.Name = "Markets";
             columnExpression4.Table = table2;
             column4.Expression = columnExpression4;
@@ -192,8 +193,14 @@ public class MarketRoutePrint : DevExpress.XtraReports.UI.XtraReport
             selectQuery2.Columns.Add(column7);
             selectQuery2.Columns.Add(column8);
             selectQuery2.Columns.Add(column9);
+            selectQuery2.FilterString = "[MarketRouteMaps.MarketRouteId] = ?paramRouteId";
+            selectQuery2.GroupFilterString = "";
             selectQuery2.MetaSerializable = "<Meta X=\"100\" Y=\"0\" Width=\"100\" Height=\"139\" />";
             selectQuery2.Name = "MarketRouteMaps";
+            queryParameter2.Name = "paramRouteId";
+            queryParameter2.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter2.Value = new DevExpress.DataAccess.Expression("?paramRouteId", typeof(int));
+            selectQuery2.Parameters.Add(queryParameter2);
             relationColumnInfo1.NestedKeyColumn = "Id";
             relationColumnInfo1.ParentKeyColumn = "MarketId";
             join1.KeyColumns.Add(relationColumnInfo1);
@@ -587,7 +594,7 @@ public class MarketRoutePrint : DevExpress.XtraReports.UI.XtraReport
             this.Margins = new System.Drawing.Printing.Margins(21, 42, 18, 100);
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
             this.paramRouteId});
-            this.Version = "19.1";
+            this.Version = "19.2";
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
     }

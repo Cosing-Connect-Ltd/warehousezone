@@ -555,6 +555,10 @@ namespace WMS.Controllers
             var recored = OrderService.GetVerifedPallet(serial, pid ?? 0, CurrentTenantId, warehouseId, type);
             if (recored != null)
             {
+                if (recored.Comments == "[#Expired#]")
+                {
+                    return Json("Expired", JsonRequestBehavior.AllowGet);
+                }
                 List<string> values = new List<string>();
                 values.Add(recored.PalletTrackingId.ToString());
                 values.Add(recored.PalletSerial);
@@ -562,7 +566,6 @@ namespace WMS.Controllers
                 values.Add(recored.TotalCases.ToString());
                 return Json(values, JsonRequestBehavior.AllowGet);
             }
-
             return Json(status, JsonRequestBehavior.AllowGet);
         }
         public JsonResult _SubmitPalleteSerials(List<string> serialList, int? pid, int? orderId, int? type, int? palletTrackingId,string groupToken, string deliveryNumber = null)

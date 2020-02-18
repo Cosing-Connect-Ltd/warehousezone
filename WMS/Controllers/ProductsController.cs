@@ -71,6 +71,7 @@ namespace WMS.Controllers
             var weightGroups = _lookupServices.GetAllValidGlobalWeightGroups().ToList();
             var lotOptionCodes = _productLookupService.GetAllValidProductLotOptionsCodes().ToList();
             var lotProcessTypeCodes = _productLookupService.GetAllValidProductLotProcessTypeCodes().ToList();
+            var WebSites = _lookupServices.GetAllValidWebsites(CurrentTenantId).ToList();
 
             ViewBag.DimensionUOMId = new SelectList(dimensionUoms, "UOMId", "UOM", dimensionUoms.Select(m => m.UOMId).FirstOrDefault());
             ViewBag.TaxID = new SelectList(taxes, "TaxID", "TaxName", taxes.Select(x => x.TaxID).FirstOrDefault());
@@ -78,12 +79,11 @@ namespace WMS.Controllers
             ViewBag.WeightGroupId = new SelectList(weightGroups, "WeightGroupId", "Description", weightGroups.Select(x => x.WeightGroupId).FirstOrDefault());
             ViewBag.LotOptionCodeId = new SelectList(lotOptionCodes, "LotOptionCodeId", "Description", lotOptionCodes.Select(x => x.LotOptionCodeId).FirstOrDefault());
             ViewBag.LotProcessTypeCodeId = new SelectList(lotProcessTypeCodes, "LotProcessTypeCodeId", "Description", lotProcessTypeCodes.Select(x => x.LotProcessTypeCodeId).FirstOrDefault());
-
             ViewBag.Groups = new SelectList(_lookupServices.GetAllValidProductGroups(CurrentTenantId), "ProductGroupId", "ProductGroup");
             ViewBag.Departments = new SelectList(_lookupServices.GetAllValidTenantDepartments(CurrentTenantId), "DepartmentId", "DepartmentName");
             ViewBag.PalletType = new SelectList(_lookupServices.GetAllValidPalletTypes(CurrentTenantId), "PalletTypeId", "Description");
             ViewBag.ProductLocations = _productLookupService.GetAllValidProductLocations(CurrentTenantId, CurrentWarehouseId);
-
+            ViewBag.WebsiteIds = WebSites;
             ViewBag.SKUCode = id;
 
             ViewBag.ProductKitItems = _productServices.GetAllValidProductMasters(CurrentTenantId).Where(x => x.ProductId != id.AsInt()).Select(pm => new { ProductId = pm.ProductId, ProductName = pm.Name });
@@ -124,7 +124,7 @@ namespace WMS.Controllers
             var weightGroups = _lookupServices.GetAllValidGlobalWeightGroups();
             var lotOptionCodes = _productLookupService.GetAllValidProductLotOptionsCodes();
             var lotProcessTypeCodes = _productLookupService.GetAllValidProductLotProcessTypeCodes();
-
+            ViewBag.linksiteIds = productMaster.ProductsWebsitesMap.Where(u=>u.IsDeleted != true).Select(u => u.SiteID).ToList();
             ViewBag.DimensionUOMId = new SelectList(dimensionUoms, "UOMId", "UOM", productMaster.DimensionUOMId);
             ViewBag.TaxID = new SelectList(taxes, "TaxID", "TaxName", productMaster.TaxID);
             ViewBag.UOMId = new SelectList(weightUoms, "UOMId", "UOM", productMaster.UOMId);
@@ -133,12 +133,12 @@ namespace WMS.Controllers
             ViewBag.LotProcessTypeCodeId = new SelectList(lotProcessTypeCodes, "LotProcessTypeCodeId", "Description", productMaster.LotProcessTypeCodeId);
 
             ViewBag.ProductLocations = _productLookupService.GetAllValidProductLocations(CurrentTenantId, CurrentWarehouseId);
-
+            ViewBag.WebsiteIds = _lookupServices.GetAllValidWebsites(CurrentTenantId).ToList();
             ViewBag.ProductLocationIds = _productLookupService.GetAllValidProductLocations(CurrentWarehouseId, CurrentTenantId, id.Value).Select(m => m.LocationId);
             ViewBag.Groups = new SelectList(_lookupServices.GetAllValidProductGroups(CurrentTenantId), "ProductGroupId", "ProductGroup");
             ViewBag.PalletType = new SelectList(_lookupServices.GetAllValidPalletTypes(CurrentTenantId), "PalletTypeId", "Description",productMaster.PalletTypeId);
             ViewBag.Departments = new SelectList(_lookupServices.GetAllValidTenantDepartments(CurrentTenantId), "DepartmentId", "DepartmentName");
-
+            
             ViewBag.Accounts = _accountServices.GetAllValidProductAccountCodes(id.Value).Select(o =>
             {
 
@@ -217,7 +217,7 @@ namespace WMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(ProductMaster productMaster, string ProductKit, IEnumerable<DevExpress.Web.UploadedFile> UploadControl, List<string> ProductAccountCodeIds, List<int> ProductAttributesIds, List<int> ProductLocationIds, List<int> ProductKitIds, string back)
+        public ActionResult Create(ProductMaster productMaster, string ProductKit, IEnumerable<DevExpress.Web.UploadedFile> UploadControl, List<string> ProductAccountCodeIds, List<int> ProductAttributesIds, List<int> ProductLocationIds, List<int> ProductKitIds, string back, List<int> SiteIds)
         {
 
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
@@ -238,7 +238,7 @@ namespace WMS.Controllers
                         throw new Exception("Product with same code already exist");
                     }
 
-                    productMaster = _productServices.SaveProduct(productMaster, ProductAccountCodeIds, ProductAttributesIds, ProductLocationIds, ProductKitIds, CurrentUserId, CurrentTenantId);
+                    productMaster = _productServices.SaveProduct(productMaster, ProductAccountCodeIds, ProductAttributesIds, ProductLocationIds, ProductKitIds, CurrentUserId, CurrentTenantId,SiteIds);
 
                     var files = Session["files"] as List<KeyValuePair<string, UploadedFileViewModel>>;
                     foreach (var file in files)
@@ -292,7 +292,7 @@ namespace WMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(ProductMaster productMaster, string ProductKit, List<string> ProductAccountCodeIds, List<int> ProductAttributesIds, List<int> ProductLocationIds, List<int> ProductKitIds, string back)
+        public ActionResult Edit(ProductMaster productMaster, string ProductKit, List<string> ProductAccountCodeIds, List<int> ProductAttributesIds, List<int> ProductLocationIds, List<int> ProductKitIds, string back, List<int> SiteIds)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
@@ -304,7 +304,7 @@ namespace WMS.Controllers
                     ProductKitIds = ProductKit.Split(',').Select(Int32.Parse).ToList();
                 }
 
-                _productServices.SaveProduct(productMaster, ProductAccountCodeIds, ProductAttributesIds, ProductLocationIds, ProductKitIds, CurrentUserId, CurrentTenantId);
+                _productServices.SaveProduct(productMaster, ProductAccountCodeIds, ProductAttributesIds, ProductLocationIds, ProductKitIds, CurrentUserId, CurrentTenantId,SiteIds);
             }
             catch (Exception ex)
             {
@@ -580,6 +580,7 @@ namespace WMS.Controllers
             return Json(_productServices.GenerateNextProductCode(CurrentTenantId), JsonRequestBehavior.AllowGet);
         }
 
+
         public ActionResult ProductList()
         {
             var viewModel = GridViewExtension.GetViewModel("ProductListGridView");
@@ -660,6 +661,72 @@ namespace WMS.Controllers
         }
 
         #region Tabs
+
+
+        #region  EditableGrid
+
+        public ActionResult EditProducts()
+        {
+            return View();
+        }
+
+
+
+        public ActionResult _EditableProductGrid()
+        {
+            var viewModel = GridViewExtension.GetViewModel("ProductEditListGridView");
+
+            if (viewModel == null)
+                viewModel = ProducctListCustomBinding.CreateProductGridViewModel();
+
+            return ProductEditGridActionCore(viewModel);
+        }
+
+        public ActionResult _ProductEditListPaging(GridViewPagerState pager)
+        {
+            var viewModel = GridViewExtension.GetViewModel("ProductEditListGridView");
+            viewModel.Pager.Assign(pager);
+            return ProductEditGridActionCore(viewModel);
+        }
+
+        public ActionResult _ProductsEditFiltering(GridViewFilteringState filteringState)
+        {
+            var viewModel = GridViewExtension.GetViewModel("ProductEditListGridView");
+            viewModel.ApplyFilteringState(filteringState);
+            return ProductEditGridActionCore(viewModel);
+        }
+
+
+        public ActionResult _ProductsEditGetDataSorting(GridViewColumnState column, bool reset)
+        {
+            var viewModel = GridViewExtension.GetViewModel("ProductEditListGridView");
+            viewModel.ApplySortingState(column, reset);
+            return ProductEditGridActionCore(viewModel);
+        }
+
+
+
+        public ActionResult ProductEditGridActionCore(GridViewModel gridViewModel)
+        {
+            gridViewModel.ProcessCustomBinding(
+                new GridViewCustomBindingGetDataRowCountHandler(args =>
+                {
+                    ProducctListCustomBinding.ProductGetDataRowCount(args, CurrentTenantId, CurrentWarehouseId);
+                }),
+
+                    new GridViewCustomBindingGetDataHandler(args =>
+                    {
+                        ProducctListCustomBinding.ProductGetData(args, CurrentTenantId, CurrentWarehouseId);
+                    })
+            );
+            return PartialView("_EditableProductGrid", gridViewModel);
+        }
+
+        #endregion
+
+
+
+
 
         public ActionResult UploadFile(IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
         {

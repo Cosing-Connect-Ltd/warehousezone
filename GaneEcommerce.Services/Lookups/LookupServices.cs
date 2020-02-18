@@ -564,7 +564,17 @@ namespace Ganedata.Core.Services
                 });
             return obj.ToList();
         }
+        public IEnumerable<object> GetAllValidWebsites(int currentTenantId)
+        {
+            var obj = _currentDbContext.TenantWebsites.Where(u => u.TenantId == currentTenantId  && u.IsDeleted != true).Select(
+              u => new
+              {
+                  u.SiteName,
+                  u.SiteID
+              });
+            return obj.ToList();
 
+        }
         public IQueryable<TenantEmailNotificationQueue> GetEmailNotifcationQueue(int tenantId)
         {
             return _currentDbContext.TenantEmailNotificationQueues.Where(u => u.IsNotificationCancelled != true).OrderByDescending(u => u.TenantEmailNotificationQueueId);

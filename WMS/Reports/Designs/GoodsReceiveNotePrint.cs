@@ -145,6 +145,7 @@ public class GoodsReceiveNotePrint : DevExpress.XtraReports.UI.XtraReport
             DevExpress.DataAccess.Sql.ColumnExpression columnExpression21 = new DevExpress.DataAccess.Sql.ColumnExpression();
             DevExpress.DataAccess.Sql.Column column22 = new DevExpress.DataAccess.Sql.Column();
             DevExpress.DataAccess.Sql.ColumnExpression columnExpression22 = new DevExpress.DataAccess.Sql.ColumnExpression();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter2 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.Join join4 = new DevExpress.DataAccess.Sql.Join();
             DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo4 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
             DevExpress.DataAccess.Sql.Join join5 = new DevExpress.DataAccess.Sql.Join();
@@ -319,7 +320,7 @@ public class GoodsReceiveNotePrint : DevExpress.XtraReports.UI.XtraReport
             selectQuery1.Tables.Add(table3);
             selectQuery1.Tables.Add(table4);
             columnExpression15.ColumnName = "SKUCode";
-            table5.MetaSerializable = "<Meta X=\"340\" Y=\"30\" Width=\"125\" Height=\"1236\" />";
+            table5.MetaSerializable = "<Meta X=\"340\" Y=\"30\" Width=\"125\" Height=\"1293\" />";
             table5.Name = "ProductMaster";
             columnExpression15.Table = table5;
             column15.Expression = columnExpression15;
@@ -330,7 +331,7 @@ public class GoodsReceiveNotePrint : DevExpress.XtraReports.UI.XtraReport
             columnExpression17.Table = table5;
             column17.Expression = columnExpression17;
             columnExpression18.ColumnName = "Qty";
-            table6.MetaSerializable = "<Meta X=\"185\" Y=\"30\" Width=\"125\" Height=\"495\" />";
+            table6.MetaSerializable = "<Meta X=\"185\" Y=\"30\" Width=\"125\" Height=\"514\" />";
             table6.Name = "OrderDetails";
             columnExpression18.Table = table6;
             column18.Expression = columnExpression18;
@@ -356,8 +357,14 @@ public class GoodsReceiveNotePrint : DevExpress.XtraReports.UI.XtraReport
             selectQuery2.Columns.Add(column20);
             selectQuery2.Columns.Add(column21);
             selectQuery2.Columns.Add(column22);
+            selectQuery2.FilterString = "[OrderReceiveCountDetails.ReceiveCountId] = ?ReceiveId";
+            selectQuery2.GroupFilterString = "";
             selectQuery2.MetaSerializable = "<Meta X=\"195\" Y=\"20\" Width=\"174\" Height=\"173\" />";
             selectQuery2.Name = "OrderReceiveCountDetails";
+            queryParameter2.Name = "ReceiveId";
+            queryParameter2.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter2.Value = new DevExpress.DataAccess.Expression("?paramGoodsReceiveId", typeof(System.Guid));
+            selectQuery2.Parameters.Add(queryParameter2);
             relationColumnInfo4.NestedKeyColumn = "OrderDetailID";
             relationColumnInfo4.ParentKeyColumn = "OrderDetailID";
             join4.KeyColumns.Add(relationColumnInfo4);
@@ -933,7 +940,7 @@ public class GoodsReceiveNotePrint : DevExpress.XtraReports.UI.XtraReport
             this.Margins = new System.Drawing.Printing.Margins(23, 54, 16, 12);
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
             this.paramGoodsReceiveId});
-            this.Version = "19.1";
+            this.Version = "19.2";
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
     }

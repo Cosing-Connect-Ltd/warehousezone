@@ -40,6 +40,7 @@ namespace WMS.Reports
             DevExpress.DataAccess.Sql.QueryParameter queryParameter2 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter3 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.CustomSqlQuery customSqlQuery2 = new DevExpress.DataAccess.Sql.CustomSqlQuery();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter4 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.MasterDetailInfo masterDetailInfo1 = new DevExpress.DataAccess.Sql.MasterDetailInfo();
             DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo1 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
             DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings1 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
@@ -1541,6 +1542,10 @@ namespace WMS.Reports
             customSqlQuery1.Sql = resources.GetString("customSqlQuery1.Sql");
             customSqlQuery2.MetaSerializable = "<Meta X=\"460\" Y=\"40\" Width=\"290\" Height=\"428\" />";
             customSqlQuery2.Name = "OrderDetail";
+            queryParameter4.Name = "OrderId";
+            queryParameter4.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter4.Value = new DevExpress.DataAccess.Expression("?paramOrderId", typeof(int));
+            customSqlQuery2.Parameters.Add(queryParameter4);
             customSqlQuery2.Sql = resources.GetString("customSqlQuery2.Sql");
             this.sqlDataSource1.Queries.AddRange(new DevExpress.DataAccess.Sql.SqlQuery[] {
             customSqlQuery1,
@@ -1557,11 +1562,11 @@ namespace WMS.Reports
             // paramResourceIds
             // 
             this.paramResourceIds.Description = "Select Resources";
-            this.paramResourceIds.LookUpSettings = staticListLookUpSettings1;
             this.paramResourceIds.MultiValue = true;
             this.paramResourceIds.Name = "paramResourceIds";
             this.paramResourceIds.Type = typeof(int);
             this.paramResourceIds.ValueInfo = "0";
+            this.paramResourceIds.ValueSourceSettings = staticListLookUpSettings1;
             // 
             // paramScheduleDate
             // 
@@ -1609,7 +1614,7 @@ namespace WMS.Reports
             this.paramTenantId,
             this.paramOrderId});
             this.RequestParameters = false;
-            this.Version = "19.1";
+            this.Version = "19.2";
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 

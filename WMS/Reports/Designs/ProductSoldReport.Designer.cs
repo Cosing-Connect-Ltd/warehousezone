@@ -553,10 +553,10 @@
             // 
             this.MarketId.AllowNull = true;
             this.MarketId.Description = "Market";
-            this.MarketId.LookUpSettings = staticListLookUpSettings1;
             this.MarketId.MultiValue = true;
             this.MarketId.Name = "MarketId";
             this.MarketId.Type = typeof(int);
+            this.MarketId.ValueSourceSettings = staticListLookUpSettings1;
             this.MarketId.Visible = false;
             // 
             // AccountID
@@ -586,7 +586,7 @@
             this.EndDate,
             this.MarketId,
             this.AccountID});
-            this.Version = "19.1";
+            this.Version = "19.2";
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
         }

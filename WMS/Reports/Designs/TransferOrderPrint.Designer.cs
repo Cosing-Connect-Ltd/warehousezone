@@ -126,7 +126,6 @@
             this.xrLabel48});
             this.Detail.Dpi = 96F;
             this.Detail.HeightF = 20.92007F;
-            this.Detail.HierarchyPrintOptions.Indent = 20F;
             this.Detail.Name = "Detail";
             this.Detail.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 96F);
             this.Detail.StylePriority.UseBorderColor = false;
@@ -957,7 +956,6 @@
             this.xrRichText1});
             this.Detail1.Dpi = 96F;
             this.Detail1.HeightF = 28.61547F;
-            this.Detail1.HierarchyPrintOptions.Indent = 20F;
             this.Detail1.Name = "Detail1";
             // 
             // lblQuantity
@@ -1128,7 +1126,7 @@
             this.paramOrderId});
             this.ReportUnit = DevExpress.XtraReports.UI.ReportUnit.Pixels;
             this.SnapGridSize = 12.5F;
-            this.Version = "19.1";
+            this.Version = "19.2";
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
