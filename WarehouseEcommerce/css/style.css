@@ -1121,8 +1121,6 @@ body {
                 display: block;
                 font-size: 13px;
                 font-weight: bold;
-                /*line-height: 20px;*/
-                /*padding: 30px 15px;*/
                 padding: 15px 15px;
                 text-transform: uppercase;
                 transition: all 0.3s ease 0s;
@@ -2978,9 +2976,9 @@ img {
 #in_dropdown li a:hover {
     background-color: #00b54a !important;
 }
-/*#primary_nav_wrap ul li:hover > #in_dropdown {
+#primary_nav_wrap ul li:hover > #in_dropdown {
     display: flex !important;
-}*/
+}
 #primary_nav_wrap ul a:active {
     background-color: #2d2f33;
     -webkit-transition: all 50ms linear;
@@ -3009,26 +3007,71 @@ img {
     background: #121314;
     padding: 0;
     z-index: 100;
+    opacity: 0.9;
+    padding-top: 13px;
+    padding-bottom: 6px;
 }
 
     #primary_nav_wrap ul ul li {
         float: none;
         width: -webkit-fill-available;
         width: -moz-available;
-        white-space: nowrap;
+        /*white-space: nowrap;*/
     }
 
     #primary_nav_wrap ul ul a {
-        padding: 8px 8px;
+        /*padding: 8px 10px;*/
+        padding: 9px 22px 11px 8px;
         background: #121314;
         color: white;
+        white-space: nowrap;
     }
-
-    #primary_nav_wrap ul ul ul {
-        top: 0;
-        left: 100%
+#in_dropdown .in-dropdown-div {
+    border-right: 1px solid #403d3d;
+}
+#in_dropdown .div1 a {
+    padding-right: 28px;
+}
+#in_dropdown .div2 a {
+    padding-right: 45px;
+}
+@media(max-width:1199px) {
+    #in_dropdown .div1 a {
+        padding-right: 5px;
     }
-
+    #in_dropdown .div2 a {
+        padding-right: 10px;
+    }
+    #in_dropdown .div3 a {
+        padding-right: 10px;
+    }
+    #in_dropdown .div4 a {
+        padding-right: 10px;
+    }
+}
+@media(max-width:1107px) {
+    #primary_nav_wrap ul ul a {
+        padding: 5px 0px 6px 7px !important;
+    }
+}
+@media(min-width:1024px) and (max-width:1106px) {
+    #primary_nav_wrap ul ul a {
+        white-space: unset;
+        width: 189px;
+    }
+}
+@media(min-width:991px) and (max-width:1023px) {
+    #primary_nav_wrap ul ul a {
+        white-space: unset;
+        width: 183px;
+    }
+}
+@media(min-width:768px) and (max-width:990px) {
+    #primary_nav_wrap ul ul a {
+        white-space: unset;
+        width: 137px;
+    }
+}
 #primary_nav_wrap ul li:hover > ul {
     display: block;
 }
@@ -3152,23 +3195,94 @@ img {
     width:80%;
 }
 .navbar-row {
-    display: flex;
+    /*display: flex;
     align-items: center;
+    flex-wrap: wrap;*/
 }
 .logo-div {
-    margin-right:30px;
+    /*margin-right:30px;*/
 }
-/*@media(max-width:991px){
-    #primary_nav_wrap {
+@media(max-width:991px){
+    .main-menu ul li a {
+        padding: 15px 7px !important;
+        white-space: nowrap;
+    }
+}
+.main-menu ul li a {
+    white-space:nowrap;
+}
+.main-menu ul {
+    display: flex;
+}
+@media (min-width: 1550px) {
+    .logo-div {
+        width: 13.666667%!important;
+    }
+}
+@media (min-width:991px) and (max-width: 1549px) {
+    .top-menu {
+        padding-left:unset;
+    }
+}
+@media (min-width:1400px) and (max-width: 1549px) {
+    .logo-div {
+        padding-right: unset;
+    }
+}
+@media (max-width:877px) {
+    .logo-div {
+        padding-right: unset;
+    }
+}
+.phone-2 {
+    color: #555 !important;
+    font-weight: bold !important;
+}
+.book-demo-1 a {
+    background-color: #2d2f33 !important;
+    color: #fff !important;
+    margin-left: 10px;
+}
+.book-demo-2 a {
+    cursor: pointer !important;
+    font-size: unset !important;
+    background-color: #2d2f33 !important;
+    color: #fff !important;
+    font-weight: bold !important;
+    padding: 15px 15px !important;
+    white-space: nowrap !important;
+    text-transform: uppercase !important;
+    transition: all 0.3s ease 0s !important;
+    font-size: 12px !important;
+}
+.phone-n-demo {
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+}
+.phone-2 {
+    padding-right: 14px;
+}
+.phone-2 li{
+    white-space:nowrap;
+}
+@media(max-width:1069px) {
+    .phone-n-demo {
+        display:none;
+    }
+}
+@media(min-width:1070px) {
+    .phone-1 {
         display: none !important;
     }
-    .mobile-menu-area a.meanmenu-reveal {
-        display: block !important;
+
+    .book-demo-1 {
+        display: none !important;
     }
-}*/
-/*.main-menu ul li a {
-    padding:unset!important;
-}*/
+}
+.mean-container a.meanmenu-reveal {
+    margin-top: -42px !important;
+}
 
 
 

@@ -110,5 +110,36 @@
     <script src="~/Scripts/jquery.cookie.js"></script>
     <script src="~/Scripts/cookies_eu.js"></script>
 
+
+    <script>
+       $(document).ready(function() {
+  
+	function closeDropdown () {
+    $('li.top-level-list-item.dropdown-open').removeClass('dropdown-open');
+
+   	$(document).unbind('click', closeDropdown); // Make sure we clean up the bind though
+  }
+  
+  $('a.top-level-link').click(function (e) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		var $menu = $(this).parent(),
+		    is_open = $menu.hasClass('dropdown-open');
+
+		closeDropdown();
+
+		if( ! is_open ) {
+			$menu.addClass('dropdown-open');
+			$open_menu_item = $menu;
+      $(document).bind('click', closeDropdown); // This basically binds to every other element on the page.
+    }
+	});
+
+	// Prevent closeDropdown from firing inside our dropdowns
+	$('.dropdown-menu').on('click', function (e) { e.stopPropagation(); });
+});	
+    </script>
+
 </body>
 </html>
