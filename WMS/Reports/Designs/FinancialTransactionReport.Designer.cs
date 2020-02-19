@@ -101,12 +101,35 @@
             DevExpress.DataAccess.Sql.QueryParameter queryParameter4 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.Join join3 = new DevExpress.DataAccess.Sql.Join();
             DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo3 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
-            DevExpress.DataAccess.Sql.MasterDetailInfo masterDetailInfo1 = new DevExpress.DataAccess.Sql.MasterDetailInfo();
+            DevExpress.DataAccess.Sql.SelectQuery selectQuery3 = new DevExpress.DataAccess.Sql.SelectQuery();
+            DevExpress.DataAccess.Sql.Column column28 = new DevExpress.DataAccess.Sql.Column();
+            DevExpress.DataAccess.Sql.ColumnExpression columnExpression28 = new DevExpress.DataAccess.Sql.ColumnExpression();
+            DevExpress.DataAccess.Sql.Table table6 = new DevExpress.DataAccess.Sql.Table();
+            DevExpress.DataAccess.Sql.Column column29 = new DevExpress.DataAccess.Sql.Column();
+            DevExpress.DataAccess.Sql.ColumnExpression columnExpression29 = new DevExpress.DataAccess.Sql.ColumnExpression();
+            DevExpress.DataAccess.Sql.Column column30 = new DevExpress.DataAccess.Sql.Column();
+            DevExpress.DataAccess.Sql.ColumnExpression columnExpression30 = new DevExpress.DataAccess.Sql.ColumnExpression();
+            DevExpress.DataAccess.Sql.Column column31 = new DevExpress.DataAccess.Sql.Column();
+            DevExpress.DataAccess.Sql.ColumnExpression columnExpression31 = new DevExpress.DataAccess.Sql.ColumnExpression();
+            DevExpress.DataAccess.Sql.Column column32 = new DevExpress.DataAccess.Sql.Column();
+            DevExpress.DataAccess.Sql.ColumnExpression columnExpression32 = new DevExpress.DataAccess.Sql.ColumnExpression();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter5 = new DevExpress.DataAccess.Sql.QueryParameter();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter6 = new DevExpress.DataAccess.Sql.QueryParameter();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter7 = new DevExpress.DataAccess.Sql.QueryParameter();
+            DevExpress.DataAccess.Sql.Join join4 = new DevExpress.DataAccess.Sql.Join();
             DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo4 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
+            DevExpress.DataAccess.Sql.Table table7 = new DevExpress.DataAccess.Sql.Table();
+            DevExpress.DataAccess.Sql.Sorting sorting1 = new DevExpress.DataAccess.Sql.Sorting();
+            DevExpress.DataAccess.Sql.ColumnExpression columnExpression33 = new DevExpress.DataAccess.Sql.ColumnExpression();
+            DevExpress.DataAccess.Sql.MasterDetailInfo masterDetailInfo1 = new DevExpress.DataAccess.Sql.MasterDetailInfo();
+            DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo5 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
+            DevExpress.DataAccess.Sql.MasterDetailInfo masterDetailInfo2 = new DevExpress.DataAccess.Sql.MasterDetailInfo();
+            DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo6 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
             DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings1 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
+            this.xrLabel18 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel9 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel34 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel35 = new DevExpress.XtraReports.UI.XRLabel();
@@ -142,6 +165,7 @@
             this.AccountId = new DevExpress.XtraReports.Parameters.Parameter();
             this.DetailReport = new DevExpress.XtraReports.UI.DetailReportBand();
             this.Detail1 = new DevExpress.XtraReports.UI.DetailBand();
+            this.xrLabel5 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel20 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel3 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel2 = new DevExpress.XtraReports.UI.XRLabel();
@@ -154,8 +178,16 @@
             this.AmountDue = new DevExpress.XtraReports.UI.CalculatedField();
             this.displayCredit = new DevExpress.XtraReports.UI.CalculatedField();
             this.displaydebit = new DevExpress.XtraReports.UI.CalculatedField();
-            this.xrLabel5 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel18 = new DevExpress.XtraReports.UI.XRLabel();
+            this.amountRecored = new DevExpress.XtraReports.UI.CalculatedField();
+            this.creditName = new DevExpress.XtraReports.UI.CalculatedField();
+            this.debitName = new DevExpress.XtraReports.UI.CalculatedField();
+            this.DueAmount = new DevExpress.XtraReports.UI.CalculatedField();
+            this.amount = new DevExpress.XtraReports.UI.CalculatedField();
+            this.xrLabel19 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel21 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel22 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel23 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel24 = new DevExpress.XtraReports.UI.XRLabel();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // TopMargin
@@ -179,6 +211,22 @@
             this.xrLabel37});
             this.Detail.HeightF = 28.77827F;
             this.Detail.Name = "Detail";
+            // 
+            // xrLabel18
+            // 
+            this.xrLabel18.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.xrLabel18.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrLabel18.ForeColor = System.Drawing.Color.Black;
+            this.xrLabel18.LocationFloat = new DevExpress.Utils.PointFloat(485.7421F, 0F);
+            this.xrLabel18.Name = "xrLabel18";
+            this.xrLabel18.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel18.SizeF = new System.Drawing.SizeF(138.5416F, 23F);
+            this.xrLabel18.StylePriority.UseBackColor = false;
+            this.xrLabel18.StylePriority.UseFont = false;
+            this.xrLabel18.StylePriority.UseForeColor = false;
+            this.xrLabel18.StylePriority.UseTextAlignment = false;
+            this.xrLabel18.Text = "Mode";
+            this.xrLabel18.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
             // xrLabel9
             // 
@@ -263,6 +311,11 @@
             // ReportHeader
             // 
             this.ReportHeader.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrLabel24,
+            this.xrLabel23,
+            this.xrLabel22,
+            this.xrLabel21,
+            this.xrLabel19,
             this.xrLine2,
             this.xrLine1,
             this.xrLabel6,
@@ -406,7 +459,7 @@
             this.xrLabel8.BorderColor = System.Drawing.Color.Transparent;
             this.xrLabel8.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
             this.xrLabel8.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[AccountTransaction].[AmountDue]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[DueAmount]")});
             this.xrLabel8.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.xrLabel8.LocationFloat = new DevExpress.Utils.PointFloat(169.0915F, 53.25017F);
             this.xrLabel8.Name = "xrLabel8";
@@ -683,7 +736,7 @@
             selectQuery1.Columns.Add(column10);
             selectQuery1.FilterString = resources.GetString("selectQuery1.FilterString");
             selectQuery1.GroupFilterString = "";
-            selectQuery1.MetaSerializable = "<Meta X=\"250\" Y=\"20\" Width=\"150\" Height=\"156\" />";
+            selectQuery1.MetaSerializable = "<Meta X=\"250\" Y=\"20\" Width=\"150\" Height=\"207\" />";
             selectQuery1.Name = "AccountTransaction";
             queryParameter1.Name = "paramStartDate";
             queryParameter1.Type = typeof(DevExpress.DataAccess.Expression);
@@ -804,16 +857,78 @@
             selectQuery2.Tables.Add(table4);
             selectQuery2.Tables.Add(table5);
             selectQuery2.Top = 1;
+            columnExpression28.ColumnName = "Amount";
+            table6.MetaSerializable = "<Meta X=\"50\" Y=\"30\" Width=\"210\" Height=\"457\" />";
+            table6.Name = "AccountTransaction";
+            columnExpression28.Table = table6;
+            column28.Expression = columnExpression28;
+            columnExpression29.ColumnName = "AccountTransactionId";
+            columnExpression29.Table = table6;
+            column29.Expression = columnExpression29;
+            columnExpression30.ColumnName = "DateCreated";
+            columnExpression30.Table = table6;
+            column30.Expression = columnExpression30;
+            columnExpression31.ColumnName = "AccountId";
+            columnExpression31.Table = table6;
+            column31.Expression = columnExpression31;
+            columnExpression32.ColumnName = "FinalBalance";
+            columnExpression32.Table = table6;
+            column32.Expression = columnExpression32;
+            selectQuery3.Columns.Add(column28);
+            selectQuery3.Columns.Add(column29);
+            selectQuery3.Columns.Add(column30);
+            selectQuery3.Columns.Add(column31);
+            selectQuery3.Columns.Add(column32);
+            selectQuery3.FilterString = "[AccountTransaction.AccountId] = ?AccountId And [AccountTransaction.DateCreated] " +
+    "< ?StartDate";
+            selectQuery3.GroupFilterString = "";
+            selectQuery3.MetaSerializable = "<Meta X=\"420\" Y=\"20\" Width=\"150\" Height=\"122\" />";
+            selectQuery3.Name = "startringBalance";
+            queryParameter5.Name = "StartDate";
+            queryParameter5.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter5.Value = new DevExpress.DataAccess.Expression("?StartDate", typeof(System.DateTime));
+            queryParameter6.Name = "EndDate";
+            queryParameter6.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter6.Value = new DevExpress.DataAccess.Expression("?EndDate", typeof(System.DateTime));
+            queryParameter7.Name = "AccountId";
+            queryParameter7.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter7.Value = new DevExpress.DataAccess.Expression("?AccountId", typeof(int));
+            selectQuery3.Parameters.Add(queryParameter5);
+            selectQuery3.Parameters.Add(queryParameter6);
+            selectQuery3.Parameters.Add(queryParameter7);
+            relationColumnInfo4.NestedKeyColumn = "AccountID";
+            relationColumnInfo4.ParentKeyColumn = "AccountId";
+            join4.KeyColumns.Add(relationColumnInfo4);
+            table7.MetaSerializable = "<Meta X=\"320\" Y=\"30\" Width=\"125\" Height=\"666\" />";
+            table7.Name = "Account";
+            join4.Nested = table7;
+            join4.Parent = table6;
+            selectQuery3.Relations.Add(join4);
+            sorting1.Direction = System.ComponentModel.ListSortDirection.Descending;
+            columnExpression33.ColumnName = "DateCreated";
+            columnExpression33.Table = table6;
+            sorting1.Expression = columnExpression33;
+            selectQuery3.Sorting.Add(sorting1);
+            selectQuery3.Tables.Add(table6);
+            selectQuery3.Tables.Add(table7);
+            selectQuery3.Top = 1;
             this.sqlDataSource1.Queries.AddRange(new DevExpress.DataAccess.Sql.SqlQuery[] {
             selectQuery1,
-            selectQuery2});
+            selectQuery2,
+            selectQuery3});
             masterDetailInfo1.DetailQueryName = "AccountTransaction";
-            relationColumnInfo4.NestedKeyColumn = "AccountId";
-            relationColumnInfo4.ParentKeyColumn = "AccountID";
-            masterDetailInfo1.KeyColumns.Add(relationColumnInfo4);
+            relationColumnInfo5.NestedKeyColumn = "AccountId";
+            relationColumnInfo5.ParentKeyColumn = "AccountID";
+            masterDetailInfo1.KeyColumns.Add(relationColumnInfo5);
             masterDetailInfo1.MasterQueryName = "Account";
+            masterDetailInfo2.DetailQueryName = "startringBalance";
+            relationColumnInfo6.NestedKeyColumn = "AccountId";
+            relationColumnInfo6.ParentKeyColumn = "AccountID";
+            masterDetailInfo2.KeyColumns.Add(relationColumnInfo6);
+            masterDetailInfo2.MasterQueryName = "Account";
             this.sqlDataSource1.Relations.AddRange(new DevExpress.DataAccess.Sql.MasterDetailInfo[] {
-            masterDetailInfo1});
+            masterDetailInfo1,
+            masterDetailInfo2});
             this.sqlDataSource1.ResultSchemaSerializable = resources.GetString("sqlDataSource1.ResultSchemaSerializable");
             // 
             // StartDate
@@ -859,6 +974,17 @@
             this.xrLabel4});
             this.Detail1.HeightF = 26.50472F;
             this.Detail1.Name = "Detail1";
+            // 
+            // xrLabel5
+            // 
+            this.xrLabel5.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[AccountPaymentModes_Description]")});
+            this.xrLabel5.LocationFloat = new DevExpress.Utils.PointFloat(485.7421F, 0F);
+            this.xrLabel5.Multiline = true;
+            this.xrLabel5.Name = "xrLabel5";
+            this.xrLabel5.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel5.SizeF = new System.Drawing.SizeF(138.5415F, 23F);
+            this.xrLabel5.Text = "xrLabel5";
             // 
             // xrLabel20
             // 
@@ -937,7 +1063,6 @@
             // Credit
             // 
             this.Credit.DataMember = "AccountTransaction";
-            this.Credit.Expression = "Iif([AccountTransactionTypeId]==1,[Amount] ,0  )";
             this.Credit.Name = "Credit";
             // 
             // Debit
@@ -964,32 +1089,92 @@
             this.displaydebit.Expression = "Iif([AccountTransactionTypeId]==2,[Amount] ,\' \' )\n";
             this.displaydebit.Name = "displaydebit";
             // 
-            // xrLabel5
+            // amountRecored
             // 
-            this.xrLabel5.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[AccountPaymentModes_Description]")});
-            this.xrLabel5.LocationFloat = new DevExpress.Utils.PointFloat(485.7421F, 0F);
-            this.xrLabel5.Multiline = true;
-            this.xrLabel5.Name = "xrLabel5";
-            this.xrLabel5.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
-            this.xrLabel5.SizeF = new System.Drawing.SizeF(138.5415F, 23F);
-            this.xrLabel5.Text = "xrLabel5";
+            this.amountRecored.DataMember = "startringBalance";
+            this.amountRecored.Name = "amountRecored";
             // 
-            // xrLabel18
+            // creditName
             // 
-            this.xrLabel18.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.xrLabel18.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel18.ForeColor = System.Drawing.Color.Black;
-            this.xrLabel18.LocationFloat = new DevExpress.Utils.PointFloat(485.7421F, 0F);
-            this.xrLabel18.Name = "xrLabel18";
-            this.xrLabel18.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel18.SizeF = new System.Drawing.SizeF(138.5416F, 23F);
-            this.xrLabel18.StylePriority.UseBackColor = false;
-            this.xrLabel18.StylePriority.UseFont = false;
-            this.xrLabel18.StylePriority.UseForeColor = false;
-            this.xrLabel18.StylePriority.UseTextAlignment = false;
-            this.xrLabel18.Text = "Mode";
-            this.xrLabel18.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            this.creditName.DataMember = "Account";
+            this.creditName.Expression = "Iif([AccountAccountTransaction].[AccountTransactionTypeId]==1,[AccountAccountTran" +
+    "saction].[Amount] , 0)\n\n";
+            this.creditName.Name = "creditName";
+            // 
+            // debitName
+            // 
+            this.debitName.DataMember = "Account";
+            this.debitName.Expression = "Iif([AccountAccountTransaction].[AccountTransactionTypeId]==2,[AccountAccountTran" +
+    "saction].[Amount] , 0)";
+            this.debitName.Name = "debitName";
+            // 
+            // DueAmount
+            // 
+            this.DueAmount.DataMember = "Account";
+            this.DueAmount.Expression = "sum([creditName]-(Sum([debitName]+[amount])))";
+            this.DueAmount.Name = "DueAmount";
+            // 
+            // amount
+            // 
+            this.amount.DataMember = "Account";
+            this.amount.Expression = "IsNull([AccountstartringBalance].[FinalBalance],0)";
+            this.amount.Name = "amount";
+            // 
+            // xrLabel19
+            // 
+            this.xrLabel19.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[amount]")});
+            this.xrLabel19.LocationFloat = new DevExpress.Utils.PointFloat(603.0834F, 180.6652F);
+            this.xrLabel19.Multiline = true;
+            this.xrLabel19.Name = "xrLabel19";
+            this.xrLabel19.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
+            this.xrLabel19.SizeF = new System.Drawing.SizeF(100F, 23F);
+            this.xrLabel19.Text = "xrLabel19";
+            // 
+            // xrLabel21
+            // 
+            this.xrLabel21.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[startringBalance].[Amount]")});
+            this.xrLabel21.LocationFloat = new DevExpress.Utils.PointFloat(585.375F, 203.6652F);
+            this.xrLabel21.Multiline = true;
+            this.xrLabel21.Name = "xrLabel21";
+            this.xrLabel21.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
+            this.xrLabel21.SizeF = new System.Drawing.SizeF(100F, 23F);
+            this.xrLabel21.Text = "xrLabel21";
+            // 
+            // xrLabel22
+            // 
+            this.xrLabel22.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[AccountstartringBalance].[FinalBalance]")});
+            this.xrLabel22.LocationFloat = new DevExpress.Utils.PointFloat(485.7421F, 175.4569F);
+            this.xrLabel22.Multiline = true;
+            this.xrLabel22.Name = "xrLabel22";
+            this.xrLabel22.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
+            this.xrLabel22.SizeF = new System.Drawing.SizeF(100F, 23F);
+            this.xrLabel22.Text = "xrLabel22";
+            this.xrLabel22.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopRight;
+            // 
+            // xrLabel23
+            // 
+            this.xrLabel23.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[creditName]")});
+            this.xrLabel23.LocationFloat = new DevExpress.Utils.PointFloat(348.9167F, 158.7068F);
+            this.xrLabel23.Multiline = true;
+            this.xrLabel23.Name = "xrLabel23";
+            this.xrLabel23.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
+            this.xrLabel23.SizeF = new System.Drawing.SizeF(100F, 23F);
+            this.xrLabel23.Text = "xrLabel23";
+            // 
+            // xrLabel24
+            // 
+            this.xrLabel24.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[debitName]")});
+            this.xrLabel24.LocationFloat = new DevExpress.Utils.PointFloat(362.4583F, 203.6652F);
+            this.xrLabel24.Multiline = true;
+            this.xrLabel24.Name = "xrLabel24";
+            this.xrLabel24.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
+            this.xrLabel24.SizeF = new System.Drawing.SizeF(100F, 23F);
+            this.xrLabel24.Text = "xrLabel24";
             // 
             // FinancialTransactionReport
             // 
@@ -1004,19 +1189,25 @@
             this.Debit,
             this.AmountDue,
             this.displayCredit,
-            this.displaydebit});
+            this.displaydebit,
+            this.amountRecored,
+            this.creditName,
+            this.debitName,
+            this.DueAmount,
+            this.amount});
             this.ComponentStorage.AddRange(new System.ComponentModel.IComponent[] {
             this.sqlDataSource1});
             this.DataMember = "Account";
             this.DataSource = this.sqlDataSource1;
             this.Font = new System.Drawing.Font("Arial", 9.75F);
-            this.Margins = new System.Drawing.Printing.Margins(24, 19, 8, 0);
+            this.Margins = new System.Drawing.Printing.Margins(24, 18, 8, 0);
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
             this.StartDate,
             this.EndDate,
             this.AccountId});
             this.Version = "19.2";
             this.DataSourceDemanded += new System.EventHandler<System.EventArgs>(this.FinancialTransactionReport_DataSourceDemanded);
+            this.AfterPrint += new System.EventHandler(this.FinancialTransactionReport_AfterPrint);
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
         }
@@ -1075,5 +1266,15 @@
         private DevExpress.XtraReports.UI.CalculatedField displaydebit;
         private DevExpress.XtraReports.UI.XRLabel xrLabel18;
         private DevExpress.XtraReports.UI.XRLabel xrLabel5;
+        public DevExpress.XtraReports.UI.CalculatedField amountRecored;
+        private DevExpress.XtraReports.UI.CalculatedField creditName;
+        private DevExpress.XtraReports.UI.CalculatedField debitName;
+        private DevExpress.XtraReports.UI.CalculatedField DueAmount;
+        private DevExpress.XtraReports.UI.CalculatedField amount;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel19;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel21;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel22;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel24;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel23;
     }
 }
