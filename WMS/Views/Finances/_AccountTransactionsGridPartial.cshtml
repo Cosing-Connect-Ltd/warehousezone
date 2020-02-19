@@ -107,10 +107,20 @@ settings =>
         });
     });
 
+    settings.Columns.Add(c =>
+        {
+            c.FieldName = "AccountName";
+            c.Caption = "Account";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
 
+    settings.Columns.Add(c =>
+        {
+            c.FieldName = "AccountCode";
+            c.Caption = "Account Code";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
 
-    settings.Columns.Add("AccountName", "Account").Width = System.Web.UI.WebControls.Unit.Pixel(200);
-    settings.Columns.Add("AccountCode", "Account Code").Width = System.Web.UI.WebControls.Unit.Pixel(200);
     settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
     settings.ClientSideEvents.EndCallback = "OnGridFocusedRowChanged";
 

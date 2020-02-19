@@ -13,8 +13,8 @@ namespace WMS.CustomBindings
         {
             var accountServices = DependencyResolver.Current.GetService<IAccountServices>();
 
-            var transactions = accountServices.GetTenantAccountTransactions(tenantId,accountId??0);
-             
+            var transactions = accountServices.GetTenantAccountTransactions(tenantId, accountId ?? 0);
+
             if (e.State.SortedColumns.Any())
             {
                 string sortString = "";
@@ -44,7 +44,7 @@ namespace WMS.CustomBindings
         {
             var accountServices = DependencyResolver.Current.GetService<IAccountServices>();
 
-            var transactions = accountServices.GetTenantAccountTransactions(tenantId,accountId??0);
+            var transactions = accountServices.GetTenantAccountTransactions(tenantId, accountId ?? 0);
 
             if (e.State.SortedColumns.Any())
             {
@@ -78,7 +78,6 @@ namespace WMS.CustomBindings
         {
             var viewModel = new GridViewModel();
             viewModel.KeyFieldName = "AccountTransactionId";
-
             viewModel.Columns.Add("AccountTransactionId");
             viewModel.Columns.Add("Notes");
             viewModel.Columns.Add("Amount");

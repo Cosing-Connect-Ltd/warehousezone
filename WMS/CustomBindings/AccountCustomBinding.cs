@@ -12,14 +12,14 @@ namespace WMS.CustomBindings
 {
     public class AccountCustomBinding
     {
-        private static IQueryable<object> GetAccountDataset(int CurrentTenantId,int? marketId)
+        private static IQueryable<object> GetAccountDataset(int CurrentTenantId, int? marketId)
         {
             var accountServices = DependencyResolver.Current.GetService<IAccountServices>();
             var marketservce = DependencyResolver.Current.GetService<IMarketServices>();
             var mid = int.Parse(!string.IsNullOrEmpty(HttpContext.Current.Request.Params["Mid"]) ? HttpContext.Current.Request.Params["Mid"] : "0");
-            if (marketId>0)
+            if (marketId > 0)
             {
-                mid = marketId??0;
+                mid = marketId ?? 0;
             }
             if (mid > 0)
             {
@@ -41,7 +41,7 @@ namespace WMS.CustomBindings
                         Currency = p.GlobalCurrency.CurrencyName,
                         AccountStatus = p.GlobalAccountStatus.AccountStatus,
                         Comments = p.Comments,
-                        OwnerName=p.AccountOwner==null? "": p.AccountOwner.UserLastName + ", " + p.AccountOwner.UserFirstName,
+                        OwnerName = p.AccountOwner == null ? "" : p.AccountOwner.UserFirstName + p.AccountOwner.UserLastName,
                         Fax = p.Fax,
                         Mobile = p.Mobile,
                         Web = p.website,
@@ -50,7 +50,7 @@ namespace WMS.CustomBindings
                         IsEndUser = p.AccountTypeEndUser,
                         p.FinalBalance,
                         MarketId = mid,
-                        
+
 
                     });
                 }
@@ -67,10 +67,10 @@ namespace WMS.CustomBindings
                                    VATNo = p.VATNo,
                                    AccountEmail = p.AccountEmail,
                                    Telephone = p.Telephone,
-                                    Currency = p.GlobalCurrency.CurrencyName,
+                                   Currency = p.GlobalCurrency.CurrencyName,
                                    AccountStatus = p.GlobalAccountStatus.AccountStatus,
                                    Comments = p.Comments,
-                                   OwnerName = p.AccountOwner == null ? "" : p.AccountOwner.UserLastName + ", " + p.AccountOwner.UserFirstName,
+                                   OwnerName = p.AccountOwner == null ? "" : p.AccountOwner.UserFirstName + p.AccountOwner.UserLastName,
                                    Fax = p.Fax,
                                    Mobile = p.Mobile,
                                    Web = p.website,
@@ -78,7 +78,7 @@ namespace WMS.CustomBindings
                                    IsSupplier = p.AccountTypeSupplier,
                                    IsEndUser = p.AccountTypeEndUser,
                                    p.FinalBalance,
-                                   MarketId=0
+                                   MarketId = 0
 
                                };
 
@@ -90,7 +90,7 @@ namespace WMS.CustomBindings
         public static void AccountGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int? marketId)
         {
 
-            var transactions = GetAccountDataset(tenantId,marketId);
+            var transactions = GetAccountDataset(tenantId, marketId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
@@ -122,7 +122,7 @@ namespace WMS.CustomBindings
         public static void AccountGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int? marketId)
         {
 
-            var transactions = GetAccountDataset(tenantId,marketId);
+            var transactions = GetAccountDataset(tenantId, marketId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
