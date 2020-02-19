@@ -74,6 +74,11 @@ namespace Ganedata.Core.Entities.Domain
         public bool ProcessByCase { get; set; }
         [Display(Name = "Process by Pallet")]
         public bool ProcessByPallet { get; set; }
+        public bool TopProduct { get; set; }
+        public bool BestSellerProduct { get; set; }
+        public bool SpecialProduct { get; set; }
+        public bool OnSaleProduct { get; set; }
+
     }
 
 

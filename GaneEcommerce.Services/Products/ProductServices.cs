@@ -977,6 +977,33 @@ namespace Ganedata.Core.Services
             return map;
         }
 
+        public ProductMaster SaveEditProduct(ProductMaster productMaster, int UserId, int TenantId)
+        {
+            if (productMaster.ProductId > 0)
+            {
+                var products = _currentDbContext.ProductMaster.FirstOrDefault(u => u.ProductId == productMaster.ProductId);
+                if (products != null)
+                {
+                    products.UpdateUpdatedInfo(UserId);
+                    products.Name = string.IsNullOrEmpty(productMaster.Name) ? products.Name : productMaster.Name;
+                    products.SKUCode = string.IsNullOrEmpty(productMaster.SKUCode) ? products.SKUCode : productMaster.SKUCode;
+                    products.Serialisable = productMaster.Serialisable;
+                    products.ProcessByPallet = productMaster.ProcessByPallet;
+                    products.TopProduct = productMaster.TopProduct;
+                    products.BestSellerProduct = productMaster.BestSellerProduct;
+                    products.SpecialProduct = productMaster.SpecialProduct;
+                    products.OnSaleProduct = productMaster.OnSaleProduct;
+                   
+                }
+                products.TenantId = TenantId;
+                _currentDbContext.Entry(products).State = EntityState.Modified;
+               _currentDbContext.SaveChanges();
+            }
+            
+            return productMaster;
+        }
+
+
 
         public void SaveProductSerials(List<string> serialList, int product, string delivery, int order, int location, int tenantId, int warehouseId, int userId)
         {
@@ -1381,7 +1408,11 @@ namespace Ganedata.Core.Services
                     EnableWarranty = prd.EnableWarranty ?? false,
                     EnableTax = prd.EnableTax ?? false,
                     DontMonitorStock = prd.DontMonitorStock,
-                    ProcessByPallet = prd.ProcessByPallet
+                    ProcessByPallet = prd.ProcessByPallet,
+                    OnSaleProduct=prd.OnSaleProduct,
+                    BestSellerProduct=prd.BestSellerProduct,
+                    TopProduct=prd.TopProduct,
+                    SpecialProduct=prd.SpecialProduct
                 }).OrderBy(x => x.Name);
 
             return model;

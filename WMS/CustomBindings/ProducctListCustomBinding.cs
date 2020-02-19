@@ -107,6 +107,10 @@ namespace WMS.CustomBindings
             viewModel.Columns.Add("IsRawMaterial");
             viewModel.Columns.Add("InStock");
             viewModel.Columns.Add("Property");
+            viewModel.Columns.Add("TopProduct");
+            viewModel.Columns.Add("BestSellerProduct");
+            viewModel.Columns.Add("OnSaleProduct");
+            viewModel.Columns.Add("SpecialProduct");
 
             viewModel.Pager.PageSize = 10;
             return viewModel;

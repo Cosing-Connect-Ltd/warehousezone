@@ -669,9 +669,6 @@ namespace WMS.Controllers
         {
             return View();
         }
-
-
-
         public ActionResult _EditableProductGrid()
         {
             var viewModel = GridViewExtension.GetViewModel("ProductEditListGridView");
@@ -681,31 +678,24 @@ namespace WMS.Controllers
 
             return ProductEditGridActionCore(viewModel);
         }
-
         public ActionResult _ProductEditListPaging(GridViewPagerState pager)
         {
             var viewModel = GridViewExtension.GetViewModel("ProductEditListGridView");
             viewModel.Pager.Assign(pager);
             return ProductEditGridActionCore(viewModel);
         }
-
         public ActionResult _ProductsEditFiltering(GridViewFilteringState filteringState)
         {
             var viewModel = GridViewExtension.GetViewModel("ProductEditListGridView");
             viewModel.ApplyFilteringState(filteringState);
             return ProductEditGridActionCore(viewModel);
         }
-
-
         public ActionResult _ProductsEditGetDataSorting(GridViewColumnState column, bool reset)
         {
             var viewModel = GridViewExtension.GetViewModel("ProductEditListGridView");
             viewModel.ApplySortingState(column, reset);
             return ProductEditGridActionCore(viewModel);
         }
-
-
-
         public ActionResult ProductEditGridActionCore(GridViewModel gridViewModel)
         {
             gridViewModel.ProcessCustomBinding(
@@ -720,6 +710,22 @@ namespace WMS.Controllers
                     })
             );
             return PartialView("_EditableProductGrid", gridViewModel);
+        }
+        public ActionResult SaveProductEdit(int ProductID, string Name, 
+            string SKUCode,bool? Serialisable,bool? ProcessByPallet,bool? TopProduct,
+            bool? BestSellerProduct, bool? SpecialProduct, bool? OnSaleProduct)
+        {
+            var productMaster = _productServices.GetProductMasterById(ProductID);
+            productMaster.Name = string.IsNullOrEmpty(Name)?productMaster.Name:Name;
+            productMaster.SKUCode = string.IsNullOrEmpty(SKUCode) ? productMaster.SKUCode : SKUCode;
+            productMaster.Serialisable = Serialisable??productMaster.Serialisable;
+            productMaster.ProcessByPallet = ProcessByPallet ?? productMaster.ProcessByPallet;
+            productMaster.TopProduct = TopProduct ?? productMaster.TopProduct;
+            productMaster.BestSellerProduct = BestSellerProduct ?? productMaster.BestSellerProduct;
+            productMaster.SpecialProduct = SpecialProduct ?? productMaster.SpecialProduct;
+            productMaster.OnSaleProduct = OnSaleProduct ?? productMaster.OnSaleProduct;
+            _productServices.SaveEditProduct(productMaster, CurrentUserId, CurrentTenantId);
+            return _EditableProductGrid();
         }
 
         #endregion
