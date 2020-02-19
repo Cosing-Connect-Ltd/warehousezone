@@ -128,7 +128,7 @@
             c.Caption = "Order Total";
             c.Width = Unit.Pixel(80);
             c.ColumnType = MVCxGridViewColumnType.SpinEdit;
-            c.Settings.AutoFilterCondition = AutoFilterCondition.Like;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
         });
         settings.Columns.Add(c =>
         {

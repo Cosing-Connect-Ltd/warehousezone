@@ -28,10 +28,30 @@
         settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
         settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
 
-        settings.Columns.Add("Id");
-        settings.Columns.Add("EmployeeId");
-        settings.Columns.Add("WeekNumber");
-        settings.Columns.Add("WeekDay");
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Id";
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "EmployeeId";
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "WeekNumber";
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "WeekDay";
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
         settings.Columns.Add("ExpectedHours");
         settings.Columns.Add("TimeBreaks");
         settings.Columns.Add(column =>
