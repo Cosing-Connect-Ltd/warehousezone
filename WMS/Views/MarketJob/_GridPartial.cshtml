@@ -58,7 +58,13 @@
             c.Settings.AllowAutoFilter = DefaultBoolean.False;
             c.Settings.AllowSort = DefaultBoolean.False;
         });
-        settings.Columns.Add("DisplayText", "Market Route Vehicle").Width = System.Web.UI.WebControls.Unit.Percentage(15);
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DisplayText";
+            c.Caption = "Market Route Vehicle";
+            c.Settings.AllowAutoFilter = DefaultBoolean.False;
+            c.Settings.AllowSort = DefaultBoolean.False;
+        });
         settings.Columns.Add(column =>
         {
             column.Width = System.Web.UI.WebControls.Unit.Percentage(15);
