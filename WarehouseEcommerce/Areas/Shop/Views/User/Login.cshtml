@@ -2,157 +2,193 @@
 @{
     Layout = null;
 }
-<link href="~/Areas/Shop/Content/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
-<link href="~/Areas/Shop/Content/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-<link href="~/Areas/Shop/Content/plugins/swiper/css/swiper.min.css" type="text/css" rel="stylesheet" media="screen" />
-<link href="~/Areas/Shop/Content/plugins/owl.carousel/owl.carousel.css" type="text/css" rel="stylesheet" media="screen" />
-<link href="~/Areas/Shop/Content/plugins/owl.carousel/owl.theme.css" type="text/css" rel="stylesheet" media="screen" />
-<link href="~/Areas/Shop/Content/plugins/magnific-popup/dist/magnific-popup.css" type="text/css" rel="stylesheet" media="screen" />
-<link href="~/Areas/Shop/Content/app/css/app.css" rel="stylesheet">
 
-<div class="shipping">
-    <div class="container">
-        <div class="text-center">
-            <p>FREE SHIPPING OVER $12! MONEY BACK GUARANTEE</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SmartShop Electronic Shop</title>
+    <meta name="description" content="SmartShop" />
+    @Styles.Render("~/Content/app/css/styles")
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    @*<link href="/Content/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />*@
+    <link href="~/Areas/Shop/Content/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Areas/Shop/Content/plugins/swiper/css/swiper.min.css" type="text/css" rel="stylesheet" media="screen" />
+    <link href="~/Areas/Shop/Content/plugins/owl.carousel/owl.carousel.css" type="text/css" rel="stylesheet" media="screen" />
+    <link href="~/Areas/Shop/Content/plugins/owl.carousel/owl.theme.css" type="text/css" rel="stylesheet" media="screen" />
+    <link href="~/Areas/Shop/Content/plugins/magnific-popup/dist/magnific-popup.css" type="text/css" rel="stylesheet" media="screen" />
+    @*<link href="/Content/app/css/app.css" rel="stylesheet">*@
+    @Scripts.Render("~/bundles/modernizr")
+    <script type="text/javascript"> var basePath = '@ViewBag.BaseFilePath';</script>
+  
+</head>
+<body>
+
+    <div class="shipping">
+        <div class="container">
+            <div class="text-center">
+                <p>FREE SHIPPING OVER $12! MONEY BACK GUARANTEE</p>
+            </div>
         </div>
     </div>
-</div>
-<div class="login-head">
-    <div class="container">
-        <div class="position-relative">
+    <div id="page-preloader" class="visible">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+
+
+    <div class="row login-row">
+
+        <div class="register-div">
+            <div class="">
+                <a class="" href="#">Help</a> |
+                <a class="" href="@Url.Action("Create","User", new {PlaceOrder=(bool?)ViewBag.PlaceOrders})">Register</a>
+            </div>
+            <ul class="list-unstyled list-inline social">
+                <li class="facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
+                <li class="twitter"><a href="#"><i class="fa fa-twitter"></i></a></li>
+                <li class="rss"><a href="#"><i class="fa fa-rss"></i></a></li>
+                <li class="pinterest"><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                <li class="vimeo"><a href="#"><i class="fa fa-vimeo"></i></a></li>
+            </ul>
+        </div>
+
+        <div class="col-md-6 login-col">
             <div class="row">
-                <div class="col-sm-3 col-xs-6 headlogo ex-center">
-                    <div id="logo">
+                <div class="col-md-12 text-center">
+                    <div class="login-logo">
                         <a href="index.html">
                             <img src="~/Areas/Shop/Content/app/img/logo.png" title="SmartShop Multistore" alt="SmartShop Multistore" class="img-responsive ex-center">
                         </a>
                     </div>
                 </div>
             </div>
-            <div class="register">
-                <div class="register-menu text-left">
-                    <a class="" href="#">Help</a> |
-                    <a class="" href="@Url.Action("Create","User", new {PlaceOrder=(bool?)ViewBag.PlaceOrders})">Register</a>
-                </div>
-                <ul class="list-unstyled list-inline social">
-                    <li class="facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
-                    <li class="twitter"><a href="#"><i class="fa fa-twitter"></i></a></li>
-                    <li class="rss"><a href="#"><i class="fa fa-rss"></i></a></li>
-                    <li class="pinterest"><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                    <li class="vimeo"><a href="#"><i class="fa fa-vimeo"></i></a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-<div id="page-preloader" class="visible">
-    <div class="spinner">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
-    </div>
-</div>
-<div id="common-home" class="container login">
-    <div class="row">
-        <div class="col-md-5 col-sm-6 ex-center bg-white">
-            <div class="webi-newsletter  webi-newsletter leftprobg text-center" id="newsletter_5b2631bae1cb9" data-mode="default">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="webi-newsletter  webi-newsletter leftprobg text-center" id="newsletter_5b2631bae1cb9" data-mode="default">
 
-                <div class="inner">
-                    <h3>LOG IN TO YOUR ACCOUNT</h3>
-                    <hr>
-                    <div class="login-google">
-                        <button class="btn btn-primary btn-fb">
-                            <i class="fa fa-facebook"></i>CONNECT WITH FACEBOOK
-                        </button>
-                        <button class="btn btn-primary btn-goggle">
-                            <i class="fa fa-google-plus" aria-hidden="true"></i>CONNECT WITH GOOGLE
-                        </button>
-                        <div class="seperator position-relative">
-                            <span class="d-inline-block">OR</span>
+                        <div class="inner">
+
+                            <div class="login-google">
+                                <button class="btn btn-primary btn-fb">
+                                    <i class="fa fa-facebook"></i>CONNECT WITH FACEBOOK
+                                </button>
+                                <button class="btn btn-primary btn-goggle">
+                                    <i class="fa fa-google-plus" aria-hidden="true"></i>CONNECT WITH GOOGLE
+                                </button>
+                                <div class="seperator position-relative">
+                                    <span class="d-inline-block">OR</span>
+                                </div>
+                            </div>
+                            @using (Html.BeginForm("LoginUser", "User", FormMethod.Post, new { @class = "", id = "" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary(true)
+                                @Html.Hidden("PlaceOrder", (bool?)ViewBag.PlaceOrders)
+                                <div class="form-group">
+                                    @*<input type="email" class="form-control input-md inputNew" size="18" placeholder="Enter your email">*@
+                                    <input id="UserName" type="text" value="" name="UserName" required autocomplete="off" class="form-control input-md inputNew" size="18" placeholder="Enter UserName">
+                                    @Html.ValidationMessageFor(model => model.UserName)
+                                    @Html.PasswordFor(model => model.UserPassword, new { required = "required", @class = "form-control input-md inputNew", @size = "18", @placeholder = "Enter your password" })
+                                    @Html.ValidationMessageFor(model => model.UserPassword)
+                                    @*<input type="password" class="form-control input-md inputNew" size="18" placeholder="Enter your password">*@
+                                </div>
+                                <div data-v-5f85c551="" class="remember-forget">
+                                    <div class="checkbox-div">
+                                        <input type="checkbox" class="rectangle ">
+                                        <p data-v-5f85c551="" class="remember-me">Remember me</p>
+                                    </div>
+                                    <a class="forget-password" role="button">Forgot Password ?</a>
+                                </div>
+                                <div class="button-submit">
+                                    <button type="submit" name="submitNewsletter" class="btn btn-block btn-primary login-button">Login</button>
+                                </div>
+                            }
+
                         </div>
-                    </div>
-                    @using (Html.BeginForm("LoginUser", "User", FormMethod.Post, new { @class = "formNewLestter", id = "formNewLestter" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        @Html.ValidationSummary(true)
-                        @Html.Hidden("PlaceOrder", (bool?)ViewBag.PlaceOrders)
-                        <div class="form-group">
-                            @*<input type="email" class="form-control input-md inputNew" size="18" placeholder="Enter your email">*@
-                            <input id="UserName" type="text" value="" name="UserName" required autocomplete="off" class="form-control input-md inputNew" size="18" placeholder="Enter UserName">
-                            @Html.ValidationMessageFor(model => model.UserName)
-                            @Html.PasswordFor(model => model.UserPassword, new { required = "required", @class = "form-control input-md inputNew", @size = "18", @placeholder = "Enter your password" })
-                            @Html.ValidationMessageFor(model => model.UserPassword)
-                            @*<input type="password" class="form-control input-md inputNew" size="18" placeholder="Enter your password">*@
-                        </div>
-                        <div class="button-submit">
-                            <button type="submit" name="submitNewsletter" class="btn btn-block btn-primary">Login</button>
-                        </div>
-                    }
-                    <div class="forgot-password">
-                        <a class="forgot-password-link" href="#">
-                            Forgot password?
-                        </a>
+
                     </div>
                 </div>
+            </div>
 
+        </div>
+    </div>
+
+
+
+
+
+
+    <footer>
+        <div class="row footer-row text-center">
+            <div class="col-md-12">
+                <div class="ccopy">powered by <a href="/">GaneData</a> &copy; 2018</div>
             </div>
         </div>
-    </div>
-</div>
-<footer class="footer-alter">
-    <div class="ui-footer text-center">
-        <div class="container">
-            @*<div class="ccopy">Powered By <a href="#">Bootstrap</a> SmartShop &copy; 2018</div>*@
-        </div>
-    </div>
-</footer>
-<a href="" id="scroll" title="Scroll to Top">
-    <span id="slidetop"></span>
-</a>
-<script src="~/Areas/Shop/Scripts/jquery-3.4.1.js"></script>
-<script src="~/Areas/Shop/Scripts/bootstrap.min.js"></script>
-<script src="~/Areas/Shop/Content/plugins/elevatezoom/jquery.elevateZoom-3.0.8.min.js"></script>
-<!-- blog image zoom -->
-<script src="~/Areas/Shop/Content/plugins/lightbox2/js/lightbox.min.js"></script>
-<link href="~/Areas/Shop/Content/plugins/lightbox2/css/lightbox.min.css" rel="stylesheet" type="text/css" />
-<!-- blog image zoom -->
-<script src="~/Areas/Shop/Content/app/js/app.js"></script>
-<script src="~/Areas/Shop/Content/plugins/swiper/js/swiper.min.js"></script>
-<script src="~/Areas/Shop/Content/plugins/owl.carousel/owl.carousel.min.js"></script>
-<script src="~/Areas/Shop/Content/plugins/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
+    </footer>
+    <a href="" id="scroll" title="Scroll to Top">
+        <span id="slidetop"></span>
+    </a>
+
+    <script src="~/Areas/Shop/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Areas/Shop/Scripts/bootstrap.min.js"></script>
+    <script src="~/Areas/Shop/Content/plugins/elevatezoom/jquery.elevateZoom-3.0.8.min.js"></script>
+    <!-- blog image zoom -->
+    <script src="~/Areas/Shop/Content/plugins/lightbox2/js/lightbox.min.js"></script>
+    <link href="~/Areas/Shop/Content/plugins/lightbox2/css/lightbox.min.css" rel="stylesheet" type="text/css" />
+    <!-- blog image zoom -->
+    <script src="~/Areas/Shop/Content/app/js/app.js"></script>
+    <script src="~/Areas/Shop/Content/plugins/swiper/js/swiper.min.js"></script>
+    <script src="~/Areas/Shop/Content/plugins/owl.carousel/owl.carousel.min.js"></script>
+    <script src="~/Areas/Shop/Content/plugins/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
 
 
 
 
 
 
-@*@using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
+    @*@using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
 
 
-        <div class="form-horizontal col-md-6 pull-left">
+            <div class="form-horizontal col-md-6 pull-left">
 
-            @Html.ValidationSummary(true)
+                @Html.ValidationSummary(true)
 
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.Label("User Name", new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    <input id="UserName" type="text" value="" name="UserName" required autocomplete="off">
-                    @Html.ValidationMessageFor(model => model.UserName)
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.Label("User Name", new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        <input id="UserName" type="text" value="" name="UserName" required autocomplete="off">
+                        @Html.ValidationMessageFor(model => model.UserName)
+                    </div>
+                </div>
+
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.Label("Password", new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.PasswordFor(model => model.UserPassword, new { required = "required" })
+                        @Html.ValidationMessageFor(model => model.UserPassword)
+                    </div>
+                </div>
+
+                <div class="bottom-right">
+                    <input type="submit" value="Submit" class="btn btn-default" />
                 </div>
             </div>
 
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.Label("Password", new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.PasswordFor(model => model.UserPassword, new { required = "required" })
-                    @Html.ValidationMessageFor(model => model.UserPassword)
-                </div>
-            </div>
+        }*@
 
-            <div class="bottom-right">
-                <input type="submit" value="Submit" class="btn btn-default" />
-            </div>
-        </div>
 
-    }*@
+
+
+
+
+</body>
+</html>
