@@ -90,6 +90,13 @@
             c.Caption = "Account Balance";
             c.ColumnType = MVCxGridViewColumnType.SpinEdit;
         });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Comments";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
         settings.Columns.Add(c => {
 
             c.FieldName = "OwnerName";
