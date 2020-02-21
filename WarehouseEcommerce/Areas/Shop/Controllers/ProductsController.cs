@@ -188,10 +188,8 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     model.ProductId = ProductId ?? 0;
                     model.Price = _productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, null).SellPrice;
                     model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
-                    
                     var details = _mapper.Map(model, new OrderDetailSessionViewModel());
                     GaneCartItemsSessionHelper.UpdateCartItemsSession("", details, false);
-                  
                     var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
                     ViewBag.TotalQty = models.Sum(u => u.TotalAmount);
                     return PartialView(models);
