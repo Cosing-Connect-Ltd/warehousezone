@@ -108,6 +108,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         {
             ViewBag.DetailImagesPath = _productServices.GetProductFiles(productId ?? 0, (CurrentTenantId), true).ToList();
             var product = _productServices.GetProductMasterById(productId ?? 0);
+            
             return View(product);
         }
 
@@ -223,6 +224,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
 
         public int CartItemsCount()
         {
+            _CartItemsPartial(null, null, null);
             return GaneCartItemsSessionHelper.GetCartItemsSession().Count;
 
         }

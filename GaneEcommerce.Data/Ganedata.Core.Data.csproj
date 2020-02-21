@@ -659,6 +659,14 @@
     <Compile Include="Migrations\202002210304197_pickerid-added-in-ordersTable.designer.cs">
       <DependentUpon>202002210304197_pickerid-added-in-ordersTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202002211247562_productmanufacturer-added.cs" />
+    <Compile Include="Migrations\202002211247562_productmanufacturer-added.designer.cs">
+      <DependentUpon>202002211247562_productmanufacturer-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002211301531_productmanufacturerid-added-in-productmaster.cs" />
+    <Compile Include="Migrations\202002211301531_productmanufacturerid-added-in-productmaster.designer.cs">
+      <DependentUpon>202002211301531_productmanufacturerid-added-in-productmaster.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1476,6 +1484,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202002210304197_pickerid-added-in-ordersTable.resx">
       <DependentUpon>202002210304197_pickerid-added-in-ordersTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002211247562_productmanufacturer-added.resx">
+      <DependentUpon>202002211247562_productmanufacturer-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002211301531_productmanufacturerid-added-in-productmaster.resx">
+      <DependentUpon>202002211301531_productmanufacturerid-added-in-productmaster.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -157,6 +157,8 @@ namespace Ganedata.Core.Data
         DbSet<TerminalCommandsQueue> TerminalCommandsQueue { get; set; }
         DbSet<Assets> Assets { get; set; }
         DbSet<AssetLog> AssetLog { get; set; }
+
+        DbSet<ProductManufacturer> ProductManufacturers { get; set; }
         DbSet<TerminalsTransactionsLog> TerminalsTransactionsLog { get; set; }
         DbSet<ProductFiles> ProductFiles { get; set; }
         DbSet<PalletType> PalletTypes { get; set; }

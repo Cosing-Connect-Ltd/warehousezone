@@ -170,6 +170,9 @@ namespace Ganedata.Core.Entities.Domain
         public int? NominalCode { get; set; }
         [Display(Name = "Is Stock Item")]
         public bool IsStockItem { get; set; }
+        public int? ManufacturerId { get; set; }
+        [ForeignKey("ManufacturerId")]
+        public ProductManufacturer ProductManufacturer { get; set; }
         public virtual GlobalUOM GlobalUOM { get; set; }
         public virtual GlobalWeightGroups GlobalWeightGroups { get; set; }
         public virtual ProductLotOptionsCodes ProductLotOptionsCodes { get; set; }
