@@ -1062,7 +1062,7 @@ fieldset[disabled] .btn-primary:hover {
 
 .product-thumb .image {
   text-align: center;
-  background-color: #f3f3f3;
+  /*background-color: #f3f3f3;*/
   border-radius: 4px;
 }
 

@@ -459,7 +459,7 @@ namespace Ganedata.Core.Services
                 customeraddresses.IsDeleted = false;
 
                 _currentDbContext.AccountAddresses.Add(customeraddresses);
-                var customer = _currentDbContext.Account.First(m => m.AccountID == customeraddresses.AccountID);
+                var customer = _currentDbContext.Account.FirstOrDefault(m => m.AccountID == customeraddresses.AccountID);
                 customer.DateUpdated = DateTime.UtcNow;
                 customer.UpdatedBy = currentUserId;
                 _currentDbContext.Account.Attach(customer);

@@ -112,6 +112,10 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         public ActionResult SaveAddress(AccountAddresses accountAddresses)
         {
             accountAddresses.Name = "Ecommerce";
+            if (accountAddresses.AccountID <= 0)
+            {
+                accountAddresses.AccountID = caCurrent.CurrentWebsiteUser().AccountId??0;
+            }
             AccountServices.SaveAccountAddress(accountAddresses, CurrentUserId == 0 ? 1 : CurrentUserId);
 
             return RedirectToAction("GetAddress", new { AccountId = accountAddresses.AccountID, ShipingAddress = (accountAddresses.AddTypeBilling != null ? false : true) });

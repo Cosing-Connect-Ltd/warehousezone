@@ -114,7 +114,7 @@ namespace Ganedata.Core.Services
 
             else
             {
-                TenantWebsites tenant = (TenantWebsites)HttpContext.Current.Session["CurrentTenantWebsites"];
+                caTenantWebsites tenant = (caTenantWebsites)HttpContext.Current.Session["CurrentTenantWebsites"];
                 TenantId = tenant.TenantId;
             }
             

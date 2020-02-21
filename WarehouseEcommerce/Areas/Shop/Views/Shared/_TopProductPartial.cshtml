@@ -10,10 +10,10 @@
                         <i></i>
                     </span>
                 </h1>
-                <ul class="nav nav-tabs text-right">
+                @*<ul class="nav nav-tabs text-right">
                     <li class="active"><a href="#featurep" data-toggle="tab">Featured</a></li>
                     <li class="latestb"><a href="#latestp" data-toggle="tab">Latest</a></li>
-                </ul>
+                </ul>*@
             </div>
 
             @if (Model.productMasterList.Count > 0)
@@ -33,7 +33,7 @@
                                 <div class="product-layout col-xs-12">
                                     <div class="product-thumb transition">
                                         <div class="image">
-                                            <a href="@Url.Action("ProductDetails", "Products", new { productId = item.ProductId })"><img src="@(!string.IsNullOrEmpty(defaulImage) ? defaulImage : "/Areas/Shop/Content/app/img/product/no_image.gif")" alt="@item.Name" title="@item.Name" class="img-responsive center-block" /></a>
+                                            <a href="@Url.Action("ProductDetails", "Products", new { productId = item.ProductId })"><img src="@(!string.IsNullOrEmpty(defaulImage) ? defaulImage : "/Areas/Shop/Content/app/img/product/no_image.gif")" alt="@item.Name" title="@item.Name" class="img-responsive center-block sami" /></a>
                                             <!-- Smartshop Images Start -->
                                             <a href="@Url.Action("ProductDetails", "Products", new { productId = item.ProductId })"><img src="@(!string.IsNullOrEmpty(hover) ? hover : "/Areas/Shop/Content/app/img/product/no_image.gif")" class="img-responsive second-img" alt="hover image" /></a>
                                             <!-- Smartshop Images End -->
