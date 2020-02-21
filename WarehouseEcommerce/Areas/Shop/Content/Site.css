@@ -307,7 +307,8 @@ ul.mhp-menu {
         border: 1px solid #e4e9f2;
         background-color: #fff;
         font-size: 15px !important;
-        margin-bottom: 15px;
+        margin-top:15px;
+        margin-bottom: 5px;
         width: 100%;
     }
 
@@ -362,7 +363,6 @@ ul.mhp-menu {
     display: flex;
     justify-content: space-between;
     font-size: 13px;
-    margin-top: 27px;
     margin-bottom: 11px;
 }
     .privacy-policy a {
@@ -388,7 +388,8 @@ ul.mhp-menu {
     .checkbox-div-signup input {
         height: unset !important;
         width: unset !important;
-        margin-right:5px;
+        margin-right: 5px;
+        margin-top: 4px;
     }
 .forget-password {
     color: #acacac !important;
@@ -488,4 +489,9 @@ ul.mhp-menu {
 }
 .mt-30 {
     margin-top: 30px;
+}
+.login-row .field-validation-error {
+    color: red;
+    float: left;
+    margin-bottom: 10px;
 }
