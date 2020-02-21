@@ -35,7 +35,7 @@ namespace WMS.CustomBindings
             return viewModel;
         }
 
-        private static IQueryable<PendingListDto> GetPickListDataset(int tenantId, int warehouseId)
+        private static IQueryable<PendingListDto> GetPickListDataset(int tenantId, int warehouseId, int UserId)
         {
             DateTime picklistDate;
             expectedDate = null;
@@ -58,7 +58,7 @@ namespace WMS.CustomBindings
                                  ||
                                  (o.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.WorksOrder && (!expectedDate.HasValue ||
                                  DbFunctions.TruncateTime(o.Appointmentses.Max(m => m.StartTime)) == expectedDate || o.Appointmentses.Max(x => x.RecurrenceInfo) != null)
-                                 && (o.OrderStatusID == (int)OrderStatusEnum.Scheduled))) && o.TenentId == tenantId && o.IsDeleted != true)
+                                 && (o.OrderStatusID == (int)OrderStatusEnum.Scheduled))) && o.TenentId == tenantId && o.IsDeleted != true && (o.PickerId==UserId || o.PickerId==null))
                                .Include(m => m.OrderStatus)
                                .Include(m => m.TransactionType)
                                .Include(m => m.Account)
@@ -110,10 +110,10 @@ namespace WMS.CustomBindings
             return PendingListDto;
         }
 
-        public static void PickListGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId)
+        public static void PickListGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId,int UserId)
         {
 
-            var transactions = GetPickListDataset(tenantId, warehouseId);
+            var transactions = GetPickListDataset(tenantId, warehouseId,UserId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
@@ -145,9 +145,9 @@ namespace WMS.CustomBindings
 
         }
 
-        public static void PickListGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId)
+        public static void PickListGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId,int UserId)
         {
-            var transactions = GetPickListDataset(tenantId, warehouseId);
+            var transactions = GetPickListDataset(tenantId, warehouseId,UserId);
 
             if (e.State.SortedColumns.Count() > 0)
             {

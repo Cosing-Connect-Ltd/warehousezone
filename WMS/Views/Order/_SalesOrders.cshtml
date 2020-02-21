@@ -130,6 +130,16 @@
             c.ColumnType = MVCxGridViewColumnType.SpinEdit;
             c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
         });
+        
+         settings.Columns.Add(c =>
+        {
+            c.FieldName = "PickerName";
+            c.Caption = "Picker Name";
+            c.Width = Unit.Percentage(20);
+            c.Settings.AllowAutoFilter = DefaultBoolean.False;
+            c.Settings.AllowSort = DefaultBoolean.False;
+        });
+
         settings.Columns.Add(c =>
         {
             c.FieldName = "OrderNotesListText";
@@ -173,19 +183,17 @@
                 var orderId = (int)DataBinder.Eval(m.DataItem, "OrderID");
                 var statusId = (int)DataBinder.Eval(m.DataItem, "OrderStatusID");
                 var functon = string.Format("CustomEmails({0},{1})", orderId, 8);
+               
                 if (statusId == (int)OrderStatusEnum.AwaitingAuthorisation)
                 {
                     var function = string.Format("ApproveOrder({0})", orderId);
                     ViewContext.Writer.Write("<a target='_blank' alt='Authorize Order' title='Authorize Order' class='btn fa fa-check' onclick=" + function + "></a>");
 
                 }
-
-
                 if (statusId == (int)OrderStatusEnum.Hold)
                 {
                     ViewContext.Writer.Write("<a target='_blank' data-orderid=" + orderId + " data-statusid = '1' data-type = 'SO' alt='Make Order Active' class='make-order-active btn fa fa-arrow-left'></a>");
                 }
-
                 if (statusId == (int)OrderStatusEnum.BeingPicked)
                 {
                     ViewContext.Writer.Write("<a target='_blank' data-orderid=" + orderId + " data-statusid = '1' data-type = 'SO' alt='Unlock order for picking' class='unlock-order btn fa fa-unlock'></a>");
@@ -197,7 +205,12 @@
                 if (statusId != (int)OrderStatusEnum.BeingPicked && statusId != (int)OrderStatusEnum.Hold && statusId != (int)OrderStatusEnum.Active && statusId != (int)OrderStatusEnum.Pending)
                 {
             // ViewContext.Writer.Write("<a target='_blank' data-orderid=" + orderId + " alt='Send Custom Email' class='btn fa fa-envelope' onclick=" + functon + "></a>");
-        }
+                }
+                var assignPicker = string.Format("AssignPicker({0})", orderId);
+                ViewContext.Writer.Write("<a target='_blank' alt='Assign Picker' title='Assign Picker' class='btn fa fa-user' onclick=" + assignPicker + "></a>");
+
+                
+
             });
         });
 

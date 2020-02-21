@@ -22,16 +22,18 @@ namespace WMS.Controllers
         private readonly ISalesOrderService _salesServices;
         private readonly IAccountServices _accountServices;
         private readonly IProductServices _productServices;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
         public SalesOrdersController(IProductServices productServices, ISalesOrderService salesOrderService, ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices,
-            IAppointmentsService appointmentsService, IGaneConfigurationsHelper configurationsHelper, IEmailServices emailServices, ITenantLocationServices tenantLocationservices, ITenantsServices tenantsServices, IMapper mapper)
+            IAppointmentsService appointmentsService, IGaneConfigurationsHelper configurationsHelper, IEmailServices emailServices, ITenantLocationServices tenantLocationservices, IUserService userService, ITenantsServices tenantsServices, IMapper mapper)
             : base(orderService, propertyService, accountServices, lookupServices, appointmentsService, configurationsHelper, emailServices, tenantLocationservices, tenantsServices)
         {
             _salesServices = orderService;
             _accountServices = accountServices;
             _productServices = productServices;
             _mapper = mapper;
+            _userService = userService;
         }
         // GET: SalesOrders
         public ActionResult Index()
@@ -1052,6 +1054,20 @@ namespace WMS.Controllers
             accountShipmentInfo.UserId = CurrentUserId;
             var status = OrderService.UpdateDeliveryAddress(accountShipmentInfo);
             return Json(status);
+        }
+
+
+        public ActionResult _AssignPicker(int OrderId)
+        {
+            ViewBag.OrderIds = OrderId;
+            ViewBag.Picker = new SelectList(_userService.GetAllAuthUsers(CurrentTenantId), "UserId", "DisplayName");
+            return View();
+        }
+
+        public JsonResult SaveAssignPicker(int OrderId, int PickerId)
+        {
+            var status = OrderService.UpdatePickerId(OrderId, PickerId,CurrentUserId);
+            return Json(status, JsonRequestBehavior.AllowGet);
         }
 
     }

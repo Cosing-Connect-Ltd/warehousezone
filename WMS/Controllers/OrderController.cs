@@ -1376,11 +1376,11 @@ namespace WMS.Controllers
             gridViewModel.ProcessCustomBinding(
                 new GridViewCustomBindingGetDataRowCountHandler(args =>
                 {
-                    PickListCustomBinding.PickListGetDataRowCount(args, CurrentTenantId, CurrentWarehouseId);
+                    PickListCustomBinding.PickListGetDataRowCount(args, CurrentTenantId, CurrentWarehouseId,CurrentUserId);
                 }),
                     new GridViewCustomBindingGetDataHandler(args =>
                     {
-                        PickListCustomBinding.PickListGetData(args, CurrentTenantId, CurrentWarehouseId);
+                        PickListCustomBinding.PickListGetData(args, CurrentTenantId, CurrentWarehouseId, CurrentUserId);
                     })
             );
 

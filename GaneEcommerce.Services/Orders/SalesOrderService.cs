@@ -506,6 +506,7 @@ namespace Ganedata.Core.Services
                     AccountName = p.Account.CompanyName,
                     Currecny = p.AccountCurrency.CurrencyName,
                     OrderTotal = p.OrderTotal,
+                    PickerName = p.Picker == null ? "" : p.Picker.UserLastName + ", " + p.Picker.UserFirstName,
                     EmailCount = _currentDbContext.TenantEmailNotificationQueues.Count(u => u.OrderId == p.OrderID),
                     OrderNotesList = p.OrderNotes.Where(m => m.IsDeleted != true).Select(s => new OrderNotesViewModel()
                     {
@@ -546,6 +547,7 @@ namespace Ganedata.Core.Services
                     AccountName = p.Account.CompanyName,
                     Currecny = p.AccountCurrency.CurrencyName,
                     OrderTotal = p.OrderTotal,
+                    PickerName = p.Picker == null ? "" : p.Picker.UserLastName + ", " + p.Picker.UserFirstName,
                     EmailCount = _currentDbContext.TenantEmailNotificationQueues.Count(u => u.OrderId == p.OrderID),
                     OrderNotesList = p.OrderNotes.Where(m => m.IsDeleted != true).Select(s => new OrderNotesViewModel()
                     {

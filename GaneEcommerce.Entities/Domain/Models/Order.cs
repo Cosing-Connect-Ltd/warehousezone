@@ -81,6 +81,8 @@ namespace Ganedata.Core.Entities.Domain
 
         public int? AccountAddressId { get; set; }
 
+        public int? PickerId { get; set; }
+
         public bool IsCancel { get; set; }
 
         [Display(Name = "Active")]
@@ -145,6 +147,9 @@ namespace Ganedata.Core.Entities.Domain
         public string AuthorisedNotes { get; set; }
 
         public virtual Account Account { get; set; }
+
+        [ForeignKey("PickerId")]
+        public virtual AuthUser Picker { get; set; }
 
         [ForeignKey("TenentId")]
         public virtual Tenant Tenant { get; set; }

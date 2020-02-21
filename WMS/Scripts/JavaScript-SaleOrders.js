@@ -11,6 +11,7 @@ var startDate;
 var endDate;
 var PORStatus;
 var editdelivery;
+var pickerOrderid;
 
 function beginAddCustomEmailPopup(s, e) {
     var ftReport = $("#FTReport").val();
@@ -333,6 +334,45 @@ function CreatePalletTracking() {
             });
 
     }
+}
+
+function AssignPicker(ordersIds) {
+    pickerOrderid = ordersIds;
+    AssignPickerPopUp.Show();
+}
+function beginpickerCallBack(s, e) {
+    e.customArgs["OrderId"] = pickerOrderid;
+}
+function SavePicker() {
+    var OrderId = $("#OrderId").val();
+    var AssignPicker = $("#AssignPicker :selected").val();
+    var data = { "OrderId": OrderId, "PickerId": AssignPicker}
+    if (AssignPicker === "" || AssignPicker === null || AssignPicker === undefined) {
+        alert("Select Picker Name");
+        return;
+    }
+    $.post("/SalesOrders/SaveAssignPicker", data,
+        function (result) {
+            debugger;
+            if (result === true)
+            {
+                _SalesOrderListGridView_Active.Refresh();
+                _PurchaseOrderListGridView_Completed.Refresh();
+                AssignPickerPopUp.Hide();
+                $("#infoMsg").html("Picker assigned!").show();
+                $('#infoMsg').delay(2000).fadeOut();
+            }
+            else {
+                LoadingPanel.Hide();
+                AssignPickerPopUp.Hide();
+                //alert("Could not send email, please contact support!");
+                alert(result);
+            }
+        })
+        .fail(function (error) {
+            alert(error.Message);
+        });
+
 }
 
 

@@ -876,8 +876,8 @@ namespace Ganedata.Core.Services
 
         public OrderDetail SaveOrderDetail(OrderDetail podetail, int tenantId, int userId)
         {
-            
-            
+
+
             podetail.DateUpdated = DateTime.UtcNow;
             podetail.TenentId = tenantId;
             podetail.UpdatedBy = userId;
@@ -898,9 +898,9 @@ namespace Ganedata.Core.Services
                     detail.Notes = podetail.Notes;
                     detail.UpdatedBy = userId;
                     detail.DateUpdated = DateTime.UtcNow;
-                    detail.TaxAmount= podetail.TaxAmount;
+                    detail.TaxAmount = podetail.TaxAmount;
                     detail.TotalAmount = podetail.TotalAmount;
-                    
+
                 }
 
                 _currentDbContext.Entry(detail).State = EntityState.Modified;
@@ -3385,5 +3385,20 @@ namespace Ganedata.Core.Services
             return order;
         }
 
+        public bool UpdatePickerId(int OrderId, int pickerId, int userId)
+        {
+            var order = _currentDbContext.Order.FirstOrDefault(u => u.OrderID == OrderId);
+            if (order != null)
+            {
+                order.PickerId = pickerId;
+                order.UpdatedBy = userId;
+                order.DateUpdated = DateTime.UtcNow;
+                _currentDbContext.Entry(order).State = EntityState.Modified;
+                _currentDbContext.SaveChanges();
+                return true;
+            }
+            return false;
+
+        }
     }
 }

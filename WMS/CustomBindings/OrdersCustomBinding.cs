@@ -226,6 +226,7 @@ namespace WMS.CustomBindings
             viewModel.Columns.Add("Qty");
             viewModel.Columns.Add("QtyReturned");
             viewModel.Columns.Add("QtyProcessed");
+            viewModel.Columns.Add("PickerName");
 
             viewModel.Pager.PageSize = 10;
             return viewModel;
@@ -321,7 +322,7 @@ namespace WMS.CustomBindings
             sodata.ForEach(u =>
                 u.ReturnQty = context.OrderProcess.Where(d => d.OrderID == u.OrderID && d.IsDeleted != true && (d.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Returns || d.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Wastage
                 || d.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.WastedReturn))?.SelectMany(m => m.OrderProcessDetail).Where(d => d.IsDeleted != true).Select(c => c.QtyProcessed).DefaultIfEmpty(0).Sum());
-
+            
             e.Data = sodata;
         }
         private static IQueryable<SalesOrderViewModel> GetSalesOrderAwaitingDataset(int CurrentTenantId, int CurrentWarehouseId)

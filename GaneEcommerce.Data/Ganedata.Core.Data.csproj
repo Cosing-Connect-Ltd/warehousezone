@@ -655,6 +655,10 @@
     <Compile Include="Migrations\202002161940028_Websites-Products-Relation-Table-Added.designer.cs">
       <DependentUpon>202002161940028_Websites-Products-Relation-Table-Added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202002210304197_pickerid-added-in-ordersTable.cs" />
+    <Compile Include="Migrations\202002210304197_pickerid-added-in-ordersTable.designer.cs">
+      <DependentUpon>202002210304197_pickerid-added-in-ordersTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1469,6 +1473,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202002161940028_Websites-Products-Relation-Table-Added.resx">
       <DependentUpon>202002161940028_Websites-Products-Relation-Table-Added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002210304197_pickerid-added-in-ordersTable.resx">
+      <DependentUpon>202002210304197_pickerid-added-in-ordersTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

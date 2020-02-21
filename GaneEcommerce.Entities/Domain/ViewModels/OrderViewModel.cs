@@ -139,12 +139,10 @@ namespace Ganedata.Core.Entities.Domain
         public string AccountName { get; set; }
         [Display(Name = "Currency")]
         public string Currecny { get; set; }
-
         public int? EmailCount { get; set; }
-
         public string Property { get; set; }
         public string SaleNotes { get; set; }
-
+        public string PickerName { get; set; }
         public List<OrderNotesViewModel> OrderNotesList { get; set; }
 
 
