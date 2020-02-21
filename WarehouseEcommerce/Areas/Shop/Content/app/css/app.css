@@ -1393,13 +1393,19 @@ header .cart-menu-total {
 }
 
 header {
-  padding: 27.5px 0;
-  background-color: #fff;
+    padding: 14px 0;
+    background-color: #fff;
 }
-
+.sticky-header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+    background-color: white;
+}
 .top-menu-links svg:hover,
-.cart-menu>.btn:hover svg {
-  fill: #1455a6;
+.cart-menu > .btn:hover svg {
+    fill: #1455a6;
 }
 
 .top-menu-links.nav .open>a,
@@ -1659,9 +1665,12 @@ header {
 }
 
 .headerMenu {
-  background-color: #000000;
-  padding: 15px 0;
-  margin-bottom: 30px;
+    background-color: #000000;
+    padding: 15px;
+    margin-bottom: 30px;
+    width: 100%;
+     margin-right: unset; 
+     margin-left: unset;
 }
 
 .headerMenu-m-0 {
@@ -1677,9 +1686,8 @@ header {
 
 /* --------------------------
 :: Sliders
--------------------------- */
-
-#slideshow0 img {
+-------------------------- 
+    #slideshow0 img {
   border-radius: 4px;
   width: 100vw;
 }

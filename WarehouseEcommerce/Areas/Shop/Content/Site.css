@@ -71,6 +71,9 @@
 #menu1 {
     text-align: left !important;
 }
+#slideshow0 img {
+    width: 100%;
+}
 @media(min-width:1025px){
     #slideshow0 img {
         height: 550px;
@@ -494,4 +497,17 @@ ul.mhp-menu {
     color: red;
     float: left;
     margin-bottom: 10px;
+}
+/*header*/
+.custom-header-container {
+    width: 100% !important;
+    padding-right: unset;
+    padding-left: unset;
+}
+.custom-container {
+    width:100% !important;
+}
+#common-home {
+    max-width: 1360px;
+    width: 100%;
 }
