@@ -193,7 +193,9 @@ h6 {
 }
 
 .img-thumbnail {
-  border: none;
+    border: none;
+    max-width: 50px;
+    max-height: 50px;
 }
 
 
@@ -2655,6 +2657,7 @@ footer #contact li {
 
 .pro-content .qty-plus-minus .form-control {
   width: 45px;
+  height: 20px;
   text-align: center;
   color: #232d2a;
 }
@@ -2846,10 +2849,13 @@ footer #contact li {
 }
 
 @media(min-width: 992px) {
-  .sticky {
-    position: sticky;
-    top: 15px;
-  }
+    .sticky {
+        position: static;
+        max-width: 500px;
+        max-height: 500px;
+        margin-right: 100px;
+        top: 15px;
+    }
 }
 
 
@@ -3309,9 +3315,9 @@ footer #contact li {
 }
 
 @media(max-width: 991px) {
-  .pro-content {
-    margin-top: 20px;
-  }
+    .pro-content {
+        margin-top: 20px;
+    }
 }
 
 @media(min-width: 768px) and (max-width: 991px) {
@@ -4531,6 +4537,8 @@ body.active .sidenav {
   color: #6E6E6E;
   font-weight: 200;
   font-size: 13px;
+  max-width: 30px;
+  white-space: nowrap;
 }
 
 .about-cnt p {

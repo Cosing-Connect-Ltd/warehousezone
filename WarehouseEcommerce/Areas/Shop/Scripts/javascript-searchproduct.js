@@ -76,7 +76,7 @@ function updateTextBox(event, ui) {
     return false;
 }
 function AddToCart(ProductId) {
-
+    debugger;
     $.ajax({
         type: "GET",
         url: basePath + "shop/Products/_CartItemsPartial/",

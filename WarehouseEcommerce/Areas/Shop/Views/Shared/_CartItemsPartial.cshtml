@@ -11,7 +11,7 @@
                 </th>
                 <th>Quantity</th>
                 <th>Price</th>
-                <th>tax</th>
+                <th >Tax</th>
                 <th>Total</th>
             </tr>
         </thead>
@@ -49,7 +49,7 @@
                                 <li>
                                     Quantity:<br />
                                     <span>
-                                        <input type="text" placeholder="Qty" onchange="UpdateCartItem(@item.ProductId,this)" value="@item.Qty" />
+                                        <input type="number" min="0" placeholder="Qty" onchange="UpdateCartItem(@item.ProductId,this)" value="@item.Qty" />
                                     </span>
                                 </li>
                             </ul>
@@ -58,7 +58,7 @@
                     </td>
 
                     <td>
-                        <div class="price-whlist"><b> @item.Price</b> </div>
+                        <div class="price-whlist"><b style=" max-width: 20px"> @item.Price</b> </div>
                     </td>
 
                     <td>

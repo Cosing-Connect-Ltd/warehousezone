@@ -202,7 +202,7 @@
                                     @Html.EditorFor(model => model.LastName, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Enter Last Name" } })
                                     @Html.ValidationMessageFor(model => model.LastName)
 
-                                    @Html.EditorFor(model => model.ContactNumber, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Enter Contact Number" } })
+                                    @Html.EditorFor(model => model.ContactNumber, new { htmlattributes = new { @class = "form-control input-md inputNew",@type="number", @placeholder = "Enter Contact Number" } })
                                     @Html.ValidationMessageFor(model => model.ContactNumber)
                                     @Html.EditorFor(model => model.Email, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Enter Email" } })
                                     @Html.ValidationMessageFor(model => model.Email)
