@@ -162,7 +162,7 @@
         <div class="register-div">
             <div class="mb-5">
                 <a class="" href="#">Help</a> |
-                <a class="" href="@Url.Action("Create","User", new {PlaceOrder=(bool?)ViewBag.PlaceOrders})">Register</a>
+                <a class="" href="@Url.Action("Login","User", new {PlaceOrder=(bool?)ViewBag.PlaceOrders})">Login</a>
             </div>
             <ul class="list-unstyled list-inline social">
                 <li class="facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
@@ -255,25 +255,29 @@
                                 <div data-v-5f85c551="" class="privacy-policy">
                                     <div class="checkbox-div-signup">
                                         <input type="checkbox" class="rectangle ">
-                                        <p data-v-5f85c551="" class="">I agree to <a>terms & conditions,</a> and <a>privacy policy.</a></p>
+                                        <p  class="">I agree to <a>terms & conditions,</a> and <a>privacy policy.</a></p>
                                     </div>
                                 </div>
                                 <div class="button-submit">
                                     <button type="submit" name="submitNewsletter" class="btn btn-block btn-primary signup-button">Create an account</button>
                                 </div>
+                                <div class="signup-text-div mt-30">
+                                    <p class="signup-text">Have an account ?</p>
+                                    <a href="/Shop/User/Login">Login</a>
+                                </div>
                                 @*<div class="seperator position-relative">
-                            <span class="d-inline-block">OR</span>
-                        </div>
-                        <h3>Sign up with Social Media</h3>
-                        <hr>
-                        <div class="login-google">
-                            <button class="btn btn-primary btn-fb">
-                                <i class="fa fa-facebook"></i>CONNECT WITH FACEBOOK
-                            </button>
-                            <button class="btn btn-primary btn-goggle">
-                                <i class="fa fa-google-plus" aria-hidden="true"></i>CONNECT WITH GOOGLE
-                            </button>
-                        </div>*@
+            <span class="d-inline-block">OR</span>
+        </div>
+        <h3>Sign up with Social Media</h3>
+        <hr>
+        <div class="login-google">
+            <button class="btn btn-primary btn-fb">
+                <i class="fa fa-facebook"></i>CONNECT WITH FACEBOOK
+            </button>
+            <button class="btn btn-primary btn-goggle">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>CONNECT WITH GOOGLE
+            </button>
+        </div>*@
                             </div>
 
                         </div>
