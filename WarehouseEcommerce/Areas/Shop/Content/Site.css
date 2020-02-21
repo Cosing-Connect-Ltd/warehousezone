@@ -265,8 +265,18 @@ ul.mhp-menu {
     /*padding: 60px 16% 0 16%;*/
     float: unset;
 }
+.signup-col {
+    width: 750px;
+    margin: 0 auto;
+    /*padding: 60px 16% 0 16%;*/
+    float: unset;
+}
 @media (max-width: 800px) {
     .login-col {
+        margin: unset;
+        padding: 60px 0 0 0 !important;
+    }
+    .signup-col {
         margin: unset;
         padding: 60px 0 0 0 !important;
     }
@@ -292,6 +302,26 @@ ul.mhp-menu {
 .inner input:hover {
     border: 1px solid #1455a6 !important;
 }
+    .remove-inner input {
+        height: 56px;
+        border: 1px solid #e4e9f2;
+        background-color: #fff;
+        font-size: 15px !important;
+        margin-bottom: 15px;
+        width: 100%;
+    }
+
+        .remove-inner input:hover {
+            border: 1px solid #1455a6 !important;
+        }
+@media(max-width:800px){
+    .signup-single-side {
+        width:100%;
+    }
+    .signup-col {
+        width:unset;
+    }
+}
 .login-button {
     height: 56px;
     width: 331px;
@@ -304,6 +334,18 @@ ul.mhp-menu {
         box-shadow: 0 5px 12px 0 #382e2e !important;
         transform: scale(1.01);
     }
+.signup-button {
+    height: 56px;
+    width: 100%;
+    color: #fff;
+    font-weight: 600;
+    font-size: 20px;
+}
+    .signup-button:hover {
+        color: #fff;
+        box-shadow: 0 5px 12px 0 #382e2e !important;
+        transform: scale(1.01);
+    }
 .remember-forget {
     display: flex;
     justify-content: space-between;
@@ -312,13 +354,31 @@ ul.mhp-menu {
     margin-top: 20px;
     color: #acacac;
 }
-.checkbox-div {
+.privacy-policy {
     display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-top: 20px;
 }
+    .privacy-policy a {
+        font-weight:bold;
+    }
+    .checkbox-div {
+        display: flex;
+    }
     .checkbox-div input {
         height: unset !important;
         width: unset !important;
         margin-right: 5px;
+    }
+.checkbox-div-signup {
+    text-align: left;
+    display: flex;
+}
+    .checkbox-div-signup input {
+        height: unset !important;
+        width: unset !important;
+        margin-right:5px;
     }
 .forget-password {
     color: #acacac !important;
@@ -372,6 +432,9 @@ ul.mhp-menu {
     .login-col {
         padding: 11px 0 0 0 !important;
     }
+    .signup-col {
+        padding: 11px 0 0 0 !important;
+    }
     .register-div {
         align-items: center;
     }
@@ -385,4 +448,7 @@ ul.mhp-menu {
     width: 101%;
     color: white;
     text-align: center;
+}
+.mb-5 {
+    margin-bottom:5px;
 }

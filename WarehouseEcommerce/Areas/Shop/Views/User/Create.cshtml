@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login</title>
+    <title>Sign up</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -160,7 +160,7 @@
     <div class="row login-row">
 
         <div class="register-div">
-            <div class="">
+            <div class="mb-5">
                 <a class="" href="#">Help</a> |
                 <a class="" href="@Url.Action("Create","User", new {PlaceOrder=(bool?)ViewBag.PlaceOrders})">Register</a>
             </div>
@@ -173,7 +173,7 @@
             </ul>
         </div>
 
-        <div class="col-md-6 login-col">
+        <div class="col-md-6 signup-col">
             <div class="row">
                 <div class="col-md-12 text-center">
                     <div class="login-logo">
@@ -187,12 +187,12 @@
                 @using (Html.BeginForm("Create", "User", FormMethod.Post, new { @class = "formNewLestter", id = "formNewLestter" }))
                 {
                     @Html.HiddenFor(model => model.PlaceOrder, (bool?)ViewBag.Placeorder)
-                    <div class="col-md-6 ex-left">
+                    <div class="col-md-6 col-sm-6  signup-single-side">
                         <div class="webi-newsletter  webi-newsletter leftprobg text-center" id="newsletter_5b2631bae1cb9" data-mode="default">
 
                             @Html.AntiForgeryToken()
 
-                            <div class="inner">
+                            <div class="remove-inner">
                                 <h3>USER DETAIL</h3>
                                 <hr>
                                 <div class="form-group">
@@ -233,12 +233,12 @@
 
                         </div>
                     </div>
-                    <div class="col-md-6 ex-right">
+                    <div class="col-md-6 col-sm-6 signup-single-side">
                         <div class="webi-newsletter  webi-newsletter leftprobg text-center" id="newsletter_5b2631bae1cb9" data-mode="default">
 
 
 
-                            <div class="inner">
+                            <div class="remove-inner">
                                 <h3>COMPANY DETAIL</h3>
                                 <hr>
                                 <div class="form-group">
@@ -252,17 +252,14 @@
 
                                 </div>
 
-                                <div class="forgot-password">
-                                    <div class="text-left">
-                                        <p>
-                                            By creating and account you are agreeing to our <a class="forgot-password-link" href="forgot-password.html">
-                                                privacy policy
-                                            </a> and terms of use
-                                        </p>
+                                <div data-v-5f85c551="" class="privacy-policy">
+                                    <div class="checkbox-div-signup">
+                                        <input type="checkbox" class="rectangle ">
+                                        <p data-v-5f85c551="" class="">I agree to <a>terms & conditions,</a> and <a>privacy policy.</a></p>
                                     </div>
                                 </div>
                                 <div class="button-submit">
-                                    <button type="submit" name="submitNewsletter" class="btn btn-block btn-primary">Create an account</button>
+                                    <button type="submit" name="submitNewsletter" class="btn btn-block btn-primary signup-button">Create an account</button>
                                 </div>
                                 @*<div class="seperator position-relative">
                             <span class="d-inline-block">OR</span>
