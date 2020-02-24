@@ -16,6 +16,7 @@ namespace WarehouseEcommerce.Helpers
             if (hasKey.Count>0)
             {
                 existingDetailsList = hasKey;
+                isGroupProducts = true;
                 var existingOrderDetail = existingDetailsList.FirstOrDefault(m => m.ProductId == orderDetail.ProductId);
                 if (existingOrderDetail == null && isGroupProducts)
                 {
@@ -28,6 +29,7 @@ namespace WarehouseEcommerce.Helpers
                         if (orderDetail.ProductId > 0)
                         {
                             existingOrderDetail.Qty = orderDetail.Qty;
+                            existingOrderDetail.TotalAmount = (existingOrderDetail.Qty * existingOrderDetail.Price);
                         }
                         else
                         {

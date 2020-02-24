@@ -1,61 +1,62 @@
 ﻿@using Ganedata.Core.Entities.Domain
 
 <div class="headerMenu row">
-            @*<div class="col-md-3 col-sm-4 stmenu"></div>*@
-            <div id="menu1" class="col-md-9 col-sm-8 stme2 nav-menue">
+    @*<div class="col-md-3 col-sm-4 stmenu"></div>*@
+    <div id="menu1" class="col-md-9 col-sm-8 stme2 nav-menue">
 
-                <div class="manun">
-                    <ul class="list-inline">
-                        @if (ViewBag.departments != null)
-                        {
-                            var department = ViewBag.departments as List<TenantDepartments>;
-                            
-                            foreach (var item in department)
-                            {
-                                <li class="li-mhp-menu"><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home",new {DepartmentId=item.DepartmentId})">@item.DepartmentName</a>
-                                    @{
-                                        if (ViewBag.productGroup != null)
-                                        {
-                                            var groups = ViewBag.productGroup as List<ProductGroups>;
-                                            var groupDepartment = groups.Where(u => u.DepartmentId == item.DepartmentId).ToList();
-                                            if (groupDepartment.Count > 0)
+        <div class="manun">
+            <ul class="list-inline">
+                @if (ViewBag.departments != null)
+                {
+                    var department = ViewBag.departments as List<TenantDepartments>;
+
+                    foreach (var item in department)
+                    {
+                        <li class="li-mhp-menu">
+                            <a href="@Url.Action("_GetProductByGroupsAndDepartment","Home",new {DepartmentId=item.DepartmentId})">@item.DepartmentName</a>
+                            @{
+                                if (ViewBag.productGroup != null)
+                                {
+                                    var groups = ViewBag.productGroup as List<ProductGroups>;
+                                    var groupDepartment = groups.Where(u => u.DepartmentId == item.DepartmentId).ToList();
+                                    if (groupDepartment.Count > 0)
+                                    {
+                                        <ul class="mhp-menu">
+                                            @for (int i = 0; i < groupDepartment.Count; i += 3)
                                             {
-                                                <ul class="mhp-menu">
-                                                    @for (int i = 0; i < groupDepartment.Count; i += 3)
+                                                <div>
+                                                    @if (groupDepartment.ElementAtOrDefault(i) != null)
                                                     {
-                                                        <div>
-                                                            @if (groupDepartment.ElementAtOrDefault(i) != null)
-                                                            {
-                                                                
-                                                                    <li><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home",new {productgroupId=groupDepartment[i].ProductGroupId})">@groupDepartment[i].ProductGroup</a></li>
 
-                                                            
-                                                            }
-                                                            @if (groupDepartment.ElementAtOrDefault(i + 1) != null)
-                                                            {
-                                                                
-                                                                    <li><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home",new {productgroupId=groupDepartment[i+1].ProductGroupId})">@groupDepartment[i + 1].ProductGroup</a></li>
+                                                        <li><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home",new {productgroupId=groupDepartment[i].ProductGroupId})">@groupDepartment[i].ProductGroup</a></li>
 
-                                                   
-                                                            }
-                                                            @if (groupDepartment.ElementAtOrDefault(i + 2) != null)
-                                                            {
-                                                                
-                                                                    <li><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home   ",new {productgroupId=groupDepartment[i+2].ProductGroupId})">@groupDepartment[i + 2].ProductGroup</a></li>
-                                                              
-                                                            }
-                                                        </div>
+
                                                     }
-                                                </ul>
+                                                    @if (groupDepartment.ElementAtOrDefault(i + 1) != null)
+                                                    {
+
+                                                        <li><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home",new {productgroupId=groupDepartment[i+1].ProductGroupId})">@groupDepartment[i + 1].ProductGroup</a></li>
+
+
+                                                    }
+                                                    @if (groupDepartment.ElementAtOrDefault(i + 2) != null)
+                                                    {
+
+                                                        <li><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home   ",new {productgroupId=groupDepartment[i+2].ProductGroupId})">@groupDepartment[i + 2].ProductGroup</a></li>
+
+                                                    }
+                                                </div>
                                             }
-                                        }
+                                        </ul>
                                     }
-                                </li>
+                                }
                             }
-                        }
-                    </ul>
-                </div>
-            </div>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
 </div>
 <div class="hidden-md hidden-lg hidden-sm horizontal-menu">
     <div class="row">
@@ -104,44 +105,7 @@
     </div>
     <div id="search-by-category" class="search-by-category">
         <div class="search-container">
-            @*<div class="categories-container">
-                <div class="hover-cate">
-                    <p><span class="cate-selected" data-value="0">All Categories</span></p>
-                    <ul class="cate-items">
-                        <li class="item-search" data-value="0">All Categories</li>
-                        <li class="item-search">Hp Laptop</li>
-                        <li class="item-search">Smart phone</li>
-                        <li class="item-search">Smart Watch</li>
-                        <li class="item-search">Desktops</li>
-                        <li class="item-search l1">PC</li>
-                        <li class="item-search l2">Dell laptop</li>
-                        <li class="item-search l2">lenovo desktop</li>
-                        <li class="item-search l2">macbook</li>
-                        <li class="item-search l1">Mac</li>
-                        <li class="item-search l2">Apple Macbook</li>
-                        <li class="item-search l2">Asus macbook</li>
-                        <li class="item-search l2">dell macbook</li>
-                        <li class="item-search">Laptops</li>
-                        <li class="item-search l1">Macs</li>
-                        <li class="item-search l1">Windows</li>
-                        <li class="item-search l2">Scanners</li>
-                        <li class="item-search l2">Web Cameras</li>
-                        <li class="item-search">Components</li>
-                        <li class="item-search l1">Monitors</li>
-                        <li class="item-search l1">Printers</li>
-                        <li class="item-search l2">Canon printers</li>
-                        <li class="item-search l2">Epson Printer</li>
-                        <li class="item-search l2">HP Printers</li>
-                        <li class="item-search l1">Trackballs</li>
-                        <li class="item-search l2">Trackballs-new</li>
-                        <li class="item-search">Tablets</li>
-                        <li class="item-search">Software</li>
-                        <li class="item-search">Phones &amp; PDAs</li>
-                        <li class="item-search">Cameras</li>
-                        <li class="item-search">MP3 Players</li>
-                    </ul>
-                </div>
-            </div>*@
+
             <div class="search-box input-group">
                 <input type="text" name="search" id="text-search-mobile" value="" placeholder="Search" class="text-search" />
                 <div id="sp-btn-search" class="input-group-btn">
@@ -157,30 +121,36 @@
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                <li><a href="#">Management</a></li>
-                <li><a href="#"></a>
-                s</li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle header-menu" data-toggle="dropdown">All Categories<i class="fa fa-angle-down pull-right"></i></a>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-inner">
-                            <ul class="list-unstyled">
-                                <!--3rd level-->
-                                <li class="dropdown-submenu">
-                                    <a href="#" class="submenu-title"> Category 1 </a>
-                                </li>
-                                <!--3rd level over-->
-                            </ul>
-                            <ul class="list-unstyled">
-                                <!--3rd level-->
-                                <li class="dropdown-submenu">
-                                    <a href="#" class="submenu-title"> Category 2 </a>
-                                </li>
-                                <!--3rd level over-->
-                            </ul>
+                @if (ViewBag.departments != null)
+                {
+                    var department = ViewBag.departments as List<TenantDepartments>;
+                    foreach (var item in department)
+                    {
+                        <li><a href="@Url.Action("_GetProductByGroupsAndDepartment", "Home", new { DepartmentId = item.DepartmentId })">@item.DepartmentName</a></li>
+                    }
+                }
+                @* <li class="dropdown">
+                        <a href="#" class="dropdown-toggle header-menu" data-toggle="dropdown">All Categories<i class="fa fa-angle-down pull-right"></i></a>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-inner">
+                                <ul class="list-unstyled">
+                                    <!--3rd level-->
+                                    <li class="dropdown-submenu">
+                                        <a href="#" class="submenu-title"> Category 1 </a>
+                                    </li>
+                                    <!--3rd level over-->
+                                </ul>
+                                <ul class="list-unstyled">
+                                    <!--3rd level-->
+                                    <li class="dropdown-submenu">
+                                        <a href="#" class="submenu-title"> Category 2 </a>
+                                    </li>
+                                    <!--3rd level over-->
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
+                *@
             </ul>
         </div>
     </div>
