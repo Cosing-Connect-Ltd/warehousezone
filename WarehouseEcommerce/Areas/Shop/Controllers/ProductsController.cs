@@ -17,7 +17,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
 
         private readonly IUserService _userService;
         private readonly IActivityServices _activityServices;
-        private readonly ITenantsServices _tenantServices;
+        private readonly ITenantsCurrencyRateServices _tenantServices;
         private readonly IProductLookupService _productlookupServices;
         private readonly ILookupServices _lookupServices;
         private readonly IProductServices _productServices;
@@ -25,12 +25,12 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         private readonly IMapper _mapper;
         private readonly IProductPriceService _productPriceService;
 
-        public ProductsController(IProductServices productServices, IUserService userService, IProductLookupService productlookupServices,IProductPriceService productPriceService, IMapper mapper, ICommonDbServices commonDbServices, ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IActivityServices activityServices, ITenantsServices tenantServices)
-            : base(orderService, propertyService, accountServices, lookupServices)
+        public ProductsController(IProductServices productServices, IUserService userService, IProductLookupService productlookupServices,IProductPriceService productPriceService, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IMapper mapper, ICommonDbServices commonDbServices, ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IActivityServices activityServices, ITenantsServices tenantServices)
+            : base(orderService, propertyService, accountServices, lookupServices,tenantsCurrencyRateServices)
         {
             _userService = userService;
             _activityServices = activityServices;
-            _tenantServices = tenantServices;
+            _tenantServices = tenantsCurrencyRateServices;
             _productlookupServices = productlookupServices;
             _lookupServices = lookupServices;
             _productServices = productServices;
@@ -162,10 +162,13 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
 
         public PartialViewResult _CartItemsPartial(int? ProductId ,decimal? qty, bool? Remove, bool?details)
        {
+            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             if (!ProductId.HasValue)
             {
                 var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
                 ViewBag.TotalQty = models.Sum(u => u.TotalAmount);
+                models.ForEach(u => u.Price = (u.Price * (currencyyDetail.Rate??0)));
+                models.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
                 return PartialView(models);
 
             }
@@ -176,6 +179,8 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     GaneCartItemsSessionHelper.RemoveCartItemSession(ProductId ?? 0);
                     var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
                     ViewBag.TotalQty = models.Sum(u => u.TotalAmount);
+                    models.ForEach(u => u.Price = (u.Price * (currencyyDetail.Rate ?? 0)));
+                    models.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
                     return PartialView(models);
 
                 }
@@ -186,12 +191,14 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     model.ProductMaster = Product;
                     model.Qty = qty.HasValue ? qty.Value : 1;
                     model.ProductId = ProductId ?? 0;
-                    model.Price = _productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, null).SellPrice;
+                    model.Price = (_productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, null).SellPrice * (currencyyDetail.Rate ?? 0));
                     model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
                     var Details = _mapper.Map(model, new OrderDetailSessionViewModel());
                     GaneCartItemsSessionHelper.UpdateCartItemsSession("", Details, false);
                     var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
                     ViewBag.TotalQty = models.Sum(u => u.TotalAmount);
+                    models.ForEach(u => u.Price = (u.Price * (currencyyDetail.Rate ?? 0)));
+                    models.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
                     return PartialView(models);
                 }
                 else
@@ -202,7 +209,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     model.ProductMaster = Product;
                     model.Qty = qty.HasValue ? qty.Value : 1;
                     model.ProductId = ProductId ?? 0;
-                    model.Price = _productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, null).SellPrice;
+                    model.Price = (_productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, null).SellPrice * (currencyyDetail.Rate ?? 0));
                     model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
                     ViewBag.CartModal = false;
                     var Details = _mapper.Map(model, new OrderDetailSessionViewModel());
@@ -214,6 +221,8 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     GaneCartItemsSessionHelper.UpdateCartItemsSession("", Details, false);
                     var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
                     var cartedProduct = models.Where(u => u.ProductId == ProductId).ToList();
+                    cartedProduct.ForEach(u => u.Price = (u.Price * (currencyyDetail.Rate ?? 0)));
+                    cartedProduct.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
                     return PartialView(cartedProduct);
                 }
             }

@@ -5,7 +5,7 @@
 function searchPoducts() {
     var sortvalue = $("#SortedValues").val();
     var groupId = $("#ProductGroups").val();
-    if (groupId == "" || groupId == undefined || groupId == null) { groupId= $("#ProductGroupsId").val(); }
+    if (groupId == "" || groupId == undefined || groupId == null) { groupId = $("#ProductGroupsId").val(); }
     var pagenumber = $("#pagenumber").val();
     var departmentId = $("#departmentId").val();
     var currentFilter = $("#currentFiltervalue").val();
@@ -52,11 +52,11 @@ $('#text-search').autocomplete({
         });
     },
     open: function () {
-        
+
         if (seeall) {
             var $li = $("<li>");
             var $link = $("<a>", {
-                href: basePath + "/Shop/Products/ProductCategories?productGroupId="+$("#ProductGroups").val()+"&searchString=" + searchvalues,
+                href: basePath + "/Shop/Products/ProductCategories?productGroupId=" + $("#ProductGroups").val() + "&searchString=" + searchvalues,
                 class: "see-all"
             }).html("See All Results").appendTo($li);
             $li.appendTo($('.ui-autocomplete'));
@@ -68,7 +68,7 @@ $('#text-search').autocomplete({
 
     return $('<li>')
         .append("<img style='width: 65px; height:58px;' src=" + item.Path + " alt=" + item.Name + "/>")
-        .append("<a href=" + basePath + "/Shop/Products/ProductCategories?productGroupId="+$("#ProductGroups").val() +"&searchString=" + item.Name + ">" + item.Name + "</a>").appendTo(ul);
+        .append("<a href=" + basePath + "/Shop/Products/ProductCategories?productGroupId=" + $("#ProductGroups").val() + "&searchString=" + item.Name + ">" + item.Name + "</a>").appendTo(ul);
 };
 
 function updateTextBox(event, ui) {
@@ -178,21 +178,37 @@ function ChooseShippingAddress(addressId) {
 }
 
 $("input[name='paymentMethod']").on("click", function (e) {
- 
+
     if (e.target.value == "2") {
         $(".paypal-btn").hide();
         $(".cash-btn").show();
     }
-    else
-    {
+    else {
         $(".paypal-btn").show();
         $(".cash-btn").hide();
     }
-    
+
 
 });
 $(document).ready(function () {
-  
+
     $(".cash-btn").hide();
     $('#PayPal').prop('checked', true);
 });
+
+
+function onCurrencyChange(event) {
+
+    var currencyId = event.currentTarget.id;
+    $.ajax({
+        url: 'Base/CurrencyDetail',
+        type: "GET",
+        data: { CurrencyId: currencyId },
+        success: function (data) {
+            location.reload();
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            location.reload();
+        }
+    });
+}

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Web.Mvc;
 
 
@@ -17,21 +18,25 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         protected readonly IPropertyService PropertyService;
         protected readonly IAccountServices AccountServices;
         protected readonly ILookupServices LookupServices;
+        private readonly ITenantsCurrencyRateServices tenantsCurrencyRateServices;
         public static string NoImage = "/UploadedFiles/Products/Products/no-image.png";
         public static string uploadedProductCategoryfilePath = "/UploadedFiles/ProductCategory/";
-         
-        public BaseController(ICoreOrderService orderService, IPropertyService propertyService, IProductServices productServices, IAccountServices accountServices, ILookupServices lookupServices)
+
+        public BaseController(ICoreOrderService orderService, IPropertyService propertyService, IProductServices productServices, IAccountServices accountServices, ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsService)
         {
             OrderService = orderService;
             PropertyService = propertyService;
             AccountServices = accountServices;
             LookupServices = lookupServices;
+            tenantsCurrencyRateServices = tenantsService;
+
 
 
         }
 
-        public BaseController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices)
+        public BaseController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsService)
         {
+            tenantsCurrencyRateServices = tenantsService;
             OrderService = orderService;
             PropertyService = propertyService;
             AccountServices = accountServices;
@@ -178,6 +183,8 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         {
             ViewBag.TimeZone = GetCurrentTimeZone();
             ViewBag.BaseFilePath = ConfigurationManager.AppSettings["BaseFilePath"];
+            ViewBag.Currencies = LookupServices.GetAllGlobalCurrencies();
+            CurrencyDetail(null);
 
             var queryString = Request.QueryString["fragment"];
             if (queryString != null && queryString != string.Empty)
@@ -194,7 +201,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             var Tenantwebiste = CurrentTenantWebsite;
             string timeZone = "GMT Standard Time";
 
-            
+
 
             if (user != null && !string.IsNullOrEmpty(user.UserTimeZoneId))
             {
@@ -255,6 +262,54 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
 
             return paths;
         }
+
+
+        public void CurrencyDetail(int? CurrencyId)
+        {
+
+                if (CurrencyId.HasValue)
+                {
+                    var detail = LookupServices.GetAllGlobalCurrencies().Where(c => (!CurrencyId.HasValue || c.CurrencyID == CurrencyId)).Select(u => new caCurrencyDetail
+                    {
+
+                        Symbol = u.Symbol,
+                        Id = u.CurrencyID,
+                        CurrencyName = u.CurrencyName
+
+                    }).ToList();
+                    var getTenantCurrencies = tenantsCurrencyRateServices.GetTenantCurrencies(CurrentTenantId).FirstOrDefault(u => u.CurrencyID == detail.FirstOrDefault()?.Id);
+                    detail.ForEach(c =>
+                        c.Rate = tenantsCurrencyRateServices.GetCurrencyRateByTenantid(getTenantCurrencies.TenantCurrencyID)
+                    );
+                    Session["CurrencyDetail"] = detail.FirstOrDefault();
+                }
+
+                else
+                {
+                    if (Session["CurrencyDetail"] == null)
+                    {
+                        CurrencyId = 1;
+
+                        var detail = LookupServices.GetAllGlobalCurrencies().Where(c => (!CurrencyId.HasValue || c.CurrencyID == CurrencyId)).Select(u => new caCurrencyDetail
+                        {
+
+                            Symbol = u.Symbol,
+                            Id = u.CurrencyID,
+                            CurrencyName = u.CurrencyName
+
+                        }).ToList();
+                        var getTenantCurrencies = tenantsCurrencyRateServices.GetTenantCurrencies(CurrentTenantId).FirstOrDefault(u => u.CurrencyID == detail.FirstOrDefault()?.Id);
+                        detail.ForEach(c =>
+                            c.Rate = tenantsCurrencyRateServices.GetCurrencyRateByTenantid(getTenantCurrencies.TenantCurrencyID)
+                        );
+                        Session["CurrencyDetail"] = detail.FirstOrDefault();
+                    }
+
+                }
+            
+
+        }
+
 
         protected override void Dispose(bool disposing)
         {

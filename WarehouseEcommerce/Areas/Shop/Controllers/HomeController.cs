@@ -15,8 +15,8 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         private readonly ILookupServices _lookupServices;
         private readonly IProductServices _productServices;
         private readonly IProductLookupService _productlookupServices;
-        public HomeController(ICoreOrderService orderService,IMapper mapper, IProductServices productServices, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IUserService userService, IActivityServices activityServices, ITenantsServices tenantServices)
-            : base(orderService, propertyService, accountServices, lookupServices)
+        public HomeController(ICoreOrderService orderService,IMapper mapper, IProductServices productServices, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices,ITenantsCurrencyRateServices tenantsCurrencyRateServices, IUserService userService, IActivityServices activityServices, ITenantsServices tenantServices)
+            : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices)
         {
             _lookupServices = lookupServices;
             _userService = userService;
@@ -66,14 +66,19 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
 
         public PartialViewResult _SpecialProductPartial()
         {
+            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             var specialProduct = new ProductDetailViewModel
             {
                 productMasterList = _productServices.GetProductByCategory(CurrentTenantId, 6, SpecialProduct: true).ToList(),
-
+               
             };
+            specialProduct.productMasterList.ForEach(u => u.SellPrice = (u.SellPrice * currencyyDetail.Rate));
+            specialProduct.CurrencySign = currencyyDetail.Symbol;
             if (specialProduct.productMasterList != null)
             {
                 var prdouctIds = specialProduct.productMasterList.Select(u => u.ProductId).ToList();
+                
+              
                 specialProduct.ProductFilesList = _productServices.GetProductFilesByTenantId((CurrentTenantId)).Where(u => prdouctIds.Contains(u.ProductId)).ToList();
             }
 
@@ -82,11 +87,14 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         }
         public PartialViewResult _TopProductPartial()
         {
+            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             var TopProduct = new ProductDetailViewModel
             {
                 productMasterList = _productServices.GetProductByCategory((CurrentTenantId), 12, TopProduct: true).ToList(),
 
             };
+            TopProduct.productMasterList.ForEach(u => u.SellPrice = (u.SellPrice * currencyyDetail.Rate));
+            TopProduct.CurrencySign = currencyyDetail.Symbol;
             if (TopProduct.productMasterList != null)
             {
                 var prdouctIds = TopProduct.productMasterList.Select(u => u.ProductId).ToList();
@@ -99,11 +107,14 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         }
         public PartialViewResult _OnSalePartial()
         {
+            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             var onsale = new ProductDetailViewModel
             {
                 productMasterList = _productServices.GetProductByCategory(CurrentTenantId, 6, OnSaleProduct: true).ToList(),
 
             };
+            onsale.productMasterList.ForEach(u => u.SellPrice = (u.SellPrice * currencyyDetail.Rate));
+            onsale.CurrencySign = currencyyDetail.Symbol;
             if (onsale.productMasterList != null)
             {
                 var prdouctIds = onsale.productMasterList.Select(u => u.ProductId).ToList();
@@ -127,10 +138,13 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
 
         public PartialViewResult _BestSellerPartial()
         {
+            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             var BestSellerProduct = new ProductDetailViewModel
             {
                 productMasterList = _productServices.GetProductByCategory((CurrentTenantId), 2, BestSellerProduct: true).ToList()
             };
+            BestSellerProduct.productMasterList.ForEach(u => u.SellPrice = (u.SellPrice * currencyyDetail.Rate));
+            BestSellerProduct.CurrencySign = currencyyDetail.Symbol;
             if (BestSellerProduct.productMasterList != null)
             {
                 var prdouctIds = BestSellerProduct.productMasterList.Select(u => u.ProductId).ToList();

@@ -51,7 +51,7 @@
                                         <div class="caption ">
                                             <h4><a href="@Url.Action("ProductDetails","Products", new { productId= product[i].ProductId })"> @product[i].Name</a></h4>
                                             <p class="price">
-                                                $@(product[i].SellPrice)
+                                                @Model.CurrencySign @product[i].SellPrice
 
                                             </p>
                                             <div class="rating">
@@ -106,7 +106,7 @@
                                         <div class="caption ">
                                             <h4><a href="@Url.Action("ProductDetails","Products", new { productId= product[i+1].ProductId })"> @product[i + 1].Name</a></h4>
                                             <p class="price">
-                                                $@(product[i + 1].SellPrice)
+                                                @Model.CurrencySign @(product[i + 1].SellPrice)
 
                                             </p>
                                             <div class="rating">

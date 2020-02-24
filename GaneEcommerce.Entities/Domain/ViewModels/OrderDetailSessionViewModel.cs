@@ -71,5 +71,7 @@ namespace Ganedata.Core.Entities.Domain
         public virtual ProductMasterViewModel ProductMaster { get; set; }
         public virtual GlobalTaxViewModel TaxName { get; set; }
         public virtual ProductAccountCodesViewModel AccountCode { get; set; }
+
+        public string CurrencySign { get; set; }
     }
 }

@@ -95,6 +95,7 @@ namespace WarehouseEcommerce
             container.RegisterType<IResourceHolidayServices, ResourceHolidayServices>();
             container.RegisterType<IVanSalesService, VanSalesService>();
             container.RegisterType<IAssetServices, AssetServices>();
+            container.RegisterType<ITenantsCurrencyRateServices, TenantsCurrencyRateServices>();
 
             //Register Auto Mapper
             var newMapper = new AutoMapperBootStrapper();

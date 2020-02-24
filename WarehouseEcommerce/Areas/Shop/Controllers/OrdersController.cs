@@ -29,8 +29,8 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         string PAYPAL_URL = System.Configuration.ConfigurationManager.AppSettings["PAYPAL_URL"] != null
                                         ? System.Configuration.ConfigurationManager.AppSettings["PAYPAL_URL"] : "";
 
-        public OrdersController(IProductServices productServices, IProductLookupService productlookupServices, IProductPriceService productPriceService, ICommonDbServices commonDbServices, ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IUserService userService, IActivityServices activityServices, ITenantsServices tenantServices,IMapper mapper, IGaneConfigurationsHelper configurationsHelper)
-            : base(orderService, propertyService, accountServices, lookupServices)
+        public OrdersController(IProductServices productServices, IProductLookupService productlookupServices, IProductPriceService productPriceService, ICommonDbServices commonDbServices, ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IUserService userService, IActivityServices activityServices, ITenantsServices tenantServices,IMapper mapper, IGaneConfigurationsHelper configurationsHelper)
+            : base(orderService, propertyService, accountServices, lookupServices,tenantsCurrencyRateServices)
         {
             _userService = userService;
             _activityServices = activityServices;

@@ -17,8 +17,8 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         private readonly IAccountServices _accountServices;
         private readonly IGaneConfigurationsHelper _configurationsHelper;
         string baseUrl = "";
-        public UserController(ICoreOrderService orderService, IMapper mapper, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IUserService userService, IActivityServices activityServices, ITenantsServices tenantServices, IGaneConfigurationsHelper configurationsHelper)
-            : base(orderService, propertyService, accountServices, lookupServices)
+        public UserController(ICoreOrderService orderService, IMapper mapper, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IUserService userService, IActivityServices activityServices, ITenantsServices tenantServices, IGaneConfigurationsHelper configurationsHelper)
+            : base(orderService, propertyService, accountServices, lookupServices,tenantsCurrencyRateServices)
         {
             _userService = userService;
             _activityServices = activityServices;

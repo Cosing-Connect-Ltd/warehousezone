@@ -17,5 +17,8 @@ namespace Ganedata.Core.Services
         IEnumerable<TenantCurrenciesExRates> GetTenantCurrenciesExRates(int tenantId);
         int Insert(TenantCurrenciesExRates tenantCurrenciesExRates);
         void LogAPI(string apiLog, HttpStatusCode httpStatusCode, Type type);
+
+        decimal GetCurrencyRateByTenantid(int currencyTenantId);
+
     };
 }

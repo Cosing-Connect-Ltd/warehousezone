@@ -181,6 +181,7 @@
     <Compile Include="Activity\IActivityServices.cs" />
     <Compile Include="Assets\AssetServices.cs" />
     <Compile Include="Assets\IAssetServices.cs" />
+    <Compile Include="Core\Auth\caCurrencyDetail.cs" />
     <Compile Include="Core\Auth\caCurrent.cs" />
     <Compile Include="Core\Auth\caError.cs" />
     <Compile Include="Core\Auth\caSession.cs" />

@@ -15,6 +15,7 @@ namespace WarehouseEcommerce.ViewModels
         public List<ProductFiles> ProductFilesList { get; set; }
         public ProductFiles ProductFiles { get; set; }
 
+        public string CurrencySign { get; set; }
     }
 
     public class UsersViewModel

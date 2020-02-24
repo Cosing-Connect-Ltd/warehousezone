@@ -53,7 +53,11 @@ namespace Ganedata.Core.Services
             _currentDbContext.SaveChanges();
             return tenantCurrenciesExRates.ExchnageRateID;
         }
-        
+        public decimal GetCurrencyRateByTenantid(int currencyTenantId)
+        {
+            return _currentDbContext.TenantCurrenciesExRates.OrderByDescending(u=>u.ExchnageRateID).FirstOrDefault(u => u.TenantCurrencyID == currencyTenantId).Rate;
+        }
+
 
         public void LogAPI(string apiLog, HttpStatusCode httpStatusCode, Type type)
         {

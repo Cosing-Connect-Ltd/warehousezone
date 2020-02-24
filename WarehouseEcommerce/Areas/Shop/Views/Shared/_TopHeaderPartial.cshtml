@@ -2,110 +2,119 @@
 
 
 
-    <div class="sticky-header">
-        <header class="custom-header-container">
-            <div class="container custom-container">
-                <div class="row header-row">
-                    <div class="head-logo">
-                        <div id="logo" class="ui-logo">
-                            <a href="@Url.Action("Index","Home")">
-                                <img src="/Areas/Shop/Content/app/img/logo.png" title="SmartShop Multistore" alt="SmartShop Multistore" class="img-responsive" />
-                            </a>
-                        </div>
+<div class="sticky-header">
+    <header class="custom-header-container">
+        <div class="container custom-container">
+            <div class="row header-row">
+                <div class="head-logo">
+                    <div id="logo" class="ui-logo">
+                        <a href="@Url.Action("Index","Home")">
+                            <img src="/Areas/Shop/Content/app/img/logo.png" title="SmartShop Multistore" alt="SmartShop Multistore" class="img-responsive" />
+                        </a>
                     </div>
-                    @*<div class="col-xs-6 iconxs"></div>*@
-                    <div class=" h-search">
-                        <div id="search-by-category" class="search-by-category">
-                            <div class="search-container">
-                                <div class="categories-container">
-                                    <div class="hover-cate">
-                                        @Html.DropDownList("ProductGroups", ViewBag.ProductGroups as SelectList, "All Categories", htmlAttributes: new { @class = "" })
-                                    </div>
-                                </div>
-                                <div class="search-box input-group">
-                                    <input type="text" name="search" id="text-search" value="" placeholder="Search" class="text-search" />
-                                    <div id="sp-btn-search" class="input-group-btn">
-                                        <button type="button" id="btn-search-category" class="btn btn-search-category" onclick="SearchProductCategory();">Search</button>
-                                    </div>
+                </div>
+                @*<div class="col-xs-6 iconxs"></div>*@
+                <div class=" h-search">
+                    <div id="search-by-category" class="search-by-category">
+                        <div class="search-container">
+                            <div class="categories-container">
+                                <div class="hover-cate">
+                                    @Html.DropDownList("ProductGroups", ViewBag.ProductGroups as SelectList, "All Categories", htmlAttributes: new { @class = "" })
                                 </div>
                             </div>
+                            <div class="search-box input-group">
+                                <input type="text" name="search" id="text-search" value="" placeholder="Search" class="text-search" />
+                                <div id="sp-btn-search" class="input-group-btn">
+                                    <button type="button" id="btn-search-category" class="btn btn-search-category" onclick="SearchProductCategory();">Search</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                        <div class=" contact-currency text-right">
-                            <div class="hcontact">
-                                <a href="#">
-                                    <span class="hidden-xs">
-                                        <svg width="20px" height="19px">
-                                            <use xlink:href="/Areas/Shop/Content/app/img/icons/icons.svg#call"></use>
-                                        </svg>
-                                        +1 123 456 7890
-                                    </span>
-                                </a>
-                            </div>
-                            <div class="cur">
-                                <form action="#" method="post" enctype="multipart/form-data" id="form-currency">
-                                    <div class="btn-group">
-                                        <button class="btn btn-link dropdown-toggle test" data-toggle="dropdown">
-                                            <strong>£</strong>
-                                            <span>Currency</span>&nbsp;<i class="fa fa-angle-down"></i>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li>
-                                                <button class="currency-select btn btn-link btn-block" type="button" name="EUR">€ Euro</button>
-                                            </li>
-                                            <li>
-                                                <button class="currency-select btn btn-link btn-block" type="button" name="GBP">£ Pound Sterling</button>
-                                            </li>
-                                            <li>
-                                                <button class="currency-select btn btn-link btn-block" type="button" name="USD">$ US Dollar</button>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <input type="hidden" name="code" value="" />
-                                    <input type="hidden" name="redirect" value="#" />
-                                </form>
-                            </div>
-                        </div>
-                    <div id="top-links" class=" menu-link account-cart">
-                        <ul class="list-inline list-inline-flex">
-                            <li class="dropdown user_menu">
-                                <a href="#" title="@(ViewBag.UserName == " " ? "My Account" : ViewBag.UserName)" class="dropdown-toggle" data-toggle="dropdown">
-
-                                    <svg width="24px" height="24px">
-                                        <use xlink:href="/Areas/Shop/Content/app/img/icons/icons.svg#user"></use>
-                                    </svg>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-right user_account">
-                                    <li><a href="@Url.Action("Create","User")"><i class="fa fa-user-plus"></i>Register</a></li>
-                                    <li><a href="@Url.Action("logout","User")"><i class="fa fa-lock"></i>Login</a></li>
-                                    <li><a href="#" id="wishlist-total"><i class="fa fa-heart"></i>Wish List (0)</a></li>
-                                </ul>
-                            </li>
-                            <li id="cart" class="cart-menu">
-                                <a href="" type="button" data-toggle="dropdown" data-loading-text="Loading..." class="btn btn-lg dropdown-toggle">
-                                    <svg width="28px" height="26px">
-                                        <use xlink:href="/Areas/Shop/Content/app/img/icons/icons.svg#hcart"></use>
-                                    </svg>
-                                    <span id="cart-total">@(ViewBag.CartItemCount == 0 ? 0 : ViewBag.CartItemCount)</span>
-                                </a>
-                                <ul class="dropdown-menu  cart-menu-height" style="overflow:auto">
-                                    @if (ViewBag.CartItemCount != 0)
+                </div>
+                <div class=" contact-currency text-right">
+                    <div class="hcontact">
+                        <a href="#">
+                            <span class="hidden-xs">
+                                <svg width="20px" height="19px">
+                                    <use xlink:href="/Areas/Shop/Content/app/img/icons/icons.svg#call"></use>
+                                </svg>
+                                +1 123 456 7890
+                            </span>
+                        </a>
+                    </div>
+                    <div class="cur">
+                        <form action="#" method="post" enctype="multipart/form-data" id="form-currency">
+                            <div class="btn-group">
+                                <button class="btn btn-link dropdown-toggle test" data-toggle="dropdown">
+                                    <span>Currency</span>&nbsp;<i class="fa fa-angle-down"></i>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    @if (ViewBag.Currencies != null)
                                     {
+                                        foreach (var item in ViewBag.Currencies)
+                                        {
+                                            <li>
+                                                <a href="javascript:;" class="currency-select btn btn-link btn-block" id ="@item.CurrencyID" type="button" onclick="onCurrencyChange(event)" >@item.Symbol @item.CurrencyName</a>
+                                            </li>
+                                        }
+                                    }
+                                 
+                                    @*<li>
+                                            <button class="currency-select btn btn-link btn-block" type="button" name="EUR">€ Euro</button>
+                                        </li>
                                         <li>
-                                            <table>
-                                                <tbody>
-                                                    @foreach (var item in ViewBag.CartItems)
-                                                    {
-                                                        <tr>
+                                            <button class="currency-select btn btn-link btn-block" type="button" name="GBP">£ Pound Sterling</button>
+                                        </li>
+                                        <li>
+                                            <button class="currency-select btn btn-link btn-block" type="button" name="USD">$ US Dollar</button>
+                                        </li>*@
+                                </ul>
+                            </div>
+                            <input type="hidden" name="code" value="" />
+                            <input type="hidden" name="redirect" value="#" />
+                        </form>
+                    </div>
+                </div>
+                <div id="top-links" class=" menu-link account-cart">
+                    <ul class="list-inline list-inline-flex">
+                        <li class="dropdown user_menu">
+                            <a href="#" title="@(ViewBag.UserName == " " ? "My Account" : ViewBag.UserName)" class="dropdown-toggle" data-toggle="dropdown">
 
-                                                            <td><a href="@Url.Action("AddToCart","Products")"><img src="~/UploadedFiles/Products/no-image.png" alt="@(item?.ProductMaster?.Name)"></a></td>
-                                                            <td>
-                                                                <div class="ordered-items">
-                                                                    <p>
-                                                                        <a href="@Url.Action("AddToCart","Products")">@(item.ProductMaster?.Name)<br /><span style="font-weight:bold;">Sku:</span>@(item.ProductMaster?.SKUCode)<br /><span style="font-weight:bold;">Qty:</span>@(item.Qty)</a>
-                                                                    </p>
+                                <svg width="24px" height="24px">
+                                    <use xlink:href="/Areas/Shop/Content/app/img/icons/icons.svg#user"></use>
+                                </svg>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right user_account">
+                                <li><a href="@Url.Action("Create","User")"><i class="fa fa-user-plus"></i>Register</a></li>
+                                <li><a href="@Url.Action("logout","User")"><i class="fa fa-lock"></i>Login</a></li>
+                                <li><a href="#" id="wishlist-total"><i class="fa fa-heart"></i>Wish List (0)</a></li>
+                            </ul>
+                        </li>
+                        <li id="cart" class="cart-menu">
+                            <a href="" type="button" data-toggle="dropdown" data-loading-text="Loading..." class="btn btn-lg dropdown-toggle">
+                                <svg width="28px" height="26px">
+                                    <use xlink:href="/Areas/Shop/Content/app/img/icons/icons.svg#hcart"></use>
+                                </svg>
+                                <span id="cart-total">@(ViewBag.CartItemCount == 0 ? 0 : ViewBag.CartItemCount)</span>
+                            </a>
+                            <ul class="dropdown-menu  cart-menu-height" style="overflow:auto">
+                                @if (ViewBag.CartItemCount != 0)
+                                {
+                                    <li>
+                                        <table>
+                                            <tbody>
+                                                @foreach (var item in ViewBag.CartItems)
+                                                {
+                                                    <tr>
 
-                                                                    @*<ul>
+                                                        <td><a href="@Url.Action("AddToCart","Products")"><img src="~/UploadedFiles/Products/no-image.png" alt="@(item?.ProductMaster?.Name)"></a></td>
+                                                        <td>
+                                                            <div class="ordered-items">
+                                                                <p>
+                                                                    <a href="@Url.Action("AddToCart","Products")">@(item.ProductMaster?.Name)<br /><span style="font-weight:bold;">Sku:</span>@(item.ProductMaster?.SKUCode)<br /><span style="font-weight:bold;">Qty:</span>@(item.Qty)</a>
+                                                                </p>
+
+                                                                @*<ul>
                                                                         <li>
                                                                             Sku: <span>@(item.ProductMaster?.SKUCode)</span>
                                                                         </li>
@@ -114,27 +123,27 @@
                                                                             Quantity: <span>@item.Qty</span>
                                                                         </li>
                                                                     </ul>*@
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    }
-                                                </tbody>
-                                            </table>
-                                            @* <a href="@Url.Action("AddToCart","Products")">Go to shopping cart</a>*@
-                                        </li>
-                                    }
-                                    else
-                                    {
-                                        <li>
-                                            <p class="text-center">Your shopping cart is empty!</p>
-                                        </li>
-                                    }
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                        @* <a href="@Url.Action("AddToCart","Products")">Go to shopping cart</a>*@
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <p class="text-center">Your shopping cart is empty!</p>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
             </div>
-        </header>
-        @Html.Action("_HorizontalNavbarPartial", "Home")
-    </div>
+        </div>
+    </header>
+    @Html.Action("_HorizontalNavbarPartial", "Home")
+</div>
