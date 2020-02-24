@@ -121,9 +121,38 @@
     <value>17, 17</value>
   </metadata>
   <data name="selectQuery1.FilterString" xml:space="preserve">
-    <value>[AccountTransaction.AccountId] = ?paramAccountId And [AccountTransaction.DateCreated] &gt;= ?paramStartDate And [AccountTransaction.DateCreated] &lt; ?paramEndDate And ([AccountTransaction.IsDeleted] Is Null Or [AccountTransaction.IsDeleted] &lt;&gt; True)</value>
+    <value>[AccountTransaction.AccountId] = ?paramAccountId And [AccountTransaction.DateCreated] &gt;= ?paramStartDate And [AccountTransaction.DateCreated] &lt;= ?paramEndDate And ([AccountTransaction.IsDeleted] Is Null Or [AccountTransaction.IsDeleted] &lt;&gt; True)</value>
+  </data>
+  <data name="customSqlQuery1.Sql" xml:space="preserve">
+    <value>select top 1 "Account"."AccountID",
+       "Account"."AccountCode",
+       "Account"."CompanyName",
+       "Account"."Telephone", "Account"."website",
+       "Account"."CreditLimit",
+       "Account"."TenantId",
+       "Account"."CreditTerms",
+       "AccountAddresses"."Name",
+       "AccountAddresses"."AddressLine1",
+       "AccountAddresses"."AddressLine2",
+       "AccountAddresses"."AddressLine3",
+       "AccountAddresses"."Telephone" as "AccountAddresses_Telephone",
+       "AccountAddresses"."Town",
+       "AccountAddresses"."County",
+       "AccountAddresses"."PostCode",
+       "AccountAddresses"."AddTypeBilling",
+       (select top 1 "AccountTransaction"."FinalBalance" from "dbo"."AccountTransaction" where (("AccountTransaction"."AccountId" = @paramAccountId) and 
+       ("AccountTransaction"."DateCreated" &lt; @ParamStartDate)) order by "AccountTransaction"."DateCreated" desc) as StartingBalance,
+       (select top 1 "AccountTransaction"."FinalBalance" from "dbo"."AccountTransaction" where (("AccountTransaction"."AccountId" = @paramAccountId) and 
+       ("AccountTransaction"."DateCreated" &lt; @ParamEndDate)) order by "AccountTransaction"."DateCreated" desc) as DueBalance
+  from ("dbo"."Account" "Account"
+  inner join "dbo"."AccountAddresses"
+       "AccountAddresses"
+       on ("AccountAddresses"."AccountID" = "Account"."AccountID"))
+ where (("Account"."AccountID" = @paramAccountId)
+       and ("Account"."IsDeleted" is null
+       or ("Account"."IsDeleted" &lt;&gt; 1)))</value>
   </data>
   <data name="sqlDataSource1.ResultSchemaSerializable" xml:space="preserve">
-    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9IkFjY291bnRUcmFuc2FjdGlvbiI+PEZpZWxkIE5hbWU9IkFtb3VudCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iRmluYWxCYWxhbmNlIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJOb3RlcyIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iRGF0ZUNyZWF0ZWQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkRlc2NyaXB0aW9uIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJBY2NvdW50SWQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkFjY291bnRUcmFuc2FjdGlvbklkIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJJc0RlbGV0ZWQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkFjY291bnRUcmFuc2FjdGlvblR5cGVJZCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQWNjb3VudFBheW1lbnRNb2Rlc19EZXNjcmlwdGlvbiIgVHlwZT0iVW5rbm93biIgLz48L1ZpZXc+PFZpZXcgTmFtZT0iQWNjb3VudCI+PEZpZWxkIE5hbWU9IkFjY291bnRJRCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQWNjb3VudENvZGUiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkNvbXBhbnlOYW1lIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJUZWxlcGhvbmUiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IndlYnNpdGUiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkNyZWRpdExpbWl0IiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJUZW5hbnRJZCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQ3JlZGl0VGVybXMiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9Ik5hbWUiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkFkZHJlc3NMaW5lMSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQWRkcmVzc0xpbmUyIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJBZGRyZXNzTGluZTMiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkFjY291bnRBZGRyZXNzZXNfVGVsZXBob25lIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJUb3duIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJDb3VudHkiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IlBvc3RDb2RlIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJBZGRUeXBlQmlsbGluZyIgVHlwZT0iVW5rbm93biIgLz48L1ZpZXc+PFZpZXcgTmFtZT0ic3RhcnRyaW5nQmFsYW5jZSI+PEZpZWxkIE5hbWU9IkFtb3VudCIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0iQWNjb3VudFRyYW5zYWN0aW9uSWQiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJEYXRlQ3JlYXRlZCIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9IkFjY291bnRJZCIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9IkZpbmFsQmFsYW5jZSIgVHlwZT0iRGVjaW1hbCIgLz48L1ZpZXc+PFJlbGF0aW9uIE1hc3Rlcj0iQWNjb3VudCIgRGV0YWlsPSJBY2NvdW50VHJhbnNhY3Rpb24iPjxLZXlDb2x1bW4gTWFzdGVyPSJBY2NvdW50SUQiIERldGFpbD0iQWNjb3VudElkIiAvPjwvUmVsYXRpb24+PFJlbGF0aW9uIE1hc3Rlcj0iQWNjb3VudCIgRGV0YWlsPSJzdGFydHJpbmdCYWxhbmNlIj48S2V5Q29sdW1uIE1hc3Rlcj0iQWNjb3VudElEIiBEZXRhaWw9IkFjY291bnRJZCIgLz48L1JlbGF0aW9uPjwvRGF0YVNldD4=</value>
+    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9IkFjY291bnRUcmFuc2FjdGlvbiI+PEZpZWxkIE5hbWU9IkFtb3VudCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iRmluYWxCYWxhbmNlIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJOb3RlcyIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iRGF0ZUNyZWF0ZWQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkRlc2NyaXB0aW9uIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJBY2NvdW50SWQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkFjY291bnRUcmFuc2FjdGlvbklkIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJJc0RlbGV0ZWQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkFjY291bnRUcmFuc2FjdGlvblR5cGVJZCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQWNjb3VudFBheW1lbnRNb2Rlc19EZXNjcmlwdGlvbiIgVHlwZT0iVW5rbm93biIgLz48L1ZpZXc+PFZpZXcgTmFtZT0iQWNjb3VudCI+PEZpZWxkIE5hbWU9IkFjY291bnRJRCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQWNjb3VudENvZGUiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkNvbXBhbnlOYW1lIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJUZWxlcGhvbmUiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IndlYnNpdGUiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkNyZWRpdExpbWl0IiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJUZW5hbnRJZCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQ3JlZGl0VGVybXMiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9Ik5hbWUiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkFkZHJlc3NMaW5lMSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQWRkcmVzc0xpbmUyIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJBZGRyZXNzTGluZTMiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkFjY291bnRBZGRyZXNzZXNfVGVsZXBob25lIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJUb3duIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJDb3VudHkiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IlBvc3RDb2RlIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJBZGRUeXBlQmlsbGluZyIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iU3RhcnRpbmdCYWxhbmNlIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJEdWVCYWxhbmNlIiBUeXBlPSJVbmtub3duIiAvPjwvVmlldz48UmVsYXRpb24gTWFzdGVyPSJBY2NvdW50IiBEZXRhaWw9IkFjY291bnRUcmFuc2FjdGlvbiI+PEtleUNvbHVtbiBNYXN0ZXI9IkFjY291bnRJRCIgRGV0YWlsPSJBY2NvdW50SWQiIC8+PC9SZWxhdGlvbj48L0RhdGFTZXQ+</value>
   </data>
 </root>

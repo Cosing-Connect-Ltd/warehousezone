@@ -96,6 +96,7 @@ namespace Ganedata.Core.Models
         public string BatchNumber { get; set; }
         public DateTime? ExpiryDate { get; set; }
         public List<PalleTrackingProcess> PalleTrackingProcess { get; set; }
+        public List<ProductKitMapViewModel> ProductKitMapViewModel { get; set; }
     }
 
     public class AccountTransactionInfoSync

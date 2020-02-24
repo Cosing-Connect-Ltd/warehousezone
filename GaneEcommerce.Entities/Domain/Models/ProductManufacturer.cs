@@ -6,6 +6,7 @@ using System.Web;
 
 namespace Ganedata.Core.Entities.Domain
 {
+    [Serializable]
     public class ProductManufacturer : PersistableEntity<int>
     {
         [Key]
