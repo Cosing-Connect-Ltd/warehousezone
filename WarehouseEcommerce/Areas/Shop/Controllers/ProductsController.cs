@@ -160,7 +160,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
 
         }
 
-        public PartialViewResult _CartItemsPartial(int? ProductId ,decimal? qty, bool? Remove)
+        public PartialViewResult _CartItemsPartial(int? ProductId ,decimal? qty, bool? Remove, bool?details)
        {
             if (!ProductId.HasValue)
             {
@@ -179,7 +179,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     return PartialView(models);
 
                 }
-                else if (qty.HasValue)
+                else if (qty.HasValue && !details.HasValue)
                 {
                     var model = new OrderDetail();
                     var Product = _productServices.GetProductMasterById(ProductId ?? 0);
@@ -188,8 +188,8 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     model.ProductId = ProductId ?? 0;
                     model.Price = _productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, null).SellPrice;
                     model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
-                    var details = _mapper.Map(model, new OrderDetailSessionViewModel());
-                    GaneCartItemsSessionHelper.UpdateCartItemsSession("", details, false);
+                    var Details = _mapper.Map(model, new OrderDetailSessionViewModel());
+                    GaneCartItemsSessionHelper.UpdateCartItemsSession("", Details, false);
                     var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
                     ViewBag.TotalQty = models.Sum(u => u.TotalAmount);
                     return PartialView(models);
@@ -205,13 +205,13 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     model.Price = _productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, null).SellPrice;
                     model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
                     ViewBag.CartModal = false;
-                    var details = _mapper.Map(model, new OrderDetailSessionViewModel());
+                    var Details = _mapper.Map(model, new OrderDetailSessionViewModel());
                     var ProductCheck = GaneCartItemsSessionHelper.GetCartItemsSession().FirstOrDefault(u => u.ProductId == ProductId);
                     if (ProductCheck != null)
                     {
-                        details.Qty = ProductCheck.Qty + 1;
+                        Details.Qty = ProductCheck.Qty + (qty.HasValue? qty.Value : 1);
                     }
-                    GaneCartItemsSessionHelper.UpdateCartItemsSession("", details, false);
+                    GaneCartItemsSessionHelper.UpdateCartItemsSession("", Details, false);
                     var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
                     var cartedProduct = models.Where(u => u.ProductId == ProductId).ToList();
                     return PartialView(cartedProduct);
@@ -222,7 +222,6 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
 
         public int CartItemsCount()
         {
-            _CartItemsPartial(null, null, null);
             return GaneCartItemsSessionHelper.GetCartItemsSession().Count;
 
         }

@@ -77,10 +77,13 @@ function updateTextBox(event, ui) {
 }
 function AddToCart(ProductId) {
     debugger;
+
+    var quantity = $(".input-number").val();
+    var detail = $(".input-number").data("detail");
     $.ajax({
         type: "GET",
         url: basePath + "shop/Products/_CartItemsPartial/",
-        data: { ProductId: ProductId },
+        data: { ProductId: ProductId, qty: quantity, details: detail },
         dataType: 'html',
         success: function (data) {
             var cardItemsValue = parseInt($("#cart-total").text());
