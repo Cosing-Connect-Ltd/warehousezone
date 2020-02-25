@@ -395,4 +395,8 @@ namespace Ganedata.Core.Entities.Enums
         Internal = 1,
         PrestaShop = 2
     }
+    public enum ApiTypes
+    {
+        MerakiSecretKey=1
+    }
 }
