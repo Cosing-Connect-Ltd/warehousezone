@@ -17,6 +17,7 @@
 }
 .search-container{
     display:flex;
+    border-radius: 10px;
 }
 .search-box input {
     border: 1px solid #CBDAF2;
@@ -26,6 +27,7 @@
     border-bottom-right-radius: 0px;
     font-size: 15px !important;
     width: unset !important;
+    border-radius: 10px;
 }
 
 .search-by-category {

@@ -145,6 +145,7 @@ body {
 
 .dropdown-menu {
   box-shadow: 0 0px 5px rgba(0, 0, 0, .175);
+  z-index: 9999;
 }
 
 .form-control {
@@ -448,8 +449,11 @@ div.required .control-label:before {
 }
 
 .cart-menu .dropdown-menu {
-  min-width: 200px;
-  width: 300px;
+    min-width: 200px;
+    width: 300px;
+    position: relative;
+    left: 100px;
+    right: 10px;
 }
 
 @media(min-width: 768px) {
@@ -1402,7 +1406,7 @@ header {
     position: sticky;
     top: 0;
     width: 100%;
-    z-index: 999;
+    z-index: 99;
     background-color: white;
 }
 .top-menu-links svg:hover,

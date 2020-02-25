@@ -105,6 +105,7 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Landing Cost")]
         public decimal? LandedCost { get; set; }
         [Display(Name = "Sell Price")]
+        [DisplayFormat(DataFormatString = "{0:n2}", ApplyFormatInEditMode = true)]
         public decimal? SellPrice { get; set; }
         [Display(Name = "Threshold Price")]
         public decimal? MinThresholdPrice { get; set; }

@@ -25,8 +25,8 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         private readonly IMapper _mapper;
         private readonly IProductPriceService _productPriceService;
 
-        public ProductsController(IProductServices productServices, IUserService userService, IProductLookupService productlookupServices,IProductPriceService productPriceService, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IMapper mapper, ICommonDbServices commonDbServices, ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IActivityServices activityServices, ITenantsServices tenantServices)
-            : base(orderService, propertyService, accountServices, lookupServices,tenantsCurrencyRateServices)
+        public ProductsController(IProductServices productServices, IUserService userService, IProductLookupService productlookupServices, IProductPriceService productPriceService, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IMapper mapper, ICommonDbServices commonDbServices, ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IActivityServices activityServices, ITenantsServices tenantServices)
+            : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices)
         {
             _userService = userService;
             _activityServices = activityServices;
@@ -40,7 +40,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         }
         // GET: Products
 
-        public ActionResult ProductCategories(int? productGroupId, int? sortOrder, string currentFilter, string searchString, int? page, int? pagesize = 10,int? departmentId=null)
+        public ActionResult ProductCategories(int? productGroupId, int? sortOrder, string currentFilter, string searchString, int? page, int? pagesize = 10, int? departmentId = null)
         {
             ViewBag.groupId = productGroupId;
             ViewBag.departmentId = departmentId;
@@ -52,7 +52,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             var product = _productlookupServices.GetAllValidProductGroupById(productGroupId);
             if (departmentId.HasValue)
             {
-                product = _productlookupServices.GetAllValidProductGroupById(null,departmentId);
+                product = _productlookupServices.GetAllValidProductGroupById(null, departmentId);
             }
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -108,7 +108,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         {
             ViewBag.DetailImagesPath = _productServices.GetProductFiles(productId ?? 0, (CurrentTenantId), true).ToList();
             var product = _productServices.GetProductMasterById(productId ?? 0);
-            
+
             return View(product);
         }
 
@@ -131,7 +131,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         }
 
         public JsonResult searchProduct(int? groupId, string searchkey)
-      {
+        {
             var model = (from product in _productlookupServices.GetAllValidProductGroupById(groupId)
                          where (product.Name.Contains(searchkey.Trim()) || product.SKUCode.Contains(searchkey.Trim()) || product.ManufacturerPartNo.Contains(searchkey.Trim())
                          || product.Description.Contains(searchkey.Trim()) || product.ProductGroup.ProductGroup.Contains(searchkey.Trim()))
@@ -143,9 +143,9 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
 
 
                          }).OrderBy(u => u.Id).Take(10).ToList();
-            
 
-            model.ForEach(x => x.Path = ConfigurationManager.AppSettings["BaseFilePath"] + (string.IsNullOrEmpty(x.Path)? "/UploadedFiles/Products/no-image.png" : x.Path));
+
+            model.ForEach(x => x.Path = ConfigurationManager.AppSettings["BaseFilePath"] + (string.IsNullOrEmpty(x.Path) ? "/UploadedFiles/Products/no-image.png" : x.Path));
 
 
             return Json(model, JsonRequestBehavior.AllowGet);
@@ -155,19 +155,19 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         public ActionResult AddToCart()
         {
             ViewBag.cart = true;
-           
+
             return View();
 
         }
 
-        public PartialViewResult _CartItemsPartial(int? ProductId ,decimal? qty, bool? Remove, bool?details)
-       {
+        public PartialViewResult _CartItemsPartial(int? ProductId, decimal? qty, bool? Remove, bool? details)
+        {
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             if (!ProductId.HasValue)
             {
                 var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
                 ViewBag.TotalQty = models.Sum(u => u.TotalAmount);
-                models.ForEach(u => u.Price = (u.Price * (currencyyDetail.Rate??0)));
+                models.ForEach(u => u.Price = Math.Round((u.Price) * (currencyyDetail.Rate ?? 0), 2));
                 models.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
                 return PartialView(models);
 
@@ -179,7 +179,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     GaneCartItemsSessionHelper.RemoveCartItemSession(ProductId ?? 0);
                     var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
                     ViewBag.TotalQty = models.Sum(u => u.TotalAmount);
-                    models.ForEach(u => u.Price = (u.Price * (currencyyDetail.Rate ?? 0)));
+                    models.ForEach(u => u.Price = Math.Round((u.Price)  * (currencyyDetail.Rate ?? 0), 2));
                     models.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
                     return PartialView(models);
 
@@ -191,10 +191,10 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     model.ProductMaster = Product;
                     model.Qty = qty.HasValue ? qty.Value : 1;
                     model.ProductId = ProductId ?? 0;
-                    model.Price = (_productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, null).SellPrice * (currencyyDetail.Rate ?? 0));
+                    model.Price = Math.Round(((_productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, null).SellPrice) * (currencyyDetail.Rate ?? 0)), 2);
                     model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
                     var Details = _mapper.Map(model, new OrderDetailSessionViewModel());
-                    Details.ProductPath= _productServices.GetProductFilesByTenantId((CurrentTenantId)).FirstOrDefault(u => u.ProductId == Details.ProductId && u.DefaultImage == true)?.FilePath?? "/Areas/Shop/Content/app/img/product/no_image.gif";
+                    Details.ProductPath = _productServices.GetProductFilesByTenantId((CurrentTenantId)).FirstOrDefault(u => u.ProductId == Details.ProductId && u.DefaultImage == true)?.FilePath ?? "/Areas/Shop/Content/app/img/product/no_image.gif";
                     GaneCartItemsSessionHelper.UpdateCartItemsSession("", Details, false);
                     var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
                     ViewBag.TotalQty = models.Sum(u => u.TotalAmount);
@@ -210,7 +210,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     model.ProductMaster = Product;
                     model.Qty = qty.HasValue ? qty.Value : 1;
                     model.ProductId = ProductId ?? 0;
-                    model.Price = (_productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, null).SellPrice * (currencyyDetail.Rate ?? 0));
+                    model.Price = Math.Round(((_productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, null).SellPrice) * (currencyyDetail.Rate ?? 0)), 2);
                     model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
                     ViewBag.CartModal = false;
                     var Details = _mapper.Map(model, new OrderDetailSessionViewModel());
@@ -218,12 +218,12 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     var ProductCheck = GaneCartItemsSessionHelper.GetCartItemsSession().FirstOrDefault(u => u.ProductId == ProductId);
                     if (ProductCheck != null)
                     {
-                        Details.Qty = ProductCheck.Qty + (qty.HasValue? qty.Value : 1);
+                        Details.Qty = ProductCheck.Qty + (qty.HasValue ? qty.Value : 1);
                     }
                     GaneCartItemsSessionHelper.UpdateCartItemsSession("", Details, false);
                     var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
                     var cartedProduct = models.Where(u => u.ProductId == ProductId).ToList();
-                    cartedProduct.ForEach(u => u.Price = (u.Price * (currencyyDetail.Rate ?? 0)));
+                    cartedProduct.ForEach(u => u.Price = Math.Round((u.Price) * (currencyyDetail.Rate ?? 0), 2));
                     cartedProduct.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
                     return PartialView(cartedProduct);
                 }

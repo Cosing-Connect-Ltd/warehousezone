@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Ganedata.Core.Services;
+using System;
 using System.Linq;
 using System.Web.Mvc;
 using WarehouseEcommerce.Helpers;
@@ -15,7 +16,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         private readonly ILookupServices _lookupServices;
         private readonly IProductServices _productServices;
         private readonly IProductLookupService _productlookupServices;
-        public HomeController(ICoreOrderService orderService,IMapper mapper, IProductServices productServices, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices,ITenantsCurrencyRateServices tenantsCurrencyRateServices, IUserService userService, IActivityServices activityServices, ITenantsServices tenantServices)
+        public HomeController(ICoreOrderService orderService, IMapper mapper, IProductServices productServices, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IUserService userService, IActivityServices activityServices, ITenantsServices tenantServices)
             : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices)
         {
             _lookupServices = lookupServices;
@@ -53,7 +54,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             ViewBag.CartItemCount = GaneCartItemsSessionHelper.GetCartItemsSession().Count;
             ViewBag.CartItems = GaneCartItemsSessionHelper.GetCartItemsSession().ToList();
             ViewBag.ProductGroups = new SelectList(_lookupServices.GetAllValidProductGroups((CurrentTenantId), 12), "ProductGroupId", "ProductGroup");
-            ViewBag.UserName = CurrentUser.UserFirstName+ " " +CurrentUser.UserLastName;
+            ViewBag.UserName = CurrentUser.UserFirstName + " " + CurrentUser.UserLastName;
             return PartialView();
         }
 
@@ -70,15 +71,15 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             var specialProduct = new ProductDetailViewModel
             {
                 productMasterList = _productServices.GetProductByCategory(CurrentTenantId, 6, SpecialProduct: true).ToList(),
-               
+
             };
-            specialProduct.productMasterList.ForEach(u => u.SellPrice = (u.SellPrice * currencyyDetail.Rate));
+            specialProduct.productMasterList.ForEach(u => u.SellPrice = (Math.Round((u.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0), 2)));
             specialProduct.CurrencySign = currencyyDetail.Symbol;
             if (specialProduct.productMasterList != null)
             {
                 var prdouctIds = specialProduct.productMasterList.Select(u => u.ProductId).ToList();
-                
-              
+
+
                 specialProduct.ProductFilesList = _productServices.GetProductFilesByTenantId((CurrentTenantId)).Where(u => prdouctIds.Contains(u.ProductId)).ToList();
             }
 
@@ -93,7 +94,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                 productMasterList = _productServices.GetProductByCategory((CurrentTenantId), 12, TopProduct: true).ToList(),
 
             };
-            TopProduct.productMasterList.ForEach(u => u.SellPrice = (u.SellPrice * currencyyDetail.Rate));
+            TopProduct.productMasterList.ForEach(u => u.SellPrice = (Math.Round(((u.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0)), 2)));
             TopProduct.CurrencySign = currencyyDetail.Symbol;
             if (TopProduct.productMasterList != null)
             {
@@ -113,7 +114,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                 productMasterList = _productServices.GetProductByCategory(CurrentTenantId, 6, OnSaleProduct: true).ToList(),
 
             };
-            onsale.productMasterList.ForEach(u => u.SellPrice = (u.SellPrice * currencyyDetail.Rate));
+            onsale.productMasterList.ForEach(u => u.SellPrice = (Math.Round((u.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0), 2)));
             onsale.CurrencySign = currencyyDetail.Symbol;
             if (onsale.productMasterList != null)
             {
@@ -127,13 +128,13 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
 
         public PartialViewResult _TopCategoryPartial()
         {
-            var TopCategory  = _lookupServices.GetAllValidProductGroups((CurrentTenantId),6);
-           
+            var TopCategory = _lookupServices.GetAllValidProductGroups((CurrentTenantId), 6);
+
 
 
             return PartialView(TopCategory);
         }
-        
+
 
 
         public PartialViewResult _BestSellerPartial()
@@ -143,7 +144,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             {
                 productMasterList = _productServices.GetProductByCategory((CurrentTenantId), 2, BestSellerProduct: true).ToList()
             };
-            BestSellerProduct.productMasterList.ForEach(u => u.SellPrice = (u.SellPrice * currencyyDetail.Rate));
+            BestSellerProduct.productMasterList.ForEach(u => u.SellPrice = (Math.Round((u.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0), 2)));
             BestSellerProduct.CurrencySign = currencyyDetail.Symbol;
             if (BestSellerProduct.productMasterList != null)
             {
@@ -183,9 +184,9 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             return PartialView();
         }
 
-        public ActionResult _GetProductByGroupsAndDepartment(int? DepartmentId,int?productgroupId)
+        public ActionResult _GetProductByGroupsAndDepartment(int? DepartmentId, int? productgroupId)
         {
-            return RedirectToAction("ProductCategories", "Products",new { productGroupId=productgroupId, departmentId= DepartmentId});
+            return RedirectToAction("ProductCategories", "Products", new { productGroupId = productgroupId, departmentId = DepartmentId });
         }
 
         public ActionResult ReturnPath(int productId, bool status)

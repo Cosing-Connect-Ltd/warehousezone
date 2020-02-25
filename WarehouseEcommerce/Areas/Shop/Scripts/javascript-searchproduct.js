@@ -76,7 +76,6 @@ function updateTextBox(event, ui) {
     return false;
 }
 function AddToCart(ProductId) {
-    debugger;
 
     var quantity = $(".input-number").val();
     var detail = $(".input-number").data("detail");

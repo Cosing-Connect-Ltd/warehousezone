@@ -283,7 +283,9 @@ th {
   content: "\002a";
 }
 .glyphicon-plus:before {
-  content: "\002b";
+    content: "\002b";
+    position: relative;
+    bottom: 7px;
 }
 .glyphicon-euro:before,
 .glyphicon-eur:before {
@@ -291,6 +293,9 @@ th {
 }
 .glyphicon-minus:before {
   content: "\2212";
+  position: relative;
+  bottom: 7px;
+
 }
 .glyphicon-cloud:before {
   content: "\2601";
@@ -4045,7 +4050,9 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .input-group-btn:last-child > .btn,
 .input-group-btn:last-child > .btn-group {
   z-index: 2;
-  margin-left: -1px;
+  margin-left: 3px;
+  border-radius: 3px;
+  height: 35px;
 }
 .nav {
   padding-left: 0;
