@@ -73,5 +73,7 @@ namespace Ganedata.Core.Entities.Domain
         public virtual ProductAccountCodesViewModel AccountCode { get; set; }
 
         public string CurrencySign { get; set; }
+
+        public string ProductPath { get; set; }
     }
 }

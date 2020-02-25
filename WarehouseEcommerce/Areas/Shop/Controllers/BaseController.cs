@@ -301,7 +301,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                         }).ToList();
                         var getTenantCurrencies = tenantsCurrencyRateServices.GetTenantCurrencies(CurrentTenantId).FirstOrDefault(u => u.CurrencyID == detail.FirstOrDefault()?.Id);
                         detail.ForEach(c =>
-                            c.Rate = tenantsCurrencyRateServices.GetCurrencyRateByTenantid(getTenantCurrencies.TenantCurrencyID)
+                            c.Rate = tenantsCurrencyRateServices.GetCurrencyRateByTenantid(getTenantCurrencies?.TenantCurrencyID??0)
                         );
                         Session["CurrencyDetail"] = detail.FirstOrDefault();
                     }

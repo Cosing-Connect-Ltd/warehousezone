@@ -194,6 +194,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     model.Price = (_productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, null).SellPrice * (currencyyDetail.Rate ?? 0));
                     model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
                     var Details = _mapper.Map(model, new OrderDetailSessionViewModel());
+                    Details.ProductPath= _productServices.GetProductFilesByTenantId((CurrentTenantId)).FirstOrDefault(u => u.ProductId == Details.ProductId && u.DefaultImage == true)?.FilePath?? "/Areas/Shop/Content/app/img/product/no_image.gif";
                     GaneCartItemsSessionHelper.UpdateCartItemsSession("", Details, false);
                     var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
                     ViewBag.TotalQty = models.Sum(u => u.TotalAmount);
@@ -213,6 +214,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
                     ViewBag.CartModal = false;
                     var Details = _mapper.Map(model, new OrderDetailSessionViewModel());
+                    Details.ProductPath = _productServices.GetProductFilesByTenantId((CurrentTenantId)).FirstOrDefault(u => u.ProductId == Details.ProductId && u.DefaultImage == true)?.FilePath ?? "/Areas/Shop/Content/app/img/product/no_image.gif";
                     var ProductCheck = GaneCartItemsSessionHelper.GetCartItemsSession().FirstOrDefault(u => u.ProductId == ProductId);
                     if (ProductCheck != null)
                     {

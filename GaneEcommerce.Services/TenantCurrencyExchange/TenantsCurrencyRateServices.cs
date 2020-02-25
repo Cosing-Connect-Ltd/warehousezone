@@ -55,7 +55,7 @@ namespace Ganedata.Core.Services
         }
         public decimal GetCurrencyRateByTenantid(int currencyTenantId)
         {
-            return _currentDbContext.TenantCurrenciesExRates.OrderByDescending(u=>u.ExchnageRateID).FirstOrDefault(u => u.TenantCurrencyID == currencyTenantId).Rate;
+            return _currentDbContext.TenantCurrenciesExRates.OrderByDescending(u=>u.ExchnageRateID).FirstOrDefault(u => u.TenantCurrencyID == currencyTenantId)?.Rate??0;
         }
 
 
