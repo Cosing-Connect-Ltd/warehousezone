@@ -183,6 +183,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         {
             ViewBag.TimeZone = GetCurrentTimeZone();
             ViewBag.BaseFilePath = ConfigurationManager.AppSettings["BaseFilePath"];
+            ViewBag.LoginDetail = CurrentUserId > 0 ? "Logout" : "Login";
             ViewBag.Currencies = LookupServices.GetAllGlobalCurrencies();
             CurrencyDetail(null);
 

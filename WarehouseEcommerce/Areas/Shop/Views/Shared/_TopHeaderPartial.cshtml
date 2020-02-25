@@ -86,7 +86,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right user_account">
                                 <li><a href="@Url.Action("Create","User")"><i class="fa fa-user-plus"></i>Register</a></li>
-                                <li><a href="@Url.Action("logout","User")"><i class="fa fa-lock"></i>Login</a></li>
+                                <li><a href="@Url.Action("logout","User")"><i class="fa fa-lock"></i>@ViewBag.LoginDetail</a></li>
                                 <li><a href="#" id="wishlist-total"><i class="fa fa-heart"></i>Wish List (0)</a></li>
                             </ul>
                         </li>

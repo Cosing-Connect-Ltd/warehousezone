@@ -188,6 +188,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
 
         public ActionResult logout()
         {
+
             Session.Clear();
             Session.Abandon();
             return RedirectToAction("Login", "User");
