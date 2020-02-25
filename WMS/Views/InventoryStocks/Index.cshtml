@@ -32,7 +32,8 @@
     }
 
     function OnInventoryLocationBeginCallback(s, e) {
-        //e.customArgs["id"] = $('#selkey').val();
+        e.customArgs["id"] = $("#InventoryWarehouseId").val();
+        e.customArgs["productid"] = $('#selkey').val();
     }
 
     $(document).ready(function () {

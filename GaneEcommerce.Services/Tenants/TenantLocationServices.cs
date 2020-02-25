@@ -127,6 +127,7 @@ namespace Ganedata.Core.Services
                 select new WarehouseProductLevelViewModel()
                 {
                     ProductName = p.Name,
+                    SKUCode = p.SKUCode,
                     ProductID = p.ProductId,
                     TenantLocationID = warehouseId,
                     ReOrderQuantity = p.ReorderQty ?? 0,

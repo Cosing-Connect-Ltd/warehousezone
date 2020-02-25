@@ -240,6 +240,7 @@ namespace Ganedata.Core.Entities.Domain
         public int MarketId { get; set; }
         public decimal ReOrderQuantity { get; set; }
         public decimal MinStockQuantity { get; set; }
+        public string SKUCode { get; set; }
     }
 
 

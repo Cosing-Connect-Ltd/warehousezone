@@ -70,7 +70,7 @@ namespace WMS.CustomBindings
         }
 
         private static IQueryable<InventoryStockViewModel> GetInventoryStocksListDataset(int tenantId, int InventoryId)
-        {
+      {
             var InventoryStocks = DependencyResolver.Current.GetService<IProductServices>();
             var transactions = InventoryStocks.GetAllInventoryStocksList(tenantId, InventoryId);
 

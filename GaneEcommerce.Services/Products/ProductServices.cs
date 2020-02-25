@@ -755,7 +755,7 @@ namespace Ganedata.Core.Services
                     }
                     productMaster.Kit = false;
                 }
-               
+
 
 
 
@@ -869,7 +869,8 @@ namespace Ganedata.Core.Services
                 }
                 _currentDbContext.SaveChanges();
             }
-            else {
+            else
+            {
                 var isdeletedList = _currentDbContext.ProductsWebsitesMap.Where(u => u.ProductId == productMaster.ProductId && u.IsDeleted != true).ToList();
                 if (isdeletedList.Count > 0)
                 {
@@ -993,13 +994,13 @@ namespace Ganedata.Core.Services
                     products.BestSellerProduct = productMaster.BestSellerProduct;
                     products.SpecialProduct = productMaster.SpecialProduct;
                     products.OnSaleProduct = productMaster.OnSaleProduct;
-                   
+
                 }
                 products.TenantId = TenantId;
                 _currentDbContext.Entry(products).State = EntityState.Modified;
-               _currentDbContext.SaveChanges();
+                _currentDbContext.SaveChanges();
             }
-            
+
             return productMaster;
         }
 
@@ -1102,7 +1103,8 @@ namespace Ganedata.Core.Services
             {
                 return _currentDbContext.ProductMaster.Where(u => u.TenantId == tenantId && u.OnSaleProduct == OnSaleProduct && u.IsDeleted != true).Take(NumberofProducts);
             }
-            else {
+            else
+            {
                 return _currentDbContext.ProductMaster.Where(u => u.TenantId == tenantId && u.IsDeleted != true).Take(NumberofProducts);
             }
         }
@@ -1124,8 +1126,8 @@ namespace Ganedata.Core.Services
                            join p in _currentDbContext.ProductMaster on i.ProductId equals p.ProductId
                            join w in _currentDbContext.TenantWarehouses on i.WarehouseId equals w.WarehouseId
                            where i.TenantId == tenantId && i.ProductId == filterByProductId
-                               && (warehouseId == 0 || i.WarehouseId == warehouseId || (i.TenantWarehous.ParentWarehouse != null
-                               && i.TenantWarehous.ParentWarehouseId == warehouseId))
+                               && (warehouseId == 0 || i.WarehouseId == warehouseId || i.TenantWarehous.ParentWarehouseId == warehouseId)
+                           orderby w.WarehouseName
                            select new InventoryStockViewModel
                            {
                                Allocated = i.Allocated,
@@ -1153,7 +1155,8 @@ namespace Ganedata.Core.Services
                                join i in _currentDbContext.InventoryStocks
                                on p.ProductId equals i.ProductId
                                join w in _currentDbContext.TenantWarehouses on i.WarehouseId equals w.WarehouseId
-                               where p.IsDeleted != true && i.TenantId == tenantId && (warehouseId == 0 || i.WarehouseId == warehouseId || (i.TenantWarehous.ParentWarehouse != null && i.TenantWarehous.ParentWarehouseId == warehouseId))
+                               where p.IsDeleted != true && i.TenantId == tenantId && (warehouseId == 0 || i.WarehouseId == warehouseId || i.TenantWarehous.ParentWarehouseId == warehouseId)
+                               orderby w.WarehouseName
                                group new { p, i, w } by new { p.ProductId } into gq
                                select new InventoryStockViewModel()
                                {
@@ -1182,7 +1185,8 @@ namespace Ganedata.Core.Services
                                join i in _currentDbContext.InventoryStocks
                                on p.ProductId equals i.ProductId
                                join w in _currentDbContext.TenantWarehouses on i.WarehouseId equals w.WarehouseId
-                               where p.IsDeleted != true && i.TenantId == tenantId && (warehouseId == 0 || i.WarehouseId == warehouseId || (i.TenantWarehous.ParentWarehouse != null && i.TenantWarehous.ParentWarehouseId == warehouseId))
+                               where p.IsDeleted != true && i.TenantId == tenantId && (warehouseId == 0 || i.WarehouseId == warehouseId || i.TenantWarehous.ParentWarehouseId == warehouseId)
+                               orderby w.WarehouseName
                                select new InventoryStockViewModel
                                {
                                    Allocated = i.Allocated,
@@ -1398,10 +1402,10 @@ namespace Ganedata.Core.Services
                     TaxName = prd.GlobalTax.TaxName,
                     ProdStartDate = prd.ProdStartDate,
                     ProductLotProcessTypeCodesDescription = prd.ProductLotProcessTypeCodes.Description,
-                    Available = prd.InventoryStocks.Where(x => x.ProductId == prd.ProductId).Select(x => x.Available).FirstOrDefault(),
-                    Allocated = prd.InventoryStocks.Where(x => x.ProductId == prd.ProductId).Select(x => x.Allocated).FirstOrDefault(),
-                    InStock = prd.InventoryStocks.Where(x => x.ProductId == prd.ProductId).Select(x => x.InStock).FirstOrDefault(),
-                    OnOrder = prd.InventoryStocks.Where(x => x.ProductId == prd.ProductId).Select(x => x.OnOrder).FirstOrDefault(),
+                    Available = prd.InventoryStocks.Where(x => x.ProductId == prd.ProductId && (x.WarehouseId == warehouseId || x.TenantWarehous.ParentWarehouseId == warehouseId)).Select(x => x.Available).Sum(),
+                    Allocated = prd.InventoryStocks.Where(x => x.ProductId == prd.ProductId && (x.WarehouseId == warehouseId || x.TenantWarehous.ParentWarehouseId == warehouseId)).Select(x => x.Allocated).Sum(),
+                    InStock = prd.InventoryStocks.Where(x => x.ProductId == prd.ProductId && (x.WarehouseId == warehouseId || x.TenantWarehous.ParentWarehouseId == warehouseId)).Select(x => x.InStock).Sum(),
+                    OnOrder = prd.InventoryStocks.Where(x => x.ProductId == prd.ProductId && (x.WarehouseId == warehouseId || x.TenantWarehous.ParentWarehouseId == warehouseId)).Select(x => x.OnOrder).Sum(),
                     ProductGroupName = prd.ProductGroup.ProductGroup ?? null,
                     DepartmentName = prd.TenantDepartment.DepartmentName,
                     Location = prd.ProductLocationsMap.Where(a => a.IsDeleted != true).Select(x => x.Locations.LocationCode).FirstOrDefault().ToString(),
@@ -1409,10 +1413,10 @@ namespace Ganedata.Core.Services
                     EnableTax = prd.EnableTax ?? false,
                     DontMonitorStock = prd.DontMonitorStock,
                     ProcessByPallet = prd.ProcessByPallet,
-                    OnSaleProduct=prd.OnSaleProduct,
-                    BestSellerProduct=prd.BestSellerProduct,
-                    TopProduct=prd.TopProduct,
-                    SpecialProduct=prd.SpecialProduct
+                    OnSaleProduct = prd.OnSaleProduct,
+                    BestSellerProduct = prd.BestSellerProduct,
+                    TopProduct = prd.TopProduct,
+                    SpecialProduct = prd.SpecialProduct
                 }).OrderBy(x => x.Name);
 
             return model;

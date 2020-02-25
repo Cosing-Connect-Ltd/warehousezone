@@ -55,6 +55,8 @@
             DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo1 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
             DevExpress.DataAccess.Sql.Join join2 = new DevExpress.DataAccess.Sql.Join();
             DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo2 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
+            DevExpress.DataAccess.Sql.Join join3 = new DevExpress.DataAccess.Sql.Join();
+            DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo3 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
             this.xrLabel8 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel3 = new DevExpress.XtraReports.UI.XRLabel();
@@ -163,10 +165,10 @@
             // WarehouseParam
             // 
             this.WarehouseParam.Description = "Location";
-            this.WarehouseParam.LookUpSettings = staticListLookUpSettings1;
             this.WarehouseParam.Name = "WarehouseParam";
             this.WarehouseParam.Type = typeof(int);
             this.WarehouseParam.ValueInfo = "0";
+            this.WarehouseParam.ValueSourceSettings = staticListLookUpSettings1;
             // 
             // ReportHeader
             // 
@@ -319,7 +321,7 @@
             columnExpression2.Table = table1;
             column2.Expression = columnExpression2;
             columnExpression3.ColumnName = "SKUCode";
-            table2.MetaSerializable = "<Meta X=\"270\" Y=\"30\" Width=\"125\" Height=\"1255\" />";
+            table2.MetaSerializable = "<Meta X=\"270\" Y=\"30\" Width=\"125\" Height=\"1312\" />";
             table2.Name = "ProductMaster";
             columnExpression3.Table = table2;
             column3.Expression = columnExpression3;
@@ -365,8 +367,14 @@
             join2.KeyColumns.Add(relationColumnInfo2);
             join2.Nested = table3;
             join2.Parent = table2;
+            relationColumnInfo3.NestedKeyColumn = "WarehouseId";
+            relationColumnInfo3.ParentKeyColumn = "TenantLocationID";
+            join3.KeyColumns.Add(relationColumnInfo3);
+            join3.Nested = table3;
+            join3.Parent = table1;
             selectQuery1.Relations.Add(join1);
             selectQuery1.Relations.Add(join2);
+            selectQuery1.Relations.Add(join3);
             selectQuery1.Tables.Add(table1);
             selectQuery1.Tables.Add(table2);
             selectQuery1.Tables.Add(table3);
@@ -393,7 +401,7 @@
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
             this.WarehouseParam,
             this.TenantIdParam});
-            this.Version = "19.1";
+            this.Version = "19.2";
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
         }

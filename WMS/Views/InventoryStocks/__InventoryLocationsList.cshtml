@@ -7,7 +7,7 @@
     var grid = Html.DevExpress().GridView(settings =>
     {
         settings.Name = "InventoryLocations";
-        settings.CallbackRouteValues = new { Controller = "InventoryStocks", Action = "_InventoryLocationsList", id = productId };
+        settings.CallbackRouteValues = new { Controller = "InventoryStocks", Action = "_InventoryLocationsList", productid = productId };
         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
         settings.Settings.ShowHeaderFilterButton = false;
         settings.SettingsBehavior.AllowSort = false;
@@ -21,10 +21,10 @@
 
         settings.KeyFieldName = "WarehouseId";
 
-        settings.SettingsPager.Visible = false;
+        settings.SettingsPager.Visible = true;
         settings.Settings.ShowGroupPanel = false;
         settings.Settings.ShowFilterRow = false;
-        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = false;
 
         settings.Columns.Add("WarehouseName");
         settings.Columns.Add("InStock");

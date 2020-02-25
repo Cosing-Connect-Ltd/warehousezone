@@ -85,14 +85,11 @@ namespace Ganedata.Core.Entities.Domain
     public class WarehouseProductLevelViewModel
     {
         public int ProductLocationStockLevelID { get; set; }
-
         public int ProductID { get; set; }
-
         public string ProductName { get; set; }
-
         public int TenantLocationID { get; set; }
-
         public decimal ReOrderQuantity { get; set; }
         public decimal MinStockQuantity { get; set; }
+        public string SKUCode { get; set; }
     }
 }

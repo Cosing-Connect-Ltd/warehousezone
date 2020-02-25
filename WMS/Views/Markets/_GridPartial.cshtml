@@ -37,7 +37,7 @@
 
                 ViewContext.Writer.Write("<form class='form-horizontal' id='_deleteMarket'>" + Html.AntiForgeryToken());
 
-                if(WMS.Helpers.LayoutHelpers.ActivityValidator("Markets", "Edit"))
+                if (WMS.Helpers.LayoutHelpers.ActivityValidator("Markets", "Edit"))
                 {
                     ViewContext.Writer.Write("<a class='btn fa fa-pencil' href='/markets/edit/" + id + "' role='button'></a>");
                 }
@@ -49,14 +49,15 @@
                 {
                     ViewContext.Writer.Write("<a class='btn fa fa-trash' style='" + (allowDelete ? "" : "display:none") + "' role='button' data-valueid='" + id
                                         + "' data-controller='Markets' id='deleteBtn' data-title='Delete Markets' data-message='This cannot be reversed, are you sure you want to delete this Market?' " +
-                                        "data-toggle='modal' data-target='#confirm-delete'></a></form>");
+                                        "data-toggle='modal' data-target='#confirm-delete'></a>");
                 }
                 ViewContext.Writer.Write("<a class='btn fa fa-print' target='_blank' href='/Reports/MarketCustomerPrint/" + id + "' role='button'></a>");
+                ViewContext.Writer.Write("</form>");
 
             });
         });
 
         settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
-       
+
 
     }).Bind(Model.Markets).GetHtml()

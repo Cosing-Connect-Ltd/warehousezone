@@ -688,6 +688,7 @@ namespace Ganedata.Core.Services
                 {
                     ProductName = p.Name,
                     ProductID = p.ProductId,
+                    SKUCode = p.SKUCode,
                     MarketId = marketId,
                     ReOrderQuantity = p.ReorderQty ?? 0,
                     MinStockQuantity = g?.MinStockQuantity ?? 0,
