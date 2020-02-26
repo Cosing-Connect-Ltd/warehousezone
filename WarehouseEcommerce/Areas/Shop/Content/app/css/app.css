@@ -451,9 +451,10 @@ div.required .control-label:before {
 .cart-menu .dropdown-menu {
     min-width: 200px;
     width: 300px;
-    position: relative;
-    left: 100px;
-    right: 10px;
+    position: absolute;
+    right: 0;
+    left: unset !important;
+    top: 64px;
 }
 
 @media(min-width: 768px) {
@@ -1446,13 +1447,13 @@ header {
   color: #777;
 }
 
-.search-by-category .search-container .categories-container {
+ .categories-container {
   float: left;
   width: 160px;
   position: relative
 }
 
-.search-by-category .search-container .categories-container .hover-cate p {
+.categories-container .hover-cate p {
   position: relative;
   margin-bottom: 0;
   border: 1px solid #eee;
@@ -1462,7 +1463,7 @@ header {
   border-radius: 4px 0 0 4px;
 }
 
-.search-by-category .search-container .categories-container .hover-cate p:after {
+.categories-container .hover-cate p:after {
   content: "\f107";
   font-family: 'fontawesome';
   position: absolute;
@@ -1471,7 +1472,7 @@ header {
   font-size: 18px;
 }
 
-    .search-by-category .search-container .categories-container .hover-cate .cate-items {
+.categories-container .hover-cate .cate-items {
         z-index: 9999;
         position: absolute;
         display: none;
@@ -1491,17 +1492,20 @@ header {
 }
 
 .btn-search-category {
-  background: #1455a6;
-  color: #fff;
-  border: 1px solid #1455a6;
-  height: 40px;
-  box-shadow: none;
-  text-transform: uppercase;
-  font-size: 13px;
-  padding: 3px 8px 0 8px;
-  min-width: 100px;
-  transition: 0.3s ease;
-  letter-spacing: 0.8px;
+    background: #1455a6;
+    color: #fff;
+    border: 1px solid #1455a6;
+    height: 40px !important;
+    box-shadow: none;
+    text-transform: uppercase;
+    font-size: 13px;
+    padding: 3px 8px 0 8px;
+    min-width: 100px;
+    transition: 0.3s ease;
+    letter-spacing: 0.8px;
+    margin-left: unset !important;
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px!important;
 }
 
 .btn-search-category:hover {
@@ -3255,7 +3259,7 @@ footer #contact li {
 }
 
 @media(min-width: 1200px) {
-  .search-by-category .search-container .categories-container {
+.categories-container {
     width: 180px;
   }
 }
@@ -3416,7 +3420,7 @@ footer #contact li {
   .product-thumb .price-old {
     display: inline-block;
   }
-  .search-by-category .search-container .categories-container {
+ .categories-container {
     display: none;
   }
   .ui-logo {
@@ -4702,11 +4706,14 @@ a.cashbtn {
 }
 
 .about-cnt td a.remove-btn {
-  color: #6E6E6E;
+  color: red;
+  font-weight: 400;
 }
-
+.about-cnt td a i {
+    font-weight: 600;
+}
 @media screen and (max-width:567px) {
-  .order-details td:first-child {
+    .order-details td:first-child {
     width: 100px;
   }
   .ordered-items {

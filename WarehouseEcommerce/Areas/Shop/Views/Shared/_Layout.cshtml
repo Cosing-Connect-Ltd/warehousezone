@@ -125,5 +125,12 @@
         $("#cart").click(function () {
             location.href = basePath + 'Shop/Products/AddToCart';
         });
+        $("#user_menue").hover(function () {
+            $('#user_menue').addClass('open');
+        });
+        $("#user_menue").mouseleave(function () {
+            $('#user_menue').removeClass('open');
+        });
+
     });
 </script>

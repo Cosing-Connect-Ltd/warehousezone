@@ -1,4 +1,7 @@
-﻿.head-logo img {
+﻿.head-logo {
+    margin: 0 10px 0 7px;
+}
+.head-logo img {
     height: 71px;
 }
 .header-row {
@@ -56,6 +59,7 @@
     }
     .search-box input {
             width: 100% !important;
+            height:40px
         }
     .list-inline-flex {
         justify-content: flex-end;
@@ -145,6 +149,9 @@
     width: 235px;
     height: 235px;
     border: solid 1px #D7D7D7;
+}
+#feature .caption {
+    width: 235px;
 }
 #onsale .image img {
     margin-right: unset !important;
@@ -509,6 +516,85 @@ ul.mhp-menu {
     width:100% !important;
 }
 #common-home {
-    max-width: 1360px;
+    max-width: 1400px;
     width: 100%;
+}
+@media(max-width:1024px) {
+    .header-row {
+        justify-content: unset!important;
+    }
+    .hcontact {
+        margin: 0 0 0 10px;
+        font-size: 12px;
+    }
+    .hcontact svg {
+        margin:unset;
+    }
+    .contact-currency {
+        display: flex;
+        align-items: center;
+    }
+    .cur button {
+        padding: unset;
+    }
+    .cur .btn.test::before {
+        margin: 0 5px;
+    }
+    .cur .btn.test::after {
+        margin: 0 5px;
+    }
+    .user_menu {
+        padding-right: unset !important;
+        margin-right: unset !important;
+        margin: 0 10px 0 10px;
+    }
+    .cart-menu {
+        margin: 0px 10px 0 10px;
+    }
+}
+@media(min-width:768px) and (max-width:960px) {
+    .contact-currency {
+        flex-wrap: wrap;
+        align-items: center;
+        margin-left: 10px;
+        width: 97px;
+    }
+    .cur .btn.test::before {
+        margin: unset;
+    }
+    .cur .btn.test::after {
+        margin: unset;
+    }
+    .hcontact {
+        margin: unset;
+    }
+    .search-box input {
+        width: 170px !important;
+    }
+    .categories-container {
+        width: 130px;
+    }
+    .btn-search-category {
+        min-width: unset !important;
+    }
+}
+.header-row .cart-menu {
+    display: flex !important;
+    align-items: center !important;
+}
+.header-row .user_menu {
+    display: flex !important;
+    align-items: center !important;
+}
+.card-container {
+    max-width: 1400px;
+    width: 100%;
+}
+.proceed-card-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.user_account {
+    top: 24px;
 }
