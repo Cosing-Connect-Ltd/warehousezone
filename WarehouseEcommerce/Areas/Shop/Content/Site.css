@@ -263,6 +263,8 @@ ul.mhp-menu {
     position: absolute;
     z-index: 999;
     margin: 0 0 0 -18px;
+    padding-top: 14px;
+    opacity: 0.95;
 }
 .mhp-menu li:hover {
     background-color: #1455a6;
@@ -600,4 +602,13 @@ ul.mhp-menu {
 }
 .user_account {
     top: 24px;
+}
+.nav-main-menu::after {
+    content: '';
+    border: 1px solid #313131;
+    height: 12px;
+    font-size: 7px;
+    position: relative;
+    top: -1px;
+    margin: 0 10px;
 }

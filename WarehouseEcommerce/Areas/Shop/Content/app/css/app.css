@@ -1639,16 +1639,7 @@ header {
   #_desktop_top_menu:hover .btn-navbar.navbar-toggle {
     background-color: #4de8d9;
   }
-  #menu1 li a::after {
-    content: '';
-    border: 1px solid #313131;
-    height: 12px;
-    font-size: 7px;
-    position: relative;
-    top: -1px;
-    margin: 0 10px;
 
-  }
     #menu1{
         text-align: center;
     }
@@ -4698,7 +4689,8 @@ a.cashbtn {
 }
 
 .ordered-items {
-  padding: 20px;
+    padding: 20px;
+    white-space: normal;
 }
 
 .price-whlist {

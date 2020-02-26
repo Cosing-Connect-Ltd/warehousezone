@@ -13,7 +13,7 @@
                     foreach (var item in department)
                     {
                         <li class="li-mhp-menu">
-                            <a href="@Url.Action("_GetProductByGroupsAndDepartment","Home",new {DepartmentId=item.DepartmentId})">@item.DepartmentName</a>
+                            <a class="nav-main-menu" href="@Url.Action("_GetProductByGroupsAndDepartment","Home",new {DepartmentId=item.DepartmentId})">@item.DepartmentName</a>
                             @{
                                 if (ViewBag.productGroup != null)
                                 {
