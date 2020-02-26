@@ -315,8 +315,9 @@
     <Content Include="Areas\Shop\Content\app\img\product\Microware-CHARGING-DOCK-LED-Light-hover.jpg" />
     <Content Include="Areas\Shop\Content\app\img\product\Microware-CHARGING-DOCK-LED-Light.jpg" />
     <Content Include="Areas\Shop\Content\app\img\product\no_image.PNG" />
-    <Content Include="Areas\Shop\Content\app\img\slider\1.jpg" />
     <Content Include="Areas\Shop\Content\app\img\slider\2.jpg" />
+    <Content Include="Areas\Shop\Content\app\img\slider\3.jpg" />
+    <Content Include="Areas\Shop\Content\app\img\slider\1.jpg" />
     <Content Include="Areas\Shop\Content\app\js\app.js" />
     <Content Include="Areas\Shop\Content\bootstrap-theme.css" />
     <Content Include="Areas\Shop\Content\bootstrap-theme.min.css" />
