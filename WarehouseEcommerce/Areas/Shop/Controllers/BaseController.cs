@@ -185,7 +185,11 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             ViewBag.BaseFilePath = ConfigurationManager.AppSettings["BaseFilePath"];
             ViewBag.LoginDetail = CurrentUserId > 0 ? "Logout" : "Login";
             ViewBag.Currencies = LookupServices.GetAllGlobalCurrencies();
-            CurrencyDetail(null);
+            if (Session["CurrencyDetail"] == null)
+            {
+                CurrencyDetail(null);
+            }
+
 
             var queryString = Request.QueryString["fragment"];
             if (queryString != null && queryString != string.Empty)
@@ -268,8 +272,29 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         public void CurrencyDetail(int? CurrencyId)
         {
 
-                if (CurrencyId.HasValue)
+            if (CurrencyId.HasValue)
+            {
+                var detail = LookupServices.GetAllGlobalCurrencies().Where(c => (!CurrencyId.HasValue || c.CurrencyID == CurrencyId)).Select(u => new caCurrencyDetail
                 {
+
+                    Symbol = u.Symbol,
+                    Id = u.CurrencyID,
+                    CurrencyName = u.CurrencyName
+
+                }).ToList();
+                var getTenantCurrencies = tenantsCurrencyRateServices.GetTenantCurrencies(CurrentTenantId).FirstOrDefault(u => u.CurrencyID == detail.FirstOrDefault()?.Id);
+                detail.ForEach(c =>
+                    c.Rate = tenantsCurrencyRateServices.GetCurrencyRateByTenantid(getTenantCurrencies.TenantCurrencyID)
+                );
+                Session["CurrencyDetail"] = detail.FirstOrDefault();
+            }
+
+            else
+            {
+                if (Session["CurrencyDetail"] == null)
+                {
+                    CurrencyId = 1;
+
                     var detail = LookupServices.GetAllGlobalCurrencies().Where(c => (!CurrencyId.HasValue || c.CurrencyID == CurrencyId)).Select(u => new caCurrencyDetail
                     {
 
@@ -280,34 +305,13 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     }).ToList();
                     var getTenantCurrencies = tenantsCurrencyRateServices.GetTenantCurrencies(CurrentTenantId).FirstOrDefault(u => u.CurrencyID == detail.FirstOrDefault()?.Id);
                     detail.ForEach(c =>
-                        c.Rate = tenantsCurrencyRateServices.GetCurrencyRateByTenantid(getTenantCurrencies.TenantCurrencyID)
+                        c.Rate = tenantsCurrencyRateServices.GetCurrencyRateByTenantid(getTenantCurrencies?.TenantCurrencyID ?? 0)
                     );
                     Session["CurrencyDetail"] = detail.FirstOrDefault();
                 }
 
-                else
-                {
-                    if (Session["CurrencyDetail"] == null)
-                    {
-                        CurrencyId = 1;
+            }
 
-                        var detail = LookupServices.GetAllGlobalCurrencies().Where(c => (!CurrencyId.HasValue || c.CurrencyID == CurrencyId)).Select(u => new caCurrencyDetail
-                        {
-
-                            Symbol = u.Symbol,
-                            Id = u.CurrencyID,
-                            CurrencyName = u.CurrencyName
-
-                        }).ToList();
-                        var getTenantCurrencies = tenantsCurrencyRateServices.GetTenantCurrencies(CurrentTenantId).FirstOrDefault(u => u.CurrencyID == detail.FirstOrDefault()?.Id);
-                        detail.ForEach(c =>
-                            c.Rate = tenantsCurrencyRateServices.GetCurrencyRateByTenantid(getTenantCurrencies?.TenantCurrencyID??0)
-                        );
-                        Session["CurrencyDetail"] = detail.FirstOrDefault();
-                    }
-
-                }
-            
 
         }
 

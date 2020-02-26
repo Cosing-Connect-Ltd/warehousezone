@@ -197,7 +197,7 @@ $(document).ready(function () {
 
 
 function onCurrencyChange(event) {
-
+   
     var currencyId = event.currentTarget.id;
     var cartview = $("#cartView").val();
     if (cartview) {
@@ -206,7 +206,7 @@ function onCurrencyChange(event) {
         {
             var cId = parseInt(event.currentTarget.id);
             $.ajax({
-                url: 'Products/CurrencyChanged',
+                url: basePath + 'Products/CurrencyChanged',
                 type: "GET",
                 data: { CurrencyId: cId },
                 success: function (data) {
@@ -222,9 +222,8 @@ function onCurrencyChange(event) {
             return;
         }
     }
-    
     $.ajax({
-        url: 'Base/CurrencyDetail',
+        url: basePath + 'Base/CurrencyDetail',
         type: "GET",
         data: { CurrencyId: currencyId },
         success: function (data) {

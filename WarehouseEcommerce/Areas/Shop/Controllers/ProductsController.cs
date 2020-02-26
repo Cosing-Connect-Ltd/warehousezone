@@ -172,12 +172,16 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                 {
                     foreach (var item in models)
                     {
-                        item.Price = (item.Price * (currencyyDetail.Rate ?? 1));
+                        var product = _productServices.GetProductMasterById(item.ProductId);
+                        item.Price = Math.Round(((product.SellPrice ?? 0) * (currencyyDetail.Rate ?? 1)),2);
+                        item.CurrencySign = currencyyDetail.Symbol;
+                        item.CurrencyId = currencyyDetail.Id;
                         GaneCartItemsSessionHelper.UpdateCartItemsSession("", item, false, false);
-
                     }
                     models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
+                    
                 }
+                ViewBag.TotalQty = models.Sum(u => u.TotalAmount);
                 return PartialView(models);
 
             }
@@ -265,24 +269,24 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             }
         }
 
-            public int CartItemsCount()
-            {
-                return GaneCartItemsSessionHelper.GetCartItemsSession().Count;
-
-            }
-
-            public ActionResult PaymentInfo()
-            {
-
-                return View();
-            }
-
-        }
-
-        public class ProductSearchResult
+        public int CartItemsCount()
         {
-            public int Id { get; set; }
-            public string Name { get; set; }
-            public string Path { get; set; }
+            return GaneCartItemsSessionHelper.GetCartItemsSession().Count;
+
         }
+
+        public ActionResult PaymentInfo()
+        {
+
+            return View();
+        }
+
     }
+
+    public class ProductSearchResult
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Path { get; set; }
+    }
+}
