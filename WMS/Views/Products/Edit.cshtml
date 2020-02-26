@@ -547,7 +547,7 @@ settings =>
                     </div>
                 </div>
                 <div class="input-group h-100 justify-content-center align-items-center" id="dvkit">
-                    @Html.LabelFor(model => model.Kit, htmlAttributes: new { @class = "col-md-4" })
+                    @Html.Label("Product Kit Items", htmlAttributes: new { @class = "col-md-4" })
                     <div class="col-md-8">
 
                         @Html.Action("_ProductKitCombobox", new { ProductId = Model.ProductId })

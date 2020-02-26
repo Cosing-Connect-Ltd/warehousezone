@@ -12,7 +12,7 @@ namespace Ganedata.Core.Services
 {
     public interface IProductServices
     {
-        IEnumerable<ProductMaster> GetAllValidProductMasters(int tenantId, DateTime? lastUpdated = null, bool includeIsDeleted = false);
+        IQueryable<ProductMaster> GetAllValidProductMasters(int tenantId, DateTime? lastUpdated = null, bool includeIsDeleted = false);
 
         IQueryable<SelectListItem> GetAllValidProductMastersForSelectList(int tenantId, DateTime? lastUpdated = null, bool includeIsDeleted = false);
 

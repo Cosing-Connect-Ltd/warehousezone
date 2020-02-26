@@ -124,7 +124,7 @@ namespace WMS.Controllers
             var weightGroups = _lookupServices.GetAllValidGlobalWeightGroups();
             var lotOptionCodes = _productLookupService.GetAllValidProductLotOptionsCodes();
             var lotProcessTypeCodes = _productLookupService.GetAllValidProductLotProcessTypeCodes();
-            ViewBag.linksiteIds = productMaster.ProductsWebsitesMap.Where(u=>u.IsDeleted != true).Select(u => u.SiteID).ToList();
+            ViewBag.linksiteIds = productMaster.ProductsWebsitesMap.Where(u => u.IsDeleted != true).Select(u => u.SiteID).ToList();
             ViewBag.DimensionUOMId = new SelectList(dimensionUoms, "UOMId", "UOM", productMaster.DimensionUOMId);
             ViewBag.TaxID = new SelectList(taxes, "TaxID", "TaxName", productMaster.TaxID);
             ViewBag.UOMId = new SelectList(weightUoms, "UOMId", "UOM", productMaster.UOMId);
@@ -136,9 +136,9 @@ namespace WMS.Controllers
             ViewBag.WebsiteIds = _lookupServices.GetAllValidWebsites(CurrentTenantId).ToList();
             ViewBag.ProductLocationIds = _productLookupService.GetAllValidProductLocations(CurrentWarehouseId, CurrentTenantId, id.Value).Select(m => m.LocationId);
             ViewBag.Groups = new SelectList(_lookupServices.GetAllValidProductGroups(CurrentTenantId), "ProductGroupId", "ProductGroup");
-            ViewBag.PalletType = new SelectList(_lookupServices.GetAllValidPalletTypes(CurrentTenantId), "PalletTypeId", "Description",productMaster.PalletTypeId);
+            ViewBag.PalletType = new SelectList(_lookupServices.GetAllValidPalletTypes(CurrentTenantId), "PalletTypeId", "Description", productMaster.PalletTypeId);
             ViewBag.Departments = new SelectList(_lookupServices.GetAllValidTenantDepartments(CurrentTenantId), "DepartmentId", "DepartmentName");
-            
+
             ViewBag.Accounts = _accountServices.GetAllValidProductAccountCodes(id.Value).Select(o =>
             {
 
@@ -147,7 +147,7 @@ namespace WMS.Controllers
             }).ToList();
             ViewBag.ProductAccountCodeIds = _accountServices.GetAllValidProductAccountCodes(id.Value).Select(o =>
                 {
-                   return o.ProdAccCodeID;
+                    return o.ProdAccCodeID;
                 }
             ).ToList();
 
@@ -238,7 +238,7 @@ namespace WMS.Controllers
                         throw new Exception("Product with same code already exist");
                     }
 
-                    productMaster = _productServices.SaveProduct(productMaster, ProductAccountCodeIds, ProductAttributesIds, ProductLocationIds, ProductKitIds, CurrentUserId, CurrentTenantId,SiteIds);
+                    productMaster = _productServices.SaveProduct(productMaster, ProductAccountCodeIds, ProductAttributesIds, ProductLocationIds, ProductKitIds, CurrentUserId, CurrentTenantId, SiteIds);
 
                     var files = Session["files"] as List<KeyValuePair<string, UploadedFileViewModel>>;
                     foreach (var file in files)
@@ -304,7 +304,7 @@ namespace WMS.Controllers
                     ProductKitIds = ProductKit.Split(',').Select(Int32.Parse).ToList();
                 }
 
-                _productServices.SaveProduct(productMaster, ProductAccountCodeIds, ProductAttributesIds, ProductLocationIds, ProductKitIds, CurrentUserId, CurrentTenantId,SiteIds);
+                _productServices.SaveProduct(productMaster, ProductAccountCodeIds, ProductAttributesIds, ProductLocationIds, ProductKitIds, CurrentUserId, CurrentTenantId, SiteIds);
             }
             catch (Exception ex)
             {
@@ -711,14 +711,14 @@ namespace WMS.Controllers
             );
             return PartialView("_EditableProductGrid", gridViewModel);
         }
-        public ActionResult SaveProductEdit(int ProductID, string Name, 
-            string SKUCode,bool? Serialisable,bool? ProcessByPallet,bool? TopProduct,
+        public ActionResult SaveProductEdit(int ProductID, string Name,
+            string SKUCode, bool? Serialisable, bool? ProcessByPallet, bool? TopProduct,
             bool? BestSellerProduct, bool? SpecialProduct, bool? OnSaleProduct)
         {
             var productMaster = _productServices.GetProductMasterById(ProductID);
-            productMaster.Name = string.IsNullOrEmpty(Name)?productMaster.Name:Name;
+            productMaster.Name = string.IsNullOrEmpty(Name) ? productMaster.Name : Name;
             productMaster.SKUCode = string.IsNullOrEmpty(SKUCode) ? productMaster.SKUCode : SKUCode;
-            productMaster.Serialisable = Serialisable??productMaster.Serialisable;
+            productMaster.Serialisable = Serialisable ?? productMaster.Serialisable;
             productMaster.ProcessByPallet = ProcessByPallet ?? productMaster.ProcessByPallet;
             productMaster.TopProduct = TopProduct ?? productMaster.TopProduct;
             productMaster.BestSellerProduct = BestSellerProduct ?? productMaster.BestSellerProduct;
@@ -1053,7 +1053,7 @@ namespace WMS.Controllers
 
             var productModel = new ProductMasterViewModel() { Name = product.Name, ProductId = product.ProductId, SKUCode = product.SKUCode, BarCode = product.BarCode, IsRawMaterial = product.IsRawMaterial };
 
-            var recipeProductItems = _productServices.GetAllValidProductMasters(CurrentTenantId).Where(m => m.ProductId != productId && m.IsRawMaterial && !m.Kit);
+            var recipeProductItems = _productServices.GetAllValidProductMasters(CurrentTenantId).Where(m => m.ProductId != productId && m.IsRawMaterial && !m.Kit).ToList();
 
             productModel.AllSelectedSubItems = product.RecipeItemProducts.Where(m => m.IsDeleted != true).
                 Select(r => new ProductRecipeItemViewModel

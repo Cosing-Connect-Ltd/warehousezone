@@ -98,7 +98,7 @@ namespace Ganedata.Core.Services
             {
                 market.IsDeleted = true;
                 market.UpdateUpdatedInfo(userId);
-               _currentDbContext.Entry(market).State = EntityState.Modified;
+                _currentDbContext.Entry(market).State = EntityState.Modified;
                 var marketCustomer = _currentDbContext.MarketCustomers.Where(u => u.MarketId == marketId).ToList();
                 if (marketCustomer.Count > 0)
                 {
@@ -114,7 +114,7 @@ namespace Ganedata.Core.Services
 
         public MarketCustomersViewModel GetMarketCustomersById(int marketId, int tenantId, string searchText = null)
         {
-            var mc = _currentDbContext.MarketCustomers.Where(r => r.MarketId == marketId && r.IsDeleted != true && r.TenantId==tenantId)
+            var mc = _currentDbContext.MarketCustomers.Where(r => r.MarketId == marketId && r.IsDeleted != true && r.TenantId == tenantId)
                  .Select(c => new CustomerAccountViewModel()
                  {
                      AccountId = c.AccountId,
@@ -150,7 +150,7 @@ namespace Ganedata.Core.Services
             return routeViewModel;
         }
 
-        public MarketCustomersViewModel SaveMarketCustomer(MarketCustomersViewModel model, int userId,int TenantId)
+        public MarketCustomersViewModel SaveMarketCustomer(MarketCustomersViewModel model, int userId, int TenantId)
         {
             var marketId = model.MarketId;
             if (model.MarketId > 0)
@@ -691,8 +691,8 @@ namespace Ganedata.Core.Services
                     SKUCode = p.SKUCode,
                     MarketId = marketId,
                     ReOrderQuantity = p.ReorderQty ?? 0,
-                    MinStockQuantity = g?.MinStockQuantity ?? 0,
-                    ProductMarketStockLevelID = g?.ProductMarketStockLevelID ?? 0
+                    MinStockQuantity = g == null ? 0 : g.MinStockQuantity,
+                    ProductMarketStockLevelID = g == null ? 0 : g.ProductMarketStockLevelID
                 };
 
             return levels.ToList();
@@ -739,8 +739,9 @@ namespace Ganedata.Core.Services
             {
                 return _currentDbContext.MarketCustomers.FirstOrDefault(u => u.AccountId == accountId && (MarketId == 0 || u.MarketId == MarketId) && u.IsDeleted != true)?.Market?.Name;
             }
-            else {
-                return string.Join(",",_currentDbContext.MarketCustomers.Where(u => u.AccountId == accountId && (MarketId == 0 || u.MarketId == MarketId) && u.IsDeleted != true).ToList().Select(u=>u.Market?.Name));
+            else
+            {
+                return string.Join(",", _currentDbContext.MarketCustomers.Where(u => u.AccountId == accountId && (MarketId == 0 || u.MarketId == MarketId) && u.IsDeleted != true).ToList().Select(u => u.Market?.Name));
             }
 
         }

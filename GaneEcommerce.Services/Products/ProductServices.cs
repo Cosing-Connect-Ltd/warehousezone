@@ -26,7 +26,7 @@ namespace Ganedata.Core.Services
             _mapper = mapper;
         }
 
-        public IEnumerable<ProductMaster> GetAllValidProductMasters(int tenantId, DateTime? lastUpdated = null, bool includeIsDeleted = false)
+        public IQueryable<ProductMaster> GetAllValidProductMasters(int tenantId, DateTime? lastUpdated = null, bool includeIsDeleted = false)
         {
             return _currentDbContext.ProductMaster.Where(a => a.TenantId == tenantId && (includeIsDeleted || a.IsDeleted != true) && (!lastUpdated.HasValue || (a.DateUpdated ?? a.DateCreated) >= lastUpdated));
         }
@@ -1402,10 +1402,10 @@ namespace Ganedata.Core.Services
                     TaxName = prd.GlobalTax.TaxName,
                     ProdStartDate = prd.ProdStartDate,
                     ProductLotProcessTypeCodesDescription = prd.ProductLotProcessTypeCodes.Description,
-                    Available = prd.InventoryStocks.Where(x => x.ProductId == prd.ProductId && (x.WarehouseId == warehouseId || x.TenantWarehous.ParentWarehouseId == warehouseId)).Select(x => x.Available).Sum(),
-                    Allocated = prd.InventoryStocks.Where(x => x.ProductId == prd.ProductId && (x.WarehouseId == warehouseId || x.TenantWarehous.ParentWarehouseId == warehouseId)).Select(x => x.Allocated).Sum(),
-                    InStock = prd.InventoryStocks.Where(x => x.ProductId == prd.ProductId && (x.WarehouseId == warehouseId || x.TenantWarehous.ParentWarehouseId == warehouseId)).Select(x => x.InStock).Sum(),
-                    OnOrder = prd.InventoryStocks.Where(x => x.ProductId == prd.ProductId && (x.WarehouseId == warehouseId || x.TenantWarehous.ParentWarehouseId == warehouseId)).Select(x => x.OnOrder).Sum(),
+                    Available = prd.InventoryStocks.Where(x => x.ProductId == prd.ProductId && (x.WarehouseId == warehouseId || x.TenantWarehous.ParentWarehouseId == warehouseId)).Select(x => x.Available).DefaultIfEmpty(0).Sum(),
+                    Allocated = prd.InventoryStocks.Where(x => x.ProductId == prd.ProductId && (x.WarehouseId == warehouseId || x.TenantWarehous.ParentWarehouseId == warehouseId)).Select(x => x.Allocated).DefaultIfEmpty(0).Sum(),
+                    InStock = prd.InventoryStocks.Where(x => x.ProductId == prd.ProductId && (x.WarehouseId == warehouseId || x.TenantWarehous.ParentWarehouseId == warehouseId)).Select(x => x.InStock).DefaultIfEmpty(0).Sum(),
+                    OnOrder = prd.InventoryStocks.Where(x => x.ProductId == prd.ProductId && (x.WarehouseId == warehouseId || x.TenantWarehous.ParentWarehouseId == warehouseId)).Select(x => x.OnOrder).DefaultIfEmpty(0).Sum(),
                     ProductGroupName = prd.ProductGroup.ProductGroup ?? null,
                     DepartmentName = prd.TenantDepartment.DepartmentName,
                     Location = prd.ProductLocationsMap.Where(a => a.IsDeleted != true).Select(x => x.Locations.LocationCode).FirstOrDefault().ToString(),

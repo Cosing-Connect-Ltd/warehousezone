@@ -30,7 +30,7 @@ namespace WMS.Controllers.WebAPI
             _tenantServices = TenantServices;
         }
 
-
+        // i.e. http://localhost:8005/api/sync/currency-ex-rates/1
         public async Task<IHttpActionResult> GetTenantCurrencyExRate(int tenantId)
         {
             try

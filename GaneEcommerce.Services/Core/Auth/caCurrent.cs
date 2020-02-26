@@ -54,17 +54,20 @@ namespace Ganedata.Core.Services
 
             int currentSiteId = int.Parse(string.IsNullOrEmpty(ConfigurationManager.AppSettings["SiteId"].ToString()) ? "0" : ConfigurationManager.AppSettings["SiteId"]);
             caTenantWebsites tenantWebsites = new caTenantWebsites();
-            
+
             if (HttpContext.Current.Session["CurrentTenantWebsites"] == null)
             {
                 var tenantWeb = context.TenantWebsites.FirstOrDefault(e => e.SiteID == currentSiteId && e.IsDeleted != true);
-                tenantWebsites.ApiToken = tenantWeb.ApiToken;
-                tenantWebsites.SiteApiUrl = tenantWeb.SiteApiUrl;
-                tenantWebsites.TenantId = tenantWeb.TenantId;
-                tenantWebsites.WarehouseId = tenantWeb.WarehouseId;
-                tenantWebsites.SiteName = tenantWeb.SiteName;
-                tenantWebsites.SiteDescription = tenantWeb.SiteDescription;
-                HttpContext.Current.Session["CurrentTenantWebsites"] = tenantWebsites;
+                if (tenantWeb != null)
+                {
+                    tenantWebsites.ApiToken = tenantWeb.ApiToken;
+                    tenantWebsites.SiteApiUrl = tenantWeb.SiteApiUrl;
+                    tenantWebsites.TenantId = tenantWeb.TenantId;
+                    tenantWebsites.WarehouseId = tenantWeb.WarehouseId;
+                    tenantWebsites.SiteName = tenantWeb.SiteName;
+                    tenantWebsites.SiteDescription = tenantWeb.SiteDescription;
+                    HttpContext.Current.Session["CurrentTenantWebsites"] = tenantWebsites;
+                }
             }
             else
             {

@@ -131,8 +131,8 @@ namespace Ganedata.Core.Services
                     ProductID = p.ProductId,
                     TenantLocationID = warehouseId,
                     ReOrderQuantity = p.ReorderQty ?? 0,
-                    MinStockQuantity = g?.MinStockQuantity ?? 0,
-                    ProductLocationStockLevelID = g?.ProductLocationStockLevelID ?? 0
+                    MinStockQuantity = g == null ? 0 : g.MinStockQuantity,
+                    ProductLocationStockLevelID = g == null ? 0 : g.ProductLocationStockLevelID
                 };
 
             return levels.ToList();
