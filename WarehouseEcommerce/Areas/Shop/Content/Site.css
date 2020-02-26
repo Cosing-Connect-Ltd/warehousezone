@@ -76,12 +76,15 @@
 #menu1 {
     text-align: left !important;
 }
-#slideshow0 img {
+.custom-carousel-control {
+    width: 6% !important;
+}
+.home-slider img {
     width: 100%;
 }
 @media(min-width:1025px){
-    #slideshow0 img {
-        height: 550px;
+    .home-slider img {
+        height: 550px !important;
     }
 }
 .nav-menue a:hover {
