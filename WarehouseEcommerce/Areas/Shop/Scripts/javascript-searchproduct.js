@@ -199,6 +199,30 @@ $(document).ready(function () {
 function onCurrencyChange(event) {
 
     var currencyId = event.currentTarget.id;
+    var cartview = $("#cartView").val();
+    if (cartview) {
+        var r = confirm("You are going to change the currency!");
+        if (r)
+        {
+            var cId = parseInt(event.currentTarget.id);
+            $.ajax({
+                url: 'Products/CurrencyChanged',
+                type: "GET",
+                data: { CurrencyId: cId },
+                success: function (data) {
+                    location.reload();
+                    return;
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    location.reload();
+                }
+            });
+        }
+        else {
+            return;
+        }
+    }
+    
     $.ajax({
         url: 'Base/CurrencyDetail',
         type: "GET",

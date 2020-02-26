@@ -74,6 +74,7 @@ namespace WarehouseEcommerce.Helpers
             }
             else
             {
+                orderDetail.TotalAmount = (orderDetail.Qty * orderDetail.Price);
                 existingDetailsList = new List<OrderDetailSessionViewModel> { orderDetail };
                 orderDetailsDictionary.AddRange(existingDetailsList);
             }

@@ -75,5 +75,7 @@ namespace Ganedata.Core.Entities.Domain
         public string CurrencySign { get; set; }
 
         public string ProductPath { get; set; }
+
+        public int? CurrencyId { get; set; }
     }
 }

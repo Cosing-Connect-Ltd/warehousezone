@@ -165,10 +165,19 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             if (!ProductId.HasValue)
             {
+
                 var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
-                ViewBag.TotalQty = models.Sum(u => u.TotalAmount);
-                models.ForEach(u => u.Price = Math.Round((u.Price) * (currencyyDetail.Rate ?? 0), 2));
-                models.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
+                var data = models.FirstOrDefault(u => u.CurrencyId == currencyyDetail.Id);
+                if (data == null)
+                {
+                    foreach (var item in models)
+                    {
+                        item.Price = (item.Price * (currencyyDetail.Rate ?? 1));
+                        GaneCartItemsSessionHelper.UpdateCartItemsSession("", item, false, false);
+
+                    }
+                    models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
+                }
                 return PartialView(models);
 
             }
@@ -179,7 +188,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     GaneCartItemsSessionHelper.RemoveCartItemSession(ProductId ?? 0);
                     var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
                     ViewBag.TotalQty = models.Sum(u => u.TotalAmount);
-                    models.ForEach(u => u.Price = Math.Round((u.Price)  * (currencyyDetail.Rate ?? 0), 2));
+                    models.ForEach(u => u.Price = Math.Round((u.Price) * (currencyyDetail.Rate ?? 0), 2));
                     models.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
                     return PartialView(models);
 
@@ -195,10 +204,12 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
                     var Details = _mapper.Map(model, new OrderDetailSessionViewModel());
                     Details.ProductPath = _productServices.GetProductFilesByTenantId((CurrentTenantId)).FirstOrDefault(u => u.ProductId == Details.ProductId && u.DefaultImage == true)?.FilePath ?? "/Areas/Shop/Content/app/img/product/no_image.gif";
+                    Details.Price = (Details.Price * (currencyyDetail.Rate ?? 0));
+                    Details.CurrencyId = currencyyDetail.Id;
                     GaneCartItemsSessionHelper.UpdateCartItemsSession("", Details, false);
                     var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
                     ViewBag.TotalQty = models.Sum(u => u.TotalAmount);
-                    models.ForEach(u => u.Price = (u.Price * (currencyyDetail.Rate ?? 0)));
+                    //models.ForEach(u => u.Price = (u.Price * (currencyyDetail.Rate ?? 0)));
                     models.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
                     return PartialView(models);
                 }
@@ -216,6 +227,8 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     var Details = _mapper.Map(model, new OrderDetailSessionViewModel());
                     Details.ProductPath = _productServices.GetProductFilesByTenantId((CurrentTenantId)).FirstOrDefault(u => u.ProductId == Details.ProductId && u.DefaultImage == true)?.FilePath ?? "/Areas/Shop/Content/app/img/product/no_image.gif";
                     var ProductCheck = GaneCartItemsSessionHelper.GetCartItemsSession().FirstOrDefault(u => u.ProductId == ProductId);
+                    Details.Price = (Details.Price * (currencyyDetail.Rate ?? 0));
+                    Details.CurrencyId = currencyyDetail.Id;
                     if (ProductCheck != null)
                     {
                         Details.Qty = ProductCheck.Qty + (qty.HasValue ? qty.Value : 1);
@@ -231,24 +244,45 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
 
         }
 
-        public int CartItemsCount()
+        public void CurrencyChanged(int? CurrencyId)
         {
-            return GaneCartItemsSessionHelper.GetCartItemsSession().Count;
+
+            if (CurrencyId.HasValue)
+            {
+                var detail = LookupServices.GetAllGlobalCurrencies().Where(c => (!CurrencyId.HasValue || c.CurrencyID == CurrencyId)).Select(u => new caCurrencyDetail
+                {
+
+                    Symbol = u.Symbol,
+                    Id = u.CurrencyID,
+                    CurrencyName = u.CurrencyName
+
+                }).ToList();
+                var getTenantCurrencies = _tenantServices.GetTenantCurrencies(CurrentTenantId).FirstOrDefault(u => u.CurrencyID == detail.FirstOrDefault()?.Id);
+                detail.ForEach(c =>
+                    c.Rate = _tenantServices.GetCurrencyRateByTenantid(getTenantCurrencies.TenantCurrencyID)
+                );
+                Session["CurrencyDetail"] = detail.FirstOrDefault();
+            }
+        }
+
+            public int CartItemsCount()
+            {
+                return GaneCartItemsSessionHelper.GetCartItemsSession().Count;
+
+            }
+
+            public ActionResult PaymentInfo()
+            {
+
+                return View();
+            }
 
         }
 
-        public ActionResult PaymentInfo()
+        public class ProductSearchResult
         {
-
-            return View();
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string Path { get; set; }
         }
-
     }
-
-    public class ProductSearchResult
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Path { get; set; }
-    }
-}

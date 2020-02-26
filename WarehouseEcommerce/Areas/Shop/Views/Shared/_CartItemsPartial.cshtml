@@ -1,5 +1,7 @@
 ﻿
 @model List<Ganedata.Core.Entities.Domain.OrderDetailSessionViewModel>
+
+
 <table class="order-details">
     @if (ViewBag.CartModal == null)
     {
@@ -36,8 +38,8 @@
                             </li>
                             <li>Size: <span>M</span></li>
                             @*<li>
-                                    Quantity: <span>@item.Qty</span>
-                                </li>*@
+                        Quantity: <span>@item.Qty</span>
+                    </li>*@
                         </ul>
                     </div>
                 </td>
@@ -60,7 +62,7 @@
                     <td>
                         <div class="price-whlist"><b style=" max-width: 20px"> @item.CurrencySign @item.Price</b> </div>
                     </td>
-
+                    @Html.Hidden("cartView", true);
                     <td>
                         <div class="price-whlist"><b> @item.TaxAmount</b> </div>
                     </td>
