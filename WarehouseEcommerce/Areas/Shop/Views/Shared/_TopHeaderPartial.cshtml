@@ -46,7 +46,7 @@
                         <form action="#" method="post" enctype="multipart/form-data" id="form-currency">
                             <div class="btn-group">
                                 <button class="btn btn-link dropdown-toggle test" data-toggle="dropdown">
-                                    <span>Currency</span>&nbsp;<i class="fa fa-angle-down"></i>
+                                    <span>@ViewBag.Symbol @ViewBag.CurrencyName</span>&nbsp;<i class="fa fa-angle-down"></i>
                                 </button>
                                 <ul class="dropdown-menu">
                                     @if (ViewBag.Currencies != null)

@@ -51,10 +51,13 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         public PartialViewResult _TopHeaderPartial()
         {
             caCurrent caUser = new caCurrent();
+            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.CartItemCount = GaneCartItemsSessionHelper.GetCartItemsSession().Count;
             ViewBag.CartItems = GaneCartItemsSessionHelper.GetCartItemsSession().ToList();
             ViewBag.ProductGroups = new SelectList(_lookupServices.GetAllValidProductGroups((CurrentTenantId), 12), "ProductGroupId", "ProductGroup");
             ViewBag.UserName = CurrentUser.UserFirstName + " " + CurrentUser.UserLastName;
+            ViewBag.Symbol = currencyyDetail.Symbol;
+            ViewBag.CurrencyName = currencyyDetail.CurrencyName;
             return PartialView();
         }
 
