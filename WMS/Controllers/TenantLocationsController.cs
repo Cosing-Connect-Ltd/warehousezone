@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using DevExpress.Web.Mvc;
+using WMS.CustomBindings;
 
 namespace WMS.Controllers
 {
@@ -206,15 +207,10 @@ namespace WMS.Controllers
                 var warehouse = _tenantLocationServices.GetTenantLocationById(warehouseId.Value);
                 ViewBag.WarehouseName = warehouse.WarehouseName;
             }
-            var model = _tenantLocationServices.GetAllStockLevelsForWarehouse(warehouseId.Value);
-            return View(model);
+            
+            return View();
         }
 
-        public ActionResult _StockLevelsPartial()
-        {
-            var model = _tenantLocationServices.GetAllStockLevelsForWarehouse(CurrentWarehouseId);
-            return PartialView("_StockLevelsPartial", model);
-        }
 
         [ValidateInput(false)]
         public ActionResult UpdateProductLevels(MVCxGridViewBatchUpdateValues<WarehouseProductLevelViewModel, int> updateValues)
@@ -226,7 +222,55 @@ namespace WMS.Controllers
                         product.MinStockQuantity, CurrentUserId);
             }
             return _StockLevelsPartial();
-        }   
+        }
+
+        public ActionResult _StockLevelsPartial()
+        {
+            var viewModel = GridViewExtension.GetViewModel("StockLevelsGridView");
+
+            if (viewModel == null)
+                viewModel = LocationListCustomBinding.CreateLocationGridViewModel();
+
+
+            return LocationGridActionCore(viewModel);
+        }
+        public ActionResult _LocationListPaging(GridViewPagerState pager)
+        {
+            var viewModel = GridViewExtension.GetViewModel("StockLevelsGridView");
+            viewModel.Pager.Assign(pager);
+            return LocationGridActionCore(viewModel);
+        }
+
+        public ActionResult _LocationFiltering(GridViewFilteringState filteringState)
+        {
+            var viewModel = GridViewExtension.GetViewModel("StockLevelsGridView");
+            viewModel.ApplyFilteringState(filteringState);
+            return LocationGridActionCore(viewModel);
+        }
+
+
+        public ActionResult _LocationGetDataSorting(GridViewColumnState column, bool reset)
+        {
+            var viewModel = GridViewExtension.GetViewModel("StockLevelsGridView");
+            viewModel.ApplySortingState(column, reset);
+            return LocationGridActionCore(viewModel);
+        }
+
+        public ActionResult LocationGridActionCore(GridViewModel gridViewModel)
+        {
+            gridViewModel.ProcessCustomBinding(
+                new GridViewCustomBindingGetDataRowCountHandler(args =>
+                {
+                    LocationListCustomBinding.LocationGetDataRowCount(args, CurrentTenantId, CurrentWarehouseId);
+                }),
+
+                    new GridViewCustomBindingGetDataHandler(args =>
+                    {
+                        LocationListCustomBinding.LocationGetData(args, CurrentTenantId, CurrentWarehouseId);
+                    })
+            );
+            return PartialView("_StockLevelsPartial", gridViewModel);
+        }
 
     }
 }

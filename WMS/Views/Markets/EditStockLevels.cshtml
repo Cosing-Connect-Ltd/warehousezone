@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Ganedata.Core.Entities.Domain.MarketProductLevelViewModel>
+﻿
 @using Ganedata.Core.Entities.Helpers
 
 @section scripts {
@@ -53,7 +53,7 @@
     @Html.Hidden("LastEditingRowIndex")
 
     <div class="input-group h-100 justify-content-center align-items-center">
-        @Html.Partial("_StockLevelsPartial", Model)
+        @Html.Action("_StockLevelsPartial", "TenantLocations")
     </div>
 }
 

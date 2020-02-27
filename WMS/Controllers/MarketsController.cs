@@ -309,8 +309,7 @@ namespace WMS.Controllers
             var market = _marketServices.GetMarketById(id);
             ViewBag.MarketName = market.Name;
             ViewBag.MarketId = market.Id;
-            var model = _marketServices.GetAllStockLevelsForMarket(id);
-            return View(model);
+            return View();
         }
 
         public ActionResult _StockLevelsPartial(int id)

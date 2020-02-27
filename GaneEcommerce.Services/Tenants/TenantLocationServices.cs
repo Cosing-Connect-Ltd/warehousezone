@@ -115,11 +115,11 @@ namespace Ganedata.Core.Services
             return stockLevel;
         }
 
-        public List<WarehouseProductLevelViewModel> GetAllStockLevelsForWarehouse(int warehouseId)
+        public IQueryable<WarehouseProductLevelViewModel> GetAllStockLevelsForWarehouse(int warehouseId)
         {
             var warehouse = _currentDbContext.TenantWarehouses.Find(warehouseId);
-            var allProducts = _productServices.GetAllValidProductMasters(warehouse.TenantId).ToList();
-            var allStockLevels = _currentDbContext.ProductLocationStockLevels.Where(m => m.TenantLocationID == warehouseId);
+            var allProducts = _currentDbContext.ProductMaster.Where(u => u.TenantId == warehouse.TenantId && u.IsDeleted != true);
+            var allStockLevels = _currentDbContext.ProductLocationStockLevels.Where(m => m.TenantLocationID == warehouseId && m.IsDeleted != true);
             var levels =
                 from p in allProducts
                 join a in allStockLevels on p.ProductId equals a.ProductMasterID into tmpGroups
@@ -135,7 +135,7 @@ namespace Ganedata.Core.Services
                     ProductLocationStockLevelID = g == null ? 0 : g.ProductLocationStockLevelID
                 };
 
-            return levels.ToList();
+            return levels;
         }
     }
 }

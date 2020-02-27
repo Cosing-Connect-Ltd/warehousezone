@@ -1,21 +1,47 @@
 ﻿@using System.Web.UI.WebControls
-@model IEnumerable<Ganedata.Core.Entities.Domain.WarehouseProductLevelViewModel>
 
 @{
     Html.EnableClientValidation();
     Html.EnableUnobtrusiveJavaScript();
 }
 
-@Html.DevExpress().GridView(
-    settings =>
+@{
+    var grid = Html.DevExpress().GridView(settings =>
     {
-        settings.Name = "warehouseStocksGridView";
-        settings.KeyFieldName = "ProductID";
-        settings.Width = Unit.Percentage(100);
+
+        settings.Name = "StockLevelsGridView";
         settings.CallbackRouteValues = new { Controller = "TenantLocations", Action = "_StockLevelsPartial" };
         settings.SettingsEditing.BatchUpdateRouteValues = new { Controller = "TenantLocations", Action = "UpdateProductLevels" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
 
-        settings.SettingsEditing.Mode = GridViewEditingMode.Batch;
+        settings.CustomBindingRouteValuesCollection.Add(
+            GridViewOperationType.Paging,
+            new { Controller = "TenantLocations", Action = "_LocationListPaging" }
+        );
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Filtering,
+        new { Controller = "TenantLocations", Action = "_LocationFiltering" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Sorting,
+        new { Controller = "TenantLocations", Action = "_LocationGetDataSorting" }
+        );
+
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+        settings.KeyFieldName = "ProductName";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = true;
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+
+settings.SettingsEditing.Mode = GridViewEditingMode.Batch;
         settings.SettingsEditing.BatchEditSettings.EditMode = GridViewBatchEditMode.Cell;
         settings.SettingsEditing.BatchEditSettings.StartEditAction = GridViewBatchStartEditAction.DblClick;
         settings.Settings.ShowStatusBar = GridViewStatusBarMode.Hidden;
@@ -33,14 +59,14 @@
         settings.Columns.Add(column =>
         {
             column.FieldName = "ProductName";
-            column.EditFormSettings.Visible = DefaultBoolean.False;
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
         });
 
         settings.Columns.Add(column =>
         {
             column.Caption = "SKU";
             column.FieldName = "SKUCode";
-            column.EditFormSettings.Visible = DefaultBoolean.False;
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
         });
 
         settings.Columns.Add(column =>
@@ -68,4 +94,6 @@
         settings.ClientSideEvents.BeginCallback = "OnBeginGridCallback";
         settings.ClientSideEvents.FocusedCellChanging = "OnStockLevelsGridFocusChanged";
         settings.ClientSideEvents.EndCallback = "OnEndGridCallback";
-    }).Bind(Model).GetHtml()
+    });
+}
+@grid.BindToCustomData(Model).GetHtml()

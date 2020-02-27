@@ -23,6 +23,6 @@ namespace Ganedata.Core.Services
 
         ProductLocationStockLevel UpdateProductLevelsForTenantLocation(int warehouseId, int productId, decimal stockQty, int userId);
 
-        List<WarehouseProductLevelViewModel> GetAllStockLevelsForWarehouse(int warehouseId);
+        IQueryable<WarehouseProductLevelViewModel> GetAllStockLevelsForWarehouse(int warehouseId);
     }
 }
