@@ -153,14 +153,6 @@ namespace WMS.Controllers
         public ActionResult GoodsReturn()
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
-            //var products = (from prds in _productServices.GetAllValidProductMasters(CurrentTenantId).ToList()
-            //                select new
-            //                {
-            //                    prds.ProductId,
-            //                    prds.SKUCode,
-            //                    prds.NameWithCode
-            //                }).ToList();
-            //ViewBag.grProducts = new SelectList(products, "ProductId", "NameWithCode");
             Guid guid = Guid.NewGuid();
             ViewBag.DeliveryNo= GaneStaticAppExtensions.GenerateDateRandomNo();
             ViewBag.groupToken = guid.ToString();

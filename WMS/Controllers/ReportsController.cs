@@ -30,7 +30,7 @@ namespace WMS.Controllers
         private readonly IPalletingService _palletingService;
         readonly IInvoiceService _invoiceService;
         private readonly ILookupServices _lookupService;
-        
+
         public ReportsController(ITenantLocationServices tenantLocationsServices, IShiftsServices shiftsServices, IEmployeeShiftsServices employeeShiftsServices, IEmployeeServices employeeServices, ICoreOrderService orderService,
             IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IAppointmentsService appointmentsService, IGaneConfigurationsHelper ganeConfigurationsHelper, IEmailServices emailServices, IInvoiceService invoiceService,
             ITenantLocationServices tenantLocationservices, IProductServices productServices, ITenantsServices tenantsServices, IPalletingService palleteServices, IMarketServices marketServices)
@@ -75,7 +75,7 @@ namespace WMS.Controllers
             InventoryReport.paramTenantId.Value = CurrentTenantId;
             InventoryReport.paramWarehouseId.Value = CurrentWarehouseId;
 
-            IEnumerable<ProductMaster> products = _productServices.GetAllValidProductMasters(CurrentTenantId);
+            IEnumerable<ProductMaster> products = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList();
             StaticListLookUpSettings setting = (StaticListLookUpSettings)InventoryReport.paramProductId.LookUpSettings;
 
             foreach (var item in products)
@@ -108,7 +108,7 @@ namespace WMS.Controllers
             StockValueReport.paramsTenantId.Value = CurrentTenantId;
             StockValueReport.paramWarehouseId.Value = CurrentWarehouseId;
 
-            IEnumerable<ProductMaster> products = _productServices.GetAllValidProductMasters(CurrentTenantId);
+            IEnumerable<ProductMaster> products = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList();
             StaticListLookUpSettings setting = (StaticListLookUpSettings)StockValueReport.paramProductId.LookUpSettings;
 
             foreach (var item in products)
@@ -231,7 +231,7 @@ namespace WMS.Controllers
 
         #region SalesOrder
 
-        public ActionResult SalesOrderPrint(int id = 0, bool directsales = false, bool returns=false)
+        public ActionResult SalesOrderPrint(int id = 0, bool directsales = false, bool returns = false)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
@@ -240,10 +240,10 @@ namespace WMS.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var report = CreateSalesOrderPrint(id,directsales,returns);
+            var report = CreateSalesOrderPrint(id, directsales, returns);
             ViewBag.DirectSalesOrder = directsales;
             ViewBag.OrderId = id;
-            
+
 
             return View(report);
         }
@@ -742,7 +742,7 @@ namespace WMS.Controllers
                 foreach (var itemShift in shiftInfo)
                 {
                     //get EmployeeShifts by EmployeeId and Date
-                    var employeeShifts = _employeeShiftsServices.SearchByEmployeeIdAndDate(itemShift.EmployeeId, (DateTime)itemShift.Date,CurrentTenantId);
+                    var employeeShifts = _employeeShiftsServices.SearchByEmployeeIdAndDate(itemShift.EmployeeId, (DateTime)itemShift.Date, CurrentTenantId);
 
                     //if no employeeShifts TimeStamp
                     if (employeeShifts.Count() == 0)
@@ -1319,7 +1319,7 @@ namespace WMS.Controllers
             return View(report);
         }
 
-        
+
 
         #endregion
 
@@ -1340,7 +1340,7 @@ namespace WMS.Controllers
             productMovement.lbldate.Text = DateTime.UtcNow.ToShortDateString();
             productMovement.TenantId.Value = CurrentTenantId;
             productMovement.WarehouseId.Value = CurrentWarehouseId;
-            IEnumerable<ProductMaster> products = _productServices.GetAllValidProductMasters(CurrentTenantId);
+            IEnumerable<ProductMaster> products = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList();
             StaticListLookUpSettings setting = (StaticListLookUpSettings)productMovement.paramProductId.LookUpSettings;
 
             foreach (var item in products)
@@ -1418,7 +1418,7 @@ namespace WMS.Controllers
             var users = OrderService.GetAllAuthorisedUsers(CurrentTenantId, true);
             StaticListLookUpSettings ownerSettings = (StaticListLookUpSettings)productSoldBySkuPrint.paramOwnerID.LookUpSettings;
             ownerSettings.LookUpValues.AddRange(users.Select(m => new LookUpValue(m.UserId, m.DisplayName)));
-            IEnumerable<ProductMaster> products = _productServices.GetAllValidProductMasters(CurrentTenantId);
+            IEnumerable<ProductMaster> products = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList();
             StaticListLookUpSettings setting = (StaticListLookUpSettings)productSoldBySkuPrint.ProductsIds.LookUpSettings;
             foreach (var item in products)
             {
@@ -1501,8 +1501,8 @@ namespace WMS.Controllers
             DateTime startDate = (DateTime)report.Parameters["paramStartDate"].Value;
             DateTime endDate = (DateTime)report.Parameters["paramEndDate"].Value;
             endDate = endDate.AddHours(24);
-            int? AccountId= (int?)report.Parameters["paramAccountId"].Value;
-            var InvoiceMaster = _invoiceService.GetAllInvoiceMastersWithAllStatus(CurrentTenantId,AccountId).Where(x => x.InvoiceDate >= startDate && x.InvoiceDate < endDate).ToList();
+            int? AccountId = (int?)report.Parameters["paramAccountId"].Value;
+            var InvoiceMaster = _invoiceService.GetAllInvoiceMastersWithAllStatus(CurrentTenantId, AccountId).Where(x => x.InvoiceDate >= startDate && x.InvoiceDate < endDate).ToList();
 
             var dataSource = new List<InvoiceProfitReportViewModel>();
             foreach (var type in InvoiceMaster)
@@ -1544,7 +1544,7 @@ namespace WMS.Controllers
             InvoiceByProductReport.paramStartDate.Value = DateTime.Today.AddMonths(-1);
             InvoiceByProductReport.paramEndDate.Value = DateTime.Today;
             InvoiceByProductReport.TenantID.Value = CurrentTenantId;
-            IEnumerable<ProductMaster> products = _productServices.GetAllValidProductMasters(CurrentTenantId);
+            IEnumerable<ProductMaster> products = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList();
             StaticListLookUpSettings setting = (StaticListLookUpSettings)InvoiceByProductReport.paramProductsIds.LookUpSettings;
 
             foreach (var item in products)
@@ -1660,11 +1660,11 @@ namespace WMS.Controllers
                 {
                     var EmployeeName = item.Name;
                     var JobStartDate = item.JobStartDate;
-                    var firstYear =string.Format("{0} {1} {2}",_employeeServices.GetHolidaysCountByEmployeeId(item.ResourceId, years[years.Count - years.Count]).ToString(),"out of", item.HolidayEntitlement.ToString());
-                    var secondYear = string.Format("{0} {1} {2}", _employeeServices.GetHolidaysCountByEmployeeId(item.ResourceId, years[years.Count - (years.Count-1)]).ToString(), "out of", item.HolidayEntitlement.ToString());
-                    var thirdYear = string.Format("{0} {1} {2}", _employeeServices.GetHolidaysCountByEmployeeId(item.ResourceId, years[years.Count - (years.Count-2)]).ToString(), "out of", item.HolidayEntitlement.ToString());
-                    var fourthYear = string.Format("{0} {1} {2}", _employeeServices.GetHolidaysCountByEmployeeId(item.ResourceId, years[years.Count - (years.Count-3)]).ToString(), "out of", item.HolidayEntitlement.ToString());
-                    var fifthYear = string.Format("{0} {1} {2}", _employeeServices.GetHolidaysCountByEmployeeId(item.ResourceId, years[years.Count - (years.Count-4)]).ToString(), "out of", item.HolidayEntitlement.ToString());
+                    var firstYear = string.Format("{0} {1} {2}", _employeeServices.GetHolidaysCountByEmployeeId(item.ResourceId, years[years.Count - years.Count]).ToString(), "out of", item.HolidayEntitlement.ToString());
+                    var secondYear = string.Format("{0} {1} {2}", _employeeServices.GetHolidaysCountByEmployeeId(item.ResourceId, years[years.Count - (years.Count - 1)]).ToString(), "out of", item.HolidayEntitlement.ToString());
+                    var thirdYear = string.Format("{0} {1} {2}", _employeeServices.GetHolidaysCountByEmployeeId(item.ResourceId, years[years.Count - (years.Count - 2)]).ToString(), "out of", item.HolidayEntitlement.ToString());
+                    var fourthYear = string.Format("{0} {1} {2}", _employeeServices.GetHolidaysCountByEmployeeId(item.ResourceId, years[years.Count - (years.Count - 3)]).ToString(), "out of", item.HolidayEntitlement.ToString());
+                    var fifthYear = string.Format("{0} {1} {2}", _employeeServices.GetHolidaysCountByEmployeeId(item.ResourceId, years[years.Count - (years.Count - 4)]).ToString(), "out of", item.HolidayEntitlement.ToString());
                     var sourceItem = new HolidayReportViewModel();
                     sourceItem.UserName = EmployeeName;
                     sourceItem.Date = JobStartDate;
@@ -1675,7 +1675,7 @@ namespace WMS.Controllers
                     sourceItem.FifthYear = fifthYear;
                     dataSource.Add(sourceItem);
                 }
-              report.DataSource = dataSource;
+                report.DataSource = dataSource;
             }
         }
 

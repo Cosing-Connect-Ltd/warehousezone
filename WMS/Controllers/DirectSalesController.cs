@@ -41,7 +41,7 @@ namespace WMS.Controllers
                 .Select(m => new SelectListItem {Text = m.CompanyName, Value = m.AccountID.ToString()}).ToList();
             //model.AllAccounts.Insert(0, new SelectListItem { Text = "None", Value = "0" });
 
-            model.AllProducts = _productServices.GetAllValidProductMasters(CurrentTenantId)
+            model.AllProducts = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList()
                 .Select(m => new SelectListItem {Text = m.NameWithCode, Value = m.ProductId.ToString()}).ToList();
             model.AllTaxes = allTaxes.Select(m => new SelectListItem {Text = m.TaxName, Value = m.TaxID.ToString()})
                 .ToList();

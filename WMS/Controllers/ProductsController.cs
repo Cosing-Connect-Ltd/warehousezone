@@ -458,7 +458,7 @@ namespace WMS.Controllers
             ViewBag.DimensionUOMs = _lookupServices.GetAllValidGlobalUoms(EnumUomType.Dimensions).Select(duom => new { Id = duom.UOMId, DUOM = duom.UOM });
             ViewBag.UOMs = _lookupServices.GetAllValidGlobalUoms(EnumUomType.Weight).Select(duom => new { Id = duom.UOMId, UOM = duom.UOM }).ToList();
             ViewBag.LocationTypes = _lookupServices.GetAllValidLocationTypes(CurrentTenantId);
-            ViewBag.Products = _productServices.GetAllValidProductMasters(CurrentTenantId);
+            ViewBag.Products = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList();
 
             if (Id == null) return PartialView("_LocationCreate", new Locations());
             else
@@ -1086,7 +1086,7 @@ namespace WMS.Controllers
 
             var productModel = new ProductMasterViewModel() { Name = product.Name, ProductId = product.ProductId, SKUCode = product.SKUCode, BarCode = product.BarCode, IsRawMaterial = product.IsRawMaterial };
 
-            var recipeProductItems = _productServices.GetAllValidProductMasters(CurrentTenantId).Where(m => m.ProductId != productId && !m.IsRawMaterial && !m.Kit);
+            var recipeProductItems = _productServices.GetAllValidProductMasters(CurrentTenantId).Where(m => m.ProductId != productId && !m.IsRawMaterial && !m.Kit).ToList();
 
             productModel.AllSelectedSubItems = product.ProductKitMap.Where(m => m.IsDeleted != true).
                 Select(r => new ProductRecipeItemViewModel

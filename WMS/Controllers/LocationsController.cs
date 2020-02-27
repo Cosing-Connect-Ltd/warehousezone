@@ -251,7 +251,7 @@ namespace WMS.Controllers
                             }).ToList();
 
             ViewBag.LocationTypes = LookupServices.GetAllValidLocationTypes(CurrentTenantId);
-            ViewBag.Products = _productServices.GetAllValidProductMasters(tenant.TenantId);
+            ViewBag.Products = _productServices.GetAllValidProductMasters(tenant.TenantId).ToList();
         }
 
         public ActionResult _Products(int LocationId)

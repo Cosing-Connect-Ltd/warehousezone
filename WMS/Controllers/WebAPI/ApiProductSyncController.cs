@@ -33,7 +33,7 @@ namespace WMS.Controllers.WebAPI
 
             var result = new ProductMasterSyncCollection();
 
-            var allProducts = ProductServices.GetAllValidProductMasters(terminal.TenantId, reqDate, true);
+            var allProducts = ProductServices.GetAllValidProductMasters(terminal.TenantId, reqDate, true).ToList();
             var products = new List<ProductMasterSync>();
 
             foreach (var p in allProducts)

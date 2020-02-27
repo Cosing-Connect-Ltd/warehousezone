@@ -99,7 +99,7 @@ namespace WMS.Controllers
                 return View();
             }
 
-            ViewBag.ProductId = new SelectList(_productService.GetAllValidProductMasters(CurrentTenantId), "ProductId", "Name", product.ProductId);
+            ViewBag.ProductId = new SelectList(_productService.GetAllValidProductMasters(CurrentTenantId).ToList(), "ProductId", "Name", product.ProductId).ToList();
             ViewBag.ProductName = product.Name;
             ViewBag.ProductDescription = product.Description;
             ViewBag.InventoryTransactionTypeId = new SelectList(LookupServices.GetAllInventoryTransactionTypes().Where(e => e.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.AdjustmentIn || e.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.AdjustmentOut), "InventoryTransactionTypeId", "InventoryTransactionTypeName");

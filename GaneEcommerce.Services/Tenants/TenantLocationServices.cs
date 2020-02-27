@@ -118,7 +118,7 @@ namespace Ganedata.Core.Services
         public List<WarehouseProductLevelViewModel> GetAllStockLevelsForWarehouse(int warehouseId)
         {
             var warehouse = _currentDbContext.TenantWarehouses.Find(warehouseId);
-            var allProducts = _productServices.GetAllValidProductMasters(warehouse.TenantId);
+            var allProducts = _productServices.GetAllValidProductMasters(warehouse.TenantId).ToList();
             var allStockLevels = _currentDbContext.ProductLocationStockLevels.Where(m => m.TenantLocationID == warehouseId);
             var levels =
                 from p in allProducts
