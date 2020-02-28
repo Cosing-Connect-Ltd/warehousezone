@@ -20,7 +20,7 @@ namespace Ganedata.Core.Entities.Domain
         public int CreatedBy { get; set; }
         public int? UpdatedBy { get; set; }
 
-        
+        public string AccountNumber { get; set; }
 
         public int? TenantId { get; set; }
 

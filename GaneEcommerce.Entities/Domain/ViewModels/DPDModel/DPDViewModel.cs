@@ -122,6 +122,20 @@ namespace Ganedata.Core.Entities.Domain.ViewModels
         public object error { get; set; }
         public DpdResponseData data { get; set; }
     }
+    public class Error
+    {
+        public string errorCode { get; set; }
+        public string obj { get; set; }
+        public string errorType { get; set; }
+        public string errorMessage { get; set; }
+        public object errorAction { get; set; }
+    }
+
+    public class DpdErrorViewModel
+    {
+        public List<Error> error { get; set; }
+        public object data { get; set; }
+    }
 
 
 

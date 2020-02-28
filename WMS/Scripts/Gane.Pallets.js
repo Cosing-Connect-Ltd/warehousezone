@@ -249,9 +249,23 @@ $(document).ready(function () {
             });
 
     });
-   
-
+ 
 });
+
+function OnSubmitFormvalidate() {
+   
+        debugger;
+        var deliveryMethod = $("#DeliveryMethod").val();
+        if (deliveryMethod === "3") {
+            var serviceId = $("#NetworkCode").val();
+            if (serviceId <= 0 || serviceId === null || serviceId === "") {
+                alert("Select services first!")
+                return false;
+            }
+        }
+
+    
+}
 function DeliveryMethodChange(e) {
     debugger;
     if ($("#DeliveryMethod :selected").val() == "3") {

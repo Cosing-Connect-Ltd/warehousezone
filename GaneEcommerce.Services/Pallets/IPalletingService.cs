@@ -21,7 +21,7 @@ namespace Ganedata.Core.Services
         Pallet GetFulfillmentPalletByNumber(string palletNumber);
         decimal GetFulfilledProductQuantity(int orderProcessDetailId);
         PalletDispatchInfoViewModel GetPalletDispatchDetailByPallet(int palletId);
-        PalletsDispatch DispatchPallets(PalletDispatchViewModel dispatch, int userId);
+        string DispatchPallets(PalletDispatchViewModel dispatch, int userId);
         PalletSync DispatchPalletsFromHandheld(PalletSync currentPallet, int userId);
         Pallet UpdatePalletStatus(int palletId, bool isCompleted, Guid? newPalletToken = null, byte[][] palletProofImage = null);
         Pallet UpdatePalletProof(string palletNumber, byte[][] palletProofImage);

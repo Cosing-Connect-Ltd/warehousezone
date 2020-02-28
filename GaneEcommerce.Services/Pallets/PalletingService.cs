@@ -116,10 +116,12 @@ namespace Ganedata.Core.Services
             return _currentDbContext.PalletProducts.Where(m => m.OrderProcessDetailID == orderProcessDetailId && m.IsDeleted != true).ToList().Sum(x => x.Quantity);
         }
 
-        public PalletsDispatch DispatchPallets(PalletDispatchViewModel dispatch, int userId)
+        public string DispatchPallets(PalletDispatchViewModel dispatch, int userId)
         {
+            string result = "";
             if (dispatch.PalletDispatchId > 0)
             {
+                
                 var item = _currentDbContext.PalletsDispatches.FirstOrDefault(u => u.PalletsDispatchID == dispatch.PalletDispatchId);
                 if (item != null)
                 {
@@ -136,8 +138,13 @@ namespace Ganedata.Core.Services
                     _currentDbContext.Entry(item).State = EntityState.Modified;
                     _currentDbContext.SaveChanges();
                 }
+                if (dispatch.DeliveryMethod == DeliveryMethods.DPD)
+                {
+                    var model = MapModelWithRealValues(item.PalletsDispatchID, dispatch.NetworkCode);
+                    result=_dataImportFactory.PostShipmentData(item.PalletsDispatchID,model);
+                }
+                return result;
 
-                return item;
             }
             else
             {
@@ -192,9 +199,9 @@ namespace Ganedata.Core.Services
                 if (dispatch.DeliveryMethod == DeliveryMethods.DPD)
                 {
                     var model = MapModelWithRealValues(item.PalletsDispatchID,dispatch.NetworkCode);
-                    _dataImportFactory.PostShipmentData(model);
+                    result=_dataImportFactory.PostShipmentData(item.PalletsDispatchID,model);
                 }
-                return item;
+                return result;
             }
             
         }
@@ -587,7 +594,7 @@ namespace Ganedata.Core.Services
                 viewModel.jobId = null;
                 viewModel.collectionOnDelivery = false;
                 viewModel.invoice = null;
-                viewModel.collectionDate = DateTime.Today.AddHours(2);
+                viewModel.collectionDate = DateTime.UtcNow.AddHours(2);
                 Consignment consignment = new Consignment();
                 consignment.consignmentNumber = null;
                 consignment.consignmentRef = null;
@@ -606,7 +613,6 @@ namespace Ganedata.Core.Services
                 collectionDetails.address = address1;
                 collectionDetails.contactDetails = contactDetails;
                 collectionDetails.address = address1;
-                
                 DeliveryDetails deliveryDetails = new DeliveryDetails();
                 ContactDetails2 contactDetails2 = new ContactDetails2();
                 contactDetails2.contactName = palletDispatch.OrderProcess?.Order?.Account?.AccountContacts.FirstOrDefault()?.ContactName;
@@ -626,8 +632,8 @@ namespace Ganedata.Core.Services
                 consignment.deliveryDetails = deliveryDetails;
                 consignment.networkCode = NetworkCode;
                 consignment.numberOfParcels = _currentDbContext.Pallets.Count(u => u.PalletsDispatchID == DispatchId);
-                //var palletProduct= _currentDbContext.Pallets.Where(u => u.PalletsDispatchID == DispatchId).Select(u => u.PalletProducts);
-                consignment.totalWeight =null;
+
+                consignment.totalWeight = GetPalltedProductWeight(DispatchId);
                 consignment.shippingRef1 = palletDispatch.OrderProcess?.Order?.OrderID.ToString();
                 consignment.shippingRef2 = palletDispatch.OrderProcessID.ToString();
                 consignment.shippingRef3 = DispatchId.ToString();
@@ -642,6 +648,15 @@ namespace Ganedata.Core.Services
                 return viewModel;
             }
             return default;
+        }
+
+        private int GetPalltedProductWeight(int DispatchId)
+        {
+            var palletId = _currentDbContext.Pallets.Where(u => u.PalletsDispatchID == DispatchId).Select(u => u.PalletID).ToList();
+            var productIds = _currentDbContext.PalletProducts.Where(u => palletId.Contains(u.PalletID)).Select(u => u.ProductID).ToList();
+            var weights = _currentDbContext.ProductMaster.Where(u => productIds.Contains(u.ProductId)).Sum(u => u.Weight);
+            decimal weight = int.Parse(weights.ToString());
+            return weight;
         }
     }
 }

@@ -305,8 +305,11 @@ namespace WMS.Controllers
             {
                 model.ProofOfDeliveryImageFilenames = "";
             }
-            _palletingService.DispatchPallets(model, CurrentUserId);
-
+           var result= _palletingService.DispatchPallets(model, CurrentUserId);
+            if (!string.IsNullOrEmpty(result))
+            {
+                TempData["Error"] = result;
+            }
             return RedirectToAction("Index", "Pallets");
         }
 

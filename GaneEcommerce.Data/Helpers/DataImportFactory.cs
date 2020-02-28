@@ -3141,7 +3141,7 @@ namespace Ganedata.Core.Data.Helpers
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                 httpWebRequest.Method = "GET";
                 httpResponse = httpWebRequest.GetResponse();
-                
+
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var result = streamReader.ReadToEnd();
@@ -3184,43 +3184,73 @@ namespace Ganedata.Core.Data.Helpers
             return "";
 
         }
-        public string PostShipmentData(DpdShipmentDataViewModel dpdShipmentDataViewModel)
+        public string PostShipmentData(int PalletDispatchId, DpdShipmentDataViewModel dpdShipmentDataViewModel)
         {
             WebResponse httpResponse = null;
-            
             string url = "";
             try
             {
                 var _currentDbContext = new ApplicationContext();
                 var globalapis = _currentDbContext.GlobalApis.FirstOrDefault(u => u.ApiTypes == ApiTypes.DPD);
+                if (globalapis == null || string.IsNullOrEmpty(globalapis.ApiUrl) || string.IsNullOrEmpty(globalapis.ApiKey) || string.IsNullOrEmpty(globalapis.AccountNumber))
+                {
+                    return "Api Configuration is invalid, Either Api url, Api key or Api account fields are empty";
+                }
                 if (globalapis.ExpiryDate.HasValue && globalapis.ExpiryDate.Value.Day != DateTime.Today.Day)
                 {
-                    globalapis.ApiKey=GetDPDGeoSession(globalapis);
+                    globalapis.ApiKey = GetDPDGeoSession(globalapis);
 
                 }
-                url = globalapis?.ApiUrl;
-                url = url + "shipment";
+                url = globalapis.ApiUrl + "shipment";
                 DpdReponseViewModel dpdResponse = new DpdReponseViewModel();
+                DpdErrorViewModel errorViewModel = new DpdErrorViewModel();
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                 httpWebRequest.Method = "POST";
                 httpWebRequest.Headers.Add("GeoSession", globalapis.ApiKey);
-                httpWebRequest.Headers.Add("GeoClient", "account/ITC142468");
+                httpWebRequest.Headers.Add("GeoClient", "account/" + globalapis.AccountNumber);
                 httpWebRequest.ContentType = "application/json";
-                StreamWriter writer = new StreamWriter(httpWebRequest.GetRequestStream());
-                writer.WriteLine(dpdShipmentDataViewModel);
-                writer.Close();
+                using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+                {
+                    string json = JsonConvert.SerializeObject(dpdShipmentDataViewModel);
+                    streamWriter.Write(json);
+                }
                 httpResponse = httpWebRequest.GetResponse();
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var result = streamReader.ReadToEnd();
                     dpdResponse = JsonConvert.DeserializeObject<DpdReponseViewModel>(result);
+                    errorViewModel = JsonConvert.DeserializeObject<DpdErrorViewModel>(result);
                 }
-                foreach (var item in dpdResponse.data.consignmentDetail.ToList())
+                if (dpdResponse.data != null)
                 {
-                   
+                    foreach (var item in dpdResponse.data.consignmentDetail.ToList())
+                    {
+                        var palletDispatch = _currentDbContext.PalletsDispatches.FirstOrDefault(u => u.PalletsDispatchID == PalletDispatchId);
+                        if (palletDispatch != null)
+                        {
+                            palletDispatch.ShipmentId = dpdResponse.data.shipmentId.ToString();
+                            palletDispatch.ParcelNumbers = string.Join(",", item.parcelNumbers.ToList());
+                            palletDispatch.ConsignmentNumber = item.consignmentNumber;
+                            _currentDbContext.Entry(palletDispatch).State = EntityState.Modified;
+                            _currentDbContext.SaveChanges();
+                        }
+
+                    }
+                }
+                else
+                {
+                    if (errorViewModel.error != null)
+                    {
+                        foreach (var item in errorViewModel.error.ToList())
+                        {
+                            return item.obj + " " + item.errorMessage;
+                        }
+
+                    }
 
                 }
                 _currentDbContext.SaveChanges();
+
 
             }
             catch (Exception ex)
@@ -3229,20 +3259,21 @@ namespace Ganedata.Core.Data.Helpers
                 throw;
             }
 
-            return "";
+            return "Data Posted";
 
         }
 
         public string GetDPDGeoSession(GlobalApi globalApi)
         {
             var _currentDbContext = new ApplicationContext();
+            string authorization = GetEncodeUserNameBas64(globalApi.UserName, globalApi.Password);
             WebResponse httpResponse = null;
             string url = globalApi?.ApiUrl;
             url = url.Replace("shipping", "user") + "?action=login";
             GeoSession GeoSession = new GeoSession();
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
             httpWebRequest.Method = "POST";
-            httpWebRequest.Headers.Add(HttpRequestHeader.Authorization, "Basic R0FORURBVEFURVNUOkdBTkVEQVRBVEVTVA==");
+            httpWebRequest.Headers.Add(HttpRequestHeader.Authorization, "Basic " + authorization);
             httpResponse = httpWebRequest.GetResponse();
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
             {
@@ -3269,6 +3300,13 @@ namespace Ganedata.Core.Data.Helpers
             return GeoSession.data.geoSession;
         }
 
+
+        private string GetEncodeUserNameBas64(string userName, string Password)
+        {
+            string singleString = userName + ":" + Password;
+            var base64EncodedBytes = System.Convert.FromBase64String(singleString);
+            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+        }
     }
 
 

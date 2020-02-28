@@ -3,7 +3,7 @@
 @using Ganedata.Core.Entities.Enums
 @using Ganedata.Core.Models;
 
-@using (Html.BeginForm("SavePalletsDispatch", "Pallets", FormMethod.Post, new { @id = "frmDispatchPallets", @class = "form-horizontal", @enctype = "multipart/form-data" }))
+@using (Html.BeginForm("SavePalletsDispatch", "Pallets", FormMethod.Post, new {id="frmDispatchPallets", @class = "form-horizontal", @enctype = "multipart/form-data", onsubmit="return OnSubmitFormvalidate()"}))
 {
     @Html.HiddenFor(model => model.PalletDispatchId)
     @Html.Hidden("DispatchSelectedPalletIds")
@@ -127,4 +127,18 @@
 
     </tr>
 
+</script>
+<script type="text/javascript">
+     $("#frmDispatchPallets").on("submit", function () {
+        debugger;
+        var deliveryMethod = $("#DeliveryMethod").val();
+        if (deliveryMethod === "3") {
+            var serviceId = $("#NetworkCode").val();
+            if (serviceId <= 0 || serviceId === null || serviceId === "") {
+                alert("Select services first!")
+                return;
+            }
+        }
+
+    });
 </script>

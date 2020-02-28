@@ -59,7 +59,7 @@
                             <li class="nav-item">
                                 Welcome : <b> @LayoutHelpers.GetCurrentUserName() </b>
                             </li>
-}
+                        }
                         <li class="nav-item">@Html.Raw(WMS.Helpers.LayoutHelpers.WarehDropdown())</li>
 
                         <li class="nav-item">
@@ -85,22 +85,52 @@
         <div class="main-left">
             @*Error / warning / info / success Mesagess*@
             @*Error Message*@
-            @if (ViewBag.Error != null)
+            @if (ViewBag.Error != null || TempData["Error"] != null)
             {
-                <div class="alert alert-danger">@ViewBag.Error</div>
+                if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger">@ViewBag.Error</div>
+                }
+                if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger">@TempData["Error"]</div>
+                }
             }
             @*Warning Message*@
-            @if (ViewBag.Warning != null)
+            @if (ViewBag.Warning != null || TempData["Warning"] != null)
             {
-                <div class="alert alert-warning">@ViewBag.Warning</div>
-            }@*Info Message*@@if (ViewBag.Info != null)
-            {
-                <div class="alert alert-info">@ViewBag.Info</div>
+                if (ViewBag.Warning != null)
+                {
+                    <div class="alert alert-warning">@ViewBag.Warning</div>
+                }
+                if (TempData["Warning"] != null)
+                {
+                    <div class="alert alert-warning">@TempData["Warning"]</div>
+                }
             }
             @*Info Message*@
-            @if (ViewBag.Success != null)
+            @if (ViewBag.Info != null || TempData["Info"] != null)
             {
-                <div class="alert alert-success">@ViewBag.Success</div>
+                if (ViewBag.Info != null)
+                {
+                    <div class="alert alert-info">@ViewBag.Info</div>
+                }
+                if (TempData["info"] != null)
+                {
+                    <div class="alert alert-info">@TempData["info"]</div>
+                }
+            }
+            @*Info Message*@
+            @if (ViewBag.Success != null || TempData["Success"] != null)
+            {
+                if (ViewBag.Success != null)
+                {
+                    <div class="alert alert-success">@ViewBag.Success</div>
+                }
+                if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success">@TempData["Success"]</div>
+                }
             }
             @Html.Partial("_ModalAccountAddress")
             @Html.Partial("_ModalAccountContact")

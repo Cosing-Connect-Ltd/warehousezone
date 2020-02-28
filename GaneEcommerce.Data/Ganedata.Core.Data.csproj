@@ -675,6 +675,10 @@
     <Compile Include="Migrations\202002280651064_dpdResonsecoulmn-added-in-database.designer.cs">
       <DependentUpon>202002280651064_dpdResonsecoulmn-added-in-database.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202002281453268_accountNumber-in-GlobalApi.cs" />
+    <Compile Include="Migrations\202002281453268_accountNumber-in-GlobalApi.designer.cs">
+      <DependentUpon>202002281453268_accountNumber-in-GlobalApi.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1504,6 +1508,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202002280651064_dpdResonsecoulmn-added-in-database.resx">
       <DependentUpon>202002280651064_dpdResonsecoulmn-added-in-database.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002281453268_accountNumber-in-GlobalApi.resx">
+      <DependentUpon>202002281453268_accountNumber-in-GlobalApi.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
