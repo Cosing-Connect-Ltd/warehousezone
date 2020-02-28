@@ -184,6 +184,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             ViewBag.departments = productDepartments;
             var productGroups = _lookupServices.GetAllValidProductGroups(CurrentTenantId).ToList();
             ViewBag.productGroup = productGroups;
+            ViewBag.UserName = CurrentUser.UserFirstName + " " + CurrentUser.UserLastName;
             return PartialView();
         }
 

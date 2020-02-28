@@ -75,15 +75,30 @@
             <div id="top-links-menu" class="text-right top-menu-links col-sm-2 col-lg-2">
                 <ul class="list-inline">
                     <li class="dropdown user_menu">
-                        <a href="#" title="My Account" class="dropdown-toggle" data-toggle="dropdown">
+                        <a href="#" title="@(ViewBag.UserName == " " ? "My Account" : ViewBag.UserName)" class="dropdown-toggle" data-toggle="dropdown">
                             <svg width="24px" height="24px">
                                 <use xlink:href="/Areas/Shop/Content/app/img/icons/icons.svg#user"></use>
                             </svg>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right user_account">
-                            <li><a href="signup.html"><i class="fa fa-user-plus"></i>Register</a></li>
-                            <li><a href="login.html"><i class="fa fa-lock"></i>Login</a></li>
-                            <li><a href="#" id="wishlist-total-mobile"><i class="fa fa-heart"></i>Wish List (0)</a></li>
+                            @if (@ViewBag.LoginDetail == "Login")
+                            {
+                                <li><a href="@Url.Action("Create","User")"><i class="fa fa-user-plus"></i>Register</a></li>
+                            }
+                            else
+                            {
+                                <li><a href="@Url.Action("Index","Home")"><i class="fa fa-user" style="margin: 0 7px !important;"></i>@ViewBag.UserName</a></li>
+                            }
+
+                            @if (@ViewBag.LoginDetail == "Login")
+                            {
+                                <li><a href="@Url.Action("login", "User")"><i class="fa fa-sign-in" style="margin: 0 6.5px !important;"></i>Login</a></li>
+                            }
+                            else
+                            {
+                                <li><a href="@Url.Action("logout", "User")"><i class="fa fa-sign-out"></i>Logout</a></li>
+                            }
+                            @*<li><a href="#" id="wishlist-total-mobile"><i class="fa fa-heart"></i>Wish List (0)</a></li>*@
                         </ul>
                     </li>
                     <li id="cart-mobile" class="cart-menu">

@@ -642,3 +642,109 @@ ul.mhp-menu {
     top: -1px;
     margin: 0 10px;
 }
+#special .caption {
+    margin-bottom: 7px;
+}
+.mb-25 {
+    margin-bottom: 25px !important;
+}
+.product-cat {
+    display: flex;
+    flex-wrap: wrap;
+}
+@media(max-width:839px){
+    .product-cat {
+        justify-content:center;
+    }
+}
+.product-cat .image img {
+    margin-right: unset !important;
+    margin-left: unset !important;
+    width: 235px;
+    height: 235px;
+    border: solid 1px #D7D7D7;
+}
+.product-cat .caption {
+    width: 235px;
+}
+.product-cat .product-grid {
+    width: 270px !important;
+}
+.custom-max-width{
+    max-width:1400px;
+    width:100%;
+}
+.cat-filter {
+    font-size: 13px;
+    white-space: nowrap;
+}
+.cat-filter a{
+    font-size: 14px;
+    white-space: nowrap;
+}
+.billing-address .menu-about li {
+    box-shadow: 1px 4px 4px 0px rgba(0,0,0,.1);
+    margin-bottom: 15px;
+}
+@media(max-width:768px) {
+.billing-address .button-submit button {
+    width:100% !important;
+}
+}
+.shippingMethod {
+    text-transform: none !important;
+}
+    .shippingMethod label {
+        display: flex;
+        font-weight: 300 !important;
+        margin-top: 5px;
+    }
+.shippingMethod input[type="checkbox"], input[type="radio"] {
+        margin: 3px 10px 0 !important;
+    }
+.custom-hr {
+    margin-top: 15px !important;
+    border-top: 2px solid #e2e2e2 !important;
+}
+.mt-20 {
+    margin-top:20px;
+}
+.mb-15 {
+    margin-bottom:15px;
+}
+.h-40px{
+    height:40px;
+}
+.billing-address .both-btn a {
+    margin-right: 10px;
+    margin-top: 8px;
+}
+@media(max-width:500px) {
+    .billing-address .both-btn a {
+        width: 100%;
+        margin-top: 8px;
+    }
+}
+.custom-danger {
+    background-color: #d9534f !important;
+    border-color: #d9534f !important;
+}
+    .custom-danger:hover {
+        background-color: #000 !important;
+        border-color: #000 !important;
+    }
+@media(max-width:991px){
+    .p-mt-20 {
+        margin-top:20px;
+    }
+    .confirm-order {
+        width:100%;
+    }
+}
+.orders-total {
+    color: #434343;
+}
+.shiping-method-2 {
+    box-shadow: 1px 4px 4px 0px rgba(0,0,0,.1);
+    margin-bottom: 20px;
+}

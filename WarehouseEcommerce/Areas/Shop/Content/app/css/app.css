@@ -216,7 +216,7 @@ h1 {
 }
 
 h2 {
-  font-size: 27px;
+  font-size: 25px;
 }
 
 h3 {
@@ -456,7 +456,11 @@ div.required .control-label:before {
     left: unset !important;
     top: 64px;
 }
-
+@media(max-width: 767px) {
+    .cart-menu .dropdown-menu {
+        top: 21px;
+    }
+}
 @media(min-width: 768px) {
   .cart-menu .dropdown-menu {
     margin: 0 14px;
@@ -2261,7 +2265,7 @@ header {
 }
 
 .leftpro .price {
-  margin-bottom: 5px;
+  /*margin-bottom: 5px;*/
 }
 
 .left-widgets .leftpro:last-child {
@@ -4487,6 +4491,7 @@ body.active .sidenav {
   background-color: #000;
 }
 
+
 .menu-about li a {
   position: relative;
 }
@@ -4518,18 +4523,14 @@ body.active .sidenav {
 }
 
 .about-cnt {
-  padding: 0 20px;
-  padding-right: 200px;
+  /*padding: 0 20px;
+  padding-right: 200px;*/
 }
 
 .about-cnt p a,
 .about-list li a,
 .about-cnt td a {
   color: #3a99d9;
-}
-
-.about-cnt table {
-  margin-bottom: 20px;
 }
 
 .about-cnt td {
@@ -4541,7 +4542,7 @@ body.active .sidenav {
 }
 
 .about-cnt p {
-  margin-bottom: 20px;
+  /*margin-bottom: 20px;*/
   font-size: 14px;
   line-height: 25px;
   color: #6E6E6E;

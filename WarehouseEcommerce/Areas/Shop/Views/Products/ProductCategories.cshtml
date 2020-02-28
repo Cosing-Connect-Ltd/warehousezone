@@ -6,10 +6,10 @@
     ViewBag.Title = "ProductCategories";
 }
 
-<div id="product-search" class="container">
+<div id="product-search" class="container .custom-max-width">
     <div class="row">
-        <div class="col-md-3">
-            <div class="filters">
+        <div class="col-md-2">
+            <div class="filters cat-filter">
                 <h2>Refined by</h2>
                 <button type="button" class="btn filterCollapse" data-toggle="collapse" data-target="#accordion">
                     Refined by
@@ -84,7 +84,7 @@
 
             </div>
         </div>
-        <div id="content" class="col-md-9">
+        <div id="content" class="col-md-10">
             <ul class="breadcrumb">
                 <li><a href="#">Home</a></li>
                 <li><a href="#">Special Offers</a></li>
@@ -139,7 +139,7 @@
 
 
             </div>
-            <div class="row productspm">
+            <div class="row productspm product-cat">
                 @if (Model != null)
                 {
                     foreach (var item in Model)
@@ -153,7 +153,7 @@
                             <div class="product-thumb transition">
                                 <div class="image">
                                     <a href="@Url.Action("ProductDetails","Products", new {productId=item.ProductId})">
-                                        <img src="@(!string.IsNullOrEmpty(defaulImage) ? ViewBag.BaseFilePath + defaulImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no-image.png")" alt="@item.Name" class="img-responsive center-block" />
+                                        <img src="@(!string.IsNullOrEmpty(defaulImage) ? ViewBag.BaseFilePath + defaulImage : ViewBag.BaseFilePath + "/Areas/Shop/Content/app/img/product/no_image.gif")" alt="@item.Name" class="img-responsive center-block" />
                                     </a>
                                     <span class="salep">sale</span>
                                     <div class="topbutton">

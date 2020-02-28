@@ -8,21 +8,20 @@
 }
 <style>
     .about-cnt p {
-        height: 113px;
+        /*height: 113px;*/
     }
 
     .shippingMethod {
         background: #f7f7f9;
         display: block;
         border-bottom: 1px solid #ffffff;
-        padding: 20px 20px;
         color: #434343;
         position: relative;
         text-transform: uppercase;
     }
 </style>
-<div class="about bg-white">
-    <div class="container-fluid">
+<div class="about bg-white billing-address">
+    <div class="container-fluid custom-max-width">
         <div class="row">
             <div class="col-md-3 col-sm-12 ">
                 <ul class="menu-about">
@@ -31,11 +30,11 @@
 
                 </ul>
             </div>
-            <div class="col-md-9 col-sm-12 bg-white login my-account">
+            <div class="col-md-8 col-sm-12 bg-white login my-account">
                 <div class="about-cnt">
                     <div class="content-wrapper select">
                         <h2 class="text-uppercase">@ViewBag.AddressMessage</h2>
-                        <hr>
+                        <hr class="custom-hr">
                         @if (ViewBag.Addresses != null)
                         {
 
@@ -45,7 +44,7 @@
                                 <div class="row">
                                     @if (address.ElementAtOrDefault(i) != null)
                                     {
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 both-btn">
                                         <p>
                                             @if (!string.IsNullOrEmpty(address[i].AddressLine1))
                                             {
@@ -73,23 +72,29 @@
 
                                         </p>
                                         @if (address[i].AddTypeBilling == true)
-                                        {
-                                            <a href="@Url.Action("GetAddress", "Orders", new { AccountId = ViewBag.AccountIds, ShipingAddress = true })" role="button" class="btn btn-default" style="font-size:11px">Select billing address</a> <a href="@Url.Action("GetAddress", "Orders", new { AccountId = address[i].AccountID, AccountAddressId = address[i].AddressID })" role="button" class="btn btn-default" style="font-size:11px">Edit address</a>
+                                        { 
+                                            <div class="">
+                                            <a href="@Url.Action("GetAddress", "Orders", new { AccountId = ViewBag.AccountIds, ShipingAddress = true })" role="button" class="btn btn-default" style="font-size:11px">Select billing address</a>
+                                            <a href="@Url.Action("GetAddress", "Orders", new { AccountId = address[i].AccountID, AccountAddressId = address[i].AddressID })" role="button" class="btn btn-default" style="font-size:11px">Edit address</a>
+                                           </div>
                                         }
                                         else
                                         {
+                                        <div class="">
                                             <a href="javascript:;" role="button" class="btn btn-primary" style="font-size:11px" onclick="ChooseShippingAddress(@address[i].AddressID)">Select shipping address</a>
                                             @*<a href="@Url.Action("AddShippingMethod","Orders",new {AccountAddressId=address[i].AddressID })" role="button" class="btn btn-primary" style="font-size:11px">Select shipping address</a>*@
-                                            <a href="@Url.Action("GetAddress", "Orders", new { AccountId = address[i].AccountID, AccountAddressId = address[i].AddressID,ShipingAddress = true })" role="button" class="btn btn-success" style="font-size:11px">Edit Address</a> <a href="@Url.Action("RemoveAddress", "Orders", new {AccountAddressId = address[i].AddressID })" role="button" class="btn btn-danger" style="font-size:11px">Remove address</a>
-                                        }
+                                            <a href="@Url.Action("GetAddress", "Orders", new { AccountId = address[i].AccountID, AccountAddressId = address[i].AddressID,ShipingAddress = true })" role="button" class="btn btn-success" style="font-size:11px">Edit Address</a>
+                                            <a href="@Url.Action("RemoveAddress", "Orders", new {AccountAddressId = address[i].AddressID })" role="button" class="btn btn-danger custom-danger" style="font-size:11px">Remove address</a>
+                                        </div>
+                                                }
 
                                     </div>
                                     }
                                     @if (address.ElementAtOrDefault(i + 1) != null)
                                     {
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 both-btn">
                                             <div class="w-25 p-3">
-                                                <p>
+                                                <p class="p-mt-20">
                                                     @if (!string.IsNullOrEmpty(address[i + 1].AddressLine1))
                                                     {
                                                         <b>@address[i + 1].AddressLine1</b><br />
@@ -115,45 +120,33 @@
 
                                                 </p>
                                             </div>
-                                            <div>
+                                            <div class="">
                                                 <a href="javascript:;" role="button" class="btn btn-primary" style="font-size:11px" onclick="ChooseShippingAddress(@address[i + 1].AddressID)">Select shipping address</a>
-                                                <a href="@Url.Action("GetAddress","Orders",new {AccountId=address[i+1].AccountID, AccountAddressId=address[i+1].AddressID })" role="button" class="btn btn-success" style="font-size:11px">Edit address</a> <a href="@Url.Action("RemoveAddress", "Orders", new {AccountAddressId = address[i+1].AddressID }))" role="button" class="btn btn-danger" style="font-size:11px">Remove address</a>
+                                                <a href="@Url.Action("GetAddress","Orders",new {AccountId=address[i+1].AccountID, AccountAddressId=address[i+1].AddressID })" role="button" class="btn btn-success" style="font-size:11px">Edit address</a> 
+                                                <a href="@Url.Action("RemoveAddress", "Orders", new {AccountAddressId = address[i+1].AddressID }))" role="button" class="btn btn-danger custom-danger" style="font-size:11px">Remove address</a>
                                             </div>
                                         </div>
                                     }
                                 </div>
                                 <br />
                             }
-                            <br />
+                        
                         }
                         @if (billingType == 0 && ViewBag.Shiping != null)
                         {
 
-                            <h4 class="text-uppercase">Select Shipping Method</h4>
-                            <hr>
+                            <h4 class="text-uppercase mb-15">Select Shipping Method</h4>
                             <div class="shippingMethod">
                                 <div class="form-check-inline">
                                     <label class="control-label" for="radio1">
-                                        <input type="radio" class="form-check-input" id="radio1" name="optradio" value="1">By Shop
-                                    </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <label class="control-label">
-                                        Pick up in-store
-                                    </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <label class="control-label">
-                                        Free
+                                        <input type="radio" class="form-check-input" id="radio1" name="optradio" value="1">Pick up (From Store) Free
                                     </label>
                                 </div>
                             </div>
                             <div class="shippingMethod">
                                 <div class="form-check-inline">
                                     <label class="control-label" for="radio2">
-                                        <input type="radio" class="form-check-input" id="radio2" name="optradio" value="2">By Delivery
-                                    </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <label class="control-label">
-                                        Carrier
-                                    </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <label class="control-label">
-                                        $10
+                                        <input type="radio" class="form-check-input" id="radio2" name="optradio" value="2">Delivery (Courier) $10
                                     </label>
                                 </div>
                             </div>
@@ -164,40 +157,40 @@
 
 
                         <div style="display:@(billingType==0?"":"none");">
-                            <h4 class="text-uppercase">Add a new address</h4>
-                            <hr>
+                            <h4 class="text-uppercase mt-20">Add a new address</h4>
+                            <hr class="custom-hr">
                             @using (Html.BeginForm("SaveAddress", "Orders"))
                             {
                                 @Html.HiddenFor(model => model.AddressID)
                                 <div class="">
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 col-sm-6">
                                             <div class="form-group">
                                                 @Html.EditorFor(model => model.AddressLine1, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Address Line 1" } })
                                                 @*<input type="text" class="form-control input-md inputNew" size="18" placeholder="Address Line 1">*@
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 col-sm-6">
                                             <div class="form-group">
                                                 @Html.EditorFor(model => model.AddressLine2, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Address Line 2" } })
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 col-sm-6">
                                             <div class="form-group">
                                                 @Html.EditorFor(model => model.AddressLine3, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Address Line 3" } })
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 col-sm-6">
                                             <div class="form-group">
                                                 @Html.EditorFor(model => model.PostCode, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Postal Code" } })
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 col-sm-6">
                                             <div class="form-group">
-                                                @Html.EditorFor(model => model.Telephone, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Telephone Number" } })
+                                                @Html.EditorFor(model => model.Telephone, new { htmlattributes = new { @class = "form-control input-md inputNew h-40px", @placeholder = "Telephone Number" } })
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 col-sm-6">
                                             <div class="form-group">
                                                 @Html.DropDownListFor(model => model.CountryID, ViewBag.Country as SelectList, new { @class = "" })
 
