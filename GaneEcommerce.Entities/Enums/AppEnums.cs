@@ -68,8 +68,8 @@ namespace Ganedata.Core.Entities.Enums
         ScheduledDate = 19,
         CustomMessage = 20,
         AccountPurchasingContactName = 21,
-        UserName=22,
-        ConfirmationLink=23
+        UserName = 22,
+        ConfirmationLink = 23
     }
 
     public enum WorksOrderNotificationTypeEnum
@@ -366,7 +366,7 @@ namespace Ganedata.Core.Entities.Enums
         Created = 1,
         Loaded = 2,
         Delivered = 3,
-        Scheduled= 4,
+        Scheduled = 4,
     }
 
     public enum TnALogsStampType
@@ -397,6 +397,7 @@ namespace Ganedata.Core.Entities.Enums
     }
     public enum ApiTypes
     {
-        MerakiSecretKey=1
+        MerakiSecretKey = 1,
+        DPD = 2
     }
 }

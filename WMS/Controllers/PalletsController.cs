@@ -287,6 +287,8 @@ namespace WMS.Controllers
             model.AllSentMethods = _palletingService.GetAllSentMethods()
                 .Select(m => new SelectListItem() { Text = m.ToString(), Value = ((int)m).ToString() });
             model.DispatchRefrenceNumber = GaneStaticAppExtensions.GenerateDateRandomNo();
+            model.AllDpdServices=_palletingService.GetAllDpdServices().
+                Select(m => new SelectListItem() { Text = m.NetworkDescription.ToString(), Value = m.NetworkCode.ToString() });
             ViewBag.ControllerName = "Pallets";
             Session["UploadedPalletEvidences"] = null;
             return PartialView("_PalletDisptachDetail", model);

@@ -671,6 +671,10 @@
     <Compile Include="Migrations\202002251353519_adding-GlobaAPisAndDeliveryService-in-database.designer.cs">
       <DependentUpon>202002251353519_adding-GlobaAPisAndDeliveryService-in-database.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202002280651064_dpdResonsecoulmn-added-in-database.cs" />
+    <Compile Include="Migrations\202002280651064_dpdResonsecoulmn-added-in-database.designer.cs">
+      <DependentUpon>202002280651064_dpdResonsecoulmn-added-in-database.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1497,6 +1501,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202002251353519_adding-GlobaAPisAndDeliveryService-in-database.resx">
       <DependentUpon>202002251353519_adding-GlobaAPisAndDeliveryService-in-database.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002280651064_dpdResonsecoulmn-added-in-database.resx">
+      <DependentUpon>202002280651064_dpdResonsecoulmn-added-in-database.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

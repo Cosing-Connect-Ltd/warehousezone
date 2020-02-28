@@ -242,6 +242,7 @@
     <Compile Include="Domain\Tenants\TenantConfig.cs" />
     <Compile Include="Domain\ViewModels\AssetLogViewModel.cs" />
     <Compile Include="Domain\ViewModels\CurrencyExRateViewModel.cs" />
+    <Compile Include="Domain\ViewModels\DPDModel\DPDViewModel.cs" />
     <Compile Include="Domain\ViewModels\GlobalTaxViewModel.cs" />
     <Compile Include="Domain\ViewModels\PrestaShopModel\PrestaShopProductViewModel.cs" />
     <Compile Include="Domain\ViewModels\ScanSourceProductViewModel.cs" />

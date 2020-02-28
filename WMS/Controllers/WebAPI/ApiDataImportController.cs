@@ -40,5 +40,14 @@ namespace WMS.Controllers.WebAPI
                 return BadRequest("Could not import data:  " + ex.Message);
             }
         }
+
+        public IHttpActionResult GetDPDServices()
+        {
+            var value=dataImportFactory.GetDPDServices();
+            return Ok(value);
+
+
+        }
+        
     }
 }

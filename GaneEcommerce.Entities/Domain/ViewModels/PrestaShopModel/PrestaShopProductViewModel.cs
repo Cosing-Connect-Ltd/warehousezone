@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Ganedata.Core.Entities.Domain.ViewModels.PrestaShopModel
+namespace Ganedata.Core.Entities.Domain.ViewModels
 {
     public class PrestaShopProductDetailViewModel
     {

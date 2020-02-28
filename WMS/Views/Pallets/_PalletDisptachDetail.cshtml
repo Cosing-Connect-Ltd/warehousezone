@@ -13,33 +13,42 @@
             <div class="col-md-12 p-0">
                 <div class="col-md-6 p-0 pull-left">
                     <div class="col-md-12 p-0">
-                        <div class="col-md-4 pull-left pallet-quantity-hlabel">Sent Method</div>
+                        <div class="col-md-4 pull-left pallet-quantity-hlabel">Delivery Method</div>
                         <div class="input-group col-md-8 pull-left">
 
-                            @Html.DropDownListFor(m => m.DeliveryMethod, EnumHelper.GetSelectList(typeof(DeliveryMethods)), new { @class = "chosen-select" })
+                            @Html.DropDownListFor(m => m.DeliveryMethod, EnumHelper.GetSelectList(typeof(DeliveryMethods)), new { @class = "chosen-select", @onchange = "DeliveryMethodChange(event)" })
 
                             @*   @Html.DropDownListFor(m => m.SentMethodID, Model.AllSentMethods, new { @class = "chosen-select" })*@
                         </div>
                     </div>
-                    <div class="col-md-12 p-0 pull-left">
-                        <div class="col-md-4 pull-left pallet-quantity-hlabel">Tracking No.</div>
-                        <div class="input-group col-md-8 pull-left">
-                            @Html.TextBoxFor(m => m.TrackingReference, new { @class = "form-control" })
+                    <div class="data-detail">
+                        <div class="col-md-12 p-0 pull-left">
+                            <div class="col-md-4 pull-left pallet-quantity-hlabel">Tracking No.</div>
+                            <div class="input-group col-md-8 pull-left">
+                                @Html.TextBoxFor(m => m.TrackingReference, new { @class = "form-control" })
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="col-md-12 p-0 pull-left">
-                        <div class="col-md-4 pull-left pallet-quantity-hlabel">Vehicle<a class="pull-right" id="lnkVehicleManuallyEnter" onclick="$('#divChooseVehicle').hide(); $('#divCustomVehicle').fadeIn(); $('#lnkVehicleManuallyEnter').hide(); $('#MarketVehicleID').val(null);"><span class="fa fa-pencil"></span></a></div>
-                        <div class="col-md-8 pull-left" id="divChooseVehicle">@Html.DropDownListFor(m => m.MarketVehicleID, Model.AllVehicles, "Select vechicle", new { @class = "chosen-select" })</div>
-                        <div class="col-md-12" id="divCustomVehicle" style="display: none">
-                            <div class="col-md-10 pull-left">@Html.TextBoxFor(m => m.CustomVehicleModel)</div><a class="fa fa-times col-md-1 pull-left" onclick="$('#divCustomVehicle').hide(); $('#divChooseVehicle').fadeIn(); $('#lnkVehicleManuallyEnter').fadeIn();"></a>
+                        <div class="col-md-12 p-0 pull-left">
+                            <div class="col-md-4 pull-left pallet-quantity-hlabel">Vehicle<a class="pull-right" id="lnkVehicleManuallyEnter" onclick="$('#divChooseVehicle').hide(); $('#divCustomVehicle').fadeIn(); $('#lnkVehicleManuallyEnter').hide(); $('#MarketVehicleID').val(null);"><span class="fa fa-pencil"></span></a></div>
+                            <div class="col-md-8 pull-left" id="divChooseVehicle">@Html.DropDownListFor(m => m.MarketVehicleID, Model.AllVehicles, "Select vechicle", new { @class = "chosen-select" })</div>
+                            <div class="col-md-12" id="divCustomVehicle" style="display: none">
+                                <div class="col-md-10 pull-left">@Html.TextBoxFor(m => m.CustomVehicleModel)</div><a class="fa fa-times col-md-1 pull-left" onclick="$('#divCustomVehicle').hide(); $('#divChooseVehicle').fadeIn(); $('#lnkVehicleManuallyEnter').fadeIn();"></a>
+                            </div>
+                        </div>
+                        <div class="col-md-12 p-0 pull-left">
+                            <div class="col-md-4 pull-left pallet-quantity-hlabel">Driver <a class="pull-right" id="lnkDriverManuallyEnter" onclick="$('#divChooseDriver').hide(); $('#divCustomDriver').fadeIn(); $('#lnkDriverManuallyEnter').hide(); $('#MarketVehicleDriverID').val(null);"><span class="fa fa-pencil"></span></a></div>
+                            <div class="col-md-8 pull-left" id="divChooseDriver">@Html.DropDownListFor(m => m.MarketVehicleDriverID, Model.AllDrivers, "Select driver", new { @class = "chosen-select" })</div>
+                            <div class="col-md-12" id="divCustomDriver" style="display: none">
+                                <div class="col-md-10"> @Html.TextBoxFor(m => m.CustomDriverDetails)</div><a class="fa fa-times col-md-1" onclick="$('#divCustomDriver').hide(); $('#divChooseDriver').fadeIn(); $('#lnkDriverManuallyEnter').fadeIn();"></a>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-12 p-0 pull-left">
-                        <div class="col-md-4 pull-left pallet-quantity-hlabel">Driver <a class="pull-right" id="lnkDriverManuallyEnter" onclick="$('#divChooseDriver').hide(); $('#divCustomDriver').fadeIn(); $('#lnkDriverManuallyEnter').hide(); $('#MarketVehicleDriverID').val(null);"><span class="fa fa-pencil"></span></a></div>
-                        <div class="col-md-8 pull-left" id="divChooseDriver">@Html.DropDownListFor(m => m.MarketVehicleDriverID, Model.AllDrivers, "Select driver", new { @class = "chosen-select" })</div>
-                        <div class="col-md-12" id="divCustomDriver" style="display: none">
-                            <div class="col-md-10"> @Html.TextBoxFor(m => m.CustomDriverDetails)</div><a class="fa fa-times col-md-1" onclick="$('#divCustomDriver').hide(); $('#divChooseDriver').fadeIn(); $('#lnkDriverManuallyEnter').fadeIn();"></a>
+                    <div class="data-ddp" style="display:none">
+                        <div class="col-md-12 p-0 pull-left">
+                            <div class="col-md-4 pull-left pallet-quantity-hlabel">Select Service</div>
+                            <div class="col-md-8 pull-left" id="divserviceDriver">@Html.DropDownListFor(m => m.NetworkCode, Model.AllDpdServices, "Select Service", new { @class = "chosen-select" })</div>
+
                         </div>
                     </div>
                     <div class="col-md-12 p-0 pull-left">
@@ -117,4 +126,5 @@
         <td><a class="LRemove" onclick="_RemoveProofOfDeliveryFile('${FileName}')">Remove</a></td>
 
     </tr>
+
 </script>

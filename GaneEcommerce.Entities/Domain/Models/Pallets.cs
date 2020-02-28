@@ -52,6 +52,11 @@ namespace Ganedata.Core.Entities.Domain
         public virtual OrderProcess OrderProcess { get; set; }
         public string ReceiverName { get; set; }
         public string ReceiverSign { get; set; }
+        public string NetworkCode { get; set; }
+        public string ShipmentId { get; set; }
+        public string ConsignmentNumber { get; set; }
+        public string ParcelNumbers { get; set; }
+
     }
 
     [Serializable]

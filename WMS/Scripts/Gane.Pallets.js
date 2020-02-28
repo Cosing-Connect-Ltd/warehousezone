@@ -17,8 +17,8 @@ var AllCount = 0;
 var TotalCount = 0;
 
 (function ($, gane) {
-var showDispatch = true;
-gane.PalletHelpers = function () {
+    var showDispatch = true;
+    gane.PalletHelpers = function () {
         var onBeginCallbackPalletItem = function (s, e) {
             e.customArgs["orderDetailID"] = $("#divPalletingInformation #CurrentOrderDetailID").val();
             e.customArgs["processedQuantity"] = $("#divPalletingInformation #CurrentProcessedQuantity").val();
@@ -56,7 +56,7 @@ gane.PalletHelpers = function () {
                 });
         };
         var palletOrderItemsLoaded = function () {
-            var dataCount = 1; 
+            var dataCount = 1;
             var addToPallet = function (oDetilId, pqty, productId, productname) {
                 $("#divPalletingInformation #CurrentOrderDetailID").val(oDetilId);
                 $("#divPalletingInformation #CurrentProcessedQuantity").val(pqty);
@@ -72,21 +72,18 @@ gane.PalletHelpers = function () {
                 var productId = $(this).data('productid');
                 var productname = $(this).data('productname');
                 var $basketLink = $("<a class='fa fa-cart-plus sales-detail-pallet-basket' title='Load to Pallet'></a>");
-                $basketLink.on("click", function (){
+                $basketLink.on("click", function () {
                     addToPallet(orderDetailId, processedQty, productId, productname);
                 });
-                if ($("#SelectedPalletID").val() > 0)
-                {
+                if ($("#SelectedPalletID").val() > 0) {
                     dataCount = 0;
-                    if ($("#IsPalletCompleted").val() !== "True")
-                    {
+                    if ($("#IsPalletCompleted").val() !== "True") {
                         if (parseFloat(actualQty) > parseFloat(processedQty)) {
                             $(this).html($basketLink);
                         }
-                       
-                    }                     
-                    else
-                    {
+
+                    }
+                    else {
 
                         if ($("#divPalletingInformation .pallet-number .pallet-dispatch-success").length < 1) {
                             $("<small class='pallet-dispatch-success'>Completed : " + $("#PalletCompletedDate").val() + "</small>").appendTo("#divPalletingInformation .pallet-number");
@@ -95,7 +92,7 @@ gane.PalletHelpers = function () {
                 }
             });
 
-         };
+        };
 
 
         var palletEditorInit = function () {
@@ -138,7 +135,7 @@ gane.PalletHelpers = function () {
             OnBeginCallbackPalletItem: function (s, e) {
                 return onBeginCallbackPalletItem(s, e);
             },
-            ConfirmLoadToPallets: function () {  return confirmLoadToPallets(); }
+            ConfirmLoadToPallets: function () { return confirmLoadToPallets(); }
         };
     };
 
@@ -146,9 +143,9 @@ gane.PalletHelpers = function () {
 
 })(jQuery, Gane);
 
-function OnGridTotalCount (s, e) {
+function OnGridTotalCount(s, e) {
     TotalCount = s.cpVisibleRowCount;
-   
+
 }
 
 function OnGridFocusedRowChanged(s, e) {
@@ -160,18 +157,16 @@ function OnPalletGridFocusedRowChanged(s, e) {
 
 function OnPalletOrderDetailsCallback(s, e) {
     Gane.Pallets.PalletOrderItemsLoaded();
-    ShowPalletDispatchButton(); 
+    ShowPalletDispatchButton();
 }
 
 
-function ShowPalletDispatchButton(s,e) {
+function ShowPalletDispatchButton(s, e) {
     LoadingPanel.Show();
     var data = { OrderProcessId: $("#orderprocessId").val() };
-    $.post('/Pallets/PalletDispatchCheck', data, function (result)
-    {
+    $.post('/Pallets/PalletDispatchCheck', data, function (result) {
         LoadingPanel.Hide();
-        if (result)
-        {
+        if (result) {
             $("#btnDispatchPallets").slideDown();
         }
         else {
@@ -187,15 +182,15 @@ function EditPalletDispatch(palletDispatchId) {
     var data = { PalletsDispatchID: palletDispatchId };
     LoadingPanel.Show();
     $.post('/Pallets/EditDispatchPallets', data, function (result) {
-          
-            LoadingPanel.Hide();
-            Gane.Helpers.ShowPopupMessage('Dispatch Pallets', result, PopupTypes.Warning);
-            MVCxClientUtils.FinalizeCallback();
-           
-        }).fail(function (xhr, status, error) {
-            LoadingPanel.Hide();
-            Gane.Helpers.ShowPopupMessage('Dispatch Pallets Error', xhr.responseText, PopupTypes.Warning);
-        });
+
+        LoadingPanel.Hide();
+        Gane.Helpers.ShowPopupMessage('Dispatch Pallets', result, PopupTypes.Warning);
+        MVCxClientUtils.FinalizeCallback();
+
+    }).fail(function (xhr, status, error) {
+        LoadingPanel.Hide();
+        Gane.Helpers.ShowPopupMessage('Dispatch Pallets Error', xhr.responseText, PopupTypes.Warning);
+    });
 
 }
 
@@ -208,7 +203,7 @@ function SaveEditPallets() {
         LoadingPanel.Show();
         UploadControl.UploadFile();
     }
-  
+
 }
 
 
@@ -243,7 +238,7 @@ $(document).ready(function () {
         $.post('/Pallets/DispatchPallets',
             data,
             function (result) {
-                
+                debugger;
                 LoadingPanel.Hide();
                 Gane.Helpers.ShowPopupMessage('Dispatch Pallets', '<div class="pallet-number"><b>DELIVERY REFERENCE NUMBER : </b>' + deliveryNumber + "</div><br/>" + result, PopupTypes.Warning);
                 MVCxClientUtils.FinalizeCallback();
@@ -254,10 +249,20 @@ $(document).ready(function () {
             });
 
     });
-
+   
 
 });
-
+function DeliveryMethodChange(e) {
+    debugger;
+    if ($("#DeliveryMethod :selected").val() == "3") {
+        $(".data-detail").hide();
+        $(".data-ddp").show();
+    }
+    else {
+        $(".data-detail").show();
+        $(".data-ddp").hide();
+    }
+}
 
 function DeletePalletProduct(PalletProductId) {
     if (confirm("Are you sure want to remove this product from pallet?")) {
@@ -270,9 +275,9 @@ function DeletePalletProduct(PalletProductId) {
             success: function (data) {
                 LoadingPanel.Hide();
                 if (data) {
-                   
+
                     PalletsListGridView1.Refresh();
-                   
+
                 }
             }
         });

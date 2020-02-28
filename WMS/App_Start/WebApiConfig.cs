@@ -80,7 +80,8 @@ namespace WMS
             config.Routes.MapHttpRoute("ApiCurrencyExRateRoute", "api/sync/currency-ex-rates/{TenantId}", new { controller = "ApiCurrencyExRate", action = "GetTenantCurrencyExRate", TenantId = string.Empty });
             config.Routes.MapHttpRoute("ImportScanSourceData", "api/sync/Scan-Source-Product-Import/{TenantId}", new { controller = "ApiDataImport", action = "GetScanSourceDataImport", TenantId = string.Empty });
             config.Routes.MapHttpRoute("ImportCipherLabProductData", "api/sync/Cipher-Lab-Product-Import/{TenantId}", new { controller = "ApiDataImport", action = "GetCipherLabProductDataImport", TenantId = string.Empty });
-            
+            config.Routes.MapHttpRoute("IpmortDPDServices", "api/sync/Get-DPD-Services", new { controller = "ApiDataImport", action = "GetDPDServices"});
+
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",

@@ -51,11 +51,16 @@ namespace Ganedata.Core.Entities.Domain
         public string DispatchSelectedPalletIds { get; set; }
         public string DispatchNotes { get; set; }
         public string DispatchRefrenceNumber { get; set; }
+
+        public string NetworkCode { get; set; }
         public virtual IEnumerable<SelectListItem> AllSentMethods { get; set; }
         public virtual IEnumerable<int> SelectedPallets { get; set; }
 
         public virtual IEnumerable<SelectListItem> AllVehicles { get; set; }
         public virtual IEnumerable<SelectListItem> AllDrivers { get; set; }
+        public virtual IEnumerable<SelectListItem> AllDpdServices { get; set; }
+
+        
     }
 
     public class PalletDispatchInfoViewModel

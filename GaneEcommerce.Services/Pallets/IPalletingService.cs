@@ -31,6 +31,7 @@ namespace Ganedata.Core.Services
 
         PalletsDispatch GetPalletsDispatchByDispatchId(int palletDispatchId);
 
+        IEnumerable<TenantDeliveryService> GetAllDpdServices();
         bool MarkedOrderProcessAsDispatch(int OrderProcessId);
 
         IEnumerable<PalletsDispatch> GetAllPalletsDispatch();

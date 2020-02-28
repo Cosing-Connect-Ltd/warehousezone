@@ -1,7 +1,6 @@
 using CsvHelper;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Domain.ViewModels;
-using Ganedata.Core.Entities.Domain.ViewModels.PrestaShopModel;
 using Ganedata.Core.Entities.Enums;
 using Microsoft.VisualBasic.FileIO;
 using Newtonsoft.Json;
@@ -19,6 +18,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Xml;
 using Elmah;
+using System.Text;
 
 namespace Ganedata.Core.Data.Helpers
 {
@@ -2898,10 +2898,6 @@ namespace Ganedata.Core.Data.Helpers
 
         }
 
-
-
-
-
         private string GetPlainTextFromHtml(string htmlString)
         {
             if (!string.IsNullOrEmpty(htmlString))
@@ -3130,6 +3126,148 @@ namespace Ganedata.Core.Data.Helpers
 
 
         }
+        public string GetDPDServices()
+        {
+            WebResponse httpResponse = null;
+            string url = "";
+            try
+            {
+
+                var _currentDbContext = new ApplicationContext();
+                var globalapis = _currentDbContext.GlobalApis.FirstOrDefault(u => u.ApiTypes == ApiTypes.DPD);
+                url = globalapis?.ApiUrl;
+                url = url + "network/?businessUnit=0&deliveryDirection=1&numberOfParcels=1&shipmentType=0&totalWeight=1.0&deliveryDetails.address.countryCode=GB&deliveryDetails.address.countryName=United Kingdom&deliveryDetails.address.locality=&deliveryDetails.address.organisation=Gane DataScan Ltd&deliveryDetails.address.postcode=LS16 6RF&deliveryDetails.address.property=Airedale House&deliveryDetails.address.street=Clayton Wood Rise&deliveryDetails.address.town=Leeds&deliveryDetails.address.county=West Yorkshire&collectionDetails.address.countryCode=GB&collectionDetails.address.countryName=United Kingdom&collectionDetails.address.locality=&collectionDetails.address.organisation=&collectionDetails.address.postcode=BD4 6BU&collectionDetails.address.property=1 School View&collectionDetails.address.street=Bierley House Avenue&collectionDetails.address.town=Bradford&collectionDetails.address.county=West Yorkshire";
+                DPDViewModel dpdServices = new DPDViewModel();
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
+                httpWebRequest.Method = "GET";
+                httpResponse = httpWebRequest.GetResponse();
+                
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                    dpdServices = JsonConvert.DeserializeObject<DPDViewModel>(result);
+                }
+                foreach (var item in dpdServices.data.ToList())
+                {
+                    var service = _currentDbContext.TenantDeliveryServices.FirstOrDefault(u => u.NetworkCode == item.network.networkCode.Trim());
+                    if (service != null)
+                    {
+                        service.NetworkDescription = item.network.networkDescription;
+                        _currentDbContext.Entry(service).State = EntityState.Modified;
+                    }
+                    else
+                    {
+
+                        service = new TenantDeliveryService();
+                        service.NetworkCode = item.network.networkCode;
+                        service.NetworkDescription = item.network.networkDescription;
+                        service.TenantId = 1;
+                        service.DateCreated = DateTime.UtcNow;
+                        service.DateUpdated = DateTime.UtcNow;
+                        service.CreatedBy = 1;
+                        service.UpdatedBy = 1;
+                        service.IsDeleted = true;
+                        _currentDbContext.Entry(service).State = EntityState.Added;
+
+                    }
+
+                }
+                _currentDbContext.SaveChanges();
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+            return "";
+
+        }
+        public string PostShipmentData(DpdShipmentDataViewModel dpdShipmentDataViewModel)
+        {
+            WebResponse httpResponse = null;
+            
+            string url = "";
+            try
+            {
+                var _currentDbContext = new ApplicationContext();
+                var globalapis = _currentDbContext.GlobalApis.FirstOrDefault(u => u.ApiTypes == ApiTypes.DPD);
+                if (globalapis.ExpiryDate.HasValue && globalapis.ExpiryDate.Value.Day != DateTime.Today.Day)
+                {
+                    globalapis.ApiKey=GetDPDGeoSession(globalapis);
+
+                }
+                url = globalapis?.ApiUrl;
+                url = url + "shipment";
+                DpdReponseViewModel dpdResponse = new DpdReponseViewModel();
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
+                httpWebRequest.Method = "POST";
+                httpWebRequest.Headers.Add("GeoSession", globalapis.ApiKey);
+                httpWebRequest.Headers.Add("GeoClient", "account/ITC142468");
+                httpWebRequest.ContentType = "application/json";
+                StreamWriter writer = new StreamWriter(httpWebRequest.GetRequestStream());
+                writer.WriteLine(dpdShipmentDataViewModel);
+                writer.Close();
+                httpResponse = httpWebRequest.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                    dpdResponse = JsonConvert.DeserializeObject<DpdReponseViewModel>(result);
+                }
+                foreach (var item in dpdResponse.data.consignmentDetail.ToList())
+                {
+                   
+
+                }
+                _currentDbContext.SaveChanges();
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+            return "";
+
+        }
+
+        public string GetDPDGeoSession(GlobalApi globalApi)
+        {
+            var _currentDbContext = new ApplicationContext();
+            WebResponse httpResponse = null;
+            string url = globalApi?.ApiUrl;
+            url = url.Replace("shipping", "user") + "?action=login";
+            GeoSession GeoSession = new GeoSession();
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
+            httpWebRequest.Method = "POST";
+            httpWebRequest.Headers.Add(HttpRequestHeader.Authorization, "Basic R0FORURBVEFURVNUOkdBTkVEQVRBVEVTVA==");
+            httpResponse = httpWebRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                var result = streamReader.ReadToEnd();
+                GeoSession = JsonConvert.DeserializeObject<GeoSession>(result);
+            }
+            if (GeoSession != null)
+            {
+                var updateApi = _currentDbContext.GlobalApis.FirstOrDefault(u => u.Id == globalApi.Id);
+                if (updateApi != null)
+                {
+                    updateApi.ExpiryDate = DateTime.Today.AddHours(23);
+                    updateApi.ApiKey = GeoSession.data.geoSession;
+                    updateApi.UpdatedDate = DateTime.UtcNow;
+                    updateApi.UpdatedBy = 1;
+                    _currentDbContext.Entry(updateApi).State = EntityState.Modified;
+                    _currentDbContext.SaveChanges();
+
+                }
+
+            }
+
+
+            return GeoSession.data.geoSession;
+        }
 
     }
 
@@ -3147,5 +3285,16 @@ namespace Ganedata.Core.Data.Helpers
 
 
 
+    }
+    public class GeoSessionData
+    {
+        public string geoSession { get; set; }
+        public string flag { get; set; }
+    }
+
+    public class GeoSession
+    {
+        public object error { get; set; }
+        public GeoSessionData data { get; set; }
     }
 }

@@ -1,6 +1,8 @@
 using AutoMapper;
 using Ganedata.Core.Data;
+using Ganedata.Core.Data.Helpers;
 using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Domain.ViewModels;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Models;
 using System;
@@ -18,6 +20,7 @@ namespace Ganedata.Core.Services
         private readonly IMarketServices _marketServices;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
+        private  DataImportFactory _dataImportFactory; 
 
         public PalletingService(IApplicationContext currentDbContext, IMarketServices marketServices, IUserService userService, IMapper mapper)
         {
@@ -25,6 +28,8 @@ namespace Ganedata.Core.Services
             _marketServices = marketServices;
             _userService = userService;
             _mapper = mapper;
+            _dataImportFactory = new DataImportFactory();
+
         }
         public PalletProduct AddFulFillmentPalletProduct(PalletProductAddViewModel model)
         {
@@ -92,6 +97,10 @@ namespace Ganedata.Core.Services
             return Enum.GetValues(typeof(DeliveryMethods)).Cast<DeliveryMethods>().ToList();
         }
 
+        public IEnumerable<TenantDeliveryService> GetAllDpdServices()
+        {
+            return _currentDbContext.TenantDeliveryServices.Where(u=>u.IsDeleted != true);
+        }
         public Pallet CreateNewPallet(int orderProcessId, int userId)
         {
             var orderProcess = _currentDbContext.OrderProcess.Find(orderProcessId);
@@ -120,6 +129,7 @@ namespace Ganedata.Core.Services
                     item.DispatchNotes = dispatch.DispatchNotes;
                     item.DispatchReference = dispatch.DispatchRefrenceNumber;
                     item.UpdatedBy = userId;
+                    item.NetworkCode = dispatch.NetworkCode;
                     item.DateUpdated = DateTime.UtcNow;
                     item.TrackingReference = dispatch.TrackingReference;
                     item.DeliveryMethod = dispatch.DeliveryMethod;
@@ -140,6 +150,7 @@ namespace Ganedata.Core.Services
                     DispatchNotes = dispatch.DispatchNotes,
                     DispatchReference = dispatch.DispatchRefrenceNumber,
                     CreatedBy = userId,
+                    NetworkCode=dispatch.NetworkCode,
                     DateCreated = DateTime.UtcNow,
                     OrderProcessID = int.Parse(!string.IsNullOrEmpty(dispatch.DispatchSelectedPalletIds) ? dispatch.DispatchSelectedPalletIds : "0"),
                     TrackingReference = dispatch.TrackingReference,
@@ -178,8 +189,14 @@ namespace Ganedata.Core.Services
                     }
                 }
                 _currentDbContext.SaveChanges();
+                if (dispatch.DeliveryMethod == DeliveryMethods.DPD)
+                {
+                    var model = MapModelWithRealValues(item.PalletsDispatchID,dispatch.NetworkCode);
+                    _dataImportFactory.PostShipmentData(model);
+                }
                 return item;
             }
+            
         }
 
         public Pallet UpdatePalletProof(string palletNumber, byte[][] palletProofImages)
@@ -561,6 +578,70 @@ namespace Ganedata.Core.Services
             return false;
         }
 
+        private DpdShipmentDataViewModel MapModelWithRealValues(int DispatchId,string NetworkCode)
+        {
+            var palletDispatch =  _currentDbContext.PalletsDispatches.FirstOrDefault(u => u.PalletsDispatchID == DispatchId);
+            if (palletDispatch != null)
+            {
+                DpdShipmentDataViewModel viewModel = new DpdShipmentDataViewModel();
+                viewModel.jobId = null;
+                viewModel.collectionOnDelivery = false;
+                viewModel.invoice = null;
+                viewModel.collectionDate = DateTime.Today.AddHours(2);
+                Consignment consignment = new Consignment();
+                consignment.consignmentNumber = null;
+                consignment.consignmentRef = null;
+                consignment.parcel = new List<object>();
+                CollectionDetails collectionDetails = new CollectionDetails();
+                ContactDetails contactDetails = new ContactDetails();
+                contactDetails.contactName = palletDispatch.OrderProcess?.Order?.Tenant?.TenantName;
+                contactDetails.telephone= palletDispatch.OrderProcess?.Order?.Tenant?.TenantDayPhone;
+                Address1 address1 = new Address1();
+                address1.countryCode = palletDispatch.OrderProcess?.Order?.Tenant?.Country?.CountryCode;
+                address1.county = palletDispatch.OrderProcess?.Order?.Tenant?.TenantStateCounty;
+                address1.postcode = palletDispatch.OrderProcess?.Order?.Tenant?.TenantPostalCode;
+                address1.street= palletDispatch.OrderProcess?.Order?.Tenant?.TenantAddress1;
+                address1.town = palletDispatch.OrderProcess?.Order?.Tenant?.TenantAddress3;
+                address1.county = palletDispatch.OrderProcess?.Order?.Tenant?.TenantCity;
+                collectionDetails.address = address1;
+                collectionDetails.contactDetails = contactDetails;
+                collectionDetails.address = address1;
+                
+                DeliveryDetails deliveryDetails = new DeliveryDetails();
+                ContactDetails2 contactDetails2 = new ContactDetails2();
+                contactDetails2.contactName = palletDispatch.OrderProcess?.Order?.Account?.AccountContacts.FirstOrDefault()?.ContactName;
+                contactDetails2.telephone = palletDispatch.OrderProcess?.Order?.Account?.AccountContacts.FirstOrDefault()?.TenantContactPhone;
+                deliveryDetails.contactDetails = contactDetails2;
+                Address2 address2 = new Address2();
+                address2.countryCode= palletDispatch.OrderProcess?.Order?.Tenant?.Country?.CountryCode;
+                address2.postcode = palletDispatch.OrderProcess?.Order?.ShipmentAddressPostcode;
+                address2.street = palletDispatch.OrderProcess?.Order?.ShipmentAddressLine1;
+                address2.town = palletDispatch.OrderProcess?.Order?.ShipmentAddressLine3;
+                deliveryDetails.address = address2;
+                NotificationDetails notificationDetails = new NotificationDetails();
+                notificationDetails.email = palletDispatch.OrderProcess?.Order?.Account?.AccountEmail;
+                notificationDetails.mobile = palletDispatch?.OrderProcess.Order?.Account?.Telephone;
+                deliveryDetails.notificationDetails = notificationDetails;
+                consignment.collectionDetails = collectionDetails;
+                consignment.deliveryDetails = deliveryDetails;
+                consignment.networkCode = NetworkCode;
+                consignment.numberOfParcels = _currentDbContext.Pallets.Count(u => u.PalletsDispatchID == DispatchId);
+                //var palletProduct= _currentDbContext.Pallets.Where(u => u.PalletsDispatchID == DispatchId).Select(u => u.PalletProducts);
+                consignment.totalWeight =null;
+                consignment.shippingRef1 = palletDispatch.OrderProcess?.Order?.OrderID.ToString();
+                consignment.shippingRef2 = palletDispatch.OrderProcessID.ToString();
+                consignment.shippingRef3 = DispatchId.ToString();
+                viewModel.consignment= new List<Consignment>();
+                viewModel.consignment.Add(consignment);
 
+
+
+
+
+
+                return viewModel;
+            }
+            return default;
+        }
     }
 }
