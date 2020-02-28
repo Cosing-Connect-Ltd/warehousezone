@@ -136,11 +136,11 @@
                             <div class="pull-left orders-total">
                                 @if (Model.ToList().Count > 0)
                                 {
-                                    <b> Total Quantity: @(Model == null ? 0 : Model.ToList().Count) </b>
+                                    <label> Total Quantity: @(Model == null ? 0 : Model.ToList().Count) </label>
                                 }
                                 @if (ViewBag.TotalQty != null && (int)ViewBag.TotalQty > 0)
                                 {
-                                    <b> Total: @(ViewBag.TotalQty == null ? 0 : ViewBag.TotalQty) </b>
+                                    <label> Total: @(ViewBag.TotalQty == null ? 0 : ViewBag.TotalQty) </label>
                                 }
                             </div>
 
@@ -152,9 +152,9 @@
         @if (Model.ToList().Count > 0)
         {
             <div class="row">
-                <div class="col-md-8 col-sm-8 bg-white my-account login">
+                <div class="col-md-12 col-sm-12 bg-white my-account login mt-20">
                     <div class="about-cnt">
-                        <div class="content-wrapper select">    
+                        <div class="content-wrapper select">
                             <div class="shippingMethod shiping-method-2">
                                 @if ((int)ViewBag.ShipmentMethod == 2)
                                 {
@@ -173,18 +173,20 @@
                                     </div>
                                 }
                             </div>
-                            <h4 class="text-uppercase">Select Payment Method</h4>
-                            <hr>
-                            <div class="shippingMethod">
+                            <h4 class="text-uppercase mt-35">Select Payment Method</h4>
+                            <hr class="custom-hr">
+                            <div class="shippingMethod shiping-method-2">
                                 <div class="form-check-inline">
                                     <label class="control-label" for="radio2">
                                         <input type="radio" class="form-check-input" id="Cash" name="paymentMethod" value="2">  Cash
-                                    </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="shippingMethod shiping-method-2">
+                                <div class="form-check-inline">
                                     <label class="control-label" for="radio1">
                                         <input type="radio" class="form-check-input" id="PayPal" name="paymentMethod" value="1">  Paypal
                                     </label>
-
-
                                 </div>
                             </div>
                             <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
@@ -219,7 +221,7 @@
                                 </div>
 
                             </form>
-                    
+
 
                         </div>
 

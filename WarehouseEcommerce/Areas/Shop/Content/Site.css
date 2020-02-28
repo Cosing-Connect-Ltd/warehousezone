@@ -742,9 +742,19 @@ ul.mhp-menu {
     }
 }
 .orders-total {
+    width: 100%;
+    background: #f7f7f9;
+    border-bottom: 1px solid #ffffff;
+    padding: 20px 20px;
     color: #434343;
+    position: relative;
+    margin-top: 15px;
+    box-shadow: 1px 4px 4px 0px rgba(0,0,0,.1);
 }
 .shiping-method-2 {
     box-shadow: 1px 4px 4px 0px rgba(0,0,0,.1);
     margin-bottom: 20px;
+}
+.mt-35 {
+    margin-top: 35px;
 }
