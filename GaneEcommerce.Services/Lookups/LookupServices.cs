@@ -251,8 +251,7 @@ namespace Ganedata.Core.Services
                 m => m.TenentId == tenantId && m.LocationName == locationName);
         }
 
-        public Locations CreateLocation(Locations location, List<int> productIds, int userId, int tenantId,
-            int warehouseId)
+        public Locations CreateLocation(Locations location, List<int> ProductKitIds, int userId, int tenantId, int warehouseId)
         {
             location.CreatedBy = userId;
             location.DateCreated = DateTime.UtcNow;
@@ -260,9 +259,9 @@ namespace Ganedata.Core.Services
             location.WarehouseId = warehouseId;
             _currentDbContext.Locations.Add(location);
             _currentDbContext.SaveChanges();
-            if (productIds != null)
+            if (ProductKitIds != null)
             {
-                foreach (var item in productIds)
+                foreach (var item in ProductKitIds)
                 {
                     ProductLocations locMap = new ProductLocations
                     {
@@ -336,7 +335,7 @@ namespace Ganedata.Core.Services
                                                                         a.LocationTypeId != excludeLocationTypeId));
         }
 
-        public Locations BulkEditProductsLocation(Locations location, List<int> productIds, int tenantId,
+        public Locations BulkEditProductsLocation(Locations location, List<int> ProductKitIds, int tenantId,
             int warehouseId, int userId)
         {
             _currentDbContext.Locations.Attach(location);
@@ -364,15 +363,15 @@ namespace Ganedata.Core.Services
             location.DateUpdated = DateTime.UtcNow;
             location.UpdatedBy = userId;
             location.WarehouseId = warehouseId;
-            if (productIds != null)
+            if (ProductKitIds != null)
             {
-                var toAdd = productIds.Except(_currentDbContext.ProductLocationsMap
+                var toAdd = ProductKitIds.Except(_currentDbContext.ProductLocationsMap
                     .Where(a => a.IsDeleted != true && a.LocationId == location.LocationId).Select(a => a.ProductId)
                     .ToList());
                 var toDelete = _currentDbContext.ProductLocationsMap
                     .Where(a => a.LocationId == location.LocationId && a.IsDeleted != true).Select(a => a.ProductId)
                     .ToList()
-                    .Except(productIds);
+                    .Except(ProductKitIds);
                 foreach (var item in toAdd)
                 {
                     var lmap = new ProductLocations

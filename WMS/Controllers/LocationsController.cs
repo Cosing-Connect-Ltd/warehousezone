@@ -58,13 +58,18 @@ namespace WMS.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Locations location, List<int> ProductIds)
+        public ActionResult Create(Locations location, string ProductKit, List<int> ProductKitIds)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             // get properties of tenant
             var clocation = LookupServices.GetLocationByCode(location.LocationCode, CurrentTenantId);
             var cname = LookupServices.GetLocationByCode(location.LocationName, CurrentTenantId);
 
+            if (!string.IsNullOrEmpty(ProductKit))
+            {
+                ProductKitIds = new List<int>();
+                ProductKitIds = ProductKit.Split(',').Select(Int32.Parse).ToList();
+            }
             if (clocation != null || cname != null)
             {
                 if (clocation != null)
@@ -76,10 +81,10 @@ namespace WMS.Controllers
                 SetDropdowns();
                 return View(location);
             }
-  
+
             if (ModelState.IsValid)
             {
-                LookupServices.CreateLocation(location, ProductIds, CurrentUserId, CurrentTenantId, CurrentWarehouseId);
+                LookupServices.CreateLocation(location, ProductKitIds, CurrentUserId, CurrentTenantId, CurrentWarehouseId);
 
                 return RedirectToAction("Index");
             }
@@ -158,12 +163,17 @@ namespace WMS.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Locations locations, List<int> ProductIds)
+        public ActionResult Edit(Locations locations, string ProductKit, List<int> ProductKitIds)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+            if (!string.IsNullOrEmpty(ProductKit))
+            {
+                ProductKitIds = new List<int>();
+                ProductKitIds = ProductKit.Split(',').Select(Int32.Parse).ToList();
+            }
             if (ModelState.IsValid)
             {
-                LookupServices.BulkEditProductsLocation(locations, ProductIds, CurrentTenantId, CurrentWarehouseId, CurrentUserId);
+                LookupServices.BulkEditProductsLocation(locations, ProductKitIds, CurrentTenantId, CurrentWarehouseId, CurrentUserId);
 
                 return RedirectToAction("Index");
             }
@@ -180,7 +190,7 @@ namespace WMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var locations = LookupServices.GetLocationById(id??0, CurrentTenantId);
+            var locations = LookupServices.GetLocationById(id ?? 0, CurrentTenantId);
             if (locations == null)
             {
                 return HttpNotFound();
@@ -203,7 +213,7 @@ namespace WMS.Controllers
         public JsonResult _GetLocationGroups()
         {
             var data = LookupServices.GetAllValidLocationGroups(CurrentTenantId)
-                        .Select(m=> new 
+                        .Select(m => new
                         {
                             Id = m.LocationGroupId,
                             Description = m.Locdescription
@@ -229,11 +239,11 @@ namespace WMS.Controllers
             var tenant = caCurrent.CurrentTenant();
             ViewBag.LocationGroups = LookupServices.GetAllValidLocationGroups(CurrentTenantId)
                 .Select(m => new
-                        {
-                                          Id = m.LocationGroupId,
-                                          Group = m.Locdescription
+                {
+                    Id = m.LocationGroupId,
+                    Group = m.Locdescription
 
-                                      }).ToList();
+                }).ToList();
             ViewBag.DimensionUOMs = (from duom in LookupServices.GetAllValidGlobalUoms(EnumUomType.Dimensions)
                                      select new
                                      {
@@ -251,7 +261,6 @@ namespace WMS.Controllers
                             }).ToList();
 
             ViewBag.LocationTypes = LookupServices.GetAllValidLocationTypes(CurrentTenantId);
-            ViewBag.Products = _productServices.GetAllValidProductMasters(tenant.TenantId).ToList();
         }
 
         public ActionResult _Products(int LocationId)
@@ -270,7 +279,7 @@ namespace WMS.Controllers
         {
             if (locationid == 0)
             {
-              return Json(LookupServices.GetLocationByCode(locationCode, CurrentTenantId) == null, JsonRequestBehavior.AllowGet);
+                return Json(LookupServices.GetLocationByCode(locationCode, CurrentTenantId) == null, JsonRequestBehavior.AllowGet);
             }
             else
             {
@@ -281,7 +290,7 @@ namespace WMS.Controllers
         {
             if (LocationTypeId == 0)
             {
-               return Json(LookupServices.GetLocationTypeByName(LocTypeName, CurrentTenantId), JsonRequestBehavior.AllowGet);
+                return Json(LookupServices.GetLocationTypeByName(LocTypeName, CurrentTenantId), JsonRequestBehavior.AllowGet);
             }
             else
             {
@@ -293,8 +302,8 @@ namespace WMS.Controllers
         {
             SetDropdowns();
 
-            if(id.HasValue)
-            ViewBag.ProductIds = _productServices.GetAllProductsInALocationFromMaps(id.Value).ToList();
+            if (id.HasValue)
+                ViewBag.ProductIds = _productServices.GetAllProductsInALocationFromMaps(id.Value).ToList();
 
             var model = LookupServices.GetLocationById(id.Value, CurrentTenantId);
 
@@ -347,12 +356,12 @@ namespace WMS.Controllers
             LocationGroup addedLocationGroup = new LocationGroup();
 
             if (model.LocationGroupId == 0)
-            {      
+            {
                 var item = LookupServices.GetLocationGroupByName(model.Locdescription, CurrentTenantId);
                 if (item != null)
                     return Json(new { error = true, msg = "Location group already exists" });
 
-                addedLocationGroup =  LookupServices.CreateLocationGroup(model.Locdescription, CurrentTenantId, CurrentUserId);
+                addedLocationGroup = LookupServices.CreateLocationGroup(model.Locdescription, CurrentTenantId, CurrentUserId);
             }
             return Json(new { error = false, id = addedLocationGroup.LocationGroupId, type = addedLocationGroup.Locdescription });
         }

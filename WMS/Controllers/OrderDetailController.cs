@@ -259,7 +259,7 @@ namespace WMS.Controllers
             if (Request.Params["rec_qty"] != null)
                 ViewBag.RecQty = Request.Params["rec_qty"].ToString();
 
-            ViewBag.Products = new SelectList(_productServices.GetAllValidProductMasters(CurrentTenantId).ToList(), "ProductId", "NameWithCode");
+            //ViewBag.Products = new SelectList(_productServices.GetAllValidProductMasters(CurrentTenantId).ToList(), "ProductId", "NameWithCode");
             ViewBag.ProductAccounts = new SelectList(new List<ProductAccountCodes>(), "ProdAccCodeID", "ProdAccCode");
 
             if (!string.IsNullOrEmpty(Request.Params["account"]))

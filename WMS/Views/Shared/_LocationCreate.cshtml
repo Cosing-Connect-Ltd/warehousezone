@@ -76,9 +76,8 @@ else if (Request.Url.AbsolutePath.ToLower().Contains("/locations/create"))
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.Label("Location Products", htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
-                    <div>
-                        @Html.ListBox("ProductIds", new MultiSelectList(ViewBag.Products, "ProductId", "Name"), new { Multiple = "multiple", size = "5", @class = "chosen-select", data_placeholder = "Choose Products" })
-                    </div>
+                    @Html.Action("_ProductKitCombobox", "Products")
+                    @Html.Hidden("ProductKit")
                 </div>
             </div>
         }

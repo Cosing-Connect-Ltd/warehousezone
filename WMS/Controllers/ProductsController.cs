@@ -86,7 +86,6 @@ namespace WMS.Controllers
             ViewBag.WebsiteIds = WebSites;
             ViewBag.SKUCode = id;
 
-            ViewBag.ProductKitItems = _productServices.GetAllValidProductMasters(CurrentTenantId).Where(x => x.ProductId != id.AsInt()).Select(pm => new { ProductId = pm.ProductId, ProductName = pm.Name });
             ViewBag.Accounts = new List<ProductAccountCodes>();
             ViewBag.ProductPrices = new List<string>();
             ViewBag.Attributes = _productLookupService.GetAllValidProductAttributeValues().Select(patr => new
@@ -340,7 +339,7 @@ namespace WMS.Controllers
                 }
             }
 
-            ViewBag.Kits = _productServices.GetAllProductInKitsByKitProductId(id.Value).Any() ? (bool?)true : null;
+            ViewBag.Kits = _productServices.GetAllProductInKitsByKitProductId(id.Value).Any() ? _productServices.GetAllProductInKitsByKitProductId(id.Value) : null /*(bool?)true :*/;
 
             return View(productMaster);
         }
@@ -458,7 +457,7 @@ namespace WMS.Controllers
             ViewBag.DimensionUOMs = _lookupServices.GetAllValidGlobalUoms(EnumUomType.Dimensions).Select(duom => new { Id = duom.UOMId, DUOM = duom.UOM });
             ViewBag.UOMs = _lookupServices.GetAllValidGlobalUoms(EnumUomType.Weight).Select(duom => new { Id = duom.UOMId, UOM = duom.UOM }).ToList();
             ViewBag.LocationTypes = _lookupServices.GetAllValidLocationTypes(CurrentTenantId);
-            ViewBag.Products = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList();
+            //ViewBag.Products = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList();
 
             if (Id == null) return PartialView("_LocationCreate", new Locations());
             else
