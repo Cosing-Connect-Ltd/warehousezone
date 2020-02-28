@@ -655,7 +655,7 @@ namespace Ganedata.Core.Services
             var palletId = _currentDbContext.Pallets.Where(u => u.PalletsDispatchID == DispatchId).Select(u => u.PalletID).ToList();
             var productIds = _currentDbContext.PalletProducts.Where(u => palletId.Contains(u.PalletID)).Select(u => u.ProductID).ToList();
             var weights = _currentDbContext.ProductMaster.Where(u => productIds.Contains(u.ProductId)).Sum(u => u.Weight);
-            decimal weight = int.Parse(weights.ToString());
+            int weight = int.Parse(weights.ToString());
             return weight;
         }
     }

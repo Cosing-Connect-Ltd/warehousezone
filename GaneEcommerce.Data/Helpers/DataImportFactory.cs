@@ -3304,8 +3304,8 @@ namespace Ganedata.Core.Data.Helpers
         private string GetEncodeUserNameBas64(string userName, string Password)
         {
             string singleString = userName + ":" + Password;
-            var base64EncodedBytes = System.Convert.FromBase64String(singleString);
-            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(singleString);
+            return System.Convert.ToBase64String(plainTextBytes);
         }
     }
 
