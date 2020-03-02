@@ -11,9 +11,9 @@
                     </span>
                 </h1>
                 @*<ul class="nav nav-tabs text-right">
-                    <li class="active"><a href="#featurep" data-toggle="tab">Featured</a></li>
-                    <li class="latestb"><a href="#latestp" data-toggle="tab">Latest</a></li>
-                </ul>*@
+                        <li class="active"><a href="#featurep" data-toggle="tab">Featured</a></li>
+                        <li class="latestb"><a href="#latestp" data-toggle="tab">Latest</a></li>
+                    </ul>*@
             </div>
 
             @if (Model.productMasterList.Count > 0)
@@ -27,15 +27,12 @@
                         <div id="feature" class="owl-theme owl-carousel">
                             @foreach (var item in Model.productMasterList)
                             {
-                                var defaulImage = Model.ProductFilesList.FirstOrDefault(u => (u.DefaultImage == true) && u.ProductId == item.ProductId)?.FilePath;
-                                var hover = Model.ProductFilesList.FirstOrDefault(u => u.HoverImage == true && u.ProductId == item.ProductId)?.FilePath;
-
                                 <div class="product-layout col-xs-12">
                                     <div class="product-thumb transition">
                                         <div class="image">
-                                            <a href="@Url.Action("ProductDetails", "Products", new { productId = item.ProductId })"><img src="@(!string.IsNullOrEmpty(defaulImage) ? defaulImage : "/Areas/Shop/Content/app/img/product/no_image.gif")" alt="@item.Name" title="@item.Name" class="img-responsive center-block sami" /></a>
+                                            <a href="@Url.Action("ProductDetails", "Products", new { productId = item.ProductId })"><img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath +item.DefaultImage : ViewBag.BaseFilePath +"/UploadedFiles/Products/no_image.gif")" alt="@item.Name" title="@item.Name" class="img-responsive center-block sami" /></a>
                                             <!-- Smartshop Images Start -->
-                                            <a href="@Url.Action("ProductDetails", "Products", new { productId = item.ProductId })"><img src="@(!string.IsNullOrEmpty(hover) ? hover : "/Areas/Shop/Content/app/img/product/no_image.gif")" class="img-responsive second-img" alt="hover image" /></a>
+                                            <a href="@Url.Action("ProductDetails", "Products", new { productId = item.ProductId })"><img src="@(!string.IsNullOrEmpty(item.HoverImage) ? ViewBag.BaseFilePath +item.HoverImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive second-img" alt="hover image" /></a>
                                             <!-- Smartshop Images End -->
                                             <div class="topbutton">
                                                 <button type="button" data-toggle="tooltip" title="Add to Wish List">
@@ -79,7 +76,7 @@
                         </div>
 
                     </div>
-                                    </div>
+                </div>
 
             }
 

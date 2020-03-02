@@ -23,9 +23,7 @@ namespace Ganedata.Core.Services
         IEnumerable<ProductMaster> GetAllProductInKitsByKitProductId(int productId);
         IEnumerable<int> GetAllProductsInALocationFromMaps(int locationId);
         IEnumerable<int> GetAllProductLocationsFromMaps(int productId);
-        IQueryable<ProductFiles> GetProductFilesByTenantId(int tenantId, bool defaultImage = false);
-
-        IQueryable<ProductMasterViewModel> GetAllProductMasterDetail( int tenantId, int warehouseId);
+        IQueryable<ProductMasterViewModel> GetAllProductMasterDetail(int tenantId, int warehouseId);
         IEnumerable<ProductAccountCodes> GetAllProductAccountCodesByProductId(int productId);
         InventoryStock GetInventoryStockByProductTenantLocation(int productId, int warehouseId);
         List<InventoryStock> GetAllInventoryStocksByProductId(int productId);
@@ -113,11 +111,11 @@ namespace Ganedata.Core.Services
         List<Tuple<string, string, decimal, bool>> AllocatedProductDetail(int productId, int WarehouseId, int detail);
 
         IEnumerable<InventoryTransaction> GetInventoryTransactionsReturns(int productId, int? orderId, string orderNumber, int inventoryTransactionType, string grouptoken);
-        IQueryable<ProductMaster> GetAllValidProducts(int tenantId, string args, int OrderId,int departmentId = 0, int groupId = 0,int ProductId=0);
+        IQueryable<ProductMaster> GetAllValidProducts(int tenantId, string args, int OrderId, int departmentId = 0, int groupId = 0, int ProductId = 0);
 
         IEnumerable<PalletTracking> GetAllPalletByOrderProcessDetailId(int orderprocessdetailId, int tenantId);
 
-        IEnumerable<ProductSerialis> GetAllProductSerialbyOrderProcessDetailId(int orderprocessdetailId, int tenantId,bool? type);
+        IEnumerable<ProductSerialis> GetAllProductSerialbyOrderProcessDetailId(int orderprocessdetailId, int tenantId, bool? type);
 
         ProductMaster SaveEditProduct(ProductMaster productMaster, int UserId, int TenantId);
         bool GetInventroyTransactionCountbyOrderProcessDetailId(int orderprocessdetailId, int tenantId);

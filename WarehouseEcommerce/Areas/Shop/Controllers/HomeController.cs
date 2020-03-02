@@ -15,7 +15,6 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         private readonly ITenantsServices _tenantServices;
         private readonly ILookupServices _lookupServices;
         private readonly IProductServices _productServices;
-        private readonly IProductLookupService _productlookupServices;
         public HomeController(ICoreOrderService orderService, IMapper mapper, IProductServices productServices, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IUserService userService, IActivityServices activityServices, ITenantsServices tenantServices)
             : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices)
         {
@@ -28,9 +27,6 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         }
         public ActionResult Index()
         {
-            //if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
-            //ViewBag.TopProduct = _productServices.GetProductByCategory((CurrentTenantId == 0 ? tenantId : CurrentTenantId), 12, TopProduct:true).ToList();
-            //ViewBag.OnSaleProduct= _productServices.GetProductByCategory((CurrentTenantId == 0 ? tenantId : CurrentTenantId), 6, OnSaleProduct: true).ToList();
             ViewBag.ProductGroups = new SelectList(_lookupServices.GetAllValidProductGroups((CurrentTenantId), 12), "ProductGroupId", "ProductGroup", ViewBag.groupId);
             return View();
         }
@@ -81,9 +77,6 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             if (specialProduct.productMasterList != null)
             {
                 var prdouctIds = specialProduct.productMasterList.Select(u => u.ProductId).ToList();
-
-
-                specialProduct.ProductFilesList = _productServices.GetProductFilesByTenantId((CurrentTenantId)).Where(u => prdouctIds.Contains(u.ProductId)).ToList();
             }
 
             return PartialView(specialProduct);
@@ -95,16 +88,13 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             var TopProduct = new ProductDetailViewModel
             {
                 productMasterList = _productServices.GetProductByCategory((CurrentTenantId), 12, TopProduct: true).ToList(),
-
             };
             TopProduct.productMasterList.ForEach(u => u.SellPrice = (Math.Round(((u.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0)), 2)));
             TopProduct.CurrencySign = currencyyDetail.Symbol;
             if (TopProduct.productMasterList != null)
             {
                 var prdouctIds = TopProduct.productMasterList.Select(u => u.ProductId).ToList();
-                TopProduct.ProductFilesList = _productServices.GetProductFilesByTenantId((CurrentTenantId)).Where(u => prdouctIds.Contains(u.ProductId)).ToList();
             }
-
 
             return PartialView(TopProduct);
 
@@ -115,14 +105,12 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             var onsale = new ProductDetailViewModel
             {
                 productMasterList = _productServices.GetProductByCategory(CurrentTenantId, 6, OnSaleProduct: true).ToList(),
-
             };
             onsale.productMasterList.ForEach(u => u.SellPrice = (Math.Round((u.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0), 2)));
             onsale.CurrencySign = currencyyDetail.Symbol;
             if (onsale.productMasterList != null)
             {
                 var prdouctIds = onsale.productMasterList.Select(u => u.ProductId).ToList();
-                onsale.ProductFilesList = _productServices.GetProductFilesByTenantId((CurrentTenantId)).Where(u => prdouctIds.Contains(u.ProductId)).ToList();
             }
 
             return PartialView(onsale);
@@ -132,9 +120,6 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         public PartialViewResult _TopCategoryPartial()
         {
             var TopCategory = _lookupServices.GetAllValidProductGroups((CurrentTenantId), 6);
-
-
-
             return PartialView(TopCategory);
         }
 
@@ -152,30 +137,22 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             if (BestSellerProduct.productMasterList != null)
             {
                 var prdouctIds = BestSellerProduct.productMasterList.Select(u => u.ProductId).ToList();
-                BestSellerProduct.ProductFilesList = _productServices.GetProductFilesByTenantId((CurrentTenantId)).Where(u => prdouctIds.Contains(u.ProductId)).ToList();
             }
-
 
             return PartialView(BestSellerProduct);
 
         }
         public PartialViewResult _NewsLetterPartial()
         {
-
             return PartialView();
-
         }
         public PartialViewResult _TopProductBannerPartial()
         {
-
             return PartialView();
-
         }
         public PartialViewResult _ImageBlockPartial()
         {
-
             return PartialView();
-
         }
 
         public PartialViewResult _HorizontalNavbarPartial()
@@ -196,7 +173,6 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         public ActionResult ReturnPath(int productId, bool status)
         {
             string path = GetPathAgainstProductId(productId, status);
-
             return Content(path);
         }
     }

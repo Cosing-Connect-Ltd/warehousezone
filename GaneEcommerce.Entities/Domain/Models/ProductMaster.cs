@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Ganedata.Core.Entities.Domain
@@ -23,6 +24,7 @@ namespace Ganedata.Core.Entities.Domain
             ProductSerialization = new HashSet<ProductSerialis>();
             ProductKitMap = new HashSet<ProductKitMap>();
             ProductsWebsitesMap = new HashSet<ProductsWebsitesMap>();
+            ProductFiles = new HashSet<ProductFiles>();
         }
 
         [Key]
@@ -195,6 +197,32 @@ namespace Ganedata.Core.Entities.Domain
         public virtual ICollection<ProductFiles> ProductFiles { get; set; }
         public virtual List<ProductReceipeMaster> RecipeItemProducts { get; set; }
         public virtual ICollection<ProductsWebsitesMap> ProductsWebsitesMap { get; set; }
+
+        public string HoverImage
+        {
+            get
+            {
+                var file = ProductFiles.Where(x => x.HoverImage == true && x.IsDeleted != true).FirstOrDefault();
+                if (file == null)
+                {
+                    file = ProductFiles.Where(x => x.IsDeleted != true).FirstOrDefault();
+                }
+                return file?.FilePath;
+            }
+        }
+        public string DefaultImage
+        {
+            get
+            {
+                var file = ProductFiles.Where(x => x.DefaultImage == true && x.IsDeleted != true).FirstOrDefault();
+                if (file == null)
+                {
+                    file = ProductFiles.Where(x => x.IsDeleted != true).FirstOrDefault();
+                }
+                return file?.FilePath;
+            }
+        }
+
     }
 
     public class ProductReceipeMaster : PersistableEntity<int>

@@ -938,11 +938,6 @@ namespace Ganedata.Core.Services
 
 
         }
-        public IQueryable<ProductFiles> GetProductFilesByTenantId(int tenantId, bool defaultImage = false)
-        {
-            return _currentDbContext.ProductFiles.Where(u => u.TenantId == tenantId && u.IsDeleted != true && (!defaultImage || u.DefaultImage == defaultImage));
-        }
-
 
         public LocationGroup SaveLocationGroup(string locationGroupName, int userId, int tenantId)
         {

@@ -33,24 +33,25 @@
         }
     }
 
-    </script>
+</script>
 <script type="text/javascript">
 
     //MVCxClientGlobalEvents.AddControlsInitializedEventHandler(OnBeginGridCallback);
 
-    function OnBeginGridCallback(s, e) {
+    function OnBeginGridCallback(s, e, gridName) {
+        debugger;
         e.customArgs = MVCxClientUtils.GetSerializedEditorValuesInContainer("frmProductFileDetail");
         @*e.customArgs["PriceGroupId"] = @ViewBag.PriceGroupId;*@
-        
+        var grid =  ASPxClientControl.GetControlCollection().GetByName(gridName.name);
         //WORKAROUND for BULK Update
         var gridValues = JSON.parse(JSON.stringify($("#frmProductFileDetail").serializeArray()));
         var values = gridValues[gridValues.length - 1].value.split(',');
 
         for (var i = 0; i < gridValues.length - 1; i++) {
-            if (gridValues[i].name == 'ProductFileDetailGridView$DXEditor2') {
+            if (gridValues[i].name == grid.name + '$DXEditor2') {
                 e.customArgs["SortOrder"] = gridValues[i].value;
             }
-            if (gridValues[i].name == 'ProductFileDetailGridView$DXEditor3') {
+            if (gridValues[i].name == grid.name + '$DXEditor3') {
                 var value = gridValues[i].value;
                 if (value === "C") {
                     e.customArgs["DefaultImage"] = true;
@@ -59,7 +60,7 @@
                     e.customArgs["DefaultImage"]=false
                 }
             }
-            if (gridValues[i].name == 'ProductFileDetailGridView$DXEditor4') {
+            if (gridValues[i].name == grid.name + '$DXEditor4') {
                 var value = gridValues[i].value;
                 if (value === "C") {
                     e.customArgs["HoverImage"] = true;
@@ -68,7 +69,7 @@
                     e.customArgs["HoverImage"] = false
                 }
             }
-            if (gridValues[i].name == 'ProductFileDetailGridView$DXEditor5') {
+            if (gridValues[i].name == grid.name + '$DXEditor5') {
                 var value = gridValues[i].value;
                 if (value === "C") {
                     e.customArgs["IsDeleted"] = true;
@@ -81,20 +82,23 @@
 
         var rowIndex = parseInt($("#RowIndexForProductId").val()) || 0;
 
-        e.customArgs["Id"] = ProductFileDetailGridView.GetRowKey(rowIndex);
+        e.customArgs["Id"] = grid.GetRowKey(rowIndex);
     }
 
-    function OnEndGridCallback(s, e) {
+    function OnEndGridCallback(s, e, gridName) {
+        var grid =  ASPxClientControl.GetControlCollection().GetByName(gridName.name);
         var lastIndex = parseInt($("#LastEditingRowIndex").val()) || 0;
-            SetGridEditorToRowIndex(lastIndex);
+            SetGridEditorToRowIndex(lastIndex, grid);
     }
 
-    function SetGridEditorToRowIndex(index) {
-        ProductFileDetailGridView.batchEditApi.StartEdit(index, ProductFileDetailGridView.GetColumnByField($("#LastEditingColIndex").val()).index);
+    function SetGridEditorToRowIndex(index, grid) {
+        grid.batchEditApi.StartEdit(index, grid.GetColumnByField($("#LastEditingColIndex").val()).index);
     }
 
-    function OnDetailsChanged(s, e) {
-        ProductFileDetailGridView.UpdateEdit();
+    function OnDetailsChanged(s, e, gridName) {
+        debugger;
+        var grid =  ASPxClientControl.GetControlCollection().GetByName(gridName.name);
+        grid.UpdateEdit();
     }
 
     function OnSpecialPricesGridFocusChanged(s, e) {
