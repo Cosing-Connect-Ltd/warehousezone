@@ -13,48 +13,34 @@
             <div class="row product-bg">
                 <div class="sticky">
                     <ul class="thumbnails">
-                        @if (ViewBag.DetailImagesPath != null)
-                        {
-                            var productPath = (List<ProductFiles>)ViewBag.DetailImagesPath;
+                        <li>
+                            <a class="thumbnail" href="@(!string.IsNullOrEmpty(Model.DefaultImage)?ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" title="#">
+                                <img data-zoom-image="@(!string.IsNullOrEmpty(Model.DefaultImage)?ViewBag.BaseFilePath + Model.DefaultImage:ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" src="@(!string.IsNullOrEmpty(Model.DefaultImage)?ViewBag.BaseFilePath + Model.DefaultImage:ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" id="zoom_03" class="img-responsive center-block" alt="image">
+                            </a>
+                        </li>
 
+                        <li>
+                            <div class="row">
+                                <div id="gallery_01" class="owl-carousel">
+                                    @foreach (var item in Model.ProductFiles)
+                                    {
+                                        <div class="col-xs-12">
+                                            <a data-zoom-image="@(!string.IsNullOrEmpty(item.FilePath)?ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" data-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" href="@(!string.IsNullOrEmpty(item.FilePath)?ViewBag.BaseFilePath + item.FilePath:ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")">
+                                                <img src="@(!string.IsNullOrEmpty(item.FilePath)?ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive center-block" alt="additional image">
+                                            </a>
+                                        </div>
+                                    }
 
-                            <li>
-                                <a class="thumbnail" href="@(!string.IsNullOrEmpty(productPath.FirstOrDefault()?.FilePath)?ViewBag.BaseFilePath + productPath.FirstOrDefault()?.FilePath:ViewBag.BaseFilePath + "/Areas/Shop/Content/app/img/product/no_image.gif")" title="#">
-                                    <img data-zoom-image="@(!string.IsNullOrEmpty(productPath.FirstOrDefault()?.FilePath)?ViewBag.BaseFilePath + productPath.FirstOrDefault()?.FilePath:ViewBag.BaseFilePath + "/Areas/Shop/Content/app/img/product/no_image.gif")" src="@(!string.IsNullOrEmpty(productPath.FirstOrDefault()?.FilePath)?ViewBag.BaseFilePath + productPath.FirstOrDefault()?.FilePath:ViewBag.BaseFilePath + "/Areas/Shop/Content/app/img/product/no_image.gif")" id="zoom_03" class="img-responsive center-block" alt="image">
-                                </a>
-                            </li>
-
-
-
-
-                            <li>
-                                <div class="row">
-                                    <div id="gallery_01" class="owl-carousel">
-                                        @for (int i = 0; i < productPath.Count; i++)
-                                        {
-                                            if (productPath.ElementAtOrDefault(i) != null)
-                                            {
-                                                <div class="col-xs-12">
-
-                                                    <a data-zoom-image="@(!string.IsNullOrEmpty(productPath[i].FilePath)?ViewBag.BaseFilePath + productPath[i].FilePath:ViewBag.BaseFilePath + "/Areas/Shop/Content/app/img/product/no_image.gif")" data-image="@(!string.IsNullOrEmpty(productPath[i].FilePath)?ViewBag.BaseFilePath + productPath[i].FilePath:ViewBag.BaseFilePath + "/Areas/Shop/Content/app/img/product/no_image.gif")" href="@(!string.IsNullOrEmpty(productPath[i].FilePath)?ViewBag.BaseFilePath + productPath[i].FilePath:ViewBag.BaseFilePath + "/Areas/Shop/Content/app/img/product/no_image.gif")">
-                                                        <img src="@(!string.IsNullOrEmpty(productPath[i].FilePath)?ViewBag.BaseFilePath + productPath[i].FilePath:ViewBag.BaseFilePath + "/Areas/Shop/Content/app/img/product/no_image.gif")" class="img-responsive center-block" alt="additional image">
-                                                    </a>
-                                                </div>
-                                            }
-                                        }
-
-                                    </div>
                                 </div>
-                            </li>
-
-                        }
+                            </div>
+                        </li>
                     </ul>
                 </div>
                 <div class="col-md-5 pro-content">
                     <h1>@Model.Name</h1>
                     <hr class="hr-line">
                     <ul class="list-unstyled">
-                        <li><span class="text-decor">Brands:</span><a href="#" class="textdeb">@(Model.ProductManufacturer==null?"":Model.ProductManufacturer.Name)</a></li>
+                        <li><span class="text-decor">Brands:</span><a href="#" class="textdeb">@(Model.ProductManufacturer == null ? "" : Model.ProductManufacturer.Name)</a></li>
                         <li><span class="text-decor">Product Code:</span>@Model.SKUCode</li>
                         <li><span class="text-decor">Bar Code:</span>@Model.BarCode</li>
                         <li><span class="text-decor">Availability:</span>@(Model.InventoryStocks.Count == 0 ? "Not Avaialable" : "In Stock")</li>
@@ -96,7 +82,7 @@
                                         <span class="glyphicon glyphicon-minus"></span>
                                     </button>
                                     <input id="input-quantity" type="text" name="quantity" value="1" size="2" class="form-control input-number pull-left" data-detail="true" />
-                                    
+
                                     <input type="hidden" name="product_id" value="30" />
                                     <button type="button" class="form-control pull-left btn-number btnplus" data-type="plus" data-field="quantity">
                                         <span class="glyphicon glyphicon-plus"></span>
@@ -204,5 +190,5 @@
             <!-- relatedproduct -->
         </div>
 
-        </div>
+    </div>
 </div>

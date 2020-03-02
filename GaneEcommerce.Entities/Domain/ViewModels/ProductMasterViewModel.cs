@@ -34,8 +34,8 @@ namespace Ganedata.Core.Entities.Domain
         public bool IsRawMaterial { get; set; }
         public bool IsSelectable { get; set; }
 
-       
-       
+
+
         public string UOM { get; set; }
         public bool Kit { get; set; }
         public string BarCode2 { get; set; }
@@ -78,6 +78,8 @@ namespace Ganedata.Core.Entities.Domain
         public bool BestSellerProduct { get; set; }
         public bool SpecialProduct { get; set; }
         public bool OnSaleProduct { get; set; }
+        public string HoverImage { get; set; }
+        public string DefaultImage { get; set; }
 
     }
 

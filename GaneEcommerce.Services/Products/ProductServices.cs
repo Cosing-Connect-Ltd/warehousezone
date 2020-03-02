@@ -1388,7 +1388,6 @@ namespace Ganedata.Core.Services
                     Width = prd.Width,
                     Depth = prd.Depth,
                     Weight = prd.Weight,
-
                     PercentMargin = prd.PercentMargin,
                     LotOptionDescription = prd.ProductLotOptionsCodes.Description,
                     LotOption = prd.LotOption,
@@ -1411,7 +1410,9 @@ namespace Ganedata.Core.Services
                     OnSaleProduct = prd.OnSaleProduct,
                     BestSellerProduct = prd.BestSellerProduct,
                     TopProduct = prd.TopProduct,
-                    SpecialProduct = prd.SpecialProduct
+                    SpecialProduct = prd.SpecialProduct,
+                    HoverImage = prd.HoverImage,
+                    DefaultImage = prd.DefaultImage
                 }).OrderBy(x => x.Name);
 
             return model;

@@ -25,7 +25,7 @@
 
             <tr>
 
-                <td><a href=""><img src="@item.ProductPath" alt="@(item?.ProductMaster?.Name)"></a></td>
+                <td><a href=""><img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage)? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@(item?.ProductMaster?.Name)"></a></td>
                 <td>
                     <div class="ordered-items">
                         <p>
@@ -38,8 +38,8 @@
                             </li>
                             <li>Size: <span>M</span></li>
                             @*<li>
-                        Quantity: <span>@item.Qty</span>
-                    </li>*@
+                                    Quantity: <span>@item.Qty</span>
+                                </li>*@
                         </ul>
                     </div>
                 </td>

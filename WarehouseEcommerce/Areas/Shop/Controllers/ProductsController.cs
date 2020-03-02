@@ -105,9 +105,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
 
         public ActionResult ProductDetails(int? productId)
         {
-            ViewBag.DetailImagesPath = _productServices.GetProductFiles(productId ?? 0, (CurrentTenantId), true).ToList();
             var product = _productServices.GetProductMasterById(productId ?? 0);
-
             return View(product);
         }
 
@@ -144,7 +142,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                          }).OrderBy(u => u.Id).Take(10).ToList();
 
 
-            model.ForEach(x => x.Path = ConfigurationManager.AppSettings["BaseFilePath"] + (string.IsNullOrEmpty(x.Path) ? "/UploadedFiles/Products/no-image.png" : x.Path));
+            model.ForEach(x => x.Path = ConfigurationManager.AppSettings["BaseFilePath"] + (string.IsNullOrEmpty(x.Path) ? "/UploadedFiles/Products/no_image.gif" : x.Path));
 
 
             return Json(model, JsonRequestBehavior.AllowGet);

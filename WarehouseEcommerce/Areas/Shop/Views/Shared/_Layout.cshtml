@@ -17,7 +17,10 @@
     <link href="~/Areas/Shop/Content/plugins/magnific-popup/dist/magnific-popup.css" type="text/css" rel="stylesheet" media="screen" />
     @*<link href="/Content/app/css/app.css" rel="stylesheet">*@
     @Scripts.Render("~/bundles/modernizr")
-    <script type="text/javascript"> var basePath = '@ViewBag.BasePath';</script>
+    <script type="text/javascript">
+        var basePath = '@ViewBag.BasePath';
+        var baseFilePath = '@ViewBag.BaseFilePath';
+    </script>
     <style>
         .see-all {
             line-height: 38px;
@@ -123,7 +126,7 @@
             $('#cart').removeClass('open');
         });
         $("#cart").click(function () {
-            location.href = basePath + 'Shop/Products/AddToCart';
+            location.href = basePath + '/Shop/Products/AddToCart';
         });
         $("#user_menue").hover(function () {
             $('#user_menue').addClass('open');

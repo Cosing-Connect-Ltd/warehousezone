@@ -144,17 +144,11 @@
                 {
                     foreach (var item in Model)
                     {
-
-                        var data = (List<ProductFiles>)ViewBag.ProductFilesList;
-                        var defaulImage = data.FirstOrDefault(u => u.ProductId == item.ProductId)?.FilePath;
-
-
                         <div class="product-layout product-list col-xs-12">
                             <div class="product-thumb transition">
                                 <div class="image">
-                                    <a href="@Url.Action("ProductDetails","Products", new {productId=item.ProductId})">
-                                        <img src="@(!string.IsNullOrEmpty(defaulImage) ? ViewBag.BaseFilePath + defaulImage : ViewBag.BaseFilePath + "/Areas/Shop/Content/app/img/product/no_image.gif")" alt="@item.Name" class="img-responsive center-block" />
-                                    </a>
+                                    <a href="@Url.Action("ProductDetails","Products", new {productId = item.ProductId})"><img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@item.Name" class="img-responsive center-block" /></a>
+                                    <a href="@Url.Action("ProductDetails", "Products", new { productId = item.ProductId })"><img src="@(!string.IsNullOrEmpty(item.HoverImage) ? ViewBag.BaseFilePath +item.HoverImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive second-img" alt="hover image" /></a>
                                     <span class="salep">sale</span>
                                     <div class="topbutton">
                                         <button type="button" data-toggle="tooltip" title="Add to Wish List">
@@ -194,14 +188,14 @@
                         </div>
                     }
                 }
-                
+
                 <input type="hidden" id="departmentId" value="@ViewBag.departmentId" />
                 <input type="hidden" id="ProductGroupsId" value="@ViewBag.groupId" />
             </div>
             <div class="row pagi">
                 <div class="col-sm-6 col-xs-6 text-left pagination">
 
-                    @Html.PagedListPager(Model, page => Url.Action("ProductCategories", new { productGroupId = ViewBag.groupId ?? null, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, page = page, pagesize = Model.PageSize,departmentId=ViewBag.departmentId }))
+                    @Html.PagedListPager(Model, page => Url.Action("ProductCategories", new { productGroupId = ViewBag.groupId ?? null, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, page = page, pagesize = Model.PageSize, departmentId = ViewBag.departmentId }))
 
 
                 </div>

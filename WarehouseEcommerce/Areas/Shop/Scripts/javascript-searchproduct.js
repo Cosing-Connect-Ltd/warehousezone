@@ -5,29 +5,29 @@
 function searchPoducts() {
     var sortvalue = $("#SortedValues").val();
     var groupId = $("#ProductGroups").val();
-    if (groupId == "" || groupId == undefined || groupId == null) { groupId = $("#ProductGroupsId").val(); }
+    if (groupId === "" || groupId === undefined || groupId === null) { groupId = $("#ProductGroupsId").val(); }
     var pagenumber = $("#pagenumber").val();
     var departmentId = $("#departmentId").val();
     var currentFilter = $("#currentFiltervalue").val();
     var searchstring = $("#searchString").val();
     var pageSize = $("#input-limit :selected").val();
-    window.location.href = basePath + "shop/Products/ProductCategories?productGroupId=" + groupId + "&sortOrder=" + sortvalue + "&currentFilter=" + currentFilter + "&searchString=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&departmentId=" + departmentId;
+    window.location.href = basePath + "/shop/Products/ProductCategories?productGroupId=" + groupId + "&sortOrder=" + sortvalue + "&currentFilter=" + currentFilter + "&searchString=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&departmentId=" + departmentId;
 }
 
 function SearchProductCategory() {
     var productgroupId = $("#ProductGroups").val();
     var searchstring = $("#text-search").val();
-    window.location.href = basePath + "shop/Products/ProductCategories?productGroupId=" + productgroupId + "&searchString=" + searchstring;
+    window.location.href = basePath + "/shop/Products/ProductCategories?productGroupId=" + productgroupId + "&searchString=" + searchstring;
 }
 
 var searchvalues;
 var seeall = true;
 $('#text-search').autocomplete({
-    minLength: 1,
+    minLength: 2,
     source: function (request, response) {
         searchvalues = request.term;
         $.ajax({
-            url: basePath + 'Products/searchProduct',
+            url: basePath + '/Products/searchProduct',
             method: 'post',
             data: { groupId: $("#ProductGroups").val(), searchkey: request.term },
             dataType: 'json',
@@ -35,13 +35,13 @@ $('#text-search').autocomplete({
                 seeall = true;
                 if (!data.length) {
                     seeall = false;
+                    debugger;
                     data = [
                         {
                             Name: 'No matches found',
-                            Path: '/shop/UploadedFiles/Products/Products/no-image.png'
+                            Path: baseFilePath + '/UploadedFiles/Products/no_image.gif'
                         }
                     ];
-
                 }
 
                 response(data);
@@ -65,9 +65,9 @@ $('#text-search').autocomplete({
     focus: updateTextBox,
     select: updateTextBox
 }).autocomplete('instance')._renderItem = function (ul, item) {
-
-    return $('<li>')
-        .append("<img style='width: 65px; height:58px;' src=" + item.Path + " alt=" + item.Name + "/>")
+    debugger;
+    return $('<li class="search-item">')
+        .append("<img style='width: 46px; height:46px;' src=" + item.Path + " alt=" + item.Name + "/>")
         .append("<a href=" + basePath + "/Shop/Products/ProductCategories?productGroupId=" + $("#ProductGroups").val() + "&searchString=" + item.Name + ">" + item.Name + "</a>").appendTo(ul);
 };
 
@@ -81,7 +81,7 @@ function AddToCart(ProductId) {
     var detail = $(".input-number").data("detail");
     $.ajax({
         type: "GET",
-        url: basePath + "shop/Products/_CartItemsPartial/",
+        url: basePath + "/shop/Products/_CartItemsPartial/",
         data: { ProductId: ProductId, qty: quantity, details: detail },
         dataType: 'html',
         success: function (data) {
@@ -100,7 +100,7 @@ function AddToCart(ProductId) {
 function RemoveCartItem(id) {
     $.ajax({
         type: "GET",
-        url: basePath + "shop/Products/_CartItemsPartial/",
+        url: basePath + "/shop/Products/_CartItemsPartial/",
         data: { ProductId: id, Remove: true },
         dataType: 'html',
         success: function (data) {
@@ -119,7 +119,7 @@ function UpdateCartItem(ID, event) {
     var quantity = event.value;
     $.ajax({
         type: "GET",
-        url: basePath + "shop/Products/_CartItemsPartial/",
+        url: basePath + "/shop/Products/_CartItemsPartial/",
         data: { ProductId: ID, qty: quantity },
         dataType: 'html',
         success: function (data) {
@@ -135,7 +135,7 @@ function UpdateCartItem(ID, event) {
 function CartItemCount() {
     $.ajax({
         type: "GET",
-        url: basePath + "shop/Products/CartItemsCount/",
+        url: basePath + "/shop/Products/CartItemsCount/",
         dataType: 'json',
         success: function (data) {
             $("#cart-total").text("");
@@ -162,7 +162,7 @@ function ConfirmOrder() {
         return;
     }
 
-    window.location.href = basePath + "shop/Orders/ConfirmOrder/?AccountAddressId=" + AccountAddressIds + "&PaymentTypeId=" + paymentMethodId + "&ShippmentTypeId=" + ShippingTypeId;
+    window.location.href = basePath + "/shop/Orders/ConfirmOrder/?AccountAddressId=" + AccountAddressIds + "&PaymentTypeId=" + paymentMethodId + "&ShippmentTypeId=" + ShippingTypeId;
 }
 
 function ChooseShippingAddress(addressId) {
@@ -173,12 +173,12 @@ function ChooseShippingAddress(addressId) {
         return;
     }
 
-    location.href = basePath + "shop/Orders/ConfirmOrder?accountId=" + accountId + "&AccountAddressId=" + addressId + "&ShippmentTypeId=" + ShippmentId;
+    location.href = basePath + "/shop/Orders/ConfirmOrder?accountId=" + accountId + "&AccountAddressId=" + addressId + "&ShippmentTypeId=" + ShippmentId;
 }
 
 $("input[name='paymentMethod']").on("click", function (e) {
 
-    if (e.target.value == "2") {
+    if (e.target.value === "2") {
         $(".paypal-btn").hide();
         $(".cash-btn").show();
     }
@@ -197,17 +197,16 @@ $(document).ready(function () {
 
 
 function onCurrencyChange(event) {
-   
+
     var currencyId = event.currentTarget.id;
     var cartview = $("#cartView").val();
     debugger;
     if (cartview) {
         var r = confirm("You are going to change the currency!");
-        if (r)
-        {
+        if (r) {
             var cId = parseInt(event.currentTarget.id);
             $.ajax({
-                url: basePath + 'Products/CurrencyChanged',
+                url: basePath + '/Products/CurrencyChanged',
                 type: "GET",
                 data: { CurrencyId: cId },
                 success: function (data) {
@@ -226,7 +225,7 @@ function onCurrencyChange(event) {
 
     debugger;
     $.ajax({
-        url: /*basePath + */'Base/CurrencyDetail',
+        url: basePath + '/Base/CurrencyDetail',
         type: "GET",
         data: { CurrencyId: currencyId },
         success: function (data) {
