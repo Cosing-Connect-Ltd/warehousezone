@@ -111,7 +111,7 @@
 
                                     <tr>
 
-                                        <td> <a href=""> <img src="@(!string.IsNullOrEmpty(item.ProductMaster) ? ViewBag.BaseFilePath +item.DefaultImage : ViewBag.BaseFilePath +"/UploadedFiles/Products/no_image.gif")" alt="@item.Name" title="@item.Name"" alt="@(item?.ProductMaster?.Name)"> </a> </td>
+                                        <td> <a href=""> <img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage) ? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath +"/UploadedFiles/Products/no_image.gif")" title="@item.ProductMaster.Name" alt="@(item?.ProductMaster?.Name)"> </a> </td>
                                         <td>
                                             <div class="ordered-items">
                                                 <p>
@@ -133,16 +133,16 @@
                                 </tbody>
                             }
                         </table>
-                            <div class="pull-left orders-total">
-                                @if (Model.ToList().Count > 0)
-                                {
-                                    <label> Total Quantity: @(Model == null ? 0 : Model.ToList().Count) </label>
-                                }
-                                @if (ViewBag.TotalQty != null && (int)ViewBag.TotalQty > 0)
-                                {
-                                    <label> Total: @(ViewBag.TotalQty == null ? 0 : ViewBag.TotalQty) </label>
-                                }
-                            </div>
+                        <div class="pull-left orders-total">
+                            @if (Model.ToList().Count > 0)
+                            {
+                                <label> Total Quantity: @(Model == null ? 0 : Model.ToList().Count) </label>
+                            }
+                            @if (ViewBag.TotalQty != null && (int)ViewBag.TotalQty > 0)
+                            {
+                                <label> Total: @(ViewBag.TotalQty == null ? 0 : ViewBag.TotalQty) </label>
+                            }
+                        </div>
 
                     </div>
                 </div>
