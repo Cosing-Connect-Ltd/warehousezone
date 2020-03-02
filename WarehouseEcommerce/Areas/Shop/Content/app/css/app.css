@@ -146,6 +146,8 @@ body {
 .dropdown-menu {
     box-shadow: 0 0px 5px rgba(0, 0, 0, .175);
     z-index: 9999;
+    height: 500px;
+    overflow-y: scroll;
 }
 
 .form-control {
