@@ -29,7 +29,7 @@ namespace WarehouseEcommerce.Helpers
                         if (orderDetail.ProductId > 0)
                         {
                             existingOrderDetail.Qty = orderDetail.Qty;
-                            existingOrderDetail.TotalAmount = (existingOrderDetail.Qty * existingOrderDetail.Price);
+                            existingOrderDetail.TotalAmount = Math.Round((existingOrderDetail.Qty * existingOrderDetail.Price),2);
                         }
                         else
                         {

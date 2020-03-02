@@ -113,7 +113,7 @@
                                                 {
                                                     <tr>
 
-                                                        <td><a href="@Url.Action("AddToCart","Products")"><img src="~/UploadedFiles/Products/no-image.png" alt="@(item?.ProductMaster?.Name)"></a></td>
+                                                        <td><a href="@Url.Action("AddToCart","Products")"><img src=@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage)? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif") alt="@(item?.ProductMaster?.Name)"></a></td>
                                                         <td>
                                                             <div class="ordered-items">
                                                                 <p>

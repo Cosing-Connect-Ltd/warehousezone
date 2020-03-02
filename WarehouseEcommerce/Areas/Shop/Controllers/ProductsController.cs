@@ -183,7 +183,8 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
 
                 }
-                ViewBag.TotalQty = models.Sum(u => u.TotalAmount);
+                ViewBag.CurrencySymbol = currencyyDetail.Symbol;
+                ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
                 return PartialView(models);
 
             }
@@ -193,7 +194,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                 {
                     GaneCartItemsSessionHelper.RemoveCartItemSession(ProductId ?? 0);
                     var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
-                    ViewBag.TotalQty = models.Sum(u => u.TotalAmount);
+                    ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
                     models.ForEach(u => u.Price = Math.Round((u.Price) * (currencyyDetail.Rate ?? 0), 2));
                     models.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
                     return PartialView(models);
@@ -209,11 +210,11 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     model.Price = Math.Round(((_productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, null).SellPrice) * (currencyyDetail.Rate ?? 0)), 2);
                     model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
                     var Details = _mapper.Map(model, new OrderDetailSessionViewModel());
-                    Details.Price = (Details.Price * (currencyyDetail.Rate ?? 0));
+                    Details.Price = Math.Round(((Details.Price) * (currencyyDetail.Rate ?? 0)), 2);
                     Details.CurrencyId = currencyyDetail.Id;
                     GaneCartItemsSessionHelper.UpdateCartItemsSession("", Details, false);
                     var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
-                    ViewBag.TotalQty = models.Sum(u => u.TotalAmount);
+                    ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
                     //models.ForEach(u => u.Price = (u.Price * (currencyyDetail.Rate ?? 0)));
                     models.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
                     return PartialView(models);
@@ -231,7 +232,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     ViewBag.CartModal = false;
                     var Details = _mapper.Map(model, new OrderDetailSessionViewModel());
                     var ProductCheck = GaneCartItemsSessionHelper.GetCartItemsSession().FirstOrDefault(u => u.ProductId == ProductId);
-                    Details.Price = (Details.Price * (currencyyDetail.Rate ?? 0));
+                    Details.Price = Math.Round(((Details.Price) * (currencyyDetail.Rate ?? 0)), 2);
                     Details.CurrencyId = currencyyDetail.Id;
                     if (ProductCheck != null)
                     {
