@@ -1912,11 +1912,11 @@ var updateSOShipmentInfo = function () {
     if (address !== null && address !== 'Select') {
         var addressParts = address.split(',');
         if (addressParts.length < 1) return;
-        $("#ShipmentAddressLine1").val(addressParts[0]);
-        $("#ShipmentAddressLine2").val(addressParts[1]);
-        $("#ShipmentAddressLine3").val(addressParts[2]);
-        $("#ShipmentAddressLine4").val(addressParts[3]);
-        $("#ShipmentAddressPostcode").val(addressParts[4]);
+        $("#ShipmentAddressLine1").val(addressParts[0].trim());
+        $("#ShipmentAddressLine2").val(addressParts[1].trim());
+        $("#ShipmentAddressLine3").val(addressParts[2].trim());
+        $("#ShipmentAddressLine4").val(addressParts[3].trim());
+        $("#ShipmentAddressPostcode").val(addressParts[4].trim());
     }
 };
 

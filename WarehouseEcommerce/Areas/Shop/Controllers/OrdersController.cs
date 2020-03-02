@@ -60,7 +60,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
 
 
                 ViewBag.cart = true;
-                ViewBag.AccountIds =caCurrent.CurrentWebsiteUser().AccountId;
+                ViewBag.AccountIds = CurrentUser?.AccountId;
                 AccountId=caCurrent.CurrentWebsiteUser().AccountId;
                 ViewBag.Country = new SelectList(_lookupServices.GetAllGlobalCountries(), "CountryID", "CountryName");
                 if (!ShipingAddress.HasValue || ShipingAddress == false)

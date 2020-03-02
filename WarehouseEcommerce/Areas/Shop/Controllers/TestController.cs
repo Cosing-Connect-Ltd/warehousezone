@@ -1,6 +1,8 @@
 ﻿using Ganedata.Core.Entities.Domain;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -16,6 +18,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                                             ? System.Configuration.ConfigurationManager.AppSettings["PAYPAL_RET_URL"] : "";
         string PAYPAL_URL = System.Configuration.ConfigurationManager.AppSettings["PAYPAL_URL"] != null
                                         ? System.Configuration.ConfigurationManager.AppSettings["PAYPAL_URL"] : "";
+        
         // GET: Test
         public ActionResult Index()
         {
@@ -28,26 +31,30 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         public async Task<ActionResult> IPN(FormCollection form)
 
         {
-            var datas = Request.QueryString.Get("tx");
-            var propertyId = 0;
+            //var datas = Request.QueryString.Get("tx");
+            //var propertyId = 0;
             // var packageId = _adPackageService.GetAdPackages().FirstOrDefault(f => f.Name.Equals("CUSTOM", StringComparison.InvariantCulture)).Id;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
             var ipn = Request.Form.AllKeys.ToDictionary(k => k, k => Request[k]);
 
+            WriteLog(string.Join(",", ipn.Values.ToList()));
             ipn.Add("cmd", "_notify-validate");
             var isIpnValid = await ValidateIpnAsync(ipn);
 
             if (isIpnValid && ipn["custom"] == "Test")
             {
+                WriteLog("successfull return");
                 return RedirectToAction("Success", new { id = -10 });
+
+
             }
             if (!isIpnValid && ipn["custom"] == "Test")
             {
                 return RedirectToAction("Failed", new { id = -10 });
             }
 
-            var custom = ipn["custom"].Split('|');
-            propertyId = Convert.ToInt32(custom[0]);
+            //var custom = ipn["custom"].Split('|');
+            //propertyId = Convert.ToInt32(custom[0]);
 
 
 
@@ -81,6 +88,25 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                 return (responseString == "VERIFIED");
             }
 
+        }
+
+        public static void WriteLog(string message)
+        {
+            try
+            {
+                var sw = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "\\LogFiles\\" +"paypal"+DateTime.UtcNow.ToString("ddMMMyyyy") + ".txt", true);
+                var msg = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss") + ": " + message;
+                sw.WriteLine(msg);
+                sw.Flush();
+                sw.Close();
+                Console.WriteLine(msg);
+            }
+            catch (Exception ex)
+            {
+                var err = "Ganedata Sync Service - Writing logs :" + ex.Source;
+                EventLog.WriteEntry(err, ex.Message);
+                Console.WriteLine(err);
+            }
         }
     }
 }

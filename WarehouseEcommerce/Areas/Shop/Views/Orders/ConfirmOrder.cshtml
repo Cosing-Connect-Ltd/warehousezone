@@ -3,7 +3,10 @@
     ViewBag.Title = "Confirm Order";
     int j = 1;
 }
-@{var address = ViewBag.Addresses as List<Ganedata.Core.Entities.Domain.AccountAddresses>;}
+@{
+    var address = ViewBag.Addresses as List<Ganedata.Core.Entities.Domain.AccountAddresses>;
+    
+    }
 <style>
     .shippingMethod {
         background: #f7f7f9;
@@ -196,8 +199,9 @@
                                         <input class="full-width" type="hidden" name="business" value="shoaib@ganedata.co.uk">
                                         <input type="hidden" name="cmd" value="_cart">
                                         <input type="hidden" name="upload" value="1" />
-                                        <input type="hidden" name="return" value="@((string)ViewBag.RetUrl)">
-                                        <input type="hidden" name="notify_url" value="@((string)ViewBag.RetUrl)">
+                                        <input type="hidden" name="return" value="192.168.18.7:8006">
+                                        @*<input type="hidden" name="notify_url" value="@((string)ViewBag.RetUrl)">*@
+                                        <input type="hidden" name="notify_url" value="192.168.18.7:8006/Test/IPN">
                                         <input type="hidden" NAME="currency_code" value="GBP">
                                         <input type="hidden" name="OrderId" value="@ViewBag.OrdersId" />
 
@@ -206,17 +210,18 @@
                                     @foreach (var item in Model)
                                     {
 
-                                        <input type="hidden" name="item_name_@j" value="@item.ProductMaster.Name">
-                                        <input type="hidden" name="item_number_@j" value="@item.ProductMaster.SKUCode">
-                                        <input type="hidden" name="amount_@j" value="@item.Price">
-                                        <input type="hidden" name="quantity_@j" value="@item.Qty">
-
+                                        <input type="hidden" name="item_name_1" value="@item.ProductMaster.Name">
+                                        <input type="hidden" name="item_number_1" value="@item.ProductMaster.SKUCode">
+                                        <input type="hidden" name="amount_1" value="4.2">
+                                        <input type="hidden" name="quantity_1" value="@item.Qty">
+                                        break;
+                                       
                                     }
 
                                 </div>
                                 <div class="button-submit">
                                     <button type="Submit" name="submitNewsletter" class="btn btn-block paypal-btn">Proceed To Payment</button>
-                                    <a href="@Url.Action("Index","Test")" class="btn btn-block cash-btn cashbtn" name="submitNewsletter"> Proceed To Payment</a>
+                                    @*<a href="@Url.Action("Index","Test")" class="btn btn-block cash-btn cashbtn" name="submitNewsletter"> Proceed To Payment</a>*@
 
                                 </div>
 
