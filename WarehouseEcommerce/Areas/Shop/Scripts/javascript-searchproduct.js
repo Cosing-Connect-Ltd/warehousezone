@@ -200,7 +200,6 @@ function onCurrencyChange(event) {
 
     var currencyId = event.currentTarget.id;
     var cartview = $("#cartView").val();
-    debugger;
     if (cartview) {
         var r = confirm("You are going to change the currency!");
         if (r) {
@@ -223,7 +222,6 @@ function onCurrencyChange(event) {
         }
     }
 
-    debugger;
     $.ajax({
         url: basePath + '/Base/CurrencyDetail',
         type: "GET",

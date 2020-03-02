@@ -50,11 +50,11 @@
                     <ul class="list-inline">
                         <li class="text-decor-bold proprice">
                             <h2>
-                                @Model.MinThresholdPrice
+                                @*@Model.MinThresholdPrice*@
                             </h2>
                         </li>
                         <li>
-                            <span style="text-decoration: line-through;">@Model.SellPrice</span>
+                            <span> @ViewBag.CurrencySymbol @Model.SellPrice</span>
                         </li>
                     </ul>
 

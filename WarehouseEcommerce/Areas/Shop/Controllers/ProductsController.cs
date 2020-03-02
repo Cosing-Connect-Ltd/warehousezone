@@ -42,6 +42,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
 
         public ActionResult ProductCategories(int? productGroupId, int? sortOrder, string currentFilter, string searchString, int? page, int? pagesize = 10, int? departmentId = null)
         {
+            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.groupId = productGroupId;
             ViewBag.departmentId = departmentId;
             ViewBag.CurrentSort = sortOrder;
@@ -49,6 +50,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             ViewBag.SortedValues = (sortOrder ?? 1);
             ViewBag.pageList = new SelectList(from d in Enumerable.Range(1, 5) select new SelectListItem { Text = (d * 10).ToString(), Value = (d * 10).ToString() }, "Value", "Text", pagesize);
             ViewBag.searchString = searchString;
+            ViewBag.CurrencySymbol = currencyyDetail.Symbol;
             var product = _productlookupServices.GetAllValidProductGroupById(productGroupId);
             if (departmentId.HasValue)
             {
@@ -94,7 +96,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             {
                 data.ToList().ForEach(u =>
 
-                u.SellPrice = _productPriceService.GetProductPriceThresholdByAccountId(u.ProductId, null)?.SellPrice
+                u.SellPrice = (Math.Round((_productPriceService.GetProductPriceThresholdByAccountId(u.ProductId, null)?.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0), 2))
 
                 );
                 var prdouctIds = data.Select(u => u.ProductId).ToList();
@@ -105,7 +107,10 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
 
         public ActionResult ProductDetails(int? productId)
         {
+            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
+            ViewBag.CurrencySymbol = currencyyDetail.Symbol;
             var product = _productServices.GetProductMasterById(productId ?? 0);
+            product.SellPrice = Math.Round((product.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0), 2);
             return View(product);
         }
 

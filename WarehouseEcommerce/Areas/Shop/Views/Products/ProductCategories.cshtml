@@ -175,10 +175,10 @@
                                         <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
                                         <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
                                     </div>
-                                    <p class="pricedis price text-right"><span class="price-new">$@item.MinThresholdPrice</span> <span class="price-old">$@item.SellPrice</span></p>
+                                    <p class="pricedis price text-right">@*<span class="price-new">@ViewBag.CurrencySymbol@item.MinThresholdPrice</span>*@ <span class="price-old">@ViewBag.CurrencySymbol @item.SellPrice</span></p>
                                     <div class="clearfix"></div>
                                     <div class="button-group">
-
+                                         
                                         <a href="javascript:;" type="button" class="acart" onclick="AddToCart(@item.ProductId)">
                                             <span>Add to Cart</span>
                                         </a>

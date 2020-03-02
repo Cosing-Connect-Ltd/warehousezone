@@ -1433,9 +1433,10 @@ ol ol {
   list-style: none;
 }
 .list-inline {
-  padding-left: 0;
-  list-style: none;
-  margin-left: -5px;
+    padding-left: 0;
+    list-style: none;
+    margin-left: -5px;
+    color: rgb(177, 39, 4);
 }
 .list-inline > li {
   display: inline-block;
