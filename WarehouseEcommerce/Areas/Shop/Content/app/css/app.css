@@ -146,8 +146,6 @@ body {
 .dropdown-menu {
     box-shadow: 0 0px 5px rgba(0, 0, 0, .175);
     z-index: 9999;
-    height: 500px;
-    overflow-y: scroll;
 }
 
 .form-control {
@@ -457,6 +455,8 @@ div.required .control-label:before {
     right: 0;
     left: unset !important;
     top: 64px;
+    height: 500px;
+    overflow-y: scroll;
 }
 
 @media(max-width: 767px) {
