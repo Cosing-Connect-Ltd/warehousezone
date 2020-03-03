@@ -1704,7 +1704,7 @@ namespace Ganedata.Core.Services
 
                     var itemsAllocated = itemsOnSalesOrders - itemsDispatched;
                     bool directship = _currentDbContext.Order.FirstOrDefault(u => u.OrderID == item)?.DirectShip ?? false;
-                    if (itemsAllocated > 0)
+                    if (itemsAllocated > 0 && detail.Count(u=>u.Item2==OrderNumber)<=0)
                     {
                         detail.Add(new Tuple<string, string, decimal, bool>(AccountNumber, OrderNumber, itemsAllocated, directship));
                     }
@@ -1733,7 +1733,7 @@ namespace Ganedata.Core.Services
 
                     var itemsOnOrder = itemsOrdered - itemsReceived;
                     bool directship = _currentDbContext.Order.FirstOrDefault(u => u.OrderID == item)?.DirectShip ?? false;
-                    if (itemsOnOrder > 0)
+                    if (itemsOnOrder > 0 && detail.Count(u => u.Item2 == OrderNumber) <= 0)
                     {
                         detail.Add(new Tuple<string, string, decimal, bool>(AccountNumber, OrderNumber, itemsOrdered, directship));
                     }
