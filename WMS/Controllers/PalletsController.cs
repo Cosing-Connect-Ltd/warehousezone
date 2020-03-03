@@ -155,7 +155,7 @@ namespace WMS.Controllers
         }
 
         // int? accountid = null
-        public ActionResult PalletEditor(string id = null, int? OrderProcessId = null)
+        public ActionResult PalletEditor(string id = null, int? OrderProcessId = null, int? DispatchId=null)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             var palletId = 0;
@@ -176,7 +176,7 @@ namespace WMS.Controllers
 
             };
             model.OrderProcesses = OrderService.GetOrderProcessByOrderProcessId(OrderProcessId ?? 0);
-
+            model.dispatchId = DispatchId;
             return View("PalletEditor", model);
         }
 
@@ -287,7 +287,7 @@ namespace WMS.Controllers
             model.AllSentMethods = _palletingService.GetAllSentMethods()
                 .Select(m => new SelectListItem() { Text = m.ToString(), Value = ((int)m).ToString() });
             model.DispatchRefrenceNumber = GaneStaticAppExtensions.GenerateDateRandomNo();
-            model.AllDpdServices=_palletingService.GetAllDpdServices().
+            model.AllDpdServices = _palletingService.GetAllDpdServices().
                 Select(m => new SelectListItem() { Text = m.NetworkDescription.ToString(), Value = m.NetworkCode.ToString() });
             ViewBag.ControllerName = "Pallets";
             Session["UploadedPalletEvidences"] = null;
@@ -305,15 +305,13 @@ namespace WMS.Controllers
             {
                 model.ProofOfDeliveryImageFilenames = "";
             }
-           var result= _palletingService.DispatchPallets(model, CurrentUserId);
+            var result = _palletingService.DispatchPallets(model, CurrentUserId);
             if (!string.IsNullOrEmpty(result))
             {
                 TempData["Error"] = result;
             }
             return RedirectToAction("Index", "Pallets");
         }
-
-
         public ActionResult EditDispatchPallets(int PalletsDispatchID)
         {
             PalletDispatchViewModel model = new PalletDispatchViewModel();
@@ -326,6 +324,7 @@ namespace WMS.Controllers
             model.MarketVehicleDriverID = PalletDispatch.VehicleDriverResourceID;
             model.CustomDriverDetails = PalletDispatch.CustomDriverDetails;
             model.DispatchNotes = PalletDispatch.DispatchNotes;
+            model.NetworkCode = PalletDispatch.NetworkCode;
             model.ProofOfDeliveryImageFilenames = PalletDispatch.ProofOfDeliveryImageFilenames;
             model.AllVehicles = _marketServices.GetAllValidMarketVehicles(CurrentTenantId).MarketVehicles
                 .Select(m => new SelectListItem() { Text = m.Name, Value = m.Id.ToString() });
@@ -334,6 +333,8 @@ namespace WMS.Controllers
             model.AllSentMethods = _palletingService.GetAllSentMethods()
                 .Select(m => new SelectListItem() { Text = m.ToString(), Value = ((int)m).ToString() });
             model.DispatchRefrenceNumber = PalletDispatch.DispatchReference;
+            model.AllDpdServices = _palletingService.GetAllDpdServices().
+                Select(m => new SelectListItem() { Text = m.NetworkDescription.ToString(), Value = m.NetworkCode.ToString() });
             Session["UploadedPalletEvidences"] = null;
             ViewBag.ControllerName = "Pallets";
             if (!string.IsNullOrEmpty(PalletDispatch.ProofOfDeliveryImageFilenames))
@@ -359,13 +360,6 @@ namespace WMS.Controllers
 
             return PartialView("_PalletDisptachDetail", model);
         }
-
-
-
-
-
-
-
         public JsonResult DeletePallet(int palletId)
         {
             var status = _palletingService.DeletePallet(palletId);

@@ -91,6 +91,7 @@
 
                 var dispatchId = (int)DataBinder.Eval(m.DataItem, "PalletsDispatchID");
                 string receiverSign = (string)DataBinder.Eval(m.DataItem, "ReceiverSign");
+                var orderproccessId = (int)DataBinder.Eval(m.DataItem, "OrderProcess.OrderProcessID");
                 var editDispatchFunction= string.Format("EditPalletDispatch('{0}')", dispatchId);
                 ViewContext.Writer.Write("<a target='_blank' alt='Print Delivery Note' class='btn fa fa-print' href='/Reports/PalleteReportPrint?dispatchId=" + dispatchId + "' role='button'></a>");
                 if (!receiverSign.IsNullOrEmpty())
@@ -100,6 +101,7 @@
                     ViewContext.Writer.Write("<a href='javascript:void(0)' alt='Print Delivery Note' class='btn fa fa-picture-o' onclick=" + function + " role='button'></a>");
                 }
                 ViewContext.Writer.Write("<a target='javascript:void(0)' alt='Edit dispatches' title='Edit dispatch' class='btn fa fa-pencil' onclick=" + editDispatchFunction + " role='button'></a>");
+                ViewContext.Writer.Write("<a href='/pallets/orderProcess?OrderProcessId="+orderproccessId+"&DispatchId="+dispatchId+"' alt='Add dispatches' title='Add dispatch' class='btn fa fa-plus'></a>");
 
 
 

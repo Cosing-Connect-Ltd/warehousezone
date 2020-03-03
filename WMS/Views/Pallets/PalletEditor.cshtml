@@ -30,6 +30,7 @@
     @Html.AntiForgeryToken()
     @Html.Hidden("selkey", 10000)
     @Html.Hidden("orderprocessId", Model.SelectedOrderProcessId)
+    @Html.Hidden("dispatchId",(int?)Model.dispatchId)
     @Html.Hidden("DeliveryRefrenceNumber",(Model.OrderProcesses==null?"":Model.OrderProcesses.DeliveryNO))
 <div class="col-md-12 p-0 pull-left report-date-header mb-1">
     <div class="col-md-4 mt-1 pull-left">

@@ -231,40 +231,46 @@ function GetSelectedFieldValuesCallback(values) {
 
 $(document).ready(function () {
     $("#btnDispatchPallets").on("click", function () {
-        var selectedPallets = $("#orderprocessId").val();
-        var deliveryNumber = $('#DeliveryRefrenceNumber').val();
-        var data = { SelectedPallets: selectedPallets };
-        LoadingPanel.Show();
-        $.post('/Pallets/DispatchPallets',
-            data,
-            function (result) {
-                debugger;
-                LoadingPanel.Hide();
-                Gane.Helpers.ShowPopupMessage('Dispatch Pallets', '<div class="pallet-number"><b>DELIVERY REFERENCE NUMBER : </b>' + deliveryNumber + "</div><br/>" + result, PopupTypes.Warning);
-                MVCxClientUtils.FinalizeCallback();
-                $("#DispatchSelectedPalletIds").val($("#orderprocessId").val());
-            }).fail(function (xhr, status, error) {
-                LoadingPanel.Hide();
-                Gane.Helpers.ShowPopupMessage('Dispatch Pallets Error', xhr.responseText, PopupTypes.Warning);
-            });
+        var dispatchId = $("#dispatchId").val();
+        if (dispatchId > 0 && dispatchId !== null && dispatchId !== undefined && dispatchId !== "") {
+            EditPalletDispatch(dispatchId);
 
+        }
+        else {
+            var selectedPallets = $("#orderprocessId").val();
+            var deliveryNumber = $('#DeliveryRefrenceNumber').val();
+            var data = { SelectedPallets: selectedPallets };
+            LoadingPanel.Show();
+            $.post('/Pallets/DispatchPallets',
+                data,
+                function (result) {
+                    debugger;
+                    LoadingPanel.Hide();
+                    Gane.Helpers.ShowPopupMessage('Dispatch Pallets', '<div class="pallet-number"><b>DELIVERY REFERENCE NUMBER : </b>' + deliveryNumber + "</div><br/>" + result, PopupTypes.Warning);
+                    MVCxClientUtils.FinalizeCallback();
+                    $("#DispatchSelectedPalletIds").val($("#orderprocessId").val());
+                }).fail(function (xhr, status, error) {
+                    LoadingPanel.Hide();
+                    Gane.Helpers.ShowPopupMessage('Dispatch Pallets Error', xhr.responseText, PopupTypes.Warning);
+                });
+        }
     });
- 
+
 });
 
 function OnSubmitFormvalidate() {
-   
-        debugger;
-        var deliveryMethod = $("#DeliveryMethod").val();
-        if (deliveryMethod === "3") {
-            var serviceId = $("#NetworkCode").val();
-            if (serviceId <= 0 || serviceId === null || serviceId === "") {
-                alert("Select services first!")
-                return false;
-            }
-        }
 
-    
+    debugger;
+    var deliveryMethod = $("#DeliveryMethod").val();
+    if (deliveryMethod === "3") {
+        var serviceId = $("#NetworkCode").val();
+        if (serviceId <= 0 || serviceId === null || serviceId === "") {
+            alert("Select services first!")
+            return false;
+        }
+    }
+
+
 }
 function DeliveryMethodChange(e) {
     debugger;

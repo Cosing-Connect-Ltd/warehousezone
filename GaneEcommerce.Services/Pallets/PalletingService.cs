@@ -20,7 +20,7 @@ namespace Ganedata.Core.Services
         private readonly IMarketServices _marketServices;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
-        private  DataImportFactory _dataImportFactory; 
+        private DataImportFactory _dataImportFactory;
 
         public PalletingService(IApplicationContext currentDbContext, IMarketServices marketServices, IUserService userService, IMapper mapper)
         {
@@ -99,7 +99,7 @@ namespace Ganedata.Core.Services
 
         public IEnumerable<TenantDeliveryService> GetAllDpdServices()
         {
-            return _currentDbContext.TenantDeliveryServices.Where(u=>u.IsDeleted != true);
+            return _currentDbContext.TenantDeliveryServices.Where(u => u.IsDeleted != true);
         }
         public Pallet CreateNewPallet(int orderProcessId, int userId)
         {
@@ -121,7 +121,7 @@ namespace Ganedata.Core.Services
             string result = "";
             if (dispatch.PalletDispatchId > 0)
             {
-                
+
                 var item = _currentDbContext.PalletsDispatches.FirstOrDefault(u => u.PalletsDispatchID == dispatch.PalletDispatchId);
                 if (item != null)
                 {
@@ -131,17 +131,46 @@ namespace Ganedata.Core.Services
                     item.DispatchNotes = dispatch.DispatchNotes;
                     item.DispatchReference = dispatch.DispatchRefrenceNumber;
                     item.UpdatedBy = userId;
-                    item.NetworkCode = dispatch.NetworkCode;
                     item.DateUpdated = DateTime.UtcNow;
                     item.TrackingReference = dispatch.TrackingReference;
                     item.DeliveryMethod = dispatch.DeliveryMethod;
+                    item.NetworkCode = dispatch.DeliveryMethod == DeliveryMethods.DPD ? dispatch.NetworkCode : "";
                     _currentDbContext.Entry(item).State = EntityState.Modified;
+                    if (!string.IsNullOrEmpty(item.OrderProcessID.ToString()))
+                    {
+                        int OrderProcessId = int.Parse(item.OrderProcessID.ToString());
+                        var PalletList = _currentDbContext.Pallets.Where(u => u.OrderProcessID == OrderProcessId).ToList();
+                        var orderProcess = _currentDbContext.OrderProcess.FirstOrDefault(u => u.OrderProcessID == OrderProcessId);
+
+                        foreach (var palletId in PalletList)
+                        {
+                            var pallet = _currentDbContext.Pallets.Find(palletId.PalletID);
+                            if (pallet != null && pallet.PalletProducts.Count > 0)
+                            {
+
+                                pallet.DateCompleted = DateTime.UtcNow;
+                                pallet.DateUpdated = DateTime.UtcNow;
+                                pallet.CompletedBy = userId;
+                                pallet.PalletsDispatch = item;
+
+
+                                _currentDbContext.Entry(pallet).State = pallet.PalletsDispatchID>0?EntityState.Modified: EntityState.Added;
+                            }
+                        }
+                        if (orderProcess != null)
+                        {
+                            orderProcess.OrderProcessStatusId = (int)OrderProcessStatusEnum.Dispatched;
+                            orderProcess.DateUpdated = DateTime.UtcNow;
+                            orderProcess.UpdatedBy = userId;
+                            _currentDbContext.Entry(orderProcess).State = EntityState.Modified;
+                        }
+                    }
                     _currentDbContext.SaveChanges();
                 }
                 if (dispatch.DeliveryMethod == DeliveryMethods.DPD)
                 {
                     var model = MapModelWithRealValues(item.PalletsDispatchID, dispatch.NetworkCode);
-                    result=_dataImportFactory.PostShipmentData(item.PalletsDispatchID,model);
+                    result = _dataImportFactory.PostShipmentData(item.PalletsDispatchID, model);
                 }
                 return result;
 
@@ -157,7 +186,7 @@ namespace Ganedata.Core.Services
                     DispatchNotes = dispatch.DispatchNotes,
                     DispatchReference = dispatch.DispatchRefrenceNumber,
                     CreatedBy = userId,
-                    NetworkCode=dispatch.NetworkCode,
+                    NetworkCode = dispatch.DeliveryMethod == DeliveryMethods.DPD ? dispatch.NetworkCode : "",
                     DateCreated = DateTime.UtcNow,
                     OrderProcessID = int.Parse(!string.IsNullOrEmpty(dispatch.DispatchSelectedPalletIds) ? dispatch.DispatchSelectedPalletIds : "0"),
                     TrackingReference = dispatch.TrackingReference,
@@ -198,12 +227,12 @@ namespace Ganedata.Core.Services
                 _currentDbContext.SaveChanges();
                 if (dispatch.DeliveryMethod == DeliveryMethods.DPD)
                 {
-                    var model = MapModelWithRealValues(item.PalletsDispatchID,dispatch.NetworkCode);
-                    result=_dataImportFactory.PostShipmentData(item.PalletsDispatchID,model);
+                    var model = MapModelWithRealValues(item.PalletsDispatchID, dispatch.NetworkCode);
+                    result = _dataImportFactory.PostShipmentData(item.PalletsDispatchID, model);
                 }
                 return result;
             }
-            
+
         }
 
         public Pallet UpdatePalletProof(string palletNumber, byte[][] palletProofImages)
@@ -275,7 +304,7 @@ namespace Ganedata.Core.Services
 
         public IEnumerable<PalletsDispatch> GetAllPalletsDispatch()
         {
-            return _currentDbContext.PalletsDispatches.Where(u => u.DispatchStatus == PalletDispatchStatusEnum.Created).OrderByDescending(u=>u.PalletsDispatchID);
+            return _currentDbContext.PalletsDispatches.Where(u => u.DispatchStatus == PalletDispatchStatusEnum.Created).OrderByDescending(u => u.PalletsDispatchID);
         }
 
         public IQueryable<PalletViewModel> GetAllPallets(int? lastXdays = null, PalletStatusEnum? palletStatusEnum = null, int? orderProcessId = null, DateTime? reqDate = null, int? filterByPalletDetail = null, int? dispatchId = null)
@@ -569,25 +598,25 @@ namespace Ganedata.Core.Services
             return _currentDbContext.PalletsDispatches.FirstOrDefault(u => u.PalletsDispatchID == palletDispatchId);
         }
 
-        public bool UpdatePalletsDispatchStatus(int dispatchId,int? reourceId, int userID, bool Status = false)
+        public bool UpdatePalletsDispatchStatus(int dispatchId, int? reourceId, int userID, bool Status = false)
         {
             var palletDispatch = _currentDbContext.PalletsDispatches.FirstOrDefault(u => u.PalletsDispatchID == dispatchId);
             if (palletDispatch != null)
             {
-                palletDispatch.DispatchStatus = Status?PalletDispatchStatusEnum.Created: PalletDispatchStatusEnum.Scheduled;
+                palletDispatch.DispatchStatus = Status ? PalletDispatchStatusEnum.Created : PalletDispatchStatusEnum.Scheduled;
                 palletDispatch.UpdatedBy = userID;
                 palletDispatch.DateUpdated = DateTime.UtcNow;
                 palletDispatch.MarketVehicleID = reourceId;
-               _currentDbContext.Entry(palletDispatch).State=EntityState.Modified;
+                _currentDbContext.Entry(palletDispatch).State = EntityState.Modified;
                 _currentDbContext.SaveChanges();
                 return true;
             }
             return false;
         }
 
-        private DpdShipmentDataViewModel MapModelWithRealValues(int DispatchId,string NetworkCode)
+        private DpdShipmentDataViewModel MapModelWithRealValues(int DispatchId, string NetworkCode)
         {
-            var palletDispatch =  _currentDbContext.PalletsDispatches.FirstOrDefault(u => u.PalletsDispatchID == DispatchId);
+            var palletDispatch = _currentDbContext.PalletsDispatches.FirstOrDefault(u => u.PalletsDispatchID == DispatchId);
             if (palletDispatch != null)
             {
                 DpdShipmentDataViewModel viewModel = new DpdShipmentDataViewModel();
@@ -602,12 +631,12 @@ namespace Ganedata.Core.Services
                 CollectionDetails collectionDetails = new CollectionDetails();
                 ContactDetails contactDetails = new ContactDetails();
                 contactDetails.contactName = palletDispatch.OrderProcess?.Order?.Tenant?.TenantName;
-                contactDetails.telephone= palletDispatch.OrderProcess?.Order?.Tenant?.TenantDayPhone;
+                contactDetails.telephone = palletDispatch.OrderProcess?.Order?.Tenant?.TenantDayPhone;
                 Address1 address1 = new Address1();
                 address1.countryCode = palletDispatch.OrderProcess?.Order?.Tenant?.Country?.CountryCode;
                 address1.county = palletDispatch.OrderProcess?.Order?.Tenant?.TenantStateCounty;
                 address1.postcode = palletDispatch.OrderProcess?.Order?.Tenant?.TenantPostalCode;
-                address1.street= palletDispatch.OrderProcess?.Order?.Tenant?.TenantAddress1;
+                address1.street = palletDispatch.OrderProcess?.Order?.Tenant?.TenantAddress1;
                 address1.town = palletDispatch.OrderProcess?.Order?.Tenant?.TenantAddress3;
                 address1.county = palletDispatch.OrderProcess?.Order?.Tenant?.TenantCity;
                 collectionDetails.address = address1;
@@ -619,7 +648,7 @@ namespace Ganedata.Core.Services
                 contactDetails2.telephone = palletDispatch.OrderProcess?.Order?.Account?.AccountContacts.FirstOrDefault()?.TenantContactPhone;
                 deliveryDetails.contactDetails = contactDetails2;
                 Address2 address2 = new Address2();
-                address2.countryCode= palletDispatch.OrderProcess?.Order?.Tenant?.Country?.CountryCode;
+                address2.countryCode = palletDispatch.OrderProcess?.Order?.Tenant?.Country?.CountryCode;
                 address2.postcode = palletDispatch.OrderProcess?.Order?.ShipmentAddressPostcode;
                 address2.street = palletDispatch.OrderProcess?.Order?.ShipmentAddressLine1;
                 address2.town = palletDispatch.OrderProcess?.Order?.ShipmentAddressLine3;
@@ -637,7 +666,7 @@ namespace Ganedata.Core.Services
                 consignment.shippingRef1 = palletDispatch.OrderProcess?.Order?.OrderID.ToString();
                 consignment.shippingRef2 = palletDispatch.OrderProcessID.ToString();
                 consignment.shippingRef3 = DispatchId.ToString();
-                viewModel.consignment= new List<Consignment>();
+                viewModel.consignment = new List<Consignment>();
                 viewModel.consignment.Add(consignment);
 
 

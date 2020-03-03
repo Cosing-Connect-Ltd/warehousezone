@@ -15,7 +15,7 @@ namespace Ganedata.Core.Entities.Domain
         }
         public bool PalletsEnabled { get; set; }
 
-      
+
         public string NextPalletNumber { get; set; }
         public bool IsNewPallet { get; set; }
         public bool IsCompleted { get; set; }
@@ -27,6 +27,7 @@ namespace Ganedata.Core.Entities.Domain
         public string ProductName { get; set; }
         public int SelectedOrderProcessId { get; set; }
         public int SelectedPalletID { get; set; }
+        public int? dispatchId { get; set; }
         public List<SelectListItem> AllCurrentPallets { get; set; }
         public OrderProcess OrderProcesses { get; set; }
     }
@@ -60,7 +61,7 @@ namespace Ganedata.Core.Entities.Domain
         public virtual IEnumerable<SelectListItem> AllDrivers { get; set; }
         public virtual IEnumerable<SelectListItem> AllDpdServices { get; set; }
 
-        
+
     }
 
     public class PalletDispatchInfoViewModel
