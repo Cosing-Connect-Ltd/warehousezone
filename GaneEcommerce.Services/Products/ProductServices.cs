@@ -1410,9 +1410,7 @@ namespace Ganedata.Core.Services
                     OnSaleProduct = prd.OnSaleProduct,
                     BestSellerProduct = prd.BestSellerProduct,
                     TopProduct = prd.TopProduct,
-                    SpecialProduct = prd.SpecialProduct,
-                    HoverImage = prd.HoverImage,
-                    DefaultImage = prd.DefaultImage
+                    SpecialProduct = prd.SpecialProduct
                 }).OrderBy(x => x.Name);
 
             return model;
