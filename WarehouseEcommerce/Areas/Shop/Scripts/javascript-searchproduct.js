@@ -65,7 +65,7 @@ $('#text-search').autocomplete({
     focus: updateTextBox,
     select: updateTextBox
 }).autocomplete('instance')._renderItem = function (ul, item) {
-    debugger;
+    //debugger;
     return $('<li class="search-item">')
         .append("<img style='width: 46px; height:46px;' src=" + item.Path + " alt=" + item.Name + "/>")
         .append("<a href=" + basePath + "/Shop/Products/ProductCategories?productGroupId=" + $("#ProductGroups").val() + "&searchString=" + item.Name + ">" + item.Name + "</a>").appendTo(ul);

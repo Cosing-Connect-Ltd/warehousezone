@@ -386,7 +386,7 @@ namespace WMS.Controllers
                                 prds.SKUCode,
                                 prds.NameWithCode
                             }).ToList();
-            ViewBag.wrProducts = new SelectList(products, "ProductId", "NameWithCode");
+            //ViewBag.wrProducts = new SelectList(products, "ProductId", "NameWithCode");
             Guid guid = Guid.NewGuid();
             ViewBag.groupToken = guid.ToString();
             return View();

@@ -75,7 +75,6 @@ function deleteDetails(id) {
 }
 function addDetail(action) {
     var postProductValidationProcess = function (confirmedAck) {
-        debugger;
         checkIsdeleted = false;
         VerifyQunatity();
         var productid = prdid.GetValue();
@@ -210,7 +209,6 @@ function removeDetail(id) {
             url: "/OrderDetail/_RemoveProduct",
             data: { "Id": id, "pageSessionToken": sessionStorage["PageSessionToken"] },
             success: function (e) {
-                debugger;
                 if (e !== "" && e === false) {
                     alert("Quantity is Processed, Not able to delete this product");
 
@@ -1312,13 +1310,11 @@ function loadOrderDetailCommonEvents() {
 
         var id = e.target.id;
         if (id == 'OrderDetailadd') {
-            debugger;
             var accounId = $(".orderactcnts :selected").val();
             var warehouseId = $("#TransferWarehouseId :selected").val();
             var transfertype = $("#inverntoryType").val();
 
             if (transfertype === "3" || transfertype === "4") {
-                debugger;
                 if (warehouseId === "" || warehouseId === null || warehouseId == undefined) {
                     return alert("Please select Warehouse first!");
                 }
@@ -1430,7 +1426,6 @@ function submitProductProcessing(productId, orderDetailId, iscaseQty) {
 }
 
 var completeConfirmed = function (isWorksOrder, suffix) {
-    debugger;
 
     var deliverynumber = $('#DeliveryNumber').val();
     isWorksOrder = isWorksOrder || false;
@@ -1609,7 +1604,6 @@ function loadOrderDetailProcessPickEvents() {
 //----------Adjustment --------------------
 
 function RowsCount() {
-    debugger;
     if ($("#gridViewOrdDetEdit").length > 0) {
         if (gridViewOrdDetEdit.cpRowCount > 0) {
             DisableChosenDropdown('AccountID', true);
@@ -2366,7 +2360,6 @@ function VerifyPalletSalesOrder(e, cnt) {
             data: data,
             dataType: 'json',
             success: function (data) {
-                debugger;
                 LoadingPanel.Hide();
 
                 if (!data) {

@@ -118,8 +118,9 @@ namespace Ganedata.Core.Services
            var model = _mapper.Map<VanSalesDailyCashSync, VanSalesDailyCash>(vanSalesCashReport);
             model.UpdateCreatedInfo(vanSalesCashReport.UserId);
             _currentDbContext.VanSalesDailyCashes.Add(model);
-            _currentDbContext.SaveChanges();
             model.SalesManUserId = vanSalesCashReport.UserId;
+            _currentDbContext.SaveChanges();
+            
             foreach (var id in vanSalesCashReport.OrderIds)
             {
                 var order = _currentDbContext.Order.Where(x => x.OrderToken == id).FirstOrDefault();
