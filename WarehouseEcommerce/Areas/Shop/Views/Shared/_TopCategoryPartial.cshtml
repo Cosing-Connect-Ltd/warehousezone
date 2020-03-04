@@ -26,7 +26,7 @@
                     <li  class="webTab"><a href="#tab-8" data-toggle="tab">Monitors</a></li>
                   </ul>
                 </div>
-            <div class="tab-content col-lg-8 col-md-8 col-sm-12">
+            <div class="tab-content col-lg-10 col-md-10 col-sm-12">
                 <div class="tab-pane fade active in" id="tab-1">
                     <div id="cattab" class="owl-theme owl-carousel">
                         @if (Model != null)
@@ -38,7 +38,7 @@
                                     <div class="product-layout col-xs-12">
                                         <div class="product-thumb transition">
                                             <div class="image">
-                                                <a href="@Url.Action("_GetProductByGroupsAndDepartment","Home", new { productgroupId= item.ProductGroupId })"><img src="/UploadedFiles/Products/no_image.gif" alt="@item.ProductGroup" title="@item.ProductGroup" class="img-responsive center-block" /></a>
+                                                <a href="@Url.Action("_GetProductByGroupsAndDepartment","Home", new { productgroupId= item.ProductGroupId })"><img src="~/Areas/Shop/Content/app/img/product/no_image.gif" alt="@item.ProductGroup" title="@item.ProductGroup" class="img-responsive center-block" /></a>
                                                 <!-- Smartshop Images Start -->
                                                 <!-- End -->
                                                 @*<span class="salep">sale</span>*@
@@ -58,7 +58,7 @@
                                                     <div class="bquickv" title="quickview" data-toggle="tooltip"></div>
                                                 </div>
                                             </div>
-                                            <div class="caption">
+                                            <div class="cat-caption">
                                                 <h4><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home", new { productgroupId= item.ProductGroupId })">@item.ProductGroup</a></h4>
                                                 <div class="rating pull-left">
                                                     <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>

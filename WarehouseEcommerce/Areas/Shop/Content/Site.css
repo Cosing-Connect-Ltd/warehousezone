@@ -121,7 +121,12 @@
 }
 #cattab .owl-item {
     width: unset !important;
-    margin: 25px;
+    margin: 15px;
+}
+@media(max-width:1025px) {
+    #cattab .owl-item {
+        margin: 10px;
+    }
 }
 .category-tab {
     padding-bottom: unset !important;
@@ -652,7 +657,7 @@ ul.mhp-menu {
     display: flex;
     flex-wrap: wrap;
 }
-@media(max-width:839px){
+@media(max-width:991px){
     .product-cat {
         justify-content:center;
     }
@@ -664,11 +669,32 @@ ul.mhp-menu {
     height: 235px;
     border: solid 1px #D7D7D7;
 }
-.product-cat .caption {
+.product-cat .product-grid .caption {
     width: 235px;
 }
 .product-cat .product-grid {
     width: 270px !important;
+}
+@media(max-width:1119px) {
+    .product-cat .product-grid {
+        width: 245px !important;
+    }
+        .product-cat .product-grid .caption {
+            width: unset;
+        }
+    .product-grid .topbutton {
+        right: 12px;
+    }
+}
+@media(max-width:839px) {
+    .product-cat .product-grid {
+        width: 236px !important;
+    }
+}
+@media(max-width:767px) {
+    .product-cat .product-list {
+        width: 236px !important;
+    }
 }
 .custom-max-width{
     max-width:1400px;
@@ -679,15 +705,15 @@ ul.mhp-menu {
     white-space: nowrap;
 }
 .cat-filter a{
-    font-size: 14px;
+    font-size: 13.6px;
     white-space: nowrap;
 }
-.billing-address .menu-about li {
+.get-address-page .menu-about li {
     box-shadow: 1px 4px 4px 0px rgba(0,0,0,.1);
     margin-bottom: 15px;
 }
 @media(max-width:768px) {
-.billing-address .button-submit button {
+.get-address-page .button-submit button {
     width:100% !important;
 }
 }
@@ -697,7 +723,7 @@ ul.mhp-menu {
     .shippingMethod label {
         display: flex;
         font-weight: 300 !important;
-        margin-top: 5px;
+        margin-top: 8px;
     }
 .shippingMethod input[type="checkbox"], input[type="radio"] {
         margin: 3px 10px 0 !important;
@@ -715,12 +741,12 @@ ul.mhp-menu {
 .h-40px{
     height:40px;
 }
-.billing-address .both-btn a {
+.get-address-page .both-btn a {
     margin-right: 10px;
     margin-top: 8px;
 }
 @media(max-width:500px) {
-    .billing-address .both-btn a {
+    .get-address-page .both-btn a {
         width: 100%;
         margin-top: 8px;
     }
@@ -737,24 +763,79 @@ ul.mhp-menu {
     .p-mt-20 {
         margin-top:20px;
     }
-    .confirm-order {
+    .confirm-order-addresses {
         width:100%;
     }
 }
+.menu-about li a {
+    background: rgb(231,234,237);
+    display: block;
+    border-bottom: 1px solid rgb(231,234,237);
+    padding: 20px 20px;
+    color: #434343;
+    position: relative;
+    text-transform: uppercase;
+    box-shadow: 1px 4px 4px 0px rgba(0,0,0,.1);
+}
 .orders-total {
     width: 100%;
-    background: #f7f7f9;
-    border-bottom: 1px solid #ffffff;
+    background: rgb(231,234,237);
+    border-bottom: 1px solid rgb(231,234,237);
     padding: 20px 20px;
     color: #434343;
     position: relative;
     margin-top: 15px;
     box-shadow: 1px 4px 4px 0px rgba(0,0,0,.1);
 }
-.shiping-method-2 {
+.confirm-order-page .shippingMethod {
+    background: rgb(231,234,237);
+    display: block;
+    border-bottom: 1px solid rgb(231,234,237);
+    padding: 20px 20px;
+    color: #434343;
+    position: relative;
+    text-transform: uppercase;
     box-shadow: 1px 4px 4px 0px rgba(0,0,0,.1);
     margin-bottom: 20px;
+}
+.get-address-page .shippingMethod {
+    background: rgb(231,234,237);
+    display: block;
+    border-bottom: 1px solid rgb(231,234,237);
+    color: #434343;
+    position: relative;
+    text-transform: uppercase;
+    box-shadow: 1px 4px 4px 0px rgba(0,0,0,.1);
+    padding: 1px;
+    margin-bottom: 15px;
 }
 .mt-35 {
     margin-top: 35px;
 }
+.cat-caption h4 {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 180px;
+    padding-bottom: 1px;
+}
+    .cat-caption h4 a {
+        color: #000;
+        font-size: 13px;
+        transition: all 0.3s ease-out 0s;
+        letter-spacing: 0.5px;
+        text-transform: capitalize;
+    }
+.currency-dropdown {
+    left: 28px !important;
+    width: 108px !important;
+    min-width: unset !important;
+    padding: unset !important;
+}
+    .currency-dropdown li:hover {
+        background-color: #337ab7 !important;
+        color: white !important;
+    }
+    .currency-dropdown li a:hover {
+        color: white !important;
+    }

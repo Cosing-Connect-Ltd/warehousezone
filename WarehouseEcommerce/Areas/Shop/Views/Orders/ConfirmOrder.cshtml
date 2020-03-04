@@ -7,21 +7,11 @@
     var address = ViewBag.Addresses as List<Ganedata.Core.Entities.Domain.AccountAddresses>;
     
     }
-<style>
-    .shippingMethod {
-        background: #f7f7f9;
-        display: block;
-        border-bottom: 1px solid #ffffff;
-        padding: 20px 20px;
-        color: #434343;
-        position: relative;
-        text-transform: uppercase;
-    }
-</style>
-<div class="about bg-white">
+
+<div class="about bg-white confirm-order-page">
     <div class="container custom-max-width">
         <div class="row">
-            <div class="col-md-8 col-sm-8 bg-white my-account login confirm-order">
+            <div class="col-md-8 col-sm-8 bg-white my-account login confirm-order-addresses">
                 <div class="about-cnt">
                     <div class="content-wrapper select">
                         @if (ViewBag.Addresses != null)
@@ -106,7 +96,8 @@
                     <div class="content-wrapper select">
                         <h2 class="text-uppercase"> Items Detail</h2>
                         <hr class="custom-hr">
-                        <table class="order-details" style="border-collapse:unset">
+                        <table class="order-details" style="        border-collapse: unset
+">
                             @foreach (var item in Model)
                             {
                                 <tbody>
@@ -158,7 +149,7 @@
                 <div class="col-md-12 col-sm-12 bg-white my-account login mt-20">
                     <div class="about-cnt">
                         <div class="content-wrapper select">
-                            <div class="shippingMethod shiping-method-2">
+                            <div class="shippingMethod ">
                                 @if ((int)ViewBag.ShipmentMethod == 2)
                                 {
                                     <div class="form-check-inline">
@@ -178,14 +169,14 @@
                             </div>
                             <h4 class="text-uppercase mt-35">Select Payment Method</h4>
                             <hr class="custom-hr">
-                            <div class="shippingMethod shiping-method-2">
+                            <div class="shippingMethod ">
                                 <div class="form-check-inline">
                                     <label class="control-label" for="radio2">
                                         <input type="radio" class="form-check-input" id="Cash" name="paymentMethod" value="2">  Cash
                                     </label>
                                 </div>
                             </div>
-                            <div class="shippingMethod shiping-method-2">
+                            <div class="shippingMethod ">
                                 <div class="form-check-inline">
                                     <label class="control-label" for="radio1">
                                         <input type="radio" class="form-check-input" id="PayPal" name="paymentMethod" value="1">  Paypal

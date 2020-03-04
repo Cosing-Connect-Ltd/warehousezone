@@ -1974,8 +1974,8 @@ header {
 
 .salep {
     position: absolute;
-    top: 15px;
-    left: 15px;
+    top: 10px;
+    left: 10px;
     color: #303030;
     font-size: 13px;
     background-color: #fed951;
@@ -2019,6 +2019,9 @@ header {
     top: 7px;
     right: 25px;
 }
+.product-list .topbutton {
+    right: 12px;
+}
 
 .wishcom {
     margin: 15px 0;
@@ -2045,10 +2048,13 @@ header {
     border-radius: 4px;
     color: #fff;
     letter-spacing: 0.8px;
+    white-space: nowrap;
 }
 
     .acart:hover {
         background-color: #000;
+        color: white;
+        font-weight: 300;
     }
 
 .product-thumb .price-old {
@@ -2495,13 +2501,18 @@ footer #contact li {
     background: #dfdfdf;
     color: #4f4f4f;
 }
-
+.register-div .social li a {
+    display: block;
+    color: #4f4f4f;
+    position: relative;
+    top: 7px;
+    left: 0.3px;
+}
     .social li a {
         display: block;
         color: #4f4f4f;
         position: relative;
-        top: 7px;
-        left: 0.3px;
+        top: 3px;
     }
 
     .social li:hover {
@@ -2950,12 +2961,11 @@ footer #contact li {
     }
 
     .product-list .image {
-        width: 25%;
         position: relative;
     }
 
     .product-list .caption {
-        width: 75%;
+        /*width: 75%;*/
     }
 }
 
@@ -2971,15 +2981,18 @@ footer #contact li {
     }
 
     .product-list .image {
-        width: 30%;
         position: relative;
     }
 
     .product-list .caption {
-        width: 70%;
+        /*width: 70%;*/
     }
 }
-
+@media(max-width:767px){
+    #list-view {
+        display:none;
+    }
+}
 @media (min-width: 768px) and (max-width: 991px) {
     .dropdown-inner a {
         min-width: 145px !important;
@@ -2999,12 +3012,11 @@ footer #contact li {
     }
 
     .product-list .image {
-        width: 40%;
         position: relative;
     }
 
     .product-list .caption {
-        width: 60%;
+        /*width: 60%;*/
     }
 
     .product-list .product-thumb .price {
@@ -3026,6 +3038,7 @@ footer #contact li {
 
 .product-grid {
     padding: 0 10px;
+    margin-bottom: 10px;
 }
 
 .filter-panel .panel-footer {
@@ -3157,7 +3170,7 @@ footer #contact li {
     .product-list .product-thumb .acart {
         position: unset;
         opacity: 1;
-        padding: 7px 11px;
+        padding: 9px 30px 7px 30px;
     }
 
     .product-list .product-thumb:hover .caption h4,
@@ -3363,9 +3376,9 @@ footer #contact li {
         width: 32%;
     }
 
-    .cat-tab .tab-content {
+    /*.cat-tab .tab-content {
         width: 100%;
-    }
+    }*/
 
     .toppro .acart {
         margin-top: 10px;
@@ -3707,11 +3720,11 @@ footer #contact li {
 }
 
 @media(min-width: 375px) and (max-width: 599px) {
-    .product-grid,
+    /*.product-grid,
     .product-list,
     .ses {
         width: 50%;
-    }
+    }*/
 }
 
 @media(max-width: 599px) {
@@ -3851,11 +3864,11 @@ footer #contact li {
   .category-tab .tab-content {
     width: 50%;
   }*/
-    .product-grid,
+    /*.product-grid,
     .product-list,
     .ses {
         width: 33.33%;
-    }
+    }*/
 
     .ct {
         display: none;
@@ -4692,15 +4705,7 @@ body.active {
         background: #eee;
     }
 
-    .menu-about li a {
-        background: #f7f7f9;
-        display: block;
-        border-bottom: 1px solid #ffffff;
-        padding: 20px 20px;
-        color: #434343;
-        position: relative;
-        text-transform: uppercase;
-    }
+    
 
 .menu-about {
     padding-bottom: 30px;
