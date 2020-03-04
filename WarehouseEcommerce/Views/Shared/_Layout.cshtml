@@ -112,33 +112,40 @@
 
 
     <script>
-       $(document).ready(function() {
-  
-	function closeDropdown () {
-    $('li.top-level-list-item.dropdown-open').removeClass('dropdown-open');
+        $(document).ready(function () {
 
-   	$(document).unbind('click', closeDropdown); // Make sure we clean up the bind though
-  }
-  
-  $('a.top-level-link').click(function (e) {
-		e.preventDefault();
-		e.stopPropagation();
+            function closeDropdown() {
+                $('li.top-level-list-item.dropdown-open').removeClass('dropdown-open');
 
-		var $menu = $(this).parent(),
-		    is_open = $menu.hasClass('dropdown-open');
+                $(document).unbind('click', closeDropdown); // Make sure we clean up the bind though
+            }
 
-		closeDropdown();
+            $('a.top-level-link').click(function (e) {
+                e.preventDefault();
+                e.stopPropagation();
 
-		if( ! is_open ) {
-			$menu.addClass('dropdown-open');
-			$open_menu_item = $menu;
-      $(document).bind('click', closeDropdown); // This basically binds to every other element on the page.
-    }
-	});
+                var $menu = $(this).parent(),
+                    is_open = $menu.hasClass('dropdown-open');
 
-	// Prevent closeDropdown from firing inside our dropdowns
-	$('.dropdown-menu').on('click', function (e) { e.stopPropagation(); });
-});	
+                closeDropdown();
+
+                if (!is_open) {
+                    $menu.addClass('dropdown-open');
+                    $open_menu_item = $menu;
+                    $(document).bind('click', closeDropdown); // This basically binds to every other element on the page.
+                }
+            });
+
+            // Prevent closeDropdown from firing inside our dropdowns
+            $('.dropdown-menu').on('click', function (e) { e.stopPropagation(); });
+        });
+
+
+    //Chat Script
+        var $zoho = $zoho || {}; $zoho.salesiq = $zoho.salesiq ||
+            { widgetcode: "082929f0048de095abde931cb153e076df2700d430dbecb2d6ce1ea29d3bd2f88cb9ddbeff8957905285212e1a49dd9e", values: {}, ready: function () { } };
+        var d = document; s = d.createElement("script"); s.type = "text/javascript"; s.id = "zsiqscript"; s.defer = true;
+        s.src = "https://salesiq.zoho.eu/widget"; t = d.getElementsByTagName("script")[0]; t.parentNode.insertBefore(s, t); d.write("<div id='zsiqwidget'></div>");
     </script>
 
 </body>

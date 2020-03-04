@@ -91,9 +91,11 @@
 
             </div>
         }*@
+    <div class="container">
 
-    @RenderBody()
+        @RenderBody()
 
+    </div>
 
     @Html.Partial("_FooterPartial")
 
@@ -136,4 +138,10 @@
         });
 
     });
+
+//Chat Script
+    var $zoho = $zoho || {}; $zoho.salesiq = $zoho.salesiq ||
+        { widgetcode: "082929f0048de095abde931cb153e076df2700d430dbecb2d6ce1ea29d3bd2f88cb9ddbeff8957905285212e1a49dd9e", values: {}, ready: function () { } };
+    var d = document; s = d.createElement("script"); s.type = "text/javascript"; s.id = "zsiqscript"; s.defer = true;
+    s.src = "https://salesiq.zoho.eu/widget"; t = d.getElementsByTagName("script")[0]; t.parentNode.insertBefore(s, t); d.write("<div id='zsiqwidget'></div>");
 </script>

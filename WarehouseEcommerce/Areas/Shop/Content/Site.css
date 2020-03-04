@@ -112,6 +112,16 @@
         height: 485px !important;
     }
 }
+@media(min-width:1500px) {
+    .home-slider img {
+        height: 515px !important;
+    }
+}
+@media(min-width:1700px) {
+    .home-slider img {
+        height: 525px !important;
+    }
+}
 .nav-menue a:hover {
     color: white !important;
 }
@@ -555,10 +565,6 @@ ul.mhp-menu {
 .custom-container {
     width:100% !important;
 }
-#common-home {
-    max-width: 1400px;
-    width: 100%;
-}
 @media(max-width:1024px) {
     .header-row {
         justify-content: unset!important;
@@ -625,10 +631,6 @@ ul.mhp-menu {
 .header-row .user_menu {
     display: flex !important;
     align-items: center !important;
-}
-.card-container {
-    max-width: 1400px;
-    width: 100%;
 }
 .proceed-card-btn {
     display: flex;
@@ -697,7 +699,7 @@ ul.mhp-menu {
     }
 }
 .custom-max-width{
-    max-width:1400px;
+    max-width:1920px;
     width:100%;
 }
 .cat-filter {
