@@ -5,12 +5,14 @@
 
     @Html.DevExpress().GetStyleSheets(
         new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
-        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+         new StyleSheet { ExtensionType = ExtensionType.UploadControl, Theme = GaneStaticAppExtensions.DevexTheme }
         )
 
     @Html.DevExpress().GetScripts(
         new Script { ExtensionType = ExtensionType.SpinEdit },
-        new Script { ExtensionType = ExtensionType.DateEdit }
+        new Script { ExtensionType = ExtensionType.DateEdit },
+          new Script { ExtensionType = ExtensionType.UploadControl }
         )
 }
 
@@ -19,6 +21,7 @@
 }
 
 <h2><span> Tenant Departments</span></h2>
+@Html.Hidden("DepartmentFileLoader",true)
 <div class="col-md-12 p-0">
     <div class="col-md-6">
         @using (Html.BeginForm())
@@ -39,6 +42,17 @@
                 @Html.Label("Enter or scan Account Code", htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
                     @Html.DropDownListFor(model => model.AccountID, ViewBag.AccountIDs as SelectList, "Select Account", new { @class = "chosen-select" })
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("Image File", new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.Partial("_Uploader")
+                    <br />
+                    <div id="dvfiles">
+                        <strong>Uploaded Files</strong>
+                    </div>
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">

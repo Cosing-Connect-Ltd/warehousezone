@@ -20,6 +20,9 @@ namespace Ganedata.Core.Entities.Domain
         [Required]
         [Display(Name = "Department")]
         public string DepartmentName { get; set; }
+
+        [Display(Name = "File")]
+        public string ImagePath { get; set; }
         public virtual ICollection<ProductMaster> Products { get; set; }
         [ForeignKey("TenantId")]
         public virtual Tenant Tenant { get; set; }

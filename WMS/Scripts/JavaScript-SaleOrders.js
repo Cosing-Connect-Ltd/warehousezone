@@ -354,7 +354,7 @@ function SavePicker() {
     $.post("/SalesOrders/SaveAssignPicker", data,
         function (result) {
             debugger;
-            if (result === true)
+            if (result === "true")
             {
                 _SalesOrderListGridView_Active.Refresh();
                 _PurchaseOrderListGridView_Completed.Refresh();

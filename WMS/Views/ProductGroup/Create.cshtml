@@ -5,12 +5,14 @@
 
     @Html.DevExpress().GetStyleSheets(
         new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
-        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+          new StyleSheet { ExtensionType = ExtensionType.UploadControl, Theme = GaneStaticAppExtensions.DevexTheme }
         )
 
     @Html.DevExpress().GetScripts(
         new Script { ExtensionType = ExtensionType.SpinEdit },
-        new Script { ExtensionType = ExtensionType.DateEdit }
+        new Script { ExtensionType = ExtensionType.DateEdit },
+        new Script { ExtensionType = ExtensionType.UploadControl }
         )
 }
 
@@ -39,17 +41,42 @@
                     @Html.ValidationMessageFor(model => model.ProductGroup)
                 </div>
             </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.IconPath, new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.IconPath)
-                    @Html.ValidationMessageFor(model => model.ProductGroup)
-                </div>
-            </div>
+
+
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.Label("Enter Department", htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
                     @Html.DropDownListFor(model => model.DepartmentId, ViewBag.Departments as SelectList, "Select Department", new { @class = "chosen-select" })
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("Image File", new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.Partial("_Uploader")
+                    <br />
+                    <div id="dvfiles" style="display: block;">
+                        <strong>Uploaded Files</strong>
+                        @if (ViewBag.Files != null)
+                        {
+                            foreach (var file in ViewBag.Files)
+                            {
+                                <table>
+                                    <tr>
+                                        <td id="tdfileName">@file</td>
+                                        <td>
+                                            <p>&nbsp;</p>
+                                        </td>
+                                        <td><a class="LRemove" onclick="_RemoveProofOfDeliveryFile('@file')">Remove</a></td>
+                                        <td>
+                                            <p>&nbsp;</p>
+                                        </td>
+
+                                    </tr>
+                                </table>
+                            }
+                        }
+                    </div>
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">
@@ -63,3 +90,12 @@
 
     </div>
 </div>
+<script id="uploaderProductDepartment" type="text/x-jquery-tmpl">
+    <tr>
+        <td id="tdProductDepartmentfileName">${FileName}</td>
+        <td><p>&nbsp;</p></td>
+        <td><a class="LRemove" onclick="_RemoveProductGroupFile('${FileName}')">Remove</a></td>
+
+    </tr>
+
+</script>

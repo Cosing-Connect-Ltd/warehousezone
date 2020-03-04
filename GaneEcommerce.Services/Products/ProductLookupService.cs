@@ -331,18 +331,23 @@ namespace Ganedata.Core.Services
 
         public ProductGroups UpdateProductGroup(ProductGroups model, int userId)
         {
-            model.ProductGroup = model.ProductGroup.Trim();
-            model.IconPath = !string.IsNullOrEmpty(model.IconPath) ? model.IconPath.Trim() : "";
-            model.DateUpdated = DateTime.UtcNow;
-            model.UpdatedBy = userId;
-            model.DepartmentId = model.DepartmentId;
-            _currentDbContext.ProductGroups.Attach(model);
-            var entry = _currentDbContext.Entry(model);
-            entry.Property(e => e.ProductGroup).IsModified = true;
-            entry.Property(e => e.DateUpdated).IsModified = true;
-            entry.Property(e => e.UpdatedBy).IsModified = true;
-            entry.Property(e => e.DepartmentId).IsModified = true;
-            _currentDbContext.SaveChanges();
+            var productGroup = _currentDbContext.ProductGroups.FirstOrDefault(u => u.ProductGroupId == model.ProductGroupId);
+            if (productGroup != null)
+            {
+                productGroup.ProductGroup = model.ProductGroup.Trim();
+                productGroup.IconPath = !string.IsNullOrEmpty(model.IconPath) ? model.IconPath.Trim() : "";
+                productGroup.DateUpdated = DateTime.UtcNow;
+                productGroup.UpdatedBy = userId;
+                productGroup.DepartmentId = model.DepartmentId;
+                _currentDbContext.ProductGroups.Attach(productGroup);
+                var entry = _currentDbContext.Entry(productGroup);
+                entry.Property(e => e.ProductGroup).IsModified = true;
+                entry.Property(e => e.DateUpdated).IsModified = true;
+                entry.Property(e => e.UpdatedBy).IsModified = true;
+                entry.Property(e => e.DepartmentId).IsModified = true;
+                entry.Property(e => e.IconPath).IsModified = true;
+                _currentDbContext.SaveChanges();
+            }
             return model;
         }
 

@@ -13,12 +13,14 @@
     {
         controllerName = ViewBag.ControllerName;
         settings.ShowUploadButton = false;
+        
+
     }
 
     settings.AdvancedModeSettings.EnableMultiSelect = true;
     settings.AdvancedModeSettings.EnableFileList = true;
     settings.AdvancedModeSettings.EnableDragAndDrop = true;
-   
+
     settings.NullText = "Select multiple files...";
     settings.CallbackRouteValues = new { Controller = controllerName, Action = "UploadFile" };
     settings.Size = 30;

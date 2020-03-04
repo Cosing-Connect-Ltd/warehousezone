@@ -1,5 +1,6 @@
 ﻿function onFileUploadComplete(s, e) {
-    
+
+    debugger;
     if ($("#ProofOfDeliveryImageFilenames").length > 0) {
         $("#ProofOfDeliveryImageFilenames").val(e.callbackData);
         frmDispatchPallets.submit();
@@ -8,7 +9,8 @@
     }
 
     if (e.callbackData) {
-        
+        debugger;
+      
         $("#dvfiles").show();
         var fileData = e.callbackData.split('|');
         var Fileobj = { FileName: fileData };
@@ -21,6 +23,7 @@
         $('.se-pre-con').hide();
 
     }
+ 
 }
 function onFileUploadStart(s, e) {
     
@@ -99,6 +102,37 @@ function _RemoveProofOfDeliveryFile(filename) {
                 $("#dvfiles").append(' <strong>Uploaded Files</strong>  ');
                 $.each(files.files, function (index, value) {
                     
+                    var Fileobj = { FileName: value };
+                    var result = $("#uploaderPalletTemplate").tmpl(Fileobj);
+                    $("#dvfiles").append(result);
+                });
+
+            }
+        }
+    });
+
+}
+
+function _RemoveProductGroupFile(filename) {
+    $('#dvbusy').show();
+
+    $.ajax({
+        type: "POST",
+        url: "/Pallets/_RemoveProofOfDeliveryFile",
+        data: 'filename=' + filename,
+        success: function (files) {
+            $("#dvbusy").hide();
+            if (files.files == null) {
+                $('#dvfiles').empty();
+                $("#dvfiles").hide();
+                $("#dvfiles").append(' <strong>Uploaded Files</strong>  ');
+            }
+
+            else {
+                $('#dvfiles').empty();
+                $("#dvfiles").append(' <strong>Uploaded Files</strong>  ');
+                $.each(files.files, function (index, value) {
+
                     var Fileobj = { FileName: value };
                     var result = $("#uploaderPalletTemplate").tmpl(Fileobj);
                     $("#dvfiles").append(result);
