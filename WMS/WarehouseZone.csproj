@@ -514,7 +514,6 @@
     <Compile Include="Controllers\WebAPI\ApiCurrencyExRateController.cs" />
     <Compile Include="Controllers\WebAPI\ApiDataImportController.cs" />
     <Compile Include="Controllers\WebAPI\ApiMarketsController.cs" />
-    <Compile Include="Controllers\WebAPI\ApiOrdersController.cs" />
     <Compile Include="Controllers\WebAPI\ApiOrderReceiveCountSyncController.cs" />
     <Compile Include="Controllers\WebAPI\ApiPalletTrackingSyncController.cs" />
     <Compile Include="Controllers\WebAPI\ApiPrestaShopSyncController.cs" />

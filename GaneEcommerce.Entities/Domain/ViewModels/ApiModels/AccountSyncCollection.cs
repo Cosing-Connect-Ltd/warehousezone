@@ -44,6 +44,7 @@ namespace Ganedata.Core.Models
         public string FullAddress { get; set; }
         public int TaxID { get; set; }
         public decimal TaxPercent { get; set; }
+        public int? AcceptedShelfLife { get; set; }
     }
 
     public class TenantPriceGroupsSyncCollection

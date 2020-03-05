@@ -86,6 +86,7 @@ namespace Ganedata.Core.Models
         public int? VanSalesDailyCashId { get; set; }
         public decimal OrderDiscount { get; set; }
         public Guid? OrderToken { get; set; }
+        public int? PickerId { get; set; }
     }
 
     public class OrderDetailSync

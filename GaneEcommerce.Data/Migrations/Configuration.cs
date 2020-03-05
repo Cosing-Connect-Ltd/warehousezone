@@ -40,6 +40,7 @@ namespace Ganedata.Core.Data.Migrations
             //SeedEESmith(context);
             //SeedGaneIntranet(context);
             //SeedTheGelBottle(context);
+            SeedNghAssetTracking(context);
 
 
             //var maxId = 1001;
@@ -575,6 +576,7 @@ namespace Ganedata.Core.Data.Migrations
             context.AccountPaymentModes.AddOrUpdate(m => m.AccountPaymentModeId, new AccountPaymentMode() { AccountPaymentModeId = 2, Description = "Card" });
             context.AccountPaymentModes.AddOrUpdate(m => m.AccountPaymentModeId, new AccountPaymentMode() { AccountPaymentModeId = 3, Description = "Online Transfer" });
             context.AccountPaymentModes.AddOrUpdate(m => m.AccountPaymentModeId, new AccountPaymentMode() { AccountPaymentModeId = 4, Description = "Bank Deposit" });
+            context.AccountPaymentModes.AddOrUpdate(m => m.AccountPaymentModeId, new AccountPaymentMode() { AccountPaymentModeId = 5, Description = "Cheque" });
 
             context.OrderProcessStatuses.AddOrUpdate(m => m.OrderProcessStatusId, new OrderProcessStatus() { OrderProcessStatusId = 1, Status = "Active" });
             context.OrderProcessStatuses.AddOrUpdate(m => m.OrderProcessStatusId, new OrderProcessStatus() { OrderProcessStatusId = 2, Status = "Complete" });
@@ -1682,6 +1684,427 @@ namespace Ganedata.Core.Data.Migrations
             context.VehicleInspectionTypes.AddOrUpdate(m => new { m.TypeName }, new VehicleInspectionType()
             {
                 TypeName = "TheGelBottle",
+                TenantId = CurrentTenantId,
+                DateCreated = DateTime.UtcNow
+            });
+            context.VehicleInspectionTypes.AddOrUpdate(m => new { m.TypeName }, new VehicleInspectionType()
+            {
+                TypeName = "PSV Standards",
+                TenantId = CurrentTenantId,
+                DateCreated = DateTime.UtcNow
+            });
+
+            context.SaveChanges();
+
+            // add case account for van sales / direct sale
+            var defaultCashAccount = new Account()
+            {
+                CompanyName = "Default Cash Account",
+                AccountCode = "Default001",
+                CreatedBy = context.AuthUsers.First().UserId,
+                DateCreated = DateTime.UtcNow,
+                CountryID = tenant.CountryID ?? 0,
+                TenantId = tenant.TenantId,
+                CurrencyID = tenant.CurrencyID,
+                PriceGroupID = 1,
+                AccountStatusID = 2,
+                TaxID = 4
+            };
+            context.Account.AddOrUpdate(m => m.CompanyName, defaultCashAccount);
+            context.SaveChanges();
+
+            context.VehicleInspectionCheckLists.AddOrUpdate(m => new { m.Name },
+
+                new VehicleInspectionCheckList() { Name = "Exterior Wings & Load Security", VehicleInspectionTypeId = 1, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow },
+                new VehicleInspectionCheckList() { Name = "Tactograph Unit", VehicleInspectionTypeId = 1, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow },
+                new VehicleInspectionCheckList() { Name = "Rear/Side Lights & Markers", VehicleInspectionTypeId = 1, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow },
+                new VehicleInspectionCheckList() { Name = "Speed Limiter", VehicleInspectionTypeId = 1, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow },
+                new VehicleInspectionCheckList() { Name = "Speedometer", VehicleInspectionTypeId = 1, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow },
+                new VehicleInspectionCheckList() { Name = "Spray Suppression", VehicleInspectionTypeId = 1, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow },
+                new VehicleInspectionCheckList() { Name = "5th Wheel Couplings Security", VehicleInspectionTypeId = 1, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow },
+                new VehicleInspectionCheckList() { Name = "Saloon Lighting", VehicleInspectionTypeId = 1, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow },
+                new VehicleInspectionCheckList() { Name = "Saloon Floor Covering", VehicleInspectionTypeId = 1, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow },
+                new VehicleInspectionCheckList() { Name = "Steering", VehicleInspectionTypeId = 2, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow },
+                new VehicleInspectionCheckList() { Name = "Mirrors & Glass", VehicleInspectionTypeId = 2, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow },
+                new VehicleInspectionCheckList() { Name = "Brakes", VehicleInspectionTypeId = 2, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow },
+                new VehicleInspectionCheckList() { Name = "Windscreen Wipers/ Washers", VehicleInspectionTypeId = 2, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow },
+                new VehicleInspectionCheckList() { Name = "Heating/Ventilation", VehicleInspectionTypeId = 2, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow },
+                new VehicleInspectionCheckList() { Name = "Horn", VehicleInspectionTypeId = 2, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow },
+                new VehicleInspectionCheckList() { Name = "Excessive Engine Exhaust Smoke", VehicleInspectionTypeId = 2, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow },
+                new VehicleInspectionCheckList() { Name = "Warning Lamps", VehicleInspectionTypeId = 2, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow },
+                new VehicleInspectionCheckList() { Name = "Lights, Reflectors & Indicators", VehicleInspectionTypeId = 2, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow },
+                new VehicleInspectionCheckList() { Name = "First Aid Kit", VehicleInspectionTypeId = 2, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow },
+                new VehicleInspectionCheckList() { Name = "Fire Extinguisher", VehicleInspectionTypeId = 2, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow },
+                new VehicleInspectionCheckList() { Name = "Doors & Exits", VehicleInspectionTypeId = 2, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow },
+                new VehicleInspectionCheckList() { Name = "Body Interior (Seat belts)", VehicleInspectionTypeId = 2, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow },
+                new VehicleInspectionCheckList() { Name = "Body Exterior", VehicleInspectionTypeId = 2, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow },
+                new VehicleInspectionCheckList() { Name = "Emergency Exit Hammer", VehicleInspectionTypeId = 2, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow },
+                new VehicleInspectionCheckList() { Name = "Number Plates", VehicleInspectionTypeId = 2, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow },
+                new VehicleInspectionCheckList() { Name = "Fuel, Oil and Waste Leaks", VehicleInspectionTypeId = 2, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow },
+                new VehicleInspectionCheckList() { Name = "Tyre & Wheel Fixings", VehicleInspectionTypeId = 2, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow }
+                );
+
+            //add consignment types
+            context.ConsignmentTypes.AddOrUpdate(m => new { m.ConsignmentType, m.TenantId },
+                new OrderConsignmentTypes
+                {
+                    ConsignmentType = "DPD",
+                    TenantId = CurrentTenantId,
+                    DateCreated = DateTime.UtcNow
+                });
+            context.ConsignmentTypes.AddOrUpdate(m => new { m.ConsignmentType, m.TenantId },
+                new OrderConsignmentTypes
+                {
+                    ConsignmentType = "DPD Priority",
+                    TenantId = CurrentTenantId,
+                    DateCreated = DateTime.UtcNow
+                });
+            context.ConsignmentTypes.AddOrUpdate(m => new { m.ConsignmentType, m.TenantId },
+                new OrderConsignmentTypes
+                {
+                    ConsignmentType = "DPD Pre Ten",
+                    TenantId = CurrentTenantId,
+                    DateCreated = DateTime.UtcNow
+                });
+            context.ConsignmentTypes.AddOrUpdate(m => new { m.ConsignmentType, m.TenantId },
+                new OrderConsignmentTypes
+                {
+                    ConsignmentType = "Collection",
+                    TenantId = CurrentTenantId,
+                    DateCreated = DateTime.UtcNow
+                });
+
+            // Add Common Warranty types
+            context.TenantWarranty.AddOrUpdate(m => new { m.WarrantyName, m.TenantId },
+                new TenantWarranty
+                {
+                    WarrantyName = "None",
+                    PostageTypeId = 1,
+                    PercentageOfPrice = 0,
+                    FixedPrice = 0,
+                    IsPercent = false,
+                    HotSwap = false,
+                    TenantId = CurrentTenantId,
+                    DateCreated = DateTime.UtcNow
+
+                });
+            context.TenantWarranty.AddOrUpdate(m => new { m.WarrantyName, m.TenantId },
+                new TenantWarranty
+                {
+                    WarrantyName = "Standard",
+                    PostageTypeId = 1,
+                    PercentageOfPrice = 5,
+                    FixedPrice = 0,
+                    IsPercent = true,
+                    HotSwap = false,
+                    TenantId = CurrentTenantId,
+                    DateCreated = DateTime.UtcNow
+                });
+            context.TenantWarranty.AddOrUpdate(m => new { m.WarrantyName, m.TenantId },
+                new TenantWarranty
+                {
+                    WarrantyName = "Extended",
+                    PostageTypeId = 1,
+                    PercentageOfPrice = 2,
+                    FixedPrice = 0,
+                    IsPercent = true,
+                    HotSwap = false,
+                    TenantId = CurrentTenantId,
+                    DateCreated = DateTime.UtcNow
+                });
+            context.TenantWarranty.AddOrUpdate(m => new { m.WarrantyName, m.TenantId },
+                new TenantWarranty
+                {
+                    WarrantyName = "Extended Two Years",
+                    PostageTypeId = 1,
+                    PercentageOfPrice = 0,
+                    FixedPrice = 10,
+                    IsPercent = false,
+                    HotSwap = false,
+                    TenantId = CurrentTenantId,
+                    DateCreated = DateTime.UtcNow
+                });
+
+
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (DbEntityValidationException exception)
+            {
+                foreach (var item in exception.EntityValidationErrors)
+                {
+                    var errors = item.ValidationErrors;
+                    foreach (var error in errors)
+                        EventLog.WriteEntry("Warehouse Seeding", item.Entry.Entity.ToString() + " > " + error.PropertyName + ": " + error.ErrorMessage);
+                }
+            }
+        }
+
+        private void SeedNghAssetTracking(ApplicationContext context)
+        {
+            //Add Tenant
+            var tenant = new Tenant
+            {
+                TenantId = 1,
+                TenantName = "Northampton General Hospital",
+                TenantDayPhone = "01604 634700",
+                TenantFax = "",
+                TenantAddress1 = "Cliftonville",
+                TenantAddress2 = "",
+                TenantCity = "Northampton",
+                TenantPostalCode = "NN1 5BD",
+                TenantSubDmoain = "ganedev",
+                IsActive = true,
+                CurrencyID = 1,
+                CountryID = 1,
+                ProductCodePrefix = "ITM-1"
+            };
+            context.Tenants.AddOrUpdate(m => m.TenantName, tenant);
+
+
+            context.SaveChanges();
+            int CurrentTenantId = context.Tenants.Where(x => x.TenantName == "Northampton General Hospital").FirstOrDefault().TenantId;
+            ////Add User
+            context.AuthUsers.AddOrUpdate(m => new { m.UserName, m.TenantId },
+                new AuthUser
+                {
+                    UserName = adminUserName,
+                    UserPassword = GaneStaticAppExtensions.GetMd5("br4PrE"),
+                    IsActive = true,
+                    TenantId = CurrentTenantId,
+                    DateCreated = DateTime.UtcNow,
+                    SuperUser = true
+                });
+            context.AuthUsers.AddOrUpdate(m => new { m.UserName, m.TenantId },
+                new AuthUser
+                {
+                    UserName = "Test",
+                    UserPassword = GaneStaticAppExtensions.GetMd5("br4PrE"),
+                    IsActive = true,
+                    TenantId = CurrentTenantId,
+                    DateCreated = DateTime.UtcNow,
+                    SuperUser = false
+                });
+
+            // Add Location
+            context.TenantWarehouses.AddOrUpdate(m => new { m.WarehouseName, m.TenantId },
+                new TenantLocations
+                {
+                    WarehouseId = 1,
+                    TenantId = CurrentTenantId,
+                    WarehouseName = "Head Office",
+                    CountryID = 1,
+                    IsActive = true,
+                    SortOrder = 1,
+                    DateCreated = DateTime.UtcNow,
+                    AddressLine1 = "Cliftonville",
+                    AddressLine2 = "",
+                    PostalCode = "NN1 5BD",
+                    City = "Northampton"
+                });
+
+            context.SaveChanges();
+
+            //Tenant Configuration
+            context.TenantConfigs.AddOrUpdate(m => new { m.TenantId }, new TenantConfig()
+            {
+                TenantId = CurrentTenantId,
+                PoReportFooterMsg1 = "No Additional Items To Be Added Without Authorisation",
+                EnforceMinimumProductPrice = false,
+                AlertMinimumProductPrice = true,
+                AlertMinimumPriceMessage = "Selling Price cannot be less than the minimum threshold price.",
+                WorksOrderScheduleByAmPm = true,
+                WorksOrderScheduleByMarginHours = 2,
+                DateCreated = DateTime.UtcNow
+            });
+
+            // Add Departments
+            context.TenantDepartments.AddOrUpdate(m => new { m.DepartmentName, m.TenantId },
+                new TenantDepartments
+                {
+                    DepartmentName = "Management",
+                    DateCreated = DateTime.UtcNow,
+                    TenantId = CurrentTenantId,
+                });
+            context.TenantDepartments.AddOrUpdate(m => new { m.DepartmentName, m.TenantId },
+                new TenantDepartments
+                {
+                    DepartmentName = "Sales",
+                    DateCreated = DateTime.UtcNow,
+                    TenantId = CurrentTenantId
+                });
+
+            // add Tenant Modules 
+            context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
+                new TenantModules()
+                {
+                    ModuleId = 1,
+                    TenantId = CurrentTenantId
+                });
+            context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
+                new TenantModules()
+                {
+                    ModuleId = 9,
+                    TenantId = CurrentTenantId
+                });
+            context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
+                new TenantModules()
+                {
+                    ModuleId = 10,
+                    TenantId = CurrentTenantId
+                });
+
+            // Add Price Groups
+            context.TenantPriceGroups.AddOrUpdate(m => new { m.Name, m.TenantId },
+                new TenantPriceGroups { Name = "CASH", Percent = 0, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow });
+            context.TenantPriceGroups.AddOrUpdate(m => new { m.Name, m.TenantId },
+                new TenantPriceGroups { Name = "SDIL", Percent = 3, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow });
+
+            //Add TenantEmailTemplateVariables
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "CompanyName",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "AccountCode",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "AccountRemittancesContactName",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "AccountStatementsContactName",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "AccountInvoicesContactName",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "AccountMarketingContactName",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "OrderId",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "OrderNumber",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "OrderStatus",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "BillingAccountToEmail",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "WorksOrderResourceName",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "WorksOrderTimeslot",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "WorksTenantName",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "WorkPropertyAddress",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "WorksJobTypeDescription",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "WorksJobSubTypeDescription",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "WorksSlaJobPriorityName",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "WorksPropertyContactNumber",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "ScheduledDate",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "CustomMessage",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "AccountPurchasingContactName",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "UserName",
+                    TenantId = CurrentTenantId
+                });
+            context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
+                new TenantEmailTemplateVariable()
+                {
+                    VariableName = "ConfirmationLink",
+                    TenantId = CurrentTenantId
+                });
+
+
+            context.VehicleInspectionTypes.AddOrUpdate(m => new { m.TypeName }, new VehicleInspectionType()
+            {
+                TypeName = "NGH",
                 TenantId = CurrentTenantId,
                 DateCreated = DateTime.UtcNow
             });

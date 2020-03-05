@@ -20,8 +20,7 @@ namespace WMS
             config.Routes.MapHttpRoute("StockTakeDetailQtyUpdateApi", "api/stocktake/stockdetail-updatequantity", new { controller = "ApiStockTakes", action = "UpdateStockTakeDetailQuantity" });
             config.Routes.MapHttpRoute("StockTakeDetailArchiveApi", "api/stocktake/stockdetail-archive", new { controller = "ApiStockTakes", action = "ArchiveStockTakeDetail" });
             config.Routes.MapHttpRoute("StockTakeCreateProductApi", "api/product/create", new { controller = "ApiStockTakes", action = "CreateProductOnStockTake" });
-            config.Routes.MapHttpRoute("ProductInfoBySerial", "api/product/serial-details", new { controller = "ApiOrders", action = "VerifyProductInfoBySerial" });
-
+            config.Routes.MapHttpRoute("ProductInfoBySerial", "api/product/serial-details", new { controller = "ApiOrdersSync", action = "VerifyProductInfoBySerial" });
             //Handheld Api's
             config.Routes.MapHttpRoute("UsersSync", "api/sync/users/{reqDate}/{serialNo}", new { controller = "ApiTerminalUserSync", action = "GetUsers", reqDate = string.Empty, serialNo = string.Empty });
             config.Routes.MapHttpRoute("AccountsSync", "api/sync/accounts/{reqDate}/{serialNo}", new { controller = "ApiAccountSync", action = "GetAccounts", reqDate = string.Empty, serialNo = string.Empty });

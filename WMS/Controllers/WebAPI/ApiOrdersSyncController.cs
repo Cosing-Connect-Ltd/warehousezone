@@ -1,11 +1,13 @@
 using AutoMapper;
 using DevExpress.DataProcessing;
+using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Models;
 using Ganedata.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace WMS.Controllers.WebAPI
@@ -155,5 +157,13 @@ namespace WMS.Controllers.WebAPI
 
             return Ok(result);
         }
+
+        public async Task<IHttpActionResult> VerifyProductInfoBySerial(ProductDetailRequest request)
+        {
+            var result = await _productService.GetProductInfoBySerial(request.SerialCode, request.TenantId);
+
+            return Ok(result);
+        }
+
     }
 }

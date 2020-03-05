@@ -915,8 +915,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Seed\SEED_AuthResetPermissions.sql" />
-    <Content Include="Content\Seed\SEED_WorksOrderTemplates.sql" />
     <Content Include="Migrations\Scripts\Migrations-Datecreated.sql" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -928,7 +926,6 @@
     <Content Include="Content\Seed\Products.csv" />
     <Content Include="Content\Seed\ProductsMini.csv" />
     <Content Include="Content\Seed\Vendors.csv" />
-    <Content Include="Content\Seed\RegalCustomers.csv" />
     <Content Include="Content\Seed\AuthActivities.csv" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
