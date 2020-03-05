@@ -29,7 +29,7 @@ namespace WarehouseEcommerce
 
             routes.MapRoute(
             name: "GetStarted",
-            url: "GetStarted",
+            url: "get-started",
             defaults: new { controller = "Home", action = "GetStarted" },
             namespaces: new[] { "WarehouseEcommerce.Controllers" }
             );
@@ -182,12 +182,20 @@ namespace WarehouseEcommerce
             );
 
             routes.MapRoute(
+            name: "DataProtection",
+            url: "data-protection",
+            defaults: new { controller = "Home", action = "DataProtection" },
+            namespaces: new[] { "WarehouseEcommerce.Controllers" }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
                 namespaces: new[] { "WarehouseEcommerce.Controllers" }
             );
 
+            
 
         }
     }

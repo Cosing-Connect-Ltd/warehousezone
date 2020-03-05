@@ -179,7 +179,10 @@ namespace WarehouseEcommerce.Controllers
         {
             return View();
         }
-
+        public ActionResult DataProtection()
+        {
+            return View();
+        }
 
     }
 }

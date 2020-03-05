@@ -890,6 +890,7 @@
     <Content Include="Views\Home\News.cshtml" />
     <Content Include="uploads\Registration-Certificate.pdf" />
     <Content Include="Views\Home\CourierIntegration.cshtml" />
+    <Content Include="Views\Home\DataProtection.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
