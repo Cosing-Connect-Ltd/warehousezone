@@ -40,7 +40,7 @@ namespace Ganedata.Core.Data.Migrations
             //SeedEESmith(context);
             //SeedGaneIntranet(context);
             //SeedTheGelBottle(context);
-            SeedNghAssetTracking(context);
+            //SeedNghAssetTracking(context);
 
 
             //var maxId = 1001;
@@ -901,7 +901,8 @@ namespace Ganedata.Core.Data.Migrations
                 CurrencyID = tenant.CurrencyID,
                 PriceGroupID = 1,
                 AccountStatusID = 2,
-                TaxID = 4
+                TaxID = 4,
+                OwnerUserId = 1
             };
             context.Account.AddOrUpdate(m => m.CompanyName, defaultCashAccount);
             context.SaveChanges();
@@ -1305,7 +1306,8 @@ namespace Ganedata.Core.Data.Migrations
                 CurrencyID = tenant.CurrencyID,
                 PriceGroupID = 1,
                 AccountStatusID = 2,
-                TaxID = 4
+                TaxID = 4,
+                OwnerUserId = 1
             };
             context.Account.AddOrUpdate(m => m.CompanyName, defaultCashAccount);
             context.SaveChanges();
@@ -1708,7 +1710,8 @@ namespace Ganedata.Core.Data.Migrations
                 CurrencyID = tenant.CurrencyID,
                 PriceGroupID = 1,
                 AccountStatusID = 2,
-                TaxID = 4
+                TaxID = 4,
+                OwnerUserId = 1
             };
             context.Account.AddOrUpdate(m => m.CompanyName, defaultCashAccount);
             context.SaveChanges();
@@ -2129,7 +2132,8 @@ namespace Ganedata.Core.Data.Migrations
                 CurrencyID = tenant.CurrencyID,
                 PriceGroupID = 1,
                 AccountStatusID = 2,
-                TaxID = 4
+                TaxID = 4,
+                OwnerUserId = 1
             };
             context.Account.AddOrUpdate(m => m.CompanyName, defaultCashAccount);
             context.SaveChanges();
