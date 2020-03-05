@@ -46,7 +46,7 @@
                                             </div>
                                         </div>
                                         <div class="caption ">
-                                            <h4><a href="@Url.Action("ProductDetails","Products", new { productId= product[i].ProductId })"> @product[i].Name</a></h4>
+                                            <h4><a data-toggle="tooltip" title="@product[i].Name" href="@Url.Action("ProductDetails","Products", new { productId= product[i].ProductId })"> @product[i].Name</a></h4>
                                             <p class="price">
                                                 @Model.CurrencySign @product[i].SellPrice
 
@@ -99,7 +99,7 @@
                                             </div>
                                         </div>
                                         <div class="caption ">
-                                            <h4><a href="@Url.Action("ProductDetails","Products", new { productId= product[i+1].ProductId })"> @product[i + 1].Name</a></h4>
+                                            <h4><a data-toggle="tooltip" title="@product[i + 1].Name" href="@Url.Action("ProductDetails","Products", new { productId= product[i+1].ProductId })"> @product[i + 1].Name</a></h4>
                                             <p class="price">
                                                 @Model.CurrencySign @(product[i + 1].SellPrice)
 

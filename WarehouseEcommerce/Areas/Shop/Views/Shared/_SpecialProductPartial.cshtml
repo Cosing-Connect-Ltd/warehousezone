@@ -33,7 +33,7 @@
                                     </div>
                                     <div class="caption">
                                         <h4>
-                                            <a href="@Url.Action("ProductDetails","Products", new { productId= Model.productMasterList[i].ProductId })">
+                                            <a data-toggle="tooltip" title="@Model.productMasterList[i].Name" href="@Url.Action("ProductDetails","Products", new { productId= Model.productMasterList[i].ProductId })">
                                                 @Model.productMasterList[i].Name
 
                                             </a>
@@ -73,7 +73,7 @@
                                         <!-- Smartshop Images End -->
                                     </div>
                                     <div class="caption">
-                                        <h4><a href="@Url.Action("ProductDetails","Products", new { productId= Model.productMasterList[i+1].ProductId })"> @Model.productMasterList[i + 1].Name</a></h4>
+                                        <h4><a data-toggle="tooltip" title="@Model.productMasterList[i + 1].Name" href="@Url.Action("ProductDetails","Products", new { productId= Model.productMasterList[i+1].ProductId })"> @Model.productMasterList[i + 1].Name</a></h4>
                                         <p class="price">
                                             @Model.CurrencySign @Model.productMasterList[i + 1].SellPrice
                                         </p>
@@ -109,7 +109,7 @@
                                         <!-- Smartshop Images End -->
                                     </div>
                                     <div class="caption">
-                                        <h4><a href="@Url.Action("ProductDetails","Products", new { productId= Model.productMasterList[i+2].ProductId })">@Model.productMasterList[i + 2].Name</a></h4>
+                                        <h4><a data-toggle="tooltip" title="@Model.productMasterList[i + 2].Name" href="@Url.Action("ProductDetails","Products", new { productId= Model.productMasterList[i+2].ProductId })">@Model.productMasterList[i + 2].Name</a></h4>
                                         <p class="price">
                                             @Model.CurrencySign@Model.productMasterList[i + 2].SellPrice
                                         </p>
@@ -123,7 +123,7 @@
                                     </div>
                                     <div class="clearfix"></div>
                                     <div class="button-group">
-                                        <button type="button" class="acart" onclick="AddToCart(@Model.CurrencySign @Model.productMasterList[i].ProductId)">
+                                        <button type="button" class="acart" onclick="AddToCart(@Model.productMasterList[i].ProductId)">
                                             <span>Add to Cart</span>
                                         </button>
                                     </div>
