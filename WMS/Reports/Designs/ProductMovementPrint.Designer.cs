@@ -121,6 +121,7 @@
             this.xrLabel9.StylePriority.UseBorderWidth = false;
             this.xrLabel9.StylePriority.UseFont = false;
             this.xrLabel9.Text = "Balance";
+            this.xrLabel9.TextFormatString = "{0:#.00}";
             // 
             // xrLabel8
             // 
@@ -137,6 +138,7 @@
             this.xrLabel8.StylePriority.UseBorderWidth = false;
             this.xrLabel8.StylePriority.UseFont = false;
             this.xrLabel8.Text = "OUT";
+            this.xrLabel8.TextFormatString = "{0:#.00}";
             // 
             // xrLabel4
             // 
@@ -153,6 +155,7 @@
             this.xrLabel4.StylePriority.UseBorderWidth = false;
             this.xrLabel4.StylePriority.UseFont = false;
             this.xrLabel4.Text = "IN";
+            this.xrLabel4.TextFormatString = "{0:#.00}";
             // 
             // xrLabel3
             // 
@@ -442,19 +445,19 @@
             // 
             this.paramProductId.AllowNull = true;
             this.paramProductId.Description = "Select Products";
-            this.paramProductId.LookUpSettings = staticListLookUpSettings1;
             this.paramProductId.MultiValue = true;
             this.paramProductId.Name = "paramProductId";
             this.paramProductId.Type = typeof(int);
+            this.paramProductId.ValueSourceSettings = staticListLookUpSettings1;
             // 
             // paramProductGroups
             // 
             this.paramProductGroups.AllowNull = true;
             this.paramProductGroups.Description = "Select Groups";
-            this.paramProductGroups.LookUpSettings = staticListLookUpSettings2;
             this.paramProductGroups.MultiValue = true;
             this.paramProductGroups.Name = "paramProductGroups";
             this.paramProductGroups.Type = typeof(int);
+            this.paramProductGroups.ValueSourceSettings = staticListLookUpSettings2;
             // 
             // TenantId
             // 
@@ -497,7 +500,7 @@
             this.paramProductGroups,
             this.TenantId,
             this.WarehouseId});
-            this.Version = "19.1";
+            this.Version = "19.2";
             this.DataSourceDemanded += new System.EventHandler<System.EventArgs>(this.ProductMovementPrint_DataSourceDemanded);
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
