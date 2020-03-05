@@ -841,3 +841,11 @@ ul.mhp-menu {
     .currency-dropdown li a:hover {
         color: white !important;
     }
+.ccopy a {
+    color: #ffffff;
+    font-weight: 400;
+    line-height: 26px;
+}
+    .ccopy a:hover {
+        color: #ffffff;
+    }

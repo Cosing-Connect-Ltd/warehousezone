@@ -15,7 +15,8 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         private readonly ITenantsServices _tenantServices;
         private readonly ILookupServices _lookupServices;
         private readonly IProductServices _productServices;
-        public HomeController(ICoreOrderService orderService, IMapper mapper, IProductServices productServices, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IUserService userService, IActivityServices activityServices, ITenantsServices tenantServices)
+        private readonly IProductLookupService _productlookupServices;
+        public HomeController(ICoreOrderService orderService, IMapper mapper, IProductLookupService productlookupServices, IProductServices productServices, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IUserService userService, IActivityServices activityServices, ITenantsServices tenantServices)
             : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices)
         {
             _lookupServices = lookupServices;
@@ -23,6 +24,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             _activityServices = activityServices;
             _tenantServices = tenantServices;
             _productServices = productServices;
+            _productlookupServices = productlookupServices;
 
         }
         public ActionResult Index()
@@ -169,7 +171,12 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         {
             return RedirectToAction("ProductCategories", "Products", new { productGroupId = productgroupId, departmentId = DepartmentId });
         }
-
+      
+        public ActionResult _TopCategoryProductsPartial(int? ProductGroupId)
+        {
+            //var model = _productlookupServices.GetAllValidProductGroupById(ProductGroupId);
+            return PartialView();
+        }
         public ActionResult ReturnPath(int productId, bool status)
         {
             string path = GetPathAgainstProductId(productId, status);

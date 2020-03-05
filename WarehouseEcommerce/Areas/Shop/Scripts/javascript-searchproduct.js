@@ -75,6 +75,21 @@ function updateTextBox(event, ui) {
     $(this).val(ui.item.Name);
     return false;
 }
+function getTopCategoryProducts(ProductGroupId) {
+    $.ajax({
+        type: "GET",
+        url: basePath + "/shop/Home/_TopCategoryProductsPartial/",
+        data: { ProductGroupId: ProductGroupId },
+        dataType: 'html',
+        success: function (data) {
+            $('#top_category_products').empty();
+            $('#top_category_products').html(data);
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert('Error' + textStatus + "/" + errorThrown);
+        }
+    });
+}
 function AddToCart(ProductId) {
 
     var quantity = $(".input-number").val();
