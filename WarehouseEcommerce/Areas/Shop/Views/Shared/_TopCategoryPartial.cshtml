@@ -1,5 +1,6 @@
 ﻿@using Ganedata.Core.Entities.Domain
 @model IEnumerable<ProductGroups>
+@model PagedList.IPagedList<ProductMaster>
 <div class="category-tab tabpro pro-nepr">
 
 
@@ -15,17 +16,17 @@
     <div class="row">
         <div class="cat-tab">
             <div class="col-lg-2 col-md-2 home-cat" id="cat_tab">
-                  <ul class="nav nav-tabs">
-                    <li  class="active webTab"><a href="#tab-1" data-toggle="tab">Desktops</a></li>
-                    <li  class="webTab"><a href="#tab-2" data-toggle="tab">Web Cameras</a></li>
-                    <li  class="webTab"><a href="#tab-3" data-toggle="tab">Cameras</a></li>
-                    <li  class="webTab"><a href="#tab-4" data-toggle="tab">Components</a></li>
-                    <li  class="webTab"><a href="#tab-5" data-toggle="tab">Phones &amp; PDAs</a></li>
-                    <li  class="webTab"><a href="#tab-6" data-toggle="tab">Laptops</a></li>
-                    <li  class="webTab"><a href="#tab-7" data-toggle="tab">PC</a></li>
-                    <li  class="webTab"><a href="#tab-8" data-toggle="tab">Monitors</a></li>
-                  </ul>
-                </div>
+                <ul class="nav nav-tabs">
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <li class="webTab"><a data-toggle="tab" href="@Url.Action("_GetProductByGroupsAndDepartment","Home", new { productgroupId= item.ProductGroupId })">@item.ProductGroup</a> </li>
+                        }
+                    }
+                    @*<li class="active webTab"><a href="#tab-2" data-toggle="tab">Web Cameras</a></li>*@
+                </ul>
+            </div>
             <div class="tab-content col-lg-10 col-md-10 col-sm-12">
                 <div class="tab-pane fade active in" id="tab-1">
                     <div id="cattab" class="owl-theme owl-carousel">
@@ -34,51 +35,51 @@
                             foreach (var item in Model)
                             {
 
-                               
-                                    <div class="product-layout col-xs-12">
-                                        <div class="product-thumb transition">
-                                            <div class="image">
-                                                <a href="@Url.Action("_GetProductByGroupsAndDepartment","Home", new { productgroupId= item.ProductGroupId })"><img src="~/Areas/Shop/Content/app/img/product/no_image.gif" alt="@item.ProductGroup" title="@item.ProductGroup" class="img-responsive center-block" /></a>
-                                                <!-- Smartshop Images Start -->
-                                                <!-- End -->
-                                                @*<span class="salep">sale</span>*@
-                                                <div class="topbutton">
-                                                    <button type="button" data-toggle="tooltip" title="Add to Wish List">
-                                                        <svg width="20px" height="20px">
-                                                            <use xlink:href="app/img/icons/icons.svg#wishlist"></use>
-                                                        </svg>
-                                                        <span class="hidden-xs"></span>
-                                                    </button>
-                                                    <button type="button" data-toggle="tooltip" title="Compare this Product" class="wishcom">
-                                                        <svg width="20px" height="20px">
-                                                            <use xlink:href="app/img/icons/icons.svg#pcom"></use>
-                                                        </svg>
-                                                        <span class="hidden-xs"></span>
-                                                    </button>
-                                                    <div class="bquickv" title="quickview" data-toggle="tooltip"></div>
-                                                </div>
+
+                                <div class="product-layout col-xs-12">
+                                    <div class="product-thumb transition">
+                                        <div class="image">
+                                            <a href="@Url.Action("_GetProductByGroupsAndDepartment","Home", new { productgroupId= item.ProductGroupId })"><img src="~/Areas/Shop/Content/app/img/product/no_image.gif" alt="@item.ProductGroup" title="@item.ProductGroup" class="img-responsive center-block" /></a>
+                                            <!-- Smartshop Images Start -->
+                                            <!-- End -->
+                                            @*<span class="salep">sale</span>*@
+                                            <div class="topbutton">
+                                                <button type="button" data-toggle="tooltip" title="Add to Wish List">
+                                                    <svg width="20px" height="20px">
+                                                        <use xlink:href="app/img/icons/icons.svg#wishlist"></use>
+                                                    </svg>
+                                                    <span class="hidden-xs"></span>
+                                                </button>
+                                                <button type="button" data-toggle="tooltip" title="Compare this Product" class="wishcom">
+                                                    <svg width="20px" height="20px">
+                                                        <use xlink:href="app/img/icons/icons.svg#pcom"></use>
+                                                    </svg>
+                                                    <span class="hidden-xs"></span>
+                                                </button>
+                                                <div class="bquickv" title="quickview" data-toggle="tooltip"></div>
                                             </div>
-                                            <div class="cat-caption">
-                                                <h4><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home", new { productgroupId= item.ProductGroupId })">@item.ProductGroup</a></h4>
-                                                <div class="rating pull-left">
-                                                    <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
-                                                    <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
-                                                    <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
-                                                    <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
-                                                    <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
-                                                </div>
-                                               @* <p class="pricedis price text-right"><span class="price-new"> $ 200</span> <span class="price-old">$344.00</span></p>*@
+                                        </div>
+                                        <div class="cat-caption">
+                                            <h4><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home", new { productgroupId= item.ProductGroupId })">@item.ProductGroup</a></h4>
+                                            <div class="rating pull-left">
+                                                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
                                             </div>
-                                            @*<div class="button-group">
+                                            @* <p class="pricedis price text-right"><span class="price-new"> $ 200</span> <span class="price-old">$344.00</span></p>*@
+                                        </div>
+                                        @*<div class="button-group">
                                                 <button type="button" class="acart" onclick="AddToCart()">
                                                     <span>Add to Cart</span>
                                                 </button>
                                             </div>*@
-                                        </div>
                                     </div>
-                                }
+                                </div>
                             }
-                        </div>
+                        }
+                    </div>
                 </div>
             </div>
         </div>
