@@ -19,51 +19,85 @@
 @{
     ViewBag.Title = "Add New Tenant Departments";
 }
+<script type="text/javascript">
+    function onFileUploadComplete(s, e) {
+        debugger;
+        if (e.callbackData) {
+            debugger;
+            $("#dvfiles").show();
+            var fileData = e.callbackData.split('|');
+            var Fileobj = { FileName: fileData };
+            var result = $("#uploaderTenantDept").tmpl(Fileobj);
+            $("#dvfiles").append(result);
+            $('.se-pre-con').hide();
+            $("#FileLength").val('True');
+
+        }
+
+
+    }
+    function onFileUploadStart(s, e) {
+        if ($("#FileLength").val() == 'True') {
+            e.cancel = true;
+            alert("Only one file allow to be select");
+            return;
+        }
+    }
+</script>
 
 <h2><span> Tenant Departments</span></h2>
-@Html.Hidden("DepartmentFileLoader",true)
+@Html.Hidden("TenantDepartment", true)
 <div class="col-md-12 p-0">
     <div class="col-md-6">
-        @using (Html.BeginForm())
+        @using (Html.BeginForm("Create", "TenantDepartment", FormMethod.Post, new { @class = "frmSaveTenantdepartment", onsubmit = "return submitformTD()" }))
         {
             @Html.AntiForgeryToken()
 
-        <div class="form-horizontal">
+            <div class="form-horizontal">
 
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.DepartmentName, htmlAttributes: new { @class = "control-label col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.DepartmentName, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.DepartmentName, "", new { @class = "text-danger" })
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.DepartmentName, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.DepartmentName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.DepartmentName, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.Label("Enter or scan Account Code", htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.DropDownListFor(model => model.AccountID, ViewBag.AccountIDs as SelectList, "Select Account", new { @class = "chosen-select" })
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.Label("Enter or scan Account Code", htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(model => model.AccountID, ViewBag.AccountIDs as SelectList, "Select Account", new { @class = "chosen-select" })
+                    </div>
                 </div>
-            </div>
 
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.Label("Image File", new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.Partial("_Uploader")
-                    <br />
-                    <div id="dvfiles">
-                        <strong>Uploaded Files</strong>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.Label("Image File", new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.Partial("_Uploader")
+                        <br />
+                        <div id="dvfiles">
+                            @Html.Hidden("FileLength", (bool?)ViewBag.FileLength)
+                            <strong>Uploaded Files</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    <div class="col-md-offset-2 col-md-10 bottom-right">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                        <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
                     </div>
                 </div>
             </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                <div class="col-md-offset-2 col-md-10 bottom-right">
-                    <input type="submit" value="Create" class="btn btn-primary" />
-                    <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
-                </div>
-            </div>
-        </div>
         }
 
 
     </div>
 </div>
+<script id="uploaderTenantDept" type="text/x-jquery-tmpl">
+    <tr>
+        <td id="tdfileName">${FileName}</td>
+        <td><p>&nbsp;</p></td>
+        <td><a class="LRemove" onclick="_RemoveProofOfDeliveryFile('${FileName}')">Remove</a></td>
+
+    </tr>
+</script>

@@ -9,8 +9,7 @@
     }
 
     if (e.callbackData) {
-        debugger;
-      
+
         $("#dvfiles").show();
         var fileData = e.callbackData.split('|');
         var Fileobj = { FileName: fileData };
@@ -21,12 +20,14 @@
 
         $("#dvfiles").append(result);
         $('.se-pre-con').hide();
-
     }
- 
+
 }
-function onFileUploadStart(s, e) {
-    
+     
+ 
+
+function onFileUploadStart(s, e)
+{   debugger;
     $('.se-pre-con').show();
 }
 
@@ -64,68 +65,41 @@ function removeFile(filename) {
 }
 
 function downloadFile(filename) {
-    
+
     window.open('/Products/Download?filename=' + filename);
-   
+
 }
 
 var onFileImportComplete = function (s, e) {
-    
-        $('#dvbusy').hide();
-        $("#data-import-results").html(e.callbackData);
-    
-    
+
+    $('#dvbusy').hide();
+    $("#data-import-results").html(e.callbackData);
+
+
 
 };
 
-var onFileImportStart = function(s, e) {
-    
+var onFileImportStart = function (s, e) {
+
 };
 
 function _RemoveProofOfDeliveryFile(filename) {
+    var department = $("#TenantDepartment").val();
+    var productGroup = $("#productGroup").val();
     $('#dvbusy').show();
-
     $.ajax({
         type: "POST",
         url: "/Pallets/_RemoveProofOfDeliveryFile",
-        data: 'filename=' + filename,
+        data: {
+            "filename": filename, "tenantDepartment": department, "TenantGroup": productGroup
+        },
         success: function (files) {
             $("#dvbusy").hide();
             if (files.files == null) {
                 $('#dvfiles').empty();
                 $("#dvfiles").hide();
-                $("#dvfiles").append(' <strong>Uploaded Files</strong>  ');
-            }
-
-            else {
-                $('#dvfiles').empty();
-                $("#dvfiles").append(' <strong>Uploaded Files</strong>  ');
-                $.each(files.files, function (index, value) {
-                    
-                    var Fileobj = { FileName: value };
-                    var result = $("#uploaderPalletTemplate").tmpl(Fileobj);
-                    $("#dvfiles").append(result);
-                });
-
-            }
-        }
-    });
-
-}
-
-function _RemoveProductGroupFile(filename) {
-    $('#dvbusy').show();
-
-    $.ajax({
-        type: "POST",
-        url: "/Pallets/_RemoveProofOfDeliveryFile",
-        data: 'filename=' + filename,
-        success: function (files) {
-            $("#dvbusy").hide();
-            if (files.files == null) {
-                $('#dvfiles').empty();
-                $("#dvfiles").hide();
-                $("#dvfiles").append(' <strong>Uploaded Files</strong>  ');
+                $("#dvfiles").append('<strong>Uploaded Files</strong>  ');
+                $("#FileLength").val(false);
             }
 
             else {
@@ -143,3 +117,5 @@ function _RemoveProductGroupFile(filename) {
     });
 
 }
+
+

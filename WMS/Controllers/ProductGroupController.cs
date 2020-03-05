@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using System.Web.Routing;
+using DevExpress.Web.Mvc;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Models;
 using Ganedata.Core.Services;
@@ -49,22 +51,23 @@ namespace WMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ProductGroup,IconPath,DepartmentId")] ProductGroups productgroups, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
         {
-
+            ViewBag.ControllerName = "ProductGroup";
             if (ModelState.IsValid)
             {
                 string filePath = "";
                 var files = UploadControl;
-                var filesName = Session["files"] as List<string>;
+                var filesName = Session["uploadProductGroup"] as List<string>;
                 var productGroup = _productLookupService.CreateProductGroup(productgroups, CurrentUserId, CurrentTenantId);
-                foreach (var file in files)
+                if (filesName != null)
                 {
-                    filePath = MoveFile(file,filesName.FirstOrDefault(), productGroup.ProductGroupId);
-                    productGroup.IconPath = filePath;
-                    _productLookupService.UpdateProductGroup(productGroup, CurrentUserId);
-                    break;
+                    
+                    filePath = MoveFile(UploadControl.FirstOrDefault(), filesName.FirstOrDefault(), productGroup.ProductGroupId);
+                    if (!string.IsNullOrEmpty(filePath))
+                    {
+                        productGroup.IconPath = filePath;
+                        _productLookupService.UpdateProductGroup(productGroup, CurrentUserId);
+                    }
                 }
-
-
                 return RedirectToAction("Index");
             }
             ViewBag.Departments = new SelectList(_LookupService.GetAllValidTenantDepartments(CurrentTenantId), "DepartmentId", "DepartmentName", productgroups.DepartmentId);
@@ -89,22 +92,36 @@ namespace WMS.Controllers
             if (!string.IsNullOrEmpty(productgroups.IconPath))
             {
                 List<string> files = new List<string>();
-                
+                ViewBag.FileLength = true;
                 DirectoryInfo dInfo = new DirectoryInfo(productgroups.IconPath);
                 files.Add(dInfo.Name);
-                Session["files"] = files;
+                Session["uploadProductGroup"] = files;
                 ViewBag.Files = files;
             }
+
 
             return View(productgroups);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProductGroupId,ProductGroup,IconPath,DepartmentId")] ProductGroups productgroups,IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
+        public ActionResult Edit([Bind(Include = "ProductGroupId,ProductGroup,IconPath,DepartmentId")] ProductGroups productgroups, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
         {
+            ViewBag.ControllerName = "ProductGroup";
+            string filePath = "";
             if (ModelState.IsValid)
             {
+                var filesName = Session["uploadProductGroup"] as List<string>;
+                if (filesName == null) { productgroups.IconPath = ""; }
+                else
+                {
+                    if (UploadControl != null)
+                    {
+                        filePath = MoveFile(UploadControl.FirstOrDefault(), filesName.FirstOrDefault(), productgroups.ProductGroupId);
+                        productgroups.IconPath = filePath;
+                    }
+
+                }
                 _productLookupService.UpdateProductGroup(productgroups, CurrentUserId);
                 return RedirectToAction("Index");
             }
@@ -148,11 +165,11 @@ namespace WMS.Controllers
 
         public ActionResult UploadFile(IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
         {
-            if (Session["files"] == null)
+            if (Session["uploadProductGroup"] == null)
             {
-                Session["files"] = new List<string>();
+                Session["uploadProductGroup"] = new List<string>();
             }
-            var files = Session["files"] as List<string>;
+            var files = Session["uploadProductGroup"] as List<string>;
 
             foreach (var file in UploadControl)
             {
@@ -161,20 +178,35 @@ namespace WMS.Controllers
                 var fileName = fileToken + ext;
                 files.Add(file.FileName);
             }
-            Session["files"] = files;
+            Session["uploadProductGroup"] = files;
 
             return null;
         }
-        private string MoveFile(DevExpress.Web.UploadedFile file,string FileName, int ProductGroupId)
+        private string MoveFile(DevExpress.Web.UploadedFile file, string FileName, int ProductGroupId)
         {
-            Session["files"] = null;
+            Session["uploadProductGroup"] = null;
             if (!Directory.Exists(Server.MapPath(UploadDirectory + ProductGroupId.ToString())))
                 Directory.CreateDirectory(Server.MapPath(UploadDirectory + ProductGroupId.ToString()));
             string resFileName = Server.MapPath(UploadDirectory + ProductGroupId.ToString() + @"/" + FileName);
             file.SaveAs(resFileName);
-            return resFileName;
+            return UploadDirectory.Replace("~", "") + ProductGroupId.ToString() + @"/" + FileName;
         }
 
+        protected override void Initialize(RequestContext requestContext)
+        {
+            var binder = (DevExpressEditorsBinder)ModelBinders.Binders.DefaultBinder;
+            var actionName = (string)requestContext.RouteData.Values["Action"];
+            switch (actionName)
+            {
+                case "UploadFile":
+                    binder.UploadControlBinderSettings.FileUploadCompleteHandler = (s, e) =>
+                    {
+                        e.CallbackData = e.UploadedFile.FileName;
+                    };
+                    break;
+            }
+            base.Initialize(requestContext);
+        }
 
     }
 }

@@ -19,9 +19,33 @@
 @{
     ViewBag.Title = "Add New Product Group";
 }
+    <script type="text/javascript">
+        function onFileUploadComplete(s, e) {
+            debugger;
+            if (e.callbackData) {
+                debugger;
+                $("#dvfiles").show();
+                var fileData = e.callbackData.split('|');
+                var Fileobj = { FileName: fileData };
+                var result = $("#uploaderTenantDept").tmpl(Fileobj);
+                $("#dvfiles").append(result);
+                $('.se-pre-con').hide();
+                $("#FileLength").val('True');
 
+            }
+
+
+        }
+        function onFileUploadStart(s, e) {
+            if ($("#FileLength").val() == 'True') {
+                e.cancel = true;
+                alert("Only one file allow to be select");
+                return;
+            }
+        }
+    </script>
 <h2><span>Product Groups</span></h2>
-
+@Html.Hidden("productGroup",true)
 <div class="col-md-12 p-0">
     <div class="col-md-6">
 
@@ -56,6 +80,7 @@
                     @Html.Partial("_Uploader")
                     <br />
                     <div id="dvfiles" style="display: block;">
+                        @Html.Hidden("FileLength", (bool?)ViewBag.FileLength)
                         <strong>Uploaded Files</strong>
                         @if (ViewBag.Files != null)
                         {
@@ -90,12 +115,11 @@
 
     </div>
 </div>
-<script id="uploaderProductDepartment" type="text/x-jquery-tmpl">
+<script id="uploaderTenantDept" type="text/x-jquery-tmpl">
     <tr>
-        <td id="tdProductDepartmentfileName">${FileName}</td>
+        <td id="tdfileName">${FileName}</td>
         <td><p>&nbsp;</p></td>
-        <td><a class="LRemove" onclick="_RemoveProductGroupFile('${FileName}')">Remove</a></td>
+        <td><a class="LRemove" onclick="_RemoveProofOfDeliveryFile('${FileName}')">Remove</a></td>
 
     </tr>
-
 </script>

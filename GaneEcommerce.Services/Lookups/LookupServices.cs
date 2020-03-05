@@ -151,6 +151,7 @@ namespace Ganedata.Core.Services
             dept.TenantId = tenantDepartments.TenantId;
             dept.DepartmentName = tenantDepartments.DepartmentName;
             dept.AccountID = tenantDepartments.AccountID;
+            dept.ImagePath = tenantDepartments.ImagePath;
             dept.UpdateUpdatedInfo(tenantDepartments.CreatedBy ?? 1);
             _currentDbContext.Entry(dept).State = EntityState.Modified;
             _currentDbContext.SaveChanges();

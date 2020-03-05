@@ -35,6 +35,19 @@
                 ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
             });
         });
+           settings.Columns.Add(c =>
+        {
+            c.FieldName = "IconPath";
+            c.SetDataItemTemplateContent(m =>
+            {
+                var path = (string)DataBinder.Eval(m.DataItem, "IconPath");
+                if (!string.IsNullOrEmpty(path))
+                {
+
+                    ViewContext.Writer.Write("<img src='" + path + "' style='height:30px;width:30px'>");
+                }
+            });
+        });
 
         settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
         settings.SettingsPager.PageSizeItemSettings.Visible = true;

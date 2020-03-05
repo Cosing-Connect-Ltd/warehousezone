@@ -20,9 +20,7 @@
         settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
         settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
         settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
-
         settings.Columns.Add("DepartmentName");
-
         settings.Columns.Add(c =>
         {
             c.FieldName = "DateCreated";
@@ -33,6 +31,19 @@
                 var date = (DateTime?)DataBinder.Eval(m.DataItem, "DateCreated");
                 DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
                 ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
+            });
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ImagePath";
+            c.SetDataItemTemplateContent(m =>
+            {
+                var path = (string)DataBinder.Eval(m.DataItem, "ImagePath");
+                if (!string.IsNullOrEmpty(path))
+                {
+
+                    ViewContext.Writer.Write("<img src='" + path + "' style='height:30px;width:30px'>");
+                }
             });
         });
 

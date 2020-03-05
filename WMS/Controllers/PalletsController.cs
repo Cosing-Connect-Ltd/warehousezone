@@ -155,7 +155,7 @@ namespace WMS.Controllers
         }
 
         // int? accountid = null
-        public ActionResult PalletEditor(string id = null, int? OrderProcessId = null, int? DispatchId=null)
+        public ActionResult PalletEditor(string id = null, int? OrderProcessId = null, int? DispatchId = null)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             var palletId = 0;
@@ -446,17 +446,44 @@ namespace WMS.Controllers
 
         }
 
-        public JsonResult _RemoveProofOfDeliveryFile(string filename)
+        public JsonResult _RemoveProofOfDeliveryFile(string filename, bool tenantDepartment = false, bool TenantGroup = false)
         {
-            var files = Session["UploadedPalletEvidences"] as List<string>;
-            var filetoremove = files.FirstOrDefault(a => a == filename);
-            files.Remove(filetoremove);
-            if (files.Count <= 0)
+            if (tenantDepartment)
             {
-                Session["UploadedPalletEvidences"] = null;
+                var files = Session["UploadTenantDepartmentImage"] as List<string>;
+                var filetoremove = files.FirstOrDefault(a => a == filename);
+                files.Remove(filetoremove);
+                if (files.Count <= 0)
+                {
+                    Session["UploadTenantDepartmentImage"] = null;
+                }
+                var cfiles = files.Select(a => a).ToList();
+                return Json(new { files = cfiles.Count == 0 ? null : cfiles });
             }
-            var cfiles = files.Select(a => a).ToList();
-            return Json(new { files = cfiles.Count == 0 ? null : cfiles });
+            else if (TenantGroup)
+            {
+                var files = Session["uploadProductGroup"] as List<string>;
+                var filetoremove = files.FirstOrDefault(a => a == filename);
+                files.Remove(filetoremove);
+                if (files.Count <= 0)
+                {
+                    Session["uploadProductGroup"] = null;
+                }
+                var cfiles = files.Select(a => a).ToList();
+                return Json(new { files = cfiles.Count == 0 ? null : cfiles });
+            }
+            else
+            {
+                var files = Session["UploadedPalletEvidences"] as List<string>;
+                var filetoremove = files.FirstOrDefault(a => a == filename);
+                files.Remove(filetoremove);
+                if (files.Count <= 0)
+                {
+                    Session["UploadedPalletEvidences"] = null;
+                }
+                var cfiles = files.Select(a => a).ToList();
+                return Json(new { files = cfiles.Count == 0 ? null : cfiles });
+            }
         }
     }
 }

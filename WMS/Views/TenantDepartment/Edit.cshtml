@@ -15,16 +15,36 @@
         new Script { ExtensionType = ExtensionType.UploadControl }
         )
 }
-<script id="uploadertenantDepartment" type="text/x-jquery-tmpl">
-    <tr>
-        <td id="tddepartmentfileName">${FileName}</td>
-        <td><p>&nbsp;</p></td>
-        <td><a class="LRemove" onclick="_RemoveProductGroupFile('${FileName}')">Remove</a></td>
+<script type="text/javascript">
+    function onFileUploadComplete(s, e) {
+        debugger;
+        if (e.callbackData) {
+            debugger;
+            $("#dvfiles").show();
+            var fileData = e.callbackData.split('|');
+            var Fileobj = { FileName: fileData };
+            var result = $("#uploaderTenantDept").tmpl(Fileobj);
+            $("#dvfiles").append(result);
+            $('.se-pre-con').hide();
+            $("#FileLength").val('True');
 
-    </tr>
+        }
+
+
+    }
+    function onFileUploadStart(s, e) {
+        if ($("#FileLength").val() == "True") {
+            e.cancel = true;
+            alert("Only one file allow to be select");
+            return;
+
+        }
+    }
 </script>
 
 <h2><span> Tenant Departments</span></h2>
+@Html.Hidden("hdPFiles", (List<string>)ViewBag.Files)
+@Html.Hidden("TenantDepartment", true)
 <div class="col-md-12 p-0">
     <div class="col-md-6">
         @using (Html.BeginForm("Edit", "TenantDepartment"))
@@ -53,19 +73,21 @@
                     @Html.Label("Image File", new { @class = "col-md-4" })
                     <div class="col-md-8">
                         @Html.Partial("_Uploader")
+                        <br />
                         <div id="dvfiles" style="display:block;">
                             <strong>Uploaded Files</strong>
                             @if (ViewBag.Files != null)
                             {
                                 foreach (var file in ViewBag.Files)
                                 {
+                                    @Html.Hidden("FileLength", (bool?)ViewBag.FileLength)
                                     <table>
                                         <tr>
                                             <td id="tdProductfileName">@file</td>
                                             <td>
                                                 <p>&nbsp;</p>
                                             </td>
-                                            <td><a class="LRemove" onclick="_RemoveProductGroupFile('@file')">Remove</a></td>
+                                            <td><a class="LRemove" onclick="_RemoveProofOfDeliveryFile('@file')">Remove</a></td>
                                             <td>
                                                 <p>&nbsp;</p>
                                             </td>
@@ -89,3 +111,11 @@
 
     </div>
 </div>
+<script id="uploaderTenantDept" type="text/x-jquery-tmpl">
+    <tr>
+        <td id="tdfileName">${FileName}</td>
+        <td><p>&nbsp;</p></td>
+        <td><a class="LRemove" onclick="_RemoveProofOfDeliveryFile('${FileName}')">Remove</a></td>
+
+    </tr>
+</script>

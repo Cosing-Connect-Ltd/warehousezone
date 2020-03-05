@@ -11,13 +11,20 @@
     settings.ShowUploadButton = true;
     if (ViewBag.ControllerName != null)
     {
+
         controllerName = ViewBag.ControllerName;
         settings.ShowUploadButton = false;
-        
-
     }
-
-    settings.AdvancedModeSettings.EnableMultiSelect = true;
+    if (controllerName == "TenantDepartment" || controllerName == "ProductGroup")
+    {
+        settings.AdvancedModeSettings.EnableMultiSelect = false;
+        settings.AutoStartUpload = true;
+    }
+    else
+    {
+        settings.AdvancedModeSettings.EnableMultiSelect = true;
+       
+    }
     settings.AdvancedModeSettings.EnableFileList = true;
     settings.AdvancedModeSettings.EnableDragAndDrop = true;
 

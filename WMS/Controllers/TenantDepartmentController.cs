@@ -7,6 +7,8 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
+using DevExpress.Web.Mvc;
 using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Services;
@@ -69,7 +71,7 @@ namespace WMS.Controllers
             }).ToList();
             ViewBag.AccountIDs = new SelectList(accounts, "AccountID", "AccountNameCode");
             return View();
-           
+
         }
 
         // POST: TenantDepartment/Create
@@ -83,14 +85,17 @@ namespace WMS.Controllers
             {
                 var files = UploadControl;
                 var filesName = Session["UploadTenantDepartmentImage"] as List<string>;
-                var departments = _LookupService.SaveTenantDepartment(tenantDepartments.DepartmentName,tenantDepartments.AccountID, CurrentUserId, CurrentTenantId);
+                var departments = _LookupService.SaveTenantDepartment(tenantDepartments.DepartmentName, tenantDepartments.AccountID, CurrentUserId, CurrentTenantId);
                 string filePath = "";
-                foreach (var file in files)
+                if (filesName != null)
                 {
-                    filePath = MoveFile(file, filesName.FirstOrDefault(), departments.DepartmentId);
-                    departments.ImagePath = filePath;
-                    _LookupService.UpdateTenantDepartment(departments);
-                    break;
+                    foreach (var file in files)
+                    {
+                        filePath = MoveFile(file, filesName.FirstOrDefault(), departments.DepartmentId);
+                        departments.ImagePath = filePath;
+                        _LookupService.UpdateTenantDepartment(departments);
+                        break;
+                    }
                 }
                 return RedirectToAction("Index");
             }
@@ -112,16 +117,25 @@ namespace WMS.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ViewBag.ControllerName = "TenantDepartment";
-            TenantDepartments tenantDepartments = _LookupService.GetTenantDepartmentById(id??0);
+            TenantDepartments tenantDepartments = _LookupService.GetTenantDepartmentById(id ?? 0);
             var accounts = AccountServices.GetAllValidAccounts(CurrentTenantId).Select(acnts => new
             {
                 acnts.AccountID,
                 acnts.AccountNameCode
             }).ToList();
-            ViewBag.AccountIDs = new SelectList(accounts, "AccountID", "AccountNameCode",tenantDepartments?.AccountID);
+            ViewBag.AccountIDs = new SelectList(accounts, "AccountID", "AccountNameCode", tenantDepartments?.AccountID);
             if (tenantDepartments == null)
             {
                 return HttpNotFound();
+            }
+            if (!string.IsNullOrEmpty(tenantDepartments.ImagePath))
+            {
+                List<string> files = new List<string>();
+                ViewBag.FileLength = true;
+                DirectoryInfo dInfo = new DirectoryInfo(tenantDepartments.ImagePath);
+                files.Add(dInfo.Name);
+                Session["UploadTenantDepartmentImage"] = files;
+                ViewBag.Files = files;
             }
             //ViewBag.TenantId = new SelectList(db.Tenants, "TenantId", "TenantName", tenantDepartments.TenantId);
             return View(tenantDepartments);
@@ -132,13 +146,25 @@ namespace WMS.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "DepartmentId,DepartmentName,TenantId,AccountID,DateCreated,DateUpdated,CreatedBy,UpdatedBy,IsDeleted")] TenantDepartments tenantDepartments, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
+        public ActionResult Edit([Bind(Include = "DepartmentId,DepartmentName,TenantId,AccountID,DateCreated,DateUpdated,CreatedBy,UpdatedBy,IsDeleted")] TenantDepartments tenantDepartments, DevExpress.Web.UploadedFile UploadControl)
         {
             if (ModelState.IsValid)
             {
+                string filePath = "";
                 tenantDepartments.DepartmentId = tenantDepartments.DepartmentId;
                 tenantDepartments.CreatedBy = CurrentUserId;
                 tenantDepartments.TenantId = CurrentTenantId;
+                var filesName = Session["UploadTenantDepartmentImage"] as List<string>;
+                if (filesName == null) { tenantDepartments.ImagePath = ""; }
+                else
+                {
+                    if (UploadControl != null)
+                    {
+                        filePath = MoveFile(UploadControl, filesName.FirstOrDefault(), tenantDepartments.DepartmentId);
+                        tenantDepartments.ImagePath = filePath;
+                    }
+
+                }
 
                 _LookupService.UpdateTenantDepartment(tenantDepartments);
                 return RedirectToAction("Index");
@@ -174,8 +200,8 @@ namespace WMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            _LookupService.RemoveTenantDepartment(id,CurrentUserId);
-             return RedirectToAction("Index");
+            _LookupService.RemoveTenantDepartment(id, CurrentUserId);
+            return RedirectToAction("Index");
         }
 
         public ActionResult UploadFile(IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
@@ -204,9 +230,23 @@ namespace WMS.Controllers
                 Directory.CreateDirectory(Server.MapPath(UploadDirectory + ProductGroupId.ToString()));
             string resFileName = Server.MapPath(UploadDirectory + ProductGroupId.ToString() + @"/" + FileName);
             file.SaveAs(resFileName);
-            return resFileName;
+            return UploadDirectory.Replace("~", "") + ProductGroupId.ToString() + @"/" + FileName;
         }
-
+        protected override void Initialize(RequestContext requestContext)
+        {
+            var binder = (DevExpressEditorsBinder)ModelBinders.Binders.DefaultBinder;
+            var actionName = (string)requestContext.RouteData.Values["Action"];
+            switch (actionName)
+            {
+                case "UploadFile":
+                    binder.UploadControlBinderSettings.FileUploadCompleteHandler = (s, e) =>
+                    {
+                        e.CallbackData = e.UploadedFile.FileName;
+                    };
+                    break;
+            }
+            base.Initialize(requestContext);
+        }
 
     }
 }
