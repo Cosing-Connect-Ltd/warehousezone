@@ -219,3 +219,16 @@ ActivityId,ActivityName,ActivityController,ActivityAction,IsActive,RightNav,Excl
 218,Invoice Profit Report,Reports,InvoiceProfitReport,1,1,0,0,0,14,1,2019-08-13 12:08:08.977,2019-08-13 12:08:08.977,1,1,0
 219,Product Sale By Sku,Reports,ProductSaleReportBySku,1,1,0,0,0,2,1,2019-08-13 12:10:19.873,2019-08-13 12:10:19.873,1,1,0
 220,Product Movement Report,Reports,ProductMovementReport,1,1,0,0,0,16,1,2019-08-13 12:10:44.913,2019-08-13 12:10:44.913,1,1,0
+221,Invoice By Product Report,Reports,InvoiceByProductReport,1,1,0,0,0,12,1,2019-08-15 00:58:25.097,2019-08-15 00:58:25.097,1,1,0
+222,Order Process Details,Invoice,ProcessedOrdersPartial,1,0,1,0,0,16,1,2019-08-23 01:59:28.067,2019-08-23 02:06:06.547,1,1,0
+223,Purchase Order Audit Report,Reports,PurchaseOrderAuditReport,1,1,0,0,0,3,1,2019-10-29 10:26:29.890,2019-10-29 10:26:29.890,1,1,0
+224,Delete Order Internal,Order,DeleteOrder,1,0,1,0,0,16,1,2019-10-31 22:59:45.380,2019-10-31 22:59:45.380,1,1,0
+225,Pallet Types,PalletTypes,Index,1,1,0,0,20,8,1,2019-11-19 10:52:47.423,2019-11-19 10:52:47.423,1,1,0
+226,Create Pallet Type,PalletTypes,Create,1,0,0,0,0,8,1,2019-11-19 11:03:34.753,2019-11-19 11:03:34.753,1,1,0
+227,Edit Pallet Type,PalletTypes,Edit,1,0,0,0,0,8,1,2019-11-19 11:04:01.567,2019-11-19 11:04:01.567,1,1,0
+228,Delete Pallet Type,PalletTypes,Delete,1,0,0,0,0,8,1,2019-11-19 11:04:26.113,2019-11-19 11:04:26.113,1,1,0
+229,Product Sale By Pallet Type,Reports,ProductSaleReportByPalletType,1,1,0,0,0,2,1,2019-11-20 03:31:39.427,2019-11-20 03:31:39.427,1,1,0
+230,Price Group Print,Reports,PriceGroupReport,1,0,0,0,0,15,2,2019-06-10 17:55:15.597,2019-06-10 17:55:15.597,2,2,0
+231,Market Customer Print,Reports,MarketCustomerPrint,1,0,0,0,0,7,2,2019-06-10 18:18:18.223,2019-06-10 18:18:18.223,2,2,0
+232,Assets,Assets,Index,1,1,0,0,0,11,2,2020-02-27 12:33:26.087,2020-02-27 12:33:26.087,2,2,0
+233,Asset Log,Assets,Details,1,1,0,0,1,11,2,2020-02-27 12:34:00.263,2020-02-27 12:34:00.263,2,2,0

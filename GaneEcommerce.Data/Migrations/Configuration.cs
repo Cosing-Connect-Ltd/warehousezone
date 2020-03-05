@@ -40,7 +40,7 @@ namespace Ganedata.Core.Data.Migrations
             //SeedEESmith(context);
             //SeedGaneIntranet(context);
             //SeedTheGelBottle(context);
-            //SeedNghAssetTracking(context);
+            SeedNghAssetTracking(context);
 
 
             //var maxId = 1001;
@@ -119,7 +119,7 @@ namespace Ganedata.Core.Data.Migrations
                new Module()
                {
                    Id = 11,
-                   ModuleName = "Captive Portal"
+                   ModuleName = "Asset Tracking"
                });
             context.Modules.AddOrUpdate(m => m.Id,
                new Module()
@@ -267,14 +267,14 @@ namespace Ganedata.Core.Data.Migrations
                     var line = reader.ReadLine();
                     if (line == null) throw new ArgumentNullException(nameof(line));
                     var values = line.Split(',');
-                    context.GlobalCountries.AddOrUpdate(c => new { c.CountryID, c.CountryName }, new GlobalCountry { CountryID = int.Parse(values[0]), CountryName = values[1], CountryCode = values[2] });
+                    context.GlobalCountries.AddOrUpdate(c => c.CountryID, new GlobalCountry { CountryID = int.Parse(values[0]), CountryName = values[1], CountryCode = values[2] });
                 }
             }
 
             //Add Currencies
-            context.GlobalCurrencies.AddOrUpdate(c => c.CurrencyName, new GlobalCurrency { CurrencyID = 1, CurrencyName = "GBP", Symbol = "£", CountryID = 1 });
-            context.GlobalCurrencies.AddOrUpdate(c => c.CurrencyName, new GlobalCurrency { CurrencyID = 2, CurrencyName = "Euro", Symbol = "€", CountryID = 81 });
-            context.GlobalCurrencies.AddOrUpdate(c => c.CurrencyName, new GlobalCurrency { CurrencyID = 3, CurrencyName = "USD", Symbol = "$", CountryID = 226 });
+            context.GlobalCurrencies.AddOrUpdate(c => c.CurrencyID, new GlobalCurrency { CurrencyID = 1, CurrencyName = "GBP", Symbol = "£", CountryID = 1 });
+            context.GlobalCurrencies.AddOrUpdate(c => c.CurrencyID, new GlobalCurrency { CurrencyID = 2, CurrencyName = "Euro", Symbol = "€", CountryID = 81 });
+            context.GlobalCurrencies.AddOrUpdate(c => c.CurrencyID, new GlobalCurrency { CurrencyID = 3, CurrencyName = "USD", Symbol = "$", CountryID = 226 });
 
 
             // add Inventory Transaction Types.
@@ -449,18 +449,13 @@ namespace Ganedata.Core.Data.Migrations
             context.OrderStatus.AddOrUpdate(m => m.OrderStatusID, new OrderStatus { OrderStatusID = 14, Status = "Invoiced" });
 
             // add account status
-            context.GlobalAccountStatus.AddOrUpdate(m => m.AccountStatusID,
-                new GlobalAccountStatus { AccountStatusID = 1, AccountStatus = "Active" });
-            context.GlobalAccountStatus.AddOrUpdate(m => m.AccountStatusID,
-                new GlobalAccountStatus { AccountStatusID = 2, AccountStatus = "Inactive" });
-            context.GlobalAccountStatus.AddOrUpdate(m => m.AccountStatusID,
-               new GlobalAccountStatus { AccountStatusID = 3, AccountStatus = "On Stop" });
+            context.GlobalAccountStatus.AddOrUpdate(m => m.AccountStatusID, new GlobalAccountStatus { AccountStatusID = 1, AccountStatus = "Active" });
+            context.GlobalAccountStatus.AddOrUpdate(m => m.AccountStatusID, new GlobalAccountStatus { AccountStatusID = 2, AccountStatus = "Inactive" });
+            context.GlobalAccountStatus.AddOrUpdate(m => m.AccountStatusID, new GlobalAccountStatus { AccountStatusID = 3, AccountStatus = "On Stop" });
 
             // Add Global Measurment Types
-            context.GlobalUOMTypes.AddOrUpdate(m => m.UOMTypeId,
-                new GlobalUOMTypes { UOMTypeId = 1, UOMType = "General" });
-            context.GlobalUOMTypes.AddOrUpdate(m => m.UOMTypeId,
-                new GlobalUOMTypes { UOMTypeId = 2, UOMType = "Measurement" });
+            context.GlobalUOMTypes.AddOrUpdate(m => m.UOMTypeId, new GlobalUOMTypes { UOMTypeId = 1, UOMType = "General" });
+            context.GlobalUOMTypes.AddOrUpdate(m => m.UOMTypeId, new GlobalUOMTypes { UOMTypeId = 2, UOMType = "Measurement" });
 
             // Add Global UOM
             context.GlobalUOM.AddOrUpdate(m => m.UOMId, new GlobalUOM { UOMId = 1, UOM = "Each", UOMTypeId = 1 });
@@ -483,28 +478,19 @@ namespace Ganedata.Core.Data.Migrations
 
 
             // Lot Option Codes
-            context.ProductLotOptionsCodes.AddOrUpdate(m => m.LotOptionCodeId,
-                new ProductLotOptionsCodes() { LotOptionCodeId = 1, Description = "None" });
-            context.ProductLotOptionsCodes.AddOrUpdate(m => m.LotOptionCodeId,
-                new ProductLotOptionsCodes() { LotOptionCodeId = 2, Description = "Display Days Remaining" });
-            context.ProductLotOptionsCodes.AddOrUpdate(m => m.LotOptionCodeId,
-                new ProductLotOptionsCodes() { LotOptionCodeId = 3, Description = "Display Percent Remaining" });
+            context.ProductLotOptionsCodes.AddOrUpdate(m => m.LotOptionCodeId, new ProductLotOptionsCodes() { LotOptionCodeId = 1, Description = "None" });
+            context.ProductLotOptionsCodes.AddOrUpdate(m => m.LotOptionCodeId, new ProductLotOptionsCodes() { LotOptionCodeId = 2, Description = "Display Days Remaining" });
+            context.ProductLotOptionsCodes.AddOrUpdate(m => m.LotOptionCodeId, new ProductLotOptionsCodes() { LotOptionCodeId = 3, Description = "Display Percent Remaining" });
 
             // Lot Process Codes
-            context.ProductLotProcessTypeCodes.AddOrUpdate(m => m.LotProcessTypeCodeId,
-               new ProductLotProcessTypeCodes() { LotProcessTypeCodeId = 1, Description = "None" });
-            context.ProductLotProcessTypeCodes.AddOrUpdate(m => m.LotProcessTypeCodeId,
-                new ProductLotProcessTypeCodes() { LotProcessTypeCodeId = 2, Description = "Update lot status" });
-            context.ProductLotProcessTypeCodes.AddOrUpdate(m => m.LotProcessTypeCodeId,
-                new ProductLotProcessTypeCodes() { LotProcessTypeCodeId = 3, Description = "Update lot grade" });
+            context.ProductLotProcessTypeCodes.AddOrUpdate(m => m.LotProcessTypeCodeId, new ProductLotProcessTypeCodes() { LotProcessTypeCodeId = 1, Description = "None" });
+            context.ProductLotProcessTypeCodes.AddOrUpdate(m => m.LotProcessTypeCodeId, new ProductLotProcessTypeCodes() { LotProcessTypeCodeId = 2, Description = "Update lot status" });
+            context.ProductLotProcessTypeCodes.AddOrUpdate(m => m.LotProcessTypeCodeId, new ProductLotProcessTypeCodes() { LotProcessTypeCodeId = 3, Description = "Update lot grade" });
 
             // Add Weight Groups
-            context.GlobalWeightGroups.AddOrUpdate(m => m.WeightGroupId,
-                new GlobalWeightGroups { WeightGroupId = 1, Description = "Light", Weight = 20 });
-            context.GlobalWeightGroups.AddOrUpdate(m => m.WeightGroupId,
-               new GlobalWeightGroups { WeightGroupId = 2, Description = "Medium", Weight = 30 });
-            context.GlobalWeightGroups.AddOrUpdate(m => m.WeightGroupId,
-               new GlobalWeightGroups { WeightGroupId = 3, Description = "Heavy", Weight = 50 });
+            context.GlobalWeightGroups.AddOrUpdate(m => m.WeightGroupId, new GlobalWeightGroups { WeightGroupId = 1, Description = "Light", Weight = 20 });
+            context.GlobalWeightGroups.AddOrUpdate(m => m.WeightGroupId, new GlobalWeightGroups { WeightGroupId = 2, Description = "Medium", Weight = 30 });
+            context.GlobalWeightGroups.AddOrUpdate(m => m.WeightGroupId, new GlobalWeightGroups { WeightGroupId = 3, Description = "Heavy", Weight = 50 });
 
             // Add Global Tax
             context.GlobalTax.AddOrUpdate(m => m.TaxID,
@@ -1849,7 +1835,6 @@ namespace Ganedata.Core.Data.Migrations
             //Add Tenant
             var tenant = new Tenant
             {
-                TenantId = 1,
                 TenantName = "Northampton General Hospital",
                 TenantDayPhone = "01604 634700",
                 TenantFax = "",
@@ -1894,7 +1879,6 @@ namespace Ganedata.Core.Data.Migrations
             context.TenantWarehouses.AddOrUpdate(m => new { m.WarehouseName, m.TenantId },
                 new TenantLocations
                 {
-                    WarehouseId = 1,
                     TenantId = CurrentTenantId,
                     WarehouseName = "Head Office",
                     CountryID = 1,
@@ -1957,12 +1941,16 @@ namespace Ganedata.Core.Data.Migrations
                     ModuleId = 10,
                     TenantId = CurrentTenantId
                 });
+            context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
+                new TenantModules()
+                {
+                    ModuleId = 11,
+                    TenantId = CurrentTenantId
+                });
 
             // Add Price Groups
-            context.TenantPriceGroups.AddOrUpdate(m => new { m.Name, m.TenantId },
-                new TenantPriceGroups { Name = "CASH", Percent = 0, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow });
-            context.TenantPriceGroups.AddOrUpdate(m => new { m.Name, m.TenantId },
-                new TenantPriceGroups { Name = "SDIL", Percent = 3, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow });
+            context.TenantPriceGroups.AddOrUpdate(m => new { m.Name, m.TenantId }, new TenantPriceGroups { Name = "CASH", Percent = 0, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow });
+            context.TenantPriceGroups.AddOrUpdate(m => new { m.Name, m.TenantId }, new TenantPriceGroups { Name = "SDIL", Percent = 3, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow });
 
             //Add TenantEmailTemplateVariables
             context.TenantEmailTemplateVariables.AddOrUpdate(m => new { m.VariableName, m.TenantId },
@@ -2127,7 +2115,7 @@ namespace Ganedata.Core.Data.Migrations
                 AccountCode = "Default001",
                 CreatedBy = context.AuthUsers.First().UserId,
                 DateCreated = DateTime.UtcNow,
-                CountryID = tenant.CountryID ?? 0,
+                CountryID = tenant.CountryID ?? 1,
                 TenantId = tenant.TenantId,
                 CurrencyID = tenant.CurrencyID,
                 PriceGroupID = 1,

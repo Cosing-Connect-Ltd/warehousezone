@@ -300,7 +300,7 @@ namespace Ganedata.Core.Entities.Enums
         Palleting = 8,
         HumanResources = 9,
         TimeAndAttendance = 10,
-        CaptivePortal = 11,
+        AssetTracking = 11,
         Accounting = 12,
         POD = 13,
         Accounts = 14,
