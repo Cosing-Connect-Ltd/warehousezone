@@ -1,6 +1,6 @@
 ﻿@using Ganedata.Core.Entities.Helpers
 @{
-    ViewBag.Title = "Tenant Departments";
+    ViewBag.Title = "Product Manufacturer";
 }
 @section scripts {
 
@@ -15,7 +15,7 @@
         )
 }
 
-<h2><span>Tenant Department</span></h2>
+<h2><span>Product Manufacturer</span></h2>
 <script type="text/javascript">
     function OnGridFocusedRowChanged(s, e) {
         $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
@@ -24,22 +24,22 @@
 
 @Html.Hidden("selkey", null, new { @class = "selkey" })
 
-@Html.Action("TenantDepartmentList")
+@Html.Action("ProductManufacturersList")
 
 <div class="col-md-12 p-0">
 
-    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("ProductManufacturers", "Create"))
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TenantDepartment", "Create"))
     {
         @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary  " })
     }
 
-    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("ProductManufacturers", "Edit"))
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TenantDepartment", "Edit"))
     {
         @Html.ActionLink("Update", "Edit", null, new { @class = "btn btn-primary  Caction" })
     }
 
 
-    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("ProductManufacturers", "Delete"))
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TenantDepartment", "Delete"))
     {
         @Html.ActionLink("Delete", "Delete", null, new { @class = "btn btn-primary  Caction" })
     }

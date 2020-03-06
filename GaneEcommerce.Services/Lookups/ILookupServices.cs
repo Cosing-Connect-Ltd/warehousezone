@@ -20,8 +20,8 @@ namespace Ganedata.Core.Services
         IEnumerable<LocationGroup> GetAllValidLocationGroups(int tenantId);
         IEnumerable<ProductGroups> GetAllValidProductGroups(int tenantId, int numberofproduct=0);
         IEnumerable<PalletType> GetAllValidPalletTypes(int tenantId);
-        IEnumerable<ProductManufacturer> GetAllValidProductManufacturer(int tenantId);
-
+        IEnumerable<ProductManufacturer> GetAllValidProductManufacturer(int tenantId,int? Id=null);
+        bool RemoveProductManufacturer(int Id);
         IEnumerable<ReportType> GetAllReportTypes(int tenantId);
         IEnumerable<OrderStatus> GetAllOrderStatuses();
         OrderStatus GetOrderStatusById(int statusId);
@@ -78,5 +78,7 @@ namespace Ganedata.Core.Services
         IQueryable<TenantEmailNotificationQueue> GetEmailNotifcationQueue(int tenantId);
 
         bool CheckStockIssue(int ProductId, decimal InStock,bool serialize, bool palletsPrdocut);
+
+       ProductManufacturer SaveAndUpdateProductManufacturer(ProductManufacturer productManufacturer,int UserId);
     }
 }

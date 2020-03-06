@@ -15,7 +15,7 @@
         controllerName = ViewBag.ControllerName;
         settings.ShowUploadButton = false;
     }
-    if (controllerName == "TenantDepartment" || controllerName == "ProductGroup")
+    if (controllerName == "TenantDepartment" || controllerName == "ProductGroup" || controllerName=="ProductManufacturers")
     {
         settings.AdvancedModeSettings.EnableMultiSelect = false;
         settings.AutoStartUpload = true;

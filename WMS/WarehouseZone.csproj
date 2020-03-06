@@ -505,6 +505,7 @@
     <Compile Include="Controllers\PalletTrackingController.cs" />
     <Compile Include="Controllers\MarketRoutesController.cs" />
     <Compile Include="Controllers\PalletTypesController.cs" />
+    <Compile Include="Controllers\ProductManufacturersController.cs" />
     <Compile Include="Controllers\ProductSerialController.cs" />
     <Compile Include="Controllers\ProductSpecialPriceController.cs" />
     <Compile Include="Controllers\ScanSourceProductController.cs" />
@@ -1891,6 +1892,12 @@
     <Content Include="Views\Products\_EditableProductGrid.cshtml" />
     <Content Include="Views\Products\EditProducts.cshtml" />
     <Content Include="Views\SalesOrders\_AssignPicker.cshtml" />
+    <Content Include="Views\ProductManufacturers\Create.cshtml" />
+    <Content Include="Views\ProductManufacturers\Delete.cshtml" />
+    <Content Include="Views\ProductManufacturers\Details.cshtml" />
+    <Content Include="Views\ProductManufacturers\Edit.cshtml" />
+    <Content Include="Views\ProductManufacturers\Index.cshtml" />
+    <Content Include="Views\ProductManufacturers\_ProductManufacturerList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

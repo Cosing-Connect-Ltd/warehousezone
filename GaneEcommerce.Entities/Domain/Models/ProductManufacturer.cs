@@ -13,7 +13,7 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Id")]
         public int Id { get; set; }
         [Required]
-        [Display(Name = "Manufacturer Name")]
+        [Display(Name = "Name")]
         public string Name { get; set; }
         [Display(Name = "Image Path")]
         public string ImagePath { get; set; }

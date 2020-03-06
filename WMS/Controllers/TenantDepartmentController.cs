@@ -21,7 +21,6 @@ namespace WMS.Controllers
         private readonly IProductLookupService _productLookupService;
         private readonly ILookupServices _LookupService;
         string UploadDirectory = "~/UploadedFiles/TenantDepartment/";
-        string UploadTempDirectory = "~/UploadedFiles/TenantDepartment/TempFiles/";
 
         public TenantDepartmentController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IProductLookupService productLookupService)
             : base(orderService, propertyService, accountServices, lookupServices)

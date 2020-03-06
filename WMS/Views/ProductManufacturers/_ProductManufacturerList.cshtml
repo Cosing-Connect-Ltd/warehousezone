@@ -2,13 +2,13 @@
 @{
     var grid = Html.DevExpress().GridView(settings =>
     {
-        settings.Name = "TenantDeptGridView";
-        settings.CallbackRouteValues = new { Controller = "TenantDepartment", Action = "TenantDepartmentList" };
+        settings.Name = "ProductManufacturerGridView";
+        settings.CallbackRouteValues = new { Controller = "ProductManufacturers", Action = "ProductManufacturersList" };
         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
         settings.Settings.ShowHeaderFilterButton = false;
         settings.SettingsPopup.HeaderFilter.Height = 200;
         settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
-        settings.KeyFieldName = "DepartmentId";
+        settings.KeyFieldName = "Id";
 
         settings.SettingsPager.Visible = true;
         settings.Settings.ShowGroupPanel = true;
@@ -20,7 +20,8 @@
         settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
         settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
         settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
-        settings.Columns.Add("DepartmentName");
+        settings.Columns.Add("Name");
+        settings.Columns.Add("Note");
         settings.Columns.Add(c =>
         {
             c.FieldName = "DateCreated";
@@ -42,8 +43,8 @@
                 var path = (string)DataBinder.Eval(m.DataItem, "ImagePath");
                 if (!string.IsNullOrEmpty(path))
                 {
-
-                   ViewContext.Writer.Write("<img src='" + path + "' style='height:30px;width:30px'>");
+                    ViewContext.Writer.Write("<img src='" + path + "' style='height:30px;width:30px'>");
+                    //ViewContext.Writer.Write("<img style='width:100%' src='" + path + "'/>");
                 }
             });
         });

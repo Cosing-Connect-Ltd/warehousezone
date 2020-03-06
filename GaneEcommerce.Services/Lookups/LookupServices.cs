@@ -79,11 +79,22 @@ namespace Ganedata.Core.Services
         {
             return _currentDbContext.PalletTypes.Where(m => m.IsDeleted != true && m.TenentId == tenantId);
         }
-        public IEnumerable<ProductManufacturer> GetAllValidProductManufacturer(int tenantId)
+        public IEnumerable<ProductManufacturer> GetAllValidProductManufacturer(int tenantId,int? Id=null)
         {
-            return _currentDbContext.ProductManufacturers.Where(m => m.IsDeleted != true && m.TenantId == tenantId);
+            return _currentDbContext.ProductManufacturers.Where(m => m.IsDeleted != true && m.TenantId == tenantId && (!Id.HasValue || m.Id==Id));
         }
-
+        public bool RemoveProductManufacturer(int Id)
+        {
+            var manufacturer= _currentDbContext.ProductManufacturers.FirstOrDefault(m=> m.Id == Id);
+            if (manufacturer != null)
+            {
+                manufacturer.IsDeleted = true;
+                _currentDbContext.Entry(manufacturer).State = EntityState.Modified;
+                _currentDbContext.SaveChanges();
+                return true;
+            }
+            return false;
+        }
         public IEnumerable<ReportType> GetAllReportTypes(int tenantId)
         {
             var reportTypes = _currentDbContext.ReportTypes.Where(a => a.TenantId == tenantId && a.IsDeleted != true);
@@ -570,7 +581,7 @@ namespace Ganedata.Core.Services
         }
         public IEnumerable<object> GetAllValidWebsites(int currentTenantId)
         {
-            var obj = _currentDbContext.TenantWebsites.Where(u => u.TenantId == currentTenantId  && u.IsDeleted != true).Select(
+            var obj = _currentDbContext.TenantWebsites.Where(u => u.TenantId == currentTenantId && u.IsDeleted != true).Select(
               u => new
               {
                   u.SiteName,
@@ -583,12 +594,12 @@ namespace Ganedata.Core.Services
         {
             return _currentDbContext.TenantEmailNotificationQueues.Where(u => u.IsNotificationCancelled != true).OrderByDescending(u => u.TenantEmailNotificationQueueId);
         }
-        public bool CheckStockIssue(int ProductId, decimal InStock,bool serial,bool productPallet)
+        public bool CheckStockIssue(int ProductId, decimal InStock, bool serial, bool productPallet)
         {
             decimal palletstock = 0;
             if (productPallet)
             {
-               palletstock= _currentDbContext.PalletTracking.Where(u => u.ProductId == ProductId && (u.RemainingCases > 0) && u.Status != PalletTrackingStatusEnum.Created).Select(u => u.RemainingCases).DefaultIfEmpty(0).Sum();
+                palletstock = _currentDbContext.PalletTracking.Where(u => u.ProductId == ProductId && (u.RemainingCases > 0) && u.Status != PalletTrackingStatusEnum.Created).Select(u => u.RemainingCases).DefaultIfEmpty(0).Sum();
             }
 
             //else if (serial)
@@ -600,6 +611,27 @@ namespace Ganedata.Core.Services
                 return false;
             }
             return true;
+        }
+
+        public ProductManufacturer SaveAndUpdateProductManufacturer(ProductManufacturer productManufacturer, int userId)
+        {
+            var productmanufactrer = _currentDbContext.ProductManufacturers.FirstOrDefault(u => u.Id == productManufacturer.Id);
+            if (productmanufactrer == null)
+            {
+                productmanufactrer = new ProductManufacturer();
+                productmanufactrer.UpdateCreatedInfo(userId);
+
+            }
+            else
+            {
+                productmanufactrer.UpdateUpdatedInfo(userId);
+            }
+            productmanufactrer.Name = productManufacturer.Name;
+            productmanufactrer.Note = productManufacturer.Note;
+            productmanufactrer.ImagePath = productManufacturer.ImagePath;
+            _currentDbContext.Entry(productmanufactrer).State = productManufacturer.Id > 0 ? EntityState.Modified : EntityState.Added;
+            _currentDbContext.SaveChanges();
+            return productmanufactrer;
         }
     }
 

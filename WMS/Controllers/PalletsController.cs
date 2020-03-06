@@ -446,7 +446,7 @@ namespace WMS.Controllers
 
         }
 
-        public JsonResult _RemoveProofOfDeliveryFile(string filename, bool tenantDepartment = false, bool TenantGroup = false)
+        public JsonResult _RemoveProofOfDeliveryFile(string filename, bool tenantDepartment = false, bool TenantGroup = false, bool Maufacturer=false)
         {
             if (tenantDepartment)
             {
@@ -471,6 +471,19 @@ namespace WMS.Controllers
                 }
                 var cfiles = files.Select(a => a).ToList();
                 return Json(new { files = cfiles.Count == 0 ? null : cfiles });
+            }
+            else if (Maufacturer)
+            {
+                var files = Session["UploadProductManufacturerImage"] as List<string>;
+                var filetoremove = files.FirstOrDefault(a => a == filename);
+                files.Remove(filetoremove);
+                if (files.Count <= 0)
+                {
+                    Session["UploadProductManufacturerImage"] = null;
+                }
+                var cfiles = files.Select(a => a).ToList();
+                return Json(new { files = cfiles.Count == 0 ? null : cfiles });
+                
             }
             else
             {
