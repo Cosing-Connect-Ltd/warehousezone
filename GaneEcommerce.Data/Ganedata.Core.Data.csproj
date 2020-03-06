@@ -683,6 +683,10 @@
     <Compile Include="Migrations\202003041347367_imagepath-in-tenantDepartment.designer.cs">
       <DependentUpon>202003041347367_imagepath-in-tenantDepartment.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003061059578_ImagePathAndNote-added-in-PrdocutManufacturer.cs" />
+    <Compile Include="Migrations\202003061059578_ImagePathAndNote-added-in-PrdocutManufacturer.designer.cs">
+      <DependentUpon>202003061059578_ImagePathAndNote-added-in-PrdocutManufacturer.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1515,6 +1519,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003041347367_imagepath-in-tenantDepartment.resx">
       <DependentUpon>202003041347367_imagepath-in-tenantDepartment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003061059578_ImagePathAndNote-added-in-PrdocutManufacturer.resx">
+      <DependentUpon>202003061059578_ImagePathAndNote-added-in-PrdocutManufacturer.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

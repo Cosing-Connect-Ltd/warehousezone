@@ -79,6 +79,10 @@ namespace Ganedata.Core.Services
         {
             return _currentDbContext.PalletTypes.Where(m => m.IsDeleted != true && m.TenentId == tenantId);
         }
+        public IEnumerable<ProductManufacturer> GetAllValidProductManufacturer(int tenantId)
+        {
+            return _currentDbContext.ProductManufacturers.Where(m => m.IsDeleted != true && m.TenantId == tenantId);
+        }
 
         public IEnumerable<ReportType> GetAllReportTypes(int tenantId)
         {

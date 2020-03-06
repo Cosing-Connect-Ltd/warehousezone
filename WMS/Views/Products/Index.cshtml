@@ -45,39 +45,26 @@
         var grid =  ASPxClientControl.GetControlCollection().GetByName(gridName.name);
         //WORKAROUND for BULK Update
         var gridValues = JSON.parse(JSON.stringify($("#frmProductFileDetail").serializeArray()));
-        var values = gridValues[gridValues.length - 1].value.split(',');
+        var values = JSON.parse(gridValues[gridValues.length - 1].value.split(','));
+        var LengthOfObject=Object.keys(values).length;
+        for (var i = 0; i < LengthOfObject; i++)
+        {
+        if (grid.name + '_DXEditor2' != null)
+        {
+            
+            e.customArgs["SortOrder"] = values[i];
+        }
+        if (grid.name+'_DXEditor3' != null)
+        {
+            e.customArgs["DefaultImage"] = values.ProductFileDetailGridView294_DXEditor3;
+        }
+        if (grid.name+'_DXEditor4' != null) {
+            e.customArgs["HoverImage"] = values.ProductFileDetailGridView294_DXEditor4;
 
-        for (var i = 0; i < gridValues.length - 1; i++) {
-            if (gridValues[i].name == grid.name + '$DXEditor2') {
-                e.customArgs["SortOrder"] = gridValues[i].value;
-            }
-            if (gridValues[i].name == grid.name + '$DXEditor3') {
-                var value = gridValues[i].value;
-                if (value === "C") {
-                    e.customArgs["DefaultImage"] = true;
-                }
-                else{
-                    e.customArgs["DefaultImage"]=false
-                }
-            }
-            if (gridValues[i].name == grid.name + '$DXEditor4') {
-                var value = gridValues[i].value;
-                if (value === "C") {
-                    e.customArgs["HoverImage"] = true;
-                }
-                else {
-                    e.customArgs["HoverImage"] = false
-                }
-            }
-            if (gridValues[i].name == grid.name + '$DXEditor5') {
-                var value = gridValues[i].value;
-                if (value === "C") {
-                    e.customArgs["IsDeleted"] = true;
-                }
-                else {
-                    e.customArgs["IsDeleted"] = false
-                }
-            }
+        }
+        if (grid.name+'_DXEditor5' != null) {
+            e.customArgs["IsDeleted"] =values.ProductFileDetailGridView294_DXEditor5;
+        }
         }
 
         var rowIndex = parseInt($("#RowIndexForProductId").val()) || 0;

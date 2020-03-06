@@ -336,6 +336,20 @@
 
                     </div>
                 </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.Label("Manufacturer", htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(u => u.ManufacturerId, ViewBag.Manufacturer as SelectList, "Select Manufacturer", new { @class = "chosen-select" })
+                        @Html.ValidationMessageFor(model => model.DimensionUOMId)
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.ManufacturerPartNo, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.ManufacturerPartNo)
+                        @Html.ValidationMessageFor(model => model.ManufacturerPartNo)
+                    </div>
+                </div>
                 @if (ViewBag.IsEcommerceEnabled)
                 {
                     <div class="input-group h-100 justify-content-center align-items-center">
@@ -364,10 +378,13 @@
                         </div>
                     </div>
 
+
+
+
                 }
             </div>
             <div class="col-md-6 pull-left">
-
+           
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.LabelFor(model => model.OnSaleProduct, htmlAttributes: new { @class = "col-md-4" })
                     <div class="col-md-8">

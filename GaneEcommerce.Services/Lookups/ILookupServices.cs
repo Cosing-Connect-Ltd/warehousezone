@@ -20,6 +20,7 @@ namespace Ganedata.Core.Services
         IEnumerable<LocationGroup> GetAllValidLocationGroups(int tenantId);
         IEnumerable<ProductGroups> GetAllValidProductGroups(int tenantId, int numberofproduct=0);
         IEnumerable<PalletType> GetAllValidPalletTypes(int tenantId);
+        IEnumerable<ProductManufacturer> GetAllValidProductManufacturer(int tenantId);
 
         IEnumerable<ReportType> GetAllReportTypes(int tenantId);
         IEnumerable<OrderStatus> GetAllOrderStatuses();

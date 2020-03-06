@@ -938,6 +938,10 @@ namespace Ganedata.Core.Services
 
 
         }
+        public ProductFiles GetProductFilesById(int Id)
+        {
+            return _currentDbContext.ProductFiles.FirstOrDefault(u => u.Id == Id && u.IsDeleted != true);
+        }
 
         public LocationGroup SaveLocationGroup(string locationGroupName, int userId, int tenantId)
         {

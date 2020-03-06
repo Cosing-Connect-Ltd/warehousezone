@@ -101,6 +101,7 @@
                 @Html.ValidationMessageFor(model => model.BarCode2)
             </div>
         </div>
+
         <div class="single-check-select">
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.Serialisable, htmlAttributes: new { @class = "col-md-4" })
@@ -124,6 +125,7 @@
                 </div>
             </div>
         </div>
+
         <div class="input-group h-100 justify-content-center align-items-center">
             @Html.LabelFor(model => model.IsRawMaterial, htmlAttributes: new { @class = "col-md-4" })
             <div class="col-md-8">
@@ -248,11 +250,24 @@
         <div class="input-group h-100 justify-content-center align-items-center">
             @Html.Label("Product Sites", htmlAttributes: new { @class = "col-md-4" })
             <div class="col-md-8">
-               @Html.ListBox("SiteIds", new MultiSelectList(ViewBag.WebsiteIds, "SiteID", "SiteName"), new { Multiple = "multiple", size = "5", @class = "chosen-select", data_placeholder = "Choose Site" })
-             
+                @Html.ListBox("SiteIds", new MultiSelectList(ViewBag.WebsiteIds, "SiteID", "SiteName"), new { Multiple = "multiple", size = "5", @class = "chosen-select", data_placeholder = "Choose Site" })
+
             </div>
         </div>
-
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Manufacturer", htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(u=>u.ManufacturerId,ViewBag.Manufacturer as SelectList,"Select Manufacturer", new { @class = "chosen-select" })
+                @Html.ValidationMessageFor(model => model.DimensionUOMId)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ManufacturerPartNo, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.ManufacturerPartNo)
+                @Html.ValidationMessageFor(model => model.ManufacturerPartNo)
+            </div>
+        </div>
         @if (ViewBag.IsEcommerceEnabled)
         {
             <div class="input-group h-100 justify-content-center align-items-center">
@@ -285,322 +300,324 @@
                 </div>
             </div>
 
+
         }
 
     </div>
-        <div class="col-md-6 pull-left">
-
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.EnableTax, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.EnableTax)
-                    @Html.ValidationMessageFor(model => model.EnableTax)
-                </div>
+    <div class="col-md-6 pull-left">
+      
+      
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.EnableTax, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.EnableTax)
+                @Html.ValidationMessageFor(model => model.EnableTax)
             </div>
-            <div class="input-group h-100 justify-content-center align-items-center" style="visibility:hidden" id="divTaxEnable">
-                @Html.LabelFor(model => model.TaxID, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.DropDownList("TaxID", null, String.Empty, new { @class = "chosen-select" })
-                    @Html.ValidationMessageFor(model => model.TaxID)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.EnableWarranty, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.EnableWarranty)
-                    @Html.ValidationMessageFor(model => model.EnableWarranty)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.PercentMargin, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.PercentMargin)
-                    @Html.ValidationMessageFor(model => model.PercentMargin)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.MinThresholdPrice, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.MinThresholdPrice)
-                    @Html.ValidationMessageFor(model => model.MinThresholdPrice)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.IsActive)
-                    @Html.ValidationMessageFor(model => model.IsActive)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.AllowZeroSale, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.AllowZeroSale)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.AllowModifyPrice, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.AllowModifyPrice)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.ProdStartDate, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.DevExpress().DateEditFor(m => m.ProdStartDate,
-                    settings =>
-                    {
-                        settings.Name = "ProdStartDate";
-                        settings.Properties.DisplayFormatString = "D";
-                        settings.Date = DateTime.Today;
-                        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
-                        settings.ControlStyle.CssClass = "form-control";
-                        settings.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
-                    }
-                    ).Bind(DateTime.UtcNow).GetHtml()
-                    @Html.ValidationMessageFor(model => model.ProdStartDate)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(m => m.BuyPrice, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.DevExpress().SpinEditFor(m => m.BuyPrice,
-                    settings =>
-                    {
-                        settings.Name = "BuyPrice";
-                        settings.ClientVisible = true;
-                        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
-                        settings.ControlStyle.CssClass = "form-control";
-                    }
-                    ).GetHtml()
-                    @Html.ValidationMessageFor(model => model.BuyPrice)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(m => m.LandedCost, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.DevExpress().SpinEditFor(m => m.LandedCost,
-                    settings =>
-                    {
-                        settings.Name = "LandedCost";
-                        settings.ClientVisible = true;
-                        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
-                        settings.ControlStyle.CssClass = "form-control";
-                    }
-                    ).GetHtml()
-                    @Html.ValidationMessageFor(model => model.LandedCost)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(m => m.SellPrice, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.DevExpress().SpinEditFor(m => m.SellPrice,
-                    settings =>
-                    {
-                        settings.Name = "SellPrice";
-                        settings.ClientVisible = true;
-                        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
-                        settings.ControlStyle.CssClass = "form-control";
-                    }
-                    ).GetHtml()
-                    @Html.ValidationMessageFor(model => model.SellPrice)
-                </div>
-            </div>
-
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(m => m.NominalCode, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.DevExpress().SpinEditFor(m => m.NominalCode,
-                    settings =>
-                    {
-                        settings.Name = "NominalCode";
-                        settings.ClientVisible = true;
-                        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
-                        settings.ControlStyle.CssClass = "form-control";
-                    }
-                    ).GetHtml()
-                    @Html.ValidationMessageFor(model => model.NominalCode)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.Kit, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.CheckBoxFor(m => m.Kit, new { @id = "chkkit", @class = "form-control" })
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center" id="dvkit">
-                @Html.LabelFor(model => model.Kit, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-
-                    @Html.Action("_ProductKitCombobox")
-                    @Html.Hidden("ProductKit")
-
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.Discontinued, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.CheckBoxFor(m => m.Discontinued, new { @id = "chkdis", @class = "form-control" })
-
-                    @Html.ValidationMessageFor(model => model.Discontinued)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center" id="dvdisc">
-                @Html.LabelFor(model => model.DiscontDate, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-
-                    @Html.DevExpress().DateEditFor(m => m.DiscontDate,
-                    settings =>
-                    {
-                        settings.Name = "DiscontDate";
-                        settings.Properties.DisplayFormatString = "dd/MM/yyyy";
-                        settings.Date = DateTime.UtcNow;
-                        settings.ClientVisible = true;
-                        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
-                        settings.ControlStyle.CssClass = "form-control";
-                        settings.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
-
-                    }).GetHtml()
-                    @Html.ValidationMessageFor(model => model.DiscontDate)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.ProcessByCase, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.CheckBoxFor(m => m.ProcessByCase, new { @class = "chkprocessby form-control" })
-                    @Html.ValidationMessageFor(model => model.ProcessByCase)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.ProductsPerCase, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.TextBoxFor(m => m.ProductsPerCase, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.ProductsPerCase)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.CasesPerPallet, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.TextBoxFor(m => m.CasesPerPallet, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.CasesPerPallet)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.RequiresBatchNumberOnReceipt, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(m => m.RequiresBatchNumberOnReceipt)
-
-                    @Html.ValidationMessageFor(model => model.RequiresBatchNumberOnReceipt)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.RequiresExpiryDateOnReceipt, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(m => m.RequiresExpiryDateOnReceipt)
-
-                    @Html.ValidationMessageFor(model => model.RequiresExpiryDateOnReceipt)
-                </div>
-            </div>
-
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.Label("Files", htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.Partial("_Uploader")
-                    <br />
-                    <div id="dvfiles">
-                        <strong>Uploaded Files</strong>
-                    </div>
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(m => m.PreferredSupplier, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    <div>
-                        @Html.DropDownListFor(m => m.PreferredSupplier, ViewBag.PreferredSuppliers as SelectList, "Select Preferred Suplier", new { @class = "chosen-select" })
-                    </div>
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(m => m.PalletTypeId, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    <div class="col-12 p-0 mt-1 pull-left">
-                        @Html.DropDownListFor(m => m.PalletTypeId, ViewBag.PalletType as SelectList, "Select Pallet Type", new { @class = "chosen-select" })
-                    </div>
-
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(m => m.DepartmentId, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    <div class="col-11 p-0 mt-1 pull-left">
-                        @Html.DropDownListFor(m => m.DepartmentId, ViewBag.Departments as SelectList, new { @id = "drpPD", @class = "chosen-select" })
-                    </div>
-                    <div class="col-1 p-0 pull-left">
-                        <input type="button" onclick="javascript: pcModalproductcategory.Show();" id="ProdDepartmentAdd" class="btn btn-primary" value="+">
-                    </div>
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(m => m.ProductGroupId, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    <div class="col-11 p-0 mt-1 pull-left">
-                        @Html.DropDownListFor(m => m.ProductGroupId, ViewBag.Groups as SelectList, "Select Product Group", new { @id = "drpPG", @class = "chosen-select" })
-                    </div>
-                    <div class="col-1 p-0 pull-left">
-                        <input type="button" onclick="showproductgrouppopup()" id="ProdGroupAdd" class="btn btn-primary" value="+">
-                    </div>
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.Label("Product Locations", htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    <div class="col-11 p-0 mt-1 pull-left">
-                        @Html.ListBox("ProductLocationIds", new MultiSelectList(ViewBag.ProductLocations, "LocationId", "LocationCode"), new { Multiple = "multiple", size = "5", @class = "chosen-select", data_placeholder = "Choose Locations" })
-                    </div>
-                    <div class="col-1 p-0 pull-left">
-                        <input type="button" onclick="javascript: pcModalLocations.Show();" id="ProdLocationAdd" class="btn btn-primary" value="+">
-                    </div>
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.Label("Product Attributes", htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    <div class="col-11 p-0 mt-1 pull-left">
-                        @Html.ListBox("ProductAttributesIds", new MultiSelectList(ViewBag.Attributes, "Id", "Value", "Attribute"), new { @include_group_label_in_selected = "true", @class = "chosen-select", Multiple = "multiple", size = "5", data_placeholder = "Choose Attributes" })
-                    </div>
-                    <div class="col-1 p-0 pull-left">
-                        <input type="button" onclick="javascript: pcModalAttributesValues.Show();" id="ProdAttributeAdd" class="btn btn-primary" value="+">
-                    </div>
-
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.Label("Product Accounts", htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    <div class="col-11 p-0 mt-1 pull-left">
-                        @Html.ListBox("ProductAccountCodeIds", new MultiSelectList(ViewBag.Accounts, "accountid", "account"), new { Multiple = "multiple", size = "5", @class = "chosen-select", data_placeholder = "Choose Account Codes" })
-                    </div>
-                    <div class="col-1 p-0 pull-left">
-                        <input type="button" onclick="javascript: pcModalproductaccount.Show();" id="ProdCategoryAdd" class="btn btn-primary" value="+">
-                    </div>
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                <div class="col-md-offset-2 col-md-12 bottom-right">
-                    <input type="submit" value="Save" class="btn btn-primary" />
-                    @if (ViewBag.back == 1)
-                    {
-                        <div class="btn btn-primary"> @Html.ActionLink("Cancel", "Edit", new { @id = Session["pId"] })</div>
-                    }
-                    else
-                    {
-                        <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
-                    }
-                </div>
-            </div>
-
-
         </div>
+        <div class="input-group h-100 justify-content-center align-items-center" style="visibility:hidden" id="divTaxEnable">
+            @Html.LabelFor(model => model.TaxID, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownList("TaxID", null, String.Empty, new { @class = "chosen-select" })
+                @Html.ValidationMessageFor(model => model.TaxID)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.EnableWarranty, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.EnableWarranty)
+                @Html.ValidationMessageFor(model => model.EnableWarranty)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.PercentMargin, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.PercentMargin)
+                @Html.ValidationMessageFor(model => model.PercentMargin)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.MinThresholdPrice, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.MinThresholdPrice)
+                @Html.ValidationMessageFor(model => model.MinThresholdPrice)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.IsActive)
+                @Html.ValidationMessageFor(model => model.IsActive)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.AllowZeroSale, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.AllowZeroSale)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.AllowModifyPrice, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.AllowModifyPrice)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ProdStartDate, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DevExpress().DateEditFor(m => m.ProdStartDate,
+                settings =>
+                {
+                    settings.Name = "ProdStartDate";
+                    settings.Properties.DisplayFormatString = "D";
+                    settings.Date = DateTime.Today;
+                    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                    settings.ControlStyle.CssClass = "form-control";
+                    settings.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
+                }
+                ).Bind(DateTime.UtcNow).GetHtml()
+                @Html.ValidationMessageFor(model => model.ProdStartDate)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(m => m.BuyPrice, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DevExpress().SpinEditFor(m => m.BuyPrice,
+                settings =>
+                {
+                    settings.Name = "BuyPrice";
+                    settings.ClientVisible = true;
+                    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                    settings.ControlStyle.CssClass = "form-control";
+                }
+                ).GetHtml()
+                @Html.ValidationMessageFor(model => model.BuyPrice)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(m => m.LandedCost, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DevExpress().SpinEditFor(m => m.LandedCost,
+                settings =>
+                {
+                    settings.Name = "LandedCost";
+                    settings.ClientVisible = true;
+                    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                    settings.ControlStyle.CssClass = "form-control";
+                }
+                ).GetHtml()
+                @Html.ValidationMessageFor(model => model.LandedCost)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(m => m.SellPrice, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DevExpress().SpinEditFor(m => m.SellPrice,
+                settings =>
+                {
+                    settings.Name = "SellPrice";
+                    settings.ClientVisible = true;
+                    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                    settings.ControlStyle.CssClass = "form-control";
+                }
+                ).GetHtml()
+                @Html.ValidationMessageFor(model => model.SellPrice)
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(m => m.NominalCode, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DevExpress().SpinEditFor(m => m.NominalCode,
+                settings =>
+                {
+                    settings.Name = "NominalCode";
+                    settings.ClientVisible = true;
+                    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                    settings.ControlStyle.CssClass = "form-control";
+                }
+                ).GetHtml()
+                @Html.ValidationMessageFor(model => model.NominalCode)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.Kit, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.CheckBoxFor(m => m.Kit, new { @id = "chkkit", @class = "form-control" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center" id="dvkit">
+            @Html.LabelFor(model => model.Kit, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+
+                @Html.Action("_ProductKitCombobox")
+                @Html.Hidden("ProductKit")
+
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.Discontinued, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.CheckBoxFor(m => m.Discontinued, new { @id = "chkdis", @class = "form-control" })
+
+                @Html.ValidationMessageFor(model => model.Discontinued)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center" id="dvdisc">
+            @Html.LabelFor(model => model.DiscontDate, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+
+                @Html.DevExpress().DateEditFor(m => m.DiscontDate,
+                settings =>
+                {
+                    settings.Name = "DiscontDate";
+                    settings.Properties.DisplayFormatString = "dd/MM/yyyy";
+                    settings.Date = DateTime.UtcNow;
+                    settings.ClientVisible = true;
+                    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                    settings.ControlStyle.CssClass = "form-control";
+                    settings.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
+
+                }).GetHtml()
+                @Html.ValidationMessageFor(model => model.DiscontDate)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ProcessByCase, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.CheckBoxFor(m => m.ProcessByCase, new { @class = "chkprocessby form-control" })
+                @Html.ValidationMessageFor(model => model.ProcessByCase)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ProductsPerCase, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(m => m.ProductsPerCase, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ProductsPerCase)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.CasesPerPallet, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(m => m.CasesPerPallet, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CasesPerPallet)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.RequiresBatchNumberOnReceipt, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(m => m.RequiresBatchNumberOnReceipt)
+
+                @Html.ValidationMessageFor(model => model.RequiresBatchNumberOnReceipt)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.RequiresExpiryDateOnReceipt, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(m => m.RequiresExpiryDateOnReceipt)
+
+                @Html.ValidationMessageFor(model => model.RequiresExpiryDateOnReceipt)
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Files", htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.Partial("_Uploader")
+                <br />
+                <div id="dvfiles">
+                    <strong>Uploaded Files</strong>
+                </div>
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(m => m.PreferredSupplier, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                <div>
+                    @Html.DropDownListFor(m => m.PreferredSupplier, ViewBag.PreferredSuppliers as SelectList, "Select Preferred Suplier", new { @class = "chosen-select" })
+                </div>
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(m => m.PalletTypeId, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                <div class="col-12 p-0 mt-1 pull-left">
+                    @Html.DropDownListFor(m => m.PalletTypeId, ViewBag.PalletType as SelectList, "Select Pallet Type", new { @class = "chosen-select" })
+                </div>
+
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(m => m.DepartmentId, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                <div class="col-11 p-0 mt-1 pull-left">
+                    @Html.DropDownListFor(m => m.DepartmentId, ViewBag.Departments as SelectList, new { @id = "drpPD", @class = "chosen-select" })
+                </div>
+                <div class="col-1 p-0 pull-left">
+                    <input type="button" onclick="javascript: pcModalproductcategory.Show();" id="ProdDepartmentAdd" class="btn btn-primary" value="+">
+                </div>
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(m => m.ProductGroupId, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                <div class="col-11 p-0 mt-1 pull-left">
+                    @Html.DropDownListFor(m => m.ProductGroupId, ViewBag.Groups as SelectList, "Select Product Group", new { @id = "drpPG", @class = "chosen-select" })
+                </div>
+                <div class="col-1 p-0 pull-left">
+                    <input type="button" onclick="showproductgrouppopup()" id="ProdGroupAdd" class="btn btn-primary" value="+">
+                </div>
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Product Locations", htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                <div class="col-11 p-0 mt-1 pull-left">
+                    @Html.ListBox("ProductLocationIds", new MultiSelectList(ViewBag.ProductLocations, "LocationId", "LocationCode"), new { Multiple = "multiple", size = "5", @class = "chosen-select", data_placeholder = "Choose Locations" })
+                </div>
+                <div class="col-1 p-0 pull-left">
+                    <input type="button" onclick="javascript: pcModalLocations.Show();" id="ProdLocationAdd" class="btn btn-primary" value="+">
+                </div>
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Product Attributes", htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                <div class="col-11 p-0 mt-1 pull-left">
+                    @Html.ListBox("ProductAttributesIds", new MultiSelectList(ViewBag.Attributes, "Id", "Value", "Attribute"), new { @include_group_label_in_selected = "true", @class = "chosen-select", Multiple = "multiple", size = "5", data_placeholder = "Choose Attributes" })
+                </div>
+                <div class="col-1 p-0 pull-left">
+                    <input type="button" onclick="javascript: pcModalAttributesValues.Show();" id="ProdAttributeAdd" class="btn btn-primary" value="+">
+                </div>
+
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Product Accounts", htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                <div class="col-11 p-0 mt-1 pull-left">
+                    @Html.ListBox("ProductAccountCodeIds", new MultiSelectList(ViewBag.Accounts, "accountid", "account"), new { Multiple = "multiple", size = "5", @class = "chosen-select", data_placeholder = "Choose Account Codes" })
+                </div>
+                <div class="col-1 p-0 pull-left">
+                    <input type="button" onclick="javascript: pcModalproductaccount.Show();" id="ProdCategoryAdd" class="btn btn-primary" value="+">
+                </div>
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <div class="col-md-offset-2 col-md-12 bottom-right">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                @if (ViewBag.back == 1)
+                {
+                    <div class="btn btn-primary"> @Html.ActionLink("Cancel", "Edit", new { @id = Session["pId"] })</div>
+                }
+                else
+                {
+                    <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+                }
+            </div>
+        </div>
+
+
+    </div>
 
 
 

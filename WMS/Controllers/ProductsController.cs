@@ -85,7 +85,7 @@ namespace WMS.Controllers
             ViewBag.ProductLocations = _productLookupService.GetAllValidProductLocations(CurrentTenantId, CurrentWarehouseId);
             ViewBag.WebsiteIds = WebSites;
             ViewBag.SKUCode = id;
-
+            ViewBag.Manufacturer= new SelectList(_lookupServices.GetAllValidProductManufacturer(CurrentTenantId), "Id", "Name");
             ViewBag.Accounts = new List<ProductAccountCodes>();
             ViewBag.ProductPrices = new List<string>();
             ViewBag.Attributes = _productLookupService.GetAllValidProductAttributeValues().Select(patr => new
@@ -137,7 +137,7 @@ namespace WMS.Controllers
             ViewBag.Groups = new SelectList(_lookupServices.GetAllValidProductGroups(CurrentTenantId), "ProductGroupId", "ProductGroup");
             ViewBag.PalletType = new SelectList(_lookupServices.GetAllValidPalletTypes(CurrentTenantId), "PalletTypeId", "Description", productMaster.PalletTypeId);
             ViewBag.Departments = new SelectList(_lookupServices.GetAllValidTenantDepartments(CurrentTenantId), "DepartmentId", "DepartmentName");
-
+            ViewBag.Manufacturer = new SelectList(_lookupServices.GetAllValidProductManufacturer(CurrentTenantId), "Id", "Name",productMaster.ManufacturerId);
             ViewBag.Accounts = _accountServices.GetAllValidProductAccountCodes(id.Value).Select(o =>
             {
 
@@ -907,10 +907,18 @@ namespace WMS.Controllers
             return View();
         }
 
-        public ActionResult SaveProductFiles(ProductFiles productFiles)
+        public ActionResult SaveProductFiles(int Id, short? SortOrder, bool? DefaultImage, bool? HoverImage, bool? IsDeleted)
         {
+            var productFiles = _productServices.GetProductFilesById(Id);
+            if (productFiles != null)
+            {
+                productFiles.SortOrder = SortOrder.HasValue ? SortOrder.Value : productFiles.SortOrder;
+                productFiles.DefaultImage = DefaultImage.HasValue ? DefaultImage.Value : productFiles.DefaultImage;
+                productFiles.HoverImage = HoverImage.HasValue ? HoverImage.Value : productFiles.HoverImage;
+                productFiles.IsDeleted = IsDeleted.HasValue ? IsDeleted.Value : productFiles.IsDeleted;
+            }
             int productId = _productServices.EditProductFile(productFiles, CurrentTenantId, CurrentUserId);
-            var productFile = _productServices.GetProductFiles(productId, CurrentTenantId).ToList();
+
             return _ProductDocumentsDetails(productId);
         }
 

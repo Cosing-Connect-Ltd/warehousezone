@@ -105,6 +105,7 @@ namespace Ganedata.Core.Services
         int EditProductFile(ProductFiles productFiles, int tenantId, int userId);
         void RemoveFile(int ProductId, int tenantId, int userId, string filePath);
         IEnumerable<ProductFiles> GetProductFiles(int ProductId, int tenantId, bool sort = false);
+        ProductFiles GetProductFilesById(int Id);
         bool SyncDate(int palletTrackingId);
 
         bool UpdateDontMonitorStockFlagForLocationproducts(int currentTenantId);
