@@ -2,7 +2,7 @@
 
 
 
-<div class="sticky-header">
+<div id="top-header" class="sticky-header">
     <header class="custom-header-container">
         <div class="container custom-container">
             <div class="row header-row">
@@ -103,7 +103,7 @@
                                 </svg>
                                 <span id="cart-total">@(ViewBag.CartItemCount == 0 ? 0 : ViewBag.CartItemCount)</span>
                             </a>
-                            <ul class="dropdown-menu  cart-menu-height" style="overflow:auto">
+                            <ul id="cart-dropdown-menu" class="dropdown-menu  cart-menu-height" style="overflow:auto">
                                 @if (ViewBag.CartItemCount != 0)
                                 {
                                     <li>
@@ -153,5 +153,28 @@
     </header>
     @Html.Action("_HorizontalNavbarPartial", "Home")
 </div>
+<script src="~/Areas/Shop/Scripts/javascript-searchproduct.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $("#cart").hover(function () {
+            $('#cart').addClass('open');
+        });
+        $("#cart").mouseleave(function () {
+            $('#cart').removeClass('open');
+        });
+        $("#cart").click(function () {
+            location.href = basePath + '/Shop/Products/AddToCart';
+        });
+        $("#user_menue").hover(function () {
+            $('#user_menue').addClass('open');
+        });
+        $("#user_menue").mouseleave(function () {
+            $('#user_menue').removeClass('open');
+        });
+
+    });
+
+    </script>
 
 

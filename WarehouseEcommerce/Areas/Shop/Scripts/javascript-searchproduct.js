@@ -161,6 +161,7 @@ function CartItemCount() {
             alert('Error' + textStatus + "/" + errorThrown);
         }
     });
+    $('#top-header').load(basePath + "/shop/Home/_TopHeaderPartial");
 }
 
 function ConfirmOrder() {
