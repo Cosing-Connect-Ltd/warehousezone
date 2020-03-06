@@ -29,8 +29,8 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         string PAYPAL_URL = System.Configuration.ConfigurationManager.AppSettings["PAYPAL_URL"] != null
                                         ? System.Configuration.ConfigurationManager.AppSettings["PAYPAL_URL"] : "";
 
-        public OrdersController(IProductServices productServices, IProductLookupService productlookupServices, IProductPriceService productPriceService, ICommonDbServices commonDbServices, ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IUserService userService, IActivityServices activityServices, ITenantsServices tenantServices,IMapper mapper, IGaneConfigurationsHelper configurationsHelper)
-            : base(orderService, propertyService, accountServices, lookupServices,tenantsCurrencyRateServices)
+        public OrdersController(IProductServices productServices, IProductLookupService productlookupServices, IProductPriceService productPriceService, ICommonDbServices commonDbServices, ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IUserService userService, IActivityServices activityServices, ITenantsServices tenantServices, IMapper mapper, IGaneConfigurationsHelper configurationsHelper)
+            : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices)
         {
             _userService = userService;
             _activityServices = activityServices;
@@ -61,7 +61,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
 
                 ViewBag.cart = true;
                 ViewBag.AccountIds = CurrentUser?.AccountId;
-                AccountId=caCurrent.CurrentWebsiteUser().AccountId;
+                AccountId = caCurrent.CurrentWebsiteUser().AccountId;
                 ViewBag.Country = new SelectList(_lookupServices.GetAllGlobalCountries(), "CountryID", "CountryName");
                 if (!ShipingAddress.HasValue || ShipingAddress == false)
                 {
@@ -71,7 +71,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                         var model = AccountServices.GetAccountAddressById(AccountAddressId ?? 0);
                         return View(model);
                     }
-                    var billingAddress = AccountServices.GetAllValidAccountAddressesByAccountId(AccountId??0).Where(u => u.AddTypeBilling == true).ToList();
+                    var billingAddress = AccountServices.GetAllValidAccountAddressesByAccountId(AccountId ?? 0).Where(u => u.AddTypeBilling == true).ToList();
                     if (billingAddress.Count > 0)
                     {
                         ViewBag.BillingAddress = true;
@@ -90,7 +90,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                         ViewBag.Shiping = true;
                         return View(model);
                     }
-                    ViewBag.Addresses = AccountServices.GetAllValidAccountAddressesByAccountId(AccountId??0).Where(u => u.AddTypeShipping == true).ToList();
+                    ViewBag.Addresses = AccountServices.GetAllValidAccountAddressesByAccountId(AccountId ?? 0).Where(u => u.AddTypeShipping == true).ToList();
                     ViewBag.AddressMessage = "Shipping Address";
                     ViewBag.Shiping = true;
 
@@ -114,7 +114,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             accountAddresses.Name = "Ecommerce";
             if (accountAddresses.AccountID <= 0)
             {
-                accountAddresses.AccountID = caCurrent.CurrentWebsiteUser().AccountId??0;
+                accountAddresses.AccountID = caCurrent.CurrentWebsiteUser().AccountId ?? 0;
             }
             AccountServices.SaveAccountAddress(accountAddresses, CurrentUserId == 0 ? 1 : CurrentUserId);
 
@@ -128,8 +128,9 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             return RedirectToAction("GetAddress", new { AccountId = accountAddresses.AccountID, ShipingAddress = (accountAddresses.AddTypeBilling != null ? false : true) });
         }
 
-        public ActionResult ConfirmOrder(int accountId, int AccountAddressId,int ShippmentTypeId)
+        public ActionResult ConfirmOrder(int accountId, int AccountAddressId, int ShippmentTypeId)
         {
+            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.cart = true;
             ViewBag.CartModal = true;
             List<AccountAddresses> accountAddresses = new List<AccountAddresses>();
@@ -137,8 +138,9 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             accountAddresses.Add(AccountServices.GetAllValidAccountAddressesByAccountId(accountId).FirstOrDefault(u => u.AddTypeBilling == true));
             ViewBag.Addresses = accountAddresses;
             var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
-            var orders= OrderService.CreateShopOrder(accountAddresses.FirstOrDefault().AccountID, _mapper.Map(models, new List<OrderDetail>()),1,1,1);
-            ViewBag.TotalQty = models.Sum(u => u.TotalAmount);
+            var orders = OrderService.CreateShopOrder(accountAddresses.FirstOrDefault().AccountID, _mapper.Map(models, new List<OrderDetail>()), 1, 1, 1);
+            ViewBag.TotalQty = Math.Round(((models.Sum(u => u.TotalAmount)) * (currencyyDetail.Rate ?? 1)), 2);
+            ViewBag.Symbol = currencyyDetail.Symbol;
             ViewBag.ShipmentMethod = ShippmentTypeId;
             ViewBag.RetUrl = PAYPAL_RET_URL;
             ViewBag.PAYPALURL = PAYPAL_URL;
@@ -146,13 +148,13 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             return View(models);
         }
 
-       
+
 
         public ActionResult AddShippingMethod(int AccountAddressId)
         {
             ViewBag.cart = true;
             ViewBag.AccountAddressId = AccountAddressId;
-          
+
             return View();
         }
 

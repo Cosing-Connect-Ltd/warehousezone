@@ -132,9 +132,10 @@
                             {
                                 <label> Total Quantity: @(Model == null ? 0 : Model.ToList().Count) </label>
                             }
+                            <br />
                             @if (ViewBag.TotalQty != null && (int)ViewBag.TotalQty > 0)
                             {
-                                <label> Total: @(ViewBag.TotalQty == null ? 0 : ViewBag.TotalQty) </label>
+                                <label> Total: @ViewBag.Symbol @(ViewBag.TotalQty == null ? 0 : ViewBag.TotalQty) </label>
                             }
                         </div>
 
