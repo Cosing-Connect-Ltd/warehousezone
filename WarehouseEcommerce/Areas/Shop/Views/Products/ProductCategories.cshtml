@@ -150,7 +150,7 @@
                             <div class="product-thumb transition">
                                 <div class="image">
                                     <a href="@Url.Action("ProductDetails","Products", new {productId = item.ProductId})"><img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@item.Name" class="img-responsive center-block" /></a>
-                                    <a href="@Url.Action("ProductDetails", "Products", new { productId = item.ProductId })"><img src="@(!string.IsNullOrEmpty(item.HoverImage) ? ViewBag.BaseFilePath +item.HoverImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive second-img" alt="hover image" /></a>
+                                    <a href="@Url.Action("ProductDetails", "Products", new { productId = item.ProductId })"><img src="@(!string.IsNullOrEmpty(item.HoverImage) ? ViewBag.BaseFilePath +item.HoverImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive second-img" alt="@item.Name" /></a>
                                     <span class="salep">sale</span>
                                     <div class="topbutton">
                                         <button type="button" data-toggle="tooltip" title="Add to Wish List">
