@@ -50,6 +50,7 @@
         @using (Html.BeginForm("Edit", "TenantDepartment"))
         {
             @Html.HiddenFor(model => model.DepartmentId)
+            @Html.HiddenFor(model=>model.DepartmentId, htmlAttributes : new { @id = "Id" })
             @Html.AntiForgeryToken()
 
             <div class="form-horizontal">

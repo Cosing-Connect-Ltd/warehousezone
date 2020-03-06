@@ -87,12 +87,13 @@ function _RemoveProofOfDeliveryFile(filename) {
     var department = $("#TenantDepartment").val();
     var productGroup = $("#productGroup").val();
     var Maufacturer = $("#ProductManufacturer").val();
+    var id = $("#Id").val();
     $('#dvbusy').show();
     $.ajax({
         type: "POST",
         url: "/Pallets/_RemoveProofOfDeliveryFile",
         data: {
-            "filename": filename, "tenantDepartment": department, "TenantGroup": productGroup, "Maufacturer": Maufacturer
+            "filename": filename, "tenantDepartment": department, "TenantGroup": productGroup, "Maufacturer": Maufacturer,"Id":id
         },
         success: function (files) {
             $("#dvbusy").hide();

@@ -22,6 +22,9 @@ namespace WMS.Controllers
         private readonly IGaneConfigurationsHelper _helper;
         private readonly ITenantsServices _tenantServices;
         private string _uploadDirectory = "~/UploadedFiles/Pallets/";
+        string UploadProductManufacturerDirectory = "~/UploadedFiles/ProductManufacturers/";
+        string UploadTenantDepartmentDirectory = "~/UploadedFiles/TenantDepartment/";
+        string UploadProductGroupsDirectory = "~/UploadedFiles/ProductGroups/";
         public PalletsController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITenantsServices tenantsServices, IPalletingService palletingService, IMarketServices marketServices, IEmployeeServices employeeServices, IGaneConfigurationsHelper helper) : base(orderService, propertyService, accountServices, lookupServices)
         {
             _palletingService = palletingService;
@@ -446,13 +449,26 @@ namespace WMS.Controllers
 
         }
 
-        public JsonResult _RemoveProofOfDeliveryFile(string filename, bool tenantDepartment = false, bool TenantGroup = false, bool Maufacturer=false)
+        public JsonResult _RemoveProofOfDeliveryFile(string filename, bool tenantDepartment = false, bool TenantGroup = false, bool Maufacturer=false,int?Id=null)
         {
             if (tenantDepartment)
             {
                 var files = Session["UploadTenantDepartmentImage"] as List<string>;
                 var filetoremove = files.FirstOrDefault(a => a == filename);
                 files.Remove(filetoremove);
+                if (Request.UrlReferrer.AbsolutePath.Contains("Edit"))
+                {
+                    string FilePath = Server.MapPath(UploadTenantDepartmentDirectory.Replace("~", "") + Id.ToString() + "/" + filename);
+                    if (System.IO.File.Exists(FilePath))
+                    {
+                        System.IO.File.Delete(FilePath);
+                    }
+                    //System.IO.File.Delete(Server.MapPath(UploadDirectory + Session["pId"].ToString() + "/" + filename));
+                }
+                else
+                {
+                    System.IO.File.Delete(Server.MapPath(UploadTenantDepartmentDirectory + "TempFiles" + "/" + filename));
+                }
                 if (files.Count <= 0)
                 {
                     Session["UploadTenantDepartmentImage"] = null;
@@ -465,6 +481,19 @@ namespace WMS.Controllers
                 var files = Session["uploadProductGroup"] as List<string>;
                 var filetoremove = files.FirstOrDefault(a => a == filename);
                 files.Remove(filetoremove);
+                if (Request.UrlReferrer.AbsolutePath.Contains("Edit"))
+                {
+                    string FilePath = Server.MapPath(UploadProductGroupsDirectory.Replace("~", "") + Id.ToString() + "/" + filename);
+                    if (System.IO.File.Exists(FilePath))
+                    {
+                        System.IO.File.Delete(FilePath);
+                    }
+                    //System.IO.File.Delete(Server.MapPath(UploadDirectory + Session["pId"].ToString() + "/" + filename));
+                }
+                else
+                {
+                    System.IO.File.Delete(Server.MapPath(UploadProductGroupsDirectory + "TempFiles" + "/" + filename));
+                }
                 if (files.Count <= 0)
                 {
                     Session["uploadProductGroup"] = null;
@@ -477,6 +506,19 @@ namespace WMS.Controllers
                 var files = Session["UploadProductManufacturerImage"] as List<string>;
                 var filetoremove = files.FirstOrDefault(a => a == filename);
                 files.Remove(filetoremove);
+                if (Request.UrlReferrer.AbsolutePath.Contains("Edit"))
+                {
+                    string FilePath = Server.MapPath(UploadProductManufacturerDirectory.Replace("~", "") + Id.ToString() + "/" + filename);
+                    if (System.IO.File.Exists(FilePath))
+                    {
+                        System.IO.File.Delete(FilePath);
+                    }
+                    //System.IO.File.Delete(Server.MapPath(UploadDirectory + Session["pId"].ToString() + "/" + filename));
+                }
+                else
+                {
+                    System.IO.File.Delete(Server.MapPath(UploadProductManufacturerDirectory + "TempFiles" + "/" + filename));
+                }
                 if (files.Count <= 0)
                 {
                     Session["UploadProductManufacturerImage"] = null;

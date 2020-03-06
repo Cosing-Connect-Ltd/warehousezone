@@ -173,9 +173,7 @@ namespace WMS.Controllers
 
             foreach (var file in UploadControl)
             {
-                var fileToken = Guid.NewGuid().ToString();
-                var ext = new FileInfo(file.FileName).Extension;
-                var fileName = fileToken + ext;
+                SaveFile(file);
                 files.Add(file.FileName);
             }
             Session["uploadProductGroup"] = files;
@@ -187,11 +185,22 @@ namespace WMS.Controllers
             Session["uploadProductGroup"] = null;
             if (!Directory.Exists(Server.MapPath(UploadDirectory + ProductGroupId.ToString())))
                 Directory.CreateDirectory(Server.MapPath(UploadDirectory + ProductGroupId.ToString()));
-            string resFileName = Server.MapPath(UploadDirectory + ProductGroupId.ToString() + @"/" + FileName);
-            file.SaveAs(resFileName);
-            return UploadDirectory.Replace("~", "") + ProductGroupId.ToString() + @"/" + FileName;
-        }
 
+            string sourceFile = Server.MapPath(UploadTempDirectory + @"/" + FileName);
+            string destFile = Server.MapPath(UploadDirectory + ProductGroupId.ToString() + @"/" + FileName);
+            if (!System.IO.File.Exists(destFile))
+            {
+                System.IO.File.Move(sourceFile, destFile);
+            }
+            return (UploadDirectory.Replace("~", "") + ProductGroupId.ToString() + @"/" + FileName);
+        }
+        private void SaveFile(DevExpress.Web.UploadedFile file)
+        {
+            if (!Directory.Exists(Server.MapPath(UploadTempDirectory)))
+                Directory.CreateDirectory(Server.MapPath(UploadTempDirectory));
+            string resFileName = Server.MapPath(UploadTempDirectory + @"/" + file.FileName);
+            file.SaveAs(resFileName);
+        }
         protected override void Initialize(RequestContext requestContext)
         {
             var binder = (DevExpressEditorsBinder)ModelBinders.Binders.DefaultBinder;

@@ -20,6 +20,7 @@ namespace WMS.Controllers
         private readonly IProductLookupService _productLookupService;
         private readonly ILookupServices _LookupService;
         string UploadDirectory = "~/UploadedFiles/ProductManufacturers/";
+        string UploadTempDirectory = "~/UploadedFiles/ProductManufacturers/TempFiles/";
         public ProductManufacturersController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IProductLookupService productLookupService)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
@@ -96,6 +97,7 @@ namespace WMS.Controllers
         public ActionResult Edit(int? id)
         {
             ViewBag.ControllerName = "ProductManufacturers";
+       
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -113,6 +115,7 @@ namespace WMS.Controllers
                 files.Add(dInfo.Name);
                 Session["UploadProductManufacturerImage"] = files;
                 ViewBag.Files = files;
+               
             }
             return View(productManufacturer);
         }
@@ -179,23 +182,34 @@ namespace WMS.Controllers
 
             foreach (var file in UploadControl)
             {
-                var fileToken = Guid.NewGuid().ToString();
-                var ext = new FileInfo(file.FileName).Extension;
-                var fileName = fileToken + ext;
+                SaveFile(file);
                 files.Add(file.FileName);
+                
             }
             Session["UploadProductManufacturerImage"] = files;
 
             return Content("true");
+        }
+        private void SaveFile(DevExpress.Web.UploadedFile file)
+        {
+            if (!Directory.Exists(Server.MapPath(UploadTempDirectory)))
+                Directory.CreateDirectory(Server.MapPath(UploadTempDirectory));
+            string resFileName = Server.MapPath(UploadTempDirectory + @"/" + file.FileName);
+            file.SaveAs(resFileName);
         }
         private string MoveFile(DevExpress.Web.UploadedFile file, string FileName, int ProductmanuId)
         {
             Session["UploadProductManufacturerImage"] = null;
             if (!Directory.Exists(Server.MapPath(UploadDirectory + ProductmanuId.ToString())))
                 Directory.CreateDirectory(Server.MapPath(UploadDirectory + ProductmanuId.ToString()));
-            string resFileName = Server.MapPath(UploadDirectory + ProductmanuId.ToString() + @"/" + FileName);
-            file.SaveAs(resFileName);
-            return UploadDirectory.Replace("~", "") + ProductmanuId.ToString() + @"/" + FileName;
+
+            string sourceFile = Server.MapPath(UploadTempDirectory + @"/" + FileName);
+            string destFile = Server.MapPath(UploadDirectory + ProductmanuId.ToString() + @"/" +FileName);
+            if (!System.IO.File.Exists(destFile))
+            {
+                System.IO.File.Move(sourceFile, destFile);
+            }
+            return (UploadDirectory.Replace("~", "") + ProductmanuId.ToString() + @"/" + FileName);
         }
         protected override void Initialize(RequestContext requestContext)
         {

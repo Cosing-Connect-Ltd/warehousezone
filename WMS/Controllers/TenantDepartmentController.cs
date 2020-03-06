@@ -21,6 +21,7 @@ namespace WMS.Controllers
         private readonly IProductLookupService _productLookupService;
         private readonly ILookupServices _LookupService;
         string UploadDirectory = "~/UploadedFiles/TenantDepartment/";
+        string UploadTempDirectory = "~/UploadedFiles/TenantDepartment/TempFiles/";
 
         public TenantDepartmentController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IProductLookupService productLookupService)
             : base(orderService, propertyService, accountServices, lookupServices)
@@ -115,6 +116,7 @@ namespace WMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+          
             ViewBag.ControllerName = "TenantDepartment";
             TenantDepartments tenantDepartments = _LookupService.GetTenantDepartmentById(id ?? 0);
             var accounts = AccountServices.GetAllValidAccounts(CurrentTenantId).Select(acnts => new
@@ -145,7 +147,7 @@ namespace WMS.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "DepartmentId,DepartmentName,TenantId,AccountID,DateCreated,DateUpdated,CreatedBy,UpdatedBy,IsDeleted")] TenantDepartments tenantDepartments, DevExpress.Web.UploadedFile UploadControl)
+        public ActionResult Edit([Bind(Include = "DepartmentId,DepartmentName,TenantId,AccountID,DateCreated,DateUpdated,CreatedBy,UpdatedBy,IsDeleted")] TenantDepartments tenantDepartments, IEnumerable <DevExpress.Web.UploadedFile> UploadControl)
         {
             if (ModelState.IsValid)
             {
@@ -159,7 +161,7 @@ namespace WMS.Controllers
                 {
                     if (UploadControl != null)
                     {
-                        filePath = MoveFile(UploadControl, filesName.FirstOrDefault(), tenantDepartments.DepartmentId);
+                        filePath = MoveFile(UploadControl.FirstOrDefault(), filesName.FirstOrDefault(), tenantDepartments.DepartmentId);
                         tenantDepartments.ImagePath = filePath;
                     }
 
@@ -213,23 +215,36 @@ namespace WMS.Controllers
 
             foreach (var file in UploadControl)
             {
-                var fileToken = Guid.NewGuid().ToString();
-                var ext = new FileInfo(file.FileName).Extension;
-                var fileName = fileToken + ext;
-                files.Add(file.FileName);
+               
+                    SaveFile(file);
+                    files.Add(file.FileName);
+                
             }
             Session["UploadTenantDepartmentImage"] = files;
 
             return Content("true");
         }
-        private string MoveFile(DevExpress.Web.UploadedFile file, string FileName, int ProductGroupId)
+        private void SaveFile(DevExpress.Web.UploadedFile file)
+        {
+            if (!Directory.Exists(Server.MapPath(UploadTempDirectory)))
+                Directory.CreateDirectory(Server.MapPath(UploadTempDirectory));
+            string resFileName = Server.MapPath(UploadTempDirectory + @"/" + file.FileName);
+            file.SaveAs(resFileName);
+        }
+       
+        private string MoveFile(DevExpress.Web.UploadedFile file, string FileName, int ProductmanuId)
         {
             Session["UploadTenantDepartmentImage"] = null;
-            if (!Directory.Exists(Server.MapPath(UploadDirectory + ProductGroupId.ToString())))
-                Directory.CreateDirectory(Server.MapPath(UploadDirectory + ProductGroupId.ToString()));
-            string resFileName = Server.MapPath(UploadDirectory + ProductGroupId.ToString() + @"/" + FileName);
-            file.SaveAs(resFileName);
-            return UploadDirectory.Replace("~", "") + ProductGroupId.ToString() + @"/" + FileName;
+            if (!Directory.Exists(Server.MapPath(UploadDirectory + ProductmanuId.ToString())))
+                Directory.CreateDirectory(Server.MapPath(UploadDirectory + ProductmanuId.ToString()));
+
+            string sourceFile = Server.MapPath(UploadTempDirectory + @"/" + FileName);
+            string destFile = Server.MapPath(UploadDirectory + ProductmanuId.ToString() + @"/" + FileName);
+            if (!System.IO.File.Exists(destFile))
+            {
+                System.IO.File.Move(sourceFile, destFile);
+            }
+            return (UploadDirectory.Replace("~", "") + ProductmanuId.ToString() + @"/" + FileName);
         }
         protected override void Initialize(RequestContext requestContext)
         {

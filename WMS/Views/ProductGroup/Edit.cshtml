@@ -60,7 +60,7 @@
 
                 @Html.ValidationSummary(true)
                 @Html.HiddenFor(model => model.ProductGroupId)
-
+                @Html.HiddenFor(model => model.ProductGroupId,  htmlAttributes : new { @id = "Id" })
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.LabelFor(model => model.ProductGroup, new { @class = "col-md-4" })
                     <div class="col-md-8">
