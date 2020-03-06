@@ -849,3 +849,18 @@ ul.mhp-menu {
     .ccopy a:hover {
         color: #ffffff;
     }
+.cat-tab .webTab a {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+#cattab {
+    display: flex;
+    flex-wrap: wrap;
+}
+.blue {
+    color: #1455a6;
+}
+#cat_tab a[class*="blue"]::before {
+    content: ''!important;
+    border-right: 2px solid #1455a6!important;
+}

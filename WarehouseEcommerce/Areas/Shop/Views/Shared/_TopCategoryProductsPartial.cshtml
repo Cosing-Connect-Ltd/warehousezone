@@ -1,21 +1,17 @@
 ﻿@using Ganedata.Core.Entities.Domain
-@model IEnumerable<ProductGroups>
+@model IEnumerable<ProductMaster>
 
-@*This h2 tag is just for testing*@
-<h2>Top Category Products Partial view</h2>
 
-<div id="cattab" class="owl-theme owl-carousel">
-    @if (Model != null)
-    {
-        foreach (var item in Model)
+
+    <div id="cattab" class="owl-theme">
+        @if (Model != null)
         {
-            <div class="product-layout col-xs-12">
+            foreach (var item in Model)
+            {
+            <div class="product-layout">
                 <div class="product-thumb transition">
                     <div class="image">
-                        <a href="@Url.Action("_GetProductByGroupsAndDepartment","Home", new { productgroupId= item.ProductGroupId })"><img src="~/Areas/Shop/Content/app/img/product/no_image.gif" alt="@item.ProductGroup" title="@item.ProductGroup" class="img-responsive center-block" /></a>
-                        <!-- Smartshop Images Start -->
-                        <!-- End -->
-                        @*<span class="salep">sale</span>*@
+                        <a href="@Url.Action("ProductDetails","Products", new {productId = item.ProductId})"><img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@item.Name" class="img-responsive center-block" /></a>
                         <div class="topbutton">
                             <button type="button" data-toggle="tooltip" title="Add to Wish List">
                                 <svg width="20px" height="20px">
@@ -33,7 +29,7 @@
                         </div>
                     </div>
                     <div class="cat-caption">
-                        <h4><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home", new { productgroupId= item.ProductGroupId })">@item.ProductGroup</a></h4>
+                        <h4><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home", new { productgroupId= item.ProductGroupId })">@item.Name</a></h4>
                         <div class="rating pull-left">
                             <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
                             <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
@@ -44,12 +40,13 @@
                         @* <p class="pricedis price text-right"><span class="price-new"> $ 200</span> <span class="price-old">$344.00</span></p>*@
                     </div>
                     @*<div class="button-group">
-                            <button type="button" class="acart" onclick="AddToCart()">
-                                <span>Add to Cart</span>
-                            </button>
-                        </div>*@
+                        <button type="button" class="acart" onclick="AddToCart()">
+                            <span>Add to Cart</span>
+                        </button>
+                    </div>*@
                 </div>
             </div>
         }
     }
-</div>
+    </div>
+

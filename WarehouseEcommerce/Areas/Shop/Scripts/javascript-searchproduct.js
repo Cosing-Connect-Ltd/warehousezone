@@ -84,6 +84,8 @@ function getTopCategoryProducts(ProductGroupId) {
         success: function (data) {
             $('#top_category_products').empty();
             $('#top_category_products').html(data);
+            $('li a').removeClass("blue");
+            $("#catID_" + ProductGroupId).addClass("blue");
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert('Error' + textStatus + "/" + errorThrown);
@@ -91,7 +93,6 @@ function getTopCategoryProducts(ProductGroupId) {
     });
 }
 function AddToCart(ProductId) {
-
     var quantity = $(".input-number").val();
     var detail = $(".input-number").data("detail");
     $.ajax({
@@ -111,7 +112,6 @@ function AddToCart(ProductId) {
         }
     });
 }
-
 function RemoveCartItem(id) {
     $.ajax({
         type: "GET",
@@ -209,6 +209,9 @@ $(document).ready(function () {
 
     $(".cash-btn").hide();
     $('#PayPal').prop('checked', true);
+
+    var id = $('#ProductGroupIds').val();
+    getTopCategoryProducts(id);
 });
 
 

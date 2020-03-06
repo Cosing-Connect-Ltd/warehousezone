@@ -174,8 +174,8 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
       
         public ActionResult _TopCategoryProductsPartial(int? ProductGroupId)
         {
-            //var model = _productlookupServices.GetAllValidProductGroupById(ProductGroupId);
-            return PartialView();
+            var model = _productlookupServices.GetAllValidProductGroupById(ProductGroupId).Take(5).ToList();
+            return PartialView(model);
         }
         public ActionResult ReturnPath(int productId, bool status)
         {
