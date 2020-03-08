@@ -40,7 +40,7 @@ namespace Ganedata.Core.Data.Migrations
             //SeedEESmith(context);
             //SeedGaneIntranet(context);
             //SeedTheGelBottle(context);
-            SeedNghAssetTracking(context);
+            //SeedNghAssetTracking(context);
 
 
             //var maxId = 1001;

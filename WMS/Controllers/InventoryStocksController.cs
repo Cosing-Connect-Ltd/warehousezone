@@ -43,6 +43,7 @@ namespace WMS.Controllers
         //stock adjustments controller
         public ActionResult InventoryAdjustments(int id)
         {
+
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
             //if (string.IsNullOrEmpty(id)) return  RedirectToAction("Index", "Products");
@@ -71,6 +72,16 @@ namespace WMS.Controllers
                                                 p.ProductGroup
                                             }, "ProductGroupId", "ProductGroup");
 
+            string referrer = (Request.UrlReferrer != null) ? Request.UrlReferrer.ToString() : "/";
+
+            // route to appropriate controller / action
+            ViewBag.RController = "InventoryStocks";
+
+            if (referrer.Contains("Products"))
+            {
+                ViewBag.RController = "Products";
+            }
+
             return View();
         }
 
@@ -85,7 +96,7 @@ namespace WMS.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult InventoryAdjustments(StockAdjustSerialsRequest model)
+        public ActionResult InventoryAdjustments(StockAdjustSerialsRequest model, string ReturnController = "")
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
@@ -99,6 +110,7 @@ namespace WMS.Controllers
                 return View();
             }
 
+            ViewBag.productId = product.ProductId;
             ViewBag.ProductName = product.Name;
             ViewBag.ProductDescription = product.Description;
             ViewBag.InventoryTransactionTypeId = new SelectList(LookupServices.GetAllInventoryTransactionTypes().Where(e => e.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.AdjustmentIn || e.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.AdjustmentOut), "InventoryTransactionTypeId", "InventoryTransactionTypeName");
@@ -116,6 +128,12 @@ namespace WMS.Controllers
                 return View();
             }
 
+            if (product.Serialisable && (model.SerialItems == null))
+            {
+                ViewBag.Error = "Please specify product serials to continue";
+                return View();
+            }
+
             if (product.Serialisable)
             {
                 var currentQuantity = model.SerialItems.Count;
@@ -123,19 +141,7 @@ namespace WMS.Controllers
 
                 if (productInventory == null)
                 {
-                    ViewBag.Error = $"No inventory stocks found for the product with id {product.NameWithCode} ";
-                    return View();
-                }
-
-                var adjustment = productInventory.InStock - currentQuantity;
-
-                if (adjustment > 0)
-                {
-                    Inventory.StockTransactionApi(productId, (int)InventoryTransactionTypeEnum.AdjustmentOut, adjustment, 0, CurrentTenantId, CurrentWarehouseId, CurrentUserId);
-                }
-                if (adjustment < 0)
-                {
-                    Inventory.StockTransactionApi(productId, (int)InventoryTransactionTypeEnum.AdjustmentIn, Math.Abs(adjustment), 0, CurrentTenantId, CurrentWarehouseId, CurrentUserId);
+                    Inventory.StockRecalculate(product.ProductId, CurrentWarehouseId, CurrentTenantId, CurrentUserId);
                 }
 
                 foreach (var serial in model.SerialItems)
@@ -146,15 +152,9 @@ namespace WMS.Controllers
                         productSerial = new ProductSerialis() { ProductId = productId, SerialNo = serial, CurrentStatus = InventoryTransactionTypeEnum.AdjustmentIn, BuyPrice = 0, WarrantyID = 1, DateCreated = DateTime.UtcNow, CreatedBy = CurrentUserId, UpdatedBy = CurrentUserId, TenentId = CurrentTenantId, WarehouseId = CurrentWarehouseId };
                     }
                     _productService.SaveProductSerial(productSerial, CurrentUserId);
-                }
 
-                var nonExistingSerials = product.ProductSerialization.Where(m => !model.SerialItems.Contains(m.SerialNo));
-                foreach (var serialItem in nonExistingSerials)
-                {
-                    serialItem.CurrentStatus = InventoryTransactionTypeEnum.AdjustmentOut;
-                    _productService.SaveProductSerial(serialItem, CurrentUserId);
+                    var res = Inventory.StockTransaction(productId, model.InventoryTransactionTypeId, 1, null, null, model.InventoryTransactionRef, productSerial.SerialID);
                 }
-
             }
 
             if (!product.Serialisable && ModelState.IsValid && model.Quantity.HasValue && model.Quantity > 0)
@@ -164,14 +164,17 @@ namespace WMS.Controllers
                     ViewBag.Error = "Sorry, Some error occured During Processing, Please Contact Support";
                     return View();
                 }
-
-                return RedirectToAction("index");
             }
 
-            if (model.ProductId < 1) return RedirectToAction("Index", "Products");
+            if (ReturnController != "")
+            {
+                return RedirectToAction("Index", ReturnController);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
 
-
-            return View();
         }
 
 
@@ -197,7 +200,7 @@ namespace WMS.Controllers
         //[ValidateInput(false)]
         //public ActionResult _InventoryList()
         //{
-            
+
         //    var model = _productService.GetAllInventoryStocksList(CurrentTenantId, id ?? 0);
 
         //    return PartialView("__InventoryList", model.ToList());
@@ -223,7 +226,7 @@ namespace WMS.Controllers
             }
             var viewModel = GridViewExtension.GetViewModel("Inventory");
             viewModel.Pager.Assign(pager);
-            return _InventoryStocksGridActionCore(viewModel,InventoryId);
+            return _InventoryStocksGridActionCore(viewModel, InventoryId);
         }
 
 
@@ -237,7 +240,7 @@ namespace WMS.Controllers
             var viewModel = GridViewExtension.GetViewModel("Inventory");
 
             viewModel.ApplyFilteringState(filteringState);
-            return _InventoryStocksGridActionCore(viewModel,InventoryId);
+            return _InventoryStocksGridActionCore(viewModel, InventoryId);
         }
 
         public ActionResult _InventoryStocksSorting(GridViewColumnState column, bool reset)
@@ -249,13 +252,13 @@ namespace WMS.Controllers
             }
             var viewModel = GridViewExtension.GetViewModel("Inventory");
             viewModel.ApplySortingState(column, reset);
-            return _InventoryStocksGridActionCore(viewModel,InventoryId);
+            return _InventoryStocksGridActionCore(viewModel, InventoryId);
         }
 
 
-        public ActionResult _InventoryStocksGridActionCore(GridViewModel gridViewModel,int id)
+        public ActionResult _InventoryStocksGridActionCore(GridViewModel gridViewModel, int id)
         {
-            
+
             gridViewModel.ProcessCustomBinding(
                 new GridViewCustomBindingGetDataRowCountHandler(args =>
                 {
@@ -319,13 +322,13 @@ namespace WMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            else if(product.ProcessByPallet)
+            else if (product.ProcessByPallet)
             {
                 if (product.ProcessByPallet && caCurrent.CurrentWarehouse().EnableGlobalProcessByPallet) { product.ProcessByPallet = true; } else { product.ProcessByPallet = false; }
 
 
             }
-            return Json(new { ProductName = product.Name, ProcessByPallet = product.ProcessByPallet,  IsSerialised = product.Serialisable, ExistingSerials = product.ProductSerialization.Select(m => new { m.SerialID, m.SerialNo }) }, JsonRequestBehavior.AllowGet);
+            return Json(new { ProductName = product.Name, ProcessByPallet = product.ProcessByPallet, IsSerialised = product.Serialisable, ExistingSerials = product.ProductSerialization.Select(m => new { m.SerialID, m.SerialNo }) }, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -335,8 +338,8 @@ namespace WMS.Controllers
             var Details = int.Parse(!string.IsNullOrEmpty(Request.Params["detail"]) ? Request.Params["detail"] : "0");
             if (ProductId > 0 && Details > 0)
             {
-               var model= _productService.AllocatedProductDetail(ProductId,CurrentWarehouseId,Details);
-               return PartialView("_InventoryAdjustmentDetailGridView",model);
+                var model = _productService.AllocatedProductDetail(ProductId, CurrentWarehouseId, Details);
+                return PartialView("_InventoryAdjustmentDetailGridView", model);
             }
             return View("Index");
         }

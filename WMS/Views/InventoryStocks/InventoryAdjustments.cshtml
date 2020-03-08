@@ -9,7 +9,7 @@
         new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme },
          new StyleSheet { ExtensionType = ExtensionType.ComboBox, Theme = GaneStaticAppExtensions.DevexTheme }
             )
-        
+
 
     @Html.DevExpress().GetScripts(
         new Script { ExtensionType = ExtensionType.SpinEdit },
@@ -27,33 +27,12 @@
         @using (Html.BeginForm("InventoryAdjustments", "InventoryStocks", FormMethod.Post, new { @class = "frmAdjust" }))
         {
             @Html.AntiForgeryToken()
+            @Html.Hidden("ReturnController", (object)ViewBag.RController)
             <div class="form-horizontal col-md-6 pull-left">
                 <table class="table tdclear">
                     <caption>
                         @Html.ValidationSummary(true)
                     </caption>
-                    <tr>
-                        <td style="width:30%" class="h3">
-                            @Html.Label("Product")
-                        </td>
-                        <td>
-                            @Html.Partial("~/Views/Shared/ProductLargeDataComboBoxPartial.cshtml")
-                            @*@Html.DropDownList("ProductId", null, string.Empty, new { @class = "chosen-select" })*@
-
-                           @Html.Hidden("ProductId")
-
-                            @Html.ValidationMessageFor(model => model.ProductId)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.InventoryTransactionTypeId)
-                        </td>
-                        <td>
-                            @Html.DropDownList("InventoryTransactionTypeId")
-                            @Html.ValidationMessageFor(model => model.InventoryTransactionTypeId)
-                        </td>
-                    </tr>
                     <tr>
                         <td>
                             @Html.LabelFor(model => model.InventoryTransactionRef)
@@ -62,7 +41,25 @@
                             @Html.EditorFor(model => model.InventoryTransactionRef)
                             @Html.ValidationMessageFor(model => model.InventoryTransactionRef)
                         </td>
-
+                    </tr>
+                    <tr>
+                        <td style="width:30%" class="h3">
+                            @Html.Label("Product")
+                        </td>
+                        <td>
+                            @Html.Partial("~/Views/Shared/ProductLargeDataComboBoxPartial.cshtml")
+                            @Html.Hidden("ProductId")
+                            @Html.ValidationMessageFor(model => model.ProductId)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.InventoryTransactionTypeId)
+                        </td>
+                        <td>
+                            @Html.DropDownList("InventoryTransactionTypeId", "Select Transaction Type")
+                            @Html.ValidationMessageFor(model => model.InventoryTransactionTypeId)
+                        </td>
                     </tr>
                     <tr>
                         <td>
@@ -87,7 +84,7 @@
                             <div class="input-group h-100 justify-content-center align-items-center">
                                 <div class="col-md-12 bottom-right">
                                     <input type="submit" value="Confirm Adjustment" class="btn btn-primary btn-adjst" />
-                                    <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+                                    <div class="back-list">@Html.ActionLink("Back to List", "Index", (string)ViewBag.RController, null, new { @class = "btn btn-default" })</div>
                                 </div>
                             </div>
                         </td>
@@ -151,95 +148,37 @@
 
 <script type="text/javascript">
 
+    $("#InventoryTransactionTypeId").on("change", function () {
+        debugger;
+        prdid.SelectedIndexChanged.FireEvent();
+    });
+
     var palletProduct = false;
-   
-    $(function () {
 
-        var productId = prdid.GetValue();
-        if (productId< 1) return false;
-           $("#divCurrentProductName").text(prdid.GetText());
-                $.ajax({
-                    type: "GET",
-                    url: '/InventoryStocks/GetProductInformation/' + productId,
-                    data: { ProductId: productId },
-                    dataType: 'json',
-                    success: function (data) {
-                        if (data.IsSerialised) {
-                            //$("#divSerialsContainer").slideDown();
+    $(".frmAdjust").unbind().on("submit", function () {
+        if ($("#inventoryAdjustCheck").prop('checked')) {
+            if (value !== "") {
+                var check = $('#Quantity').val();
+                if (check === 0 || check === "") {
+                    $('#Quantity').val(value);
+                }
+            }
+            if ($('#Quantity').val() === 0 || $('#Quantity').val() === "") {
+                return false;
+            }
 
-                            $("#frmInventoryStockAdjustment #InventoryTransactionTypeId").attr("disabled", "disabled");
-                            $("#frmInventoryStockAdjustment #Quantity").attr("disabled", "disabled");
-                            InventorySerialAdjustPopup.Show();
-                            $("#scanSerialsRowExistingSerials").html("");
-                            for (var i = 0; i < data.ExistingSerials.length; i++) {
-                                $("#scanSerialsRowExistingSerials").append("<input type='hidden' value='" + data.ExistingSerials[i].SerialNo + "' />");
-                            }
-                        }
-                        if (data.ProcessByPallet) {
-                            palletProduct = true;
-                            $("#inventoryAdjustCheck").prop('checked', true);
-                        }
-
-
-
-                        else {
-                            $("#divSerialsContainer").slideUp();
-                            $("#divExistingScannedSerialsTable").html("");
-                            InventorySerialAdjustPopup.Hide();
-                            $("#frmInventoryStockAdjustment #InventoryTransactionTypeId").removeAttr("disabled");
-                            $("#frmInventoryStockAdjustment #Quantity").removeAttr("disabled");
-                        }
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        // alert(xhr.status);
-                        alert('Error' + textStatus + "/" + errorThrown);
-                    }
-                });
-            });
-
- 
-    $(".frmAdjust").unbind().on("submit",function () {
             if ($("#inventoryAdjustCheck").prop('checked')) {
-                if (value !== "") {
-                    var check = $('#Quantity').val();
-                    if (check === 0 || check === "") {
-                        $('#Quantity').val(value);
-                    }
-                }
-                if ($('#Quantity').val() === 0 || $('#Quantity').val() === "") {
-
-                    return false;
-                }
-
-                if ($("#inventoryAdjustCheck").prop('checked')) {
-                    ModelAddPallete.Show();
-                    value = $('#Quantity').val();
-                    return false;
-
-                }
+                ModelAddPallete.Show();
+                value = $('#Quantity').val();
+                return false;
             }
-        });
-    function getprodlist() {
-        $.ajax({
-            type: "GET",
-            url: '/InventoryStocks/GetProductList',
-            data: $('#mdlsearch').serialize(),
-            dataType: 'json',
-            success: function (data) {
-                var result = $("#ProdTemplate").tmpl(data);
-                $("#prodlist").empty().append(result);
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                // alert(xhr.status);
-                alert('Error' + textStatus + "/" + errorThrown);
-            }
-        });
-    }
+        }
+    });
+
     function beginStockAdjustSerialCallback(s, e) {
         e.customArgs["id"] = prdid.GetValue();
-        
-           // $("#ProductId option:selected").val();
     }
+
     var value = "";
     $(".frmAdjust").unbind().on("submit",
         function () {
@@ -251,7 +190,6 @@
                     }
                 }
                 if ($('#Quantity').val() === 0 || $('#Quantity').val() === "") {
-
                     return false;
                 }
 
@@ -259,7 +197,6 @@
                     ModelAddPallete.Show();
                     value = $('#Quantity').val();
                     return false;
-
                 }
             }
         });

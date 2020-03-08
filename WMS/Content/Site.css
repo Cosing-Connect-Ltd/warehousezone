@@ -1945,6 +1945,10 @@ input[type=text].serial {
     line-height: 2em;
 }
 
+.dxeButtonEditButton_MetropolisBlue {
+    padding: 2px !important;
+}
+
 .dxeEditArea_MetropolisBlue {
     margin-top: 2px !important;
     margin-bottom: 2px !important;

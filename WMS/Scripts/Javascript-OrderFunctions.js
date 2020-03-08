@@ -1623,17 +1623,15 @@ function RowsCount() {
 //---------------- product  dropdown-------------------------------------
 
 function OnchangeDropdown(s, e) {
-
+    debugger;
     var type = $("#InventoryTransactionTypeId").val();
     var blindshipment = $("#blindshipment").val();
     var prdId = prdid.GetValue();
-    if (s.GetSelectedIndex() < 0) {
+    if (s != null && s.GetSelectedIndex() < 0) {
         s.SetValue(null);
-
     }
-
     else {
-
+        debugger;
         if (type === "6" || type === "7") {
             if (prdid.GetValue() < 1) return false;
             var text = prdid.GetText();
@@ -1645,11 +1643,9 @@ function OnchangeDropdown(s, e) {
                 data: { ProductId: prdId },
                 dataType: 'json',
                 success: function (data) {
-
                     if (data.IsSerialised) {
                         //$("#divSerialsContainer").slideDown();
                         $("#ProductId").val(prdid.GetValue());
-                        $("#frmInventoryStockAdjustment #InventoryTransactionTypeId").attr("disabled", "disabled");
                         $("#frmInventoryStockAdjustment #Quantity").attr("disabled", "disabled");
                         InventorySerialAdjustPopup.Show();
                         $("#scanSerialsRowExistingSerials").html("");
@@ -1657,18 +1653,14 @@ function OnchangeDropdown(s, e) {
                             $("#scanSerialsRowExistingSerials").append("<input type='hidden' value='" + data.ExistingSerials[i].SerialNo + "' />");
                         }
                     }
-                    if (data.ProcessByPallet) {
+                    else if (data.ProcessByPallet) {
                         palletProduct = true;
                         $("#inventoryAdjustCheck").prop('checked', true);
                     }
-
-
-
                     else {
                         $("#divSerialsContainer").slideUp();
                         $("#divExistingScannedSerialsTable").html("");
                         InventorySerialAdjustPopup.Hide();
-                        $("#frmInventoryStockAdjustment #InventoryTransactionTypeId").removeAttr("disabled");
                         $("#frmInventoryStockAdjustment #Quantity").removeAttr("disabled");
                     }
                 },
@@ -1677,16 +1669,12 @@ function OnchangeDropdown(s, e) {
                     alert('Error' + textStatus + "/" + errorThrown);
                 }
             });
-
-
-
         }
         // 100  InventoryTransactionTypeId used  just for Creating invoices.
         else if (type == "15" || type == "100") {
             GProductId = prdid.GetValue();
             updateProductPrice();
             ProductIdEdit = GProductId;
-
         }
         // This check is for  Create pallet tracking
         else if (type == "200") {
@@ -1699,26 +1687,20 @@ function OnchangeDropdown(s, e) {
                     if (data !== 0) {
                         TotalCases.SetValue(data);
                     }
-
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     // alert(xhr.status);
                     alert('Error' + textStatus + "/" + errorThrown);
                 }
             });
-
         }
         else if (blindshipment == "True") {
 
             var id = prdid.GetValue();
             if (jQuery.isNumeric(prdId)) {
-
                 ModelBS.Show();
             }
-
-
         }
-
         else {
 
             prdId = prdid.GetValue();
@@ -1727,10 +1709,8 @@ function OnchangeDropdown(s, e) {
             endOrderDetailCallback();
             $('.ordering-notes').hide();
             loadProdAccounts();
-
         }
     }
-
 }
 
 function OnStartCallback(s, e) {

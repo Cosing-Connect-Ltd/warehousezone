@@ -720,22 +720,7 @@ $(function () {
     // call onhashchange function
     window.onhashchange = locationHashChanged;
 
-    ////////////////////////// find product button is clicked   display model////////////////////
-    //$("#ProdGroupAdd").click(function (e) {
-
-    //    ////// reset model
-    //    $('#sp').attr('checked', true);
-    //    $('#pg').attr('checked', false);
-    //    $('#Groups').val('');
-    //    $('#q').val('');
-    //    //////////
-    //    // call of ajax function
-    //    getprodlist();
-    //    ////// display model
-    //    var y = 150;
-    //    $('#divProd').css('display', 'block').animate({ top: y });
-    //    e.preventDefault();
-    //});
+    // code for file uplaoding 
     var vhdFiles = $('#hdPFiles').val();
     if (vhdFiles == null || vhdFiles == '')
         $("#dvfiles").hide();

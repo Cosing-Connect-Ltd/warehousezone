@@ -14,8 +14,6 @@ namespace Ganedata.Core.Services
     public class Inventory
     {
 
-
-
         public static bool StockTransaction(int productId, int transType, decimal quantity, int? orderID, int? locationId = null, string transactionRef = null, int? serialId = null, int? pallettrackingId = null, int? orderprocessId = null, int? orderProcessDetailId = null)
         {
 
@@ -33,6 +31,13 @@ namespace Ganedata.Core.Services
             if (!ValidateProduct(productId)) { return false; }
             if (quantity < 0) { return false; }
             if (!ValidateTransType(transType)) { return false; }
+
+            if (serialId != null)
+            {
+                var serial = context.ProductSerialization.Find(serialId);
+                if (serial == null) { return false; }
+                serial.CurrentStatus = (InventoryTransactionTypeEnum)transType;
+            }
 
             // if DontMonitorStock flag is true then make that flag true in inventory as well
             bool dontMonitorStock = CheckDontStockMonitor(productId, null, orderID);
@@ -84,7 +89,6 @@ namespace Ganedata.Core.Services
             {
                 if (goodsReturnRequestSync.MissingTrackingNo == true)
                 {
-
                     return StockTransaction(goodsReturnRequestSync, groupToken);
                 }
                 var context = DependencyResolver.Current.GetService<IApplicationContext>();
@@ -105,7 +109,7 @@ namespace Ganedata.Core.Services
                 var cOrder = context.Order.Find(goodsReturnRequestSync.OrderId);
                 if (goodsReturnRequestSync.OrderId <= 0 && goodsReturnRequestSync.InventoryTransactionType > 0)
                 {
-                    cOrder = orderservice.CreateOrderByOrderNumber(goodsReturnRequestSync.OrderNumber, goodsReturnRequestSync.ProductId, goodsReturnRequestSync.tenantId, goodsReturnRequestSync.warehouseId, goodsReturnRequestSync.InventoryTransactionType ?? 0, user,(goodsReturnRequestSync.Quantity??1));
+                    cOrder = orderservice.CreateOrderByOrderNumber(goodsReturnRequestSync.OrderNumber, goodsReturnRequestSync.ProductId, goodsReturnRequestSync.tenantId, goodsReturnRequestSync.warehouseId, goodsReturnRequestSync.InventoryTransactionType ?? 0, user, (goodsReturnRequestSync.Quantity ?? 1));
                 }
 
                 if (goodsReturnRequestSync.OrderDetailID == null || goodsReturnRequestSync.OrderDetailID < 1)
@@ -213,7 +217,6 @@ namespace Ganedata.Core.Services
             }
             catch (Exception)
             {
-
                 return -1;
             }
 
@@ -239,12 +242,11 @@ namespace Ganedata.Core.Services
                 }
 
 
-
                 var cOrder = context.Order.Find(goodsReturnRequestSync.OrderId);
 
                 if (goodsReturnRequestSync.OrderId <= 0 && goodsReturnRequestSync.InventoryTransactionType > 0)
                 {
-                    cOrder = orderservice.CreateOrderByOrderNumber(goodsReturnRequestSync.OrderNumber, goodsReturnRequestSync.ProductId, goodsReturnRequestSync.tenantId, goodsReturnRequestSync.warehouseId, goodsReturnRequestSync.InventoryTransactionType ?? 0, UserId,(goodsReturnRequestSync.Quantity??1));
+                    cOrder = orderservice.CreateOrderByOrderNumber(goodsReturnRequestSync.OrderNumber, goodsReturnRequestSync.ProductId, goodsReturnRequestSync.tenantId, goodsReturnRequestSync.warehouseId, goodsReturnRequestSync.InventoryTransactionType ?? 0, UserId, (goodsReturnRequestSync.Quantity ?? 1));
                 }
 
                 if (goodsReturnRequestSync.OrderDetailID == null || goodsReturnRequestSync.OrderDetailID < 1)
@@ -298,7 +300,6 @@ namespace Ganedata.Core.Services
                 StockRecalculate(goodsReturnRequestSync.ProductId, goodsReturnRequestSync.warehouseId, goodsReturnRequestSync.tenantId, UserId);
 
                 return cOrder.OrderID;
-
 
             }
             catch (Exception)
