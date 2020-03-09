@@ -40,7 +40,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         }
         // GET: Products
 
-        public ActionResult ProductCategories(int? productGroupId, int? sortOrder, string currentFilter, string searchString, int? page, int? pagesize = 10, int? departmentId = null)
+        public ActionResult ProductCategories(int? productGroupId, int? sortOrder, string currentFilter, string searchString, int? page, int? pagesize = 20, int? departmentId = null)
         {
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.groupId = productGroupId;
