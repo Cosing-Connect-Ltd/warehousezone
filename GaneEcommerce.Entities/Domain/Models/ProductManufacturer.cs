@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -18,5 +19,7 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Image Path")]
         public string ImagePath { get; set; }
         public string Note { get; set; }
+        [ForeignKey("TenantId")]
+        public virtual Tenant Tenant { get; set; }
     }
 }

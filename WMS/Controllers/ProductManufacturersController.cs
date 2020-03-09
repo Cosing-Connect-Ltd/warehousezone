@@ -60,6 +60,7 @@ namespace WMS.Controllers
         // GET: ProductManufacturers/Create
         public ActionResult Create()
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ViewBag.ControllerName = "ProductManufacturers";
             return View();
         }
@@ -71,6 +72,7 @@ namespace WMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,Note")] ProductManufacturer productManufacturer, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
         {
+           
             ViewBag.ControllerName = "ProductManufacturers";
             var filesName = Session["UploadProductManufacturerImage"] as List<string>;
             string filePath = "";
@@ -82,6 +84,7 @@ namespace WMS.Controllers
                 {
                     filePath = MoveFile(UploadControl.FirstOrDefault(), filesName.FirstOrDefault(), manufacturer.Id);
                     manufacturer.ImagePath = filePath;
+                    manufacturer.TenantId = CurrentTenantId;
                     _LookupService.SaveAndUpdateProductManufacturer(manufacturer, CurrentUserId);
 
 
@@ -96,8 +99,10 @@ namespace WMS.Controllers
         // GET: ProductManufacturers/Edit/5
         public ActionResult Edit(int? id)
         {
+
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ViewBag.ControllerName = "ProductManufacturers";
-       
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -142,6 +147,7 @@ namespace WMS.Controllers
                     }
 
                 }
+                productManufacturer.TenantId = CurrentTenantId;
                 _LookupService.SaveAndUpdateProductManufacturer(productManufacturer, CurrentUserId);
                 return RedirectToAction("Index");
             }

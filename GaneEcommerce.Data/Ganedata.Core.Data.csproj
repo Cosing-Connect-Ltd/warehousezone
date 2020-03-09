@@ -687,6 +687,10 @@
     <Compile Include="Migrations\202003061059578_ImagePathAndNote-added-in-PrdocutManufacturer.designer.cs">
       <DependentUpon>202003061059578_ImagePathAndNote-added-in-PrdocutManufacturer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003091043529_tenantRelationadded-in-productManufacturer.cs" />
+    <Compile Include="Migrations\202003091043529_tenantRelationadded-in-productManufacturer.designer.cs">
+      <DependentUpon>202003091043529_tenantRelationadded-in-productManufacturer.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1522,6 +1526,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003061059578_ImagePathAndNote-added-in-PrdocutManufacturer.resx">
       <DependentUpon>202003061059578_ImagePathAndNote-added-in-PrdocutManufacturer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003091043529_tenantRelationadded-in-productManufacturer.resx">
+      <DependentUpon>202003091043529_tenantRelationadded-in-productManufacturer.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
