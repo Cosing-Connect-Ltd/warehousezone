@@ -119,7 +119,8 @@
 }
 @media(min-width:1700px) {
     .home-slider img {
-        height: 525px !important;
+        width: 1920px;
+        height: 420px !important;
     }
 }
 .nav-menue a:hover {
