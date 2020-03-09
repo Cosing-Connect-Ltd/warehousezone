@@ -828,7 +828,7 @@
     <Content Include="Areas\Shop\Views\Shared\_OnSalePartial.cshtml" />
     <Content Include="Areas\Shop\Views\Shared\_TopCategoryPartial.cshtml" />
     <Content Include="Areas\Shop\Views\Shared\_SliderPartial.cshtml" />
-    <Content Include="Areas\Shop\Views\Shared\_FooterPartial.cshtml" />
+    <Content Include="Areas\Shop\Views\Shared\_FooterPartialArea.cshtml" />
     <Content Include="Areas\Shop\Views\Products\ProductCategories.cshtml" />
     <Content Include="Areas\Shop\Views\Products\ProductDetails.cshtml" />
     <Content Include="Areas\Shop\Views\Shared\_DeliveryInfoPartial.cshtml" />

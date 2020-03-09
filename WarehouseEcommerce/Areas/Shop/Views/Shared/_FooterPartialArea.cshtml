@@ -1,16 +1,15 @@
-﻿<footer>
+﻿@model List<Ganedata.Core.Entities.Domain.ProductManufacturer>
+
+<footer>
     <div>
         <div class="container logo-slider">
             <div id="carousel0" class="owl-carousel owl-theme">
-                <div class="text-center"><img src="/Areas/Shop/Content/app/img/brands/1.png" alt="" class="img-responsive" /></div>
-                <div class="text-center"><img src="/Areas/Shop/Content/app/img/brands/2.png" alt="" class="img-responsive" /></div>
-                <div class="text-center"><img src="/Areas/Shop/Content/app/img/brands/3.png" alt="" class="img-responsive" /></div>
-                <div class="text-center"><img src="/Areas/Shop/Content/app/img/brands/4.png" alt="" class="img-responsive" /></div>
-                <div class="text-center"><img src="/Areas/Shop/Content/app/img/brands/5.png" alt="" class="img-responsive" /></div>
-                <div class="text-center"><img src="/Areas/Shop/Content/app/img/brands/6.png" alt="" class="img-responsive" /></div>
-                <div class="text-center"><img src="/Areas/Shop/Content/app/img/brands/7.png" alt="" class="img-responsive" /></div>
-                <div class="text-center"><img src="/Areas/Shop/Content/app/img/brands/8.png" alt="" class="img-responsive" /></div>
-                <div class="text-center"><img src="/Areas/Shop/Content/app/img/brands/9.png" alt="" class="img-responsive" /></div>
+                @foreach (var item in Model)
+                {
+
+                    <a href=""><img src="@(!string.IsNullOrEmpty(item.ImagePath)? ViewBag.BaseFilePath + item.ImagePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="" class="img-responsive"> </a>
+                 
+                }
             </div>
         </div>
         <hr class="footer-hr">
@@ -26,7 +25,6 @@
                         </h5>
                         <div id="about" class="collapse footer-collapse footabout">
                             <a href="/Shop"><img src="/Areas/Shop/Content/app/img/logo.png" class="img-responsive" alt=""></a>
-                            @*<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris mattis ultricies metus. Integer laoreet rhoncus ipsum, a ornare mi. Pellentesque elementum fringilla risus,</p>*@
                             <h5 id="follow-us" class="text-capitalize">Follow Us</h5>
                             <ul class="list-unstyled list-inline social">
                                 <li class="facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>

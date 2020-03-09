@@ -182,5 +182,11 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             string path = GetPathAgainstProductId(productId, status);
             return Content(path);
         }
+
+        public PartialViewResult _FooterPartialArea()
+        {
+            var productManufacturer = _lookupServices.GetAllValidProductManufacturer(CurrentTenantId);
+            return PartialView(productManufacturer.ToList());
+        }
     }
 }

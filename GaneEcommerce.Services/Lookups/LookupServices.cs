@@ -628,6 +628,7 @@ namespace Ganedata.Core.Services
             }
             productmanufactrer.Name = productManufacturer.Name;
             productmanufactrer.Note = productManufacturer.Note;
+            productmanufactrer.TenantId = productManufacturer.TenantId;
             productmanufactrer.ImagePath = productManufacturer.ImagePath;
             _currentDbContext.Entry(productmanufactrer).State = productManufacturer.Id > 0 ? EntityState.Modified : EntityState.Added;
             _currentDbContext.SaveChanges();
