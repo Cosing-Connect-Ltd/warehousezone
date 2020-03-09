@@ -42,7 +42,7 @@
                                                     @if (groupDepartment.ElementAtOrDefault(i + 2) != null)
                                                     {
 
-                                                        <li><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home   ",new {productgroupId=groupDepartment[i+2].ProductGroupId})">@groupDepartment[i + 2].ProductGroup</a></li>
+                                                        <li><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home",new {productgroupId=groupDepartment[i+2].ProductGroupId})">@groupDepartment[i + 2].ProductGroup</a></li>
 
                                                     }
                                                 </div>

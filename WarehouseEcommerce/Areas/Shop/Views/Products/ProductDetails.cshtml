@@ -41,8 +41,8 @@
                     <hr class="hr-line">
                     <ul class="list-unstyled">
                         <li><span class="text-decor">Brands:</span><a href="#" class="textdeb">@(Model.ProductManufacturer == null ? "" : Model.ProductManufacturer.Name)</a></li>
-                        <li><span class="text-decor">Product Code:</span>@Model.SKUCode</li>
-                        <li><span class="text-decor">Bar Code:</span>@Model.BarCode</li>
+                        <li><span class="text-decor">SKU Code:</span>@Model.SKUCode</li>
+                        <li><span class="text-decor">Product Code:</span>@Model.BarCode</li>
                         <li><span class="text-decor">Availability:</span>@(Model.InventoryStocks.Count == 0 ? "Not Avaialable" : "In Stock")</li>
                     </ul>
                     <hr class="hr-line">
