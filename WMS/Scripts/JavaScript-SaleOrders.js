@@ -335,9 +335,10 @@ function CreatePalletTracking() {
 
     }
 }
-
-function AssignPicker(ordersIds) {
+var checkingTransactionType = 0;
+function AssignPicker(ordersIds,transtype) {
     pickerOrderid = ordersIds;
+    checkingTransactionType = transtype;
     AssignPickerPopUp.Show();
 }
 function beginpickerCallBack(s, e) {
@@ -347,18 +348,21 @@ function SavePicker() {
     var OrderId = $("#OrderId").val();
     var AssignPicker = $("#AssignPicker :selected").val();
     var data = { "OrderId": OrderId, "PickerId": AssignPicker}
-    if (AssignPicker === "" || AssignPicker === null || AssignPicker === undefined) {
-        alert("Select Picker Name");
-        return;
-    }
+    
     $.post("/SalesOrders/SaveAssignPicker", data,
         function (result) {
-            debugger;
-            if (result === "true")
+           
+            if (result)
             {
-                _SalesOrderListGridView_Active.Refresh();
-                _PurchaseOrderListGridView_Completed.Refresh();
                 AssignPickerPopUp.Hide();
+                if (checkingTransactionType === 1) {
+                    _PurchaseOrderListGridView.Refresh();
+                   
+                }
+                else {
+                    _SalesOrderListGridView_Active.Refresh();
+                }
+               
                 $("#infoMsg").html("Picker assigned!").show();
                 $('#infoMsg').delay(2000).fadeOut();
             }
@@ -366,7 +370,7 @@ function SavePicker() {
                 LoadingPanel.Hide();
                 AssignPickerPopUp.Hide();
                 //alert("Could not send email, please contact support!");
-                alert(result);
+                //alert(result);
             }
         })
         .fail(function (error) {

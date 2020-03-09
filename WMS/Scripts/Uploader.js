@@ -105,6 +105,7 @@ function _RemoveProofOfDeliveryFile(filename) {
             }
 
             else {
+                $("#FileLength").val(false);
                 $('#dvfiles').empty();
                 $("#dvfiles").append(' <strong>Uploaded Files</strong>  ');
                 $.each(files.files, function (index, value) {

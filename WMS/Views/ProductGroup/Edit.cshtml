@@ -76,6 +76,7 @@
                 </div>
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.Label("Image File", new { @class = "col-md-4" })
+                    @Html.Hidden("FileLength", (bool?)ViewBag.FileLength)
                     <div class="col-md-8">
                         @Html.Partial("_Uploader")
                         <br />
@@ -86,7 +87,6 @@
                             {
                                 foreach (var file in ViewBag.Files)
                                 {
-                                    @Html.Hidden("FileLength", (bool?)ViewBag.FileLength)
                                     <table>
                                         <tr>
                                             <td id="tdProductfileName">@file</td>

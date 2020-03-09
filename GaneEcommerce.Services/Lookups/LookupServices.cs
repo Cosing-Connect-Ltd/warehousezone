@@ -630,6 +630,7 @@ namespace Ganedata.Core.Services
             productmanufactrer.Note = productManufacturer.Note;
             productmanufactrer.TenantId = productManufacturer.TenantId;
             productmanufactrer.ImagePath = productManufacturer.ImagePath;
+            productmanufactrer.TenantId = productManufacturer.TenantId;
             _currentDbContext.Entry(productmanufactrer).State = productManufacturer.Id > 0 ? EntityState.Modified : EntityState.Added;
             _currentDbContext.SaveChanges();
             return productmanufactrer;

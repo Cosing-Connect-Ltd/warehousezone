@@ -1060,11 +1060,12 @@ namespace WMS.Controllers
         public ActionResult _AssignPicker(int OrderId)
         {
             ViewBag.OrderIds = OrderId;
-            ViewBag.Picker = new SelectList(_userService.GetAllAuthUsers(CurrentTenantId), "UserId", "DisplayName");
+            var UserId = OrderService.GetOrderById(OrderId).PickerId;
+            ViewBag.Picker = new SelectList(_userService.GetAllAuthUsers(CurrentTenantId), "UserId", "DisplayName",UserId);
             return View();
         }
 
-        public JsonResult SaveAssignPicker(int OrderId, int PickerId)
+        public JsonResult SaveAssignPicker(int OrderId, int? PickerId)
         {
             var status = OrderService.UpdatePickerId(OrderId, PickerId,CurrentUserId);
             return Json(status, JsonRequestBehavior.AllowGet);

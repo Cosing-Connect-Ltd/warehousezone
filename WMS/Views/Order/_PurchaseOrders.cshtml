@@ -138,6 +138,14 @@
             c.Width = Unit.Pixel(80);
             c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
         });
+         settings.Columns.Add(c =>
+        {
+            c.FieldName = "PickerName";
+            c.Caption = "Picker Name";
+            c.Width = Unit.Percentage(20);
+            c.Settings.AllowAutoFilter = DefaultBoolean.False;
+            c.Settings.AllowSort = DefaultBoolean.False;
+        });
         settings.Columns.Add(c =>
         {
             c.FieldName = "OrderNotesListText";
@@ -192,6 +200,11 @@
                 if (statusId == (int)OrderStatusEnum.Complete)
                 {
                     ViewContext.Writer.Write("<a target='_blank' data-orderid=" + orderId + " data-statusid='1' data-type='PO' alt='Make Order Active' class='make-order-active btn fa fa-arrow-left'></a>");
+                }
+                if (statusId == (int)OrderStatusEnum.BeingPicked || statusId == (int)OrderStatusEnum.Hold || statusId == (int)OrderStatusEnum.Active || statusId == (int)OrderStatusEnum.Pending)
+                {
+                    var assignPicker = string.Format("AssignPicker({0},{1})", orderId,1);
+                    ViewContext.Writer.Write("<a target='_blank' alt='Assign Picker' title='Assign Picker' class='btn fa fa-user' onclick=" + assignPicker + "></a>");
                 }
             });
         });

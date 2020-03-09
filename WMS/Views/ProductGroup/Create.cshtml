@@ -78,9 +78,10 @@
                 @Html.Label("Image File", new { @class = "col-md-4" })
                 <div class="col-md-8">
                     @Html.Partial("_Uploader")
+                    @Html.Hidden("FileLength", (bool?)ViewBag.FileLength)
                     <br />
                     <div id="dvfiles" style="display: block;">
-                        @Html.Hidden("FileLength", (bool?)ViewBag.FileLength)
+                        
                         <strong>Uploaded Files</strong>
                         @if (ViewBag.Files != null)
                         {

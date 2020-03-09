@@ -925,7 +925,7 @@ namespace Ganedata.Core.Services
                     OrderStatusID = p.OrderStatusID,
                     Account = p.Account.AccountCode,
                     AccountName = p.Account.CompanyName,
-
+                    PickerName=p.Picker==null?"" :p.Picker.UserLastName + ", " + p.Picker.UserFirstName,
                     Currecny = p.AccountCurrency.CurrencyName,
                     InvoiceNo = p.InvoiceNo,
                     InvoiceDetails = p.InvoiceDetails,

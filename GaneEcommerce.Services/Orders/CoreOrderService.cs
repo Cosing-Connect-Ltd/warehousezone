@@ -670,7 +670,7 @@ namespace Ganedata.Core.Services
 
         }
 
-        public bool UpdatePickerId(int OrderId, int pickerId, int userId)
+        public bool UpdatePickerId(int OrderId, int? pickerId, int userId)
         {
             return OrderService.UpdatePickerId(OrderId, pickerId,  userId);
         }

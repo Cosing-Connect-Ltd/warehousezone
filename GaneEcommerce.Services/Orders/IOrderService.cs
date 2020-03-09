@@ -122,7 +122,7 @@ namespace Ganedata.Core.Services
         decimal GetDiscountOnTotalCost(int accountId, decimal OrdersTotal);
 
         Order CreateShopOrder(int accountId, List<OrderDetail> orderDetail, int tenantId, int UserId, int warehouseId);
-        bool UpdatePickerId(int OrderId, int pickerId, int userId);
+        bool UpdatePickerId(int OrderId, int? pickerId, int userId);
 
     }
 }

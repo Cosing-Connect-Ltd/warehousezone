@@ -3385,7 +3385,7 @@ namespace Ganedata.Core.Services
             return order;
         }
 
-        public bool UpdatePickerId(int OrderId, int pickerId, int userId)
+        public bool UpdatePickerId(int OrderId, int? pickerId, int userId)
         {
             var order = _currentDbContext.Order.FirstOrDefault(u => u.OrderID == OrderId);
             if (order != null)
