@@ -244,7 +244,6 @@ $(document).ready(function () {
             $.post('/Pallets/DispatchPallets',
                 data,
                 function (result) {
-                    debugger;
                     LoadingPanel.Hide();
                     Gane.Helpers.ShowPopupMessage('Dispatch Pallets', '<div class="pallet-number"><b>DELIVERY REFERENCE NUMBER : </b>' + deliveryNumber + "</div><br/>" + result, PopupTypes.Warning);
                     MVCxClientUtils.FinalizeCallback();
@@ -259,8 +258,6 @@ $(document).ready(function () {
 });
 
 function OnSubmitFormvalidate() {
-
-    debugger;
     var deliveryMethod = $("#DeliveryMethod").val();
     if (deliveryMethod === "3") {
         var serviceId = $("#NetworkCode").val();
@@ -273,7 +270,6 @@ function OnSubmitFormvalidate() {
 
 }
 function DeliveryMethodChange(e) {
-    debugger;
     if ($("#DeliveryMethod :selected").val() == "3") {
         $(".data-detail").hide();
         $(".data-ddp").show();

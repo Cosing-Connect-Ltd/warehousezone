@@ -854,7 +854,6 @@ $(function () {
     // end Draggable
 
     $('.orderactcnts').change(function (e) {
-
         var id = $("#AccountID option:selected").val();
         if (id === null || id === "" || id === 0) { return; }
         LoadingPanel.Show();

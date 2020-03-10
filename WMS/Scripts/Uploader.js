@@ -1,6 +1,4 @@
 ﻿function onFileUploadComplete(s, e) {
-
-    debugger;
     if ($("#ProofOfDeliveryImageFilenames").length > 0) {
         $("#ProofOfDeliveryImageFilenames").val(e.callbackData);
         frmDispatchPallets.submit();
@@ -23,11 +21,10 @@
     }
 
 }
-     
- 
 
-function onFileUploadStart(s, e)
-{   debugger;
+
+
+function onFileUploadStart(s, e) {
     $('.se-pre-con').show();
 }
 
@@ -93,7 +90,7 @@ function _RemoveProofOfDeliveryFile(filename) {
         type: "POST",
         url: "/Pallets/_RemoveProofOfDeliveryFile",
         data: {
-            "filename": filename, "tenantDepartment": department, "TenantGroup": productGroup, "Maufacturer": Maufacturer,"Id":id
+            "filename": filename, "tenantDepartment": department, "TenantGroup": productGroup, "Maufacturer": Maufacturer, "Id": id
         },
         success: function (files) {
             $("#dvbusy").hide();

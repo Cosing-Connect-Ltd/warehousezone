@@ -29,7 +29,6 @@
 
     function OnBeginEditGridCallback(s, e) {
 
-        debugger;
         e.customArgs = MVCxClientUtils.GetSerializedEditorValuesInContainer("frmEditProducts");
         var test=MVCxClientUtils.GetSerializedEditorValuesInContainer("options");
         var gridValues = JSON.parse(JSON.stringify($("#frmEditProducts").serializeArray()));

@@ -83,7 +83,7 @@ function addDetail(action) {
         //$("#prdid :selected").val();
         var Qty = $("#Qty_I").val();
         var price = $("#Price_I").val();
-        var type = $("#inverntoryType :selected").val();
+        var type = $("#inventoryType :selected").val();
         if (productid === null || productid === "") {
             if ($("#IsNewProduct").prop("checked") !== true) {
                 return alert("Please select product");
@@ -1312,7 +1312,7 @@ function loadOrderDetailCommonEvents() {
         if (id == 'OrderDetailadd') {
             var accounId = $(".orderactcnts :selected").val();
             var warehouseId = $("#TransferWarehouseId :selected").val();
-            var transfertype = $("#inverntoryType").val();
+            var transfertype = $("#inventoryType").val();
 
             if (transfertype === "3" || transfertype === "4") {
                 if (warehouseId === "" || warehouseId === null || warehouseId == undefined) {
@@ -1623,7 +1623,6 @@ function RowsCount() {
 //---------------- product  dropdown-------------------------------------
 
 function OnchangeDropdown(s, e) {
-    debugger;
     var type = $("#InventoryTransactionTypeId").val();
     var blindshipment = $("#blindshipment").val();
     var prdId = prdid.GetValue();
@@ -1631,7 +1630,6 @@ function OnchangeDropdown(s, e) {
         s.SetValue(null);
     }
     else {
-        debugger;
         if (type === "6" || type === "7") {
             if (prdid.GetValue() < 1) return false;
             var text = prdid.GetText();
@@ -1815,7 +1813,7 @@ $(document).ready(function () {
 function LoadSOAccountAddresses() {
 
     var blindshipment = $("#blindshipment").val();
-    var type = $('#inverntoryType').val();
+    var type = $('#inventoryType').val();
     if (type !== "1") {
         if (blindshipment !== 'True' || blindshipment === "") {
             if ($("input[name='SOShipmentDestination']").length < 1) return;

@@ -17,9 +17,7 @@
 }
 <script type="text/javascript">
     function onFileUploadComplete(s, e) {
-        debugger;
         if (e.callbackData) {
-            debugger;
             $("#dvfiles").show();
             var fileData = e.callbackData.split('|');
             var Fileobj = { FileName: fileData };

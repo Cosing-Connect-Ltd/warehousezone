@@ -71,7 +71,6 @@
             type: 'GET',
             cache: false
         }).done(function (result) {
-            debugger;
             $('#DynamicRefresh').html("");
             $('#DynamicRefresh').html(result);
             $("#JobTabs").tabs({ active: 'ByTrade' });

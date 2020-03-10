@@ -45,7 +45,7 @@ else
 {
     @Html.AntiForgeryToken()
     @Html.Hidden("selkeyhdPrddet", 100);
-    @Html.HiddenFor(m => m.InventoryTransactionTypeId, new { id = "inverntoryType" });
+    @Html.HiddenFor(m => m.InventoryTransactionTypeId, new { id = "inventoryType" });
 
     <div class=" col-md-12 order-forms pull-left">
         @Html.ValidationSummary(true, "")
