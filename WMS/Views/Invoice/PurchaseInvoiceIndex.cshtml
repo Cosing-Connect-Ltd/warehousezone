@@ -20,7 +20,7 @@
     var command;
     MVCxClientGlobalEvents.AddControlsInitializedEventHandler(OnProcessedDetailsEditCallback);
     function OnProcessedDetailsEditCallback(s, e) {
-
+      
         e.customArgs = MVCxClientUtils.GetSerializedEditorValuesInContainer("frmPriceGroupPrices");
         var gridValues = JSON.parse(JSON.stringify($("#frmPriceGroupPrices").serializeArray()));
         var values = gridValues[gridValues.length - 1].value.split(',');
@@ -29,7 +29,8 @@
             if (gridValues[i].name == 'gridMasterAwaitingInvoicing$DXEditor3') {
                 e.customArgs["InvoiceNumber"] = gridValues[i].value;
             }
-            if (gridValues[i].name == 'gridMasterAwaitingInvoicing$DXEditor6') {
+            if (gridValues[i].name == 'gridMasterAwaitingInvoicing$DXEditor6')
+            {
                 e.customArgs["InvoiceDate"] = gridValues[i].value;
             }
 

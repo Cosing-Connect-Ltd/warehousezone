@@ -3238,8 +3238,8 @@ namespace Ganedata.Core.Services
                 {
                     status = true;
                 }
-                orderprocess.InvoiceDate = InvoiceDate;
-                orderprocess.InvoiceNo = InvoiceNumber;
+                orderprocess.InvoiceDate = InvoiceDate.HasValue ? InvoiceDate : orderprocess.InvoiceDate;
+                orderprocess.InvoiceNo = string.IsNullOrEmpty(InvoiceNumber)?orderprocess.InvoiceNo:InvoiceNumber;
                 _currentDbContext.OrderProcess.Attach(orderprocess);
                 _currentDbContext.Entry(orderprocess).State = EntityState.Modified;
                 _currentDbContext.SaveChanges();
