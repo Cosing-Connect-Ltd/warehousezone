@@ -3345,6 +3345,7 @@ namespace Ganedata.Core.Services
             {
                 throw new Exception($"Order Number {order.OrderNumber} already associated with another Order. Please regenerate order number.", new Exception("Duplicate Order Number"));
             }
+            order.AccountID = accountId;
             order.InventoryTransactionTypeId = (int)InventoryTransactionTypeEnum.SalesOrder;
             order.IssueDate = DateTime.UtcNow;
             order.ExpectedDate = DateTime.UtcNow;

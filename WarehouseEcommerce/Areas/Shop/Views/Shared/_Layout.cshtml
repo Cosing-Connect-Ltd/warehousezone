@@ -17,6 +17,9 @@
     <link href="~/Areas/Shop/Content/plugins/magnific-popup/dist/magnific-popup.css" type="text/css" rel="stylesheet" media="screen" />
     @*<link href="/Content/app/css/app.css" rel="stylesheet">*@
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript">
         var basePath = '@ViewBag.BasePath';
         var baseFilePath = '@ViewBag.BaseFilePath';
@@ -56,14 +59,14 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Added to Cart</h4>
+                    <h4 class="modal-title">Added to Basket</h4>
                 </div>
                 <div class="modal-body" style="overflow:auto;max-height:430px;">
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success" onclick="CartItemCount();">Continue Shoping</button>
-                    <a href="@Url.Action("AddToCart","Products")" type="button" class="btn btn-default">Go to Cart</a>
+                    <a href="@Url.Action("AddToCart","Products")" type="button" class="btn btn-default">Go to Basket</a>
                 </div>
             </div>
             Go
@@ -100,11 +103,10 @@
     @Html.Action("_FooterPartialArea", "Home")
 
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    
 
 
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    
     <script src="~/Areas/Shop/Content/plugins/elevatezoom/jquery.elevateZoom-3.0.8.min.js"></script>
     <!-- blog image zoom -->
     <script src="~/Areas/Shop/Content/plugins/lightbox2/js/lightbox.min.js"></script>
@@ -140,7 +142,7 @@
     });
 
 //Chat Script
-    var $zoho = $zoho || {}; $zoho.salesiq = $zoho.salesiq ||
+    @*var $zoho = $zoho || {}; $zoho.salesiq = $zoho.salesiq ||
         { widgetcode: "082929f0048de095abde931cb153e076df2700d430dbecb2d6ce1ea29d3bd2f88cb9ddbeff8957905285212e1a49dd9e", values: {}, ready: function () { } };
     var d = document; s = d.createElement("script"); s.type = "text/javascript"; s.id = "zsiqscript"; s.defer = true;
     s.src = "https://salesiq.zoho.eu/widget"; t = d.getElementsByTagName("script")[0]; t.parentNode.insertBefore(s, t); d.write("<div id='zsiqwidget'></div>");
@@ -148,5 +150,5 @@
 <script>
     $(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip();
-    });
+    });*@
 </script>
