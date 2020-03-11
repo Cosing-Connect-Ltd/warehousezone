@@ -193,7 +193,7 @@
 
         @if (Request.UrlReferrer.AbsolutePath.Contains("PurchaseOrders") || Request.UrlReferrer.AbsolutePath.Contains("DirectSales") || Request.UrlReferrer.AbsolutePath.Contains("SalesOrders") || Request.UrlReferrer.AbsolutePath.Contains("WorksOrders"))
         {
-            <div class="input-group h-100 justify-content-center align-items-center">
+            <div id="chk" class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-4">
                     @Html.DevExpress().SpinEditFor(m => m.Price,

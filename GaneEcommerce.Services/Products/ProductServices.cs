@@ -556,6 +556,11 @@ namespace Ganedata.Core.Services
             List<int> productAttributesIds,
             List<int> productLocationIds, List<int> productKitIds, int userId, int tenantId, List<int> SiteId)
         {
+            if (!productMaster.SellPrice.HasValue || productMaster.SellPrice <= 0 && productMaster.BuyPrice != 0 && !productMaster.BuyPrice.HasValue)
+            {
+                var sellPrice = (productMaster.BuyPrice + ((productMaster.BuyPrice / 100) * productMaster.PercentMargin) + (productMaster.LandedCost ?? 0));
+                productMaster.SellPrice = sellPrice;
+            }
             if (productMaster.ProductId > 0)
             {
                 productMaster.UpdateCreatedInfo(userId);
@@ -1708,7 +1713,7 @@ namespace Ganedata.Core.Services
 
                     var itemsAllocated = itemsOnSalesOrders - itemsDispatched;
                     bool directship = _currentDbContext.Order.FirstOrDefault(u => u.OrderID == item)?.DirectShip ?? false;
-                    if (itemsAllocated > 0 && detail.Count(u=>u.Item2==OrderNumber)<=0)
+                    if (itemsAllocated > 0 && detail.Count(u => u.Item2 == OrderNumber) <= 0)
                     {
                         detail.Add(new Tuple<string, string, decimal, bool>(AccountNumber, OrderNumber, itemsAllocated, directship));
                     }

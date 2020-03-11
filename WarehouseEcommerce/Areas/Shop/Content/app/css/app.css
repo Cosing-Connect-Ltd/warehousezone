@@ -4900,8 +4900,10 @@ a.cashbtn {
 }
 
 .about-cnt td a.remove-btn {
-    color: red;
-    font-weight: 400;
+    color: #0066C0;
+    font-weight: 200;
+    font-family: "Amazon Ember",Arial,sans-serif ;
+    font-size: 12px;
 }
 
 .about-cnt td a i {

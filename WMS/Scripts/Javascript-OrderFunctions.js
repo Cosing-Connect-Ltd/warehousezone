@@ -3185,6 +3185,9 @@ function IsAllowZeroSale() {
 
             }
         }
+        else if (allowZPrice == false && PriceValue == 0 || PriceValue == null) {
+            document.getElementById('chk').style.display = 'none';
+        }
     }
 
     var inventoryTypes = $('#inventoryType').val();
