@@ -1125,11 +1125,6 @@ ul.mhp-menu {
 #menu1 .list-inline {
     display: flex;
 }
-
-#menu1 .manun {
-    overflow-y: overlay;
-}
-
 .top-product-h1 {
     display: flex;
     margin-bottom: unset;
