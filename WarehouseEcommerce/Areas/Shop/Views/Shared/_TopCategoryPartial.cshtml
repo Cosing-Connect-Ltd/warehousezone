@@ -1,8 +1,7 @@
 ﻿@using Ganedata.Core.Entities.Domain
 @model IEnumerable<ProductGroups>
+
 <div class="category-tab tabpro pro-nepr">
-
-
     <div class="tab-head">
         <h1>
             <span>
@@ -22,7 +21,7 @@
 
                         foreach (var item in Model)
                         {
-                            <li class="webTab"><a data-toggle="tooltip" title="@item.ProductGroup" id="catID_@item.ProductGroupId" onclick="getTopCategoryProducts(@item.ProductGroupId)">@item.ProductGroup</a> </li>
+                            <li class="webTab"><a title="@item.ProductGroup" id="catID_@item.ProductGroupId" onclick="getTopCategoryProducts(@item.ProductGroupId)">@item.ProductGroup</a> </li>
                         }
                     }
                     @*<li class="active webTab"><a href="#tab-2" data-toggle="tab">Web Cameras</a></li>*@

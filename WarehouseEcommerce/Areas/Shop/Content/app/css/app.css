@@ -1795,8 +1795,7 @@ header {
 
 .deliveryinfo {
     background-color: #fff;
-    padding: 25px 0;
-    margin-top: 30px;
+    padding: 10px 0 10px 0;
     margin-bottom: 30px;
     border-radius: 4px;
 }
@@ -3391,10 +3390,6 @@ footer #contact li {
 }
 
 @media(min-width: 992px) and (max-width: 1199px) {
-    #menu1 li a::after {
-        margin: 0 25px;
-    }
-
     .ui-main-menu .nav > li > a {
         font-size: 12px;
     }
@@ -3620,7 +3615,8 @@ footer #contact li {
     }
 
     .ui-logo img {
-        max-width: 115px;
+        max-width: 115px!important;
+        margin-left:unset!important;
     }
 
     #top {
@@ -3791,10 +3787,6 @@ footer #contact li {
     }
 
     .imgbanner {
-        display: none;
-    }
-
-    .xs-tab h1 {
         display: none;
     }
 
