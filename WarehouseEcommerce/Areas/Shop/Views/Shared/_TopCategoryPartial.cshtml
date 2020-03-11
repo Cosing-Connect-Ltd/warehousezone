@@ -1,37 +1,53 @@
 ﻿@using Ganedata.Core.Entities.Domain
 @model IEnumerable<ProductGroups>
 
-<div class="category-tab tabpro pro-nepr">
-    <div class="tab-head">
-        <h1>
-            <span>
-                Top Category
-                <i></i>
-            </span>
-        </h1>
-    </div>
-    <!--category-tab-->
-    <div class="row">
-        <div class="cat-tab">
-            <div class="col-lg-2 col-md-2 home-cat" id="cat_tab">
-                <ul class="nav nav-tabs">
-                    @if (Model != null)
+    <div class="category-tab tabpro pro-nepr top-cat-tab">
+        <div class="tab-head top-cat-head">
+            <h1>
+                <span>
+                    Top Category
+                    <i></i>
+                </span>
+            </h1>
+            <span id="show-hidden-menu" class="collapsed toggle" data-toggle="collapse" data-target="#showme"></span>
+        </div>
+
+        <div id="showme" class="hidden-menu" aria-expanded="true" style="display: none;">
+            <ul>
+                @if (Model != null)
+                {
+                    @Html.Hidden("ProductGroupIds", Model.FirstOrDefault()?.ProductGroupId)
+
+                    foreach (var item in Model)
                     {
-                        @Html.Hidden("ProductGroupIds", Model.FirstOrDefault()?.ProductGroupId)
-
-                        foreach (var item in Model)
-                        {
-                            <li class="webTab"><a title="@item.ProductGroup" id="catID_@item.ProductGroupId" onclick="getTopCategoryProducts(@item.ProductGroupId)">@item.ProductGroup</a> </li>
-                        }
+                        <li class="webTab"><a title="@item.ProductGroup" id="catID_@item.ProductGroupId" onclick="getTopCategoryProducts(@item.ProductGroupId)">@item.ProductGroup</a> </li>
                     }
-                    @*<li class="active webTab"><a href="#tab-2" data-toggle="tab">Web Cameras</a></li>*@
-                </ul>
-            </div>
-            <div class="tab-content">
-                <div class="tab-pane fade active in" id="top_category_products">
+                }
+            </ul>
+        </div>
 
+        <!--category-tab-->
+        <div class="row">
+            <div class="cat-tab">
+                <div class="col-lg-2 col-md-3 home-cat" id="cat_tab">
+                    <ul class="nav nav-tabs">
+                        @if (Model != null)
+                        {
+                            @Html.Hidden("ProductGroupIds", Model.FirstOrDefault()?.ProductGroupId)
+
+                            foreach (var item in Model)
+                            {
+                                <li class="webTab"><a title="@item.ProductGroup" id="catID_@item.ProductGroupId" onclick="getTopCategoryProducts(@item.ProductGroupId)">@item.ProductGroup</a> </li>
+                            }
+                        }
+                        @*<li class="active webTab"><a href="#tab-2" data-toggle="tab">Web Cameras</a></li>*@
+                    </ul>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane fade active in" id="top_category_products">
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>

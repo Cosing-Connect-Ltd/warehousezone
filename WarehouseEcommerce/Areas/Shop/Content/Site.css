@@ -280,9 +280,18 @@
     border: solid 1px #D7D7D7;
 }
 
+#show-hidden-menu {
+    display:none;
+}
 @media(max-width:991px) {
     #cat_tab {
         display: none;
+    }
+    #show-hidden-menu {
+        display: block;
+    }
+    #cattab {
+        justify-content:center;
     }
 }
 
@@ -1137,4 +1146,61 @@ ul.mhp-menu {
 .manufacturer-ul li {
     text-overflow: ellipsis;
     overflow: hidden;
+}
+.top-cat-head {
+    display: flex;
+    justify-content: space-between;
+}
+.top-cat-tab .hidden-menu li {
+    white-space: nowrap;
+    cursor: pointer;
+    list-style: none;
+}
+.top-cat-tab .hidden-menu a::before {
+    content: '';
+    border-right: 2px solid #fff;
+    font-size: 8px;
+    position: relative;
+    top: -3px;
+    margin: 5px;
+}
+.top-cat-tab .hidden-menu a {
+    transition: 0.3s all ease;
+    font-size: 14px;
+    text-transform: capitalize;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin: 0 15px;
+    border-radius: 0;
+    border-bottom: 1px solid #eee !important;
+    padding: 15px 0;
+    display: block;
+    background-color: transparent;
+    border: none;
+    
+}
+    .top-cat-tab .hidden-menu a:hover {
+        color: #1455a6;
+        padding-left: 10px;
+        margin-left: 10px;
+    }
+    .top-cat-tab .hidden-menu a[class*="blue"]::before {
+        content: '' !important;
+        border-right: 2px solid #1455a6 !important;
+    }
+.top-cat-tab .toggle.collapsed::after {
+    font-family: 'FontAwesome';
+    content: '\f067';
+    font-size: 18px;
+    font-weight: normal;
+    float: right;
+    cursor: pointer;
+}
+.top-cat-tab .toggle::after {
+    font-family: 'FontAwesome';
+    content: '\f068';
+    font-size: 18px;
+    font-weight: normal;
+    float: right;
+    cursor: pointer;
 }

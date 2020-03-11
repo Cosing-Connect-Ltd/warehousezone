@@ -3892,7 +3892,7 @@ body.active {
         position: absolute;
         top: 0;
         width: 100%;
-        z-index: 999;
+        z-index: 1;
         transition: all .2s ease 0s;
         -webkit-transition: all .2s ease 0s;
         -moz-transition: all .2s ease 0s;
