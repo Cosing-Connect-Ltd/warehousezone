@@ -691,6 +691,10 @@
     <Compile Include="Migrations\202003091043529_tenantRelationadded-in-productManufacturer.designer.cs">
       <DependentUpon>202003091043529_tenantRelationadded-in-productManufacturer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003111205097_productCategoriesTableAdded.cs" />
+    <Compile Include="Migrations\202003111205097_productCategoriesTableAdded.designer.cs">
+      <DependentUpon>202003111205097_productCategoriesTableAdded.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1529,6 +1533,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003091043529_tenantRelationadded-in-productManufacturer.resx">
       <DependentUpon>202003091043529_tenantRelationadded-in-productManufacturer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003111205097_productCategoriesTableAdded.resx">
+      <DependentUpon>202003111205097_productCategoriesTableAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

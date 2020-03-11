@@ -80,5 +80,7 @@ namespace Ganedata.Core.Services
         bool CheckStockIssue(int ProductId, decimal InStock,bool serialize, bool palletsPrdocut);
 
        ProductManufacturer SaveAndUpdateProductManufacturer(ProductManufacturer productManufacturer,int UserId);
+
+        IEnumerable<ProductCategory> GetAllValidProductCategories(int tenantId, int numberofproduct = 0);
     }
 }

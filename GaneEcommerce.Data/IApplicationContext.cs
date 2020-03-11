@@ -82,6 +82,7 @@ namespace Ganedata.Core.Data
         DbSet<ProductLocations> ProductLocationsMap { get; set; }
         DbSet<ProductAttributes> ProductAttributes { get; set; }
         DbSet<ProductGroups> ProductGroups { get; set; }
+        DbSet<ProductCategory> ProductCategories { get; set; }
         DbSet<ProductAttributeValues> ProductAttributeValues { get; set; }
         DbSet<ProductAttributeValuesMap> ProductAttributeValuesMap { get; set; }
         DbSet<ProductLotOptionsCodes> ProductLotOptionsCodes { get; set; }

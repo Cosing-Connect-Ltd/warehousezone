@@ -44,6 +44,11 @@ namespace Ganedata.Core.Services
         ProductGroups UpdateProductGroup(ProductGroups model, int userId);
         void DeleteProductGroup(int productGroupId, int userId);
 
+        ProductCategory GetProductCategoryById(int productCategoryId);
+        ProductCategory GetProductCategoryByName(string categoryName);
+        ProductCategory CreateProductCategory(ProductCategory model, int userId, int tenantId);
+        ProductCategory UpdateProductCategory(ProductCategory model, int userId, int tenantId);
+        void DeleteProductCategory(int id, int userId);
         List<WastageReason> GetAllWastageReasons();
     }
 }

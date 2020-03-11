@@ -77,6 +77,11 @@ namespace Ganedata.Core.Services
         {
             return _currentDbContext.ProductGroups.Find(productGroupId);
         }
+
+        public ProductCategory GetProductCategoryById(int productCategoryId)
+        {
+            return _currentDbContext.ProductCategories.Find(productCategoryId);
+        }
         public PalletType GetPalletTypeById(int palletTypeId)
         {
             return _currentDbContext.PalletTypes.Find(palletTypeId);
@@ -85,6 +90,11 @@ namespace Ganedata.Core.Services
         public ProductGroups GetProductGroupByName(string groupName)
         {
             return _currentDbContext.ProductGroups.FirstOrDefault(p => p.ProductGroup.Equals(groupName) && p.IsDeleted != true);
+        }
+
+        public ProductCategory GetProductCategoryByName(string categoryName)
+        {
+            return _currentDbContext.ProductCategories.FirstOrDefault(p => p.ProductCategoryName.Equals(categoryName) && p.IsDeleted != true);
         }
         public PalletType GetPalletTypeByName(string palletType)
         {
@@ -367,6 +377,61 @@ namespace Ganedata.Core.Services
             _currentDbContext.SaveChanges();
         }
 
+        public ProductCategory CreateProductCategory(ProductCategory model, int userId, int tenantId)
+        {
+            var pctg = _currentDbContext.ProductCategories.FirstOrDefault(a => a.ProductCategoryName.Equals(model.ProductCategoryName, StringComparison.InvariantCultureIgnoreCase));
+            if (pctg != null)
+                throw new Exception("Product category already exsists");
+
+            var pCategory = new ProductCategory()
+            {
+                CreatedBy = userId,
+                DateCreated = DateTime.UtcNow,
+                DateUpdated = DateTime.UtcNow,
+                IsDeleted = false,
+                ProductCategoryName = model.ProductCategoryName,
+                ProductGroupId = model.ProductGroupId,
+                TenantId = tenantId,
+                UpdatedBy = userId
+            };
+            _currentDbContext.ProductCategories.Add(pCategory);
+            _currentDbContext.SaveChanges();
+            return pCategory;
+        }
+
+        public ProductCategory UpdateProductCategory(ProductCategory model, int userId, int tenantId)
+        {
+            var productCategory = _currentDbContext.ProductCategories.FirstOrDefault(u => u.ProductCategoryId == model.ProductCategoryId);
+            if (productCategory != null)
+            {
+                productCategory.ProductCategoryName = model.ProductCategoryName.Trim();
+                productCategory.DateUpdated = DateTime.UtcNow;
+                productCategory.UpdatedBy = userId;
+                _currentDbContext.ProductCategories.Attach(productCategory);
+                var entry = _currentDbContext.Entry(productCategory);
+                entry.Property(e => e.ProductCategoryName).IsModified = true;
+                entry.Property(e => e.DateUpdated).IsModified = true;
+                entry.Property(e => e.UpdatedBy).IsModified = true;
+                _currentDbContext.SaveChanges();
+            }
+            return model;
+        }
+
+        public void DeleteProductCategory(int productCategoryId, int userId)
+        {
+            ProductCategory productcategory = GetProductCategoryById(productCategoryId);
+
+            productcategory.IsDeleted = true;
+            productcategory.DateUpdated = DateTime.UtcNow;
+            productcategory.UpdatedBy = userId;
+            _currentDbContext.ProductCategories.Attach(productcategory);
+
+            var entry = _currentDbContext.Entry(productcategory);
+            entry.Property(e => e.IsDeleted).IsModified = true;
+            entry.Property(e => e.DateUpdated).IsModified = true;
+            entry.Property(e => e.UpdatedBy).IsModified = true;
+            _currentDbContext.SaveChanges();
+        }
         public List<WastageReason> GetAllWastageReasons()
         {
             return _currentDbContext.WastageReasons.ToList();

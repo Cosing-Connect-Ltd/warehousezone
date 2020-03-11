@@ -188,6 +188,7 @@
     <Compile Include="Domain\Models\OrderReceiveCount.cs" />
     <Compile Include="Domain\Models\PalletTracking.cs" />
     <Compile Include="Domain\Models\PalletType.cs" />
+    <Compile Include="Domain\Models\ProductCategory.cs" />
     <Compile Include="Domain\Models\ProductFiles.cs" />
     <Compile Include="Domain\Models\ProductManufacturer.cs" />
     <Compile Include="Domain\Models\ProductsWebsitesMap.cs" />
