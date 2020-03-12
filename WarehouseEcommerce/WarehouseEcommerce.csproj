@@ -272,10 +272,10 @@
     <Content Include="Areas\Shop\Content\app\img\brands\7.png" />
     <Content Include="Areas\Shop\Content\app\img\brands\8.png" />
     <Content Include="Areas\Shop\Content\app\img\brands\9.png" />
-    <Content Include="Areas\Shop\Content\app\img\home\1.png" />
-    <Content Include="Areas\Shop\Content\app\img\home\2.png" />
-    <Content Include="Areas\Shop\Content\app\img\home\3.png" />
-    <Content Include="Areas\Shop\Content\app\img\home\4.png" />
+    <Content Include="Areas\Shop\Content\app\img\home\Banner_1.png" />
+    <Content Include="Areas\Shop\Content\app\img\home\Banner_2.png" />
+    <Content Include="Areas\Shop\Content\app\img\home\Banner_3.png" />
+    <Content Include="Areas\Shop\Content\app\img\home\Banner_4.png" />
     <Content Include="Areas\Shop\Content\app\img\icon.png" />
     <Content Include="Areas\Shop\Content\app\img\icons\1.png" />
     <Content Include="Areas\Shop\Content\app\img\icons\2.png" />
@@ -314,9 +314,7 @@
     <Content Include="Areas\Shop\Content\app\img\product\no_image.gif" />
     <Content Include="Areas\Shop\Content\app\img\product\Microware-CHARGING-DOCK-LED-Light-hover.jpg" />
     <Content Include="Areas\Shop\Content\app\img\product\Microware-CHARGING-DOCK-LED-Light.jpg" />
-    <Content Include="Areas\Shop\Content\app\img\slider\1.png" />
-    <Content Include="Areas\Shop\Content\app\img\slider\1.jpg" />
-    <Content Include="Areas\Shop\Content\app\img\slider\4.jpg" />
+    <Content Include="Areas\Shop\Content\app\img\slider\SliderImage.png" />
     <Content Include="Areas\Shop\Content\app\js\app.js" />
     <Content Include="Areas\Shop\Content\bootstrap-theme.css" />
     <Content Include="Areas\Shop\Content\bootstrap-theme.min.css" />
