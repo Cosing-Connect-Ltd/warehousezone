@@ -76,13 +76,13 @@ namespace WMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ViewBag.ControllerName = "ProductCategory";
+
             ProductCategory productCategory = _productLookupService.GetProductCategoryById(id.Value);
             if (productCategory == null)
             {
                 return HttpNotFound();
             }
-
+            ViewBag.ProductGroupId = new SelectList(_LookupService.GetAllValidProductGroups(CurrentTenantId), "ProductGroupId", "ProductGroup");
             return View(productCategory);
         }
 
@@ -99,6 +99,7 @@ namespace WMS.Controllers
                 _productLookupService.UpdateProductCategory(productCategory, CurrentUserId, CurrentTenantId);
                 return RedirectToAction("Index");
             }
+            ViewBag.ProductGroupId = new SelectList(_LookupService.GetAllValidProductGroups(CurrentTenantId), "ProductGroupId", "ProductGroup");
             return View(productCategory);
         }
 
