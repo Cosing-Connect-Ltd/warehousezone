@@ -62,6 +62,7 @@ namespace Ganedata.Core.Entities.Domain
         public decimal InStock { get; set; }
         public decimal OnOrder { get; set; }
         public string ProductGroupName { get; set; }
+        public string ProductCategoryName { get; set; }
         public string DepartmentName { get; set; }
         public string Location { get; set; }
 

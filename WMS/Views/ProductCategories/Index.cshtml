@@ -48,39 +48,4 @@
 
 
 </div>
-    @*<p>
-            @Html.ActionLink("Create New", "Create")
-        </p>
-        <table class="table">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.ProductGroups.ProductGroup)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ProductCategoryName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SortOrder)
-                </th>
-                <th></th>
-            </tr>
-
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ProductGroups.ProductGroup)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ProductCategoryName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SortOrder)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.ProductCategoryId }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.ProductCategoryId }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.ProductCategoryId })
-                    </td>
-                </tr>
-            }*@
+   

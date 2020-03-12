@@ -298,6 +298,7 @@ function CreateProduct() {
     var quantity = $("#QuantityNew").val();
     var price = $("#PriceShipment").val();
     var ProductGroupId = $("#drpPG :selected").val();
+    var ProductCategoryId = $("#drpPC : selected").val();
     var ProductDepartmentId = $("#drpPD :selected").val();
     if (price == "" || price == null || price == undefined) {
         price = 0;
@@ -318,6 +319,7 @@ function CreateProduct() {
         Quantity: quantity,
         Price: price,
         ProductGroupId: ProductGroupId,
+        ProductCategoryId: ProductCategoryId,
         ProductDepartmentId: ProductDepartmentId,
         ProductDesc: $("#ProductDesc").val()
     };
@@ -416,6 +418,13 @@ function onchangeGroup() {
     $('#drpPG').val(groupId);
     $("#drpPG").trigger("chosen:updated");
 }
+function onchangeGroup() {
+
+    var categoryId = $(".drpPC").val();
+    $('#drpPC').val(categoryId);
+    $("#drpPC").trigger("chosen:updated");
+}
+
 
 
 

@@ -379,7 +379,7 @@ namespace Ganedata.Core.Services
 
         public ProductCategory CreateProductCategory(ProductCategory model, int userId, int tenantId)
         {
-            var pctg = _currentDbContext.ProductCategories.FirstOrDefault(a => a.ProductCategoryName.Equals(model.ProductCategoryName, StringComparison.InvariantCultureIgnoreCase));
+            var pctg = _currentDbContext.ProductCategories.FirstOrDefault(a => a.ProductCategoryName.Equals(model.ProductCategoryName, StringComparison.InvariantCultureIgnoreCase) && a.IsDeleted != true);
             if (pctg != null)
                 throw new Exception("Product category already exsists");
 
@@ -388,7 +388,6 @@ namespace Ganedata.Core.Services
                 CreatedBy = userId,
                 DateCreated = DateTime.UtcNow,
                 DateUpdated = DateTime.UtcNow,
-                IsDeleted = false,
                 ProductCategoryName = model.ProductCategoryName,
                 ProductGroupId = model.ProductGroupId,
                 TenantId = tenantId,
@@ -405,6 +404,8 @@ namespace Ganedata.Core.Services
             if (productCategory != null)
             {
                 productCategory.ProductCategoryName = model.ProductCategoryName.Trim();
+                productCategory.TenantId = model.TenantId;
+                productCategory.SortOrder = model.SortOrder;
                 productCategory.DateUpdated = DateTime.UtcNow;
                 productCategory.UpdatedBy = userId;
                 _currentDbContext.ProductCategories.Attach(productCategory);

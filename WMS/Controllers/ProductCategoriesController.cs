@@ -128,11 +128,11 @@ namespace WMS.Controllers
             return RedirectToAction("Index");
         }
 
-        public JsonResult IsProductCategoryAvailable(string ProductCategory, int ProductCategoryId = 0)
+        public JsonResult IsProductCategoryAvailable(string ProductCategoryName, int ProductCategoryId = 0)
         {
-            if (!String.IsNullOrEmpty(ProductCategory)) ProductCategory = ProductCategory.Trim();
+            if (!String.IsNullOrEmpty(ProductCategoryName)) ProductCategoryName = ProductCategoryName.Trim();
 
-            var productCategory = _productLookupService.GetProductCategoryByName(ProductCategory);
+            var productCategory = _productLookupService.GetProductCategoryByName(ProductCategoryName);
 
             return Json((productCategory == null || productCategory.ProductCategoryId == ProductCategoryId), JsonRequestBehavior.AllowGet);
         }

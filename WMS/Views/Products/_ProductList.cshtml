@@ -85,6 +85,12 @@
         });
         settings.Columns.Add(c =>
         {
+            c.FieldName = "ProductCategoryName";
+            c.Caption = "Category";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
             c.FieldName = "DepartmentName";
             c.Caption = "Department";
             c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;

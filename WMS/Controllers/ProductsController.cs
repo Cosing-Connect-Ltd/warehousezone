@@ -80,6 +80,7 @@ namespace WMS.Controllers
             ViewBag.LotOptionCodeId = new SelectList(lotOptionCodes, "LotOptionCodeId", "Description", lotOptionCodes.Select(x => x.LotOptionCodeId).FirstOrDefault());
             ViewBag.LotProcessTypeCodeId = new SelectList(lotProcessTypeCodes, "LotProcessTypeCodeId", "Description", lotProcessTypeCodes.Select(x => x.LotProcessTypeCodeId).FirstOrDefault());
             ViewBag.Groups = new SelectList(_lookupServices.GetAllValidProductGroups(CurrentTenantId), "ProductGroupId", "ProductGroup");
+            ViewBag.Category = new SelectList(_lookupServices.GetAllValidProductCategories(CurrentTenantId), "ProductCategoryId", "ProductCategoryName");
             ViewBag.Departments = new SelectList(_lookupServices.GetAllValidTenantDepartments(CurrentTenantId), "DepartmentId", "DepartmentName");
             ViewBag.PalletType = new SelectList(_lookupServices.GetAllValidPalletTypes(CurrentTenantId), "PalletTypeId", "Description");
             ViewBag.ProductLocations = _productLookupService.GetAllValidProductLocations(CurrentTenantId, CurrentWarehouseId);
@@ -135,6 +136,7 @@ namespace WMS.Controllers
             ViewBag.WebsiteIds = _lookupServices.GetAllValidWebsites(CurrentTenantId).ToList();
             ViewBag.ProductLocationIds = _productLookupService.GetAllValidProductLocations(CurrentWarehouseId, CurrentTenantId, id.Value).Select(m => m.LocationId);
             ViewBag.Groups = new SelectList(_lookupServices.GetAllValidProductGroups(CurrentTenantId), "ProductGroupId", "ProductGroup");
+            ViewBag.Category = new SelectList(_lookupServices.GetAllValidProductCategories(CurrentTenantId), "ProductCategoryId", "ProductCategoryName");
             ViewBag.PalletType = new SelectList(_lookupServices.GetAllValidPalletTypes(CurrentTenantId), "PalletTypeId", "Description", productMaster.PalletTypeId);
             ViewBag.Departments = new SelectList(_lookupServices.GetAllValidTenantDepartments(CurrentTenantId), "DepartmentId", "DepartmentName");
             ViewBag.Manufacturer = new SelectList(_lookupServices.GetAllValidProductManufacturer(CurrentTenantId), "Id", "Name",productMaster.ManufacturerId);

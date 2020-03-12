@@ -39,6 +39,7 @@ namespace Ganedata.Core.Models
         public DateTime? DiscontDate { get; set; }
         public string DepartmentName { get; set; }
         public string ProductGroupName { get; set; }
+        public string ProductCategoryName { get; set; }
         public bool? RequiresBatchNumberOnReceipt { get; set; }
         public bool? RequiresExpiryDateOnReceipt { get; set; }
         public string ProductNotes { get; set; }

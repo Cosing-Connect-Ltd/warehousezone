@@ -227,6 +227,7 @@ namespace Ganedata.Core.Entities.Domain
         public bool DirectPostAllowed { get; set; }
 
         public string ProductGroup { get; set; }
+        public string ProductCategory { get; set; }
         public int? orderstatusId { get; set; }
         public int? orderProcessstatusId { get; set; }
         public ProductGroups ProductGroups { get; set; }

@@ -129,6 +129,8 @@ namespace Ganedata.Core.Entities.Domain
         public int DepartmentId { get; set; }
         [Display(Name = "Group")]
         public int? ProductGroupId { get; set; }
+        [Display(Name = "Category")]
+        public int? ProductCategoryId { get; set; }
         [Display(Name = " Product Pallet Type")]
         public int? PalletTypeId { get; set; }
         [Display(Name = "Case Quantity")]
@@ -193,6 +195,7 @@ namespace Ganedata.Core.Entities.Domain
         public virtual ICollection<ProductKitMap> ProductKitMap { get; set; }
         public virtual TenantDepartments TenantDepartment { get; set; }
         public virtual ProductGroups ProductGroup { get; set; }
+        public virtual ProductCategory ProductCategory { get; set; }
         public virtual PalletType PalletType { get; set; }
         public virtual ICollection<ProductFiles> ProductFiles { get; set; }
         public virtual List<ProductReceipeMaster> RecipeItemProducts { get; set; }
