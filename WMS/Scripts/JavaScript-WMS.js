@@ -19,7 +19,7 @@ $(function () {
         var departmentId = $("#drpPD").val();
         if (departmentId === null || departmentId === "" || departmentId === 0) { return; }
         LoadingPanel.Show();
-        
+
         //var pid = $("#prdid option:selected").val();
         $('#drpPG').empty();
         $("#drpPG").trigger("chosen:updated");
@@ -48,11 +48,41 @@ $(function () {
 
         });
 
-
-
-
     });
 
+    $("#drpPG").on("change", function () {
+        var groupId = $("#drpPG").val();
+        if (groupId === null || groupId === "" || groupId === 0) { return; }
+        LoadingPanel.Show();
+        
+        //var pid = $("#prdid option:selected").val();
+        $('#drpPC').empty();
+        $("#drpPC").trigger("chosen:updated");
+        $.ajax({
+            type: "GET",
+            url: "/PurchaseOrders/_GetProductCategory/",
+            data: { GroupId: groupId },
+            
+            success: function (data) {
+                var options = "<option value='0'>Select Category</option>";
+                $.each(data, function (i, item) {
+                    options += "<option value='" + item.ProductCategoryId + "'>" + item.ProductCategoryName + "</option>";
+                });
+                $("#drpPC").html(options);
+                $("#drpPC").trigger("chosen:updated");
+                $("drpPG").val(groupId);
+                LoadingPanel.Hide();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                // alert(xhr.status);
+                LoadingPanel.Hide();
+                alert('Error' + textStatus + "/" + errorThrown);
+
+            }
+
+        });
+
+    });
 
     $('#grProducts').prop('disabled', true).trigger("chosen:updated");
     $('.deletepg').click(function (e) {
@@ -149,8 +179,7 @@ $(function () {
         else if (id === "lnkSalesOrderCompleteUpdate") {
             value = $('#selkeySalesOrderCompleteList').val();
         }
-        else if (id === "lnkmodifydirectSalesOrder")
-        {
+        else if (id === "lnkmodifydirectSalesOrder") {
             value = $("#selkeySalesOrderList").val();
         }
         else if (id === "lnkDirectSalesOrderPrint") {
@@ -272,7 +301,7 @@ $(function () {
         else if (id === "lnkWorkOrderCompleteUpdate") {
             value = $('#selkeyWorksOrderCompletedListGridView').val();
         }
-       
+
         else if (id === "lnkPalletGridFocusedRowValue") {
             var hash = window.location.hash.substr(1);
             if (hash === "AD" || hash === "") {
@@ -322,7 +351,7 @@ $(function () {
 
     });
 
-    
+
 
 
 
@@ -682,7 +711,7 @@ $(function () {
     $(window).on('beforeunload', function () {
         $('.se-pre-con').show();
     });
-    
+
 
     /////////////////////// jquery ui tabs ////////////////////////////////////
 
@@ -904,11 +933,11 @@ $(function () {
 
                         $('#emailWithaccount').append('<option value=' + item.Value + ' selected>' + item.Text + '</option>');
                         selectedId.push(item.Value);
-                       
+
                     }
                     else {
                         $('#emailWithaccount').append('<option value=' + item.Value + '>' + item.Text + '</option>');
-                       
+
                     }
 
 
@@ -983,8 +1012,8 @@ $(function () {
 
                                 },
                                 Return: function () {
-                                                prdid.SetEnabled(true);
-                                                $("#btngrDrp").removeAttr("disabled");
+                                    prdid.SetEnabled(true);
+                                    $("#btngrDrp").removeAttr("disabled");
                                 }
                             }
                         });
@@ -1252,7 +1281,7 @@ function AccountContactChange(e) {
 
 function SetContactEmail() {
     var id = $("#AccountContactId :selected").val();
-    if (id>0 && id !== undefined) {
+    if (id > 0 && id !== undefined) {
         $('#emailWithaccount > option :selected').each(function () {
             $(this).attr("selected", false);
         });
@@ -1261,7 +1290,7 @@ function SetContactEmail() {
     }
     else {
         $("#emailWithaccount").val($("#emailWithaccount option:first").val());
-        $("#emailWithaccount").trigger("chosen:updated");    
+        $("#emailWithaccount").trigger("chosen:updated");
     }
 }
 function EditAccount() {
@@ -1286,7 +1315,7 @@ function s4() {
 
 
 function fillProductDepartment(id) {
-    
+
     var id = $("#AccountID option:selected").val();
     if (id === null || id === "" || id === 0) { return; }
     LoadingPanel.Show();
@@ -1307,7 +1336,7 @@ function fillProductDepartment(id) {
             });
             $("#drpPD").html(options);
             $("#drpPD").trigger("chosen:updated");
-            
+
             LoadingPanel.Hide();
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {

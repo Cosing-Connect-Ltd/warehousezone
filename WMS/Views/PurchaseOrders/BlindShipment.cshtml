@@ -22,8 +22,10 @@
     function OnStartCallback(s, e) {
         var department = $(".drpPD").val();
         var group = $(".drpPG").val();
+        var category = $(.drpPC).val();
         e.customArgs["ProductDepartment"] = department;
         e.customArgs["ProductGroup"] = group;
+        e.customArgs["ProductCategory"] = category;
     }
 
 </script>

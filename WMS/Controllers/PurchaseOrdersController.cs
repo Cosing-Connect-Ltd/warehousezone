@@ -957,6 +957,12 @@ namespace WMS.Controllers
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult _GetProductCategory(int GroupId)
+        {
+            var model = LookupServices.GetProductCategory(GroupId);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
 
         public JsonResult RefreshProductGroupAndDepartment(string value)
         {

@@ -76,13 +76,13 @@ namespace Ganedata.Core.Services
             return _currentDbContext.ProductGroups.Where(m => m.IsDeleted != true && m.TenentId == tenantId);
         }
 
-        public IEnumerable<ProductCategory> GetAllValidProductCategories(int tenantId, int numberofproduct = 0)
+        public IEnumerable<ProductCategory> GetAllValidProductCategories(int tenantId, int numberofproduct = 0, int? ProductGroupId = null)
         {
             if (numberofproduct > 0)
             {
-                return _currentDbContext.ProductCategories.Where(m => m.IsDeleted != true && m.TenantId == tenantId).Take(numberofproduct);
+                return _currentDbContext.ProductCategories.Where(m => m.IsDeleted != true && m.TenantId == tenantId && (!ProductGroupId.HasValue || m.ProductGroupId == ProductGroupId)).Take(numberofproduct);
             }
-            return _currentDbContext.ProductCategories.Where(m => m.IsDeleted != true && m.TenantId == tenantId);
+            return _currentDbContext.ProductCategories.Where(m => m.IsDeleted != true && m.TenantId == tenantId && (!ProductGroupId.HasValue || m.ProductGroupId == ProductGroupId));
         }
         public IEnumerable<PalletType> GetAllValidPalletTypes(int tenantId)
         {
@@ -585,6 +585,17 @@ namespace Ganedata.Core.Services
                 {
                     u.ProductGroupId,
                     u.ProductGroup
+                });
+            return obj.ToList();
+        }
+
+        public IEnumerable<object> GetProductCategory(int groupId)
+        {
+            var obj = _currentDbContext.ProductCategories.Where(u => (u.ProductGroupId == groupId) && u.IsDeleted != true).Select(
+                u => new
+                {
+                    u.ProductCategoryId,
+                    u.ProductCategoryName
                 });
             return obj.ToList();
         }

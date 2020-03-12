@@ -29,6 +29,7 @@ function BSsubmitProduct() {
     var PEFC = $(".prodPEFC").val();
     var FscPercent = $(".prodFscPercent").val();
     var ProductGroupId = $("#drpPG :selected").val();
+    var ProductCategoryId = $("#drpPC : selected").val();
     LoadingPanel.Show();
     var value = $('#delivery').val();
     var type = 13;
@@ -418,7 +419,7 @@ function onchangeGroup() {
     $('#drpPG').val(groupId);
     $("#drpPG").trigger("chosen:updated");
 }
-function onchangeGroup() {
+function onchangeCategory() {
 
     var categoryId = $(".drpPC").val();
     $('#drpPC').val(categoryId);

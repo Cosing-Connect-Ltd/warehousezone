@@ -73,6 +73,8 @@ namespace Ganedata.Core.Services
 
         IEnumerable<object> GetProductGroups(int departmentId);
 
+        IEnumerable<object> GetProductCategory(int groupId);
+
         IEnumerable<object> GetAllValidWebsites(int currentTenantId);
 
         IQueryable<TenantEmailNotificationQueue> GetEmailNotifcationQueue(int tenantId);
@@ -81,6 +83,6 @@ namespace Ganedata.Core.Services
 
        ProductManufacturer SaveAndUpdateProductManufacturer(ProductManufacturer productManufacturer,int UserId);
 
-        IEnumerable<ProductCategory> GetAllValidProductCategories(int tenantId, int numberofproduct = 0);
+        IEnumerable<ProductCategory> GetAllValidProductCategories(int tenantId, int numberofproduct = 0, int? ProductGroupId = null);
     }
 }
