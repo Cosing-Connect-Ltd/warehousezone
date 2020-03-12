@@ -1,100 +1,61 @@
 ﻿
 @model List<Ganedata.Core.Entities.Domain.OrderDetailSessionViewModel>
 
-
-<table class="order-details">
-    @if (ViewBag.CartModal == null)
-    {
-        <thead>
-            <tr>
-                <th>Item</th>
-                <th>
-                    <div class="ordered-items">Description</div>
-                </th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Tax</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-    }
     @foreach (var item in Model)
     {
-        <tbody>
+        <div class="cartitem-details">
+            <div class="cartitem-imgtext ">
+                <div class="cartitem-img">
+                    <a href="">
+                        @* <img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage)? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")">*@
+                        @*<img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage)? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@(item?.ProductMaster?.Name)">*@
+                        <img src="~/Areas/Shop/Content/app/img/product/no_image.gif">
 
-
-            <tr>
-
-                <td><a href=""><img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage)? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@(item?.ProductMaster?.Name)"></a></td>
-                <td>
-                    <div class="ordered-items">
-                        <p>
-                            <a href=""><strong>@(item.ProductMaster?.Name)</strong></a>
-
+                    </a>
+                </div>
+                <div class="cartitem-text">
+                    <p><a href=""><strong>@(item.ProductMaster?.Name)</strong></a></p>
+                    @*<p><li href="#" class="badge">#1 Best Seller</li><span> in category-name</span></p>*@
+                    <p><b style="color: #007600 !important;">In Stock</b></p>
+                    <p><b>SKU:</b> <span>@(item.ProductMaster?.SKUCode)</span></p>
+                    <p><b>Size:</b> <span>M</span></p>
+                    @if (ViewBag.CartModal == null)
+                    {
+                        <p style="margin-top:-3px">
+                            <b>Quantity:</b> <input type="number" min="0" placeholder="Qty" onchange="UpdateCartItem(@item.ProductId,this)" value="@item.Qty" />
+                            <a href="javascript:;" class="remove-btn cart-del" onclick="RemoveCartItem(@item.ProductId)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
                         </p>
-                        <ul>
-                            <li>
-                                SKU: <span>@(item.ProductMaster?.SKUCode)</span>
-                            </li>
-                            <li>Size: <span>M</span></li>
-                            @*<li>
-                                    Quantity: <span>@item.Qty</span>
-                                </li>*@
-                        </ul>
-                    </div>
-                </td>
-                @if (ViewBag.CartModal == null)
-                {
-                    <td>
-                        <div class="ordered-items ordered-items-spacing">
-                            <ul>
-                                <li>
-                                    Quantity:<br />
-                                    <span>
-                                        <input type="number" min="0" placeholder="Qty" onchange="UpdateCartItem(@item.ProductId,this)" value="@item.Qty" />
-                                    </span>
-                                </li>
-                            </ul>
-                            <a href="javascript:;" class="remove-btn" onclick="RemoveCartItem(@item.ProductId)"><i class="fa fa-trash-o" aria-hidden="true"></i> Remove</a>
-                        </div>
-                    </td>
 
-                    <td>
-                        <div class="price-whlist"><b style=" max-width: 20px"> @item.CurrencySign @item.Price</b> </div>
-                    </td>
-                    @Html.Hidden("cartView", true);
-                    <td>
-                        <div class="price-whlist"><b> @item.TaxAmount</b> </div>
-                    </td>
-                    <td>
-                        <div class="price-whlist"><b> @item.TotalAmount</b> </div>
-
-                    </td>
-                }
-            </tr>
-
-
-        </tbody>
-    }
-</table>
-@if (ViewBag.CartModal == null)
-{
-    if (Model.Count > 0)
-    {
-        <div class="button-submit proceed-card-btn">
-
-            <button type="Submit" name="submitNewsletter" class="btn btn-block" onclick="window.location.href='@Url.Action("GetAddress", "Orders")'">Proceed to Checkout</button>
-            <div class=""><label>Total: @ViewBag.CurrencySymbol @(ViewBag.TotalQty == null ? 0 : ViewBag.TotalQty) </label></div>
+                    }
+                </div>
+            </div>
+            <div class="cartitem-price">
+                <p><span>Price:</span><b>@item.CurrencySign@item.Price</b></p>
+                @*@Html.Hidden("cartView", true);*@
+                <p><span>Tax:</span><b>@item.CurrencySign@item.TaxAmount</b></p>
+                <p><span>Total:</span><b>@item.CurrencySign@item.TotalAmount</b></p>
+            </div>
         </div>
-    }
-    else
-    {
-        <center><p><h4 style="text-align:center">Your Basket is empty!</h4></p></center>
-        <div class="button-submit">
-
-            <button type="Submit" name="submitNewsletter" class="btn btn-block" onclick="window.location.href='@Url.Action("Index", "Home")'">Back</button>
-        </div>
-    }
 
 }
+    @if (ViewBag.CartModal == null)
+    {
+        if (Model.Count > 0)
+        {
+            <div class="button-submit proceed-card-btn">
+
+                <button type="Submit" name="submitNewsletter" class="btn btn-block" onclick="window.location.href='@Url.Action("GetAddress", "Orders")'">Proceed to Checkout</button>
+                <div class=""><label>Grand Total: <b>@ViewBag.CurrencySymbol@(ViewBag.TotalQty == null ? 0 : ViewBag.TotalQty)</b> </label></div>
+            </div>
+        }
+        else
+        {
+            <center><p><h4 style="text-align:center">Your Basket is empty!</h4></p></center>
+            <div class="button-submit">
+
+                <button type="Submit" name="submitNewsletter" class="btn btn-block" onclick="window.location.href='@Url.Action("Index", "Home")'">Back</button>
+            </div>
+        }
+
+    }
 

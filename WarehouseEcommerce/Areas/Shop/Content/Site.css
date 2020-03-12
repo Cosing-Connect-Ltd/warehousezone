@@ -854,11 +854,16 @@ ul.mhp-menu {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-top: 1px solid #dddddd;
+    margin-top: -3px;
+    padding-top: 15px;
 }
-
-.user_account {
-    top: 24px;
-}
+    .proceed-card-btn b {
+        color: #B12704 !important;
+    }
+    .user_account {
+        top: 24px;
+    }
 
 .nav-main-menu::after {
     content: '';
@@ -1203,4 +1208,69 @@ ul.mhp-menu {
     font-weight: normal;
     float: right;
     cursor: pointer;
+}
+.cartitem-details {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    border-top: 1px solid #dddddd;
+    padding: 15px 0px;
+}
+.cartitem-imgtext {
+    display: flex;
+    flex-wrap: nowrap;
+}
+.cartitem-img img{
+    height:180px;
+    width:180px;
+}
+.cartitem-img{
+    margin-right: 15px;
+}
+.mb-15 {
+    margin-bottom: 15px!important;
+}
+.cartitem-price {
+    /*text-align: end;*/
+}
+    .cartitem-price p {
+        white-space: nowrap;
+        color: #B12704 !important;
+        display: flex;
+        align-items: baseline;
+    }
+    .cartitem-price span {
+        padding: 5px;
+        font-size: 14px !important;
+        line-height: 1.5 !important;
+        color: #555 !important;
+        font-weight: bold;
+        min-width: 60px;
+    }
+.cartitem-text input {
+    width: 60px;
+    height: 20px;
+}
+.cart-del {
+    font-size: 13px;
+    font-weight: 400;
+}
+.cartitem-text strong{
+    font-size:17px;
+}
+.cartitem-text p, span{
+    margin-bottom: 5px;
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+    color: #555 !important;
+}
+.cartitem-text b {
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+    font-weight: 400;
+}
+.cartitem-text .badge {
+    background-color: #E47911 !important;
+    font-weight: 300;
+    padding: 4px 7px;
 }
