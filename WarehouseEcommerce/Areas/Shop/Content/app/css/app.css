@@ -78,7 +78,7 @@ ul {
 }
 
 .list-inline > li {
-    padding: 0;
+    /*padding: 0;*/
 }
 
 input[type="checkbox"],
@@ -1707,7 +1707,6 @@ header {
 .headerMenu {
     background-color: #000000;
     padding: 15px;
-    margin-bottom: 30px;
     width: 100%;
     margin-right: unset;
     margin-left: unset;
@@ -1776,14 +1775,14 @@ header {
     }
 
 .deliveryinfo ul li h4 {
-    font-size: 16px;
+    font-size: 13px;
     text-transform: capitalize;
     color: #000;
     margin-bottom: 0;
 }
 
 .deliveryinfo ul li p {
-    font-size: 11px;
+    font-size: 10px;
     text-transform: capitalize;
     color: #6d6d6d;
     margin-bottom: 0;
@@ -1792,7 +1791,6 @@ header {
 .deliveryinfo {
     background-color: #fff;
     padding: 10px 0 10px 0;
-    margin-bottom: 30px;
     border-radius: 4px;
 }
 
@@ -1815,7 +1813,35 @@ header {
             top: 10px;
         }
 }
+@media(max-width:800px){
+    .deliveryinfo svg {
+        width:30px;
+        margin:unset;
+    }
+    .deliveryinfo li {
+        padding:unset;
+    }
+    .deliveryinfo ul li h4 {
+        font-size: 10px;
+    }
 
+    .deliveryinfo ul li p {
+        font-size: 8px;
+    }
+}
+@media(max-width:653px) {
+    .deliveryinfo-row .list-inline {
+        width: 100%;
+        text-align: left !important;
+    }
+    .deliveryinfo-row {
+        flex-wrap:wrap;
+    }
+    .deliveryinfo-row {
+        margin: 0 auto;
+        width: 160px;
+    }
+}
 
 /* --------------------------
 :: Product
@@ -2035,7 +2061,7 @@ header {
 
 .acart {
     background-color: #1455a6;
-    padding: 9px 30px 7px 30px;
+    padding: 9px 15px 7px 15px;
     border-radius: 5px;
     font-size: 12px;
     border: none;
@@ -3575,7 +3601,7 @@ footer #contact li {
     }
 
     .text-search {
-        height: 35px;
+        /*height: 35px;*/
         border-radius: 4px 0 0 4px;
     }
 
@@ -3603,11 +3629,16 @@ footer #contact li {
         height: 22px;
     }
 
-    .cart-menu > .btn svg {
-        width: 23px;
-        height: 23px;
-    }
+    /*.cart-menu > .btn svg {
+        width: 22px;
+        height: 22px;
+    }*/
 
+    @media(max-width:334px) {
+        .hidden-sm .list-inline {
+            display:flex;
+        }
+    }
     header .cart-menu-total {
         right: -7px;
     }
