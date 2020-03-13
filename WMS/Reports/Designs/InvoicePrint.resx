@@ -175,7 +175,7 @@ order by "ProductMaster".SKUCode</value>
   left
   join "dbo"."AccountAddresses" "AccountAddresses"
        on "AccountAddresses"."AccountID" = "Account"."AccountID" and "AccountAddresses"."AddressID" = (select top(1) "AddressID" from AccountAddresses 
-	 where AccountAddresses.AccountID = "Account"."AccountId" AND ("AddTypeBilling" = 1 or "AddTypeDefault" = 1))
+	 where AccountAddresses.AccountID = "Account"."AccountId" AND (AccountAddresses.IsDeleted = 0 OR AccountAddresses.IsDeleted is null) AND ("AddTypeBilling" = 1 or "AddTypeDefault" = 1))
   left
   join "dbo"."OrderNotes" "OrderNotes"
        on "OrderNotes"."OrderID" = "Orders"."OrderID"

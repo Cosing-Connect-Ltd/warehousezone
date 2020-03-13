@@ -160,7 +160,7 @@ FROM            Orders INNER JOIN
                          TenantLocations ON TenantLocations.WarehouseId = Orders.WarehouseId LEFT OUTER JOIN
                          TenantLocations AS TenantWarehouse ON Orders.TransferWarehouseId = TenantWarehouse.WarehouseId LEFT OUTER JOIN
                          SLAPriorits ON Orders.SLAPriorityId = SLAPriorits.SLAPriorityId LEFT OUTER JOIN
-                         AccountAddresses ON Accounts.AccountID = AccountAddresses.AccountID AND AccountAddresses.AddTypeDefault = 1 LEFT OUTER JOIN
+                         AccountAddresses ON Accounts.AccountID = AccountAddresses.AccountID AND AccountAddresses.AddTypeDefault = 1 AND (AccountAddresses.IsDeleted = 0 OR AccountAddresses.IsDeleted is null) LEFT OUTER JOIN
                          JobTypes ON JobTypes.JobTypeId = Orders.JobTypeId LEFT OUTER JOIN
                          JobSubTypes ON JobSubTypes.JobSubTypeId = Orders.JobSubTypeId LEFT OUTER JOIN
                          PProperties ON PProperties.PPropertyId = Orders.PPropertyId LEFT OUTER JOIN

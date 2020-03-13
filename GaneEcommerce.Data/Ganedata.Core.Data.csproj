@@ -699,6 +699,10 @@
     <Compile Include="Migrations\202003121110130_addedProductCategory-in-ProductMaster.designer.cs">
       <DependentUpon>202003121110130_addedProductCategory-in-ProductMaster.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003131035333_ProductMaster-ProductCategory-Relation.cs" />
+    <Compile Include="Migrations\202003131035333_ProductMaster-ProductCategory-Relation.designer.cs">
+      <DependentUpon>202003131035333_ProductMaster-ProductCategory-Relation.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1543,6 +1547,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003121110130_addedProductCategory-in-ProductMaster.resx">
       <DependentUpon>202003121110130_addedProductCategory-in-ProductMaster.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003131035333_ProductMaster-ProductCategory-Relation.resx">
+      <DependentUpon>202003131035333_ProductMaster-ProductCategory-Relation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

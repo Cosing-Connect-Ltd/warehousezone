@@ -222,7 +222,7 @@ ActivityId,ActivityName,ActivityController,ActivityAction,IsActive,RightNav,Excl
 221,Invoice By Product Report,Reports,InvoiceByProductReport,1,1,0,0,0,12,1,2019-08-15 00:58:25.097,2019-08-15 00:58:25.097,1,1,0
 222,Order Process Details,Invoice,ProcessedOrdersPartial,1,0,1,0,0,16,1,2019-08-23 01:59:28.067,2019-08-23 02:06:06.547,1,1,0
 223,Purchase Order Audit Report,Reports,PurchaseOrderAuditReport,1,1,0,0,0,3,1,2019-10-29 10:26:29.890,2019-10-29 10:26:29.890,1,1,0
-224,Delete Order Internal,Order,DeleteOrder,1,0,1,0,0,16,1,2019-10-31 22:59:45.380,2019-10-31 22:59:45.380,1,1,0
+224,Product Batch Edit,Products,EditProducts,1,1,0,0,0,15,1,2019-10-31 22:59:45.380,2019-10-31 22:59:45.380,1,1,0
 225,Pallet Types,PalletTypes,Index,1,1,0,0,20,8,1,2019-11-19 10:52:47.423,2019-11-19 10:52:47.423,1,1,0
 226,Create Pallet Type,PalletTypes,Create,1,0,0,0,0,8,1,2019-11-19 11:03:34.753,2019-11-19 11:03:34.753,1,1,0
 227,Edit Pallet Type,PalletTypes,Edit,1,0,0,0,0,8,1,2019-11-19 11:04:01.567,2019-11-19 11:04:01.567,1,1,0
