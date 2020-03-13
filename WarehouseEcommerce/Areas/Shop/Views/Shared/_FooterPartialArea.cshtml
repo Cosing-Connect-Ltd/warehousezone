@@ -1,16 +1,16 @@
 ﻿@model List<Ganedata.Core.Entities.Domain.ProductManufacturer>
 
-<footer>
+<footer class="footer-class">
     <div>
         <div class="container logo-slider">
-            <div id="carousel0" class="owl-carousel owl-theme">
+            @*<div id="carousel0" class="owl-carousel owl-theme">*@
                 @foreach (var item in Model)
                 {
 
                     <a href=""><img src="@(!string.IsNullOrEmpty(item.ImagePath)? ViewBag.BaseFilePath + item.ImagePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="" class="img-responsive"> </a>
                  
                 }
-            </div>
+            @*</div>*@
         </div>
         <hr class="footer-hr">
     </div>
