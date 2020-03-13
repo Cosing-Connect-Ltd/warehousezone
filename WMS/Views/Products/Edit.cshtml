@@ -417,7 +417,7 @@
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.LabelFor(model => model.PercentMargin, htmlAttributes: new { @class = "col-md-4" })
                     <div class="col-md-8">
-                        @Html.EditorFor(model => model.PercentMargin)
+                        @Html.EditorFor(model => model.PercentMargin, new { htmlAttributes = new { onblur = "suggestedPrice()" } })
                         @Html.ValidationMessageFor(model => model.PercentMargin)
                     </div>
                 </div>
@@ -459,6 +459,7 @@ settings =>
     settings.ClientVisible = true;
     settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
     settings.ControlStyle.CssClass = "form-control";
+    settings.Properties.ClientSideEvents.LostFocus = "suggestedPrice";
 
 }).GetHtml()
                         @Html.ValidationMessageFor(model => model.BuyPrice)
@@ -466,7 +467,7 @@ settings =>
                 </div>
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.LabelFor(m => m.LandedCost, htmlAttributes: new { @class = "col-md-4" })
-                    <div class="col-md-8">
+                    <div class="col-md-8" id="landed_Cost_Id">
                         @Html.DevExpress().SpinEditFor(m => m.LandedCost,
 settings =>
 {
@@ -474,11 +475,20 @@ settings =>
     settings.ClientVisible = true;
     settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
     settings.ControlStyle.CssClass = "form-control";
+    settings.Properties.ClientSideEvents.LostFocus = "suggestedPrice";
 
 }).GetHtml()
                         @Html.ValidationMessageFor(model => model.LandedCost)
                     </div>
                 </div>
+
+                <div class="input-group h-100 justify-content-center align-items-center" style="display:none" id="suggestedDiv">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" id="suggestedSellPrice" />
+                    </div>
+                </div>
+
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.LabelFor(m => m.SellPrice, htmlAttributes: new { @class = "col-md-4" })
                     <div class="col-md-8">

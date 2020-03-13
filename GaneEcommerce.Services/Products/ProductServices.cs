@@ -556,11 +556,6 @@ namespace Ganedata.Core.Services
             List<int> productAttributesIds,
             List<int> productLocationIds, List<int> productKitIds, int userId, int tenantId, List<int> SiteId)
         {
-            if (!productMaster.SellPrice.HasValue || productMaster.SellPrice <= 0 && productMaster.BuyPrice != 0 && !productMaster.BuyPrice.HasValue)
-            {
-                var sellPrice = (productMaster.BuyPrice + ((productMaster.BuyPrice / 100) * productMaster.PercentMargin) + (productMaster.LandedCost ?? 0));
-                productMaster.SellPrice = sellPrice;
-            }
             if (productMaster.ProductId > 0)
             {
                 productMaster.UpdateCreatedInfo(userId);
