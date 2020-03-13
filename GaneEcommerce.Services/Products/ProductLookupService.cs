@@ -46,10 +46,26 @@ namespace Ganedata.Core.Services
             return _currentDbContext.ProductAttributeValuesMap
                 .Where(a => a.ProductId == productId && a.IsDeleted != true).Select(a => a.ProductAttributeValues);
         }
-        public IQueryable<ProductMaster> GetAllValidProductGroupById(int? productGroupId,int?departmentId=null)
+        public IQueryable<ProductMaster> GetAllValidProductGroupById(int? productGroupId, int? departmentId = null)
         {
             return _currentDbContext.ProductMaster
-                .Where(a => ((!productGroupId.HasValue || a.ProductGroupId == productGroupId) && (!departmentId.HasValue || a.DepartmentId==departmentId)) && a.IsDeleted != true);
+                .Where(a => ((!productGroupId.HasValue || a.ProductGroupId == productGroupId) && (!departmentId.HasValue || a.DepartmentId == departmentId)) && a.IsDeleted != true).Include(u => u.ProductManufacturer);
+        }
+        public IQueryable<ProductMaster> GetAllValidProductGroupAndDeptByName(string productGroup, string department = "")
+        {
+            int? productGroupId = _currentDbContext.ProductGroups.FirstOrDefault(u => u.ProductGroup == productGroup && u.IsDeleted != true)?.ProductGroupId;
+            int? departmentId = _currentDbContext.TenantDepartments.FirstOrDefault(u => u.DepartmentName == department && u.IsDeleted != true)?.DepartmentId;
+            return _currentDbContext.ProductMaster
+                .Where(a => ((!productGroupId.HasValue || a.ProductGroupId == productGroupId) && (!departmentId.HasValue || a.DepartmentId == departmentId)) && a.IsDeleted != true).Include(u => u.ProductManufacturer);
+        }
+
+        public IEnumerable<ProductManufacturer> GetAllValidProductManufacturerGroupAndDeptByName(string productGroup, string department = "")
+        {
+            int? productGroupId = _currentDbContext.ProductGroups.FirstOrDefault(u => u.ProductGroup == productGroup && u.IsDeleted != true)?.ProductGroupId;
+            int? departmentId = _currentDbContext.TenantDepartments.FirstOrDefault(u => u.DepartmentName == department && u.IsDeleted != true)?.DepartmentId;
+            var productmanufacturerId=  _currentDbContext.ProductMaster.Where(a => ((!productGroupId.HasValue || a.ProductGroupId == productGroupId) && (!departmentId.HasValue || a.DepartmentId == departmentId)) && a.IsDeleted != true).Select(u=>u.ManufacturerId).ToList();
+            return _currentDbContext.ProductManufacturers.Where(u => productmanufacturerId.Contains(u.Id));
+
         }
         public IEnumerable<ProductAttributeValuesMap> GetAllValidProductAttributeValuesMap()
         {
@@ -64,8 +80,91 @@ namespace Ganedata.Core.Services
             return _currentDbContext.ProductLocationsMap.Where(
                 a => a.Locations.IsDeleted != true && a.IsDeleted != true && a.ProductId == productId);
         }
+        public IQueryable<ProductMaster> FilterProduct(IQueryable<ProductMaster> productMaster, string filterstring)
+        {
+            Dictionary<string, List<string>> filters = new Dictionary<string, List<string>>();
+            if (!string.IsNullOrEmpty(filterstring))
+            {
+                var data = filterstring.Split('/');
+                foreach (var item in data)
+                {
+                    if (!string.IsNullOrEmpty(item))
+                    {
+                        var filtersData = item.Split('-');
+                        List<string> value = new List<string>();
+                        if (filtersData.Length >= 2)
+                        {
+                            value = filtersData[1].Split(',').Select(i => i.ToLower()).ToList();
+                            if (!filters.Keys.Contains(filtersData[0]))
+                            {
+                                filters.Add(filtersData[0], value);
+                            }
+                        }
 
 
+                    }
+
+                }
+                foreach (var item in filters)
+                {
+                    if (item.Key.Equals("stockS"))
+                    {
+                        if (item.Value.Count > 1)
+                        {
+                            productMaster = productMaster.Where(u => ((u.InventoryStocks.Sum(rv => rv.Available)) > 0) || (u.InventoryStocks.Any(rv => rv.InStock <= 0)));
+                        }
+                        else if (item.Value.Contains("in_stock"))
+                        {
+                            productMaster = productMaster.Where(u => (u.InventoryStocks.Sum(rv => rv.Available)) > 0);
+                        }
+                        else if (item.Value.Contains("out_stock"))
+                        {
+                            productMaster = productMaster.Where(u => u.InventoryStocks.Any(rv => rv.InStock <= 0));
+                        }
+
+                    }
+                    if (item.Key.Equals("priceS"))
+                    {
+                        List<decimal> prices = new List<decimal>();
+                        if (item.Value.Count > 0)
+                        {
+                            foreach (var price in item.Value)
+                            {
+                                var range = price.Split('_');
+                                if (range.Length >= 2)
+                                {
+                                    prices.Add(Convert.ToDecimal(range[0]));
+                                    prices.Add(Convert.ToDecimal(range[1]));
+                                }
+
+                            }
+                        }
+                        if (prices.Count > 0)
+                        {
+                            decimal? min = prices.Min();
+                            decimal? max = prices.Max();
+                            productMaster = productMaster.Where(u => u.SellPrice >= min && u.SellPrice <= max);
+                        }
+                    }
+                    if (item.Key.Contains("BrandS"))
+                    {
+                        item.Value.ForEach(u => u.Replace("_", " "));
+                        productMaster = productMaster.Where(u => item.Value.Contains(u.ProductManufacturer.Name));
+
+                    }
+
+
+
+                }
+
+
+
+
+            }
+
+            return productMaster;
+
+        }
 
 
         public Locations GetLocationById(int locationId)

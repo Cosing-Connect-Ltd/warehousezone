@@ -20,6 +20,8 @@ namespace Ganedata.Core.Services
         Locations GetLocationById(int locationId);
         ProductGroups GetProductGroupById(int productGroupId);
         IQueryable<ProductMaster> GetAllValidProductGroupById(int? productGroupId,int?departmentId=null);
+        IQueryable<ProductMaster> GetAllValidProductGroupAndDeptByName(string productGroup, string department = "");
+        IEnumerable<ProductManufacturer> GetAllValidProductManufacturerGroupAndDeptByName(string productGroup, string department = "");
         ProductGroups GetProductGroupByName(string groupName);
         PalletType GetPalletTypeByName(string palletType);
         ProductSCCCodes GetProductSccCodesById(int productSccCodesId);
@@ -50,5 +52,7 @@ namespace Ganedata.Core.Services
         ProductCategory UpdateProductCategory(ProductCategory model, int userId, int tenantId);
         void DeleteProductCategory(int id, int userId);
         List<WastageReason> GetAllWastageReasons();
+
+        IQueryable<ProductMaster> FilterProduct(IQueryable<ProductMaster> productMaster, string filterstring);
     }
 }

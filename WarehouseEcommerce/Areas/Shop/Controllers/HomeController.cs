@@ -167,9 +167,9 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             return PartialView();
         }
 
-        public ActionResult _GetProductByGroupsAndDepartment(int? DepartmentId, int? productgroupId)
+        public ActionResult _GetProductByGroupsAndDepartment(string DepartmentId, string productgroupId)
         {
-            return RedirectToAction("ProductCategories", "Products", new { productGroupId = productgroupId, departmentId = DepartmentId });
+            return RedirectToAction("ProductCategories", "Products", new { productGroup = productgroupId, department = DepartmentId });
         }
       
         public ActionResult _TopCategoryProductsPartial(int? ProductGroupId)

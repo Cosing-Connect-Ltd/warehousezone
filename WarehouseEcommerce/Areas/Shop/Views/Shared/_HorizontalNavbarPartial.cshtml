@@ -13,7 +13,7 @@
                     foreach (var item in department)
                     {
                         <li class="li-mhp-menu">
-                            <a class="nav-main-menu" href="@Url.Action("_GetProductByGroupsAndDepartment","Home",new {DepartmentId=item.DepartmentId})">@item.DepartmentName</a>
+                            <a class="nav-main-menu" href="@Url.Action("_GetProductByGroupsAndDepartment","Home",new {DepartmentId=item.DepartmentName})">@item.DepartmentName</a>
                             @{
                                 if (ViewBag.productGroup != null)
                                 {
@@ -28,21 +28,21 @@
                                                     @if (groupDepartment.ElementAtOrDefault(i) != null)
                                                     {
 
-                                                        <li><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home",new {productgroupId=groupDepartment[i].ProductGroupId})">@groupDepartment[i].ProductGroup</a></li>
+                                                        <li><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home",new {productgroupId=groupDepartment[i].ProductGroup})">@groupDepartment[i].ProductGroup</a></li>
 
 
                                                     }
                                                     @if (groupDepartment.ElementAtOrDefault(i + 1) != null)
                                                     {
 
-                                                        <li><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home",new {productgroupId=groupDepartment[i+1].ProductGroupId})">@groupDepartment[i + 1].ProductGroup</a></li>
+                                                        <li><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home",new {productgroupId=groupDepartment[i+1].ProductGroup})">@groupDepartment[i + 1].ProductGroup</a></li>
 
 
                                                     }
                                                     @if (groupDepartment.ElementAtOrDefault(i + 2) != null)
                                                     {
 
-                                                        <li><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home",new {productgroupId=groupDepartment[i+2].ProductGroupId})">@groupDepartment[i + 2].ProductGroup</a></li>
+                                                        <li><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home",new {productgroupId=groupDepartment[i+2].ProductGroup})">@groupDepartment[i + 2].ProductGroup</a></li>
 
                                                     }
                                                 </div>
@@ -143,7 +143,7 @@
                     var department = ViewBag.departments as List<TenantDepartments>;
                     foreach (var item in department)
                     {
-                        <li><a href="@Url.Action("_GetProductByGroupsAndDepartment", "Home", new { DepartmentId = item.DepartmentId })">@item.DepartmentName</a></li>
+                        <li><a href="@Url.Action("_GetProductByGroupsAndDepartment", "Home", new { DepartmentId = item.DepartmentName })">@item.DepartmentName</a></li>
                     }
                 }
             </ul>

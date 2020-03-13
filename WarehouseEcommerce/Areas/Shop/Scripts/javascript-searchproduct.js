@@ -11,13 +11,15 @@ function searchPoducts() {
     var currentFilter = $("#currentFiltervalue").val();
     var searchstring = $("#searchString").val();
     var pageSize = $("#input-limit :selected").val();
-    window.location.href = basePath + "/shop/Products/ProductCategories?productGroupId=" + groupId + "&sortOrder=" + sortvalue + "&currentFilter=" + currentFilter + "&searchString=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&departmentId=" + departmentId;
+    var valuesparam = $("#valuesParameter").val();
+    window.location.href = basePath + "/shop/Products/ProductCategories?productGroupId=" + groupId + "&sortOrder=" + sortvalue + "&currentFilter=" + currentFilter + "&searchString=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&departmentId=" + departmentId + "&values=" + valuesparam;
 }
 
 function SearchProductCategory() {
     var productgroupId = $("#ProductGroups").val();
     var searchstring = $("#text-search").val();
-    window.location.href = basePath + "/shop/Products/ProductCategories?productGroupId=" + productgroupId + "&searchString=" + searchstring;
+    var valuesparam = $("#valuesParameter").val();
+    window.location.href = basePath + "/shop/Products/ProductCategories?productGroupId=" + productgroupId + "&searchString=" + searchstring + "&values=" + valuesparam;
 }
 
 var searchvalues;
@@ -55,7 +57,7 @@ $('#text-search').autocomplete({
         if (seeall) {
             var $li = $("<li>");
             var $link = $("<a>", {
-                href: basePath + "/Shop/Products/ProductCategories?productGroupId=" + $("#ProductGroups").val() + "&searchString=" + searchvalues,
+                href: basePath + "/Shop/Products/ProductCategories?productGroupId=" + $("#ProductGroups").val() + "&searchString=" + searchvalues + "&values=" + $("#valuesParameter").val(),
                 class: "see-all"
             }).html("See All Results").appendTo($li);
             $li.appendTo($('.ui-autocomplete'));
@@ -66,7 +68,7 @@ $('#text-search').autocomplete({
 }).autocomplete('instance')._renderItem = function (ul, item) {
     return $('<li class="search-item">')
         .append("<img style='width: 46px; height:46px;' src=" + item.Path + " alt=" + item.Name + "/>")
-        .append("<a href=" + basePath + "/Shop/Products/ProductCategories?productGroupId=" + $("#ProductGroups").val() + "&searchString=" + item.Name + ">" + item.Name + "</a>").appendTo(ul);
+        .append("<a href=" + basePath + "/Shop/Products/ProductCategories?productGroupId=" + $("#ProductGroups").val() + "&searchString=" + item.Name +"&values=" + $("#valuesParameter").val()+">" + item.Name + "</a>").appendTo(ul);
 };
 
 function updateTextBox(event, ui) {
@@ -211,8 +213,6 @@ $(document).ready(function () {
     var id = $('#ProductGroupIds').val();
     getTopCategoryProducts(id);
 });
-
-
 function onCurrencyChange(event) {
 
     var currencyId = event.currentTarget.id;
@@ -251,3 +251,54 @@ function onCurrencyChange(event) {
         }
     });
 }
+
+$("input[type=checkbox]").on("change", function () {
+    debugger;
+    var arr = []
+    var data = "";
+    var str = $(location).attr('href');
+    if (str.indexOf("&") > 0) {
+        var result = str.substring(str.indexOf("&"), (str.length));
+        str = str.replace(result, "");
+    }
+    var parameter = "&values=";
+    str = str + parameter;
+    $(":checkbox").each(function () {
+
+        if (this.checked) {
+            if (str.indexOf($(this).val()) < 0) {
+                arr.push($(this).val())
+                data = this.id;
+                if (str.indexOf(data) < 0) {
+                    var indexof = str.lastIndexOf("=");
+                    var checkpreviousString = str.substr((indexof - 6), 6);
+                    var found = str.charAt((indexof + 1));
+                    if (checkpreviousString === "values" && found === "")
+                    {
+                        str = str + data + "-" + $(this).val();
+                    }
+                    else {
+                        str = str + "/" + data + "-" + $(this).val();
+                    }
+                }
+                else {
+                    if (str.indexOf($(this).val()) < 0) {
+                        str = str + "," + $(this).val();
+                    }
+                }
+            }
+
+        }
+
+    });
+    if (arr.length <= 0) {
+        if (str.indexOf("&") > 0) {
+            var result = str.substring(str.indexOf("&"), (str.length));
+            str = str.replace(result, "");
+        }
+    }
+    location.href = str;
+
+
+
+});

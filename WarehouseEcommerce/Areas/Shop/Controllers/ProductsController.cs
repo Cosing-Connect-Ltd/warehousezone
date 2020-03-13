@@ -40,21 +40,23 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         }
         // GET: Products
 
-        public ActionResult ProductCategories(int? productGroupId, int? sortOrder, string currentFilter, string searchString, int? page, int? pagesize = 20, int? departmentId = null)
+        public ActionResult ProductCategories(string productGroup, int? sortOrder, string currentFilter, string searchString, string values,  int? page, int? pagesize = 20, string department = "")
         {
+            
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
-            ViewBag.groupId = productGroupId;
-            ViewBag.departmentId = departmentId;
+            ViewBag.groupId = productGroup;
+            ViewBag.departmentId = department;
             ViewBag.CurrentSort = sortOrder;
-            //ViewBag.ProductPath = uploadedProductfilePath;
             ViewBag.SortedValues = (sortOrder ?? 1);
             ViewBag.pageList = new SelectList(from d in Enumerable.Range(1, 5) select new SelectListItem { Text = (d * 10).ToString(), Value = (d * 10).ToString() }, "Value", "Text", pagesize);
             ViewBag.searchString = searchString;
             ViewBag.CurrencySymbol = currencyyDetail.Symbol;
-            var product = _productlookupServices.GetAllValidProductGroupById(productGroupId);
-            if (departmentId.HasValue)
+            var product = _productlookupServices.GetAllValidProductGroupAndDeptByName(productGroup);
+            ViewBag.Manufacturer = _productlookupServices.GetAllValidProductManufacturerGroupAndDeptByName(productGroup);
+            if (!string.IsNullOrEmpty(department))
             {
-                product = _productlookupServices.GetAllValidProductGroupById(null, departmentId);
+                product = _productlookupServices.GetAllValidProductGroupAndDeptByName(productGroup, department);
+                ViewBag.Manufacturer = _productlookupServices.GetAllValidProductManufacturerGroupAndDeptByName(productGroup,department);
             }
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -84,9 +86,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     product = product.OrderBy(s => s.Name);
                     break;
             }
-
-
-
+            product= _productlookupServices.FilterProduct(product,values);
             int pageSize = pagesize ?? 10;
             int pageNumber = (page ?? 1);
             var pageedlist = product.ToPagedList(pageNumber, pageSize);
@@ -95,12 +95,13 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             if (data.Count > 0)
             {
                 data.ToList().ForEach(u =>
-
-                u.SellPrice = (Math.Round((_productPriceService.GetProductPriceThresholdByAccountId(u.ProductId, null)?.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0), 2))
+                u.SellPrice = (Math.Round((_productPriceService.GetProductPriceThresholdByAccountId(u.ProductId, null).SellPrice) * (currencyyDetail.Rate ?? 1), 2))
 
                 );
-                var prdouctIds = data.Select(u => u.ProductId).ToList();
             }
+           
+
+
             return View(data);
 
         }
@@ -281,6 +282,9 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
 
             return View();
         }
+
+     
+
 
     }
 
