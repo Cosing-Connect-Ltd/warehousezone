@@ -218,11 +218,6 @@
 .fborder {
     padding-left: 140px;
 }
-
-.follow-us-footer {
-    padding-left: 100px;
-}
-
 @media(max-width:1440px) {
     .fborder {
         padding-left: 85px;
