@@ -1348,10 +1348,6 @@ h2.price {
 :: Header
 -------------------------- */
 
-.user_account i {
-    margin: 0 5px;
-}
-
 .user_account > li > a {
     padding: 3px 10px;
     line-height: 25px;
@@ -2541,7 +2537,7 @@ footer #contact li {
 }
 
 .f-left span {
-    margin-left: 35px;
+    margin-left: 30px;
     display: block;
     position: relative;
 }
@@ -2549,7 +2545,9 @@ footer #contact li {
 .f-left img {
     float: left;
 }
-
+.mt-7 {
+    margin-top: 7px;
+}
 .ui-footer {
     background-color: #000;
     padding: 10px 0;
@@ -3850,9 +3848,9 @@ footer #contact li {
         width: 33%;
     }
 
-    .cbanner {
+    /*.cbanner {
         width: 67%;
-    }
+    }*/
     /*.home-cat,
   .category-tab .tab-content {
     width: 50%;

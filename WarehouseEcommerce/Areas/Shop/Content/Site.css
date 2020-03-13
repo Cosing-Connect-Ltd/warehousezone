@@ -1320,5 +1320,63 @@ ul.mhp-menu {
     .logo-slider {
         flex-direction: column;
     }
+    .cartitem-price {
+        flex-wrap:wrap;
+    }
 }
-
+.user-fa-icons i {
+    min-width: 25px;
+    text-align: center;
+}
+@media(max-width:1440px) {
+    .side-banner img {
+        height: 360px;
+    }
+}
+@media (max-width: 1024px) {
+    .side-banner img {
+        height: 252px;
+    }
+}
+@media (max-width: 991px) {
+    .side-banner img {
+        display:none;
+    }
+}
+@media (max-width: 991px) {
+    .topbanner {
+        padding: unset;
+        margin: unset;
+    }
+}
+@media (max-width: 403px) {
+    .topbutton {
+        right: 0px;
+    }
+
+    .topprom .caption h4 {
+        max-width: 135px;
+        white-space: normal;
+    }
+
+    .toppro .caption a, .toppro .price {
+        font-size: 13px !important;
+    }
+}
+@media (max-width: 375px) {
+    .topbutton {
+        right: -15px;
+    }
+    .topprom .caption h4 {
+        max-width: 138px;
+    }
+}
+@media (max-width: 360px) {
+    .topbutton {
+        right: 38px;
+    }
+
+    .topprom .caption h4 {
+        max-width: 100px;
+    }
+}
