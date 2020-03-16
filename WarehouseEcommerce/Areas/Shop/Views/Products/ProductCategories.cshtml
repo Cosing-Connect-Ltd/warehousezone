@@ -188,10 +188,18 @@
                                     <p class="pricedis price text-right">@*<span class="price-new">@ViewBag.CurrencySymbol@item.MinThresholdPrice</span>*@ <span class="price-old">@ViewBag.CurrencySymbol @item.SellPrice</span></p>
                                     <div class="clearfix"></div>
                                     <div class="button-group">
-
-                                        <a href="javascript:;" type="button" class="acart" onclick="AddToCart(@item.ProductId)">
-                                            <span>Add to Basket</span>
-                                        </a>
+                                        @if (@item.SellPrice > 0 && @item.SellPrice.HasValue && @item.PercentMargin > 0)
+                                        {
+                                            <a href="javascript:;" type="button" class="acart" onclick="AddToCart(@item.ProductId)">
+                                                <span>Add to Basket</span>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="javascript:;" type="button" class="acart" style="color:white; background-color: grey" disabled>
+                                                <span>Add to Basket</span>
+                                            </a>
+                                        }
                                     </div>
                                 </div>
                             </div>

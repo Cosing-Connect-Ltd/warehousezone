@@ -90,8 +90,17 @@
                                 </li>
                             </ul>
                             <hr class="hr-line">
+                            @if (@Model.SellPrice > 0 && @Model.SellPrice.HasValue && @Model.PercentMargin > 0)
+                            {
+                                <button type="button" id="button-cart" class="btn add-to-cart btn-primary" onclick="AddToCart(@Model.ProductId)">Add to Basket</button>
+                            }
+                            else
+                            {
+                                <button type="button" class="acart" style="color:white; background-color: grey" disabled>
+                                    <span>Add to Basket</span>
+                                </button>
+                            }
 
-                            <button type="button" id="button-cart" class="btn add-to-cart btn-primary" onclick="AddToCart(@Model.ProductId)">Add to Basket</button>
                             <button type="button" data-toggle="tooltip" title="Add to Wish List" class="btn add-to-cart btn-primary pwishcom" onclick="wishlist.add('30');">
                                 <svg width="20px" height="20px">
                                     <use xlink:href="/Areas/Shop/Content/app/img/icons/icons.svg#wishlist"></use>

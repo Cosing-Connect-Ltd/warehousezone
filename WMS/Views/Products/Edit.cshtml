@@ -421,6 +421,11 @@
                         @Html.ValidationMessageFor(model => model.PercentMargin)
                     </div>
                 </div>
+                <div id="alertDivPM" class="input-group h-100 justify-content-center align-items-center" style="display:none; color:red; font-size:10px">
+                    <div class="col-md-4">
+                        Please enter Percent Margin
+                    </div>
+                </div>
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.LabelFor(model => model.MinThresholdPrice, htmlAttributes: new { @class = "col-md-4" })
                     <div class="col-md-8">
@@ -465,6 +470,13 @@ settings =>
                         @Html.ValidationMessageFor(model => model.BuyPrice)
                     </div>
                 </div>
+
+                <div id="alertDivBP" class="input-group h-100 justify-content-center align-items-center" style="display:none; color:red; font-size:10px">
+                    <div class="col-md-4">
+                        Please enter Buy Price
+                    </div>
+                </div>
+
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.LabelFor(m => m.LandedCost, htmlAttributes: new { @class = "col-md-4" })
                     <div class="col-md-8" id="landed_Cost_Id">
@@ -481,24 +493,34 @@ settings =>
                         @Html.ValidationMessageFor(model => model.LandedCost)
                     </div>
                 </div>
+                <div id="alertDivLC" class="input-group h-100 justify-content-center align-items-center" style="display:none; color:red; font-size:10px">
+                    <div class="col-md-4">
+                        Please enter Landing Cost
+                    </div>
+                </div>
 
                 <div class="input-group h-100 justify-content-center align-items-center" style="display:none" id="suggestedDiv">
-                    <div class="col-md-4"></div>
-                    <div class="col-md-8">
-                        <input type="text" class="form-control" id="suggestedSellPrice" />
+                    <div class="col-md-4" style="color:red">Suggested Sell Price</div>
+                    <div class="col-md-8" style="display:flex; justify-content: space-between">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" id="suggestedSellPrice" readonly />
+                        </div>
+                        <div class="col-md-4">
+                            <button style="color:red" type="button" onclick="setPrice()">Use this value</button>
+                        </div>
                     </div>
                 </div>
 
                 <div class="input-group h-100 justify-content-center align-items-center">
-                    @Html.LabelFor(m => m.SellPrice, htmlAttributes: new { @class = "col-md-4" })
+                    @Html.LabelFor(m => m.SellPrice, htmlAttributes: new { @class = "col-md-4", @id = "sellingPrice" })
                     <div class="col-md-8">
                         @Html.DevExpress().SpinEditFor(m => m.SellPrice,
 settings =>
-{
-    settings.Name = "SellPrice";
-    settings.ClientVisible = true;
-    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
-    settings.ControlStyle.CssClass = "form-control";
+    {
+      settings.Name = "SellPrice";
+      settings.ClientVisible = true;
+      settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+      settings.ControlStyle.CssClass = "form-control";
 
 }).GetHtml()
                         @Html.ValidationMessageFor(model => model.SellPrice)
@@ -526,8 +548,8 @@ settings =>
                     @Html.LabelFor(model => model.ProdStartDate, htmlAttributes: new { @class = "col-md-4" })
                     <div class="col-md-8">
                         @Html.DevExpress().DateEditFor(m => m.ProdStartDate,
-settings =>
-{
+    settings =>
+    {
     settings.Name = "ProdStartDate";
     settings.Properties.DisplayFormatString = "D";
     settings.Date = DateTime.Today;
@@ -535,7 +557,7 @@ settings =>
     settings.ControlStyle.CssClass = "form-control";
     settings.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
 
-}).GetHtml()
+    }).GetHtml()
                         @Html.ValidationMessageFor(model => model.ProdStartDate)
                     </div>
                 </div>

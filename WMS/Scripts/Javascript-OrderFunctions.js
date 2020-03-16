@@ -3186,9 +3186,6 @@ function IsAllowZeroSale() {
 
             }
         }
-        else if (allowZPrice == false && PriceValue == 0 || PriceValue == null) {
-            document.getElementById('chk').style.display = 'none';
-        }
     }
 
     if (inventoryTypes != "1") {
@@ -3235,19 +3232,40 @@ function suggestedPrice() {
 
     if (sellPrice == null || sellPrice == 0) {
         if (buyPrice == null || buyPrice == 0) {
-
+            $("#alertDivBP").show();
         }
-        else if (margin == null || margin == 0) {
-
+        else if (sellPrice == null || sellPrice == 0) {
+            $("#alertDivBP").hide();
         }
-        else if (landedCost == null || landedCost == 0) {
 
+        if (margin == null || margin == 0) {
+            $("#alertDivPM").show();
         }
-        if ((buyPrice != null || buyPrice != 0) && (margin != null || margin != 0) && (landedCost != null || landedCost != 0)) {
+        else if (margin != null || margin != 0) {
+            $("#alertDivPM").hide();
+        }
+
+        if (landedCost == null || landedCost == 0) {
+            $("#alertDivLC").show();
+        }
+        else if (landedCost != null || landedCost != 0) {
+            $("#alertDivLC").hide();
+        }
+
+        if ((buyPrice != null && buyPrice != 0) && (margin != null && margin != 0) && (landedCost != null && landedCost != 0)) {
             suggestedSellPrice = (((buyPrice * margin) / 100) + buyPrice + landedCost);
+            suggestedSellPrice = suggestedSellPrice.toFixed(2);
             $("#suggestedDiv").show();
             $("#suggestedSellPrice").val(suggestedSellPrice);
         }
-
+        else {
+            $("#suggestedDiv").hide();
+        }
     }
+}
+
+function setPrice() {
+
+    var suggestedSellPrice = $("#suggestedSellPrice").val();
+    SellPrice.SetValue(suggestedSellPrice);
 }
