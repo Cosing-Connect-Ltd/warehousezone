@@ -651,7 +651,7 @@ namespace Ganedata.Core.Services
                 address2.countryCode = palletDispatch.OrderProcess?.Order?.Tenant?.Country?.CountryCode;
                 address2.postcode = palletDispatch.OrderProcess?.Order?.ShipmentAddressPostcode;
                 address2.street = palletDispatch.OrderProcess?.Order?.ShipmentAddressLine1;
-                address2.town = palletDispatch.OrderProcess?.Order?.ShipmentAddressLine3;
+                address2.town = string.IsNullOrEmpty(palletDispatch.OrderProcess?.Order?.ShipmentAddressLine3)? palletDispatch.OrderProcess?.Order?.ShipmentAddressLine2: palletDispatch.OrderProcess?.Order?.ShipmentAddressLine3;
                 deliveryDetails.address = address2;
                 NotificationDetails notificationDetails = new NotificationDetails();
                 notificationDetails.email = palletDispatch.OrderProcess?.Order?.Account?.AccountEmail;
