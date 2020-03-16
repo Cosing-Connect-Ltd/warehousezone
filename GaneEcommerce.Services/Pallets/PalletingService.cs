@@ -637,8 +637,8 @@ namespace Ganedata.Core.Services
                 address1.county = palletDispatch.OrderProcess?.Order?.Tenant?.TenantStateCounty;
                 address1.postcode = palletDispatch.OrderProcess?.Order?.Tenant?.TenantPostalCode;
                 address1.street = palletDispatch.OrderProcess?.Order?.Tenant?.TenantAddress1;
-                address1.town = palletDispatch.OrderProcess?.Order?.Tenant?.TenantAddress3;
-                address1.county = palletDispatch.OrderProcess?.Order?.Tenant?.TenantCity;
+                address1.town = palletDispatch.OrderProcess?.Order?.Tenant?.TenantCity;
+                address1.county = palletDispatch.OrderProcess?.Order?.Tenant?.TenantStateCounty;
                 collectionDetails.address = address1;
                 collectionDetails.contactDetails = contactDetails;
                 collectionDetails.address = address1;
@@ -685,6 +685,7 @@ namespace Ganedata.Core.Services
             var productIds = _currentDbContext.PalletProducts.Where(u => palletId.Contains(u.PalletID)).Select(u => u.ProductID).ToList();
             var weights = _currentDbContext.ProductMaster.Where(u => productIds.Contains(u.ProductId)).Sum(u => u.Weight);
             int weight = int.Parse(weights.ToString());
+            if (weight == 0) weight = 1;
             return weight;
         }
     }

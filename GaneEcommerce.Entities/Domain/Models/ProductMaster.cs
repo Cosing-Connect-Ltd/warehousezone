@@ -46,8 +46,7 @@ namespace Ganedata.Core.Entities.Domain
         [DataType(DataType.MultilineText)]
         [Display(Name = "Product Description")]
         public string Description { get; set; }
-        [Required]
-        [Remote("IsBarCodeAvailable", "Products", AdditionalFields = "ProductId", ErrorMessage = "BarCode already in exists.")]
+        [Remote("IsBarCodeAvailable", "Products", AdditionalFields = "ProductId", ErrorMessage = "BarCode already exists.")]
         [Display(Name = "Barcode")]
         public string BarCode { get; set; }
         [Display(Name = "Outer Barcode(Case)")]

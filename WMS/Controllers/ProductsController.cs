@@ -86,7 +86,7 @@ namespace WMS.Controllers
             ViewBag.ProductLocations = _productLookupService.GetAllValidProductLocations(CurrentTenantId, CurrentWarehouseId);
             ViewBag.WebsiteIds = WebSites;
             ViewBag.SKUCode = id;
-            ViewBag.Manufacturer= new SelectList(_lookupServices.GetAllValidProductManufacturer(CurrentTenantId), "Id", "Name");
+            ViewBag.Manufacturer = new SelectList(_lookupServices.GetAllValidProductManufacturer(CurrentTenantId), "Id", "Name");
             ViewBag.Accounts = new List<ProductAccountCodes>();
             ViewBag.ProductPrices = new List<string>();
             ViewBag.Attributes = _productLookupService.GetAllValidProductAttributeValues().Select(patr => new
@@ -139,7 +139,7 @@ namespace WMS.Controllers
             ViewBag.Category = new SelectList(_lookupServices.GetAllValidProductCategories(CurrentTenantId), "ProductCategoryId", "ProductCategoryName");
             ViewBag.PalletType = new SelectList(_lookupServices.GetAllValidPalletTypes(CurrentTenantId), "PalletTypeId", "Description", productMaster.PalletTypeId);
             ViewBag.Departments = new SelectList(_lookupServices.GetAllValidTenantDepartments(CurrentTenantId), "DepartmentId", "DepartmentName");
-            ViewBag.Manufacturer = new SelectList(_lookupServices.GetAllValidProductManufacturer(CurrentTenantId), "Id", "Name",productMaster.ManufacturerId);
+            ViewBag.Manufacturer = new SelectList(_lookupServices.GetAllValidProductManufacturer(CurrentTenantId), "Id", "Name", productMaster.ManufacturerId);
             ViewBag.Accounts = _accountServices.GetAllValidProductAccountCodes(id.Value).Select(o =>
             {
 
@@ -387,7 +387,16 @@ namespace WMS.Controllers
         // validate dynamic values from database through Ajax, JQuery Validate libraries
         public JsonResult IsBarCodeAvailable(string barcode, int ProductId = 0)
         {
-            if (!String.IsNullOrEmpty(barcode)) barcode = barcode.Trim();
+
+            if (String.IsNullOrEmpty(barcode))
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+
+            }
+            barcode = barcode.Trim();
 
             return Json(_productServices.IsCodeAvailableForUse(barcode, CurrentTenantId, EnumProductCodeType.Barcode, ProductId), JsonRequestBehavior.AllowGet);
         }

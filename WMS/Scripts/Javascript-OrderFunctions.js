@@ -1884,11 +1884,11 @@ var updateSOShipmentInfo = function () {
     if (address !== null && address !== 'Select') {
         var addressParts = address.split(',');
         if (addressParts.length < 1) return;
-        $("#ShipmentAddressLine1").val(addressParts[0].trim());
-        $("#ShipmentAddressLine2").val(addressParts[1].trim());
-        $("#ShipmentAddressLine3").val(addressParts[2].trim());
-        $("#ShipmentAddressLine4").val(addressParts[3].trim());
-        $("#ShipmentAddressPostcode").val(addressParts[4].trim());
+        $("#ShipmentAddressLine1").val(addressParts[0] === undefined ? '' : addressParts[0].trim());
+        $("#ShipmentAddressLine2").val(addressParts[1] === undefined ? '' : addressParts[1].trim());
+        $("#ShipmentAddressLine3").val(addressParts[2] === undefined ? '' : addressParts[2].trim());
+        $("#ShipmentAddressLine4").val(addressParts[3] === undefined ? '' : addressParts[3].trim());
+        $("#ShipmentAddressPostcode").val(addressParts[4] === undefined ? '' : addressParts[4].trim());
     }
 };
 
@@ -3160,6 +3160,7 @@ function IsAllowZeroSale() {
                 if (PriceValue <= 0) {
                     if (!data.zeroprice) {
                         allowZPrice = false;
+                        debugger;
                         alert("0 price is not allowed for this product")
                         if (DirectSalestranstype == "15" || DirectSalestranstype == "100") {
                             InvoiceProductPrice.SetValue("");
@@ -3190,64 +3191,63 @@ function IsAllowZeroSale() {
         }
     }
 
-    var inventoryTypes = $('#inventoryType').val();
     if (inventoryTypes != "1") {
         // price analysis
         PriceAnalysis();
     }
 }
-    function suggestedPrice() {
-        
-        var buyPrice = 0;
-        var margin = 0;
-        var landedCost = 0;
-        var sellPrice = 0;
+function suggestedPrice() {
 
-        if (BuyPrice.GetValue() !== null) {
-            buyPrice = parseFloat(BuyPrice.GetValue());
-        }
-        else {
-            buyPrice = 0;
-        }
+    var buyPrice = 0;
+    var margin = 0;
+    var landedCost = 0;
+    var sellPrice = 0;
 
-        if ($("#PercentMargin").val() !== null) {
-            margin = parseFloat($("#PercentMargin").val());
-        }
-        else {
-            margin = 0;
-        }
-
-        if (LandedCost.GetValue() != null) {
-            landedCost = parseFloat(LandedCost.GetValue());
-        }
-        else {
-            landedCost = 0;
-        }
-
-        if (SellPrice.GetValue() !== null) {
-            sellPrice = parseFloat(SellPrice.GetValue());
-        }
-        else {
-            sellPrice = 0;
-        }
-        
-        var suggestedSellPrice = 0;
-
-        if (sellPrice == null || sellPrice == 0) {
-            if (buyPrice == null || buyPrice == 0) {
-                
-            }
-            else if (margin == null || margin == 0) {
-                
-            }
-            else if (landedCost == null || landedCost == 0) {
-                
-            }
-            if ((buyPrice != null || buyPrice != 0) && (margin != null || margin != 0) && (landedCost != null || landedCost != 0)) {
-                suggestedSellPrice = (((buyPrice * margin) / 100) + buyPrice + landedCost);
-                $("#suggestedDiv").show();
-                $("#suggestedSellPrice").val(suggestedSellPrice);
-            }
-
-        }
+    if (BuyPrice.GetValue() !== null) {
+        buyPrice = parseFloat(BuyPrice.GetValue());
     }
+    else {
+        buyPrice = 0;
+    }
+
+    if ($("#PercentMargin").val() !== null) {
+        margin = parseFloat($("#PercentMargin").val());
+    }
+    else {
+        margin = 0;
+    }
+
+    if (LandedCost.GetValue() != null) {
+        landedCost = parseFloat(LandedCost.GetValue());
+    }
+    else {
+        landedCost = 0;
+    }
+
+    if (SellPrice.GetValue() !== null) {
+        sellPrice = parseFloat(SellPrice.GetValue());
+    }
+    else {
+        sellPrice = 0;
+    }
+
+    var suggestedSellPrice = 0;
+
+    if (sellPrice == null || sellPrice == 0) {
+        if (buyPrice == null || buyPrice == 0) {
+
+        }
+        else if (margin == null || margin == 0) {
+
+        }
+        else if (landedCost == null || landedCost == 0) {
+
+        }
+        if ((buyPrice != null || buyPrice != 0) && (margin != null || margin != 0) && (landedCost != null || landedCost != 0)) {
+            suggestedSellPrice = (((buyPrice * margin) / 100) + buyPrice + landedCost);
+            $("#suggestedDiv").show();
+            $("#suggestedSellPrice").val(suggestedSellPrice);
+        }
+
+    }
+}

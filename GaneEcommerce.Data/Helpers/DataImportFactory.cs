@@ -1394,14 +1394,14 @@ namespace Ganedata.Core.Data.Helpers
                         return $"File headers mismatch! Please add required headers";
                     }
                 }
-                if (headers.Count > 9)
+                if (headers.Count > 11)
                 {
                     return $"File headers mismatch! Please add required headers";
                 }
 
                 if (!headers.Contains("product code") || !headers.Contains("manufacturer code") || !headers.Contains("description") || !headers.Contains("description 2") &&
                     (!headers.Contains("inventory") || !headers.Contains("base unit of measure") || !headers.Contains("buy price")) || !headers.Contains("sell price")
-                     || !headers.Contains("preferred vendor no"))
+                     || !headers.Contains("preferred vendor no") || !headers.Contains("barcode"))
                 {
                     return $"File headers mismatch! Please add required headers";
                 }
@@ -1436,7 +1436,7 @@ namespace Ganedata.Core.Data.Helpers
                             count++;
                             continue;
                         }
-                        if (string.IsNullOrEmpty(values[1]))
+                        if (string.IsNullOrEmpty(values[2]))
                         {
                             if (count >= 50) { return recorednotmatched; }
                             recorednotmatched += "Import Failed : No product name found on line :@ " + lineNumber + "<br/> ";
@@ -1514,6 +1514,18 @@ namespace Ganedata.Core.Data.Helpers
                             {
                                 existingProduct.SellPrice = isStockLevelSheet ? null : string.IsNullOrEmpty(values[7]) ? (decimal?)null : decimal.Parse(values[7]);
                             }
+                            if (8 < values.Length)
+                            {
+                                existingProduct.PreferredSupplier = string.IsNullOrEmpty(values[8]) ? (int?)null : Int32.Parse(values[8]);
+                            }
+                            if (9 < values.Length)
+                            {
+                                existingProduct.BarCode = string.IsNullOrEmpty(values[9]) ? " " : values[9];
+                            }
+                            if (10 < values.Length)
+                            {
+                                existingProduct.BarCode2 = values[10];
+                            }
 
                             existingProduct.DateCreated = DateTime.UtcNow;
                             existingProduct.ProdStartDate = DateTime.UtcNow;
@@ -1523,7 +1535,6 @@ namespace Ganedata.Core.Data.Helpers
                             existingProduct.CreatedBy = userId ?? adminUserId;
                             existingProduct.Description = description;
                             existingProduct.Name = description;
-                            existingProduct.BarCode = existingProduct.SKUCode;
                             existingProduct.UOMId = context.GlobalUOM.FirstOrDefault()?.UOMId ?? 1;
                             existingProduct.DimensionUOMId = context.GlobalUOM.FirstOrDefault()?.UOMId ?? 1;
                             existingProduct.ProductGroup = group;
@@ -2473,11 +2484,6 @@ namespace Ganedata.Core.Data.Helpers
                 {
                     var serializer = new XmlSerializer(typeof(Prestashop));
                     accountAddressSearch = serializer.Deserialize(streamReader) as Prestashop;
-
-                   
-
-
-
                 }
 
                 #endregion
@@ -2496,9 +2502,9 @@ namespace Ganedata.Core.Data.Helpers
                         {
                             Name = item.Firstname + " " + item.Lastname,
                             PostCode = item.Postcode,
+                            Town = item.City,
                             AddressLine1 = item.Address1,
                             AddressLine2 = item.Address2,
-                            AddressLine3 = " ",
                             DateCreated = DateTime.UtcNow,
                             IsActive = true,
                             CountryID = context.Tenants.FirstOrDefault(m => m.TenantId == tenantId).CountryID ?? 0,
@@ -2572,7 +2578,7 @@ namespace Ganedata.Core.Data.Helpers
                     {
                         return AccountIds;
                     }
-                    
+
                     var JsonObject = JObject.Parse(result).SelectToken("customers").ToString();
                     accountSearch = JsonConvert.DeserializeObject<List<PrestaShopAccountViewModel>>(JsonObject);
 
@@ -2584,7 +2590,7 @@ namespace Ganedata.Core.Data.Helpers
                     if (account == null)
                     {
                         account = new Account();
-                        account.CompanyName = string.IsNullOrEmpty(item.company) ? "S" : item.company;
+                        account.CompanyName = string.IsNullOrEmpty(item.company) ? "P" : item.company;
                         account.AccountCode = item.secure_key;
                         account.website = item.website;
                         account.AccountStatusID = 1;
@@ -2603,7 +2609,7 @@ namespace Ganedata.Core.Data.Helpers
                     }
                     else
                     {
-                        account.CompanyName = string.IsNullOrEmpty(item.company) ? "S" : item.company;
+                        account.CompanyName = string.IsNullOrEmpty(item.company) ? "P" : item.company;
                         account.AccountCode = item.secure_key;
                         account.website = item.website;
                         account.DateUpdated = DateTime.UtcNow;
@@ -2618,7 +2624,7 @@ namespace Ganedata.Core.Data.Helpers
                         var updateaccount = context.Account.FirstOrDefault(u => u.AccountID == account.AccountID);
                         if (updateaccount != null)
                         {
-                            updateaccount.CompanyName = string.IsNullOrEmpty(accountadress.FirstOrDefault()) ? "S" : accountadress.FirstOrDefault();
+                            updateaccount.CompanyName = string.IsNullOrEmpty(accountadress.FirstOrDefault()) ? "P" : accountadress.FirstOrDefault();
                             context.Entry(updateaccount).State = EntityState.Modified;
                         }
 
@@ -2675,12 +2681,11 @@ namespace Ganedata.Core.Data.Helpers
 
                 var _currentDbContext = new ApplicationContext();
 
-                var GetSyncRecored = _currentDbContext.TenantWebsitesSyncLog.Where(u => u.Synced != false).OrderByDescending(u => u.RequestTime).FirstOrDefault();
+                var GetSyncRecored = _currentDbContext.TenantWebsitesSyncLog.Where(u => u.Synced != false && u.SiteID == SiteId).OrderByDescending(u => u.RequestTime).FirstOrDefault();
                 if (GetSyncRecored != null)
                 {
                     requestTime = GetSyncRecored.RequestTime;
                     dates = requestTime.ToString("yyyy-MM-dd-HH:mm:ss");
-
                 }
 
                 url = PrestashopUrl + "orders?filter[date_upd]=>[" + dates + "]&date=1&filter[current_state]=2&display=full&output_format=JSON";
@@ -2771,7 +2776,7 @@ namespace Ganedata.Core.Data.Helpers
                     }
                     if (item.next_day_delivery > 0)
                     {
-                        order.SLAPriorityId =1;
+                        order.SLAPriorityId = 1;
                     }
                     _currentDbContext.Entry(order).State = order.OrderID > 0 ? EntityState.Modified : EntityState.Added;
                     decimal? ordTotal = 0;
@@ -3216,12 +3221,12 @@ namespace Ganedata.Core.Data.Helpers
                 {
                     return "Api Configuration is invalid, Either Api url, Api key or Api account fields are empty";
                 }
-                if (globalapis.ExpiryDate.HasValue && globalapis.ExpiryDate.Value.Day != DateTime.Today.Day)
+                if (globalapis.ExpiryDate == null || (globalapis.ExpiryDate.HasValue && globalapis.ExpiryDate.Value.Day != DateTime.Today.Day))
                 {
                     globalapis.ApiKey = GetDPDGeoSession(globalapis);
 
                 }
-                url = globalapis.ApiUrl + "shipment";
+                url = globalapis.ApiUrl + "shipping/shipment";
                 DpdReponseViewModel dpdResponse = new DpdReponseViewModel();
                 DpdErrorViewModel errorViewModel = new DpdErrorViewModel();
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
@@ -3288,11 +3293,12 @@ namespace Ganedata.Core.Data.Helpers
             var _currentDbContext = new ApplicationContext();
             string authorization = GetEncodeUserNameBas64(globalApi.UserName, globalApi.Password);
             WebResponse httpResponse = null;
-            string url = globalApi?.ApiUrl;
-            url = url.Replace("shipping", "user") + "?action=login";
+            string url = globalApi.ApiUrl;
+            url += "user/?action=login";
             GeoSession GeoSession = new GeoSession();
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
             httpWebRequest.Method = "POST";
+            httpWebRequest.ContentLength = 0;
             httpWebRequest.Headers.Add(HttpRequestHeader.Authorization, "Basic " + authorization);
             httpResponse = httpWebRequest.GetResponse();
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
@@ -3344,6 +3350,7 @@ namespace Ganedata.Core.Data.Helpers
 
 
     }
+
     public class GeoSessionData
     {
         public string geoSession { get; set; }
