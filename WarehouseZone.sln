@@ -33,6 +33,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ganedata.Core.Entities", "G
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseEcommerce", "WarehouseEcommerce\WarehouseEcommerce.csproj", "{0C205923-B232-4286-B3A7-8B79D078DB1C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DPD Label Print", "DPD Label Print", "{BC5748C7-3BBF-41DA-91A6-863A75008284}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseDpdLabelPrint", "WarehouseDpdLabelPrint\WarehouseDpdLabelPrint.csproj", "{F767193C-0A06-445D-97F1-DDB1C0984155}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -123,6 +127,14 @@ Global
 		{0C205923-B232-4286-B3A7-8B79D078DB1C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0C205923-B232-4286-B3A7-8B79D078DB1C}.Release|x86.ActiveCfg = Release|Any CPU
 		{0C205923-B232-4286-B3A7-8B79D078DB1C}.Release|x86.Build.0 = Release|Any CPU
+		{F767193C-0A06-445D-97F1-DDB1C0984155}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F767193C-0A06-445D-97F1-DDB1C0984155}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F767193C-0A06-445D-97F1-DDB1C0984155}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F767193C-0A06-445D-97F1-DDB1C0984155}.Debug|x86.Build.0 = Debug|Any CPU
+		{F767193C-0A06-445D-97F1-DDB1C0984155}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F767193C-0A06-445D-97F1-DDB1C0984155}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F767193C-0A06-445D-97F1-DDB1C0984155}.Release|x86.ActiveCfg = Release|Any CPU
+		{F767193C-0A06-445D-97F1-DDB1C0984155}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -136,12 +148,13 @@ Global
 		{CA155FC7-78E3-425C-A8B3-9F8BC17F1218} = {95FDC0AA-E6FE-4CEB-9A0F-80C10A2A1F97}
 		{2A72DFBB-815C-4AA0-B132-268C8468F927} = {95FDC0AA-E6FE-4CEB-9A0F-80C10A2A1F97}
 		{706892F4-49D7-4EFA-A414-44B5E1D74286} = {95FDC0AA-E6FE-4CEB-9A0F-80C10A2A1F97}
+		{F767193C-0A06-445D-97F1-DDB1C0984155} = {BC5748C7-3BBF-41DA-91A6-863A75008284}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {429F5B44-FFEA-4E1C-A95E-3915404064CD}
 	EndGlobalSection
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 11
+		SccNumberOfProjects = 12
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://shoaibramay.visualstudio.com/
 		SccLocalPath0 = .
@@ -183,6 +196,10 @@ Global
 		SccProjectUniqueName10 = WarehouseEcommerce\\WarehouseEcommerce.csproj
 		SccProjectName10 = WarehouseEcommerce
 		SccLocalPath10 = WarehouseEcommerce
+		SccProjectUniqueName11 = WarehouseDpdLabelPrint\\WarehouseDpdLabelPrint.csproj
+		SccProjectTopLevelParentUniqueName11 = WarehouseZone.sln
+		SccProjectName11 = WarehouseDpdLabelPrint
+		SccLocalPath11 = WarehouseDpdLabelPrint
 	EndGlobalSection
 	GlobalSection(Performance) = preSolution
 		HasPerformanceSessions = true

@@ -42,4 +42,11 @@ namespace Ganedata.Core.Entities.Domain
         public DateTime? DateUpdated { get; set; }
         public bool IsActive { get; set; }
     }
-} 
+
+    public class UserLoginStatusViewModel
+    {
+        public string UserName { get; set; }
+        public string Md5Pass { get; set; }
+        public int TenantId { get; set; }
+    }
+}

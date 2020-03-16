@@ -147,10 +147,11 @@ namespace Ganedata.Core.Services
             return name;
         }
 
-        public IEnumerable<TenantWebsites> GetTenantWebsites(int TenantId, int WarehouseId, TenantWebsiteTypes SiteType) {
+        public IEnumerable<TenantWebsites> GetTenantWebsites(int TenantId, int WarehouseId, TenantWebsiteTypes SiteType)
+        {
 
             return _currentDbContext.TenantWebsites.Where(u => u.WarehouseId == WarehouseId && u.TenantId == TenantId && u.IsDeleted != true && u.SiteType == SiteType);
-        
+
         }
 
         public Tenant GetTenantBySiteId(int SiteId)
@@ -160,6 +161,18 @@ namespace Ganedata.Core.Services
         public TenantLocations GetWarehouseBySiteId(int SiteId)
         {
             return _currentDbContext.TenantWebsites.FirstOrDefault(u => u.SiteID == SiteId && u.IsDeleted != true).Warehouse;
+        }
+
+        public bool GetUserLoginStatus(UserLoginStatusViewModel loginStatus)
+        {
+            bool res = false;
+            var user = _currentDbContext.AuthUsers.AsNoTracking().Where(e => e.UserName.Equals(loginStatus.UserName, StringComparison.CurrentCultureIgnoreCase) && e.UserPassword == loginStatus.Md5Pass.Trim() && e.TenantId == loginStatus.TenantId && e.IsActive && e.IsDeleted != true).FirstOrDefault();
+            if (user != null)
+            {
+                res = true;
+            }
+
+            return res;
         }
     }
 }

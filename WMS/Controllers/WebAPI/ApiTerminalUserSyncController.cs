@@ -14,12 +14,14 @@ namespace WMS.Controllers.WebAPI
     {
         private readonly IActivityServices _activityServices;
         private readonly ITenantLocationServices _tenantLocationServices;
+        private readonly IUserService _userService;
 
         public ApiTerminalUserSyncController(ITerminalServices terminalServices, ITenantLocationServices tenantLocationServices, IOrderService orderService, IProductServices productServices, IUserService userService, IActivityServices activityServices)
             : base(terminalServices, tenantLocationServices, orderService, productServices, userService)
         {
             _activityServices = activityServices;
             _tenantLocationServices = tenantLocationServices;
+            _userService = userService;
         }
 
         //GET http://localhost:8005/api/sync/users/{reqDate}/{serialNo}
@@ -215,5 +217,25 @@ namespace WMS.Controllers.WebAPI
                 return BadRequest("Unable to save records");
             }
         }
+
+
+        [HttpPost]
+        public IHttpActionResult GetUserLoginStatus(UserLoginStatusViewModel loginStatus)
+        {
+
+
+            bool res = _userService.GetUserLoginStatus(loginStatus);
+
+            if (res == true)
+            {
+                return Ok("Success");
+            }
+            else
+            {
+                return BadRequest("Failed");
+            }
+        }
+
+
     }
 }

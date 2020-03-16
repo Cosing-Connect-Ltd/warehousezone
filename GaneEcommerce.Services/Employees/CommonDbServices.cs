@@ -175,18 +175,22 @@ namespace Ganedata.Core.Services
                 if (accountId.HasValue && accountId > 0)
                 {
                     var account = _currentDbContext.Account.FirstOrDefault(u => u.AccountID == accountId);
-                    if (account.GlobalTax?.PercentageOfAmount <= 0)
+                    if (account.GlobalTax?.PercentageOfAmount < 0)
                     {
                         model.TaxID = account.TaxID;
                         model.TaxAmount = 0;
-                        model.TaxName.PercentageOfAmount = 0;
+                        if (model.TaxName != null)
+                        {
+                            model.TaxName.PercentageOfAmount = 0;
+                        }
+
                     }
 
 
 
                 }
                 model.TotalAmount = Math.Round((model.Price * model.Qty), 2) + model.TaxAmount + model.WarrantyAmount;
-               
+
 
 
             }
