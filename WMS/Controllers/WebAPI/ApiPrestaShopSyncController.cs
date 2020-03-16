@@ -47,25 +47,27 @@ namespace WMS.Controllers.WebAPI
         [HttpGet]
         public IHttpActionResult ImportPrestaShopOrders(int TenatId, int WarehouseId)
         {
-            var sites = _userService.GetTenantWebsites(TenatId, WarehouseId, TenantWebsiteTypes.PrestaShop);
+            var sites = _userService.GetTenantWebsites(TenatId, WarehouseId, TenantWebsiteTypes.PrestaShop).ToList();
+            string result = "";
             foreach (var item in sites)
             {
-                var result = dataImportFactory.GetPrestaShopOrdersSync(item.TenantId, item.WarehouseId, item.SiteApiUrl, item.ApiToken,item.SiteID);
-                return Ok(result);
+                 result = dataImportFactory.GetPrestaShopOrdersSync(item.TenantId, item.WarehouseId, item.SiteApiUrl, item.ApiToken,item.SiteID).Result;
+               
             }
-            return Ok("");
+            return Ok(!string.IsNullOrEmpty(result)?result:"All orders are syncroized properly");
         }
         [HttpGet]
         //Post http://localhost:8005/api/sync/Post-PrestaShop-ProductStock/?TenatId=1&WarehouseId=1
         public async Task<IHttpActionResult> PrestaShopStockSync(int TenatId, int WarehouseId)
         {
             var sites = _userService.GetTenantWebsites(TenatId, WarehouseId, TenantWebsiteTypes.PrestaShop);
+            string result = "";
             foreach (var item in sites)
             {
-                 var result = await dataImportFactory.PrestaShopStockSync(item.TenantId, item.WarehouseId, item.SiteApiUrl, item.ApiToken, item.SiteID);
-                 return Ok(result);
+                  result = dataImportFactory.PrestaShopStockSync(item.TenantId, item.WarehouseId, item.SiteApiUrl, item.ApiToken, item.SiteID).Result;
+                
             }
-            return Ok("");
+            return Ok(result);
         }
 
 

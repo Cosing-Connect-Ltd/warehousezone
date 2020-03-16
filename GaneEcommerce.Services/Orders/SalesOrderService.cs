@@ -487,7 +487,7 @@ namespace Ganedata.Core.Services
                     o.TenentId == tenantId && o.WarehouseId == warehouseId && (!statusId.HasValue || o.OrderStatusID == statusId.Value) && (o.OrderStatusID == (int)OrderStatusEnum.Active || o.OrderStatusID == (int)OrderStatusEnum.Hold || o.OrderStatusID == (int)OrderStatusEnum.BeingPicked || o.OrderStatusID == (int)OrderStatusEnum.AwaitingAuthorisation) && (o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.SalesOrder
                             || o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Proforma || o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Quotation ||
                             o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Samples || o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Loan) && o.IsDeleted != true)
-                .OrderByDescending(x => x.DateCreated)
+                .OrderBy(u=>u.SLAPriorityId).ThenByDescending(x => x.DateCreated)
                 .Select(p => new SalesOrderViewModel()
                 {
                     OrderID = p.OrderID,
@@ -506,6 +506,7 @@ namespace Ganedata.Core.Services
                     AccountName = p.Account.CompanyName,
                     Currecny = p.AccountCurrency.CurrencyName,
                     OrderTotal = p.OrderTotal,
+                    SLAPriorityId=p.SLAPriorityId,
                     PickerName = p.Picker == null ? "" : p.Picker.UserLastName + ", " + p.Picker.UserFirstName,
                     EmailCount = _currentDbContext.TenantEmailNotificationQueues.Count(u => u.OrderId == p.OrderID),
                     OrderNotesList = p.OrderNotes.Where(m => m.IsDeleted != true).Select(s => new OrderNotesViewModel()

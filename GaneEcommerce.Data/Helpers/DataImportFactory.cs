@@ -19,6 +19,7 @@ using System.Web;
 using System.Xml;
 using Elmah;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace Ganedata.Core.Data.Helpers
 {
@@ -2460,81 +2461,87 @@ namespace Ganedata.Core.Data.Helpers
                 string url = PrestashopUrl + "addresses/?filter[date_upd]=>[" + date + "]&date=1&display=full&output_format=JSON";
                 if (id_customer.HasValue)
                 {
-                    url = PrestashopUrl + "addresses/?filter[id_customer]=[" + id_customer + "]&display=full&output_format=JSON";
+                    url = PrestashopUrl + "addresses/?filter[id]=[" + DeliveryAddressId + "]&display=full";
                 }
-                List<PrestaShopAccountAddressViewModel> accountAddressSearch = new List<PrestaShopAccountAddressViewModel>();
+                Prestashop accountAddressSearch = new Prestashop();
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                 httpWebRequest.Credentials = new NetworkCredential(PrestashopKey, "");
                 httpWebRequest.Method = "GET";
                 var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                string result = "";
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
-                    var result = streamReader.ReadToEnd();
-                    if (string.IsNullOrEmpty(result) || result == "[]")
-                    {
-                        return accountaddress;
-                    }
-                    var JsonObject = JObject.Parse(result).SelectToken("addresses").ToString();
-                    accountAddressSearch = JsonConvert.DeserializeObject<List<PrestaShopAccountAddressViewModel>>(JsonObject);
+                    var serializer = new XmlSerializer(typeof(Prestashop));
+                    accountAddressSearch = serializer.Deserialize(streamReader) as Prestashop;
+
+                   
+
+
 
                 }
+
                 #endregion
-                foreach (var item in accountAddressSearch)
+
+                if (accountAddressSearch?.Addresses?.Address != null)
                 {
-                    accountaddress.Add(item.company);
-                    var currentAddress = context.AccountAddresses.FirstOrDefault(u => u.PrestaShopAddressId == item.id && u.IsDeleted != true);
+
+                    var item = accountAddressSearch.Addresses.Address;
+                    accountaddress.Add(item.Company);
+                    int? mainId = Convert.ToInt32(item.Id);
+                    var currentAddress = context.AccountAddresses.FirstOrDefault(u => u.PrestaShopAddressId == mainId && u.IsDeleted != true);
                     if (currentAddress == null)
                     {
 
                         currentAddress = new AccountAddresses()
                         {
-                            Name = item.firstname + " " + item.lastname,
-                            PostCode = item.postcode,
-                            AddressLine1 = item.address1,
-                            AddressLine2 = item.address2,
+                            Name = item.Firstname + " " + item.Lastname,
+                            PostCode = item.Postcode,
+                            AddressLine1 = item.Address1,
+                            AddressLine2 = item.Address2,
                             AddressLine3 = " ",
                             DateCreated = DateTime.UtcNow,
                             IsActive = true,
                             CountryID = context.Tenants.FirstOrDefault(m => m.TenantId == tenantId).CountryID ?? 0,
                             AccountID = accountId,
                             CreatedBy = UserId,
-                            PrestaShopAddressId = item.id,
+                            PrestaShopAddressId = mainId,
 
                         };
                     }
                     else
                     {
-                        currentAddress.Name = item.firstname + " " + item.lastname;
-                        currentAddress.PostCode = item.postcode;
-                        currentAddress.AddressLine1 = item.address1;
-                        currentAddress.AddressLine2 = item.address2;
+                        currentAddress.Name = item.Firstname + " " + item.Lastname;
+                        currentAddress.PostCode = item.Postcode;
+                        currentAddress.AddressLine1 = item.Address1;
+                        currentAddress.AddressLine2 = item.Address2;
                         currentAddress.AddressLine3 = " ";
 
                     }
-                    if ((item.id == DeliveryAddressId || item.id == InvoiceAdressId) && DeliveryAddressId == InvoiceAdressId)
+                    if ((mainId == DeliveryAddressId || mainId == InvoiceAdressId) && DeliveryAddressId == InvoiceAdressId)
                     {
                         currentAddress.AddTypeShipping = true;
                         currentAddress.AddTypeBilling = true;
                     }
-                    else if (item.id == DeliveryAddressId)
+                    else if (mainId == DeliveryAddressId)
                     {
                         currentAddress.AddTypeShipping = true;
                     }
-                    else if (item.id == InvoiceAdressId)
+                    else if (mainId == InvoiceAdressId)
                     {
                         currentAddress.AddTypeBilling = true;
                     }
 
                     context.Entry(currentAddress).State = currentAddress.AddressID > 0 ? EntityState.Modified : EntityState.Added;
                     context.SaveChanges();
-                }
 
+
+                }
             }
 
 
             catch (Exception ex)
             {
-                throw ex;
+
 
             }
             return accountaddress;
@@ -2565,6 +2572,7 @@ namespace Ganedata.Core.Data.Helpers
                     {
                         return AccountIds;
                     }
+                    
                     var JsonObject = JObject.Parse(result).SelectToken("customers").ToString();
                     accountSearch = JsonConvert.DeserializeObject<List<PrestaShopAccountViewModel>>(JsonObject);
 
@@ -2655,9 +2663,10 @@ namespace Ganedata.Core.Data.Helpers
                 throw ex;
             }
         }
-        public async Task<bool> GetPrestaShopOrdersSync(int tenantId, int warehouseId, string PrestashopUrl, string PrestashopKey, int SiteId)
+        public async Task<string> GetPrestaShopOrdersSync(int tenantId, int warehouseId, string PrestashopUrl, string PrestashopKey, int SiteId)
         {
-            DateTime requestTime = DateTime.UtcNow;
+            DateTime requestTime = new DateTime(2000, 01, 01);
+            var dates = requestTime.ToString("yyyy-MM-dd-HH:mm:ss");
             WebResponse httpResponse = null;
             DateTime responseTime = DateTime.UtcNow;
             string url = "";
@@ -2665,20 +2674,23 @@ namespace Ganedata.Core.Data.Helpers
             {
 
                 var _currentDbContext = new ApplicationContext();
-                var dates = DateTime.UtcNow.ToString("yyyy-MM-dd-HH:mm:ss");
-                var GetSyncRecored = _currentDbContext.TenantWebsitesSyncLog.OrderByDescending(u => u.RequestTime).FirstOrDefault();
+
+                var GetSyncRecored = _currentDbContext.TenantWebsitesSyncLog.Where(u => u.Synced != false).OrderByDescending(u => u.RequestTime).FirstOrDefault();
                 if (GetSyncRecored != null)
                 {
-                    dates = GetSyncRecored.RequestTime.ToString("yyyy-MM-dd-HH:mm:ss");
+                    requestTime = GetSyncRecored.RequestTime;
+                    dates = requestTime.ToString("yyyy-MM-dd-HH:mm:ss");
+
                 }
 
-                url = PrestashopUrl + "orders?filter[date_upd]=>[" + dates + "]&date=1&display=full&output_format=JSON";
+                url = PrestashopUrl + "orders?filter[date_upd]=>[" + dates + "]&date=1&filter[current_state]=2&display=full&output_format=JSON";
                 List<PrestaShopOrderViewModel> orderSearch = new List<PrestaShopOrderViewModel>();
+
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                 httpWebRequest.Credentials = new NetworkCredential(PrestashopKey, "");
                 httpWebRequest.Method = "GET";
                 httpWebRequest.ContentType = "application/json";
-                requestTime = DateTime.UtcNow;
+
                 httpResponse = httpWebRequest.GetResponse();
                 responseTime = DateTime.UtcNow;
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
@@ -2687,7 +2699,7 @@ namespace Ganedata.Core.Data.Helpers
                     if (string.IsNullOrEmpty(result) || result == "[]")
                     {
                         CreateWebSiteSyncLog(requestTime, url, 1, true, 0, responseTime, SiteId);
-                        return false;
+                        return "No data against this call";
                     }
                     var JsonObject = JObject.Parse(result).SelectToken("orders").ToString();
                     orderSearch = JsonConvert.DeserializeObject<List<PrestaShopOrderViewModel>>(JsonObject);
@@ -2753,6 +2765,14 @@ namespace Ganedata.Core.Data.Helpers
                     }
 
                     order.InventoryTransactionTypeId = (int)InventoryTransactionTypeEnum.SalesOrder;
+                    if (item.urgent > 0)
+                    {
+                        order.SLAPriorityId = 2;
+                    }
+                    if (item.next_day_delivery > 0)
+                    {
+                        order.SLAPriorityId =1;
+                    }
                     _currentDbContext.Entry(order).State = order.OrderID > 0 ? EntityState.Modified : EntityState.Added;
                     decimal? ordTotal = 0;
                     foreach (var order_row in item.associations.order_rows)
@@ -2810,9 +2830,9 @@ namespace Ganedata.Core.Data.Helpers
             catch (Exception ex)
             {
                 CreateWebSiteSyncLog(requestTime, url, 0, false, 0, responseTime, SiteId);
-                throw ex;
+                return ex.Message;
             }
-            return true;
+            return "All data sync properly";
         }
         public AccountAddresses GetAccountAddressesByPrestaShopAddressId(int id)
         {
@@ -2820,7 +2840,7 @@ namespace Ganedata.Core.Data.Helpers
 
             return _currentdbContext.AccountAddresses.FirstOrDefault(u => u.PrestaShopAddressId == id);
         }
-        public async Task<bool> PrestaShopStockSync(int tenantId, int warehouseId, string PrestashopUrl, string PrestashopKey, int SiteId)
+        public async Task<string> PrestaShopStockSync(int tenantId, int warehouseId, string PrestashopUrl, string PrestashopKey, int SiteId)
         {
             DateTime requestTime = DateTime.UtcNow;
             WebResponse httpResponse = null;
@@ -2846,7 +2866,7 @@ namespace Ganedata.Core.Data.Helpers
                     if (string.IsNullOrEmpty(result) || result == "[]")
                     {
                         CreateWebSiteSyncLog(requestTime, url, 1, true, 0, responseTime, SiteId);
-                        return false;
+                        return "stock not posted correctly";
                     }
                     var JsonObject = JObject.Parse(result).SelectToken("products").ToString();
                     prestashopProducts = JsonConvert.DeserializeObject<List<PrestaShopProductViewModel>>(JsonObject);
@@ -2890,10 +2910,10 @@ namespace Ganedata.Core.Data.Helpers
             catch (Exception)
             {
 
-                throw;
+                return "Stock is not posted correctly";
             }
 
-            return true;
+            return "Stock posted correctly";
 
 
         }

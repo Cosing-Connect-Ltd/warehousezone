@@ -175,9 +175,8 @@ FROM            Orders INNER JOIN
                                WHERE        (OrderId = Orders.OrderID) AND (Status = 0) AND (IsCanceled = 0)
                                ORDER BY StartTime DESC) LEFT OUTER JOIN
                          Resources ON Resources.ResourceId = Appointments.ResourceId 
-WHERE ("Orders"."OrderId" = 24083)
-and(orders.IsDeleted=0 or orders.IsDeleted is null)
-</value>
+WHERE ("Orders"."OrderId" = @SqlParamOrderId)
+and(orders.IsDeleted=0 or orders.IsDeleted is null)</value>
   </data>
   <data name="customSqlQuery2.Sql" xml:space="preserve">
     <value>SELECT        OrderDetails.OrderDetailID, OrderDetails.OrderID, OrderDetails.WarehouseId, OrderDetails.ProductId, OrderDetails.ProdAccCodeID, OrderDetails.Qty, OrderDetails.Price, OrderDetails.WarrantyID,
