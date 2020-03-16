@@ -703,6 +703,10 @@
     <Compile Include="Migrations\202003131035333_ProductMaster-ProductCategory-Relation.designer.cs">
       <DependentUpon>202003131035333_ProductMaster-ProductCategory-Relation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003161053084_Barcode-Required-Removed.cs" />
+    <Compile Include="Migrations\202003161053084_Barcode-Required-Removed.designer.cs">
+      <DependentUpon>202003161053084_Barcode-Required-Removed.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1550,6 +1554,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003131035333_ProductMaster-ProductCategory-Relation.resx">
       <DependentUpon>202003131035333_ProductMaster-ProductCategory-Relation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003161053084_Barcode-Required-Removed.resx">
+      <DependentUpon>202003161053084_Barcode-Required-Removed.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

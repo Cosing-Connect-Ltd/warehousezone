@@ -33,6 +33,11 @@ namespace WMS.Controllers
 
             var tick = DateTime.UtcNow.Ticks;
             var fileTime = DateTime.UtcNow.ToFileTime();
+            var mid = Environment.MachineName.ToString();
+
+            var rem = Request.UserHostName;
+
+
 
             return View();
         }
