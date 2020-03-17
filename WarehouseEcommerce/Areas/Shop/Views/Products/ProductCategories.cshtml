@@ -108,10 +108,17 @@
             </div>
         </div>
         <div id="content" class="col-md-9 col-sm-12">
-            <ul class="breadcrumb">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Special Offers</a></li>
-            </ul>
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    <ul class="breadcrumb">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">@(!string.IsNullOrEmpty(item?.ProductGroup?.ProductGroup) ? item.ProductGroup.ProductGroup : "Product Group")</a></li>
+                    </ul>
+                    break;
+                }
+            }
             <div class="row cate-border">
                 <div class="col-md-2 col-sm-3 col-xs-5">
                     <div class="btn-group-sm">

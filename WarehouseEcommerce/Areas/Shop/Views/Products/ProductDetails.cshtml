@@ -8,6 +8,8 @@
         <div id="content" class="col-md-12 col-sm-12">
             <ul class="breadcrumb">
                 <li><a href="#">Home</a></li>
+                <li><a href="#">@(!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup) ? Model.ProductGroup.ProductGroup : "Product Group")</a></li>
+                <li><a href="#">@(!string.IsNullOrEmpty(Model?.ProductCategory?.ProductCategoryName) ? Model.ProductCategory.ProductCategoryName : "Product Category")</a></li>
                 <li><a href="#">@Model.Name</a></li>
             </ul>
             <div class="row product-bg">
