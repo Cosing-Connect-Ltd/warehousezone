@@ -74,13 +74,15 @@ namespace WMS
             config.Routes.MapHttpRoute("PostOrderReceiveCountSync", "api/sync/post-order-receive-count", new { controller = "ApiOrderReceiveCountSync", action = "PostOrderReceiveCount" });
             config.Routes.MapHttpRoute("PostAssetLog", "api/sync/post-asset-log", new { controller = "ApiAsset", action = "PostAssetLog" });
             config.Routes.MapHttpRoute("PostDispatchProgress", "api/sync/post-dispatch-progress", new { controller = "ApiPalletsSync", action = "PostDispatchProgress" });
-            config.Routes.MapHttpRoute("ImportPrestaShopOrders", "api/sync/Import-PrestaShop-Orders/{TenatId}/{WarehouseId}", new { controller = "ApiPrestaShopSync", action = "ImportPrestaShopOrders", TenatId=string.Empty, WarehouseId=string.Empty });
+            config.Routes.MapHttpRoute("ImportPrestaShopOrders", "api/sync/Import-PrestaShop-Orders/{TenatId}/{WarehouseId}", new { controller = "ApiPrestaShopSync", action = "ImportPrestaShopOrders", TenatId = string.Empty, WarehouseId = string.Empty });
             config.Routes.MapHttpRoute("PostStocktoPrestaShop", "api/sync/Post-PrestaShop-ProductStock/{TenatId}/{WarehouseId}", new { controller = "ApiPrestaShopSync", action = "PrestaShopStockSync", TenatId = string.Empty, WarehouseId = string.Empty });
             config.Routes.MapHttpRoute("ApiCurrencyExRateRoute", "api/sync/currency-ex-rates/{TenantId}", new { controller = "ApiCurrencyExRate", action = "GetTenantCurrencyExRate", TenantId = string.Empty });
             config.Routes.MapHttpRoute("ImportScanSourceData", "api/sync/Scan-Source-Product-Import/{TenantId}", new { controller = "ApiDataImport", action = "GetScanSourceDataImport", TenantId = string.Empty });
             config.Routes.MapHttpRoute("ImportCipherLabProductData", "api/sync/Cipher-Lab-Product-Import/{TenantId}", new { controller = "ApiDataImport", action = "GetCipherLabProductDataImport", TenantId = string.Empty });
-            config.Routes.MapHttpRoute("IpmortDPDServices", "api/sync/Get-DPD-Services", new { controller = "ApiDataImport", action = "GetDPDServices"});
+            config.Routes.MapHttpRoute("IpmortDPDServices", "api/sync/Get-DPD-Services", new { controller = "ApiDataImport", action = "GetDPDServices" });
             config.Routes.MapHttpRoute("PostUserLoginStatus", "api/sync/get-login-status", new { controller = "ApiTerminalUserSync", action = "GetUserLoginStatus" });
+            config.Routes.MapHttpRoute("GetPalletDispatchLabel", "api/sync/get-dispatch-for-label", new { controller = "ApiPalletsSync", action = "GetPalletDispatchLabelPrint", tenantId = string.Empty, userId = string.Empty });
+            config.Routes.MapHttpRoute("GetPalletDispatchLabelStatus", "api/sync/update-dispatch-for-label", new { controller = "ApiPalletsSync", action = "UpdatePalletDispatchLabelPrintStatus", shipmentId = string.Empty });
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

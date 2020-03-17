@@ -49,4 +49,11 @@ namespace Ganedata.Core.Entities.Domain
         public string Md5Pass { get; set; }
         public int TenantId { get; set; }
     }
+
+    public class UserLoginStatusResponseViewModel
+    {
+        public bool Success { get; set; }
+        public string UserName { get; set; }
+        public int UserId { get; set; }
+    }
 }

@@ -138,4 +138,12 @@ namespace Ganedata.Core.Models
         public byte[] ReceiverSign { get; set; }
         public string Comments { get; set; }
     }
+
+    public class PalletDispatchLabelPrintViewModel
+    {
+        public string ShipmentId { get; set; }
+        public string GeoSession { get; set; }
+        public string GeoAccount { get; set; }
+        public string ApiUrl { get; set; }
+    }
 }

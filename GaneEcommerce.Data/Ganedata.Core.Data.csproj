@@ -707,6 +707,10 @@
     <Compile Include="Migrations\202003161053084_Barcode-Required-Removed.designer.cs">
       <DependentUpon>202003161053084_Barcode-Required-Removed.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003170331126_Shipment-Label-Status-added.cs" />
+    <Compile Include="Migrations\202003170331126_Shipment-Label-Status-added.designer.cs">
+      <DependentUpon>202003170331126_Shipment-Label-Status-added.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1557,6 +1561,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003161053084_Barcode-Required-Removed.resx">
       <DependentUpon>202003161053084_Barcode-Required-Removed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003170331126_Shipment-Label-Status-added.resx">
+      <DependentUpon>202003170331126_Shipment-Label-Status-added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

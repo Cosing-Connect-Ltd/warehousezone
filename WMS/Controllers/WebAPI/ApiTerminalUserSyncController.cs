@@ -222,20 +222,16 @@ namespace WMS.Controllers.WebAPI
         [HttpPost]
         public IHttpActionResult GetUserLoginStatus(UserLoginStatusViewModel loginStatus)
         {
+            var resp = _userService.GetUserLoginStatus(loginStatus);
 
-
-            bool res = _userService.GetUserLoginStatus(loginStatus);
-
-            if (res == true)
+            if (resp.Success == true)
             {
-                return Ok("Success");
+                return Ok(resp);
             }
             else
             {
-                return BadRequest("Failed");
+                return Unauthorized();
             }
         }
-
-
     }
 }

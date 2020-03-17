@@ -14,8 +14,8 @@ namespace Ganedata.Core.Services
         List<PalletProduct> GetFulFillmentPalletProductsForPallet(int palletId);
         List<PalletProductsSync> GetAllPalletProductsForSync(DateTime? afterDate);
         List<DeliveryMethods> GetAllSentMethods();
-        IQueryable<PalletViewModel> GetAllPallets(int? lastXdays = null, PalletStatusEnum? palletStatusEnum = null, int? orderProcessId = null, DateTime? reqDate = null, int? filterByPalletDetail = null,int? dispatchId=null);
-        List<PalletsDispatch> GetAllPalletsDispatch(int? dispatchId, DateTime? reqDate,int? orderProcessID= null);
+        IQueryable<PalletViewModel> GetAllPallets(int? lastXdays = null, PalletStatusEnum? palletStatusEnum = null, int? orderProcessId = null, DateTime? reqDate = null, int? filterByPalletDetail = null, int? dispatchId = null);
+        List<PalletsDispatch> GetAllPalletsDispatch(int? dispatchId, DateTime? reqDate, int? orderProcessID = null);
         string GenerateNextPalletNumber(string prefix = null);
         Pallet GetFulfillmentPalletById(int palletId);
         Pallet GetFulfillmentPalletByNumber(string palletNumber);
@@ -35,7 +35,8 @@ namespace Ganedata.Core.Services
         bool MarkedOrderProcessAsDispatch(int OrderProcessId);
 
         IEnumerable<PalletsDispatch> GetAllPalletsDispatch();
-        bool UpdatePalletsDispatchStatus(int dispatchId, int? resourceId, int userID, bool Status=false);
-
+        bool UpdatePalletsDispatchStatus(int dispatchId, int? resourceId, int userID, bool Status = false);
+        PalletDispatchLabelPrintViewModel PalletDispatchForLabels(int tenantId, int userId);
+        bool UpdateDispatchForLabelsStatus(string shipmentId);
     }
 }

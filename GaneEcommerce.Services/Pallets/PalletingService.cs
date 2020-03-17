@@ -154,7 +154,7 @@ namespace Ganedata.Core.Services
                                 pallet.PalletsDispatch = item;
 
 
-                                _currentDbContext.Entry(pallet).State = pallet.PalletsDispatchID>0?EntityState.Modified: EntityState.Added;
+                                _currentDbContext.Entry(pallet).State = pallet.PalletsDispatchID > 0 ? EntityState.Modified : EntityState.Added;
                             }
                         }
                         if (orderProcess != null)
@@ -651,7 +651,7 @@ namespace Ganedata.Core.Services
                 address2.countryCode = palletDispatch.OrderProcess?.Order?.Tenant?.Country?.CountryCode;
                 address2.postcode = palletDispatch.OrderProcess?.Order?.ShipmentAddressPostcode;
                 address2.street = palletDispatch.OrderProcess?.Order?.ShipmentAddressLine1;
-                address2.town = string.IsNullOrEmpty(palletDispatch.OrderProcess?.Order?.ShipmentAddressLine3)? palletDispatch.OrderProcess?.Order?.ShipmentAddressLine2: palletDispatch.OrderProcess?.Order?.ShipmentAddressLine3;
+                address2.town = string.IsNullOrEmpty(palletDispatch.OrderProcess?.Order?.ShipmentAddressLine3) ? palletDispatch.OrderProcess?.Order?.ShipmentAddressLine2 : palletDispatch.OrderProcess?.Order?.ShipmentAddressLine3;
                 deliveryDetails.address = address2;
                 NotificationDetails notificationDetails = new NotificationDetails();
                 notificationDetails.email = palletDispatch.OrderProcess?.Order?.Account?.AccountEmail;
@@ -669,11 +669,6 @@ namespace Ganedata.Core.Services
                 viewModel.consignment = new List<Consignment>();
                 viewModel.consignment.Add(consignment);
 
-
-
-
-
-
                 return viewModel;
             }
             return default;
@@ -687,6 +682,40 @@ namespace Ganedata.Core.Services
             int weight = int.Parse(weights.ToString());
             if (weight == 0) weight = 1;
             return weight;
+        }
+
+        public PalletDispatchLabelPrintViewModel PalletDispatchForLabels(int tenantId, int userId)
+        {
+            var result = new PalletDispatchLabelPrintViewModel();
+            var apiCredentials = _currentDbContext.GlobalApis.Where(x => x.TenantId == tenantId && x.ApiTypes == ApiTypes.DPD).FirstOrDefault();
+            var palletDispatch = _currentDbContext.PalletsDispatches.Where(u => u.CreatedBy == userId && u.LabelPrintStatus == false
+            && u.DeliveryMethod == DeliveryMethods.DPD && !String.IsNullOrEmpty(u.ShipmentId)).FirstOrDefault();
+
+            if (apiCredentials != null && palletDispatch != null)
+            {
+                result.ApiUrl = apiCredentials.ApiUrl;
+                result.GeoSession = apiCredentials.ApiKey;
+                result.GeoAccount = apiCredentials.AccountNumber;
+                result.ShipmentId = palletDispatch.ShipmentId;
+            }
+
+
+            return result;
+        }
+
+        public bool UpdateDispatchForLabelsStatus(string shipmentId)
+        {
+            var palletDispatch = _currentDbContext.PalletsDispatches.Where(u => u.ShipmentId == shipmentId).FirstOrDefault();
+
+            if (palletDispatch != null)
+            {
+                palletDispatch.LabelPrintStatus = true;
+            }
+
+            _currentDbContext.SaveChanges();
+
+
+            return true;
         }
     }
 }

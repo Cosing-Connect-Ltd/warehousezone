@@ -163,16 +163,19 @@ namespace Ganedata.Core.Services
             return _currentDbContext.TenantWebsites.FirstOrDefault(u => u.SiteID == SiteId && u.IsDeleted != true).Warehouse;
         }
 
-        public bool GetUserLoginStatus(UserLoginStatusViewModel loginStatus)
+        public UserLoginStatusResponseViewModel GetUserLoginStatus(UserLoginStatusViewModel loginStatus)
         {
-            bool res = false;
+            UserLoginStatusResponseViewModel resp = new UserLoginStatusResponseViewModel();
+
             var user = _currentDbContext.AuthUsers.AsNoTracking().Where(e => e.UserName.Equals(loginStatus.UserName, StringComparison.CurrentCultureIgnoreCase) && e.UserPassword == loginStatus.Md5Pass.Trim() && e.TenantId == loginStatus.TenantId && e.IsActive && e.IsDeleted != true).FirstOrDefault();
             if (user != null)
             {
-                res = true;
+                resp.UserId = user.UserId;
+                resp.Success = true;
+                resp.UserName = user.UserFirstName;
             }
 
-            return res;
+            return resp;
         }
     }
 }

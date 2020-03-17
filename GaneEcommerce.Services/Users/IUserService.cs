@@ -23,6 +23,6 @@ namespace Ganedata.Core.Services
 
         Tenant GetTenantBySiteId(int SiteId);
         TenantLocations GetWarehouseBySiteId(int SiteId);
-        bool GetUserLoginStatus(UserLoginStatusViewModel loginStatus);
+        UserLoginStatusResponseViewModel GetUserLoginStatus(UserLoginStatusViewModel loginStatus);
     }
 }

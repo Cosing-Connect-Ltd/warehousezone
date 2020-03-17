@@ -56,6 +56,7 @@ namespace Ganedata.Core.Entities.Domain
         public string ShipmentId { get; set; }
         public string ConsignmentNumber { get; set; }
         public string ParcelNumbers { get; set; }
+        public bool LabelPrintStatus { get; set; }
 
     }
 

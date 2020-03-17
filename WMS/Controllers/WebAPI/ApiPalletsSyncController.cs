@@ -246,5 +246,19 @@ namespace WMS.Controllers.WebAPI
 
             return Ok(result);
         }
+
+        [HttpGet]
+        public IHttpActionResult GetPalletDispatchLabelPrint(int tenantId, int userId)
+        {
+            var result = _palletService.PalletDispatchForLabels(tenantId, userId);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public IHttpActionResult UpdatePalletDispatchLabelPrintStatus(string shipmentId)
+        {
+            var result = _palletService.UpdateDispatchForLabelsStatus(shipmentId);
+            return Ok(result);
+        }
     }
 }
