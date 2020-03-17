@@ -2355,57 +2355,57 @@ namespace Ganedata.Core.Data.Helpers
 
                 List<int> ProductIds = new List<int>();
                 #region ApiCall
-                string url = PrestashopUrl + "products/?filter[date_upd]=>[" + (date.HasValue ? date.Value.ToString() : "") + "]&date=1&display=full&output_format=JSON";
+                string url = PrestashopUrl + "products/?filter[date_upd]=>[" + (date.HasValue ? date.Value.ToString() : "") + "]&date=1&display=full";
                 if (Id.HasValue)
                 {
-                    url = PrestashopUrl + "products/?filter[id]=[" + Id + "]&display=full&output_format=JSON";
+                    url = PrestashopUrl + "products/?filter[id]=[" + Id + "]&display=full";
                 }
-                List<PrestaShopProductDetailViewModel> productSearch = new List<PrestaShopProductDetailViewModel>();
+                PrestashopProduct productSearch = new PrestashopProduct();
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                 httpWebRequest.Credentials = new NetworkCredential(PrestashopKey, "");
                 httpWebRequest.Method = "GET";
                 var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
-                    var result = streamReader.ReadToEnd();
-                    if (string.IsNullOrEmpty(result) || result == "[]")
+                    var serializer = new XmlSerializer(typeof(PrestashopProduct));
+                    productSearch = serializer.Deserialize(streamReader) as PrestashopProduct;
+                    if (productSearch?.Products?.Product?.Count < 0)
                     {
-                        return ProductIds;
+                        return default;
                     }
-                    var JsonObject = JObject.Parse(result).SelectToken("products").ToString();
-                    productSearch = JsonConvert.DeserializeObject<List<PrestaShopProductDetailViewModel>>(JsonObject);
+                    
 
                 }
                 #endregion
-                if (productSearch.Count > 0)
+                if (productSearch.Products.Product.Count > 0)
                 {
-                    foreach (var item in productSearch)
+                    foreach (var item in productSearch.Products.Product)
                     {
-                        var productMaster = context.ProductMaster.FirstOrDefault(u => u.SKUCode == item.reference.Trim() && u.IsDeleted != true);
+                        var productMaster = context.ProductMaster.FirstOrDefault(u => u.SKUCode == item.Reference.Trim() && u.IsDeleted != true);
                         if (productMaster == null)
                         {
                             productMaster = new ProductMaster();
                             productMaster.DateCreated = DateTime.UtcNow;
                             productMaster.CreatedBy = UserId;
-                            productMaster.SKUCode = string.IsNullOrEmpty(item.reference) ? "SkuPresta" : item.reference.Trim();
-                            productMaster.ManufacturerPartNo = item.manufacturer_name;
+                            productMaster.SKUCode = string.IsNullOrEmpty(item.Reference) ? "SkuPresta" : item.Reference.Trim();
+                            //productMaster.ManufacturerPartNo = item.Manufacturer_name.NotFilterable;
 
                             productMaster.TaxID = 1;
-                            productMaster.Name = string.IsNullOrEmpty(item.name) ? "PrestaShopProduct" : item.name;
+                            productMaster.Name = string.IsNullOrEmpty(item?.Name?.Language?.Text) ? "PrestaShopProduct" : item.Name.Language.Text;
                             //productMaster.CommodityCode = item.CommodityImportCodeNumber;
-                            productMaster.Description = GetPlainTextFromHtml(item.description);
+                            productMaster.Description = GetPlainTextFromHtml(item.Description.Language.Text);
                             productMaster.UOMId = 1;
                             productMaster.Serialisable = false;
 
                             productMaster.LotOption = false;
                             productMaster.LotOptionCodeId = 1;
                             productMaster.LotProcessTypeCodeId = 1;
-                            productMaster.BarCode = string.IsNullOrEmpty(item.reference) ? "SkuPresta" : item.reference.Trim(); ;
+                            productMaster.BarCode = string.IsNullOrEmpty(item.Reference) ? "SkuPresta" : item.Reference.Trim(); ;
                             //productMaster.PackSize = 0;
-                            productMaster.Height = item.height ?? 0;
-                            productMaster.Width = item.width ?? 0;
-                            productMaster.Depth = item.depth ?? 0;
-                            productMaster.Weight = item.weight ?? 0;
+                            productMaster.Height = item.Height ?? 0;
+                            productMaster.Width = item.Width ?? 0;
+                            productMaster.Depth = item.Depth ?? 0;
+                            productMaster.Weight = item.Weight ?? 0;
                             productMaster.TaxID = 1;
                             productMaster.WeightGroupId = 1;
                             productMaster.PercentMargin = 0;
@@ -2424,7 +2424,7 @@ namespace Ganedata.Core.Data.Helpers
                             productMaster.SpecialProduct = false;
                             productMaster.OnSaleProduct = false;
                             productMaster.ProductGroupId = 1;
-                            productMaster.BuyPrice = item.price;
+                            productMaster.BuyPrice = item.Price;
                             //productMaster.CountryOfOrigion = productDetail.CountryofOrigin;
                             context.Entry(productMaster).State = EntityState.Added;
                             context.SaveChanges();
@@ -2469,29 +2469,27 @@ namespace Ganedata.Core.Data.Helpers
             {
                 #region ApiCall
 
-                string url = PrestashopUrl + "addresses/?filter[date_upd]=>[" + date + "]&date=1&display=full&output_format=JSON";
+                string url = PrestashopUrl + "addresses/?filter[date_upd]=>[" + date + "]&date=1&display=full";
                 if (id_customer.HasValue)
                 {
-                    url = PrestashopUrl + "addresses/?filter[id]=[" + DeliveryAddressId + "]&display=full";
+                    url = PrestashopUrl + "addresses/?filter[id_customer]=[" + id_customer + "]&display=full";
                 }
-                Prestashop accountAddressSearch = new Prestashop();
+                PrestashopAddress accountAddressSearch = new PrestashopAddress();
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                 httpWebRequest.Credentials = new NetworkCredential(PrestashopKey, "");
                 httpWebRequest.Method = "GET";
                 var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-                string result = "";
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
-                    var serializer = new XmlSerializer(typeof(Prestashop));
-                    accountAddressSearch = serializer.Deserialize(streamReader) as Prestashop;
+                    var serializer = new XmlSerializer(typeof(PrestashopAddress));
+                    accountAddressSearch = serializer.Deserialize(streamReader) as PrestashopAddress;
                 }
 
                 #endregion
 
-                if (accountAddressSearch?.Addresses?.Address != null)
+                foreach (var item in accountAddressSearch.Addresses.Address)
                 {
 
-                    var item = accountAddressSearch.Addresses.Address;
                     accountaddress.Add(item.Company);
                     int? mainId = Convert.ToInt32(item.Id);
                     var currentAddress = context.AccountAddresses.FirstOrDefault(u => u.PrestaShopAddressId == mainId && u.IsDeleted != true);
@@ -2561,38 +2559,32 @@ namespace Ganedata.Core.Data.Helpers
             try
             {
                 #region apicall
-                string url = PrestashopUrl + "customers/?filter[date_upd]=>[" + (date.HasValue ? date.Value.ToString() : "") + "]&date=1&display=full&output_format=JSON";
+                string url = PrestashopUrl + "customers/?filter[date_upd]=>[" + (date.HasValue ? date.Value.ToString() : "") + "]&date=1&display=full";
                 if (Id.HasValue)
                 {
-                    url = PrestashopUrl + "customers/?filter[id]=[" + Id + "]&display=full&output_format=JSON";
+                    url = PrestashopUrl + "customers/?filter[id]=[" + Id + "]&display=full";
                 }
-                List<PrestaShopAccountViewModel> accountSearch = new List<PrestaShopAccountViewModel>();
+                PrestashopAccounts accountSearch = new PrestashopAccounts();
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                 httpWebRequest.Credentials = new NetworkCredential(PrestashopKey, "");
                 httpWebRequest.Method = "GET";
                 var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
-                    var result = streamReader.ReadToEnd();
-                    if (string.IsNullOrEmpty(result) || result == "[]")
-                    {
-                        return AccountIds;
-                    }
-
-                    var JsonObject = JObject.Parse(result).SelectToken("customers").ToString();
-                    accountSearch = JsonConvert.DeserializeObject<List<PrestaShopAccountViewModel>>(JsonObject);
-
+                    var serializer = new XmlSerializer(typeof(PrestashopAccounts));
+                    accountSearch = serializer.Deserialize(streamReader) as PrestashopAccounts;
+                    
                 }
                 #endregion
-                foreach (var item in accountSearch)
+                foreach (var item in accountSearch.Customers.Customer)
                 {
-                    var account = context.Account.FirstOrDefault(u => u.AccountCode.Equals(item.secure_key, StringComparison.CurrentCultureIgnoreCase) && u.IsDeleted != true);
+                    var account = context.Account.FirstOrDefault(u => u.AccountCode.Equals(item.Secure_key, StringComparison.CurrentCultureIgnoreCase) && u.IsDeleted != true);
                     if (account == null)
                     {
                         account = new Account();
-                        account.CompanyName = string.IsNullOrEmpty(item.company) ? "P" : item.company;
-                        account.AccountCode = item.secure_key;
-                        account.website = item.website;
+                        account.CompanyName = string.IsNullOrEmpty(item.Company) ? "P" : item.Company;
+                        account.AccountCode = item.Secure_key;
+                        account.website = item.Website;
                         account.AccountStatusID = 1;
                         account.DateCreated = DateTime.UtcNow;
                         account.AccountTypeCustomer = true;
@@ -2609,9 +2601,9 @@ namespace Ganedata.Core.Data.Helpers
                     }
                     else
                     {
-                        account.CompanyName = string.IsNullOrEmpty(item.company) ? "P" : item.company;
-                        account.AccountCode = item.secure_key;
-                        account.website = item.website;
+                        account.CompanyName = string.IsNullOrEmpty(item.Company) ? "P" : item.Company;
+                        account.AccountCode = item.Secure_key;
+                        account.website = item.Website;
                         account.DateUpdated = DateTime.UtcNow;
                         account.UpdatedBy = UserId;
                         context.Entry(account).State = EntityState.Modified;
@@ -2634,9 +2626,9 @@ namespace Ganedata.Core.Data.Helpers
                     {
                         currentContact = new AccountContacts()
                         {
-                            ContactName = item.firstname + " " + item.lastname,
+                            ContactName = item.Firstname + " " + item.Lastname,
                             ConTypeInvoices = true,
-                            ContactEmail = item.email,
+                            ContactEmail = item.Email,
                             //TenantContactPhone = item.x,
                             DateCreated = DateTime.UtcNow,
                             CreatedBy = UserId,
@@ -2650,8 +2642,8 @@ namespace Ganedata.Core.Data.Helpers
                     }
                     else
                     {
-                        currentContact.ContactName = item.firstname + " " + item.lastname;
-                        currentContact.ContactEmail = item.email;
+                        currentContact.ContactName = item.Firstname + " " + item.Lastname;
+                        currentContact.ContactEmail = item.Email;
                         currentContact.DateUpdated = DateTime.UtcNow;
                         currentContact.UpdatedBy = UserId;
                         context.Entry(currentContact).State = EntityState.Modified;
@@ -2680,7 +2672,6 @@ namespace Ganedata.Core.Data.Helpers
             {
 
                 var _currentDbContext = new ApplicationContext();
-
                 var GetSyncRecored = _currentDbContext.TenantWebsitesSyncLog.Where(u => u.Synced != false && u.SiteID == SiteId).OrderByDescending(u => u.RequestTime).FirstOrDefault();
                 if (GetSyncRecored != null)
                 {
@@ -2688,8 +2679,8 @@ namespace Ganedata.Core.Data.Helpers
                     dates = requestTime.ToString("yyyy-MM-dd-HH:mm:ss");
                 }
 
-                url = PrestashopUrl + "orders?filter[date_upd]=>[" + dates + "]&date=1&filter[current_state]=2&display=full&output_format=JSON";
-                List<PrestaShopOrderViewModel> orderSearch = new List<PrestaShopOrderViewModel>();
+                url = PrestashopUrl + "orders?filter[date_upd]=>[" + dates + "]&date=1&filter[current_state]=2&display=full";
+               PrestashopOrders orderSearch = new PrestashopOrders();
 
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                 httpWebRequest.Credentials = new NetworkCredential(PrestashopKey, "");
@@ -2700,19 +2691,22 @@ namespace Ganedata.Core.Data.Helpers
                 responseTime = DateTime.UtcNow;
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
-                    var result = streamReader.ReadToEnd();
-                    if (string.IsNullOrEmpty(result) || result == "[]")
+                    var serializer = new XmlSerializer(typeof(PrestashopOrders));
+                    orderSearch = serializer.Deserialize(streamReader) as PrestashopOrders;
+                    if (orderSearch?.Orders?.Order.Count > 0)
                     {
-                        CreateWebSiteSyncLog(requestTime, url, 1, true, 0, responseTime, SiteId);
-                        return "No data against this call";
+                        CreateWebSiteSyncLog(requestTime, url, 1, true, orderSearch.Orders.Order.Count, responseTime, SiteId);
                     }
-                    var JsonObject = JObject.Parse(result).SelectToken("orders").ToString();
-                    orderSearch = JsonConvert.DeserializeObject<List<PrestaShopOrderViewModel>>(JsonObject);
-                    CreateWebSiteSyncLog(requestTime, url, 1, true, orderSearch.Count, responseTime, SiteId);
+                    else
+                    {
+
+                        CreateWebSiteSyncLog(requestTime, url, 1, true, 0, responseTime, SiteId);
+                        return "No Orders found";
+                    }
                 }
-                foreach (var item in orderSearch)
+                foreach (var item in orderSearch.Orders.Order)
                 {
-                    var order = _currentDbContext.Order.FirstOrDefault(u => u.PrestaShopOrderId == item.id && u.SiteID == SiteId && u.IsDeleted != true);
+                    var order = _currentDbContext.Order.FirstOrDefault(u => u.PrestaShopOrderId == item.Id_customer.Text && u.SiteID == SiteId && u.IsDeleted != true);
                     if (order == null)
                     {
                         order = new Order();
@@ -2731,7 +2725,7 @@ namespace Ganedata.Core.Data.Helpers
                         order.CreatedBy = 1;
                         order.UpdatedBy = 1;
                         order.WarehouseId = warehouseId;
-                        var accounts = GetPrestaShopAccount(item.id_customer, null, tenantId, 1, item.id_address_delivery, item.id_address_invoice, PrestashopUrl, PrestashopKey);
+                        var accounts = GetPrestaShopAccount(item.Id_customer.Text, null, tenantId, 1, item.Id_address_delivery.Text, item.Id_address_invoice.Text, PrestashopUrl, PrestashopKey);
                         var accountID = accounts?.FirstOrDefault() ?? 1;
                         if (accountID > 0)
                         {
@@ -2742,7 +2736,7 @@ namespace Ganedata.Core.Data.Helpers
 
                             }
                             order.AccountID = accountID;
-                            var accountAddress = GetAccountAddressesByPrestaShopAddressId(item.id_address_delivery);
+                            var accountAddress = GetAccountAddressesByPrestaShopAddressId(item.Id_address_delivery.Text);
                             if (accountAddress != null)
                             {
                                 order.ShipmentAccountAddressId = accountAddress.AddressID;
@@ -2770,17 +2764,17 @@ namespace Ganedata.Core.Data.Helpers
                     }
 
                     order.InventoryTransactionTypeId = (int)InventoryTransactionTypeEnum.SalesOrder;
-                    if (item.urgent > 0)
+                    if (item.Urgent > 0)
                     {
                         order.SLAPriorityId = 2;
                     }
-                    if (item.next_day_delivery > 0)
+                    if (item.Next_day_delivery > 0)
                     {
                         order.SLAPriorityId = 1;
                     }
                     _currentDbContext.Entry(order).State = order.OrderID > 0 ? EntityState.Modified : EntityState.Added;
                     decimal? ordTotal = 0;
-                    foreach (var order_row in item.associations.order_rows)
+                    foreach (var order_row in item.Associations.Order_rows.Order_row)
                     {
                         var orderDetail = _currentDbContext.OrderDetail.FirstOrDefault(u => u.OrderID == order.OrderID);
                         if (orderDetail == null)
@@ -2788,7 +2782,7 @@ namespace Ganedata.Core.Data.Helpers
                             orderDetail = new OrderDetail();
                             orderDetail.DateCreated = DateTime.UtcNow;
                             orderDetail.CreatedBy = 1;
-                            var Product = GetPrestaShopProducts(order_row.product_id, null, order_row.product_reference, tenantId, 1, PrestashopUrl, PrestashopKey);
+                            var Product = GetPrestaShopProducts(order_row.Product_id, null, order_row.Product_reference, tenantId, 1, PrestashopUrl, PrestashopKey);
                             orderDetail.ProductId = Product?.FirstOrDefault() ?? 1;
 
                         }
@@ -2806,10 +2800,10 @@ namespace Ganedata.Core.Data.Helpers
                         orderDetail.ProductMaster = null;
                         orderDetail.TaxName = null;
                         orderDetail.Warranty = null;
-                        orderDetail.Qty = order_row.product_quantity;
-                        orderDetail.Price = order_row.unit_price_tax_incl;
+                        orderDetail.Qty = order_row.Product_quantity;
+                        orderDetail.Price = order_row.Unit_price_tax_incl;
                         orderDetail.WarehouseId = warehouseId;
-                        orderDetail.TotalAmount = (order_row.unit_price_tax_incl * order_row.product_quantity);
+                        orderDetail.TotalAmount = (order_row.Unit_price_tax_incl * order_row.Product_quantity);
                         if (order.OrderID <= 0)
                         {
                             order.OrderDetails.Add(orderDetail);
@@ -2819,12 +2813,12 @@ namespace Ganedata.Core.Data.Helpers
                             _currentDbContext.Entry(orderDetail).State = EntityState.Modified;
                         }
 
-                        ordTotal = ordTotal + ((order_row.unit_price_tax_incl * order_row.product_quantity));
+                        ordTotal = ordTotal + ((order_row.Unit_price_tax_incl * order_row.Product_quantity));
 
                     }
                     order.OrderTotal = (decimal)ordTotal;
                     order.OrderCost = (decimal)ordTotal;
-                    order.PrestaShopOrderId = item.id;
+                    order.PrestaShopOrderId = item.Id;
                     order.SiteID = SiteId;
                     _currentDbContext.SaveChanges();
 
@@ -2855,34 +2849,46 @@ namespace Ganedata.Core.Data.Helpers
             {
 
                 var _currentDbContext = new ApplicationContext();
-                url = PrestashopUrl + "products/?display=[id,reference]&output_format=JSON";
-                List<PrestaShopProductViewModel> prestashopProducts = new List<PrestaShopProductViewModel>();
+                url = PrestashopUrl + "products/?display=full";
+                PrestashopProduct prestashopProducts = new PrestashopProduct();
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                 httpWebRequest.Credentials = new NetworkCredential(PrestashopKey, "");
 
                 httpWebRequest.Method = "GET";
                 httpWebRequest.ContentType = "application/json";
                 requestTime = DateTime.UtcNow;
-                httpResponse = await httpWebRequest.GetResponseAsync();
+                httpResponse = httpWebRequest.GetResponse();
                 responseTime = DateTime.UtcNow;
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
-                    var result = streamReader.ReadToEnd();
-                    if (string.IsNullOrEmpty(result) || result == "[]")
+                    var serializer = new XmlSerializer(typeof(PrestashopProduct));
+                    prestashopProducts = serializer.Deserialize(streamReader) as PrestashopProduct;
+                    if (prestashopProducts?.Products?.Product?.Count > 0)
                     {
-                        CreateWebSiteSyncLog(requestTime, url, 1, true, 0, responseTime, SiteId);
-                        return "stock not posted correctly";
+                        CreateWebSiteSyncLog(requestTime, url, 1, true, prestashopProducts.Products.Product.Count, responseTime, SiteId);
                     }
-                    var JsonObject = JObject.Parse(result).SelectToken("products").ToString();
-                    prestashopProducts = JsonConvert.DeserializeObject<List<PrestaShopProductViewModel>>(JsonObject);
-                    CreateWebSiteSyncLog(requestTime, url, 1, true, prestashopProducts.Count, responseTime, SiteId);
+                    else {
+                        CreateWebSiteSyncLog(requestTime, url, 1, true, 0, responseTime, SiteId);
+                        return "No Product Found";
+                    }
+                    
                 }
-                var prestashopSkucode = prestashopProducts.Select(u => u.reference).ToList();
+                var prestashopSkucode = prestashopProducts.Products.Product.Select(u => u.Reference).ToList();
+
+                var productavailableIds = prestashopProducts.Products.Product.Select(u => new
+                {
+
+                    StockAvailable = u.Associations.Stock_availables.Stock_available,
+                    SKU = u.Reference,
+
+                }).ToList();
                 var getProductDetails = _currentDbContext.ProductMaster.Where(u => prestashopSkucode.Contains(u.SKUCode) && u.IsDeleted != true && u.TenantId == tenantId)
                     .Select(u => new
                     {
                         InventoryStock = u.InventoryStocks,
                         SkuCode = u.SKUCode,
+
+
 
                     }).ToList();
                 if (getProductDetails.Count > 0)
@@ -2890,14 +2896,19 @@ namespace Ganedata.Core.Data.Helpers
                     List<stock_available> stock_Availables = new List<stock_available>();
                     foreach (var item in getProductDetails)
                     {
+                        var sku = item.SkuCode;
+                        var stockdetail = productavailableIds.FirstOrDefault(u => u.SKU == sku).StockAvailable;
+                        if(stockdetail !=null)
+                        { 
                         stock_available stock_Available = new stock_available();
-                        stock_Available.id_product = prestashopProducts.FirstOrDefault(u => u.reference == item.SkuCode).id;
+                        stock_Available.id_product = prestashopProducts.Products.Product.FirstOrDefault(u => u.Reference == item.SkuCode).Id;
                         stock_Available.out_of_stock = item.InventoryStock == null ? 0 : Convert.ToInt32(Math.Round(item.InventoryStock.Sum(u => u.InStock)));
                         stock_Available.quantity = item.InventoryStock == null ? 0 : Convert.ToInt32(Math.Round(item.InventoryStock.Sum(u => u.Available)));
                         stock_Available.depends_on_stock = 0;
-                        stock_Available.id_product_attribute = 0;
-                        stock_Available.StockAvailableId = 1;
+                        stock_Available.id_product_attribute = stockdetail == null ? 0 : stockdetail.Id_product_attribute;
+                        stock_Available.StockAvailableId = stockdetail == null ? 0 : stockdetail.Id;
                         stock_Availables.Add(stock_Available);
+                            }
 
                     }
                     if (stock_Availables.Count > 0)
@@ -3079,9 +3090,13 @@ namespace Ganedata.Core.Data.Helpers
 
         public string UpdatePrestaShopStock(string prestashopUrl, string prestashopKey, List<stock_available> stock_Availables)
         {
+
+
+
             WebRequest req = null;
             WebResponse rsp = null;
             string Response = "";
+
             try
             {
                 req = WebRequest.Create(prestashopUrl);
@@ -3089,7 +3104,8 @@ namespace Ganedata.Core.Data.Helpers
                 req.Credentials = new NetworkCredential(prestashopKey, "");
                 req.ContentType = "text/xml";
                 StreamWriter writer = new StreamWriter(req.GetRequestStream());
-                writer.WriteLine(GenerateXmlPrestaShopStockUpdate(stock_Availables));
+                var data = GenerateXmlPrestaShopStockUpdate(stock_Availables);
+                writer.WriteLine(data);
                 writer.Close();
                 rsp = req.GetResponse();
                 StreamReader sr = new StreamReader(rsp.GetResponseStream());
@@ -3110,6 +3126,7 @@ namespace Ganedata.Core.Data.Helpers
                 if (req != null) req.GetRequestStream().Close();
                 if (rsp != null) rsp.GetResponseStream().Close();
             }
+
             return Response;
         }
         public string GenerateXmlPrestaShopStockUpdate(List<stock_available> stock_Availables)

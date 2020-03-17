@@ -67,6 +67,33 @@ namespace Ganedata.Core.Services
             return _currentDbContext.ProductManufacturers.Where(u => productmanufacturerId.Contains(u.Id));
 
         }
+        public Tuple<string, string> AllPriceListAgainstGroupAndDept(string productGroup, string department = "")
+        {
+            int? productGroupId = _currentDbContext.ProductGroups.FirstOrDefault(u => u.ProductGroup == productGroup && u.IsDeleted != true)?.ProductGroupId;
+            int? departmentId = _currentDbContext.TenantDepartments.FirstOrDefault(u => u.DepartmentName == department && u.IsDeleted != true)?.DepartmentId;
+            var avarageValue= _currentDbContext.ProductMaster.Where(a => ((!productGroupId.HasValue || a.ProductGroupId == productGroupId) && (!departmentId.HasValue || a.DepartmentId == departmentId)) && a.IsDeleted != true).Select(u => u.SellPrice).ToList();
+            Tuple<string,string> Prices = null;
+            var avgValue = avarageValue.Average();
+            var minValue = avarageValue.Min();
+            var maxValue = avarageValue.Max();
+            var centervalue = avarageValue.Find(u => u.Value > avgValue && u.Value < maxValue);
+            var firstValue = new Tuple<string, string>(minValue.ToString(), avgValue.ToString());
+            var secondValue = new Tuple<string, string>(avgValue.ToString(), centervalue.ToString());
+            Prices= new Tuple<string, string>(centervalue.ToString(), maxValue.ToString());
+            return Prices;
+        }
+        private List<List<decimal[]>> SplitList(List<decimal[]> locations, int nSize = 20)
+        {
+            var list = new List<List<decimal[]>>();
+
+            for (int i = 0; i < locations.Count; i += nSize)
+            {
+                list.Add(locations.GetRange(i, Math.Min(nSize, locations.Count - i)));
+            }
+
+            return list;
+        }
+
         public IEnumerable<ProductAttributeValuesMap> GetAllValidProductAttributeValuesMap()
         {
             return _currentDbContext.ProductAttributeValuesMap.Where(m => m.IsDeleted != true);

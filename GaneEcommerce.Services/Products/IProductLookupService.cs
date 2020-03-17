@@ -1,4 +1,5 @@
 using Ganedata.Core.Entities.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,6 +23,9 @@ namespace Ganedata.Core.Services
         IQueryable<ProductMaster> GetAllValidProductGroupById(int? productGroupId,int?departmentId=null);
         IQueryable<ProductMaster> GetAllValidProductGroupAndDeptByName(string productGroup, string department = "");
         IEnumerable<ProductManufacturer> GetAllValidProductManufacturerGroupAndDeptByName(string productGroup, string department = "");
+
+        Tuple<string, string> AllPriceListAgainstGroupAndDept(string productGroup, string department = "");
+
         ProductGroups GetProductGroupByName(string groupName);
         PalletType GetPalletTypeByName(string palletType);
         ProductSCCCodes GetProductSccCodesById(int productSccCodesId);
