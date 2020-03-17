@@ -1,21 +1,15 @@
 ﻿using EzioDll;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+using System.Configuration;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Timers;
 using Timer = System.Windows.Forms.Timer;
-using System.Security.Cryptography;
-using Newtonsoft.Json;
-using System.Configuration;
 
 namespace WarehouseDpdLabelPrint
 {
@@ -47,7 +41,6 @@ namespace WarehouseDpdLabelPrint
 
         private void button1_Click(object sender, EventArgs e)
         {
-
             int tenantId = Convert.ToInt32(ConfigurationManager.AppSettings["TenantId"]);
             string siteUrl = ConfigurationManager.AppSettings["SiteUrl"];
             // Get shipments id from warehouse system
@@ -127,7 +120,6 @@ namespace WarehouseDpdLabelPrint
                 {
                     var result = streamReader.ReadToEnd();
                     labelPrintData = JsonConvert.DeserializeObject<PalletDispatchLabelPrintViewModel>(result);
-
                 }
             }
             catch (Exception ex)
@@ -138,7 +130,7 @@ namespace WarehouseDpdLabelPrint
             if (labelPrintData.ShipmentId != null && labelPrintData.GeoAccount != null && labelPrintData.ApiUrl != null && labelPrintData.GeoSession != null)
             {
 
-                string url = String.Format($"{labelPrintData.ApiUrl}shipping/shipment/{0}/label/", labelPrintData.ShipmentId);
+                string url = String.Format($"{labelPrintData.ApiUrl}shipping/shipment/{labelPrintData.ShipmentId}/label/");
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                 httpWebRequest.Method = "GET";
                 httpWebRequest.ContentType = "application/json";
@@ -198,12 +190,7 @@ namespace WarehouseDpdLabelPrint
                     //log exceptions
                     return;
                 }
-
-
-
-
             }
-
         }
 
         public static string GetMd5(string input)
@@ -241,27 +228,6 @@ namespace WarehouseDpdLabelPrint
             public string ApiUrl { get; set; }
         }
 
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            loginStatus = false;
-            loginUserId = 0;
-            userName = "";
-            toggleVisibility(true);
-            PrintTimer.Stop();
-
-
-        }
-
-        private void button2_Resize(object sender, EventArgs e)
-        {
-
-        }
-
         private void frmLogin_Resize(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Minimized)
@@ -269,6 +235,18 @@ namespace WarehouseDpdLabelPrint
                 //Hide();
                 //notifyIcon1.Visible = true;
             }
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            loginStatus = false;
+            loginUserId = 0;
+            userName = "";
+            toggleVisibility(true);
+            textBox1.Text = "";
+            textBox2.Text = "";
+            PrintTimer.Stop();
+
         }
     }
 }

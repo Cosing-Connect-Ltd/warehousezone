@@ -172,7 +172,7 @@ namespace Ganedata.Core.Services
             {
                 resp.UserId = user.UserId;
                 resp.Success = true;
-                resp.UserName = user.UserFirstName;
+                resp.UserName = user.UserName;
             }
 
             return resp;

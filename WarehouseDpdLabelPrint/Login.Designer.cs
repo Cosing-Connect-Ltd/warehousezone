@@ -91,7 +91,6 @@
             this.label3.TabIndex = 5;
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.label3.Visible = false;
-            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // button2
             // 
@@ -102,7 +101,7 @@
             this.button2.Text = "Logout";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Visible = false;
-            this.button2.Resize += new System.EventHandler(this.button2_Resize);
+            this.button2.Click += new System.EventHandler(this.button2_Click_1);
             // 
             // notifyIcon1
             // 
