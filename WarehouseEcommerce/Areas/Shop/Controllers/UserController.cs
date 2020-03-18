@@ -194,6 +194,22 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             return RedirectToAction("Login", "User");
 
         }
+        public ActionResult Account()
+        {
+            return View();
+        }
+        public ActionResult _AccountSideBar()
+        {
+            return PartialView();
+        }
+        public ActionResult OrderHistory()
+        {
+            return View();
+        }
+        public ActionResult WishList()
+        {
+            return View();
+        }
 
     }
 }

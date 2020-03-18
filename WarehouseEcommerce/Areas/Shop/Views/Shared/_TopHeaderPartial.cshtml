@@ -86,9 +86,9 @@
                                 }
                                 else
                                 {
-                                    <li><a href="@Url.Action("Index","Home")"><i class="fa fa-user"></i>@ViewBag.UserName</a></li>
-                                    <li><a href="#"><i class="fa fa-cart-arrow-down"></i>Order History</a></li>
-                                    <li><a href="#"><i class="fa fa-heart"></i>Wish List</a></li>
+                                    <li><a href="@Url.Action("Account","User")"><i class="fa fa-user"></i>@ViewBag.UserName</a></li>
+                                    <li><a href="@Url.Action("OrderHistory","User")"><i class="fa fa-cart-arrow-down"></i>Order History</a></li>
+                                    <li><a href="@Url.Action("WishList","User")"><i class="fa fa-heart"></i>Wish List</a></li>
                                 }
 
                                 @if (@ViewBag.LoginDetail == "Login")

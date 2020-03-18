@@ -30,8 +30,8 @@
             <div class="cartitem-price">
                 <p><span>Price:</span><b>@item.CurrencySign@item.Price</b></p>
                 @*@Html.Hidden("cartView", true);*@
-                @*<p><span>Tax:</span><b>@item.CurrencySign@item.TaxAmount</b></p>
-                <p><span>Total:</span><b>@item.CurrencySign@item.TotalAmount</b></p>*@
+                @*<p><span>Tax:</span><b>@item.CurrencySign@item.TaxAmount</b></p>*@
+                <p><span>Total:</span><b>@item.CurrencySign@item.TotalAmount</b></p>
             </div>
         </div>
 
@@ -48,10 +48,10 @@
         }
         else
         {
-            <center><p><h4 style="text-align:center">Your Basket is empty!</h4></p></center>
+            <center><p><h4 class="empty-cart-h4" style="text-align:center">Your Basket is empty!</h4></p></center>
             <div class="button-submit">
 
-                <button type="Submit" name="submitNewsletter" class="btn btn-block" onclick="window.location.href='@Url.Action("Index", "Home")'">Back</button>
+                <button type="Submit" name="submitNewsletter" class="btn btn-block empty-cart-back-btn" onclick="window.location.href='@Url.Action("Index", "Home")'">Back</button>
             </div>
         }
 

@@ -48,8 +48,8 @@
                             <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                                 <div class="panel-body">
                                     <ul class="">
-                                        <li class="list-group-item"><input type="checkbox" id="stockS" class="checkbox-inline" value="In_stock" @(Request.Url.Query.ToLower().Contains("in_stock") ? "checked" : "")>In stock </li>
-                                        <li class="list-group-item"><input type="checkbox" id="stockS" class="checkbox-inline" value="Out_stock" @(Request.Url.Query.ToLower().Contains("out_stock") ? "checked" : "")>Out of stock</li>
+                                        <li class="list-group-item cat-stock"><input type="checkbox" id="stockS" class="checkbox-inline" value="In_stock" @(Request.Url.Query.ToLower().Contains("in_stock") ? "checked" : "")>In stock </li>
+                                        <li class="list-group-item cat-stock"><input type="checkbox" id="stockS" class="checkbox-inline" value="Out_stock" @(Request.Url.Query.ToLower().Contains("out_stock") ? "checked" : "")>Out of stock</li>
                                     </ul>
                                 </div>
                             </div>
@@ -65,9 +65,9 @@
                             <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
                                 <div class="panel-body">
                                     <ul class="">
-                                        <li class="list-group-item"><input type="checkbox" id="priceS" class="checkbox-inline" value="5_25" @(Request.Url.Query.ToLower().Contains("5_25") ? "checked" : "")> £5 - £25.00</li>
-                                        <li class="list-group-item"><input type="checkbox" id="priceS" class="checkbox-inline" value="25_50" @(Request.Url.Query.ToLower().Contains("25_50") ? "checked" : "")> £25.00 - £50.00</li>
-                                        <li class="list-group-item"><input type="checkbox" id="priceS" class="checkbox-inline" value="50_100" @(Request.Url.Query.ToLower().Contains("50_100") ? "checked" : "")> £50.00 - £100.00</li>
+                                        <li class="list-group-item cat-stock"><input type="checkbox" id="priceS" value="5_25" @(Request.Url.Query.ToLower().Contains("5_25") ? "checked" : "")> £5 - £25.00</li>
+                                        <li class="list-group-item cat-stock"><input type="checkbox" id="priceS" value="25_50" @(Request.Url.Query.ToLower().Contains("25_50") ? "checked" : "")> £25.00 - £50.00</li>
+                                        <li class="list-group-item cat-stock"><input type="checkbox" id="priceS" value="50_100" @(Request.Url.Query.ToLower().Contains("50_100") ? "checked" : "")> £50.00 - £100.00</li>
                                     </ul>
                                 </div>
                             </div>
@@ -113,7 +113,7 @@
                 foreach (var item in Model)
                 {
             <ul class="breadcrumb">
-                <li><a href="#">Home</a></li>
+                <li><a href="/shop">Home</a></li>
                 <li><a href="#">@(!string.IsNullOrEmpty(item?.TenantDepartment?.DepartmentName) ? item.TenantDepartment.DepartmentName : "Department Name")</a></li>
                 <li><a href="#">@(!string.IsNullOrEmpty(item?.ProductGroup?.ProductGroup) ? item.ProductGroup.ProductGroup : "Product Group")</a></li>
                 <li><a href="#">@(!string.IsNullOrEmpty(item?.ProductCategory?.ProductCategoryName) ? item.ProductCategory.ProductCategoryName : "Product Category")</a></li>
@@ -164,7 +164,7 @@
                     foreach (var item in Model)
                     {
                         <div class="product-layout product-list col-xs-12">
-                            <div class="product-thumb transition">
+                            <div class="product-thumb transition single-product-cat">
                                 <div class="image">
                                     <a href="@Url.Action("ProductDetails","Products", new {productId = item.ProductId})"><img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@item.Name" class="img-responsive center-block" /></a>
                                     <a href="@Url.Action("ProductDetails", "Products", new { productId = item.ProductId })"><img src="@(!string.IsNullOrEmpty(item.HoverImage) ? ViewBag.BaseFilePath +item.HoverImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive second-img" alt="@item.Name" /></a>
@@ -205,7 +205,7 @@
                                         }
                                         else
                                         {
-                                            <a href="javascript:;" type="button" class="acart" style="color:white; background-color: grey" disabled>
+                                            <a href="javascript:;" type="button" class="acart disabled-btn" disabled>
                                                 <span>Add to Basket</span>
                                             </a>
                                         }

@@ -491,6 +491,10 @@
     <Content Include="fonts\Pe-icon-7-stroke.ttf" />
     <Content Include="fonts\Pe-icon-7-stroke.woff" />
     <Content Include="Areas\Shop\Views\Shared\_TopCategoryProductsPartial.cshtml" />
+    <Content Include="Areas\Shop\Views\User\Account.cshtml" />
+    <Content Include="Areas\Shop\Views\User\OrderHistory.cshtml" />
+    <Content Include="Areas\Shop\Views\User\WishList.cshtml" />
+    <Content Include="Areas\Shop\Views\Shared\_AccountSideBar.cshtml" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\Shop\Scripts\bootstrap.js" />
