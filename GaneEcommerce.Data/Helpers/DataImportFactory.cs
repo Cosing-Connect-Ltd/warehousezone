@@ -734,6 +734,7 @@ namespace Ganedata.Core.Data.Helpers
                 var ItemImage = "";
                 var productHierarchy1 = "";
                 var productHierarchy2 = "";
+                var productHierarchy3 = "";
                 var ProductFamilyImage = "";
                 var scanSourceItemNumber = "";
 
@@ -867,6 +868,10 @@ namespace Ganedata.Core.Data.Helpers
                         {
                             productHierarchy2 = readText[32];
                         }
+                        if (readText.Length >= 34)
+                        {
+                            productHierarchy3 = readText[33];
+                        }
 
 
                         var department = context.TenantDepartments.AsNoTracking().FirstOrDefault(u => u.DepartmentName == productHierarchy1);
@@ -889,12 +894,28 @@ namespace Ganedata.Core.Data.Helpers
                             group = new ProductGroups()
                             {
                                 ProductGroup = string.IsNullOrEmpty(productHierarchy2) ? "testGroup" : productHierarchy2,
+                                DepartmentId = department.DepartmentId,
                                 CreatedBy = 1,
                                 DateCreated = DateTime.UtcNow,
                                 IsActive = true,
                                 TenentId = tenantId
                             };
                             context.ProductGroups.Add(group);
+                            context.SaveChanges();
+                        }
+
+                        var category = context.ProductCategories.AsNoTracking().FirstOrDefault(m => m.ProductCategoryName.Equals(productHierarchy3));
+                        if (category == null)
+                        {
+                            category = new ProductCategory()
+                            {
+                                ProductCategoryName = string.IsNullOrEmpty(productHierarchy3) ? "testCategory" : productHierarchy3,
+                                ProductGroupId = group.ProductGroupId,
+                                CreatedBy = 1,
+                                DateCreated = DateTime.UtcNow,
+                                TenantId = tenantId,
+                            };
+                            context.ProductCategories.Add(category);
                             context.SaveChanges();
                         }
 
@@ -972,6 +993,7 @@ namespace Ganedata.Core.Data.Helpers
                         existingProduct.CreatedBy = userId ?? adminUserId;
                         existingProduct.BarCode = existingProduct.SKUCode;
                         existingProduct.LotOptionCodeId = productLotOptionId;
+                        existingProduct.ProductCategoryId = category.ProductCategoryId;
                         existingProduct.ProductGroupId = group.ProductGroupId;
                         existingProduct.DepartmentId = department.DepartmentId;
                         existingProduct.LotProcessTypeCodeId = productLotProcessId;

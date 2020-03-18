@@ -23,7 +23,7 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Product Category")]
         public string ProductCategoryName { get; set; }
         public int SortOrder { get; set; }
-        public int ProductGroupId { get; set; }
+        public int? ProductGroupId { get; set; }
         public virtual ProductGroups ProductGroups { get; set; }
 
     }

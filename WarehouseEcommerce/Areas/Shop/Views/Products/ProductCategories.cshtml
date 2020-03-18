@@ -112,11 +112,12 @@
             {
                 foreach (var item in Model)
                 {
-                    <ul class="breadcrumb">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">@(!string.IsNullOrEmpty(item?.TenantDepartment?.DepartmentName) ? item.TenantDepartment.DepartmentName : "Department Name")</a></li>
-                        <li><a href="#">@(!string.IsNullOrEmpty(item?.ProductGroup?.ProductGroup) ? item.ProductGroup.ProductGroup : "Product Group")</a></li>
-                    </ul>
+            <ul class="breadcrumb">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">@(!string.IsNullOrEmpty(item?.TenantDepartment?.DepartmentName) ? item.TenantDepartment.DepartmentName : "Department Name")</a></li>
+                <li><a href="#">@(!string.IsNullOrEmpty(item?.ProductGroup?.ProductGroup) ? item.ProductGroup.ProductGroup : "Product Group")</a></li>
+                <li><a href="#">@(!string.IsNullOrEmpty(item?.ProductCategory?.ProductCategoryName) ? item.ProductCategory.ProductCategoryName : "Product Category")</a></li>
+            </ul>
                     break;
                 }
             }
