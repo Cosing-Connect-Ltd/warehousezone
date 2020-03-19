@@ -4,11 +4,7 @@
 @using PagedList.Mvc;
 @{
     ViewBag.Title = "ProductCategories";
-    IEnumerable<ProductManufacturer> data = null;
-    if (ViewBag.Manufacturer != null)
-    {
-        data = ViewBag.Manufacturer as IEnumerable<ProductManufacturer>;
-    }
+   
     var UrlQuery = Request.Url.Query;
     string values = "";
     if (UrlQuery.Contains("values="))
@@ -24,89 +20,7 @@
 <div id="product-search" class="container custom-max-width">
     <div class="row">
         @Html.Hidden("valuesParameter", (string)values)
-        <div class="col-md-3 col-sm-12">
-            <div class="filters cat-filter">
-                <h2>Refined by</h2>
-                <button type="button" class="btn filterCollapse" data-toggle="collapse" data-target="#accordion">
-                    Refined by
-                    <span class="glyphicon glyphicon-menu-down"></span>
-                </button>
-                <div class="" id="accordion">
-                    <div class="accordion-option">
-                        <a href="javascript:void(0)" class="toggle-accordion active" accordion-id="#accordion"></a>
-                    </div>
-                    <div class="clearfix"></div>
-                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                        <div class="panel panel-default">
-                            <div class="panel-heading" role="tab" id="headingOne">
-                                <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        In stock
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                                <div class="panel-body">
-                                    <ul class="">
-                                        <li class="list-group-item cat-stock"><input type="checkbox" id="stockS" class="checkbox-inline" value="In_stock" @(Request.Url.Query.ToLower().Contains("in_stock") ? "checked" : "")>In stock </li>
-                                        <li class="list-group-item cat-stock"><input type="checkbox" id="stockS" class="checkbox-inline" value="Out_stock" @(Request.Url.Query.ToLower().Contains("out_stock") ? "checked" : "")>Out of stock</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading" role="tab" id="headingTwo">
-                                <h4 class="panel-title">
-                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                        Price
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
-                                <div class="panel-body">
-                                    <ul class="">
-                                        <li class="list-group-item cat-stock"><input type="checkbox" id="priceS" value="5_25" @(Request.Url.Query.ToLower().Contains("5_25") ? "checked" : "")> £5 - £25.00</li>
-                                        <li class="list-group-item cat-stock"><input type="checkbox" id="priceS" value="25_50" @(Request.Url.Query.ToLower().Contains("25_50") ? "checked" : "")> £25.00 - £50.00</li>
-                                        <li class="list-group-item cat-stock"><input type="checkbox" id="priceS" value="50_100" @(Request.Url.Query.ToLower().Contains("50_100") ? "checked" : "")> £50.00 - £100.00</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading" role="tab" id="headingThree">
-                                <h4 class="panel-title">
-                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                                        Brand
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
-                                <div class="panel-body">
-                                    <ul class="">
-                                        @if (data != null)
-                                        {
-                                            foreach (var item in data)
-                                            {
-                                                string name = item.Name.Replace(" ", "_");
-                                                <li class="list-group-item"><input type="checkbox" id="BrandS" class="checkbox-inline" value="@(item.Name.Replace(" ", "_"))" @(Request.Url.Query.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(item?.Name)</li>
-                                            }
-                                        }
-
-
-
-
-
-
-
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+        @Html.Action("_DynamicFilters", new {department=ViewBag.departmentId,groups= ViewBag.groupId,SubCategory=ViewBag.subcategory})
         <div id="content" class="col-md-9 col-sm-12">
             @if (Model != null)
             {

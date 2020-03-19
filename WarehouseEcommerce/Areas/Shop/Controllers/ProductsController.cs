@@ -39,8 +39,8 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             _productPriceService = productPriceService;
         }
         // GET: Products
-
-        public ActionResult ProductCategories(string productGroup, int? sortOrder, string currentFilter, string searchString, string values,  int? page, int? pagesize = 20, string department = "")
+        
+        public ActionResult ProductCategories(string productGroup, int? sortOrder, string currentFilter, string searchString, string values,  int? page, int? pagesize = 20, string department = "", string SubCategory = "")
         {
             
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
@@ -51,13 +51,9 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             ViewBag.pageList = new SelectList(from d in Enumerable.Range(1, 5) select new SelectListItem { Text = (d * 10).ToString(), Value = (d * 10).ToString() }, "Value", "Text", pagesize);
             ViewBag.searchString = searchString;
             ViewBag.CurrencySymbol = currencyyDetail.Symbol;
-            var product = _productlookupServices.GetAllValidProductGroupAndDeptByName(productGroup);
-            ViewBag.Manufacturer = _productlookupServices.GetAllValidProductManufacturerGroupAndDeptByName(productGroup);
-            if (!string.IsNullOrEmpty(department))
-            {
-                product = _productlookupServices.GetAllValidProductGroupAndDeptByName(productGroup, department);
-                ViewBag.Manufacturer = _productlookupServices.GetAllValidProductManufacturerGroupAndDeptByName(productGroup,department);
-            }
+            ViewBag.subcategory = SubCategory;
+            var product = _productlookupServices.GetAllValidProductGroupAndDeptByName(productGroup, department,SubCategory);
+           
             if (!string.IsNullOrEmpty(searchString))
             {
                 page = 1;
@@ -281,6 +277,14 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         {
 
             return View();
+        }
+
+        public PartialViewResult _DynamicFilters(string department,string groups,string subcategory)
+        {
+            ProductFilteringViewModel productFiltering = new ProductFilteringViewModel();
+            productFiltering.Manufacturer= _productlookupServices.GetAllValidProductManufacturerGroupAndDeptByName(groups, department, subcategory).Select(u=>u.Name).ToList();
+            productFiltering.PriceInterval = _productlookupServices.AllPriceListAgainstGroupAndDept(groups, department);
+            return PartialView(productFiltering);
         }
 
      
