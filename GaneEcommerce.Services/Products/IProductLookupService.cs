@@ -24,7 +24,7 @@ namespace Ganedata.Core.Services
         IQueryable<ProductMaster> GetAllValidProductGroupAndDeptByName(string productGroup, string department = "", string SubCategory = "");
         IEnumerable<ProductManufacturer> GetAllValidProductManufacturerGroupAndDeptByName(string productGroup, string department = "", string SubCategory = "");
 
-        Tuple<string, string> AllPriceListAgainstGroupAndDept(string productGroup, string department = "");
+        List<Tuple<string, string>> AllPriceListAgainstGroupAndDept(string productGroup, string department = "", string SubCategory = "");
 
         ProductGroups GetProductGroupByName(string groupName);
         PalletType GetPalletTypeByName(string palletType);

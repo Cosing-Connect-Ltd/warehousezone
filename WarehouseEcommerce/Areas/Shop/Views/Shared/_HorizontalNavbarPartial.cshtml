@@ -1,4 +1,5 @@
 ﻿@using Ganedata.Core.Entities.Domain
+@model List<Ganedata.Core.Entities.Domain.TenantDepartments>
 
 <div class="headerMenu row">
     @*<div class="col-md-3 col-sm-4 stmenu"></div>*@
@@ -6,105 +7,98 @@
 
         <div class="manun custom-max-width m-auto">
             <ul class="list-inline">
-                @if (ViewBag.departments != null)
+
+                @foreach (var item in Model)
                 {
-                    var department = ViewBag.departments as List<TenantDepartments>;
+                    <li class="li-mhp-menu">
+                        <a class="nav-main-menu" href="@Url.Action("ProductCategories","Products",new {department=item.DepartmentName})">@item.DepartmentName</a>
+                        @{
 
-                    foreach (var item in department)
-                    {
-                        <li class="li-mhp-menu">
-                            <a class="nav-main-menu" href="@Url.Action("ProductCategories","Products",new {department=item.DepartmentName})">@item.DepartmentName</a>
-                            @{
-                                if (ViewBag.productGroup != null)
+                            var groupDepartment = item.ProductGroups.Where(u=>u.IsDeleted != true).ToList();
+                            <ul class="mhp-menu">
+                                @for (int i = 0; i < groupDepartment.Count; i += 3)
                                 {
-                                    var groups = ViewBag.productGroup as List<ProductGroups>;
-                                    var groupDepartment = groups.Where(u => u.DepartmentId == item.DepartmentId).ToList();
-                                    if (groupDepartment.Count > 0)
-                                    {
-                                        <ul class="mhp-menu">
-                                            @for (int i = 0; i < groupDepartment.Count; i += 3)
-                                            {
-                                                <div>
-                                                    @if (groupDepartment.ElementAtOrDefault(i) != null)
-                                                    {
+                                    <div>
+                                        @if (groupDepartment.ElementAtOrDefault(i) != null)
+                                        {
 
-                                                        <li>
-                                                            <a href="@Url.Action("ProductCategories","Products",new {productGroup=groupDepartment[i].ProductGroup})">
-                                                                @groupDepartment[i].ProductGroup
+                                            <li>
+                                                <a href="@Url.Action("ProductCategories","Products",new {productGroup=groupDepartment[i].ProductGroup})">
+                                                    @groupDepartment[i].ProductGroup
+                                                </a>
+                                                <ul class="mhp-menu">
+                                                    @foreach (var categories in @groupDepartment[i].ProductCategories)
+                                                    {
+                                                        <div>
+
+                                                            <a href="@Url.Action("ProductCategories","Products",new {SubCategory=categories.ProductCategoryName})">
+                                                                @categories.ProductCategoryName
                                                             </a>
-                                                            <ul class="mhp-menu">
-                                                                @foreach (var categories in @groupDepartment[i].ProductCategories)
-                                                                {
-                                                                    <div>
 
-                                                                        <a href="@Url.Action("ProductCategories","Products",new {SubCategory=categories.ProductCategoryName})">
-                                                                            @categories.ProductCategoryName
-                                                                        </a>
-
-                                                                    </div>
-
-
-                                                                }
-                                                            </ul>
-
-                                                        </li>
+                                                        </div>
 
 
                                                     }
-                                                    @if (groupDepartment.ElementAtOrDefault(i + 1) != null)
+                                                </ul>
+
+                                            </li>
+
+
+                                        }
+                                        @if (groupDepartment.ElementAtOrDefault(i + 1) != null)
+                                        {
+
+                                            <li>
+                                                <a href="@Url.Action("ProductCategories","Products",new {productGroup=groupDepartment[i+1].ProductGroup})">@groupDepartment[i + 1].ProductGroup</a>
+                                                <ul class="mhp-menu">
+                                                    @foreach (var categories in @groupDepartment[i + 1].ProductCategories)
                                                     {
+                                                        <div>
 
-                                                        <li>
-                                                            <a href="@Url.Action("ProductCategories","Products",new {productGroup=groupDepartment[i+1].ProductGroup})">@groupDepartment[i + 1].ProductGroup</a>
-                                                            <ul class="mhp-menu">
-                                                                @foreach (var categories in @groupDepartment[i + 1].ProductCategories)
-                                                                {
-                                                                <div>
+                                                            <a href="@Url.Action("ProductCategories","Products",new {SubCategory=categories.ProductCategoryName})">
+                                                                @categories.ProductCategoryName
+                                                            </a>
 
-                                                                    <a href="@Url.Action("ProductCategories","Products",new {SubCategory=categories.ProductCategoryName})">
-                                                                        @categories.ProductCategoryName
-                                                                    </a>
-
-                                                                </div>
-
-                                                                }
-                                                            </ul>
-
-                                                        </li>
+                                                        </div>
 
                                                     }
-                                                    @if (groupDepartment.ElementAtOrDefault(i + 2) != null)
+                                                </ul>
+
+                                            </li>
+
+                                        }
+                                        @if (groupDepartment.ElementAtOrDefault(i + 2) != null)
+                                        {
+
+                                            <li>
+                                                <a href="@Url.Action("ProductCategories","Products",new {productGroup=groupDepartment[i+2].ProductGroup})">@groupDepartment[i + 2].ProductGroup</a>
+                                                <ul class="mhp-menu">
+                                                    @foreach (var categories in @groupDepartment[i + 2].ProductCategories)
                                                     {
+                                                        <div>
 
-                                                        <li>
-                                                            <a href="@Url.Action("ProductCategories","Products",new {productGroup=groupDepartment[i+2].ProductGroup})">@groupDepartment[i + 2].ProductGroup</a>
-                                                            <ul class="mhp-menu">
-                                                                @foreach (var categories in @groupDepartment[i + 2].ProductCategories)
-                                                                {
-                                                                <div>
+                                                            <a href="@Url.Action("ProductCategories","Products",new {SubCategory=categories.ProductCategoryName})">
+                                                                @categories.ProductCategoryName
+                                                            </a>
 
-                                                                    <a href="@Url.Action("ProductCategories","Products",new {SubCategory=categories.ProductCategoryName})">
-                                                                        @categories.ProductCategoryName
-                                                                    </a>
+                                                        </div>
 
-                                                                </div>
-
-
-                                                                }
-                                                            </ul>
-
-                                                        </li>
 
                                                     }
-                                                </div>
-                                            }
-                                        </ul>
-                                    }
+                                                </ul>
+
+                                            </li>
+
+                                        }
+                                    </div>
                                 }
-                            }
-                        </li>
-                    }
+                            </ul>
+                        }
+
+
+                    </li>
                 }
+
             </ul>
         </div>
     </div>

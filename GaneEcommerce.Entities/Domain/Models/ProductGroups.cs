@@ -43,7 +43,11 @@ namespace Ganedata.Core.Entities.Domain
         public int SortOrder { get; set; }
         public virtual ICollection<ProductMaster> Products { get; set; }
 
-        public virtual ICollection<ProductCategory> ProductCategories { get; set; }
+        public virtual ICollection<ProductCategory> ProductCategories
+        {
+            get; set;
+
+        }
 
         public int? DepartmentId { get; set; }
         [ForeignKey("DepartmentId")]

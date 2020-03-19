@@ -160,19 +160,14 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         public PartialViewResult _HorizontalNavbarPartial()
         {
             var productDepartments = _lookupServices.GetAllValidTenantDepartments(CurrentTenantId).Take(8).ToList();
-            ViewBag.departments = productDepartments;
-            var productGroups = _lookupServices.GetAllValidProductGroups(CurrentTenantId).ToList();
-            ViewBag.productGroup = productGroups;
             ViewBag.UserName = CurrentUser.UserFirstName + " " + CurrentUser.UserLastName;
-
-            caCurrent caUser = new caCurrent();
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.CartItemCount = GaneCartItemsSessionHelper.GetCartItemsSession().Count;
             ViewBag.CartItems = GaneCartItemsSessionHelper.GetCartItemsSession().ToList();
             ViewBag.ProductGroups = new SelectList(_lookupServices.GetAllValidProductGroups((CurrentTenantId), 12), "ProductGroupId", "ProductGroup");
             ViewBag.Symbol = currencyyDetail.Symbol;
             ViewBag.CurrencyName = currencyyDetail.CurrencyName;
-            return PartialView();
+            return PartialView(productDepartments);
         }
 
         public ActionResult _GetProductByGroupsAndDepartment(string DepartmentId, string productgroupId, string productCategories)

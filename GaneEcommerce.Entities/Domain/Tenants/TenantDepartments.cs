@@ -12,6 +12,7 @@ namespace Ganedata.Core.Entities.Domain
         public TenantDepartments()
         {
             Products = new HashSet<ProductMaster>();
+            ProductGroups = new HashSet<ProductGroups>();
         }
         [Key]
         [Display(Name = "Department Id")]
@@ -30,5 +31,9 @@ namespace Ganedata.Core.Entities.Domain
         public int? AccountID { get; set; }
         [ForeignKey("AccountID")]
         public virtual Account Account { get; set; }
+
+        public virtual ICollection<ProductGroups> ProductGroups { get; set; }
+
+
     }
 }

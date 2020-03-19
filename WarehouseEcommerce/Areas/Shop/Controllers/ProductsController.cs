@@ -283,7 +283,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         {
             ProductFilteringViewModel productFiltering = new ProductFilteringViewModel();
             productFiltering.Manufacturer= _productlookupServices.GetAllValidProductManufacturerGroupAndDeptByName(groups, department, subcategory).Select(u=>u.Name).ToList();
-            productFiltering.PriceInterval = _productlookupServices.AllPriceListAgainstGroupAndDept(groups, department);
+            productFiltering.PriceInterval = _productlookupServices.AllPriceListAgainstGroupAndDept(groups, department, subcategory);
             return PartialView(productFiltering);
         }
 

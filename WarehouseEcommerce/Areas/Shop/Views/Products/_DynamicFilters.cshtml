@@ -43,14 +43,14 @@
                     <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
                         <div class="panel-body">
                             <ul class="">
-                                @*@foreach (var item in Model.PriceInterval)
-                                {*@
+                                @foreach (var item in Model.PriceInterval)
+                                {
 
 
-                                <li class="list-group-item"><input type="checkbox" id="priceS" class="checkbox-inline" value="5_25" @(Request.Url.Query.ToLower().Contains("5_25") ? "checked" : "")> £3- £2</li>
-                                <li class="list-group-item"><input type="checkbox" id="priceS" class="checkbox-inline" value="25_50" @(Request.Url.Query.ToLower().Contains("25_50") ? "checked" : "")> £25.00 - £50.00</li>
-                                <li class="list-group-item"><input type="checkbox" id="priceS" class="checkbox-inline" value="50_100" @(Request.Url.Query.ToLower().Contains("50_100") ? "checked" : "")> £50.00 - £100.00</li>
-                                @* }*@
+                                <li class="list-group-item"><input type="checkbox" id="priceS" class="checkbox-inline" value="@(item.Item1+"_"+item.Item2)" @(Request.Url.Query.ToLower().Contains(item.Item1+"_"+item.Item2) ? "checked" : "")> £@item.Item1 - £@item.Item2</li>
+                                @*<li class="list-group-item"><input type="checkbox" id="priceS" class="checkbox-inline" value="25_50" @(Request.Url.Query.ToLower().Contains("25_50") ? "checked" : "")> £@item - £50.00</li>
+                                <li class="list-group-item"><input type="checkbox" id="priceS" class="checkbox-inline" value="50_100" @(Request.Url.Query.ToLower().Contains("50_100") ? "checked" : "")> £50.00 - £100.00</li>*@
+                                 }
                             </ul>
                         </div>
                     </div>

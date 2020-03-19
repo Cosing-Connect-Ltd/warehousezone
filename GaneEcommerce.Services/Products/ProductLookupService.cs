@@ -69,19 +69,21 @@ namespace Ganedata.Core.Services
             return _currentDbContext.ProductManufacturers.Where(u => productmanufacturerId.Contains(u.Id));
 
         }
-        public Tuple<string, string> AllPriceListAgainstGroupAndDept(string productGroup, string department = "")
+        public List<Tuple<string, string>> AllPriceListAgainstGroupAndDept(string productGroup, string department = "", string SubCategory = "")
         {
-            int? productGroupId = _currentDbContext.ProductGroups.FirstOrDefault(u => u.ProductGroup == productGroup && u.IsDeleted != true)?.ProductGroupId;
+            List<Tuple<string, string>> Prices = new List<Tuple<string, string>>();
+            int ? productGroupId = _currentDbContext.ProductGroups.FirstOrDefault(u => u.ProductGroup == productGroup && u.IsDeleted != true)?.ProductGroupId;
             int? departmentId = _currentDbContext.TenantDepartments.FirstOrDefault(u => u.DepartmentName == department && u.IsDeleted != true)?.DepartmentId;
-            var avarageValue= _currentDbContext.ProductMaster.Where(a => ((!productGroupId.HasValue || a.ProductGroupId == productGroupId) && (!departmentId.HasValue || a.DepartmentId == departmentId)) && a.IsDeleted != true).Select(u => u.SellPrice).ToList();
-            Tuple<string,string> Prices = null;
+            int? subCategoryId = _currentDbContext.ProductCategories.FirstOrDefault(u => u.ProductCategoryName == SubCategory && u.IsDeleted != true)?.ProductCategoryId;
+            var avarageValue= _currentDbContext.ProductMaster.Where(a => ((!productGroupId.HasValue || a.ProductGroupId == productGroupId) && (!departmentId.HasValue || a.DepartmentId == departmentId) && (!subCategoryId.HasValue || a.ProductCategoryId == subCategoryId)) && a.IsDeleted != true).Select(u => u.SellPrice);
             var avgValue = avarageValue.Average();
-            var minValue = avarageValue.Min();
-            var maxValue = avarageValue.Max();
-            var centervalue = avarageValue.Find(u => u.Value > avgValue && u.Value < maxValue);
-            var firstValue = new Tuple<string, string>(minValue.ToString(), avgValue.ToString());
-            var secondValue = new Tuple<string, string>(avgValue.ToString(), centervalue.ToString());
-            Prices= new Tuple<string, string>(centervalue.ToString(), maxValue.ToString());
+            var averageInt = Convert.ToInt32(avgValue);
+            var minValue = Convert.ToInt32(avarageValue.Min());
+            var maxValue = Convert.ToInt32(avarageValue.Max());
+            var centervalue = Convert.ToInt32(avarageValue.FirstOrDefault(u => u.Value > avgValue && u.Value < maxValue)==null?0: avarageValue.FirstOrDefault(u => u.Value > avgValue && u.Value < maxValue));
+            Prices.Add(new Tuple<string, string>(minValue.ToString(), averageInt.ToString("D4")));
+            Prices.Add(new Tuple<string, string>(averageInt.ToString("D4"),  centervalue.ToString()));
+            Prices.Add(new Tuple<string, string>(centervalue.ToString(),  maxValue.ToString()));
             return Prices;
         }
         private List<List<decimal[]>> SplitList(List<decimal[]> locations, int nSize = 20)
