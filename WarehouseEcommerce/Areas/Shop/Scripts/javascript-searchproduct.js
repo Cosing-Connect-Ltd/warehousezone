@@ -253,7 +253,6 @@ function onCurrencyChange(event) {
 }
 
 $("input[type=checkbox]").on("change", function () {
-    debugger;
     var arr = []
     var data = "";
     var str = $(location).attr('href');

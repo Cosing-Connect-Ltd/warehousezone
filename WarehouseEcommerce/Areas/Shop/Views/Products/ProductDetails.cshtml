@@ -8,10 +8,25 @@
         <div id="content" class="col-md-12 col-sm-12">
             <ul class="breadcrumb">
                 <li><a href="#">Home</a></li>
-                <li><a href="#">@(!string.IsNullOrEmpty(Model?.TenantDepartment?.DepartmentName) ? Model.TenantDepartment.DepartmentName : "Department name")</a></li>
-                <li><a href="#">@(!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup) ? Model.ProductGroup.ProductGroup : "Product Group")</a></li>
-                <li><a href="#">@(!string.IsNullOrEmpty(Model?.ProductCategory?.ProductCategoryName) ? Model.ProductCategory.ProductCategoryName : "Product Category")</a></li>
-                <li><a href="#">@Model.Name</a></li>
+                @if (!string.IsNullOrEmpty(Model?.TenantDepartment?.DepartmentName))
+                {
+                    <li><a href="@Url.Action("ProductCategories", "Products", new { department = @Model.TenantDepartment.DepartmentName})">@(!string.IsNullOrEmpty(Model?.TenantDepartment?.DepartmentName) ? Model.TenantDepartment.DepartmentName : "")</a></li>
+                }
+                @if (Url.Action() != Url.Action("ProductCategories", "Products", new { department = Model.TenantDepartment.DepartmentName }))
+                {
+                    if (!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup))
+                    {
+                        <li><a href="@Url.Action("ProductCategories", "Products", new { productGroup = Model.ProductGroup.ProductGroup})">@(!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup) ? Model.ProductGroup.ProductGroup : "")</a></li>
+                    }
+                }
+                @if (Url.Action() != Url.Action("ProductDetails", "Products", new { productId = Model.ProductId }))
+                {
+                    if (!string.IsNullOrEmpty(Model?.ProductCategory?.ProductCategoryName))
+                    {
+                        <li><a href="@Url.Action("ProductDetails", "Products", new { productId = @Model.ProductId })">@(!string.IsNullOrEmpty(Model?.ProductCategory?.ProductCategoryName) ? Model.ProductCategory.ProductCategoryName : "")</a></li>
+                    }
+                }
+                <li>@Model.Name></li>
             </ul>
             <div class="row product-bg">
                 <div class="sticky">
