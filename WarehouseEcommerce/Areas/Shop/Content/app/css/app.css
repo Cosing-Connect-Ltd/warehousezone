@@ -2202,16 +2202,16 @@ header {
 
 .toppro .acart {
     border: 1px solid #e7e7e7;
-    background-color: #fff;
-    color: #000000;
+    background-color: #1455a6;
+    color: white;
     margin-top: 18px;
     padding-top: 10px;
     white-space: nowrap;
 }
 
     .toppro .acart:hover {
-        border: 1px solid #1455a6;
-        background-color: #1455a6;
+        border: 1px solid #000;
+        background-color: #000;
         color: #fff;
     }
 

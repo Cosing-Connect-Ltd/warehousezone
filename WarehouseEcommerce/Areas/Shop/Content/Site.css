@@ -751,7 +751,7 @@ ul.mhp-menu {
     }
 
     .cart-menu {
-        margin: 0px 10px 0 10px;
+        margin: 0px 0px 0 10px;
     }
 }
 .deliveryinfo-row {
@@ -775,15 +775,10 @@ ul.mhp-menu {
 .ml-0 {
     margin-left: unset !important;
 }
-@media(max-width:991px) {
+@media(max-width:1024px) {
     .custom-header-container {
         display: none;
     }
-
-    .headerMenu {
-        display: none;
-    }
-
     .hidden-sm {
         display: block !important;
     }
@@ -800,7 +795,7 @@ ul.mhp-menu {
 
     .ui-logo img {
         max-width: 145px;
-        margin-left: 30px;
+        margin-left: 6px;
     }
 
     .search-box input {
@@ -858,6 +853,9 @@ ul.mhp-menu {
 
     .btn-search-category {
         min-width: unset !important;
+    }
+    .cart-menu {
+        margin: 0px 0px 0 10px;
     }
 }
 
@@ -1482,7 +1480,7 @@ ul.mhp-menu {
     background-color: grey !important;
 }
     .disabled-btn:hover {
-        /*cursor:no-drop !important;*/
+        cursor:no-drop !important;
         background-color: grey !important;
         border-color: grey !important;
     }
@@ -1552,7 +1550,7 @@ ul.mhp-menu {
 
 .headerMenu .dropdown {
     position: absolute;
-    width: 230px;
+    width: 290px;
     background: #1a1a1a;
     text-align: left;
     display: none;
@@ -1568,12 +1566,13 @@ ul.mhp-menu {
 
 .headerMenu .dropdown2 {
     position: absolute;
-    width: 230px;
+    width: 290px;
     background: #2d2d2d;
     text-align: left;
     display: none;
     right: -100%;
-    top: 0;
+    /*top: 0;*/
+    margin-top: -42px;
 }
 
     .headerMenu .dropdown2 li {
@@ -1598,8 +1597,16 @@ ul.mhp-menu {
 .core-menu li a {
     color:white;
 }
+.hamburger-menu {
+    padding: 1em;
+    display: none;
+    font: normal normal normal 16px/1 Roboto;
+    text-transform: uppercase;
+}
 
-@media (max-width:720px) {
+
+
+@media (max-width:1024px) {
     .main-menu {
         height: 50px;
     }
@@ -1641,6 +1648,72 @@ ul.mhp-menu {
         width: 100%;
         position: relative;
         padding: 0 20px;
+    }
+    .hamburger-menu {
+        display: block;
+        text-align: center;
+        padding-right: 60px;
+        float: none;
+        width: 100%;
+        color: white;
+        padding-top: 12px;
+    }
+
+    .burger-1, .burger-2, .burger-3 {
+        display: block;
+        position: absolute;
+        width: 20px;
+        height: 3px;
+        border-radius: 30px;
+        right: 0;
+        margin-right: 25px;
+        background: #fff;
+        -webkit-transition: .2s ease;
+        -ms-transition: .2s ease;
+        -moz-transition: .2s ease;
+        -o-transition: .2s ease;
+        transition: .2s ease;
+    }
+
+    .burger-1 {
+        top: 15px;
+    }
+
+    .burger-2 {
+        top: 23px;
+    }
+
+    .burger-3 {
+        top: 31px;
+    }
+
+        .burger-1.open, .burger-2.open, .burger-3.open {
+            -webkit-transition: .2s ease;
+            -ms-transition: .2s ease;
+            -moz-transition: .2s ease;
+            -o-transition: .2s ease;
+            transition: .2s ease;
+            transform-origin: 50% 50%;
+        }
+
+    .burger-1.open {
+        top: 25px;
+        width: 23px;
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+    }
+
+    .burger-2.open {
+        opacity: 0;
+    }
+
+    .burger-3.open {
+        top: 25px;
+        width: 23px;
+        transform: rotate(-45deg);
     }
 }
 
