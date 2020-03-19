@@ -1,107 +1,99 @@
 ﻿@using Ganedata.Core.Entities.Domain
 @model List<Ganedata.Core.Entities.Domain.TenantDepartments>
 
-<div class="headerMenu row">
-    @*<div class="col-md-3 col-sm-4 stmenu"></div>*@
-    <div id="menu1" class="col-md-12 stme2 nav-menue">
+<div id='main-menu' class='main-menu headerMenu'>
+    <nav class='navigation'>
+        <ul class='core-menu'>
 
-        <div class="manun custom-max-width m-auto">
-            <ul class="list-inline">
-
-                @foreach (var item in Model)
-                {
-                    <li class="li-mhp-menu">
-                        <a class="nav-main-menu" href="@Url.Action("ProductCategories","Products",new {department=item.DepartmentName})">@item.DepartmentName</a>
-                        @{
-
-                            var groupDepartment = item.ProductGroups.Where(u=>u.IsDeleted != true).ToList();
-                            <ul class="mhp-menu">
-                                @for (int i = 0; i < groupDepartment.Count; i += 3)
-                                {
-                                    <div>
-                                        @if (groupDepartment.ElementAtOrDefault(i) != null)
-                                        {
-
-                                            <li>
-                                                <a href="@Url.Action("ProductCategories","Products",new {productGroup=groupDepartment[i].ProductGroup})">
-                                                    @groupDepartment[i].ProductGroup
-                                                </a>
-                                                <ul class="mhp-menu">
-                                                    @foreach (var categories in @groupDepartment[i].ProductCategories)
-                                                    {
-                                                        <div>
-
-                                                            <a href="@Url.Action("ProductCategories","Products",new {SubCategory=categories.ProductCategoryName})">
-                                                                @categories.ProductCategoryName
-                                                            </a>
-
-                                                        </div>
-
-
-                                                    }
-                                                </ul>
-
-                                            </li>
-
-
-                                        }
-                                        @if (groupDepartment.ElementAtOrDefault(i + 1) != null)
-                                        {
-
-                                            <li>
-                                                <a href="@Url.Action("ProductCategories","Products",new {productGroup=groupDepartment[i+1].ProductGroup})">@groupDepartment[i + 1].ProductGroup</a>
-                                                <ul class="mhp-menu">
-                                                    @foreach (var categories in @groupDepartment[i + 1].ProductCategories)
-                                                    {
-                                                        <div>
-
-                                                            <a href="@Url.Action("ProductCategories","Products",new {SubCategory=categories.ProductCategoryName})">
-                                                                @categories.ProductCategoryName
-                                                            </a>
-
-                                                        </div>
-
-                                                    }
-                                                </ul>
-
-                                            </li>
-
-                                        }
-                                        @if (groupDepartment.ElementAtOrDefault(i + 2) != null)
-                                        {
-
-                                            <li>
-                                                <a href="@Url.Action("ProductCategories","Products",new {productGroup=groupDepartment[i+2].ProductGroup})">@groupDepartment[i + 2].ProductGroup</a>
-                                                <ul class="mhp-menu">
-                                                    @foreach (var categories in @groupDepartment[i + 2].ProductCategories)
-                                                    {
-                                                        <div>
-
-                                                            <a href="@Url.Action("ProductCategories","Products",new {SubCategory=categories.ProductCategoryName})">
-                                                                @categories.ProductCategoryName
-                                                            </a>
-
-                                                        </div>
-
-
-                                                    }
-                                                </ul>
-
-                                            </li>
-
-                                        }
-                                    </div>
-                                }
-                            </ul>
+            @foreach (var item in Model)
+            {
+                <li>
+                    <a href="@Url.Action("ProductCategories", "Products", new { department = item.DepartmentName })">
+                        @item.DepartmentName
+                        @if (item.ProductGroups.Count > 0)
+                        {
+                            <span class='toggle'></span>
                         }
+                    </a>
+                    @{
+
+                        var groupDepartment = item.ProductGroups.Where(u => u.IsDeleted != true).ToList();
+                        <ul class='dropdown'>
+                            @for (int i = 0; i < groupDepartment.Count; i += 3)
+                            {
+                                <div>
+                                    @if (groupDepartment.ElementAtOrDefault(i) != null)
+                                    {
+
+                                        <li>
+                                            <a href="@Url.Action("ProductCategories", "Products", new { productGroup = groupDepartment[i].ProductGroup })">
+                                                @groupDepartment[i].ProductGroup
+                                            @if (groupDepartment[i].ProductCategories.Count > 0)
+                                            {
+                                                <span class='toggle2'></span>
+                                            }
+                                        </a>
+                                        <ul class='dropdown2'>
+                                            @foreach (var categories in @groupDepartment[i].ProductCategories)
+                                            {
+                                                <li><a href="@Url.Action("ProductCategories", "Products", new { SubCategory = categories.ProductCategoryName })"> @categories.ProductCategoryName</a> </li>
+                                            }
+                                        </ul>
+                                    </li>
 
 
-                    </li>
-                }
+                                }
+                                    @if (groupDepartment.ElementAtOrDefault(i + 1) != null)
+                                    {
 
-            </ul>
-        </div>
-    </div>
+                                        <li>
+                                            <a href="@Url.Action("ProductCategories", "Products", new { productGroup = groupDepartment[i + 1].ProductGroup })">
+                                                @groupDepartment[i + 1].ProductGroup
+                                                @if (groupDepartment[i + 1].ProductCategories.Count > 0)
+                                                {
+                                                    <span class='toggle2'></span>
+                                                }
+                                            </a>
+                                            <ul class='dropdown2'>
+                                                @foreach (var categories in @groupDepartment[i + 1].ProductCategories)
+                                                {
+                                                    <li><a href="@Url.Action("ProductCategories", "Products", new { SubCategory = categories.ProductCategoryName })">@categories.ProductCategoryName</a> </li>
+                                                }
+                                            </ul>
+                                        </li>
+
+                                    }
+                                    @if (groupDepartment.ElementAtOrDefault(i + 2) != null)
+                                    {
+
+                                        <li>
+                                            <a href="@Url.Action("ProductCategories", "Products", new { productGroup = groupDepartment[i + 2].ProductGroup })">
+                                                @groupDepartment[i + 2].ProductGroup
+                                                @if (groupDepartment[i + 2].ProductCategories.Count > 0)
+                                                {
+                                                    <span class='toggle2'></span>
+                                                }
+                                            </a>
+                                            <ul class='dropdown2'>
+                                                @foreach (var categories in @groupDepartment[i + 2].ProductCategories)
+                                                {
+                                                    <li><a href="@Url.Action("ProductCategories", "Products", new { SubCategory = categories.ProductCategoryName })"> @categories.ProductCategoryName</a> </li>
+                                                }
+                                            </ul>
+                                        </li>
+
+                                    }
+                                </div>
+                            }
+                        </ul>
+                    }
+
+
+                </li>
+            }
+
+        </ul>
+    </nav>
 </div>
 <div class="hidden-md hidden-lg hidden-sm horizontal-menu">
     <div class="row">
@@ -231,3 +223,23 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        //the trigger on hover when cursor directed to this class
+        $(".core-menu li").hover(
+            function () {
+                //i used the parent ul to show submenu
+                $(this).children('ul').slideDown('fast');
+            },
+            //when the cursor away
+            function () {
+                $('ul', this).slideUp('fast');
+            });
+        //this feature only show on 600px device width
+        $(".hamburger-menu").click(function () {
+            $(".burger-1, .burger-2, .burger-3").toggleClass("open");
+            $(".core-menu").slideToggle("fast");
+        });
+    });
+</script>

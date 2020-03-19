@@ -1707,7 +1707,7 @@ header {
 
 .headerMenu {
     background-color: #000000;
-    padding: 15px;
+    padding: 5px 15px 5px 15px;
     width: 100%;
     margin-right: unset;
     margin-left: unset;
@@ -3589,11 +3589,6 @@ footer #contact li {
         margin-top: 4px;
         padding: 0;
     }
-
-    .headerMenu {
-        display: none;
-    }
-
     .horizontal-menu {
         padding: 15px;
     }

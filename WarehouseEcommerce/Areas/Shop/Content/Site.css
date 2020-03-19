@@ -1507,3 +1507,140 @@ ul.mhp-menu {
 #cart-total {
     color: #B12704 !important;
 }
+
+
+.main-menu {
+    position: relative;
+    background: #0e0e0e;
+}
+
+.main-menu:before, .main-menu:after {
+    display: table;
+    line-height: 0;
+    content: "";
+}
+
+.core-menu {
+    text-align: left;
+    font: normal normal normal 1em/1 Roboto, sans-serif;
+    overflow: hidden;
+}
+
+    .core-menu li {
+        list-style: none;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+        .core-menu li a {
+            display: inline-block;
+            padding: 1em;
+        }
+
+            .core-menu li a:hover {
+                background: #38a201;
+            }
+
+.headerMenu li span.toggle {
+    padding-left: 1em;
+}
+
+.headerMenu .toggle:before {
+    content: "\f107";
+    font: normal normal normal 16px/1 FontAwesome;
+}
+
+.headerMenu .dropdown {
+    position: absolute;
+    width: 230px;
+    background: #1a1a1a;
+    text-align: left;
+    display: none;
+}
+
+    .headerMenu .dropdown li {
+        display: block;
+    }
+
+        .headerMenu .dropdown li a {
+            display: block;
+        }
+
+.headerMenu .dropdown2 {
+    position: absolute;
+    width: 230px;
+    background: #2d2d2d;
+    text-align: left;
+    display: none;
+    right: -100%;
+    top: 0;
+}
+
+    .headerMenu .dropdown2 li {
+        display: block;
+    }
+
+        .headerMenu .dropdown2 li a {
+            display: block;
+        }
+
+.headerMenu li span.toggle2 {
+    position: absolute;
+    right: 0;
+    margin-right: 20px;
+}
+
+.headerMenu .toggle2:before {
+    content: "\f105";
+    font: normal normal normal 16px/1 FontAwesome;
+}
+
+.core-menu li a {
+    color:white;
+}
+
+@media (max-width:720px) {
+    .main-menu {
+        height: 50px;
+    }
+
+    .navigation {
+        float: left;
+        display: block;
+        width: 100%;
+    }
+
+    .core-menu {
+        float: right;
+        width: 100%;
+        background: #1a1a1a;
+        margin: auto;
+        display: none;
+    }
+
+        .core-menu li {
+            width: 100%;
+            display: block;
+        }
+
+            .core-menu li a {
+                display: block;
+                margin: auto;
+            }
+
+    .headerMenu .dropdown {
+        width: 100%;
+        background: #0e0e0e;
+        text-align: center;
+        position: relative;
+    }
+
+    .headerMenu .dropdown2 {
+        right: 0;
+        top: 0;
+        width: 100%;
+        position: relative;
+        padding: 0 20px;
+    }
+}
+
