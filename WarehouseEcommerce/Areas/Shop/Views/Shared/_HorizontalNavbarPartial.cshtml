@@ -13,7 +13,7 @@
                     foreach (var item in department)
                     {
                         <li class="li-mhp-menu">
-                            <a class="nav-main-menu" href="@Url.Action("_GetProductByGroupsAndDepartment","Home",new {DepartmentId=item.DepartmentName})">@item.DepartmentName</a>
+                            <a class="nav-main-menu" href="@Url.Action("ProductCategories","Products",new {department=item.DepartmentName})">@item.DepartmentName</a>
                             @{
                                 if (ViewBag.productGroup != null)
                                 {
@@ -28,21 +28,72 @@
                                                     @if (groupDepartment.ElementAtOrDefault(i) != null)
                                                     {
 
-                                                        <li><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home",new {productgroupId=groupDepartment[i].ProductGroup})">@groupDepartment[i].ProductGroup</a></li>
+                                                        <li>
+                                                            <a href="@Url.Action("ProductCategories","Products",new {productGroup=groupDepartment[i].ProductGroup})">
+                                                                @groupDepartment[i].ProductGroup
+                                                            </a>
+                                                            <ul class="mhp-menu">
+                                                                @foreach (var categories in @groupDepartment[i].ProductCategories)
+                                                                {
+                                                                    <div>
+
+                                                                        <a href="@Url.Action("ProductCategories","Products",new {SubCategory=categories.ProductCategoryName})">
+                                                                            @categories.ProductCategoryName
+                                                                        </a>
+
+                                                                    </div>
+
+
+                                                                }
+                                                            </ul>
+
+                                                        </li>
 
 
                                                     }
                                                     @if (groupDepartment.ElementAtOrDefault(i + 1) != null)
                                                     {
 
-                                                        <li><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home",new {productgroupId=groupDepartment[i+1].ProductGroup})">@groupDepartment[i + 1].ProductGroup</a></li>
+                                                        <li>
+                                                            <a href="@Url.Action("ProductCategories","Products",new {productGroup=groupDepartment[i+1].ProductGroup})">@groupDepartment[i + 1].ProductGroup</a>
+                                                            <ul class="mhp-menu">
+                                                                @foreach (var categories in @groupDepartment[i + 1].ProductCategories)
+                                                                {
+                                                                <div>
 
+                                                                    <a href="@Url.Action("ProductCategories","Products",new {SubCategory=categories.ProductCategoryName})">
+                                                                        @categories.ProductCategoryName
+                                                                    </a>
+
+                                                                </div>
+
+                                                                }
+                                                            </ul>
+
+                                                        </li>
 
                                                     }
                                                     @if (groupDepartment.ElementAtOrDefault(i + 2) != null)
                                                     {
 
-                                                        <li><a href="@Url.Action("_GetProductByGroupsAndDepartment","Home",new {productgroupId=groupDepartment[i+2].ProductGroup})">@groupDepartment[i + 2].ProductGroup</a></li>
+                                                        <li>
+                                                            <a href="@Url.Action("ProductCategories","Products",new {productGroup=groupDepartment[i+2].ProductGroup})">@groupDepartment[i + 2].ProductGroup</a>
+                                                            <ul class="mhp-menu">
+                                                                @foreach (var categories in @groupDepartment[i + 2].ProductCategories)
+                                                                {
+                                                                <div>
+
+                                                                    <a href="@Url.Action("ProductCategories","Products",new {SubCategory=categories.ProductCategoryName})">
+                                                                        @categories.ProductCategoryName
+                                                                    </a>
+
+                                                                </div>
+
+
+                                                                }
+                                                            </ul>
+
+                                                        </li>
 
                                                     }
                                                 </div>
@@ -109,48 +160,48 @@
                             </svg>
                             <span id="cart-total-mobile">@(ViewBag.CartItemCount == 0 ? 0 : ViewBag.CartItemCount)</span>
                         </button>
-                    <ul id="cart-dropdown-menu" class="dropdown-menu  cart-menu-height" style="overflow:auto">
-                        @if (ViewBag.CartItemCount != 0)
-                        {
-                            <li>
-                                <table>
-                                    <tbody>
-                                        @foreach (var item in ViewBag.CartItems)
-                                        {
-                                            <tr>
+                        <ul id="cart-dropdown-menu" class="dropdown-menu  cart-menu-height" style="overflow:auto">
+                            @if (ViewBag.CartItemCount != 0)
+                            {
+                                <li>
+                                    <table>
+                                        <tbody>
+                                            @foreach (var item in ViewBag.CartItems)
+                                            {
+                                                <tr>
 
-                                                <td><a href="@Url.Action("AddToCart","Products")"><img src=@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage)? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif") alt="@(item?.ProductMaster?.Name)"></a></td>
-                                                <td>
-                                                    <div class="ordered-items">
-                                                        <p>
-                                                            <a href="@Url.Action("AddToCart","Products")">@(item.ProductMaster?.Name)<br /><span style="font-weight:bold;">Sku:</span>@(item.ProductMaster?.SKUCode)<br /><span style="font-weight:bold;">Qty:</span>@(item.Qty)</a>
-                                                        </p>
+                                                    <td><a href="@Url.Action("AddToCart","Products")"><img src=@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage)? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif") alt="@(item?.ProductMaster?.Name)"></a></td>
+                                                    <td>
+                                                        <div class="ordered-items">
+                                                            <p>
+                                                                <a href="@Url.Action("AddToCart","Products")">@(item.ProductMaster?.Name)<br /><span style="font-weight:bold;">Sku:</span>@(item.ProductMaster?.SKUCode)<br /><span style="font-weight:bold;">Qty:</span>@(item.Qty)</a>
+                                                            </p>
 
-                                                        @*<ul>
-                                            <li>
-                                                Sku: <span>@(item.ProductMaster?.SKUCode)</span>
-                                            </li>
-                                            <li>Size: <span>M</span></li>
-                                            <li>
-                                                Quantity: <span>@item.Qty</span>
-                                            </li>
-                                        </ul>*@
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                                @* <a href="@Url.Action("AddToCart","Products")">Go to shopping cart</a>*@
-                            </li>
-                        }
-                        else
-                        {
-                            <li>
-                                <p class="text-center">Your Basket is empty!</p>
-                            </li>
-                        }
-                    </ul>
+                                                            @*<ul>
+                                                                    <li>
+                                                                        Sku: <span>@(item.ProductMaster?.SKUCode)</span>
+                                                                    </li>
+                                                                    <li>Size: <span>M</span></li>
+                                                                    <li>
+                                                                        Quantity: <span>@item.Qty</span>
+                                                                    </li>
+                                                                </ul>*@
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                    @* <a href="@Url.Action("AddToCart","Products")">Go to shopping cart</a>*@
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <p class="text-center">Your Basket is empty!</p>
+                                </li>
+                            }
+                        </ul>
                     </li>
                 </ul>
             </div>

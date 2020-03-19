@@ -12,6 +12,7 @@ namespace Ganedata.Core.Entities.Domain
         public ProductGroups()
         {
             Products = new HashSet<ProductMaster>();
+            ProductCategories = new HashSet<ProductCategory>();
         }
 
         [Key]
@@ -41,6 +42,8 @@ namespace Ganedata.Core.Entities.Domain
         public int TenentId { get; set; }
         public int SortOrder { get; set; }
         public virtual ICollection<ProductMaster> Products { get; set; }
+
+        public virtual ICollection<ProductCategory> ProductCategories { get; set; }
 
         public int? DepartmentId { get; set; }
         [ForeignKey("DepartmentId")]

@@ -282,11 +282,11 @@ function BlindShipmentAccount() {
             var addressParts = address.split(',');
             if (addressParts.length < 4) return;
 
-            $("#ShipmentAddressLine1").val(addressParts[0].trim());
-            $("#ShipmentAddressLine2").val(addressParts[1].trim());
-            $("#ShipmentAddressLine3").val(addressParts[2].trim());
-            $("#ShipmentAddressLine4").val(addressParts[3].trim());
-            $("#ShipmentAddressPostcode").val(addressParts[4].trim());
+            $("#ShipmentAddressLine1").val(addressParts[0] === undefined ? '' : addressParts[0].trim());
+            $("#ShipmentAddressLine2").val(addressParts[1] === undefined ? '' : addressParts[1].trim());
+            $("#ShipmentAddressLine3").val(addressParts[2] === undefined ? '' : addressParts[2].trim());
+            $("#ShipmentAddressLine4").val(addressParts[3] === undefined ? '' : addressParts[3].trim());
+            $("#ShipmentAddressPostcode").val(addressParts[4] === undefined ? '' : addressParts[4].trim());
         }
     }
 }

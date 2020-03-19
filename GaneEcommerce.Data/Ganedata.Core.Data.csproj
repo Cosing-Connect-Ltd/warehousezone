@@ -711,6 +711,10 @@
     <Compile Include="Migrations\202003170331126_Shipment-Label-Status-added.designer.cs">
       <DependentUpon>202003170331126_Shipment-Label-Status-added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003191211157_listofproductcategories-added-in-productgroup.cs" />
+    <Compile Include="Migrations\202003191211157_listofproductcategories-added-in-productgroup.designer.cs">
+      <DependentUpon>202003191211157_listofproductcategories-added-in-productgroup.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1564,6 +1568,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003170331126_Shipment-Label-Status-added.resx">
       <DependentUpon>202003170331126_Shipment-Label-Status-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003191211157_listofproductcategories-added-in-productgroup.resx">
+      <DependentUpon>202003191211157_listofproductcategories-added-in-productgroup.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -93,7 +93,7 @@ var updateInvoiceRowHiddenValues = function (index, productId, qtyProcessed, tax
         "<input type='hidden' id='AllInvoiceProducts" + index + "_TaxAmounts' name='AllInvoiceProducts[" + index + "].TaxAmounts' value='" + taxTotal + "' />" +
         "<input type='hidden' id='AllInvoiceProducts" + index + "_TaxID' name='AllInvoiceProducts[" + index + "].TaxID' value='" + taxId + "' />" +
         "<input type='hidden' id='AllInvoiceProducts" + index + "_TaxAmountsInvoice' name='AllInvoiceProducts[" + index + "].TaxAmountsInvoice' value='" + taxTotal + "' />" +
-        "<input type='hidden' id='AllInvoiceProducts" + index + "_TaxAmountsInvoice' name='AllInvoiceProducts[" + index + "].DiscountAmount' value='" + discount + "' />";
+        "<input type='hidden' id='AllInvoiceProducts" + index + "_DiscountAmount' name='AllInvoiceProducts[" + index + "].DiscountAmount' value='" + discount + "' />";
 
     return result;
 }
@@ -253,7 +253,7 @@ var getTaxAmountById = function (taxId, price, isPercent) {
     }
 }
 var getDiscountAmount = function (totalamount) {
-
+    debugger;
     var value = DiscountBox.GetValue();
     var percent = (value / 100);
     var taxamount = (totalamount * percent);
@@ -578,11 +578,8 @@ var updateProductDetailsAfterDelete = function () {
         else {
             $table.append($row);
         }
-
         var hiddenValues = updateInvoiceRowHiddenValues(rowsIndex, productId, productQty, productTax.toFixed(2), netAmount.toFixed(2), productWarranty.toFixed(2), productPrice, productWarrantyId, productTaxId, DiscountAmount, net.toFixed(2));
-
         $("#frmInvoicesCreate").append(hiddenValues);
-
         updateInvoiceTotals();
         DisableChosenDropdown("AccountId", true);
         rowsIndex++;
