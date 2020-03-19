@@ -3,6 +3,7 @@
 }
 
 function searchPoducts() {
+    debugger;
     var sortvalue = $("#SortedValues").val();
     var groupId = $("#ProductGroups").val();
     if (groupId === "" || groupId === undefined || groupId === null) { groupId = $("#ProductGroupsId").val(); }
@@ -12,14 +13,14 @@ function searchPoducts() {
     var searchstring = $("#searchString").val();
     var pageSize = $("#input-limit :selected").val();
     var valuesparam = $("#valuesParameter").val();
-    window.location.href = basePath + "/shop/Products/ProductCategories?productGroupId=" + groupId + "&sortOrder=" + sortvalue + "&currentFilter=" + currentFilter + "&searchString=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&departmentId=" + departmentId + "&values=" + valuesparam;
+    window.location.href = basePath + "/shop/Products/ProductCategories?productGroup=" + groupId + "&sortOrder=" + sortvalue + "&currentFilter=" + currentFilter + "&searchString=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&department=" + departmentId + "&values=" + valuesparam;
 }
 
 function SearchProductCategory() {
     var productgroupId = $("#ProductGroups").val();
     var searchstring = $("#text-search").val();
     var valuesparam = $("#valuesParameter").val();
-    window.location.href = basePath + "/shop/Products/ProductCategories?productGroupId=" + productgroupId + "&searchString=" + searchstring + "&values=" + valuesparam;
+    window.location.href = basePath + "/shop/Products/ProductCategories?productGroup=" + productgroupId + "&searchString=" + searchstring + "&values=" + valuesparam;
 }
 
 var searchvalues;
@@ -253,11 +254,15 @@ function onCurrencyChange(event) {
 }
 
 $("input[type=checkbox]").on("change", function () {
+    debugger;
     var arr = []
     var data = "";
     var str = $(location).attr('href');
-    if (str.indexOf("&") > 0) {
-        var result = str.substring(str.indexOf("&"), (str.length));
+    var re = new RegExp("&page=\\d+");
+    str = str.replace(re, '')
+    if (str.indexOf("&") > 0)
+    {
+        var result = str.substring(str.indexOf("&values"), (str.length));
         str = str.replace(result, "");
     }
     var parameter = "&values=";
@@ -265,7 +270,8 @@ $("input[type=checkbox]").on("change", function () {
     $(":checkbox").each(function () {
 
         if (this.checked) {
-            if (str.indexOf($(this).val()) < 0) {
+            if (str.indexOf($(this).val()) < 0)
+            {
                 arr.push($(this).val())
                 data = this.id;
                 if (str.indexOf(data) < 0) {

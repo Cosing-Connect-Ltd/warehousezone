@@ -47,7 +47,7 @@
                                 {
 
 
-                                <li class="list-group-item"><input type="checkbox" id="priceS" class="checkbox-inline" value="@(item.Item1+"_"+item.Item2)" @(Request.Url.Query.ToLower().Contains(item.Item1+"_"+item.Item2) ? "checked" : "")> £@item.Item1 - £@item.Item2</li>
+                                <li class="list-group-item"><input type="checkbox" id="priceS" class="checkbox-inline" value="@(item.Item1+"_"+item.Item2)" @(Request.Url.Query.ToLower().Contains(item.Item1 + "_" + item.Item2) ? "checked" : "")> @ViewBag.CurrencySymbol@item.Item1 - @ViewBag.CurrencySymbol@item.Item2</li>
                                 @*<li class="list-group-item"><input type="checkbox" id="priceS" class="checkbox-inline" value="25_50" @(Request.Url.Query.ToLower().Contains("25_50") ? "checked" : "")> £@item - £50.00</li>
                                 <li class="list-group-item"><input type="checkbox" id="priceS" class="checkbox-inline" value="50_100" @(Request.Url.Query.ToLower().Contains("50_100") ? "checked" : "")> £50.00 - £100.00</li>*@
                                  }

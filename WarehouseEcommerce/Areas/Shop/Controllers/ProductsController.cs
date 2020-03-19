@@ -282,6 +282,8 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         public PartialViewResult _DynamicFilters(string department,string groups,string subcategory)
         {
             ProductFilteringViewModel productFiltering = new ProductFilteringViewModel();
+            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
+            ViewBag.CurrencySymbol = currencyyDetail.Symbol;
             productFiltering.Manufacturer= _productlookupServices.GetAllValidProductManufacturerGroupAndDeptByName(groups, department, subcategory).Select(u=>u.Name).ToList();
             productFiltering.PriceInterval = _productlookupServices.AllPriceListAgainstGroupAndDept(groups, department, subcategory);
             return PartialView(productFiltering);

@@ -189,23 +189,29 @@
 <script>
     function GetSortedList(e) {
         var sortvalue = parseInt(e.currentTarget.value);
-        var groupId = $("#ProductGroup").val();
-        var pagenumber = $("#pagenumber").val();
-        var currentFilter = $("#currentFiltervalue").val();
-        var searchstring = $("#searchString").val();
-        var pageSize = $("#input-limit :selected").val();
-        window.location.href = "/Products/ProductCategories?productGroupId=" + groupId + "&sortOrder=" + sortvalue + "&currentFilter=" + currentFilter + "&searchString=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize;
+      
+    var groupId = $("#ProductGroups").val();
+    if (groupId === "" || groupId === undefined || groupId === null) { groupId = $("#ProductGroupsId").val(); }
+    var pagenumber = $("#pagenumber").val();
+    var departmentId = $("#departmentId").val();
+    var currentFilter = $("#currentFiltervalue").val();
+    var searchstring = $("#searchString").val();
+    var pageSize = $("#input-limit :selected").val();
+    var valuesparam = $("#valuesParameter").val();
+    window.location.href = basePath + "/shop/Products/ProductCategories?productGroup=" + groupId + "&sortOrder=" + sortvalue + "&currentFilter=" + currentFilter + "&searchString=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&department=" + departmentId + "&values=" + valuesparam;
     }
 
     function PageSizeChanges(e) {
         var pageSize = parseInt(e.currentTarget.value);
-        var sortvalue = $("#SortedValue").val();
-        var groupId = $("#ProductGroup").val();
-        var currentsort = $("#currentsortedvalue").val();
+        var sortvalue = $("#SortedValues").val();
+        var groupId = $("#ProductGroups").val();
+        if (groupId === "" || groupId === undefined || groupId === null) { groupId = $("#ProductGroupsId").val(); }
+        var pagenumber = $("#pagenumber").val();
+        var departmentId = $("#departmentId").val();
         var currentFilter = $("#currentFiltervalue").val();
         var searchstring = $("#searchString").val();
-        var pagenumber = $("#pagenumber").val();
-        window.location.href = "/Products/ProductCategories?productGroupId=" + groupId + "&sortOrder=" + currentsort + "&currentFilter=" + currentFilter + "&searchString=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize;
+var valuesparam = $("#valuesParameter").val();
+        window.location.href = basePath + "/shop/Products/ProductCategories?productGroup=" + groupId + "&sortOrder=" + sortvalue + "&currentFilter=" + currentFilter + "&searchString=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&department=" + departmentId + "&values=" + valuesparam;
     }
 
 </script>
