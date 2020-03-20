@@ -51,7 +51,7 @@
             @foreach (var item in Model)
             {
                 <li>
-                    <a href="@Url.Action("ProductCategories", "Products", new { department = item.DepartmentName })">
+                    <a class="department-a-tag" href="@Url.Action("ProductCategories", "Products", new { department = item.DepartmentName })">
                         @item.DepartmentName
                         @if (item.ProductGroups.Count > 0)
                         {

@@ -1735,3 +1735,39 @@ ul.mhp-menu {
     margin-right: 5px;
 }
 
+@media(max-device-width: 1160px) {
+    .headerMenu .core-menu {
+        height: 500px;
+        overflow-y: scroll;
+        padding-bottom: 5px;
+    }
+
+    .headerMenu .dropdown {
+        display: block !important;
+        padding: 0 20px 0 20px;
+    }
+
+        .headerMenu .dropdown li a {
+            border-bottom: 1px solid #333333;
+        }
+
+    .headerMenu .dropdown2 {
+        display: block !important;
+        margin-top: unset;
+    }
+
+    .headerMenu .department-a-tag {
+        background: #38a201;
+        margin-top: 5px;
+    }
+
+    .headerMenu .toggle2:before {
+        content: "\f107";
+    }
+
+    .headerMenu li span.toggle2 {
+        padding-left: 0.3em;
+        position: unset;
+        margin-right: unset;
+    }
+}
