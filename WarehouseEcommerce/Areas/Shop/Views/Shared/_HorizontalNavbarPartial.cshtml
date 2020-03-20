@@ -16,82 +16,10 @@
                 <div id="top-links-menu" class="text-right top-menu-links col-sm-12 col-lg-2">
                     <ul class="list-inline">
                         <li class="dropdown user_menu">
-                            <a href="#" title="@(ViewBag.UserName == " " ? "My Account" : ViewBag.UserName)" class="dropdown-toggle" data-toggle="dropdown">
-                                <svg width="24px" height="24px">
-                                    <use xlink:href="/Areas/Shop/Content/app/img/icons/icons.svg#user"></use>
-                                </svg>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-right user_account user-fa-icons">
-                                @if (@ViewBag.LoginDetail == "Login")
-                                {
-                                    <li><a href="@Url.Action("Create","User")"><i class="fa fa-user-plus"></i>Register</a></li>
-                                }
-                                else
-                                {
-                                    <li><a href="@Url.Action("Account","User")"><i class="fa fa-user"></i>@ViewBag.UserName</a></li>
-                                    <li><a href="@Url.Action("OrderHistory","User")"><i class="fa fa-cart-arrow-down"></i>Order History</a></li>
-                                    <li><a href="@Url.Action("WishList","User")"><i class="fa fa-heart"></i>Wish List</a></li>
-                                }
-
-                                @if (@ViewBag.LoginDetail == "Login")
-                                {
-                                    <li><a href="@Url.Action("login", "User")"><i class="fa fa-sign-in"></i>Login</a></li>
-                                }
-                                else
-                                {
-                                    <li><a href="@Url.Action("logout", "User")"><i class="fa fa-sign-out"></i>Logout</a></li>
-                                }
-                            </ul>
+                            @Html.Action("_UserMenuPartial")
                         </li>
                         <li id="cart-mobile" class="cart-menu">
-                            <button type="button" data-toggle="dropdown" data-loading-text="Loading..." class="btn btn-lg dropdown-toggle">
-                                <svg width="28px" height="26px">
-                                    <use xlink:href="/Areas/Shop/Content/app/img/icons/icons.svg#hcart"></use>
-                                </svg>
-                                <span id="cart-total-mobile">@(ViewBag.CartItemCount == 0 ? 0 : ViewBag.CartItemCount)</span>
-                            </button>
-                            <ul id="cart-dropdown-menu" class="dropdown-menu  cart-menu-height" style="overflow:auto">
-                                @if (ViewBag.CartItemCount != 0)
-                                {
-                                    <li>
-                                        <table>
-                                            <tbody>
-                                                @foreach (var item in ViewBag.CartItems)
-                                                {
-                                                    <tr>
-
-                                                        <td><a href="@Url.Action("AddToCart","Products")"><img src=@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage)? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif") alt="@(item?.ProductMaster?.Name)"></a></td>
-                                                        <td>
-                                                            <div class="ordered-items">
-                                                                <p>
-                                                                    <a href="@Url.Action("AddToCart","Products")">@(item.ProductMaster?.Name)<br /><span style="font-weight:bold;">Sku:</span>@(item.ProductMaster?.SKUCode)<br /><span style="font-weight:bold;">Qty:</span>@(item.Qty)</a>
-                                                                </p>
-
-                                                                @*<ul>
-                                                                    <li>
-                                                                        Sku: <span>@(item.ProductMaster?.SKUCode)</span>
-                                                                    </li>
-                                                                    <li>Size: <span>M</span></li>
-                                                                    <li>
-                                                                        Quantity: <span>@item.Qty</span>
-                                                                    </li>
-                                                                </ul>*@
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                }
-                                            </tbody>
-                                        </table>
-                                        @* <a href="@Url.Action("AddToCart","Products")">Go to shopping cart</a>*@
-                                    </li>
-                                }
-                                else
-                                {
-                                    <li>
-                                        <p class="text-center">Your Basket is empty!</p>
-                                    </li>
-                                }
-                            </ul>
+                            @Html.Action("_CartMenuPartial")
                         </li>
                     </ul>
                 </div>
@@ -106,24 +34,6 @@
                         <button type="button" id="btn-search-category" class="btn btn-search-category">Search</button>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div id="mobileMenu" class="sidenav">
-            <div class="close-nav">
-                <span class="categories">Category</span>
-                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i class="fa fa-close"></i></a>
-            </div>
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <ul class="nav navbar-nav">
-                    @if (ViewBag.departments != null)
-                    {
-                        var department = ViewBag.departments as List<TenantDepartments>;
-                        foreach (var item in department)
-                        {
-                            <li><a href="@Url.Action("_GetProductByGroupsAndDepartment", "Home", new { DepartmentId = item.DepartmentName })">@item.DepartmentName</a></li>
-                        }
-                    }
-                </ul>
             </div>
         </div>
     </div>

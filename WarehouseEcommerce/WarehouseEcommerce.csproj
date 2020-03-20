@@ -496,6 +496,8 @@
     <Content Include="Areas\Shop\Views\User\WishList.cshtml" />
     <Content Include="Areas\Shop\Views\Shared\_AccountSideBar.cshtml" />
     <Content Include="Areas\Shop\Views\Products\_DynamicFilters.cshtml" />
+    <Content Include="Areas\Shop\Views\Shared\_UserMenuPartial.cshtml" />
+    <Content Include="Areas\Shop\Views\Shared\_CartMenuPartial.cshtml" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\Shop\Scripts\bootstrap.js" />

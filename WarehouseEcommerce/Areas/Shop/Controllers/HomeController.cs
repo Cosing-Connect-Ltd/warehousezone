@@ -58,6 +58,30 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             ViewBag.CurrencyName = currencyyDetail.CurrencyName;
             return PartialView();
         }
+        public PartialViewResult _UserMenuPartial()
+        {
+            caCurrent caUser = new caCurrent();
+            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
+            ViewBag.CartItemCount = GaneCartItemsSessionHelper.GetCartItemsSession().Count;
+            ViewBag.CartItems = GaneCartItemsSessionHelper.GetCartItemsSession().ToList();
+            ViewBag.ProductGroups = new SelectList(_lookupServices.GetAllValidProductGroups((CurrentTenantId), 12), "ProductGroupId", "ProductGroup");
+            ViewBag.UserName = CurrentUser.UserFirstName + " " + CurrentUser.UserLastName;
+            ViewBag.Symbol = currencyyDetail.Symbol;
+            ViewBag.CurrencyName = currencyyDetail.CurrencyName;
+            return PartialView();
+        }
+        public PartialViewResult _CartMenuPartial()
+        {
+            caCurrent caUser = new caCurrent();
+            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
+            ViewBag.CartItemCount = GaneCartItemsSessionHelper.GetCartItemsSession().Count;
+            ViewBag.CartItems = GaneCartItemsSessionHelper.GetCartItemsSession().ToList();
+            ViewBag.ProductGroups = new SelectList(_lookupServices.GetAllValidProductGroups((CurrentTenantId), 12), "ProductGroupId", "ProductGroup");
+            ViewBag.UserName = CurrentUser.UserFirstName + " " + CurrentUser.UserLastName;
+            ViewBag.Symbol = currencyyDetail.Symbol;
+            ViewBag.CurrencyName = currencyyDetail.CurrencyName;
+            return PartialView();
+        }
 
         public PartialViewResult _VerticalNavBarPartial()
         {
