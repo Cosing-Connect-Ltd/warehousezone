@@ -18,14 +18,15 @@ function searchPoducts() {
 
 function SearchProductCategory() {
     var productgroupId = $("#ProductGroups").val();
-    var searchstring = $("#text-search").val();
+    var searchstring = $(".text-search").val();
     var valuesparam = $("#valuesParameter").val();
     window.location.href = basePath + "/shop/Products/ProductCategories?productGroup=" + productgroupId + "&searchString=" + searchstring + "&values=" + valuesparam;
 }
 
 var searchvalues;
 var seeall = true;
-$('#text-search').autocomplete({
+$('.text-search').on('input', function () {
+    $(this).autocomplete({
     minLength: 2,
     source: function (request, response) {
         searchvalues = request.term;
@@ -70,7 +71,8 @@ $('#text-search').autocomplete({
     return $('<li class="search-item">')
         .append("<img style='width: 46px; height:46px;' src=" + item.Path + " alt=" + item.Name + "/>")
         .append("<a href=" + basePath + "/Shop/Products/ProductCategories?productGroupId=" + $("#ProductGroups").val() + "&searchString=" + item.Name +"&values=" + $("#valuesParameter").val()+">" + item.Name + "</a>").appendTo(ul);
-};
+        };
+});
 
 function updateTextBox(event, ui) {
     $(this).val(ui.item.Name);

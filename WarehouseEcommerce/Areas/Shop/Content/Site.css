@@ -1731,4 +1731,7 @@ ul.mhp-menu {
         transform: rotate(-45deg);
     }
 }
+#accordion .list-group-item input{
+    margin-right: 5px;
+}
 
