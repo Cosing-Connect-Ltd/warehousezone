@@ -1423,7 +1423,7 @@ namespace Ganedata.Core.Data.Helpers
 
                 if (!headers.Contains("product code") || !headers.Contains("manufacturer code") || !headers.Contains("description") || !headers.Contains("description 2") &&
                     (!headers.Contains("inventory") || !headers.Contains("base unit of measure") || !headers.Contains("buy price")) || !headers.Contains("sell price")
-                     || !headers.Contains("preferred vendor no") || !headers.Contains("barcode"))
+                     || !headers.Contains("preferred vendor no") || !headers.Contains("barcode") || !headers.Contains("outer barcode"))
                 {
                     return $"File headers mismatch! Please add required headers";
                 }
