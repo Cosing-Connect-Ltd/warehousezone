@@ -13,5 +13,9 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         {
             return View();
         }
+        public PartialViewResult _SocialMediaAccountsPartial()
+        {
+            return PartialView();
+        }
     }
 }

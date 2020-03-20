@@ -51,11 +51,7 @@
                 <a class="" href="@Url.Action("Login","User", new {PlaceOrder=(bool?)ViewBag.PlaceOrders})">Login</a>
             </div>
             <ul class="list-unstyled list-inline social">
-                <li class="facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
-                <li class="twitter"><a href="#"><i class="fa fa-twitter"></i></a></li>
-                <li class="rss"><a href="#"><i class="fa fa-rss"></i></a></li>
-                <li class="pinterest"><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                <li class="vimeo"><a href="#"><i class="fa fa-vimeo"></i></a></li>
+                @Html.Action("_SocialMediaAccountsPartial", "Default")
             </ul>
         </div>
 
