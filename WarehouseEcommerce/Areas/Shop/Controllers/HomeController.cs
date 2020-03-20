@@ -183,7 +183,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
 
         public PartialViewResult _HorizontalNavbarPartial()
         {
-            var productDepartments = _lookupServices.GetAllValidTenantDepartments(CurrentTenantId).Take(8).ToList();
+            var productDepartments = _lookupServices.GetAllValidTenantDepartments(CurrentTenantId).Take(20).ToList();
             ViewBag.UserName = CurrentUser.UserFirstName + " " + CurrentUser.UserLastName;
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.CartItemCount = GaneCartItemsSessionHelper.GetCartItemsSession().Count;

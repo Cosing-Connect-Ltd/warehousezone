@@ -19,6 +19,8 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Image Path")]
         public string ImagePath { get; set; }
         public string Note { get; set; }
+        [Display(Name = "Manufacturer Code")]
+        public string MFGCode { get; set; }
         [ForeignKey("TenantId")]
         public virtual Tenant Tenant { get; set; }
     }

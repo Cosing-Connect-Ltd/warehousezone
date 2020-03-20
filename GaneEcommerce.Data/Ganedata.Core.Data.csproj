@@ -715,6 +715,10 @@
     <Compile Include="Migrations\202003191211157_listofproductcategories-added-in-productgroup.designer.cs">
       <DependentUpon>202003191211157_listofproductcategories-added-in-productgroup.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003201317172_added-ManufacturerCode-as-MFGCode-in-ProductManufacturer.cs" />
+    <Compile Include="Migrations\202003201317172_added-ManufacturerCode-as-MFGCode-in-ProductManufacturer.designer.cs">
+      <DependentUpon>202003201317172_added-ManufacturerCode-as-MFGCode-in-ProductManufacturer.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1571,6 +1575,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003191211157_listofproductcategories-added-in-productgroup.resx">
       <DependentUpon>202003191211157_listofproductcategories-added-in-productgroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003201317172_added-ManufacturerCode-as-MFGCode-in-ProductManufacturer.resx">
+      <DependentUpon>202003201317172_added-ManufacturerCode-as-MFGCode-in-ProductManufacturer.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
