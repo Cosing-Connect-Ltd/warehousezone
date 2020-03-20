@@ -754,9 +754,6 @@ ul.mhp-menu {
         margin: 0px 0px 0 10px;
     }
 }
-.deliveryinfo-row {
-    display: flex;
-}
 .t-center{
     text-align:center!important;
 }
@@ -808,8 +805,9 @@ ul.mhp-menu {
     }
     .deliveryinfo {
         padding-top: unset;
+        padding-bottom: unset;
+        height: unset;
     }
-
     .search-by-category {
         margin-bottom: 10px;
         margin-top: 10px;
@@ -1737,7 +1735,7 @@ ul.mhp-menu {
 
 @media(max-device-width: 1160px) {
     .headerMenu .core-menu {
-        height: 500px;
+        height: 400px;
         overflow-y: scroll;
         padding-bottom: 5px;
     }

@@ -1796,6 +1796,7 @@ header {
     background-color: #fff;
     padding: 10px 0 10px 0;
     border-radius: 4px;
+    height:64px;
 }
 
     .deliveryinfo ul:hover svg {
@@ -1839,6 +1840,7 @@ header {
         text-align: left !important;
     }
     .deliveryinfo-row {
+        display:flex;
         flex-wrap:wrap;
     }
     .deliveryinfo-row {
