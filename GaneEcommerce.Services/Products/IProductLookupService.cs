@@ -22,9 +22,9 @@ namespace Ganedata.Core.Services
         ProductGroups GetProductGroupById(int productGroupId);
         IQueryable<ProductMaster> GetAllValidProductGroupById(int? productGroupId,int?departmentId=null);
         IQueryable<ProductMaster> GetAllValidProductGroupAndDeptByName(string productGroup, string department = "", string SubCategory = "");
-        IEnumerable<ProductManufacturer> GetAllValidProductManufacturerGroupAndDeptByName(string productGroup, string department = "", string SubCategory = "");
+        IEnumerable<ProductManufacturer> GetAllValidProductManufacturerGroupAndDeptByName(IQueryable<ProductMaster> productMasters, string productGroup, string department = "", string SubCategory = "");
 
-        List<Tuple<string, string>> AllPriceListAgainstGroupAndDept(string productGroup, string department = "", string SubCategory = "");
+        List<Tuple<string, string>> AllPriceListAgainstGroupAndDept(IQueryable<ProductMaster> productMasters,string productGroup, string department = "", string SubCategory = "");
 
         ProductGroups GetProductGroupByName(string groupName);
         PalletType GetPalletTypeByName(string palletType);
@@ -58,5 +58,7 @@ namespace Ganedata.Core.Services
         List<WastageReason> GetAllWastageReasons();
 
         IQueryable<ProductMaster> FilterProduct(IQueryable<ProductMaster> productMaster, string filterstring);
+
+        Dictionary<string, List<ProductAttributeValues>> GetAllValidProductAttributeValuesByProductIds(IQueryable<ProductMaster> product);
     }
 }

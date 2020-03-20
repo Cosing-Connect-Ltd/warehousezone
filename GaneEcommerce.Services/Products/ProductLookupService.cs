@@ -46,12 +46,24 @@ namespace Ganedata.Core.Services
             return _currentDbContext.ProductAttributeValuesMap
                 .Where(a => a.ProductId == productId && a.IsDeleted != true).Select(a => a.ProductAttributeValues);
         }
+
+        public Dictionary<string, List<ProductAttributeValues>> GetAllValidProductAttributeValuesByProductIds(IQueryable<ProductMaster> product)
+        {
+            var productId = product.Select(u => u.ProductId).ToList();
+            var valuesid = _currentDbContext.ProductAttributeValuesMap
+                .Where(a => productId.Contains(a.ProductId) && a.IsDeleted != true).Select(a => a.AttributeValueId).Distinct().ToList();
+            var productAttributs=  _currentDbContext.ProductAttributeValues.Where(u => valuesid.Contains(u.AttributeValueId)).ToList();
+           return productAttributs.GroupBy(o => o.AttributeId).ToDictionary(g => g.Key.ToString(), g => g.ToList());
+
+        }
+
+
         public IQueryable<ProductMaster> GetAllValidProductGroupById(int? productGroupId, int? departmentId = null)
         {
             return _currentDbContext.ProductMaster
                 .Where(a => ((!productGroupId.HasValue || a.ProductGroupId == productGroupId) && (!departmentId.HasValue || a.DepartmentId == departmentId)) && a.IsDeleted != true).Include(u => u.ProductManufacturer);
         }
-        public IQueryable<ProductMaster> GetAllValidProductGroupAndDeptByName(string productGroup, string department = "",string SubCategory="")
+        public IQueryable<ProductMaster> GetAllValidProductGroupAndDeptByName(string productGroup, string department = "", string SubCategory = "")
         {
             int? productGroupId = _currentDbContext.ProductGroups.FirstOrDefault(u => u.ProductGroup == productGroup && u.IsDeleted != true)?.ProductGroupId;
             int? departmentId = _currentDbContext.TenantDepartments.FirstOrDefault(u => u.DepartmentName == department && u.IsDeleted != true)?.DepartmentId;
@@ -60,43 +72,29 @@ namespace Ganedata.Core.Services
                 .Where(a => ((!productGroupId.HasValue || a.ProductGroupId == productGroupId) && (!departmentId.HasValue || a.DepartmentId == departmentId) && (!subCategoryId.HasValue || a.ProductCategoryId == subCategoryId)) && a.IsDeleted != true).Include(u => u.ProductManufacturer);
         }
 
-        public IEnumerable<ProductManufacturer> GetAllValidProductManufacturerGroupAndDeptByName(string productGroup, string department = "", string SubCategory = "")
+        public IEnumerable<ProductManufacturer> GetAllValidProductManufacturerGroupAndDeptByName(IQueryable<ProductMaster> productMasters, string productGroup, string department = "", string SubCategory = "")
         {
-            int? productGroupId = _currentDbContext.ProductGroups.FirstOrDefault(u => u.ProductGroup == productGroup && u.IsDeleted != true)?.ProductGroupId;
-            int? departmentId = _currentDbContext.TenantDepartments.FirstOrDefault(u => u.DepartmentName == department && u.IsDeleted != true)?.DepartmentId;
-            int? subCategoryId = _currentDbContext.ProductCategories.FirstOrDefault(u => u.ProductCategoryName == SubCategory && u.IsDeleted != true)?.ProductCategoryId;
-            var productmanufacturerId=  _currentDbContext.ProductMaster.Where(a => ((!productGroupId.HasValue || a.ProductGroupId == productGroupId) && (!departmentId.HasValue || a.DepartmentId == departmentId) && (!subCategoryId.HasValue || a.ProductCategoryId == subCategoryId)) && a.IsDeleted != true).Select(u=>u.ManufacturerId).ToList();
+
+            var productmanufacturerId = productMasters.Select(u => u.ManufacturerId).ToList();
             return _currentDbContext.ProductManufacturers.Where(u => productmanufacturerId.Contains(u.Id));
 
         }
-        public List<Tuple<string, string>> AllPriceListAgainstGroupAndDept(string productGroup, string department = "", string SubCategory = "")
+        public List<Tuple<string, string>> AllPriceListAgainstGroupAndDept(IQueryable<ProductMaster> productMasters, string productGroup, string department = "", string SubCategory = "")
         {
             List<Tuple<string, string>> Prices = new List<Tuple<string, string>>();
-            int ? productGroupId = _currentDbContext.ProductGroups.FirstOrDefault(u => u.ProductGroup == productGroup && u.IsDeleted != true)?.ProductGroupId;
-            int? departmentId = _currentDbContext.TenantDepartments.FirstOrDefault(u => u.DepartmentName == department && u.IsDeleted != true)?.DepartmentId;
-            int? subCategoryId = _currentDbContext.ProductCategories.FirstOrDefault(u => u.ProductCategoryName == SubCategory && u.IsDeleted != true)?.ProductCategoryId;
-            var avarageValue= _currentDbContext.ProductMaster.Where(a => ((!productGroupId.HasValue || a.ProductGroupId == productGroupId) && (!departmentId.HasValue || a.DepartmentId == departmentId) && (!subCategoryId.HasValue || a.ProductCategoryId == subCategoryId)) && a.IsDeleted != true).Select(u => u.SellPrice);
+
+            var avarageValue = productMasters.Select(u => u.SellPrice);
             var avgValue = avarageValue.Average();
             var averageInt = Convert.ToInt32(avgValue);
             var minValue = Convert.ToInt32(avarageValue.Min());
             var maxValue = Convert.ToInt32(avarageValue.Max());
-            var centervalue = Convert.ToInt32(avarageValue.FirstOrDefault(u => u.Value > avgValue && u.Value < maxValue)==null?0: avarageValue.FirstOrDefault(u => u.Value > avgValue && u.Value < maxValue));
-            Prices.Add(new Tuple<string, string>(minValue.ToString(), averageInt.ToString("D4")));
-            Prices.Add(new Tuple<string, string>(averageInt.ToString("D4"),  centervalue.ToString()));
-            Prices.Add(new Tuple<string, string>(centervalue.ToString(),  maxValue.ToString()));
+            var centervalue = Convert.ToInt32(avarageValue.FirstOrDefault(u => u.Value > avgValue && u.Value < maxValue) == null ? 0 : avarageValue.FirstOrDefault(u => u.Value > avgValue && u.Value < maxValue));
+            Prices.Add(new Tuple<string, string>(minValue.ToString(), averageInt.ToString()));
+            Prices.Add(new Tuple<string, string>(averageInt.ToString(), centervalue.ToString()));
+            Prices.Add(new Tuple<string, string>(centervalue.ToString(), maxValue.ToString()));
             return Prices;
         }
-        private List<List<decimal[]>> SplitList(List<decimal[]> locations, int nSize = 20)
-        {
-            var list = new List<List<decimal[]>>();
 
-            for (int i = 0; i < locations.Count; i += nSize)
-            {
-                list.Add(locations.GetRange(i, Math.Min(nSize, locations.Count - i)));
-            }
-
-            return list;
-        }
 
         public IEnumerable<ProductAttributeValuesMap> GetAllValidProductAttributeValuesMap()
         {
@@ -114,85 +112,100 @@ namespace Ganedata.Core.Services
         public IQueryable<ProductMaster> FilterProduct(IQueryable<ProductMaster> productMaster, string filterstring)
         {
             Dictionary<string, List<string>> filters = new Dictionary<string, List<string>>();
-            if (!string.IsNullOrEmpty(filterstring))
+            try
             {
-                var data = filterstring.Split('/');
-                foreach (var item in data)
+
+                if (!string.IsNullOrEmpty(filterstring))
                 {
-                    if (!string.IsNullOrEmpty(item))
+                    var data = filterstring.Split('/');
+                    foreach (var item in data)
                     {
-                        var filtersData = item.Split('-');
-                        List<string> value = new List<string>();
-                        if (filtersData.Length >= 2)
+                        if (!string.IsNullOrEmpty(item))
                         {
-                            value = filtersData[1].Split(',').Select(i => i.ToLower()).ToList();
-                            if (!filters.Keys.Contains(filtersData[0]))
+                            var filtersData = item.Split('-');
+                            List<string> value = new List<string>();
+                            if (filtersData.Length >= 2)
                             {
-                                filters.Add(filtersData[0], value);
-                            }
-                        }
-
-
-                    }
-
-                }
-                foreach (var item in filters)
-                {
-                    if (item.Key.Equals("stockS"))
-                    {
-                        if (item.Value.Count > 1)
-                        {
-                            productMaster = productMaster.Where(u => ((u.InventoryStocks.Sum(rv => rv.Available)) > 0) || (u.InventoryStocks.Any(rv => rv.InStock <= 0)));
-                        }
-                        else if (item.Value.Contains("in_stock"))
-                        {
-                            productMaster = productMaster.Where(u => (u.InventoryStocks.Sum(rv => rv.Available)) > 0);
-                        }
-                        else if (item.Value.Contains("out_stock"))
-                        {
-                            productMaster = productMaster.Where(u => u.InventoryStocks.Any(rv => rv.InStock <= 0));
-                        }
-
-                    }
-                    if (item.Key.Equals("priceS"))
-                    {
-                        List<decimal> prices = new List<decimal>();
-                        if (item.Value.Count > 0)
-                        {
-                            foreach (var price in item.Value)
-                            {
-                                var range = price.Split('_');
-                                if (range.Length >= 2)
+                                value = filtersData[1].Split(',').Select(i => i.ToLower()).ToList();
+                                if (!filters.Keys.Contains(filtersData[0]))
                                 {
-                                    prices.Add(Convert.ToDecimal(range[0]));
-                                    prices.Add(Convert.ToDecimal(range[1]));
+                                    filters.Add(filtersData[0], value);
                                 }
+                            }
 
+
+                        }
+
+                    }
+                    foreach (var item in filters)
+                    {
+                        if (item.Key.Equals("stockS"))
+                        {
+                            if (item.Value.Count > 1)
+                            {
+                                productMaster = productMaster.Where(u => ((u.InventoryStocks.Sum(rv => rv.Available)) > 0) || (u.InventoryStocks.Any(rv => rv.InStock <= 0) || u.InventoryStocks.Count<0));
+                            }
+                            else if (item.Value.Contains("in_stock"))
+                            {
+                                productMaster = productMaster.Where(u => (u.InventoryStocks.Sum(rv => rv.Available)) > 0);
+                            }
+                            else if (item.Value.Contains("out_stock"))
+                            {
+                                productMaster = productMaster.Where(u => u.InventoryStocks.Any(rv => rv.InStock <= 0));
+                            }
+
+                        }
+                        if (item.Key.Equals("priceS"))
+                        {
+                            List<decimal> prices = new List<decimal>();
+                            if (item.Value.Count > 0)
+                            {
+                                foreach (var price in item.Value)
+                                {
+                                    var range = price.Split('_');
+                                    if (range.Length >= 2)
+                                    {
+                                        prices.Add(Convert.ToDecimal(range[0]));
+                                        prices.Add(Convert.ToDecimal(range[1]));
+                                    }
+
+                                }
+                            }
+                            if (prices.Count > 0)
+                            {
+                                decimal? min = prices.Min();
+                                decimal? max = prices.Max();
+                                productMaster = productMaster.Where(u => u.SellPrice >= min && u.SellPrice <= max);
                             }
                         }
-                        if (prices.Count > 0)
+                        if (item.Key.Contains("BrandS"))
                         {
-                            decimal? min = prices.Min();
-                            decimal? max = prices.Max();
-                            productMaster = productMaster.Where(u => u.SellPrice >= min && u.SellPrice <= max);
+                            var result = item.Value.Select(s => s.Replace("_", " ")).ToList();
+                            productMaster = productMaster.Where(u => result.Contains(u.ProductManufacturer.Name));
+
                         }
-                    }
-                    if (item.Key.Contains("BrandS"))
-                    {
-                        item.Value.ForEach(u => u.Replace("_", " "));
-                        productMaster = productMaster.Where(u => item.Value.Contains(u.ProductManufacturer.Name));
+                        if (item.Key.Length > 0 && (!item.Key.Equals("BrandS") && !item.Key.Equals("priceS") && !item.Key.Equals("stockS")))
+                        {
+                            var result=item.Value.Select(s => s.Replace("_", " ")).ToList();
+                            var attributeValueId = _currentDbContext.ProductAttributeValues.Where(u => result.Contains(u.Value)).Select(u => u.AttributeValueId).ToList();
+                            var productids = _currentDbContext.ProductAttributeValuesMap.Where(u => attributeValueId.Contains(u.AttributeValueId)).Select(u => u.ProductId).ToList();
+                            productMaster = productMaster.Where(u => productids.Contains(u.ProductId));
+                        }
+
+
 
                     }
+
 
 
 
                 }
-
-
-
-
             }
+            catch (Exception ex)
+            {
 
+                throw;
+            }
             return productMaster;
 
         }

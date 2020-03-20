@@ -39,66 +39,74 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             _productPriceService = productPriceService;
         }
         // GET: Products
-        
-        public ActionResult ProductCategories(string productGroup, int? sortOrder, string currentFilter, string searchString, string values,  int? page, int? pagesize = 20, string department = "", string SubCategory = "")
+
+        public ActionResult ProductCategories(string productGroup, int? sortOrder, string currentFilter, string searchString, string values, int? page, int? pagesize = 20, string department = "", string SubCategory = "")
         {
-            
-            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
-            ViewBag.groupId = productGroup;
-            ViewBag.departmentId = department;
-            ViewBag.CurrentSort = sortOrder;
-            ViewBag.SortedValues = (sortOrder ?? 1);
-            ViewBag.pageList = new SelectList(from d in Enumerable.Range(1, 5) select new SelectListItem { Text = (d * 10).ToString(), Value = (d * 10).ToString() }, "Value", "Text", pagesize);
-            ViewBag.searchString = searchString;
-            ViewBag.CurrencySymbol = currencyyDetail.Symbol;
-            ViewBag.subcategory = SubCategory;
-            var product = _productlookupServices.GetAllValidProductGroupAndDeptByName(productGroup, department,SubCategory);
-           
-            if (!string.IsNullOrEmpty(searchString))
+            try
             {
-                page = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-            }
-            ViewBag.CurrentFilter = searchString;
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                product = product.Where(s => s.Name.Contains(searchString));
-            }
-            switch ((SortProductTypeEnum)(sortOrder ?? 1))
-            {
-                case SortProductTypeEnum.PriceByDesc:
-                    product = product.OrderByDescending(s => s.SellPrice);
-                    break;
-                case SortProductTypeEnum.NameByAsc:
-                    product = product.OrderBy(s => s.Name);
-                    break;
-                case SortProductTypeEnum.PriceByAsc:
-                    product = product.OrderBy(s => s.SellPrice);
-                    break;
-                default:  // Name ascending 
-                    product = product.OrderBy(s => s.Name);
-                    break;
-            }
-            product= _productlookupServices.FilterProduct(product,values);
-            int pageSize = pagesize ?? 10;
-            int pageNumber = (page ?? 1);
-            var pageedlist = product.ToPagedList(pageNumber, pageSize);
-            page = pageNumber = pageNumber > pageedlist.PageCount ? pageedlist.PageCount : pageNumber;
-            var data = product.ToPagedList((pageNumber == 0 ? 1 : pageNumber), pageSize);
-            if (data.Count > 0)
-            {
-                data.ToList().ForEach(u =>
-                u.SellPrice = (Math.Round((_productPriceService.GetProductPriceThresholdByAccountId(u.ProductId, null).SellPrice) * (currencyyDetail.Rate ?? 1), 2))
 
-                );
+                var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
+                ViewBag.groupId = productGroup;
+                ViewBag.departmentId = department;
+                ViewBag.CurrentSort = sortOrder;
+                ViewBag.SortedValues = (sortOrder ?? 1);
+                ViewBag.pageList = new SelectList(from d in Enumerable.Range(1, 5) select new SelectListItem { Text = (d * 10).ToString(), Value = (d * 10).ToString() }, "Value", "Text", pagesize);
+                ViewBag.searchString = searchString;
+                ViewBag.CurrencySymbol = currencyyDetail.Symbol;
+                ViewBag.subcategory = SubCategory;
+                var product = _productlookupServices.GetAllValidProductGroupAndDeptByName(productGroup, department, SubCategory);
+
+                if (!string.IsNullOrEmpty(searchString))
+                {
+                    page = 1;
+                }
+                else
+                {
+                    searchString = currentFilter;
+                }
+                ViewBag.CurrentFilter = searchString;
+                if (!string.IsNullOrEmpty(searchString))
+                {
+                    product = product.Where(s => s.Name.Contains(searchString));
+                }
+                switch ((SortProductTypeEnum)(sortOrder ?? 1))
+                {
+                    case SortProductTypeEnum.PriceByDesc:
+                        product = product.OrderByDescending(s => s.SellPrice);
+                        break;
+                    case SortProductTypeEnum.NameByAsc:
+                        product = product.OrderBy(s => s.Name);
+                        break;
+                    case SortProductTypeEnum.PriceByAsc:
+                        product = product.OrderBy(s => s.SellPrice);
+                        break;
+                    default:  // Name ascending 
+                        product = product.OrderBy(s => s.Name);
+                        break;
+                }
+                product = _productlookupServices.FilterProduct(product, values);
+                int pageSize = pagesize ?? 10;
+                int pageNumber = (page ?? 1);
+                var pageedlist = product.ToPagedList(pageNumber, pageSize);
+                page = pageNumber = pageNumber > pageedlist.PageCount ? pageedlist.PageCount : pageNumber;
+                var data = product.ToPagedList((pageNumber == 0 ? 1 : pageNumber), pageSize);
+                if (data.Count > 0)
+                {
+                    data.ToList().ForEach(u =>
+                    u.SellPrice = (Math.Round((_productPriceService.GetProductPriceThresholdByAccountId(u.ProductId, null).SellPrice) * (currencyyDetail.Rate ?? 1), 2))
+
+                    );
+                }
+
+
+                return View(data);
             }
-           
+            catch (Exception ex)
+            {
 
-
-            return View(data);
+                return Content("Issue of getting data  " + ex.Message);
+                
+            }
 
         }
 
@@ -279,17 +287,20 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             return View();
         }
 
-        public PartialViewResult _DynamicFilters(string department,string groups,string subcategory)
+        public PartialViewResult _DynamicFilters(string department, string groups, string subcategory)
         {
             ProductFilteringViewModel productFiltering = new ProductFilteringViewModel();
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.CurrencySymbol = currencyyDetail.Symbol;
-            productFiltering.Manufacturer= _productlookupServices.GetAllValidProductManufacturerGroupAndDeptByName(groups, department, subcategory).Select(u=>u.Name).ToList();
-            productFiltering.PriceInterval = _productlookupServices.AllPriceListAgainstGroupAndDept(groups, department, subcategory);
+            var products = _productlookupServices.GetAllValidProductGroupAndDeptByName(groups, department, subcategory);
+            productFiltering.Manufacturer = _productlookupServices.GetAllValidProductManufacturerGroupAndDeptByName(products,groups, department, subcategory).Select(u => u.Name).ToList();
+            productFiltering.PriceInterval = _productlookupServices.AllPriceListAgainstGroupAndDept(products,groups, department, subcategory);
+            productFiltering.AttributeValues = _productlookupServices.GetAllValidProductAttributeValuesByProductIds(products);
+            
             return PartialView(productFiltering);
         }
 
-     
+
 
 
     }

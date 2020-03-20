@@ -260,8 +260,10 @@ $("input[type=checkbox]").on("change", function () {
     var arr = []
     var data = "";
     var str = $(location).attr('href');
-    var re = new RegExp("&page=\\d+");
-    str = str.replace(re, '')
+    var pagerep = new RegExp("&page=\\d+");
+    str = str.replace(pagerep, '')
+    str = removeURLParameter(str, "page");
+
     if (str.indexOf("&") > 0)
     {
         var result = str.substring(str.indexOf("&values"), (str.length));
@@ -309,3 +311,24 @@ $("input[type=checkbox]").on("change", function () {
 
 
 });
+
+function removeURLParameter(url, parameter) {
+    //prefer to use l.search if you have a location/link object
+    var urlparts = url.split('?');
+    if (urlparts.length >= 2) {
+
+        var prefix = encodeURIComponent(parameter) + '=';
+        var pars = urlparts[1].split(/[&;]/g);
+          for (var i = pars.length; i-- > 0;) {
+           
+            if (pars[i].lastIndexOf(prefix, 0) !== -1) {
+                pars.splice(i, 1);
+            }
+        }
+
+        url = urlparts[0] + '?' + pars.join('&');
+        return url;
+    } else {
+        return url;
+    }
+}

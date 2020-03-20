@@ -15,6 +15,8 @@ namespace Ganedata.Core.Entities.Domain
 
         public string  CurrencySymbol { get; set; }
 
+        public Dictionary<string,List<ProductAttributeValues>> AttributeValues { get; set; }
+
 
     }
 }

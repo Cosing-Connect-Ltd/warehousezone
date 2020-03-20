@@ -47,14 +47,15 @@
                                 {
 
 
-                                <li class="list-group-item"><input type="checkbox" id="priceS" class="checkbox-inline" value="@(item.Item1+"_"+item.Item2)" @(Request.Url.Query.ToLower().Contains(item.Item1 + "_" + item.Item2) ? "checked" : "")> @ViewBag.CurrencySymbol@item.Item1 - @ViewBag.CurrencySymbol@item.Item2</li>
-                                @*<li class="list-group-item"><input type="checkbox" id="priceS" class="checkbox-inline" value="25_50" @(Request.Url.Query.ToLower().Contains("25_50") ? "checked" : "")> £@item - £50.00</li>
-                                <li class="list-group-item"><input type="checkbox" id="priceS" class="checkbox-inline" value="50_100" @(Request.Url.Query.ToLower().Contains("50_100") ? "checked" : "")> £50.00 - £100.00</li>*@
-                                 }
+                                    <li class="list-group-item"><input type="checkbox" id="priceS" class="checkbox-inline" value="@(item.Item1+"_"+item.Item2)" @(Request.Url.Query.ToLower().Contains(item.Item1 + "_" + item.Item2) ? "checked" : "")> @ViewBag.CurrencySymbol@item.Item1 - @ViewBag.CurrencySymbol@item.Item2</li>
+                                    @*<li class="list-group-item"><input type="checkbox" id="priceS" class="checkbox-inline" value="25_50" @(Request.Url.Query.ToLower().Contains("25_50") ? "checked" : "")> £@item - £50.00</li>
+                                        <li class="list-group-item"><input type="checkbox" id="priceS" class="checkbox-inline" value="50_100" @(Request.Url.Query.ToLower().Contains("50_100") ? "checked" : "")> £50.00 - £100.00</li>*@
+                                }
                             </ul>
                         </div>
                     </div>
                 </div>
+
                 <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="headingThree">
                         <h4 class="panel-title">
@@ -66,18 +67,45 @@
                     <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
                         <div class="panel-body">
                             <ul class="">
-                                
-                                    @foreach (var item in Model.Manufacturer)
-                                    {
-                                        string name = item.Replace(" ", "_");
-                                        <li class="list-group-item"><input type="checkbox" id="BrandS" class="checkbox-inline" value="@(item.Replace(" ", "_"))" @(Request.Url.Query.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(item)</li>
-                                    }
-                                
+
+                                @foreach (var item in Model.Manufacturer)
+                                {
+                                    string name = item.Replace(" ", "_");
+                                    <li class="list-group-item"><input type="checkbox" id="BrandS" class="checkbox-inline" value="@(item.Replace(" ", "_"))" @(Request.Url.Query.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(item)</li>
+                                }
+
 
                             </ul>
                         </div>
                     </div>
                 </div>
+                @* Adding dynmic attributes here *@
+                @foreach (var item in Model.AttributeValues)
+                {
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="heading_@(item.Key)">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_@(item.Key)" aria-expanded="true" aria-controls="collapse_@(item.Key)">
+                                    @item.Value.FirstOrDefault().ProductAttributes.AttributeName
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapse_@(item.Key)" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading_@(item.Key)">
+                            <div class="panel-body">
+                                <ul class="">
+
+                                    @foreach (var items in item.Value)
+                                    {
+                                        string name = items.Value.Replace(" ", "_");
+                                        <li class="list-group-item"><input type="checkbox" id="@items.ProductAttributes.AttributeName.Replace(" ", "_")" class="checkbox-inline" value="@(items.Value.Replace(" ", "_"))" @(Request.Url.Query.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(items.Value)</li>
+                                    }
+
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
 
