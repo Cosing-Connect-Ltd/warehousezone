@@ -89,6 +89,7 @@ namespace WMS
                 cfg.CreateMap<GlobalTax, GlobalTaxViewModel>().ReverseMap();
                 cfg.CreateMap<PalletProductsSync, PalletProductAddViewModel>().ReverseMap();
                 cfg.CreateMap<AssetLogViewModel, Observation>().ReverseMap();
+                cfg.CreateMap<ProductKitMapViewModel, ProductKitMap>().ReverseMap();
             });
 
             return config;

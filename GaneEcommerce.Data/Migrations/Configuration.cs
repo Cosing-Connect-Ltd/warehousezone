@@ -36,9 +36,9 @@ namespace Ganedata.Core.Data.Migrations
 
 
             //Customer Data Seeds
-            // ***** only one customer seed should run at a time of first deployment deployment. *****
+            // ***** only one customer seed should run at a time of first deployment. Should be commented out after first run *****
             //SeedEESmith(context);
-            SeedGaneIntranet(context);
+            //SeedGaneIntranet(context);
             //SeedTheGelBottle(context);
             //SeedNghAssetTracking(context);
 

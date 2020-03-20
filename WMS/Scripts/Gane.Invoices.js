@@ -11,11 +11,11 @@
 }
 var pricealert;
 var updateProductPrice = function () {
-    
+
     var model = { ProductId: prdid.GetValue(), AccountId: $("#AccountId").val() };
 
     if ((model.ProductId < 0) || model.AccountId < 0) return;
-    
+
 
     $.get('/Invoice/GetProductPrice/', model)
         .done(function (data) {
@@ -55,7 +55,7 @@ var updateProductPrice = function () {
                 $(".WarrantyDetail").hide();
                 $("#WarrantyId").val(0);
                 $("#WarrantyId").trigger("chosen:updated");
-                
+
             }
 
 
@@ -86,7 +86,7 @@ var updateAddItemButtonText = function () {
 
 var updateInvoiceRowHiddenValues = function (index, productId, qtyProcessed, taxTotal, netTotal, warrantyAmt, price, warrantyId, taxId, discount) {
     $("#frmDirectCreate input[type=hidden][id^=AllInvoiceProducts" + index).remove();
-    
+
     var result = "<input type='hidden' id='AllInvoiceProducts" + index + "_ProductId' name='AllInvoiceProducts[" + index + "].ProductId' value='" + productId + "' />" +
         "<input type='hidden' id='AllInvoiceProducts" + index + "_QtyProcessed' name='AllInvoiceProducts[" + index + "].QtyProcessed' value='" + qtyProcessed + "' />" +
         "<input type='hidden' id='AllInvoiceProducts" + index + "_NetAmount' name='AllInvoiceProducts[" + index + "].NetAmount' value='" + netTotal + "' />" +
@@ -147,7 +147,7 @@ $(document).ready(function () {
 
     var $form = $("#frmDirectCreate");
     $form.submit(function (e) {
-        
+
         var abc = $("#AccountId").val();
         var isValid = true;
         if ($("#AccountId").val() < 0.01) {
@@ -213,7 +213,7 @@ var getWarrantyAmountById = function (warrantyId, price) {
 }
 
 var updateProductDetails = function (editPrdouctId) {
-    
+
     var productId = GProductId;
     var productQty = InvoiceProductQty.GetValue();
     var productPrice = InvoiceProductPrice.GetValue();
@@ -272,7 +272,7 @@ var updateProductDetails = function (editPrdouctId) {
 
 }
 var addProductDetails = function () {
-    
+
     var productId = GProductId;
     var productQty = InvoiceProductQty.GetValue();
     var productPrice = InvoiceProductPrice.GetValue();
@@ -333,7 +333,7 @@ var addProductDetails = function () {
 var updateRowActions = function ($row) {
     $row.find(".fa-trash").on("click", function () {
         if (confirm("Are you sure you want to delete?")) {
-            
+
 
 
             var productId = $(this).closest("tr").data('id');
@@ -354,9 +354,8 @@ var updateRowActions = function ($row) {
         }
 
     });
-    $row.find(".fa-pencil").on("click", function ()
-    {
-        
+    $row.find(".fa-pencil").on("click", function () {
+
         isEdit = true;
         var productId = $(this).closest("tr").data('id');
         ProductIdEdit = productId;
@@ -408,7 +407,7 @@ function AddedPaymentDirectSales() {
 }
 
 var updateInvoiceTotals = function () {
-    
+
     var finalTotal = 0;
     var taxTotal = 0;
     var finalInvoiceTotal = 0;
@@ -458,13 +457,15 @@ function DisableChosenDropdown(dropdownId, disable) {
     }
     $("#" + dropdownId).trigger("chosen:updated");
 }
+
 function formsubmit() {
-    
+
     formmodified = 0;
     $('#frmDirectCreate').submit();
 }
+
 var updateProductDetailsAfterDelete = function () {
-    
+
     var rowsIndex = 0;
     $("#invoice-products-table").find("tr[data-id]").each(function () {
         var productId = $(this).data('id');
@@ -509,12 +510,9 @@ var updateProductDetailsAfterDelete = function () {
             var index = this.rowIndex;
             $("#frmDirectCreate input[type=hidden][id^=AllInvoiceProducts" + (index - 1)).remove();
             $rowToReplace.remove();
-
-
         }
         else {
             $table.append($row);
-
         }
 
         var hiddenValues = updateInvoiceRowHiddenValues(rowsIndex, productId, productQty, productTax.toFixed(2), netAmount.toFixed(2), productWarranty.toFixed(2), productPrice, productWarrantyId, productTaxId, DiscountAmount, net.toFixed(2));

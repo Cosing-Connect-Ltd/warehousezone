@@ -28,7 +28,8 @@ namespace Ganedata.Core.Services
 
         public IQueryable<ProductMaster> GetAllValidProductMasters(int tenantId, DateTime? lastUpdated = null, bool includeIsDeleted = false)
         {
-            return _currentDbContext.ProductMaster.Where(a => a.TenantId == tenantId && (includeIsDeleted || a.IsDeleted != true) && (!lastUpdated.HasValue || (a.DateUpdated ?? a.DateCreated) >= lastUpdated));
+            return _currentDbContext.ProductMaster.Where(a => a.TenantId == tenantId && (includeIsDeleted || a.IsDeleted != true) && (!lastUpdated.HasValue || (a.DateUpdated ?? a.DateCreated) >= lastUpdated))
+                .Include(x => x.ProductKitMap);
         }
 
         public IQueryable<SelectListItem> GetAllValidProductMastersForSelectList(int tenantId, DateTime? lastUpdated = null, bool includeIsDeleted = false)
@@ -1404,8 +1405,8 @@ namespace Ganedata.Core.Services
                     Allocated = prd.InventoryStocks.Where(x => x.ProductId == prd.ProductId && (x.WarehouseId == warehouseId || x.TenantWarehous.ParentWarehouseId == warehouseId)).Select(x => x.Allocated).DefaultIfEmpty(0).Sum(),
                     InStock = prd.InventoryStocks.Where(x => x.ProductId == prd.ProductId && (x.WarehouseId == warehouseId || x.TenantWarehous.ParentWarehouseId == warehouseId)).Select(x => x.InStock).DefaultIfEmpty(0).Sum(),
                     OnOrder = prd.InventoryStocks.Where(x => x.ProductId == prd.ProductId && (x.WarehouseId == warehouseId || x.TenantWarehous.ParentWarehouseId == warehouseId)).Select(x => x.OnOrder).DefaultIfEmpty(0).Sum(),
-                    ProductGroupName = prd.ProductGroup==null?"":prd.ProductGroup.ProductGroup,
-                    ProductCategoryName = prd.ProductCategory==null?"":prd.ProductCategory.ProductCategoryName,
+                    ProductGroupName = prd.ProductGroup == null ? "" : prd.ProductGroup.ProductGroup,
+                    ProductCategoryName = prd.ProductCategory == null ? "" : prd.ProductCategory.ProductCategoryName,
                     DepartmentName = prd.TenantDepartment.DepartmentName,
                     Location = prd.ProductLocationsMap.Where(a => a.IsDeleted != true).Select(x => x.Locations.LocationCode).FirstOrDefault().ToString(),
                     EnableWarranty = prd.EnableWarranty ?? false,

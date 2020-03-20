@@ -31,7 +31,7 @@ namespace Ganedata.Core.Services
         public IQueryable<InvoiceMaster> GetAllInvoiceMastersWithAllStatus(int TenantId, int? AccountId)
         {
 
-            return _currentDbContext.InvoiceMasters.Where(u => u.IsDeleted != true && u.TenantId == TenantId && (!AccountId.HasValue || u.AccountId==AccountId));
+            return _currentDbContext.InvoiceMasters.Where(u => u.IsDeleted != true && u.TenantId == TenantId && (!AccountId.HasValue || u.AccountId == AccountId));
 
         }
         public IQueryable<InvoiceMaster> GetAllInvoiceViews(int TenantId)
@@ -96,7 +96,7 @@ namespace Ganedata.Core.Services
                 InvoiceCurrency = account.GlobalCurrency.CurrencyName,
                 DateUpdated = DateTime.UtcNow,
                 InvoiceTotal = invoiceData.InvoiceTotal,
-                NetAmount = ((invoiceData.InvoiceTotal - invoiceData.TaxAmount)-(invoiceData.WarrantyAmount)),
+                NetAmount = ((invoiceData.InvoiceTotal - invoiceData.TaxAmount) - (invoiceData.WarrantyAmount)),
                 PostageCharges = invoiceData.PostageCharges,
                 TaxAmount = invoiceData.TaxAmount,
                 WarrantyAmount = invoiceData.WarrantyAmount,
@@ -111,8 +111,8 @@ namespace Ganedata.Core.Services
                 ProductId = m.ProductId,
                 Quantity = m.QtyProcessed,
                 Price = m.Price,
-                Total = m.TotalAmount + (m.TaxAmountsInvoice??0) + m.WarrantyAmount,
-                Tax = (m.TaxAmountsInvoice??0),
+                Total = m.TotalAmount + (m.TaxAmountsInvoice ?? 0) + m.WarrantyAmount,
+                Tax = (m.TaxAmountsInvoice ?? 0),
                 NetAmount = m.TotalAmount,
                 WarrantyAmount = m.WarrantyAmount,
                 CreatedBy = userId,
@@ -122,7 +122,7 @@ namespace Ganedata.Core.Services
                 TenantId = tenantId,
                 TaxId = m.TaxId,
                 OrderDetailId = m.OrderDetailId,
-                WarrantyId=m.WarrantyId
+                WarrantyId = m.WarrantyId
 
             }).ToList();
             _currentDbContext.Entry(invoice).State = EntityState.Added;
@@ -185,7 +185,7 @@ namespace Ganedata.Core.Services
                 invoiceMaster.InvoiceCurrency = account.GlobalCurrency.CurrencyName;
                 invoiceMaster.DateUpdated = DateTime.UtcNow;
                 invoiceMaster.InvoiceTotal = invoiceData.InvoiceTotal;
-                invoiceMaster.NetAmount = (invoiceData.NetAmount - invoiceData.TaxAmount)-(invoiceData.WarrantyAmount);
+                invoiceMaster.NetAmount = (invoiceData.NetAmount - invoiceData.TaxAmount) - (invoiceData.WarrantyAmount);
                 invoiceMaster.PostageCharges = invoiceData.PostageCharges;
                 invoiceMaster.TaxAmount = invoiceData.TaxAmount;
                 invoiceMaster.WarrantyAmount = invoiceData.WarrantyAmount;
@@ -210,7 +210,7 @@ namespace Ganedata.Core.Services
                             Tax = item.TaxAmountsInvoice ?? 0,
                             NetAmount = item.TotalAmount,
                             WarrantyAmount = item.WarrantyAmount,
-                            WarrantyId=item.WarrantyId,
+                            WarrantyId = item.WarrantyId,
                             CreatedBy = userId,
                             DateCreated = DateTime.UtcNow,
                             DateUpdated = DateTime.UtcNow,
@@ -433,12 +433,11 @@ namespace Ganedata.Core.Services
                         OrderProcessDetailId = x.OrderProcessDetailID,
                         OrderDetailId = x.OrderDetailID,
                         TaxId = x?.OrderDetail?.TaxID,
-                        WarrantyId=x?.OrderDetail?.WarrantyID,
-                        TaxAmountsInvoice = Math.Round((((x?.OrderDetail?.Price ?? 0) * x.QtyProcessed) / 100) * (x.OrderDetail.TaxName?.PercentageOfAmount ?? 0),2)
+                        WarrantyId = x?.OrderDetail?.WarrantyID,
+                        TaxAmountsInvoice = Math.Round((((x?.OrderDetail?.Price ?? 0) * x.QtyProcessed) / 100) * (x.OrderDetail.TaxName?.PercentageOfAmount ?? 0), 2)
                     };
                     if (x?.OrderDetail?.Warranty != null)
                     {
-
                         pd.WarrantyAmount = x.OrderDetail.Warranty.IsPercent ? Math.Round(x.OrderDetail.Warranty.PercentageOfPrice * ((pd.Price * x.QtyProcessed) / 100), 2) : Math.Round(x.OrderDetail.Warranty.FixedPrice * x.QtyProcessed, 2);
                     }
                     if (x?.OrderDetail?.TaxName != null)
