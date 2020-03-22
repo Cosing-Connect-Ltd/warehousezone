@@ -15,39 +15,23 @@ namespace WMS.Controllers.WebAPI
 
         public IHttpActionResult GetCipherLabProductDataImport(int tenantId)
         {
-            try
-            {
-                dataImportFactory.ImportCipherLabProductData(tenantId);
-               
-                return Ok("All Cipher Lab product data has been imported");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Could not import data:  " + ex.Message);
-            }
+            var res = dataImportFactory.ImportCipherLabProductData(tenantId);
+            return Ok(res);
         }
 
         public IHttpActionResult GetScanSourceDataImport(int tenantId)
         {
-            try
-            {
-                dataImportFactory.ImportScanSourceProductData(tenantId);
-
-                return Ok("All Scan Source product data has been imported");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Could not import data:  " + ex.Message);
-            }
+            var res = dataImportFactory.ImportScanSourceProductData(tenantId);
+            return Ok(res);
         }
 
         public IHttpActionResult GetDPDServices()
         {
-            var value=dataImportFactory.GetDPDServices();
+            var value = dataImportFactory.GetDPDServices();
             return Ok(value);
 
 
         }
-        
+
     }
 }

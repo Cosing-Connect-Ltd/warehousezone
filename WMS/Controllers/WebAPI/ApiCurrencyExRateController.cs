@@ -66,6 +66,11 @@ namespace WMS.Controllers.WebAPI
                                 tenantCurrenciesExRates.ActualRate = Convert.ToDecimal(item.Value);
                                 tenantCurrenciesExRates.DiffFactor = Convert.ToDecimal(itemModel.DiffFactor);
                                 tenantCurrenciesExRates.Rate = Convert.ToDecimal(tenantCurrenciesExRates.DiffFactor + tenantCurrenciesExRates.ActualRate);
+                                if (Key == tenantBaseCurrency.CurrencyName)
+                                {
+                                    tenantCurrenciesExRates.Rate = Convert.ToDecimal(tenantCurrenciesExRates.ActualRate);
+                                }
+
                                 tenantCurrenciesExRates.DateUpdated = DateTime.UtcNow;
                                 SaveTenantCurrencyRate(tenantCurrenciesExRates);
                             }
@@ -92,7 +97,7 @@ namespace WMS.Controllers.WebAPI
             {
                 var apiToken = ConfigurationManager.AppSettings["CurrencyLayerKey"];
                 var apiLink = ConfigurationManager.AppSettings["ApiUrl"];
-                
+
                 int tenantid = 0;
                 CurrenciesRates model = new CurrenciesRates();
                 string apiUrl;
@@ -106,7 +111,7 @@ namespace WMS.Controllers.WebAPI
                     }
                     //base currency currently is GBP 
                     BaseCurrency = _tenantServices.GetAllTenants().Where(u => u.TenantId == tenantid).FirstOrDefault().Currency.CurrencyName;
-                    
+
                     //Api Key Provided by apilayer
                     apiUrl = apiLink + (BaseCurrency).ToUpper()
                                             + "&access_key=" + apiToken + "&currencies=" +
