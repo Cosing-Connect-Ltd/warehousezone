@@ -17,6 +17,7 @@ namespace Ganedata.Core.Entities.Domain
 
         public Dictionary<string,List<ProductAttributeValues>> AttributeValues { get; set; }
 
+        public List<string> subCategories  { get; set; }
 
     }
 }

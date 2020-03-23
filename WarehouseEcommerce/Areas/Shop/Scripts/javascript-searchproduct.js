@@ -13,14 +13,17 @@ function searchPoducts() {
     var searchstring = $("#searchString").val();
     var pageSize = $("#input-limit :selected").val();
     var valuesparam = $("#valuesParameter").val();
-    window.location.href = basePath + "/shop/Products/ProductCategories?productGroup=" + groupId + "&sortOrder=" + sortvalue + "&currentFilter=" + currentFilter + "&searchString=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&department=" + departmentId + "&values=" + valuesparam;
+    var SubCategory = $("#SubCategoryId").val();
+    window.location.href = basePath + "/shop/Products/ProductCategories?productGroup=" + groupId + "&sortOrder=" + sortvalue + "&currentFilter=" + currentFilter + "&searchString=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&department=" + departmentId + "&values=" + valuesparam + "&SubCategory=" + subCategory;
 }
 
 function SearchProductCategory() {
     var productgroupId = $("#ProductGroups").val();
     var searchstring = $(".text-search").val();
     var valuesparam = $("#valuesParameter").val();
-    window.location.href = basePath + "/shop/Products/ProductCategories?productGroup=" + productgroupId + "&searchString=" + searchstring + "&values=" + valuesparam;
+    var SubCategory = $("#SubCategoryId").val();
+    var departmentId = $("#departmentId").val();
+    window.location.href = basePath + "/shop/Products/ProductCategories?productGroup=" + productgroupId + "&department=" + departmentId + "&searchString=" + searchstring + "&values=" + valuesparam + "&SubCategory=" + SubCategory;
 }
 
 var searchvalues;
@@ -59,7 +62,7 @@ $('.text-search').on('input', function () {
         if (seeall) {
             var $li = $("<li>");
             var $link = $("<a>", {
-                href: basePath + "/Shop/Products/ProductCategories?productGroupId=" + $("#ProductGroups").val() + "&searchString=" + searchvalues + "&values=" + $("#valuesParameter").val(),
+                href: basePath + "/Shop/Products/ProductCategories?productGroupId=" + $("#ProductGroups").val() + "&searchString=" + searchvalues + "&values=" + $("#valuesParameter").val() + "&department=" + $("#departmentId").val() + "&SubCategory=" + $("#SubCategoryId").val(),
                 class: "see-all"
             }).html("See All Results").appendTo($li);
             $li.appendTo($('.ui-autocomplete'));
@@ -70,7 +73,7 @@ $('.text-search').on('input', function () {
 }).autocomplete('instance')._renderItem = function (ul, item) {
     return $('<li class="search-item">')
         .append("<img style='width: 46px; height:46px;' src=" + item.Path + " alt=" + item.Name + "/>")
-        .append("<a href=" + basePath + "/Shop/Products/ProductCategories?productGroupId=" + $("#ProductGroups").val() + "&searchString=" + item.Name +"&values=" + $("#valuesParameter").val()+">" + item.Name + "</a>").appendTo(ul);
+        .append("<a href=" + basePath + "/Shop/Products/ProductCategories?productGroupId=" + $("#ProductGroups").val() + "&searchString=" + item.Name + "&values=" + $("#valuesParameter").val() + "&department="+$("#departmentId").val()+"&SubCategory="+$("#SubCategoryId").val()+">" + item.Name + "</a>").appendTo(ul);
         };
 });
 

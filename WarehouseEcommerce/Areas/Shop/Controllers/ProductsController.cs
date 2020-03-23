@@ -296,7 +296,9 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             productFiltering.Manufacturer = _productlookupServices.GetAllValidProductManufacturerGroupAndDeptByName(products,groups, department, subcategory).Select(u => u.Name).ToList();
             productFiltering.PriceInterval = _productlookupServices.AllPriceListAgainstGroupAndDept(products,groups, department, subcategory);
             productFiltering.AttributeValues = _productlookupServices.GetAllValidProductAttributeValuesByProductIds(products);
-            
+            productFiltering.subCategories = _productlookupServices.GetAllValidSubCategoriesByDepartmentAndGroup(products).ToList();
+
+
             return PartialView(productFiltering);
         }
 

@@ -165,11 +165,12 @@
 
                 <input type="hidden" id="departmentId" value="@ViewBag.departmentId" />
                 <input type="hidden" id="ProductGroupsId" value="@ViewBag.groupId" />
+                <input type="hidden" id="SubCategoryId" value="@ViewBag.subcategory" />
             </div>
             <div class="row pagi">
                 <div class="col-sm-6 col-xs-6 text-left pagination">
 
-                    @Html.PagedListPager(Model, page => Url.Action("ProductCategories", new { productGroup = ViewBag.groupId ?? null, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, page = page, pagesize = Model.PageSize, department = ViewBag.departmentId, values = values }))
+                    @Html.PagedListPager(Model, page => Url.Action("ProductCategories", new { productGroup = ViewBag.groupId ?? null, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, page = page, pagesize = Model.PageSize, department = ViewBag.departmentId, values = values, SubCategory = ViewBag.subcategory }))
 
 
                 </div>
@@ -198,7 +199,8 @@
         var searchstring = $("#searchString").val();
         var pageSize = $("#input-limit :selected").val();
         var valuesparam = $("#valuesParameter").val();
-        window.location.href = basePath + "/shop/Products/ProductCategories?productGroup=" + groupId + "&sortOrder=" + sortvalue + "&currentFilter=" + currentFilter + "&searchString=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&department=" + departmentId + "&values=" + valuesparam;
+        var subCategory = $("#SubCategoryId").val();
+        window.location.href = basePath + "/shop/Products/ProductCategories?productGroup=" + groupId + "&sortOrder=" + sortvalue + "&currentFilter=" + currentFilter + "&searchString=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&department=" + departmentId + "&values=" + valuesparam + "&SubCategory=" + subCategory;
     }
 
     function PageSizeChanges(e) {
@@ -210,8 +212,9 @@
         var departmentId = $("#departmentId").val();
         var currentFilter = $("#currentFiltervalue").val();
         var searchstring = $("#searchString").val();
+        var subCategory = $("#SubCategoryId").val();
         var valuesparam = $("#valuesParameter").val();
-        window.location.href = basePath + "/shop/Products/ProductCategories?productGroup=" + groupId + "&sortOrder=" + sortvalue + "&currentFilter=" + currentFilter + "&searchString=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&department=" + departmentId + "&values=" + valuesparam;
+        window.location.href = basePath + "/shop/Products/ProductCategories?productGroup=" + groupId + "&sortOrder=" + sortvalue + "&currentFilter=" + currentFilter + "&searchString=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&department=" + departmentId + "&values=" + valuesparam + "&SubCategory=" + subCategory;
     }
 
 </script>

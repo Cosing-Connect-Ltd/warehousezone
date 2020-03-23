@@ -69,7 +69,7 @@
                                     {
 
                                         <li>
-                                            <a href="@Url.Action("ProductCategories", "Products", new { productGroup = groupDepartment[i].ProductGroup })">
+                                            <a href="@Url.Action("ProductCategories", "Products", new { productGroup = groupDepartment[i].ProductGroup,department = item.DepartmentName })">
                                                 @groupDepartment[i].ProductGroup
                                                 @if (groupDepartment[i].ProductCategories.Count > 0)
                                                 {
@@ -79,7 +79,7 @@
                                             <ul class='dropdown2'>
                                                 @foreach (var categories in @groupDepartment[i].ProductCategories)
                                                 {
-                                                    <li><a href="@Url.Action("ProductCategories", "Products", new { SubCategory = categories.ProductCategoryName })"> @categories.ProductCategoryName</a> </li>
+                                                    <li><a href="@Url.Action("ProductCategories", "Products", new { SubCategory = categories.ProductCategoryName,productGroup = groupDepartment[i].ProductGroup,department = item.DepartmentName })"> @categories.ProductCategoryName</a> </li>
                                                 }
                                             </ul>
                                         </li>
@@ -90,7 +90,7 @@
                                     {
 
                                         <li>
-                                            <a href="@Url.Action("ProductCategories", "Products", new { productGroup = groupDepartment[i + 1].ProductGroup })">
+                                            <a href="@Url.Action("ProductCategories", "Products", new { productGroup = groupDepartment[i + 1].ProductGroup,department = item.DepartmentName })">
                                                 @groupDepartment[i + 1].ProductGroup
                                                 @if (groupDepartment[i + 1].ProductCategories.Count > 0)
                                                 {
@@ -100,7 +100,7 @@
                                             <ul class='dropdown2'>
                                                 @foreach (var categories in @groupDepartment[i + 1].ProductCategories)
                                                 {
-                                                    <li><a href="@Url.Action("ProductCategories", "Products", new { SubCategory = categories.ProductCategoryName })">@categories.ProductCategoryName</a> </li>
+                                                    <li><a href="@Url.Action("ProductCategories", "Products", new { SubCategory = categories.ProductCategoryName,productGroup = groupDepartment[i + 1].ProductGroup,department = item.DepartmentName })">@categories.ProductCategoryName</a> </li>
                                                 }
                                             </ul>
                                         </li>
@@ -110,7 +110,7 @@
                                     {
 
                                         <li>
-                                            <a href="@Url.Action("ProductCategories", "Products", new { productGroup = groupDepartment[i + 2].ProductGroup })">
+                                            <a href="@Url.Action("ProductCategories", "Products", new { productGroup = groupDepartment[i + 2].ProductGroup,department = item.DepartmentName })">
                                                 @groupDepartment[i + 2].ProductGroup
                                                 @if (groupDepartment[i + 2].ProductCategories.Count > 0)
                                                 {
@@ -120,7 +120,7 @@
                                             <ul class='dropdown2'>
                                                 @foreach (var categories in @groupDepartment[i + 2].ProductCategories)
                                                 {
-                                                    <li><a href="@Url.Action("ProductCategories", "Products", new { SubCategory = categories.ProductCategoryName })"> @categories.ProductCategoryName</a> </li>
+                                                    <li><a href="@Url.Action("ProductCategories", "Products", new { SubCategory = categories.ProductCategoryName,productGroup = groupDepartment[i + 2].ProductGroup,department = item.DepartmentName })"> @categories.ProductCategoryName</a> </li>
                                                 }
                                             </ul>
                                         </li>

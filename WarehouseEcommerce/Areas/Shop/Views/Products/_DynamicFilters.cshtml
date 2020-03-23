@@ -49,7 +49,7 @@
 
                                     <li class="list-group-item"><input type="checkbox" id="priceS" class="checkbox-inline" value="@(item.Item1+"_"+item.Item2)" @(Request.Url.Query.ToLower().Contains(item.Item1 + "_" + item.Item2) ? "checked" : "")> @ViewBag.CurrencySymbol@item.Item1 - @ViewBag.CurrencySymbol@item.Item2</li>
                                     @*<li class="list-group-item"><input type="checkbox" id="priceS" class="checkbox-inline" value="25_50" @(Request.Url.Query.ToLower().Contains("25_50") ? "checked" : "")> £@item - £50.00</li>
-                                        <li class="list-group-item"><input type="checkbox" id="priceS" class="checkbox-inline" value="50_100" @(Request.Url.Query.ToLower().Contains("50_100") ? "checked" : "")> £50.00 - £100.00</li>*@
+                            <li class="list-group-item"><input type="checkbox" id="priceS" class="checkbox-inline" value="50_100" @(Request.Url.Query.ToLower().Contains("50_100") ? "checked" : "")> £50.00 - £100.00</li>*@
                                 }
                             </ul>
                         </div>
@@ -57,10 +57,33 @@
                 </div>
 
                 <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingfour">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsefour" aria-expanded="true" aria-controls="collapsefour">
+                                Brand
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapsefour" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingfour">
+                        <div class="panel-body">
+                            <ul class="">
+
+                                @foreach (var item in Model.Manufacturer)
+                                {
+                                    string name = item.Replace(" ", "_").Replace(",", "^");;
+                                    <li class="list-group-item"><input type="checkbox" id="BrandS" class="checkbox-inline" value="@(name)" @(Request.Url.Query.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(item)</li>
+                                }
+
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="headingThree">
                         <h4 class="panel-title">
                             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                                Brand
+                                By Type
                             </a>
                         </h4>
                     </div>
@@ -68,10 +91,10 @@
                         <div class="panel-body">
                             <ul class="">
 
-                                @foreach (var item in Model.Manufacturer)
+                                @foreach (var item in Model.subCategories)
                                 {
-                                    string name = item.Replace(" ", "_");
-                                    <li class="list-group-item"><input type="checkbox" id="BrandS" class="checkbox-inline" value="@(item.Replace(" ", "_"))" @(Request.Url.Query.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(item)</li>
+                                    string name = item.Replace(" ", "_").Replace(",", "^");
+                                    <li class="list-group-item"><input type="checkbox" id="TypeS" class="checkbox-inline" value="@(name)" @(Request.Url.Query.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(item)</li>
                                 }
 
 
@@ -96,8 +119,8 @@
 
                                     @foreach (var items in item.Value)
                                     {
-                                        string name = items.Value.Replace(" ", "_");
-                                        <li class="list-group-item"><input type="checkbox" id="@items.ProductAttributes.AttributeName.Replace(" ", "_")" class="checkbox-inline" value="@(items.Value.Replace(" ", "_"))" @(Request.Url.Query.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(items.Value)</li>
+                                        string name = items.Value.Replace(" ", "_").Replace(",", "^");
+                                        <li class="list-group-item"><input type="checkbox" id="@items.ProductAttributes.AttributeName.Replace(" ", "_")" class="checkbox-inline" value="@name" @(Request.Url.Query.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(items.Value)</li>
                                     }
 
 
