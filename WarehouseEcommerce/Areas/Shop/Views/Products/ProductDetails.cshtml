@@ -19,13 +19,11 @@
                         <li><a href="@Url.Action("ProductCategories", "Products", new { productGroup = Model.ProductGroup.ProductGroup})">@(!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup) ? Model.ProductGroup.ProductGroup : "")</a></li>
                     }
                 }
-                @if (Url.Action() != Url.Action("ProductDetails", "Products", new { productId = Model.ProductId }))
+                @if (!string.IsNullOrEmpty(Model?.ProductCategory?.ProductCategoryName))
                 {
-                    if (!string.IsNullOrEmpty(Model?.ProductCategory?.ProductCategoryName))
-                    {
-                        <li><a href="@Url.Action("ProductDetails", "Products", new { productId = @Model.ProductId })">@(!string.IsNullOrEmpty(Model?.ProductCategory?.ProductCategoryName) ? Model.ProductCategory.ProductCategoryName : "")</a></li>
-                    }
+                    <li><a href="@Url.Action("ProductCategories", "Products", new { SubCategory = Model.ProductCategory.ProductCategoryName })">@(!string.IsNullOrEmpty(Model?.ProductCategory?.ProductCategoryName) ? Model.ProductCategory.ProductCategoryName : "")</a></li>
                 }
+
                 <li>@Model.Name</li>
             </ul>
             <div class="row product-bg">

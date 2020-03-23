@@ -3193,8 +3193,9 @@ function IsAllowZeroSale() {
         PriceAnalysis();
     }
 }
-function suggestedPrice() {
 
+function suggestedPrice() {
+   
     var buyPrice = 0;
     var margin = 0;
     var landedCost = 0;
@@ -3230,38 +3231,42 @@ function suggestedPrice() {
 
     var suggestedSellPrice = 0;
 
-    if (sellPrice == null || sellPrice == 0) {
-        if (buyPrice == null || buyPrice == 0) {
-            $("#alertDivBP").show();
-        }
-        else if (sellPrice == null || sellPrice == 0) {
-            $("#alertDivBP").hide();
-        }
 
-        if (margin == null || margin == 0) {
-            $("#alertDivPM").show();
-        }
-        else if (margin != null || margin != 0) {
-            $("#alertDivPM").hide();
-        }
-
-        if (landedCost == null || landedCost == 0) {
-            $("#alertDivLC").show();
-        }
-        else if (landedCost != null || landedCost != 0) {
-            $("#alertDivLC").hide();
-        }
-
-        if ((buyPrice != null && buyPrice != 0) && (margin != null && margin != 0) && (landedCost != null && landedCost != 0)) {
-            suggestedSellPrice = (((buyPrice * margin) / 100) + buyPrice + landedCost);
-            suggestedSellPrice = suggestedSellPrice.toFixed(2);
-            $("#suggestedDiv").show();
-            $("#suggestedSellPrice").val(suggestedSellPrice);
-        }
-        else {
-            $("#suggestedDiv").hide();
-        }
+    if (buyPrice == null || buyPrice == 0) {
+        $("#alertDivBP").show();
     }
+    else if (sellPrice == null || sellPrice == 0) {
+        $("#alertDivBP").hide();
+    }
+    var undefined = true;
+    if (margin == null || margin == 0 || isNaN(margin) === true) {
+        margin = 0;
+        $("#alertDivPM").show();
+    }
+    else if (margin != null || margin != 0) {
+        $("#alertDivPM").hide();
+    }
+
+    if (landedCost == null || landedCost == 0) {
+        $("#alertDivLC").show();
+    }
+    else if (landedCost != null || landedCost != 0) {
+        $("#alertDivLC").hide();
+    }
+
+    if ((buyPrice != null) && (margin != null) && (landedCost != null)) {
+        suggestedSellPrice = (((buyPrice * margin) / 100) + buyPrice + landedCost);
+        suggestedSellPrice = suggestedSellPrice.toFixed(2);
+        $("#suggestedDiv").show();
+        $("#suggestedSellPrice").val(suggestedSellPrice);
+    }
+    else {
+        $("#suggestedDiv").hide();
+    }
+    if (SellPrice.GetValue() == null || SellPrice.GetValue() == 0) {
+        SellPrice.SetValue(suggestedSellPrice);
+    }
+
 }
 
 function setPrice() {
