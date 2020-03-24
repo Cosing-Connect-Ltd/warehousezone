@@ -194,10 +194,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             return PartialView(productDepartments);
         }
 
-        public ActionResult _GetProductByGroupsAndDepartment(string DepartmentId, string productgroupId, string productCategories)
-        {
-            return RedirectToAction("ProductCategories", "Products", new { productGroup = productgroupId, department = DepartmentId, SubCategory=productCategories });
-        }
+       
       
         public ActionResult _TopCategoryProductsPartial(int? ProductGroupId)
         {

@@ -40,36 +40,36 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         }
         // GET: Products
 
-        public ActionResult ProductCategories(string productGroup, int? sortOrder, string currentFilter, string searchString, string values, int? page, int? pagesize = 20, string department = "", string SubCategory = "")
+        public ActionResult list(string group, int? sort, string filter, string search, string values, int? page, int? pagesize = 20, string department = "", string category = "")
         {
             try
             {
 
                 var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
-                ViewBag.groupId = productGroup;
+                ViewBag.groupId = group;
                 ViewBag.departmentId = department;
-                ViewBag.CurrentSort = sortOrder;
-                ViewBag.SortedValues = (sortOrder ?? 1);
+                ViewBag.CurrentSort = sort;
+                ViewBag.SortedValues = (sort ?? 1);
                 ViewBag.pageList = new SelectList(from d in Enumerable.Range(1, 5) select new SelectListItem { Text = (d * 10).ToString(), Value = (d * 10).ToString() }, "Value", "Text", pagesize);
-                ViewBag.searchString = searchString;
+                ViewBag.searchString = search;
                 ViewBag.CurrencySymbol = currencyyDetail.Symbol;
-                ViewBag.subcategory = SubCategory;
-                var product = _productlookupServices.GetAllValidProductGroupAndDeptByName(productGroup, department, SubCategory);
+                ViewBag.subcategory = category;
+                var product = _productlookupServices.GetAllValidProductGroupAndDeptByName(group, department, category);
 
-                if (!string.IsNullOrEmpty(searchString))
+                if (!string.IsNullOrEmpty(search))
                 {
                     page = 1;
                 }
                 else
                 {
-                    searchString = currentFilter;
+                    search = filter;
                 }
-                ViewBag.CurrentFilter = searchString;
-                if (!string.IsNullOrEmpty(searchString))
+                ViewBag.CurrentFilter = search;
+                if (!string.IsNullOrEmpty(search))
                 {
-                    product = product.Where(s => s.Name.Contains(searchString));
+                    product = product.Where(s => s.Name.Contains(search));
                 }
-                switch ((SortProductTypeEnum)(sortOrder ?? 1))
+                switch ((SortProductTypeEnum)(sort ?? 1))
                 {
                     case SortProductTypeEnum.PriceByDesc:
                         product = product.OrderByDescending(s => s.SellPrice);
@@ -110,11 +110,11 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
 
         }
 
-        public ActionResult ProductDetails(int? productId)
+        public ActionResult ProductDetails(string sku,int? productId=null)
         {
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.CurrencySymbol = currencyyDetail.Symbol;
-            var product = _productServices.GetProductMasterById(productId ?? 0);
+            var product = _productServices.GetProductMasterByProductCode(sku,CurrentTenantId);
             product.SellPrice = Math.Round((product.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0), 2);
             return View(product);
         }

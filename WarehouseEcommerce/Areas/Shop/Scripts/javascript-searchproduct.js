@@ -14,7 +14,7 @@ function searchPoducts() {
     var pageSize = $("#input-limit :selected").val();
     var valuesparam = $("#valuesParameter").val();
     var SubCategory = $("#SubCategoryId").val();
-    window.location.href = basePath + "/shop/Products/ProductCategories?productGroup=" + groupId + "&sortOrder=" + sortvalue + "&currentFilter=" + currentFilter + "&searchString=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&department=" + departmentId + "&values=" + valuesparam + "&SubCategory=" + subCategory;
+    window.location.href = basePath + "/shop/Products/list?group=" + groupId + "&sort=" + sortvalue + "&filter=" + currentFilter + "&search=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&department=" + departmentId + "&values=" + valuesparam + "&category=" + SubCategory;
 }
 
 function SearchProductCategory() {
@@ -23,7 +23,7 @@ function SearchProductCategory() {
     var valuesparam = $("#valuesParameter").val();
     var SubCategory = $("#SubCategoryId").val();
     var departmentId = $("#departmentId").val();
-    window.location.href = basePath + "/shop/Products/ProductCategories?productGroup=" + productgroupId + "&department=" + departmentId + "&searchString=" + searchstring + "&values=" + valuesparam + "&SubCategory=" + SubCategory;
+    window.location.href = basePath + "/shop/Products/list?group=" + productgroupId + "&department=" + departmentId + "&search=" + searchstring + "&values=" + valuesparam + "&category=" + SubCategory;
 }
 
 var searchvalues;
@@ -62,7 +62,7 @@ $('.text-search').on('input', function () {
         if (seeall) {
             var $li = $("<li>");
             var $link = $("<a>", {
-                href: basePath + "/Shop/Products/ProductCategories?productGroupId=" + $("#ProductGroups").val() + "&searchString=" + searchvalues + "&values=" + $("#valuesParameter").val() + "&department=" + $("#departmentId").val() + "&SubCategory=" + $("#SubCategoryId").val(),
+                href: basePath + "/Shop/Products/list?group=" + $("#ProductGroups").val() + "&search=" + searchvalues + "&values=" + $("#valuesParameter").val() + "&department=" + $("#departmentId").val() + "&category=" + $("#SubCategoryId").val(),
                 class: "see-all"
             }).html("See All Results").appendTo($li);
             $li.appendTo($('.ui-autocomplete'));
@@ -73,7 +73,7 @@ $('.text-search').on('input', function () {
 }).autocomplete('instance')._renderItem = function (ul, item) {
     return $('<li class="search-item">')
         .append("<img style='width: 46px; height:46px;' src=" + item.Path + " alt=" + item.Name + "/>")
-        .append("<a href=" + basePath + "/Shop/Products/ProductCategories?productGroupId=" + $("#ProductGroups").val() + "&searchString=" + item.Name + "&values=" + $("#valuesParameter").val() + "&department="+$("#departmentId").val()+"&SubCategory="+$("#SubCategoryId").val()+">" + item.Name + "</a>").appendTo(ul);
+        .append("<a href=" + basePath + "/Shop/Products/list?group=" + $("#ProductGroups").val() + "&search=" + item.Name + "&values=" + $("#valuesParameter").val() + "&department=" + $("#departmentId").val() +"&category="+$("#SubCategoryId").val()+">" + item.Name + "</a>").appendTo(ul);
         };
 });
 
@@ -266,12 +266,7 @@ $("input[type=checkbox]").on("change", function () {
     var pagerep = new RegExp("&page=\\d+");
     str = str.replace(pagerep, '')
     str = removeURLParameter(str, "page");
-
-    if (str.indexOf("&") > 0)
-    {
-        var result = str.substring(str.indexOf("&values"), (str.length));
-        str = str.replace(result, "");
-    }
+    str = removeURLParameter(str, "values");
     var parameter = "&values=";
     str = str + parameter;
     $(":checkbox").each(function () {
@@ -303,12 +298,12 @@ $("input[type=checkbox]").on("change", function () {
         }
 
     });
-    if (arr.length <= 0) {
-        if (str.indexOf("&") > 0) {
-            var result = str.substring(str.indexOf("&"), (str.length));
-            str = str.replace(result, "");
-        }
-    }
+    //if (arr.length <= 0) {
+    //    if (str.indexOf("&") > 0) {
+    //        var result = str.substring(str.indexOf("&"), (str.length));
+    //        str = str.replace(result, "");
+    //    }
+    //}
     location.href = str;
 
 

@@ -19,14 +19,14 @@
                             <div class="col-xs-12">
 
                                 <div class="image col-sm-4 col-xs-4">
-                                    <a href="@Url.Action("ProductDetails","Products", new { productId= item.ProductId })"><img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@item.Name" title="@item.Name" class="img-responsive center-block" /></a>
+                                    <a href="@Url.Action("ProductDetails","Products", new { sku= item.SKUCode })"><img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@item.Name" title="@item.Name" class="img-responsive center-block" /></a>
                                     <!-- Smartshop Images Start -->
-                                    <a href="@Url.Action("ProductDetails","Products", new { productId= item.ProductId })"><img src="@(!string.IsNullOrEmpty(item.HoverImage) ? ViewBag.BaseFilePath + item.HoverImage:ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive second-img" alt="hover image" /></a>
+                                    <a href="@Url.Action("ProductDetails","Products", new { sku= item.SKUCode })"><img src="@(!string.IsNullOrEmpty(item.HoverImage) ? ViewBag.BaseFilePath + item.HoverImage:ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive second-img" alt="hover image" /></a>
 
                                     <!-- Smartshop Images End -->
                                 </div>
                                 <div class="caption col-sm-8 col-xs-8">
-                                    <h4><a data-toggle="tooltip" title="@item.Name" href="@Url.Action("ProductDetails","Products", new { productId= item.ProductId })">@item.Name</a></h4>
+                                    <h4><a data-toggle="tooltip" title="@item.Name" href="@Url.Action("ProductDetails","Products", new { sku= item.SKUCode })">@item.Name</a></h4>
                                     <p class="price">
                                         @Model.CurrencySign@item.SellPrice
                                     </p>

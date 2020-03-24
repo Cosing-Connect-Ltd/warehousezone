@@ -25,9 +25,9 @@
                                 <div class="">
                                     <div class="col-xs-12 manage-width topprom ">
                                         <div class="image ">
-                                            <a href="@Url.Action("ProductDetails","Products", new { productId= product[i].ProductId })"><img src="@(!string.IsNullOrEmpty(product[i].DefaultImage)? ViewBag.BaseFilePath + product[i].DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@product[i].Name" title="@product[i].Name" class="img-responsive center-block" /></a>
+                                            <a href="@Url.Action("ProductDetails","Products", new { sku= product[i].SKUCode })"><img src="@(!string.IsNullOrEmpty(product[i].DefaultImage)? ViewBag.BaseFilePath + product[i].DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@product[i].Name" title="@product[i].Name" class="img-responsive center-block" /></a>
                                             <!-- Smartshop Images Start -->
-                                            <a href="@Url.Action("ProductDetails","Products", new { productId= product[i].ProductId })"><img src="@(!string.IsNullOrEmpty(product[i].HoverImage)? ViewBag.BaseFilePath + product[i].HoverImage :ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive second-img" alt="hover image" /></a>
+                                            <a href="@Url.Action("ProductDetails","Products", new { sku= product[i].SKUCode })"><img src="@(!string.IsNullOrEmpty(product[i].HoverImage)? ViewBag.BaseFilePath + product[i].HoverImage :ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive second-img" alt="hover image" /></a>
                                             <!-- Smartshop Images End -->
                                             <div class="topbutton">
                                                 <button type="button" data-toggle="tooltip" title="Add to Wish List">
@@ -46,7 +46,7 @@
                                             </div>
                                         </div>
                                         <div class="caption ">
-                                            <h4><a title="@product[i].Name" href="@Url.Action("ProductDetails","Products", new { productId= product[i].ProductId })"> @product[i].Name</a></h4>
+                                            <h4><a title="@product[i].Name" href="@Url.Action("ProductDetails","Products", new { sku= product[i].SKUCode })"> @product[i].Name</a></h4>
                                             <p class="price">
                                                 @Model.CurrencySign @product[i].SellPrice
 
@@ -87,9 +87,9 @@
                                 <div class="">
                                     <div class="col-xs-12 manage-width topprom ">
                                         <div class="image">
-                                            <a href="@Url.Action("ProductDetails","Products", new { productId= product[i+1].ProductId })"><img src="@(!string.IsNullOrEmpty(product[i].DefaultImage)?ViewBag.BaseFilePath +product[i].DefaultImage :ViewBag.BaseFilePath +"/UploadedFiles/Products/no_image.gif")" alt="@product[i+1].Name" title="@product[i+1].Name" class="img-responsive center-block first-img" /></a>
+                                            <a href="@Url.Action("ProductDetails","Products", new { sku= product[i+1].SKUCode })"><img src="@(!string.IsNullOrEmpty(product[i].DefaultImage)?ViewBag.BaseFilePath +product[i].DefaultImage :ViewBag.BaseFilePath +"/UploadedFiles/Products/no_image.gif")" alt="@product[i+1].Name" title="@product[i+1].Name" class="img-responsive center-block first-img" /></a>
                                             <!-- Smartshop Images Start -->
-                                            <a href="@Url.Action("ProductDetails","Products", new { productId= product[i+1].ProductId })"><img src="@(!string.IsNullOrEmpty(product[i].HoverImage)?ViewBag.BaseFilePath +product[i].HoverImage :ViewBag.BaseFilePath +"/UploadedFiles/Products/no_image.gif")" class="img-responsive second-img" alt="hover image" /></a>
+                                            <a href="@Url.Action("ProductDetails","Products", new { sku= product[i+1].SKUCode })"><img src="@(!string.IsNullOrEmpty(product[i].HoverImage)?ViewBag.BaseFilePath +product[i].HoverImage :ViewBag.BaseFilePath +"/UploadedFiles/Products/no_image.gif")" class="img-responsive second-img" alt="hover image" /></a>
                                             <!-- Smartshop Images End -->
                                             <div class="topbutton">
                                                 <button type="button" data-toggle="tooltip" title="Add to Wish List">
@@ -108,7 +108,7 @@
                                             </div>
                                         </div>
                                         <div class="caption ">
-                                            <h4><a data-toggle="tooltip" title="@product[i + 1].Name" href="@Url.Action("ProductDetails","Products", new { productId= product[i+1].ProductId })"> @product[i + 1].Name</a></h4>
+                                            <h4><a data-toggle="tooltip" title="@product[i + 1].Name" href="@Url.Action("ProductDetails","Products", new { sku= product[i+1].SKUCode })"> @product[i + 1].Name</a></h4>
                                             <p class="price">
                                                 @Model.CurrencySign @(product[i + 1].SellPrice)
 

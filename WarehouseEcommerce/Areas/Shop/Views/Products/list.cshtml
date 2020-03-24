@@ -30,7 +30,7 @@
                         <li><a href="/shop">Home</a></li>
                         @if (!string.IsNullOrEmpty(item?.TenantDepartment?.DepartmentName))
                         {
-                            if (Url.Action() == Url.Action("ProductCategories", "Products", new { department = @item.TenantDepartment.DepartmentName }))
+                            if (Url.Action() == Url.Action("list", "Products", new { department = @item.TenantDepartment.DepartmentName }))
                             {
                                 <li>@(!string.IsNullOrEmpty(item?.TenantDepartment?.DepartmentName) ? item.TenantDepartment.DepartmentName : "")</li>
                             }
@@ -38,14 +38,14 @@
                             {
                                 if (!string.IsNullOrEmpty(item?.ProductGroup?.ProductGroup))
                                 {
-                                    if (Url.Action() == Url.Action("ProductCategories", "Products", new { productGroup = @item.ProductGroup.ProductGroup }))
+                                    if (Url.Action() == Url.Action("list", "Products", new { group = @item.ProductGroup.ProductGroup }))
                                     {
-                                        <li><a href="@Url.Action("ProductCategories", "Products", new { department = @item.TenantDepartment.DepartmentName})">@(!string.IsNullOrEmpty(item?.TenantDepartment?.DepartmentName) ? item.TenantDepartment.DepartmentName : "")</a></li>
+                                        <li><a href="@Url.Action("list", "Products", new { department = @item.TenantDepartment.DepartmentName})">@(!string.IsNullOrEmpty(item?.TenantDepartment?.DepartmentName) ? item.TenantDepartment.DepartmentName : "")</a></li>
                                         <li>@(!string.IsNullOrEmpty(item?.ProductGroup?.ProductGroup) ? item.ProductGroup.ProductGroup : "")</li>
                                     }
                                     else
                                     {
-                                        if (Url.Action() == Url.Action("ProductDetails", "Products", new { productId = @item.ProductId }))
+                                        if (Url.Action() == Url.Action("ProductDetails", "Products", new { sku = @item.SKUCode }))
                                         {
                                             if (!string.IsNullOrEmpty(item?.ProductCategory?.ProductCategoryName))
                                             {
@@ -54,8 +54,8 @@
                                         }
                                         else
                                         {
-                                            <li><a href="@Url.Action("ProductCategories", "Products", new { department = @item.TenantDepartment.DepartmentName})">@(!string.IsNullOrEmpty(item?.TenantDepartment?.DepartmentName) ? item.TenantDepartment.DepartmentName : "")</a></li>
-                                            <li><a href="@Url.Action("ProductCategories", "Products", new { productGroup = @item.ProductGroup.ProductGroup})">@(!string.IsNullOrEmpty(item?.ProductGroup?.ProductGroup) ? item.ProductGroup.ProductGroup : "")</a></li>
+                                            <li><a href="@Url.Action("list", "Products", new { department = @item.TenantDepartment.DepartmentName})">@(!string.IsNullOrEmpty(item?.TenantDepartment?.DepartmentName) ? item.TenantDepartment.DepartmentName : "")</a></li>
+                                            <li><a href="@Url.Action("list", "Products", new { productGroup = @item.ProductGroup.ProductGroup})">@(!string.IsNullOrEmpty(item?.ProductGroup?.ProductGroup) ? item.ProductGroup.ProductGroup : "")</a></li>
                                             <li>@(!string.IsNullOrEmpty(item?.ProductCategory?.ProductCategoryName) ? item.ProductCategory.ProductCategoryName : "")</li>
                                         }
                                     }
@@ -113,8 +113,8 @@
                         <div class="product-layout product-list col-xs-12">
                             <div class="product-thumb transition single-product-cat">
                                 <div class="image">
-                                    <a href="@Url.Action("ProductDetails","Products", new {productId = item.ProductId})"><img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@item.Name" class="img-responsive center-block" /></a>
-                                    <a href="@Url.Action("ProductDetails", "Products", new { productId = item.ProductId })"><img src="@(!string.IsNullOrEmpty(item.HoverImage) ? ViewBag.BaseFilePath +item.HoverImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive second-img" alt="@item.Name" /></a>
+                                    <a href="@Url.Action("ProductDetails","Products", new {sku = item.SKUCode})"><img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@item.Name" class="img-responsive center-block" /></a>
+                                    <a href="@Url.Action("ProductDetails", "Products", new { sku = item.SKUCode })"><img src="@(!string.IsNullOrEmpty(item.HoverImage) ? ViewBag.BaseFilePath +item.HoverImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive second-img" alt="@item.Name" /></a>
                                     <span class="salep">sale</span>
                                     <div class="topbutton">
                                         <button type="button" data-toggle="tooltip" title="Add to Wish List">
@@ -133,7 +133,7 @@
                                     </div>
                                 </div>
                                 <div class="caption">
-                                    <h4><a href="@Url.Action("ProductDetails","Products", new {productId=item.ProductId})">@item.Name</a></h4>
+                                    <h4><a href="@Url.Action("ProductDetails","Products", new {sku=item.SKUCode})">@item.Name</a></h4>
                                     <div class="rating pull-left">
                                         <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
                                         <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
@@ -170,7 +170,7 @@
             <div class="row pagi">
                 <div class="col-sm-6 col-xs-6 text-left pagination">
 
-                    @Html.PagedListPager(Model, page => Url.Action("ProductCategories", new { productGroup = ViewBag.groupId ?? null, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, page = page, pagesize = Model.PageSize, department = ViewBag.departmentId, values = values, SubCategory = ViewBag.subcategory }))
+                    @Html.PagedListPager(Model, page => Url.Action("list", new { group = ViewBag.groupId ?? null, sort = ViewBag.CurrentSort, filter = ViewBag.CurrentFilter, page = page, pagesize = Model.PageSize, department = ViewBag.departmentId, values = values, category = ViewBag.subcategory }))
 
 
                 </div>

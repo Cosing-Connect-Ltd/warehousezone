@@ -10,18 +10,18 @@
                 <li><a href="/shop">Home</a></li>
                 @if (!string.IsNullOrEmpty(Model?.TenantDepartment?.DepartmentName))
                 {
-                    <li><a href="@Url.Action("ProductCategories", "Products", new { department = @Model.TenantDepartment.DepartmentName})">@(!string.IsNullOrEmpty(Model?.TenantDepartment?.DepartmentName) ? Model.TenantDepartment.DepartmentName : "")</a></li>
+                    <li><a href="@Url.Action("list", "Products", new { department = @Model.TenantDepartment.DepartmentName})">@(!string.IsNullOrEmpty(Model?.TenantDepartment?.DepartmentName) ? Model.TenantDepartment.DepartmentName : "")</a></li>
                 }
-                @if (Url.Action() != Url.Action("ProductCategories", "Products", new { department = Model.TenantDepartment.DepartmentName }))
+                @if (Url.Action() != Url.Action("list", "Products", new { department = Model.TenantDepartment.DepartmentName }))
                 {
                     if (!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup))
                     {
-                        <li><a href="@Url.Action("ProductCategories", "Products", new { productGroup = Model.ProductGroup.ProductGroup})">@(!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup) ? Model.ProductGroup.ProductGroup : "")</a></li>
+                        <li><a href="@Url.Action("list", "Products", new { group = Model.ProductGroup.ProductGroup})">@(!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup) ? Model.ProductGroup.ProductGroup : "")</a></li>
                     }
                 }
                 @if (!string.IsNullOrEmpty(Model?.ProductCategory?.ProductCategoryName))
                 {
-                    <li><a href="@Url.Action("ProductCategories", "Products", new { SubCategory = Model.ProductCategory.ProductCategoryName })">@(!string.IsNullOrEmpty(Model?.ProductCategory?.ProductCategoryName) ? Model.ProductCategory.ProductCategoryName : "")</a></li>
+                    <li><a href="@Url.Action("list", "Products", new { category = Model.ProductCategory.ProductCategoryName })">@(!string.IsNullOrEmpty(Model?.ProductCategory?.ProductCategoryName) ? Model.ProductCategory.ProductCategoryName : "")</a></li>
                 }
 
                 <li>@Model.Name</li>
