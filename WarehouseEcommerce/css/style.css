@@ -1194,6 +1194,45 @@ body {
     padding: 310px 0;
     position: relative;
 }
+.warehouse-banner img {
+    margin: auto;
+    display: flex;
+    justify-content: center;
+}
+@media (min-width: 300px) {
+    .warehouse-banner img {
+        height: 116px;
+    }
+}
+@media (min-width: 375px) {
+    .warehouse-banner img {
+        height: 140px;
+    }
+}
+@media (min-width: 425px) {
+    .warehouse-banner img {
+        height: 160px;
+    }
+}
+@media (min-width: 600px) {
+    .warehouse-banner img {
+        height: 300px;
+    }
+}
+@media (min-width: 769px) {
+    .warehouse-banner img {
+        height: 400px;
+    }
+}
+@media (min-width: 1050px) {
+    .warehouse-banner img {
+        height: 485px;
+    }
+}
+
+
+
+
 
 .slider-text {
     position: relative;

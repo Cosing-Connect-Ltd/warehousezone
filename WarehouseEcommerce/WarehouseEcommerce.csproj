@@ -747,6 +747,7 @@
     <Content Include="img\services\Sensormatic-Solutions-Global-Stamp.jpg" />
     <Content Include="img\services\stock-control-banner.jpg" />
     <Content Include="img\services\warehouse-banner.jpg" />
+    <Content Include="img\services\warehouse_banner.png" />
     <Content Include="img\services\wh-bottom.jpg" />
     <Content Include="img\services\wh-middle.jpeg" />
     <Content Include="img\services\wh-top.jpeg" />
