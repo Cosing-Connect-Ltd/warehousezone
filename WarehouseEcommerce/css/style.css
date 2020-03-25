@@ -1194,6 +1194,12 @@ body {
     padding: 310px 0;
     position: relative;
 }
+.warehouse-banner {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
 .warehouse-banner img {
     margin: auto;
     display: flex;
