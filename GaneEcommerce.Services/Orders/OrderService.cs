@@ -1536,6 +1536,7 @@ namespace Ganedata.Core.Services
 
                         orderProcess.DateUpdated = DateTime.UtcNow;
                         orderProcess.UpdatedBy = op.UpdatedBy;
+                        orderProcess.PickContainerCode = item.PickContainerCode;
                         _currentDbContext.OrderProcessDetail.Add(o);
                         _currentDbContext.SaveChanges();
                         // handle Pallet tracking info
@@ -3239,7 +3240,7 @@ namespace Ganedata.Core.Services
                     status = true;
                 }
                 orderprocess.InvoiceDate = InvoiceDate.HasValue ? InvoiceDate : orderprocess.InvoiceDate;
-                orderprocess.InvoiceNo = string.IsNullOrEmpty(InvoiceNumber)?orderprocess.InvoiceNo:InvoiceNumber;
+                orderprocess.InvoiceNo = string.IsNullOrEmpty(InvoiceNumber) ? orderprocess.InvoiceNo : InvoiceNumber;
                 _currentDbContext.OrderProcess.Attach(orderprocess);
                 _currentDbContext.Entry(orderprocess).State = EntityState.Modified;
                 _currentDbContext.SaveChanges();

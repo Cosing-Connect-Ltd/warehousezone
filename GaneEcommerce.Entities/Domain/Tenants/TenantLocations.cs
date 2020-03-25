@@ -131,7 +131,7 @@ namespace Ganedata.Core.Entities.Domain
 
         [Display(Name = "Show Price alerts in Sales Order")]
         public bool ShowPriceAlertInSalesOrder { get; set; }
-
-
+        public bool PickByContainer { get; set; }
+        public bool MandatoryPickByContainer { get; set; }
     }
 }

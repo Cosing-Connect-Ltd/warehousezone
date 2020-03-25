@@ -719,6 +719,10 @@
     <Compile Include="Migrations\202003201317172_added-ManufacturerCode-as-MFGCode-in-ProductManufacturer.designer.cs">
       <DependentUpon>202003201317172_added-ManufacturerCode-as-MFGCode-in-ProductManufacturer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003241741303_pick-by-container-properties-added.cs" />
+    <Compile Include="Migrations\202003241741303_pick-by-container-properties-added.designer.cs">
+      <DependentUpon>202003241741303_pick-by-container-properties-added.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1578,6 +1582,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003201317172_added-ManufacturerCode-as-MFGCode-in-ProductManufacturer.resx">
       <DependentUpon>202003201317172_added-ManufacturerCode-as-MFGCode-in-ProductManufacturer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003241741303_pick-by-container-properties-added.resx">
+      <DependentUpon>202003241741303_pick-by-container-properties-added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

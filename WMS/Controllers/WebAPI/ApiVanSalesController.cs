@@ -124,7 +124,9 @@ namespace WMS.Controllers.WebAPI
                 ShowFullBalanceOnPayment = terminal.TenantWarehous.ShowFullBalanceOnPayment,
                 AllowExportDatabase = terminal.AllowExportDatabase,
                 ShowCasePrices = terminal.ShowCasePrices,
-                ScanVehicleLicensePlate = terminal.ScanVehicleLicensePlate
+                ScanVehicleLicensePlate = terminal.ScanVehicleLicensePlate,
+                PickByContainer = terminal.TenantWarehous.PickByContainer,
+                MandatoryPickByContainer = terminal.TenantWarehous.MandatoryPickByContainer
             };
 
             var mobileLocation = TerminalServices.GetMobileLocationByTerminalId(terminal.TerminalId);

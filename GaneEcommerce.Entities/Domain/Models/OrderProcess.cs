@@ -86,6 +86,7 @@ namespace Ganedata.Core.Entities.Domain
         //timber properties
         public string FSC { get; set; }
         public string PEFC { get; set; }
+        public string PickContainerCode { get; set; }
     }
 
 }

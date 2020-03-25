@@ -52,6 +52,8 @@ namespace Ganedata.Core.Models
         public bool AllowExportDatabase { get; set; }
         public bool ShowCasePrices { get; set; }
         public bool ScanVehicleLicensePlate { get; set; }
+        public bool PickByContainer { get; set; }
+        public bool MandatoryPickByContainer { get; set; }
     }
 
 
