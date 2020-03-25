@@ -1554,7 +1554,7 @@ body {
     margin-bottom: 25px;
 }
 
-    .service-icon img:hover {
+    .single-service img:hover {
         transform: scale(0.8);
         -ms-transform: scale(0.8);
         -webkit-transform: scale(0.8);
@@ -1580,21 +1580,22 @@ body {
     transform: rotate(360deg) scale(1);
 }
 
-.service-text h4 {
-    color: #000;
+.service-text h3 {
+    font-size: 16px;
     font-weight: 700;
-    letter-spacing: 1px;
-    margin-bottom: 15px;
+    margin-bottom: 9px;
+    margin-top: 7px;
+    position: relative;
     text-transform: capitalize;
-    font-size: 22px;
+    color: #444;
 }
-
 .service-text p {
-    color: #000000;
-    line-height: 26px;
-    font-weight: 400;
-    font-size: 14px;
+    font-size: 13px;
+    line-height: 20px;
     margin-bottom: 0;
+    color: #000000;
+    font-weight: 600;
+    text-align: center;
 }
 
 /* 8. testimonial-area */
