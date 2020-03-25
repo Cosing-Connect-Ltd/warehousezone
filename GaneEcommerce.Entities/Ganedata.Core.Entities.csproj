@@ -263,6 +263,7 @@
     <Compile Include="Domain\ViewModels\PrestaShopModel\AccountPrestaShopViewModel.cs" />
     <Compile Include="Domain\ViewModels\PrestaShopModel\OrdersPrestaShopViewModel.cs" />
     <Compile Include="Domain\ViewModels\PrestaShopModel\PrestashopAddressViewModel.cs" />
+    <Compile Include="Domain\ViewModels\PrestaShopModel\PrestaShopCountryViewModel.cs" />
     <Compile Include="Domain\ViewModels\PrestaShopModel\ProductPrestaShopViewModel.cs" />
     <Compile Include="Domain\ViewModels\ProductFilteringViewModel.cs" />
     <Compile Include="Domain\ViewModels\ScanSourceProductViewModel.cs" />

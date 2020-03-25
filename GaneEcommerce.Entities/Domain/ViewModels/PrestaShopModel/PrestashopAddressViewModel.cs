@@ -34,7 +34,7 @@ namespace Ganedata.Core.Entities.Domain.ViewModels
         [XmlAttribute(AttributeName = "href", Namespace = "http://www.w3.org/1999/xlink")]
         public string Href { get; set; }
         [XmlText]
-        public string Text { get; set; }
+        public int Text { get; set; }
     }
 
     [XmlRoot(ElementName = "address")]

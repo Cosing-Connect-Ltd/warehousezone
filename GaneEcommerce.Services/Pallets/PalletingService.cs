@@ -648,7 +648,7 @@ namespace Ganedata.Core.Services
                 contactDetails2.telephone = palletDispatch.OrderProcess?.Order?.Account?.AccountContacts.FirstOrDefault()?.TenantContactPhone;
                 deliveryDetails.contactDetails = contactDetails2;
                 Address2 address2 = new Address2();
-                address2.countryCode = palletDispatch.OrderProcess?.Order?.Tenant?.Country?.CountryCode;
+                address2.countryCode = palletDispatch.OrderProcess?.Order?.Account?.AccountAddresses.FirstOrDefault(u=>u.AddTypeShipping==true)?.GlobalCountry?.CountryCode;
                 address2.postcode = palletDispatch.OrderProcess?.Order?.ShipmentAddressPostcode;
                 address2.street = palletDispatch.OrderProcess?.Order?.ShipmentAddressLine1;
                 address2.town = string.IsNullOrEmpty(palletDispatch.OrderProcess?.Order?.ShipmentAddressLine3) ? palletDispatch.OrderProcess?.Order?.ShipmentAddressLine2 : palletDispatch.OrderProcess?.Order?.ShipmentAddressLine3;
@@ -674,12 +674,12 @@ namespace Ganedata.Core.Services
             return default;
         }
 
-        private int GetPalltedProductWeight(int DispatchId)
+        private decimal GetPalltedProductWeight(int DispatchId)
         {
             var palletId = _currentDbContext.Pallets.Where(u => u.PalletsDispatchID == DispatchId).Select(u => u.PalletID).ToList();
             var productIds = _currentDbContext.PalletProducts.Where(u => palletId.Contains(u.PalletID)).Select(u => u.ProductID).ToList();
             var weights = _currentDbContext.ProductMaster.Where(u => productIds.Contains(u.ProductId)).Sum(u => u.Weight);
-            int weight = int.Parse(weights.ToString());
+            decimal weight = decimal.Parse(weights.ToString());
             if (weight == 0) weight = 1;
             return weight;
         }

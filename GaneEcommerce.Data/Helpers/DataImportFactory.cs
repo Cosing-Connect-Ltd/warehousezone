@@ -2546,12 +2546,16 @@ namespace Ganedata.Core.Data.Helpers
                             AddressLine2 = item.Address2,
                             DateCreated = DateTime.UtcNow,
                             IsActive = true,
-                            CountryID = context.Tenants.FirstOrDefault(m => m.TenantId == tenantId).CountryID ?? 0,
+                            CountryID = context.GlobalCountries.FirstOrDefault(m => m.PrestaShopCountryId == item.Id_country.Text)?.CountryID ?? 0,
                             AccountID = accountId,
                             CreatedBy = UserId,
                             PrestaShopAddressId = mainId,
 
                         };
+                        if (currentAddress.CountryID <= 0)
+                        {
+                            currentAddress.CountryID = GetPrestaShopCountry(item.Id_country.Text, PrestashopUrl, PrestashopUrl).FirstOrDefault();
+                        }
                     }
                     else
                     {
@@ -2559,7 +2563,10 @@ namespace Ganedata.Core.Data.Helpers
                         currentAddress.PostCode = item.Postcode;
                         currentAddress.AddressLine1 = item.Address1;
                         currentAddress.AddressLine2 = item.Address2;
-                        currentAddress.AddressLine3 = " ";
+                        currentAddress.Town = item.City;
+                        currentAddress.DateUpdated = DateTime.UtcNow;
+                        currentAddress.UpdatedBy = UserId;
+
 
                     }
                     if ((mainId == DeliveryAddressId || mainId == InvoiceAdressId) && DeliveryAddressId == InvoiceAdressId)
@@ -2747,7 +2754,7 @@ namespace Ganedata.Core.Data.Helpers
                 }
                 foreach (var item in orderSearch.Orders.Order)
                 {
-                    var order = _currentDbContext.Order.FirstOrDefault(u => u.PrestaShopOrderId == item.Id_customer.Text && u.SiteID == SiteId && u.IsDeleted != true);
+                    var order = _currentDbContext.Order.FirstOrDefault(u => u.PrestaShopOrderId == item.Id && u.SiteID == SiteId && u.IsDeleted != true);
                     if (order == null)
                     {
                         order = new Order();
@@ -2783,8 +2790,7 @@ namespace Ganedata.Core.Data.Helpers
                                 order.ShipmentAccountAddressId = accountAddress.AddressID;
                                 order.ShipmentAddressLine1 = accountAddress.AddressLine1;
                                 order.ShipmentAddressLine2 = accountAddress.AddressLine2;
-                                order.ShipmentAddressLine3 = accountAddress.AddressLine3;
-                                order.ShipmentAddressLine4 = accountAddress.AddressLine4;
+                                order.ShipmentAddressLine3 = accountAddress.Town;
                                 order.ShipmentAddressPostcode = accountAddress.PostCode;
 
                             }
@@ -2792,11 +2798,35 @@ namespace Ganedata.Core.Data.Helpers
 
 
                         }
-
                         order.OrderStatusID = _currentDbContext.OrderStatus.First(a => a.OrderStatusID == (int)OrderStatusEnum.Active).OrderStatusID;
                     }
                     else
                     {
+                        var accounts = GetPrestaShopAccount(item.Id_customer.Text, null, tenantId, 1, item.Id_address_delivery.Text, item.Id_address_invoice.Text, PrestashopUrl, PrestashopKey);
+                        var accountID = accounts?.FirstOrDefault() ?? 1;
+                        if (accountID > 0)
+                        {
+                            var account = _currentDbContext.Account.Find(accountID);
+                            if (account != null)
+                            {
+                                order.AccountCurrencyID = account.CurrencyID;
+
+                            }
+                            order.AccountID = accountID;
+                            var accountAddress = GetAccountAddressesByPrestaShopAddressId(item.Id_address_delivery.Text);
+                            if (accountAddress != null)
+                            {
+                                order.ShipmentAccountAddressId = accountAddress.AddressID;
+                                order.ShipmentAddressLine1 = accountAddress.AddressLine1;
+                                order.ShipmentAddressLine2 = accountAddress.AddressLine2;
+                                order.ShipmentAddressLine3 = accountAddress.Town;
+                                order.ShipmentAddressPostcode = accountAddress.PostCode;
+
+                            }
+
+
+
+                        }
                         order.DateUpdated = DateTime.UtcNow;
                         order.TenentId = tenantId;
                         order.UpdatedBy = 1;
@@ -2880,6 +2910,75 @@ namespace Ganedata.Core.Data.Helpers
 
             return _currentdbContext.AccountAddresses.FirstOrDefault(u => u.PrestaShopAddressId == id);
         }
+        public List<int> GetPrestaShopCountry(int? Id, string PrestashopUrl, string PrestashopKey)
+        {
+            var context = new ApplicationContext();
+            try
+            {
+
+                List<int> countIds = new List<int>();
+                #region ApiCall
+                string url = PrestashopUrl + "countries?filter[active]=[1]&display=full";
+                if (Id.HasValue)
+                {
+                    url = PrestashopUrl + "countries?filter[id]=[" + Id + "]&display=full";
+                }
+                PrestaShopCountry countries = new PrestaShopCountry();
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
+                httpWebRequest.Credentials = new NetworkCredential(PrestashopKey, "");
+                httpWebRequest.Method = "GET";
+                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var serializer = new XmlSerializer(typeof(PrestaShopCountry));
+                    countries = serializer.Deserialize(streamReader) as PrestaShopCountry;
+                    if (countries.Countries.Country.Count < 0)
+                    {
+                        return default;
+                    }
+
+
+                }
+                #endregion
+                if (countries.Countries.Country.Count > 0)
+                {
+                    foreach (var item in countries.Countries.Country)
+                    {
+                        var country = context.GlobalCountries.FirstOrDefault(u => u.CountryCode == item.Iso_code.Trim() || u.CountryName == item.Name.Language.Text);
+                        if (country == null)
+                        {
+                            country = new GlobalCountry();
+                            country.PrestaShopCountryId = item.Id;
+                            country.CountryName = item.Name.Language.Text;
+                            country.CountryCode = item.Iso_code;
+
+                        }
+                        else
+                        {
+                            country.PrestaShopCountryId = item.Id;
+
+                        }
+                        context.Entry(country).State = country.CountryID > 0 ? EntityState.Modified : EntityState.Added;
+                        context.SaveChanges();
+                        countIds.Add(country.CountryID);
+                    }
+
+
+
+                }
+                return countIds;
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+
+
+
         public async Task<string> PrestaShopStockSync(int tenantId, int warehouseId, string PrestashopUrl, string PrestashopKey, int SiteId)
         {
             DateTime requestTime = DateTime.UtcNow;

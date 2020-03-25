@@ -92,7 +92,7 @@ namespace Ganedata.Core.Entities.Domain.ViewModels
         public DeliveryDetails deliveryDetails { get; set; }
         public string networkCode { get; set; }
         public int numberOfParcels { get; set; }
-        public int? totalWeight { get; set; }
+        public decimal? totalWeight { get; set; }
         public string shippingRef1 { get; set; }
         public string shippingRef2 { get; set; }
         public string shippingRef3 { get; set; }

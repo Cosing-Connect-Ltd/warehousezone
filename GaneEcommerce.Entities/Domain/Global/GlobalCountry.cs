@@ -25,6 +25,10 @@ namespace Ganedata.Core.Entities.Domain
         [StringLength(200)]
         [Display(Name = "Country Name")]
         public string CountryName { get; set; }
+
+        public int? PrestaShopCountryId { get; set; }
         public virtual ICollection<GlobalCurrency> GlobalCurrency { get; set; }
+
+
     }
 }
