@@ -1410,13 +1410,13 @@ ul.mhp-menu {
 .logo-slider {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     flex-wrap: wrap;
 }
 
     .logo-slider img {
         width: 200px;
         max-width: unset;
+        margin: 10px;
     }
 
 @media(max-width:1440px) {
