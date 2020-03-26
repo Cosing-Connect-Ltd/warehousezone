@@ -3,7 +3,7 @@
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class prestashopcountryIdaddedincountryTable : DbMigration
+    public partial class PrestaShopCountryIdadded : DbMigration
     {
         public override void Up()
         {

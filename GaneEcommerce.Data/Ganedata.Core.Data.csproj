@@ -723,9 +723,9 @@
     <Compile Include="Migrations\202003241741303_pick-by-container-properties-added.designer.cs">
       <DependentUpon>202003241741303_pick-by-container-properties-added.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202003251741335_prestashopcountryId-added-in-countryTable.cs" />
-    <Compile Include="Migrations\202003251741335_prestashopcountryId-added-in-countryTable.designer.cs">
-      <DependentUpon>202003251741335_prestashopcountryId-added-in-countryTable.cs</DependentUpon>
+    <Compile Include="Migrations\202003261029318_PrestaShop-CountryId-added.cs" />
+    <Compile Include="Migrations\202003261029318_PrestaShop-CountryId-added.designer.cs">
+      <DependentUpon>202003261029318_PrestaShop-CountryId-added.cs</DependentUpon>
     </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
@@ -1590,8 +1590,8 @@
     <EmbeddedResource Include="Migrations\202003241741303_pick-by-container-properties-added.resx">
       <DependentUpon>202003241741303_pick-by-container-properties-added.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003251741335_prestashopcountryId-added-in-countryTable.resx">
-      <DependentUpon>202003251741335_prestashopcountryId-added-in-countryTable.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202003261029318_PrestaShop-CountryId-added.resx">
+      <DependentUpon>202003261029318_PrestaShop-CountryId-added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -7,13 +7,13 @@ namespace Ganedata.Core.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.0")]
-    public sealed partial class prestashopcountryIdaddedincountryTable : IMigrationMetadata
+    public sealed partial class PrestaShopCountryIdadded : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(prestashopcountryIdaddedincountryTable));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(PrestaShopCountryIdadded));
         
         string IMigrationMetadata.Id
         {
-            get { return "202003251741335_prestashopcountryId-added-in-countryTable"; }
+            get { return "202003261029318_PrestaShop-CountryId-added"; }
         }
         
         string IMigrationMetadata.Source
