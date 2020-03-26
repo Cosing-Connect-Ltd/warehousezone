@@ -6,7 +6,7 @@
                 @foreach (var item in Model)
                 {
 
-                    <a href=""><img src="@(!string.IsNullOrEmpty(item.ImagePath)? ViewBag.BaseFilePath + item.ImagePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="" class="img-responsive"> </a>
+                    <a href=""><img src="@(!string.IsNullOrEmpty(item.ImagePath)? ViewBag.BaseFilePath + item.ImagePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@item.Name" title="@item.Name" class="img-responsive"> </a>
                  
                 }
             
