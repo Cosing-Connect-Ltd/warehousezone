@@ -21,7 +21,7 @@
                                 <div class="image col-sm-4 col-xs-4">
                                     <a href="@Url.Action("ProductDetails","Products", new { sku= item.SKUCode })"><img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@item.Name" title="@item.Name" class="img-responsive center-block" /></a>
                                     <!-- Smartshop Images Start -->
-                                    <a href="@Url.Action("ProductDetails","Products", new { sku= item.SKUCode })"><img src="@(!string.IsNullOrEmpty(item.HoverImage) ? ViewBag.BaseFilePath + item.HoverImage:ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive second-img" alt="hover image" /></a>
+                                    <a href="@Url.Action("ProductDetails","Products", new { sku= item.SKUCode })"><img src="@(!string.IsNullOrEmpty(item.HoverImage) ? ViewBag.BaseFilePath + item.HoverImage:ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@item.Name" title="@item.Name" class="img-responsive second-img" /></a>
 
                                     <!-- Smartshop Images End -->
                                 </div>

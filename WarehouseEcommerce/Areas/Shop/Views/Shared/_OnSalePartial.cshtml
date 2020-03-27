@@ -27,7 +27,7 @@
                                         <div class="image ">
                                             <a href="@Url.Action("ProductDetails","Products", new { sku= product[i].SKUCode })"><img src="@(!string.IsNullOrEmpty(product[i].DefaultImage)? ViewBag.BaseFilePath + product[i].DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@product[i].Name" title="@product[i].Name" class="img-responsive center-block" /></a>
                                             <!-- Smartshop Images Start -->
-                                            <a href="@Url.Action("ProductDetails","Products", new { sku= product[i].SKUCode })"><img src="@(!string.IsNullOrEmpty(product[i].HoverImage)? ViewBag.BaseFilePath + product[i].HoverImage :ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive second-img" alt="hover image" /></a>
+                                            <a href="@Url.Action("ProductDetails","Products", new { sku= product[i].SKUCode })"><img src="@(!string.IsNullOrEmpty(product[i].HoverImage)? ViewBag.BaseFilePath + product[i].HoverImage :ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@product[i].Name" title="@product[i].Name" class="img-responsive second-img" /></a>
                                             <!-- Smartshop Images End -->
                                             <div class="topbutton">
                                                 <button type="button" data-toggle="tooltip" title="Add to Wish List">
@@ -89,7 +89,7 @@
                                         <div class="image">
                                             <a href="@Url.Action("ProductDetails","Products", new { sku= product[i+1].SKUCode })"><img src="@(!string.IsNullOrEmpty(product[i].DefaultImage)?ViewBag.BaseFilePath +product[i].DefaultImage :ViewBag.BaseFilePath +"/UploadedFiles/Products/no_image.gif")" alt="@product[i+1].Name" title="@product[i+1].Name" class="img-responsive center-block first-img" /></a>
                                             <!-- Smartshop Images Start -->
-                                            <a href="@Url.Action("ProductDetails","Products", new { sku= product[i+1].SKUCode })"><img src="@(!string.IsNullOrEmpty(product[i].HoverImage)?ViewBag.BaseFilePath +product[i].HoverImage :ViewBag.BaseFilePath +"/UploadedFiles/Products/no_image.gif")" class="img-responsive second-img" alt="hover image" /></a>
+                                            <a href="@Url.Action("ProductDetails","Products", new { sku= product[i+1].SKUCode })"><img src="@(!string.IsNullOrEmpty(product[i].HoverImage)?ViewBag.BaseFilePath +product[i].HoverImage :ViewBag.BaseFilePath +"/UploadedFiles/Products/no_image.gif")" alt="@product[i+1].Name" title="@product[i+1].Name" class="img-responsive second-img" /></a>
                                             <!-- Smartshop Images End -->
                                             <div class="topbutton">
                                                 <button type="button" data-toggle="tooltip" title="Add to Wish List">

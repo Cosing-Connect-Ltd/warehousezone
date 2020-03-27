@@ -54,6 +54,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                 ViewBag.searchString = search;
                 ViewBag.CurrencySymbol = currencyyDetail.Symbol;
                 ViewBag.subcategory = category;
+                ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
                 var product = _productlookupServices.GetAllValidProductGroupAndDeptByName(group, department, category);
 
                 if (!string.IsNullOrEmpty(search))
@@ -114,6 +115,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         {
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.CurrencySymbol = currencyyDetail.Symbol;
+            ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
             var product = _productServices.GetProductMasterByProductCode(sku,CurrentTenantId);
             product.SellPrice = Math.Round((product.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0), 2);
             return View(product);

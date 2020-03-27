@@ -3,8 +3,6 @@
 @model PagedList.IPagedList<ProductMaster>
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = "ProductCategories";
-
     var UrlQuery = Request.Url.Query;
     string values = "";
     if (UrlQuery.Contains("values="))
@@ -13,8 +11,8 @@
         var lastindex = UrlQuery.Length - startindex;
         values = UrlQuery.Substring(startindex, lastindex).Replace("values=", "");
     }
-}
 
+}
 
 
 <div id="product-search" class="container custom-max-width">
@@ -24,20 +22,23 @@
         <div id="content" class="col-md-9 col-sm-12">
             <ul class="breadcrumb">
                 <li><a href="/shop">Home</a></li>
-                @if (ViewBag.departmentId != null && ViewBag.groupId != null && !string.IsNullOrWhiteSpace(ViewBag.subcategory)) 
+                @if (ViewBag.departmentId != null && ViewBag.groupId != null && !string.IsNullOrWhiteSpace(ViewBag.subcategory))
                 {
                     <li><a href="@Url.Action("list","Products",new { department = ViewBag.departmentId})">@ViewBag.departmentId </a></li>
                     <li><a href="@Url.Action("list","Products",new { group = ViewBag.groupId, department = ViewBag.departmentId})">@ViewBag.groupId </a></li>
                     <li>@ViewBag.subcategory</li>
+                     ViewBag.Title = (ViewBag.departmentId ?? "") +" | "+ (ViewBag.groupId ?? "" ) +" | "+ (ViewBag.subcategory ?? "") +" | "+ ViewBag.SiteDescription;
                 }
                 else if (ViewBag.departmentId != null && ViewBag.groupId != null)
                 {
                     <li><a href="@Url.Action("list","Products",new { department = ViewBag.departmentId})">@ViewBag.departmentId </a></li>
                     <li>@ViewBag.groupId</li>
+                     ViewBag.Title = (ViewBag.departmentId ?? "") +" | "+ (ViewBag.groupId ?? "" ) +" | "+ ViewBag.SiteDescription;
                 }
                 else if (ViewBag.departmentId != null)
                 {
                     <li>@ViewBag.departmentId</li>
+                     ViewBag.Title = (ViewBag.departmentId ?? "") +" | "+ ViewBag.SiteDescription;
                 }
 
             </ul>
@@ -87,8 +88,8 @@
                         <div class="product-layout product-list col-xs-12">
                             <div class="product-thumb transition single-product-cat">
                                 <div class="image">
-                                    <a href="@Url.Action("ProductDetails","Products", new {sku = item.SKUCode})"><img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@item.Name" class="img-responsive center-block" /></a>
-                                    <a href="@Url.Action("ProductDetails", "Products", new { sku = item.SKUCode })"><img src="@(!string.IsNullOrEmpty(item.HoverImage) ? ViewBag.BaseFilePath +item.HoverImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive second-img" alt="@item.Name" /></a>
+                                    <a href="@Url.Action("ProductDetails","Products", new {sku = item.SKUCode})"><img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" title="@item.Name" alt="@item.Name" class="img-responsive center-block" /></a>
+                                    <a href="@Url.Action("ProductDetails", "Products", new { sku = item.SKUCode })"><img src="@(!string.IsNullOrEmpty(item.HoverImage) ? ViewBag.BaseFilePath +item.HoverImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive second-img" title="@item.Name" alt="@item.Name" /></a>
                                     <span class="salep">sale</span>
                                     <div class="topbutton">
                                         <button type="button" data-toggle="tooltip" title="Add to Wish List">
