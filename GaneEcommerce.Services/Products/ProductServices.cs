@@ -121,7 +121,7 @@ namespace Ganedata.Core.Services
             var product = _currentDbContext.ProductMaster.FirstOrDefault(a => a.ProductId == productId && a.IsDeleted != true);
             if (product != null)
             {
-                product.RecipeItemProducts = _currentDbContext.ProductReceipeMasters.Where(m => m.ProductMasterID == productId && m.IsDeleted != true).ToList();
+                
                 product.ProductKitMap = _currentDbContext.ProductKitMaps.Where(m => m.ProductId == productId && m.IsDeleted != true).ToList();
             }
             return product;
@@ -162,12 +162,12 @@ namespace Ganedata.Core.Services
         public void SaveSelectedProductRecipeItems(int productId, List<RecipeProductItemRequest> recipeItems, int currentUserId)
         {
             var productMaster = GetProductMasterById(productId);
-            var recipeProducts = productMaster.RecipeItemProducts.Where(m => m.IsDeleted != true).Select(m => m.RecipeItemProduct).ToList();
+            var recipeProducts = productMaster.ProductKitMap.Where(m => m.IsDeleted != true && m.ProductKitType==ProductKitTypeEnum.Recipe).Select(m => m.KitProductMaster).ToList();
 
             var removedItems = recipeProducts.Where(m => !recipeItems.Select(x => x.ProductId).Contains(m.ProductId));
             foreach (var item in removedItems)
             {
-                var recipeLink = _currentDbContext.ProductReceipeMasters.First(m => m.ProductMasterID == productId && m.RecipeItemProductID == item.ProductId && m.IsDeleted != true);
+                var recipeLink = _currentDbContext.ProductKitMaps.First(m => m.ProductId == productId && m.KitProductId == item.ProductId && m.IsDeleted != true);
                 recipeLink.IsDeleted = true;
                 recipeLink.UpdateUpdatedInfo(currentUserId);
                 _currentDbContext.Entry(recipeLink).State = EntityState.Modified;
@@ -176,20 +176,20 @@ namespace Ganedata.Core.Services
             var addedItems = recipeItems.Where(m => !recipeProducts.Select(x => x.ProductId).Contains(m.ProductId));
             foreach (var item in addedItems)
             {
-                var recipeItem = new ProductReceipeMaster
+                var recipeItem = new ProductKitMap
                 {
-                    ProductMasterID = productId,
-                    RecipeItemProductID = item.ProductId,
+                    ProductId = productId,
+                    KitProductId = item.ProductId,
                     Quantity = item.Quantity
                 };
                 recipeItem.UpdateCreatedInfo(currentUserId);
                 _currentDbContext.Entry(recipeItem).State = EntityState.Added;
             }
 
-            var modifiedItems = productMaster.RecipeItemProducts.Where(m => recipeItems.Select(x => x.ProductId).Contains(m.RecipeItemProductID));
+            var modifiedItems = productMaster.ProductKitMap.Where(m => recipeItems.Select(x => x.ProductId).Contains(m.KitProductId));
             foreach (var item in modifiedItems)
             {
-                var recipeItem = recipeItems.First(m => m.ProductId == item.RecipeItemProductID);
+                var recipeItem = recipeItems.First(m => m.ProductId == item.KitProductId);
                 item.Quantity = recipeItem.Quantity;
                 item.UpdateUpdatedInfo(currentUserId);
                 _currentDbContext.Entry(item).State = EntityState.Modified;
@@ -243,7 +243,7 @@ namespace Ganedata.Core.Services
 
         public void RemoveRecipeItemProduct(int productId, int recipeItemProductId, int currentUserId)
         {
-            var productRecipeItem = _currentDbContext.ProductReceipeMasters.FirstOrDefault(m => m.ProductMasterID == productId && m.RecipeItemProductID == recipeItemProductId && m.IsDeleted != true);
+            var productRecipeItem = _currentDbContext.ProductKitMaps.FirstOrDefault(m => m.ProductId == productId && m.KitProductId == recipeItemProductId && m.IsDeleted != true && m.ProductKitType==ProductKitTypeEnum.Recipe);
 
             if (productRecipeItem != null)
             {
@@ -256,7 +256,7 @@ namespace Ganedata.Core.Services
         }
         public void UpdateRecipeItemProduct(int productId, int recipeItemProductId, decimal quantity, int currentUserId)
         {
-            var productRecipeItem = _currentDbContext.ProductReceipeMasters.FirstOrDefault(m => m.ProductMasterID == productId && m.RecipeItemProductID == recipeItemProductId && m.IsDeleted != true);
+            var productRecipeItem = _currentDbContext.ProductKitMaps.FirstOrDefault(m => m.ProductId == productId && m.KitProductId == recipeItemProductId && m.IsDeleted != true && m.ProductKitType == ProductKitTypeEnum.Recipe);
 
             if (productRecipeItem != null)
             {
@@ -704,7 +704,7 @@ namespace Ganedata.Core.Services
                 }
 
 
-                if (productMaster.Kit && productKitIds != null)
+                if ((productMaster.Kit || productMaster.GroupedProduct) && productKitIds != null)
                 {
                     var ToDelete = new List<int>();
 
@@ -740,6 +740,7 @@ namespace Ganedata.Core.Services
                             KitProductId = item,
                             ProductId = productMaster.ProductId,
                             TenantId = tenantId,
+                            ProductKitType=productMaster.GroupedProduct?ProductKitTypeEnum.Grouped:ProductKitTypeEnum.Kit,
                             Quantity = 1
                         };
                         _currentDbContext.ProductKitMaps.Add(newItem);
@@ -755,6 +756,7 @@ namespace Ganedata.Core.Services
                         _currentDbContext.Entry(entity).State = EntityState.Modified;
                     }
                     productMaster.Kit = false;
+                    productMaster.GroupedProduct = false;
                 }
 
 
@@ -818,7 +820,7 @@ namespace Ganedata.Core.Services
                     }
 
                 }
-                if (productKitIds != null && productMaster.Kit)
+                if (productKitIds != null && (productMaster.Kit || productMaster.GroupedProduct))
                 {
                     foreach (var item in productKitIds)
                     {

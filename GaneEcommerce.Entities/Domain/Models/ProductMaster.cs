@@ -175,6 +175,9 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Is Stock Item")]
         public bool IsStockItem { get; set; }
         public int? ManufacturerId { get; set; }
+        [Display(Name = "Group Product")]
+        public bool GroupedProduct { get; set; }
+
         [ForeignKey("ManufacturerId")]
         public ProductManufacturer ProductManufacturer { get; set; }
         public virtual GlobalUOM GlobalUOM { get; set; }
@@ -191,13 +194,13 @@ namespace Ganedata.Core.Entities.Domain
         public virtual ICollection<StockTakeSnapshot> StockTakeSnapShots { get; set; }
         public virtual ICollection<ProductAccountCodes> ProductAccountCodes { get; set; }
         public virtual ICollection<ProductSerialis> ProductSerialization { get; set; }
+        [InverseProperty("KitProductMaster")]
         public virtual ICollection<ProductKitMap> ProductKitMap { get; set; }
         public virtual TenantDepartments TenantDepartment { get; set; }
         public virtual ProductGroups ProductGroup { get; set; }
         public virtual ProductCategory ProductCategory { get; set; }
         public virtual PalletType PalletType { get; set; }
         public virtual ICollection<ProductFiles> ProductFiles { get; set; }
-        public virtual List<ProductReceipeMaster> RecipeItemProducts { get; set; }
         public virtual ICollection<ProductsWebsitesMap> ProductsWebsitesMap { get; set; }
 
         public string HoverImage
@@ -227,22 +230,6 @@ namespace Ganedata.Core.Entities.Domain
 
     }
 
-    public class ProductReceipeMaster : PersistableEntity<int>
-    {
-        [Key]
-        public int ProductReceipeMasterID { get; set; }
-
-        public int ProductMasterID { get; set; }
-        [ForeignKey("ProductMasterID")]
-        public virtual ProductMaster RecipeProduct { get; set; }
-
-        public int RecipeItemProductID { get; set; }
-        [ForeignKey("RecipeItemProductID")]
-        public virtual ProductMaster RecipeItemProduct { get; set; }
-
-        public decimal Quantity { get; set; }
-
-    }
 
     [Table("ProductLocationStockLevel")]
     public class ProductLocationStockLevel : PersistableEntity<int>

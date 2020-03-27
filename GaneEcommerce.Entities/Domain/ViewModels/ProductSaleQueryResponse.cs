@@ -1,3 +1,5 @@
+using System;
+
 namespace Ganedata.Core.Entities.Domain
 {
     public class ProductSaleQueryResponse
@@ -37,6 +39,7 @@ namespace Ganedata.Core.Entities.Domain
 
     }
 
+    [Serializable]
     public class RecipeProductItemRequest
     {
         public int ParentProductId { get; set; }

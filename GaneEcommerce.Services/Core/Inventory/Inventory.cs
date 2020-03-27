@@ -1065,22 +1065,6 @@ namespace Ganedata.Core.Services
             var productService = DependencyResolver.Current.GetService<IProductServices>();
             var productMaster = productService.GetProductMasterById(parentTransaction.ProductId);
 
-            productMaster.RecipeItemProducts.ForEach(p =>
-            {
-
-                // if DontMonitorStock flag is true then make that flag true in inventory as well
-                bool dontMonitorStock = CheckDontStockMonitor(p.RecipeItemProductID, null, null);
-
-                var transaction = _mapper.Map(parentTransaction, new InventoryTransaction());
-                transaction.InventoryTransactionId = 0;
-                transaction.ProductId = p.RecipeItemProductID;
-                transaction.Quantity = parentTransaction.Quantity * p.Quantity;
-                transaction.LastQty = CalculateLastQty(p.RecipeItemProductID, parentTransaction.TenentId, parentTransaction.WarehouseId, (parentTransaction.Quantity * p.Quantity), parentTransaction.InventoryTransactionTypeId, dontMonitorStock);
-                context.InventoryTransactions.Add(transaction);
-                context.SaveChanges();
-                StockRecalculate(p.RecipeItemProductID, parentTransaction.WarehouseId, parentTransaction.TenentId, parentTransaction.CreatedBy);
-
-            });
 
             productMaster.ProductKitMap.ToList().ForEach(p =>
             {

@@ -400,4 +400,10 @@ namespace Ganedata.Core.Entities.Enums
         MerakiSecretKey = 1,
         DPD = 2
     }
+    public enum ProductKitTypeEnum
+    {
+        Kit = 1,
+        Grouped = 2,
+        Recipe = 3,
+    }
 }
