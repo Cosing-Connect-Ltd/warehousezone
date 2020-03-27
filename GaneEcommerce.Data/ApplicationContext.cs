@@ -1,6 +1,7 @@
 ﻿using Ganedata.Core.Entities.Domain;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.ModelConfiguration;
 using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace Ganedata.Core.Data
@@ -17,7 +18,6 @@ namespace Ganedata.Core.Data
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ProductMaster>().HasMany(d => d.RecipeItemProducts);
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
             //modelBuilder.Entity<Order>().HasIndex(d => d.OrderNumber).IsUnique();
             Database.SetInitializer<ApplicationContext>(null);
@@ -108,7 +108,7 @@ namespace Ganedata.Core.Data
         public DbSet<ProductLotOptionsCodes> ProductLotOptionsCodes { get; set; }
         public DbSet<ProductLotProcessTypeCodes> ProductLotProcessTypeCodes { get; set; }
         public DbSet<ProductMaster> ProductMaster { get; set; }
-        public DbSet<ProductReceipeMaster> ProductReceipeMasters { get; set; }
+      
         public DbSet<ProductSCCCodes> ProductSCCCodes { get; set; }
         public DbSet<ProductSerialis> ProductSerialization { get; set; }
         public DbSet<ProductAccountCodes> ProductAccountCodes { get; set; }
@@ -190,4 +190,5 @@ namespace Ganedata.Core.Data
         public DbSet<ProductManufacturer> ProductManufacturers { get; set; }
         //#endregion
     }
+   
 }

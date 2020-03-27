@@ -88,7 +88,6 @@ namespace Ganedata.Core.Data
         DbSet<ProductLotOptionsCodes> ProductLotOptionsCodes { get; set; }
         DbSet<ProductLotProcessTypeCodes> ProductLotProcessTypeCodes { get; set; }
         DbSet<ProductMaster> ProductMaster { get; set; }
-        DbSet<ProductReceipeMaster> ProductReceipeMasters { get; set; }
         DbSet<ProductSCCCodes> ProductSCCCodes { get; set; }
         DbSet<ProductSerialis> ProductSerialization { get; set; }
         DbSet<ProductAccountCodes> ProductAccountCodes { get; set; }

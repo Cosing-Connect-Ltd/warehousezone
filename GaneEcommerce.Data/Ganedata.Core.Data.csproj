@@ -727,6 +727,18 @@
     <Compile Include="Migrations\202003261029318_PrestaShop-CountryId-added.designer.cs">
       <DependentUpon>202003261029318_PrestaShop-CountryId-added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003261154438_groupedproduct-added.cs" />
+    <Compile Include="Migrations\202003261154438_groupedproduct-added.designer.cs">
+      <DependentUpon>202003261154438_groupedproduct-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003261531011_removeProductReceipeMasters-and-addedProductKitEnumType.cs" />
+    <Compile Include="Migrations\202003261531011_removeProductReceipeMasters-and-addedProductKitEnumType.designer.cs">
+      <DependentUpon>202003261531011_removeProductReceipeMasters-and-addedProductKitEnumType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003261611136_productkitrealtion-added.cs" />
+    <Compile Include="Migrations\202003261611136_productkitrealtion-added.designer.cs">
+      <DependentUpon>202003261611136_productkitrealtion-added.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1592,6 +1604,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003261029318_PrestaShop-CountryId-added.resx">
       <DependentUpon>202003261029318_PrestaShop-CountryId-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003261154438_groupedproduct-added.resx">
+      <DependentUpon>202003261154438_groupedproduct-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003261531011_removeProductReceipeMasters-and-addedProductKitEnumType.resx">
+      <DependentUpon>202003261531011_removeProductReceipeMasters-and-addedProductKitEnumType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003261611136_productkitrealtion-added.resx">
+      <DependentUpon>202003261611136_productkitrealtion-added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
