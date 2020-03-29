@@ -740,9 +740,72 @@ namespace WMS.Controllers
 
         #endregion
 
+        #region EditableProductLookup
+
+        public ActionResult _EditableKitProductGrid()
+        {
+            var viewModel = GridLookupExtension.GetViewModel("ProductKitListGridView");
+            if (viewModel == null)
+                viewModel = ProducctListCustomBinding.CreateProductLookupGridViewModel();
+
+            return ProductKitEditGridActionCore(viewModel);
+        }
+        public ActionResult _ProductKitEditListPaging(GridViewPagerState pager)
+        {
+            var viewModel = GridLookupExtension.GetViewModel("ProductKitListGridView");
+            viewModel.Pager.Assign(pager);
+            return ProductKitEditGridActionCore(viewModel);
+        }
+        public ActionResult _ProductsKitEditFiltering(GridViewFilteringState filteringState)
+        {
+            var viewModel = GridLookupExtension.GetViewModel("ProductKitListGridView");
+            viewModel.ApplyFilteringState(filteringState);
+            return ProductKitEditGridActionCore(viewModel);
+        }
+        public ActionResult _ProductsKitEditGetDataSorting(GridViewColumnState column, bool reset)
+        {
+            var viewModel = GridLookupExtension.GetViewModel("ProductKitListGridView");
+            viewModel.ApplySortingState(column, reset);
+            return ProductKitEditGridActionCore(viewModel);
+        }
+        public ActionResult ProductKitEditGridActionCore(GridLookupViewModel gridViewModel)
+        {
+
+            gridViewModel.ProcessCustomBinding(
+                new GridViewCustomBindingGetDataRowCountHandler(args =>
+                {
+                    ProducctListCustomBinding.GetDataRowCount(args, CurrentTenantId, CurrentWarehouseId);
+                }),
+                    new GridViewCustomBindingGetDataHandler(args =>
+                    {
+                        ProducctListCustomBinding.GetData(args, CurrentTenantId, CurrentWarehouseId);
+                    }),
+                     new GridViewCustomBindingGetRowValuesHandler(args =>
+                     {
+                         ProducctListCustomBinding.GetRowValues(args, CurrentTenantId, CurrentWarehouseId);
+                     })
+            );
+            return PartialView("_EditableKitProductGrid", gridViewModel);
+        }
+        public ActionResult SaveProductKitEdit(int ProductID, string Name,
+            string SKUCode, bool? Serialisable, bool? ProcessByPallet, bool? TopProduct,
+            bool? BestSellerProduct, bool? SpecialProduct, bool? OnSaleProduct)
+        {
+            var productMaster = _productServices.GetProductMasterById(ProductID);
+            productMaster.Name = string.IsNullOrEmpty(Name) ? productMaster.Name : Name;
+            productMaster.SKUCode = string.IsNullOrEmpty(SKUCode) ? productMaster.SKUCode : SKUCode;
+            productMaster.Serialisable = Serialisable ?? productMaster.Serialisable;
+            productMaster.ProcessByPallet = ProcessByPallet ?? productMaster.ProcessByPallet;
+            productMaster.TopProduct = TopProduct ?? productMaster.TopProduct;
+            productMaster.BestSellerProduct = BestSellerProduct ?? productMaster.BestSellerProduct;
+            productMaster.SpecialProduct = SpecialProduct ?? productMaster.SpecialProduct;
+            productMaster.OnSaleProduct = OnSaleProduct ?? productMaster.OnSaleProduct;
+            _productServices.SaveEditProduct(productMaster, CurrentUserId, CurrentTenantId);
+            return _EditableKitProductGrid();
+        }
 
 
-
+        #endregion
 
         public ActionResult UploadFile(IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
         {
@@ -1071,15 +1134,15 @@ namespace WMS.Controllers
 
             var productModel = new ProductMasterViewModel() { Name = product.Name, ProductId = product.ProductId, SKUCode = product.SKUCode, BarCode = product.BarCode, IsRawMaterial = product.IsRawMaterial };
 
-            var recipeProductItems = _productServices.GetAllValidProductMasters(CurrentTenantId).Where(m => m.ProductId != productId && m.IsRawMaterial && !m.Kit).ToList();
+            var recipeProductItems = _productServices.GetAllValidProductMasters(CurrentTenantId).Where(m => m.ProductId != productId && m.IsRawMaterial && (!m.Kit || !m.GroupedProduct)).ToList();
 
-            productModel.AllSelectedSubItems = product.RecipeItemProducts.Where(m => m.IsDeleted != true).
+            productModel.AllSelectedSubItems = product.ProductKitMap.Where(m => m.IsDeleted != true && m.ProductKitType == ProductKitTypeEnum.Recipe).
                 Select(r => new ProductRecipeItemViewModel
                 {
-                    Name = r.RecipeItemProduct.Name,
-                    ProductId = r.RecipeItemProductID,
-                    SKUCode = r.RecipeItemProduct.SKUCode,
-                    BarCode = r.RecipeItemProduct.BarCode,
+                    Name = r.KitProductMaster.Name,
+                    ProductId = r.KitProductId,
+                    SKUCode = r.KitProductMaster.SKUCode,
+                    BarCode = r.KitProductMaster.BarCode,
                     Quantity = r.Quantity,
                     ParentProductId = productId
                 }).ToList();
@@ -1104,9 +1167,9 @@ namespace WMS.Controllers
 
             var productModel = new ProductMasterViewModel() { Name = product.Name, ProductId = product.ProductId, SKUCode = product.SKUCode, BarCode = product.BarCode, IsRawMaterial = product.IsRawMaterial };
 
-            var recipeProductItems = _productServices.GetAllValidProductMasters(CurrentTenantId).Where(m => m.ProductId != productId && !m.IsRawMaterial && !m.Kit).ToList();
+            var recipeProductItems = _productServices.GetAllValidProductMasters(CurrentTenantId).Where(m => m.ProductId != productId && !m.IsRawMaterial && (!m.Kit || !m.GroupedProduct)).Take(10).ToList();
 
-            productModel.AllSelectedSubItems = product.ProductKitMap.Where(m => m.IsDeleted != true).
+            productModel.AllSelectedSubItems = product.ProductKitMap.Where(m => m.IsDeleted != true && m.ProductKitType == ProductKitTypeEnum.Recipe).
                 Select(r => new ProductRecipeItemViewModel
                 {
                     Name = r.KitProductMaster.Name,

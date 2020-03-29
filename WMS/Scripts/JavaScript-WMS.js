@@ -54,7 +54,7 @@ $(function () {
         var groupId = $("#drpPG").val();
         if (groupId === null || groupId === "" || groupId === 0) { return; }
         LoadingPanel.Show();
-        
+
         //var pid = $("#prdid option:selected").val();
         $('#drpPC').empty();
         $("#drpPC").trigger("chosen:updated");
@@ -62,7 +62,7 @@ $(function () {
             type: "GET",
             url: "/PurchaseOrders/_GetProductCategory/",
             data: { GroupId: groupId },
-            
+
             success: function (data) {
                 var options = "<option value='0'>Select Category</option>";
                 $.each(data, function (i, item) {
@@ -764,8 +764,15 @@ $(function () {
 
     if ($("#chkkit").is(":checked")) {
         $("#dvkit").show();
+        $(".kitlabel").text("Product Kit");
     }
-    else {
+    else if ($("#GroupedProduct").is(":checked"))
+    {
+        $("#dvkit").show();
+        $(".kitlabel").text("Product Group");
+    }
+    else
+    {
         $("#dvkit").hide();
     }
 
@@ -1137,13 +1144,27 @@ $(function () {
 
     //only single checkbox allowed wihtin parent div
     $('.single-check-select .checkbox').click(function () {
+        debugger;
         var checkedState = $(this).prop("checked");
-        $(this)
-            .parents('.single-check-select')
-            .find('.checkbox:checked')
-            .prop("checked", false);
-
+        $(this).parents('.single-check-select').find('.checkbox:checked').prop("checked", false);
         $(this).prop("checked", checkedState);
+        var checkboxId = this.id;
+        if (checkboxId == "GroupedProduct") {
+            comboBox.ClearTokenCollection();
+            $("#ProductKit").val("");
+            $(".kitlabel").text("Product Group");
+            $("#dvkit").show();
+        }
+        else if (checkboxId == "chkkit") {
+            comboBox.ClearTokenCollection();
+            $("#ProductKit").val("");
+            $(".kitlabel").text("Product Kit");
+        }
+        else {
+            $("#dvkit").hide();
+
+        }
+
     });
 
 

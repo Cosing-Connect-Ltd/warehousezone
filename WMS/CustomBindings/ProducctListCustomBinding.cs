@@ -1,5 +1,7 @@
 ﻿using DevExpress.Data.Filtering;
 using DevExpress.Web.Mvc;
+using Ganedata.Core.Data;
+using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -90,7 +92,6 @@ namespace WMS.CustomBindings
 
         }
 
-
         public static GridViewModel CreateProductGridViewModel()
         {
             var viewModel = new GridViewModel();
@@ -115,5 +116,80 @@ namespace WMS.CustomBindings
             viewModel.Pager.PageSize = 10;
             return viewModel;
         }
+        #region EditableLookupGrid
+        static IQueryable<ProductMaster> ProductDetail {
+            get 
+            {
+                var db = DependencyResolver.Current.GetService<IApplicationContext>();
+                return db.ProductMaster; 
+            } 
+        }
+        public static GridLookupViewModel CreateProductLookupGridViewModel()
+        {
+            var viewModel = new GridLookupViewModel();
+            viewModel.KeyFieldName = "ProductId";
+            viewModel.Columns.Add("Name");
+            viewModel.Columns.Add("Qty");
+            viewModel.TextFormatString = "{0} {1}";
+
+            viewModel.Pager.PageSize = 10;
+            return viewModel;
+        }
+        public static void GetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId)
+        {
+            
+            e.DataRowCount = ProductDetail.Where(u=>u.TenantId== tenantId).Count();
+        }
+        public static void GetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId)
+        {
+            ProductDetail.Where(u => u.TenantId == tenantId).Count();
+            if (e.State.SortedColumns.Count() > 0)
+            {
+
+                string sortString = "";
+
+                foreach (var column in e.State.SortedColumns)
+                {
+                    sortString += column.FieldName + " " + column.SortOrder;
+                }
+                ProductDetail.Where(u => u.TenantId == tenantId).OrderBy(sortString);
+            }
+            else
+            {
+                ProductDetail.Where(u => u.TenantId == tenantId).OrderBy("ProductId");
+            }
+            if (e.FilterExpression != string.Empty)
+            {
+                CriteriaOperator op = CriteriaOperator.Parse(e.FilterExpression);
+
+                string filterString = CriteriaToWhereClauseHelper.GetDynamicLinqWhere(op);
+
+                ProductDetail.Where(u => u.TenantId == tenantId).Where(filterString);
+
+            }
+            ProductDetail.Where(u => u.TenantId == tenantId).Skip(e.StartDataRowIndex).Take(e.DataRowCount);
+            e.Data = ProductDetail.Where(u => u.TenantId == tenantId);
+
+        }
+        public static void GetRowValues(GridViewCustomBindingGetRowValuesArgs e, int tenantId, int warehouseId)
+        {
+            if (e.KeyValues.Count() == 0)
+                e.RowValues = ProductDetail.Where(u => u.TenantId == tenantId && object.Equals(u.ProductId, -1)).ToList();
+            else
+            {
+                var list = new List<ProductMaster>();
+                foreach (var item in e.KeyValues)
+                {
+                    list.Add(ProductDetail.Where(c => object.Equals(c.ProductId, item)).FirstOrDefault());
+                }
+                e.RowValues = list;
+            }
+
+
+
+        }
+
+        #endregion
+
     }
 }

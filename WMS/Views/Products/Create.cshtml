@@ -124,6 +124,28 @@
                         @Html.ValidationMessageFor(model => model.DontMonitorStock)
                     </div>
                 </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.GroupedProduct, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(m => m.GroupedProduct, new { @class = "checkbox" })
+                        @Html.ValidationMessageFor(model => model.GroupedProduct)
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center divchkkit">
+                    @Html.LabelFor(model => model.Kit, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.CheckBoxFor(m => m.Kit, new { @id = "chkkit", @class = "form-control checkbox" })
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center" id="dvkit">
+                    @Html.LabelFor(model => model.Kit, htmlAttributes: new { @class = "col-md-4 kitlabel" })
+                    <div class="col-md-8">
+
+                        @Html.Action("_ProductKitCombobox")
+                        @Html.Hidden("ProductKit")
+
+                    </div>
+                </div>
             </div>
 
             <div class="input-group h-100 justify-content-center align-items-center">
@@ -472,21 +494,7 @@
                     @Html.ValidationMessageFor(model => model.NominalCode)
                 </div>
             </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.Kit, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.CheckBoxFor(m => m.Kit, new { @id = "chkkit", @class = "form-control" })
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center" id="dvkit">
-                @Html.LabelFor(model => model.Kit, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-
-                    @Html.Action("_ProductKitCombobox")
-                    @Html.Hidden("ProductKit")
-
-                </div>
-            </div>
+          
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.Discontinued, htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">

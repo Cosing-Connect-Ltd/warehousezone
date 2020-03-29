@@ -1,0 +1,94 @@
+﻿
+@{
+    var grid = Html.DevExpress().GridLookup(settings =>
+    {
+        settings.Name = "ProductKitListGridView";
+        settings.GridViewProperties.CallbackRouteValues = new { Controller = "Products", Action = "_EditableKitProductGrid" };
+        settings.GridViewProperties.SettingsEditing.BatchUpdateRouteValues = new { Controller = "Products", Action = "SaveProductKitEdit" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.GridViewProperties.SettingsEditing.Mode = GridViewEditingMode.Batch;
+        settings.GridViewProperties.SettingsEditing.BatchEditSettings.EditMode = GridViewBatchEditMode.Cell;
+        settings.GridViewProperties.SettingsEditing.BatchEditSettings.StartEditAction = GridViewBatchStartEditAction.DblClick;
+        settings.GridViewProperties.Settings.ShowStatusBar = GridViewStatusBarMode.Hidden;
+        settings.GridViewProperties.EnableCallbackAnimation = false;
+        settings.GridViewProperties.CustomBindingRouteValuesCollection.Add(
+            GridViewOperationType.Paging,
+            new { Controller = "Products", Action = "_ProductKitEditListPaging" }
+        );
+
+        settings.GridViewProperties.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Filtering,
+        new { Controller = "Products", Action = "_ProductsKitEditFiltering" }
+        );
+
+        settings.GridViewProperties.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Sorting,
+        new { Controller = "Products", Action = "_ProductsKitEditGetDataSorting" }
+        );
+
+
+        settings.KeyFieldName = "ProductId";
+        settings.GridViewProperties.SettingsBehavior.AllowFocusedRow = true;
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Name";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+
+        });
+        settings.Columns.Add(c =>
+        {
+            c.Caption = "Qty";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.EditFormSettings.Visible = DefaultBoolean.False;
+            c.EditorProperties().TextBox(p =>
+            {
+                p.ClientSideEvents.LostFocus = "function(s,e){ OnDetailsChanged(s,e);}";
+            });
+            c.EditFormSettings.Visible = DefaultBoolean.True;
+        });
+
+
+        settings.GridViewClientSideEvents.BeginCallback = "function(s,e){ OnBeginEditLookupGridCallback(s, e); }";
+        settings.GridViewClientSideEvents.FocusedCellChanging = "OnEditGridLookupFocusChanged";
+        settings.GridViewClientSideEvents.EndCallback = "OnEndEditLookupGridCallback";
+
+
+        settings.Properties.SelectionMode = DevExpress.Web.GridLookupSelectionMode.Multiple;
+        settings.Properties.TextFormatString = "{0} {1}";
+        settings.Properties.MultiTextSeparator = ", ";
+        settings.Properties.Width = 250;
+
+        settings.GridViewProperties.Settings.ShowFilterRow = true;
+        settings.GridViewProperties.Settings.ShowStatusBar = GridViewStatusBarMode.Visible;
+        settings.GridViewProperties.SettingsPager.EnableAdaptivity = true;
+        settings.GridViewProperties.SettingsPager.PageSize = 7;
+        settings.GridViewProperties.SetStatusBarTemplateContent(c =>
+        {
+            ViewContext.Writer.Write("<div style=\"padding: 2px 8px 2px 0; float: right\">");
+            Html.DevExpress().Button(btnSettings =>
+            {
+                btnSettings.Name = "btnClose";
+                btnSettings.UseSubmitBehavior = false;
+                btnSettings.Text = "Close";
+                btnSettings.ClientSideEvents.Click = "CloseGridLookup";
+            }).Render();
+            ViewContext.Writer.Write("</div>");
+        });
+
+        settings.DataBound = (sender, e) =>
+        {
+            var gridLookup = (MVCxGridLookup)sender;
+            gridLookup.GridView.Width = 250;
+        };
+
+
+
+
+
+
+    });
+
+}
+
+@grid.BindToCustomData(Model).GetHtml()
