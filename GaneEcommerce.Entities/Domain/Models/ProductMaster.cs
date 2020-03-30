@@ -196,6 +196,8 @@ namespace Ganedata.Core.Entities.Domain
         public virtual ICollection<ProductSerialis> ProductSerialization { get; set; }
         [InverseProperty("KitProductMaster")]
         public virtual ICollection<ProductKitMap> ProductKitMap { get; set; }
+        [InverseProperty("ProductMaster")]
+        public virtual ICollection<ProductKitMap> ProductKitItems { get; set; }
         public virtual TenantDepartments TenantDepartment { get; set; }
         public virtual ProductGroups ProductGroup { get; set; }
         public virtual ProductCategory ProductCategory { get; set; }

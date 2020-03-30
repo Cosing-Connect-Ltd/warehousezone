@@ -15,10 +15,10 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Product")]
         public int ProductId { get; set; }
         [Display(Name = "Sub product")]
-        [ForeignKey("KitProductMaster")]
         public int KitProductId { get; set; }
         [ForeignKey("ProductId")]
         public virtual ProductMaster ProductMaster { get; set; }
+        [ForeignKey("KitProductId")]
         public virtual ProductMaster KitProductMaster { get; set; }
         [Display(Name = "Quantity")]
         public decimal Quantity { get; set; }
@@ -27,5 +27,5 @@ namespace Ganedata.Core.Entities.Domain
 
 
     }
-   
+
 }

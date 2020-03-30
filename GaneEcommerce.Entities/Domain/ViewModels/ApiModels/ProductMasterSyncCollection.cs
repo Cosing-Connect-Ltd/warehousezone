@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ganedata.Core.Entities.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace Ganedata.Core.Models
@@ -72,5 +73,6 @@ namespace Ganedata.Core.Models
         public bool? IsDeleted { get; set; }
         public int TenantId { get; set; }
         public decimal Quantity { get; set; }
+        public ProductKitTypeEnum ProductKitType { get; set; }
     }
 }

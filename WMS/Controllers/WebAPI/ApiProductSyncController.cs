@@ -43,6 +43,7 @@ namespace WMS.Controllers.WebAPI
                 mappedProduct.ProductGroupName = p.Name;
                 mappedProduct.DepartmentName = p.TenantDepartment.DepartmentName;
                 mappedProduct.TaxPercent = p.GlobalTax.PercentageOfAmount;
+                mappedProduct.ProductKitMapViewModelList = _mapper.Map(p.ProductKitMap.ToList(), mappedProduct.ProductKitMapViewModelList);
                 products.Add(mappedProduct);
             }
 

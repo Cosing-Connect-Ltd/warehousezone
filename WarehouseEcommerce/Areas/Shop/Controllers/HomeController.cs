@@ -184,7 +184,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
 
         public PartialViewResult _HorizontalNavbarPartial()
         {
-            var productDepartments = _lookupServices.GetAllValidTenantDepartments(CurrentTenantId).Take(20).ToList();
+            var productDepartments = _lookupServices.GetAllValidTenantDepartments(CurrentTenantId).ToList();
             ViewBag.UserName = CurrentUser.UserFirstName + " " + CurrentUser.UserLastName;
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.CartItemCount = GaneCartItemsSessionHelper.GetCartItemsSession().Count;
@@ -195,8 +195,8 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             return PartialView(productDepartments);
         }
 
-       
-      
+
+
         public ActionResult _TopCategoryProductsPartial(int? ProductGroupId)
         {
             var model = _productlookupServices.GetAllValidProductGroupById(ProductGroupId).Take(5).ToList();

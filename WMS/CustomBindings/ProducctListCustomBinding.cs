@@ -174,7 +174,7 @@ namespace WMS.CustomBindings
         public static void GetRowValues(GridViewCustomBindingGetRowValuesArgs e, int tenantId, int warehouseId)
         {
             if (e.KeyValues.Count() == 0)
-                e.RowValues = ProductDetail.Where(u => u.TenantId == tenantId && object.Equals(u.ProductId, -1)).ToList();
+                e.RowValues = ProductDetail.Where(u => u.TenantId == tenantId).ToList();
             else
             {
                 var list = new List<ProductMaster>();
