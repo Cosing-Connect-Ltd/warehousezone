@@ -764,16 +764,18 @@ $(function () {
 
     if ($("#chkkit").is(":checked")) {
         $("#dvkit").show();
-        $(".kitlabel").text("Product Kit");
+        $("#dvgrp").hide();
+   
     }
     else if ($("#GroupedProduct").is(":checked"))
     {
-        $("#dvkit").show();
-        $(".kitlabel").text("Product Group");
+        $("#dvgrp").show();
+        $("#dvkit").hide();
     }
     else
     {
         $("#dvkit").hide();
+        $("#dvgrp").hide()
     }
 
 
@@ -791,11 +793,25 @@ $(function () {
 
         if ($(this).is(":checked")) {
             $("#dvkit").show();
+            $("#dvgrp").hide();
         }
         else {
             $("#dvkit").hide();
         }
     });
+
+    $('#chkgrp').change(function () {
+
+        if ($(this).is(":checked")) {
+            $("#dvkit").hide();
+            $("#dvgrp").show();
+        }
+        else {
+            $("#dvgrp").hide();
+        }
+    });
+
+
     $('#LRemove').click(function (e) {
     });
 
@@ -1150,19 +1166,21 @@ $(function () {
         $(this).prop("checked", checkedState);
         var checkboxId = this.id;
         if (checkboxId == "GroupedProduct") {
-            comboBox.ClearTokenCollection();
+           
             $("#ProductKit").val("");
-            $(".kitlabel").text("Product Group");
-            $("#dvkit").show();
+            $("#dvgrp").show();
+            $("#dvkit").hide();
+            
         }
         else if (checkboxId == "chkkit") {
-            comboBox.ClearTokenCollection();
+           
             $("#ProductKit").val("");
-            $(".kitlabel").text("Product Kit");
+            $("#dvkit").show();
+            $("#dvgrp").hide();
         }
         else {
             $("#dvkit").hide();
-
+            $("#dvgrp").hide();
         }
 
     });

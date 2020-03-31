@@ -210,8 +210,6 @@
     }).GetHtml()
 @*////*@
 
-
-
 @Html.DevExpress().PopupControl(
     settings =>
     {
@@ -234,4 +232,30 @@
         settings.EnableClientSideAPI = true;
         settings.ShowFooter = true;
         settings.FooterText = "";
+    }).GetHtml()
+
+@Html.DevExpress().PopupControl(
+    settings =>
+    {
+        settings.Name = "pcModalKitProduct";
+        settings.LoadContentViaCallback = LoadContentViaCallback.OnFirstShow;
+        settings.CallbackRouteValues = new { Controller = "Products", Action = "_ProductKits", Method = "GET" };
+
+        // settings.ContentUrl = "/Products/_LocationCreate";
+        settings.Width = 600;
+        settings.Height = 350;
+        settings.AllowDragging = true;
+        settings.CloseAction = CloseAction.CloseButton;
+        settings.CloseOnEscape = true;
+        settings.PopupAnimationType = DevExpress.Web.AnimationType.None;
+        settings.ShowHeader = false;
+        settings.Modal = true;
+        settings.AutoUpdatePosition = true;
+        settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+        settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+        settings.ScrollBars = System.Web.UI.WebControls.ScrollBars.Vertical;
+        settings.EnableClientSideAPI = true;
+        settings.ClientSideEvents.BeginCallback = "ProductKitPopUpCallBack";
+
+        //settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer(null, '', true); }";
     }).GetHtml()

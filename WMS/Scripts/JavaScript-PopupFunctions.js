@@ -142,6 +142,7 @@ function _AddKitProduct(productId, productName) {
             }
         });
 }
+
 function ConfirmAddedRecipeProducts() {
     var productId = $("#ProductId").val();
     var data = { Id: productId };
@@ -166,14 +167,14 @@ function ConfirmAddedKitProducts() {
 function productaccountSave() {
     $("#vldPrAccountCode").removeClass("validation-summary-errors");
     $("#vldPrAccountCode").addClass("validation-summary-valid");
-    
+
     if (IsValidForm('#frmproductaccountcode')) {
         var value;
         var code;
         var deliveryType;
         var orderingNotes;
         $.each($('#frmproductaccountcode').serializeArray(), function (i, field) {
-            
+
             if (field.name == 'AccountID') {
                 value = field.value;
             }
@@ -192,7 +193,7 @@ function productaccountSave() {
 
 
             }
-         
+
             else {
 
 
@@ -210,17 +211,16 @@ function productaccountSave() {
         $.ajax({
             url: "/Products/_CreateProductAccount",
             data: dataRec,
-            success: function (result)
-            {
-                
+            success: function (result) {
+
                 $('#ProductAccountCodeIds').append('<option selected value=' + result.ProdAccCodeID + '>' + result.ProdAccCode + '</option>');
                 $("#ProductAccountCodeIds").trigger("chosen:updated");
-               
+
             }
         });
 
 
-       
+
 
         LoadingPanel.Hide();
         pcModalproductaccount.Hide();
@@ -573,11 +573,68 @@ function movestockshow() {
 
 }
 //////////////////////////////////////////////////////
-////                ACCOUNT FUNCTIONS   //////////////
+////                Product Kit and Recipe FUNCTIONS   //////////////
 /////////////////////////////////////////////////////
+function ProductKitChanges(s, e) {
+
+    var comboproductIds = comboBox.GetValue();
+    $("#ProductKit").val(comboproductIds);
+
+}
 
 
 
+function AddKitProduct(kitTypes, tab) {
+
+    var qty = $("#Quantity").val();
+    var parentProductId = $(".productIds").val();
+    var productId = prdid.GetValue();
+    var productName = prdid.GetText();
+    if (qty <= 0) {
+        $("#Quantity").css({ "background-color": "#f9baba" });
+        setTimeout(function () {
+            $("#Quantity").removeAttr("style");
+        }, 400);
+        return false;
+    }
+    data = { ParentProductId: parentProductId, ProductId: productId, ProductName: productName, Quantity: qty, KitType: kitTypes };
+    var url = "/Products/AddProductKitItemsWithQuantity";
+    if (tab) {
+        url = "/Products/ConfirmAddedKitProducts";
+    }
+    $.post(url, data, function (result) {
+        pcModalKitProduct.Hide();
+        if (tab) {
+            if (kitTypes == 1) {
+                GetDevexControlByName(parentProductId + "productKitItems").Refresh();
+            }
+            else if (kitTypes == 3) {
+                GetDevexControlByName(parentProductId + "productRecipeItems").Refresh();
+            }
+
+        }
+        else {
+          
+            $('#ProductKitIds').append('<option selected value=' + result.ProductId + '>' + result.ProductName + "" + "(" + (result.Quantity) + ")" + '</option>');
+            $("#ProductKitIds").trigger("chosen:updated");
+        }
+
+
+    });
+}
+var producttypekit;
+function ProductKitPopUpCallBack(s, e) {
+    debugger;
+    e.customArgs["kitTypeId"] = producttypekit;
+
+} 
+function ProductKitPopUp(isEdit) {
+    debugger;
+    producttypekit = isEdit;
+    pcModalKitProduct.Show();
+   
+
+}
 
 
 
@@ -586,5 +643,4 @@ function movestockshow() {
 
 $(document).ready(function () {
     loadKitProductGridItemEvents();
-   
 });

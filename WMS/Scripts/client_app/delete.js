@@ -22,11 +22,21 @@ $(document).on('click', '#modalDialog .modal-footer #deleteConfirm', function (e
     var form = $('#_deleteForm');
     var token = $('input[name="__RequestVerificationToken"]', form).val();
     console.log('delete: ' + controller);
-
+    var kit = false;
     var model = { Id: $datavalueid, __RequestVerificationToken: token };
 
     if (controllerAction == "RemoveRecipeItemProduct" || controllerAction == "RemoveKitItemProduct") {
-        model = { Id: $("#ProductId").val(), RecipeProductId: $(this).attr('data-valueid') }
+
+        model = { Id: $(".productIds").val(), RecipeProductId: $(this).attr('data-valueid'), KitType: 3 }
+        if (controllerAction == "RemoveKitItemProduct") {
+            kit = true;
+            controllerAction = "RemoveRecipeItemProduct";
+            model = { Id: $(".productIds").val(), RecipeProductId: $(this).attr('data-valueid'), KitType: 1 }
+        }
+        else {
+            kit = false;
+        }
+
     }
 
     $.ajax({
@@ -44,8 +54,13 @@ $(document).on('click', '#modalDialog .modal-footer #deleteConfirm', function (e
                     ProductRecipeSelectedItemsGrid.Refresh();
                 }
                 if (controllerAction == "RemoveRecipeItemProduct") {
-                    var productid = $("#ProductId").val();
-                    GetDevexControlByName(productid + "productRecipeItems").Refresh();
+                    var productid = $(".productIds").val();
+                    if (kit) {
+                        GetDevexControlByName(productid + "productKitItems").Refresh();
+                    }
+                    else {
+                        GetDevexControlByName(productid + "productRecipeItems").Refresh();
+                    }
                 }
                 if (controllerAction == "RemoveKitItemProduct") {
                     var productid = $("#ProductId").val();

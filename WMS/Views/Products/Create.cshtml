@@ -124,11 +124,20 @@
                         @Html.ValidationMessageFor(model => model.DontMonitorStock)
                     </div>
                 </div>
-                <div class="input-group h-100 justify-content-center align-items-center">
+                <div class="input-group h-100 justify-content-center align-items-center divchkgrp">
                     @Html.LabelFor(model => model.GroupedProduct, htmlAttributes: new { @class = "col-md-4" })
                     <div class="col-md-8">
                         @Html.EditorFor(m => m.GroupedProduct, new { @class = "checkbox" })
                         @Html.ValidationMessageFor(model => model.GroupedProduct)
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center" id="dvgrp">
+                    @Html.LabelFor(model => model.ProductGroup, htmlAttributes: new { @class = "col-md-4 kitlabel" })
+                    <div class="col-md-8">
+
+                        @Html.Action("_ProductKitCombobox", new { ProductId = Model.ProductId })
+                        @Html.Hidden("ProductKit")
+
                     </div>
                 </div>
                 <div class="input-group h-100 justify-content-center align-items-center divchkkit">
@@ -138,14 +147,17 @@
                     </div>
                 </div>
                 <div class="input-group h-100 justify-content-center align-items-center" id="dvkit">
-                    @Html.LabelFor(model => model.Kit, htmlAttributes: new { @class = "col-md-4 kitlabel" })
+                    @Html.LabelFor(model => model.Kit, htmlAttributes: new { @class = "col-md-4" })
                     <div class="col-md-8">
-
-                        @Html.Action("_ProductKitCombobox")
-                        @Html.Hidden("ProductKit")
-
+                        <div class="col-11 p-0 mt-1 pull-left">
+                            @Html.ListBox("ProductKitIds", new MultiSelectList(ViewBag.ProductKitItems,"",""), new { Multiple = "multiple", @class = "chosen-select", data_placeholder = "Choose Product Kit" })
+                        </div>
+                        <div class="col-1 p-0 pull-left">
+                            <input type="button" onclick="javascript: pcModalKitProduct.Show();" id="ProdkitAdd" class="btn btn-primary" value="+">
+                        </div>
                     </div>
                 </div>
+             
             </div>
 
             <div class="input-group h-100 justify-content-center align-items-center">
@@ -494,7 +506,7 @@
                     @Html.ValidationMessageFor(model => model.NominalCode)
                 </div>
             </div>
-          
+
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.Discontinued, htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">

@@ -2986,11 +2986,7 @@ function UpdateRemoveDetails(id) {
     SaveOrderProcessDetail();
 }
 
-function ProductKitChanges(s, e) {
 
-    var result = comboBox.GetValue();
-    $("#ProductKit").val(result);
-}
 
 var ordersIdEmail;
 var invoicemasterIds;

@@ -26,75 +26,6 @@
     ViewBag.Title = "Edit";
 }
 <h2><span>Edit Product</span></h2>
-<script type="text/javascript">
-
-    MVCxClientGlobalEvents.AddControlsInitializedEventHandler(OnBeginEditLookupGridCallback);
-
-    function OnBeginEditLookupGridCallback(s, e) {
-
-        //e.customArgs = MVCxClientUtils.GetSerializedEditorValuesInContainer("frmEditProducts");
-        //var test = MVCxClientUtils.GetSerializedEditorValuesInContainer("options");
-        //var gridValues = JSON.parse(JSON.stringify($("#frmEditProducts").serializeArray()));
-        //var values = JSON.parse(gridValues[gridValues.length - 1].value.split(','));
-        //e.customArgs["data"] = values;
-        //if (values.ProductEditListGridView_DXEditor0 != null) {
-        //    e.customArgs["Name"] = values.ProductEditListGridView_DXEditor0;
-        //}
-        //if (values.ProductEditListGridView_DXEditor1 != null) {
-        //    e.customArgs["SKUCode"] = values.ProductEditListGridView_DXEditor1;
-        //}
-        //if (values.ProductEditListGridView_DXEditor2 != null) {
-        //    e.customArgs["Serialisable"] = values.ProductEditListGridView_DXEditor2;
-
-        //}
-        //if (values.ProductEditListGridView_DXEditor3 != null) {
-        //    e.customArgs["ProcessByPallet"] = values.ProductEditListGridView_DXEditor3;
-        //}
-        //if (values.ProductEditListGridView_DXEditor4 != null) {
-        //    e.customArgs["TopProduct"] = values.ProductEditListGridView_DXEditor4;
-        //}
-        //if (values.ProductEditListGridView_DXEditor5 != null) {
-        //    e.customArgs["BestSellerProduct"] = values.ProductEditListGridView_DXEditor5;
-        //}
-        //if (values.ProductEditListGridView_DXEditor6 != null) {
-
-        //    e.customArgs["SpecialProduct"] = values.ProductEditListGridView_DXEditor6;
-        //}
-        //if (values.ProductEditListGridView_DXEditor7 != null) {
-        //    e.customArgs["OnSaleProduct"] = values.ProductEditListGridView_DXEditor7;
-        //}
-        //var rowIndex = parseInt($("#RowIndexForProductId").val()) || 0;
-        //e.customArgs["ProductID"] = ProductEditListGridView.GetRowKey(rowIndex);
-
-    }
-    function CloseGridLookup() {
-        ProductKitListGridView.ConfirmCurrentSelection();
-        ProductKitListGridView.HideDropDown();
-    }
-    function OnEndEditLookupGridCallback(s, e) {
-        var lastIndex = parseInt($("#LastEditingRowIndex").val()) || 0;
-        //SetGridEditorToRowIndex(lastIndex);
-    }
-
-    function SetGridEditorToRowIndex(index) {
-        ProductEditListGridView.batchEditApi.StartEdit(index, ProductEditListGridView.GetColumnByField($("#LastEditingColIndex").val()).index);
-    }
-
-    function OnDetailsChanged(s, e) {
-        ProductEditListGridView.UpdateEdit();
-    }
-
-    function OnEditGridLookupFocusChanged(s, e) {
-
-        if (e.cellInfo.rowVisibleIndex >= 0) {
-            var index = e.cellInfo.rowVisibleIndex;
-            $("#LastEditingRowIndex").val(index);
-            $("#RowIndexForProductId").val(index);
-        }
-        $("#LastEditingColIndex").val(e.cellInfo.column.fieldName);
-    }
-
-</script>
 
 <script type="text/javascript">
     function OnGridFocusedRowChanged(s, e) {
@@ -167,7 +98,7 @@
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
-    @Html.HiddenFor(model => model.ProductId)
+    @Html.HiddenFor(model => model.ProductId, new { @class = "productIds" })
     @Html.Hidden("hdPFiles", ViewBag.Files as object)
     @Html.Hidden("hdPFilesEdit", "edit")
     <div id="tabs" style="visibility: hidden">
@@ -276,15 +207,15 @@
                             @Html.ValidationMessageFor(model => model.DontMonitorStock)
                         </div>
                     </div>
-                    <div class="input-group h-100 justify-content-center align-items-center">
+                    <div class="input-group h-100 justify-content-center align-items-center divchkgrp">
                         @Html.LabelFor(model => model.GroupedProduct, htmlAttributes: new { @class = "col-md-4" })
                         <div class="col-md-8">
                             @Html.EditorFor(m => m.GroupedProduct, new { @class = "checkbox" })
                             @Html.ValidationMessageFor(model => model.GroupedProduct)
                         </div>
                     </div>
-                    <div class="input-group h-100 justify-content-center align-items-center" id="dvkit">
-                        @Html.LabelFor(model => model.Kit, htmlAttributes: new { @class = "col-md-4 kitlabel" })
+                    <div class="input-group h-100 justify-content-center align-items-center" id="dvgrp">
+                        @Html.LabelFor(model => model.ProductGroup, htmlAttributes: new { @class = "col-md-4 kitlabel" })
                         <div class="col-md-8">
 
                             @Html.Action("_ProductKitCombobox", new { ProductId = Model.ProductId })
@@ -292,7 +223,6 @@
 
                         </div>
                     </div>
-
                     <div class="input-group h-100 justify-content-center align-items-center divchkkit">
                         @Html.LabelFor(model => model.Kit, htmlAttributes: new { @class = "col-md-4" })
                         <div class="col-md-8">
@@ -300,11 +230,14 @@
                         </div>
                     </div>
                     <div class="input-group h-100 justify-content-center align-items-center" id="dvkit">
-                        @Html.LabelFor(model => model.Kit, htmlAttributes: new { @class = "col-md-4 kitlabel" })
+                        @Html.LabelFor(model => model.Kit, htmlAttributes: new { @class = "col-md-4" })
                         <div class="col-md-8">
-                            @Html.Action("_EditableKitProductGrid")
-
-
+                            <div class="col-11 p-0 mt-1 pull-left">
+                                @Html.ListBox("ProductKitIds", ViewBag.ProductKitItems as MultiSelectList, new { Multiple = "multiple", size = "5", @class = "chosen-select", data_placeholder = "Choose Product Kit" })
+                            </div>
+                            <div class="col-1 p-0 pull-left">
+                                <input type="button" onclick="ProductKitPopUp();" id="ProdkitAdd" class="btn btn-primary" value="+">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -882,7 +815,7 @@ settings =>
                     @Html.Action("_ProductRecipeItems", new { productId = Model.ProductId })
                 </div>
                 <div class="col-md-12 p-0 bottom-right">
-                    <input type="button" class="btn btn-primary" id="btnProductRecipeItemsPopup" value="Add Items" />
+                    <input type="button" class="btn btn-primary" onclick="ProductKitPopUp(3);" value="Add Items" />
                 </div>
             </div>
         }
@@ -904,7 +837,7 @@ settings =>
         {
             <div id="product-kit-items">
                 <div class="col-md-12 p-0">
-                    <input type="button" class="btn btn-primary" id="btnProductKitItemsPopup" value="Add Items" />
+                    <input type="button" class="btn btn-primary" value="Add Items" onclick="ProductKitPopUp(1);" />
                 </div>
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.Action("_ProductKitItems", new { productId = Model.ProductId })
