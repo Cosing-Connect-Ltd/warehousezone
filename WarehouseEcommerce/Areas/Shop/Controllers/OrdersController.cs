@@ -139,7 +139,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             ViewBag.Addresses = accountAddresses;
             var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
             var orders = OrderService.CreateShopOrder(accountAddresses.FirstOrDefault().AccountID, _mapper.Map(models, new List<OrderDetail>()), 1, 1, 1);
-            ViewBag.TotalQty = Math.Round(((models.Sum(u => u.TotalAmount)) * (currencyyDetail.Rate ?? 1)), 2);
+            ViewBag.TotalQty = Math.Round(((models.Sum(u => u.TotalAmount)) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
             ViewBag.Symbol = currencyyDetail.Symbol;
             ViewBag.ShipmentMethod = ShippmentTypeId;
             ViewBag.RetUrl = PAYPAL_RET_URL;

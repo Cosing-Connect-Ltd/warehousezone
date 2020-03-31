@@ -117,7 +117,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             ViewBag.CurrencySymbol = currencyyDetail.Symbol;
             ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
             var product = _productServices.GetProductMasterByProductCode(sku,CurrentTenantId);
-            product.SellPrice = Math.Round((product.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0), 2);
+            product.SellPrice = Math.Round((product.SellPrice ?? 0) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value), 2);
             return View(product);
         }
 
