@@ -30,51 +30,50 @@ var searchvalues;
 var seeall = true;
 $('.text-search').on('input', function () {
     $(this).autocomplete({
-    minLength: 2,
-    source: function (request, response) {
-        searchvalues = request.term;
-        $.ajax({
-            url: basePath + '/Products/searchProduct',
-            method: 'post',
-            data: { groupId: $("#ProductGroups").val(), searchkey: request.term },
-            dataType: 'json',
-            success: function (data) {
-                seeall = true;
-                if (!data.length) {
-                    seeall = false;
-                    data = [
-                        {
-                            Name: 'No matches found',
-                            Path: baseFilePath + '/UploadedFiles/Products/no_image.gif'
-                        }
-                    ];
+        minLength: 2,
+        source: function (request, response) {
+            searchvalues = request.term;
+            $.ajax({
+                url: basePath + '/Products/searchProduct',
+                method: 'post',
+                data: { groupId: $("#ProductGroups").val(), searchkey: request.term },
+                dataType: 'json',
+                success: function (data) {
+                    seeall = true;
+                    if (!data.length) {
+                        seeall = false;
+                        data = [
+                            {
+                                Name: 'No matches found',
+                                Path: baseFilePath + '/UploadedFiles/Products/no_image.gif'
+                            }
+                        ];
+                    }
+
+                    response(data);
+                },
+                error: function (err) {
+                    alert(err);
                 }
-
-                response(data);
-            },
-            error: function (err) {
-                alert(err);
+            });
+        },
+        open: function (data) {
+            if (seeall) {
+                var $li = $("<li>");
+                var $link = $("<a>", {
+                    href: basePath + "/Shop/Products/list?group=" + data.Group + "&search=" + data.SKUCode + "&values=" + $("#valuesParameter").val() + "&department=" + data.Department + "&category=" + data.SubCategory,
+                    class: "see-all"
+                }).html("See All Results").appendTo($li);
+                $li.appendTo($('.ui-autocomplete'));
             }
-        });
-    },
-    open: function () {
-
-        if (seeall) {
-            var $li = $("<li>");
-            var $link = $("<a>", {
-                href: basePath + "/Shop/Products/list?group=" + $("#ProductGroups").val() + "&search=" + searchvalues + "&values=" + $("#valuesParameter").val() + "&department=" + $("#departmentId").val() + "&category=" + $("#SubCategoryId").val(),
-                class: "see-all"
-            }).html("See All Results").appendTo($li);
-            $li.appendTo($('.ui-autocomplete'));
-        }
-    },
-    focus: updateTextBox,
-    select: updateTextBox
-}).autocomplete('instance')._renderItem = function (ul, item) {
-    return $('<li class="search-item">')
-        .append("<img style='width: 46px; height:46px;' src=" + item.Path + " alt=" + item.Name + "/>")
-        .append("<a href=" + basePath + "/Shop/Products/list?group=" + $("#ProductGroups").val() + "&search=" + item.Name + "&values=" + $("#valuesParameter").val() + "&department=" + $("#departmentId").val() +"&category="+$("#SubCategoryId").val()+">" + item.Name + "</a>").appendTo(ul);
-        };
+        },
+        focus: updateTextBox,
+        select: updateTextBox
+    }).autocomplete('instance')._renderItem = function (ul, item) {
+        return $('<li class="search-item">')
+            .append("<img style='width: 46px; height:46px;' src=" + item.Path + " alt=" + item.Name + "/>")
+            .append("<a href=" + basePath + "/Shop/Products/list?group=" + item.Group + "&search=" + item.SKUCode + "&values=" + $("#valuesParameter").val() + "&department=" + item.Department + "&category=" + item.SubCategory + ">" + item.Name + "</a>").appendTo(ul);
+    };
 });
 
 function updateTextBox(event, ui) {
@@ -272,16 +271,14 @@ $("input[type=checkbox]").on("change", function () {
     $(":checkbox").each(function () {
 
         if (this.checked) {
-            if (str.indexOf($(this).val()) < 0)
-            {
+            if (str.indexOf($(this).val()) < 0) {
                 arr.push($(this).val())
                 data = this.id;
                 if (str.indexOf(data) < 0) {
                     var indexof = str.lastIndexOf("=");
                     var checkpreviousString = str.substr((indexof - 6), 6);
                     var found = str.charAt((indexof + 1));
-                    if (checkpreviousString === "values" && found === "")
-                    {
+                    if (checkpreviousString === "values" && found === "") {
                         str = str + data + "-" + $(this).val();
                     }
                     else {
@@ -317,8 +314,8 @@ function removeURLParameter(url, parameter) {
 
         var prefix = encodeURIComponent(parameter) + '=';
         var pars = urlparts[1].split(/[&;]/g);
-          for (var i = pars.length; i-- > 0;) {
-           
+        for (var i = pars.length; i-- > 0;) {
+
             if (pars[i].lastIndexOf(prefix, 0) !== -1) {
                 pars.splice(i, 1);
             }

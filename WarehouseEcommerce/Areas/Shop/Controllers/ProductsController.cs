@@ -68,7 +68,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                 ViewBag.CurrentFilter = search;
                 if (!string.IsNullOrEmpty(search))
                 {
-                    product = product.Where(s => s.Name.Contains(search));
+                    product = product.Where(s => s.SKUCode.Contains(search));
                 }
                 switch ((SortProductTypeEnum)(sort ?? 1))
                 {
@@ -149,7 +149,11 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                              Id = product.ProductId,
                              Name = product.Name,
                              Path = product.ProductFiles.FirstOrDefault().FilePath,
-                             
+                             Department = product.TenantDepartment.DepartmentName,
+                             Group = product.ProductGroup.ProductGroup,
+                             SubCategory = product.ProductCategory.ProductCategoryName,
+                             SKUCode = product.SKUCode
+
 
                          }).OrderBy(u => u.Id).Take(10).ToList();
 
@@ -314,5 +318,9 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         public int Id { get; set; }
         public string Name { get; set; }
         public string Path { get; set; }
+        public string Department { get; set; }
+        public string Group { get; set; }
+        public string SubCategory { get; set; }
+        public string SKUCode { get; set; }
     }
 }
