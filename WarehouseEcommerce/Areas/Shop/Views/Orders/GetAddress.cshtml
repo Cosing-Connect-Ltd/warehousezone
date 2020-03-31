@@ -159,33 +159,33 @@
                                     <div class="row">
                                         <div class="col-md-6 col-sm-6">
                                             <div class="form-group">
-                                                @Html.EditorFor(model => model.AddressLine1, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Address Line 1" } })
+                                                @Html.EditorFor(model => model.AddressLine1, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Address Line 1", @required = "Required" } })
                                                 @*<input type="text" class="form-control input-md inputNew" size="18" placeholder="Address Line 1">*@
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-sm-6">
                                             <div class="form-group">
-                                                @Html.EditorFor(model => model.AddressLine2, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Address Line 2" } })
+                                                @Html.EditorFor(model => model.AddressLine2, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Address Line 2", @required = "Required" } })
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-sm-6">
                                             <div class="form-group">
-                                                @Html.EditorFor(model => model.AddressLine3, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Address Line 3" } })
+                                                @Html.EditorFor(model => model.AddressLine3, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Address Line 3", @required = "Required" } })
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-sm-6">
                                             <div class="form-group">
-                                                @Html.EditorFor(model => model.PostCode, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Postal Code" } })
+                                                @Html.EditorFor(model => model.PostCode, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Postal Code", @required = "Required" } })
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-sm-6">
                                             <div class="form-group">
-                                                @Html.EditorFor(model => model.Telephone, new { htmlattributes = new { @class = "form-control input-md inputNew h-40px", @placeholder = "Telephone Number" } })
+                                                @Html.EditorFor(model => model.Telephone, new { htmlattributes = new { @class = "form-control input-md inputNew h-40px", @placeholder = "Telephone Number", @required = "Required" } })
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-sm-6">
                                             <div class="form-group">
-                                                @Html.DropDownListFor(model => model.CountryID, ViewBag.Country as SelectList, new { @class = "" })
+                                                @Html.DropDownListFor(model => model.CountryID, ViewBag.Country as SelectList, new { @class = "", @required = "Required" })
 
                                             </div>
                                         </div>

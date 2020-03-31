@@ -94,7 +94,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                 if (data.Count > 0)
                 {
                     data.ToList().ForEach(u =>
-                    u.SellPrice = (Math.Round((_productPriceService.GetProductPriceThresholdByAccountId(u.ProductId, null).SellPrice) * (currencyyDetail.Rate ?? 1), 2))
+                    u.SellPrice = (Math.Round((_productPriceService.GetProductPriceThresholdByAccountId(u.ProductId, null).SellPrice) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value), 2))
 
                     );
                 }
@@ -149,7 +149,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                              Id = product.ProductId,
                              Name = product.Name,
                              Path = product.ProductFiles.FirstOrDefault().FilePath,
-
+                             
 
                          }).OrderBy(u => u.Id).Take(10).ToList();
 
@@ -182,7 +182,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     foreach (var item in models)
                     {
                         var product = _productServices.GetProductMasterById(item.ProductId);
-                        item.Price = Math.Round(((product.SellPrice ?? 0) * (currencyyDetail.Rate ?? 1)), 2);
+                        item.Price = Math.Round(((product.SellPrice ?? 0) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
                         item.CurrencySign = currencyyDetail.Symbol;
                         item.CurrencyId = currencyyDetail.Id;
                         GaneCartItemsSessionHelper.UpdateCartItemsSession("", item, false, false);
@@ -202,7 +202,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     GaneCartItemsSessionHelper.RemoveCartItemSession(ProductId ?? 0);
                     var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
                     ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
-                    models.ForEach(u => u.Price = Math.Round((u.Price) * (currencyyDetail.Rate ?? 0), 2));
+                    models.ForEach(u => u.Price = Math.Round((u.Price) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value), 2));
                     models.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
                     return PartialView(models);
 
@@ -214,10 +214,10 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     model.ProductMaster = Product;
                     model.Qty = qty.HasValue ? qty.Value : 1;
                     model.ProductId = ProductId ?? 0;
-                    model.Price = Math.Round(((_productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, null).SellPrice) * (currencyyDetail.Rate ?? 0)), 2);
+                    model.Price = Math.Round(((_productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, null).SellPrice) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
                     model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
                     var Details = _mapper.Map(model, new OrderDetailSessionViewModel());
-                    Details.Price = Math.Round(((Details.Price) * (currencyyDetail.Rate ?? 0)), 2);
+                    Details.Price = Math.Round(((Details.Price) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
                     Details.CurrencyId = currencyyDetail.Id;
                     GaneCartItemsSessionHelper.UpdateCartItemsSession("", Details, false);
                     var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
@@ -234,12 +234,12 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     model.ProductMaster = Product;
                     model.Qty = qty.HasValue ? qty.Value : 1;
                     model.ProductId = ProductId ?? 0;
-                    model.Price = Math.Round(((_productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, null).SellPrice) * (currencyyDetail.Rate ?? 0)), 2);
+                    model.Price = Math.Round(((_productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, null).SellPrice) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
                     model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
                     ViewBag.CartModal = false;
                     var Details = _mapper.Map(model, new OrderDetailSessionViewModel());
                     var ProductCheck = GaneCartItemsSessionHelper.GetCartItemsSession().FirstOrDefault(u => u.ProductId == ProductId);
-                    Details.Price = Math.Round(((Details.Price) * (currencyyDetail.Rate ?? 0)), 2);
+                    Details.Price = Math.Round(((Details.Price) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
                     Details.CurrencyId = currencyyDetail.Id;
                     if (ProductCheck != null)
                     {
@@ -248,7 +248,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     GaneCartItemsSessionHelper.UpdateCartItemsSession("", Details, false);
                     var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
                     var cartedProduct = models.Where(u => u.ProductId == ProductId).ToList();
-                    cartedProduct.ForEach(u => u.Price = Math.Round((u.Price) * (currencyyDetail.Rate ?? 0), 2));
+                    cartedProduct.ForEach(u => u.Price = Math.Round((u.Price) * (((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2));
                     cartedProduct.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
                     return PartialView(cartedProduct);
                 }
