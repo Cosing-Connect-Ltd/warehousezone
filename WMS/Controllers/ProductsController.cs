@@ -115,6 +115,7 @@ namespace WMS.Controllers
             if (!id.HasValue) throw new Exception("Product cannot be found.");
 
             Session["pId"] = id;
+            Session["ProductKitModelItems"] = null;
 
             ProductMaster productMaster = _productServices.GetProductMasterById(id.Value);
 
@@ -262,8 +263,8 @@ namespace WMS.Controllers
 
                     if (back == "1")
                     {
-                        _productServices.UpdateProductKitMap(productMaster.ProductId, (int)Session["pId"], CurrentUserId, CurrentTenantId);
-                        return RedirectToAction("Edit", new { id = Session["pId"] });
+                        //_productServices.UpdateProductKitMap(productMaster.ProductId, (int)Session["pId"], CurrentUserId, CurrentTenantId);
+                        //return RedirectToAction("Edit", new { id = Session["pId"] });
                     }
 
                 }
@@ -321,10 +322,7 @@ namespace WMS.Controllers
                 return View(productMaster);
             }
 
-            if (back == "1")
-                return RedirectToAction("Edit", new { id = Session["pId"] });
-            else
-                return RedirectToAction("Index");
+            return RedirectToAction("Index");
         }
         // GET: Products/Delete/5
         public ActionResult Delete(int? id)
@@ -588,9 +586,18 @@ namespace WMS.Controllers
                 return PartialView(_accountServices.GetProductAccountCodesById(Id.Value));
 
         }
-        public PartialViewResult _ProductKits(int? kitTypeId)
+        public PartialViewResult _ProductKits(int? kitTypeId, int? ProductKitId)
         {
+
             ViewBag.kitType = kitTypeId;
+
+            if (ProductKitId.HasValue)
+            {
+                var productKit = _productServices.GetProductInKitsByKitId(ProductKitId ?? 0);
+                ViewBag.productId = productKit.KitProductId;
+                return PartialView(productKit);
+
+            }
             return PartialView();
         }
 
@@ -622,6 +629,12 @@ namespace WMS.Controllers
 
         }
 
+        public JsonResult SaveEditKitProduct(int KitId, decimal Quantity, int ProductId)
+        {
+            _productServices.SaveProductKit(KitId, Quantity, ProductId, CurrentUserId);
+            return Json(true, JsonRequestBehavior.AllowGet);
+
+        }
 
 
 
@@ -1125,8 +1138,7 @@ namespace WMS.Controllers
         {
             var product = _productServices.GetProductMasterById(productId);
             var productModel = new ProductMasterViewModel();
-
-            productModel.AllSelectedSubItems = product.ProductKitMap.Where(m => m.IsDeleted != true && m.ProductKitType == productKitType).
+            productModel.AllSelectedSubItems = product.ProductKitItems.Where(m => m.IsDeleted != true && m.ProductKitType == productKitType).
                 Select(r => new ProductRecipeItemViewModel
                 {
                     Name = r.KitProductMaster.Name,
@@ -1134,7 +1146,8 @@ namespace WMS.Controllers
                     SKUCode = r.KitProductMaster.SKUCode,
                     BarCode = r.KitProductMaster.BarCode,
                     Quantity = r.Quantity,
-                    ParentProductId = productId
+                    ParentProductId = productId,
+                    ProductKitId = r.Id
                 }).ToList();
 
 
@@ -1286,8 +1299,7 @@ namespace WMS.Controllers
 
         public JsonResult ConfirmAddedKitProducts(RecipeProductItemRequest recipeProductItem)
         {
-            var recipeItems = new List<RecipeProductItemRequest>() { recipeProductItem };
-            _productServices.SaveSelectedProductKitItems(recipeProductItem.ParentProductId, recipeItems, CurrentUserId, CurrentTenantId);
+            _productServices.SaveSelectedProductKitItems(recipeProductItem.ParentProductId, recipeProductItem, CurrentUserId, CurrentTenantId);
 
             return Json(new { success = true }, JsonRequestBehavior.AllowGet);
         }

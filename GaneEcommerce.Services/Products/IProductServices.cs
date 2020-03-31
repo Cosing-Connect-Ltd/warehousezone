@@ -66,7 +66,7 @@ namespace Ganedata.Core.Services
         void DeleteProductsAndKits(int productId, int kitProductId, int tenantId, int userId);
 
         void SaveSelectedProductRecipeItems(int productId, List<RecipeProductItemRequest> recipeItems, int currentUserId);
-        void SaveSelectedProductKitItems(int productId, List<RecipeProductItemRequest> kitItems, int currentUserId, int tenantId);
+        void SaveSelectedProductKitItems(int productId, RecipeProductItemRequest kitItems, int currentUserId, int tenantId);
         void RemoveRecipeItemProduct(int productId, int recipeItemProductId,int kitType, int currentUserId);
         void UpdateRecipeItemProduct(int productId, int recipeItemProductId, decimal quantity, int currentUserId);
         void RemoveKitItemProduct(int productId, int kitItemProductId, int currentUserId);
@@ -107,7 +107,7 @@ namespace Ganedata.Core.Services
         IEnumerable<ProductFiles> GetProductFiles(int ProductId, int tenantId, bool sort = false);
         ProductFiles GetProductFilesById(int Id);
         bool SyncDate(int palletTrackingId);
-
+        ProductKitMap GetProductInKitsByKitId(int KitId);
         bool UpdateDontMonitorStockFlagForLocationproducts(int currentTenantId);
         List<Tuple<string, string, decimal, bool>> AllocatedProductDetail(int productId, int WarehouseId, int detail);
 
@@ -123,6 +123,6 @@ namespace Ganedata.Core.Services
         IEnumerable<ProductMaster> GetAllProductProcessByPallet(int tenantId);
         string CreatePalletTracking(PalletTracking palletTracking, int NoOfLabels);
 
-        ProductKitMap SaveProductKit(ProductKitMap productKitMap);
+        ProductKitMap SaveProductKit(int KitId, decimal Quantity,int ProductId,int userId);
     }
 }

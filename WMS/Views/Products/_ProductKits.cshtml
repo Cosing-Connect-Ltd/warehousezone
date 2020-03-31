@@ -1,42 +1,78 @@
-﻿@model Ganedata.Core.Entities.Domain.RecipeProductItemRequest
+﻿@model Ganedata.Core.Entities.Domain.ProductKitMap
 @using Ganedata.Core.Entities.Enums
 <hgroup>
-    <h2><span>@((ViewBag.kitType==null || ViewBag.kitType==1)?"Product Kits":"Product Recipes")</span></h2>
+    <h2><span>@((ViewBag.kitType == null || ViewBag.kitType == 1) ? "Product Kits" : "Product Recipes")</span></h2>
     <h3><span>@Html.ValidationSummary("", new { @id = "vldPrProductKit" })</span></h3>
 </hgroup>
-@using (Html.BeginForm("AddProductKitItemsWithQuantity", "Products", FormMethod.Post, new { @id = "frmproductKit" }))
+@if (Model == null)
 {
-    @Html.HiddenFor(m => m.ProductId)
-    <div class="col-md-12 pull-left">
-        <div class="input-group h-100 justify-content-center align-items-center">
-            <label class="col-md-4">Product</label>
-            <div class="col-md-8">
+    using (Html.BeginForm("AddProductKitItemsWithQuantity", "Products", FormMethod.Post, new { @id = "frmproductKit" }))
+    {
+        @Html.HiddenFor(m => m.Id)
+        <div class="col-md-12 pull-left">
+            <div class="input-group h-100 justify-content-center align-items-center">
+                <label class="col-md-4">Product</label>
+                <div class="col-md-8">
 
-                @Html.Partial("~/Views/Shared/ProductLargeDataComboBoxPartial.cshtml")
+                    @Html.Partial("~/Views/Shared/ProductLargeDataComboBoxPartial.cshtml")
 
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                <label class="col-md-4">Quantity<span style="color:red"> *</span></label>
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.Quantity)
+                    @Html.ValidationMessageFor(model => model.Quantity)
+                </div>
             </div>
         </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            <label class="col-md-4">Quantity<span style="color:red"> *</span></label>
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.Quantity)
-                @Html.ValidationMessageFor(model => model.Quantity)
+        <div class="col-md-offset-2 col-md-10 bottom-right-popup">
+            @if (ViewBag.kitType == null)
+            {
+                <input type="button" onclick="AddKitProduct()" value="Save" class="btn btn-primary" />
+            }
+            else
+            {
+                <input type="button" onclick="AddKitProduct(@ViewBag.kitType,@(ViewBag.kitType == null ? false : true))" value="Save" class="btn btn-primary" />
+            }
+            <input type="button" onclick="pcModalKitProduct.Hide()" value="Cancel" class="btn btn-default" />
+        </div>
+
+
+    }
+}
+else
+{
+    using (Html.BeginForm("", "", FormMethod.Post, new { @id = "frmEditproductKit" }))
+    {
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.ProductKitType)
+        @Html.HiddenFor(model => model.ProductId, new { @class = "parentProductId" })
+        <div class="col-md-12 pull-left">
+            <div class="input-group h-100 justify-content-center align-items-center">
+                <label class="col-md-4">Product</label>
+                <div class="col-md-8">
+
+                    @Html.Partial("~/Views/Shared/ProductLargeDataComboBoxPartial.cshtml")
+
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                <label class="col-md-4">Quantity<span style="color:red"> *</span></label>
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.Quantity)
+                    @Html.ValidationMessageFor(model => model.Quantity)
+                </div>
             </div>
         </div>
-    </div>
+        <div class="col-md-offset-2 col-md-10 bottom-right-popup">
+
+            <input type="button" onclick="EditKitProductView()" value="Save" class="btn btn-primary" />
+
+            <input type="button" onclick="pcModalKitProduct.Hide()" value="Cancel" class="btn btn-default" />
+        </div>
 
 
-    <div class="col-md-offset-2 col-md-10 bottom-right-popup">
-        @if (ViewBag.kitType == null)
-        {
-            <input type="button" onclick="AddKitProduct()" value="Save" class="btn btn-primary" />
-        }
-        else
-        {
-            <input type="button" onclick="AddKitProduct(@ViewBag.kitType,@(ViewBag.kitType == null ? false : true))" value="Save" class="btn btn-primary" />
-        }
-        <input type="button" onclick="pcModalKitProduct.Hide()" value="Cancel" class="btn btn-default" />
-    </div>
-   
-   
+    }
+
 }

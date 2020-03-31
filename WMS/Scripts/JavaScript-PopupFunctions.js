@@ -614,7 +614,7 @@ function AddKitProduct(kitTypes, tab) {
 
         }
         else {
-          
+
             $('#ProductKitIds').append('<option selected value=' + result.ProductId + '>' + result.ProductName + "" + "(" + (result.Quantity) + ")" + '</option>');
             $("#ProductKitIds").trigger("chosen:updated");
         }
@@ -622,19 +622,64 @@ function AddKitProduct(kitTypes, tab) {
 
     });
 }
+
+function EditKitProductView() {
+    debugger;
+    var qty = $("#Quantity").val();
+    var kitId = $("#Id").val();
+    var kitTypes = $("#ProductKitType").val();
+    var productId = prdid.GetValue();
+    var parentProductId = $(".parentProductId").val();
+    if (qty <= 0) {
+        $("#Quantity").css({ "background-color": "#f9baba" });
+        setTimeout(function () {
+            $("#Quantity").removeAttr("style");
+        }, 400);
+        return false;
+    }
+    data = { KitId: kitId, Quantity: qty, ProductId: productId };
+    var url = "/Products/SaveEditKitProduct";
+
+    $.post(url, data, function (result) {
+        pcModalKitProduct.Hide();
+        if (kitTypes == "Kit") {
+            GetDevexControlByName(parentProductId + "productKitItems").Refresh();
+        }
+        else if (kitTypes == "Recipe") {
+            GetDevexControlByName(parentProductId + "productRecipeItems").Refresh();
+        }
+
+
+
+
+
+    });
+
+}
+
+
+
+
 var producttypekit;
+var ProductKitId;
 function ProductKitPopUpCallBack(s, e) {
     debugger;
     e.customArgs["kitTypeId"] = producttypekit;
-
-} 
+    e.customArgs["ProductKitId"] = ProductKitId;
+}
 function ProductKitPopUp(isEdit) {
     debugger;
     producttypekit = isEdit;
+    ProductKitId = null;
     pcModalKitProduct.Show();
-   
-
 }
+function EditKitProduct(kitId, kitType) {
+
+    producttypekit = kitType;
+    ProductKitId = kitId;
+    pcModalKitProduct.Show();
+}
+
 
 
 

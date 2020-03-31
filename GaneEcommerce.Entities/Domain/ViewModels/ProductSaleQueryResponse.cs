@@ -46,8 +46,9 @@ namespace Ganedata.Core.Entities.Domain
         public int ProductId { get; set; }
         public string ProductName { get; set; }
         public decimal Quantity { get; set; }
-
         public int KitType { get; set; }
+
+        public int? KitIds { get; set; }
 
     }
     public class RemoveRecipeItemRequest

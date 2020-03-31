@@ -14,6 +14,8 @@ namespace Ganedata.Core.Entities.Domain
         public string BarCode { get; set; }
         public decimal Quantity { get; set; }
 
+        public int ProductKitId { get; set; }
+
     }
 
     [Serializable]

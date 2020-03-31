@@ -46,32 +46,10 @@
                 var id = (int)DataBinder.Eval(m.DataItem, "ProductId");
                 var parentProductId = (int)DataBinder.Eval(m.DataItem, "ParentProductId");
                 var name = DataBinder.Eval(m.DataItem, "Name").ToString();
+                var kitId = (int)DataBinder.Eval(m.DataItem, "ProductKitId");
+                var function = string.Format("EditKitProduct({0},{1})", kitId, 3);
+                ViewContext.Writer.Write("<a onclick=" + function + "><i class='btn fa fa-pencil'></i></a> <a class='btn fa fa-trash' role='button' data-valueid='" + id + "' data-action='RemoveRecipeItemProduct' title='Delete Recipe Item' data-controller='Products' id='deleteBtn' data-title='Delete Recipe' data-message='This cannot be reversed, are you sure you want to remove this recipe item?' data-toggle='modal' data-target='#confirm-delete'></a>");
 
-                if (ViewBag.SelectionMode == true)
-                {
-                    var spinEditHtml = Html.DevExpress().SpinEdit(s =>
-                    {
-                        s.Name = "RecipeProductQty_" + id.ToString();
-                        s.Properties.MinValue = 1; s.ControlStyle.CssClass = "recipeitem-select-lines";
-                        s.Width = System.Web.UI.WebControls.Unit.Percentage(100);
-                        s.ControlStyle.CssClass = "form-control";
-                        s.Properties.MaxValue = 10000000;
-                    }).GetHtml().ToHtmlString();
-
-                    var btnEditHtml = Html.DevExpress().Button(s =>
-                    {
-                        s.Name = "btnRecipeAddProduct_" + id.ToString(); s.ControlStyle.CssClass = "recipeitem-select-lines";
-                        s.Text = "+"; s.Width = Unit.Percentage(16);
-                        s.ClientSideEvents.Click = "function(s,e){_AddRecipeProduct(" + id + ",'" + name + "');}";
-                    }).GetHtml().ToHtmlString();
-                    ViewContext.Writer.Write("<div class='col-md-6'>" + spinEditHtml + "</div>" +
-                                             "<div class='col-md-4'>" + btnEditHtml + "</div>");
-                }
-                else
-                {
-
-                    ViewContext.Writer.Write("<a onclick=''><i class='btn fa fa-pencil'></i></a> <a class='btn fa fa-trash' role='button' data-valueid='" + id + "' data-action='RemoveRecipeItemProduct' title='Delete Recipe Item' data-controller='Products' id='deleteBtn' data-title='Delete Recipe' data-message='This cannot be reversed, are you sure you want to remove this recipe item?' data-toggle='modal' data-target='#confirm-delete'></a>");
-                }
 
             });
         });
