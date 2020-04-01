@@ -316,6 +316,7 @@
     <Content Include="Areas\Shop\Content\app\img\product\Microware-CHARGING-DOCK-LED-Light.jpg" />
     <Content Include="Areas\Shop\Content\app\img\slider\SliderImage.png" />
     <Content Include="Areas\Shop\Content\app\js\app.js" />
+    <Content Include="Areas\Shop\Content\app\js\custom.js" />
     <Content Include="Areas\Shop\Content\bootstrap-theme.css" />
     <Content Include="Areas\Shop\Content\bootstrap-theme.min.css" />
     <Content Include="Areas\Shop\Content\bootstrap.css" />

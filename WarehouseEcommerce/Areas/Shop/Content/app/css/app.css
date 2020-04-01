@@ -2923,7 +2923,7 @@ footer #contact li {
 }
 
 .product-tab {
-    margin-top: 30px;
+    margin-top: 70px !important;
     margin-bottom: 30px;
     padding: 0 15px;
     background-color: #fff;

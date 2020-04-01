@@ -1318,6 +1318,7 @@ ul.mhp-menu {
     justify-content: space-between;
     border-top: 1px solid #dddddd;
     padding: 15px 0px;
+    margin-top: -1px;
 }
 
 .cartitem-imgtext {
@@ -1890,3 +1891,124 @@ ul.mhp-menu {
         margin-right: unset;
     }
 }
+
+
+.kit-tab-content {
+    border: solid 1px #D7D7D7;
+    padding: 0px 10px;
+}
+.kit-product .product-bg .thumbnails img{
+    border: solid 1px #D7D7D7;
+}
+.kit-product .nav-tabs {
+    border: solid 1px #D7D7D7;
+    border-bottom: unset;
+}
+@media (min-width: 992px) {
+    .kit-product .sticky {
+        margin-right: 15px;
+    }
+}
+.kit-product .cartitem-text label {
+    font-size: 12px !important;
+    line-height: 1.5;
+    font-weight: 400;
+    color: #555;
+}
+.kit-product .cartitem-text select {
+    height: 22px;
+    font-size: 13px !important;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-bottom: 8px;
+}
+.rates-page-tabs .nav-tabs > li > a {
+    border: none;
+    text-transform: uppercase;
+    color: #7d7d7d;
+}
+
+    .rates-page-tabs .nav-tabs > li > a:hover,
+    .rates-page-tabs .nav-tabs > li > a:focus {
+        color: #000;
+        background-color: white;
+        box-shadow: 0px -2px 0px #000 inset;
+        font-weight: 600;
+    }
+
+.rates-page-tabs .nav-tabs > li.active > a,
+.rates-page-tabs .nav-tabs > li.active > a:focus,
+.rates-page-tabs .nav-tabs > li.active > a:hover {
+    border: none;
+    box-shadow: 0px -2px 0px #000 inset;
+    color: #000;
+    font-weight: 600;
+}
+
+.panel-group .panel-heading + .panel-collapse > .panel-body {
+    border: 1px solid #ddd;
+}
+
+.rates-page-tabs .panel-group,
+.rates-page-tabs .panel-group .panel,
+.rates-page-tabs .panel-group .panel-heading,
+.rates-page-tabs .panel-group .panel-heading a,
+.rates-page-tabs .panel-group .panel-title,
+.rates-page-tabs .panel-group .panel-title a,
+.rates-page-tabs .panel-group .panel-body,
+.rates-page-tabs .panel-group .panel-group .panel-heading + .panel-collapse > .panel-body {
+    border-radius: 2px;
+    border: 0;
+}
+
+    .rates-page-tabs .panel-group .panel-heading {
+        padding: 0;
+        background-color: white;
+    }
+
+        .rates-page-tabs .panel-group .panel-heading a {
+            display: block;
+            color: #303030;
+            font-size: 18px;
+            padding: 15px 15px 15px 45px;
+            text-decoration: none;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+            .rates-page-tabs .panel-group .panel-heading a.collapsed {
+            }
+
+            .rates-page-tabs .panel-group .panel-heading a:before {
+                content: '-';
+                position: absolute;
+                left: 14px;
+                top: 8px;
+                font-size: 26px;
+            }
+
+            .rates-page-tabs .panel-group .panel-heading a.collapsed:before {
+                content: '+';
+                left: 10px;
+                top: 10px;
+            }
+
+
+    .rates-page-tabs .panel-group .panel-collapse {
+        margin-top: 5px !important;
+    }
+
+    .rates-page-tabs .panel-group .panel-body {
+        background: #ffffff;
+        padding: 15px;
+    }
+
+    .rates-page-tabs .panel-group .panel {
+        background-color: transparent;
+    }
+
+    .rates-page-tabs .panel-group .panel-body p:last-child,
+    .rates-page-tabs .panel-group .panel-body ul:last-child,
+    .rates-page-tabs .panel-group .panel-body ol:last-child {
+        margin-bottom: 0;
+    }
