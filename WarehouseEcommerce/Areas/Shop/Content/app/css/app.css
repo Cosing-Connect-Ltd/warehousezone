@@ -4893,6 +4893,11 @@ a.cashbtn {
     width: 100%;
 }
 
+.order-details img {
+   text-overflow: ellipsis;
+   overflow: hidden;
+    }
+
 .ordered-items li span {
     font-weight: bold;
 }

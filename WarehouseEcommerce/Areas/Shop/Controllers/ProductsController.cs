@@ -40,7 +40,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         }
         // GET: Products
 
-        public ActionResult list(string group, int? sort, string filter, string search, string values, int? page, int? pagesize = 20, string department = "", string category = "")
+        public ActionResult list(string group, int? sort, string filter, string search, string values, int? page, int? pagesize = 20, string department = "", string category = "", string manufacturerName = "")
         {
             try
             {
@@ -54,8 +54,9 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                 ViewBag.searchString = search;
                 ViewBag.CurrencySymbol = currencyyDetail.Symbol;
                 ViewBag.subcategory = category;
+                ViewBag.manufacturername = manufacturerName;
                 ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
-                var product = _productlookupServices.GetAllValidProductGroupAndDeptByName(group, department, category);
+                var product = _productlookupServices.GetAllValidProductGroupAndDeptByName(group, department, category, manufacturerName);
 
                 if (!string.IsNullOrEmpty(search))
                 {

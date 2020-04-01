@@ -3,13 +3,13 @@
 <footer>
     <div>
         <div class="custom-max-width m-auto logo-slider">
-                @foreach (var item in Model)
-                {
+            @foreach (var item in Model)
+            {
 
-                    <a href=""><img src="@(!string.IsNullOrEmpty(item.ImagePath)? ViewBag.BaseFilePath + item.ImagePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@item.Name" title="@item.Name" class="img-responsive"> </a>
-                 
-                }
-            
+                <a href="@Url.Action("list","Products",new { manufacturerName=item.Name})"><img src="@(!string.IsNullOrEmpty(item.ImagePath)? ViewBag.BaseFilePath + item.ImagePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@item.Name" title="@item.Name" class="img-responsive"> </a>
+
+            }
+
         </div>
         <hr class="footer-hr">
     </div>
