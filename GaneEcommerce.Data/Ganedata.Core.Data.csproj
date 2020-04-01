@@ -739,6 +739,14 @@
     <Compile Include="Migrations\202003261611136_productkitrealtion-added.designer.cs">
       <DependentUpon>202003261611136_productkitrealtion-added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004011733485_changes-in-terminalLog-added.cs" />
+    <Compile Include="Migrations\202004011733485_changes-in-terminalLog-added.designer.cs">
+      <DependentUpon>202004011733485_changes-in-terminalLog-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004011757182_realtionwebsiteid-added-in-terminalLog.cs" />
+    <Compile Include="Migrations\202004011757182_realtionwebsiteid-added-in-terminalLog.designer.cs">
+      <DependentUpon>202004011757182_realtionwebsiteid-added-in-terminalLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1613,6 +1621,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003261611136_productkitrealtion-added.resx">
       <DependentUpon>202003261611136_productkitrealtion-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004011733485_changes-in-terminalLog-added.resx">
+      <DependentUpon>202004011733485_changes-in-terminalLog-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004011757182_realtionwebsiteid-added-in-terminalLog.resx">
+      <DependentUpon>202004011757182_realtionwebsiteid-added-in-terminalLog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

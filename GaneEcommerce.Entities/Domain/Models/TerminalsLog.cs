@@ -11,7 +11,7 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Log Id")]
         public Guid TerminalLogId { get; set; }
         [Display(Name = "Terminal Id")]
-        public int TerminalId { get; set; }
+        public int? TerminalId { get; set; }
         [MaxLength(50)]
         [Display(Name = "Log Type")]
         public string TerminalLogType { get; set; }
@@ -32,8 +32,12 @@ namespace Ganedata.Core.Entities.Domain
         public DateTime DateCreated { get; set; }
         [Display(Name = "Client")]
         public int TenantId { get; set; }
+
+        public int? SiteID { get; set; }
         public DateTime? DateUpdated { get; set; }
         [ForeignKey("TerminalId")]
         public virtual Terminals Terminals { get; set; }
+        [ForeignKey("SiteID")]
+        public virtual TenantWebsites TenantWebsites { get; set; }
     }
 }

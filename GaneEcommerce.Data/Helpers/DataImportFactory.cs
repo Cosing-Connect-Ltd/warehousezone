@@ -2714,41 +2714,37 @@ namespace Ganedata.Core.Data.Helpers
             DateTime requestTime = new DateTime(2000, 01, 01);
             var dates = requestTime.ToString("yyyy-MM-dd-HH:mm:ss");
             WebResponse httpResponse = null;
-            DateTime responseTime = DateTime.UtcNow;
+            DateTime requestSentTime = DateTime.UtcNow;
             string url = "";
             try
             {
-
                 var _currentDbContext = new ApplicationContext();
-                var GetSyncRecored = _currentDbContext.TenantWebsitesSyncLog.Where(u => u.Synced != false && u.SiteID == SiteId).OrderByDescending(u => u.RequestTime).FirstOrDefault();
+                var GetSyncRecored = _currentDbContext.TerminalsLog.Where(u => u.Ack != false && u.SiteID == SiteId).OrderByDescending(u => u.DateCreated).FirstOrDefault();
                 if (GetSyncRecored != null)
                 {
-                    requestTime = GetSyncRecored.RequestTime;
+                    requestTime = GetSyncRecored.DateCreated;
                     dates = requestTime.ToString("yyyy-MM-dd-HH:mm:ss");
                 }
-
                 url = PrestashopUrl + "orders?filter[date_upd]=>[" + dates + "]&date=1&filter[current_state]=2&display=full";
                 PrestashopOrders orderSearch = new PrestashopOrders();
-
+                requestSentTime = DateTime.UtcNow;
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                 httpWebRequest.Credentials = new NetworkCredential(PrestashopKey, "");
                 httpWebRequest.Method = "GET";
                 httpWebRequest.ContentType = "application/json";
-
                 httpResponse = httpWebRequest.GetResponse();
-                responseTime = DateTime.UtcNow;
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var serializer = new XmlSerializer(typeof(PrestashopOrders));
                     orderSearch = serializer.Deserialize(streamReader) as PrestashopOrders;
                     if (orderSearch?.Orders?.Order.Count > 0)
                     {
-                        CreateWebSiteSyncLog(requestTime, url, 1, true, orderSearch.Orders.Order.Count, responseTime, SiteId);
+                        CreateWebSiteSyncLog(requestTime,"OK", true, orderSearch.Orders.Order.Count, requestSentTime, SiteId,tenantId);
                     }
                     else
                     {
 
-                        CreateWebSiteSyncLog(requestTime, url, 1, true, 0, responseTime, SiteId);
+                        CreateWebSiteSyncLog(requestTime, "OK", true, orderSearch.Orders.Order.Count, requestSentTime, SiteId, tenantId);
                         return "No Orders found";
                     }
                 }
@@ -2899,7 +2895,7 @@ namespace Ganedata.Core.Data.Helpers
             }
             catch (Exception ex)
             {
-                CreateWebSiteSyncLog(requestTime, url, 0, false, 0, responseTime, SiteId);
+                CreateWebSiteSyncLog(requestTime, "Error", false,0, requestSentTime, SiteId, tenantId);
                 return ex.Message;
             }
             return "All data sync properly";
@@ -2981,9 +2977,10 @@ namespace Ganedata.Core.Data.Helpers
 
         public async Task<string> PrestaShopStockSync(int tenantId, int warehouseId, string PrestashopUrl, string PrestashopKey, int SiteId)
         {
-            DateTime requestTime = DateTime.UtcNow;
+            DateTime requestTime = new DateTime(2000, 01, 01);
+            var dates = requestTime.ToString("yyyy-MM-dd-HH:mm:ss");
             WebResponse httpResponse = null;
-            DateTime responseTime = DateTime.UtcNow;
+            DateTime requestSentTime = DateTime.UtcNow;
             string url = "";
             try
             {
@@ -2996,20 +2993,19 @@ namespace Ganedata.Core.Data.Helpers
 
                 httpWebRequest.Method = "GET";
                 httpWebRequest.ContentType = "application/json";
-                requestTime = DateTime.UtcNow;
+                requestSentTime = DateTime.UtcNow;
                 httpResponse = httpWebRequest.GetResponse();
-                responseTime = DateTime.UtcNow;
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var serializer = new XmlSerializer(typeof(PrestashopProduct));
                     prestashopProducts = serializer.Deserialize(streamReader) as PrestashopProduct;
                     if (prestashopProducts?.Products?.Product?.Count > 0)
                     {
-                        CreateWebSiteSyncLog(requestTime, url, 1, true, prestashopProducts.Products.Product.Count, responseTime, SiteId);
+                        CreateWebSiteSyncLog(requestTime,"OK", true, prestashopProducts.Products.Product.Count, requestSentTime, SiteId,tenantId);
                     }
                     else
                     {
-                        CreateWebSiteSyncLog(requestTime, url, 1, true, 0, responseTime, SiteId);
+                        CreateWebSiteSyncLog(requestTime, "OK", true, prestashopProducts.Products.Product.Count, requestSentTime, SiteId, tenantId);
                         return "No Product Found";
                     }
 
@@ -3066,6 +3062,7 @@ namespace Ganedata.Core.Data.Helpers
             }
             catch (Exception)
             {
+                CreateWebSiteSyncLog(requestTime, "Error", true, 0, requestSentTime, SiteId, tenantId);
 
                 return "Stock is not posted correctly";
             }
@@ -3211,18 +3208,22 @@ namespace Ganedata.Core.Data.Helpers
             return "ITM-100001";
         }
 
-        public void CreateWebSiteSyncLog(DateTime RequestTime, string requesturl, int ErrorCode, bool synced, int resultCount, DateTime ResponseTime, int SiteId)
+        public void CreateWebSiteSyncLog(DateTime RequestTime, string ErrorCode, bool synced, int resultCount, DateTime RequestedTime, int SiteId, int TenantId)
         {
             var dbcontext = new ApplicationContext();
-            TenantWebsitesSyncLog syncLog = new TenantWebsitesSyncLog();
-            syncLog.RequestTime = RequestTime;
-            syncLog.RequestUrl = requesturl;
-            syncLog.ErrorCode = ErrorCode;
-            syncLog.Synced = synced;
-            syncLog.ResultCount = resultCount;
-            syncLog.ResponseTime = ResponseTime;
-            syncLog.SiteID = SiteId;
-            dbcontext.TenantWebsitesSyncLog.Add(syncLog);
+            TerminalLogTypeEnum logType = (TerminalLogTypeEnum)Enum.Parse(typeof(TerminalLogTypeEnum), "PrestaShopOrderSync");
+
+            TerminalsLog newDeviceLog = new TerminalsLog();
+            newDeviceLog.TerminalLogId = Guid.NewGuid();
+            newDeviceLog.TerminalLogType = logType.ToString();
+            newDeviceLog.Response = ErrorCode.Trim().ToString();
+            newDeviceLog.DateCreated = RequestedTime;
+            newDeviceLog.TenantId = TenantId;
+            newDeviceLog.DateRequest = RequestTime;
+            newDeviceLog.SiteID = SiteId;
+            newDeviceLog.RecievedCount = resultCount;
+            newDeviceLog.Ack = synced;
+            dbcontext.TerminalsLog.Add(newDeviceLog);
             dbcontext.SaveChanges();
 
 
@@ -3231,9 +3232,6 @@ namespace Ganedata.Core.Data.Helpers
 
         public string UpdatePrestaShopStock(string prestashopUrl, string prestashopKey, List<stock_available> stock_Availables)
         {
-
-
-
             WebRequest req = null;
             WebResponse rsp = null;
             string Response = "";

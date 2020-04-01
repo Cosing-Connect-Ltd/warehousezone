@@ -93,7 +93,7 @@ namespace WMS.Controllers.WebAPI
             }
 
             TerminalServices.CreateTerminalLog(DateTime.UtcNow, terminal.TenantId, data.PalletTrackingSync.Count, terminal.TerminalId, TerminalLogTypeEnum.PostPalletTracking);
-
+          
             return Ok(results);
         }
 

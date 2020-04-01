@@ -259,7 +259,8 @@ namespace Ganedata.Core.Entities.Enums
         TnAGetConfig = 28,
         TnAPostStampsAndLogs = 29,
         TnAPostCmdResponse = 30,
-        PalletProductsSync = 31
+        PalletProductsSync = 31,
+        PrestaShopOrderSync=32
     }
 
     public enum OrderProcessStatusEnum

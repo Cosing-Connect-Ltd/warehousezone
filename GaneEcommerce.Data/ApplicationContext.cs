@@ -183,7 +183,7 @@ namespace Ganedata.Core.Data
 
         public DbSet<PalletType> PalletTypes { get; set; }
         public DbSet<TenantWebsites> TenantWebsites { get; set; }
-        public DbSet<TenantWebsitesSyncLog> TenantWebsitesSyncLog { get; set; }
+       
         public DbSet<OrderSchedule> OrderSchedule { get; set; }
         public DbSet<ProductsWebsitesMap> ProductsWebsitesMap { get; set; }
 

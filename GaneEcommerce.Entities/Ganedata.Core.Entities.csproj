@@ -219,7 +219,6 @@
     <Compile Include="Domain\Tenants\TenantDepartments.cs" />
     <Compile Include="Domain\Models\Pallets.cs" />
     <Compile Include="Domain\Models\ProductGroups.cs" />
-    <Compile Include="Domain\Tenants\TenantWebsitesSyncLog.cs" />
     <Compile Include="Domain\Tenants\TenantWebsites.cs" />
     <Compile Include="Domain\Tenants\TenantLoanTypes.cs" />
     <Compile Include="Domain\Tenants\TenantPriceGroups.cs" />
