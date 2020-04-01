@@ -499,6 +499,8 @@
     <Content Include="Areas\Shop\Views\Shared\_UserMenuPartial.cshtml" />
     <Content Include="Areas\Shop\Views\Shared\_CartMenuPartial.cshtml" />
     <Content Include="Areas\Shop\Views\Shared\_SocialMediaAccountsPartial.cshtml" />
+    <Content Include="Areas\Shop\Views\Products\GroupedProductDetail.cshtml" />
+    <Content Include="Areas\Shop\Views\Products\KitProductDetail.cshtml" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\Shop\Scripts\bootstrap.js" />

@@ -106,21 +106,43 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             {
 
                 return Content("Issue of getting data  " + ex.Message);
-                
+
             }
 
         }
 
-        public ActionResult ProductDetails(string sku,int? productId=null)
+        public ActionResult ProductDetails(string sku, int? productId = null)
         {
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.CurrencySymbol = currencyyDetail.Symbol;
             ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
-            var product = _productServices.GetProductMasterByProductCode(sku,CurrentTenantId);
-            product.SellPrice = Math.Round((product.SellPrice ?? 0) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value), 2);
+            var product = _productServices.GetProductMasterByProductCode(sku, CurrentTenantId);
+            product.SellPrice = Math.Round((product.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0), 2);
+            if (product.GroupedProduct)
+            {
+                TempData["ProductMaster"] = product;
+                return RedirectToAction("GroupedProductDetail", "Products");
+            }
+            else if (product.Kit)
+            {
+                TempData["ProductMaster"] = product;
+                return RedirectToAction("KitProductDetail", "Products");
+            }
             return View(product);
         }
 
+        public ActionResult GroupedProductDetail()
+        {
+            ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
+            ProductMaster productMaster = TempData["ProductMaster"] as ProductMaster;
+            return View(productMaster);
+        }
+        public ActionResult KitProductDetail()
+        {
+            ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
+            ProductMaster productMaster = TempData["ProductMaster"] as ProductMaster;
+            return View(productMaster);
+        }
 
         public JsonResult GetProductCategories()
         {
@@ -299,8 +321,8 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.CurrencySymbol = currencyyDetail.Symbol;
             var products = _productlookupServices.GetAllValidProductGroupAndDeptByName(groups, department, subcategory);
-            productFiltering.Manufacturer = _productlookupServices.GetAllValidProductManufacturerGroupAndDeptByName(products,groups, department, subcategory).Select(u => u.Name).ToList();
-            productFiltering.PriceInterval = _productlookupServices.AllPriceListAgainstGroupAndDept(products,groups, department, subcategory);
+            productFiltering.Manufacturer = _productlookupServices.GetAllValidProductManufacturerGroupAndDeptByName(products, groups, department, subcategory).Select(u => u.Name).ToList();
+            productFiltering.PriceInterval = _productlookupServices.AllPriceListAgainstGroupAndDept(products, groups, department, subcategory);
             productFiltering.AttributeValues = _productlookupServices.GetAllValidProductAttributeValuesByProductIds(products);
             productFiltering.subCategories = _productlookupServices.GetAllValidSubCategoriesByDepartmentAndGroup(products).ToList();
 
