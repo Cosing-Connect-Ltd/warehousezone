@@ -387,25 +387,9 @@
 .product-bg {
     display: flex;
     justify-content: center;
+    flex-wrap:nowrap;
 }
 
-    .product-bg img {
-        /*width:380px;*/
-    }
-
-@media(max-width:991px) {
-    .product-bg {
-        flex-wrap: wrap;
-    }
-
-    .pro-content {
-        width: 100%;
-    }
-
-    .sticky {
-        width: 100%;
-    }
-}
 
 .hover-cate {
     height: 100%;
@@ -1904,11 +1888,12 @@ ul.mhp-menu {
     border: solid 1px #D7D7D7;
     border-bottom: unset;
 }
-@media (min-width: 992px) {
-    .kit-product .sticky {
-        margin-right: 15px;
+
+    @media(min-width:900px) {
+        .kit-product .sticky {
+            margin-right: 15px;
+        }
     }
-}
 .kit-product .cartitem-text label {
     font-size: 12px !important;
     line-height: 1.5;
@@ -1921,6 +1906,28 @@ ul.mhp-menu {
     padding-top: 0px;
     padding-bottom: 0px;
     margin-bottom: 8px;
+}
+.kit-product .cartitem-price span {
+    color:white !important;
+}
+.kit-product .button-submit button, .my-account.login .button-submit input[type="submit"] {
+    height: 40px;
+    background: #1455a6;
+    color: #fff;
+    transition: 0.5s;
+    width: auto;
+    padding: 7px 35px;
+    width: 100%;
+}
+    .kit-product .button-submit button:hover, .my-account.login .button-submit button:focus, .my-account.login .button-submit input[type="submit"]:hover, .my-account.login .button-submit input[type="submit"]:focus {
+        background: #000;
+        transition: 0.5s;
+    }
+.kit-product button {
+    height: 40px;
+    color: #fff;
+    padding: 7px 35px;
+    width: 100%;
 }
 .rates-page-tabs .nav-tabs > li > a {
     border: none;
@@ -2012,3 +2019,41 @@ ul.mhp-menu {
     .rates-page-tabs .panel-group .panel-body ol:last-child {
         margin-bottom: 0;
     }
+    .no-wrap {
+        white-space:nowrap;
+    }
+@media(max-width:1024px) {
+    .product-bg img {
+        width: 380px !important;
+    }
+    .sticky {
+        width: 380px;
+    }
+}
+
+@media(max-width:900px) {
+    .product-bg {
+        flex-wrap: wrap;
+    }
+    .pro-content {
+        width:100%;
+        margin-top:20px;
+    }
+
+}
+@media(max-width:425px) {
+    .product-bg img {
+        width: 300px !important;
+    }
+    .sticky {
+        width: 300px;
+    }
+}
+@media(max-width:360px) {
+    .product-bg img {
+        width: 250px !important;
+    }
+    .sticky {
+        width: 250px;
+    }
+}

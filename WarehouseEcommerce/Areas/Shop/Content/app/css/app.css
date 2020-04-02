@@ -2929,6 +2929,11 @@ footer #contact li {
     background-color: #fff;
     border-radius: 4px;
 }
+@media(min-width:1025px){
+    .product-tab {
+        margin-top: 185px !important;
+    }
+}
 
     .product-tab li a {
         border: none !important;
@@ -3460,11 +3465,11 @@ footer #contact li {
     }
 }
 
-@media(max-width: 991px) {
+/*@media(max-width: 991px) {
     .pro-content {
         margin-top: 20px;
     }
-}
+}*/
 
 @media(min-width: 768px) and (max-width: 991px) {
     #menu1 li a::after {
