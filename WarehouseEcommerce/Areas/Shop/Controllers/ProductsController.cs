@@ -121,28 +121,32 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             product.SellPrice = Math.Round((product.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0), 2);
             if (product.GroupedProduct)
             {
-                TempData["ProductMaster"] = product;
-                return RedirectToAction("GroupedProductDetail", "Products");
+                return RedirectToAction("GroupedProductDetail", "Products", new { sku = sku });
             }
             else if (product.Kit)
             {
-                TempData["ProductMaster"] = product;
-                return RedirectToAction("KitProductDetail", "Products");
+                return RedirectToAction("KitProductDetail", "Products", new { sku = sku });
             }
             return View(product);
         }
 
-        public ActionResult GroupedProductDetail()
+        public ActionResult GroupedProductDetail(string sku)
         {
+            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
+            ViewBag.CurrencySymbol = currencyyDetail.Symbol;
             ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
-            ProductMaster productMaster = TempData["ProductMaster"] as ProductMaster;
-            return View(productMaster);
+            var product = _productServices.GetProductMasterByProductCode(sku, CurrentTenantId);
+            product.SellPrice = Math.Round((product.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0), 2);
+            return View(product);
         }
-        public ActionResult KitProductDetail()
+        public ActionResult KitProductDetail(string sku)
         {
+            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
+            ViewBag.CurrencySymbol = currencyyDetail.Symbol;
             ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
-            ProductMaster productMaster = TempData["ProductMaster"] as ProductMaster;
-            return View(productMaster);
+            var product = _productServices.GetProductMasterByProductCode(sku, CurrentTenantId);
+            product.SellPrice = Math.Round((product.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0), 2);
+            return View(product);
         }
 
         public JsonResult GetProductCategories()
