@@ -1,7 +1,7 @@
 ﻿@using Ganedata.Core.Entities.Domain
 @model ProductMaster
 @{
-    ViewBag.Title = Model?.Name + " | " + ViewBag.SiteDescription??"";
+    ViewBag.Title = Model?.Name + " | " + ViewBag.SiteDescription ?? "";
 }
 <div id="product-product" class="container custom-max-width m-auto kit-product">
     <div class="row">
@@ -24,13 +24,13 @@
                     <li><a href="@Url.Action("list", "Products", new { category = Model.ProductCategory?.ProductCategoryName, group = Model.ProductGroup?.ProductGroup, department = Model.TenantDepartment?.DepartmentName })">@(!string.IsNullOrEmpty(Model?.ProductCategory?.ProductCategoryName) ? Model.ProductCategory.ProductCategoryName : "")</a></li>
                 }
 
-                <li>@Model.Name</li> 
+                <li>@Model.Name</li>
             </ul>
 
             <div>
-                <h2>@Model.Name</h2>
+                <h2 style="padding: 0px 15px;">@Model.Name</h2>
                 <div class="row product-bg">
-                    <div class="sticky">
+                    <div class="sticky col-sm-6 col-md-6">
                         <ul class="thumbnails">
                             <li>
                                 <a class="thumbnail" href="@(!string.IsNullOrEmpty(Model.DefaultImage)?ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" title="#">
@@ -56,9 +56,66 @@
                                 </div>
                             </li>
                         </ul>
+                        <!-- product Reviews Start-->
+                        <div class="product-tab">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#tab-description" data-toggle="tab">Description</a></li>
+                                <li><a href="#tab-review" data-toggle="tab">Reviews (0)</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tab-description">
+                                    <p>
+                                        @Model.Description
+
+                                    </p>
+
+                                </div>
+                                <div class="tab-pane" id="tab-review">
+                                    <form class="form-horizontal" id="form-review">
+                                        <div id="review"></div>
+                                        <h2 class="heading co-heading">Write a review</h2>
+                                        <div class="form-group required">
+                                            <div class="col-sm-12">
+                                                <label class="control-label" for="input-name">Your Name</label>
+                                                <input type="text" name="name" value="" id="input-name" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group required">
+                                            <div class="col-sm-12">
+                                                <label class="control-label" for="input-review">Your Review</label>
+                                                <textarea name="text" rows="5" id="input-review" class="form-control"></textarea>
+                                                <div class="help-block"><span class="text-danger">Note:</span> Add Basic html tag if required!</div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group required">
+                                            <div class="col-sm-12">
+                                                <label class="control-label rat">Rating</label>
+                                                &nbsp;&nbsp;&nbsp; Bad&nbsp;
+                                                <input type="radio" name="rating" value="1" />
+                                                &nbsp;
+                                                <input type="radio" name="rating" value="2" />
+                                                &nbsp;
+                                                <input type="radio" name="rating" value="3" />
+                                                &nbsp;
+                                                <input type="radio" name="rating" value="4" />
+                                                &nbsp;
+                                                <input type="radio" name="rating" value="5" />
+                                                &nbsp;Good
+                                            </div>
+                                        </div>
+                                        <div class="buttons clearfix mt-25">
+                                            <div class="pull-right w-100">
+                                                <button type="button" id="button-review" data-loading-text="Loading..." class="btn btn-primary">Continue</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- product Reviews End-->
                     </div>
 
-                    <div class="col-sm-6 pro-content">
+                    <div class="col-sm-6 col-md-6 pro-content">
                         <div class="tab-group rates-page-tabs">
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs responsive" role="tablist">
@@ -125,75 +182,9 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
-          
-
-
-
-
-
-
-
-            <div class="product-tab">
-                <ul class="nav nav-tabs">
-                    <li class="active"><a href="#tab-description" data-toggle="tab">Description</a></li>
-                    <li><a href="#tab-review" data-toggle="tab">Reviews (0)</a></li>
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane active" id="tab-description">
-                        <p>
-                            @Model.Description
-
-                        </p>
-
-                    </div>
-                    <div class="tab-pane" id="tab-review">
-                        <form class="form-horizontal" id="form-review">
-                            <div id="review"></div>
-                            <h2 class="heading co-heading">Write a review</h2>
-                            <div class="form-group required">
-                                <div class="col-sm-12">
-                                    <label class="control-label" for="input-name">Your Name</label>
-                                    <input type="text" name="name" value="" id="input-name" class="form-control" />
-                                </div>
-                            </div>
-                            <div class="form-group required">
-                                <div class="col-sm-12">
-                                    <label class="control-label" for="input-review">Your Review</label>
-                                    <textarea name="text" rows="5" id="input-review" class="form-control"></textarea>
-                                    <div class="help-block"><span class="text-danger">Note:</span> Add Basic html tag if required!</div>
-                                </div>
-                            </div>
-                            <div class="form-group required">
-                                <div class="col-sm-12">
-                                    <label class="control-label rat">Rating</label>
-                                    &nbsp;&nbsp;&nbsp; Bad&nbsp;
-                                    <input type="radio" name="rating" value="1" />
-                                    &nbsp;
-                                    <input type="radio" name="rating" value="2" />
-                                    &nbsp;
-                                    <input type="radio" name="rating" value="3" />
-                                    &nbsp;
-                                    <input type="radio" name="rating" value="4" />
-                                    &nbsp;
-                                    <input type="radio" name="rating" value="5" />
-                                    &nbsp;Good
-                                </div>
-                            </div>
-                            <div class="buttons clearfix">
-                                <div class="pull-right">
-                                    <button type="button" id="button-review" data-loading-text="Loading..." class="btn btn-primary">Continue</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!-- relatedproduct -->
         </div>
-
     </div>
 </div>

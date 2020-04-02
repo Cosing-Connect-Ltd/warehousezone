@@ -1419,7 +1419,7 @@ namespace Ganedata.Core.Services
         }
 
         public ProductMaster GetProductMasterByProductCode(string productCode, int tenantId)
-        {
+         {
             return _currentDbContext.ProductMaster.FirstOrDefault(e => e.TenantId == tenantId && e.IsDeleted != true && (e.SKUCode.Equals(productCode, StringComparison.CurrentCultureIgnoreCase)
             || e.BarCode.Equals(productCode, StringComparison.CurrentCultureIgnoreCase) || e.ManufacturerPartNo.Equals(productCode, StringComparison.CurrentCultureIgnoreCase)));
         }
