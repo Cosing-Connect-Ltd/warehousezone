@@ -1890,7 +1890,8 @@ ul.mhp-menu {
 }
 
 .kit-product .pro-content {
-    width: 100%
+    width: 100%;
+    padding: unset;
 }
 
 @media(min-width:900px) {
