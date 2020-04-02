@@ -1,7 +1,14 @@
 ﻿@model Ganedata.Core.Entities.Domain.ProductKitMap
 @using Ganedata.Core.Entities.Enums
 <hgroup>
-    <h2><span>@((ViewBag.kitType == null || ViewBag.kitType == 1) ? "Product Kits" : "Product Recipes")</span></h2>
+    @if (ViewBag.grouped == true)
+    {
+        <h2><span>Product Group</span></h2>
+    }
+    else
+    {
+        <h2><span>@((ViewBag.kitType == null || ViewBag.kitType == 1) ? "Product Kits" : "Product Recipes")</span></h2>
+    }
     <h3><span>@Html.ValidationSummary("", new { @id = "vldPrProductKit" })</span></h3>
 </hgroup>
 @if (Model == null)
@@ -18,13 +25,27 @@
 
                 </div>
             </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                <label class="col-md-4">Quantity<span style="color:red"> *</span></label>
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.Quantity)
-                    @Html.ValidationMessageFor(model => model.Quantity)
+            @if (ViewBag.grouped == false)
+            {
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    <label class="col-md-4">Quantity<span style="color:red"> *</span></label>
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Quantity)
+                        @Html.ValidationMessageFor(model => model.Quantity)
+                    </div>
                 </div>
-            </div>
+            }
+            else
+            {
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    <label class="col-md-4">Product Kit Type<span style="color:red"> *</span></label>
+                    <div class="col-md-8">
+                        @Html.DropDownList("ProductKitTypeId", ViewBag.groupedtype as SelectList, "Select Product Kit", new { @class = "chosen-select" })
+
+                    </div>
+                </div>
+
+            }
         </div>
         <div class="col-md-offset-2 col-md-10 bottom-right-popup">
             @if (ViewBag.kitType == null)
@@ -57,13 +78,27 @@ else
 
                 </div>
             </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
-                <label class="col-md-4">Quantity<span style="color:red"> *</span></label>
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.Quantity)
-                    @Html.ValidationMessageFor(model => model.Quantity)
+            @if (ViewBag.grouped == false)
+            {
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    <label class="col-md-4">Quantity<span style="color:red"> *</span></label>
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Quantity)
+                        @Html.ValidationMessageFor(model => model.Quantity)
+                    </div>
                 </div>
-            </div>
+            }
+            else
+            {
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    <label class="col-md-4">Product Kit Type<span style="color:red"> *</span></label>
+                    <div class="col-md-8">
+                        @Html.DropDownList("ProductKitTypeId", ViewBag.groupedtype as SelectList, "Select Product Kit", new { @class = "chosen-select" })
+
+                    </div>
+                </div>
+
+            }
         </div>
         <div class="col-md-offset-2 col-md-10 bottom-right-popup">
 

@@ -57,7 +57,7 @@ namespace Ganedata.Core.Services
         ProductCategory UpdateProductCategory(ProductCategory model, int userId, int tenantId);
         void DeleteProductCategory(int id, int userId);
         List<WastageReason> GetAllWastageReasons();
-
+        IEnumerable<ProductKitType> GetProductKitTypes(int TenantId);
         IQueryable<ProductMaster> FilterProduct(IQueryable<ProductMaster> productMaster, string filterstring);
 
         Dictionary<string, List<ProductAttributeValues>> GetAllValidProductAttributeValuesByProductIds(IQueryable<ProductMaster> product);

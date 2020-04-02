@@ -747,6 +747,10 @@
     <Compile Include="Migrations\202004011757182_realtionwebsiteid-added-in-terminalLog.designer.cs">
       <DependentUpon>202004011757182_realtionwebsiteid-added-in-terminalLog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004021409511_productkitTypes-table-added.cs" />
+    <Compile Include="Migrations\202004021409511_productkitTypes-table-added.designer.cs">
+      <DependentUpon>202004021409511_productkitTypes-table-added.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1627,6 +1631,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004011757182_realtionwebsiteid-added-in-terminalLog.resx">
       <DependentUpon>202004011757182_realtionwebsiteid-added-in-terminalLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004021409511_productkitTypes-table-added.resx">
+      <DependentUpon>202004021409511_productkitTypes-table-added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

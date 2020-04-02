@@ -46,6 +46,11 @@ namespace Ganedata.Core.Services
             return _currentDbContext.ProductAttributeValuesMap
                 .Where(a => a.ProductId == productId && a.IsDeleted != true).Select(a => a.ProductAttributeValues);
         }
+
+        public IEnumerable<ProductKitType> GetProductKitTypes(int TenantId)
+        {
+           return _currentDbContext.ProductKitTypes.Where(u => u.TenentId == TenantId && u.IsDeleted!=true);
+        }
         public Dictionary<string, List<ProductAttributeValues>> GetAllValidProductAttributeValuesByProductIds(IQueryable<ProductMaster> product)
         {
             var AttributeValueId = (from prd in product

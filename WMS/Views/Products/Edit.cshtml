@@ -217,11 +217,17 @@
                     <div class="input-group h-100 justify-content-center align-items-center" id="dvgrp">
                         @Html.LabelFor(model => model.ProductGroup, htmlAttributes: new { @class = "col-md-4 kitlabel" })
                         <div class="col-md-8">
-
-                            @Html.Action("_ProductKitCombobox", new { ProductId = Model.ProductId })
-                            @Html.Hidden("ProductKit")
-
+                            <div class="col-11 p-0 mt-1 pull-left">
+                                @Html.ListBox("ProductGroupIds", new MultiSelectList(ViewBag.ProductgroupIds, "", ""), new { Multiple = "multiple", @class = "chosen-select", data_placeholder = "Choose Product Groups" })
+                            </div>
+                            <div class="col-1 p-0 pull-left">
+                                <input type="button" onclick="ShowProductGroupPopUp();" id="ProdGroupAdd" class="btn btn-primary" value="+">
+                            </div>
                         </div>
+                        @*@Html.Action("_ProductKitCombobox", new { ProductId = Model.ProductId })
+            @Html.Hidden("ProductKit")*@
+
+
                     </div>
                     <div class="input-group h-100 justify-content-center align-items-center divchkkit">
                         @Html.LabelFor(model => model.Kit, htmlAttributes: new { @class = "col-md-4" })

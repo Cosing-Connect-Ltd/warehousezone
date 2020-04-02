@@ -581,9 +581,6 @@ function ProductKitChanges(s, e) {
     $("#ProductKit").val(comboproductIds);
 
 }
-
-
-
 function AddKitProduct(kitTypes, tab) {
 
     var qty = $("#Quantity").val();
@@ -622,7 +619,6 @@ function AddKitProduct(kitTypes, tab) {
 
     });
 }
-
 function EditKitProductView() {
     debugger;
     var qty = $("#Quantity").val();
@@ -662,10 +658,13 @@ function EditKitProductView() {
 
 var producttypekit;
 var ProductKitId;
+var grouped = false;
 function ProductKitPopUpCallBack(s, e) {
     debugger;
     e.customArgs["kitTypeId"] = producttypekit;
     e.customArgs["ProductKitId"] = ProductKitId;
+    e.customArgs["Grouped"] = grouped;
+    
 }
 function ProductKitPopUp(isEdit) {
     debugger;
@@ -679,7 +678,11 @@ function EditKitProduct(kitId, kitType) {
     ProductKitId = kitId;
     pcModalKitProduct.Show();
 }
+function ShowProductGroupPopUp() {
+    grouped = true;
+    pcModalKitProduct.Show();
 
+}
 
 
 

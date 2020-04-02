@@ -185,6 +185,7 @@
     <Compile Include="Domain\Auth\AuthUserprofile.cs" />
     <Compile Include="Domain\Auth\Module.cs" />
     <Compile Include="Domain\Models\GlobalApi.cs" />
+    <Compile Include="Domain\Models\ProductKitType.cs" />
     <Compile Include="Domain\Models\OrderSchedule.cs" />
     <Compile Include="Domain\Models\Account.cs" />
     <Compile Include="Domain\Models\AccountAddresses.cs" />

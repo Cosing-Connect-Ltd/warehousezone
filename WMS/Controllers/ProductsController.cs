@@ -90,6 +90,7 @@ namespace WMS.Controllers
             ViewBag.Manufacturer = new SelectList(_lookupServices.GetAllValidProductManufacturer(CurrentTenantId), "Id", "Name");
             ViewBag.Accounts = new List<ProductAccountCodes>();
             ViewBag.ProductKitItems = new List<ProductKitMap>();
+            ViewBag.ProductgroupIds = new List<ProductKitMap>();
             ViewBag.ProductPrices = new List<string>();
             ViewBag.Attributes = _productLookupService.GetAllValidProductAttributeValues().Select(patr => new
             {
@@ -170,6 +171,7 @@ namespace WMS.Controllers
                 productMaster.DiscontDate = DateTime.Today.AddDays(15);
 
             ViewBag.ProductKitItems = new MultiSelectList(productMaster.ProductKitMap.Where(u => u.ProductKitType == ProductKitTypeEnum.Kit && u.IsDeleted != true).Select(pm => new { ProductId = pm.KitProductId, ProductName = pm.KitProductMaster.Name + "" + "(" + (pm.Quantity) + ")" }).ToList(), "ProductId", "ProductName", productMaster.ProductKitMap.Select(u => u.KitProductId).ToList());
+            ViewBag.ProductgroupIds= new MultiSelectList(productMaster.ProductKitMap.Where(u => u.ProductKitType == ProductKitTypeEnum.Grouped && u.IsDeleted != true).Select(pm => new { ProductId = pm.KitProductId, ProductName = pm.KitProductMaster.Name + "" + "(" + (pm.Quantity) + ")" }).ToList(), "ProductId", "ProductName", productMaster.ProductKitMap.Select(u => u.KitProductId).ToList());
 
             //ViewBag.ProductKitIds =string.Join(",",_productServices.GetAllProductInKitsByProductId(id.Value).Where(u=>u.ProductKitType==ProductKitTypeEnum.Kit).Select(a => a.KitProductId).Distinct().ToList());
 
@@ -586,11 +588,15 @@ namespace WMS.Controllers
                 return PartialView(_accountServices.GetProductAccountCodesById(Id.Value));
 
         }
-        public PartialViewResult _ProductKits(int? kitTypeId, int? ProductKitId)
+        public PartialViewResult _ProductKits(int? kitTypeId, int? ProductKitId,bool? Grouped=false)
         {
 
             ViewBag.kitType = kitTypeId;
-
+            ViewBag.grouped = Grouped;
+            if (Grouped==true)
+            {
+                ViewBag.groupedtype = new SelectList(_productLookupService.GetProductKitTypes(CurrentTenantId).ToList(), "Id", "Name");
+            }
             if (ProductKitId.HasValue)
             {
                 var productKit = _productServices.GetProductInKitsByKitId(ProductKitId ?? 0);
@@ -598,6 +604,7 @@ namespace WMS.Controllers
                 return PartialView(productKit);
 
             }
+
             return PartialView();
         }
 

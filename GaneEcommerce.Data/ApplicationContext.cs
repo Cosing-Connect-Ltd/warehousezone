@@ -92,6 +92,8 @@ namespace Ganedata.Core.Data
         public DbSet<Locations> Locations { get; set; }
         public DbSet<LocationGroup> LocationGroups { get; set; }
         public DbSet<LocationTypes> LocationTypes { get; set; }
+
+        public DbSet<ProductKitType> ProductKitTypes { get; set; }
         public DbSet<Order> Order { get; set; }
         public DbSet<OrderNotes> OrderNotes { get; set; }
         public DbSet<OrderDetail> OrderDetail { get; set; }
