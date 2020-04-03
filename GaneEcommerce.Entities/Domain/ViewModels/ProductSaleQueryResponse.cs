@@ -50,6 +50,8 @@ namespace Ganedata.Core.Entities.Domain
 
         public int? KitIds { get; set; }
 
+        public int? ProductkitType { get; set; }
+
     }
     public class RemoveRecipeItemRequest
     {

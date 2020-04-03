@@ -67,7 +67,7 @@ namespace Ganedata.Core.Services
 
         void SaveSelectedProductRecipeItems(int productId, List<RecipeProductItemRequest> recipeItems, int currentUserId);
         void SaveSelectedProductKitItems(int productId, RecipeProductItemRequest kitItems, int currentUserId, int tenantId);
-        void RemoveRecipeItemProduct(int productId, int recipeItemProductId,int kitType, int currentUserId);
+        void RemoveRecipeItemProduct(int KitProductId, int currentUserId);
         void UpdateRecipeItemProduct(int productId, int recipeItemProductId, decimal quantity, int currentUserId);
         void RemoveKitItemProduct(int productId, int kitItemProductId, int currentUserId);
         void UpdateKitItemProduct(int productId, int kitItemProductId, decimal quantity, int currentUserId);
@@ -123,6 +123,6 @@ namespace Ganedata.Core.Services
         IEnumerable<ProductMaster> GetAllProductProcessByPallet(int tenantId);
         string CreatePalletTracking(PalletTracking palletTracking, int NoOfLabels);
 
-        ProductKitMap SaveProductKit(int KitId, decimal Quantity,int ProductId,int userId);
+        ProductKitMap SaveProductKit(int KitId, decimal Quantity, int ProductId, int userId, int? ProductKitTypeId);
     }
 }

@@ -23,7 +23,13 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Quantity")]
         public decimal Quantity { get; set; }
 
+        public int? ProductKitTypeId { get; set; }
+
+
         public ProductKitTypeEnum ProductKitType { get; set; }
+
+        [ForeignKey("ProductKitTypeId")]
+        public ProductKitType ProductKitTypes { get; set; }
 
 
     }

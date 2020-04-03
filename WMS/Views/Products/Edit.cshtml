@@ -124,6 +124,10 @@
             {
                 <li><a href="#product-kit-items">Kit Items</a></li>
             }
+            @if (Model.GroupedProduct)
+            {
+                <li><a href="#product-group-items">Grouped Items</a></li>
+            }
         </ul>
         <div id="product-detail">
             <div class="col-md-6 pull-left">
@@ -218,14 +222,14 @@
                         @Html.LabelFor(model => model.ProductGroup, htmlAttributes: new { @class = "col-md-4 kitlabel" })
                         <div class="col-md-8">
                             <div class="col-11 p-0 mt-1 pull-left">
-                                @Html.ListBox("ProductGroupIds", new MultiSelectList(ViewBag.ProductgroupIds, "", ""), new { Multiple = "multiple", @class = "chosen-select", data_placeholder = "Choose Product Groups" })
+                                @Html.ListBox("ProductGroupIds", ViewBag.ProductgroupItems as MultiSelectList, new { Multiple = "multiple", @class = "chosen-select", data_placeholder = "Choose Product Groups" })
                             </div>
                             <div class="col-1 p-0 pull-left">
                                 <input type="button" onclick="ShowProductGroupPopUp();" id="ProdGroupAdd" class="btn btn-primary" value="+">
                             </div>
                         </div>
                         @*@Html.Action("_ProductKitCombobox", new { ProductId = Model.ProductId })
-            @Html.Hidden("ProductKit")*@
+                            @Html.Hidden("ProductKit")*@
 
 
                     </div>
@@ -498,15 +502,15 @@
                     @Html.LabelFor(m => m.BuyPrice, htmlAttributes: new { @class = "col-md-4" })
                     <div class="col-md-8">
                         @Html.DevExpress().SpinEditFor(m => m.BuyPrice,
-settings =>
-{
+    settings =>
+    {
     settings.Name = "BuyPrice";
     settings.ClientVisible = true;
     settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
     settings.ControlStyle.CssClass = "form-control";
     settings.Properties.ClientSideEvents.LostFocus = "suggestedPrice";
 
-}).GetHtml()
+    }).GetHtml()
                         @Html.ValidationMessageFor(model => model.BuyPrice)
                     </div>
                 </div>
@@ -521,15 +525,15 @@ settings =>
                     @Html.LabelFor(m => m.LandedCost, htmlAttributes: new { @class = "col-md-4" })
                     <div class="col-md-8" id="landed_Cost_Id">
                         @Html.DevExpress().SpinEditFor(m => m.LandedCost,
-settings =>
-{
+    settings =>
+    {
     settings.Name = "LandedCost";
     settings.ClientVisible = true;
     settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
     settings.ControlStyle.CssClass = "form-control";
     settings.Properties.ClientSideEvents.LostFocus = "suggestedPrice";
 
-}).GetHtml()
+    }).GetHtml()
                         @Html.ValidationMessageFor(model => model.LandedCost)
                     </div>
                 </div>
@@ -555,14 +559,14 @@ settings =>
                     @Html.LabelFor(m => m.SellPrice, htmlAttributes: new { @class = "col-md-4", @id = "sellingPrice" })
                     <div class="col-md-8">
                         @Html.DevExpress().SpinEditFor(m => m.SellPrice,
-settings =>
+    settings =>
     {
       settings.Name = "SellPrice";
       settings.ClientVisible = true;
       settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
       settings.ControlStyle.CssClass = "form-control";
 
-}).GetHtml()
+    }).GetHtml()
                         @Html.ValidationMessageFor(model => model.SellPrice)
                     </div>
                 </div>
@@ -849,6 +853,20 @@ settings =>
                     @Html.Action("_ProductKitItems", new { productId = Model.ProductId })
                 </div>
             </div>
+        }
+        @if (Model.GroupedProduct)
+        {
+            <div id="product-group-items">
+                <div class="col-md-12 p-0">
+                    <input type="button" class="btn btn-primary" value="Add Items" onclick="ProductKitPopUp(2);" />
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.Action("_ProductGroupedItems", new { productId = Model.ProductId })
+                </div>
+            </div>
+
+
+
         }
 
 

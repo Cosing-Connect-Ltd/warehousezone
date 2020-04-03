@@ -4,13 +4,14 @@ $(document).on('click', '#deleteBtn', function (e) {
     var selector = $('#modalDialog');
     var controller = $(this).data('controller');
     var controllerAction = $(this).attr('data-action');
+    var kitsvalue = $(this).attr('data-kitType');
     selector.modal('show');
     $title = $(this).data('title');
     $message = $(this).data('message');
     $datavalueid = $(this).data('valueid');
     selector.find('.modal-header h4').text($title);
     selector.find('.modal-body p').text($message);
-    selector.find('.modal-footer #deleteConfirm').attr('data-valueid', $datavalueid).attr('data-controller', controller).attr('data-action', controllerAction);
+    selector.find('.modal-footer #deleteConfirm').attr('data-valueid', $datavalueid).attr('data-controller', controller).attr('data-action', controllerAction).attr('data-kitType', kitsvalue);
 });
 
 //on delete
@@ -19,23 +20,17 @@ $(document).on('click', '#modalDialog .modal-footer #deleteConfirm', function (e
     $datavalueid = $(this).attr('data-valueid');
     var controller = $(this).attr('data-controller');
     var controllerAction = $(this).attr('data-action');
+    var kitsvalue = $(this).attr('data-kitType');
     var form = $('#_deleteForm');
     var token = $('input[name="__RequestVerificationToken"]', form).val();
     console.log('delete: ' + controller);
-    var kit = false;
     var model = { Id: $datavalueid, __RequestVerificationToken: token };
 
-    if (controllerAction == "RemoveRecipeItemProduct" || controllerAction == "RemoveKitItemProduct") {
+    if (controllerAction == "RemoveRecipeItemProduct" || controllerAction == "RemoveKitItemProduct" || controllerAction =="RemoveGroupedItemProduct") {
 
-        model = { Id: $(".productIds").val(), RecipeProductId: $(this).attr('data-valueid'), KitType: 3 }
-        if (controllerAction == "RemoveKitItemProduct") {
-            kit = true;
-            controllerAction = "RemoveRecipeItemProduct";
-            model = { Id: $(".productIds").val(), RecipeProductId: $(this).attr('data-valueid'), KitType: 1 }
-        }
-        else {
-            kit = false;
-        }
+        controllerAction = "RemoveRecipeItemProduct";
+        model = { Id: $(this).attr('data-valueid'), RecipeProductId: $(this).attr('data-valueid') }
+        
 
     }
 
@@ -43,7 +38,9 @@ $(document).on('click', '#modalDialog .modal-footer #deleteConfirm', function (e
         url: '/' + controller + '/' + (controllerAction == null ? "Delete" : controllerAction),
         data: model,
         method: 'POST',
-        success: function (response) {
+        success: function (response)
+        {
+            debugger;
             if (response.success) {
 
                 selector.modal('hide');
@@ -55,10 +52,14 @@ $(document).on('click', '#modalDialog .modal-footer #deleteConfirm', function (e
                 }
                 if (controllerAction == "RemoveRecipeItemProduct") {
                     var productid = $(".productIds").val();
-                    if (kit) {
+                    if (kitsvalue=="1") {
                         GetDevexControlByName(productid + "productKitItems").Refresh();
                     }
-                    else {
+                    else if (kitsvalue == "2")
+                    {
+                        GetDevexControlByName(productid + "productgroupedItems").Refresh();
+                    }
+                    else if (kitsvalue == "3") {
                         GetDevexControlByName(productid + "productRecipeItems").Refresh();
                     }
                 }

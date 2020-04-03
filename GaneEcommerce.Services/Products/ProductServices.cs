@@ -121,7 +121,7 @@ namespace Ganedata.Core.Services
             var product = _currentDbContext.ProductMaster.FirstOrDefault(a => a.ProductId == productId && a.IsDeleted != true);
             if (product != null)
             {
-                
+
                 product.ProductKitMap = _currentDbContext.ProductKitMaps.Where(m => m.ProductId == productId && m.IsDeleted != true).ToList();
             }
             return product;
@@ -138,7 +138,7 @@ namespace Ganedata.Core.Services
 
         public IEnumerable<ProductKitMap> GetAllProductInKitsByProductId(int productId)
         {
-            return _currentDbContext.ProductKitMaps.Where(a => a.ProductId == productId && a.IsDeleted != true)
+            return _currentDbContext.ProductKitMaps.Where(a => a.ProductId == productId && a.IsDeleted != true).Include(u=>u.ProductKitTypes)
                 .Distinct().ToList();
 
             //if (disProdIds.Count > 0)
@@ -169,7 +169,7 @@ namespace Ganedata.Core.Services
         public void SaveSelectedProductRecipeItems(int productId, List<RecipeProductItemRequest> recipeItems, int currentUserId)
         {
             var productMaster = GetProductMasterById(productId);
-            var recipeProducts = productMaster.ProductKitMap.Where(m => m.IsDeleted != true && m.ProductKitType==ProductKitTypeEnum.Recipe).Select(m => m.KitProductMaster).ToList();
+            var recipeProducts = productMaster.ProductKitMap.Where(m => m.IsDeleted != true && m.ProductKitType == ProductKitTypeEnum.Recipe).Select(m => m.KitProductMaster).ToList();
 
             var removedItems = recipeProducts.Where(m => !recipeItems.Select(x => x.ProductId).Contains(m.ProductId));
             foreach (var item in removedItems)
@@ -206,14 +206,17 @@ namespace Ganedata.Core.Services
         }
         public void SaveSelectedProductKitItems(int productId, RecipeProductItemRequest kitItems, int currentUserId, int tenantId)
         {
-            
-            var recipeProducts = _currentDbContext.ProductKitMaps.Where(m => m.IsDeleted != true && m.ProductKitType==(ProductKitTypeEnum)kitItems.KitType && m.KitProductId== kitItems.ProductId).ToList();
+
+            var recipeProducts = _currentDbContext.ProductKitMaps.Where(m => m.IsDeleted != true && m.ProductKitType == (ProductKitTypeEnum)kitItems.KitType && m.KitProductId == kitItems.ProductId).ToList();
             if (recipeProducts.Count > 0)
             {
                 foreach (var item in recipeProducts)
                 {
-                    item.Quantity = item.Quantity;
-
+                    item.Quantity = item.Quantity > 0 ? item.Quantity : 1;
+                    if (kitItems.ProductkitType.HasValue)
+                    {
+                        item.ProductKitTypeId = kitItems.ProductkitType;
+                    }
                     item.UpdatedBy = currentUserId;
                     item.DateUpdated = DateTime.UtcNow;
                     _currentDbContext.Entry(item).State = EntityState.Modified;
@@ -221,30 +224,35 @@ namespace Ganedata.Core.Services
             }
             else
             {
-                
-                
-                    var recipeItem = new ProductKitMap
-                    {
-                        ProductId = kitItems.ParentProductId,
-                        KitProductId = kitItems.ProductId,
-                        Quantity = kitItems.Quantity,
-                        TenantId = tenantId,
-                        CreatedBy = currentUserId,
-                        DateCreated = DateTime.UtcNow,
-                        ProductKitType = (ProductKitTypeEnum)kitItems.KitType,
-                        
-                    };
-                    _currentDbContext.Entry(recipeItem).State = EntityState.Added;
-                
+
+
+                var recipeItem = new ProductKitMap
+                {
+                    ProductId = kitItems.ParentProductId,
+                    KitProductId = kitItems.ProductId,
+                    Quantity = kitItems.Quantity > 0 ? kitItems.Quantity : 1,
+                    TenantId = tenantId,
+                    CreatedBy = currentUserId,
+                    DateCreated = DateTime.UtcNow,
+                    ProductKitType = (ProductKitTypeEnum)kitItems.KitType,
+
+
+                };
+                if (kitItems.ProductkitType.HasValue)
+                {
+                    recipeItem.ProductKitTypeId = kitItems.ProductkitType;
+                }
+                _currentDbContext.Entry(recipeItem).State = EntityState.Added;
+
             }
-           
+
 
             _currentDbContext.SaveChanges();
         }
 
-        public void RemoveRecipeItemProduct(int productId, int recipeItemProductId, int Kittype, int currentUserId)
+        public void RemoveRecipeItemProduct(int KitProductId, int currentUserId)
         {
-            var productRecipeItem = _currentDbContext.ProductKitMaps.FirstOrDefault(m => m.ProductId == productId && m.KitProductId == recipeItemProductId && m.IsDeleted != true && m.ProductKitType==(ProductKitTypeEnum)Kittype);
+            var productRecipeItem = _currentDbContext.ProductKitMaps.FirstOrDefault(m => m.Id == KitProductId && m.IsDeleted != true);
 
             if (productRecipeItem != null)
             {
@@ -705,7 +713,7 @@ namespace Ganedata.Core.Services
                 }
 
 
-                if (productMaster.GroupedProduct && productKitIds != null)
+                if (productMaster.GroupedProduct && (recipeProductItems != null || productKitIds != null))
                 {
                     var ToDelete = new List<int>();
                     ToDelete = _currentDbContext.ProductKitMaps.Where(x => x.ProductId == productMaster.ProductId && x.IsDeleted != true && x.ProductKitType == ProductKitTypeEnum.Kit)
@@ -740,7 +748,7 @@ namespace Ganedata.Core.Services
                     var ToAdd = new List<int>();
                     ToAdd = productKitIds
                         .Except(_currentDbContext.ProductKitMaps
-                            .Where(x => x.ProductId == productMaster.ProductId && x.IsDeleted != true)
+                            .Where(x => x.ProductId == productMaster.ProductId && x.IsDeleted != true && x.ProductKitType == ProductKitTypeEnum.Grouped)
                             .Select(x => x.KitProductId)
                             .ToList())
                         .ToList();
@@ -754,7 +762,8 @@ namespace Ganedata.Core.Services
                             ProductId = productMaster.ProductId,
                             TenantId = tenantId,
                             ProductKitType = productMaster.GroupedProduct ? ProductKitTypeEnum.Grouped : ProductKitTypeEnum.Kit,
-                            Quantity = 1
+                            Quantity = 1,
+                            ProductKitTypeId = recipeProductItems.FirstOrDefault(u => u.ParentProductId == productMaster.ProductId && u.ProductId == item)?.ProductkitType ?? 1
                         };
                         _currentDbContext.ProductKitMaps.Add(newItem);
                     }
@@ -795,7 +804,7 @@ namespace Ganedata.Core.Services
                     var ToAdd = new List<int>();
                     ToAdd = productKitIds
                         .Except(_currentDbContext.ProductKitMaps
-                            .Where(x => x.ProductId == productMaster.ProductId && x.IsDeleted != true)
+                            .Where(x => x.ProductId == productMaster.ProductId && x.IsDeleted != true && x.ProductKitType == ProductKitTypeEnum.Kit)
                             .Select(x => x.KitProductId)
                             .ToList())
                         .ToList();
@@ -809,7 +818,7 @@ namespace Ganedata.Core.Services
                             ProductId = productMaster.ProductId,
                             TenantId = tenantId,
                             ProductKitType = productMaster.GroupedProduct ? ProductKitTypeEnum.Grouped : ProductKitTypeEnum.Kit,
-                            Quantity = recipeProductItems.FirstOrDefault(u=>u.ParentProductId== productMaster.ProductId && u.ProductId== item)?.Quantity??1
+                            Quantity = recipeProductItems.FirstOrDefault(u => u.ParentProductId == productMaster.ProductId && u.ProductId == item)?.Quantity ?? 1
                         };
                         _currentDbContext.ProductKitMaps.Add(newItem);
                     }
@@ -885,7 +894,7 @@ namespace Ganedata.Core.Services
                     }
 
                 }
-                if (productKitIds != null && productMaster.GroupedProduct)
+                if ((recipeProductItems != null || productKitIds != null) && productMaster.GroupedProduct)
                 {
                     foreach (var item in productKitIds)
                     {
@@ -896,8 +905,10 @@ namespace Ganedata.Core.Services
                             ProductId = productMaster.ProductId,
                             KitProductId = item,
                             TenantId = tenantId,
-                            ProductKitType = productMaster.GroupedProduct ? ProductKitTypeEnum.Grouped : ProductKitTypeEnum.Kit
-                            
+                            ProductKitType = productMaster.GroupedProduct ? ProductKitTypeEnum.Grouped : ProductKitTypeEnum.Kit,
+                            Quantity = 1,
+                            ProductKitTypeId = recipeProductItems.FirstOrDefault(u => u.ProductId == item)?.ProductkitType ?? 1
+
                         };
 
                         _currentDbContext.ProductKitMaps.Add(pKit);
@@ -907,7 +918,7 @@ namespace Ganedata.Core.Services
                 }
                 else if (productMaster.Kit && (recipeProductItems != null || productKitIds != null))
                 {
-                   
+
                     foreach (var item in productKitIds)
                     {
                         var newItem = new ProductKitMap()
@@ -1419,7 +1430,7 @@ namespace Ganedata.Core.Services
         }
 
         public ProductMaster GetProductMasterByProductCode(string productCode, int tenantId)
-         {
+        {
             return _currentDbContext.ProductMaster.FirstOrDefault(e => e.TenantId == tenantId && e.IsDeleted != true && (e.SKUCode.Equals(productCode, StringComparison.CurrentCultureIgnoreCase)
             || e.BarCode.Equals(productCode, StringComparison.CurrentCultureIgnoreCase) || e.ManufacturerPartNo.Equals(productCode, StringComparison.CurrentCultureIgnoreCase)));
         }
@@ -1871,17 +1882,21 @@ namespace Ganedata.Core.Services
 
         }
 
-        public ProductKitMap SaveProductKit(int kitId, decimal quantity, int ProductId,int UserId)
+        public ProductKitMap SaveProductKit(int kitId, decimal quantity, int ProductId, int UserId, int? ProductKitTypeId)
         {
             var productKit = _currentDbContext.ProductKitMaps.FirstOrDefault(u => u.Id == kitId);
             if (productKit != null)
             {
                 productKit.KitProductId = ProductId;
                 productKit.Quantity = quantity;
+                if (ProductKitTypeId.HasValue)
+                {
+                    productKit.ProductKitTypeId = ProductKitTypeId;
+                }
                 productKit.UpdateCreatedInfo(UserId);
-                _currentDbContext.Entry(productKit).State=EntityState.Modified;
+                _currentDbContext.Entry(productKit).State = EntityState.Modified;
             }
-           
+
             _currentDbContext.SaveChanges();
             return productKit;
 

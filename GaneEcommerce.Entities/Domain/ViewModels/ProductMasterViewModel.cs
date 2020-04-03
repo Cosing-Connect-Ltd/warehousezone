@@ -16,6 +16,8 @@ namespace Ganedata.Core.Entities.Domain
 
         public int ProductKitId { get; set; }
 
+        public string ProductKitType { get; set; }
+
     }
 
     [Serializable]

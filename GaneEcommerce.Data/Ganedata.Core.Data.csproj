@@ -751,6 +751,10 @@
     <Compile Include="Migrations\202004021409511_productkitTypes-table-added.designer.cs">
       <DependentUpon>202004021409511_productkitTypes-table-added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004021636461_relationship-kitMap-added.cs" />
+    <Compile Include="Migrations\202004021636461_relationship-kitMap-added.designer.cs">
+      <DependentUpon>202004021636461_relationship-kitMap-added.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1634,6 +1638,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004021409511_productkitTypes-table-added.resx">
       <DependentUpon>202004021409511_productkitTypes-table-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004021636461_relationship-kitMap-added.resx">
+      <DependentUpon>202004021636461_relationship-kitMap-added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

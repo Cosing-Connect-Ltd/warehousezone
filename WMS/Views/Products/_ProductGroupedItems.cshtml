@@ -26,6 +26,8 @@
 
         settings.Columns.Add("SKUCode", "Item Code").Width = Unit.Percentage(15);
 
+        settings.Columns.Add("ProductKitType", "Product Kit Type").Width = Unit.Percentage(15);
+
         settings.Columns.Add(column =>
 {
     column.Width = Unit.Percentage(10);
@@ -45,8 +47,8 @@
                 var parentProductId = (int)DataBinder.Eval(m.DataItem, "ParentProductId");
                 var name = DataBinder.Eval(m.DataItem, "Name").ToString();
                 var kitId = (int)DataBinder.Eval(m.DataItem, "ProductKitId");
-                var function = string.Format("EditKitProduct({0},{1})", kitId, 1);
-                ViewContext.Writer.Write("<a onclick=" + function + "><i class='btn fa fa-pencil'></i></a><a class='btn fa fa-trash' role='button' data-kitType=" + ((int)ProductKitTypeEnum.Kit) + " data-valueid='" + kitId + "' data-action='RemoveKitItemProduct' title='Delete Kit Item' data-controller='Products' id='deleteBtn' data-title='Delete Kit Product' data-message='This cannot be reversed, are you sure you want to remove this Kit item?' data-toggle='modal' data-target='#confirm-delete'></a>");
+                var function = string.Format("EditKitProduct({0},{1})", kitId, 2);
+                ViewContext.Writer.Write("<a onclick=" + function + "><i class='btn fa fa-pencil'></i></a><a class='btn fa fa-trash' role='button' data-kitType=" + ((int)ProductKitTypeEnum.Grouped) + "   data-valueid='" + kitId + "' data-action='RemoveGroupedItemProduct' title='Delete Grouped Item' data-controller='Products' id='deleteBtn' data-title='Delete Kit Product' data-message='This cannot be reversed, are you sure you want to remove this Kit item?' data-toggle='modal' data-target='#confirm-delete'></a>");
 
 
             });
