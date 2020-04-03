@@ -170,8 +170,8 @@ namespace WMS.Controllers
             if (!productMaster.Discontinued)
                 productMaster.DiscontDate = DateTime.Today.AddDays(15);
 
-            ViewBag.ProductKitItems = new MultiSelectList(productMaster.ProductKitMap.Where(u => u.ProductKitType == ProductKitTypeEnum.Kit && u.IsDeleted != true).Select(pm => new { ProductId = pm.KitProductId, ProductName = pm.KitProductMaster.Name + "" + "(" + (pm.Quantity) + ")" }).ToList(), "ProductId", "ProductName", productMaster.ProductKitMap.Select(u => u.KitProductId).ToList());
-            ViewBag.ProductgroupIds= new MultiSelectList(productMaster.ProductKitMap.Where(u => u.ProductKitType == ProductKitTypeEnum.Grouped && u.IsDeleted != true).Select(pm => new { ProductId = pm.KitProductId, ProductName = pm.KitProductMaster.Name + "" + "(" + (pm.Quantity) + ")" }).ToList(), "ProductId", "ProductName", productMaster.ProductKitMap.Select(u => u.KitProductId).ToList());
+            ViewBag.ProductKitItems = new MultiSelectList(productMaster.ProductKitMap.Where(u => u.ProductKitType == ProductKitTypeEnum.Kit && u.IsDeleted != true).Select(pm => new { ProductId = pm.KitProductId, ProductName = pm.KitProductMaster.Name + "" + "(" + (pm.Quantity) + ")" }).ToList(), "ProductId", "ProductName", productMaster.ProductKitMap.Where(u => u.ProductKitType == ProductKitTypeEnum.Kit && u.IsDeleted != true).Select(u => u.KitProductId).ToList());
+            ViewBag.ProductgroupItems = new MultiSelectList(productMaster.ProductKitMap.Where(u => u.ProductKitType == ProductKitTypeEnum.Grouped && u.IsDeleted != true).Select(pm => new { ProductId = pm.KitProductId, ProductName = pm.KitProductMaster.Name }).ToList(), "ProductId", "ProductName", productMaster.ProductKitMap.Where(u => u.ProductKitType == ProductKitTypeEnum.Grouped && u.IsDeleted != true).Select(u => u.KitProductId).ToList());
 
             //ViewBag.ProductKitIds =string.Join(",",_productServices.GetAllProductInKitsByProductId(id.Value).Where(u=>u.ProductKitType==ProductKitTypeEnum.Kit).Select(a => a.KitProductId).Distinct().ToList());
 
@@ -224,7 +224,7 @@ namespace WMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(ProductMaster productMaster, string ProductKit, IEnumerable<DevExpress.Web.UploadedFile> UploadControl, List<string> ProductAccountCodeIds, List<int> ProductAttributesIds, List<int> ProductLocationIds, List<int> ProductKitIds, string back, List<int> SiteIds)
+        public ActionResult Create(ProductMaster productMaster, List<int> ProductGroupIds, IEnumerable<DevExpress.Web.UploadedFile> UploadControl, List<string> ProductAccountCodeIds, List<int> ProductAttributesIds, List<int> ProductLocationIds, List<int> ProductKitIds, string back, List<int> SiteIds)
         {
 
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
@@ -235,21 +235,17 @@ namespace WMS.Controllers
 
                 try
                 {
-                    if (!string.IsNullOrEmpty(ProductKit))
+                    if (ProductGroupIds != null)
                     {
-                        if (!string.IsNullOrEmpty(ProductKit) && productMaster.GroupedProduct)
-                        {
-                            ProductKitIds = new List<int>();
-                            ProductKitIds = ProductKit.Split(',').Select(Int32.Parse).ToList();
-                        }
-
+                        ProductKitIds = new List<int>();
+                        ProductKitIds = ProductGroupIds;
                     }
                     if (!_productServices.IsCodeAvailableForUse(productMaster.SKUCode, CurrentTenantId, EnumProductCodeType.SkuCode))
                     {
                         throw new Exception("Product with same code already exist");
                     }
 
-                    productMaster = _productServices.SaveProduct(productMaster, ProductAccountCodeIds, ProductAttributesIds, ProductLocationIds, ProductKitIds, CurrentUserId, CurrentTenantId, SiteIds, (productMaster.Kit ? (List<RecipeProductItemRequest>)Session["ProductKitModelItems"] : null));
+                    productMaster = _productServices.SaveProduct(productMaster, ProductAccountCodeIds, ProductAttributesIds, ProductLocationIds, ProductKitIds, CurrentUserId, CurrentTenantId, SiteIds, (List<RecipeProductItemRequest>)Session["ProductKitModelItems"]);
 
                     var files = Session["files"] as List<KeyValuePair<string, UploadedFileViewModel>>;
                     foreach (var file in files)
@@ -303,19 +299,19 @@ namespace WMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(ProductMaster productMaster, string ProductKit, List<string> ProductAccountCodeIds, List<int> ProductAttributesIds, List<int> ProductLocationIds, List<int> ProductKitIds, string back, List<int> SiteIds)
+        public ActionResult Edit(ProductMaster productMaster, List<int> ProductGroupIds, List<string> ProductAccountCodeIds, List<int> ProductAttributesIds, List<int> ProductLocationIds, List<int> ProductKitIds, string back, List<int> SiteIds)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
             try
             {
-                if (!string.IsNullOrEmpty(ProductKit))
+                if (ProductGroupIds != null && productMaster.GroupedProduct)
                 {
                     ProductKitIds = new List<int>();
-                    ProductKitIds = ProductKit.Split(',').Select(Int32.Parse).ToList();
+                    ProductKitIds = ProductGroupIds;
                 }
 
-                _productServices.SaveProduct(productMaster, ProductAccountCodeIds, ProductAttributesIds, ProductLocationIds, ProductKitIds, CurrentUserId, CurrentTenantId, SiteIds, (productMaster.Kit ? (List<RecipeProductItemRequest>)Session["ProductKitModelItems"] : null));
+                _productServices.SaveProduct(productMaster, ProductAccountCodeIds, ProductAttributesIds, ProductLocationIds, ProductKitIds, CurrentUserId, CurrentTenantId, SiteIds, (List<RecipeProductItemRequest>)Session["ProductKitModelItems"]);
             }
             catch (Exception ex)
             {
@@ -588,12 +584,13 @@ namespace WMS.Controllers
                 return PartialView(_accountServices.GetProductAccountCodesById(Id.Value));
 
         }
-        public PartialViewResult _ProductKits(int? kitTypeId, int? ProductKitId,bool? Grouped=false)
+        public PartialViewResult _ProductKits(int? kitTypeId, int? ProductKitId, bool? Grouped = false)
         {
-
+            if (kitTypeId.HasValue && kitTypeId == 2) { Grouped = true; }
             ViewBag.kitType = kitTypeId;
             ViewBag.grouped = Grouped;
-            if (Grouped==true)
+            
+            if (Grouped == true && !ProductKitId.HasValue)
             {
                 ViewBag.groupedtype = new SelectList(_productLookupService.GetProductKitTypes(CurrentTenantId).ToList(), "Id", "Name");
             }
@@ -601,6 +598,10 @@ namespace WMS.Controllers
             {
                 var productKit = _productServices.GetProductInKitsByKitId(ProductKitId ?? 0);
                 ViewBag.productId = productKit.KitProductId;
+                if (Grouped == true && ProductKitId.HasValue)
+                {
+                    ViewBag.groupedtype = new SelectList(_productLookupService.GetProductKitTypes(CurrentTenantId).ToList(), "Id", "Name", productKit.ProductKitTypeId);
+                }
                 return PartialView(productKit);
 
             }
@@ -610,6 +611,7 @@ namespace WMS.Controllers
 
         public JsonResult AddProductKitItemsWithQuantity(RecipeProductItemRequest model)
         {
+
             if (Session["ProductKitModelItems"] == null)
             {
                 var recipeItems = new List<RecipeProductItemRequest> { model };
@@ -620,6 +622,11 @@ namespace WMS.Controllers
             else
             {
                 var productList = (List<RecipeProductItemRequest>)Session["ProductKitModelItems"];
+                var checkDataForAlternativeTypes = productList.Where(u => u.KitType != model.KitType).ToList();
+                if (checkDataForAlternativeTypes.Count > 0)
+                {
+                    Session["ProductKitModelItems"] = null;
+                }
                 var existingProduct = productList.FirstOrDefault(m => m.ProductId == model.ProductId);
                 if (existingProduct == null)
                 {
@@ -634,11 +641,12 @@ namespace WMS.Controllers
                 return Json(model, JsonRequestBehavior.AllowGet);
             }
 
+
         }
 
-        public JsonResult SaveEditKitProduct(int KitId, decimal Quantity, int ProductId)
+        public JsonResult SaveEditKitProduct(int KitId, decimal? Quantity, int ProductId ,int? ProductKitTypeId)
         {
-            _productServices.SaveProductKit(KitId, Quantity, ProductId, CurrentUserId);
+            _productServices.SaveProductKit(KitId, (Quantity??0), ProductId, CurrentUserId, ProductKitTypeId);
             return Json(true, JsonRequestBehavior.AllowGet);
 
         }
@@ -1068,6 +1076,22 @@ namespace WMS.Controllers
 
             return PartialView(product.AllSelectedSubItems);
         }
+        public ActionResult _ProductGroupedItems(int productId, bool? selectionMode)
+        {
+            var recipeGridname = productId + "productgroupedItems" + (selectionMode == true ? "-select" : "");
+            ViewBag.settingsName = recipeGridname;
+
+            ViewBag.routeValues = new { Controller = "Products", Action = "_ProductGroupedItems", productId, selectionMode };
+
+            if (selectionMode == true)
+            {
+                ViewBag.SelectionMode = true;
+            }
+
+            var product = GetKitProductModelById(productId, ProductKitTypeEnum.Grouped);
+
+            return PartialView(product.AllSelectedSubItems);
+        }
 
         public ActionResult _ProductRecipeSelectedItems(int productId)
         {
@@ -1143,9 +1167,9 @@ namespace WMS.Controllers
 
         private ProductMasterViewModel GetKitProductModelById(int productId, ProductKitTypeEnum productKitType)
         {
-            var product = _productServices.GetProductMasterById(productId);
+            var product = _productServices.GetAllProductInKitsByProductId(productId).Where(m => m.IsDeleted != true && m.ProductKitType == productKitType).ToList();
             var productModel = new ProductMasterViewModel();
-            productModel.AllSelectedSubItems = product.ProductKitItems.Where(m => m.IsDeleted != true && m.ProductKitType == productKitType).
+            productModel.AllSelectedSubItems = product.
                 Select(r => new ProductRecipeItemViewModel
                 {
                     Name = r.KitProductMaster.Name,
@@ -1154,7 +1178,8 @@ namespace WMS.Controllers
                     BarCode = r.KitProductMaster.BarCode,
                     Quantity = r.Quantity,
                     ParentProductId = productId,
-                    ProductKitId = r.Id
+                    ProductKitId = r.Id,
+                    ProductKitType=r.ProductKitTypes==null?"": r.ProductKitTypes.Name
                 }).ToList();
 
 
@@ -1269,7 +1294,7 @@ namespace WMS.Controllers
 
         public JsonResult RemoveRecipeItemProduct(RemoveRecipeItemRequest request)
         {
-            _productServices.RemoveRecipeItemProduct(request.Id, request.RecipeProductId, (request.KitType ?? 0), CurrentUserId);
+            _productServices.RemoveRecipeItemProduct(request.Id, CurrentUserId);
 
             return Json(new { success = true }, JsonRequestBehavior.AllowGet);
         }

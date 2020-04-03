@@ -582,19 +582,29 @@ function ProductKitChanges(s, e) {
 
 }
 function AddKitProduct(kitTypes, tab) {
-
+    debugger;
     var qty = $("#Quantity").val();
     var parentProductId = $(".productIds").val();
     var productId = prdid.GetValue();
     var productName = prdid.GetText();
-    if (qty <= 0) {
-        $("#Quantity").css({ "background-color": "#f9baba" });
-        setTimeout(function () {
-            $("#Quantity").removeAttr("style");
-        }, 400);
-        return false;
+    var ProductkitType = $("#ProductKitTypeId").val();
+    if (kitTypes == 2) {
+        if (ProductkitType == "" || ProductkitType == undefined || ProductkitType == null) {
+            alert("Please select product kit types")
+            return false;
+        }
+
     }
-    data = { ParentProductId: parentProductId, ProductId: productId, ProductName: productName, Quantity: qty, KitType: kitTypes };
+    else {
+        if (qty <= 0) {
+            $("#Quantity").css({ "background-color": "#f9baba" });
+            setTimeout(function () {
+                $("#Quantity").removeAttr("style");
+            }, 400);
+            return false;
+        }
+    }
+    data = { ParentProductId: parentProductId, ProductId: productId, ProductName: productName, Quantity: qty, KitType: kitTypes, ProductkitType: ProductkitType };
     var url = "/Products/AddProductKitItemsWithQuantity";
     if (tab) {
         url = "/Products/ConfirmAddedKitProducts";
@@ -604,6 +614,9 @@ function AddKitProduct(kitTypes, tab) {
         if (tab) {
             if (kitTypes == 1) {
                 GetDevexControlByName(parentProductId + "productKitItems").Refresh();
+            }
+            if (kitTypes == 2) {
+                GetDevexControlByName(parentProductId + "productgroupedItems").Refresh();
             }
             else if (kitTypes == 3) {
                 GetDevexControlByName(parentProductId + "productRecipeItems").Refresh();
@@ -619,6 +632,30 @@ function AddKitProduct(kitTypes, tab) {
 
     });
 }
+function AddKitGroup() {
+    var ProductkitType = $("#ProductKitTypeId").val();
+    var parentProductId = $(".productIds").val();
+    var productId = prdid.GetValue();
+    var productName = prdid.GetText();
+    var qty = $("#Quantity").val();
+    if (ProductkitType <= 0 || ProductkitType == null || ProductkitType == "" || ProductkitType == undefined) {
+        alert("Product Kit is required.");
+        return false;
+    }
+    data = { ParentProductId: parentProductId, ProductId: productId, ProductName: productName, Quantity: qty, ProductkitType: ProductkitType };
+    var url = "/Products/AddProductKitItemsWithQuantity";
+    $.post(url, data, function (result) {
+        pcModalKitProduct.Hide();
+
+
+        $('#ProductGroupIds').append('<option selected value=' + result.ProductId + '>' + result.ProductName + '</option>');
+        $("#ProductGroupIds").trigger("chosen:updated");
+
+
+
+    });
+
+}
 function EditKitProductView() {
     debugger;
     var qty = $("#Quantity").val();
@@ -626,20 +663,33 @@ function EditKitProductView() {
     var kitTypes = $("#ProductKitType").val();
     var productId = prdid.GetValue();
     var parentProductId = $(".parentProductId").val();
-    if (qty <= 0) {
-        $("#Quantity").css({ "background-color": "#f9baba" });
-        setTimeout(function () {
-            $("#Quantity").removeAttr("style");
-        }, 400);
-        return false;
+    var productKitTypeIds = $("#ProductKitTypeId").val();
+    if (kitTypes == "Grouped") {
+        if (productKitTypeIds == "" || productKitTypeIds == undefined || productKitTypeIds == null) {
+            alert("Please select product kit types")
+            return false;
+        }
+
     }
-    data = { KitId: kitId, Quantity: qty, ProductId: productId };
+    else {
+        if (qty <= 0) {
+            $("#Quantity").css({ "background-color": "#f9baba" });
+            setTimeout(function () {
+                $("#Quantity").removeAttr("style");
+            }, 400);
+            return false;
+        }
+    }
+    data = { KitId: kitId, Quantity: qty, ProductId: productId, productKitTypeId: productKitTypeIds };
     var url = "/Products/SaveEditKitProduct";
 
     $.post(url, data, function (result) {
         pcModalKitProduct.Hide();
         if (kitTypes == "Kit") {
             GetDevexControlByName(parentProductId + "productKitItems").Refresh();
+        }
+        else if (kitTypes == "Grouped") {
+            GetDevexControlByName(parentProductId + "productgroupedItems").Refresh();
         }
         else if (kitTypes == "Recipe") {
             GetDevexControlByName(parentProductId + "productRecipeItems").Refresh();
@@ -652,10 +702,6 @@ function EditKitProductView() {
     });
 
 }
-
-
-
-
 var producttypekit;
 var ProductKitId;
 var grouped = false;
@@ -664,7 +710,7 @@ function ProductKitPopUpCallBack(s, e) {
     e.customArgs["kitTypeId"] = producttypekit;
     e.customArgs["ProductKitId"] = ProductKitId;
     e.customArgs["Grouped"] = grouped;
-    
+
 }
 function ProductKitPopUp(isEdit) {
     debugger;

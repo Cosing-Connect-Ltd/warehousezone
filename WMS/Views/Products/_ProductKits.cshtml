@@ -50,11 +50,12 @@
         <div class="col-md-offset-2 col-md-10 bottom-right-popup">
             @if (ViewBag.kitType == null)
             {
-                <input type="button" onclick="AddKitProduct()" value="Save" class="btn btn-primary" />
+                <input type="button" onclick="@(ViewBag.grouped==true?"AddKitGroup()":"AddKitProduct()")" value="Save" class="btn btn-primary" />
             }
             else
             {
-                <input type="button" onclick="AddKitProduct(@ViewBag.kitType,@(ViewBag.kitType == null ? false : true))" value="Save" class="btn btn-primary" />
+                var Status = ViewBag.kitType == null ? "false" : "true";
+                <input type="button" onclick="AddKitProduct(@ViewBag.kitType,@Status)" value="Save" class="btn btn-primary" />
             }
             <input type="button" onclick="pcModalKitProduct.Hide()" value="Cancel" class="btn btn-default" />
         </div>
