@@ -137,6 +137,8 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
             var product = _productServices.GetProductMasterByProductCode(sku, CurrentTenantId);
             product.SellPrice = Math.Round((product.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0), 2);
+            var productTabs = product.ProductKitItems.Where(u => u.ProductKitType == ProductKitTypeEnum.Grouped && u.IsDeleted != true).Select(u => u.ProductKitTypeId).ToList();
+            ViewBag.GroupedTabs = _productlookupServices.GetProductKitTypes(productTabs);
             return View(product);
         }
         public ActionResult KitProductDetail(string sku)

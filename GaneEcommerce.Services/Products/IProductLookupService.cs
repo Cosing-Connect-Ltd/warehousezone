@@ -60,6 +60,8 @@ namespace Ganedata.Core.Services
         IEnumerable<ProductKitType> GetProductKitTypes(int TenantId);
         IQueryable<ProductMaster> FilterProduct(IQueryable<ProductMaster> productMaster, string filterstring);
 
+        IEnumerable<ProductKitType> GetProductKitTypes(List<int?> kitIds);
+
         Dictionary<string, List<ProductAttributeValues>> GetAllValidProductAttributeValuesByProductIds(IQueryable<ProductMaster> product);
 
       

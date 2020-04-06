@@ -47,6 +47,11 @@ namespace Ganedata.Core.Services
                 .Where(a => a.ProductId == productId && a.IsDeleted != true).Select(a => a.ProductAttributeValues);
         }
 
+        public IEnumerable<ProductKitType> GetProductKitTypes(List<int?> kitIds)
+        {
+           return  _currentDbContext.ProductKitTypes.Where(u => kitIds.Contains(u.Id)).Distinct().ToList();
+        }
+
         public IEnumerable<ProductKitType> GetProductKitTypes(int TenantId)
         {
            return _currentDbContext.ProductKitTypes.Where(u => u.TenentId == TenantId && u.IsDeleted!=true);
