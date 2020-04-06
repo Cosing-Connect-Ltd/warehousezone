@@ -1,7 +1,9 @@
 ﻿@using Ganedata.Core.Entities.Domain
+@using System.Configuration
 @model ProductMaster
 @{
-    ViewBag.Title = Model.Name +" | "+ ViewBag.SiteDescription;
+    ViewBag.Title = Model.Name + " | " + ViewBag.SiteDescription;
+    var Images = ConfigurationManager.AppSettings["ImageFormats"].Split(new char[] { ',' });
 }
 <div id="product-product" class="container">
     <div class="row">
@@ -40,10 +42,15 @@
                                 <div id="gallery_01" class="owl-carousel">
                                     @foreach (var item in Model.ProductFiles)
                                     {
+                                        var extension = Path.GetExtension(item.FilePath);
+
                                         <div class="col-xs-12">
-                                            <a data-zoom-image="@(!string.IsNullOrEmpty(item.FilePath)?ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" data-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" href="@(!string.IsNullOrEmpty(item.FilePath)?ViewBag.BaseFilePath + item.FilePath:ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")">
-                                                <img src="@(!string.IsNullOrEmpty(item.FilePath)?ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive center-block" alt="additional image">
-                                            </a>
+                                            @if (Images.Contains(extension))
+                                            {
+                                                <a data-zoom-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" data-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" href="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")">
+                                                    <img src="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive center-block" alt="additional image">
+                                                </a>
+                                            }
                                         </div>
                                     }
 
