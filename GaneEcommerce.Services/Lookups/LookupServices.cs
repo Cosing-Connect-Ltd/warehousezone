@@ -84,6 +84,12 @@ namespace Ganedata.Core.Services
             }
             return _currentDbContext.ProductCategories.Where(m => m.IsDeleted != true && m.TenantId == tenantId && (!ProductGroupId.HasValue || m.ProductGroupId == ProductGroupId));
         }
+
+        public IEnumerable<ProductKitType> GetAllValidProductKitType(int tenantId)
+        {
+            return _currentDbContext.ProductKitTypes.Where(m => m.IsDeleted != true && m.TenentId == tenantId);
+        }
+
         public IEnumerable<PalletType> GetAllValidPalletTypes(int tenantId)
         {
             return _currentDbContext.PalletTypes.Where(m => m.IsDeleted != true && m.TenentId == tenantId);

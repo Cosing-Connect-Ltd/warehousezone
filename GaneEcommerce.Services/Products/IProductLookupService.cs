@@ -58,6 +58,11 @@ namespace Ganedata.Core.Services
         void DeleteProductCategory(int id, int userId);
         List<WastageReason> GetAllWastageReasons();
         IEnumerable<ProductKitType> GetProductKitTypes(int TenantId);
+        ProductKitType GetProductKitTypeById(int productKitTypeId);
+        ProductKitType CreateProductKitType(ProductKitType model, int userId, int tenantId);
+        ProductKitType UpdateProductKitType(ProductKitType model, int userId, int tenantId);
+        void DeleteProductKitType(int productKitTypeId, int userId);
+        ProductKitType GetProductKitTypeByName(string productKitTypeName);
         IQueryable<ProductMaster> FilterProduct(IQueryable<ProductMaster> productMaster, string filterstring);
 
         IEnumerable<ProductKitType> GetProductKitTypes(List<int?> kitIds);

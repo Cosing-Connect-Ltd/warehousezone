@@ -56,6 +56,12 @@ namespace Ganedata.Core.Services
         {
            return _currentDbContext.ProductKitTypes.Where(u => u.TenentId == TenantId && u.IsDeleted!=true);
         }
+
+        public ProductKitType GetProductKitTypeById(int productKitTypeId)
+        {
+            return _currentDbContext.ProductKitTypes.Find(productKitTypeId);
+        }
+
         public Dictionary<string, List<ProductAttributeValues>> GetAllValidProductAttributeValuesByProductIds(IQueryable<ProductMaster> product)
         {
             var AttributeValueId = (from prd in product
@@ -251,6 +257,7 @@ namespace Ganedata.Core.Services
     {
         return _currentDbContext.ProductCategories.Find(productCategoryId);
     }
+
     public PalletType GetPalletTypeById(int palletTypeId)
     {
         return _currentDbContext.PalletTypes.Find(palletTypeId);
@@ -265,7 +272,12 @@ namespace Ganedata.Core.Services
     {
         return _currentDbContext.ProductCategories.FirstOrDefault(p => p.ProductCategoryName.Equals(categoryName) && p.IsDeleted != true);
     }
-    public PalletType GetPalletTypeByName(string palletType)
+
+    public ProductKitType GetProductKitTypeByName(string productKitTypeName)
+    {
+        return _currentDbContext.ProductKitTypes.FirstOrDefault(p => p.Name.Equals(productKitTypeName) && p.IsDeleted != true);
+    }
+        public PalletType GetPalletTypeByName(string palletType)
     {
         return _currentDbContext.PalletTypes.FirstOrDefault(p => p.Description.Equals(palletType) && p.IsDeleted != true);
     }
@@ -602,7 +614,64 @@ namespace Ganedata.Core.Services
         entry.Property(e => e.UpdatedBy).IsModified = true;
         _currentDbContext.SaveChanges();
     }
-    public List<WastageReason> GetAllWastageReasons()
+
+        public ProductKitType CreateProductKitType(ProductKitType model, int userId, int tenantId)
+        {
+            var pctg = _currentDbContext.ProductKitTypes.FirstOrDefault(a => a.Name.Equals(model.Name, StringComparison.InvariantCultureIgnoreCase) && a.IsDeleted != true);
+            if (pctg != null)
+                throw new Exception("Product Kit Type already exists");
+
+            var pKitType = new ProductKitType()
+            {
+                CreatedBy = userId,
+                DateCreated = DateTime.UtcNow,
+                DateUpdated = DateTime.UtcNow,
+                Name = model.Name,
+                TenentId = tenantId,
+                UpdatedBy = userId
+            };
+            _currentDbContext.ProductKitTypes.Add(pKitType);
+            _currentDbContext.SaveChanges();
+            return pKitType;
+        }
+
+        public ProductKitType UpdateProductKitType(ProductKitType model, int userId, int tenantId)
+        {
+            var productKitType = _currentDbContext.ProductKitTypes.FirstOrDefault(u => u.Id == model.Id);
+            if (productKitType != null)
+            {
+                productKitType.Name = model.Name.Trim();
+                productKitType.TenentId = model.TenentId;
+                productKitType.SortOrder = model.SortOrder;
+                productKitType.DateUpdated = DateTime.UtcNow;
+                productKitType.UpdatedBy = userId;
+                _currentDbContext.ProductKitTypes.Attach(productKitType);
+                var entry = _currentDbContext.Entry(productKitType);
+                entry.Property(e => e.Name).IsModified = true;
+                entry.Property(e => e.DateUpdated).IsModified = true;
+                entry.Property(e => e.UpdatedBy).IsModified = true;
+                _currentDbContext.SaveChanges();
+            }
+            return model;
+        }
+
+        public void DeleteProductKitType(int productKitTypeId, int userId)
+        {
+            ProductKitType productKitType = GetProductKitTypeById(productKitTypeId);
+
+            productKitType.IsDeleted = true;
+            productKitType.DateUpdated = DateTime.UtcNow;
+            productKitType.UpdatedBy = userId;
+            _currentDbContext.ProductKitTypes.Attach(productKitType);
+
+            var entry = _currentDbContext.Entry(productKitType);
+            entry.Property(e => e.IsDeleted).IsModified = true;
+            entry.Property(e => e.DateUpdated).IsModified = true;
+            entry.Property(e => e.UpdatedBy).IsModified = true;
+            _currentDbContext.SaveChanges();
+        }
+
+        public List<WastageReason> GetAllWastageReasons()
     {
         return _currentDbContext.WastageReasons.ToList();
     }

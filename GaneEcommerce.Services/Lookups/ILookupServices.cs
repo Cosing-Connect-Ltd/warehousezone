@@ -84,5 +84,7 @@ namespace Ganedata.Core.Services
        ProductManufacturer SaveAndUpdateProductManufacturer(ProductManufacturer productManufacturer,int UserId);
 
         IEnumerable<ProductCategory> GetAllValidProductCategories(int tenantId, int numberofproduct = 0, int? ProductGroupId = null);
+
+        IEnumerable<ProductKitType> GetAllValidProductKitType(int tenantId);
     }
 }
