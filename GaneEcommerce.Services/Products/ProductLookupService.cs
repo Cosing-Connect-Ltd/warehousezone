@@ -88,14 +88,18 @@ namespace Ganedata.Core.Services
         return _currentDbContext.ProductMaster
             .Where(a => ((!productGroupId.HasValue || a.ProductGroupId == productGroupId) && (!departmentId.HasValue || a.DepartmentId == departmentId)) && a.IsDeleted != true).Include(u => u.ProductManufacturer);
     }
-    public IQueryable<ProductMaster> GetAllValidProductGroupAndDeptByName(string productGroup, string department = "", string SubCategory = "", string manufacturerName = "")
+    public IQueryable<ProductMaster> GetAllValidProductGroupAndDeptByName(string productGroup, string department = "", string SubCategory = "", string manufacturerName = "",string ProductName="")
     {
         int? productGroupId = _currentDbContext.ProductGroups.FirstOrDefault(u => u.ProductGroup == productGroup && u.IsDeleted != true)?.ProductGroupId;
         int? departmentId = _currentDbContext.TenantDepartments.FirstOrDefault(u => u.DepartmentName == department && u.IsDeleted != true)?.DepartmentId;
         int? subCategoryId = _currentDbContext.ProductCategories.FirstOrDefault(u => u.ProductCategoryName == SubCategory && u.IsDeleted != true)?.ProductCategoryId;
-            int? manufacturerId = _currentDbContext.ProductManufacturers.FirstOrDefault(u => u.Name == manufacturerName && u.IsDeleted != true)?.Id;
+        int? manufacturerId = _currentDbContext.ProductManufacturers.FirstOrDefault(u => u.Name == manufacturerName && u.IsDeleted != true)?.Id;
+            if (!productGroupId.HasValue && !departmentId.HasValue && !subCategoryId.HasValue && !manufacturerId.HasValue)
+            {
+                return _currentDbContext.ProductMaster;
+            }
         return _currentDbContext.ProductMaster
-            .Where(a => ((!productGroupId.HasValue || a.ProductGroupId == productGroupId) && (!departmentId.HasValue || a.DepartmentId == departmentId) && (!subCategoryId.HasValue || a.ProductCategoryId == subCategoryId) && (!manufacturerId.HasValue || a.ManufacturerId == manufacturerId)) && a.IsDeleted != true).Include(u => u.ProductManufacturer);
+            .Where(a => ((!productGroupId.HasValue || a.ProductGroupId == productGroupId) && (!departmentId.HasValue || a.DepartmentId == departmentId) && (!subCategoryId.HasValue || a.ProductCategoryId == subCategoryId) && (!manufacturerId.HasValue || a.ManufacturerId == manufacturerId) && (string.IsNullOrEmpty(ProductName) || a.Name.Contains(ProductName)) && (string.IsNullOrEmpty(ProductName) || a.SKUCode.Contains(ProductName))) && a.IsDeleted != true ).Include(u => u.ProductManufacturer);
     }
 
     public IEnumerable<ProductManufacturer> GetAllValidProductManufacturerGroupAndDeptByName(IQueryable<ProductMaster> productMasters, string productGroup, string department = "", string SubCategory = "")

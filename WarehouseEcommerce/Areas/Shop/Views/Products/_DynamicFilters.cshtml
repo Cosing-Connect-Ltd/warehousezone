@@ -70,9 +70,10 @@
 
                                 @foreach (var item in Model.Manufacturer)
                                 {
-                                    string name = item.Replace(" ", "_").Replace(",", "^");;
+                                    string name = item.Replace(" ", "_").Replace(",", "^");
                                     <li class="list-group-item"><input type="checkbox" id="BrandS" class="checkbox-inline" title="@(item)" value="@(name)" @(Request.Url.Query.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(item)</li>
                                 }
+
 
 
                             </ul>

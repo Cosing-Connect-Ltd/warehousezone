@@ -356,9 +356,10 @@ namespace Ganedata.Core.Entities.Enums
         NameByDesc = 1,
         [Display(Name = "Name(Z-A)")]
         NameByAsc = 2,
-        [Display(Name = "Price (Low > High)")]
-        PriceByDesc = 3,
         [Display(Name = "Price (High > Low)")]
+        PriceByDesc = 3,
+        [Display(Name = "Price (Low > High)")]
+       
         PriceByAsc = 4
     }
 

@@ -79,7 +79,7 @@
                                             <ul class='dropdown2'>
                                                 @foreach (var categories in groupDepartment[i].ProductCategories)
                                                 {
-                                                    <li><a href="@Url.Action("list", "Products", new { category = categories.ProductCategoryName,group = groupDepartment[i].ProductGroup,department = item.DepartmentName })"> @categories.ProductCategoryName</a> </li>
+                                                    <li><a href="@Url.Action("list", "Products", new { group = groupDepartment[i].ProductGroup,department = item.DepartmentName,values="TypeS-"+categories.ProductCategoryName.Replace(" ", "_").Replace(",", "^")})"> @categories.ProductCategoryName</a> </li>
                                                 }
                                             </ul>
                                         </li>
@@ -100,7 +100,7 @@
                                             <ul class='dropdown2'>
                                                 @foreach (var categories in @groupDepartment[i + 1].ProductCategories)
                                                 {
-                                                    <li><a href="@Url.Action("list", "Products", new { category = categories.ProductCategoryName,group = groupDepartment[i + 1].ProductGroup,department = item.DepartmentName })">@categories.ProductCategoryName</a> </li>
+                                                    <li><a href="@Url.Action("list", "Products", new { group = groupDepartment[i + 1].ProductGroup,department = item.DepartmentName, values="TypeS-"+categories.ProductCategoryName.Replace(" ", "_").Replace(",", "^")})">@categories.ProductCategoryName</a> </li>
                                                 }
                                             </ul>
                                         </li>
@@ -120,7 +120,7 @@
                                             <ul class='dropdown2'>
                                                 @foreach (var categories in groupDepartment[i + 2].ProductCategories)
                                                 {
-                                                    <li><a href="@Url.Action("list", "Products", new { category = categories.ProductCategoryName,group = groupDepartment[i + 2].ProductGroup,department = item.DepartmentName })"> @categories.ProductCategoryName</a> </li>
+                                                    <li><a href="@Url.Action("list", "Products", new { group = groupDepartment[i + 2].ProductGroup,department = item.DepartmentName,values="TypeS-"+categories.ProductCategoryName.Replace(" ", "_").Replace(",", "^") })"> @categories.ProductCategoryName</a> </li>
                                                 }
                                             </ul>
                                         </li>

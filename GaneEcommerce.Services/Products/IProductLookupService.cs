@@ -20,12 +20,12 @@ namespace Ganedata.Core.Services
 
         Locations GetLocationById(int locationId);
         ProductGroups GetProductGroupById(int productGroupId);
-        IQueryable<ProductMaster> GetAllValidProductGroupById(int? productGroupId,int?departmentId=null);
-        IQueryable<ProductMaster> GetAllValidProductGroupAndDeptByName(string productGroup, string department = "", string SubCategory = "", string manufacturerName = "");
+        IQueryable<ProductMaster> GetAllValidProductGroupById(int? productGroupId, int? departmentId = null);
+        IQueryable<ProductMaster> GetAllValidProductGroupAndDeptByName(string productGroup, string department = "", string SubCategory = "", string manufacturerName = "", string productName="");
         IEnumerable<ProductManufacturer> GetAllValidProductManufacturerGroupAndDeptByName(IQueryable<ProductMaster> productMasters, string productGroup, string department = "", string SubCategory = "");
 
         IEnumerable<string> GetAllValidSubCategoriesByDepartmentAndGroup(IQueryable<ProductMaster> productMasters);
-        List<Tuple<string, string>> AllPriceListAgainstGroupAndDept(IQueryable<ProductMaster> productMasters,string productGroup, string department = "", string SubCategory = "");
+        List<Tuple<string, string>> AllPriceListAgainstGroupAndDept(IQueryable<ProductMaster> productMasters, string productGroup, string department = "", string SubCategory = "");
 
         ProductGroups GetProductGroupByName(string groupName);
         PalletType GetPalletTypeByName(string palletType);
@@ -69,6 +69,6 @@ namespace Ganedata.Core.Services
 
         Dictionary<string, List<ProductAttributeValues>> GetAllValidProductAttributeValuesByProductIds(IQueryable<ProductMaster> product);
 
-      
+
     }
 }

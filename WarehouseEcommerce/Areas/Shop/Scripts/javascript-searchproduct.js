@@ -8,22 +8,22 @@ function searchPoducts() {
     var groupId = $("#ProductGroups").val();
     if (groupId === "" || groupId === undefined || groupId === null) { groupId = $("#ProductGroupsId").val(); }
     var pagenumber = $("#pagenumber").val();
-    var departmentId = $("#departmentId").val();
+    var departmentId = $("#departmentId").val() == undefined ? "" : $("#departmentId").val();
     var currentFilter = $("#currentFiltervalue").val();
     var searchstring = $("#searchString").val();
     var pageSize = $("#input-limit :selected").val();
-    var valuesparam = $("#valuesParameter").val();
-    var SubCategory = $("#SubCategoryId").val();
-    window.location.href = basePath + "/shop/Products/list?group=" + groupId + "&sort=" + sortvalue + "&filter=" + currentFilter + "&search=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&department=" + departmentId + "&values=" + valuesparam + "&category=" + SubCategory;
+    var valuesparam = $("#valuesParameter").val() == undefined?"": $("#valuesParameter").val();
+    var SubCategory = $("#SubCategoryId").val() == undefined ?"": $("#SubCategoryId").val() ;
+    window.location.href = basePath + "/shop/Products/list?group=" + groupId + "&sort=" + sortvalue + "&filter=" + currentFilter + "&search=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&department=" + departmentId + "&category=" + SubCategory +"&values=" + valuesparam;
 }
 
 function SearchProductCategory() {
-    var productgroupId = $("#ProductGroups").val();
+    var productgroupId = $("#ProductGroups").val() == undefined?"" : $("#valuesParameter").val();
     var searchstring = $(".text-search").val();
     var valuesparam = $("#valuesParameter").val();
-    var SubCategory = $("#SubCategoryId").val();
-    var departmentId = $("#departmentId").val();
-    window.location.href = basePath + "/shop/Products/list?group=" + productgroupId + "&department=" + departmentId + "&search=" + searchstring + "&values=" + valuesparam + "&category=" + SubCategory;
+    var SubCategory = $("#SubCategoryId").val() == undefined ? "" : $("#SubCategoryId").val();
+    var departmentId = $("#departmentId").val() == undefined ? "" : $("#departmentId").val();
+    window.location.href = basePath + "/shop/Products/list?group=" + productgroupId + "&department=" + departmentId + "&search=" + searchstring + "&category=" + SubCategory + "&values=" + valuesparam;
 }
 
 var searchvalues;
@@ -59,9 +59,10 @@ $('.text-search').on('input', function () {
         },
         open: function (data) {
             if (seeall) {
+                debugger;
                 var $li = $("<li>");
                 var $link = $("<a>", {
-                    href: basePath + "/Shop/Products/list?group=" + data.Group + "&search=" + data.SKUCode + "&values=" + $("#valuesParameter").val() + "&department=" + data.Department + "&category=" + data.SubCategory,
+                    href: basePath + "/Shop/Products/list?group=" + data.Group + "&search=" + data.SKUCode + "&department=" + data.Department,
                     class: "see-all"
                 }).html("See All Results").appendTo($li);
                 $li.appendTo($('.ui-autocomplete'));
@@ -69,10 +70,11 @@ $('.text-search').on('input', function () {
         },
         focus: updateTextBox,
         select: updateTextBox
-    }).autocomplete('instance')._renderItem = function (ul, item) {
-        return $('<li class="search-item">')
-            .append("<img style='width: 46px; height:46px;' src=" + item.Path + " alt=" + item.Name + "/>")
-            .append("<a href=" + basePath + "/Shop/Products/list?group=" + item.Group + "&search=" + item.SKUCode + "&values=" + $("#valuesParameter").val() + "&department=" + item.Department + "&category=" + item.SubCategory + ">" + item.Name + "</a>").appendTo(ul);
+    }).autocomplete('instance')._renderItem = function (ul, item)
+    {
+        debugger;
+        return $('<li class="search-item">').append("<img style='width: 46px; height:46px;' src=" + item.Path + " alt=" + item.Name + "/>")
+            .append("<a href=" + basePath + "/Shop/Products/list?group=" + item.Group + "&search=" + item.SKUCode + "&department=" + item.Department +">" + item.Name + "</a>").appendTo(ul);
     };
 });
 

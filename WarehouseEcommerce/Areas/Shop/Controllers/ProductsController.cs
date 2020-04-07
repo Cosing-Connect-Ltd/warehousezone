@@ -6,6 +6,7 @@ using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using WarehouseEcommerce.Helpers;
@@ -24,6 +25,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         private readonly ICommonDbServices _commonDbServices;
         private readonly IMapper _mapper;
         private readonly IProductPriceService _productPriceService;
+        private string [] Images= ConfigurationManager.AppSettings["ImageFormats"].Split(new char[] { ',' });
 
         public ProductsController(IProductServices productServices, IUserService userService, IProductLookupService productlookupServices, IProductPriceService productPriceService, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IMapper mapper, ICommonDbServices commonDbServices, ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IActivityServices activityServices, ITenantsServices tenantServices)
             : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices)
@@ -40,7 +42,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         }
         // GET: Products
 
-        public ActionResult list(string group, int? sort, string filter, string search, string values, int? page, int? pagesize = 20, string department = "", string category = "", string manufacturerName = "")
+        public ActionResult list(string group, int? sort, string filter, string search,  int? page, int? pagesize = 20, string department = "", string values="")
         {
             try
             {
@@ -53,10 +55,8 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                 ViewBag.pageList = new SelectList(from d in Enumerable.Range(1, 5) select new SelectListItem { Text = (d * 10).ToString(), Value = (d * 10).ToString() }, "Value", "Text", pagesize);
                 ViewBag.searchString = search;
                 ViewBag.CurrencySymbol = currencyyDetail.Symbol;
-                ViewBag.subcategory = category;
-                ViewBag.manufacturername = manufacturerName;
                 ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
-                var product = _productlookupServices.GetAllValidProductGroupAndDeptByName(group, department, category, manufacturerName);
+                var product = _productlookupServices.GetAllValidProductGroupAndDeptByName(group, department, "","");
 
                 if (!string.IsNullOrEmpty(search))
                 {
@@ -69,8 +69,9 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                 ViewBag.CurrentFilter = search;
                 if (!string.IsNullOrEmpty(search))
                 {
-                    product = product.Where(s => s.SKUCode.Contains(search));
+                    product = product.Where(s => s.SKUCode.Contains(search) || s.Name.Contains(search));
                 }
+                product = _productlookupServices.FilterProduct(product, values);
                 switch ((SortProductTypeEnum)(sort ?? 1))
                 {
                     case SortProductTypeEnum.PriceByDesc:
@@ -86,7 +87,7 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                         product = product.OrderBy(s => s.Name);
                         break;
                 }
-                product = _productlookupServices.FilterProduct(product, values);
+                
                 int pageSize = pagesize ?? 10;
                 int pageNumber = (page ?? 1);
                 var pageedlist = product.ToPagedList(pageNumber, pageSize);
@@ -171,16 +172,15 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
         public JsonResult searchProduct(int? groupId, string searchkey)
         {
             var model = (from product in _productlookupServices.GetAllValidProductGroupById(groupId)
-                         where (product.Name.Contains(searchkey.Trim()) || product.SKUCode.Contains(searchkey.Trim()) || product.ManufacturerPartNo.Contains(searchkey.Trim())
-                         || product.Description.Contains(searchkey.Trim()) || product.ProductGroup.ProductGroup.Contains(searchkey.Trim()))
+                         where (product.Name.Contains(searchkey.Trim()) || product.SKUCode.Contains(searchkey.Trim()) || product.Description.Contains(searchkey.Trim()) || product.ProductGroup.ProductGroup.Contains(searchkey.Trim()))
                          select new ProductSearchResult
                          {
                              Id = product.ProductId,
                              Name = product.Name,
-                             Path = product.ProductFiles.FirstOrDefault().FilePath,
-                             Department = product.TenantDepartment.DepartmentName,
-                             Group = product.ProductGroup.ProductGroup,
-                             SubCategory = product.ProductCategory.ProductCategoryName,
+                             Path = product.ProductFiles.FirstOrDefault(u=>Images.Contains(u.FilePath)).FilePath,
+                             Department = product.TenantDepartment == null ? "" : product.TenantDepartment.DepartmentName,
+                             Group = product.ProductGroup == null ? "" : product.ProductGroup.ProductGroup,
+                             SubCategory = product.ProductCategory == null ? "" : product.ProductCategory.ProductCategoryName,
                              SKUCode = product.SKUCode
 
 
@@ -322,12 +322,12 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             return View();
         }
 
-        public PartialViewResult _DynamicFilters(string department, string groups, string subcategory)
+        public PartialViewResult _DynamicFilters(string department, string groups, string subcategory,string productName)
         {
             ProductFilteringViewModel productFiltering = new ProductFilteringViewModel();
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.CurrencySymbol = currencyyDetail.Symbol;
-            var products = _productlookupServices.GetAllValidProductGroupAndDeptByName(groups, department, subcategory);
+            var products = _productlookupServices.GetAllValidProductGroupAndDeptByName(groups, department, subcategory,productName);
             productFiltering.Manufacturer = _productlookupServices.GetAllValidProductManufacturerGroupAndDeptByName(products, groups, department, subcategory).Select(u => u.Name).ToList();
             productFiltering.PriceInterval = _productlookupServices.AllPriceListAgainstGroupAndDept(products, groups, department, subcategory);
             productFiltering.AttributeValues = _productlookupServices.GetAllValidProductAttributeValuesByProductIds(products);
