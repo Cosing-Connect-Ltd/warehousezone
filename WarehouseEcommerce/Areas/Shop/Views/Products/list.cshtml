@@ -3,7 +3,7 @@
 @model PagedList.IPagedList<ProductMaster>
 @using PagedList.Mvc;
 @{
-    var UrlQuery = Request.Url.Query;
+    var UrlQuery = Request.Url.OriginalString;
     string values = "";
     string SubCategory = "";
     string Manufacturer = "";
@@ -32,8 +32,8 @@
                 {
                     <li><a href="@Url.Action("list","Products",new { department=ViewBag.departmentId})">@ViewBag.departmentId </a></li>
                     <li><a href="@Url.Action("list","Products",new { group=ViewBag.groupId, department=ViewBag.departmentId})">@ViewBag.groupId </a></li>
-                    <li>@SubCategory.Replace("TypeS-", "")</li>
-                    ViewBag.Title = (ViewBag.departmentId ?? "") + " | " + (ViewBag.groupId ?? "") + " | " + (SubCategory.Replace("TypeS-", "") ?? "") + " | " + ViewBag.SiteDescription;
+                    <li>@SubCategory.Replace("TypeS-", "").Replace("^", ",").Replace("_"," ")</li>
+                    ViewBag.Title = (ViewBag.departmentId ?? "") + " | " + (ViewBag.groupId ?? "") + " | " + (SubCategory.Replace("TypeS-", "").Replace("^", ",").Replace("_", " ") ?? "") + " | " + ViewBag.SiteDescription;
                 }
                 else if (!string.IsNullOrWhiteSpace(ViewBag.departmentId) && !string.IsNullOrWhiteSpace(ViewBag.groupId))
                 {
@@ -48,8 +48,8 @@
                 }
                 else if (!string.IsNullOrWhiteSpace(Manufacturer))
                 {
-                    <li>@(Manufacturer.Replace("BrandS-", "") ?? "")</li>
-                    ViewBag.Title = (Manufacturer.Replace("BrandS-", "") ?? "") + " | " + ViewBag.SiteDescription;
+                    <li>@(Manufacturer.Replace("BrandS-", "").Replace("^", ",").Replace("_", " ") ?? "")</li>
+                    ViewBag.Title = (Manufacturer.Replace("BrandS-", "").Replace("^", ",").Replace("_", " ") ?? "") + " | " + ViewBag.SiteDescription;
                 }
 
             </ul>
