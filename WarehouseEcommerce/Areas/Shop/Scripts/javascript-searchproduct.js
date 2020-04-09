@@ -12,13 +12,13 @@ function searchPoducts() {
     var currentFilter = $("#currentFiltervalue").val();
     var searchstring = $("#searchString").val();
     var pageSize = $("#input-limit :selected").val();
-    var valuesparam = $("#valuesParameter").val() == undefined?"": $("#valuesParameter").val();
-    var SubCategory = $("#SubCategoryId").val() == undefined ?"": $("#SubCategoryId").val() ;
-    window.location.href = basePath + "/shop/Products/list?group=" + groupId + "&sort=" + sortvalue + "&filter=" + currentFilter + "&search=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&department=" + departmentId + "&category=" + SubCategory +"&values=" + valuesparam;
+    var valuesparam = $("#valuesParameter").val() == undefined ? "" : $("#valuesParameter").val();
+    var SubCategory = $("#SubCategoryId").val() == undefined ? "" : $("#SubCategoryId").val();
+    window.location.href = basePath + "/shop/Products/list?group=" + groupId + "&sort=" + sortvalue + "&filter=" + currentFilter + "&search=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&department=" + departmentId + "&category=" + SubCategory + "&values=" + valuesparam;
 }
 
 function SearchProductCategory() {
-    var productgroupId = $("#ProductGroups").val() == undefined?"" : $("#valuesParameter").val();
+    var productgroupId = $("#ProductGroups").val() == undefined ? "" : $("#valuesParameter").val();
     var searchstring = $(".text-search").val();
     var valuesparam = $("#valuesParameter").val();
     var SubCategory = $("#SubCategoryId").val() == undefined ? "" : $("#SubCategoryId").val();
@@ -70,12 +70,11 @@ $('.text-search').on('input', function () {
         },
         focus: updateTextBox,
         select: updateTextBox
-    }).autocomplete('instance')._renderItem = function (ul, item)
-    {
-        debugger;
-        return $('<li class="search-item">').append("<img style='width: 46px; height:46px;' src=" + item.Path + " alt=" + item.Name + "/>")
-            .append("<a href=" + basePath + "/Shop/Products/list?group=" + item.Group + "&search=" + item.SKUCode + "&department=" + item.Department +">" + item.Name + "</a>").appendTo(ul);
-    };
+    }).autocomplete('instance')._renderItem = function (ul, item) {
+            debugger;
+            return $('<li class="search-item">').append("<img style='width: 46px; height:46px;' src=" + item.Path + " alt=" + item.Name + "/>")
+                .append("<a href=" + basePath + "/Shop/Products/list?group=" + item.Group + "&search=" + item.SKUCode + "&department=" + item.Department + ">" + item.Name + "</a>").appendTo(ul);
+        };
 });
 
 function updateTextBox(event, ui) {
@@ -188,15 +187,23 @@ function ConfirmOrder() {
     window.location.href = basePath + "/shop/Orders/ConfirmOrder/?AccountAddressId=" + AccountAddressIds + "&PaymentTypeId=" + paymentMethodId + "&ShippmentTypeId=" + ShippingTypeId;
 }
 
-function ChooseShippingAddress(addressId) {
+function ChooseShippingAddress(accountid, billingaddressId, shippingaddressid, status) {
     var ShippmentId = $("input[name='optradio']:checked").val();
-    var accountId = $("#AccountID").val();
     if (ShippmentId === undefined) {
         alert("Please select shipping method.");
         return;
     }
 
-    location.href = basePath + "/shop/Orders/ConfirmOrder?accountId=" + accountId + "&AccountAddressId=" + addressId + "&ShippmentTypeId=" + ShippmentId;
+    location.href = basePath + "/shop/Orders/GetAddress?AccountId=" + accountid + "&AccountBillingId=" + billingaddressId + "&AccountShippingId=" + shippingaddressid + "&ShipingAddress=" + status + "&ShippmentTypeId=" + ShippmentId;
+}
+function ChoosePaymentMethod(accountid, shippingaddressid,shipmentMethodType) {
+    var paymenttypeId = $("input[name='paymentMethod']:checked").val();
+    if (paymenttypeId === undefined) {
+        alert("Please select payment method.");
+        return;
+    }
+    window.location.href = basePath + "/shop/Orders/ConfirmOrder?AccountId=" + accountid + "&ShipmentAddressId=" + shippingaddressid + "&PaymentTypeId=" + paymenttypeId + "&ShippmentTypeId=" + shipmentMethodType;
+    location.href = basePath + "/shop/Orders/GetAddress?AccountId=" + accountid + "&AccountBillingId=" + billingaddressId + "&AccountShippingId=" + shippingaddressid + "&ShipingAddress=" + status + "&ShippmentTypeId=" + ShippmentId;
 }
 
 $("input[name='paymentMethod']").on("click", function (e) {

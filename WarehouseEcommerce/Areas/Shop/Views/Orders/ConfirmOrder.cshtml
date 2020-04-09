@@ -5,8 +5,8 @@
 }
 @{
     var address = ViewBag.Addresses as List<Ganedata.Core.Entities.Domain.AccountAddresses>;
-    
-    }
+
+}
 
 <div class="about bg-white confirm-order-page">
     <div class="container custom-max-width">
@@ -16,78 +16,57 @@
                     <div class="content-wrapper select">
                         @if (ViewBag.Addresses != null)
                         {
-                            for (int i = 0; i < address.Count; i += 2)
-                            {
-                                <div class="row">
-                                    @if (address.ElementAtOrDefault(i) != null)
-                                    {
-                                        <div class="col-md-6 col-sm-6">
-                                            <h2 class="text-uppercase"> Billing Address</h2>
-                                            <hr class="custom-hr">
+                            var billingaddresses = address.Where(u => u.AddTypeBilling == true).ToList();
+                            var shipppingAddress = address.Where(u => u.AddTypeShipping == true).ToList();
+                            <div class="row">
+                                @foreach (var billingaddress in billingaddresses)
+                                {
+
+
+                                    <div class="col-md-6 col-sm-6">
+                                        <h2 class="text-uppercase"> Billing Address</h2>
+                                        <hr class="custom-hr">
+                                        <p>
+                                            <b>@billingaddress.AddressLine1 </b> <br />
+                                            @billingaddress.AddressLine2 <br />
+                                            @billingaddress.AddressLine3 @billingaddress.PostCode <br />
+                                            @billingaddress.GlobalCountry.CountryName <br />
+                                            <b> Phone:</b> @billingaddress.Telephone <br />
+
+                                        </p>
+
+                                    </div>
+
+                                }
+                                @foreach (var shiping in shipppingAddress)
+                                {
+
+
+                                    <div class="col-md-6 col-sm-6">
+                                        <h2 class="text-uppercase"> Shipping Address</h2>
+                                        <hr class="custom-hr">
+                                        <div class="w-25 p-3">
                                             <p>
-                                                @if (!string.IsNullOrEmpty(address[i].AddressLine1))
-                                                {
-                                                    <b>@address[i].AddressLine1 </b> <br />
-                                                }
-                                                @if (!string.IsNullOrEmpty(address[i].AddressLine2))
-                                                {
-                                                    @address[i].AddressLine2 <br />
-                                                }
-                                                @if (!string.IsNullOrEmpty(address[i].PostCode) || !string.IsNullOrEmpty(address[i].PostCode))
-                                                {
-                                                    @address[i].AddressLine3 @address[i].PostCode <br />
-                                                }
-                                                @if (address[i].GlobalCountry != null)
-                                                {
-                                                    @address[i].GlobalCountry.CountryName <br />
-                                                }
-                                                @if (!string.IsNullOrEmpty(address[i].Telephone))
-                                                {
+                                            <p>
+                                                <b>@shiping.AddressLine1 </b> <br />
+                                                @shiping.AddressLine2 <br />
+                                                @shiping.AddressLine3 @shiping.PostCode <br />
+                                                @shiping.GlobalCountry.CountryName <br />
+                                                <b> Phone:</b> @shiping.Telephone <br />
 
-                                                    <b> Phone:</b> @address[i].Telephone <br />
-                                                }
                                             </p>
-
+                                            </p>
                                         </div>
-                                    }
-                                    @if (address.ElementAtOrDefault(i + 1) != null)
-                                    {
-                                        <div class="col-md-6 col-sm-6">
-                                            <h2 class="text-uppercase"> Shipping Address</h2>
-                                            <hr class="custom-hr">
-                                            <div class="w-25 p-3">
-                                                <p>
-                                                    @if (!string.IsNullOrEmpty(address[i + 1].AddressLine1))
-                                                    {
-                                                        <b>@address[i + 1].AddressLine1 </b> <br />
-                                                    }
-                                                    @if (!string.IsNullOrEmpty(address[i + 1].AddressLine2))
-                                                    {
-                                                        @address[i + 1].AddressLine2 <br />
-                                                    }
-                                                    @if (!string.IsNullOrEmpty(address[i + 1].AddressLine3) || !string.IsNullOrEmpty(address[i + 1].PostCode))
-                                                    {
-                                                        @address[i + 1].AddressLine3 @address[i + 1].PostCode <br />
-                                                    }
-                                                    @if (address[i + 1].GlobalCountry != null)
-                                                    {
-                                                        @address[i + 1].GlobalCountry.CountryName <br />
-                                                    }
-                                                    @if (!string.IsNullOrEmpty(address[i + 1].Telephone))
-                                                    {
-                                                        <b> Phone:</b> @address[i + 1].Telephone <br />
 
-                                                    }
-                                                </p>
-                                            </div>
+                                    </div>
 
-                                        </div>
-                                    }
-                                </div>
-                                <br />
-                            }
+
+                                }
+
+                            </div>
                             <br />
                         }
+                        <br />
                     </div>
                 </div>
             </div>
@@ -96,8 +75,7 @@
                     <div class="content-wrapper select">
                         <h2 class="text-uppercase"> Items Detail</h2>
                         <hr class="custom-hr">
-                        <table class="order-details" style="        border-collapse: unset
-">
+                        <table class="order-details" style="border-collapse: unset">
                             @foreach (var item in Model)
                             {
                                 <tbody>
@@ -149,8 +127,11 @@
             <div class="row">
                 <div class="col-md-12 col-sm-12 bg-white my-account login mt-20">
                     <div class="about-cnt">
+                        <h4 class="text-uppercase mt-35">Shipment Method</h4>
+                        <hr class="custom-hr">
                         <div class="content-wrapper select">
                             <div class="shippingMethod ">
+
                                 @if ((int)ViewBag.ShipmentMethod == 2)
                                 {
                                     <div class="form-check-inline">
@@ -168,21 +149,25 @@
                                     </div>
                                 }
                             </div>
-                            <h4 class="text-uppercase mt-35">Select Payment Method</h4>
+                            <h4 class="text-uppercase mt-35">Payment Method</h4>
                             <hr class="custom-hr">
-                            <div class="shippingMethod ">
-                                <div class="form-check-inline">
-                                    <label class="control-label" for="radio2">
-                                        <input type="radio" class="form-check-input" id="Cash" name="paymentMethod" value="2">  Cash
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="shippingMethod ">
-                                <div class="form-check-inline">
-                                    <label class="control-label" for="radio1">
-                                        <input type="radio" class="form-check-input" id="PayPal" name="paymentMethod" value="1">  Paypal
-                                    </label>
-                                </div>
+                            <div class="shippingMethod">
+                                @if ((int)ViewBag.paymentMethod == 2)
+                                {
+                                    <div class="form-check-inline">
+                                        <label class="control-label" for="radio2">
+                                            <input type="radio" class="form-check-input" id="Cash" name="paymentMethod" value="2" checked>  Cash
+                                        </label>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="form-check-inline">
+                                        <label class="control-label" for="radio1">
+                                            <input type="radio" class="form-check-input" id="PayPal" name="paymentMethod" value="1" checked>  Paypal
+                                        </label>
+                                    </div>
+                                }
                             </div>
                             <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
                                 <div class="row">
@@ -207,7 +192,7 @@
                                         <input type="hidden" name="amount_1" value="@item.TotalAmount">
                                         <input type="hidden" name="quantity_1" value="@item.Qty">
                                         break;
-                                       
+
                                     }
 
                                 </div>

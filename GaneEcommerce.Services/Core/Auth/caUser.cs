@@ -125,6 +125,10 @@ namespace Ganedata.Core.Services
             if (Users.Any() && Users.Count() < 2)
             {
                 var user = Users.FirstOrDefault();
+                if (!user.AccountId.HasValue || user.AccountId <= 0)
+                {
+                    return false;
+                }
                 UserId = user.UserId;
                 UserName = user.UserName;
                 UserFirstName = user.UserFirstName;

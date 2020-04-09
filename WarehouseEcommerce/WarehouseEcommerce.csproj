@@ -502,6 +502,7 @@
     <Content Include="Areas\Shop\Views\Shared\_SocialMediaAccountsPartial.cshtml" />
     <Content Include="Areas\Shop\Views\Products\GroupedProductDetail.cshtml" />
     <Content Include="Areas\Shop\Views\Products\KitProductDetail.cshtml" />
+    <Content Include="Areas\Shop\Views\Orders\_PaymentAndShipmentMethods.cshtml" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\Shop\Scripts\bootstrap.js" />

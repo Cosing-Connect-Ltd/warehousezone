@@ -49,26 +49,31 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             return View();
         }
 
-        public ActionResult GetAddress(int? AccountId, int? AccountAddressId, bool? ShipingAddress)
+        public ActionResult GetAddress(int? AccountId, int? AccountAddressId, int? AccountBillingId, int? AccountShippingId, int? ShippmentTypeId, bool ShipingAddress = false)
         {
+            AccountShippingId = AccountShippingId <= 0? null: AccountShippingId;
+            AccountBillingId = AccountBillingId <= 0 ? null : AccountBillingId;
             if (GaneCartItemsSessionHelper.GetCartItemsSession().Count > 0)
             {
                 if (CurrentUser?.UserId <= 0)
                 {
                     return RedirectToAction("Login", "User", new { PlaceOrder = true });
                 }
-
-
                 ViewBag.cart = true;
-                ViewBag.AccountIds = CurrentUser?.AccountId;
-                AccountId = caCurrent.CurrentWebsiteUser().AccountId;
+                ViewBag.AccountIds = AccountId = CurrentUser?.AccountId;
                 ViewBag.Country = new SelectList(_lookupServices.GetAllGlobalCountries(), "CountryID", "CountryName");
-                if (!ShipingAddress.HasValue || ShipingAddress == false)
+                ViewBag.ShipingAddressId = AccountShippingId;
+                ViewBag.BillingAddressId = AccountBillingId;
+                ViewBag.Shiping = ShipingAddress;
+                ViewBag.ShippmentMethodType = ShippmentTypeId;
+                //Billing Address Section
+                if (!ShipingAddress)
                 {
 
                     if (AccountAddressId.HasValue)
                     {
                         var model = AccountServices.GetAccountAddressById(AccountAddressId ?? 0);
+
                         return View(model);
                     }
                     var billingAddress = AccountServices.GetAllValidAccountAddressesByAccountId(AccountId ?? 0).Where(u => u.AddTypeBilling == true).ToList();
@@ -82,17 +87,18 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                     ViewBag.AddressMessage = "Billing Address";
 
                 }
-                else
+                // Shipping Address Section
+                else if (AccountBillingId.HasValue && ShipingAddress)
                 {
+
                     if (AccountAddressId.HasValue)
                     {
                         var model = AccountServices.GetAccountAddressById(AccountAddressId ?? 0);
-                        ViewBag.Shiping = true;
                         return View(model);
                     }
                     ViewBag.Addresses = AccountServices.GetAllValidAccountAddressesByAccountId(AccountId ?? 0).Where(u => u.AddTypeShipping == true).ToList();
                     ViewBag.AddressMessage = "Shipping Address";
-                    ViewBag.Shiping = true;
+
 
                 }
             }
@@ -101,14 +107,19 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-
-
-
-
-
             return View();
 
         }
+
+        public PartialViewResult _PaymentAndShipmentMethods()
+        {
+
+            return PartialView();
+        }
+
+
+
+
         public ActionResult SaveAddress(AccountAddresses accountAddresses)
         {
             accountAddresses.Name = "Ecommerce";
@@ -117,24 +128,29 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
                 accountAddresses.AccountID = caCurrent.CurrentWebsiteUser().AccountId ?? 0;
             }
             AccountServices.SaveAccountAddress(accountAddresses, CurrentUserId == 0 ? 1 : CurrentUserId);
+            if (accountAddresses.AddTypeShipping == true)
+            {
+                return RedirectToAction("GetAddress", new { AccountId = accountAddresses.AccountID, AccountBillingId=AccountServices.GetAllValidAccountAddressesByAccountId(accountAddresses.AccountID).FirstOrDefault()?.AddressID, ShipingAddress=true });
+            }
 
-            return RedirectToAction("GetAddress", new { AccountId = accountAddresses.AccountID, ShipingAddress = (accountAddresses.AddTypeBilling != null ? false : true) });
+            return RedirectToAction("GetAddress", new { AccountId = accountAddresses.AccountID});
 
         }
 
         public ActionResult RemoveAddress(int AccountAddressId)
         {
             var accountAddresses = AccountServices.DeleteAccountAddress(AccountAddressId, (CurrentUserId == 0 ? 1 : CurrentUserId));
-            return RedirectToAction("GetAddress", new { AccountId = accountAddresses.AccountID, ShipingAddress = (accountAddresses.AddTypeBilling != null ? false : true) });
+            return RedirectToAction("GetAddress", new { AccountId = accountAddresses.AccountID, AccountBillingId = AccountServices.GetAllValidAccountAddressesByAccountId(accountAddresses.AccountID).FirstOrDefault()?.AddressID, ShipingAddress = true });
         }
 
-        public ActionResult ConfirmOrder(int accountId, int AccountAddressId, int ShippmentTypeId)
+        public ActionResult ConfirmOrder(int accountId, int ShipmentAddressId, int ShippmentTypeId,int PaymentTypeId)
         {
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.cart = true;
             ViewBag.CartModal = true;
+            ViewBag.paymentMethod = PaymentTypeId;
             List<AccountAddresses> accountAddresses = new List<AccountAddresses>();
-            accountAddresses.Add(AccountServices.GetAccountAddressById(AccountAddressId));
+            accountAddresses.Add(AccountServices.GetAccountAddressById(ShipmentAddressId));
             accountAddresses.Add(AccountServices.GetAllValidAccountAddressesByAccountId(accountId).FirstOrDefault(u => u.AddTypeBilling == true));
             ViewBag.Addresses = accountAddresses;
             var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
