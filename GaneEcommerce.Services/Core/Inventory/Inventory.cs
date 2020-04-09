@@ -76,7 +76,7 @@ namespace Ganedata.Core.Services
             {
                 StockRecalculate(productId, warehouse.WarehouseId, tenant.TenantId, user.UserId);
                 status = true;
-                AdjustRecipeAndKitItemsInventory(transaction);
+                AdjustRecipeItemsInventory(transaction);
             }
 
             return status;
@@ -744,7 +744,7 @@ namespace Ganedata.Core.Services
             {
 
                 StockRecalculate(productId, warehouseId, tenantId, userId);
-                AdjustRecipeAndKitItemsInventory(transaction);
+                AdjustRecipeItemsInventory(transaction);
 
             }
 
@@ -1058,7 +1058,7 @@ namespace Ganedata.Core.Services
             return status;
         }
 
-        public static void AdjustRecipeAndKitItemsInventory(InventoryTransaction parentTransaction)
+        public static void AdjustRecipeItemsInventory(InventoryTransaction parentTransaction)
         {
             var context = DependencyResolver.Current.GetService<IApplicationContext>();
             var _mapper = DependencyResolver.Current.GetService<IMapper>();
@@ -1066,14 +1066,20 @@ namespace Ganedata.Core.Services
             var productMaster = productService.GetProductMasterById(parentTransaction.ProductId);
 
 
-            productMaster.ProductKitMap.ToList().ForEach(p =>
+            productMaster.ProductKitMap.Where(x => x.ProductKitType == ProductKitTypeEnum.Recipe).ToList().ForEach(p =>
             {
                 // if DontMonitorStock flag is true then make that flag true in inventory as well
                 bool dontMonitorStock = CheckDontStockMonitor(p.ProductId, null, null);
 
-                var transaction = _mapper.Map(parentTransaction, new InventoryTransaction());
-                transaction.InventoryTransactionId = 0;
+                var transaction = new InventoryTransaction();
                 transaction.ProductId = p.KitProductId;
+                transaction.CreatedBy = parentTransaction.CreatedBy;
+                transaction.InventoryTransactionTypeId = parentTransaction.InventoryTransactionTypeId;
+                transaction.OrderID = parentTransaction.OrderID;
+                transaction.OrderProcessId = parentTransaction.OrderProcessId;
+                transaction.OrderProcessDetailId = parentTransaction.OrderProcessDetailId;
+                transaction.DateCreated = DateTime.UtcNow;
+                transaction.TerminalId = parentTransaction.TerminalId;
                 transaction.Quantity = parentTransaction.Quantity * p.Quantity;
                 transaction.LastQty = CalculateLastQty(p.KitProductId, parentTransaction.TenentId, parentTransaction.WarehouseId, (parentTransaction.Quantity * p.Quantity), parentTransaction.InventoryTransactionTypeId, dontMonitorStock);
                 context.InventoryTransactions.Add(transaction);

@@ -29,7 +29,7 @@ namespace Ganedata.Core.Services
         public IQueryable<ProductMaster> GetAllValidProductMasters(int tenantId, DateTime? lastUpdated = null, bool includeIsDeleted = false)
         {
             return _currentDbContext.ProductMaster.Where(a => a.TenantId == tenantId && (includeIsDeleted || a.IsDeleted != true) && (!lastUpdated.HasValue || (a.DateUpdated ?? a.DateCreated) >= lastUpdated))
-                .Include(x => x.ProductKitMap);
+                .Include(x => x.ProductKitItems);
         }
 
         public IQueryable<SelectListItem> GetAllValidProductMastersForSelectList(int tenantId, DateTime? lastUpdated = null, bool includeIsDeleted = false)
