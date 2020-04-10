@@ -2557,6 +2557,7 @@ form#search {
     font-size: 12px;
     font-weight: 500;
     font-family: Lato, sans-serif;
+    white-space:nowrap;
 }
 
 .description {
@@ -3203,7 +3204,9 @@ img {
     .cookies-eu-button-holder a:hover {
         background-color: #000 !important;
     }
-
+.cookies-eu span {
+    font-size:14px;
+}
 @media(max-width:1263px) {
     .cookies-eu-content-holder {
         padding-top: 7px !important;
@@ -3235,9 +3238,13 @@ img {
 .main-menu ul {
     display: flex;
 }
+.logo-div {
+    flex: unset;
+}
 @media (min-width: 1550px) {
     .logo-div {
-        width: 13.666667%!important;
+        width: 13.666667% !important;
+        max-width: unset;
     }
 }
 @media (min-width:991px) and (max-width: 1549px) {
@@ -3315,15 +3322,37 @@ img {
 .m-auto {
     margin:auto;
 }
-
-
-
-
-
-
-
-
-
+.custom-service-row {
+    display: flex;
+}
+@media(max-width:991px){
+    .custom-service-row a {
+        width: 50%;
+    }
+    .custom-service-row {
+       flex-wrap:wrap;
+    }
+}
+@media(max-width:650px) {
+    .custom-service-row a {
+        width: 100%;
+    }
+}
+@media(max-width:400px) {
+    .background-banner h1 {
+        font-size: 33px;
+        font-weight: 500;
+    }
+}
+.phone-n-demo .phone-2 span {
+    font-size:14px;
+}
+.footer-nav {
+font-size:14px
+}
+.header-top-area li{
+    font-size:14px;
+}
 
 
 
