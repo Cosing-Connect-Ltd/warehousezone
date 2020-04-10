@@ -779,7 +779,7 @@ ul.mhp-menu {
         display: none;
     }
 
-    .hidden-sm {
+    .d-sm {
         display: block !important;
     }
 

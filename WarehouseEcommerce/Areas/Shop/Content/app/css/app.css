@@ -286,10 +286,10 @@ input[type="color"].form-control {
     height: 30px;
 }
 
-span.hidden-xs,
-span.hidden-sm,
-span.hidden-md,
-span.hidden-lg {
+span.d-xs,
+span.d-sm,
+span.d-md,
+span.d-lg {
     display: inline;
     line-height: normal;
 }
@@ -3674,7 +3674,7 @@ footer #contact li {
     }*/
 
     @media(max-width:334px) {
-        .hidden-sm .list-inline {
+        .d-sm .list-inline {
             display: flex;
         }
     }
