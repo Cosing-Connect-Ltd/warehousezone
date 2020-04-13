@@ -256,6 +256,7 @@
     <Compile Include="Domain\Models\ProductLotProcessTypeCodes.cs" />
     <Compile Include="Domain\Models\ProductMaster.cs" />
     <Compile Include="Domain\Tenants\TenantConfig.cs" />
+    <Compile Include="Domain\ViewModels\ApiModels\LocationRequestSync.cs" />
     <Compile Include="Domain\ViewModels\AssetLogViewModel.cs" />
     <Compile Include="Domain\ViewModels\CurrencyExRateViewModel.cs" />
     <Compile Include="Domain\ViewModels\DPDModel\DPDViewModel.cs" />

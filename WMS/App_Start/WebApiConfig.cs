@@ -40,7 +40,8 @@ namespace WMS
             config.Routes.MapHttpRoute("PalletsDispatchMethodsSync", "api/sync/pallet-dispatchmethods/{serialNo}/{reqDate}", new { controller = "ApiPalletsSync", action = "GetPalletDispatchMethods", serialNo = string.Empty, reqDate = string.Empty });
 
             config.Routes.MapHttpRoute("AllPalletsDispatchesSync", "api/sync/all-pallet-dispatches/{serialNo}/{reqDate}", new { controller = "ApiPalletsSync", action = "GetPalletDispatches", serialNo = string.Empty, reqDate = string.Empty });
-
+            config.Routes.MapHttpRoute("LocationSync", "api/sync/Locations/{reqDate}/{serialNo}", new { controller = "ApiLocationSync", action = "GetLoctions", serialNo = string.Empty, reqDate = string.Empty });
+            config.Routes.MapHttpRoute("StockMovementUpdateSync", "api/sync/post-stockmovement-detail", new { controller = "ApiLocationSync", action = "PostStockMovementDetail" });
             config.Routes.MapHttpRoute("PalletsUpdateProductsSync", "api/sync/pallet-products-processes/{serialNo}", new { controller = "ApiPalletsSync", action = "UpdatePalletProducts", serialNo = string.Empty });
             config.Routes.MapHttpRoute("PalletsDispatchesSync", "api/sync/pallet-dispatch/{serialNo}/{palletId}", new { controller = "ApiPalletsSync", action = "DispatchPallet", serialNo = string.Empty, palletId = string.Empty, statusId = string.Empty });
             config.Routes.MapHttpRoute("SyncAck", "api/sync/verify-acks/{id}/{count}/{serialNo}", new { controller = "ApiTerminalUserSync", action = "VerifyAcknowlegement", id = string.Empty, count = string.Empty, serialNo = string.Empty });

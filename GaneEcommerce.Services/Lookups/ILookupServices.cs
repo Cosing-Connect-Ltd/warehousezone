@@ -1,6 +1,7 @@
 ﻿using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -37,7 +38,7 @@ namespace Ganedata.Core.Services
         IEnumerable<TenantPriceGroups> GetAllPriceGroups(int tenantId, int filterById = 0);
         IEnumerable<JobType> GetAllJobTypes(int tenantId);
         IEnumerable<SlaWorksOrderListViewModel> GetAllJobTypesIncludingNavProperties(int tenantId);
-        IEnumerable<Locations> GetAllLocations(int tenantId);
+        IEnumerable<Locations> GetAllLocations(int tenantId, DateTime? reqDate = null, bool includeIsDeleted = false);
         Locations GetLocationById(int locationId, int tenantId);
         LocationTypes GetLocationTypeById(int locationTypeId);
         void DeleteLocationById(int locationId, int tenantId, int userId);
@@ -86,5 +87,7 @@ namespace Ganedata.Core.Services
         IEnumerable<ProductCategory> GetAllValidProductCategories(int tenantId, int numberofproduct = 0, int? ProductGroupId = null);
 
         IEnumerable<ProductKitType> GetAllValidProductKitType(int tenantId);
+
+        bool UpdateStockMovement(StockMovementCollectionViewModel data);
     }
 }

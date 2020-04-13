@@ -7,7 +7,7 @@ using System.Web;
 namespace Ganedata.Core.Entities.Domain
 {
 
-    public class StockMovemeneCollectionViewModel
+    public class StockMovementCollectionViewModel
     {
         public int Count { get; set; }
         public string SerialNo { get; set; }

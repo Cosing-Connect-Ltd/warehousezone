@@ -17,7 +17,7 @@
     <AssemblyName>WMS</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -525,6 +525,7 @@
     <Compile Include="Controllers\MarketRouteSchedulesController.cs" />
     <Compile Include="Controllers\WebAPI\ApiAssetController.cs" />
     <Compile Include="Controllers\WebAPI\ApiMerakiScanningController.cs" />
+    <Compile Include="Controllers\WebAPI\ApiLocationSyncController.cs" />
     <Compile Include="CustomBindings\ConsignmentCustomBinding.cs" />
     <Compile Include="CustomBindings\PalletsCustomBinding.cs" />
     <Compile Include="CustomBindings\LocationListCustomBinding.cs" />

@@ -245,9 +245,9 @@ namespace Ganedata.Core.Services
                });
         }
 
-        public IEnumerable<Locations> GetAllLocations(int tenantId)
+        public IEnumerable<Locations> GetAllLocations(int tenantId, DateTime? reqDate = null, bool includeIsDeleted = false)
         {
-            return _currentDbContext.Locations.Where(a => a.IsDeleted != true && a.TenentId == tenantId);
+            return _currentDbContext.Locations.Where(a => (includeIsDeleted || a.IsDeleted != true) && a.TenentId == tenantId && (!reqDate.HasValue || (a.DateUpdated ?? a.DateCreated) >= reqDate));
         }
 
         public Locations GetLocationById(int locationId, int tenantId)
@@ -660,6 +660,12 @@ namespace Ganedata.Core.Services
             _currentDbContext.Entry(productmanufactrer).State = productManufacturer.Id > 0 ? EntityState.Modified : EntityState.Added;
             _currentDbContext.SaveChanges();
             return productmanufactrer;
+        }
+
+        public bool UpdateStockMovement(StockMovementCollectionViewModel data)
+        {
+
+            return true;
         }
     }
 
