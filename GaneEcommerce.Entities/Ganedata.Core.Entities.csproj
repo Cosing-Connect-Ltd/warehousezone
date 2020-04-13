@@ -236,7 +236,7 @@
     <Compile Include="Domain\Models\LocationGroup.cs" />
     <Compile Include="Domain\Models\Locations.cs" />
     <Compile Include="Domain\Models\LocationTypes.cs" />
-    <Compile Include="Domain\Models\MoveStockVM.cs" />
+    <Compile Include="Domain\Models\StockMovementViewModel.cs" />
     <Compile Include="Domain\Models\Order.cs" />
     <Compile Include="Domain\Models\OrderDetail.cs" />
     <Compile Include="Domain\Models\OrderNotes.cs" />

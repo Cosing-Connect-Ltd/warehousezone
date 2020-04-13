@@ -302,9 +302,9 @@ namespace WMS.Controllers
             ViewBag.FromLocations = new SelectList(Locations, "LocationId", "LocationCode");
             ViewBag.ToLocations = new SelectList(Locations, "LocationId", "LocationCode");
             ViewBag.Serials = new List<string>();
-            var model = new MoveStockVM
+            var model = new StockMovementViewModel
             {
-                Product = prd
+                ProductId = prd.ProductId
             };
 
             return View(model);

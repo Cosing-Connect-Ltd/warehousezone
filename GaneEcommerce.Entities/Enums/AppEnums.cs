@@ -123,7 +123,8 @@ namespace Ganedata.Core.Entities.Enums
         Wastage = 14,
         DirectSales = 15,
         Exchange = 16,
-        WastedReturn = 17
+        WastedReturn = 17,
+        StockMovement = 18
     }
 
     public enum OrderStatusEnum
@@ -260,7 +261,7 @@ namespace Ganedata.Core.Entities.Enums
         TnAPostStampsAndLogs = 29,
         TnAPostCmdResponse = 30,
         PalletProductsSync = 31,
-        PrestaShopOrderSync=32
+        PrestaShopOrderSync = 32
     }
 
     public enum OrderProcessStatusEnum
@@ -359,7 +360,7 @@ namespace Ganedata.Core.Entities.Enums
         [Display(Name = "Price (High > Low)")]
         PriceByDesc = 3,
         [Display(Name = "Price (Low > High)")]
-       
+
         PriceByAsc = 4
     }
 

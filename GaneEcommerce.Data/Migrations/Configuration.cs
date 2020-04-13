@@ -431,6 +431,15 @@ namespace Ganedata.Core.Data.Migrations
                     CreatedBy = 1,
                     IsActive = true
                 });
+            context.InventoryTransactionTypes.AddOrUpdate(m => m.InventoryTransactionTypeId,
+                new InventoryTransactionType
+                {
+                    InventoryTransactionTypeId = 18,
+                    InventoryTransactionTypeName = "Stock Movement",
+                    OrderType = "Stock Movement",
+                    CreatedBy = 1,
+                    IsActive = true
+                });
 
             // Add Order Status
             context.OrderStatus.AddOrUpdate(m => m.OrderStatusID, new OrderStatus { OrderStatusID = 1, Status = "Active" });
