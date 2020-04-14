@@ -2557,7 +2557,7 @@ form#search {
     font-size: 12px;
     font-weight: 500;
     font-family: Lato, sans-serif;
-    white-space:nowrap;
+    /*white-space:nowrap;*/
 }
 
 .description {
@@ -3353,10 +3353,33 @@ font-size:14px
 .header-top-area li{
     font-size:14px;
 }
-
-
-
-
-
+.m-width-unset {
+    max-width:unset;
+}
+.flex-unset{
+    flex:unset;
+}
+.d-unset{
+    display:unset;
+}
+.font-size-14 {
+    font-size:14px;
+}
+@media(max-width:767px){
+    .hide-this {
+        display:none;
+    }
+}
+.real-time-location .description td {
+    padding:20px;
+}
+@media(min-width:768px){
+    .header-pr{
+        padding-right:80px;
+    }
+}
+.mobile-menu-area .mean-nav ul li a {
+    font-size: 14px;
+}
 
 /* css end */

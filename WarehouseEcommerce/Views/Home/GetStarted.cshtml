@@ -20,19 +20,19 @@
 </div>
 
 <div class="contact-bottom-area ptb-100">
-    <div class="container-fluid pl-30 pr-30 custom-max-width">
-        <div class="col-md-12">
+    <div class="row container-fluid pl-30 pr-30 custom-max-width ml-auto mr-auto">
+        <div class="col-lg-12">
             <div class="pb-20 text-left">
                 <h4 style="font-size:16px;font-weight:700;">Book a Demo today and see the benefits for yourself</h4>
             </div>
         </div>
-        <div class="col-md-12">
-            <div class="col-md-8 col-sm-12">
+        <div class="row">
+            <div class="col-lg-8 col-md-12">
                 @using (Html.BeginForm("GetStarted", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
                     @Html.AntiForgeryToken()
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="row" id="contact-form">
+                <div class="" id="contact-form">
                     @if (Session["success"] != null)
                     {
                         <div class="alert custom-alert-success alert-dismissible" role="alert">
@@ -56,27 +56,27 @@
                         Session["EXCP"] = null;
                     }*@
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-lg-12">
                             <label>Name *</label>
                             @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "YOUR NAME" } })
                             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "error-text" })
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-lg-12">
                             <label>Phone Number *</label>
                             @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", @placeholder = "YOUR PHONE" } })
                             @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "error-text" })
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-lg-12">
                             <label>Email *</label>
                             @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "YOUR EMAIL" } })
                             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "error-text" })
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-lg-12">
                             <label>Message *</label>
                             @Html.EditorFor(model => model.Message, new { htmlAttributes = new { @class = "form-control", @placeholder = "MESSAGE" } })
                             @Html.ValidationMessageFor(model => model.Message, "", new { @class = "error-text" })
                         </div>
-                        <div class="col-md-12 mt-10">
+                        <div class="col-lg-12 mt-10">
                             <button class="btn custom-green" type="submit">Book A Demo</button>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                 </div>
 
             </div>
-            <div class="col-md-4 col-sm-4">
+            <div class="col-lg-4 col-md-12">
                 <div style="background: rgba(0,181,74,0.65);padding: 30px; border-top: 10px solid rgb(0, 180, 90); color: #ffffff">
                     <h4><strong>Talk To GaneData Today</strong></h4>
                     <p>
@@ -102,7 +102,7 @@
                     </p>
                 </div>
 
-                <p style="text-align: justify;" class="pt-30 pr-10 pl-10">Find out the right modules and price for your business solution , simply fill out the form and a member of our experienced team will get in touch, See how we can help automate business processes and reduce operating cost enable your business to scale.</p>
+                <p style="text-align: justify;" class="font-size-14 pt-30 pr-10 pl-10">Find out the right modules and price for your business solution , simply fill out the form and a member of our experienced team will get in touch, See how we can help automate business processes and reduce operating cost enable your business to scale.</p>
             </div>
             <br>
 
