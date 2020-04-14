@@ -17,7 +17,7 @@
     <AssemblyName>WMS</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -506,6 +506,7 @@
     <Compile Include="Controllers\MarketRoutesController.cs" />
     <Compile Include="Controllers\PalletTypesController.cs" />
     <Compile Include="Controllers\ProductCategoriesController.cs" />
+    <Compile Include="Controllers\ProductKitTypesController.cs" />
     <Compile Include="Controllers\ProductManufacturersController.cs" />
     <Compile Include="Controllers\ProductSerialController.cs" />
     <Compile Include="Controllers\ProductSpecialPriceController.cs" />
@@ -527,6 +528,7 @@
     <Compile Include="Controllers\WebAPI\ApiMerakiScanningController.cs" />
     <Compile Include="Controllers\WebAPI\ApiLocationSyncController.cs" />
     <Compile Include="CustomBindings\ConsignmentCustomBinding.cs" />
+    <Compile Include="CustomBindings\CurrencyExRateCustomBinding.cs" />
     <Compile Include="CustomBindings\PalletsCustomBinding.cs" />
     <Compile Include="CustomBindings\LocationListCustomBinding.cs" />
     <Compile Include="CustomBindings\ProductComboboxCustomBinding.cs" />

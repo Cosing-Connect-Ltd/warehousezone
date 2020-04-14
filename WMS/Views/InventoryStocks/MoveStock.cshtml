@@ -1,4 +1,4 @@
-﻿@model Ganedata.Core.Entities.Domain.MoveStockVM
+﻿@model Ganedata.Core.Entities.Domain.StockMovementViewModel
 @using Ganedata.Core.Entities.Helpers
 
 @section scripts {
@@ -18,13 +18,13 @@
     ViewBag.Title = "MoveS tock";
 }
 
-<h2><span>Move Stock (@Model.Product.Name)</span></h2>
+<h2><span>Move Stock (@Model.ProductId)</span></h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(m => m.Product.ProductId)
-    @Html.HiddenFor(m => m.Product.Serialisable)
+    @Html.HiddenFor(m => m.ProductId)
+    @*@Html.HiddenFor(m => m.Product.Serialisable)*@
 
 
     <div class="col-md-6 pull-left">
@@ -43,7 +43,7 @@
                 @Html.ValidationMessageFor(model => model.ToLocation)
             </div>
         </div>
-        @if (!Model.Product.Serialisable)
+        @if (Model.ProductId > 0)
         {
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.Qty, htmlAttributes: new { @class = "col-md-4" })

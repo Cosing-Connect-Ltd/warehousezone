@@ -64,8 +64,8 @@ namespace WMS.Controllers.WebAPI
         }
 
 
-        
-        // POST http://localhost:8005/api/sync/post-pallet-tracking
+
+        // POST http://localhost:8005/api/sync/post-stockmovement-detail
         public IHttpActionResult PostStockMovementDetail(StockMovementCollectionViewModel data)
         {
             data.SerialNo = data.SerialNo.Trim().ToLower();
