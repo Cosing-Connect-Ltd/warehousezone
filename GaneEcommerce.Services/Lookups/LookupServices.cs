@@ -94,13 +94,13 @@ namespace Ganedata.Core.Services
         {
             return _currentDbContext.PalletTypes.Where(m => m.IsDeleted != true && m.TenentId == tenantId);
         }
-        public IEnumerable<ProductManufacturer> GetAllValidProductManufacturer(int tenantId,int? Id=null)
+        public IEnumerable<ProductManufacturer> GetAllValidProductManufacturer(int tenantId, int? Id = null)
         {
-            return _currentDbContext.ProductManufacturers.Where(m => m.IsDeleted != true && m.TenantId == tenantId && (!Id.HasValue || m.Id==Id));
+            return _currentDbContext.ProductManufacturers.Where(m => m.IsDeleted != true && m.TenantId == tenantId && (!Id.HasValue || m.Id == Id));
         }
         public bool RemoveProductManufacturer(int Id)
         {
-            var manufacturer= _currentDbContext.ProductManufacturers.FirstOrDefault(m=> m.Id == Id);
+            var manufacturer = _currentDbContext.ProductManufacturers.FirstOrDefault(m => m.Id == Id);
             if (manufacturer != null)
             {
                 manufacturer.IsDeleted = true;
@@ -664,8 +664,16 @@ namespace Ganedata.Core.Services
 
         public bool UpdateStockMovement(StockMovementCollectionViewModel data)
         {
-
-            return true;
+            bool status = false;
+            if (data != null && (data.StockMovements != null || data.Count > 0))
+            {
+                foreach (var item in data.StockMovements)
+                {
+                    status=Inventory.AdjustStockMovementTransactions(item);
+                }
+                return status;
+            }
+            return status;
         }
     }
 

@@ -1295,5 +1295,92 @@ namespace Ganedata.Core.Services
             return (totalIn - totalout);
 
         }
+
+
+
+        public static bool AdjustStockMovementTransactions(StockMovementViewModel stockMovement)
+        {
+            var context = DependencyResolver.Current.GetService<IApplicationContext>();
+
+            var status = false;
+            if (stockMovement.Qty > 0)
+            {
+                var qtyMoved = stockMovement.Qty;
+                var stockListfromLocation = context.InventoryTransactions.Where(u => u.ProductId == stockMovement.ProductId && u.LocationId == stockMovement.FromLocation && u.IsCurrentLocation == true && (u.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.PurchaseOrder
+              || u.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Returns
+              || u.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.AdjustmentIn
+              || u.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.TransferIn)).ToList();
+                status = stockListfromLocation.Count > 0 ? true : false;
+                foreach (var item in stockListfromLocation)
+                {
+                    if (item.Quantity >= qtyMoved)
+                    {
+                        var result = item.Quantity - qtyMoved;
+                        InventoryTransactionForStockMovement(item, stockMovement.UserId, stockMovement.TenentId, stockMovement.WarehouseId, CurrentLocationstatus: false);
+                        if (result > 0)
+                        {
+                            InventoryTransactionForStockMovement(item, stockMovement.UserId, stockMovement.TenentId, stockMovement.WarehouseId, (stockMovement.FromLocation ?? 0), result);
+
+                        }
+                        InventoryTransactionForStockMovement(item, stockMovement.UserId, stockMovement.TenentId, stockMovement.WarehouseId, (stockMovement.ToLocation ?? 0), stockMovement.Qty);
+                        break;
+                    }
+                    else
+                    {
+                        qtyMoved = qtyMoved - item.Quantity;
+                        InventoryTransactionForStockMovement(item, stockMovement.UserId, stockMovement.TenentId, stockMovement.WarehouseId, CurrentLocationstatus: false);
+
+                    }
+                }
+
+            }
+            return status;
+        }
+
+        private static void InventoryTransactionForStockMovement(InventoryTransaction inventoryTransaction, int UserId, int Tenantid, int WarehouseId, int LocationIdTo = 0, decimal Qty = 0, bool CurrentLocationstatus = true)
+        {
+            var context = DependencyResolver.Current.GetService<IApplicationContext>();
+
+            if (!CurrentLocationstatus)
+            {
+                var stockItem = context.InventoryTransactions.FirstOrDefault(u => u.InventoryTransactionId == inventoryTransaction.InventoryTransactionId);
+                if (stockItem != null)
+                {
+                    stockItem.IsCurrentLocation = CurrentLocationstatus;
+                    stockItem.UpdatedBy = UserId;
+                    stockItem.TenentId = Tenantid;
+                    stockItem.DateUpdated = DateTime.UtcNow;
+                    context.Entry(stockItem).State = EntityState.Modified;
+                    context.SaveChanges();
+                }
+            }
+            else
+            {
+                InventoryTransaction tans = new InventoryTransaction
+                {
+                    LocationId = LocationIdTo,
+                    ProductId = inventoryTransaction.ProductId,
+                    CreatedBy = UserId,
+                    DateCreated = DateTime.UtcNow,
+                    InventoryTransactionTypeId = (int)InventoryTransactionTypeEnum.StockMovement,
+                    Quantity = Qty,
+                    TenentId = Tenantid,
+                    WarehouseId = inventoryTransaction.WarehouseId,
+                    IsCurrentLocation = true,
+                    LastQty = CalculateLastQty(inventoryTransaction.ProductId, Tenantid, inventoryTransaction.WarehouseId, Qty, (int)InventoryTransactionTypeEnum.StockMovement, (inventoryTransaction.DontMonitorStock ?? false))
+                };
+
+                context.InventoryTransactions.Add(tans);
+
+                context.SaveChanges();
+
+
+            }
+
+
+        }
+
+
+
     }
 }

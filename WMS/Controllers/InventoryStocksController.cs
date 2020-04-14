@@ -310,6 +310,29 @@ namespace WMS.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public ActionResult MoveStock(StockMovementViewModel data)
+        {
+            StockMovementCollectionViewModel model = new StockMovementCollectionViewModel();
+            model.StockMovements = new List<StockMovementViewModel>();
+            data.UserId = CurrentUserId;
+            data.TenentId = CurrentTenantId;
+            data.WarehouseId = CurrentWarehouseId;
+            model.StockMovements.Add(data);
+            var result=_lookupServices.UpdateStockMovement(model);
+            if (result)
+            {
+                TempData["Success"] = "Product Moved Successfully";
+            }
+            else 
+            {
+                TempData["Error"] = "Product not moved, qunatity not found against this product.";
+            }
+            return RedirectToAction("MoveStock",new { id=data.ProductId });
+        }
+
+
+
         public ActionResult GetProductInformation(string id)
         {
             if (id == null)

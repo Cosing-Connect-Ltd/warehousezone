@@ -646,7 +646,7 @@ namespace WMS.Controllers
 
         public JsonResult SaveEditKitProduct(int KitId, decimal? Quantity, int ProductId ,int? ProductKitTypeId)
         {
-            _productServices.SaveProductKit(KitId, (Quantity??0), ProductId, CurrentUserId, ProductKitTypeId);
+            _productServices.SaveProductKit(KitId, (Quantity??1), ProductId, CurrentUserId, ProductKitTypeId);
             return Json(true, JsonRequestBehavior.AllowGet);
 
         }

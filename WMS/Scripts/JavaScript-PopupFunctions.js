@@ -714,7 +714,9 @@ function ProductKitPopUpCallBack(s, e) {
 }
 function ProductKitPopUp(isEdit) {
     debugger;
+    if (isEdit == undefined) { grouped = false; }
     producttypekit = isEdit;
+    
     ProductKitId = null;
     pcModalKitProduct.Show();
 }

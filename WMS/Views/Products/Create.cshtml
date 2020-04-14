@@ -151,7 +151,7 @@
                             @Html.ListBox("ProductKitIds", new MultiSelectList(ViewBag.ProductKitItems, "", ""), new { Multiple = "multiple", @class = "chosen-select", data_placeholder = "Choose Product Kit" })
                         </div>
                         <div class="col-1 p-0 pull-left">
-                            <input type="button" onclick="javascript: pcModalKitProduct.Show();" id="ProdkitAdd" class="btn btn-primary" value="+">
+                            <input type="button" onclick="ProductKitPopUp();" id="ProdkitAdd" class="btn btn-primary" value="+">
                         </div>
                     </div>
                 </div>
