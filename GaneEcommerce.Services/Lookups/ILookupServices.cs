@@ -89,5 +89,6 @@ namespace Ganedata.Core.Services
         IEnumerable<ProductKitType> GetAllValidProductKitType(int tenantId);
 
         bool UpdateStockMovement(StockMovementCollectionViewModel data);
+        Guid CreateProductMovement(int userId, int TenantId);
     }
 }

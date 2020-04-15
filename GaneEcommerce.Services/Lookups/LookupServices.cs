@@ -675,6 +675,18 @@ namespace Ganedata.Core.Services
             }
             return status;
         }
+
+        public Guid CreateProductMovement(int userId, int TenantId)
+        {
+            Guid productMovementId = Guid.NewGuid();
+            ProductMovement productMovement = new ProductMovement();
+            productMovement.ProductMovementId = productMovementId;
+            productMovement.TenantId = TenantId;
+            productMovement.UpdateCreatedInfo(userId);
+            _currentDbContext.ProductMovements.Add(productMovement);
+            _currentDbContext.SaveChanges();
+            return productMovementId;
+        }
     }
 
 

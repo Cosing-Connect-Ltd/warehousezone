@@ -208,6 +208,7 @@
     <Compile Include="Domain\Models\ProductFiles.cs" />
     <Compile Include="Domain\Models\ProductManufacturer.cs" />
     <Compile Include="Domain\Models\ProductsWebsitesMap.cs" />
+    <Compile Include="Domain\Models\ProductMovement.cs" />
     <Compile Include="Domain\Models\TenantDeliveryService.cs" />
     <Compile Include="Domain\Models\TerminalCommands.cs" />
     <Compile Include="Domain\Models\TerminalCommandsQueue.cs" />

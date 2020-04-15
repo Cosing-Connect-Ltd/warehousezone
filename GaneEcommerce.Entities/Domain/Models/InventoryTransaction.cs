@@ -43,6 +43,8 @@ namespace Ganedata.Core.Entities.Domain
         public bool IsActive { get; set; }
         [Display(Name = "Deleted")]
         public bool? IsDeleted { get; set; }
+        public Guid? ProductMovementId { get; set; }
+
         public string BatchNumber { get; set; }
         public DateTime? ExpiryDate { get; set; }
         public bool IsCurrentLocation { get; set; }

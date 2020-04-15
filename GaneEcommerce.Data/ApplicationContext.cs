@@ -112,6 +112,7 @@ namespace Ganedata.Core.Data
         public DbSet<ProductMaster> ProductMaster { get; set; }
       
         public DbSet<ProductSCCCodes> ProductSCCCodes { get; set; }
+        public DbSet<ProductMovement> ProductMovements { get; set; }
         public DbSet<ProductSerialis> ProductSerialization { get; set; }
         public DbSet<ProductAccountCodes> ProductAccountCodes { get; set; }
         public DbSet<ProductKitMap> ProductKitMaps { get; set; }
