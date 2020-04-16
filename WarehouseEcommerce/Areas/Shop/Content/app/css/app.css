@@ -1385,6 +1385,7 @@ h2.price {
     height: 10px;
     display: inline-block;
     margin: 0 20px;
+    border-top:unset;
 }
 
 .hcontact svg {
@@ -1801,7 +1802,7 @@ header {
     background-color: #fff;
     padding: 10px 0 10px 0;
     border-radius: 4px;
-    height: 64px;
+    height: 60px;
 }
 
     .deliveryinfo ul:hover svg {
@@ -2368,7 +2369,7 @@ header {
 
 .product-layout.leftpro {
     float: left;
-    border-bottom: 1px solid #eee;
+    /*border-bottom: 1px solid #eee;*/
     padding-bottom: 20px;
     margin-bottom: 20px;
 }
@@ -5342,4 +5343,16 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
 
 #follow-us {
     padding-top: 70px;
+}
+.no-f-wrap {
+    flex-wrap:nowrap;
+}
+.f-unset {
+    flex:unset
+}
+.m-w-unset {
+    max-width:unset;
+}
+.mt-3px {
+    margin-top:3px;
 }

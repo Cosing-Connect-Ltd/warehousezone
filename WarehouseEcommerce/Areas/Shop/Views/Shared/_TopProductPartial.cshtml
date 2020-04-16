@@ -1,10 +1,10 @@
 ﻿@model WarehouseEcommerce.ViewModels.ProductDetailViewModel
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-lg-12">
         <div class="tabpro">
             <div class="tab-head xs-tab top-product-h1">
-                <h1 class="pull-left mb-25">
+                <h1 class="pull-left">
                     <span>
                         top product
                         <i></i>
@@ -27,12 +27,12 @@
                         <div id="feature" class="owl-theme owl-carousel">
                             @foreach (var item in Model.productMasterList)
                             {
-                                <div class="product-layout col-xs-12">
+                                <div class="product-layout col-12">
                                     <div class="product-thumb transition">
                                         <div class="image">
-                                            <a href="@Url.Action("ProductDetails", "Products", new { sku = item.SKUCode })"><img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath +item.DefaultImage : ViewBag.BaseFilePath +"/UploadedFiles/Products/no_image.gif")" alt="@item.Name" title="@item.Name" class="img-responsive center-block" /></a>
+                                            <a href="@Url.Action("ProductDetails", "Products", new { sku = item.SKUCode })"><img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath +item.DefaultImage : ViewBag.BaseFilePath +"/UploadedFiles/Products/no_image.gif")" alt="@item.Name" title="@item.Name" class="img-fluid center-block" /></a>
                                             <!-- Smartshop Images Start -->
-                                            <a href="@Url.Action("ProductDetails", "Products", new { sku = item.SKUCode })"><img src="@(!string.IsNullOrEmpty(item.HoverImage) ? ViewBag.BaseFilePath +item.HoverImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive second-img" alt="@item.Name" title="@item.Name" /></a>
+                                            <a href="@Url.Action("ProductDetails", "Products", new { sku = item.SKUCode })"><img src="@(!string.IsNullOrEmpty(item.HoverImage) ? ViewBag.BaseFilePath +item.HoverImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-fluid second-img" alt="@item.Name" title="@item.Name" /></a>
                                             <!-- Smartshop Images End -->
                                             <div class="topbutton">
                                                 <button type="button" data-toggle="tooltip" title="Add to Wish List">

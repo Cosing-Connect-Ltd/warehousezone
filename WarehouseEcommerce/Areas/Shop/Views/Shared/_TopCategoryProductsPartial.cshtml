@@ -11,7 +11,7 @@
             <div class="product-layout">
                 <div class="product-thumb transition">
                     <div class="image">
-                        <a href="@Url.Action("ProductDetails","Products", new {sku = item.SKUCode})"><img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" title="@item.Name" alt="@item.Name" class="img-responsive center-block" /></a>
+                        <a href="@Url.Action("ProductDetails","Products", new {sku = item.SKUCode})"><img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" title="@item.Name" alt="@item.Name" class="img-fluid center-block" /></a>
                         <div class="topbutton">
                             <button type="button" data-toggle="tooltip" title="Add to Wish List">
                                 <svg width="20px" height="20px">
