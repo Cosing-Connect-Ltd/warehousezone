@@ -17,6 +17,45 @@ function searchPoducts() {
     window.location.href = basePath + "/shop/Products/list?group=" + groupId + "&sort=" + sortvalue + "&filter=" + currentFilter + "&search=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&department=" + departmentId + "&category=" + SubCategory + "&values=" + valuesparam;
 }
 
+function SearchPostCode() {
+    var searchString = $(".text-search-postcode").val();
+    var selOption = '';
+    $.ajax({
+        url: basePath + '/Orders/GetApiAddressAsync',
+        method: 'post',
+        data: { postCode: searchString },
+        dataType: 'json',
+        success: function (data) {
+            debugger;
+            $('#selectAddresss').show();
+            if (data.length > 0) {
+                $('#selectApiAddress').empty();
+                $('#selectApiAddress').append('<option>Select Address</option>');
+                $.each(data, function (i, item) {
+                    $('#selectApiAddress').append($('<option></option>').val(data[i]).html(data[i]));
+
+                });
+            }
+        },
+        error: function (err) {
+            alert(err);
+        }
+    });
+}
+
+function OnchangeDropdownAddress() {
+    debugger;
+    var selOption = $('#selectApiAddress :selected').val().split(",");
+    var PostCode = document.getElementById("postCode").value;
+
+    if (selOption.length > 0) {
+        $("#AddressLine1").val(selOption[0]);
+        $("#AddressLine2").val(selOption[5]);
+        $("#AddressLine3").val(selOption[6]);
+        $("#PostCode").val(PostCode);
+    }
+}
+
 function SearchProductCategory() {
     var productgroupId = $("#ProductGroups").val() == undefined ? "" : $("#valuesParameter").val();
     var searchstring = $(".text-search").val();
@@ -71,10 +110,10 @@ $('.text-search').on('input', function () {
         focus: updateTextBox,
         select: updateTextBox
     }).autocomplete('instance')._renderItem = function (ul, item) {
-            debugger;
-            return $('<li class="search-item">').append("<img style='width: 46px; height:46px;' src=" + item.Path + " alt=" + item.Name + "/>")
-                .append("<a href=" + basePath + "/Shop/Products/list?group=" + item.Group + "&search=" + item.SKUCode + "&department=" + item.Department + ">" + item.Name + "</a>").appendTo(ul);
-        };
+        debugger;
+        return $('<li class="search-item">').append("<img style='width: 46px; height:46px;' src=" + item.Path + " alt=" + item.Name + "/>")
+            .append("<a href=" + basePath + "/Shop/Products/list?group=" + item.Group + "&search=" + item.SKUCode + "&department=" + item.Department + ">" + item.Name + "</a>").appendTo(ul);
+    };
 });
 
 function updateTextBox(event, ui) {
@@ -196,7 +235,7 @@ function ChooseShippingAddress(accountid, billingaddressId, shippingaddressid, s
 
     location.href = basePath + "/shop/Orders/GetAddress?AccountId=" + accountid + "&AccountBillingId=" + billingaddressId + "&AccountShippingId=" + shippingaddressid + "&ShipingAddress=" + status + "&ShippmentTypeId=" + ShippmentId;
 }
-function ChoosePaymentMethod(accountid, shippingaddressid,shipmentMethodType) {
+function ChoosePaymentMethod(accountid, shippingaddressid, shipmentMethodType) {
     var paymenttypeId = $("input[name='paymentMethod']:checked").val();
     if (paymenttypeId === undefined) {
         alert("Please select payment method.");
@@ -223,6 +262,7 @@ $(document).ready(function () {
 
     $(".cash-btn").hide();
     $('#PayPal').prop('checked', true);
+    $("#selectAddresss").hide();
 
     var id = $('#ProductGroupIds').val();
     getTopCategoryProducts(id);

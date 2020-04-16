@@ -125,6 +125,21 @@
                         {
                             <div>
                                 <h4 class="text-uppercase mt-20">@(Model == null ? "Add a new address" : "Edit Address")</h4>
+                                <div class="search-container">
+                                    <div class="search-box input-group">
+                                        <input id ="postCode" type="text" name="search" value="" placeholder="Enter PostCode" class="text-search-postcode" />
+                                        <div id="sp-btn-search" class="input-group-btn">
+                                            <div class="col-md-6">
+                                                <button type="button" id="btn-search-category" class="btn btn-search-category" onclick="SearchPostCode();">Find Address</button>
+                                            </div>
+                                            <div id="selectAddresss" class="col-md-8">
+                                                <select id="selectApiAddress" name="address" onchange="OnchangeDropdownAddress()">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <hr class="custom-hr">
                                 @using (Html.BeginForm("SaveAddress", "Orders"))
                                 {

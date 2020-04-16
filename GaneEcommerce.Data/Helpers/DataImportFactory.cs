@@ -20,6 +20,7 @@ using System.Xml;
 using Elmah;
 using System.Text;
 using System.Xml.Serialization;
+using System.Net.Http;
 
 namespace Ganedata.Core.Data.Helpers
 {
@@ -2739,7 +2740,7 @@ namespace Ganedata.Core.Data.Helpers
                     orderSearch = serializer.Deserialize(streamReader) as PrestashopOrders;
                     if (orderSearch?.Orders?.Order.Count > 0)
                     {
-                        CreateWebSiteSyncLog(requestTime,"OK", true, orderSearch.Orders.Order.Count, requestSentTime, SiteId,tenantId);
+                        CreateWebSiteSyncLog(requestTime, "OK", true, orderSearch.Orders.Order.Count, requestSentTime, SiteId, tenantId);
                     }
                     else
                     {
@@ -2895,7 +2896,7 @@ namespace Ganedata.Core.Data.Helpers
             }
             catch (Exception ex)
             {
-                CreateWebSiteSyncLog(requestTime, "Error", false,0, requestSentTime, SiteId, tenantId);
+                CreateWebSiteSyncLog(requestTime, "Error", false, 0, requestSentTime, SiteId, tenantId);
                 return ex.Message;
             }
             return "All data sync properly";
@@ -3001,7 +3002,7 @@ namespace Ganedata.Core.Data.Helpers
                     prestashopProducts = serializer.Deserialize(streamReader) as PrestashopProduct;
                     if (prestashopProducts?.Products?.Product?.Count > 0)
                     {
-                        CreateWebSiteSyncLog(requestTime,"OK", true, prestashopProducts.Products.Product.Count, requestSentTime, SiteId,tenantId);
+                        CreateWebSiteSyncLog(requestTime, "OK", true, prestashopProducts.Products.Product.Count, requestSentTime, SiteId, tenantId);
                     }
                     else
                     {
@@ -3488,6 +3489,38 @@ namespace Ganedata.Core.Data.Helpers
             string singleString = userName + ":" + Password;
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(singleString);
             return System.Convert.ToBase64String(plainTextBytes);
+        }
+
+        public async Task<List<string>> GetAddressByPostCodeAsync(string postCode)
+        {
+            HttpResponseMessage response = null;
+            try
+            {
+                var apiToken = ConfigurationManager.AppSettings["PostCodeKey"];
+                var apiLink = ConfigurationManager.AppSettings["ApiUrl"];
+                string apiUrl = string.Empty;
+                apiLink = apiLink + postCode;
+                apiUrl = apiLink + "?api-key=" + apiToken;
+
+                PostCodeAddressViewModel model = new PostCodeAddressViewModel();
+
+                using (HttpClient client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(apiUrl);
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                    response = await client.GetAsync(new Uri(apiUrl));
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        model = JsonConvert.DeserializeObject<PostCodeAddressViewModel>(response.Content.ReadAsStringAsync().Result);
+                    }
+                }
+                return model.addresses;
+            }
+            catch (Exception Exp)
+            {
+                return null;
+            }
         }
     }
 

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Ganedata.Core.Data.Helpers;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Services;
 using System;
@@ -164,7 +165,13 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
             return View(models);
         }
 
-
+        public async Task<JsonResult> GetApiAddressAsync(string postCode)
+        {
+            DataImportFactory dataImportFactory = new DataImportFactory();
+            var addresses = await dataImportFactory.GetAddressByPostCodeAsync(postCode);
+            
+            return Json(addresses, JsonRequestBehavior.AllowGet);
+        }
 
         public ActionResult AddShippingMethod(int AccountAddressId)
         {
