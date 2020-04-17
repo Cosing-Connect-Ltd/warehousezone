@@ -49,8 +49,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ApplicationInsights.Helpers.WebCore, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ApplicationInsights.Helpers.WebCore.1.3.0\lib\net452\ApplicationInsights.Helpers.WebCore.dll</HintPath>
+    </Reference>
     <Reference Include="BCrypt.Net-Next, Version=3.3.3.0, Culture=neutral, PublicKeyToken=1e11be04b6288443, processorArchitecture=MSIL">
       <HintPath>..\packages\BCrypt.Net-Next.3.3.3\lib\net472\BCrypt.Net-Next.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.1.0\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
@@ -76,6 +82,7 @@
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net" />
     <Reference Include="System.Numerics">
       <Private>True</Private>
     </Reference>
@@ -262,6 +269,7 @@
     <Compile Include="Domain\ViewModels\CurrencyExRateViewModel.cs" />
     <Compile Include="Domain\ViewModels\DPDModel\DPDViewModel.cs" />
     <Compile Include="Domain\ViewModels\GlobalTaxViewModel.cs" />
+    <Compile Include="Domain\ViewModels\PostCodeAddressViewModel.cs" />
     <Compile Include="Domain\ViewModels\PrestaShopModel\AccountPrestaShopViewModel.cs" />
     <Compile Include="Domain\ViewModels\PrestaShopModel\OrdersPrestaShopViewModel.cs" />
     <Compile Include="Domain\ViewModels\PrestaShopModel\PrestashopAddressViewModel.cs" />
