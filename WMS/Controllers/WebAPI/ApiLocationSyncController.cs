@@ -51,7 +51,7 @@ namespace WMS.Controllers.WebAPI
                 LocationSync.LocationId = l.LocationId;
                 LocationSync.LocationGroupId = l.LocationGroupId;
                 LocationSync.LocationTypeId = l.LocationTypeId;
-                LocationSync.WareHouseName = l.TenantWarehouses.WarehouseName;
+                LocationSync.WarehouseName = l.TenantWarehouses.WarehouseName;
                 LocationList.Add(LocationSync);
             }
 

@@ -10,14 +10,10 @@ namespace Ganedata.Core.Models
     {
         public Guid TerminalLogId { get; set; }
         public int Count { get; set; }
-
         public List<LocationSync> LocationSync { get; set; }
-
-
     }
     public class LocationSync
     {
-
         public int LocationId { get; set; }
         public int WarehouseId { get; set; }
         public int? LocationGroupId { get; set; }
@@ -27,9 +23,6 @@ namespace Ganedata.Core.Models
         public string LocationName { get; set; }
         public string LocationCode { get; set; }
         public string Description { get; set; }
-        public string WareHouseName { get; set; }
-
-
-
+        public string WarehouseName { get; set; }
     }
 }
