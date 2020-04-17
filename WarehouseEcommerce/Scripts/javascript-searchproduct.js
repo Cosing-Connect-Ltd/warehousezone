@@ -38,7 +38,7 @@ function SearchPostCode() {
             }
         },
         error: function (err) {
-            alert(err);
+            alert("Invalid Postcode please enter the correct format");
         }
     });
 }
