@@ -1843,11 +1843,28 @@ header {
         font-size: 8px;
     }
 }
+.deliveryinfo-row {
+    margin-left: unset;
+    margin-right: unset;
+    flex-wrap: nowrap;
+}
+@media(min-width:654px){
+    .deliveryinfo-row .text-center {
+        justify-content: center;
+        text-align: center;
+    }
 
+    .deliveryinfo-row .text-right {
+        justify-content: flex-end;
+        text-align: right;
+    }
+}
 @media(max-width:653px) {
     .deliveryinfo-row .list-inline {
         width: 100%;
         text-align: left !important;
+        max-width:unset;
+        flex:unset;
     }
 
     .deliveryinfo-row {
