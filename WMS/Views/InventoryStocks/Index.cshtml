@@ -70,4 +70,8 @@
     {
         @Html.ActionLink("Move Stock", "MoveStock", null, new { @class = "btn btn-primary Caction" })
     }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("InventoryStocks", "MoveStock"))
+    {
+        @Html.ActionLink("Move Bulk Stock", "MoveStock", null, new { @class = "btn btn-primary" })
+    }
 </div>

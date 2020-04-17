@@ -7,13 +7,14 @@ using System.Web;
 namespace Ganedata.Core.Entities.Domain
 {
     [Serializable]
-    public class ProductMovement : PersistableEntity<int>
+    public class StockMovement : PersistableEntity<int>
     {
-        public ProductMovement()
+        public StockMovement()
         {
         }
 
         [Key]
-        public Guid? ProductMovementId { get; set; }
+        public Guid? StockMovementId { get; set; }
+        public int WarehouseId { get; set; }
     }
 }

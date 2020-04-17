@@ -238,6 +238,34 @@ var loadProductCreateForm = function (code, serialised) {
 }
 
 $(document).ready(function () {
+    $(".stockMovement").unbind().on("submit", function () {
+        debugger;
+        var bulk = $("#BulkStock").val();
+        if (bulk) {
+            if ($("#StockMovementList").length > 0)
+            {
+                if (StockMovementList.cpRowCount > 0)
+                {
+                    Qty.removeClass("invalid").addClass("valid");
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+        else {
+            var qunatity = Qty.GetValue();
+            if (qunatity == null || qunatity <= 0) {
+                alert("Quantity is required");
+                return false;
+            }
+        }
+
+    });
+
+
+
     $(".stocktake-delete").click(function () {
         var id = $(this).attr('data-id');
         if (id !== 0 && id !== "" && id !== undefined && id !== null) {
@@ -270,7 +298,6 @@ $(document).ready(function () {
             }
         }
     });
-
     $("#divStocktakeEditcontent  #btnUpdateQtyCancel").on("click", function () {
         $("#divStocktakeEditcontent").slideUp();
         $("#divStocktakeEditcontent").insertAfter($("#divProductSerialsInputContainer"));
@@ -721,6 +748,45 @@ function OnToggleSelectAllStockApplyChanges(isChecked) {
         }
     });
 }
+
+
+function OnStockMovementAdjust() {
+    var formLocationId = $("#FromLocation").val();
+    var toLocationId = $("#ToLocation").val();
+    var productId = prdid.GetValue();
+    var qty = Qty.GetValue();
+    if (formLocationId <= 0 || toLocationId <= 0 || productId <= 0 || productId == null || qty <= 0 || qty == null) {
+        alert("All fields are mandatory");
+        return;
+    }
+    stockmovement = {
+        "FromLocation": formLocationId, "ToLocation": toLocationId, "Qty": qty, ProductId: productId
+    }
+    LoadingPanel.Show();
+    $.ajax({
+        type: "GET",
+        url: "/InventoryStocks/SaveMoveStock/",
+        data: stockmovement,
+        success: function (data) {
+            StockMovementList.Refresh();
+            prdid.SetValue(null);
+            Qty.SetValue(null);
+            LoadingPanel.Hide();
+            var info = "Stock Movement added!";
+            $("#infoMsg").html(info).show();
+            $('#infoMsg').delay(2000).fadeOut();
+
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert('Error' + textStatus + "/" + errorThrown);
+        }
+    });
+
+
+
+}
+
+
 
 
 

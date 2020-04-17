@@ -100,7 +100,7 @@ namespace Ganedata.Core.Data
         DbSet<ProductLocationStockLevel> ProductLocationStockLevels { get; set; }
         DbSet<PSyncHistory> PSyncHistories { get; set; }
         DbSet<ReportType> ReportTypes { get; set; }
-        DbSet<ProductMovement> ProductMovements { get; set; }
+        DbSet<StockMovement> StockMovements { get; set; }
         DbSet<MarketJobAllocation> MarketJobAllocations { get; set; }
         DbSet<MarketRouteProgress> MarketRouteProgresses { get; set; }
 

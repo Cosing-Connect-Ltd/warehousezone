@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using Ganedata.Core.Models;
 using DevExpress.Web.Mvc;
 using WMS.CustomBindings;
+using WarehouseEcommerce.Helpers;
 
 namespace WMS.Controllers
 {
@@ -285,11 +286,16 @@ namespace WMS.Controllers
 
         public ActionResult MoveStock(int? id)
         {
+
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+            GaneStockMovementItemsSessionHelper.ClearSessionStockMovement();
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var LocationsList = _adminServices.GetAllLocations(CurrentTenantId, CurrentWarehouseId);
+                ViewBag.FromLocations = new SelectList(LocationsList, "LocationId", "LocationCode");
+                ViewBag.ToLocations = new SelectList(LocationsList, "LocationId", "LocationCode");
+                return View();
             }
-            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             var prd = _productService.GetProductMasterById(id.Value);
 
             if (prd == null)
@@ -311,26 +317,62 @@ namespace WMS.Controllers
         }
 
         [HttpPost]
-        public ActionResult MoveStock(StockMovementViewModel data)
+        public ActionResult MoveStock(StockMovementViewModel data, bool BulkStock=false)
         {
             StockMovementCollectionViewModel model = new StockMovementCollectionViewModel();
             model.StockMovements = new List<StockMovementViewModel>();
-            data.UserId = CurrentUserId;
-            data.TenentId = CurrentTenantId;
-            data.WarehouseId = CurrentWarehouseId;
-            model.StockMovements.Add(data);
-            var result=_lookupServices.UpdateStockMovement(model);
+          
+            if (BulkStock)
+            {
+                var bulkdata = GaneStockMovementItemsSessionHelper.GetStockMovementsSession();
+                model.StockMovements.AddRange(bulkdata);
+
+            }
+            else
+            {
+                data.UserId = CurrentUserId;
+                data.TenentId = CurrentTenantId;
+                data.WarehouseId = CurrentWarehouseId;
+                model.StockMovements.Add(data);
+            }
+         
+            var result = _lookupServices.UpdateStockMovement(model);
             if (result)
             {
                 TempData["Success"] = "Product Moved Successfully";
             }
-            else 
+            else
             {
                 TempData["Error"] = "Product not moved, qunatity not found against this product.";
             }
-            return RedirectToAction("MoveStock",new { id=data.ProductId });
+            if (BulkStock)
+            {
+                return RedirectToAction("MoveStock", new { id = string.Empty});
+            }
+            else
+            {
+                return RedirectToAction("MoveStock", new { id = data.ProductId });
+            }
         }
 
+
+        public ActionResult _StockMovementList()
+        {
+            var model = GaneStockMovementItemsSessionHelper.GetStockMovementsSession();
+            return PartialView(model);
+
+        }
+        public JsonResult SaveMoveStock(StockMovementViewModel stockmovement)
+        {
+            stockmovement.WarehouseId = CurrentWarehouseId;
+            stockmovement.TenentId = CurrentTenantId;
+            stockmovement.UserId = CurrentUserId;
+            stockmovement.FromLocationName = _lookupServices.GetLocationById((stockmovement.FromLocation ?? 0), CurrentTenantId)?.LocationName;
+            stockmovement.ToLocationName = _lookupServices.GetLocationById((stockmovement.ToLocation ?? 0), CurrentTenantId)?.LocationName;
+            stockmovement.ProductName = _productService.GetProductMasterById(stockmovement.ProductId)?.Name;
+            GaneStockMovementItemsSessionHelper.UpdateStockMovementItemsSession(stockmovement);
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
 
 
         public ActionResult GetProductInformation(string id)

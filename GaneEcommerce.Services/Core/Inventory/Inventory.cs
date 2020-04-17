@@ -1315,7 +1315,7 @@ namespace Ganedata.Core.Services
                 status = stockListfromLocation.Count > 0 ? true : false;
                 if (status)
                 {
-                    ProductMovementId = lookupService.CreateProductMovement(stockMovement.UserId, stockMovement.TenentId);
+                    ProductMovementId = lookupService.CreateStockMovement(stockMovement.UserId, stockMovement.TenentId,stockMovement.WarehouseId);
                 }
                 foreach (var item in stockListfromLocation)
                 {
@@ -1343,7 +1343,7 @@ namespace Ganedata.Core.Services
             return status;
         }
 
-        private static void InventoryTransactionForStockMovement(InventoryTransaction inventoryTransaction, int UserId, int Tenantid, int WarehouseId, Guid productMovementId, int LocationIdTo = 0, decimal Qty = 0, bool CurrentLocationstatus = true)
+        private static void InventoryTransactionForStockMovement(InventoryTransaction inventoryTransaction, int UserId, int Tenantid, int WarehouseId, Guid StocktMovementId, int LocationIdTo = 0, decimal Qty = 0, bool CurrentLocationstatus = true)
         {
             var context = DependencyResolver.Current.GetService<IApplicationContext>();
 
@@ -1356,7 +1356,7 @@ namespace Ganedata.Core.Services
                     stockItem.UpdatedBy = UserId;
                     stockItem.TenentId = Tenantid;
                     stockItem.DateUpdated = DateTime.UtcNow;
-                    stockItem.ProductMovementId = productMovementId;
+                    stockItem.StockMovementId = StocktMovementId;
                     context.Entry(stockItem).State = EntityState.Modified;
                     context.SaveChanges();
                 }
@@ -1373,7 +1373,7 @@ namespace Ganedata.Core.Services
                     Quantity = Qty,
                     TenentId = Tenantid,
                     WarehouseId = WarehouseId,
-                    ProductMovementId = productMovementId,
+                    StockMovementId = StocktMovementId,
                     IsCurrentLocation = true,
                     LastQty = CalculateLastQty(inventoryTransaction.ProductId, Tenantid, inventoryTransaction.WarehouseId, Qty, (int)InventoryTransactionTypeEnum.StockMovement, (inventoryTransaction.DontMonitorStock ?? false))
                 };

@@ -25,13 +25,17 @@ namespace Ganedata.Core.Entities.Domain
         public int? ToLocation { get; set; }
         public List<int> SerialIds { get; set; }
         public List<int> PalletSerialIds { get; set; }
-        [Required]
+        
         [Display(Name = "Quantity")]
         public decimal Qty { get; set; }
+        [Display(Name = "Product")]
         public int ProductId { get; set; }
         public int UserId { get; set; }
         public int WarehouseId { get; set; }
         public int TenentId { get; set; }
+        public string ProductName { get; set; }
+        public string FromLocationName { get; set; }
+        public string ToLocationName { get; set; }
         public DateTime DateCreated { get; set; }
     }
 

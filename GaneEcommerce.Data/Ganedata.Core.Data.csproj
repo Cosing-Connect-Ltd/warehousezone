@@ -763,6 +763,10 @@
     <Compile Include="Migrations\202004151354435_prodct-movement-Id-added-in-inventoryTrnsaction.designer.cs">
       <DependentUpon>202004151354435_prodct-movement-Id-added-in-inventoryTrnsaction.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004161205537_renametable-stockmovement-stockId.cs" />
+    <Compile Include="Migrations\202004161205537_renametable-stockmovement-stockId.designer.cs">
+      <DependentUpon>202004161205537_renametable-stockmovement-stockId.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1655,6 +1659,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004151354435_prodct-movement-Id-added-in-inventoryTrnsaction.resx">
       <DependentUpon>202004151354435_prodct-movement-Id-added-in-inventoryTrnsaction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004161205537_renametable-stockmovement-stockId.resx">
+      <DependentUpon>202004161205537_renametable-stockmovement-stockId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
