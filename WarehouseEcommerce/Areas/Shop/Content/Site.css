@@ -1317,7 +1317,6 @@ ul.mhp-menu {
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
-    border-top: 1px solid #dddddd;
     padding: 15px 0px;
     margin-top: -1px;
 }
@@ -1900,21 +1899,75 @@ ul.mhp-menu {
 
 .kit-product .product-bg .thumbnails img {
     border: solid 1px #D7D7D7;
+    position: relative!important;
 }
-
+.kit-product .product-bg .thumbnails li{
+    margin-bottom:10px;
+}
+.kit-product .product-bg .thumbnails .owl-carousel .owl-item {
+    margin-right: 15px;
+}
 .kit-product .rates-page-tabs .nav-tabs {
     border: solid 1px #D7D7D7;
     border-bottom: unset;
+}
+.kit-product .product-bg .thumbnails .zoomWrapper {
+    height:unset!important;
+}
+.kit-product .product-bg .thumbnails .owl-wrapper-outer {
+    overflow-x: scroll;
 }
 
 .kit-product .pro-content {
     width: 100%;
     padding: unset;
+    max-width: unset;
+    flex: unset;
+}
+.kit-product .tab-pane {
+    width: 100%;
+}
+
+.kit-product .kit-tabs-content {
+    padding: 10px;
+    border: 1px solid #dee2e6;
+    border-top: unset;
+}
+
+.kit-product .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+    font-weight: 600;
+    color: #000;
+    font-size: 15px;
 }
 
 @media(min-width:900px) {
     .kit-product .sticky {
         margin-right: 15px;
+    }
+}
+@media(max-width:575px) {
+    .kit-product .product-bg .thumbnails .owl-wrapper-outer .owl-item {
+        width:88px!important;
+    }
+    .kit-product .card-header {
+        padding: unset !important;
+    }
+
+    .kit-product .card {
+        margin-bottom: 7px;
+    }
+
+    .kit-product .description-row {
+        width: 100%;
+        padding: unset;
+    }
+
+    .kit-product .card-title {
+        margin-bottom: auto;
+    }
+
+    .kit-product .thumbnail a img {
+        position: unset;
     }
 }
 
@@ -1958,97 +2011,6 @@ ul.mhp-menu {
     padding: 7px 35px;
     width: 100%;
 }
-
-.rates-page-tabs .nav-tabs > li > a {
-    border: none;
-    text-transform: uppercase;
-    color: #7d7d7d;
-}
-
-    .rates-page-tabs .nav-tabs > li > a:hover,
-    .rates-page-tabs .nav-tabs > li > a:focus {
-        color: #000;
-        background-color: white;
-        box-shadow: 0px -2px 0px #000 inset;
-        font-weight: 600;
-    }
-
-.rates-page-tabs .nav-tabs > li.active > a,
-.rates-page-tabs .nav-tabs > li.active > a:focus,
-.rates-page-tabs .nav-tabs > li.active > a:hover {
-    border: none;
-    box-shadow: 0px -2px 0px #000 inset;
-    color: #000;
-    font-weight: 600;
-}
-
-.panel-group .panel-heading + .panel-collapse > .panel-body {
-    border: 1px solid #ddd;
-}
-
-.rates-page-tabs .panel-group,
-.rates-page-tabs .panel-group .panel,
-.rates-page-tabs .panel-group .panel-heading,
-.rates-page-tabs .panel-group .panel-heading a,
-.rates-page-tabs .panel-group .panel-title,
-.rates-page-tabs .panel-group .panel-title a,
-.rates-page-tabs .panel-group .panel-body,
-.rates-page-tabs .panel-group .panel-group .panel-heading + .panel-collapse > .panel-body {
-    border-radius: 2px;
-    border: 0;
-}
-
-    .rates-page-tabs .panel-group .panel-heading {
-        padding: 0;
-        background-color: white;
-    }
-
-        .rates-page-tabs .panel-group .panel-heading a {
-            display: block;
-            color: #303030;
-            font-size: 18px;
-            padding: 15px 15px 15px 45px;
-            text-decoration: none;
-            text-transform: uppercase;
-            position: relative;
-        }
-
-            .rates-page-tabs .panel-group .panel-heading a.collapsed {
-            }
-
-            .rates-page-tabs .panel-group .panel-heading a:before {
-                content: '-';
-                position: absolute;
-                left: 14px;
-                top: 8px;
-                font-size: 26px;
-            }
-
-            .rates-page-tabs .panel-group .panel-heading a.collapsed:before {
-                content: '+';
-                left: 10px;
-                top: 10px;
-            }
-
-
-    .rates-page-tabs .panel-group .panel-collapse {
-        margin-top: 5px !important;
-    }
-
-    .rates-page-tabs .panel-group .panel-body {
-        background: #ffffff;
-        padding: 15px;
-    }
-
-    .rates-page-tabs .panel-group .panel {
-        background-color: transparent;
-    }
-
-    .rates-page-tabs .panel-group .panel-body p:last-child,
-    .rates-page-tabs .panel-group .panel-body ul:last-child,
-    .rates-page-tabs .panel-group .panel-body ol:last-child {
-        margin-bottom: 0;
-    }
 
 .no-wrap {
     white-space: nowrap;
@@ -2124,3 +2086,10 @@ ul.mhp-menu {
     height:235px;
     width:235px;
 }
+
+
+
+
+
+
+

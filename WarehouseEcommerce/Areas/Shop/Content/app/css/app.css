@@ -2973,9 +2973,8 @@ footer #contact li {
 }*/
 
     .product-tab li a {
-        border: none !important;
         background-color: transparent !important;
-        padding: 10px 15px 10px 0px;
+        /*padding: 10px 15px 10px 0px;*/
     }
 
 }
