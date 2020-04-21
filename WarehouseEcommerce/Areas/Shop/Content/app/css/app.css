@@ -5372,3 +5372,7 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
 .mt-3px {
     margin-top:3px;
 }
+.flex-max-width-unset {
+    flex: unset;
+    max-width: unset;
+}

@@ -496,15 +496,12 @@ ul.mhp-menu {
 .signup-single-side h3 {
     color: #545454;
     font-weight: 600;
+    white-space:nowrap;
 }
 
 @media(max-width:800px) {
     .signup-single-side {
         width: 100%;
-    }
-
-    .signup-col {
-        width: unset;
     }
 }
 
@@ -514,6 +511,7 @@ ul.mhp-menu {
     color: #fff;
     font-weight: 600;
     font-size: 20px;
+    white-space:nowrap;
 }
 
     .login-button:hover {
@@ -521,13 +519,16 @@ ul.mhp-menu {
         box-shadow: 0 5px 12px 0 #382e2e !important;
         transform: scale(1.01);
     }
-
+.login-row input{
+  font-weight:300; 
+}
 .signup-button {
     height: 56px;
     width: 100%;
     color: #fff;
     font-weight: 600;
     font-size: 20px;
+    white-space: nowrap;
 }
 
     .signup-button:hover {

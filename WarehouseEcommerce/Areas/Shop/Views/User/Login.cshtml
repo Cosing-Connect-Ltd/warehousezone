@@ -14,14 +14,8 @@
     <meta name="description" content="SmartShop" />
     @Styles.Render("~/Content/app/css/styles")
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
-    @*<link href="/Content/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />*@
-    <link href="~/Areas/Shop/Content/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    <link href="~/Areas/Shop/Content/plugins/swiper/css/swiper.min.css" type="text/css" rel="stylesheet" media="screen" />
-    <link href="~/Areas/Shop/Content/plugins/owl.carousel/owl.carousel.css" type="text/css" rel="stylesheet" media="screen" />
-    <link href="~/Areas/Shop/Content/plugins/owl.carousel/owl.theme.css" type="text/css" rel="stylesheet" media="screen" />
-    <link href="~/Areas/Shop/Content/plugins/magnific-popup/dist/magnific-popup.css" type="text/css" rel="stylesheet" media="screen" />
-    @*<link href="/Content/app/css/app.css" rel="stylesheet">*@
+    
+    <link rel="stylesheet" href="~/Content/font-awesome.min.css">
     @Scripts.Render("~/bundles/modernizr")
     <script type="text/javascript"> var basePath = '@ViewBag.BasePath';</script>
   
@@ -46,7 +40,7 @@
     <div class="row login-row">
 
         <div class="register-div">
-            <div class="mb-5">
+            <div class="">
                 <a class="" href="#">Help</a> |
                 <a class="" href="@Url.Action("Create","User", new {PlaceOrder=(bool?)ViewBag.PlaceOrders})">Register</a>
             </div>
@@ -55,9 +49,9 @@
             </ul>
         </div>
 
-        <div class="col-md-6 login-col">
+        <div class="col-lg-6 login-col">
             <div class="row">
-                <div class="col-md-12 text-center">
+                <div class="col-lg-12 text-center">
                     <div class="login-logo">
                         <a href="@Url.Action("Index","Home")">
                             <img src="~/Areas/Shop/Content/app/img/logo.png" title="SmartShop Multistore" alt="SmartShop Multistore" class="img-responsive ex-center">
@@ -66,7 +60,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-lg-12">
                     <div class="webi-newsletter  webi-newsletter leftprobg text-center" id="newsletter_5b2631bae1cb9" data-mode="default">
 
                         <div class="inner">
@@ -127,7 +121,7 @@
 
     <footer>
         <div class="row footer-row text-center">
-            <div class="col-md-12">
+            <div class="col-lg-12">
                 <div class="ccopy">powered by <a href="/">GaneData</a> &copy; 2018</div>
             </div>
         </div>
@@ -158,21 +152,21 @@
             @Html.AntiForgeryToken()
 
 
-            <div class="form-horizontal col-md-6 pull-left">
+            <div class="form-horizontal col-lg-6 pull-left">
 
                 @Html.ValidationSummary(true)
 
                 <div class="input-group h-100 justify-content-center align-items-center">
-                    @Html.Label("User Name", new { @class = "col-md-4" })
-                    <div class="col-md-8">
+                    @Html.Label("User Name", new { @class = "col-lg-4" })
+                    <div class="col-lg-8">
                         <input id="UserName" type="text" value="" name="UserName" required autocomplete="off">
                         @Html.ValidationMessageFor(model => model.UserName)
                     </div>
                 </div>
 
                 <div class="input-group h-100 justify-content-center align-items-center">
-                    @Html.Label("Password", new { @class = "col-md-4" })
-                    <div class="col-md-8">
+                    @Html.Label("Password", new { @class = "col-lg-4" })
+                    <div class="col-lg-8">
                         @Html.PasswordFor(model => model.UserPassword, new { required = "required" })
                         @Html.ValidationMessageFor(model => model.UserPassword)
                     </div>
