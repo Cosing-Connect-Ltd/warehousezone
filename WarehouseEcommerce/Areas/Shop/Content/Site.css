@@ -995,16 +995,29 @@ ul.mhp-menu {
     margin-right: unset !important;
     margin-left: unset !important;
     width: 235px;
+    min-width:235px;
     height: 235px;
     border: solid 1px #D7D7D7;
 }
 
 .product-cat .product-grid .caption {
     width: 235px;
+    margin-top:10px;
 }
-
+@media(min-width: 575px) and (max-width:767px){
+    .product-cat .product-list .caption {
+        margin-left: 15px;
+    }
+}
+@media(max-width:575px) {
+    .product-cat .product-list .caption {
+        margin-top: 10px;
+    }
+}
 .product-cat .product-grid {
     width: 268px !important;
+    max-width: unset;
+    flex: unset;
 }
 
 @media(max-width:1119px) {
@@ -1020,7 +1033,19 @@ ul.mhp-menu {
         right: 12px;
     }
 }
+@media(max-width:991px) {
+    .product-cat .product-grid .caption .button-group {
+        text-align: center;
+    }
+        .product-cat .product-grid .caption .button-group a {
+            width: 100%;
+        }
 
+    .product-cat .product-grid {
+        margin: 10px;
+    }
+}
+    
 @media(max-width:839px) {
     .product-cat .product-grid {
         width: 236px !important;
@@ -1031,8 +1056,22 @@ ul.mhp-menu {
     .product-cat .product-list {
         width: 236px !important;
     }
+    .product-cat .product-list {
+        margin: 10px;
+    }
+        .product-cat .product-list .caption .button-group {
+            text-align: center;
+        }
+
+            .product-cat .product-list .caption .button-group a {
+                width: 100%;
+            }
 }
 
+.catesort label {
+    margin-top: 5px;
+    margin-right: 5px;      
+}
 .custom-max-width {
     max-width: 1920px;
     width: 100%;
@@ -1554,13 +1593,25 @@ ul.mhp-menu {
     margin: auto;
 }
 
+
 @media(max-width:1100px) {
     .list-inline > li {
         padding-right: unset;
         padding-left: unset:
     }
 }
-
+#accordion .panel-group .collapse {
+    display:block;
+}
+#accordion .list-group-item {
+    display: flex;
+    align-items: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+#accordion .list-group-item input{
+ margin-top:unset;   
+}
 #accordion .cat-stock {
     display: flex;
     align-items: center;

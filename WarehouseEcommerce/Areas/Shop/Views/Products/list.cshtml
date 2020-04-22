@@ -22,10 +22,10 @@
 
 
 <div id="product-search" class="container custom-max-width">
-    <div class="row">
+    <div class="row mt-4">
         @Html.Hidden("valuesParameter", (string)values)
         @Html.Action("_DynamicFilters", new { department = ViewBag.departmentId, groups = ViewBag.groupId, SubCategory = ViewBag.subcategory, productName = ViewBag.CurrentFilter })
-        <div id="content" class="col-md-9 col-sm-12">
+        <div id="content" class="col-lg-9 col-md-12">
             <ul class="breadcrumb">
                 <li><a href="/shop">Home</a></li>
                 @if ((!string.IsNullOrWhiteSpace(ViewBag.departmentId) && ViewBag.department != "null") && (!string.IsNullOrWhiteSpace(ViewBag.groupId)) && (!string.IsNullOrWhiteSpace(values) && values != "null"))
@@ -55,7 +55,7 @@
             </ul>
 
             <div class="row cate-border">
-                <div class="col-md-2 col-sm-3 col-xs-5">
+                <div class="col-lg-2 col-md-3 col-12">
                     <div class="btn-group-sm">
                         <button type="button" id="list-view" class="btn listgridbtn" data-toggle="tooltip" title="List">
                             <svg width="20px" height="20px">
@@ -73,7 +73,7 @@
                 <input type="text" id="currentFiltervalue" value="@(ViewBag.CurrentFilter ?? " ")" style="display:none" />
                 <input type="text" id="searchString" value="@(ViewBag.searchString ?? " ")" style="display:none" />
 
-                <div class="col-lg-4 col-md-5 col-xs-4 col-sm-5 catesort">
+                <div class="col-xl-4 col-lg-5 col-12 col-md-5 catesort">
                     <div class="input-group input-group-sm select-input">
                         <label class="input-group-addon" for="input-sort">Sort By:</label>
                         <input type="text" id="pagenumber" value="@Model.PageNumber" style="display:none" />
@@ -81,11 +81,11 @@
 
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-5 col-xs-3 col-sm-4 catesort">
+                <div class="col-xl-3 col-lg-5 col-12 col-md-4 catesort">
                     <div class="input-group input-group-sm select-input">
                         <label class="input-group-addon" for="input-limit">Show:</label>
                         @Html.DropDownList("input-limit", ViewBag.pageList as SelectList, htmlAttributes: new { @class = "form-control", onchange = "searchPoducts();" })
-
+                            
                     </div>
                 </div>
 
@@ -96,11 +96,17 @@
                 {
                     foreach (var item in Model)
                     {
-                        <div class="product-layout product-list col-xs-12">
+                        <div class="product-layout product-list col-12">
                             <div class="product-thumb transition single-product-cat">
                                 <div class="image">
-                                    <a href="@Url.Action("ProductDetails","Products", new {sku=item.SKUCode})"><img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + " /UploadedFiles/Products/no_image.gif")" title="@item.Name" alt="@item.Name" class="img-responsive center-block" /></a>
-                                    <a href="@Url.Action("ProductDetails", "Products" , new { sku=item.SKUCode })"><img src="@(!string.IsNullOrEmpty(item.HoverImage) ? ViewBag.BaseFilePath +item.HoverImage : ViewBag.BaseFilePath + " /UploadedFiles/Products/no_image.gif")" class="img-responsive second-img" title="@item.Name" alt="@item.Name" /></a>
+                                    <a href="@Url.Action("ProductDetails","Products", new {sku=item.SKUCode})">
+                                    @*<img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + " /UploadedFiles/Products/no_image.gif")" title="@item.Name" alt="@item.Name" class="img-fluid center-block" />*@
+                                    <img src="~/Areas/Shop/Content/app/img/product/no_image.gif" alt="slfgslkrhfkhr" title="jghsdflgjkhsdfljgk" class="img-fluid center-block" />
+                                    </a>
+                                    <a href="@Url.Action("ProductDetails", "Products" , new { sku=item.SKUCode })">
+                                    @*<img src="@(!string.IsNullOrEmpty(item.HoverImage) ? ViewBag.BaseFilePath +item.HoverImage : ViewBag.BaseFilePath + " /UploadedFiles/Products/no_image.gif")" class="img-fluid second-img" title="@item.Name" alt="@item.Name" />*@
+                                      <img src="~/Areas/Shop/Content/app/img/product/no_image.gif" alt="slfgslkrhfkhr" title="jghsdflgjkhsdfljgk" class="img-fluid second-img" />
+                                    </a>
                                     <span class="salep">sale</span>
                                     <div class="topbutton">
                                         <button type="button" data-toggle="tooltip" title="Add to Wish List">
@@ -154,13 +160,13 @@
                 <input type="hidden" id="SubCategoryId" value="@ViewBag.subcategory" />
             </div>
             <div class="row pagi">
-                <div class="col-sm-6 col-xs-6 text-left pagination">
+                <div class="col-md-6 col-12 text-left pagination">
 
                     @Html.PagedListPager(Model, page => Url.Action("list", new { group = ViewBag.groupId ?? null, sort = ViewBag.CurrentSort, filter = ViewBag.CurrentFilter, page = page, pagesize = Model.PageSize, department = ViewBag.departmentId, category = ViewBag.subcategory, values = values }))
 
 
                 </div>
-                <div class="col-sm-6 col-xs-6 text-right tot">
+                <div class="col-md-6 col-12  text-right tot showing-pagination-count">
                     Showing @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) to @Model.PageSize of @(Model.TotalItemCount)
 
                 </div>

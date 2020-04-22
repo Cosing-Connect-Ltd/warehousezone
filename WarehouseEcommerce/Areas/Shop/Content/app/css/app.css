@@ -813,15 +813,26 @@ footer h5 {
 
 @media(min-width: 600px) {
     .pagination {
-        display: inline;
+        /*display: inline;*/
     }
 }
-
+.pagination > .active > a {
+    color: white;
+}
+.pagination li {
+    padding-top: 17px;
+}
+.showing-pagination-count {
+    padding-top: 17px;
+}
+.pagination {
+    flex-wrap: wrap;
+}
+  
 
 /* --------------------------
 :: Buttons
 -------------------------- */
-
 .buttons {
     margin: 1em 0;
 }
@@ -3365,11 +3376,11 @@ footer #contact li {
 }
 
 .list-group-item:first-child {
-    border-top: 1px solid #fff;
+    /*border-top: 1px solid #fff;*/
 }
 
 .list-group-item:last-child {
-    border-bottom: 1px solid #fff;
+    /*border-bottom: 1px solid #fff;*/
 }
 
 .list-group-item:first-child,
@@ -4733,6 +4744,10 @@ body.active {
     margin-top: 10px;
     margin-bottom: 10px;
 }
+.button-submit {
+    white-space:nowrap;
+}
+
 
 .background {
     background-repeat: no-repeat;
