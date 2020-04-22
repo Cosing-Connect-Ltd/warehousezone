@@ -5,9 +5,9 @@
     ViewBag.Title = Model.Name + " | " + ViewBag.SiteDescription;
     var Images = ConfigurationManager.AppSettings["ImageFormats"].Split(new char[] { ',' });
 }
-<div id="product-product" class="container">
+<div id="product-product" class="container prod-detail-main">
     <div class="row">
-        <div id="content" class="col-md-12 col-sm-12">
+        <div id="content" class="col-lg-12 col-md-12">
             <ul class="breadcrumb">
                 <li><a href="/shop">Home</a></li>
                 @if (!string.IsNullOrEmpty(Model?.TenantDepartment?.DepartmentName))
@@ -34,7 +34,7 @@
                         <li>
                             <a class="thumbnail" href="@(!string.IsNullOrEmpty(Model.DefaultImage)?ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" title="#">
                                 <img data-zoom-image="@(!string.IsNullOrEmpty(Model.DefaultImage)?ViewBag.BaseFilePath + Model.DefaultImage:ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" src="@(!string.IsNullOrEmpty(Model.DefaultImage)?ViewBag.BaseFilePath + Model.DefaultImage:ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" id="zoom_03" class="img-responsive center-block" alt="image">
-                            </a>
+                                @*<img src="~/Areas/Shop/Content/app/img/product/Canon-CS100-Connect-Station-hover.jpg" alt="slfgslkrhfkhr" title="jghsdflgjkhsdfljgk" class="img-fluid second-img" />*@                            </a>
                         </li>
 
                         <li>
@@ -49,6 +49,7 @@
                                             {
                                                 <a data-zoom-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" data-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" href="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")">
                                                     <img src="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive center-block" alt="additional image">
+                                                    @*<img src="~/Areas/Shop/Content/app/img/product/Canon-CS100-Connect-Station-hover.jpg" alt="slfgslkrhfkhr" title="jghsdflgjkhsdfljgk" class="img-fluid second-img" />*@
                                                 </a>
                                             }
                                         </div>
@@ -59,7 +60,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="col-md-5 pro-content">
+                <div class="col-lg-5 pro-content">
                     <h1>@Model.Name</h1>
                     <hr class="hr-line">
                     <ul class="list-unstyled">
@@ -96,19 +97,19 @@
                         <hr class="hr-line">
                         <!-- Quantity option -->
                         <div class="form-group">
-                            <ul class="list-inline">
+                            <ul class="list-inline qty">
                                 <li class="op-box qtlabel">
                                     <label class="control-label text-decorop" for="input-quantity">Qty</label>
                                 </li>
                                 <li class="op-box qty-plus-minus">
                                     <button type="button" class="form-control pull-left btn-number btnminus" disabled="disabled" data-type="minus" data-field="quantity">
-                                        <span class="glyphicon glyphicon-minus"></span>
+                                        <span class="fa fa-minus"></span>
                                     </button>
                                     <input id="input-quantity" type="text" name="quantity" value="1" size="2" class="form-control input-number pull-left" data-detail="true" />
 
                                     <input type="hidden" name="product_id" value="30" />
                                     <button type="button" class="form-control pull-left btn-number btnplus" data-type="plus" data-field="quantity">
-                                        <span class="glyphicon glyphicon-plus"></span>
+                                        <span class="fa fa-plus"></span>
                                     </button>
                                 </li>
                             </ul>
@@ -124,12 +125,12 @@
                                 </button>
                             }
 
-                            <button type="button" data-toggle="tooltip" title="Add to Wish List" class="btn add-to-cart btn-primary pwishcom" onclick="wishlist.add('30');">
+                            <button type="button" data-toggle="tooltip" title="Add to Wish List" class="btn add-to-cart btn-primary pwishcom mt-minus-5" onclick="wishlist.add('30');">
                                 <svg width="20px" height="20px">
                                     <use xlink:href="/Areas/Shop/Content/app/img/icons/icons.svg#wishlist"></use>
                                 </svg>
                             </button>
-                            <button type="button" data-toggle="tooltip" title="Compare this Product" class="btn add-to-cart btn-primary pwishcom" onclick="compare.add('30');">
+                            <button type="button" data-toggle="tooltip" title="Compare this Product" class="btn add-to-cart btn-primary pwishcom mt-minus-5" onclick="compare.add('30');">
                                 <svg width="20px" height="20px">
                                     <use xlink:href="/Areas/Shop/Content/app/img/icons/icons.svg#pcom"></use>
                                 </svg>
@@ -139,7 +140,7 @@
                         <!-- Quantity option end -->
                     </div>
                     <div class="rating">
-                        <ul class="list-inline">
+                        <ul class="list-inline reviews">
                             <li class="prorate">
                                 <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>                            <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>                            <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>                            <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>                            <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>
                             </li>
@@ -166,8 +167,8 @@
             </div>
             <div class="product-tab">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="#tab-description" data-toggle="tab">Description</a></li>
-                    <li><a href="#tab-review" data-toggle="tab">Reviews (0)</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#tab-description" data-toggle="tab">Description</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tab-review" data-toggle="tab">Reviews (0)</a></liclass="nav-item">
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="tab-description">
@@ -182,20 +183,20 @@
                             <div id="review"></div>
                             <h2 class="heading co-heading">Write a review</h2>
                             <div class="form-group required">
-                                <div class="col-sm-12">
+                                <div class="col-md-12">
                                     <label class="control-label" for="input-name">Your Name</label>
                                     <input type="text" name="name" value="" id="input-name" class="form-control" />
                                 </div>
                             </div>
                             <div class="form-group required">
-                                <div class="col-sm-12">
+                                <div class="col-md-12">
                                     <label class="control-label" for="input-review">Your Review</label>
                                     <textarea name="text" rows="5" id="input-review" class="form-control"></textarea>
                                     <div class="help-block"><span class="text-danger">Note:</span> Add Basic html tag if required!</div>
                                 </div>
                             </div>
                             <div class="form-group required">
-                                <div class="col-sm-12">
+                                <div class="col-md-12">
                                     <label class="control-label rat">Rating</label>
                                     &nbsp;&nbsp;&nbsp; Bad&nbsp;
                                     <input type="radio" name="rating" value="1" />

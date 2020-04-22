@@ -2759,7 +2759,7 @@ footer #contact li {
 .qtlabel {
     position: relative;
     margin-right: 10px;
-    top: -14px;
+    margin-top:4px;
 }
 
 .product-bg {
@@ -2817,7 +2817,7 @@ footer #contact li {
 
 .pro-content .qty-plus-minus .form-control {
     width: 45px;
-    height: 20px;
+    height: 32px;
     text-align: center;
     color: #232d2a;
 }
@@ -2927,14 +2927,13 @@ footer #contact li {
     text-align: center;
     font-size: 14px;
     letter-spacing: 0.5px;
-    line-height: 30px;
+    /*line-height: 30px;*/
 }
 
 .proreview {
     text-align: center;
     border-right: 1px solid #eee;
     border-left: 1px solid #eee;
-    font-size: 16px;
     letter-spacing: 1px;
     margin-top: 4px;
     text-transform: capitalize;

@@ -2139,8 +2139,20 @@ ul.mhp-menu {
     width:235px;
 }
 
-
-
+.prod-detail-main .reviews {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.prod-detail-main .qty {
+    display: flex;
+}
+.prod-detail-main .acart {
+    height: 38px;
+}
+.mt-minus-5 {
+    margin-top:-5px;
+}
 
 
 
