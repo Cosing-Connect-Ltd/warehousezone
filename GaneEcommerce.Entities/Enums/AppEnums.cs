@@ -262,9 +262,9 @@ namespace Ganedata.Core.Entities.Enums
         TnAPostCmdResponse = 30,
         PalletProductsSync = 31,
         PrestaShopOrderSync = 32,
-        LocationsSync=33,
-        PostStockMovement=34
-        
+        LocationsSync = 33,
+        PostStockMovement = 34
+
     }
 
     public enum OrderProcessStatusEnum
@@ -421,7 +421,13 @@ namespace Ganedata.Core.Entities.Enums
 
     public enum WebsiteThemeEnum
     {
+        ElecTech = 1,
+        Classic = 2
+    }
+
+    public enum EcommerceThemeEnum
+    {
         Smart = 1,
-        Link = 2
+        University = 2
     }
 }
