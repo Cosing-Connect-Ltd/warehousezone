@@ -95,18 +95,43 @@ namespace WMS.App_Start
 
         public string GetThemeName()
         {
-            WebsiteThemeEnum ThemeName = WebsiteThemeEnum.ElecTech;
-
-            if (HttpContext.Current.Session["caTenant"] != null)
+            HttpRequest request = HttpContext.Current.Request;
+            if (request != null && request.CurrentExecutionFilePath.Contains("shop"))
             {
-                caTenant tenant = (caTenant)HttpContext.Current.Session["caTenant"];
-                if (tenant.Theme > 0)
+                EcommerceThemeEnum ThemeName = EcommerceThemeEnum.Smart;
+
+                if (HttpContext.Current.Session["caTenant"] != null)
                 {
-                    Enum.TryParse<WebsiteThemeEnum>(Enum.GetName(typeof(WebsiteThemeEnum), tenant.Theme), out ThemeName);
+                    caTenant tenant = (caTenant)HttpContext.Current.Session["caTenant"];
+                    if (tenant.Theme > 0)
+                    {
+                        Enum.TryParse<EcommerceThemeEnum>(Enum.GetName(typeof(EcommerceThemeEnum), tenant.Theme), out ThemeName);
+                    }
                 }
+
+                return ThemeName.ToString();
+
+            }
+            else
+            {
+                WebsiteThemeEnum ThemeName = WebsiteThemeEnum.ElecTech;
+
+                if (HttpContext.Current.Session["caTenant"] != null)
+                {
+                    caTenant tenant = (caTenant)HttpContext.Current.Session["caTenant"];
+                    if (tenant.Theme > 0)
+                    {
+                        Enum.TryParse<WebsiteThemeEnum>(Enum.GetName(typeof(WebsiteThemeEnum), tenant.Theme), out ThemeName);
+                    }
+                }
+
+                return ThemeName.ToString();
             }
 
-            return ThemeName.ToString();
+
+
+
+
 
         }
 
