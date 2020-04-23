@@ -1,0 +1,64 @@
+﻿@using System.Web.UI.WebControls
+@model  Ganedata.Core.Entities.Domain.CustomerAccountViewModel
+
+<div class="account-box @(Model.IsSelected?"account-box-selected":"")" data-text="@Model.AccountName.ToLower()" data-id="@Model.AccountId">
+    <div class="account-box-order">
+        <b class="fa fa-university"></b>
+    </div>
+    <div class="account-box-text" title="@Model.AccountName">
+        @Model.AccountName
+
+        @if (Model.AccountAddressLine1 != null && Model.AccountAddressLine1 != "")
+        {
+            <span> : </span>
+            @Model.AccountAddressLine1;
+
+        }
+
+        @if (Model.AccountAddressPostCode != null && Model.AccountAddressPostCode != "")
+        {
+            <span> : </span>
+            @Model.AccountAddressPostCode;
+
+        }
+
+
+    </div>
+    <div class="col-md-12 p-0 account-box-skippable">
+        <div class="col-md-2 pull-left h-100 justify-content-center align-items-center">
+            @Html.CheckBoxFor(m => m.IsSkippable) Skippable
+        </div>
+        <div class="col-md-2 pull-left h-100 justify-content-center align-items-center">Skip Between</div>
+        <div class="col-md-2 pull-left h-100 justify-content-center align-items-center">
+            @Html.DevExpress().DateEdit(settings =>
+       {
+           settings.Name = "SkipFromDate_" + Model.AccountId;
+           settings.Properties.DisplayFormatString = "dd/MM/yyyy";
+           settings.Properties.ClientSideEvents.ValueChanged = "function(s,e){ onRouteCustomerSelected(); }";
+           settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+           settings.ControlStyle.CssClass = "form-control";
+           settings.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
+           settings.ClientVisible = true;
+
+       }).Bind(Model.SkipFromDate).GetHtml()
+        </div>
+        <div class="col-md-2 pull-left h-100 justify-content-center align-items-center">
+            @Html.DevExpress().DateEdit(settings =>
+       {
+           settings.Name = "SkipToDate_" + Model.AccountId;
+           settings.Properties.DisplayFormatString = "dd/MM/yyyy";
+           settings.Properties.ClientSideEvents.ValueChanged = "function(s,e){ onRouteCustomerSelected(); }";
+           settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+           settings.ControlStyle.CssClass = "form-control";
+           settings.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
+           settings.ClientVisible = true;
+
+       }).Bind(Model.SkipToDate).GetHtml()
+        </div>
+        <div class="col-md-2 pull-left h-100 justify-content-center align-items-center">Visit Freq.</div>
+        <div class="col-md-2 pull-left h-100 justify-content-center align-items-center">
+            @Html.EnumDropDownListFor(model => model.VisitFrequency)
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>

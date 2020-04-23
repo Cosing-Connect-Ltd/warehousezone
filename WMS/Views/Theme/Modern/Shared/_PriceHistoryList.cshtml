@@ -1,0 +1,42 @@
+﻿<div class="col-md-6 pull-left">
+    @{
+        var gridh = Html.DevExpress().GridView(settings =>
+        {
+            settings.Name = "gvPHistory";
+            settings.CallbackRouteValues = new { Controller = "Order", Action = "_PriceHistoryList" };
+            settings.Width = System.Web.UI.WebControls.Unit.Percentage(70);
+
+            settings.KeyFieldName = "Id";
+            settings.SettingsPager.Visible = true;
+            settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+            settings.Settings.ShowGroupPanel = true;
+            settings.Settings.ShowFilterRow = true;
+            settings.SettingsBehavior.AllowFocusedRow = true;
+
+            settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+            settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+            settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+            settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+            settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+            settings.ClientSideEvents.BeginCallback = "beginPriceHistoryCallBack";
+            settings.Columns.Add(col =>
+            {
+                col.Width = 100;
+                col.FieldName = "Price";
+
+            });
+            settings.Columns.Add("Product");
+            settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+            settings.SettingsPager.PageSizeItemSettings.Visible = true;
+            settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+
+        });
+    }
+    @gridh.Bind(Model).GetHtml()
+    <div class="col-md-offset-2 col-md-10 bottom-right-popup">
+        <input type="button" value="OK" onclick="getPrice()" class="btn btn-primary pull-right" />
+        <input type="button" value="Cancel" onclick="javaScript: ModelPriceHistory.Hide()" class="btn btn-primary" />
+    </div>
+</div>

@@ -1,0 +1,286 @@
+﻿@model Ganedata.Core.Entities.Domain.Locations
+
+
+<!DOCTYPE html>
+<script type="text/javascript">
+
+
+
+    function postdata() {
+
+        if ($('#frmlocations').valid()) {
+            var obj = { name: "test" };
+            var data = $("#frmlocations").serialize();
+            $.post("/Products/_LocationSubmit", data, function (res) {
+                // Do something with the response `res`
+                console.log(res);
+                pcModalLocations.Hide();
+                // Don't forget to hide the loading indicator!
+            });
+
+        }
+
+    }
+
+</script>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Location Add</title>
+</head>
+<body>
+    <hgroup>
+        <h2><span>Locations</span></h2>
+    </hgroup>
+    <div class="leftcol">
+
+        @using (Html.BeginForm("_LocationSubmit", "Products", FormMethod.Post, new { @id = "frmlocations" }))
+        {
+            @Html.ValidationSummary(true)
+            <div class="form-group">
+                @Html.LabelFor(model => model.LocationGroupId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(x => x.LocationGroupId, new SelectList(ViewBag.LocationGroups, "Id", "Group"),new { @class = "chosen-select" })
+
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DimensionUOMId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(x => x.DimensionUOMId, new SelectList(ViewBag.DimensionUOMs, "Id", "DUOM"), new { @class = "chosen-select" })
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.UOMId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(x => x.UOMId, new SelectList(ViewBag.UOMs, "Id", "UOM"), new { @class = "chosen-select" })
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Aisle, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Aisle)
+
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.AllowPick, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.CheckBoxFor(model => model.AllowPick)
+
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.AllowPutAway, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.CheckBoxFor(model => model.AllowPutAway)
+
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.AllowReplenish, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.CheckBoxFor(model => model.AllowReplenish)
+
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Bay, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(m => m.Bay)
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Depth, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DevExpress().SpinEditFor(model => model.Depth,
+                settings =>
+                {
+                    settings.Name = "Depth";
+                    settings.Properties.MinValue = 1;
+                    settings.Properties.MaxValue = 10;
+                    settings.Properties.NullText = "From 1 to 10...";
+                }
+            ).GetHtml()
+
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(m => m.Description)
+
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Height, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DevExpress().SpinEditFor(m => m.Height,
+                settings =>
+                {
+                    settings.Name = "Height";
+                    settings.Properties.MinValue = 1;
+                    settings.Properties.MaxValue = 10;
+                    settings.Properties.NullText = "From 1 to 10...";
+                }
+            ).GetHtml()
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.LocationCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(m => m.LocationCode)
+                    @Html.ValidationMessageFor(model => model.LocationCode)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.MixContainer, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.CheckBoxFor(m => m.MixContainer)
+
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.PickSeq, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DevExpress().SpinEditFor(m => m.PickSeq,
+                settings =>
+                {
+                    settings.Name = "PickSeq";
+                    settings.Properties.MinValue = 1;
+                    settings.Properties.MaxValue = 10;
+                    settings.Properties.NullText = "From 1 to 10...";
+                }
+            ).GetHtml()
+
+
+
+
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PutAwaySeq, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DevExpress().SpinEditFor(m => m.PutAwaySeq,
+                settings =>
+                {
+                    settings.Name = "PutAwaySeq";
+                    settings.Properties.MinValue = 1;
+                    settings.Properties.MaxValue = 10;
+                    settings.Properties.NullText = "From 1 to 10...";
+                }
+            ).GetHtml()
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Rack, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(m => m.Rack)
+
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ReplenishSeq, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DevExpress().SpinEditFor(m => m.ReplenishSeq,
+                settings =>
+                {
+                    settings.Name = "ReplenishSeq";
+                    settings.Properties.MinValue = 1;
+                    settings.Properties.MaxValue = 10;
+                    settings.Properties.NullText = "From 1 to 10...";
+                }
+            ).GetHtml()
+
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Slot, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(m => m.Slot)
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.StagingLocation, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.CheckBoxFor(m => m.StagingLocation)
+
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Weight, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DevExpress().SpinEditFor(m => m.Weight,
+                settings =>
+                {
+                    settings.Name = "Weight";
+                    settings.Properties.MinValue = 1;
+                    settings.Properties.MaxValue = 10;
+                    settings.Properties.NullText = "From 1 to 10...";
+                }
+            ).GetHtml()
+
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Width, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DevExpress().SpinEditFor(m => m.Width,
+                settings =>
+                {
+                    settings.Name = "Width";
+                    settings.Properties.MinValue = 1;
+                    settings.Properties.MaxValue = 10;
+                    settings.Properties.NullText = "From 1 to 10...";
+                }
+            ).GetHtml()
+
+                </div>
+            </div>
+            <div class="form-group">
+
+
+                <div class="col-md-12">
+                    <input type="submit"  value="Save" class="btn btn-default" />
+                    <input type="button" onclick="cancellocationadd()" value="Cancel" class="btn btn-default" />
+
+
+                </div>
+            </div>
+
+
+
+        }
+
+    </div>
+</body>
+
+</html>

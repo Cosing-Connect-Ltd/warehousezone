@@ -1,0 +1,49 @@
+﻿@model Ganedata.Core.Entities.Domain.TenantEmailTemplates
+@using Ganedata.Core.Services;
+
+<div class="col-md-12">
+    @using (Html.BeginForm(null, null))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.TemplateId)
+        @Html.ValidationSummary(true)
+        <div class="col-md-12">
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(m => m.EventName, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.TextBoxFor(m => m.EventName, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(m => m.NotificationType, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.EnumDropDownListFor(x => x.NotificationType, "Select Type", new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(m => m.HtmlHeader, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.Partial("~/Views/DevexHelper/PlaceholdersHtmlEditorPartial.cshtml", new HtmlEditorModel() { HtmlContent = Model.HtmlHeader, EditorName = "HtmlHeader", CallbackController = "DevexHelper", CallbackAction = "HtmlEditorEmailTemplateHeaderPartial", Height = 200 })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(m => m.Body, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.Partial("~/Views/DevexHelper/PlaceholdersHtmlEditorPartial.cshtml", new HtmlEditorModel() { HtmlContent = Model.Body, EditorName = "Body", CallbackController = "DevexHelper", CallbackAction = "HtmlEditorEmailTemplateBodyPartial" })
+                </div>
+            </div>
+            <hr />
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(m => m.HtmlFooter, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.Partial("~/Views/DevexHelper/PlaceholdersHtmlEditorPartial.cshtml", new HtmlEditorModel() { HtmlContent = Model.HtmlFooter, EditorName = "HtmlFooter", CallbackController = "DevexHelper", CallbackAction = "HtmlEditorEmailTemplateFooterPartial", Height = 200 })
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            <button type="submit" class="btn btn-primary">@(Model.TemplateId > 0 ? "Update" : "Create")</button>
+            <a href="@Url.Action("Index","EmailTemplates")" class="btn btn-default">Back to list</a>
+        </div>
+    }
+</div>

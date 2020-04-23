@@ -1,0 +1,22 @@
+﻿@model dynamic
+@using Ganedata.Core.Entities.Helpers
+@{
+    Layout = null;
+    var data = ViewBag.Message;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Test</title>
+    
+</head>
+<body>
+    <div>
+        <h1>Import Scan Source Product Data</h1>
+        <p>@data</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+﻿@model Ganedata.Core.Entities.Domain.ProductAttributes
+<hgroup>
+    <h2><span>Attributes</span></h2>
+    <h3><span>@Html.ValidationSummary("", new { @id = "vldAttribute" })</span></h3>
+</hgroup>
+@using (Html.BeginForm("_AttributeSubmit", "Products", FormMethod.Post, new { @id = "frmattributename" }))
+{
+    <div class="col-md-12 pull-left">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <label class="col-md-4">Attribute Name<span style="color:red">*</span></label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.AttributeName)
+                @Html.ValidationMessageFor(model => model.AttributeName)
+            </div>
+        </div>
+    </div>
+    <div class="col-md-offset-2 col-md-10 bottom-right-popup">
+        <input type="button" onclick="attributeSave()" value="Save" class="btn btn-primary" />
+        <input type="button" onclick="cancelattributeadd()" value="Cancel" class="btn btn-default" />
+    </div>
+}

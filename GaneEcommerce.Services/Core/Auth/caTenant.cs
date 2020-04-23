@@ -62,6 +62,7 @@ namespace Ganedata.Core.Services
                 TenantTimeZoneId = tenant.TenantTimeZoneId;
                 TenantModules = tenant.TenantModules;
                 AuthStatus = true;
+                Theme = tenant.Theme;
             }
 
             return AuthStatus;

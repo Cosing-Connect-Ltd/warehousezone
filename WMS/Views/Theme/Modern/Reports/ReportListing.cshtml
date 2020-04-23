@@ -1,0 +1,46 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.WebDocumentViewer, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.WebDocumentViewer }
+        )
+}
+
+<script type="text/javascript">
+    function CustomizeParameterEditors(s, e) {
+        if (e.parameter.name == "EndDate") {     
+            window['paramDisabled'] = ko.observable(false);
+            var paramEditor = $.extend({}, e.info.editor);
+            paramEditor.extendedOptions = $.extend(paramEditor.extendedOptions || {}, { disabled: window.paramDisabled });
+            e.info.editor = paramEditor;
+        }
+    }
+
+    function Init(sender, e) {
+        var parameters = sender.GetPreviewModel().parametersModel;
+        parameters["ReportTypeId"].subscribe(function (value) {
+            if (value == "2" || value == "3")
+                ko.isWritableObservable(window.paramDisabled) && window.paramDisabled(true);
+            else
+                ko.isWritableObservable(window.paramDisabled) && window.paramDisabled(false);
+        });
+    }
+</script>
+
+@{
+    ViewBag.Title = "Reports";
+    ViewBag.SectionTitle = "Reports";
+}
+
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "WebDocumentViewer1";
+    settings.ClientSideEvents.CustomizeParameterEditors = "CustomizeParameterEditors";
+    settings.ClientSideEvents.Init = "Init";
+
+}).Bind(Model).GetHtml()

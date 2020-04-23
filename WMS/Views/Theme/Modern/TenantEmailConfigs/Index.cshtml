@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Ganedata.Core.Entities.Domain.TenantEmailConfig>
+@using Ganedata.Core.Entities.Helpers
+
+@{
+    ViewBag.Title = "Email Config";
+}
+
+
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView },
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+<script>
+
+    function OnGridFocusedRowChanged(s, e) {
+
+        var name = s.name;
+        if (name.indexOf("TenantEmailConfigGridView") >= 0) {
+
+            $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        }
+    }
+
+</script>
+<h2><span>@ViewBag.Title</span></h2>
+
+<div>
+    @Html.Hidden("selkey", null, new { @class = "selkey" })
+
+    @Html.Partial("~/Views/TenantEmailConfigs/_TenantEmailConfigGridViewPartial.cshtml", Model)
+    <div class="col-md-12 pull-right bottom-right">
+
+        @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TenantEmailConfigs", "Create"))
+        {
+
+            @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary  " })
+
+        }
+        @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TenantEmailConfigs", "Details"))
+        {
+
+            @Html.ActionLink("View", "Details", null, new { @class = "btn btn-primary  Caction" })
+
+        }
+        @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TenantEmailConfigs", "Edit"))
+        {
+
+            @Html.ActionLink("Update", "Edit", null, new { @class = "btn btn-primary  Caction" })
+        }
+        @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TenantEmailConfigs", "Delete"))
+        {
+            @Html.ActionLink("Delete", "Delete", null, new { @class = "btn btn-primary  Caction" })
+        }
+
+    </div>
+</div>

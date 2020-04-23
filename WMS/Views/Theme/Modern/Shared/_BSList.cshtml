@@ -1,0 +1,83 @@
+﻿@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "BlindShipment";
+        settings.CallbackRouteValues = new { Controller = "PurchaseOrders", Action = "_BSList" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.Settings.ShowGroupFooter = GridViewGroupFooterMode.VisibleAlways;
+        settings.Settings.ShowFooter = true;
+
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+        settings.KeyFieldName = "Id";
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+
+        if (ViewBag.Groups != null && (bool)ViewBag.Groups == true)
+        {
+            settings.SettingsBehavior.AllowFixedGroups = true;
+            settings.Settings.GroupFormat = "{1}";
+            settings.Columns.Add("GroupProduct").GroupIndex = 0;
+            settings.Columns.Add("ProductDesc").Caption = "ID";
+
+            settings.BeforeGetCallbackResult = (s, e) =>
+            {
+                MVCxGridView grides = s as MVCxGridView;
+                if (grides != null)
+                    grides.ExpandAll();
+            };
+
+
+        }
+        settings.Columns.Add("ProductName");
+        settings.Columns.Add("SKU");
+        settings.Columns.Add("Quantity");
+        settings.Columns.Add("Serial");
+        if (ViewBag.Groups != null && (bool)ViewBag.Groups == true)
+        {
+            settings.Columns.Add("FscPercent");
+        }
+        settings.Columns.Add("LocationName");
+        settings.Columns.Add(column =>
+        {
+
+            column.Caption = "Action";
+            column.Name = "rc";
+
+            column.SetDataItemTemplateContent(container =>
+            {
+                var keyValue = (int)DataBinder.Eval(container.DataItem, "Id");
+                var functon = string.Format("removeBSItem({0})", keyValue);
+                var function = string.Format("editBsItem({0})", keyValue);
+                ViewContext.Writer.Write("<a style='cursor:pointer' id=" + keyValue + "href='#' onclick=" + functon + "><i class='fa fa-trash stocktake-glyph-icons'></i></a>");
+                ViewContext.Writer.Write("<a style='cursor:pointer' id=" + keyValue + "href='#' onclick=" + function + "><i class='fa fa-edit stocktake-glyph-icons'></i></a>");
+
+            });
+        });
+        settings.CustomJSProperties = (s, e) =>
+        {
+            MVCxGridView gridd = (MVCxGridView)s;
+            e.Properties["cpRowCount"] = gridd.VisibleRowCount;
+
+
+        };
+
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+    });
+}
+@grid.Bind(Model).GetHtml()

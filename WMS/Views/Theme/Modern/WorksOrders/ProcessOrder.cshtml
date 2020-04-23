@@ -1,0 +1,102 @@
+﻿@model Ganedata.Core.Entities.Domain.ReceivePOVM
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView },
+        new Script { ExtensionType = ExtensionType.PopupControl },
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+
+@{
+    ViewBag.Title = "Process Works Order";
+}
+<script type="text/javascript">
+
+    function OnGridFocusedRowChanged(s, e) {
+
+        $('#selkeyworkorder').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        var name = s.name;
+        if (name.indexOf("gvWODetail") >= 0) {
+            $('#selkeyworkorder').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        }
+        //else
+        //    $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+
+        // gvPODetail.batchEditApi.SetCellValue(s.GetFocusedRowIndex(), 'rc', 'Haris', 'Haris');
+
+    }
+
+</script>
+<h2><span>@ViewBag.Title</span></h2>
+
+@Html.Hidden("prodId", null)
+@Html.Hidden("ser", null)
+@Html.Hidden("delivery", null)
+@Html.Hidden("order", null)
+@Html.Hidden("qty", null)
+@Html.Hidden("rec_qty", null)
+@Html.Hidden("type", null)
+@Html.Hidden("line_id", null)
+@Html.Hidden("selkeyhdPrddet", null)
+@using (Html.BeginForm("Edit", "Locations", FormMethod.Post, new { @id = "frmProcessOrder" }))
+{
+    @Html.HiddenFor(m => m.OrderID)
+    @Html.HiddenFor(m => m.InventoryTransactionTypeId)
+<div class="col-md-12 pull-left">
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.OrderNumber, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.DisplayFor(m => m.OrderNumber)
+            @Html.ValidationMessageFor(model => model.OrderNumber)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.Label("Resource Name", htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.DisplayFor(m => m.WorksResourceName)
+            @Html.ValidationMessageFor(model => model.OrderNumber)
+        </div>
+    </div>
+    <div class="input-group mb-2 h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.DeliveryNumber, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+
+            @Html.EditorFor(m => m.DeliveryNumber)
+            @Html.ValidationMessageFor(model => model.DeliveryNumber)
+        </div>
+    </div>
+
+    <div class="col-12 process-textbox-scan">
+        <div class="col-11 pull-left pt-2 pb-2">
+            @Html.TextBox("ProcessBarcode", null, new { @class = "form-control", placeholder = "Scan or enter product/case sku/barcode" })
+        </div>
+        <div class="col-1 pull-left pt-1">
+            <b class="btn fa fa-search"></b>
+        </div>
+    </div>
+
+    @Html.Action("_WorksOrderDetails", new { Id = Model.OrderID })
+    <div class="col-md-offset-2 col-md-10 bottom-right">
+        <input type="button" id="OrderDetailadd" class="btn btn-primary orddet" value="Add Item">
+
+        @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Order", "Complete"))
+        {
+            <a href="javascript:void(0)" class="btn btn-primary" onclick="completeOrder()">Complete Order</a>
+        }
+
+        @Html.ActionLink("Finish Processing", "Index", ViewBag.RController as String, null, null, ViewBag.Fragment as string, null, new { @class = "btn btn-primary" })
+    </div>
+</div>
+}

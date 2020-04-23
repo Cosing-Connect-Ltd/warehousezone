@@ -1,0 +1,106 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@using Ganedata.Core.Entities.Enums
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView },
+        new Script { ExtensionType = ExtensionType.PopupControl }
+        )
+}
+
+@{
+    ViewBag.Title = "Goods Return";
+}
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+        var name = s.name;
+        if (name.indexOf("GoodsReturn") >= 0) {
+            $('#selkeyGR').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        }
+    }
+</script>
+
+<h2><span>Goods Return</span></h2>
+
+@Html.Hidden("selkeyGR", null)
+@Html.Hidden("type", (int)InventoryTransactionTypeEnum.Returns)
+@Html.Hidden("groupToken", (string)ViewBag.groupToken)
+@Html.Hidden("deliveryNumber", (string)ViewBag.DeliveryNo)
+
+<div class="col-md-12 p-0">
+    <div class="col-md-6 p-0 pull-left">
+        <div class="col-md-12 p-0">
+            @Html.ValidationSummary(true)
+            @Html.Hidden("grorderid")
+            <div class="input-group graccount h-100 justify-content-center align-items-center">
+                @Html.Label("Account", htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    <input type="text" value="" readonly="readonly" class="graccounttext form-control" id="lblgrAccount" />
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+
+                @Html.Label("Order Number", htmlAttributes: new { @class = "col-md-4" })
+
+
+                <div class="col-md-8">
+                    @Html.TextBox("grOrderNumber")
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+
+                @Html.Label("Product Code", htmlAttributes: new { @class = "col-md-4" })
+
+                <div class="col-md-8">
+
+                    @Html.Partial("~/Views/Shared/ProductLargeDataComboBoxPartial.cshtml")
+                    @*@Html.DropDownList("grProducts", null, htmlAttributes: new { @class = "chosen-select grDrp" })*@
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+
+                @Html.Label("Missing Tracking No's?", htmlAttributes: new { @class = "col-md-4" })
+
+                <div class="col-md-8">
+                    @Html.CheckBox("palletserial", htmlAttributes: new { @class = "losslyreturn form-control" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+
+                @Html.Label("Are goods in sellable condition?", htmlAttributes: new { @class = "col-md-4" })
+
+                <div class="col-md-8">
+                    @Html.CheckBox("palletserials", htmlAttributes: new { @class = "sellableCondition form-control", @checked = "checked" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                <div class="col-md-4 height-0"> </div>
+                <div class="col-md-8 pull-left mb-20">
+                    <input type="button" class="btn btn-primary pull-right" id="btngrDrp" value="Return Selected Product" disabled="disabled" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 p-0 pull-left">
+        <div class="goods-returned-list">
+            @Html.Action("_GRList")
+        </div>
+    </div>
+
+    <div class="col-md-12 bottom-right">
+        <div class="btn btn-default"> @Html.ActionLink("Back to List", "GoodReturnsIndex")</div>
+
+    </div>
+
+</div>
+<script>
+    $(document).ready(function () {
+        prdid.SetEnabled(false);
+
+    });
+</script>

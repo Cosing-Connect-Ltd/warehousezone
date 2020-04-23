@@ -1,0 +1,100 @@
+﻿@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = ViewData["accountid"] + "gridviewAccounts";
+        settings.CallbackRouteValues = new { Controller = "Account", Action = "_ContactsByAccount", AccountID = ViewData["accountid"] };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.SettingsPopup.HeaderFilter.MinWidth = 500;
+
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+        settings.KeyFieldName = "AccountContactId";
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ContactName";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ContactJobTitle";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ContactEmail";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "TenantContactPin";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "TenantContactPhone";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "AccountContactId";
+            c.Caption = "Contact Type";
+            c.Settings.AllowAutoFilter = DefaultBoolean.False;
+
+            c.SetDataItemTemplateContent(m =>
+            {
+                var contactTypes = new List<string>();
+                if (DataBinder.Eval(m.DataItem, "ConTypeRemittance") != null && (bool)DataBinder.Eval(m.DataItem, "ConTypeRemittance"))
+                {
+                    contactTypes.Add("Remittances");
+                }
+                if (DataBinder.Eval(m.DataItem, "ConTypeStatment") != null && (bool)DataBinder.Eval(m.DataItem, "ConTypeStatment"))
+                {
+                    contactTypes.Add("Statement");
+                }
+                if (DataBinder.Eval(m.DataItem, "ConTypeInvoices") != null && (bool)DataBinder.Eval(m.DataItem, "ConTypeInvoices"))
+                {
+                    contactTypes.Add("Invoices");
+                }
+                if (DataBinder.Eval(m.DataItem, "ConTypeMarketing") != null && (bool)DataBinder.Eval(m.DataItem, "ConTypeMarketing"))
+                {
+                    contactTypes.Add("Marketing");
+                }
+                if (DataBinder.Eval(m.DataItem, "ConTypePurchasing") != null && (bool)DataBinder.Eval(m.DataItem, "ConTypePurchasing"))
+                {
+                    contactTypes.Add("Purchasing");
+                }
+
+                ViewContext.Writer.Write("<b>" + string.Join(", ", contactTypes) + "</b>");
+            });
+        });
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+    });
+}
+
+@grid.Bind(Model).GetHtml()
+
+@if (Request.Url.AbsolutePath.ToLower().Contains("edit"))
+{
+    <div class="bottom-right">
+        @Html.ActionLink("Create New", "SaveAccountContact", null, new { @class = "btn btn-primary  " })
+        @Html.ActionLink("Update", "SaveAccountContact", null, new { @class = "btn btn-primary  Caction", @id = "lnkContacts" })
+        @Html.ActionLink("Delete", "DeleteAccountContact", null, new { @class = "btn btn-primary  Caction", @id = "lnkContacts" })
+    </div>
+}

@@ -1,0 +1,121 @@
+﻿@using System.Web.UI.WebControls
+@model IEnumerable<Ganedata.Core.Entities.Domain.ProductSpecialPriceViewModel>
+@using Ganedata.Core.Entities.Helpers
+@{
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+}
+
+@Html.DevExpress().GridView(
+    settings =>
+    {
+        settings.Name = "SpecialPriceGroupsGridView";
+        settings.KeyFieldName = "ProductID";
+        settings.Width = Unit.Percentage(100);
+        settings.CallbackRouteValues = new { Controller = "ProductSpecialPrice", Action = "_GroupSpecialPrices", id = ViewBag.PriceGroupId };
+        settings.SettingsEditing.BatchUpdateRouteValues = new { Controller = "ProductSpecialPrice", Action = "SaveProductSpecialPrice" };
+
+        settings.SettingsEditing.Mode = GridViewEditingMode.Batch;
+        settings.SettingsEditing.BatchEditSettings.EditMode = GridViewBatchEditMode.Cell;
+        settings.SettingsEditing.BatchEditSettings.StartEditAction = GridViewBatchStartEditAction.DblClick;
+        settings.Settings.ShowStatusBar = GridViewStatusBarMode.Hidden;
+
+        settings.EnableCallbackAnimation = false;
+        settings.SettingsPager.PageSize = 10;
+        settings.CommandColumn.Visible = false;
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "ProductName";
+            column.EditFormSettings.Visible = DefaultBoolean.False;
+
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "SkuCode";
+            column.EditFormSettings.Visible = DefaultBoolean.False;
+
+        });
+
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "SpecialPrice";
+            column.EditorProperties().SpinEdit(p =>
+            {
+                p.MinValue = 0;
+                p.MaxValue = 1000000000;
+                p.ClientSideEvents.LostFocus = "function(s,e){ OnDetailsChanged(s,e);}";
+            });
+            column.Settings.AllowAutoFilter = DefaultBoolean.False;
+
+        });
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "StartDate";
+            column.EditorProperties().DateEdit(p =>
+            {
+                p.MinDate = DateTime.UtcNow.AddDays(-1);
+                p.MaxDate = DateTime.MaxValue;
+                p.ClientSideEvents.DateChanged = "function(s,e){ OnDetailsChanged(s,e);}";
+            });
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            column.ColumnType = MVCxGridViewColumnType.DateEdit;
+            column.SetDataItemTemplateContent(m =>
+            {
+                var date = (DateTime?)DataBinder.Eval(m.DataItem, "StartDate");
+                DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
+                ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
+            });
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "EndDate";
+            column.EditorProperties().DateEdit(p =>
+            {
+                p.MinDate = DateTime.UtcNow.AddDays(-1);
+                p.MaxDate = DateTime.MaxValue;
+                p.ClientInstanceName =
+                p.ClientSideEvents.DateChanged = "function(s,e){ OnDetailsChanged(s,e);}";
+            });
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            column.ColumnType = MVCxGridViewColumnType.DateEdit;
+            column.SetDataItemTemplateContent(m =>
+            {
+                var date = (DateTime?)DataBinder.Eval(m.DataItem, "EndDate");
+                DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
+                ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
+            });
+        });
+
+        settings.CustomJSProperties = (sender, e) =>
+        {
+            MVCxGridView gridView = (MVCxGridView)sender;
+            if (gridView.EditingRowVisibleIndex > -1)
+            {
+                e.Properties["sSpecialPrice"] = gridView.GetRowValues(gridView.EditingRowVisibleIndex, "sSpecialPrice");
+                e.Properties["sStartDate"] = gridView.GetRowValues(gridView.EditingRowVisibleIndex, "sStartDate");
+                e.Properties["sEndDate"] = gridView.GetRowValues(gridView.EditingRowVisibleIndex, "sEndDate");
+            }
+        };
+
+        settings.CellEditorInitialize = (s, e) =>
+        {
+            ASPxEdit editor = (ASPxEdit)e.Editor;
+            editor.ValidationSettings.Display = Display.None;
+        };
+
+        settings.ClientSideEvents.BeginCallback = "function(s,e){ OnBeginGridCallback(s, e); }";
+        settings.ClientSideEvents.FocusedCellChanging = "OnSpecialPricesGridFocusChanged";
+        settings.ClientSideEvents.EndCallback = "OnEndGridCallback";
+    }).Bind(Model).GetHtml()

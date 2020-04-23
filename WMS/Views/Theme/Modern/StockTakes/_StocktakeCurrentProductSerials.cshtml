@@ -1,0 +1,31 @@
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "StocktakeCurrentSerialScans" + Guid.NewGuid();
+        settings.CallbackRouteValues = new { Controller = "StockTakes", Action = "StockTakeCurrentProductSerialsPartial" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.KeyFieldName = "StockTakeDetailsSerialId";
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add("SerialNumber");
+        settings.Columns.Add("DateScanned");
+
+        settings.ClientSideEvents.BeginCallback = "function(s,e){ stockTakeSerialScanBeginCallback(s,e); }";
+        settings.ClientSideEvents.EndCallback = "function(s,e){ stockTakeSerialScanEndCallback(s,e); }";
+        settings.SettingsPager.Mode = GridViewPagerMode.ShowAllRecords;
+
+
+    });
+}
+
+@grid.Bind(ViewBag.StockTakeCurrentProductSerials).GetHtml()

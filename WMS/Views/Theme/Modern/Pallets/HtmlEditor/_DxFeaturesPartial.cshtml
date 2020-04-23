@@ -1,0 +1,25 @@
+﻿@using System.Web.UI.WebControls
+@using WMS.Helpers.DevexHelpers
+@model WMS.Helpers.DevexHelpers.FeaturesOptions
+@Html.DevExpress().HtmlEditorFor(m => m.Html, settings => {
+    settings.CallbackRouteValues = new { Controller = "Pallets", Action = ViewBag.CallBackAction };
+    settings.Height = Unit.Pixel(370);
+    settings.ClientSideEvents.BeginCallback = "function(s,e){ e.customArgs['id']="+ViewBag.PalletId + ";  }";
+                                                           
+    settings.SettingsHtmlEditing.AllowScripts = Model.AllowScripts;
+    settings.SettingsHtmlEditing.AllowIFrames = Model.AllowIFrames;
+    settings.SettingsHtmlEditing.AllowFormElements = Model.AllowFormElements;
+    settings.SettingsHtmlEditing.UpdateDeprecatedElements = Model.UpdateDeprecatedElements;
+    settings.SettingsHtmlEditing.UpdateBoldItalic = Model.UpdateBoldItalic;
+    settings.SettingsHtmlEditing.EnterMode = Model.EnterMode;
+    settings.SettingsHtmlEditing.AllowIdAttributes = Model.AllowIdAttributes;
+    settings.SettingsHtmlEditing.AllowStyleAttributes = Model.AllowStyleAttributes;
+    settings.SettingsHtmlEditing.AllowedDocumentType = Model.AllowedDocumentType;
+    settings.SettingsHtmlEditing.AllowEditFullDocument = Model.AllowEditFullDocument;
+    settings.SettingsHtmlEditing.ResourcePathMode = Model.ResourcePathMode;
+    settings.Settings.AllowCustomColorsInColorPickers = Model.AllowCustomColorsInColorPickers;
+     
+    HtmlEditorFeaturesDemosHelper.SetupGlobalUploadBehaviour(settings);
+    settings.ActiveView = HtmlEditorView.Preview;
+                                                              settings.Name = "PalletPrint";
+}).GetHtml()

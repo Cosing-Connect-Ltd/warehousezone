@@ -1,0 +1,63 @@
+﻿@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = ViewBag.NotesGridName ?? "orderNotesList";
+        settings.CallbackRouteValues = new { Controller = "Order", Action = "_OrderNotesList", id = ViewBag.NotesGridName };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.SettingsPopup.HeaderFilter.MinWidth = 500;
+
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+        settings.SettingsPager.PageSize = 10;
+        settings.KeyFieldName = "OrderNoteId";
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.ClientSideEvents.BeginCallback = "function(s,e){ beginCallbackWithPageSessionToken(s,e); }";
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Notes";
+            c.Caption = "Notes";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "User.UserName";
+            c.Caption = "Created By";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+        });
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "Actions";
+            column.Name = "rc";
+            column.SetDataItemTemplateContent(container =>
+            {
+                var keyValue = container.KeyValue;
+                var note = DataBinder.Eval(container.DataItem, "Notes").ToString();
+                var noteId = DataBinder.Eval(container.DataItem, "OrderNoteId").ToString();
+                note = note.Replace("\"", "DBLQ");
+                note = note.Replace(System.Environment.NewLine, ".");
+                var delete = string.Format("deleteNote({0})", keyValue);
+                ViewContext.Writer.Write("<a href='#' class='btn fa fa-pencil' onclick=\"updateNoteLoad(" + noteId + ",'" + note + "')\"></><a href='#' class='btn fa fa-trash' onclick=" + delete + "></>");
+
+            });
+        });
+
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+        settings.SettingsDetail.ShowDetailRow = true;
+    });
+}
+@grid.Bind(Model).GetHtml()

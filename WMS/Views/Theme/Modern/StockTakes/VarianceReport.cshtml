@@ -1,0 +1,102 @@
+﻿@model Ganedata.Core.Entities.Domain.StockTakeReportResponse
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Variance Report";
+    int StId = (int)Model.CurrentStockTakeId;
+}
+
+<script type="text/javascript">
+
+    function submitconfirmf() {
+        if (confirm("Are you sure you want to apply the new stock values? This action is Irreversible and may effect Product Inventory")) {
+            $(this).closest("form").submit();
+        }
+        else {
+            setTimeout(function () {
+                $("#stock-f-submit").prop("disabled", false);
+            }, 100);
+            return false;
+        }
+
+    }
+
+</script>
+
+<h2><span>Variance Report</span></h2>
+
+<input type="hidden" id="CurrentStocktakeId" value="@Model.CurrentStockTakeId" />
+
+<p>Variance Report for Following Stocktake.</p>
+
+<div class="table-responsive table-striped">
+    <table class="table table-bordered">
+        <tr>
+            <th scope="col">Stocktake Id</th>
+            <th scope="col">Stocktake Reference</th>
+            <th scope="col">Stocktake Description</th>
+            <th scope="col">Start Date</th>
+            <th scope="col">Status</th>
+        </tr>
+
+        <tr>
+            <td>@Model.CurrentStockTakeId</td>
+            <td>@Model.CurrentStockTakeRef</td>
+            <td>@Model.CurrentStockTakeDesc</td>
+            <td>@Model.CurrentStockTakeDate</td>
+            <td>@Model.StockTakeStatusString</td>
+        </tr>
+    </table>
+</div>
+
+<form method="post" action="@Url.Action("ApplyStocktakeChanges")" id="frmStockTakeApplyChanges" onsubmit="return submitconfirmf()">
+    <input type="hidden" name="StockTakeId" id="StockTakeId" value="@Model.CurrentStockTakeId" />
+    <div class="col-md-6">
+
+        @Html.DevExpress().Button(b =>
+        {
+            b.Text = "Select All";
+            b.Name = "btnApplyStockChangesSelectAll";
+            b.ControlStyle.CssClass = "btn-margined-v";
+            b.ClientSideEvents.Click = "function(s,e){ OnToggleSelectAllStockApplyChanges(true); }";
+        }).GetHtml()
+        @Html.DevExpress().Button(b =>
+        {
+            b.Text = "UnSelect All";
+            b.Name = "btnApplyStockChangesUnSelectAll";
+            b.ControlStyle.CssClass = "btn-margined-v";
+            b.ClientSideEvents.Click = "function(s,e){ OnToggleSelectAllStockApplyChanges(false); }";
+        }).GetHtml()
+    </div>
+    <div class="col-md-6">
+        <h5>Total Items : @Model.StockTakeReportResponseItems.Count</h5>
+    </div>
+    <div class="col-md-12 p-0">
+
+        @Html.Partial("VarianceReportStocktakeDetails", Model)
+    </div>
+
+    @if (Model.AllowApplyChanges)
+    {
+        <div class="page-wrap-btn">
+            <input type="submit" id="stock-f-submit" value="Apply stock changes" class="btn btn-primary" />
+        </div>
+    }
+
+    <div class="col-md-offset-2 col-md-10 bottom-right">
+        <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+    </div>
+
+</form>
+

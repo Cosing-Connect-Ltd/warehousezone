@@ -1,0 +1,8 @@
+@Html.DevExpress().DocumentViewer(settings => {
+    settings.Name = "JobProgressReport";
+    settings.CallbackRouteValues = new { Controller = "Reports", Action = "_JobProgressReportPartial" };
+    settings.ExportRouteValues = new { Controller = "Reports", Action = "_JobProgressReportPartialExport" };
+	settings.Report = (XtraReport)Model;
+	settings.ToolbarMode = DocumentViewerToolbarMode.Ribbon;
+    settings.StylesSplitter.SidePaneMinWidth = System.Web.UI.WebControls.Unit.Pixel(300);
+}).GetHtml()

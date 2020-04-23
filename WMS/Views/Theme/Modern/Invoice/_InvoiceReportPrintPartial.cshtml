@@ -1,0 +1,9 @@
+@Html.DevExpress().DocumentViewer(settings => {
+                                                  settings.Name = "CreateInvoiceDetailReportPrint";
+                                                  settings.CallbackRouteValues = new { Controller = "Reports", Action = "InvoiceDetailReport" };
+                                                  settings.ExportRouteValues = new { Controller = "Reports", Action = "InvoiceDetailReportPrintPartialExport" };
+                                                  settings.Report = (XtraReport)Model;
+                                                  //settings.ClientSideEvents.BeginCallback = "function(s,e){  worksDayOrderBeginCallback(s,e); }";
+                                                  //settings.ClientSideEvents.BeforeExportRequest = "function(s,e){  worksDayOrderBeginCallback(s,e); }";
+                                                  settings.ToolbarMode = DocumentViewerToolbarMode.Ribbon;
+}).GetHtml()

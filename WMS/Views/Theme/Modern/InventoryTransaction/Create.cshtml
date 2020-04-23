@@ -1,0 +1,65 @@
+﻿@model Ganedata.Core.Entities.Domain.InventoryTransaction
+@using Ganedata.Core.Entities.Helpers
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2><span>Create Transaction</span></h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("back", (object)ViewBag.back)
+    <div class="col-md-6 pull-left">
+        @Html.ValidationSummary(true)
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.OrderID, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownList("OrderID", null, String.Empty, new { @class = "chosen-select" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.InventoryTransactionTypeId, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownList("InventoryTransactionTypeId", null, String.Empty, new { @class = "chosen-select" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Quantity)
+                @Html.ValidationMessageFor(model => model.Quantity)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <div class="col-md-offset-2 bottom-right">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                @if (ViewBag.back == 1)
+                {
+                    <div class="btn btn-default"> @Html.ActionLink("Cancel", "Edit", new { @id = Session["pId"] })</div>
+                }
+                else if (ViewBag.back == 2)
+                {
+                    <div class="btn btn-default"> @Html.ActionLink("Cancel", "Edit", "Products", null, null, "product-inventory", new { @id = Session["pId"] }, null)</div>
+                }
+                else
+                {
+                    <div class="btn btn-default"> @Html.ActionLink("Cancel", "Index")</div>
+                }
+            </div>
+        </div>
+    </div>
+}

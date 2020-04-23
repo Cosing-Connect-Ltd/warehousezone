@@ -1,0 +1,85 @@
+﻿@model IEnumerable<Ganedata.Core.Entities.Domain.Account>
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Accounts";
+}
+
+<h2><span>Accounts</span></h2>
+
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+        var name = s.name;
+        if (name.indexOf("accountsGridView") >= 0) {
+            $('.selkey').val(s.cpAccountID[s.GetFocusedRowIndex()]);
+            
+        }
+    }
+    function OnAccountListBeginCallback(s, e) {
+        var mid = $("#MarketId :selected").val();
+        if (mid == "" || mid == undefined) {
+            mid = 0;
+        }
+        e.customArgs["Mid"] = mid;
+    }
+
+    $(document).ready(function () {
+        $("#MarketId").on("change", function () {
+            accountsGridView.Refresh();
+        });
+    });
+</script>
+
+@Html.Hidden("selkey", null, new { @class = "selkey" })
+
+
+@if (ViewBag.IsVanSalesEnabled)
+    {
+<div class="col-md-12 report-date-header">
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.Label("Select Market", htmlAttributes: new { @class = "col-md-2" })
+        <div class="col-md-4 text-center pull-left">
+            @Html.DropDownList("MarketId", ViewBag.MarketDetailId as SelectList,"ALL", new { @class = "form-control chosen-select" })
+        </div>
+    </div>
+
+</div>
+
+ }
+
+
+
+
+<div class="col-md-12 p-0 View">
+    @Html.Action("AccountList",new {Mid= ViewBag.marketId})
+
+</div>
+
+<div class="col-md-offset-2 col-md-10 bottom-right">
+
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Account", "Create"))
+    {
+        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary  " })
+
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Account", "Edit"))
+    {
+        <a href="javascript:;" class="btn btn-primary" onclick="EditAccount();">Update</a>
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Account", "Delete"))
+    {
+        @Html.ActionLink("Delete", "Delete", null, new { @class = "btn btn-primary  Caction" })
+    }
+
+</div>

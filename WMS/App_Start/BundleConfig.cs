@@ -95,7 +95,6 @@ namespace WMS
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
               "~/Content/bootstrap.min.css",
-              "~/Content/site.css",
               "~/Content/Chosen/component-chosen.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/common").Include(
@@ -111,6 +110,12 @@ namespace WMS
                 "~/Content/themes/base/datepicker.css",
                 "~/Content/themes/base/progressbar.css",
                 "~/Content/themes/base/theme.css"));
+
+            bundles.Add(new StyleBundle("~/Content/css/default").Include(
+             "~/Content/Theme/Default/site.css"));
+
+            bundles.Add(new StyleBundle("~/Content/css/modern").Include(
+             "~/Content/Theme/Modern/site.css"));
         }
     }
 }

@@ -15,6 +15,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using WarehouseZone;
+using WMS.App_Start;
 using WMS.CustomBindings;
 
 namespace WMS
@@ -53,7 +54,7 @@ namespace WMS
 
             // remove unnecessary view engines
             ViewEngines.Engines.Clear();
-            IViewEngine razorEngine = new RazorViewEngine() { FileExtensions = new string[] { "cshtml" } };
+            IViewEngine razorEngine = new ThemedRazorViewEngine() { FileExtensions = new string[] { "cshtml" } };
             ViewEngines.Engines.Add(razorEngine);
 
              AreaRegistration.RegisterAllAreas();

@@ -1,0 +1,52 @@
+@model List<Ganedata.Core.Entities.Domain.StockTakeProductLookupRequest>
+ 
+     @Html.DevExpress().GridLookup(
+         settings => {
+             settings.Properties.Caption = "Find Product:";
+             settings.Name = "gridLookupStockTakeProducts";
+             settings.KeyFieldName= "ProductCode";
+             settings.CommandColumn.Visible = true;
+             settings.CommandColumn.ShowSelectCheckbox = true;
+             settings.Columns.Add("ProductCode");
+             settings.Columns.Add("ProductName").Settings.AllowAutoFilter = DefaultBoolean.False;
+             settings.Properties.RequireDataBinding();
+             //settings.Properties.SelectionMode = DevExpress.Web.GridLookupSelectionMode.Single;
+             settings.Properties.TextFormatString = "{0}";
+             settings.Properties.MultiTextSeparator = ", ";
+
+             settings.Properties.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+             settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+             settings.ControlStyle.Height = System.Web.UI.WebControls.Unit.Pixel(60);
+             settings.ControlStyle.CssClass = "txtStockTakeProductLookup";
+
+             settings.GridViewProperties.CallbackRouteValues = new { Controller = "StockTakes", Action = "ProductLookupPartial" };
+             settings.GridViewProperties.Settings.ShowFilterRow = true;
+             settings.GridViewProperties.Settings.ShowStatusBar = GridViewStatusBarMode.Visible;
+
+             settings.GridViewProperties.SetStatusBarTemplateContent(c =>
+             {
+                 ViewContext.Writer.Write("<div><span class='pull-left'>Select Product</span>");
+                 Html.DevExpress().Button(
+                     btnSettings =>
+                     {
+                         btnSettings.Name = "btnCloseLookup";
+                         btnSettings.UseSubmitBehavior = false;
+                         btnSettings.Text = "Close";
+                         btnSettings.ControlStyle.CssClass = "pull-right";
+                         btnSettings.ClientSideEvents.Click = "function(s,e) { closeStockTakeProductLookup(s,e);} ";
+                     }).Render();
+                 ViewContext.Writer.Write("</div>");
+             });
+
+             settings.Properties.ClientSideEvents.ValueChanged = "function(s,e){ stockTakeProductLookupSelected(s,e); }";
+
+             settings.DataBound = (sender, e) =>
+             {
+                 var gridLookup = (MVCxGridLookup)sender; gridLookup.GridView.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                 gridLookup.GridView.SettingsPager.Mode = GridViewPagerMode.ShowPager;
+                 gridLookup.GridView.SettingsPager.PageSize = 10;
+                 gridLookup.GridView.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+             };
+         }).BindList(Model).GetHtml()
+ 

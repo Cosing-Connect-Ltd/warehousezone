@@ -1,0 +1,48 @@
+﻿<button type="button" data-toggle="dropdown" data-loading-text="Loading..." class="btn btn-lg dropdown-toggle">
+    <svg width="28px" height="26px">
+        <use xlink:href="/Areas/Shop/Content/Theme/Smart/app/img/icons/icons.svg#hcart"></use>
+    </svg>
+    <span id="cart-total-mobile">@(ViewBag.CartItemCount == 0 ? 0 : ViewBag.CartItemCount)</span>
+</button>
+<ul id="cart-dropdown-menu" class="dropdown-menu  cart-menu-height" style="overflow:auto">
+    @if (ViewBag.CartItemCount != 0)
+    {
+        <li>
+            <table>
+                <tbody>
+                    @foreach (var item in ViewBag.CartItems)
+                    {
+                        <tr>
+
+                            <td><a href="@Url.Action("AddToCart","Products")"><img src=@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage)? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif") alt="@(item?.ProductMaster?.Name)"></a></td>
+                            <td>
+                                <div class="ordered-items">
+                                    <p>
+                                        <a href="@Url.Action("AddToCart","Products")">@(item.ProductMaster?.Name)<br /><span style="font-weight:bold;">Sku:</span>@(item.ProductMaster?.SKUCode)<br /><span style="font-weight:bold;">Qty:</span>@(item.Qty)</a>
+                                    </p>
+
+                                    @*<ul>
+                                            <li>
+                                                Sku: <span>@(item.ProductMaster?.SKUCode)</span>
+                                            </li>
+                                            <li>Size: <span>M</span></li>
+                                            <li>
+                                                Quantity: <span>@item.Qty</span>
+                                            </li>
+                                        </ul>*@
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @* <a href="@Url.Action("AddToCart","Products")">Go to shopping cart</a>*@
+        </li>
+    }
+    else
+    {
+        <li>
+            <p class="text-center">Your Basket is empty!</p>
+        </li>
+    }
+</ul>

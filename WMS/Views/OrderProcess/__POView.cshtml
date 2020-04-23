@@ -1,0 +1,51 @@
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "POView";
+        settings.CallbackRouteValues = new { Controller = "RecevePO", Action = "_POView" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(95);
+
+        //header filter
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+
+        //filer Bars
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+        
+        settings.KeyFieldName = "POID";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+
+        settings.Columns.Add("PONumber");
+        //settings.Columns.Add("ExpectedDate");
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "ExpectedDate";
+            column.SortOrder = DevExpress.Data.ColumnSortOrder.Ascending;
+            column.PropertiesEdit.DisplayFormatString = "d";
+        });
+
+
+        settings.Columns.Add("Supplier");
+        settings.Columns.Add("Status", "Progress", MVCxGridViewColumnType.ProgressBar);
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+
+        settings.SettingsDetail.AllowOnlyOneMasterRowExpanded = false;
+        settings.SettingsDetail.ShowDetailRow = true;
+
+        settings.SetDetailRowTemplateContent(c =>
+        {
+             //ViewContext.Writer.Write(   );
+            Html.RenderAction("PODetail", new { POID = DataBinder.Eval(c.DataItem, "POID") });
+        });
+
+    });
+}
+@grid.Bind(Model).GetHtml()

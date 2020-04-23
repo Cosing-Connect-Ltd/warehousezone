@@ -1,0 +1,65 @@
+﻿<div class="input-group h-100 justify-content-center align-items-center">
+    @Html.Label("Enter or scan Product Code", htmlAttributes: new { @class = "col-md-4" })
+
+    <div class="col-md-8">
+        @Html.Partial("~/Views/Shared/ProductLargeDataComboBoxPartial.cshtml")
+        @*@Html.DropDownList("products", null, htmlAttributes: new { @class = "chosen-select bsDrp" })*@
+    </div>
+</div>
+
+
+<div class="input-group h-100 justify-content-center align-items-center">
+    <label class="col-md-4">New Product?</label>
+    <div class="col-md-8">
+        @Html.CheckBox("IsNewProduct", new { @onclick = "toggleProductAddForm()" })
+    </div>
+</div>
+
+<div class="col-md-12 p-0" id="divNewProductAddForm" style="display: none">
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.Label("Product Name", htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.TextBox("ProductName", null, new { @class = "form-control" })
+        </div>
+    </div>
+    @if (ViewBag.ShowTaxInBlindShipment != null && (bool?)ViewBag.ShowTaxInBlindShipment == true)
+    {
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("TaxID", htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownList("TaxIds", ViewBag.GlobalTaxes as SelectList, new { @class = "chosen-select" })
+
+            </div>
+        </div>
+
+    }
+    @if (ViewBag.ShowQtyInBlindShipment != null && (bool?)ViewBag.ShowQtyInBlindShipment == true)
+    {
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Quantity", htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.TextBox("Quantity", null, new { @class = "form-control", type = "number" })
+
+            </div>
+        </div>
+    }
+    @if (ViewBag.ShowPriceInBlindShipment != null && (bool?)ViewBag.ShowPriceInBlindShipment == true)
+    {
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <label class="col-md-4">Price</label>
+            <div class="col-md-8">
+                @Html.Editor("PriceShipment", null, new { @class = "form-control", @type = "number" })
+            </div>
+        </div>
+    }
+
+
+    <div class="input-group h-100 justify-content-center">
+        <div class="col-md-10"></div>
+        <button class="btn btn-primary" onclick="CreateProduct();">Create </button>
+    </div>
+
+
+</div>

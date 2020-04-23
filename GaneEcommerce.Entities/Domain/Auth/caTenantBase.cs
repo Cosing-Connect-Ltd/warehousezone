@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ganedata.Core.Entities.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -37,6 +38,7 @@ namespace Ganedata.Core.Entities.Domain
         public Boolean AuthStatus { get; set; }
         public string TenantCulture { get; set; }
         public string TenantTimeZoneId { get; set; }
+        public WarehouseThemeEnum Theme { get; set; }
         public ICollection<TenantLocations> TenantLocations { get; set; }
         public virtual ICollection<TenantModules> TenantModules { get; set; }
     }

@@ -1,0 +1,67 @@
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "TenantEmailConfigGridView";
+        settings.CallbackRouteValues = new { Controller = "TenantEmailConfigs", Action = "TenantEmailConfigGridViewPartial" };
+
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+        settings.KeyFieldName = "TenantEmailConfigId";
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "EnableSsl";
+            c.ColumnType = MVCxGridViewColumnType.CheckBox;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "IsActive";
+            c.ColumnType = MVCxGridViewColumnType.CheckBox;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "SmtpHost";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "SmtpPort";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DailyEmailDispatchTime";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "EnableRelayEmailServer";
+            c.ColumnType = MVCxGridViewColumnType.CheckBox;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "UserEmail";
+            c.Caption = "User Email";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+        });
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+
+
+    });
+}
+@grid.Bind(Model).GetHtml()

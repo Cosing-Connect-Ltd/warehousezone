@@ -1,0 +1,30 @@
+﻿@model Ganedata.Core.Entities.Domain.MarketJobViewModel
+ 
+@using (Html.BeginForm("AllocateMarketJob", "Markets", FormMethod.Post, new { @id= "frmAllocateMarketJob", @class = "form-horizontal", @enctype = "multipart/form-data" }))
+{
+    @Html.Hidden("MarketJobId", Model.Id)
+        <div class="col-md-12 p-0 order-forms">
+
+            <div class="input-group text-center h-100 justify-content-center align-items-center">
+                <div class="col-md-12 p-0">
+                    <div class="col-md-12">
+                        <div class="col-md-4 pallet-quantity-hlabel">Change Resource</div>
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(m => m.ResourceID, Model.AllResources, new {@class = "chosen-select"})
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="alert alert-danger">
+                            This will de-allocate the job from any allocation to other drivers.
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-danger pull-left" onclick="ModalPopupAllocateMarketJob.Hide()" id="btnCancelAllocate"><b class="fa fa-times"></b> Cancel</button>
+                        <button type="button" class="btn btn-success pull-right" onclick="UpdateJobAllocation()" id="btnConfirmAllocate"><b class="fa fa-check"></b> Confirm Allocation</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }

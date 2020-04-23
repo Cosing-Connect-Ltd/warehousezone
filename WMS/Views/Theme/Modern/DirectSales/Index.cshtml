@@ -1,0 +1,59 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@model IEnumerable<Ganedata.Core.Entities.Domain.Order>
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.PageControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.PageControl },
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Direct Sales Orders";
+}
+
+<h2><span>@ViewBag.Title</span></h2>
+
+<script type="text/javascript">
+    function OnSalesOrderTabchange(s, e) {
+        var gridview = GetDevexControlByName('_SalesOrderListGridView' + tabSOs.activeTabIndex);
+        var rowKey = gridview.GetRowKey(gridview.GetFocusedRowIndex());
+        $('#selkeySalesOrderList').val(rowKey);
+    }
+
+    function OnGridDirectFocusedRowChanged(s, e) {
+
+        $('#selkeyDirectSalesOrderId').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+
+</script>
+
+@Html.Hidden("selkey", null, new { @class = "selkey" })
+@Html.Hidden("selkeyOrderList", null)
+@Html.Hidden("selkeyOrderCompleteList", null)
+@Html.Hidden("selkeySalesOrderList", null)
+@Html.Hidden("selkeyDirectSalesOrderId", null)
+@Html.Hidden("selkeyTransferInOrderList", null)
+@Html.Hidden("selkeyTransferOutOrderList", null)
+@Html.Hidden("selkeyWorksOrderListGridView", null)
+@Html.Hidden("selkeyWorksOrderCompletedListGridView", null)
+<div id="tabs" style="visibility: hidden">
+    <ul>
+        <li><a href="#CO">Completed Orders</a></li>
+    </ul>
+    <div id="CO">
+        @Html.Action("_DirectSalesOrders", "Order", new { type = 2 })
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            @Html.ActionLink("Create New", "CreateDirectSales", "DirectSales", null, new { @class = "btn btn-primary  " })
+            <a href="javascript:;" class="btn btn-primary" onclick="DirectSalesOrderPrint();">Print Order</a>
+           @* @Html.ActionLink("Print Order", "SalesOrderPrint", "Reports", null, new { @class = "btn btn-primary Caction", @id = "lnkDirectSalesOrderPrint", target = "_blank" })*@
+        </div>
+    </div>
+</div>

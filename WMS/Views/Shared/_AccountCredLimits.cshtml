@@ -1,0 +1,104 @@
+﻿
+@model Ganedata.Core.Entities.Domain.AccountCreditLimits
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Account Contacts</title>
+</head>
+<body>
+    <hgroup>
+        <h2><span>Account Contact</span></h2>
+        <h3><span>@Html.ValidationSummary("", new { @id = "vldAccountCreditLimit" })</span></h3>
+    </hgroup>
+    @using (Html.BeginForm("SaveAccountCredLimit", "Account", FormMethod.Post, new { @id = "frmAccountCredLimit" }))
+    {
+        @Html.HiddenFor(m => m.CrLimitId)
+        <div class="leftcol">
+            <div class="form-group">
+                <label class="control-label col-md-2">Credit Limit Amount <span style="color:red"> *</span></label>
+
+                <div class="col-md-10">
+                    @Html.DevExpress().SpinEditFor(m => m.CrLimitAmount,
+                settings =>
+                {
+                    settings.Name = "CrLimitAmount";
+                    settings.Properties.MinValue = 1;
+                    settings.Properties.MaxValue = 1000000;
+                    settings.Properties.NullText = "Enter Credit Limit Amount...";
+
+                }
+            ).GetHtml()
+                    @Html.ValidationMessageFor(model => model.CrLimitAmount)
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DateLimitStart, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DevExpress().DateEditFor(m => m.DateLimitStart,
+                settings =>
+                {
+                    settings.Name = "DateLimitStart";
+                    settings.Properties.DisplayFormatString = "dd/MM/yyyy";
+                    settings.Date = DateTime.Now;
+                    //settings.Date=new DateTime(1984, 06, 14);
+
+                }
+            ).GetHtml()
+
+
+                    @Html.ValidationMessageFor(model => model.DateLimitStart)
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DateLimitEnd, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DevExpress().DateEditFor(m => m.DateLimitEnd,
+                settings =>
+                {
+                    settings.Name = "DateLimitEnd";
+                    settings.Properties.DisplayFormatString = "dd/MM/yyyy";
+                    settings.Date = DateTime.Now;
+                    //settings.Date=new DateTime(1984, 06, 14);
+
+                }
+            ).GetHtml()
+                    @Html.ValidationMessageFor(model => model.DateLimitEnd)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Currency", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(m => m.CurrencyID, ViewBag.CCurrencies as IEnumerable<SelectListItem>, new { @class = "chosen-select" })
+                </div>
+            </div>
+
+            @if (!Request.Url.AbsolutePath.Contains("SaveAccountCredLimit"))
+            {
+
+
+                <div class="form-group">
+                    <div class="col-md-8">
+                        <input type="button" onclick="accountCredLimitSave()" value="Save" class="btn btn-default" />
+                        <input type="button" onclick="javascript: ModalAccountCredLimit.Hide();" value="Cancel" class="btn btn-default" />
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-8">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                    <div class="btn btn-default"> @Html.ActionLink("Cancel", "Edit", new { @id = Session["account"] })</div>
+                </div>
+
+            }
+
+        </div>
+    }
+</body>
+</html>

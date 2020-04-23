@@ -1,0 +1,40 @@
+﻿@{
+    var gridd = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = ViewBag.locationid + "ProductListGridView";
+        settings.CallbackRouteValues = new { Controller = "Locations", Action = "_Products", LocationId = ViewBag.locationid };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.ClientSideEvents.DetailRowExpanding = "OnDetailRowExpanding";
+
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+
+        settings.KeyFieldName = "ProductId";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add("Name");
+        settings.Columns.Add("SKUCode");
+        settings.Columns.Add("Description");
+        settings.Columns.Add("BarCode");
+        settings.Columns.Add("SKUCode");
+        settings.Columns.Add("Serialisable");
+        settings.Columns.Add("GlobalUOM.UOM");
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+    });
+}
+@gridd.Bind(Model).GetHtml()

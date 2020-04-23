@@ -1,0 +1,89 @@
+﻿@model Ganedata.Core.Entities.Domain.InventoryTransaction
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.PopupControl },
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Move Stock";
+}
+
+<h2><span>Move Stock</span></h2>
+
+@using (Html.BeginForm("Edit", "Locations", FormMethod.Post, new { @id = "frmMoveStock" }))
+{
+
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(m => m.InventoryTransactionId)
+    <div class="col-md-6 pull-left">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ProductMaster.Name, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.ProductMaster.Name)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Current Location", htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.Location.LocationCode)
+            </div>
+        </div>
+        @if (!Model.ProductMaster.Serialisable)
+        {
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("Quantity", htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.DevExpress().SpinEditFor(m => m.Quantity,
+              settings =>
+              {
+                  settings.Name = "Quantity";
+                  settings.Properties.MinValue = 1;
+                  settings.Properties.MaxValue = Model.Quantity;
+                  settings.ClientVisible = true;
+                  settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                  settings.ControlStyle.CssClass = "form-control";
+
+              }
+          ).GetHtml()
+                    @Html.ValidationMessageFor(model => model.Quantity)
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("Serial Number", htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.DisplayFor(m => m.ProductSerial.SerialNo)
+                </div>
+            </div>
+        }
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("New Location", htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(m => m.LocationId, ViewBag.Locations as IEnumerable<SelectListItem>, new { @class = "chosen-select" })
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <div class="col-md-8">
+                <input type="button" value="Confirm Move" onclick="moveStockSubmit()" class="btn btn-default" />
+            </div>
+        </div>
+
+    </div>
+}

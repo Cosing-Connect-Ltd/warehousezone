@@ -1,0 +1,55 @@
+﻿@model Ganedata.Core.Models.RolesViewModel
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Manage Role";
+}
+<h2><span>@ViewBag.Title</span></h2>
+<div>
+    <div class="col-7">
+        <form class="form-horizontal" action="/Roles/Submit" method="post" id="rolesDetailsForm">
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(c => c.Id)
+            <div class="input-group row h-100 justify-content-center align-items-center">
+                <div class="col-md-7">
+                    @Html.ValidationSummary()
+                </div>
+            </div>
+            @if (ViewBag.Message != null)
+            {
+                <div class="alert-success col-md-7">
+                    @ViewBag.Message
+                </div>
+            }
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(c => c.RoleName, new { @class = "col-md-2 control-label" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(c => c.RoleName, new { @placeholder = "Role Name", @class = "form-control", @row = "3" })
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="col-md-offset-2 col-md-10 bottom-right">
+    <button type="button" class="btn btn-primary" id="saveBtn_Roles">Save</button>
+    <a class="btn btn-default" href="/roles">Back to List</a>
+</div>
+
+
+
+
+
+

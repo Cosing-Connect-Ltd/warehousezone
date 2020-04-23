@@ -1,0 +1,90 @@
+@using Ganedata.Core.Entities.Enums
+
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "Warehouse";
+        settings.CallbackRouteValues = new { Controller = "TenantLocations", Action = "_Whouse" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+
+
+        settings.KeyFieldName = "WarehouseId";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "WarehouseName";
+            c.Caption = "Location Name";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "CountyState";
+            c.Caption = "County";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "PostalCode";
+            c.Caption = "Post Code";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+
+            c.FieldName = "IsActive";
+            c.ColumnType = MVCxGridViewColumnType.CheckBox;
+            (c.PropertiesEdit as CheckBoxProperties).DisplayTextChecked = "True";
+            (c.PropertiesEdit as CheckBoxProperties).DisplayTextUnchecked = "False";
+
+        });
+        settings.Columns.Add(c =>
+        {
+
+            c.FieldName = "IsMobile";
+            c.ColumnType = MVCxGridViewColumnType.CheckBox;
+            (c.PropertiesEdit as CheckBoxProperties).DisplayTextChecked = "True";
+            (c.PropertiesEdit as CheckBoxProperties).DisplayTextUnchecked = "False";
+
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "AutoTransferOrders";
+            c.ColumnType = MVCxGridViewColumnType.CheckBox;
+            (c.PropertiesEdit as CheckBoxProperties).DisplayTextChecked = "True";
+            (c.PropertiesEdit as CheckBoxProperties).DisplayTextUnchecked = "False";
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "MonitorStockVariance";
+            c.ColumnType = MVCxGridViewColumnType.CheckBox;
+            (c.PropertiesEdit as CheckBoxProperties).DisplayTextChecked = "True";
+            (c.PropertiesEdit as CheckBoxProperties).DisplayTextUnchecked = "False";
+        });
+
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSize = 10;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+
+    });
+}
+@grid.Bind(Model).GetHtml()

@@ -1,0 +1,33 @@
+﻿@model Ganedata.Core.Entities.Domain.InventoryTransaction
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add Serials</title>
+</head>
+<body>
+    <hgroup>
+        <h2><span>Add Serials</span></h2>
+    </hgroup>
+    <div class="leftcol">
+       
+        <div id="serialWrapper">
+            <div class="form-group">
+                <label class="control-label col-md-2">Add Serial Number</label>
+                <div class="col-md-10">
+                    <input type="text" class="serial" onkeypress="VerifySerialSO(event,this)" autofocus />
+                    <a href="#" style="display:none" onclick="RemoveSerial(event,this)">Remove</a>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="button" onclick="javacript: ModelAddSerialSalesOrder.Hide()" value="Cancel" class="btn btn-default" />
+            </div>
+            <div class="col-md-10">
+                <input type="button" onclick="CollectSerialsSO()" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</body>
+</html>

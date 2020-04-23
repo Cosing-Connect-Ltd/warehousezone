@@ -1,0 +1,96 @@
+﻿@using System.Web.UI.WebControls
+@using Ganedata.Core.Entities.Helpers
+@using Ganedata.Core.Entities.Enums
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "PLandlordsGridview";
+        settings.CallbackRouteValues = new { Controller = "PLandlords", Action = "PLandlordsGridview" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.CustomBindingRouteValuesCollection.Add(
+            GridViewOperationType.Paging,
+            new { Controller = "PLandlords", Action = "_PlandlordGridViewsPaging" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Filtering,
+        new { Controller = "PLandlords", Action = "_PlandlordGridViewFiltering" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Sorting,
+        new { Controller = "PLandlords", Action = "_PlandlordGridViewDataSorting" }
+        );
+
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+
+        settings.KeyFieldName = "PLandlordId";
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add("LandlordCode").SetDataItemTemplateContent(m =>
+        {
+            var code = DataBinder.Eval(m.DataItem, "LandlordCode").ToString();
+            var isArchived = (DataBinder.Eval(m.DataItem, "LandlordStatus") != null && DataBinder.Eval(m.DataItem, "LandlordStatus").ToString() == "ARCHIVED");
+            ViewContext.Writer.Write("<div>" + code + "</div>" + (isArchived ? "<b class='fa fa-exclamation' title='Archived'></b" : ""));
+        });
+
+        settings.Columns.Add("LandlordFullname");
+        settings.Columns.Add("LandlordAdded");
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "LandlordAdded";
+            c.Caption = "LandlordAdded";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            c.ColumnType = MVCxGridViewColumnType.DateEdit;
+            c.Width = Unit.Pixel(120);
+            c.SetDataItemTemplateContent(m =>
+            {
+                var date = (DateTime?)DataBinder.Eval(m.DataItem, "LandlordAdded");
+                DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
+                ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
+            });
+        });
+
+        settings.Columns.Add("Email");
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.EndCallback = "OnGridFocusedRowChanged";
+        settings.Columns.Add("AddressLine1");
+        settings.Columns.Add("AddressLine2");
+        settings.Columns.Add("AddressPostcode");
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "HomeTelephone";
+            column.Name = "Contact";
+            column.Width = System.Web.UI.WebControls.Unit.Percentage(10);
+
+            column.SetDataItemTemplateContent(m =>
+            {
+                var homeTel = DataBinder.Eval(m.DataItem, "HomeTelephone") != null ? "Tel :" + DataBinder.Eval(m.DataItem, "HomeTelephone").ToString() : "";
+                var workTel1 = DataBinder.Eval(m.DataItem, "WorkTelephone1") != null ? "<br/>Work Tel1 :" + DataBinder.Eval(m.DataItem, "WorkTelephone1").ToString() : "";
+                var workTel2 = DataBinder.Eval(m.DataItem, "WorkTelephone2") != null ? "<br/>Work Tel2:" + DataBinder.Eval(m.DataItem, "WorkTelephone2").ToString() : "";
+                var workFax1 = DataBinder.Eval(m.DataItem, "WorkTelephoneFax") != null ? "<br/>Fax :" + DataBinder.Eval(m.DataItem, "WorkTelephoneFax").ToString() : "";
+                var mob = DataBinder.Eval(m.DataItem, "MobileNumber") != null ? "<br/>Mobile :" + DataBinder.Eval(m.DataItem, "MobileNumber").ToString() : "";
+                ViewContext.Writer.Write(homeTel + workTel1 + workTel2 + workFax1 + mob);
+            });
+
+        });
+
+        settings.Columns.Add("LandlordNotes1", "Landlord Notes");
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50", "100", "500" };
+
+    });
+}
+
+@grid.BindToCustomData(Model).GetHtml()

@@ -767,6 +767,10 @@
     <Compile Include="Migrations\202004161205537_renametable-stockmovement-stockId.designer.cs">
       <DependentUpon>202004161205537_renametable-stockmovement-stockId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004180236325_Theme-added-in-tenant.cs" />
+    <Compile Include="Migrations\202004180236325_Theme-added-in-tenant.designer.cs">
+      <DependentUpon>202004180236325_Theme-added-in-tenant.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1662,6 +1666,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004161205537_renametable-stockmovement-stockId.resx">
       <DependentUpon>202004161205537_renametable-stockmovement-stockId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004180236325_Theme-added-in-tenant.resx">
+      <DependentUpon>202004180236325_Theme-added-in-tenant.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

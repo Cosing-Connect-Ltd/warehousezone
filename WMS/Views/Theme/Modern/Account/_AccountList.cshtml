@@ -1,0 +1,233 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@using Ganedata.Core.Entities.Enums
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "accountsGridView";
+        settings.CallbackRouteValues = new
+        {
+            Controller = "Account",
+            Action = "AccountList"
+        };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Paging,
+        new { Controller = "Account", Action = "_AccountPaging" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Filtering,
+        new { Controller = "Account", Action = "_AccountFiltering" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Sorting,
+        new { Controller = "Account", Action = "_AccountSorting" }
+        );
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+
+        settings.KeyFieldName = "AccountID";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = true;
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.SettingsPager.PageSize = 10;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.SettingsCookies.Enabled = true;
+        settings.SettingsCookies.CookiesID = "AccountsList";
+        settings.SettingsCookies.StoreColumnsVisiblePosition = true;
+        settings.SettingsCookies.StoreColumnsWidth = true;
+        settings.SettingsCookies.StoreFiltering = true;
+        settings.SettingsCookies.StoreGroupingAndSorting = true;
+        settings.SettingsCookies.StorePaging = true;
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "AccountCode";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "CompanyName";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "RegNo";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "VATNo";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "CountryName";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Currency";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "FinalBalance";
+            c.Caption = "Account Balance";
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Comments";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c => {
+
+            c.FieldName = "OwnerName";
+            c.Caption = "Acc Owner";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+        });
+        if (ViewBag.IsVanSalesEnabled)
+        {
+            settings.Columns.Add(c =>
+            {
+
+                c.Caption = "Market";
+                c.SetDataItemTemplateContent(m =>
+                {
+                    var market=Html.Action("_Market", new { AccountID = DataBinder.Eval(m.DataItem, "AccountID"), MarketId= DataBinder.Eval(m.DataItem, "MarketId") });
+                    ViewContext.Writer.Write(market);
+                });
+            });
+        }
+
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "IsCustomer";
+            c.Caption = "Account Type";
+            c.Settings.AllowAutoFilter = DefaultBoolean.False;
+            c.SetDataItemTemplateContent(m =>
+            {
+
+                var customerTypes = new List<string>();
+                if (DataBinder.Eval(m.DataItem, "IsCustomer") != null && (bool)DataBinder.Eval(m.DataItem, "IsCustomer"))
+                {
+                    customerTypes.Add("Customer");
+                }
+                if (DataBinder.Eval(m.DataItem, "IsSupplier") != null && (bool)DataBinder.Eval(m.DataItem, "IsSupplier"))
+                {
+                    customerTypes.Add("Supplier");
+                }
+                if (DataBinder.Eval(m.DataItem, "IsEndUser") != null && (bool)DataBinder.Eval(m.DataItem, "IsEndUser"))
+                {
+                    customerTypes.Add("End User");
+                }
+
+                ViewContext.Writer.Write("<b>" + string.Join(", ", customerTypes) + "</b>");
+
+            });
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "AccountStatus";
+            c.Caption = "AccountStatus";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var comboSettings = (ComboBoxProperties)c.PropertiesEdit;
+            comboSettings.DataSource = Enum.GetValues(typeof(AccountStatusEnum));
+            //c.Settings.AllowAutoFilter = DefaultBoolean.False;
+        });
+
+        settings.SettingsDetail.ShowDetailRow = true;
+        settings.SetDetailRowTemplateContent(c =>
+        {
+            Html.DevExpress().PageControl(s =>
+            {
+                s.EnableTabScrolling = true;
+                s.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                s.Name = DataBinder.Eval(c.DataItem, "AccountID").ToString();
+                s.TabPages.Add("Account Details").SetContent(() =>
+                {
+
+                    ViewContext.Writer.Write("<p>Account Code: <b>" + DataBinder.Eval(c.DataItem, "AccountCode") + "</b></p>" +
+                    "<p>Reg No : <b>" + DataBinder.Eval(c.DataItem, "RegNo") + "</b></p>" +
+                    "<p>VAT No : <b>" + DataBinder.Eval(c.DataItem, "VATNo") + "</b></p>" +
+                    "<p>Company Name : <b>" + DataBinder.Eval(c.DataItem, "CompanyName") + "</b></p>" +
+                    "<p>Country Name : <b>" + DataBinder.Eval(c.DataItem, "CountryName") + "</b></p>" +
+                    "<p>Currency : <b>" + DataBinder.Eval(c.DataItem, "Currency") + "</b></p>"
+                    + "<p>Email : <b>" + DataBinder.Eval(c.DataItem, "AccountEmail") + "</b></p>"
+                    + "<p>Telephone : <b>" + DataBinder.Eval(c.DataItem, "Telephone") + "</b></p>"
+                    + "<p>AccountStatus : <b>" + DataBinder.Eval(c.DataItem, "AccountStatus") + "</b></p>"
+                    + "<p>Comments : <b>" + DataBinder.Eval(c.DataItem, "Comments") + "</b></p>"
+                    + "<p>Fax : <b>" + DataBinder.Eval(c.DataItem, "Fax") + "</b></p>"
+                    + "<p>Mobile : <b>" + DataBinder.Eval(c.DataItem, "Mobile") + "</b></p>"
+                    + "<p>Web : <b>" + DataBinder.Eval(c.DataItem, "Web") + "</b></p>"
+                    + "<p>Is Customer : <b>" + ((bool)DataBinder.Eval(c.DataItem, "IsCustomer") ? "Yes" : "No") + "</b></p>"
+                    + "<p>Is Supplier : <b>" + ((bool)DataBinder.Eval(c.DataItem, "IsSupplier") ? "Yes" : "No") + "</b></p>"
+                    + "<p>Is End User : <b>" + ((bool)DataBinder.Eval(c.DataItem, "IsEndUser") ? "Yes" : "No") + "</b></p>"
+
+                    );
+                });
+                s.TabPages.Add("Addresses").SetContent(() =>
+                {
+                    Html.RenderAction("_AddressesByAccount", new { AccountID = DataBinder.Eval(c.DataItem, "AccountID") });
+                });
+                s.TabPages.Add("Contacts").SetContent(() =>
+                {
+                    Html.RenderAction("_ContactsByAccount", new { AccountID = DataBinder.Eval(c.DataItem, "AccountID") });
+
+                });
+                s.TabPages.Add("Transactions").SetContent(() =>
+                {
+                    Html.RenderAction("_AccountTransactionsGrid", "Finances", new { accountId = DataBinder.Eval(c.DataItem, "AccountID") });
+                });
+
+            }).GetHtml();
+
+        });
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.EndCallback = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.BeginCallback = "OnAccountListBeginCallback";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+
+        settings.CustomJSProperties = (s, e) =>
+        {
+            MVCxGridView g = s as MVCxGridView;
+            Dictionary<int, object>
+                dict = new Dictionary<int, object>
+                    ();
+            int startIndex = g.PageIndex * g.SettingsPager.PageSize;
+            int endIndex = startIndex + g.SettingsPager.PageSize;
+            for (int i = startIndex; i < endIndex; i++)
+            {
+                dict[i] = g.GetRowValues(i, "AccountID");
+
+            }
+            e.Properties.Add("cpAccountID", dict);
+        };
+
+
+    });
+}
+@grid.BindToCustomData(Model).GetHtml()

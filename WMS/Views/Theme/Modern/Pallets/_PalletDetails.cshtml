@@ -1,0 +1,37 @@
+﻿@model Ganedata.Core.Entities.Domain.PalletGenerateViewModel
+
+@Html.Hidden("selkeyhdPrddet", 100)
+
+<div id="divPalletingInformation" class="order-forms">
+    <div class="input-group text-center h4 h-100 justify-content-center align-items-center">
+        <div class="pallet-number col-md-12">
+            <label>Pallet Number :   @Html.DisplayFor(m => m.NextPalletNumber)</label>
+        </div>
+        @Html.HiddenFor(m => m.NextPalletNumber)
+        @Html.Hidden("CurrentOrderDetailID")
+        @Html.Hidden("CurrentProcessedQuantity")
+        @Html.Hidden("CurrentProductID")
+        @Html.Hidden("CurrentProductName")
+        @Html.Hidden("IsPalletCompleted", Model.IsCompleted)
+        @Html.Hidden("PalletCompletedDate", Model.PalletDateCompleted)
+        <div class="clearfix"></div>
+    </div>
+
+   
+    <div class="input-group pallet-holder">
+        <div class="col-md-6 p-0">
+
+            @Html.Action("_PalletOrderDetails", "Pallets", new { id = Model.SelectedOrderProcessId })
+            
+        </div>
+      
+            <div class="col-md-6 p-0">
+                @Html.Action("_PalletItemsList", new { palletId = Model.SelectedPalletID })
+            </div>
+ 
+            <div class="clearfix"></div>
+        </div>
+  
+       @* <h2 class="bg-danger">No processed sales orders found for palleting.</h2>*@
+ 
+</div>

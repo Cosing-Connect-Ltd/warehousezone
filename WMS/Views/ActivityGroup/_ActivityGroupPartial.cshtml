@@ -1,0 +1,61 @@
+﻿@model PagedList.IPagedList<Ganedata.Core.Entities.Domain.AuthActivityGroup>
+
+
+<table class="table table-bordered table-hover table-striped tsort">
+
+    <thead>
+        <tr>
+
+            <th>
+                @Html.Label("Select")
+
+            </th>
+
+
+
+            <th>
+                @Html.DisplayNameFor(model => model.First().ActivityGroupName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().ActivityGroupDetail)
+            </th>
+
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model.OrderBy(e => e.ActivityGroupParentId))
+        {
+            <tr>
+
+                <td>
+
+                    <input type="radio" name="ProductId" class="selkey" value="@item.ActivityGroupId">
+                </td>
+
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActivityGroupName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActivityGroupDetail)
+                </td>
+
+            </tr>
+            @*foreach (var subitem in item.AuthActivityGroupMaps)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => subitem.ActivityId) </td>
+                        <td>@Html.DisplayFor(modelItem => subitem.AuthActivity.ActivityName) </td>
+                    </tr>
+
+                }*@
+        }
+    </tbody>
+</table>
+
+<div class="row  prow" data-wms-url="@Url.Action("SearchActivityGroup")">
+
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = true })
+
+</div>

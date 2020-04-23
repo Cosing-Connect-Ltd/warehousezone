@@ -1,0 +1,39 @@
+﻿<div class="col-md-12 p-0 report-date-header">
+    <div class="input-group h-100 justify-content-center align-items-center">
+        <div class="col-md-12 p-0 text-center">
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("Filter By Status", htmlAttributes: new { @class = "col-md-4" })
+
+                @if (ViewBag.trasnferOrder != null)
+                {
+                    <div class="col-md-4">
+                        @Html.DropDownList("PurchaseOrderStatus",
+                         new List<SelectListItem>
+                             {
+                            new SelectListItem{ Text = "ALL", Value = "0"},
+                            new SelectListItem{ Text = "Active", Value = "1",Selected=true},
+                            new SelectListItem{ Text = "Hold", Value = "3"},
+                            new SelectListItem{ Text = "Complete", Value = "2"},
+                            new SelectListItem{ Text = "Posted To Account", Value = "13"}
+                             }, new { @class = "chosen-select", onchange = "UASelectedValueChanged(this);" })
+                    </div>
+                }
+                else
+                {
+
+                    <div class="col-md-4">
+                        @Html.DropDownList("PurchaseOrderStatus",
+                             new List<SelectListItem>
+                                 {
+                            new SelectListItem{ Text = "ALL", Value = "0"},
+                            //new SelectListItem{ Text = "Active", Value = "1"},
+                            new SelectListItem{ Text = "Complete", Value = "2",Selected=true},
+                            new SelectListItem{ Text = "Posted To Account", Value = "13"}
+                                 }, new { @class = "chosen-select", onchange = "UASelectedValueChanged(this);" })
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

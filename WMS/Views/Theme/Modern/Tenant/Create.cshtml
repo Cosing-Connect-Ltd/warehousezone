@@ -1,0 +1,240 @@
+﻿@model Ganedata.Core.Entities.Domain.Tenant
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Edit Client Detail";
+}
+
+<h2><span>Edit Client Detail</span></h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="col-md-6 pull-left">
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.TenantId)
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.TenantName, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.TenantName)
+            @Html.ValidationMessageFor(model => model.TenantName)
+        </div>
+    </div>
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.TenantNo, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.TenantNo)
+            @Html.ValidationMessageFor(model => model.TenantNo)
+        </div>
+    </div>
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.TenantVatNo, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.TenantVatNo)
+            @Html.ValidationMessageFor(model => model.TenantVatNo)
+        </div>
+    </div>
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.TenantAccountReference, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.TenantAccountReference)
+            @Html.ValidationMessageFor(model => model.TenantAccountReference)
+        </div>
+    </div>
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.TenantWebsite, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.TenantWebsite)
+            @Html.ValidationMessageFor(model => model.TenantWebsite)
+        </div>
+    </div>
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.TenantDayPhone, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.TenantDayPhone)
+            @Html.ValidationMessageFor(model => model.TenantDayPhone)
+        </div>
+    </div>
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.TenantEveningPhone, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.TenantEveningPhone)
+            @Html.ValidationMessageFor(model => model.TenantEveningPhone)
+        </div>
+    </div>
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.TenantMobilePhone, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.TenantMobilePhone)
+            @Html.ValidationMessageFor(model => model.TenantMobilePhone)
+        </div>
+    </div>
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.TenantFax, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.TenantFax)
+            @Html.ValidationMessageFor(model => model.TenantFax)
+        </div>
+    </div>
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.TenantEmail, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.TenantEmail)
+            @Html.ValidationMessageFor(model => model.TenantEmail)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.ProductCodePrefix, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.ProductCodePrefix)
+            @Html.ValidationMessageFor(model => model.ProductCodePrefix)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.TenantCulture, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.TenantCulture)
+            @Html.ValidationMessageFor(model => model.TenantCulture)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.TenantTimeZoneId, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.TenantTimeZoneId)
+            @Html.ValidationMessageFor(model => model.TenantTimeZoneId)
+        </div>
+    </div>
+
+
+</div>
+
+<div class="col-md-6 pull-left">
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.TenantAddress1, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.TenantAddress1)
+            @Html.ValidationMessageFor(model => model.TenantAddress1)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.TenantAddress2, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.TenantAddress2)
+            @Html.ValidationMessageFor(model => model.TenantAddress2)
+        </div>
+    </div>
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.TenantAddress3, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.TenantAddress3)
+            @Html.ValidationMessageFor(model => model.TenantAddress3)
+        </div>
+    </div>
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.TenantAddress4, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.TenantAddress4)
+            @Html.ValidationMessageFor(model => model.TenantAddress4)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+
+        @Html.Label("Country", htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.DropDownListFor(model => model.CountryID, ViewBag.Countries as IEnumerable<SelectListItem>, new { @class = "chosen-select" })
+
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.Label("Currency", htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.DropDownListFor(model => model.CurrencyID, ViewBag.Currencies as IEnumerable<SelectListItem>, new { @class = "chosen-select" })
+        </div>
+    </div>
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.TenantCity, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.TenantCity)
+            @Html.ValidationMessageFor(model => model.TenantCity)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.TenantStateCounty, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.TenantStateCounty)
+            @Html.ValidationMessageFor(model => model.TenantStateCounty)
+        </div>
+    </div>
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.TenantPostalCode, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.TenantPostalCode)
+            @Html.ValidationMessageFor(model => model.TenantPostalCode)
+        </div>
+    </div>
+
+
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.TenantSubDmoain, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.TenantSubDmoain)
+            @Html.ValidationMessageFor(model => model.TenantSubDmoain)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.AccountNumber, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.AccountNumber)
+            @Html.ValidationMessageFor(model => model.AccountNumber)
+        </div>
+    </div>
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.IsActive, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.IsActive)
+            @Html.ValidationMessageFor(model => model.IsActive)
+        </div>
+    </div>
+
+</div>
+
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+        </div>
+    </div>
+}
+

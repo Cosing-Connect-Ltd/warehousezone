@@ -1,0 +1,16 @@
+﻿@using WMS.Models
+
+@{
+    ViewBag.Title = "MatchGtin";
+}
+
+<h2><span>MatchGtin</span></h2>
+
+<p>Total not matched records are <b>@ViewBag.Counter</b></p>
+
+@foreach (ScannedGtins item in (List<ScannedGtins>)ViewBag.NotMatched)
+{
+    <tr>@item.Gtin</tr><br />
+    
+}
+

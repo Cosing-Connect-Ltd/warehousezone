@@ -1,0 +1,182 @@
+﻿@model IEnumerable<Ganedata.Core.Entities.Domain.TenantEmailConfig>
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.PageControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.PageControl },
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <hr />
+
+    @using (Ajax.BeginForm("Search action", "Controller", new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "productlistview", OnComplete = "updatesorter()" }))
+    {
+
+        <div class="col-md-12 p-0">
+
+            <div class="col-md-8">
+
+                <div class="col-md-1">
+                    @Html.Label("Serach")
+                </div>
+                <div class="col-md-5">
+                    <input type="text" name="q" id="q" />
+                </div>
+
+                <div class="col-md-2">
+                    <input type="submit" value="Search" class="btn btn-primary" style="width:75px;" />
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="col-md-5">
+                    @Html.Label("Records PerPage")
+                </div>
+                <div class="col-md-4">
+                    <select id="ppitems" name="ppitems">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+
+    }
+
+
+    <br />
+
+    <div id="productlistview">
+
+        <div class="col-md-12 p-0">
+
+
+
+            <table class="table table-hover table-bordered tsort">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.Label("Select")
+
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TenantId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SmtpHost)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SmtpPort)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.UserEmail)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Password)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EnableSsl)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DateUpdated)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.UpdatedBy)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.IsActive)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TenantId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SmtpHost)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SmtpPort)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserEmail)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Password)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EnableSsl)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateUpdated)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UpdatedBy)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsActive)
+                            </td>
+                            <td>
+                                <input type="radio" name="id" class="selkey" value="@item.TenantEmailConfigId">
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+
+    <div class="col-md-12 p-0">
+
+        @if (WMS.Helpers.LayoutHelpers.ActivityValidator("ControllerName", "Create"))
+        {
+
+            @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary  " })
+
+        }
+        @if (WMS.Helpers.LayoutHelpers.ActivityValidator("ControllerName", "Details"))
+        {
+
+            @Html.ActionLink("View", "Details", null, new { @class = "btn btn-primary  Caction" })
+
+        }
+        @if (WMS.Helpers.LayoutHelpers.ActivityValidator("ControllerName", "Edit"))
+        {
+
+            @Html.ActionLink("Update", "Edit", null, new { @class = "btn btn-primary  Caction" })
+        }
+        @if (WMS.Helpers.LayoutHelpers.ActivityValidator("ControllerName", "Delete"))
+        {
+            @Html.ActionLink("Delete", "Delete", null, new { @class = "btn btn-primary  Caction" })
+        }
+    </div>
+
+</body>
+</html>

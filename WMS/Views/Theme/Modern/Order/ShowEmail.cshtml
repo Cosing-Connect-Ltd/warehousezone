@@ -1,0 +1,18 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@{ 
+
+    Layout = null;
+}
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+  
+}
+@Html.Action("_ShowEmailPartial", new { id=ViewBag.orderid,InvoiceMasterId= ViewBag.invoicemasterId, TemplateId = ViewBag.templateId })
+

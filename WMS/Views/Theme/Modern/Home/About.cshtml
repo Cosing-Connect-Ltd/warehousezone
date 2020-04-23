@@ -1,0 +1,26 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "About";
+}
+<h2><span>@ViewBag.Title.</span></h2>
+<h3>@ViewBag.Message</h3>
+<h3><b>App Version:</b> @ViewBag.AppVersion</h3>
+<h3><b>Code Version:</b> @ViewBag.FileVersion</h3>
+
+
+
+

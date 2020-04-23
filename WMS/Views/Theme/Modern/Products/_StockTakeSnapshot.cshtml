@@ -1,0 +1,48 @@
+﻿@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = ViewBag.productId + "StockSnapshotgridview";
+        settings.CallbackRouteValues = new { Controller = "Products", Action = "_StockTakeSnapshot", productId = ViewBag.productId };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.SettingsPopup.HeaderFilter.MinWidth = 500;
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+
+        settings.KeyFieldName = "StockTakeSnapshotId";
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.Columns.Add("ReceivedSku");
+
+        settings.Columns.Add("ActionTaken");
+        settings.Columns.Add("NewQuantity");
+
+        settings.Columns.Add("Available");
+        settings.Columns.Add("Allocated");
+        settings.Columns.Add("StockTake.StockTakeReference");
+        settings.Columns.Add("StockTake.StockTakeDescription");
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+    });
+}
+@grid.Bind(Model).GetHtml()
+@if (Request.Url.AbsolutePath.ToLower().Contains("edit"))
+{
+    <div class="col-md-12 p-0">
+        @Html.ActionLink("Create New", "SaveProductSrSnap", null, new { @class = "btn btn-primary  " })
+        @Html.ActionLink("Update", "SaveProductSrSnap", null, new { @class = "btn btn-primary  Caction", @id = "lnksavePrdStSnap" })
+        @Html.ActionLink("Delete", "SaveProductKitItems", null, new { @class = "btn btn-primary  Caction", @id = "lnksavePrdStSnap" })
+    </div>
+}

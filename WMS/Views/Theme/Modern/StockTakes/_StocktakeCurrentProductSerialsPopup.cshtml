@@ -1,0 +1,12 @@
+<div class="divstocktakedetail-serial-title">
+    <h4 id="divSerialProductName">Scan Serials for @ViewBag.ProductName</h4>
+</div>
+
+<div class="col-md-12">
+    <div class="col-md-12 div-barcodescanner-content">
+        <input type="text" class="form-control" placeholder="Scan the Product serials" id="txtBarcodeScannerSerialInputs" />
+    </div>
+    <div class="text-center">
+        @Html.Action("StockTakeCurrentProductSerialsPartial", "StockTakes")
+    </div>
+</div>

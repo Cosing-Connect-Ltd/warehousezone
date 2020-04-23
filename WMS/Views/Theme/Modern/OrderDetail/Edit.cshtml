@@ -1,0 +1,728 @@
+﻿@model Ganedata.Core.Entities.Domain.OrderDetailSessionViewModel
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.PopupControl },
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2><span>Purchase Order Detail</span></h2>
+
+<div class="col-md-12 p-0">
+    <ul class="nav nav-tabs">
+        <li id="t1">@Html.ActionLink("PO", "Index", "PO")</li>
+        <li id="t2" class="active"><a href="#">Product Details</a></li>
+        <li id="t3">@Html.ActionLink("Manage", "Manage", "PO", new { id = ViewBag.POID }, null)</li>
+    </ul>
+    <br />
+</div>
+
+<div class="content">
+
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "frm", @class = "" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("POID")
+        @Html.HiddenFor(m => m.OrderDetailID)
+        @Html.HiddenFor(m => m.OrderID)
+        @Html.HiddenFor(m => m.DateCreated)
+        @Html.HiddenFor(m => m.TenentId)
+        @Html.Hidden("TenantId", Model.TenentId)
+        @Html.HiddenFor(m => m.WarehouseId)
+        <div class="col-md-6 pull-left">
+
+            <table class="table tdclear">
+                <caption>
+                    @Html.ValidationSummary(true)
+                </caption>
+
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.WarehouseId, "Ship To", new { @class = "col-md-6" })
+                    </td>
+                    <td>
+                        @Html.DropDownList("WarehouseId", null, "", new { @class = "chosen-select" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.WarehouseId)
+                    </td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td> <a href="#" id="findproduct">Find Product </a> </td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.ProductId, "Product", new { @class = "col-md-4" })
+                    </td>
+                    <td>
+                        @Html.DropDownList("ProductId", null, String.Empty, new { @class = "chosen-select" })
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.ProductId)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Supplier Code", new { @class = "col-md-6" })
+                    </td>
+                    <td>
+                        @Html.TextBox("SupplierCode")
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.Qty, new { @class = "col-md-4" })
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.Qty)
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.Qty)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("UOM", new { @class = "col-md-4" })
+                    </td>
+                    <td>
+                        <input type="text" name="UOM" id="UOM" disabled />
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.Price, new { @class = "col-md-4" })
+                    </td>
+                    <td>
+                        <a href="#" id="btnphistory">Price History</a>
+                        @Html.EditorFor(model => model.Price)
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.Price)
+                    </td>
+                </tr>
+            </table>
+        </div><!--left-->
+        <div class="col-md-6 pull-left">
+            <table class="table tdclear">
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.ExpectedDate, new { @class = "col-md-8" })
+                    </td>
+                    <td>
+                        @*@Html.EditorFor(model => model.ExpectedDate)*@
+                        @Html.TextBoxFor(m => m.ExpectedDate)
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.ExpectedDate)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.Notes, new { @class = "col-md-4" })
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.Notes)
+                    </td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.Notes)
+                    </td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>
+                        <input type="submit" value="Add" id="submit" class="btn btn-default btncreate" style="width:55px;" />
+                        <input type="submit" value="Update" id="submit-update" class="btn btn-primary btncreate" style="width:55px; display:none" />
+
+                        @*@Html.ActionLink("Reset", "Create", new { id = ViewBag.POID }, new { @class = "btn btn-primary" })*@
+                    </td>
+                    <td>
+                        <a href="#" class="btn btn-primary" id="sub-reset">Reset</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="clear"></div>
+    }
+
+    <div id="divPhistory" class="mdl2">
+        <p class="fixed-bottom"><a href="#" id="selectprice">&nbsp; Select </a><button type='button' class='close'>×</button> </p>
+        <div class='alert alert-error'></div>
+        <div class="col-md-12 p-0" style="width:700px">
+            <table class="table table-bordered table-condensed">
+                <thead>
+                    <tr>
+                        <th>Select</th>
+                        <th>Supplier</th>
+                        <th>Price</th>
+                        <th>Currency</th>
+                        <th>PO</th>
+                    </tr>
+                </thead>
+                <tbody id="phistory"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="divProd" class="mdl2">
+        <p class="fixed-bottom"> <a href="#" id="selectprod">&nbsp; Select </a> <button type='button' class='close'>×</button> </p>
+        <div class='alert alert-error'></div>
+        <div class="col-md-12 p-0" style="width:700px">
+            <form action="" method="get" id="mdlsearch">
+                @Html.Hidden("Supplierid")
+                @Html.Hidden("POID")
+                <table class="table table-bordered table-condensed">
+                    <tr>
+                        <td><input type="radio" name="searchby" class="searchby" id="sp" value="supplier" checked></td>
+                        <td>Products by Supplier &nbsp;</td>
+                        <td><input type="radio" name="searchby" class="searchby" id="pg" value="pg"> </td>
+                        <td> Products by ProductGroup  &nbsp;</td>
+                        <td>@Html.DropDownList("Groups", null, "Filter By ProductGroup", new { @class = "chosen-select" })</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"><input type="text" name="q" id="q" /></td>
+                        <td><input type="submit" value="Search" class="btn btn-primary btsearch" style="width:75px;" /></td>
+                    </tr>
+                </table>
+
+            </form>
+            <div id="productlistview">
+                <table class="table table-hover table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.Label("Select")
+                            </th>
+                            <th>
+                                @Html.Label("GTIN")
+                            </th>
+                            <th>
+                                @Html.Label("Product Name")
+                            </th>
+                            <th>
+                                @Html.Label("UOM")
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="prodlist"> </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <br /> <br />
+    <div class="col-md-12 p-0">
+        @Html.Hidden("POStatus")
+        <table class="table table-hover table-bordered tsort" id="tbl-pdetail">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.Label("Product")
+                    </th>
+                    <th>@Html.Label("Supplier Code")</th>
+                    <th>
+                        @Html.Label("Warehouse Name")
+                    </th>
+                    <th>
+                        @Html.Label("Expected Date")
+                    </th>
+                    <th>
+                        @Html.Label("Qty")
+                    </th>
+                    <th>
+                        @Html.Label("Price")
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="tblbody">
+                @{
+                    Decimal subtotal = 0;
+                }
+                @if (ViewBag.PoDetail != null)
+                {
+                    int index = 0;
+
+                    foreach (var item in ViewBag.PoDetail)
+                    {
+                        <tr id="@index">
+
+                            <td style="display:none">
+                                @item.PODetailID
+                            </td>
+                            <td>
+                                @item.ProductMaster.SKUCode
+
+                            </td>
+                            <td>
+                                @item.SupplierCode
+                            </td>
+                            <td>
+                                @item.TenantWarehouse.WarehouseName
+                            </td>
+                            <td>
+                                @if (item.ExpectedDate != null)
+                                {
+                                    @item.ExpectedDate.ToString("dd/MM/yyyy")
+                                }
+                            </td>
+                            <td style="display:none">
+                                @item.Notes
+                            </td>
+                            <td>
+                                @item.Qty
+                            </td>
+                            <td>
+                                @item.Price
+                            </td>
+                            <td>
+                                @if (ViewBag.POStatus != "Confirm")
+                                {
+                                    <a class="deletepg" href="@Url.Action("RemoveProduct", "PODetail", new { PODetailID = item.PODetailID,POID=ViewBag.POID })"><i class="fa fa-trash"></i>   </a>
+                                    <text>|</text> <a href="#" class="edit" data-line="@item.PODetailID">Edit</a>
+
+                                    <a href="#" onclick="RemoveProdFromList(' + index + ');return false;" class="rm">Remove</a> <text>|</text> <a href="#" onclick="EditProdFromList(' + index + ');return false;" class="rm">Edit</a>
+                                }
+                            </td>
+                        </tr>
+                        if (item.Price != null)
+                        {
+                            subtotal = subtotal + (item.Qty * item.Price);
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+        <div class="col-md-12 p-0 col-md-offset-10">
+            <h3> Subtotal:<span id="st"> @subtotal </span> </h3>
+        </div> <!-- end of row col-md-offset-6 -->
+    </div>
+</div>
+<div class="col-md-12 p-0">
+    <script type="text/javascript">
+
+    /////// declare array
+    var PdList = [];
+    function Pd(POID, WarehouseId, WarehouseName, ExpectedDate, Notes, ProductId, ProdName, Qty, Price, SupplierCode, UOM) {
+
+        this.POID = POID;
+        this.WarehouseId = WarehouseId;
+        this.WarehouseName = WarehouseName;
+        this.ExpectedDate = ExpectedDate;
+        this.Notes = Notes;
+        this.ProductId = ProductId;
+        this.ProdName = ProdName;
+        this.Qty = Qty;
+        this.Price = Price;
+        this.SupplierCode = SupplierCode;
+        this.UOM = UOM;
+    }
+
+    ////////////////////////////////////
+
+
+    $(function () {
+        ///for jquery ui date picker
+        $("#CancelDate,#ExpectedDate").datepicker({ dateFormat: 'dd/mm/yy' });
+
+        ///////////////////For google chrome Problem  ///////////
+        $.validator.addMethod('date',
+    function (value, element, params) {
+        if (this.optional(element)) {
+            return true;
+        }
+
+        var ok = true;
+        try {
+            $.datepicker.parseDate('dd/mm/yy', value);
+        }
+        catch (err) {
+            ok = false;
+        }
+        return ok;
+    });
+
+        ////////////////////////// find product button is clicked   display model////////////////////
+        $("#findproduct").click(function (e) {
+
+            ////// reset model
+            $('#sp').attr('checked', true);
+            $('#pg').attr('checked', false);
+            $('#Groups').val('');
+            $('#q').val('');
+            //////////
+            // call of ajax function
+            getprodlist();
+            ////// display model
+            var y = 150;
+            $('#divProd').css('display', 'block').animate({ top: y });
+            e.preventDefault();
+        });
+        /////////////////////model find by radio button is clciked/////////////////////////////////////
+
+
+        $('.searchby,#Groups').on('change', function (e) {
+            if ($('input[name="searchby"]:checked').val() == "supplier" || ($('input[name="searchby"]:checked').val() == "pg" && $('#Groups').val() != "")) {
+                getprodlist();
+
+            } else
+                $("#prodlist").empty();
+            e.preventDefault();
+        });
+
+        $('.btsearch').on('click', function (e) {
+            getprodlist();
+            e.preventDefault();
+        });
+
+        $('#ProductId').change(function (e) {
+            $('#UOM').val('');
+            $('#Price').val('');
+            getprice2($(this).val());
+        });
+
+        //////////////////////////////////////////
+        $('#selectprod').on('click', function (e) {
+            if ($('input[name="pid"]:checked').val() != null) {
+
+                $('#UOM').val('');
+
+                if (($('input[name="searchby"]:checked').val() == "supplier")) {
+                    // call of ajax function to get price of selected product
+                    getprice();
+                }
+
+                $('#ProductId').val($('input[name="pid"]:checked').val());
+                var row = $('input[name="pid"]:checked').val();
+                $('#UOM').val($.trim($('#' + row).find('td:nth-child(4)').text()));
+                $('#divProd').hide();
+            }
+            e.preventDefault();
+        });
+
+        ///////model get price history////////////////////////////////////////////////////
+
+        $("#btnphistory").on('click', function (e) {
+            if ($('#ProductId').val() != "") {
+                $('#divProd').hide();
+                gethistory();
+                var y = 150;
+                $('#divPhistory').css('display', 'block').animate({ top: y });
+            }
+            e.preventDefault();
+        });
+        ///// Price Select ////////////////////////////////
+        $('#selectprice').on('click', function (e) {
+            $('#Price').val($('input[name="price"]:checked').val());
+            $('#divPhistory').hide();
+            e.preventDefault();
+        });
+
+        $('#divPhistory').on("click", ".popup", function (e) {
+            window.open($(this).attr('href'), "_blank", "toolbar=yes, scrollbars=yes, resizable=yes, top=20, width=800, height=600");
+            e.preventDefault();
+        });
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        // handle non serialized products add button
+        $("#submit").click(function (e) {
+            e.preventDefault();
+            // check if quantity is not empty
+            if ($("#Qty").val() == "" || $("#WarehouseId option:selected").val() == "" || $("#ProductId option:selected").val() == "") {
+
+                alert("Please enter/check mandatory fields");
+                return;
+            } else {
+                var POID = $('#POID').val();
+                var WarehouseId = $('#WarehouseId').val();
+                var WarehouseName = $('#WarehouseId option:selected').text();
+                var ProductId = $('#ProductId').val();
+                var ProdName = $('#ProductId option:selected').text();
+                var SupplierCode = $('#SupplierCode').val();
+                var Qty = $('#Qty').val();
+                var UOM = $('#UOM').val();
+                var Price = $('#Price').val();
+                var ExpectedDate = $('#ExpectedDate').val();
+                var Notes = $('#Notes').val();
+
+                var objpd = new Pd(POID, WarehouseId, WarehouseName, ExpectedDate, Notes, ProductId, ProdName, Qty, Price, SupplierCode, UOM);
+
+                PdList.push(objpd);
+                PdetailHtml();
+                resetform();
+            }
+
+        });
+
+        // handle non serialized products add button
+        $("#submit-update").click(function (e) {
+
+            e.preventDefault();
+            // check if quantity is not empty
+            if ($("#Qty").val() == "" || $("#WarehouseId option:selected").val() == "" || $("#ProductId option:selected").val() == "") {
+
+                alert("Please enter/check mandatory fields");
+                return;
+            }
+
+            var POID = $('#POID').val();
+            var WarehouseId = $('#WarehouseId').val();
+            var WarehouseName = $('#WarehouseId option:selected').text();
+            var ProductId = $('#ProductId').val();
+            var ProdName = $('#ProductId option:selected').text();
+            var SupplierCode = $('#SupplierCode').val();
+            var Qty = $('#Qty').val();
+            var UOM = $('#UOM').val();
+            var Price = $('#Price').val();
+            var ExpectedDate = $('#ExpectedDate').val();
+            var Notes = $('#Notes').val();
+            var objpd = new Pd(POID, WarehouseId, WarehouseName, ExpectedDate, Notes, ProductId, ProdName, Qty, Price, SupplierCode, UOM);
+            var index = $('#PODetailID').val();
+            PdList[index] = objpd;
+            PdetailHtml();
+            resetform();
+        });
+
+        // handle reset button
+
+        $("#sub-reset").click(function (e) {
+            e.preventDefault();
+            resetform();
+        });
+
+        // bind submt button event
+        $("#post-data").click(function (e) {
+            e.preventDefault();
+            if (PdList.length > 0) {
+                PostData();
+            }
+        });
+
+        //cancel order
+        // confirm first as the data will be lost
+        $("#cancel-data").click(function (e) {
+            if (PdList.length > 0) {
+                // confirm cancel order
+                var conf = confirm("Are you sure to cancel PO, you will loose any unsaved data");
+                if (conf != true) {
+                    e.preventDefault();
+                }
+            }
+        });
+
+
+    }); //end of jquery
+    //////////////////////////////////////////////////
+
+    function PdetailHtml() {
+        $("#tblbody").empty();
+        var html = '';
+        var stotal = 0.0;
+        PdList.forEach(function (PD, index) {
+
+            html += '<tr id="' + index + '"><td>' + PD.ProdName + '</td> <td>' + PD.SupplierCode + '</td> <td>' + PD.WarehouseName + '</td> <td>' + PD.ExpectedDate + '</td> <td>' + PD.Qty + '</td> <td>' + PD.Price + '</td>';
+
+            if ($('#POStatus').val != "Confirm") {
+                html += '<td><a  href="#" onclick="RemoveProdFromList(' + index + ');return false;"  class="rm"  >Remove</a> | <a  href="#" onclick="EditProdFromList(' + index + ');return false;"  class="rm"  >Edit</a></td>';
+            }
+
+            html += '</tr>';
+
+            if (PD.Price != "")
+                stotal = parseFloat(stotal) + parseFloat(PD.Price);
+        });
+        $("#tblbody").append(html);
+        $('#st').html(stotal);
+
+    }  //end of function
+
+    //remove item from product list
+    function RemoveProdFromList(index) {
+        var r = confirm("Are you Sure You want to Delete!");
+        if (r == true) {
+            PdList.splice(index, 1);
+            PdetailHtml();
+        }
+    }
+
+    //Edit product from list
+    function EditProdFromList(index) {
+
+        $('#PODetailID').val(index);
+        var pdobj = PdList[index];
+        $('#WarehouseId').val(pdobj.WarehouseId);
+        $('#ProductId').val(pdobj.ProductId);
+        $('#SupplierCode').val(pdobj.SupplierCode);
+        $('#Qty').val(pdobj.Qty);
+        $('#UOM').val(pdobj.UOM);
+        $('#Price').val(pdobj.Price);
+        $('#ExpectedDate').val(pdobj.ExpectedDate);
+        $('#Notes').val(pdobj.Notes);
+        $("#submit").css("display", "none");
+        $("#submit-update").css("display", "inline-block");
+    }
+
+    function resetform() {
+        $('#PODetailID').val('');
+        $('#WarehouseId').val('');
+        $('#ProductId').val('');
+        $('#SupplierCode').val('');
+        $('#Qty').val('');
+        $('#UOM').val('');
+        $('#Price').val('');
+        $('#ExpectedDate').val('');
+        $('#Notes').val('');
+        $("#submit-update").css('display', 'none');
+        $("#submit").css("display", "inline-block");
+    }
+
+    function gethistory() {
+        var p = $("#ProductId").val();
+        if (p != null) {
+            $.ajax({
+                type: "GET",
+                url: '/PODetail/jsonpricehistory',
+                data: { "pid": p },
+                dataType: 'json',
+                success: function (data) {
+                    var result = $("#historyTemplate").tmpl(data);
+                    $("#phistory").empty().append(result);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert('HistoryError' + textStatus + "/" + errorThrown);
+                }
+            });
+        } else
+            $("#phistory").empty();
+    }
+
+    function getprodlist() {
+        $.ajax({
+            type: "GET",
+            url: '/PODetail/GetProductList',
+            data: $('#mdlsearch').serialize(),
+            dataType: 'json',
+            success: function (data) {
+                var result = $("#ProdTemplate").tmpl(data);
+                $("#prodlist").empty().append(result);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                // alert(xhr.status);
+                alert('Error' + textStatus + "/" + errorThrown);
+            }
+        });
+    }
+
+    function getprice() {
+        var supplier = $('#Supplierid').val();
+        var pid = $('input[name="pid"]:checked').val();
+        $.ajax({
+            type: "GET",
+            url: '/PODetail/PricebySupplier',
+            data: { "pid": pid, "Supplierid": supplier },
+            dataType: 'json',
+            success: function (data) {
+                $('#Price').val(data.Price);
+                $('#SupplierCode').val(data.SupplierCode);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                // alert(xhr.status);
+                alert('Error' + textStatus + "/" + errorThrown);
+            }
+        });
+    }
+
+    function getprice2(productid) {
+        var supplier = $('#Supplierid').val();
+        var pid = productid;
+        $.ajax({
+            type: "GET",
+            url: '/PODetail/PricebySupplier',
+            data: { "pid": pid, "Supplierid": supplier },
+            dataType: 'json',
+            success: function (data) {
+                $('#Price').val(data.Price);
+                $('#SupplierCode').val(data.SupplierCode);
+                $('#UOM').val(data.UOM);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                // alert(xhr.status);
+                alert('Error' + textStatus + "/" + errorThrown);
+            }
+        });
+    }
+
+    function PostData() {
+        $.ajax({
+                    type: "POST",
+                    url: '/PODetail/PostData',
+                    async: false,
+                    data: { PdetailList: JSON.stringify(PdList)},
+                    dataType: 'json',
+                    success: function (data) {
+                        var Flag = data;
+                        if (Flag == 1) {
+                            PdList= [];
+                            var baseUrl = "@Url.Content("~")";
+                            window.location.href = baseUrl + "PO/Index";
+                        }
+                        else {
+                            alert("Some Error while processing request, Please contact support")
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        // alert(xhr.status);
+                        alert('Error' + textStatus + "/" + errorThrown);
+                    }
+                });
+    }
+    </script>
+</div>
+
+<div class="col-md-12 p-0 right">
+    <a href="#" id="post-data" class="btn btn-primary"> Confirm PO </a>
+    @Html.ActionLink("Cancel PO", "Index", "PO", null, new { id = "cancel-data", @class = "btn btn-primary" })
+</div>
+
+<script id="ProdTemplate" type="text/x-jquery-tmpl">
+
+    <tr id="${ProductId}">
+        <td><input type="radio" name="pid" value="${ProductId}"></td>
+        <td>${SKUCode}</td>
+        <td>${ShortDesc}</td>
+        <td>${UOM}</td>
+    </tr>
+</script>
+
+<script id="historyTemplate" type="text/x-jquery-tmpl">
+    <tr>
+        <td><input type="radio" name="price" value="${Price}"></td>
+        <td>${CompanyName}</td>
+        <td>${Price}</td>
+        <td>${CurrencyName}</td>
+        <td><a target="_blank" class="popup" href="/PO/POProgress/${POID}">${PONumber}</a></td>
+        <td>${Status}</td>
+    </tr>
+</script>

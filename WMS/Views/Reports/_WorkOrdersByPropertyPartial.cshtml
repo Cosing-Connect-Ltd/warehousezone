@@ -1,0 +1,10 @@
+@Html.DevExpress().DocumentViewer(settings => {
+    settings.Name = "Works order- Expensive drilled Report";
+    settings.CallbackRouteValues = new { Controller = "Reports", Action = "_WorksOrderExpensesByPropertyPartial" };
+    settings.ExportRouteValues = new { Controller = "Reports", Action = "_WorksOrderExpensesByPropertyReportExport" };
+	settings.Report = (XtraReport)Model;
+    
+    settings.ToolbarMode = DocumentViewerToolbarMode.Ribbon;
+    settings.StylesSplitter.SidePaneMinWidth = System.Web.UI.WebControls.Unit.Pixel(300);
+     
+}).GetHtml()

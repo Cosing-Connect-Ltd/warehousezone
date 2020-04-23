@@ -1,0 +1,69 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@{
+    ViewBag.Title = "MarketRouteProgresses";
+}
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+                new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+                new StyleSheet { ExtensionType = ExtensionType.Scheduler, Theme = GaneStaticAppExtensions.DevexTheme },
+                new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+                )
+
+    @Html.DevExpress().GetScripts(
+                new Script { ExtensionType = ExtensionType.GridView },
+                new Script { ExtensionType = ExtensionType.Scheduler },
+                new Script { ExtensionType = ExtensionType.DateEdit }
+                )
+}
+
+<script>
+    
+    var OnMRPFocusedRowChanged= function (s, e) {
+        var rowKey = s.GetRowKey(s.GetFocusedRowIndex());
+      
+    }
+    var MRPBeginCallback = function (s, e) {
+        e.customArgs["id"] = MarketProgressScedular.GetFormattedText("dd/MM/yyyy");
+        e.customArgs["marketrouteId"] = $("#MarketRouteId").val();
+    }
+
+
+
+</script>
+<h2>Market Route Progress</h2>
+
+<div class="col-md-12 report-date-header">
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.Label("Select Filters", htmlAttributes: new { @class = "col-md-3 text-center" })
+        <div class="col-md-3 text-center pull-left">
+            @Html.DevExpress().DateEdit(settings =>
+       {
+           settings.Name = "MarketProgressScedular";
+           settings.Properties.NullText = "Select date...";
+           settings.Properties.DisplayFormatString = "dd/MM/yyyy";
+           settings.ClientVisible = true;
+           settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+           settings.ControlStyle.CssClass = "form-control";
+           settings.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
+
+       }).GetHtml()
+        </div>
+        <div class="col-md-3 text-center pull-left">
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("", htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-12 p-0">
+                     @Html.DropDownList("MarketRouteId", ViewBag.marketRoute as SelectList, "Select Market Route", new { @class = "chosen-select" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 text-center pull-left">
+            <input id="btnReports" type="button" value="Apply" class="btn btn-primary" onclick="MarketRouteProgressGridView.Refresh()" />
+        </div>
+    </div>
+</div>
+<div>
+
+    @Html.Action("_MarketRouteProgressGridView")
+</div>
+

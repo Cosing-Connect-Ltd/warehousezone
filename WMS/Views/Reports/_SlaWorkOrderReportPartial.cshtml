@@ -1,0 +1,10 @@
+@Html.DevExpress().DocumentViewer(settings => {
+    settings.Name = "SLA Works order Report";
+    settings.CallbackRouteValues = new { Controller = "Reports", Action = "_SlaWorksOrderReportPartial" };
+    settings.ExportRouteValues = new { Controller = "Reports", Action = "_SlaWorksOrderReportPartialExport" };
+	settings.Report = (XtraReport)Model;
+    
+    settings.ToolbarMode = DocumentViewerToolbarMode.Ribbon;
+    settings.StylesSplitter.SidePaneMinWidth = System.Web.UI.WebControls.Unit.Pixel(300);
+     
+}).GetHtml()

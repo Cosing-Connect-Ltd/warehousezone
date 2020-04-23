@@ -1,0 +1,122 @@
+@using System.Web.UI.WebControls
+@model Ganedata.Core.Entities.Domain.DirectSalesViewModel
+<div id="invoice-preview-container">
+<div class="col-md-12 p-0 invoice-preview-pane">
+
+    <div class="col-md-12 p-0">
+        <div class="invoice-header-accountinfo col-md-7">
+            <table class="table">
+                <tr>
+                    <td colspan="2">
+                        <div class="h3">PRODUCTS</div>
+                        @Html.HiddenFor(m => m.OrderNumber)
+                        @Html.HiddenFor(m => m.InvoiceCurrency)
+                    </td>
+                </tr>
+                <tr><td colspan="2"><strong data-attr="InvoiceAddress">@Html.Raw(Model.InvoiceAddress)</strong></td></tr>
+                <tr><td>Order Number</td><td class="value-box"><strong data-attr="OrderNumber">@Model.OrderNumber</strong></td></tr>
+            </table>
+        </div>
+        <div class="invoice-header-taxinfo col-md-5">
+        <table class="table">
+            <tr><td>Currency</td><td class="value-box"><strong data-attr="InvoiceCurrency">@(Model.InvoiceCurrency ?? "GBP")</strong></td></tr>
+        </table>
+        </div>
+            <div class="invoice-product-details">
+            <table class="table table-bordered" id="invoice-products-table">
+                <tr><th>Product</th><th>Unit Price</th><th>Qty</th><th>Warranty</th><th>VAT %</th> <th>Discount %</th><th>Amount</th><th>Actions</th></tr>
+                @{
+                var productsIndex = 0;
+                var hfString = "";
+                }
+                @foreach (var item in Model.AllInvoiceProducts)
+                {
+                    hfString += "<input type='hidden' name='AllInvoiceProducts[" + productsIndex + "].ProductId' value='" + item.ProductId + "' />" +
+                                "<input type='hidden' name='AllInvoiceProducts[" + productsIndex + "].QtyProcessed' value='" + item.QtyProcessed + "' />" +
+                                "<input type='hidden' name='AllInvoiceProducts[" + productsIndex + "].NetAmount' value='" + item.NetAmount + "' />" +
+                                "<input type='hidden' name='AllInvoiceProducts[" + productsIndex + "].WarrantyAmount' value='" + item.WarrantyAmount + "' />" +
+                                 //"<input type='hidden' name='AllInvoiceProducts[" + productsIndex + "].TaxAmount' value='" + item.TaxAmount + "' />"+
+                                 "<input type='hidden' name='AllInvoiceProducts[" + productsIndex + "].TaxAmounts' value='" + item.TaxAmounts + "' />" +
+                                "<input type='hidden' name='AllInvoiceProducts[" + productsIndex + "].DiscountAmount' value='" + item.DiscountAmount + "' />";
+
+                <tr data-id="@item.ProductId" data-qty="@item.QtyProcessed" data-warranty="@item.WarrantyAmount.ToString("0.00")" data-net="@item.NetAmount.ToString("0.00")" data-tax="@item.TaxAmounts.ToString("0.00")" data-discount="@item.DiscountAmount.ToString("0.00")" data-tax-pc="@item.TaxPercent.ToString("0.00")">
+                    <td>@item.ProductName</td>
+                    <td>@item.Price.ToString("0.00")</td>
+                    <td>@item.QtyProcessed.ToString("#.##")</td>
+                    <td>@item.WarrantyAmount.ToString("0.00")</td>
+                    <td>@item.WarrantyAmount.ToString("0.00")</td>
+                    <td>@item.TaxAmounts.ToString("0.00")</td>
+                    <td>@item.DiscountAmount.ToString("0.00")</td>
+                    <td>@item.TaxPercent</td>
+                    <td>@item.NetAmount.ToString("0.00")</td>
+                </tr>
+            productsIndex++;
+        }
+            </table>
+        </div>
+    </div>
+    <div class="col-md-12 p-0 invoice-product-preview-footer">
+        <table class="invoice-footer-summary table">
+            <tr>
+                <td rowspan="5" width="70%">
+                    <div class="input-group h-100 justify-content-center align-items-center">
+                        @Html.Label("Select Payment Mode", htmlAttributes: new { @class = "col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(m => m.PaymentModeId, Model.AllPaymentModes, new { @class = "chosen-select" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 p-0 input-group h-100 justify-content-center align-items-center">
+
+                        @Html.Label("Paying Today", htmlAttributes: new { @class = "col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DevExpress().SpinEdit(m =>
+                       {
+                           m.Name = "PaymentToday";
+                           m.ControlStyle.CssClass = "form-control payingtoday";
+                           m.Properties.MinValue = 0;
+                           m.Properties.MaxValue = 999999;
+                           m.Width = Unit.Percentage(100);
+                           m.Properties.NullText = "Payment Today";
+                           m.Properties.ClientSideEvents.NumberChanged = "AddedPaymentDirectSales";
+                           m.Properties.ClientSideEvents.TextChanged = "AddedPaymentDirectSales";
+                       }).GetHtml()
+
+                        </div>
+                    </div>
+                    <div class="col-md-12 p-0 input-group h-100 justify-content-center align-items-center">
+                        @Html.Label("Balance", htmlAttributes: new { @class = "col-md-4" })
+                        <div class="col-md-8">
+                            <div class="alert alert-warning" id="divOutstandingBalance">0.00</div>
+                        </div>
+                    </div>
+
+
+                </td>
+                <td class="ds-footer-label-box" width="20%">Net Amount @Html.HiddenFor(m => m.NetAmount)</td>
+                @*<td class="footer-value-box"><strong data-attr="TotalNet">-</strong></td>*@
+                <td class="ds-footer-value-box" width="10%"><strong data-attr="Net">-</strong></td>
+            </tr>
+            <tr><td>Total VAT @Html.HiddenFor(m => m.TaxAmount) </td><td><strong data-attr="TotalVat">-</strong></td></tr>
+
+            <tr><td>Total Warr.Amt @Html.HiddenFor(m => m.WarrantyAmount)</td><td><strong data-attr="TotalWarranty">-</strong></td></tr>
+            <tr><td>Total Net @Html.HiddenFor(m => m.NetAmount)</td><td><strong data-attr="TotalNet">-</strong></td></tr>
+            <tr><td>Discount Amount @Html.HiddenFor(m => m.DiscountAmount)</td><td><strong data-attr="TotalDiscount">-</strong></td></tr>
+            <tr style="display:none"><td>Card Charges @Html.HiddenFor(m => m.CardCharges)</td><td><strong data-attr="CardCharges">-</strong></td></tr>
+            <tr><td>Invoice Total @Html.HiddenFor(m => m.InvoiceTotal)</td><td class="ds-value-box-total"><strong data-attr="InvoiceTotal">-</strong></td></tr>
+            <tr>
+                <td colspan="2">
+                    <button type="button" class="btn btn-primary btn-lg btn-invoice-save-invoice pull-right" onclick="formsubmit();"><b class="fa fa-floppy-o"></b>Confirm and Pay Order</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <div class="alert alert-danger" id="ds-error-message" style="display:none"></div>
+                </td>
+            </tr>
+        </table>
+         
+    </div>
+</div>
+@Html.Raw(hfString)
+</div> 

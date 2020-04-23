@@ -1,0 +1,98 @@
+﻿@model dynamic
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+                    new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+                    )
+
+    @Html.DevExpress().GetScripts(
+                    new Script { ExtensionType = ExtensionType.GridView }
+                    )
+}
+
+<script>
+    function OnClick() {
+        var text = UploadControl.GetText(0);
+        var array = text.split(",");
+        var count = array.length;
+        if (text === "") {
+            alert("Please chose file first");
+        }
+        else {
+            $('#dvbusy').show();
+            UploadControl.Upload();      
+        }
+    }
+
+</script>
+
+<h2><span>Products Price Imports (@ViewBag.ProductGroup)</span></h2>
+<div class='panel-supplier-uploads'>
+    <span class="clearfix">The file should be of *.csv format. The should not exceed the maximum size of 1GB</span>
+    <span class="clearfix">This should have the columns in the order of SKU, SPECIAL PRICE, START DATE, END DATE</span>
+
+</div>
+@using (Html.BeginForm("UploadProductPriceFile", "TenantDataImport", FormMethod.Post, new { id = "DataImportUploadForm" }))
+{
+    @Html.Hidden("ImportType", "ProductPrice")
+    @Html.Hidden("ProductGroupId", (int)ViewBag.ProductGroupId)
+    <div class="col-md-12 pull-left">
+
+        <div class="data-import-upload-panel">
+
+            @Html.Partial("_ProductPriceFileUpload")
+            @Html.DevExpress().Button(button => {
+           button.Name = "btnUploadFile";
+           button.Text = "Upload";
+           button.ControlStyle.CssClass = "btn btn-primary";
+           button.ClientSideEvents.Click = "OnClick";
+       }).GetHtml()
+
+            <div class="col-md-12">
+
+                <div class="form-check-inline">
+                    <label class="form-check-label">
+                       @Html.RadioButton("ActionDetail", 1,true, new {@class="form-check-input" }) Replace Only
+                    </label>
+                </div>
+                <div class="form-check-inline">
+                    <label class="form-check-label">
+                        @Html.RadioButton("ActionDetail", 2, new { @class = "form-check-input" })Replace and Clear
+                    </label>
+
+                </div>
+            </div>
+            
+
+            <div class="col-md-12 bg-warning">
+                <ul id="data-import-results">
+                    <li>Choose Product Price CSV file</li>
+                </ul>
+            </div>
+
+            <script id="uploaderDownloadTemplate" type="text/x-jquery-tmpl">
+                <tr>
+
+                    <td id="tdfileName">${FileName}</td>
+                    <td>
+                        <p>&nbsp;</p>
+                    </td>
+                    <td class="FileRow"><a class="LRemove" onclick="removeFile('${FileName}')">Remove</a></td>
+                    <td>
+                        <p>&nbsp;</p>
+                    </td>
+                    <td class="FileRow"><a class="LRemove" onclick="downloadFile('${FileName}')" download>Download</a></td>
+                </tr>
+            </script> 
+        </div>
+
+
+
+    </div>
+}
+<div class="col-md-offset-2 col-md-10 bottom-right">
+    <div class="back-list">@Html.ActionLink("Back to List", "Edit", "ProductSpecialPrice", new { id = ViewBag.ProductGroupId }, new { @class = "btn btn-default" })</div>
+
+</div>

@@ -1,0 +1,17 @@
+﻿@model  Ganedata.Core.Entities.Domain.ProductMasterViewModel
+<div class="col-md-12 p-0">
+
+    <div class="col-md-6">
+        <h2>Available Raw Materials</h2>
+        @Html.Action("_ProductRecipeItems", new { productId = Model.ProductId, selectionMode = true })
+    </div>
+    <div class="col-md-6">
+        <h2>Selected Raw Materials</h2>
+        @Html.Action("_ProductRecipeSelectedItems", new { productId = Model.ProductId })
+    </div>
+</div>
+
+<div class="col-md-offset-2 col-md-10 bottom-right-popup">
+    <input type="submit" value="Submit" class="btn btn-primary" id="btnConfirmReceipeItems" onclick="ConfirmAddedRecipeProducts()" />
+    <input type="button" value="Cancel" class="btn btn-default" onclick="pcModalProductRecipeItemsEditor.Hide()" />
+</div>

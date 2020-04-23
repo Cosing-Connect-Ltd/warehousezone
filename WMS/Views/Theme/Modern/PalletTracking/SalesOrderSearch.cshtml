@@ -1,0 +1,84 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+                new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+
+                 new StyleSheet { ExtensionType = ExtensionType.ComboBox, Theme = GaneStaticAppExtensions.DevexTheme }
+                )
+
+    @Html.DevExpress().GetScripts(
+                new Script { ExtensionType = ExtensionType.PopupControl },
+
+                new Script { ExtensionType = ExtensionType.ComboBox }
+                )
+}
+
+@{
+    ViewBag.Title = "Hold Pallet?";
+    Layout = null;
+}
+
+<h2><span> @ViewBag.Title</span> </h2>
+<div class="col-md-12 pull-left order-detail">
+
+    @Html.Hidden("palletTrackingIds")
+    <div class="input-group h-100 justify-content-center align-items-center">
+
+        <div class="col-md-6 hold-pallet">
+            <div class="col-md-4 p-0 pull-left">
+                <label class="">Hold Pallet?</label>
+            </div>
+            <div class="col-md-8 pull-left">
+                @Html.RadioButton("IsHold", "1", htmlAttributes: new { @class = "d-inline mt-1", @name = "pallet", @onclick = "togglecomboxBox(event)" })
+            </div>
+
+        </div>
+
+        <div class="col-md-6 unhold-pallet" style="display:none">
+            <div class="col-md-4 p-0 pull-left">
+                <label class="">UnHold Pallet?</label>
+            </div>
+            <div class="col-md-8 pull-left">
+                @Html.RadioButton("IsHold", "3", htmlAttributes: new { @class = "d-inline mt-1", @name = "pallet", @onclick = "togglecomboxBox(event)" })
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6">
+            <div class="col-md-5 p-0 pull-left">
+                <label class="">Hold for order?</label>
+            </div>
+            <div class="col-md-7 pull-left">
+                @Html.RadioButton("IsHold", "2", htmlAttributes: new { @class = "d-inline mt-1", @name = "pallet", @onclick = "togglecomboxBox(event)" })
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+    <div class="search-box" style="display:none">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <label class="col-md-3">
+                Search Order
+            </label>
+            <div class="col-md-9">
+
+                @Html.Partial("~/Views/Shared/OrderAuthComboBoxPartial.cshtml")
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="col-md-offset-2 col-md-10 bottom-right-popup">
+    <input type="button" value="Save" onclick="addOrderId()" class="btn btn-primary" />
+    <input type="button" value="Cancel" onclick="javascript: OrderAuthorizationModel.Hide();" class="btn btn-default" />
+
+</div>

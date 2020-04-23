@@ -1,0 +1,154 @@
+﻿@Html.DevExpress().PopupControl(
+    settings =>
+    {
+        settings.Name = "ModelBS";
+        settings.LoadContentViaCallback = LoadContentViaCallback.OnFirstShow;
+        settings.CallbackRouteValues = new { Controller = "PurchaseOrders", Action = "_BlindShipment", Method = "GET" };
+        settings.Width = 700;
+        settings.Height = 500;
+        settings.AllowDragging = true;
+        settings.CloseAction = CloseAction.CloseButton;
+        settings.CloseOnEscape = true;
+        settings.PopupAnimationType = DevExpress.Web.AnimationType.None;
+        settings.ShowHeader = false;
+        settings.Modal = true;
+        settings.AutoUpdatePosition = true;
+        settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+        settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+        settings.ScrollBars = System.Web.UI.WebControls.ScrollBars.Vertical;
+        settings.EnableClientSideAPI = true;
+        settings.ClientSideEvents.BeginCallback = "beginBSCallBack";
+
+
+
+        //settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer(null, '', true); }";
+    }).GetHtml()
+
+
+
+
+@Html.DevExpress().PopupControl(
+    settings =>
+    {
+        settings.Name = "OrderAuthorizationModel";
+        settings.LoadContentViaCallback = LoadContentViaCallback.OnFirstShow;
+        settings.CallbackRouteValues = new { Controller = "PalletTracking", Action = "SalesOrderSearch" };
+        settings.Width = 600;
+        settings.Height = 300;
+        settings.AllowDragging = true;
+        settings.CloseAction = CloseAction.CloseButton;
+        settings.CloseOnEscape = true;
+        settings.PopupAnimationType = DevExpress.Web.AnimationType.None;
+        settings.ShowHeader = false;
+        settings.Modal = true;
+        settings.AutoUpdatePosition = true;
+        settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+        settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+        settings.ScrollBars = System.Web.UI.WebControls.ScrollBars.Vertical;
+        settings.EnableClientSideAPI = true;
+        settings.ClientSideEvents.BeginCallback = "OrderAuthCallBack";
+        settings.ClientSideEvents.EndCallback = "EndOrderAuthCallBack";
+
+
+        //settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer(null, '', true); }";
+    }).GetHtml()
+
+@Html.DevExpress().PopupControl(settings => {
+    settings.Name = "popupImage";
+    settings.Height = 400;
+    settings.Width = 400;
+    settings.HeaderText = "Signature";
+    settings.AllowDragging = true;
+
+    settings.CloseOnEscape = true;
+    settings.PopupAnimationType = DevExpress.Web.AnimationType.None;
+
+    settings.Modal = true;
+    settings.AutoUpdatePosition = true;
+    settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+    settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+    settings.ScrollBars = System.Web.UI.WebControls.ScrollBars.Vertical;
+    settings.SetContent(() =>
+    {
+        ViewContext.Writer.Write("<img id='myImg' src='' alt='Signature' height='240' width='240'>");
+    });
+}).GetHtml()
+
+
+@Html.DevExpress().PopupControl(
+    settings =>
+    {
+        settings.Name = "ModelShowEmail";
+        settings.LoadContentViaCallback = LoadContentViaCallback.OnFirstShow;
+        settings.CallbackRouteValues = new { Controller = "Order", Action = "ShowEmail", Method = "GET" };
+        settings.Width = 1200;
+        settings.Height = 500;
+        settings.CloseOnEscape = true;
+        settings.AllowDragging = true;
+        settings.CloseAction = CloseAction.CloseButton;
+        settings.ShowCloseButton = true;
+        settings.CloseOnEscape = true;
+        settings.PopupAnimationType = DevExpress.Web.AnimationType.None;
+        settings.ShowHeader = true;
+        settings.HeaderText = "Sent Email Notifications";
+        settings.Modal = true;
+        settings.AutoUpdatePosition = true;
+        settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+        settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+        settings.ScrollBars = System.Web.UI.WebControls.ScrollBars.Vertical;
+        settings.EnableClientSideAPI = true;
+        settings.ClientSideEvents.BeginCallback = "beginshowemailCallBack";
+
+
+
+        //settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer(null, '', true); }";
+    }).GetHtml()
+
+
+@Html.DevExpress().PopupControl(settings => {
+    settings.Name = "ShowAttachment";
+    settings.Height = 750;
+    settings.Width = 800;
+    settings.HeaderText = "Attachment";
+    settings.AllowDragging = true;
+
+    settings.CloseOnEscape = true;
+    settings.PopupAnimationType = DevExpress.Web.AnimationType.None;
+
+    settings.Modal = true;
+    settings.AutoUpdatePosition = true;
+    settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+    settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+    settings.ScrollBars = System.Web.UI.WebControls.ScrollBars.Vertical;
+    settings.SetContent(() =>
+    {
+        ViewContext.Writer.Write("<embed src='' type='application/pdf' height='650' width='800'  id='DynamicPdf' />");
+            
+    });
+}).GetHtml()
+
+@Html.DevExpress().PopupControl(
+    settings =>
+    {
+        settings.Name = "ModelEditDelivery";
+        settings.LoadContentViaCallback = LoadContentViaCallback.OnFirstShow;
+        settings.CallbackRouteValues = new { Controller = "SalesOrders", Action = "EditDeliveryAddress", Method = "GET" };
+        settings.Width = 700;
+        settings.Height = 400;
+        settings.CloseOnEscape = true;
+        settings.AllowDragging = true;
+        settings.CloseAction = CloseAction.CloseButton;
+        settings.ShowCloseButton = true;
+        settings.CloseOnEscape = true;
+        settings.PopupAnimationType = DevExpress.Web.AnimationType.None;
+        settings.ShowHeader = true;
+        settings.HeaderText = "Edit Delivery Address";
+        settings.Modal = true;
+        settings.AutoUpdatePosition = true;
+        settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+        settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+        settings.ScrollBars = System.Web.UI.WebControls.ScrollBars.Vertical;
+        settings.EnableClientSideAPI = true;
+        settings.ClientSideEvents.BeginCallback = "BeginEditDeliveryCallBack";
+        
+    }).GetHtml()

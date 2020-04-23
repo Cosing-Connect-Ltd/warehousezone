@@ -1,0 +1,200 @@
+﻿@using System.Web.UI.WebControls
+@model Ganedata.Core.Entities.Domain.StockTake
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit },
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Create";
+}
+<div id="tabs" style="visibility: hidden">
+    <ul>
+        <li>
+            @if (LayoutHelpers.ActiveStocktake((int)HttpContext.Current.Session["CurrentWarehouseId"]))
+            {
+                <a href="#STC">New Stocktake</a>
+            }
+            else
+            { <a href="#STC">Running Stocktake</a>}
+        </li>
+        <li><a href="#STD">Stock Details</a></li>
+    </ul>
+    <div id="STC">
+        @if (LayoutHelpers.ActiveStocktake((int)HttpContext.Current.Session["CurrentWarehouseId"]))
+        {
+            <h2><span>New Stocktake</span></h2>
+
+            <form method="post" action="@Url.Action("Create")">
+
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal col-md-6 pull-left">
+                    @Html.ValidationSummary(true)
+                    <div class="input-group h-100 justify-content-center align-items-center">
+                        @Html.LabelFor(model => model.StockTakeReference, htmlAttributes: new { @class = "col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.StockTakeReference)
+                            @Html.ValidationMessageFor(model => model.StockTakeReference)
+                        </div>
+                    </div>
+
+                    <div class="input-group h-100 justify-content-center align-items-center">
+                        @Html.LabelFor(model => model.StockTakeDescription, htmlAttributes: new { @class = "col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.StockTakeDescription)
+                            @Html.ValidationMessageFor(model => model.StockTakeDescription)
+                        </div>
+                    </div>
+
+
+                    <div class="input-group h-100 justify-content-center align-items-center">
+                        <div class="col-md-offset-2 col-md-10 bottom-right">
+                            <input type="submit" value="Create" class="btn btn-primary" />
+                            <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        }
+
+        else
+        {
+
+            <div class="">
+                <h2><span>Running Stocktake</span></h2>
+
+                <p>
+                    <input type="hidden" id="CurrentStocktakeId" value="@ViewBag.CurrentStocktakeId" />
+                    <input type="hidden" id="StocktakeCurrentUserId" value="@ViewBag.CurrentUserId" />
+                    <input type="hidden" id="StocktakeCurrentWarehouseId" value="@ViewBag.WarehouseId" />
+                    <input type="hidden" id="StocktakeCurrentTenantId" value="@ViewBag.CurrentTenantId" />
+                    <input type="hidden" id="CurrentSerialisedProductId">
+                    <input type="hidden" id="CurrentSerialisedProductCode">
+                    <div class="col-md-12 p-0 create-stock-take-contents">
+                        <div class="col-md-12 text-center">Following Stocktake is currently running, please press Stop button below to stop it</div>
+
+
+                        <table class="table table-bordered table-striped">
+                            <tr>
+                                <th scope="col">Stocktake Id</th>
+                                <th scope="col">Stocktake Reference</th>
+                                <th scope="col">Stocktake Description</th>
+                                <th scope="col">Start Date</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                            <tr>
+                                <td>@ViewBag.CurrentStocktakeId</td>
+                                <td>@ViewBag.CurrentStocktakeRef</td>
+                                <td>@ViewBag.CurrentStocktakeDesc</td>
+                                <td>@ViewBag.CurrentStocktakeDate</td>
+                                <td>
+                                    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("StockTakes", "Stop"))
+                                    {
+                                        <a class="btn btn-danger" href="javascript:void(0)" id="btnStopStockTakeConfirm">Stop StockTake</a>
+                                    }
+                                </td>
+                            </tr>
+                        </table>
+
+
+                        <div class="col-md-7 p-0 pull-left">
+                            <div class='col-md-12 pull-left div-barcodescanner-content'>
+                                <h3 class='pull-left mt-2'>Stocktake Summary</h3>
+                                <b title="Pull current session data being scanned" class='fa fa-refresh right-action-icons' onclick='StocktakeCurrentScans.Refresh()'></b>
+                            </div>
+                            @Html.Action("StockTakeCurrentProductsPartial", "StockTakes")
+                        </div>
+                        <div class="col-md-5 pull-left">
+                            @Html.Partial("_StocktakeCurrentProductSession")
+                        </div>
+                    </div>
+
+                </p>
+
+            </div>
+
+
+            <script>
+        $(function() {
+
+            bindStockTakeGridEvents();
+
+            bindStockTakeSerialPopupEvents();
+
+            bindStockTakePalletSerialPopupEvents();
+
+            $("#btnStopStockTakeConfirm").click(function() {
+                var redirectLocation = '@Url.Action("Stop", "StockTakes", new {id = ViewBag.CurrentStocktakeId})';
+                if (confirm('Are you sure, you want to cancel the current stocktaking?')) {
+                    location.href = redirectLocation;
+                }
+            });
+
+            window.onbeforeunload = function() {
+                if (confirm('Stocktake is in progress. If you leave this page, you can still continue your session later. If you have finished stocktake, then click on Stop Stocktake to continue.'))
+                {
+                    return true;
+                } else {
+                    $('.se-pre-con').fadeOut("slow");
+                    return 'Stocktake is in progress. If you leave this page, you can still continue your session later. If you have finished stocktake, then click on Stop Stocktake to continue.';
+                }
+            }
+        });
+            </script>
+
+        }
+    </div>
+
+    <div id="STD">
+        @Html.Action("_StocktakeDetailGridPartial",new {Id= ViewBag.CurrentStocktakeId })
+    </div>
+
+
+</div>
+
+@Html.DevExpress().PopupControl(settings =>
+{
+    settings.Name = "StockTakeDetailDeleteConfirm";
+    settings.ShowHeader = false;
+    settings.Height = Unit.Percentage(80);
+    settings.Width = Unit.Pixel(400);
+    settings.AutoUpdatePosition = true;
+    settings.Modal = true;
+    settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+    settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+    //settings.LoadDefaultPopupControlSettings("StockTakeDetailDeleteConfirm", "Delete Stock Detail Confirmation");
+    settings.SetContent(() =>
+    {
+        ViewContext.Writer.Write("<div class='divstocktakedetail-delete' id='divStockTakeDetailDeleteConfirm' data-id='0'><h5>Are you sure you want to delete this stock detail?</h5></div>");
+
+        ViewContext.Writer.Write(Html.DevExpress().Button(b =>
+        {
+            b.Name = "btnCancelDeleteStockTakeDetails";
+            b.Text = "Cancel";
+            b.Images.Image.Url = "/content/images/cancel.png";
+            b.ControlStyle.CssClass = "btn-stocktakedetails-buttons";
+            b.ClientSideEvents.Click = "function(s,e){ StockTakeDetailDeleteConfirm.Hide();}";
+        }).GetHtml().ToHtmlString());
+        ViewContext.Writer.Write(Html.DevExpress().Button(b =>
+        {
+            b.Name = "btnDeleteStockTakeDetails";
+            b.Text = "Confirm Delete";
+            b.Images.Image.Url = "/content/images/trash.png";
+            b.ControlStyle.CssClass = "btn-stocktakedetails-buttons";
+            b.ClientSideEvents.Click = "function(s,e){ deleteSelectedStockTakeDetails();}";
+        }).GetHtml().ToHtmlString());
+    });
+}).GetHtml()

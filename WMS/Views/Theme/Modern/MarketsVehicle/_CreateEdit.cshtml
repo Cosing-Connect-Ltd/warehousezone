@@ -1,0 +1,63 @@
+﻿@model Ganedata.Core.Entities.Domain.MarketVehicleViewModel
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.PopupControl },
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Market - Vehicle " + (Model.Id > 0 ? "Edit" : "Create");
+}
+
+
+<div>
+    <h2><span>@ViewBag.Title</span></h2>
+    <form class="form-horizontal" action="/Markets/SaveVehicle" method="post" id="frmSaveMarketVehicle">
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(c => c.Id)
+        @Html.ValidationSummary()
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert-success col-md-12">
+                @ViewBag.Message
+            </div>
+        }
+        <div class="col-md-8 pull-left">
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(c => c.Name, new { @class = "col-md-4 control-label" })
+                <div class="col-md-8">
+                    @Html.TextBoxFor(c => c.Name, new { @placeholder = "Vehicle Title", @class = "form-control" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(c => c.Description, new { @class = "col-md-4 control-label" })
+                <div class="col-md-8">
+                    @Html.TextBoxFor(c => c.Description, new { @placeholder = "Description", @class = "form-control" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(m => m.VehicleIdentifier, new { @class = "col-md-4 control-label" })
+                <div class="col-md-8">
+                    @Html.TextBoxFor(c => c.VehicleIdentifier, new { @placeholder = "Vehicle Registration", @class = "form-control" })
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            <input type="submit" class="btn btn-primary" id="saveBtn_MarketVehicles" value="Save" />
+            <a class="btn btn-default" href="/markets/vehicles">Cancel</a>
+        </div>
+
+    </form>
+</div>

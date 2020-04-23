@@ -1,0 +1,104 @@
+﻿
+@{
+    ViewBag.Title = "EditProducts";
+}
+@using Ganedata.Core.Entities.Helpers
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DataView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView },
+        new Script { ExtensionType = ExtensionType.DataView }
+        )
+}
+
+@{
+
+    ViewBag.Title = "Edit Products List";
+}
+<h2><span>Edit Products</span></h2>
+
+
+<script type="text/javascript">
+
+    MVCxClientGlobalEvents.AddControlsInitializedEventHandler(OnBeginEditGridCallback);
+
+    function OnBeginEditGridCallback(s, e) {
+
+        e.customArgs = MVCxClientUtils.GetSerializedEditorValuesInContainer("frmEditProducts");
+        var test=MVCxClientUtils.GetSerializedEditorValuesInContainer("options");
+        var gridValues = JSON.parse(JSON.stringify($("#frmEditProducts").serializeArray()));
+        var values = JSON.parse(gridValues[gridValues.length - 1].value.split(','));
+        e.customArgs["data"] = values;
+        if (values.ProductEditListGridView_DXEditor0 != null) {
+            e.customArgs["Name"] = values.ProductEditListGridView_DXEditor0;
+        }
+        if (values.ProductEditListGridView_DXEditor1 != null)
+        {
+            e.customArgs["SKUCode"] = values.ProductEditListGridView_DXEditor1;
+        }
+        if (values.ProductEditListGridView_DXEditor2 != null) {
+            e.customArgs["Serialisable"] = values.ProductEditListGridView_DXEditor2;
+
+        }
+        if (values.ProductEditListGridView_DXEditor3 != null) {
+            e.customArgs["ProcessByPallet"] = values.ProductEditListGridView_DXEditor3;
+        }
+        if (values.ProductEditListGridView_DXEditor4 != null) {
+            e.customArgs["TopProduct"] = values.ProductEditListGridView_DXEditor4;
+        }
+        if (values.ProductEditListGridView_DXEditor5 != null) {
+            e.customArgs["BestSellerProduct"] = values.ProductEditListGridView_DXEditor5;
+        }
+        if (values.ProductEditListGridView_DXEditor6 != null) {
+
+            e.customArgs["SpecialProduct"] = values.ProductEditListGridView_DXEditor6;
+        }
+        if (values.ProductEditListGridView_DXEditor7 != null) {
+            e.customArgs["OnSaleProduct"] = values.ProductEditListGridView_DXEditor7;
+        }
+        var rowIndex = parseInt($("#RowIndexForProductId").val()) || 0;
+        e.customArgs["ProductID"] = ProductEditListGridView.GetRowKey(rowIndex);
+
+    }
+
+    function OnEndEditGridCallback(s, e) {
+        var lastIndex = parseInt($("#LastEditingRowIndex").val()) || 0;
+        SetGridEditorToRowIndex(lastIndex);
+    }
+
+    function SetGridEditorToRowIndex(index) {
+        ProductEditListGridView.batchEditApi.StartEdit(index, ProductEditListGridView.GetColumnByField($("#LastEditingColIndex").val()).index);
+    }
+
+    function OnDetailsChanged(s, e) {
+        ProductEditListGridView.UpdateEdit();
+    }
+
+    function OnEditGridFocusChanged(s, e) {
+
+        if (e.cellInfo.rowVisibleIndex >= 0) {
+            var index = e.cellInfo.rowVisibleIndex;
+            $("#LastEditingRowIndex").val(index);
+            $("#RowIndexForProductId").val(index);
+        }
+        $("#LastEditingColIndex").val(e.cellInfo.column.fieldName);
+    }
+
+</script>
+
+@using (Html.BeginForm("SaveProductEdit", "Products", FormMethod.Post, new { @id = "frmEditProducts" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("LastEditingRowIndex")
+    @Html.Hidden("LastEditingColIndex")
+    @Html.Hidden("RowIndexForProductId")
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.Action("_EditableProductGrid")
+    </div>
+}

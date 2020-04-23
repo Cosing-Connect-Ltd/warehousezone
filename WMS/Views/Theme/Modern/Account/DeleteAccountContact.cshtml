@@ -1,0 +1,103 @@
+﻿@model Ganedata.Core.Entities.Domain.AccountContacts
+
+@{
+    ViewBag.Title = "Delete Account Contact";
+}
+
+<h2><span>Delete Account Contact</span></h2>
+
+<h3  class="alert alert-danger">Are you sure you want to delete this?</h3>
+<div class="form-horizontal col-md-6 pull-left">
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ContactName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ContactName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ContactJobTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ContactJobTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ContactEmail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ContactEmail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantContactPhone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantContactPhone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TenantContactPin)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenantContactPin)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ConTypeRemittance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ConTypeRemittance)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ConTypeStatment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ConTypeStatment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ConTypeInvoices)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ConTypeInvoices)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ConTypePurchasing)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ConTypePurchasing)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ConTypeMarketing)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ConTypeMarketing)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.AccountContactId)
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <div class="col-md-offset-2 col-md-10 bottom-right">
+                <input type="submit" value="Delete" class="btn btn-default" />
+                <div class="btn btn-default"> @Html.ActionLink("Cancel", "Edit", null, null, null, "contacts", new { @id = Session["account"] }, null)</div>
+            </div>
+        </div>
+    }
+</div>

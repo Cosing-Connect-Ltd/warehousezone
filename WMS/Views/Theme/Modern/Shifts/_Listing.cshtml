@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Ganedata.Core.Models.ShiftsViewModel>
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Shifts";
+    ViewBag.SectionTitle = "Shifts";
+}
+
+<h2><span>Employee Shifts</span></h2>
+
+
+@Html.Action("ShiftsGridViewPartial", "Shifts")
+
+<div class="col-md-12">
+    <div class="col-md-offset-2 col-md-10 bottom-right">
+        <a class="btn btn-primary alert-info pull-right" href="/shifts/add">Add Shifts</a>
+    </div>
+</div>
+
+
+
+
+

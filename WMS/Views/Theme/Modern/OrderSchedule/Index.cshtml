@@ -1,0 +1,164 @@
+﻿@model IEnumerable<Ganedata.Core.Entities.Domain.OrderSchedule>
+@using Ganedata.Core.Entities.Helpers
+
+@{
+    /**/
+
+    ViewBag.Title = "Order Scheduler";
+}
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+                new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+                new StyleSheet { ExtensionType = ExtensionType.Scheduler, Theme = GaneStaticAppExtensions.DevexTheme },
+                new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+                )
+
+    @Html.DevExpress().GetScripts(
+                new Script { ExtensionType = ExtensionType.GridView },
+                new Script { ExtensionType = ExtensionType.Scheduler },
+                new Script { ExtensionType = ExtensionType.DateEdit }
+                )
+}
+    <script>
+
+    // mouse refresh flag
+    var mouseRefresh = 0;
+    $(function () {
+        //JobsAccordian();
+        //// save refresh time on page load
+        //$.cookie('JobsRefreshTime', new Date(), { path: '/' });
+
+        ////check on mouse move if user was idle for more then 30 seconds then refresh page
+        //$("#Scheduler").mousemove(function (event) {
+        //    var preDateTime = $.cookie('JobsRefreshTime');
+        //    var diffMSeconds = new Date().getTime() - new Date(preDateTime).getTime();
+        //    if (diffMSeconds > 30000 && mouseRefresh <= 0) {
+        //        mouseRefresh = 1;
+        //        Scheduler.Refresh();
+        //    }
+        //});
+
+    });
+
+    function JobsAccordian() {
+        var act = 0;
+        $("#works-jobs").accordion({
+            create: function (event, ui) {
+                //get index in cookie on accordion create event
+                if ($.cookie('jobsh_index') != null) {
+                    act = $.cookie('jobsh_index');
+                    //alert($.cookie('saved_index'));
+                }
+            },
+            activate: function (event, ui) {
+                //set cookie for current index on change event
+                $.cookie('jobsh_index', null, { path: '/' });
+                var index = jQuery(this).find("h3").index(ui.newHeader[0]);
+                $.cookie('jobsh_index', index, { path: '/' });
+                //alert($.cookie('saved_index'));
+            },
+            active: parseInt($.cookie('jobsh_index')),
+            heightStyle: "content"
+        });
+    }
+
+    function AjaxCall() {
+       
+        $.ajax({
+            url: '@Url.Action("_PalletToDispatch")',
+            type: 'GET',
+            cache: false
+        }).done(function (result) {
+            $('#DynamicRefresh').html("");
+            $('#DynamicRefresh').html(result);
+            $("#JobTabs").tabs({ active: 'ByTrade' });
+            $("#JobTabs").on("tabsactivate", function (event, ui) { $.cookie('ActiveJobTabsId', 'ByTrade'); });
+            $(".draggable").draggable({ helper: 'clone', appendTo: 'body', zIndex: 100, cursor: "pointer" });
+        });
+
+        
+    }
+
+    function OnAppointmentDeleting(s, e) {
+        //setTimeout(function () { AjaxCall(); }, 1000);
+    }
+
+    function OnAppointmentEndCallBack(s, e) {
+        AjaxCall();
+    }
+
+
+
+  function OnAppointmentEventsClick(s, e) {
+        @*var appointmentId = e.appointmentId;
+        var $link = $("a#WorksOrderReportLink");
+
+        if ($link.length < 1) {
+            var $link = $("<a id='WorksOrderReportLink' class='btn btn-default pull-right p-1' target='_blank' hreftemp='@Url.Action("PrintWorksOrderByAppointment", "WorksOrders", new {id = "APPTID"})' href='@Url.Action("PrintWorksOrderByAppointment", "WorksOrders", new {id = "APPTID"})'>Print Order</a>");
+            var url = $link.attr("hreftemp");
+            url = url.replace('APPTID', appointmentId);
+            $link.attr("href", url);
+            $(".main-left h2:eq(0)").append($link);
+        } else {
+            var url = $link.attr("hreftemp");
+            url = url.replace('APPTID', appointmentId);
+            $link.attr("href", url);
+        }*@
+    }
+
+    function PrintWorksOrderByAppointmentId(appointmentId) {
+        var url = '@Url.Action("PrintWorksOrderByAppointment", "WorksOrders", new {id = "APPTID"})';
+        url = url.replace('APPTID', appointmentId);
+        location.href = url;
+    }
+
+    function SelectedValueChanged() {
+        Scheduler.Refresh();
+    }
+
+    function UASelectedValueChanged() {
+     
+    }
+
+    function RASelectedValueChanged() {
+     
+    }
+
+
+
+    function OnBeginCallback(s, e) {
+       
+    }
+
+    </script>
+<h2><span>Order Scheduler</span></h2>
+
+<div id="tabs" style="visibility: hidden">
+    <ul>
+        <li><a href="#Scheduler">Scheduler</a></li>
+    </ul>
+    <div id="Scheduler">
+        <div id="DynamicRefresh" class="col-md-4 pull-left">
+            @Html.Action("_PalletToDispatch")
+        </div>
+        <div class="col-md-8 p-0 pull-left">
+            @*<div class="col-md-12 report-date-header">
+                    <div class="input-group h-100 justify-content-center align-items-center">
+                        <div class="col-md-12 text-center">
+                            <div class="input-group h-100 justify-content-center align-items-center">
+                                @Html.Label("Filter By Job Type", htmlAttributes: new { @class = "col-md-5" })
+                                <div class="col-md-7">
+                                    @Html.DropDownList("JobTypeId", ViewBag.ResourcejobTypes as IEnumerable<SelectListItem>, new { @class = "chosen-select", onchange = @"SelectedValueChanged();" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+            <div class="droppable col-md-12 p-0">
+                @Html.Action("SchedulerPartial")
+            </div>
+        </div>
+    </div>
+</div>

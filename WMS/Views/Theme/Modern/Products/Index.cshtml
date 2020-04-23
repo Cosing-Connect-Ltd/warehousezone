@@ -1,0 +1,126 @@
+﻿@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DataView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView },
+        new Script { ExtensionType = ExtensionType.DataView }
+        )
+}
+
+@{
+    ViewBag.Title = "Products List";
+}
+<h2><span>Products List</span></h2>
+
+<script type="text/javascript">
+    function OnDetailRowExpanding(s, e) {
+        s.SetFocusedRowIndex(e.visibleIndex);
+        return false;
+    }
+    function OnGridFocusedRowChanged(s, e) {
+        var name = s.name;
+        if (name.indexOf("ProductListGridView") >= 0) {
+            $('#selkeyProductList').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        }
+        else {
+            $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        }
+    }
+
+</script>
+<script type="text/javascript">
+
+    //MVCxClientGlobalEvents.AddControlsInitializedEventHandler(OnBeginGridCallback);
+
+    function OnBeginGridCallback(s, e, gridName) {
+        e.customArgs = MVCxClientUtils.GetSerializedEditorValuesInContainer("frmProductFileDetail");
+        @*e.customArgs["PriceGroupId"] = @ViewBag.PriceGroupId;*@
+        var grid =  ASPxClientControl.GetControlCollection().GetByName(gridName.name);
+        //WORKAROUND for BULK Update
+        var gridValues = JSON.parse(JSON.stringify($("#frmProductFileDetail").serializeArray()));
+        var values = JSON.parse(gridValues[gridValues.length - 1].value.split(','));
+        var LengthOfObject=Object.keys(values).length;
+        for (var i = 0; i < LengthOfObject; i++)
+        {
+        if (grid.name + '_DXEditor2' != null)
+        {
+            
+            e.customArgs["SortOrder"] = values[i];
+        }
+        if (grid.name+'_DXEditor3' != null)
+        {
+            e.customArgs["DefaultImage"] = values.ProductFileDetailGridView294_DXEditor3;
+        }
+        if (grid.name+'_DXEditor4' != null) {
+            e.customArgs["HoverImage"] = values.ProductFileDetailGridView294_DXEditor4;
+
+        }
+        if (grid.name+'_DXEditor5' != null) {
+            e.customArgs["IsDeleted"] =values.ProductFileDetailGridView294_DXEditor5;
+        }
+        }
+
+        var rowIndex = parseInt($("#RowIndexForProductId").val()) || 0;
+
+        e.customArgs["Id"] = grid.GetRowKey(rowIndex);
+    }
+
+    function OnEndGridCallback(s, e, gridName) {
+        var grid =  ASPxClientControl.GetControlCollection().GetByName(gridName.name);
+        var lastIndex = parseInt($("#LastEditingRowIndex").val()) || 0;
+            SetGridEditorToRowIndex(lastIndex, grid);
+    }
+
+    function SetGridEditorToRowIndex(index, grid) {
+        grid.batchEditApi.StartEdit(index, grid.GetColumnByField($("#LastEditingColIndex").val()).index);
+    }
+
+    function OnDetailsChanged(s, e, gridName) {
+        var grid =  ASPxClientControl.GetControlCollection().GetByName(gridName.name);
+        grid.UpdateEdit();
+    }
+
+    function OnSpecialPricesGridFocusChanged(s, e) {
+
+        if (e.cellInfo.rowVisibleIndex > 0) {
+
+            $("#LastEditingRowIndex").val(e.cellInfo.rowVisibleIndex);
+        }
+
+        $("#RowIndexForProductId").val(e.cellInfo.rowVisibleIndex);
+        $("#LastEditingColIndex").val(e.cellInfo.column.fieldName);
+    }
+
+</script>
+
+
+@Html.Hidden("selkey", null, new { @class = "selkey" })
+@Html.Hidden("selkeyProductList", null)
+
+@Html.Action("ProductList")
+
+<div class="col-md-offset-2 col-md-10 bottom-right">
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Products", "Create"))
+    {
+        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary  " })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Products", "Edit"))
+    {
+        @Html.ActionLink("Update", "Edit", null, new { @class = "btn btn-primary  Caction", @id = "lnkProductUpdate" })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Products", "Delete"))
+    {
+        @Html.ActionLink("Delete", "Delete", null, new { @class = "btn btn-primary  Caction", @id = "lnkProductUpdate" })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("InventoryStocks", "InventoryAdjustments"))
+    {
+        @Html.ActionLink("Adjust Stock", "InventoryAdjustments", "InventoryStocks", null, new { @class = "btn btn-primary  Caction", @id = "lnkProductUpdate" })
+    }
+
+</div>

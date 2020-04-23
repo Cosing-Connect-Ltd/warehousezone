@@ -23,10 +23,10 @@ namespace WarehouseEcommerce
                       "~/Scripts/bootstrap.bundle.js"
                       ));
 
-            bundles.Add(new StyleBundle("~/Content/app/css/styles").Include(
+            bundles.Add(new StyleBundle("~/Content/app/css/styles/smart").Include(
                       "~/Content/bootstrap.css",
-                      "~/Areas/Shop/Content/app/css/app.css",
-                      "~/Areas/Shop/Content/site.css"
+                      "~/Areas/Shop/Content/Theme/Smart/app/css/app.css",
+                      "~/Areas/Shop/Content/Theme/Smart/site.css"
                       ));
 
         }

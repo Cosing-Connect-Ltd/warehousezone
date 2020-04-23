@@ -1,0 +1,154 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@model IEnumerable<Ganedata.Core.Entities.Domain.Order>
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.PageControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.PageControl },
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Transfer Orders";
+}
+
+<h2><span>@ViewBag.Title</span></h2>
+    
+<script type="text/javascript">
+    function OnSalesOrderTabchange(s, e) {
+        var gridview = GetDevexControlByName('_SalesOrderListGridView' + tabSOs.activeTabIndex);
+        var rowKey = gridview.GetRowKey(gridview.GetFocusedRowIndex());
+        $('#selkeySalesOrderList').val(rowKey);
+    }
+    function UASelectedValueChanged() {
+        _TransferInOrderListGridView.Refresh();
+        _TransferOutOrderListGridView.Refresh();
+    }
+    function OnGridBeginCallBack(s,e) {
+        e.customArgs['selectedStatus'] = $('#PurchaseOrderStatus :selected').val();
+    }
+
+    function OnGridBeginCallBackTO(s, e) {
+        e.customArgs['selectedStatusTO'] = $('#PurchaseOrderStatusTO :selected').val();
+    }
+    
+    function OnGridFocusedRowChanged(s, e) {
+
+        var name = s.name;
+        
+        if (name.indexOf("_TransferInOrderListGridView") >= 0) {
+            $('#selkeyTransferInOrderList').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        }
+        else if (name.indexOf("_TransferOutOrderListGridView") >= 0) {
+            $('#selkeyTransferOutOrderList').val(s.GetRowKey(s.GetFocusedRowIndex()));
+
+        }
+
+        else
+            $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+</script>
+
+@Html.Hidden("selkey", null, new { @class = "selkey" })
+@Html.Hidden("selkeyOrderList", null)
+@Html.Hidden("selkeyOrderCompleteList", null)
+@Html.Hidden("selkeyTransferInOrderList", null)
+@Html.Hidden("selkeyTransferOutOrderList", null)
+
+<div id="tabs" style="visibility: hidden">
+    <ul>
+        <li><a href="#TI">Transfer In</a></li>
+        <li><a href="#TO">Transfer Out</a></li>
+    </ul>
+
+    <div id="TI">
+        @Html.Partial("~/Views/PurchaseOrders/_FilterPOGridView.cshtml")
+        @Html.Action("_TransferInOrders", "Order", new { @type = 8 })
+
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TransferOrders", "Create"))
+            {
+                @Html.ActionLink("Create New", "Create", "TransferOrders", null, new { @class = "btn btn-primary  Caction", @id = "lnkTransferInOrderCreate" })
+            }
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TransferOrders", "Edit"))
+            {
+                @Html.ActionLink("Update", "Edit", "TransferOrders", null, new { @class = "btn btn-primary  Caction", @id = "lnkTransferInOrderUpdate" })
+                <a class='btn btn-primary Caction' data-type='TI' data-target='#selkeyTransferInOrderList' id="lnkTransferInOrderDelete">Delete</a>
+            }
+
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TransferOrders", "ProcessOrder"))
+            {
+                @Html.ActionLink("Process Order", "ProcessOrder", "TransferOrders", null, new { @class = "btn btn-primary  Caction", @id = "lnkTransferInOrderUpdate" })
+            }
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Reports", "TransferOrderPrint"))
+            {
+                @Html.ActionLink("Print Order", "TransferOrderPrint", "Reports", null, new { @class = "btn btn-primary Caction", @id = "lnkTransferInOrderUpdate", target = "_blank" })
+            }
+
+        </div>
+    </div>
+
+    <div id="TO">
+        <div class="col-md-12 p-0 report-date-header">
+            <div class="input-group h-100 justify-content-center align-items-center">
+                <div class="col-md-12 p-0 text-center">
+                    <div class="input-group h-100 justify-content-center align-items-center">
+                        @Html.Label("Filter By Status", htmlAttributes: new { @class = "col-md-4" })
+
+                        @if (ViewBag.trasnferOrder != null)
+                        {
+                            <div class="col-md-4">
+                                @Html.DropDownList("PurchaseOrderStatusTO",
+                                 new List<SelectListItem>
+                                     {
+                                    new SelectListItem{ Text = "ALL", Value = "0"},
+                                    new SelectListItem{ Text = "Active", Value = "1",Selected=true},
+                                    new SelectListItem{ Text = "Hold", Value = "3"},
+                                    new SelectListItem{ Text = "Complete", Value = "2"}
+                                     }, new { @class = "chosen-select", onchange = "UASelectedValueChanged(this);" })
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+                        @Html.Action("_TransferOutOrders", "Order")
+                        <div class='col-md-offset-2 col-md-10 bottom-right'>
+                            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TransferOrders", "Create"))
+                            {
+                                @Html.ActionLink("Create New", "Create", "TransferOrders", null, new { @class = "btn btn-primary  Caction", @id = "lnkTransferOutOrderCreate" })
+                            }
+                            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TransferOrders", "Edit"))
+                            {
+                                @Html.ActionLink("Update", "Edit", "TransferOrders", null, new { @class = "btn btn-primary  Caction", @id = "lnkTransferOutOrderUpdate" })
+                                <a class='btn btn-primary Caction' data-type='TO' data-target='#selkeyTransferOutOrderList' id="lnkTransferInOrderDelete">Delete</a>
+                            }
+                            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TransferOrders", "ProcessOrder"))
+                            {
+                                @Html.ActionLink("Process Order", "ProcessOrder", "TransferOrders", null, new { @class = "btn btn-primary  Caction", @id = "lnkTransferOutOrderUpdate" })
+                            }
+                            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Reports", "TransferOrderPrint"))
+                            {
+                                @Html.ActionLink("Print Order", "TransferOrderPrint", "Reports", null, new { @class = "btn btn-primary Caction", @id = "lnkTransferOutOrderUpdate", target = "_blank" })
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+    $("#WorksOrderCommandComplete").on("click", function () {
+        var orderId = $('#selkeyWorksOrderListGridView').val();
+        if (orderId < 1) return false;
+        var completeOrderUrl = '@Url.Action("Complete")' + '/' + orderId;
+        $(this).attr("href", completeOrderUrl);
+        if (!confirm('Are you sure you want to complete the order?')) {
+            return false;
+        }
+    });
+                </script>

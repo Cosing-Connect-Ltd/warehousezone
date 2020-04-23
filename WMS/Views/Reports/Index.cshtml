@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "Reports";
+    ViewBag.SectionTitle = "Reports";
+}
+
+<div class="row">
+    <div class="col-2 pull-right">
+        @*@Html.DropDownList("StoresList", ViewBag.StoresList as List<SelectListItem>, new { @class = "form-control" })*@
+        <select class="form-control" id="gracePeriod">
+            <option value="1">more than 15 minutes</option>
+            <option value="2">more than 30 minutes</option>
+            <option value="3">more than 1 hour</option>
+        </select>
+        <a class="btn btn-primary alert-info pull-right" id="searchBtn">Search Report</a>
+        <a class="btn btn-primary alert-success pull-right" href="~/TimeLog/TimeLogReport?weekNumber=@ViewData["weekNumber"]&storesId=@ViewData["storesId"]" id="printReportBtn">Print Report</a>
+    </div>
+    <div class="col-2 pull-right">
+        <div class="input-group date" id="datetimepicker2">
+            <input class="form-control" data-val="true" data-val-date="The field From Date must be a date." data-val-required="Date is required." id="toDate" name="toDate" value="" placeholder="to Date" type="text">
+            <span class="input-group-addon">
+                <span class="fa fa-calendar"></span>
+            </span>
+        </div>
+    </div>
+    <div class="col-2 pull-right">
+        <div class="input-group date" id="datetimepicker1">
+            <input class="form-control" data-val="true" data-val-date="The field From Date must be a date." data-val-required="Date is required." id="fromDate" name="fromDate" value="" placeholder="from Date" type="text">
+            <span class="input-group-addon">
+                <span class="fa fa-calendar"></span>
+            </span>
+        </div>
+    </div>
+    <div class="col-2 pull-right">
+        @Html.DropDownList("StoresList", ViewBag.StoresList as List<SelectListItem>, "Select a Location", new { @class = "form-control" })
+    </div>
+    <div class="col-2 pull-right">
+        <select class="form-control" id="reportType">
+            <option value="1">Lateness Report</option>
+            <option value="2">On Site Report</option>
+            <option value="3">Off Site Report</option>
+            <option value="4">Absence Report</option>
+        </select>
+    </div>
+</div>
+<hr />
+<div id="container_report"></div>

@@ -1,0 +1,144 @@
+﻿@model dynamic
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "Bulk Import Products & Accounts";
+
+}
+<script>
+    $(document).ready(function () {
+
+        $("#withMarketInfo").on("click", function () {
+            $("#DataImportUploadForm #ImportType").val(($(this).prop("checked") ? $(".marketcheck").show() : $(".marketcheck").hide()));
+            var checkvalues = $(this).prop("checked");
+            if (checkvalues) {
+                $("#ImportType").val("").val("AccountsWithMarketInfo");
+            }
+            else {
+                $("#ImportType").val("").val("Accounts");
+
+            }
+
+        });
+    });
+    function OnClick() {
+        var text = UploadControl.GetText(0);
+        var array = text.split(",");
+        var count = array.length;
+        if (text === "") {
+            alert("Please chose file first");
+        }
+        else {
+            $('#dvbusy').show();
+            UploadControl.Upload();
+
+        }
+    }
+</script>
+
+@using (Html.BeginForm("UploadFile", "TenantDataImport", FormMethod.Post, new { id = "DataImportUploadForm" }))
+{
+    <h2><span>Account and Products Imports</span></h2>
+    <div id="import-tabs" style="visibility: hidden">
+        <ul>
+            <li><a href="#AI">Accounts</a></li>
+            <li><a href="#PI">Products</a></li>
+        </ul>
+        <div id="AI" class="col-md-12 pull-left">
+            @Html.Hidden("ImportType", "Accounts")
+
+            <div class='panel-supplier-uploads'>
+                <h3>Supplier Imports</h3>
+                <span class="clearfix">The file should be of <i style="color:red">*</i>.csv format. The file should not exceed the maximum size of 1GB</span>
+                <p>
+                    The file should have the columns in the order of ACCOUNT CODE<i style="color:red">*</i>, ACCOUNT NAME <i style="color:red">*</i>, ACCOUNT TYPE<i style="color:red">*</i> ( Add value for Customer=1, Supplier=2, EndUser=3 For ALL=0 ),
+                    INVOICE EMAIL, INVOICE EMAIL NAME, PURCHASE EMAIL, PURCHASE EMAIL NAME, PHONE, FAX NUMBER,
+                    BILLING ADDRESS 1<i style="color:red">*</i>, BILLING ADDRESS 2, BILLING ADDRESS 3, BILLING ADDRESS 4, BILLING POSTCODE, SHIPPING ADDRESS 1, SHIPPING ADDRESS 2, SHIPPING ADDRESS 3, SHIPPING ADDRESS 4, SHIPPING POSTCODE
+                </p>
+                <span class="clearfix marketcheck" style="display:none">
+                    MARKET NAME <i style="color:red">*</i> VISIT FREQUENCY (Add value for Daily=1, Weekly=2, Fortnightly=3, Monthly=4,ThreeWeekly=5 )
+                    <span class="clearfix"><i style="color:red">*</i> These are the mandatory fields </span>
+
+                    @if (ViewBag.IsVanSalesEnabled)
+                    {
+                        <div class="col-md-6">
+                            @Html.Label("Contains Market Info?", htmlAttributes: new { @class = "col-md-4 pull-left" })
+                            <div class="col-md-8 pull-left">
+                                @Html.CheckBox("withMarketInfo", htmlAttributes: new { @class = "form-control", @Id = "withMarketInfo" })
+                            </div>
+                        </div>
+                    }
+            </div>
+        </div>
+
+        <div id="PI" class="col-md-12 pull-left">
+
+            <div class='panel-product-uploads'>
+                <h3>Product Imports by Department</h3>
+                <span class="clearfix">The file should be of <i style="color:red">*</i>.csv format. The file should not exceed the maximum size of 1GB. The filename should be in the name of the department</span>
+                <span class="clearfix">For example, all products belonging to specific product department, should be in a csv file named <b>Products.csv</b></span>
+                <span class="clearfix" , style="text-align:justify">
+                    This should have the columns in the order of Product Code<i style="color:red">*</i>,Manufacturer Code, Description<i style="color:red">*</i>, Description 2,
+                    Inventory (values should be like 3.0), Base Unit of Measure (values should be like 4.0),
+                    Buy Price (values should be like 5.0), Sell Price, Preferred Vendor No, Barcode, Outer Barcode, Serialised
+
+                </span>
+                <span class="clearfix"><i style="color:red">*</i> These are the mandatory fields </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12 pull-left">
+        <div class="data-import-upload-panel">
+            @Html.Partial("_ProductPriceFileUpload")
+            @Html.DevExpress().Button(button =>
+            {
+           button.Name = "btnUploadFile";
+           button.Text = "Upload";
+           button.ControlStyle.CssClass = "btn btn-primary";
+           button.ClientSideEvents.Click = "OnClick";
+       }).GetHtml()
+
+            <div class="col-md-12 bg-warning">
+                <ul id="data-import-results">
+                    <li>Choose Accounts CSV file</li>
+                </ul>
+            </div>
+            <script id="uploaderTemplate" type="text/x-jquery-tmpl">
+                <tr>
+                    <td id="tdfileName">${FileName}</td>
+                    <td>
+                        <p>&nbsp;</p>
+                    </td>
+                    <td><a class="LRemove" onclick="removeFile('${FileName}')">Remove</a></td>
+
+                </tr>
+            </script>
+            <script id="uploaderDownloadTemplate" type="text/x-jquery-tmpl">
+                <tr>
+
+                    <td id="tdfileName">${FileName}</td>
+                    <td>
+                        <p>&nbsp;</p>
+                    </td>
+                    <td class="FileRow"><a class="LRemove" onclick="removeFile('${FileName}')">Remove</a></td>
+                    <td>
+                        <p>&nbsp;</p>
+                    </td>
+                    <td class="FileRow"><a class="LRemove" onclick="downloadFile('${FileName}')" download>Download</a></td>
+                </tr>
+            </script>
+        </div>
+    </div>
+}

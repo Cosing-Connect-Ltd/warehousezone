@@ -1,0 +1,117 @@
+﻿@model Ganedata.Core.Models.ResourceRequestsViewModel
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>
+    <span>Request Details</span>
+</h2>
+
+<div class="col-md-6 pull-left">
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ResourceName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ResourceName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+        <dd>
+            @DateTimeToLocal.Convert(Model.StartDate, ViewBag.TimeZone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+        <dd>
+            @DateTimeToLocal.Convert(Model.EndDate, ViewBag.TimeZone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HolidayReason)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.HolidayReason)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestedDate)
+        </dt>
+        <dd>
+            @DateTimeToLocal.Convert(Model.RequestedDate, ViewBag.TimeZone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Location)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Location)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestStatus)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RequestStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActionedBy)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ActionedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActionReason)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ActionReason)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RequestType)
+        </dd>
+
+    </dl>
+</div>
+<div class="col-md-6 pull-left">
+    <dl>
+        <dt>
+            @Html.DisplayNameFor(model => model.Notes)
+        </dt>
+        <dd>
+            @Html.TextAreaFor(model => model.Notes, new { @readonly = "readonly", rows = 13 })
+        </dd>
+
+    </dl>
+</div>
+
+<div class="input-group h-100 justify-content-center align-items-center">
+    <div class="col-md-offset-2 col-md-10 bottom-right">
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" })
+        <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+    </div>
+</div>

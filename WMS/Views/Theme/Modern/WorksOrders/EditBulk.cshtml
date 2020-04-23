@@ -1,0 +1,257 @@
+﻿@using Ganedata.Core.Services
+@using Ganedata.Core.Entities.Enums
+@model Ganedata.Core.Entities.Domain.Order
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView },
+        new Script { ExtensionType = ExtensionType.PopupControl },
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+
+@{
+    ViewBag.Title = "Edit Works Orders";
+}
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+        var name = s.name;
+        if (name.indexOf("gridViewOrdDet") >= 0) {
+            $('#selkeyhdPrddet').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        }
+        $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+</script>
+<h2><span>Edit Works Order</span></h2>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @id = "frmWorksOrderForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("selkeyhdPrddet", 100);
+    @Html.Hidden("CurrentUserName", caCurrent.CurrentUser().UserName);
+    @Html.HiddenFor(m => m.OrderID);
+
+    <div class="col-md-12 p-0 order-forms">
+        <div class="col-md-5 p-0 pull-left">
+            <div class="col-md-12 p-0">
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.OrderNumber, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.OrderNumber)
+                        @Html.ValidationMessageFor(model => model.OrderNumber)
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.IssueDate, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DevExpress().DateEditFor(m => m.IssueDate,
+                            settings =>
+                            {
+                                settings.Name = "IssueDate";
+                                settings.Properties.DisplayFormatString = "dd/MM/yyyy";
+                                settings.Date = DateTime.UtcNow;
+                                settings.ClientVisible = true;
+                                settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                                settings.ControlStyle.CssClass = "form-control";
+                                settings.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
+
+                            }
+                            ).GetHtml()
+                        @Html.ValidationMessageFor(model => model.IssueDate)
+
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.ExpectedDate, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DevExpress().DateEditFor(m => m.ExpectedDate,
+                            settings =>
+                            {
+                                settings.Name = "ExpectedDate";
+                                settings.Properties.DisplayFormatString = "dd/MM/yyyy";
+                                settings.Date = DateTime.UtcNow;
+                                settings.ClientVisible = true;
+                                settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                                settings.ControlStyle.CssClass = "form-control";
+                                settings.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
+
+                            }
+                            ).GetHtml()
+                        @Html.ValidationMessageFor(model => model.ExpectedDate)
+
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.ConfirmDate, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DevExpress().DateEditFor(m => m.ConfirmDate,
+                            settings =>
+                            {
+                                settings.Name = "ConfirmDate";
+                                settings.Properties.DisplayFormatString = "dd/MM/yyyy";
+                                settings.Date = DateTime.UtcNow;
+                                settings.ClientVisible = true;
+                                settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                                settings.ControlStyle.CssClass = "form-control";
+                                settings.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
+
+                            }
+                            ).GetHtml()
+                        @Html.ValidationMessageFor(model => model.ConfirmDate)
+
+                    </div>
+                </div>
+
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.InvoiceNo, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.InvoiceNo)
+
+                    </div>
+                </div>
+
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.InvoiceDetails, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.InvoiceDetails)
+
+                    </div>
+                </div>
+
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.OrderCost, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DevExpress().SpinEditFor(m => m.OrderCost,
+                    settings =>
+                    {
+                        settings.Name = "OrderCost";
+                        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                        settings.ControlStyle.CssClass = "form-control";
+
+                    }).GetHtml()
+                        @Html.ValidationMessageFor(model => model.OrderCost)
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.ReportTypeId, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(m => m.ReportTypeId, ViewBag.ReportTypes as IEnumerable<SelectListItem>, new { @class = "chosen-select" })
+                    </div>
+                </div>
+
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.Label("Auth User", htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownList("AuthUserId", ViewBag.AuthUsers as IEnumerable<SelectListItem>, new { @class = "chosen-select", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(m => m.PPropertyId, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(m => m.PPropertyId, ViewBag.Properties as IEnumerable<SelectListItem>, new { @class = "chosen-select" })
+                        <input type="button" style="width:60px" onclick="javaScript:ModelProperty.Show();" id="ProdGroupAdd" class="btn btn-primary" value="+">
+                    </div>
+                </div>
+
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.Label("Tenants for Notification", htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+
+                        <div>
+                            @Html.ListBox("PropertyTenantIds", (MultiSelectList)ViewBag.PropertyTenants, new { Multiple = "multiple", size = "5", @id = "PropertyTenantIds", @class = "chosen-select", data_placeholder = "Choose Tenants" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(m => m.JobTypeId, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(m => m.JobTypeId, ViewBag.JobTypes as IEnumerable<SelectListItem>, new { @class = "chosen-select" })
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.Label("Job Sub Type", htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(m => m.JobSubTypeId, ViewBag.JobSubTypes as IEnumerable<SelectListItem>, new { @class = "chosen-select" })
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        <div>
+                            <div class="col-md-12 text-center bg-success">
+                                <b class="fa fa-file"></b>
+                                <a href="#" style="cursor: pointer" onclick="javaScript: ModelOrderNotes.Show();">Notes</a>
+                            </div>
+                        </div>
+                        <div class="">
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.DepartmentId, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(m => m.DepartmentId, ViewBag.Departments as IEnumerable<SelectListItem>, new { @class = "chosen-select" })
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.SLAPriorityId, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(m => m.SLAPriorityId, ViewBag.SLAPs as IEnumerable<SelectListItem>, new { @class = "chosen-select" })
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.ExpectedHours, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(m => m.ExpectedHours, ViewBag.ExpectedHoursList as IEnumerable<SelectListItem>, new { @class = "chosen-select" })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="col-md-7 p-0 pull-left">
+            <div>
+                @Html.Action("_OrderDetails", "OrderDetail")
+            </div>
+        </div>
+
+        <div class="pull-right mt-1">
+            <input type="button" style="width: 60px"
+                   id="OrderDetailadd"
+                   class="btn btn-primary orddet" value="Add">
+            <input type="button" style="width: 60px"
+                   id="OrderDetailUpdate"
+                   class="btn btn-primary orddet" value="Update">
+            <input type="button" style="width: 60px"
+                   id="OrderDetailDelete"
+                   class="btn btn-primary orddet" value="Delete">
+
+        </div>
+
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            <input type="submit" value="Confirm Order" name="WorksOrderCommand" class="btn btn-primary" />
+            <input type="submit" value="Complete Order" id="WorksOrderCommandComplete" name="WorksOrderCommand" class="btn btn-primary" style="display:@(Model.OrderStatusID==(int)OrderStatusEnum.Scheduled?"block":"none")" />
+            <div class="btn btn-default"> @Html.ActionLink("Back to List", "AnchoredOrderIndex", new { id = "WO" })</div>
+        </div>
+
+        <div class="col-md-12 order-shipmentinfo-panes">
+            @Html.Partial("~/Views/EmailTemplates/_EmailRecipientsPartial.cshtml")
+        </div>
+
+    </div>
+
+}

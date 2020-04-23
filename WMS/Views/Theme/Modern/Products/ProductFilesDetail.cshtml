@@ -1,0 +1,16 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@{
+    Layout = null;
+}
+@using (Html.BeginForm("SaveProductFiles", "Products", FormMethod.Post, new { @id = "frmProductFileDetail" }))
+{
+    @Html.AntiForgeryToken()
+ 
+    @Html.Hidden("LastEditingRowIndex")
+    @Html.Hidden("LastEditingColIndex")
+    @Html.Hidden("RowIndexForProductId")
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.Action("_ProductDocumentsDetails", new { ProductId = ViewBag.productid })
+    </div>
+}

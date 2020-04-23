@@ -1,0 +1,54 @@
+﻿@model Ganedata.Core.Entities.Domain.AccountCreditLimits
+
+@{
+    ViewBag.Title = "Delete Account Credit Limit";
+}
+
+<h2>Delete Account Credit Limit</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Account Credit Limits</h4>
+    <hr />
+    <dl class="dl-horizontal">
+
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CrLimitAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CrLimitAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateLimitStart)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateLimitStart)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateLimitEnd)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateLimitEnd)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="btn btn-default"> @Html.ActionLink("Cancel", "Edit", new { @id = Session["account"] })</div>
+                <input type="submit" value="Delete" class="btn btn-default" />
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,38 @@
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "StocktakeCurrentScans";
+        settings.CallbackRouteValues = new { Controller = "StockTakes", Action = "StockTakeCurrentProductsPartial" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.KeyFieldName = "StockTakeDetailId";
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add("Name").Width = System.Web.UI.WebControls.Unit.Percentage(50);
+        settings.Columns.Add("Quantity", "Qty").Width = System.Web.UI.WebControls.Unit.Pixel(70);
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DateScanned";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            c.ColumnType = MVCxGridViewColumnType.DateEdit;
+        });
+
+        settings.ClientSideEvents.BeginCallback = "function(s,e){ stockTakeScanBeginCallback(s,e); }";
+        settings.ClientSideEvents.EndCallback = "function(s,e){ stocktakeCurrentScansCallback(s,e); }";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50", "100", "500" };
+
+    });
+}
+
+@grid.Bind(ViewBag.StockTakeCurrentProducts).GetHtml()

@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Ganedata.Core.Entities.Domain.Resources>
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+
+@{
+    ViewBag.Title = "List Job Types";
+}
+
+<script type="text/javascript">
+    //<![CDATA[
+    function OnGridFocusedRowChanged(s, e) {
+        var name = s.name;
+        if (name.indexOf("JobTypeList") >= 0) {
+            $('#selkeyJobTypeList').val(s.GetRowKey(s.GetFocusedRowIndex()));
+        }
+    }
+</script>
+
+<h2><span>List Job Types</span></h2>
+
+@Html.Hidden("selkeyJobTypeList", null)
+
+@Html.Action("_JobTypeList")
+
+<div class="col-md-offset-2 col-md-10 bottom-right">
+
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("JobTypes", "Create"))
+    {
+        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary  " })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("JobTypes", "Edit"))
+    {
+        @Html.ActionLink("Update", "Edit", null, new { @class = "btn btn-primary  Caction", @id = "lnkjobTypeEdit" })
+    }
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("JobTypes", "Delete"))
+    {
+        @Html.ActionLink("Delete", "Delete", null, new { @class = "btn btn-primary  Caction", @id = "lnkjobTypeEdit" })
+    }
+
+</div>

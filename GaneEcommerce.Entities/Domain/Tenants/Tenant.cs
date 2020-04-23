@@ -1,4 +1,5 @@
 ﻿using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -103,6 +104,7 @@ namespace Ganedata.Core.Entities.Domain
 
         [StringLength(50)]
         public string TenantRegNo { get; set; }
+        public WarehouseThemeEnum Theme { get; set; }
         public virtual ICollection<TenantLocations> TenantLocations { get; set; }
         public virtual ICollection<AuthUser> AuthUsers { get; set; }
         public virtual ICollection<TenantEmailConfig> TenantEmailConfig { get; set; }

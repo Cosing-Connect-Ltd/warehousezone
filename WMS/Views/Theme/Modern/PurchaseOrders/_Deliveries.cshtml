@@ -1,0 +1,113 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@using Ganedata.Core.Entities.Enums
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = ViewBag.productId + "deliveriesgridview";
+        settings.CallbackRouteValues = new { Controller = "PurchaseOrders", Action = "_Deliveries" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.SettingsPopup.HeaderFilter.MinWidth = 500;
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add(col =>
+        {
+            col.FieldName = "OrderProcessID";
+            col.Visible = false;
+
+
+        });
+        settings.KeyFieldName = "OrderProcessID";
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DeliveryNO";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "OrderNumber";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "CompanyName";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "AccountCode";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DateCreated";
+            c.Caption = "Created";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            c.ColumnType = MVCxGridViewColumnType.DateEdit;
+            c.SetDataItemTemplateContent(m =>
+            {
+                var date = (DateTime?)DataBinder.Eval(m.DataItem, "DateCreated");
+                DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
+                ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
+            });
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.Width = System.Web.UI.WebControls.Unit.Percentage(15);
+            column.Caption = "Actions";
+
+            column.SetDataItemTemplateContent(m =>
+            {
+                int? orderstatus = (int?)DataBinder.Eval(m.DataItem, "OrderStatusID");
+                int? OrderProcessStatusId=(int?)DataBinder.Eval(m.DataItem, "OrderProcessStatusId"); 
+                var id = (int)DataBinder.Eval(m.DataItem, "OrderProcessID");
+                if (OrderProcessStatusId != (int)OrderProcessStatusEnum.Active && (orderstatus.HasValue && (OrderStatusEnum)orderstatus != OrderStatusEnum.BeingPicked
+                    && (OrderStatusEnum)orderstatus != OrderStatusEnum.Hold && (OrderStatusEnum)orderstatus != OrderStatusEnum.Active))
+                {
+                    ViewContext.Writer.Write("<form class='form-horizontal'>" + Html.AntiForgeryToken() + "<a target='_blank' alt='Print Delivery Note' class='btn fa fa-print' href='/Reports/GoodsBookInNotePrint/" + id + "' role='button'></a></form>");
+                }
+            });
+        });
+
+        settings.SettingsDetail.ShowDetailRow = true;
+
+        settings.SetDetailRowTemplateContent(c =>
+        {
+            Html.DevExpress().PageControl(s =>
+            {
+                s.EnableTabScrolling = true;
+                s.Name = DataBinder.Eval(c.DataItem, "OrderProcessID").ToString();
+                s.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                s.TabPages.Add("Delivery Details").SetContent(() =>
+                {
+                    Html.RenderAction("_DeliveryDetails", new { ProcessId = DataBinder.Eval(c.DataItem, "OrderProcessID") });
+                });
+
+            }).GetHtml();
+        });
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+    });
+}
+@grid.Bind(Model).GetHtml()

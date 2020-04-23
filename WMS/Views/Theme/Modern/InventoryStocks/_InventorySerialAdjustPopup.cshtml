@@ -1,0 +1,27 @@
+@using System.Web.UI.WebControls
+@Html.DevExpress().PopupControl(
+    settings =>
+    {
+        settings.Name = "InventorySerialAdjustPopup";
+        settings.LoadContentViaCallback = LoadContentViaCallback.OnPageLoad;
+        settings.CallbackRouteValues = new { Controller = "InventoryStocks", Action = "InventoryAdjustmentsSerial" };
+
+        // settings.ContentUrl = "/Products/_LocationCreate";
+        settings.Width = Unit.Pixel(900);
+        settings.Height = 500;
+        settings.AllowDragging = true;
+        settings.CloseAction = CloseAction.CloseButton;
+        settings.CloseOnEscape = true;
+        settings.PopupAnimationType = AnimationType.None;
+        settings.HeaderText = "Scan Serials";
+        settings.Modal = true;
+        settings.AutoUpdatePosition = true;
+        settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+        settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+        settings.ScrollBars = System.Web.UI.WebControls.ScrollBars.Vertical;
+        settings.EnableClientSideAPI = true;
+        settings.ClientSideEvents.BeginCallback = "function(s,e){ beginStockAdjustSerialCallback(s,e);  }";
+        settings.ClientSideEvents.EndCallback = "function(s,e){  bindAdjustStockSerialEvents(); }";
+
+        //settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer(null, '', true); }";
+    }).GetHtml()

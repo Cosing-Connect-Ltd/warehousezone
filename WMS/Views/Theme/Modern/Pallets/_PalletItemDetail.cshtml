@@ -1,0 +1,46 @@
+﻿@model Ganedata.Core.Entities.Domain.PalletGenerateViewModel
+
+<div class="order-forms">
+    <div id="divPalletingItemInformation" class="col-md-12 p-0">
+        <div class="input-group">
+            @Html.HiddenFor(m => m.NextPalletNumber)
+            @Html.HiddenFor(m => m.OrderDetailID)
+            @Html.HiddenFor(m => m.ProcessedQuantity)
+            @Html.HiddenFor(m => m.ProductID)
+            @Html.HiddenFor(m => m.ProductName)
+            <div class="col-md-12 pull-left p-0">
+                <div class="pallet-number">Pallet : @Html.DisplayFor(m => m.NextPalletNumber)</div>
+                <div class="h2">@Html.DisplayFor(m => m.ProductName)</div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-6 pallet-quantity-hlabel pull-left">Available Quantity</div>
+                <div class="col-md-6 pull-left"><div class="pallet-quantity-label">@Html.DisplayFor(m => m.ProcessedQuantity)</div> </div>
+            </div>
+            <div class="col-md-12 mt-1 pull-left">
+                <div class="col-md-6 pallet-quantity-hlabel pull-left">Add To Current Pallet</div>
+
+                <div class="col-md-6 pull-left">
+                    @Html.DevExpress().SpinEdit(m =>
+               {
+                   m.Name = "SpinPalletQuantity";
+                   m.Properties.MaxValue = Model.ProcessedQuantity;
+                   m.Enabled = Model.ProcessedQuantity > 0;
+                   m.Properties.MinValue = 0;
+                   m.ControlStyle.CssClass = "form-control pallet-process-count";
+                   m.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+               }).Bind(Model.ProcessedQuantity).GetHtml()
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+@if (Model.ProcessedQuantity > 0)
+{
+    <div class="col-md-12 bottom-right-popup">
+        <button type="button" class="btn btn-primary" id="btnConfirmLoadToPallets" onclick="Gane.Pallets.ConfirmLoadToPallets()"><b class="fa fa-check"></b>Confirm</button>
+        <button type="button" class="btn btn-default" id="btnCancelLoadToPallets" onclick="ModalPopupAddPalletItem.Hide()">Cancel</button>
+    </div>
+}
+</div>

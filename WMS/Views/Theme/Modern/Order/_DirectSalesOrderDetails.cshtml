@@ -1,0 +1,90 @@
+﻿@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = ViewBag.setname;
+        settings.CallbackRouteValues = ViewBag.route;
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.Settings.ShowGroupFooter = GridViewGroupFooterMode.VisibleAlways;
+        settings.Settings.ShowFooter = true;
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.KeyFieldName = "OrderDetailID";
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.Columns.Add("ProductMaster.Name", "Product");
+        settings.Columns.Add("ProductMaster.SKUCode", "Sku Code");
+        settings.Columns.Add("Qty");
+        settings.Columns.Add("Price");
+        settings.Columns.Add("WarrantyAmount", "Warranty Amount");
+        settings.Columns.Add("TotalWarrantyAmount");
+        settings.Columns.Add("TaxName.PercentageOfAmount", "Tax %");
+        settings.Columns.Add("TaxAmount");
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "TotalAmount";
+            column.PropertiesEdit.DisplayFormatString = "c";
+        });
+
+        if (ViewBag.PreventProcessing != true && Request.Url.AbsolutePath.ToLower().Contains("salesorders/processorder/") || (Request.Url.AbsolutePath.ToLower().Contains("salesorders/_salesorderdetails/") && Request.UrlReferrer.AbsolutePath.ToLower().Contains("salesorders/processorder/")))
+        {
+            settings.Columns.Add(column =>
+            {
+                column.Caption = "Actions";
+                column.Name = "rc";
+                column.SetDataItemTemplateContent(container =>
+                {
+                    var keyValue = container.KeyValue;
+                    var orderid = DataBinder.Eval(container.DataItem, "OrderID");
+                    var productName = DataBinder.Eval(container.DataItem, "ProductMaster.Name");
+                    var productid = DataBinder.Eval(container.DataItem, "ProductId");
+                    var ser = DataBinder.Eval(container.DataItem, "ProductMaster.Serialisable").ToString();
+                    var qty = DataBinder.Eval(container.DataItem, "Qty").ToString();
+                    var rec_qty = DataBinder.Eval(container.DataItem, "QtyProcessed");
+                    var type = DataBinder.Eval(container.DataItem, "TransType");
+            // var functon = string.Format("addSerial({0},{1},{2},{3},{4},{5})", keyValue, orderid, productid, ser == "True" ? 1 : 0,qty, rec_qty);
+            var function = string.Format("addSerial({0},{1},{2},{3},{4},{5},{6})", keyValue, orderid, productid, ser == "True" ? 1 : 0, qty, rec_qty, type);
+                    var update = string.Format("updateDetails({0},{1})", keyValue, rec_qty);
+                    var delete = string.Format("deleteDetails({0})", keyValue);
+                    var orderDetailId = DataBinder.Eval(container.DataItem, "OrderDetailID").ToString();
+                    if (rec_qty.ToString() == "0")
+                    {
+                        var processString = decimal.Parse(rec_qty.ToString()) >= decimal.Parse(qty) ? "" : "<a style='cursor:pointer' id=" + keyValue + "href='#' onclick=" + function + ">Process/</a>";
+                        ViewContext.Writer.Write("<div class='sales-detail-actions' data-id='" + orderDetailId + "' data-pqty='" + rec_qty + "' data-productid='" + productid + "' data-productname='" + productName + "'>" + processString + "<a style='cursor:pointer'  href='#' onclick=" + update + ">Update/</><a style='cursor:pointer'  href='#' onclick=" + delete + ">Delete<a/></div>");
+                    }
+                    else
+                    {
+                        var processString = decimal.Parse(rec_qty.ToString()) >= decimal.Parse(qty) ? "" : "<a style='cursor:pointer' id=" + keyValue + "href='#' onclick=" + function + ">Process/</a>";
+                        ViewContext.Writer.Write("<div class='sales-detail-actions' data-id='" + orderDetailId + "' data-pqty='" + rec_qty + "' data-productid='" + productid + "' data-productname='" + productName + "'>" + processString + "<a style='cursor:pointer'  href='#' onclick=" + update + ">Update</a></div>");
+                    }
+                });
+            });
+        }
+
+        settings.HtmlDataCellPrepared = (sender, e) =>
+        {
+            if (e.DataColumn.FieldName == "TotalAmount")
+            {
+                e.Cell.BackColor = System.Drawing.Color.LightBlue;
+                e.Cell.BorderColor = System.Drawing.Color.Black;
+            }
+        };
+
+        settings.TotalSummary.Add(DevExpress.Data.SummaryItemType.Sum, "TotalAmount").DisplayFormat = "Total = " + ViewBag.CurrencySymbol + "{0:n2}";
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+    });
+}
+@grid.Bind(Model).GetHtml()

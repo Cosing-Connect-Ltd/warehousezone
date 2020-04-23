@@ -1,0 +1,49 @@
+﻿@model Ganedata.Core.Entities.Domain.Terminals
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TerminalsLog.First().TerminalLogId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TerminalsLog.First().TerminalLogType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TerminalsLog.First().DateRequest)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TerminalsLog.First().SentCount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TerminalsLog.First().Ack)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TerminalsLog.First().RecievedCount)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model.TerminalsLog) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.TerminalLogId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TerminalLogType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateRequest)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SentCount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ack)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RecievedCount)
+        </td>
+    </tr>
+}
+
+</table>

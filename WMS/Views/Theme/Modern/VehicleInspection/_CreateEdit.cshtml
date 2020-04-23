@@ -1,0 +1,211 @@
+﻿@using System.Web.UI.WebControls
+@model Ganedata.Core.Entities.Domain.ViewModels.VehicleInspectionViewModel
+@using Ganedata.Core.Entities.Helpers
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView },
+        new Script { ExtensionType = ExtensionType.PopupControl },
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit }
+        )
+}
+@{
+    ViewBag.Title = "Vehicle Inspection";
+}
+
+<div class="col-md-12">
+    <form class="form-horizontal" action="@Url.Action("SaveInspection", "VehicleInspection")" method="post" id="frmSaveVehicleInspection">
+        @Html.HiddenFor(m => m.Id)
+
+        <h2>Vehicle Inspection Checklist</h2>
+        <div class="inspection-checklist-panel">
+            <div class="col-md-12 p-0">
+                <h3>Inspection</h3>
+                <div class="col-md-6 col-sm-12">
+                    <div class="input-group h-100 justify-content-center align-items-center">
+                        @Html.LabelFor(m => m.MarketVehicleId, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-6">
+                            @Html.DropDownListFor(m => m.MarketVehicleId, new SelectList(Model.AllVehicles, "Id", "Name"), new
+                            {
+                                @class = "chosen-select" //,onchange = @"SelectedValueChanged();"
+                            })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="input-group h-100 justify-content-center align-items-center">
+                        @Html.LabelFor(m => m.VehicleDriverId, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-6">
+                            @Html.DropDownListFor(m => m.VehicleDriverId, new SelectList(Model.AllEmployees, "Id", "Name"), new
+                            {
+                                @class = "chosen-select" //,onchange = @"SelectedValueChanged();"
+                            })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="input-group h-100 justify-content-center align-items-center">
+                        @Html.LabelFor(m => m.MileageReading, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(m => m.MileageReading, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="input-group h-100 justify-content-center align-items-center">
+                        @Html.LabelFor(m => m.FleetNumber, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(m => m.FleetNumber, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 p-0">
+                <h3>Checklist</h3>
+                <div class="col-md-12">
+                    @foreach (var item in Model.CheckList.OrderBy(m => m.VehicleInspectionTypeId))
+                    {
+                        <label class="checkbox-inline @(item.VehicleInspectionTypeId == 1 ? "inspection-list-critical" : "inspection-list-ncritical")" title="@item.Description">
+                            @Html.CheckBox("Inspection_" + item.Id.ToString(), Model.CheckedInspectionIds.Contains(item.Id), new { @class = item.VehicleInspectionTypeId == 1 ? "inspection-chk-critical" : "inspection-chk-ncritical" })
+                            @item.Name
+                        </label>
+                    }
+                </div>
+                <div class="col-md-12 p-0">
+                    <div class="col-md-12">
+                        <label class="checkbox-inline inspection-list-nilcritical">
+                            @Html.CheckBox("NilCritical")
+                            <strong>NIL DEFECT</strong>
+                        </label>
+
+
+                    </div>
+                    <div class="col-md-12">
+                        <label class="checkbox-inline">
+                            @Html.CheckBox("TickAllNonCritical")
+                            <strong>Tick all non critical</strong>
+                        </label>
+                        <strong class="label label-danger"><span class="fa fa-check"></span> MUST TICK ALL CRITICAL ONES INDIVIDUALLY</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 p-0">
+                <h3>Accidents/Incidents</h3>
+                <small>*RECORD ANY ACCIDENT HOWEVER SMALL. VEHICLE DEFECTS OR IRREGULARITIES. HAND PICK DUPLICATE COPY INTO OFFICE / TRAFFICE OFFICER. VEHICLE DEFECTS MUST ALSO BE REPORTED TO SENIOR MAINTENANCE & REPAIR ENGINEER WHO WILL INITIATE THE ORIGINAL COPY.</small>
+                <small>*RECORD ANY ACCIDENT OR INCIDENTS HOWEVER SMALL DEFECTS OR IRREGULARITIES. THIS WILL BE AUTOMATICALLY SHARED WITH SENIOR MAINTENANCE AND REPAIR ENGINEER. PLEASE REPORT THEM PHYSICALLY IF ANY CRITICAL INJURIES OR FATALITIES.</small>
+                <div class="col-md-12 p-0">
+                    <label class="label label-warning">TODO: REPORT ACCIDENTS GRIDVIEW - ALTAF FEEDBACK</label>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+
+                    <div class="col-md-12">
+                        @Html.LabelFor(m => m.Notes, new { @class = "col-md-4 control-label" })
+                        @Html.TextAreaFor(m => m.Notes, new
+                        {
+                            @class = "form-control" //,onchange = @"SelectedValueChanged();"
+                        })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 p-0">
+                <h3>Reporting</h3>
+                <div class="col-md-12">
+                    <div class="input-group col-md-6 h-100 justify-content-center align-items-center">
+                        @Html.LabelFor(m => m.ReportedToUserId, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-6">
+                            @Html.DropDownListFor(m => m.ReportedToUserId, new SelectList(Model.AllEmployees, "Id", "Name"), new
+                            {
+                                @class = "chosen-select" //,onchange = @"SelectedValueChanged();"
+                            })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 p-0">
+                <h3>Rectification</h3>
+
+                <div class="col-md-12">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="input-group h-100 justify-content-center align-items-center">
+                            @Html.LabelFor(m => m.RectifiedUserId, new { @class = "col-md-4 control-label" })
+                            <div class="col-md-6">
+                                @Html.DropDownListFor(m => m.RectifiedUserId, new SelectList(Model.AllEmployees, "Id", "Name"), new
+                                {
+                                    @class = "chosen-select" //,onchangeRectifiedUserId = @"SelectedValueChanged();"
+                                })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="input-group h-100 justify-content-center align-items-center">
+                            @Html.LabelFor(m => m.RectifiedDateTime, new { @class = "col-md-4 control-label" })
+                            <div class="col-md-6">
+                                @Html.DevExpress().DateEditFor(m => m.RectifiedDateTime,
+                                    settings =>
+                                    {
+                                        settings.Name = "RectifiedDateTime";
+                                        settings.Properties.DisplayFormatString = "dd/MM/yyyy";
+                                        settings.Date = DateTime.UtcNow;
+                                        settings.ClientVisible = true;
+                                        settings.Height = Unit.Pixel(32);
+                                        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                                        settings.ControlStyle.CssClass = "form-control";
+                                        settings.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
+
+                                    }).Bind(Model.RectifiedDateTime).GetHtml()
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            <input type="button" id="btnInspectionsSubmit" value="Submit Inspection" class="btn btn-primary" />
+            <input type="button" id="btnInspectionsConfirmRectified" value="Rectified" class="btn btn-primary" />
+            <a class="btn btn-default" href="@Url.Action("Index", "Markets")">Back to Markets</a>
+        </div>
+
+    </form>
+</div>
+<script>
+    $("#btnInspectionsSubmit").on("click", function () {
+        if (validateInspections())
+        { frmSaveVehicleInspection.submit(); }
+    }); $("#btnInspectionsConfirmRectified").on("click", function () {
+        if (validateInspections()) {
+            frmSaveVehicleInspection.submit();
+        }
+    });
+
+    var checkAllNonCritical = function (state) {
+        $("input.inspection-chk-ncritical").prop("checked", state);
+    }
+    $("#TickAllNonCritical").on("click", function () {
+        checkAllNonCritical($("#TickAllNonCritical").prop("checked"));
+    });
+    var validateInspections = function () {
+        if ($("input.inspection-chk-critical:not(:checked)").length > 0 && !$("#NilCritical").prop("checked")) {
+            $("input.inspection-chk-critical:not(:checked)").parent().css("border", '4px dashed red');
+            alert('Please complete all mandatory inspections.');
+            setTimeout(function () {
+                $("input.inspection-chk-critical:not(:checked)").parent().css("border", '');
+            },
+                300);
+
+        } else {
+            return true;
+        }
+    }
+</script>

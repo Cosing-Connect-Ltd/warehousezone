@@ -412,4 +412,16 @@ namespace Ganedata.Core.Entities.Enums
         Grouped = 2,
         Recipe = 3,
     }
+
+    public enum WarehouseThemeEnum
+    {
+        Default = 1,
+        Modern = 2
+    }
+
+    public enum WebsiteThemeEnum
+    {
+        Smart = 1,
+        Link = 2
+    }
 }
