@@ -202,6 +202,21 @@ namespace WarehouseEcommerce.Areas.Shop.Controllers
 
         }
 
+        public ActionResult Category()
+        {
+            ViewBag.cart = true;
+
+            return View();
+
+        }
+        public ActionResult CategoryDetail()
+        {
+            ViewBag.cart = true;
+
+            return View();
+
+        }
+
         public PartialViewResult _CartItemsPartial(int? ProductId, decimal? qty, bool? Remove, bool? details)
         {
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;

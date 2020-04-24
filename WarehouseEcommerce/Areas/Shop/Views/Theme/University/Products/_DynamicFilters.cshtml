@@ -1,0 +1,341 @@
+﻿@model Ganedata.Core.Entities.Domain.ProductFilteringViewModel
+@using Ganedata.Core.Entities.Domain
+
+
+<div class="col-md-4 col-lg-3">
+    <div class="nb_prd_filterwrap">
+        <div class="prod_count_sec">
+            <span class="count">30 Products</span>
+            <ul>
+                <li>
+                    <div class="form-group nb_prdpg_fg">
+                        <input type="checkbox" id="item1" />
+                        <label for="item1">New In</label>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-group nb_prdpg_fg">
+                        <input type="checkbox" id="item2" />
+                        <label for="item2">In Stock</label>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-group nb_prdpg_fg">
+                        <input type="checkbox" id="item3" />
+                        <label for="item3">Back In Stock</label>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="nb_fltr_accrd_wrap">
+            <div id="accordion" class="nb_filter_accordion">
+                <div class="nb_filter_head" id="filter1">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link"
+                                data-toggle="collapse"
+                                data-target="#collapseOne"
+                                aria-expanded="true"
+                                aria-controls="collapseOne">
+                            Category
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseOne"
+                     class="collapse show"
+                     aria-labelledby="filter1"
+                     data-parent="#accordion">
+                    <div class="nb_filter_body">
+                        <ul class="nb_prd_filter_listouter">
+                            <li>
+                                <div class="form-group nb_prdpg_fg">
+                                    <input type="checkbox" id="itemc1" />
+                                    <label for="itemc1">Item 1</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="form-group nb_prdpg_fg">
+                                    <input type="checkbox" id="itemc2" />
+                                    <label for="itemc2">Item 2</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="form-group nb_prdpg_fg">
+                                    <input type="checkbox" id="itemc3" />
+                                    <label for="itemc3">Item 3</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="nb_filter_head" id="filter2">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed"
+                                data-toggle="collapse"
+                                data-target="#collapse2"
+                                aria-expanded="true"
+                                aria-controls="collapse2">
+                            Size
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapse2"
+                     class="collapse"
+                     aria-labelledby="filter2"
+                     data-parent="#accordion">
+                    <div class="nb_filter_body">
+                        <ul class="nb_prd_filter_listouter">
+                            <li>
+                                <div class="form-group nb_prdpg_fg">
+                                    <input type="checkbox" id="items1" />
+                                    <label for="items1">Item 1</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="form-group nb_prdpg_fg">
+                                    <input type="checkbox" id="items2" />
+                                    <label for="items2">Item 2</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="form-group nb_prdpg_fg">
+                                    <input type="checkbox" id="items3" />
+                                    <label for="items3">Item 3</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="nb_filter_head" id="filter3">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed"
+                                data-toggle="collapse"
+                                data-target="#collapse3"
+                                aria-expanded="true"
+                                aria-controls="collapse3">
+                            Size Type
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapse3"
+                     class="collapse"
+                     aria-labelledby="filter3"
+                     data-parent="#accordion">
+                    <div class="nb_filter_body">
+                        <ul class="nb_prd_filter_listouter">
+                            <li>
+                                <div class="form-group nb_prdpg_fg">
+                                    <input type="checkbox" id="itemst1" />
+                                    <label for="itemst1">Item 1</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="form-group nb_prdpg_fg">
+                                    <input type="checkbox" id="itemst2" />
+                                    <label for="itemst2">Item 2</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="form-group nb_prdpg_fg">
+                                    <input type="checkbox" id="itemst3" />
+                                    <label for="itemst3">Item 3</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="nb_filter_head" id="filter4">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed"
+                                data-toggle="collapse"
+                                data-target="#collapse4"
+                                aria-expanded="true"
+                                aria-controls="collapse4">
+                            Color
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapse4"
+                     class="collapse"
+                     aria-labelledby="filter4"
+                     data-parent="#accordion">
+                    <div class="nb_filter_body">
+                        <ul class="nb_prd_filter_listouter">
+                            <li>
+                                <div class="form-group nb_prdpg_fg">
+                                    <input type="checkbox" id="itemcol1" />
+                                    <label for="itemcol1">Item 1</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="form-group nb_prdpg_fg">
+                                    <input type="checkbox" id="itemcol2" />
+                                    <label for="itemcol2">Item 2</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="form-group nb_prdpg_fg">
+                                    <input type="checkbox" id="itemcol3" />
+                                    <label for="itemcol3">Item 3</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="nb_filter_head" id="filter5">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed"
+                                data-toggle="collapse"
+                                data-target="#collapse5"
+                                aria-expanded="true"
+                                aria-controls="collapse5">
+                            Brand
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapse5"
+                     class="collapse"
+                     aria-labelledby="filter5"
+                     data-parent="#accordion">
+                    <div class="nb_filter_body">
+                        <ul class="nb_prd_filter_listouter">
+                            <li>
+                                <div class="form-group nb_prdpg_fg">
+                                    <input type="checkbox" id="itembr1" />
+                                    <label for="itembr1">Item 1</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="form-group nb_prdpg_fg">
+                                    <input type="checkbox" id="itembr2" />
+                                    <label for="itembr2">Item 2</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="form-group nb_prdpg_fg">
+                                    <input type="checkbox" id="itembr3" />
+                                    <label for="itembr3">Item 3</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="nb_filter_head" id="filter6">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed"
+                                data-toggle="collapse"
+                                data-target="#collapse6"
+                                aria-expanded="true"
+                                aria-controls="collapse6">
+                            Neckline
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapse6"
+                     class="collapse"
+                     aria-labelledby="filter6"
+                     data-parent="#accordion">
+                    <div class="nb_filter_body">
+                        <ul class="nb_prd_filter_listouter">
+                            <li>
+                                <div class="form-group nb_prdpg_fg">
+                                    <input type="checkbox" id="itemnl1" />
+                                    <label for="itemnl1">Item 1</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="form-group nb_prdpg_fg">
+                                    <input type="checkbox" id="itemnl2" />
+                                    <label for="itemnl2">Item 2</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="form-group nb_prdpg_fg">
+                                    <input type="checkbox" id="itemnl3" />
+                                    <label for="itemnl3">Item 3</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="nb_filter_head" id="filter7">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed"
+                                data-toggle="collapse"
+                                data-target="#collapse7"
+                                aria-expanded="true"
+                                aria-controls="collapse7">
+                            Pattern
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapse7"
+                     class="collapse"
+                     aria-labelledby="filter7"
+                     data-parent="#accordion">
+                    <div class="nb_filter_body">
+                        <ul class="nb_prd_filter_listouter">
+                            <li>
+                                <div class="form-group nb_prdpg_fg">
+                                    <input type="checkbox" id="itempat1" />
+                                    <label for="itempat1">Item 1</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="form-group nb_prdpg_fg">
+                                    <input type="checkbox" id="itempat2" />
+                                    <label for="itempat2">Item 2</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="form-group nb_prdpg_fg">
+                                    <input type="checkbox" id="itempat3" />
+                                    <label for="itempat3">Item 3</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="nb_filter_head" id="filter7">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed"
+                                data-toggle="collapse"
+                                data-target="#collapse7"
+                                aria-expanded="true"
+                                aria-controls="collapse7">
+                            Made with
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapse7"
+                     class="collapse"
+                     aria-labelledby="filter7"
+                     data-parent="#accordion">
+                    <div class="nb_filter_body">
+                        <ul class="nb_prd_filter_listouter">
+                            <li>
+                                <div class="form-group nb_prdpg_fg">
+                                    <input type="checkbox" id="itemmw1" />
+                                    <label for="itemmw1">Item 1</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="form-group nb_prdpg_fg">
+                                    <input type="checkbox" id="itemmw2" />
+                                    <label for="itemmw2">Item 2</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="form-group nb_prdpg_fg">
+                                    <input type="checkbox" id="itemmw3" />
+                                    <label for="itemmw3">Item 3</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

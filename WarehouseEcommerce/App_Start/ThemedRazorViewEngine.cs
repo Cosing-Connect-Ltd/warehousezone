@@ -11,7 +11,8 @@ namespace WMS.App_Start
 
     public class ThemedRazorViewEngine : RazorViewEngine
     {
-        private string[] _newAreaViewLocations = new string[] {
+        private string[] _newAreaViewLocations = new string[] 
+        {
         "~/Areas/{2}/Views/Theme/%1/{1}/{0}.cshtml",
         "~/Areas/{2}/Views/Theme/%1/{1}/{0}.vbhtml",
         "~/Areas/{2}/Views/Theme/%1/Shared/{0}.cshtml",
@@ -98,7 +99,7 @@ namespace WMS.App_Start
             HttpRequest request = HttpContext.Current.Request;
             if (request != null && request.CurrentExecutionFilePath.Contains("shop"))
             {
-                EcommerceThemeEnum ThemeName = EcommerceThemeEnum.Smart;
+                EcommerceThemeEnum ThemeName = EcommerceThemeEnum.University;
 
                 if (HttpContext.Current.Session["caTenant"] != null)
                 {

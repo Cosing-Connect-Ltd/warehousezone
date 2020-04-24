@@ -1,0 +1,86 @@
+﻿<div class="modal fade" id="signupPopup">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="login_form_sec show">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+                </div>
+                <div class="modal-body">
+                    <form class="loginForm">
+                        <div class="form-group">
+                            <label for="username">Username/Email</label>
+                            <input type="text" id="username" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" />
+                        </div>
+                        <button type="submit" class="btn btn-primary loginBtn">
+                            Login
+                        </button>
+                        <div class="rememberWrap">
+                            <div class="form-check">
+                                <input type="checkbox"
+                                       class="form-check-input"
+                                       id="rememberme" />
+                                <label class="form-check-label" for="rememberme">Remember Me</label>
+                            </div>
+                            <span class="losturpwd">
+                                Lost your password?
+                            </span>
+                        </div>
+                    </form>
+                    <div class="registrationSec">
+                        <h3 class="head">Registration</h3>
+                        <p>
+                            Registering for this site allows you to access your order
+                            status and history. Just fill in the fields below, and we’ll
+                            get a new account set up for you in no time. We will only ask
+                            you for information necessary to make the purchase process
+                            faster and easier.
+                        </p>
+                        <button id="showRegForm" class="regBtn">REGISTER</button>
+                    </div>
+                </div>
+            </div>
+            <div class="registration_form_sec">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Register</h5>
+                </div>
+                <div class="modal-body">
+                    <form class="loginForm">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Email Address</label>
+                            <input type="email" id="username" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" />
+                        </div>
+                    </form>
+                    <div class="registrationSec">
+                        <p>
+                            Your personal data will be used to support your experience
+                            throughout this website, to manage access to your account, and
+                            for other purposes described in our privacy policy
+                        </p>
+                        <button class="regBtn">REGISTER</button>
+                    </div>
+                    <div class="ahav_acc">
+                        Already have an account <span id="showLoginForm">Login</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

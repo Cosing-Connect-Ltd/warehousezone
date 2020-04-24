@@ -28,6 +28,16 @@ namespace WarehouseEcommerce
                       "~/Areas/Shop/Content/Theme/Smart/app/css/app.css",
                       "~/Areas/Shop/Content/Theme/Smart/site.css"
                       ));
+            bundles.Add(new StyleBundle("~/Content/app/css/styles/university").Include(
+                     "~/Content/bootstrap.css",
+                     "~/Areas/Shop/Content/Theme/University/app/css/northumbria_custom.css",
+                     "~/Areas/Shop/Content/Theme/University/app/css/customfontIcons.css",
+                      "~/Areas/Shop/Content/Theme/University/app/css/skew_carousle_style.css",
+                       "~/Areas/Shop/Content/Theme/University/app/css/northumbria_responsive.css",
+                        "~/Areas/Shop/Content/Theme/University/app/css/skew_carousle_style.css",
+                        "~/Areas/Shop/Content/Theme/University/app/css/skew_carousle_style.css",
+                      "~/Areas/Shop/Contents/owl.carousel/owl.carousel.css"
+                     ));
 
         }
     }
