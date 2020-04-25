@@ -63,7 +63,7 @@ namespace Ganedata.Core.Services
                     tenantWebsites.ApiToken = tenantWeb.ApiToken;
                     tenantWebsites.SiteApiUrl = tenantWeb.SiteApiUrl;
                     tenantWebsites.TenantId = tenantWeb.TenantId;
-                    tenantWebsites.WarehouseId = tenantWeb.WarehouseId;
+                    tenantWebsites.WarehouseId = tenantWeb.DefaultWarehouseId;
                     tenantWebsites.SiteName = tenantWeb.SiteName;
                     tenantWebsites.SiteDescription = tenantWeb.SiteDescription;
                     HttpContext.Current.Session["CurrentTenantWebsites"] = tenantWebsites;

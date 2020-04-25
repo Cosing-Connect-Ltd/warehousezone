@@ -214,7 +214,11 @@
     <Compile Include="Domain\Models\ProductCategory.cs" />
     <Compile Include="Domain\Models\ProductFiles.cs" />
     <Compile Include="Domain\Models\ProductManufacturer.cs" />
-    <Compile Include="Domain\Models\ProductsWebsitesMap.cs" />
+    <Compile Include="Domain\Websites\ProductsNavigationMap.cs" />
+    <Compile Include="Domain\Websites\WebsiteNavigation.cs" />
+    <Compile Include="Domain\Websites\WebsiteSlider.cs" />
+    <Compile Include="Domain\Websites\WebsiteContentPages.cs" />
+    <Compile Include="Domain\Websites\ProductsWebsitesMap.cs" />
     <Compile Include="Domain\Models\ProductMovement.cs" />
     <Compile Include="Domain\Models\TenantDeliveryService.cs" />
     <Compile Include="Domain\Models\TerminalCommands.cs" />
@@ -228,7 +232,7 @@
     <Compile Include="Domain\Tenants\TenantDepartments.cs" />
     <Compile Include="Domain\Models\Pallets.cs" />
     <Compile Include="Domain\Models\ProductGroups.cs" />
-    <Compile Include="Domain\Tenants\TenantWebsites.cs" />
+    <Compile Include="Domain\Websites\TenantWebsites.cs" />
     <Compile Include="Domain\Tenants\TenantLoanTypes.cs" />
     <Compile Include="Domain\Tenants\TenantPriceGroups.cs" />
     <Compile Include="Domain\Global\GlobalTax.cs" />

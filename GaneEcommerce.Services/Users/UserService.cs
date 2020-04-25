@@ -150,7 +150,7 @@ namespace Ganedata.Core.Services
         public IEnumerable<TenantWebsites> GetTenantWebsites(int TenantId, int WarehouseId, TenantWebsiteTypes SiteType)
         {
 
-            return _currentDbContext.TenantWebsites.Where(u => u.WarehouseId == WarehouseId && u.TenantId == TenantId && u.IsDeleted != true && u.SiteType == SiteType);
+            return _currentDbContext.TenantWebsites.Where(u => u.DefaultWarehouseId == WarehouseId && u.TenantId == TenantId && u.IsDeleted != true && u.SiteType == SiteType);
 
         }
 

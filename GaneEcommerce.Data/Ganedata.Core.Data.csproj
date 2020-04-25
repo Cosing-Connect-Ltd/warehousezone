@@ -771,6 +771,10 @@
     <Compile Include="Migrations\202004180236325_Theme-added-in-tenant.designer.cs">
       <DependentUpon>202004180236325_Theme-added-in-tenant.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004251626414_website-tables-added.cs" />
+    <Compile Include="Migrations\202004251626414_website-tables-added.designer.cs">
+      <DependentUpon>202004251626414_website-tables-added.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1669,6 +1673,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004180236325_Theme-added-in-tenant.resx">
       <DependentUpon>202004180236325_Theme-added-in-tenant.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004251626414_website-tables-added.resx">
+      <DependentUpon>202004251626414_website-tables-added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
