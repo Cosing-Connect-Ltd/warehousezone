@@ -167,7 +167,9 @@ namespace Ganedata.Core.Data
         DbSet<TenantWebsites> TenantWebsites { get; set; }
         DbSet<OrderSchedule> OrderSchedule { get; set; }
         DbSet<ProductsWebsitesMap> ProductsWebsitesMap { get; set; }
-
+        DbSet<WebsiteContentPages> WebsiteContentPages { get; set; }
+        DbSet<WebsiteNavigation> WebsiteNavigations { get; set; }
+        DbSet<WebsiteSlider> WebsiteSliders { get; set; }
 
     }
 }

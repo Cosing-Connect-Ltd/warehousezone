@@ -6,7 +6,7 @@
 {
     if (ViewBag.ControllerName == "WebsiteNavigations")
     {
-        settings.Name = "ImageDefault";
+        settings.Name = ViewBag.Name;
     }
     else
     {
@@ -38,7 +38,7 @@
     settings.AdvancedModeSettings.EnableFileList = true;
     settings.AdvancedModeSettings.EnableDragAndDrop = true;
 
-    
+
     settings.CallbackRouteValues = new { Controller = controllerName, Action = "UploadFile" };
     settings.Size = 30;
     settings.ValidationSettings.Assign(new UploadControlValidationSettings { AllowedFileExtensions = new string[] { ".jpg", ".jpeg", ".gif", ".png", ".avi", ".mp4", ".pdf", ".docx", ".xlxs" }, MaxFileSize = 100000000 });

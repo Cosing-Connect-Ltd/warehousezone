@@ -1,0 +1,60 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "TenantWebSiteGridView";
+        settings.CallbackRouteValues = new { Controller = "TenantWebsites", Action = "_TenantWebSiteList" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+        settings.KeyFieldName = "SiteID";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+        settings.Columns.Add("SiteName");
+        settings.Columns.Add("HostName");
+        settings.Columns.Add("FacebookUrl");
+        settings.Columns.Add("TwitterUrl");
+        settings.Columns.Add("LinkedInUrl");
+        settings.Columns.Add("YoutubeUrl");
+        settings.Columns.Add("InstaGramUrl");
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ImagePath";
+
+            c.SetDataItemTemplateContent(m =>
+            {
+                var Logo = (string)DataBinder.Eval(m.DataItem, "Logo");
+                if (!string.IsNullOrEmpty(Logo))
+                {
+
+                    ViewContext.Writer.Write("<img src='" + Logo + "' style='height:30px;width:30px'>");
+                }
+            });
+        });
+        var Column = new MVCxGridViewColumn();
+        Column.Caption = "Actions";
+        Column.SetDataItemTemplateContent(m =>
+        {
+            var id = DataBinder.Eval(m.DataItem, "SiteID").ToString();
+            ViewContext.Writer.Write("<div class='text-center'><a href='" + Url.Action("Details", "TenantWebsites", new { id = id }) + "' data-id='" + id + "'><i class='bt-gvactions fa fa-list'></i></a>");
+
+        });
+        settings.Columns.Add(Column);
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+
+    });
+}
+@grid.Bind(Model).GetHtml()

@@ -1,0 +1,109 @@
+﻿
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "ProductWebNavGridView";
+        settings.CallbackRouteValues = new { Controller = ViewBag.Controller, Action = "_NavigationProductList" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.CustomBindingRouteValuesCollection.Add(
+            GridViewOperationType.Paging,
+            new { Controller = ViewBag.Controller, Action = "_NavigationProductList" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Filtering,
+        new { Controller = ViewBag.Controller, Action = "_NavigationProductList" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Sorting,
+        new { Controller = ViewBag.Controller, Action = "_NavigationProductList" }
+        );
+
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+        settings.KeyFieldName = "ProductId";
+
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowSelectCheckbox = true;
+        settings.CommandColumn.SelectAllCheckboxMode = GridViewSelectAllCheckBoxMode.AllPages;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.Styles.Header.CssClass = "";
+        //settings.ClientSideEvents.DetailRowExpanding = "function(s,e){ OnDetailsRowExpanding(s,e); }";
+        //settings.ClientSideEvents.BeginCallback = "function(s,e){ OnProcessedDetailCallback(s,e); }";
+        settings.ClientSideEvents.SelectionChanged = "SelectionChangeds";
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Name";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "SKUCode";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "BarCode";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "BarCode2";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Location";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ProductGroupName";
+            c.Caption = "Group";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ProductCategoryName";
+            c.Caption = "Category";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DepartmentName";
+            c.Caption = "Department";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+
+
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.BeginCallback = "OnStartCallback";
+        settings.ClientSideEvents.EndCallback = "OnGridEndCallBack";
+
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+
+
+
+    });
+
+}
+
+@grid.BindToCustomData(Model).GetHtml()

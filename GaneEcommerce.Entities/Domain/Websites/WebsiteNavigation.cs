@@ -12,9 +12,9 @@ namespace Ganedata.Core.Entities.Domain
         public int Id { get; set; }
         public int SiteID { get; set; }
         public string Image { get; set; }
-        public string IamgeAltTag { get; set; }
+        public string ImageAltTag { get; set; }
         public string HoverImage { get; set; }
-        public string HoverIamgeAltTag { get; set; }
+        public string HoverImageAltTag { get; set; }
         public string Name { get; set; }
         public int SortOrder { get; set; }
         public bool IsActive { get; set; }
@@ -26,5 +26,7 @@ namespace Ganedata.Core.Entities.Domain
         [ForeignKey("ParentId")]
         public virtual WebsiteNavigation Parent { get; set; }
         public virtual ICollection<ProductsNavigationMap> ProductsNavigationMap { get; set; }
+        [NotMapped]
+        public List<string> SelectedProductIds { get; set; }
     }
 }

@@ -26,10 +26,15 @@ namespace Ganedata.Core.Entities.Domain
         public int DefaultWarehouseId { get; set; }
         public string HostName { get; set; }
         public string Logo { get; set; }
+        [Url]
         public string FacebookUrl { get; set; }
+        [Url]
         public string TwitterUrl { get; set; }
+        [Url]
         public string LinkedInUrl { get; set; }
+        [Url]
         public string YoutubeUrl { get; set; }
+        [Url]
         public string InstaGramUrl { get; set; }
         public string FooterText { get; set; }
         public bool IsActive { get; set; }

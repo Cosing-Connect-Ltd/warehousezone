@@ -775,6 +775,10 @@
     <Compile Include="Migrations\202004251626414_website-tables-added.designer.cs">
       <DependentUpon>202004251626414_website-tables-added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004290146253_spellingCorrection.cs" />
+    <Compile Include="Migrations\202004290146253_spellingCorrection.designer.cs">
+      <DependentUpon>202004290146253_spellingCorrection.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1676,6 +1680,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004251626414_website-tables-added.resx">
       <DependentUpon>202004251626414_website-tables-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004290146253_spellingCorrection.resx">
+      <DependentUpon>202004290146253_spellingCorrection.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

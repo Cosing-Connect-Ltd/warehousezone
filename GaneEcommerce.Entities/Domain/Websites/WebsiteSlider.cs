@@ -11,7 +11,7 @@ namespace Ganedata.Core.Entities.Domain
         public int Id { get; set; }
         public int SiteID { get; set; }
         public string Image { get; set; }
-        public string IamgeAltTag { get; set; }
+        public string ImageAltTag { get; set; }
         public string Text { get; set; }
         public string ButtonText { get; set; }
         public string ButtonLinkUrl { get; set; }

@@ -119,3 +119,8 @@ function _RemoveProofOfDeliveryFile(filename) {
 }
 
 
+function _RemoveLogoFile(filename) {
+
+}
+
+

@@ -21,10 +21,20 @@ namespace WMS.CustomBindings
             var transactions = productServices.GetAllProductMasterDetail(tenantId, warehouseId);
             return transactions;
         }
-
-        public static void ProductGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId)
+        private static IQueryable<object> GetProductNavigationDataset(int tenantId, int warehouseId)
         {
-            var transactions = GetProductDataset(tenantId, warehouseId);
+            var productServices = DependencyResolver.Current.GetService<ITenantWebsiteService>();
+            var transactions = productServices.GetAllValidWebsiteNavigations(tenantId);
+            return transactions;
+        }
+
+        public static void ProductGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId,bool Navigation=false)
+        {
+            var transactions = GetProductNavigationDataset(tenantId, warehouseId);
+            if (!Navigation)
+            {
+                transactions=GetProductDataset(tenantId, warehouseId);
+            }
 
             if (e.State.SortedColumns.Count() > 0)
             {
@@ -60,10 +70,15 @@ namespace WMS.CustomBindings
             e.Data = transactions.ToList();
         }
 
-        public static void ProductGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId)
+        public static void ProductGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId, bool Navigation=false)
         {
 
-            var transactions = GetProductDataset(tenantId, warehouseId);
+            var transactions = GetProductNavigationDataset(tenantId, warehouseId);
+            if (!Navigation)
+            {
+                transactions = GetProductDataset(tenantId, warehouseId);
+            }
+
 
             if (e.State.SortedColumns.Count() > 0)
             {

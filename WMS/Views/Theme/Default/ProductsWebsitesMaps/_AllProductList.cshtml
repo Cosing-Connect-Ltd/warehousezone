@@ -1,35 +1,40 @@
-﻿@{
+﻿
+@{
     var grid = Html.DevExpress().GridView(settings =>
     {
-        settings.Name = "ProductListGridView";
-        settings.CallbackRouteValues = new { Controller = "Products", Action = "ProductList" };
+        settings.Name = "ProductWebMapsGridView";
+        settings.CallbackRouteValues = new { Controller = ViewBag.Controller, Action = "ProductList" };
         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
 
         settings.CustomBindingRouteValuesCollection.Add(
             GridViewOperationType.Paging,
-            new { Controller = "Products", Action = "_ProductListPaging" }
+            new { Controller = ViewBag.Controller, Action = "_ProductListPaging" }
         );
 
         settings.CustomBindingRouteValuesCollection.Add(
         GridViewOperationType.Filtering,
-        new { Controller = "Products", Action = "_ProductsFiltering" }
+        new { Controller = ViewBag.Controller, Action = "_ProductsFiltering" }
         );
 
         settings.CustomBindingRouteValuesCollection.Add(
         GridViewOperationType.Sorting,
-        new { Controller = "Products", Action = "_ProductsGetDataSorting" }
+        new { Controller = ViewBag.Controller, Action = "_ProductsGetDataSorting" }
         );
 
-        settings.Settings.ShowHeaderFilterButton = true;
-        settings.SettingsPopup.HeaderFilter.Height = 200;
         settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
         settings.KeyFieldName = "ProductId";
 
-        settings.SettingsPager.Visible = true;
-        settings.Settings.ShowGroupPanel = false;
-        settings.Settings.ShowFilterRow = true;
         settings.Settings.ShowHeaderFilterButton = false;
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowSelectCheckbox = true;
+        settings.CommandColumn.SelectAllCheckboxMode = GridViewSelectAllCheckBoxMode.AllPages;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.Settings.ShowFilterRow = true;
         settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.Styles.Header.CssClass = "";
+        //settings.ClientSideEvents.DetailRowExpanding = "function(s,e){ OnDetailsRowExpanding(s,e); }";
+        //settings.ClientSideEvents.BeginCallback = "function(s,e){ OnProcessedDetailCallback(s,e); }";
+        settings.ClientSideEvents.SelectionChanged = "SelectionChangeds";
 
         settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
         settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
@@ -37,13 +42,6 @@
         settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
         settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
 
-        settings.SettingsCookies.Enabled = true;
-        settings.SettingsCookies.CookiesID = "ProductsList";
-        settings.SettingsCookies.StoreColumnsVisiblePosition = true;
-        settings.SettingsCookies.StoreColumnsWidth = true;
-        settings.SettingsCookies.StoreFiltering = true;
-        settings.SettingsCookies.StoreGroupingAndSorting = true;
-        settings.SettingsCookies.StorePaging = true;
 
 
         settings.Columns.Add(c =>
@@ -72,11 +70,7 @@
             c.FieldName = "Location";
             c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
         });
-        settings.Columns.Add(c =>
-        {
-            c.FieldName = "UOM";
-            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
-        });
+
         settings.Columns.Add(c =>
         {
             c.FieldName = "ProductGroupName";
@@ -95,40 +89,8 @@
             c.Caption = "Department";
             c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
         });
-        settings.Columns.Add(c =>
-        {
-            c.FieldName = "Serialisable";
-            c.ColumnType = MVCxGridViewColumnType.CheckBox;
-            (c.PropertiesEdit as CheckBoxProperties).DisplayTextChecked = "True";
-            (c.PropertiesEdit as CheckBoxProperties).DisplayTextUnchecked = "False";
 
-        });
-        settings.Columns.Add(c =>
-        {
-            c.FieldName = "ProcessByPallet";
-            c.ColumnType = MVCxGridViewColumnType.CheckBox;
-            (c.PropertiesEdit as CheckBoxProperties).DisplayTextChecked = "True";
-            (c.PropertiesEdit as CheckBoxProperties).DisplayTextUnchecked = "False";
 
-        });
-        settings.Columns.Add(c =>
-        {
-
-            c.FieldName = "DontMonitorStock";
-            c.ColumnType = MVCxGridViewColumnType.CheckBox;
-            (c.PropertiesEdit as CheckBoxProperties).DisplayTextChecked = "True";
-            (c.PropertiesEdit as CheckBoxProperties).DisplayTextUnchecked = "False";
-
-        });
-        settings.Columns.Add(c =>
-        {
-
-            c.FieldName = "IsRawMaterial";
-            c.ColumnType = MVCxGridViewColumnType.CheckBox;
-            (c.PropertiesEdit as CheckBoxProperties).DisplayTextChecked = "True";
-            (c.PropertiesEdit as CheckBoxProperties).DisplayTextUnchecked = "False";
-
-        });
         settings.Columns.Add(c =>
         {
 
@@ -147,26 +109,13 @@
 
 
         settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
-        settings.ClientSideEvents.EndCallback = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.BeginCallback = "OnStartCallback";
+        settings.ClientSideEvents.EndCallback = "OnGridEndCallBack";
 
         settings.SettingsPager.PageSizeItemSettings.Visible = true;
         settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
-        settings.SettingsDetail.ShowDetailRow = true;
- 
 
-        settings.HtmlRowPrepared = (s, e) =>
-        {
-            bool? flag;
-            if (e.RowType != GridViewRowType.Data) return;
 
-            flag = Convert.ToBoolean(e.GetValue("DontMonitorStock"));
-
-            if (flag == true)
-            {
-                e.Row.BackColor = System.Drawing.Color.LightCoral;
-                e.Row.ForeColor = System.Drawing.Color.Black;
-            }
-        };
 
     });
 

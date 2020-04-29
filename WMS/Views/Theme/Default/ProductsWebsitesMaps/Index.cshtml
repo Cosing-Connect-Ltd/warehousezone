@@ -1,0 +1,31 @@
+﻿@{
+    Layout = null;
+}
+<script>
+    function SelectionChangeds(s, e)
+    {
+        debugger;
+        s.GetSelectedFieldValues("ProductId", GetSelectedFieldValuesCallback);
+    }
+
+
+    function GetSelectedFieldValuesCallback(values) {
+        $("#SelectedProductIds").val(values.join());
+    }
+    var command;
+    function OnStartCallback(s, e) {
+        command = e.command;
+
+    }
+    function OnGridEndCallBack(s, e) {
+        if (command == "REFRESH") {
+            s.UnselectRows();
+        }
+    }
+
+</script>
+@Html.Hidden("selkey")
+@Html.Hidden("SelectedProductIds")
+@Html.Action("ProductList")
+
+
