@@ -170,6 +170,7 @@ namespace Ganedata.Core.Data
         DbSet<WebsiteContentPages> WebsiteContentPages { get; set; }
         DbSet<WebsiteNavigation> WebsiteNavigations { get; set; }
         DbSet<WebsiteSlider> WebsiteSliders { get; set; }
+        DbSet<ProductsNavigationMap> ProductsNavigationMaps { get; set; }
 
     }
 }

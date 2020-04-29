@@ -1,145 +1,148 @@
 ﻿@model Ganedata.Core.Entities.Domain.WebsiteSlider
+@using Ganedata.Core.Entities.Helpers
 
-@{
-    ViewBag.Title = "Edit";
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+         new StyleSheet { ExtensionType = ExtensionType.UploadControl, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit },
+          new Script { ExtensionType = ExtensionType.UploadControl }
+        )
 }
 
-<h2>Edit</h2>
+@{
+    ViewBag.Title = "Edit Website Slider";
+}
+<script type="text/javascript">
+    function onFileUploadComplete(s, e) {
+        if (e.callbackData) {
+            $("#dvfiles").show();
+            var fileData = e.callbackData.split('|');
+            var Fileobj = { FileName: fileData };
+            var result = $("#uploaderTenantDept").tmpl(Fileobj);
+            $("#dvfiles").append(result);
+            $('.se-pre-con').hide();
+            $("#FileLength").val('True');
 
+        }
+
+
+    }
+    function onFileUploadStart(s, e) {
+        if ($("#FileLength").val() == 'True') {
+            e.cancel = true;
+            alert("Only one file allow to be select");
+            return;
+        }
+    }
+</script>
+<h2><span> Edit Website Slider</span></h2>
+@Html.Hidden("websiteSlider", true)
+@Html.Hidden("hdPFiles", (List<string>)ViewBag.Files)
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>WebsiteSlider</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.SiteID, "SiteID", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("SiteID", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.SiteID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Image, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IamgeAltTag, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.IamgeAltTag, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.IamgeAltTag, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Text, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.SiteID)
+    <div class="col-md-12">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.Text, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
                 @Html.EditorFor(model => model.Text, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ButtonText, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ButtonText, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
                 @Html.EditorFor(model => model.ButtonText, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.ButtonText, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ButtonLinkUrl, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ButtonLinkUrl, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
                 @Html.EditorFor(model => model.ButtonLinkUrl, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.ButtonLinkUrl, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.SortOrder, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.SortOrder, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
                 @Html.EditorFor(model => model.SortOrder, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.SortOrder, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
                 <div class="checkbox">
                     @Html.EditorFor(model => model.IsActive)
                     @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Image", new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.Partial("_Uploader")
+                @Html.Hidden("FileLength", (bool?)ViewBag.FileLength)
+                <br />
+                <div id="dvfiles">
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.TenantId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TenantId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TenantId, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <strong>Uploaded Files</strong>
+                    @foreach (var file in ViewBag.Files)
+                    {
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.DateCreated, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DateCreated, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DateCreated, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                        <table>
+                            <tr>
+                                <td id="tdProductfileName">@file</td>
+                                <td>
+                                    <p>&nbsp;</p>
+                                </td>
+                                <td><a class="LRemove" onclick="_RemoveLogoFile('@file')">Remove</a></td>
+                                <td>
+                                    <p>&nbsp;</p>
+                                </td>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.DateUpdated, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DateUpdated, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DateUpdated, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreatedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreatedBy, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CreatedBy, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UpdatedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UpdatedBy, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.UpdatedBy, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsDeleted, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.IsDeleted)
-                    @Html.ValidationMessageFor(model => model.IsDeleted, "", new { @class = "text-danger" })
+                            </tr>
+                        </table>
+                    }
                 </div>
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ImageAltTag, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.ImageAltTag, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ImageAltTag, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <div class="col-md-offset-2 col-md-10 bottom-right">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <div class="back-list">@Html.ActionLink("Back to List", "Index", new { SiteId=Model.SiteID }, new { @class = "btn btn-default" })</div>
             </div>
         </div>
     </div>
 }
+<script id="uploaderTenantDept" type="text/x-jquery-tmpl">
+    <tr>
+        <td id="tdfileName">${FileName}</td>
+        <td><p>&nbsp;</p></td>
+        <td><a class="LRemove" onclick="_RemoveLogoFile('${FileName}')">Remove</a></td>
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+    </tr>
+</script>

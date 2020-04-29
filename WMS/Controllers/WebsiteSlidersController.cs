@@ -2,45 +2,60 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
+using DevExpress.Web.Mvc;
 using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Services;
 
 namespace WMS.Controllers
 {
-    public class WebsiteSlidersController : Controller
+    public class WebsiteSlidersController : BaseController
     {
-        private ApplicationContext db = new ApplicationContext();
+        private readonly ITenantWebsiteService _tenantWebsiteService;
+        private readonly IUserService _userService;
+        private readonly IInvoiceService _invoiceService;
+        private readonly ILookupServices _lookupServices;
+        private readonly IMarketServices _marketServices;
+        string UploadDirectory = "~/UploadedFiles/WebsiteSliders/";
+        string UploadTempDirectory = "~/UploadedFiles/WebsiteSliders/TempFiles/";
+        // GET: WebsiteNavigations
 
-        // GET: WebsiteSliders
-        public ActionResult Index()
+        public WebsiteSlidersController(ICoreOrderService orderService, IMarketServices marketServices, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IUserService userService, IInvoiceService invoiceService, ITenantWebsiteService tenantWebsiteService)
+        : base(orderService, propertyService, accountServices, lookupServices)
         {
-            var websiteSliders = db.WebsiteSliders.Include(w => w.TenantWebsites);
-            return View(websiteSliders.ToList());
+            _marketServices = marketServices;
+            _userService = userService;
+            _invoiceService = invoiceService;
+            _lookupServices = lookupServices;
+            _tenantWebsiteService = tenantWebsiteService;
         }
 
-        // GET: WebsiteSliders/Details/5
-        public ActionResult Details(int? id)
+        // GET: WebsiteSliders
+        public ActionResult Index(int SiteId)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            WebsiteSlider websiteSlider = db.WebsiteSliders.Find(id);
-            if (websiteSlider == null)
-            {
-                return HttpNotFound();
-            }
-            return View(websiteSlider);
+            ViewBag.SiteId = SiteId;
+            Session["UploadWebsiteSlider"] = null;
+            return View();
+        }
+
+        public ActionResult _SliderList(int SiteId)
+        {
+            ViewBag.SiteId = SiteId;
+            var slider = _tenantWebsiteService.GetAllValidWebsiteSlider(CurrentTenantId, SiteId).ToList();
+            return PartialView(slider);
         }
 
         // GET: WebsiteSliders/Create
-        public ActionResult Create()
+        public ActionResult Create(int SiteId)
         {
-            ViewBag.SiteID = new SelectList(db.TenantWebsites, "SiteID", "SiteName");
+            ViewBag.SiteId = SiteId;
+            ViewBag.ControllerName = "WebsiteSliders";
             return View();
         }
 
@@ -49,32 +64,54 @@ namespace WMS.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,SiteID,Image,IamgeAltTag,Text,ButtonText,ButtonLinkUrl,SortOrder,IsActive,TenantId,DateCreated,DateUpdated,CreatedBy,UpdatedBy,IsDeleted")] WebsiteSlider websiteSlider)
+        public ActionResult Create([Bind(Include = "Id,SiteID,Image,ImageAltTag,Text,ButtonText,ButtonLinkUrl,SortOrder,IsActive,TenantId,DateCreated,DateUpdated,CreatedBy,UpdatedBy,IsDeleted")] WebsiteSlider websiteSlider, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
         {
             if (ModelState.IsValid)
             {
-                db.WebsiteSliders.Add(websiteSlider);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                ViewBag.ControllerName = "WebsiteSliders";
+                var files = UploadControl;
+                var filesName = Session["UploadWebsiteSlider"] as List<string>;
+                var slider = _tenantWebsiteService.CreateOrUpdateProductswebsiteSlider(websiteSlider, CurrentUserId, CurrentTenantId);
+                string filePath = "";
+                if (filesName != null)
+                {
+                    foreach (var file in files)
+                    {
+                        filePath = MoveFile(file, filesName.FirstOrDefault(), websiteSlider.SiteID);
+                        websiteSlider.Image = filePath;
+                        _tenantWebsiteService.CreateOrUpdateProductswebsiteSlider(websiteSlider, CurrentUserId, CurrentTenantId);
+                        break;
+                    }
+                }
+                return RedirectToAction("Index",new { SiteId= websiteSlider.SiteID });
             }
 
-            ViewBag.SiteID = new SelectList(db.TenantWebsites, "SiteID", "SiteName", websiteSlider.SiteID);
             return View(websiteSlider);
         }
 
         // GET: WebsiteSliders/Edit/5
         public ActionResult Edit(int? id)
         {
+            ViewBag.ControllerName = "WebsiteSliders";
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            WebsiteSlider websiteSlider = db.WebsiteSliders.Find(id);
+            WebsiteSlider websiteSlider = _tenantWebsiteService.GetWebsiteSliderById(id??0);
             if (websiteSlider == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.SiteID = new SelectList(db.TenantWebsites, "SiteID", "SiteName", websiteSlider.SiteID);
+            ViewBag.Files = new List<string>();
+            if (!string.IsNullOrEmpty(websiteSlider.Image))
+            {
+                List<string> files = new List<string>();
+                ViewBag.FileLength = true;
+                DirectoryInfo dInfo = new DirectoryInfo(websiteSlider.Image);
+                files.Add(dInfo.Name);
+                Session["UploadWebsiteSlider"] = files;
+                ViewBag.Files = files;
+            }
             return View(websiteSlider);
         }
 
@@ -83,51 +120,98 @@ namespace WMS.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,SiteID,Image,IamgeAltTag,Text,ButtonText,ButtonLinkUrl,SortOrder,IsActive,TenantId,DateCreated,DateUpdated,CreatedBy,UpdatedBy,IsDeleted")] WebsiteSlider websiteSlider)
+        public ActionResult Edit([Bind(Include = "Id,SiteID,Image,ImageAltTag,Text,ButtonText,ButtonLinkUrl,SortOrder,IsActive,TenantId,DateCreated,DateUpdated,CreatedBy,UpdatedBy,IsDeleted")] WebsiteSlider websiteSlider, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
         {
             if (ModelState.IsValid)
             {
-             //   db.Entry(websiteSlider).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                string filePath = "";
+
+                var filesName = Session["UploadWebsiteSlider"] as List<string>;
+                if (filesName == null) 
+                { websiteSlider.Image = ""; }
+                else
+                {
+                    if (UploadControl != null)
+                    {
+                        filePath = MoveFile(UploadControl.FirstOrDefault(), filesName.FirstOrDefault(), websiteSlider.SiteID);
+                        websiteSlider.Image = filePath;
+                    }
+
+                }
+                var slider=_tenantWebsiteService.CreateOrUpdateProductswebsiteSlider(websiteSlider, CurrentUserId, CurrentTenantId);
+                return RedirectToAction("Index",new { SiteId=slider.SiteID});
             }
-            ViewBag.SiteID = new SelectList(db.TenantWebsites, "SiteID", "SiteName", websiteSlider.SiteID);
             return View(websiteSlider);
         }
 
         // GET: WebsiteSliders/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            WebsiteSlider websiteSlider = db.WebsiteSliders.Find(id);
-            if (websiteSlider == null)
-            {
-                return HttpNotFound();
-            }
-            return View(websiteSlider);
+            var result = _tenantWebsiteService.RemoveWebsiteSlider((id ?? 0), CurrentUserId);
+            return RedirectToAction("Index", new { SiteId = result.SiteID });
         }
 
-        // POST: WebsiteSliders/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+     
+
+        public ActionResult UploadFile(IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
         {
-            WebsiteSlider websiteSlider = db.WebsiteSliders.Find(id);
-            db.WebsiteSliders.Remove(websiteSlider);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (Session["UploadWebsiteSlider"] == null)
+            {
+                Session["UploadWebsiteSlider"] = new List<string>();
+            }
+            var files = Session["UploadWebsiteSlider"] as List<string>;
+
+            foreach (var file in UploadControl)
+            {
+                if (!string.IsNullOrEmpty(file.FileName))
+                {
+
+                    SaveFile(file);
+                    files.Add(file.FileName);
+                }
+
+            }
+            Session["UploadWebsiteSlider"] = files;
+
+            return Content("true");
         }
 
-        protected override void Dispose(bool disposing)
+        private void SaveFile(DevExpress.Web.UploadedFile file)
         {
-            if (disposing)
+            if (!Directory.Exists(Server.MapPath(UploadTempDirectory)))
+                Directory.CreateDirectory(Server.MapPath(UploadTempDirectory));
+            string resFileName = Server.MapPath(UploadTempDirectory + @"/" + file.FileName);
+            file.SaveAs(resFileName);
+        }
+
+        private string MoveFile(DevExpress.Web.UploadedFile file, string FileName, int ProductmanuId)
+        {
+            Session["UploadWebsiteSlider"] = null;
+            if (!Directory.Exists(Server.MapPath(UploadDirectory + ProductmanuId.ToString())))
+                Directory.CreateDirectory(Server.MapPath(UploadDirectory + ProductmanuId.ToString()));
+
+            string sourceFile = Server.MapPath(UploadTempDirectory + @"/" + FileName);
+            string destFile = Server.MapPath(UploadDirectory + ProductmanuId.ToString() + @"/" + FileName);
+            if (!System.IO.File.Exists(destFile))
             {
-                db.Dispose();
+                System.IO.File.Move(sourceFile, destFile);
             }
-            base.Dispose(disposing);
+            return (UploadDirectory.Replace("~", "") + ProductmanuId.ToString() + @"/" + FileName);
+        }
+        protected override void Initialize(RequestContext requestContext)
+        {
+            var binder = (DevExpressEditorsBinder)ModelBinders.Binders.DefaultBinder;
+            var actionName = (string)requestContext.RouteData.Values["Action"];
+            switch (actionName)
+            {
+                case "UploadFile":
+                    binder.UploadControlBinderSettings.FileUploadCompleteHandler = (s, e) =>
+                    {
+                        e.CallbackData = e.UploadedFile.FileName;
+                    };
+                    break;
+            }
+            base.Initialize(requestContext);
         }
     }
 }

@@ -8,39 +8,49 @@ using System.Web;
 using System.Web.Mvc;
 using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Services;
 
 namespace WMS.Controllers
 {
-    public class WebsiteContentPagesController : Controller
+    public class WebsiteContentPagesController : BaseController
     {
-        private ApplicationContext db = new ApplicationContext();
+        private readonly ITenantWebsiteService _tenantWebsiteService;
+        private readonly IUserService _userService;
+        private readonly IInvoiceService _invoiceService;
+        private readonly ILookupServices _lookupServices;
+        private readonly IMarketServices _marketServices;
+        // GET: WebsiteNavigations
+
+        public WebsiteContentPagesController(ICoreOrderService orderService, IMarketServices marketServices, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IUserService userService, IInvoiceService invoiceService, ITenantWebsiteService tenantWebsiteService)
+        : base(orderService, propertyService, accountServices, lookupServices)
+        {
+            _marketServices = marketServices;
+            _userService = userService;
+            _invoiceService = invoiceService;
+            _lookupServices = lookupServices;
+            _tenantWebsiteService = tenantWebsiteService;
+        }
 
         // GET: WebsiteContentPages
-        public ActionResult Index()
+        public ActionResult Index(int SiteId)
         {
-            var websiteContentPages = db.WebsiteContentPages.Include(w => w.TenantWebsites);
-            return View(websiteContentPages.ToList());
+            ViewBag.SiteId = SiteId;
+            return View();
         }
 
-        // GET: WebsiteContentPages/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult _WebsiteContentPagesList(int SiteId)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            WebsiteContentPages websiteContentPages = db.WebsiteContentPages.Find(id);
-            if (websiteContentPages == null)
-            {
-                return HttpNotFound();
-            }
-            return View(websiteContentPages);
+            ViewBag.SiteId = SiteId;
+            var contentPages = _tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, SiteId).ToList();
+            return PartialView(contentPages);
         }
+
 
         // GET: WebsiteContentPages/Create
-        public ActionResult Create()
+        public ActionResult Create(int SiteId)
         {
-            ViewBag.SiteID = new SelectList(db.TenantWebsites, "SiteID", "SiteName");
+            ViewBag.SiteId = SiteId;
+            
             return View();
         }
 
@@ -53,12 +63,10 @@ namespace WMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.WebsiteContentPages.Add(websiteContentPages);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                _tenantWebsiteService.CreateOrUpdateWebsiteContentPages(websiteContentPages, CurrentUserId, CurrentTenantId);
+                return RedirectToAction("Index", new { SiteId = websiteContentPages.SiteID });
             }
 
-            ViewBag.SiteID = new SelectList(db.TenantWebsites, "SiteID", "SiteName", websiteContentPages.SiteID);
             return View(websiteContentPages);
         }
 
@@ -69,12 +77,12 @@ namespace WMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            WebsiteContentPages websiteContentPages = db.WebsiteContentPages.Find(id);
+            WebsiteContentPages websiteContentPages = _tenantWebsiteService.GetWebsiteContentById(id??0);
             if (websiteContentPages == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.SiteID = new SelectList(db.TenantWebsites, "SiteID", "SiteName", websiteContentPages.SiteID);
+            
             return View(websiteContentPages);
         }
 
@@ -83,51 +91,30 @@ namespace WMS.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public ActionResult Edit([Bind(Include = "Id,SiteID,Title,MetaTitle,MetaDescription,Contant,SortOrder,IsActive,TenantId,DateCreated,DateUpdated,CreatedBy,UpdatedBy,IsDeleted")] WebsiteContentPages websiteContentPages)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Entry(websiteContentPages).State = EntityState.Modified;
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-        //    ViewBag.SiteID = new SelectList(db.TenantWebsites, "SiteID", "SiteName", websiteContentPages.SiteID);
-        //    return View(websiteContentPages);
-        //}
+        public ActionResult Edit([Bind(Include = "Id,SiteID,Title,MetaTitle,MetaDescription,Contant,SortOrder,IsActive,TenantId,DateCreated,DateUpdated,CreatedBy,UpdatedBy,IsDeleted")] WebsiteContentPages websiteContentPages)
+        {
+            if (ModelState.IsValid)
+            {
+                var contentPages=_tenantWebsiteService.CreateOrUpdateWebsiteContentPages(websiteContentPages, CurrentUserId, CurrentTenantId);
+                return RedirectToAction("Index",new { SiteId= contentPages.SiteID });
+            }
 
-        // GET: WebsiteContentPages/Delete/5
+            ViewBag.SiteID = new SelectList(_tenantWebsiteService.GetAllValidTenantWebSite(CurrentTenantId), "SiteID", "SiteName", websiteContentPages.SiteID);
+            return View(websiteContentPages);
+        }
+
+        //GET: WebsiteContentPages/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            WebsiteContentPages websiteContentPages = db.WebsiteContentPages.Find(id);
-            if (websiteContentPages == null)
-            {
-                return HttpNotFound();
-            }
-            return View(websiteContentPages);
+            var contentPages=_tenantWebsiteService.RemoveWebsiteContentPages((id ?? 0), CurrentUserId);
+
+            return RedirectToAction("Index", new { SiteId = contentPages.SiteID });
         }
 
-        // POST: WebsiteContentPages/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            WebsiteContentPages websiteContentPages = db.WebsiteContentPages.Find(id);
-            db.WebsiteContentPages.Remove(websiteContentPages);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
     }
 }

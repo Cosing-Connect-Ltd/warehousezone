@@ -666,6 +666,15 @@ footer p {
     display: none;
     padding-top: 5px;
 }
+#dvfilesHover {
+    font-size: small;
+    color: green;
+    background-color: lightgray;
+    border-radius: 3px;
+    padding-left: 10px;
+    display: none;
+    padding-top: 5px;
+}
 
 .LRemove {
     cursor: pointer;

@@ -42,137 +42,137 @@
         }
     }
 </script>
-
+@Html.Hidden("tenantWebsite", true)
 <h2><span> Tenant Website</span></h2>
- @using (Html.BeginForm())
-        {
-            @Html.AntiForgeryToken()
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
 
-<div class="col-md-12">
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="col-md-6 p-0 pull-left mb-2">
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.SiteName, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.SiteName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SiteDescription, "", new { @class = "text-danger" })
+    <div class="col-md-12">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="col-md-6 p-0 pull-left mb-2">
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.SiteName, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.SiteName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.SiteDescription, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.SiteDescription, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.SiteDescription, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SiteDescription, "", new { @class = "text-danger" })
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.SiteDescription, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.SiteDescription, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.SiteDescription, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.SiteType, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                @Html.EnumDropDownListFor(model => model.SiteType, "Select Site Type", htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.SiteType, "", new { @class = "text-danger" })
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.SiteType, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EnumDropDownListFor(model => model.SiteType, "Select Site Type", htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SiteType, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.SiteApiUrl, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.SiteApiUrl, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SiteApiUrl, "", new { @class = "text-danger" })
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.SiteApiUrl, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.SiteApiUrl, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.SiteApiUrl, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.ApiToken, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.ApiToken, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ApiToken, "", new { @class = "text-danger" })
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.ApiToken, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.ApiToken, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ApiToken, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.HostName, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.HostName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.HostName, "", new { @class = "text-danger" })
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.HostName, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.HostName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.HostName, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.FacebookUrl, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.FacebookUrl, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FacebookUrl, "", new { @class = "text-danger" })
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.FacebookUrl, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.FacebookUrl, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.FacebookUrl, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.TwitterUrl, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.TwitterUrl, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TwitterUrl, "", new { @class = "text-danger" })
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6 p-0 pull-left mb-2">
-
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.LinkedInUrl, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.LinkedInUrl, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.LinkedInUrl, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.YoutubeUrl, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.YoutubeUrl, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.YoutubeUrl, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.InstaGramUrl, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.InstaGramUrl, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.InstaGramUrl, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.FooterText, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.FooterText, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FooterText, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.IsActive)
-                    @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.TwitterUrl, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.TwitterUrl, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TwitterUrl, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
+        <div class="col-md-6 p-0 pull-left mb-2">
 
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.Label("Logo", new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.Partial("_Uploader")
-                @Html.Hidden("FileLength", (bool?)ViewBag.FileLength)
-                <br />
-                <div id="dvfiles">
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.LinkedInUrl, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.LinkedInUrl, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.LinkedInUrl, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
-                    <strong>Uploaded Files</strong>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.YoutubeUrl, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.YoutubeUrl, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.YoutubeUrl, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.InstaGramUrl, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.InstaGramUrl, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.InstaGramUrl, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.FooterText, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.FooterText, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.FooterText, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.IsActive)
+                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("Logo", new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.Partial("_Uploader")
+                    @Html.Hidden("FileLength", (bool?)ViewBag.FileLength)
+                    <br />
+                    <div id="dvfiles">
+
+                        <strong>Uploaded Files</strong>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="input-group h-100 justify-content-center align-items-center">
-        <div class="col-md-offset-2 col-md-10 bottom-right">
-            <input type="submit" value="Create" class="btn btn-primary" />
-            <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <div class="col-md-offset-2 col-md-10 bottom-right">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+            </div>
         </div>
     </div>
-</div>
-        }  
+}
 <script id="uploaderTenantDept" type="text/x-jquery-tmpl">
     <tr>
         <td id="tdfileName">${FileName}</td>

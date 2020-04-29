@@ -4,18 +4,25 @@
 
 @Html.DevExpress().UploadControl(settings =>
 {
- settings.Name = "UploadControl";
-settings.ShowAddRemoveButtons = true;
-settings.ShowProgressPanel = true;
-settings.ShowClearFileSelectionButton = true;
-settings.ShowUploadButton = true;
-if (ViewBag.ControllerName != null)
-{
+    if (ViewBag.ControllerName == "WebsiteNavigations")
+    {
+        settings.Name = ViewBag.Name;
+    }
+    else
+    {
+        settings.Name = "UploadControl";
+    }
+    settings.ShowAddRemoveButtons = true;
+    settings.ShowProgressPanel = true;
+    settings.ShowClearFileSelectionButton = true;
+    settings.ShowUploadButton = true;
+    if (ViewBag.ControllerName != null)
+    {
 
-    controllerName = ViewBag.ControllerName;
-    settings.ShowUploadButton = false;
-}
-if (controllerName == "TenantDepartment" || controllerName == "ProductGroup" || controllerName=="ProductManufacturers" || controllerName== "TenantWebsites" || controllerName== "WebsiteNavigations" || controllerName == "WebsiteSliders")
+        controllerName = ViewBag.ControllerName;
+        settings.ShowUploadButton = false;
+    }
+    if (controllerName == "TenantDepartment" || controllerName == "ProductGroup" || controllerName=="ProductManufacturers" || controllerName== "TenantWebsites" || controllerName== "WebsiteNavigations")
     {
         settings.AdvancedModeSettings.EnableMultiSelect = false;
         settings.UploadMode = UploadControlUploadMode.Standard;
@@ -35,8 +42,10 @@ if (controllerName == "TenantDepartment" || controllerName == "ProductGroup" || 
     settings.CallbackRouteValues = new { Controller = controllerName, Action = "UploadFile" };
     settings.Size = 30;
     settings.ValidationSettings.Assign(new UploadControlValidationSettings { AllowedFileExtensions = new string[] { ".jpg", ".jpeg", ".gif", ".png", ".avi", ".mp4", ".pdf", ".docx", ".xlxs" }, MaxFileSize = 100000000 });
-    settings.ClientSideEvents.FileUploadComplete = "function(s,e) { onFileUploadComplete(s,e); }";
-     settings.ClientSideEvents.FilesUploadStart = "function(s,e) { onFileUploadStart(s,e); }";
+
+    settings.ClientSideEvents.FileUploadComplete = "function(s,e) { onFileUploadHoverComplete(s,e); }";
+     settings.ClientSideEvents.FilesUploadStart = "function(s,e) { onFileUploadHoverStart(s,e); }";
+    
     
 }).GetHtml()
 <script id="uploaderTemplate" type="text/x-jquery-tmpl">

@@ -197,6 +197,8 @@ namespace Ganedata.Core.Data
         public DbSet<WebsiteNavigation> WebsiteNavigations { get; set; }
 
         public DbSet<WebsiteSlider> WebsiteSliders { get; set; }
+
+        public DbSet<ProductsNavigationMap> ProductsNavigationMaps { get; set; }
         //#endregion
     }
    

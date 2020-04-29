@@ -21,16 +21,16 @@ namespace WMS.CustomBindings
             var transactions = productServices.GetAllProductMasterDetail(tenantId, warehouseId);
             return transactions;
         }
-        private static IQueryable<object> GetProductNavigationDataset(int tenantId, int warehouseId)
+        private static IQueryable<object> GetProductNavigationDataset(int tenantId, int warehouseId,int? SiteId)
         {
             var productServices = DependencyResolver.Current.GetService<ITenantWebsiteService>();
-            var transactions = productServices.GetAllValidWebsiteNavigations(tenantId);
+            var transactions = productServices.GetAllValidWebsiteNavigations(tenantId,SiteId);
             return transactions;
         }
 
-        public static void ProductGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId,bool Navigation=false)
+        public static void ProductGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId,bool Navigation=false, int? SiteId = null)
         {
-            var transactions = GetProductNavigationDataset(tenantId, warehouseId);
+            var transactions = GetProductNavigationDataset(tenantId, warehouseId,SiteId);
             if (!Navigation)
             {
                 transactions=GetProductDataset(tenantId, warehouseId);
@@ -70,10 +70,10 @@ namespace WMS.CustomBindings
             e.Data = transactions.ToList();
         }
 
-        public static void ProductGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId, bool Navigation=false)
+        public static void ProductGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId, bool Navigation=false,int?SiteId=null)
         {
 
-            var transactions = GetProductNavigationDataset(tenantId, warehouseId);
+            var transactions = GetProductNavigationDataset(tenantId, warehouseId,SiteId);
             if (!Navigation)
             {
                 transactions = GetProductDataset(tenantId, warehouseId);

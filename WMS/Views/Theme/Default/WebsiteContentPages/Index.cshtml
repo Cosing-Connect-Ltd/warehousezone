@@ -1,105 +1,50 @@
-﻿@model IEnumerable<Ganedata.Core.Entities.Domain.WebsiteContentPages>
-
+﻿@using Ganedata.Core.Entities.Helpers
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "";
+}
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DataView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView },
+        new Script { ExtensionType = ExtensionType.DataView }
+        )
 }
 
-<h2>Index</h2>
+<h2><span>Website Content Pages</span></h2>
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+        $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+</script>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.TenantWebsites.SiteName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MetaTitle)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MetaDescription)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Contant)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SortOrder)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsActive)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TenantId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateCreated)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateUpdated)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UpdatedBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsDeleted)
-        </th>
-        <th></th>
-    </tr>
+@Html.Hidden("selkey", null, new { @class = "selkey" })
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.TenantWebsites.SiteName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MetaTitle)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MetaDescription)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Contant)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SortOrder)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsActive)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TenantId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateCreated)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateUpdated)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatedBy)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UpdatedBy)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsDeleted)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+@Html.Action("_WebsiteContentPagesList", new { SiteId = ViewBag.SiteId })
 
-</table>
+<div class="col-md-12 p-0">
+
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TenantWebsites", "Create"))
+    {
+        @Html.ActionLink("Create New", "Create", new { SiteId = ViewBag.SiteId }, new { @class = "btn btn-primary  " })
+    }
+
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TenantWebsites", "Edit"))
+    {
+        @Html.ActionLink("Update", "Edit", null, new { @class = "btn btn-primary  Caction" })
+    }
+
+
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TenantWebsites", "Delete"))
+    {
+        @Html.ActionLink("Delete", "Delete", null, new { @class = "btn btn-primary  Caction" })
+    }
+    <div class="back-list">
+        <a href="@Url.Action("Index","TenantWebsites")" class="btn btn-default">Back to List</a>
+    </div>
+
+</div>

@@ -27,6 +27,6 @@ namespace Ganedata.Core.Entities.Domain
         public virtual WebsiteNavigation Parent { get; set; }
         public virtual ICollection<ProductsNavigationMap> ProductsNavigationMap { get; set; }
         [NotMapped]
-        public List<string> SelectedProductIds { get; set; }
+        public string SelectedProductIds { get; set; }
     }
 }

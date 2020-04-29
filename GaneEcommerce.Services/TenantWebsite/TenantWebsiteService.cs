@@ -20,7 +20,7 @@ namespace Ganedata.Core.Services
         }
         public IEnumerable<TenantWebsites> GetAllValidTenantWebSite(int TenantId)
         {
-            return _currentDbContext.TenantWebsites.Where(u => u.IsDeleted != true);
+            return _currentDbContext.TenantWebsites.Where(u => u.IsDeleted != true && u.TenantId==TenantId);
         }
         public TenantWebsites CreateOrUpdateTenantWebsite(TenantWebsites tenantWebsites, int UserId, int TenantId)
         {
@@ -53,17 +53,53 @@ namespace Ganedata.Core.Services
         }
 
         //WebsiteContentPages
-        public IEnumerable<WebsiteContentPages> GetAllValidWebsiteContentPages(int TenantId)
+        public IEnumerable<WebsiteContentPages> GetAllValidWebsiteContentPages(int TenantId,int SiteId)
         {
-            return _currentDbContext.WebsiteContentPages.Where(u => u.IsDeleted != true);
+            return _currentDbContext.WebsiteContentPages.Where(u => u.IsDeleted != true && u.TenantId==TenantId && u.SiteID==SiteId);
         }
         public WebsiteContentPages CreateOrUpdateWebsiteContentPages(WebsiteContentPages WebsiteContentPages, int UserId, int TenantId)
         {
-            return default;
+            if (WebsiteContentPages.Id <= 0)
+            {
+                WebsiteContentPages.TenantId = TenantId;
+                WebsiteContentPages.UpdateCreatedInfo(UserId);
+                _currentDbContext.WebsiteContentPages.Add(WebsiteContentPages);
+                _currentDbContext.SaveChanges();
+            }
+            else 
+            {
+                var pages = _currentDbContext.WebsiteContentPages.AsNoTracking().FirstOrDefault(u => u.Id == WebsiteContentPages.Id);
+                if (pages != null)
+                {
+                    WebsiteContentPages.CreatedBy = pages.CreatedBy;
+                    WebsiteContentPages.DateCreated = pages.DateCreated;
+                    WebsiteContentPages.TenantId = TenantId;
+                    WebsiteContentPages.UpdateUpdatedInfo(UserId);
+                    _currentDbContext.Entry(WebsiteContentPages).State = System.Data.Entity.EntityState.Modified;
+                    _currentDbContext.SaveChanges();
+                    
+                }
+            
+            }
+            return WebsiteContentPages;
         }
-        public bool RemoveWebsiteContentPages(int Id, int UserId)
+        public WebsiteContentPages RemoveWebsiteContentPages(int Id, int UserId)
         {
-            return true;
+            var pages = _currentDbContext.WebsiteContentPages.FirstOrDefault(u => u.Id == Id);
+            if (pages != null)
+            {
+                pages.IsDeleted = true;
+                pages.UpdateUpdatedInfo(UserId);
+                _currentDbContext.Entry(pages).State = System.Data.Entity.EntityState.Modified;
+                _currentDbContext.SaveChanges();
+
+            }
+           return pages;
+        }
+
+        public WebsiteContentPages GetWebsiteContentById(int Id)
+        {
+            return _currentDbContext.WebsiteContentPages.FirstOrDefault(u => u.Id == Id);
         }
 
 
@@ -101,31 +137,68 @@ namespace Ganedata.Core.Services
         }
 
         //WebsiteSliders
-        public IEnumerable<WebsiteSlider> GetAllValidWebsiteSlider(int TenantId)
+        public IEnumerable<WebsiteSlider> GetAllValidWebsiteSlider(int TenantId,int SiteId)
         {
-            return _currentDbContext.WebsiteSliders.Where(u => u.IsDeleted != true);
+            return _currentDbContext.WebsiteSliders.Where(u => u.IsDeleted != true && u.TenantId==TenantId && u.SiteID==SiteId);
         }
         public WebsiteSlider CreateOrUpdateProductswebsiteSlider(WebsiteSlider websiteSlider, int UserId, int TenantId)
         {
-            return default;
+            if (websiteSlider.Id <= 0)
+            {
+                websiteSlider.TenantId = TenantId;
+                websiteSlider.UpdateCreatedInfo(UserId);
+                _currentDbContext.WebsiteSliders.Add(websiteSlider);
+                _currentDbContext.SaveChanges();
+            }
+            else
+            {
+                var slider = _currentDbContext.WebsiteContentPages.AsNoTracking().FirstOrDefault(u => u.Id == websiteSlider.Id);
+                if (slider != null)
+                {
+                    websiteSlider.CreatedBy = slider.CreatedBy;
+                    websiteSlider.DateCreated = slider.DateCreated;
+                    websiteSlider.TenantId = TenantId;
+                    websiteSlider.UpdateUpdatedInfo(UserId);
+                    _currentDbContext.Entry(websiteSlider).State = System.Data.Entity.EntityState.Modified;
+                    _currentDbContext.SaveChanges();
+
+                }
+
+            }
+            return websiteSlider;
         }
-        public bool RemoveWebsiteSlider(int Id, int UserId)
+        public WebsiteSlider RemoveWebsiteSlider(int Id, int UserId)
         {
-            return true;
+            var slider = _currentDbContext.WebsiteSliders.FirstOrDefault(u => u.Id == Id);
+            if (slider != null)
+            {
+                slider.IsDeleted = true;
+                slider.UpdateUpdatedInfo(UserId);
+                _currentDbContext.Entry(slider).State = System.Data.Entity.EntityState.Modified;
+                _currentDbContext.SaveChanges();
+
+            }
+            return slider;
+        }
+
+        public WebsiteSlider GetWebsiteSliderById(int Id)
+        {
+            return _currentDbContext.WebsiteSliders.FirstOrDefault(u => u.Id == Id);
         }
 
         //WebsiteNavigation
 
-        public IEnumerable<WebsiteNavigation> GetAllValidWebsiteNavigation(int TenantId)
+        public IEnumerable<WebsiteNavigation> GetAllValidWebsiteNavigation(int TenantId, int? SiteId)
         {
-            return _currentDbContext.WebsiteNavigations.Where(u => u.IsDeleted != true);
+            return _currentDbContext.WebsiteNavigations.Where(u => u.IsDeleted != true &&(!SiteId.HasValue || u.SiteID == SiteId) && u.TenantId == TenantId);
         }
 
-        public IQueryable<object> GetAllValidWebsiteNavigations(int TenantId)
+        public IQueryable<object> GetAllValidWebsiteNavigations(int TenantId, int? SiteId)
         {
-            return _currentDbContext.ProductsWebsitesMap.Where(u => u.IsDeleted != true).Select(prd => new
+            return _currentDbContext.ProductsWebsitesMap.Where(u => u.IsDeleted != true &&  (!SiteId.HasValue || u.SiteID == SiteId) && u.TenantId == TenantId).Select(prd => new
             {
-                ProductId = prd.ProductId,
+
+                ProductId = prd.Id,
                 Name = prd.ProductMaster.Name,
                 SKUCode = prd.ProductMaster.SKUCode,
                 Description = prd.ProductMaster.Description,
@@ -136,18 +209,67 @@ namespace Ganedata.Core.Services
                 ProductCategoryName = prd.ProductMaster.ProductCategory == null ? "" : prd.ProductMaster.ProductCategory.ProductCategoryName,
                 DepartmentName = prd.ProductMaster.TenantDepartment.DepartmentName,
                 Location = prd.ProductMaster.ProductLocationsMap.Where(a => a.IsDeleted != true).Select(x => x.Locations.LocationCode).FirstOrDefault().ToString(),
-               
+
 
             });
 
         }
         public WebsiteNavigation CreateOrUpdateWebsiteNavigation(WebsiteNavigation websiteNavigation, int UserId, int TenantId)
         {
-            return default;
+            if (websiteNavigation.Id <= 0)
+            {
+                websiteNavigation.TenantId = TenantId;
+                websiteNavigation.UpdateCreatedInfo(UserId);
+                _currentDbContext.WebsiteNavigations.Add(websiteNavigation);
+                _currentDbContext.SaveChanges();
+                if (!string.IsNullOrEmpty(websiteNavigation.SelectedProductIds))
+                {
+                    List<int> productWebMapId = websiteNavigation.SelectedProductIds.Split(',').Select(Int32.Parse).ToList();
+                    foreach (var item in productWebMapId)
+                    {
+                        ProductsNavigationMap productsNavigation = new ProductsNavigationMap();
+                        productsNavigation.NavigationId = websiteNavigation.Id;
+                        productsNavigation.ProductWebsiteMapId = item;
+                        productsNavigation.SortOrder = 1;
+                        productsNavigation.TenantId = TenantId;
+                        productsNavigation.IsActive = true;
+                        productsNavigation.UpdateCreatedInfo(UserId);
+                        _currentDbContext.ProductsNavigationMaps.Add(productsNavigation);
+                    }
+
+
+                }
+            }
+            else
+            {
+                var updatedRecored = _currentDbContext.WebsiteNavigations.AsNoTracking().FirstOrDefault(u => u.Id == websiteNavigation.Id);
+                if (updatedRecored != null)
+                {
+                    websiteNavigation.CreatedBy = updatedRecored.CreatedBy;
+                    websiteNavigation.DateCreated = updatedRecored.DateCreated;
+                    websiteNavigation.UpdateUpdatedInfo(UserId);
+                    _currentDbContext.Entry(websiteNavigation).State = System.Data.Entity.EntityState.Modified;
+                    _currentDbContext.SaveChanges();
+                }
+
+            }
+           
+
+
+            return websiteNavigation;
         }
-        public bool RemoveWebsiteNavigation(int Id, int UserId)
+        public WebsiteNavigation RemoveWebsiteNavigation(int Id, int UserId)
         {
-            return true;
+            var navigation = _currentDbContext.WebsiteNavigations.FirstOrDefault(u => u.Id == Id);
+            if (navigation != null)
+            {
+                navigation.IsDeleted = true;
+                navigation.UpdateUpdatedInfo(UserId);
+                _currentDbContext.Entry(navigation).State = System.Data.Entity.EntityState.Modified;
+                _currentDbContext.SaveChanges();
+
+            }
+            return navigation;
         }
 
 

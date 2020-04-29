@@ -1,9 +1,22 @@
-﻿@{
-    Layout = null;
+﻿@using Ganedata.Core.Entities.Helpers
+@{
+    Layout = "~/Views/Theme/Default/Shared/_Layout.cshtml";
+}
+@section scripts {
+
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DataView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView },
+        new Script { ExtensionType = ExtensionType.DataView }
+        )
 }
 <script>
-    function SelectionChangeds(s, e)
-    {
+    function SelectionChangeds(s, e) {
         debugger;
         s.GetSelectedFieldValues("ProductId", GetSelectedFieldValuesCallback);
     }
@@ -24,8 +37,61 @@
     }
 
 </script>
+<h2><span>Product Website Maps</span></h2>
+<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+        $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+    function PublishProductForWebSite() {
+        var selectedIds = $("#SelectedProductIds").val();
+        var SiteId = $("#SiteId").val();
+        if (selectedIds.length <= 0) { alert("Please select product first"); return; }
+        LoadingPanel.Show();
+        $.ajax({
+            type: "POST",
+            url: '/ProductsWebsitesMaps/Create/',
+            data: { ProductIds: selectedIds, siteId: SiteId },
+            dataType: 'json',
+            success: function (data) {
+
+                if (data) {
+                    ProductWebMapsGridView.Refresh();
+                    $("#infoMsg").html("Products published").show();
+                    $('#infoMsg').delay(2000).fadeOut();
+                }
+                else {
+                    $("#infoMsg").html("These products already published").show();
+                    $('#infoMsg').delay(2000).fadeOut();
+                }
+                LoadingPanel.Hide();
+
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                LoadingPanel.Hide();
+                alert('Error' + textStatus + "/" + errorThrown);
+            }
+        });
+
+
+    }
+</script>
 @Html.Hidden("selkey")
 @Html.Hidden("SelectedProductIds")
-@Html.Action("ProductList")
+@Html.Hidden("SiteId", (int)ViewBag.siteid)
+<div>
+    @Html.Action("ProductList")
+    <div class='col-md-offset-2 col-md-10 bottom-right'>
+
+        @if (WMS.Helpers.LayoutHelpers.ActivityValidator("PurchaseOrders", "Create"))
+        {
+            <input type="button" class="btn btn-primary" value="Publish Product" onclick="PublishProductForWebSite()" />
+        }
+        <div class="back-list">
+            <a href="@Url.Action("Index","TenantWebsites")" class="btn btn-default">Back to List</a>
+        </div>
+
+    </div>
+</div>
+
 
 

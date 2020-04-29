@@ -117,10 +117,66 @@ function _RemoveProofOfDeliveryFile(filename) {
     });
 
 }
+function _RemoveDefaultFile(filename) {
+    _RemoveLogoFile(filename,"Default")
+}
+function _RemoveHoverFile(filename) {
 
+    _RemoveLogoFile(filename, "Hover")
+}
 
-function _RemoveLogoFile(filename) {
+function _RemoveLogoFile(filename,loaderType)
+{
+    if (loaderType !== null || loaderType !== "" || loaderType !== undefined) {
+        var navigationWebsite = true;
+    }
+    var websiteSlider = $("#websiteSlider").val();
+    var tenantWebsite = $("#tenantWebsite").val();
+    $.ajax({
+        type: "POST",
+        url: "/TenantWebsites/_RemoveLogoFile",
+        data: {
+            "filename": filename, "websiteSlider": websiteSlider, "tenantWebsite": tenantWebsite, "navigationWebsite": navigationWebsite,
+            "NavType": loaderType
+        },
+        success: function (files) {
+            $("#dvbusy").hide();
+            if (navigationWebsite) {
+                if (loaderType === "Hover") {
+                    $('#dvfilesHover').empty();
+                    $("#dvfilesHover").hide();
+                    $("#dvfilesHover").append('<strong>Uploaded Files</strong>  ');
+                    $("#FileLengthHover").val(false);
+                }
+                else {
+                    $('#dvfiles').empty();
+                    $("#dvfiles").hide();
+                    $("#dvfiles").append('<strong>Uploaded Files</strong>  ');
+                    $("#FileLength").val(false);
 
+                }
+                return;
+            }
+            if (files.files == null) {
+                $('#dvfiles').empty();
+                $("#dvfiles").hide();
+                $("#dvfiles").append('<strong>Uploaded Files</strong>  ');
+                $("#FileLength").val(false);
+            }
+            else {
+                $("#FileLength").val(false);
+                $('#dvfiles').empty();
+                $("#dvfiles").append(' <strong>Uploaded Files</strong>  ');
+                $.each(files.files, function (index, value) {
+
+                    var Fileobj = { FileName: value };
+                    var result = $("#uploaderTenantDept").tmpl(Fileobj);
+                    $("#dvfiles").append(result);
+                });
+
+            }
+        }
+    });
 }
 
 

@@ -32,8 +32,9 @@ namespace WMS.Controllers
 
 
         // GET: ProductsWebsitesMaps
-        public ActionResult Index()
+        public ActionResult Index(int SiteId)
         {
+            ViewBag.siteid = SiteId;
             return PartialView();
         }
         public ActionResult ProductList()

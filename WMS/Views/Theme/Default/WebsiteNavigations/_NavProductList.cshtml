@@ -3,22 +3,22 @@
     var grid = Html.DevExpress().GridView(settings =>
     {
         settings.Name = "ProductWebNavGridView";
-        settings.CallbackRouteValues = new { Controller = ViewBag.Controller, Action = "_NavigationProductList" };
+        settings.CallbackRouteValues = new { Controller = ViewBag.Controller, Action = "_NavigationProductList", SiteId= ViewBag.SiteId };
         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
 
         settings.CustomBindingRouteValuesCollection.Add(
             GridViewOperationType.Paging,
-            new { Controller = ViewBag.Controller, Action = "_NavigationProductList" }
+            new { Controller = ViewBag.Controller, Action = "_NavigationProductList", SiteId = ViewBag.SiteId }
         );
 
         settings.CustomBindingRouteValuesCollection.Add(
         GridViewOperationType.Filtering,
-        new { Controller = ViewBag.Controller, Action = "_NavigationProductList" }
+        new { Controller = ViewBag.Controller, Action = "_NavigationProductList",SiteId = ViewBag.SiteId }
         );
 
         settings.CustomBindingRouteValuesCollection.Add(
         GridViewOperationType.Sorting,
-        new { Controller = ViewBag.Controller, Action = "_NavigationProductList" }
+        new { Controller = ViewBag.Controller, Action = "_NavigationProductList", SiteId = ViewBag.SiteId }
         );
 
         settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;

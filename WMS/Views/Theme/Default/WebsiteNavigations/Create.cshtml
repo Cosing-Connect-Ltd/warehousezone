@@ -2,7 +2,26 @@
 @using Ganedata.Core.Entities.Helpers
 @{
     ViewBag.Title = "Create Navigation";
-    Layout = null;
+
+}
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+         new StyleSheet { ExtensionType = ExtensionType.UploadControl, Theme = GaneStaticAppExtensions.DevexTheme },
+         new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DataView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit },
+          new Script { ExtensionType = ExtensionType.UploadControl },
+           new Script { ExtensionType = ExtensionType.GridView },
+        new Script { ExtensionType = ExtensionType.DataView }
+
+        )
 }
 
 
@@ -10,15 +29,42 @@
     ViewBag.Title = "Add Navigation for Website";
 }
 <script type="text/javascript">
+    function submitformNav() {
+        debugger;
+
+        if ($("#Type").val() == "3") {
+            var productids = $("#SelectedProductIds").val();
+            if (productids == null || productids == "" || productids == undefined) {
+                alert("Select product first");
+                return false;
+            }
+            $("#ProductsWithIds").val(productids);
+
+        }
+    }
     function onFileUploadComplete(s, e) {
         if (e.callbackData) {
             $("#dvfiles").show();
             var fileData = e.callbackData.split('|');
-            var Fileobj = { FileName: fileData };
-            var result = $("#uploaderTenantDept").tmpl(Fileobj);
+            var Fileobj = { FileName: fileData};
+            var result = $("#uploaderdefaultImage").tmpl(Fileobj);
             $("#dvfiles").append(result);
             $('.se-pre-con').hide();
             $("#FileLength").val('True');
+
+        }
+
+
+    }
+    function onFileUploadHoverComplete(s, e) {
+        if (e.callbackData) {
+            $("#dvfilesHover").show();
+            var fileData = e.callbackData.split('|');
+            var Fileobj = { FileName: fileData };
+            var result = $("#uploaderHoverImage").tmpl(Fileobj);
+            $("#dvfilesHover").append(result);
+            $('.se-pre-con').hide();
+            $("#FileLengthHover").val('True');
 
         }
 
@@ -30,8 +76,17 @@
             alert("Only one file allow to be select");
             return;
         }
-        e.CustomArgument
     }
+    function onFileUploadHoverStart(s, e) {
+        if ($("#FileLengthHover").val() == 'True') {
+            e.cancel = true;
+            alert("Only one file allow to be select");
+            return;
+        }
+
+
+    }
+
 </script>
 <script>
     $(document).ready(function () {
@@ -56,14 +111,10 @@
 
         });
     });
-
-
     function SelectionChangeds(s, e) {
         debugger;
         s.GetSelectedFieldValues("ProductId", GetSelectedFieldValuesCallback);
     }
-
-
     function GetSelectedFieldValuesCallback(values) {
         $("#SelectedProductIds").val(values.join());
     }
@@ -79,10 +130,12 @@
     }
 
 </script>
-@using (Html.BeginForm())
+<h2><span>Add Website Navigation</span></h2>
+@using (Html.BeginForm("Create", "WebsiteNavigations", FormMethod.Post, new { @class = "form-navigation", onsubmit = "return submitformNav()" }))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.SelectedProductIds)
+    @Html.Hidden("ProductsWithIds")
     @Html.HiddenFor(model => model.SiteID, (int)ViewBag.siteid)
     <div class="col-md-12">
 
@@ -136,7 +189,7 @@
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.Label("Default Image", new { @class = "col-md-4" })
                 <div class="col-md-8">
-                    @Html.Action("_Uploader", new {Name= "ImageDefault" })
+                    @Html.Action("_Uploader", new { Name = "ImageDefault" })
                     @Html.Hidden("FileLength", (bool?)ViewBag.FileLength)
                     <br />
                     <div id="dvfiles">
@@ -155,10 +208,10 @@
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.Label("Hover Image", new { @class = "col-md-4" })
                 <div class="col-md-8">
-                    @Html.Action("_Uploader", new { Name="HoverImage"})
-                    @Html.Hidden("FileLength", (bool?)ViewBag.FileLength)
+                    @Html.Action("_HoverUploader", new { Name = "HoverImage" })
+                    @Html.Hidden("FileLengthHover", (bool?)ViewBag.FileLength)
                     <br />
-                    <div id="dvfiles">
+                    <div id="dvfilesHover">
 
                         <strong>Uploaded Files</strong>
                     </div>
@@ -175,7 +228,7 @@
         </div>
         <div class="col-md-7 p-0 pull-left mb-2">
             <div class="ProductsShow" style="display:none;">
-                @Html.Action("_NavigationProductList")
+                @Html.Action("_NavigationProductList",new { SiteId= ViewBag.SiteId })
             </div>
         </div>
 
@@ -183,17 +236,25 @@
     </div>
     <div class="input-group h-100 justify-content-center align-items-center">
         <div class="col-md-offset-2 col-md-10 bottom-right">
-            <input type="submit" value="Create" class="btn btn-primary" />
-            <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+            <input type="submit"  class="btn btn-primary" value="Create" />
+            <div class="back-list">@Html.ActionLink("Back to List", "Index", new {SiteId= (int)ViewBag.siteid }, new { @class = "btn btn-default" })</div>
         </div>
     </div>
 
 }
-<script id="uploaderTenantDept" type="text/x-jquery-tmpl">
+<script id="uploaderdefaultImage" type="text/x-jquery-tmpl">
     <tr>
         <td id="tdfileName">${FileName}</td>
         <td><p>&nbsp;</p></td>
-        <td><a class="LRemove" onclick="_RemoveLogoFile('${FileName}')">Remove</a></td>
+        <td><a class="LRemove" onclick="_RemoveDefaultFile('${FileName}')">Remove</a></td>
+
+    </tr>
+</script>
+<script id="uploaderHoverImage" type="text/x-jquery-tmpl">
+    <tr>
+        <td id="tdfileName">${FileName}</td>
+        <td><p>&nbsp;</p></td>
+        <td><a class="LRemove" onclick="_RemoveHoverFile('${FileName}')">Remove</a></td>
 
     </tr>
 </script>

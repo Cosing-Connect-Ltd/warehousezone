@@ -35,7 +35,7 @@ namespace WMS.Controllers
             _tenantWebsiteService = tenantWebsiteService;
         }
 
-       
+
 
         // GET: TenantWebsites
         public ActionResult Index()
@@ -78,7 +78,7 @@ namespace WMS.Controllers
                 ViewBag.ControllerName = "TenantWebsites";
                 var files = UploadControl;
                 var filesName = Session["UploadTenantWebsiteLogo"] as List<string>;
-                var TenantWebsite= _tenantWebsiteService.CreateOrUpdateTenantWebsite(tenantWebsites, CurrentUserId, CurrentTenantId);
+                var TenantWebsite = _tenantWebsiteService.CreateOrUpdateTenantWebsite(tenantWebsites, CurrentUserId, CurrentTenantId);
                 string filePath = "";
                 if (filesName != null)
                 {
@@ -93,7 +93,7 @@ namespace WMS.Controllers
                 return RedirectToAction("Index");
             }
 
-           
+
             return View(tenantWebsites);
         }
 
@@ -135,7 +135,7 @@ namespace WMS.Controllers
             if (ModelState.IsValid)
             {
                 string filePath = "";
-                
+
                 var filesName = Session["UploadTenantWebsiteLogo"] as List<string>;
                 if (filesName == null) { tenantWebsites.Logo = ""; }
                 else
@@ -150,7 +150,7 @@ namespace WMS.Controllers
                 _tenantWebsiteService.CreateOrUpdateTenantWebsite(tenantWebsites, CurrentUserId, CurrentTenantId);
                 return RedirectToAction("Index");
             }
-           
+
             return View(tenantWebsites);
         }
 
@@ -161,12 +161,9 @@ namespace WMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TenantWebsites tenantWebsites = _tenantWebsiteService.GetAllValidTenantWebSite(CurrentTenantId).FirstOrDefault(u => u.SiteID == id);
-            if (tenantWebsites == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tenantWebsites);
+            _tenantWebsiteService.RemoveTenantWebsite((id ?? 0), CurrentUserId);
+            return RedirectToAction("Index");
+           
         }
 
         // POST: TenantWebsites/Delete/5
@@ -174,8 +171,8 @@ namespace WMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            _tenantWebsiteService.RemoveTenantWebsite(id,CurrentUserId);
-             return RedirectToAction("Index");
+            _tenantWebsiteService.RemoveTenantWebsite(id, CurrentUserId);
+            return RedirectToAction("Index");
         }
 
         public ActionResult UploadFile(IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
@@ -218,6 +215,52 @@ namespace WMS.Controllers
                 System.IO.File.Move(sourceFile, destFile);
             }
             return (UploadDirectory.Replace("~", "") + ProductmanuId.ToString() + @"/" + FileName);
+        }
+
+
+        public JsonResult _RemoveLogoFile(string filename, bool websiteSlider=false,bool tenantWebsite=false, bool navigationWebsite=false, string NavType="")
+        {
+            if (tenantWebsite)
+            {
+                var files = Session["UploadTenantWebsiteLogo"] as List<string>;
+                var filetoremove = files.FirstOrDefault(a => a == filename);
+                files.Remove(filetoremove);
+                if (files.Count <= 0)
+                {
+                    Session["UploadTenantWebsiteLogo"] = null;
+                }
+                var cfiles = files.Select(a => a).ToList();
+                return Json(new { files = cfiles.Count == 0 ? null : cfiles });
+            }
+            else if (websiteSlider)
+            {
+                var files = Session["UploadWebsiteSlider"] as List<string>;
+                var filetoremove = files.FirstOrDefault(a => a == filename);
+                files.Remove(filetoremove);
+                if (files.Count <= 0)
+                {
+                    Session["UploadWebsiteSlider"] = null;
+                }
+                var cfiles = files.Select(a => a).ToList();
+                return Json(new { files = cfiles.Count == 0 ? null : cfiles });
+            }
+            else if (navigationWebsite)
+            {
+                if (!string.IsNullOrEmpty(NavType))
+                {
+                    var files = Session["UploadTenantWebsiteNav"] as Dictionary<string,string>;
+                    files.Remove(NavType);
+                    if (files.Count <= 0)
+                    {
+                        Session["UploadTenantWebsiteNav"] = null;
+                    }
+                    var cfiles = files.Select(a => a.Key==NavType).ToList();
+                    return Json(new { files = cfiles.Count == 0 ? null : cfiles });
+
+                }
+                
+            }
+            return default;
         }
         protected override void Initialize(RequestContext requestContext)
         {

@@ -80,7 +80,8 @@ namespace WMS
                       "~/Scripts/JavaScript-Stocktake.js",
                       "~/Scripts/JavaScript-PurchaseOrders.js",
                       "~/Scripts/JavaScript-WorksOrder.js",
-                      "~/Scripts/JavaScript-SaleOrders.js"
+                      "~/Scripts/JavaScript-SaleOrders.js",
+                      "~/Scripts/JavaScript-WebsiteSettings"
 
                       ));
 

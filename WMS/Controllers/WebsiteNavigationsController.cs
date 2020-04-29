@@ -37,10 +37,16 @@ namespace WMS.Controllers
             _tenantWebsiteService = tenantWebsiteService;
         }
 
-        public ActionResult Index()
+        public ActionResult Index(int SiteId)
         {
-            
+            ViewBag.SiteId = SiteId;
             return View();
+        }
+
+        public ActionResult _NavigationList(int SiteId)
+        {
+            var model = _tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, SiteId).ToList();
+            return PartialView(model);
         }
 
         // GET: WebsiteNavigations/Create
@@ -48,113 +54,159 @@ namespace WMS.Controllers
         {
             ViewBag.siteid = SiteId;
             ViewBag.ControllerName = "WebsiteNavigations";
-            ViewBag.Name = "HoverImage";
-            ViewBag.ParentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId).ToList(), "Id", "Name");
-            ViewBag.contentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId), "Id", "MetaTitle");
+            ViewBag.ParentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, SiteId).ToList(), "Id", "Name");
+            ViewBag.contentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, SiteId), "Id", "MetaTitle");
             return View();
         }
 
         public ActionResult _Uploader(string Name)
         {
-            ViewBag.ControllerName = "WebsiteNavigations"; ViewBag.ControllerName = "WebsiteNavigations";
+            ViewBag.ControllerName = "WebsiteNavigations";
             ViewBag.Name = Name;
 
             return PartialView("_Uploader");
         }
-        public ActionResult _NavigationProductList()
+        public ActionResult _HoverUploader(string Name)
         {
-            var viewModel = GridViewExtension.GetViewModel("ProductWebMapsGridView");
+            ViewBag.ControllerName = "WebsiteNavigations";
+            ViewBag.Name = Name;
+
+            return PartialView("_HoverUploader");
+        }
+        public ActionResult _NavigationProductList(int SiteId)
+        {
+            var viewModel = GridViewExtension.GetViewModel("ProductWebNavGridView");
             ViewBag.Controller = "WebsiteNavigations";
-            
+            ViewBag.SiteId = SiteId;
+
             if (viewModel == null)
                 viewModel = ProducctListCustomBinding.CreateProductGridViewModel();
 
 
-            return ProductGridActionCore(viewModel);
+            return ProductGridActionCore(viewModel, SiteId);
         }
 
-        public ActionResult _ProductListPaging(GridViewPagerState pager)
+        public ActionResult _ProductListPaging(GridViewPagerState pager, int SiteId)
         {
-            var viewModel = GridViewExtension.GetViewModel("ProductWebMapsGridView");
+            ViewBag.SiteId = SiteId;
+            var viewModel = GridViewExtension.GetViewModel("ProductWebNavGridView");
             ViewBag.Controller = "WebsiteNavigations";
             viewModel.Pager.Assign(pager);
-            return ProductGridActionCore(viewModel);
+            return ProductGridActionCore(viewModel, SiteId);
         }
 
-        public ActionResult _ProductsFiltering(GridViewFilteringState filteringState)
+        public ActionResult _ProductsFiltering(GridViewFilteringState filteringState, int SiteId)
         {
+            ViewBag.SiteId = SiteId;
             ViewBag.Controller = "WebsiteNavigations";
-            var viewModel = GridViewExtension.GetViewModel("ProductWebMapsGridView");
+            var viewModel = GridViewExtension.GetViewModel("ProductWebNavGridView");
             viewModel.ApplyFilteringState(filteringState);
-            return ProductGridActionCore(viewModel);
+            return ProductGridActionCore(viewModel, SiteId);
         }
 
 
-        public ActionResult _ProductsGetDataSorting(GridViewColumnState column, bool reset)
+        public ActionResult _ProductsGetDataSorting(GridViewColumnState column, int SiteId, bool reset)
         {
+            ViewBag.SiteId = SiteId;
             ViewBag.Controller = "WebsiteNavigations";
-            var viewModel = GridViewExtension.GetViewModel("ProductWebMapsGridView");
+            var viewModel = GridViewExtension.GetViewModel("ProductWebNavGridView");
             viewModel.ApplySortingState(column, reset);
-            return ProductGridActionCore(viewModel);
+            return ProductGridActionCore(viewModel, SiteId);
         }
 
 
-        public ActionResult ProductGridActionCore(GridViewModel gridViewModel)
+        public ActionResult ProductGridActionCore(GridViewModel gridViewModel, int SiteId)
         {
             ViewBag.Controller = "WebsiteNavigations";
             gridViewModel.ProcessCustomBinding(
                 new GridViewCustomBindingGetDataRowCountHandler(args =>
                 {
-                    ProducctListCustomBinding.ProductGetDataRowCount(args, CurrentTenantId, CurrentWarehouseId,true);
+                    ProducctListCustomBinding.ProductGetDataRowCount(args, CurrentTenantId, CurrentWarehouseId, true, SiteId);
                 }),
 
                     new GridViewCustomBindingGetDataHandler(args =>
                     {
-                        ProducctListCustomBinding.ProductGetData(args, CurrentTenantId, CurrentWarehouseId,true);
+                        ProducctListCustomBinding.ProductGetData(args, CurrentTenantId, CurrentWarehouseId, true, SiteId);
                     })
             );
             return PartialView("_NavProductList", gridViewModel);
         }
-
-
-
-
 
         // POST: WebsiteNavigations/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(WebsiteNavigation websiteNavigation, IEnumerable<DevExpress.Web.UploadedFile> ImageDefault, IEnumerable<DevExpress.Web.UploadedFile> HoverImage)
+        public ActionResult Create(WebsiteNavigation websiteNavigation, string ProductsWithIds, IEnumerable<DevExpress.Web.UploadedFile> ImageDefault, IEnumerable<DevExpress.Web.UploadedFile> HoverImage)
         {
-            if (ModelState.IsValid)
+            if (websiteNavigation != null)
             {
-                return RedirectToAction("Index");
+                websiteNavigation.SelectedProductIds = ProductsWithIds;
+                var websiteNav = _tenantWebsiteService.CreateOrUpdateWebsiteNavigation(websiteNavigation, CurrentUserId, CurrentTenantId);
+                var Defaultfiles = ImageDefault;
+                var hoverFile = HoverImage;
+                var filesName = Session["UploadTenantWebsiteNav"] as Dictionary<string, string>;
+                string filePath = "";
+                if (filesName != null)
+                {
+                    foreach (var file in Defaultfiles)
+                    {
+                        var defultFileName = filesName.FirstOrDefault(u => u.Key == "Default").Value;
+                        if (!string.IsNullOrEmpty(defultFileName))
+                        {
+                            filePath = MoveFile(file, defultFileName, websiteNavigation.SiteID);
+                            websiteNav.Image = filePath;
+                        }
+                        break;
+                    }
+                    foreach (var file in hoverFile)
+                    {
+                        var hoverFileName = filesName.FirstOrDefault(u => u.Key == "Hover").Value;
+                        if (!string.IsNullOrEmpty(hoverFileName))
+                        {
+                            filePath = MoveFile(file, hoverFileName, websiteNavigation.SiteID);
+                            websiteNav.Image = filePath;
+                        }
+                        break;
+                    }
+                    if (!string.IsNullOrEmpty(websiteNav.Image) || !string.IsNullOrEmpty(websiteNav.HoverImage))
+                    {
+                         websiteNav.SelectedProductIds = string.Empty;
+                        _tenantWebsiteService.CreateOrUpdateWebsiteNavigation(websiteNav, CurrentUserId, CurrentTenantId);
+                    }
+
+
+                }
+                return RedirectToAction("Index",new { SiteId= websiteNavigation .SiteID});
+
             }
             ViewBag.siteid = websiteNavigation.SiteID;
             ViewBag.ControllerName = "WebsiteNavigations";
             ViewBag.Name = "HoverImage";
-            ViewBag.ParentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId).ToList(), "Id", "Name");
-            ViewBag.contentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId), "Id", "MetaTitle");
+
+            ViewBag.ParentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, websiteNavigation.SiteID).ToList(), "Id", "Name");
+            ViewBag.contentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, websiteNavigation.SiteID), "Id", "MetaTitle");
             return View(websiteNavigation);
         }
 
         //// GET: WebsiteNavigations/Edit/5
-        //public ActionResult Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    WebsiteNavigation websiteNavigation = db.WebsiteNavigations.Find(id);
-        //    if (websiteNavigation == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    ViewBag.ParentId = new SelectList(db.WebsiteNavigations, "Id", "Image", websiteNavigation.ParentId);
-        //    ViewBag.SiteID = new SelectList(db.TenantWebsites, "SiteID", "SiteName", websiteNavigation.SiteID);
-        //    return View(websiteNavigation);
-        //}
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            WebsiteNavigation websiteNavigation = _tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId,null).FirstOrDefault(u=>u.Id==id);
+            if (websiteNavigation == null)
+            {
+                return HttpNotFound();
+            }
+            
+            ViewBag.ControllerName = "WebsiteNavigations";
+            ViewBag.ParentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, websiteNavigation.SiteID).ToList(), "Id", "Name", websiteNavigation.ParentId);
+            ViewBag.contentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, websiteNavigation.SiteID), "Id", "MetaTitle", websiteNavigation.ContentPageId);
+            return View(websiteNavigation);
+        }
 
         //// POST: WebsiteNavigations/Edit/5
         //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -175,50 +227,57 @@ namespace WMS.Controllers
         //}
 
         //// GET: WebsiteNavigations/Delete/5
-        //public ActionResult Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    WebsiteNavigation websiteNavigation = db.WebsiteNavigations.Find(id);
-        //    if (websiteNavigation == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(websiteNavigation);
-        //}
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var navigation = _tenantWebsiteService.RemoveWebsiteNavigation((id??0), CurrentUserId);
+            return RedirectToAction("Index", new { SiteId = navigation.SiteID });
+        }
 
-        //// POST: WebsiteNavigations/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult DeleteConfirmed(int id)
-        //{
-        //    WebsiteNavigation websiteNavigation = db.WebsiteNavigations.Find(id);
-        //    db.WebsiteNavigations.Remove(websiteNavigation);
-        //    db.SaveChanges();
-        //    return RedirectToAction("Index");
-        //}
-        public ActionResult UploadFile(IEnumerable<DevExpress.Web.UploadedFile> ImageDefault)
+        
+        public ActionResult UploadFile(IEnumerable<DevExpress.Web.UploadedFile> ImageDefault, IEnumerable<DevExpress.Web.UploadedFile> HoverImage)
         {
             if (Session["UploadTenantWebsiteNav"] == null)
             {
-                Session["UploadTenantWebsiteNav"] = new List<string>();
+                Session["UploadTenantWebsiteNav"] = new Dictionary<string, string>();
             }
-            var files = Session["UploadTenantWebsiteNav"] as List<string>;
+            var files = Session["UploadTenantWebsiteNav"] as Dictionary<string, string>;
 
             foreach (var file in ImageDefault)
             {
+                if (!string.IsNullOrEmpty(file.FileName))
+                {
 
-                SaveFile(file);
-                files.Add(file.FileName);
+                    SaveFile(file);
+                    if (!files.ContainsKey("Default"))
+                    {
+                        files.Add("Default", file.FileName);
+                    }
+                }
+
+            }
+
+            foreach (var file in HoverImage)
+            {
+                if (!string.IsNullOrEmpty(file.FileName))
+                {
+
+                    SaveFile(file);
+                    if (!files.ContainsKey("Hover"))
+                    { 
+                        files.Add("Hover", file.FileName);
+                    }
+                }
 
             }
             Session["UploadTenantWebsiteNav"] = files;
 
             return Content("true");
         }
-       
+
         private void SaveFile(DevExpress.Web.UploadedFile file)
         {
             if (!Directory.Exists(Server.MapPath(UploadTempDirectory)))
@@ -229,7 +288,7 @@ namespace WMS.Controllers
 
         private string MoveFile(DevExpress.Web.UploadedFile file, string FileName, int ProductmanuId)
         {
-            Session["UploadTenantWebsiteLogo"] = null;
+            Session["UploadTenantWebsiteNav"] = null;
             if (!Directory.Exists(Server.MapPath(UploadDirectory + ProductmanuId.ToString())))
                 Directory.CreateDirectory(Server.MapPath(UploadDirectory + ProductmanuId.ToString()));
 

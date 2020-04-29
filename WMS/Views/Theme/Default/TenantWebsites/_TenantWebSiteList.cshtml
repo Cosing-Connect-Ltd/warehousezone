@@ -46,7 +46,12 @@
         Column.SetDataItemTemplateContent(m =>
         {
             var id = DataBinder.Eval(m.DataItem, "SiteID").ToString();
-            ViewContext.Writer.Write("<div class='text-center'><a href='" + Url.Action("Details", "TenantWebsites", new { id = id }) + "' data-id='" + id + "'><i class='bt-gvactions fa fa-list'></i></a>");
+            ViewContext.Writer.Write
+            ("<a href='" + Url.Action("Index", "ProductsWebsitesMaps", new { SiteId = id }) + "' data-id='" + id + "'><i class='btn fa fa-list' title='Product Website Map'></i></a>  " +
+             "<a href='" + Url.Action("Index", "WebsiteSliders", new { SiteId = id }) + "' data-id='" + id + "'><i class='btn fa fa-sliders' title='Website Slider List'></i></a>  " +
+             "<a href='" + Url.Action("Index", "WebsiteNavigations", new { SiteId = id }) + "' data-id='" + id + "'><i class='btn fa fa-link' title='Website Navigation List'></i></a>  " +
+             "<a href='" + Url.Action("Index", "WebsiteContentPages", new { SiteId = id }) + "' data-id='" + id + "'><i class='btn fa fa-file' title='Website Content Pages List'></i></a>"
+            );
 
         });
         settings.Columns.Add(Column);
