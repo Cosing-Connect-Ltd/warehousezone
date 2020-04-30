@@ -51,29 +51,28 @@ namespace Ganedata.Core.Services
         public static caTenantWebsites CurrentTenantWebSite()
         {
             var context = DependencyResolver.Current.GetService<IApplicationContext>();
-
-            int currentSiteId = int.Parse(string.IsNullOrEmpty(ConfigurationManager.AppSettings["SiteId"].ToString()) ? "0" : ConfigurationManager.AppSettings["SiteId"]);
-            caTenantWebsites tenantWebsites = new caTenantWebsites();
+            caTenantWebsites tenantWebsite = new caTenantWebsites();
+            string hostName = HttpContext.Current.Request.UserHostName;
 
             if (HttpContext.Current.Session["CurrentTenantWebsites"] == null)
             {
-                var tenantWeb = context.TenantWebsites.FirstOrDefault(e => e.SiteID == currentSiteId && e.IsDeleted != true);
+                var tenantWeb = context.TenantWebsites.FirstOrDefault(e => e.HostName == hostName && e.IsActive == true && e.IsDeleted != true);
                 if (tenantWeb != null)
                 {
-                    tenantWebsites.ApiToken = tenantWeb.ApiToken;
-                    tenantWebsites.SiteApiUrl = tenantWeb.SiteApiUrl;
-                    tenantWebsites.TenantId = tenantWeb.TenantId;
-                    tenantWebsites.WarehouseId = tenantWeb.DefaultWarehouseId;
-                    tenantWebsites.SiteName = tenantWeb.SiteName;
-                    tenantWebsites.SiteDescription = tenantWeb.SiteDescription;
-                    HttpContext.Current.Session["CurrentTenantWebsites"] = tenantWebsites;
+                    tenantWebsite.ApiToken = tenantWeb.ApiToken;
+                    tenantWebsite.SiteApiUrl = tenantWeb.SiteApiUrl;
+                    tenantWebsite.TenantId = tenantWeb.TenantId;
+                    tenantWebsite.WarehouseId = tenantWeb.DefaultWarehouseId;
+                    tenantWebsite.SiteName = tenantWeb.SiteName;
+                    tenantWebsite.SiteDescription = tenantWeb.SiteDescription;
+                    HttpContext.Current.Session["CurrentTenantWebsites"] = tenantWebsite;
                 }
             }
             else
             {
-                tenantWebsites = (caTenantWebsites)HttpContext.Current.Session["CurrentTenantWebsites"];
+                tenantWebsite = (caTenantWebsites)HttpContext.Current.Session["CurrentTenantWebsites"];
             }
-            return tenantWebsites;
+            return tenantWebsite;
         }
         public static caUser CurrentWebsiteUser()
         {
