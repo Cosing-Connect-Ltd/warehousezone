@@ -1,169 +1,299 @@
 ﻿@model Ganedata.Core.Entities.Domain.WebsiteNavigation
+@using Ganedata.Core.Entities.Helpers
+@{
+    ViewBag.Title = "Create Navigation";
+
+}
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+         new StyleSheet { ExtensionType = ExtensionType.UploadControl, Theme = GaneStaticAppExtensions.DevexTheme },
+         new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DataView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit },
+          new Script { ExtensionType = ExtensionType.UploadControl },
+           new Script { ExtensionType = ExtensionType.GridView },
+        new Script { ExtensionType = ExtensionType.DataView }
+
+        )
+}
+
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit Navigation Website";
+    var dictonary = (Dictionary<string, string>)ViewBag.Files;
+
 }
+<script type="text/javascript">
+    function submitformNav() {
+        debugger;
 
-<h2>Edit</h2>
+        if ($("#Type").val() == "3") {
+            var productids = $("#SelectedProductIds").val();
+            if (productids == null || productids == "" || productids == undefined) {
+                alert("Select product first");
+                return false;
+            }
+            $("#ProductsWithIds").val(productids);
 
-@using (Html.BeginForm())
+        }
+    }
+    function onFileUploadComplete(s, e) {
+        if (e.callbackData) {
+            $("#dvfiles").show();
+            var fileData = e.callbackData.split('|');
+            var Fileobj = { FileName: fileData };
+            var result = $("#uploaderdefaultImage").tmpl(Fileobj);
+            $("#dvfiles").append(result);
+            $('.se-pre-con').hide();
+            $("#FileLength").val('True');
+
+        }
+
+
+    }
+    function onFileUploadHoverComplete(s, e) {
+        if (e.callbackData) {
+            $("#dvfilesHover").show();
+            var fileData = e.callbackData.split('|');
+            var Fileobj = { FileName: fileData };
+            var result = $("#uploaderHoverImage").tmpl(Fileobj);
+            $("#dvfilesHover").append(result);
+            $('.se-pre-con').hide();
+            $("#FileLengthHover").val('True');
+
+        }
+
+
+    }
+    function onFileUploadStart(s, e) {
+        if ($("#FileLength").val() == 'True') {
+            e.cancel = true;
+            alert("Only one file allow to be select");
+            return;
+        }
+    }
+    function onFileUploadHoverStart(s, e) {
+        if ($("#FileLengthHover").val() == 'True') {
+            e.cancel = true;
+            alert("Only one file allow to be select");
+            return;
+        }
+
+
+    }
+
+</script>
+<script>
+    $(document).ready(function () {
+
+        $("#Type").on("change", function () {
+            var typeId = $("#Type :selected").val();
+            if (typeId == "1") {
+                $(".showcontentpage").hide();
+                $(".ProductsShow").hide();
+            }
+            else if (typeId == "2") {
+                $(".showcontentpage").show();
+                $(".ProductsShow").hide();
+            }
+            else if (typeId == "3") {
+
+                $(".showcontentpage").hide();
+                $(".ProductsShow").show();
+
+            }
+
+
+        });
+    });
+    function SelectionChangeds(s, e) {
+        debugger;
+        s.GetSelectedFieldValues("ProductId", GetSelectedFieldValuesCallback);
+    }
+    function GetSelectedFieldValuesCallback(values) {
+        $("#SelectedProductIds").val(values.join());
+    }
+    var command;
+    function OnStartCallback(s, e) {
+        command = e.command;
+
+    }
+    function OnGridEndCallBack(s, e) {
+        if (command == "REFRESH") {
+            s.UnselectRows();
+        }
+    }
+
+</script>
+<h2><span>Add Website Navigation</span></h2>
+@Html.Hidden("hdPFiles", (Dictionary<string, string>)ViewBag.Files)
+@using (Html.BeginForm("Edit", "WebsiteNavigations", FormMethod.Post, new { @class = "form-navigation", onsubmit = "return submitformNav()" }))
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>WebsiteNavigation</h4>
-        <hr />
+    @Html.HiddenFor(model => model.SelectedProductIds)
+    @Html.Hidden("ProductsWithIds")
+    @Html.HiddenFor(model => model.SiteID)
+    <div class="col-md-12">
+
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.SiteID, "SiteID", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("SiteID", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.SiteID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Image, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IamgeAltTag, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.IamgeAltTag, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.IamgeAltTag, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.HoverImage, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.HoverImage, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.HoverImage, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.HoverIamgeAltTag, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.HoverIamgeAltTag, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.HoverIamgeAltTag, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.SortOrder, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SortOrder, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SortOrder, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.IsActive)
-                    @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+        <div class="col-md-5 p-0 pull-left mb-2">
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                 </div>
             </div>
-        </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.ParentId, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.ParentId, ViewBag.ParentId as SelectList, "Select Parent", htmlAttributes: new { @class = "form-control" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ParentId, "ParentId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("ParentId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ParentId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.Type, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ContentPageId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ContentPageId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ContentPageId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.TenantId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TenantId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TenantId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.DateCreated, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DateCreated, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DateCreated, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.DateUpdated, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DateUpdated, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DateUpdated, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreatedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreatedBy, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CreatedBy, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UpdatedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UpdatedBy, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.UpdatedBy, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsDeleted, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.IsDeleted)
-                    @Html.ValidationMessageFor(model => model.IsDeleted, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(model => model.ParentId, "", new { @class = "text-danger" })
                 </div>
             </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EnumDropDownListFor(model => model.Type, "Select Type", htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center showcontentpage" style="@(Model.Type==Ganedata.Core.Entities.Enums.WebsiteNavigationType.Content?"":"display:none;")">
+                @Html.LabelFor(model => model.ContentPageId, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.ContentPageId, ViewBag.contentId as SelectList, "Select Content Page", htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ContentPageId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.SortOrder, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.SortOrder, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.SortOrder, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.IsActive)
+                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("Default Image", new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.Action("_Uploader", new { Name = "ImageDefault" })
+                    @Html.Hidden("FileLength", (bool?)ViewBag.FileLength)
+                    <br />
+                    <div id="dvfiles">
+
+                        <strong>Uploaded Files</strong>
+                        @if (dictonary != null && !string.IsNullOrEmpty(Model.Image))
+                        {
+                            var value = dictonary.FirstOrDefault(u => u.Key == "Default").Value;
+
+                            <table>
+                                <tr>
+                                    <td id="tdProductfileName">@value</td>
+                                    <td>
+                                        <p>&nbsp;</p>
+                                    </td>
+                                    <td><a class="LRemove" onclick="_RemoveDefaultFile('@value')">Remove</a></td>
+                                    <td>
+                                        <p>&nbsp;</p>
+                                    </td>
+
+                                </tr>
+                            </table>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.ImageAltTag, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.ImageAltTag, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ImageAltTag, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("Hover Image", new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.Action("_HoverUploader", new { Name = "HoverImage" })
+                    @Html.Hidden("FileLengthHover", (bool?)ViewBag.FileLengthHover)
+                    <br />
+                    <div id="dvfilesHover">
+
+                        <strong>Uploaded Files</strong>
+                        @if (dictonary != null && !string.IsNullOrEmpty(Model.HoverImage))
+                        {
+                            var value = dictonary.FirstOrDefault(u => u.Key == "Hover").Value;
+
+                            <table>
+                                <tr>
+                                    <td id="tdProductfileName">@value</td>
+                                    <td>
+                                        <p>&nbsp;</p>
+                                    </td>
+                                    <td><a class="LRemove" onclick="_RemoveHoverFile('@value')">Remove</a></td>
+                                    <td>
+                                        <p>&nbsp;</p>
+                                    </td>
+
+                                </tr>
+                            </table>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.HoverImageAltTag, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.HoverImageAltTag, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.HoverImageAltTag, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-7 p-0 pull-left mb-2">
+            <div class="ProductsShow" style=@(Model.Type==Ganedata.Core.Entities.Enums.WebsiteNavigationType.Category?"":"display:none;")>
+                @Html.Action("_NavigationProductList", new { SiteId = Model.SiteID, NavigationId = Model.Id })
+            </div>
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
+
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            <input type="submit" class="btn btn-primary" value="Save" />
+            <div class="back-list">@Html.ActionLink("Back to List", "Index", new { SiteId = Model.SiteID}, new { @class = "btn btn-default" })</div>
         </div>
     </div>
-}
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+}
+<script id="uploaderdefaultImage" type="text/x-jquery-tmpl">
+    <tr>
+        <td id="tdfileName">${FileName}</td>
+        <td><p>&nbsp;</p></td>
+        <td><a class="LRemove" onclick="_RemoveDefaultFile('${FileName}')">Remove</a></td>
+
+    </tr>
+</script>
+<script id="uploaderHoverImage" type="text/x-jquery-tmpl">
+    <tr>
+        <td id="tdfileName">${FileName}</td>
+        <td><p>&nbsp;</p></td>
+        <td><a class="LRemove" onclick="_RemoveHoverFile('${FileName}')">Remove</a></td>
+
+    </tr>
+</script>

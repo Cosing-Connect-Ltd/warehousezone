@@ -91,7 +91,19 @@
         });
 
 
+        if (ViewData["NaviagtionProduct"] != null)
+        {
+            var data= (List<int>)ViewData["NaviagtionProduct"];
+            settings.PreRender = (s, e) =>
+            {
+                var grids = (MVCxGridView)s;
+                foreach (int item in data)
+                {
+                    grids.Selection.SelectRowByKey(item);
+                }
 
+            };
+        }
 
         settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
         settings.ClientSideEvents.BeginCallback = "OnStartCallback";

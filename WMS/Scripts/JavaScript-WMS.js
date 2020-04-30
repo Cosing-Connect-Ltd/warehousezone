@@ -751,10 +751,14 @@ $(function () {
 
     // code for file uplaoding 
     var vhdFiles = $('#hdPFiles').val();
-    if (vhdFiles == null || vhdFiles == '')
+    if (vhdFiles == null || vhdFiles == '') {
         $("#dvfiles").hide();
-    else
+        $("#dvfilesHover").hide();
+    }
+    else {
         $("#dvfiles").show();
+        $("#dvfilesHover").show();
+    }
     if ($("#chkdis").is(":checked")) {
         $("#dvdisc").show();
     }

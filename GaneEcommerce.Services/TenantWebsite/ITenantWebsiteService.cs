@@ -37,6 +37,7 @@ namespace Ganedata.Core.Services
         IQueryable<object> GetAllValidWebsiteNavigations(int TenantId, int? SiteId);
         WebsiteNavigation CreateOrUpdateWebsiteNavigation(WebsiteNavigation websiteNavigation, int UserId, int TenantId);
         WebsiteNavigation RemoveWebsiteNavigation(int Id, int UserId);
+        WebsiteNavigation GetWebsiteNavigationId(int NavigationId);
 
     }
 }

@@ -20,8 +20,8 @@
         settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
         settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
         settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
-        settings.Columns.Add("TenantWebsites.SiteName");
-        settings.Columns.Add("WebsiteNavigation.Name");
+        settings.Columns.Add("TenantWebsites.SiteName").Caption="Site Name";
+        settings.Columns.Add("WebsiteNavigation.Name").Caption="Parent Name";
         settings.Columns.Add("Name");
         settings.Columns.Add("Type");
         settings.Columns.Add(c =>
@@ -53,7 +53,7 @@
                 }
             });
         });
-        settings.Columns.Add("HoverImage");
+        settings.Columns.Add("HoverImageAltTag");
 
         settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
         settings.SettingsPager.PageSizeItemSettings.Visible = true;

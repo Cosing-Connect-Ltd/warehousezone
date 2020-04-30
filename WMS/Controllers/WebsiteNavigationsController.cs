@@ -73,12 +73,16 @@ namespace WMS.Controllers
 
             return PartialView("_HoverUploader");
         }
-        public ActionResult _NavigationProductList(int SiteId)
+        public ActionResult _NavigationProductList(int SiteId, int? NavigationId)
         {
             var viewModel = GridViewExtension.GetViewModel("ProductWebNavGridView");
             ViewBag.Controller = "WebsiteNavigations";
             ViewBag.SiteId = SiteId;
-
+            if (NavigationId.HasValue)
+            {
+                var data = _tenantWebsiteService.GetWebsiteNavigationId(NavigationId ?? 0).ProductsNavigationMap.Select(u => u.ProductWebsiteMapId).ToList();
+                ViewData["NaviagtionProduct"] = data;
+            }
             if (viewModel == null)
                 viewModel = ProducctListCustomBinding.CreateProductGridViewModel();
 
@@ -171,13 +175,13 @@ namespace WMS.Controllers
                     }
                     if (!string.IsNullOrEmpty(websiteNav.Image) || !string.IsNullOrEmpty(websiteNav.HoverImage))
                     {
-                         websiteNav.SelectedProductIds = string.Empty;
+                        websiteNav.SelectedProductIds = string.Empty;
                         _tenantWebsiteService.CreateOrUpdateWebsiteNavigation(websiteNav, CurrentUserId, CurrentTenantId);
                     }
 
 
                 }
-                return RedirectToAction("Index",new { SiteId= websiteNavigation .SiteID});
+                return RedirectToAction("Index", new { SiteId = websiteNavigation.SiteID });
 
             }
             ViewBag.siteid = websiteNavigation.SiteID;
@@ -196,12 +200,37 @@ namespace WMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            WebsiteNavigation websiteNavigation = _tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId,null).FirstOrDefault(u=>u.Id==id);
+            WebsiteNavigation websiteNavigation = _tenantWebsiteService.GetWebsiteNavigationId(id ?? 0);
             if (websiteNavigation == null)
             {
                 return HttpNotFound();
             }
-            
+            ViewBag.Files = new Dictionary<string, string>();
+            Dictionary<string, string> files = new Dictionary<string, string>();
+            if (!string.IsNullOrEmpty(websiteNavigation.Image) || !string.IsNullOrEmpty(websiteNavigation.HoverImage))
+            {
+                if (!string.IsNullOrEmpty(websiteNavigation.Image))
+                {
+
+                    ViewBag.FileLength = true;
+                    DirectoryInfo dInfo = new DirectoryInfo(websiteNavigation.Image);
+                    files.Add("Default", dInfo.Name);
+
+                }
+                if (!string.IsNullOrEmpty(websiteNavigation.HoverImage))
+                {
+
+                    ViewBag.FileLengthHover = true;
+                    DirectoryInfo dInfo = new DirectoryInfo(websiteNavigation.HoverImage);
+                    files.Add("Hover", dInfo.Name);
+
+                }
+
+                Session["UploadTenantWebsiteNav"] = files;
+                ViewBag.Files = files;
+            }
+
+
             ViewBag.ControllerName = "WebsiteNavigations";
             ViewBag.ParentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, websiteNavigation.SiteID).ToList(), "Id", "Name", websiteNavigation.ParentId);
             ViewBag.contentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, websiteNavigation.SiteID), "Id", "MetaTitle", websiteNavigation.ContentPageId);
@@ -211,20 +240,48 @@ namespace WMS.Controllers
         //// POST: WebsiteNavigations/Edit/5
         //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         //// more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit([Bind(Include = "Id,SiteID,Image,IamgeAltTag,HoverImage,HoverIamgeAltTag,Name,SortOrder,IsActive,ParentId,Type,ContentPageId,TenantId,DateCreated,DateUpdated,CreatedBy,UpdatedBy,IsDeleted")] WebsiteNavigation websiteNavigation)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //       //db.Entry(websiteNavigation).State = EntityState.Modified;
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-        //    ViewBag.ParentId = new SelectList(db.WebsiteNavigations, "Id", "Image", websiteNavigation.ParentId);
-        //    ViewBag.SiteID = new SelectList(db.TenantWebsites, "SiteID", "SiteName", websiteNavigation.SiteID);
-        //    return View(websiteNavigation);
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(WebsiteNavigation websiteNavigation, string ProductsWithIds, IEnumerable<DevExpress.Web.UploadedFile> ImageDefault, IEnumerable<DevExpress.Web.UploadedFile> HoverImage)
+        {
+            if (websiteNavigation != null)
+            {
+                websiteNavigation.SelectedProductIds = ProductsWithIds;
+                string filePath = "";
+
+                var filesName = Session["UploadTenantWebsiteNav"] as Dictionary<string, string>;
+
+                if (filesName == null)
+                {
+                    websiteNavigation.Image = string.Empty;
+                    websiteNavigation.HoverImage = string.Empty;
+
+                }
+
+                else
+                {
+                    if (ImageDefault != null)
+                    {
+                        var defaultImage = filesName?.FirstOrDefault(u => u.Key == "Default").Value;
+                        filePath = MoveFile(ImageDefault.FirstOrDefault(), defaultImage, websiteNavigation.Id);
+                        websiteNavigation.Image = filePath;
+                    }
+                    if (HoverImage != null)
+                    {
+                        var hoverImage = filesName?.FirstOrDefault(u => u.Key == "Hover").Value;
+                        filePath = MoveFile(HoverImage.FirstOrDefault(), hoverImage, websiteNavigation.Id);
+                        websiteNavigation.HoverImage = filePath;
+                    }
+
+                }
+                _tenantWebsiteService.CreateOrUpdateWebsiteNavigation(websiteNavigation, CurrentUserId, CurrentTenantId);
+                return RedirectToAction("Index");
+            }
+            ViewBag.ControllerName = "WebsiteNavigations";
+            ViewBag.ParentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, websiteNavigation.SiteID).ToList(), "Id", "Name", websiteNavigation.ParentId);
+            ViewBag.contentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, websiteNavigation.SiteID), "Id", "MetaTitle", websiteNavigation.ContentPageId);
+            return View(websiteNavigation);
+        }
 
         //// GET: WebsiteNavigations/Delete/5
         public ActionResult Delete(int? id)
@@ -233,11 +290,11 @@ namespace WMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var navigation = _tenantWebsiteService.RemoveWebsiteNavigation((id??0), CurrentUserId);
+            var navigation = _tenantWebsiteService.RemoveWebsiteNavigation((id ?? 0), CurrentUserId);
             return RedirectToAction("Index", new { SiteId = navigation.SiteID });
         }
 
-        
+
         public ActionResult UploadFile(IEnumerable<DevExpress.Web.UploadedFile> ImageDefault, IEnumerable<DevExpress.Web.UploadedFile> HoverImage)
         {
             if (Session["UploadTenantWebsiteNav"] == null)
@@ -267,7 +324,7 @@ namespace WMS.Controllers
 
                     SaveFile(file);
                     if (!files.ContainsKey("Hover"))
-                    { 
+                    {
                         files.Add("Hover", file.FileName);
                     }
                 }
