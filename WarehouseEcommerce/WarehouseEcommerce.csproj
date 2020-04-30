@@ -233,7 +233,6 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Controllers\DefaultController.cs" />
-    <Compile Include="Areas\Shop\ShopAreaRegistration.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
@@ -544,7 +543,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Areas\Shop\Views\web.config" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.woff" />
@@ -1080,11 +1078,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Shop\Content\Theme\" />
-    <Folder Include="Areas\Shop\Controllers\" />
-    <Folder Include="Areas\Shop\fonts\" />
-    <Folder Include="Areas\Shop\Views\Shared\" />
-    <Folder Include="Areas\Shop\Views\Theme\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GaneEcommerce.Data\Ganedata.Core.Data.csproj">
