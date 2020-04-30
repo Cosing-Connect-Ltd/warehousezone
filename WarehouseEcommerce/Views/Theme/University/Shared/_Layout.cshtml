@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewBag.Title</title>
+    <meta name="description" content="SmartShop" />
+    @Styles.Render("~/Content/app/css/styles/university")
+    <link rel="icon" href="~/Content/Theme/University/app/images/favico.ico" />
+    <link href="~/Content/Theme/University/app/css/owl.carousel.min.css" rel="stylesheet" />
+
+
+    <script type="text/javascript">
+        var basePath = '@ViewBag.BasePath';
+        var baseFilePath = '@ViewBag.BaseFilePath';
+    </script>
+
+
+</head>
+
+<body>
+    @Html.Partial("_LoginRegisterPartial")
+    @Html.Action("_TopHeaderPartial", "Home")
+    @*@if (ViewBag.cart == null)
+        {
+            <div id="common-home" class="container">
+
+                <div class="row">
+                    @if (ViewBag.cart == null)
+                    {
+                        @Html.Action("_VerticalNavBarPartial", "Home")
+                    }
+                    @RenderBody()
+                </div>
+
+            </div>
+        }*@
+    <div class="container-fluid pl-0 pr-0">
+        @Scripts.Render("~/bundles/jquery")
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+                integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+                crossorigin="anonymous"></script>
+
+
+
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderBody()
+
+    </div>
+
+    @Html.Action("_FooterPartialArea", "Home")
+    @*@Scripts.Render("~/bundles/modernizr")*@
+
+    @RenderSection("scripts", required: false)
+    <script src="~/Content/Theme/University/app/js/owl.carousel.min.js"></script>
+    <script src="~/Content/Theme/University/app/js/nb_skew_carousle.js"></script>
+    <script src="~/Content/Theme/University/app/js/nb_custom_script.js"></script>
+    <script src="~/Content/Theme/University/app/js/jquery.elevatezoom.js"></script>
+
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+
+        $("#cart").hover(function () {
+            $('#cart').addClass('open');
+        });
+        $("#cart").mouseleave(function () {
+            $('#cart').removeClass('open');
+        });
+        $("#cart").click(function () {
+            location.href = basePath + '/Shop/Products/AddToCart';
+        });
+        $("#user_menue").hover(function () {
+            $('#user_menue').addClass('open');
+        });
+        $("#user_menue").mouseleave(function () {
+            $('#user_menue').removeClass('open');
+        });
+
+    });
+
+//Chat Script
+    @*var $zoho = $zoho || {}; $zoho.salesiq = $zoho.salesiq ||
+        { widgetcode: "082929f0048de095abde931cb153e076df2700d430dbecb2d6ce1ea29d3bd2f88cb9ddbeff8957905285212e1a49dd9e", values: {}, ready: function () { } };
+    var d = document; s = d.createElement("script"); s.type = "text/javascript"; s.id = "zsiqscript"; s.defer = true;
+    s.src = "https://salesiq.zoho.eu/widget"; t = d.getElementsByTagName("script")[0]; t.parentNode.insertBefore(s, t); d.write("<div id='zsiqwidget'></div>");
+</script>*@
+
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+
+      if ($(window).width() < 768) {
+        $("#zoom_01").elevateZoom({
+          gallery: "gal01",
+          cursor: "pointer",
+          galleryActiveClass: "active",
+          imageCrossfade: true,
+          loadingIcon: "",
+          cursor: "crosshair",
+          zoomWindowFadeIn: 500,
+          zoomWindowFadeOut: 500,
+          easing: true,
+          zoomWindowWidth: 500,
+          zoomWindowHeight: 500,
+          responsive: true,
+          borderSize: 1,
+          destroyContainerOnResize: true,
+          zoomWindowOffetx: 50,
+          zoomWindowOffety: -25,
+          zoomType: "inner",
+        });
+      } else {
+        $("#zoom_01").elevateZoom({
+          gallery: "gal01",
+          cursor: "pointer",
+          galleryActiveClass: "active",
+          imageCrossfade: true,
+          loadingIcon: "",
+          cursor: "crosshair",
+          zoomWindowFadeIn: 500,
+          zoomWindowFadeOut: 500,
+          easing: true,
+          zoomWindowWidth: 500,
+          zoomWindowHeight: 500,
+          responsive: true,
+          borderSize: 1,
+          destroyContainerOnResize: true,
+          zoomWindowOffetx: 50,
+          zoomWindowOffety: -25,
+          zoomType: "window",
+        });
+      }
+      //pass the images to Fancybox
+      $("#zoom_01").bind("click", function (e) {
+        var ez = $("#zoom_01").data("elevateZoom");
+        $.fancybox(ez.getGalleryList());
+        return false;
+      });
+
+    });
+    $(document).ready(function() {
+  $('#show-hidden-menu').click(function() {
+    $('.hidden-menu').slideToggle("slow");
+    // Alternative animation for example
+    // slideToggle("fast");
+  });
+});
+</script>

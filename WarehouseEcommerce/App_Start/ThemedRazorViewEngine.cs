@@ -11,7 +11,7 @@ namespace WMS.App_Start
 
     public class ThemedRazorViewEngine : RazorViewEngine
     {
-        private string[] _newAreaViewLocations = new string[] 
+        private string[] _newAreaViewLocations = new string[]
         {
         "~/Areas/{2}/Views/Theme/%1/{1}/{0}.cshtml",
         "~/Areas/{2}/Views/Theme/%1/{1}/{0}.vbhtml",
@@ -96,45 +96,18 @@ namespace WMS.App_Start
 
         public string GetThemeName()
         {
-            HttpRequest request = HttpContext.Current.Request;
-            if (request != null && request.CurrentExecutionFilePath.Contains("shop"))
+            WebsiteThemeEnum ThemeName = WebsiteThemeEnum.Smart;
+
+            if (HttpContext.Current.Session["CurrentTenantWebsites"] != null)
             {
-                EcommerceThemeEnum ThemeName = EcommerceThemeEnum.University;
-
-                if (HttpContext.Current.Session["caTenant"] != null)
+                caTenantWebsites website = (caTenantWebsites)HttpContext.Current.Session["CurrentTenantWebsites"];
+                if (website.Theme > 0)
                 {
-                    caTenant tenant = (caTenant)HttpContext.Current.Session["caTenant"];
-                    if (tenant.Theme > 0)
-                    {
-                        Enum.TryParse<EcommerceThemeEnum>(Enum.GetName(typeof(EcommerceThemeEnum), tenant.Theme), out ThemeName);
-                    }
+                    Enum.TryParse<WebsiteThemeEnum>(Enum.GetName(typeof(WebsiteThemeEnum), website.Theme), out ThemeName);
                 }
-
-                return ThemeName.ToString();
-
-            }
-            else
-            {
-                WebsiteThemeEnum ThemeName = WebsiteThemeEnum.ElecTech;
-
-                if (HttpContext.Current.Session["caTenant"] != null)
-                {
-                    caTenant tenant = (caTenant)HttpContext.Current.Session["caTenant"];
-                    if (tenant.Theme > 0)
-                    {
-                        Enum.TryParse<WebsiteThemeEnum>(Enum.GetName(typeof(WebsiteThemeEnum), tenant.Theme), out ThemeName);
-                    }
-                }
-
-                return ThemeName.ToString();
             }
 
-
-
-
-
-
+            return ThemeName.ToString();
         }
-
     }
 }

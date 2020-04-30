@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewBag.Title</title>
+    <meta name="description" content="SmartShop" />
+    <link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css">
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/swiper/css/swiper.min.css" type="text/css" rel="stylesheet" media="screen" />
+    <link href="~/Content/owl.carousel/owl.carousel.css" type="text/css" rel="stylesheet" media="screen" />
+    <link href="~/Content/owl.carousel/owl.theme.css" type="text/css" rel="stylesheet" media="screen" />
+    <link href="~/Content/magnific-popup/dist/magnific-popup.css" type="text/css" rel="stylesheet" media="screen" />
+    @Styles.Render("~/Content/app/css/styles/smart")
+
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script type="text/javascript">
+        var basePath = '@ViewBag.BasePath';
+        var baseFilePath = '@ViewBag.BaseFilePath';
+    </script>
+    <style>
+        .see-all {
+            line-height: 38px;
+            width: 100%;
+            text-decoration: none;
+            padding-left: 15px;
+            cursor: pointer;
+        }
+
+        .field-validation-error {
+            color: red !important;
+        }
+
+        .input-validation-error {
+            color: red !important;
+        }
+
+        .a.disabled {
+            pointer-events: none !important;
+            cursor: default !important;
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Added to Basket</h4>
+                </div>
+                <div class="modal-body" style="overflow:auto;max-height:430px;">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="CartItemCount();">Continue Shoping</button>
+                    <a href="@Url.Action("AddToCart","Products")" type="button" class="btn btn-default">Go to Basket</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="page-preloader" class="visible">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+    @Html.Action("_TopHeaderPartial", "Home")
+
+    @*@if (ViewBag.cart == null)
+        {
+            <div id="common-home" class="container">
+
+                <div class="row">
+                    @if (ViewBag.cart == null)
+                    {
+                        @Html.Action("_VerticalNavBarPartial", "Home")
+                    }
+                    @RenderBody()
+                </div>
+
+            </div>
+        }*@
+    <div class="container-fluid pl-0 pr-0">
+
+        @RenderBody()
+
+    </div>
+
+    @Html.Action("_FooterPartialArea", "Home")
+
+
+
+
+
+
+    <script src="~/Content/elevatezoom/jquery.elevateZoom-3.0.8.min.js"></script>
+    <!-- blog image zoom -->
+    <script src="~/Content/lightbox2/js/lightbox.min.js"></script>
+    <link href="~/Content/lightbox2/css/lightbox.min.css" rel="stylesheet" type="text/css" />
+    <!-- blog image zoom -->
+    <script src="~/Content/Theme/Smart/app/js/app.js"></script>
+    <script src="~/Content/swiper/js/swiper.min.js"></script>
+    <script src="~/Content/owl.carousel/owl.carousel.min.js"></script>
+    <script src="~/Content/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
+    <script src="~/Scripts/javascript-searchproduct.js"></script>
+    <script src="~/Content/Theme/Smart/app/js/custom.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+
+        $("#cart").hover(function () {
+            $('#cart').addClass('open');
+        });
+        $("#cart").mouseleave(function () {
+            $('#cart').removeClass('open');
+        });
+        $("#cart").click(function () {
+            location.href = basePath + '/Shop/Products/AddToCart';
+        });
+        $("#user_menue").hover(function () {
+            $('#user_menue').addClass('open');
+        });
+        $("#user_menue").mouseleave(function () {
+            $('#user_menue').removeClass('open');
+        });
+
+    });
+
+//Chat Script
+    @*var $zoho = $zoho || {}; $zoho.salesiq = $zoho.salesiq ||
+        { widgetcode: "082929f0048de095abde931cb153e076df2700d430dbecb2d6ce1ea29d3bd2f88cb9ddbeff8957905285212e1a49dd9e", values: {}, ready: function () { } };
+    var d = document; s = d.createElement("script"); s.type = "text/javascript"; s.id = "zsiqscript"; s.defer = true;
+    s.src = "https://salesiq.zoho.eu/widget"; t = d.getElementsByTagName("script")[0]; t.parentNode.insertBefore(s, t); d.write("<div id='zsiqwidget'></div>");
+</script>*@
+
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+    $(document).ready(function() {
+  $('#show-hidden-menu').click(function() {
+    $('.hidden-menu').slideToggle("slow");
+    // Alternative animation for example
+    // slideToggle("fast");
+  });
+});
+</script>

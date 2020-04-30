@@ -52,7 +52,7 @@ namespace Ganedata.Core.Services
         {
             var context = DependencyResolver.Current.GetService<IApplicationContext>();
             caTenantWebsites tenantWebsite = new caTenantWebsites();
-            string hostName = HttpContext.Current.Request.UserHostName;
+            string hostName = HttpContext.Current.Request.Url.Authority;
 
             if (HttpContext.Current.Session["CurrentTenantWebsites"] == null)
             {
@@ -65,6 +65,7 @@ namespace Ganedata.Core.Services
                     tenantWebsite.WarehouseId = tenantWeb.DefaultWarehouseId;
                     tenantWebsite.SiteName = tenantWeb.SiteName;
                     tenantWebsite.SiteDescription = tenantWeb.SiteDescription;
+                    tenantWebsite.Theme = tenantWeb.Theme;
                     HttpContext.Current.Session["CurrentTenantWebsites"] = tenantWebsite;
                 }
             }

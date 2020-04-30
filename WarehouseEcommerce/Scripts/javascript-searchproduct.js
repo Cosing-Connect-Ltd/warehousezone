@@ -14,7 +14,7 @@ function searchPoducts() {
     var pageSize = $("#input-limit :selected").val();
     var valuesparam = $("#valuesParameter").val() == undefined ? "" : $("#valuesParameter").val();
     var SubCategory = $("#SubCategoryId").val() == undefined ? "" : $("#SubCategoryId").val();
-    window.location.href = basePath + "/shop/Products/list?group=" + groupId + "&sort=" + sortvalue + "&filter=" + currentFilter + "&search=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&department=" + departmentId + "&category=" + SubCategory + "&values=" + valuesparam;
+    window.location.href = basePath + "/Products/list?group=" + groupId + "&sort=" + sortvalue + "&filter=" + currentFilter + "&search=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&department=" + departmentId + "&category=" + SubCategory + "&values=" + valuesparam;
 }
 
 function SearchPostCode() {
@@ -62,7 +62,7 @@ function SearchProductCategory() {
     var valuesparam = $("#valuesParameter").val();
     var SubCategory = $("#SubCategoryId").val() == undefined ? "" : $("#SubCategoryId").val();
     var departmentId = $("#departmentId").val() == undefined ? "" : $("#departmentId").val();
-    window.location.href = basePath + "/shop/Products/list?group=" + productgroupId + "&department=" + departmentId + "&search=" + searchstring + "&category=" + SubCategory + "&values=" + valuesparam;
+    window.location.href = basePath + "/Products/list?group=" + productgroupId + "&department=" + departmentId + "&search=" + searchstring + "&category=" + SubCategory + "&values=" + valuesparam;
 }
 
 var searchvalues;
@@ -101,7 +101,7 @@ $('.text-search').on('input', function () {
                 debugger;
                 var $li = $("<li>");
                 var $link = $("<a>", {
-                    href: basePath + "/Shop/Products/list?group=" + data.Group + "&search=" + data.SKUCode + "&department=" + data.Department,
+                    href: basePath + "/Products/list?group=" + data.Group + "&search=" + data.SKUCode + "&department=" + data.Department,
                     class: "see-all"
                 }).html("See All Results").appendTo($li);
                 $li.appendTo($('.ui-autocomplete'));
@@ -112,7 +112,7 @@ $('.text-search').on('input', function () {
     }).autocomplete('instance')._renderItem = function (ul, item) {
         debugger;
         return $('<li class="search-item">').append("<img style='width: 46px; height:46px;' src=" + item.Path + " alt=" + item.Name + "/>")
-            .append("<a href=" + basePath + "/Shop/Products/list?group=" + item.Group + "&search=" + item.SKUCode + "&department=" + item.Department + ">" + item.Name + "</a>").appendTo(ul);
+            .append("<a href=" + basePath + "/Products/list?group=" + item.Group + "&search=" + item.SKUCode + "&department=" + item.Department + ">" + item.Name + "</a>").appendTo(ul);
     };
 });
 
@@ -123,7 +123,7 @@ function updateTextBox(event, ui) {
 function getTopCategoryProducts(ProductGroupId) {
     $.ajax({
         type: "GET",
-        url: basePath + "/shop/Home/_TopCategoryProductsPartial/",
+        url: basePath + "/Home/_TopCategoryProductsPartial/",
         data: { ProductGroupId: ProductGroupId },
         dataType: 'html',
         success: function (data) {
@@ -142,7 +142,7 @@ function AddToCart(ProductId) {
     var detail = $(".input-number").data("detail");
     $.ajax({
         type: "GET",
-        url: basePath + "/shop/Products/_CartItemsPartial/",
+        url: basePath + "/Products/_CartItemsPartial/",
         data: { ProductId: ProductId, qty: quantity, details: detail },
         dataType: 'html',
         success: function (data) {
@@ -160,7 +160,7 @@ function AddToCart(ProductId) {
 function RemoveCartItem(id) {
     $.ajax({
         type: "GET",
-        url: basePath + "/shop/Products/_CartItemsPartial/",
+        url: basePath + "/Products/_CartItemsPartial/",
         data: { ProductId: id, Remove: true },
         dataType: 'html',
         success: function (data) {
@@ -179,7 +179,7 @@ function UpdateCartItem(ID, event) {
     var quantity = event.value;
     $.ajax({
         type: "GET",
-        url: basePath + "/shop/Products/_CartItemsPartial/",
+        url: basePath + "/Products/_CartItemsPartial/",
         data: { ProductId: ID, qty: quantity },
         dataType: 'html',
         success: function (data) {
@@ -195,7 +195,7 @@ function UpdateCartItem(ID, event) {
 function CartItemCount() {
     $.ajax({
         type: "GET",
-        url: basePath + "/shop/Products/CartItemsCount/",
+        url: basePath + "/Products/CartItemsCount/",
         dataType: 'json',
         success: function (data) {
             $("#cart-total").text("");
@@ -206,7 +206,7 @@ function CartItemCount() {
             alert('Error' + textStatus + "/" + errorThrown);
         }
     });
-    $('#top-header').load(basePath + "/shop/Home/_TopHeaderPartial");
+    $('#top-header').load(basePath + "/Home/_TopHeaderPartial");
 }
 
 function ConfirmOrder() {
@@ -223,7 +223,7 @@ function ConfirmOrder() {
         return;
     }
 
-    window.location.href = basePath + "/shop/Orders/ConfirmOrder/?AccountAddressId=" + AccountAddressIds + "&PaymentTypeId=" + paymentMethodId + "&ShippmentTypeId=" + ShippingTypeId;
+    window.location.href = basePath + "/Orders/ConfirmOrder/?AccountAddressId=" + AccountAddressIds + "&PaymentTypeId=" + paymentMethodId + "&ShippmentTypeId=" + ShippingTypeId;
 }
 
 function ChooseShippingAddress(accountid, billingaddressId, shippingaddressid, status) {
@@ -233,7 +233,7 @@ function ChooseShippingAddress(accountid, billingaddressId, shippingaddressid, s
         return;
     }
 
-    location.href = basePath + "/shop/Orders/GetAddress?AccountId=" + accountid + "&AccountBillingId=" + billingaddressId + "&AccountShippingId=" + shippingaddressid + "&ShipingAddress=" + status + "&ShippmentTypeId=" + ShippmentId;
+    location.href = basePath + "/Orders/GetAddress?AccountId=" + accountid + "&AccountBillingId=" + billingaddressId + "&AccountShippingId=" + shippingaddressid + "&ShipingAddress=" + status + "&ShippmentTypeId=" + ShippmentId;
 }
 function ChoosePaymentMethod(accountid, shippingaddressid, shipmentMethodType) {
     var paymenttypeId = $("input[name='paymentMethod']:checked").val();
@@ -241,8 +241,8 @@ function ChoosePaymentMethod(accountid, shippingaddressid, shipmentMethodType) {
         alert("Please select payment method.");
         return;
     }
-    window.location.href = basePath + "/shop/Orders/ConfirmOrder?AccountId=" + accountid + "&ShipmentAddressId=" + shippingaddressid + "&PaymentTypeId=" + paymenttypeId + "&ShippmentTypeId=" + shipmentMethodType;
-    location.href = basePath + "/shop/Orders/GetAddress?AccountId=" + accountid + "&AccountBillingId=" + billingaddressId + "&AccountShippingId=" + shippingaddressid + "&ShipingAddress=" + status + "&ShippmentTypeId=" + ShippmentId;
+    window.location.href = basePath + "/Orders/ConfirmOrder?AccountId=" + accountid + "&ShipmentAddressId=" + shippingaddressid + "&PaymentTypeId=" + paymenttypeId + "&ShippmentTypeId=" + shipmentMethodType;
+    location.href = basePath + "/Orders/GetAddress?AccountId=" + accountid + "&AccountBillingId=" + billingaddressId + "&AccountShippingId=" + shippingaddressid + "&ShipingAddress=" + status + "&ShippmentTypeId=" + ShippmentId;
 }
 
 $("input[name='paymentMethod']").on("click", function (e) {

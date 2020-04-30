@@ -1,0 +1,226 @@
+﻿@using Ganedata.Core.Entities.Domain
+@using System.Configuration
+@model ProductMaster
+@{
+    ViewBag.Title = Model.Name + " | " + ViewBag.SiteDescription;
+    var Images = ConfigurationManager.AppSettings["ImageFormats"].Split(new char[] { ',' });
+}
+<div id="product-product" class="container">
+    <div class="row">
+        <div id="content" class="col-md-12 col-sm-12">
+            <ul class="breadcrumb">
+                <li><a href="/shop">Home</a></li>
+                @if (!string.IsNullOrEmpty(Model?.TenantDepartment?.DepartmentName))
+                {
+                    <li><a href="@Url.Action("list", "Products", new { department = @Model.TenantDepartment.DepartmentName})">@(!string.IsNullOrEmpty(Model?.TenantDepartment?.DepartmentName) ? Model.TenantDepartment.DepartmentName : "")</a></li>
+                }
+                @if (Url.Action() != Url.Action("list", "Products", new { department = Model.TenantDepartment.DepartmentName }))
+                {
+                    if (!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup))
+                    {
+                        <li><a href="@Url.Action("list", "Products", new { group = Model.ProductGroup.ProductGroup, department = Model.TenantDepartment.DepartmentName})">@(!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup) ? Model.ProductGroup.ProductGroup : "")</a></li>
+                    }
+                }
+                @if (!string.IsNullOrEmpty(Model?.ProductCategory?.ProductCategoryName))
+                {
+                    <li><a href="@Url.Action("list", "Products", new { group = Model.ProductGroup.ProductGroup, department = Model.TenantDepartment.DepartmentName, values ="TypeS-"+Model.ProductCategory.ProductCategoryName })">@(!string.IsNullOrEmpty(Model?.ProductCategory?.ProductCategoryName) ? Model.ProductCategory.ProductCategoryName : "")</a></li>
+                }
+
+                <li>@Model.Name</li>
+            </ul>
+            <div class="row product-bg">
+                <div class="sticky">
+                    <ul class="thumbnails">
+                        <li>
+                            <a class="thumbnail" href="@(!string.IsNullOrEmpty(Model.DefaultImage)?ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" title="#">
+                                <img data-zoom-image="@(!string.IsNullOrEmpty(Model.DefaultImage)?ViewBag.BaseFilePath + Model.DefaultImage:ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" src="@(!string.IsNullOrEmpty(Model.DefaultImage)?ViewBag.BaseFilePath + Model.DefaultImage:ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" id="zoom_03" class="img-responsive center-block" alt="image">
+                            </a>
+                        </li>
+
+                        <li>
+                            <div class="row">
+                                <div id="gallery_01" class="owl-carousel">
+                                    @foreach (var item in Model.ProductFiles)
+                                    {
+                                        var extension = Path.GetExtension(item.FilePath);
+
+                                        <div class="col-xs-12">
+                                            @if (Images.Contains(extension))
+                                            {
+                                                <a data-zoom-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" data-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" href="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")">
+                                                    <img src="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive center-block" alt="additional image">
+                                                </a>
+                                            }
+                                        </div>
+                                    }
+
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-5 pro-content">
+                    <h1>@Model.Name</h1>
+                    <hr class="hr-line">
+                    <ul class="list-unstyled">
+                        <li><span class="text-decor">Brands:</span><a href="#" class="textdeb">@(Model.ProductManufacturer == null ? "" : Model.ProductManufacturer.Name)</a></li>
+                        <li><span class="text-decor">SKU Code:</span>@Model.SKUCode</li>
+                        <li><span class="text-decor">Product Code:</span>@Model.BarCode</li>
+                        <li><span class="text-decor">Availability:</span>@(Model.InventoryStocks.Count == 0 ? "Not Avaialable" : "In Stock")</li>
+                    </ul>
+                    <hr class="hr-line">
+
+                    <ul class="list-inline">
+                        <li class="text-decor-bold proprice">
+                            <h2>
+                                @*@Model.MinThresholdPrice*@
+                            </h2>
+                        </li>
+                        <li>
+                            <span> @ViewBag.CurrencySymbol @Model.SellPrice</span>
+                        </li>
+                    </ul>
+
+                    <div id="product">
+                        <hr class="hr-line">
+                        <h3>Available Options</h3>
+                        <div class="form-group required ">
+                            <label class="control-label text-decorop" for="input-option226">Select</label>
+                            <select name="option[226]" id="input-option226" class="form-control">
+                                <option value=""> --- Please Select --- </option>
+                                <option value="black">
+                                    Black
+                                </option>
+                            </select>
+                        </div>
+                        <hr class="hr-line">
+                        <!-- Quantity option -->
+                        <div class="form-group">
+                            <ul class="list-inline">
+                                <li class="op-box qtlabel">
+                                    <label class="control-label text-decorop" for="input-quantity">Qty</label>
+                                </li>
+                                <li class="op-box qty-plus-minus">
+                                    <button type="button" class="form-control pull-left btn-number btnminus" disabled="disabled" data-type="minus" data-field="quantity">
+                                        <span class="glyphicon glyphicon-minus"></span>
+                                    </button>
+                                    <input id="input-quantity" type="text" name="quantity" value="1" size="2" class="form-control input-number pull-left" data-detail="true" />
+
+                                    <input type="hidden" name="product_id" value="30" />
+                                    <button type="button" class="form-control pull-left btn-number btnplus" data-type="plus" data-field="quantity">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </button>
+                                </li>
+                            </ul>
+                            <hr class="hr-line">
+                            @if (@Model.SellPrice > 0 && @Model.SellPrice.HasValue && @Model.PercentMargin > 0)
+                            {
+                                <button type="button" id="button-cart" class="btn add-to-cart btn-primary" onclick="AddToCart(@Model.ProductId)">Add to Basket</button>
+                            }
+                            else
+                            {
+                                <button type="button" class="acart disabled-btn" disabled>
+                                    <span>Add to Basket</span>
+                                </button>
+                            }
+
+                            <button type="button" data-toggle="tooltip" title="Add to Wish List" class="btn add-to-cart btn-primary pwishcom" onclick="wishlist.add('30');">
+                                <svg width="20px" height="20px">
+                                    <use xlink:href="/Content/Theme/Smart/app/img/icons/icons.svg#wishlist"></use>
+                                </svg>
+                            </button>
+                            <button type="button" data-toggle="tooltip" title="Compare this Product" class="btn add-to-cart btn-primary pwishcom" onclick="compare.add('30');">
+                                <svg width="20px" height="20px">
+                                    <use xlink:href="/Content/Theme/Smart/app/img/icons/icons.svg#pcom"></use>
+                                </svg>
+                            </button>
+                            <hr class="hr-line">
+                        </div>
+                        <!-- Quantity option end -->
+                    </div>
+                    <div class="rating">
+                        <ul class="list-inline">
+                            <li class="prorate">
+                                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>                            <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>                            <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>                            <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>                            <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>
+                            </li>
+                            <li class="proreview">
+                                <a href="" onclick="$('a[href=\'#tab-review\']').trigger('click'); return false;">0 reviews</a>
+                            </li>
+                            <li class="prowrite">
+                                <a href="#rt" onclick="$('a[href=\'#tab-review\']').trigger('click'); return false;">Write a review</a>
+                            </li>
+                        </ul>
+                        <hr class="hr-line">
+                        <!-- AddToAny BEGIN -->
+                        <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+                            <a class="a2a_button_facebook"></a>
+                            <a class="a2a_button_twitter"></a>
+                            <a class="a2a_button_google_plus"></a>
+                            <a class="a2a_button_pinterest"></a>
+                            <a class="a2a_button_linkedin"></a>
+                            <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+                        </div>
+                        <!-- AddToAny END -->
+                    </div>
+                </div>
+            </div>
+            <div class="product-tab">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab-description" data-toggle="tab">Description</a></li>
+                    <li><a href="#tab-review" data-toggle="tab">Reviews (0)</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-description">
+                        <p>
+                            @Model.Description
+
+                        </p>
+
+                    </div>
+                    <div class="tab-pane" id="tab-review">
+                        <form class="form-horizontal" id="form-review">
+                            <div id="review"></div>
+                            <h2 class="heading co-heading">Write a review</h2>
+                            <div class="form-group required">
+                                <div class="col-sm-12">
+                                    <label class="control-label" for="input-name">Your Name</label>
+                                    <input type="text" name="name" value="" id="input-name" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group required">
+                                <div class="col-sm-12">
+                                    <label class="control-label" for="input-review">Your Review</label>
+                                    <textarea name="text" rows="5" id="input-review" class="form-control"></textarea>
+                                    <div class="help-block"><span class="text-danger">Note:</span> Add Basic html tag if required!</div>
+                                </div>
+                            </div>
+                            <div class="form-group required">
+                                <div class="col-sm-12">
+                                    <label class="control-label rat">Rating</label>
+                                    &nbsp;&nbsp;&nbsp; Bad&nbsp;
+                                    <input type="radio" name="rating" value="1" />
+                                    &nbsp;
+                                    <input type="radio" name="rating" value="2" />
+                                    &nbsp;
+                                    <input type="radio" name="rating" value="3" />
+                                    &nbsp;
+                                    <input type="radio" name="rating" value="4" />
+                                    &nbsp;
+                                    <input type="radio" name="rating" value="5" />
+                                    &nbsp;Good
+                                </div>
+                            </div>
+                            <div class="buttons clearfix">
+                                <div class="pull-right">
+                                    <button type="button" id="button-review" data-loading-text="Loading..." class="btn btn-primary">Continue</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- relatedproduct -->
+        </div>
+
+    </div>
+</div>

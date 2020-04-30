@@ -398,9 +398,8 @@ namespace Ganedata.Core.Entities.Enums
 
     public enum TenantWebsiteTypes
     {
-        InternalShop = 1,
+        Internal = 1,
         PrestaShop = 2,
-        BrandSite = 3
     }
     public enum ApiTypes
     {
@@ -423,13 +422,8 @@ namespace Ganedata.Core.Entities.Enums
     public enum WebsiteThemeEnum
     {
         ElecTech = 1,
-        Classic = 2
-    }
-
-    public enum EcommerceThemeEnum
-    {
-        Smart = 1,
-        University = 2
+        Smart = 2,
+        University = 3
     }
 
     public enum WebsiteNavigationType

@@ -779,6 +779,10 @@
     <Compile Include="Migrations\202004290146253_spellingCorrection.designer.cs">
       <DependentUpon>202004290146253_spellingCorrection.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004301923264_Website-Theme-Added.cs" />
+    <Compile Include="Migrations\202004301923264_Website-Theme-Added.designer.cs">
+      <DependentUpon>202004301923264_Website-Theme-Added.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1683,6 +1687,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004290146253_spellingCorrection.resx">
       <DependentUpon>202004290146253_spellingCorrection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004301923264_Website-Theme-Added.resx">
+      <DependentUpon>202004301923264_Website-Theme-Added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

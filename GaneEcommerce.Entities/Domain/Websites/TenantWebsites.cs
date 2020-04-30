@@ -21,6 +21,7 @@ namespace Ganedata.Core.Entities.Domain
         public string SiteName { get; set; }
         public string SiteDescription { get; set; }
         public TenantWebsiteTypes SiteType { get; set; }
+        public WebsiteThemeEnum Theme { get; set; }
         public string SiteApiUrl { get; set; }
         public string ApiToken { get; set; }
         public int DefaultWarehouseId { get; set; }

@@ -1,0 +1,96 @@
+﻿@model WarehouseEcommerce.ViewModels.ProductDetailViewModel
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="tabpro">
+            <div class="tab-head xs-tab top-product-h1">
+                <h1 class="pull-left">
+                    <span>
+                        top product
+                        <i></i>
+                    </span>
+                </h1>
+                @*<ul class="nav nav-tabs text-right">
+                        <li class="active"><a href="#featurep" data-toggle="tab">Featured</a></li>
+                        <li class="latestb"><a href="#latestp" data-toggle="tab">Latest</a></li>
+                    </ul>*@
+            </div>
+
+            @if (Model.productMasterList.Count > 0)
+            {
+
+
+                <div class="tab-content pro-nepr">
+                    <div class="tab-pane active" id="featurep">
+
+
+                        <div id="feature" class="owl-theme owl-carousel">
+                            @foreach (var item in Model.productMasterList)
+                            {
+                                <div class="product-layout col-12">
+                                    <div class="product-thumb transition">
+                                        <div class="image">
+                                            <a href="@Url.Action("ProductDetails", "Products", new { sku = item.SKUCode })"><img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath +item.DefaultImage : ViewBag.BaseFilePath +"/UploadedFiles/Products/no_image.gif")" alt="@item.Name" title="@item.Name" class="img-fluid center-block" /></a>
+                                            <!-- Smartshop Images Start -->
+                                            <a href="@Url.Action("ProductDetails", "Products", new { sku = item.SKUCode })"><img src="@(!string.IsNullOrEmpty(item.HoverImage) ? ViewBag.BaseFilePath +item.HoverImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-fluid second-img" alt="@item.Name" title="@item.Name" /></a>
+                                            <!-- Smartshop Images End -->
+                                            <div class="topbutton">
+                                                <button type="button" data-toggle="tooltip" title="Add to Wish List">
+                                                    <svg width="20px" height="20px">
+                                                        <use xlink:href="/Content/Theme/Smart/app/img/icons/icons.svg#wishlist"></use>
+                                                    </svg>
+                                                    <span class="d-xs-none"></span>
+                                                </button>
+                                                <button type="button" data-toggle="tooltip" title="Compare this Product" class="wishcom">
+                                                    <svg width="20px" height="20px">
+                                                        <use xlink:href="/Content/Theme/Smart/app/img/icons/icons.svg#pcom"></use>
+                                                    </svg>
+                                                    <span class="d-xs-none"></span>
+                                                </button>
+                                                <div class="bquickv" title="quickview" data-toggle="tooltip"></div>
+                                            </div>
+                                        </div>
+                                        <div class="caption">
+                                            <h4><a data-toggle="tooltip" title="@item.Name @item.BarCode" href="@Url.Action("ProductDetails", "Products", new { sku = item.SKUCode })">@item.Name</a></h4>
+                                            <div class="rating pull-left">
+                                                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                            </div>
+                                            <p class="price text-right">@Model.CurrencySign @item.SellPrice</p>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="button-group">
+                                            @if (@item.SellPrice > 0 && @item.SellPrice.HasValue  && @item.PercentMargin > 0)
+                                            {
+                                                <button type="button" class="acart" onclick="AddToCart(@item.ProductId)">
+                                                    <span>Add to Basket</span>
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button type="button" class="acart disabled-btn" disabled >
+                                                    <span>Add to Basket</span>
+                                                </button>
+                                            }
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+            }
+
+        </div>
+    </div>
+</div>
+
