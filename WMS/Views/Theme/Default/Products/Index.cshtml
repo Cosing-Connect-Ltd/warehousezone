@@ -39,62 +39,19 @@
     //MVCxClientGlobalEvents.AddControlsInitializedEventHandler(OnBeginGridCallback);
 
     function OnBeginGridCallback(s, e, gridName) {
+        debugger;
         e.customArgs = MVCxClientUtils.GetSerializedEditorValuesInContainer("frmProductFileDetail");
-        @*e.customArgs["PriceGroupId"] = @ViewBag.PriceGroupId;*@
-        var grid =  ASPxClientControl.GetControlCollection().GetByName(gridName.name);
-        //WORKAROUND for BULK Update
-        var gridValues = JSON.parse(JSON.stringify($("#frmProductFileDetail").serializeArray()));
-        var values = JSON.parse(gridValues[gridValues.length - 1].value.split(','));
-        var LengthOfObject=Object.keys(values).length;
-        for (var i = 0; i < LengthOfObject; i++)
-        {
-        if (grid.name + '_DXEditor2' != null)
-        {
-            
-            e.customArgs["SortOrder"] = values[i];
-        }
-        if (grid.name+'_DXEditor3' != null)
-        {
-            e.customArgs["DefaultImage"] = values.ProductFileDetailGridView294_DXEditor3;
-        }
-        if (grid.name+'_DXEditor4' != null) {
-            e.customArgs["HoverImage"] = values.ProductFileDetailGridView294_DXEditor4;
-
-        }
-        if (grid.name+'_DXEditor5' != null) {
-            e.customArgs["IsDeleted"] =values.ProductFileDetailGridView294_DXEditor5;
-        }
-        }
-
+        var grid = ASPxClientControl.GetControlCollection().GetByName(gridName.name);
         var rowIndex = parseInt($("#RowIndexForProductId").val()) || 0;
-
         e.customArgs["Id"] = grid.GetRowKey(rowIndex);
-    }
-
-    function OnEndGridCallback(s, e, gridName) {
-        var grid =  ASPxClientControl.GetControlCollection().GetByName(gridName.name);
-        var lastIndex = parseInt($("#LastEditingRowIndex").val()) || 0;
-            SetGridEditorToRowIndex(lastIndex, grid);
-    }
-
-    function SetGridEditorToRowIndex(index, grid) {
-        grid.batchEditApi.StartEdit(index, grid.GetColumnByField($("#LastEditingColIndex").val()).index);
+        var arr = gridName.name.split("_");
+        e.customArgs["ProductId"] = arr[1];
     }
 
     function OnDetailsChanged(s, e, gridName) {
-        var grid =  ASPxClientControl.GetControlCollection().GetByName(gridName.name);
+        debugger;
+        var grid = ASPxClientControl.GetControlCollection().GetByName(gridName.name);
         grid.UpdateEdit();
-    }
-
-    function OnSpecialPricesGridFocusChanged(s, e) {
-
-        if (e.cellInfo.rowVisibleIndex > 0) {
-
-            $("#LastEditingRowIndex").val(e.cellInfo.rowVisibleIndex);
-        }
-
-        $("#RowIndexForProductId").val(e.cellInfo.rowVisibleIndex);
-        $("#LastEditingColIndex").val(e.cellInfo.column.fieldName);
     }
 
 </script>

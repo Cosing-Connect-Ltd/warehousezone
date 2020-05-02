@@ -4,13 +4,12 @@
         if (ViewBag.GridName != null && ViewBag.GridName == "VI")
         {
             settings.Name = "PurchaseViewInvoice";
-
         }
         else
         {
             settings.Name = "gridMasterAwaitingInvoicing";
         }
-        settings.CallbackRouteValues = new { Controller = "Invoice", Action = "ProcessedOrdersPartial", type= ViewBag.GridName };
+        settings.CallbackRouteValues = new { Controller = "Invoice", Action = "ProcessedOrdersPartial", type = ViewBag.GridName };
         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
         settings.CustomBindingRouteValuesCollection.Add(
            GridViewOperationType.Paging,
@@ -32,7 +31,7 @@
         settings.Settings.ShowFilterRow = true;
         settings.SettingsBehavior.AllowFocusedRow = true;
         settings.CommandColumn.SelectAllCheckboxMode = GridViewSelectAllCheckBoxMode.AllPages;
-        settings.Styles.Header.CssClass="";
+        settings.Styles.Header.CssClass = "";
         settings.ClientSideEvents.DetailRowExpanding = "function(s,e){ OnDetailRowExpanding(s,e); }";
         settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
         settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
@@ -51,10 +50,6 @@
             u.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
             u.ColumnType = MVCxGridViewColumnType.SpinEdit;
         });
-
-
-
-
         if (ViewBag.GridName != null && ViewBag.GridName == "PO")
         {
             settings.CommandColumn.ShowSelectCheckbox = true;
@@ -95,7 +90,6 @@
                 u.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
                 u.EditFormSettings.Visible = DefaultBoolean.False;
             });
-
             settings.Columns.Add(u =>
             {
                 u.FieldName = "DeliveryNO";
@@ -115,8 +109,6 @@
                     p.ClientSideEvents.DateChanged = "function(s,e){ OnDetailsChanged(s,e);}";
 
                 });
-
-
             });
             settings.Columns.Add(u =>
             {
@@ -134,14 +126,10 @@
                 u.Width = System.Web.UI.WebControls.Unit.Percentage(10);
                 u.EditFormSettings.Visible = DefaultBoolean.False;
             });
-            settings.ClientSideEvents.BeginCallback = "function(s,e){ OnProcessedDetailsEditCallback(s,e); }";
-            settings.ClientSideEvents.FocusedCellChanging = "gridMasterAwaitingInvoicingOnGridFocusChanged";
-            settings.ClientSideEvents.SelectionChanged = "SelectionChanged";
-            settings.ClientSideEvents.EndCallback = "OnEndsGridCallback";
 
             settings.CommandColumn.SetHeaderTemplateContent(c =>
             {
-                c.Column.Width= System.Web.UI.WebControls.Unit.Pixel(10);
+                c.Column.Width = System.Web.UI.WebControls.Unit.Pixel(10);
                 Html.DevExpress().CheckBox(selectAll =>
                 {
                     selectAll.Name = "cbAll";
@@ -160,7 +148,7 @@
                 {
                     var value = gridview.GetRowValues(i, "InvoiceNumber");
                     bool rowEnabled = true;
-                    if ( value ==null)
+                    if (value == null)
                     {
                         rowEnabled = false;
                     }
@@ -188,8 +176,10 @@
                 }
             };
 
-
-
+            settings.ClientSideEvents.BeginCallback = "function(s,e){ OnProcessedDetailsEditCallback(s,e); }";
+            settings.ClientSideEvents.FocusedCellChanging = "gridMasterAwaitingInvoicingOnGridFocusChanged";
+            settings.ClientSideEvents.SelectionChanged = "SelectionChanged";
+            settings.ClientSideEvents.EndCallback = "OnEndsGridCallback";
         }
         else
         {
@@ -240,8 +230,6 @@
                     p.ClientSideEvents.DateChanged = "function(s,e){ OnDetailsChanged(s,e);}";
 
                 });
-
-
             });
             settings.Columns.Add(u =>
             {
@@ -262,9 +250,6 @@
                 u.Settings.AllowSort = DefaultBoolean.False;
 
             });
-
-
-
             settings.Columns.Add(u =>
             {
                 u.FieldName = "InvoiceTotal";
@@ -291,14 +276,12 @@
             settings.ClientSideEvents.FocusedCellChanging = "gridMasterAwaitingInvoicingOnGridFocusChanged";
         }
 
-
-
         settings.SetDetailRowTemplateContent(c =>
         {
             var orderProcessId = (int)DataBinder.Eval(c.DataItem, "OrderProcessID");
             Html.RenderAction("OrderProcessedDetails", new { id = orderProcessId });
         });
         settings.SettingsPager.PageSizeItemSettings.Visible = true;
-        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "30", "50","100","150","200" };
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "30", "50", "100", "150", "200" };
 
     }).BindToCustomData(Model).GetHtml()

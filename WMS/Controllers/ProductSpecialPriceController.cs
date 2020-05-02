@@ -18,7 +18,7 @@ namespace WMS.Controllers
         private readonly ITenantsServices _tenantsServices;
         private readonly IMapper _mapper;
 
-        public ProductSpecialPriceController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IProductPriceService productPriceService, 
+        public ProductSpecialPriceController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IProductPriceService productPriceService,
             IProductServices productService, ITenantsServices tenantsServices, IMapper mapper) : base(orderService, propertyService, accountServices, lookupServices)
         {
             _productPriceService = productPriceService;
@@ -68,10 +68,11 @@ namespace WMS.Controllers
             return PartialView("_ProductGroupPricesPartial", model);
         }
 
-        public ActionResult SaveProductSpecialPrice(ProductSpecialPriceViewModel model)
+        public ActionResult SaveProductSpecialPrice(int PriceGroupId, MVCxGridViewBatchUpdateValues<ProductSpecialPriceViewModel, int> updateValues)
         {
-            _productPriceService.SaveSpecialProductPrice(model.ProductID, model.SpecialPrice ?? 0, model.PriceGroupID ?? 0, model.StartDate, model.EndDate, CurrentTenantId, CurrentUserId);
-            return _GroupSpecialPrices(model.PriceGroupID ?? 0);
+            var value = updateValues.Update.FirstOrDefault();
+            _productPriceService.SaveSpecialProductPrice(value.ProductID, value.SpecialPrice ?? 0, PriceGroupId, value.StartDate, value.EndDate, CurrentTenantId, CurrentUserId);
+            return _GroupSpecialPrices(PriceGroupId);
         }
 
         public ActionResult DeleteProductSpecialPrice(int? id = null)

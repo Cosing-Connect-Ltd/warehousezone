@@ -589,7 +589,7 @@ namespace WMS.Controllers
             if (kitTypeId.HasValue && kitTypeId == 2) { Grouped = true; }
             ViewBag.kitType = kitTypeId;
             ViewBag.grouped = Grouped;
-            
+
             if (Grouped == true && !ProductKitId.HasValue)
             {
                 ViewBag.groupedtype = new SelectList(_productLookupService.GetProductKitTypes(CurrentTenantId).ToList(), "Id", "Name");
@@ -644,9 +644,9 @@ namespace WMS.Controllers
 
         }
 
-        public JsonResult SaveEditKitProduct(int KitId, decimal? Quantity, int ProductId ,int? ProductKitTypeId)
+        public JsonResult SaveEditKitProduct(int KitId, decimal? Quantity, int ProductId, int? ProductKitTypeId)
         {
-            _productServices.SaveProductKit(KitId, (Quantity??1), ProductId, CurrentUserId, ProductKitTypeId);
+            _productServices.SaveProductKit(KitId, (Quantity ?? 1), ProductId, CurrentUserId, ProductKitTypeId);
             return Json(true, JsonRequestBehavior.AllowGet);
 
         }
@@ -985,15 +985,16 @@ namespace WMS.Controllers
             return View();
         }
 
-        public ActionResult SaveProductFiles(int Id, short? SortOrder, bool? DefaultImage, bool? HoverImage, bool? IsDeleted)
+        public ActionResult SaveProductFiles(MVCxGridViewBatchUpdateValues<ProductFiles, int> updateValues)
         {
-            var productFiles = _productServices.GetProductFilesById(Id);
+            var file = updateValues.Update.FirstOrDefault();
+            var productFiles = _productServices.GetProductFilesById(file.Id);
             if (productFiles != null)
             {
-                productFiles.SortOrder = SortOrder.HasValue ? SortOrder.Value : productFiles.SortOrder;
-                productFiles.DefaultImage = DefaultImage.HasValue ? DefaultImage.Value : productFiles.DefaultImage;
-                productFiles.HoverImage = HoverImage.HasValue ? HoverImage.Value : productFiles.HoverImage;
-                productFiles.IsDeleted = IsDeleted.HasValue ? IsDeleted.Value : productFiles.IsDeleted;
+                productFiles.SortOrder = file.SortOrder;
+                productFiles.DefaultImage = file.DefaultImage;
+                productFiles.HoverImage = file.HoverImage;
+                productFiles.IsDeleted = file.IsDeleted;
             }
             int productId = _productServices.EditProductFile(productFiles, CurrentTenantId, CurrentUserId);
 
@@ -1179,7 +1180,7 @@ namespace WMS.Controllers
                     Quantity = r.Quantity,
                     ParentProductId = productId,
                     ProductKitId = r.Id,
-                    ProductKitType=r.ProductKitTypes==null?"": r.ProductKitTypes.Name
+                    ProductKitType = r.ProductKitTypes == null ? "" : r.ProductKitTypes.Name
                 }).ToList();
 
 

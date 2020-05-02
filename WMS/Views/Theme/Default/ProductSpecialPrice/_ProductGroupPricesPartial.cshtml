@@ -46,19 +46,6 @@
 
         });
 
-
-        settings.Columns.Add(column =>
-        {
-            column.FieldName = "SpecialPrice";
-            column.EditorProperties().SpinEdit(p =>
-            {
-                p.MinValue = 0;
-                p.MaxValue = 1000000000;
-                p.ClientSideEvents.LostFocus = "function(s,e){ OnDetailsChanged(s,e);}";
-            });
-            column.Settings.AllowAutoFilter = DefaultBoolean.False;
-
-        });
         settings.Columns.Add(column =>
         {
             column.FieldName = "StartDate";
@@ -66,10 +53,12 @@
             {
                 p.MinDate = DateTime.UtcNow.AddDays(-1);
                 p.MaxDate = DateTime.MaxValue;
-                p.ClientSideEvents.DateChanged = "function(s,e){ OnDetailsChanged(s,e);}";
+                p.ClientSideEvents.CloseUp = "function(s,e){ OnDetailsChanged(s,e);}";
             });
+
             column.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
             column.ColumnType = MVCxGridViewColumnType.DateEdit;
+
             column.SetDataItemTemplateContent(m =>
             {
                 var date = (DateTime?)DataBinder.Eval(m.DataItem, "StartDate");
@@ -86,7 +75,7 @@
                 p.MinDate = DateTime.UtcNow.AddDays(-1);
                 p.MaxDate = DateTime.MaxValue;
                 p.ClientInstanceName =
-                p.ClientSideEvents.DateChanged = "function(s,e){ OnDetailsChanged(s,e);}";
+                p.ClientSideEvents.CloseUp = "function(s,e){ OnDetailsChanged(s,e);}";
             });
             column.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
             column.ColumnType = MVCxGridViewColumnType.DateEdit;
@@ -96,6 +85,19 @@
                 DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
                 ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
             });
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "SpecialPrice";
+            column.EditorProperties().SpinEdit(p =>
+            {
+                p.MinValue = 0;
+                p.MaxValue = 1000000000;
+                p.ClientSideEvents.LostFocus = "function(s,e){ OnDetailsChanged(s,e);}";
+            });
+            column.Settings.AllowAutoFilter = DefaultBoolean.False;
+
         });
 
         settings.CustomJSProperties = (sender, e) =>

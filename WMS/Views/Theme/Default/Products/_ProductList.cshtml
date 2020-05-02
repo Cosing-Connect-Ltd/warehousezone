@@ -152,7 +152,95 @@
         settings.SettingsPager.PageSizeItemSettings.Visible = true;
         settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
         settings.SettingsDetail.ShowDetailRow = true;
- 
+
+        settings.SetDetailRowTemplateContent(c =>
+        {
+            Html.DevExpress().PageControl(s =>
+            {
+                s.EnableTabScrolling = true;
+                s.Name = DataBinder.Eval(c.DataItem, "ProductId").ToString();
+                s.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                s.TabPages.Add("Product Details").SetContent(() =>
+                {
+                    ViewContext.Writer.Write("<p>SKU Code: <b>" + DataBinder.Eval(c.DataItem, "SKUCode") + "</b></p>" +
+                          "<p>Name : <b>" + DataBinder.Eval(c.DataItem, "Name") + "</b></p>" +
+                         "<p>Description : <b>" + DataBinder.Eval(c.DataItem, "Description") + "</b></p>" +
+                         "<p>Bar Code : <b>" + DataBinder.Eval(c.DataItem, "BarCode") + "</b></p>" +
+                         "<p>Bar Code2 : <b>" + DataBinder.Eval(c.DataItem, "BarCode2") + "</b></p>" +
+                         "<p>Shelf Life (Days) : <b>" + DataBinder.Eval(c.DataItem, "ShelfLifeDays") + "</b></p>" +
+                         "<p>Reorder Quantity : <b>" + DataBinder.Eval(c.DataItem, "ReorderQty") + "</b></p>"
+                          + "<p>Ship Condition : <b>" + DataBinder.Eval(c.DataItem, "ShipConditionCode") + "</b></p>"
+                          + "<p>Commodity Code : <b>" + DataBinder.Eval(c.DataItem, "CommodityCode") + "</b></p>"
+                          + "<p>Commodity Class : <b>" + DataBinder.Eval(c.DataItem, "CommodityClass") + "</b></p>"
+                          + "<p>Height : <b>" + DataBinder.Eval(c.DataItem, "Height") + "</b></p>"
+                          + "<p>Width : <b>" + DataBinder.Eval(c.DataItem, "Width") + "</b></p>"
+                          + "<p>Depth : <b>" + DataBinder.Eval(c.DataItem, "Depth") + "</b></p>"
+                          + "<p>Weight : <b>" + DataBinder.Eval(c.DataItem, "Weight") + "</b></p>"
+                          + "<p>Percent Margin : <b>" + DataBinder.Eval(c.DataItem, "PercentMargin") + "</b></p>"
+                          + "<p>Weight Group : <b>" + DataBinder.Eval(c.DataItem, "GlobalWeightGrpDescription") + "</b></p>"
+                          + "<p>Lot Option Code : <b>" + DataBinder.Eval(c.DataItem, "LotOptionDescription") + "</b></p>"
+                          + "<p>Lot Process Type Code : <b>" + DataBinder.Eval(c.DataItem, "ProductLotProcessTypeCodesDescription") + "</b></p>"
+                          + "<p>Lot Options :" + Html.CheckBox("chkLot" + DataBinder.Eval(c.DataItem, "ProductId").ToString(), (bool)DataBinder.Eval(c.DataItem, "LotOption"), new { @disabled = "disabled" }) + "</p>"
+                          + "<p>Discontinued :" + Html.CheckBox("chkDis" + DataBinder.Eval(c.DataItem, "ProductId").ToString(), (bool)DataBinder.Eval(c.DataItem, "Discontinued"), new { @disabled = "disabled" })
+                          + "<p>Global Weight Groups  : <b>" + DataBinder.Eval(c.DataItem, "GlobalWeightGrpDescription") + "</b></p>"
+                          + "<p>Tax : <b>" + DataBinder.Eval(c.DataItem, "TaxName") + "</b></p>"
+                          + "<p>Start Date : <b>" + DataBinder.Eval(c.DataItem, "ProdStartDate") + "</b></p>"
+                          + "<p>Kit :" + Html.CheckBox("chkkit" + DataBinder.Eval(c.DataItem, "ProductId").ToString(), (bool)DataBinder.Eval(c.DataItem, "Kit"), new { @disabled = "disabled" }) + "</p>"
+                          + "<p>In Stock : <b>" + DataBinder.Eval(c.DataItem, "InStock") + "</b></p>"
+                          + "<p>Allocated : <b>" + DataBinder.Eval(c.DataItem, "Allocated") + "</b></p>"
+                          + "<p>Available : <b>" + DataBinder.Eval(c.DataItem, "Available") + "</b></p>"
+                          + "<p>On Order : <b>" + DataBinder.Eval(c.DataItem, "OnOrder") + "</b></p>"
+                         );
+                });
+
+                s.TabPages.Add("Product Files").SetContent(() =>
+                {
+            // Html.RenderAction("_ProductFilesContainer", DataBinder.Eval(c.DataItem, "ProductId"));
+            Html.RenderAction("_ProductFilesContainer", new { ProductId = DataBinder.Eval(c.DataItem, "ProductId") });
+                });
+
+                s.TabPages.Add("Product Codes").SetContent(() =>
+                {
+                    ViewContext.Writer.Write("<div  class=gridSeperator><b> SCC Code</b></div>");
+                    Html.RenderAction("_SCCCodes", new { ProductId = DataBinder.Eval(c.DataItem, "ProductId") });
+                    ViewContext.Writer.Write("<div  class=gridSeperator><b>Account Codes</b></div>");
+                    Html.RenderAction("_AccountCodes", new { ProductId = DataBinder.Eval(c.DataItem, "ProductId") });
+                });
+
+                s.TabPages.Add("Product Attributes").SetContent(() =>
+                {
+                    Html.RenderAction("_Attributes", new { ProductId = DataBinder.Eval(c.DataItem, "ProductId") });
+
+                });
+
+                s.TabPages.Add("Locations").SetContent(() =>
+                {
+                    Html.RenderAction("_ProductLocations", new { productId = DataBinder.Eval(c.DataItem, "ProductId") });
+
+                });
+
+                s.TabPages.Add("Inventory").SetContent(() =>
+                {
+                    ViewContext.Writer.Write("<div class=gridSeperator><b>Transactions</b></div>");
+                    Html.RenderAction("_InventoryTransactions", new { productId = DataBinder.Eval(c.DataItem, "ProductId") });
+                });
+
+                s.TabPages.Add("Serializations").SetContent(() =>
+                {
+                    Html.RenderAction("_Serializations", new { productId = DataBinder.Eval(c.DataItem, "ProductId") });
+                });
+
+                if ((bool)DataBinder.Eval(c.DataItem, "Kit"))
+                {
+                    s.TabPages.Add("Kit Items").SetContent(() =>
+                    {
+                        Html.RenderAction("_ProductKitItems", new { productId = DataBinder.Eval(c.DataItem, "ProductId") });
+                    });
+                }
+
+            }).GetHtml();
+        });
+
 
         settings.HtmlRowPrepared = (s, e) =>
         {
