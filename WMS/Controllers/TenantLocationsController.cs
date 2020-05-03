@@ -213,12 +213,14 @@ namespace WMS.Controllers
 
 
         [ValidateInput(false)]
-        public ActionResult UpdateProductLevels(MVCxGridViewBatchUpdateValues<WarehouseProductLevelViewModel, int> updateValues, int productId)
+        public ActionResult UpdateProductLevels(MVCxGridViewBatchUpdateValues<WarehouseProductLevelViewModel, int> updateValues)
         {
-            var product = updateValues.Update.FirstOrDefault();
-            if (updateValues.IsValid(product))
-                _tenantLocationServices.UpdateProductLevelsForTenantLocation(CurrentWarehouseId, product.ProductID,
-                    product.MinStockQuantity, CurrentUserId);
+            foreach (var product in updateValues.Update)
+            {
+                if (updateValues.IsValid(product))
+                    _tenantLocationServices.UpdateProductLevelsForTenantLocation(CurrentWarehouseId, product.ProductID,
+                        product.MinStockQuantity, CurrentUserId);
+            }
             return _StockLevelsPartial();
         }
 

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Domain.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -195,25 +196,35 @@ namespace Ganedata.Core.Services
             return _currentDbContext.WebsiteNavigations.Where(u => u.IsDeleted != true && (!SiteId.HasValue || u.SiteID == SiteId) && u.TenantId == TenantId);
         }
 
-        public IQueryable<object> GetAllValidWebsiteNavigations(int TenantId, int? SiteId)
+        public IQueryable<NavigationProductsViewModel> GetAllValidWebsiteNavigations(int TenantId, int SiteId, int navigationId)
         {
-            return _currentDbContext.ProductsWebsitesMap.Where(u => u.IsDeleted != true && (!SiteId.HasValue || u.SiteID == SiteId) && u.TenantId == TenantId).Select(prd => new
-            {
 
-                ProductId = prd.Id,
-                Name = prd.ProductMaster.Name,
-                SKUCode = prd.ProductMaster.SKUCode,
-                Description = prd.ProductMaster.Description,
-                BarCode = prd.ProductMaster.BarCode,
-                Serialisable = prd.ProductMaster.Serialisable,
-                BarCode2 = prd.ProductMaster.BarCode2,
-                ProductGroupName = prd.ProductMaster.ProductGroup == null ? "" : prd.ProductMaster.ProductGroup.ProductGroup,
-                ProductCategoryName = prd.ProductMaster.ProductCategory == null ? "" : prd.ProductMaster.ProductCategory.ProductCategoryName,
-                DepartmentName = prd.ProductMaster.TenantDepartment.DepartmentName,
-                Location = prd.ProductMaster.ProductLocationsMap.Where(a => a.IsDeleted != true).Select(x => x.Locations.LocationCode).FirstOrDefault().ToString(),
+            var websiteMap = _currentDbContext.ProductsWebsitesMap.Where(u => u.IsDeleted != true && u.SiteID == SiteId && u.TenantId == TenantId);
+            var allProducts = _currentDbContext.ProductMaster.Where(m => m.TenantId == TenantId && m.IsDeleted != true);
+            var navigationMap = _currentDbContext.ProductsNavigationMaps.Where(x => x.NavigationId == navigationId && x.IsDeleted != true);
 
 
-            });
+            var res = (from w in websiteMap
+                       join p in allProducts on w.ProductId equals p.ProductId
+                       join nm in navigationMap on w.Id equals nm.ProductWebsiteMapId into tempNavigation
+                       from d in tempNavigation.DefaultIfEmpty()
+                       select new NavigationProductsViewModel()
+                       {
+                           Id = w.Id,
+                           NavigationId = navigationId,
+                           SiteID = w.SiteID,
+                           ProductId = w.ProductId,
+                           Name = p.Name,
+                           SKUCode = p.SKUCode,
+                           Description = p.Description,
+                           ProductGroupName = p.ProductGroup.ProductGroup,
+                           ProductCategoryName = p.ProductCategory.ProductCategoryName,
+                           DepartmentName = p.TenantDepartment.DepartmentName,
+                           IsActive = d.IsActive,
+                           SortOrder = d.SortOrder
+                       });
+
+            return res;
 
         }
         public WebsiteNavigation CreateOrUpdateWebsiteNavigation(WebsiteNavigation websiteNavigation, int UserId, int TenantId)
@@ -224,23 +235,6 @@ namespace Ganedata.Core.Services
                 websiteNavigation.UpdateCreatedInfo(UserId);
                 _currentDbContext.WebsiteNavigations.Add(websiteNavigation);
                 _currentDbContext.SaveChanges();
-                if (!string.IsNullOrEmpty(websiteNavigation.SelectedProductIds))
-                {
-                    List<int> productWebMapId = websiteNavigation.SelectedProductIds.Split(',').Select(Int32.Parse).ToList();
-                    foreach (var item in productWebMapId)
-                    {
-                        ProductsNavigationMap productsNavigation = new ProductsNavigationMap();
-                        productsNavigation.NavigationId = websiteNavigation.Id;
-                        productsNavigation.ProductWebsiteMapId = item;
-                        productsNavigation.SortOrder = websiteNavigation.SortOrder;
-                        productsNavigation.TenantId = TenantId;
-                        productsNavigation.IsActive = websiteNavigation.IsActive;
-                        productsNavigation.UpdateCreatedInfo(UserId);
-                        _currentDbContext.ProductsNavigationMaps.Add(productsNavigation);
-                    }
-
-
-                }
             }
             else
             {
@@ -254,41 +248,8 @@ namespace Ganedata.Core.Services
                     _currentDbContext.Entry(websiteNavigation).State = System.Data.Entity.EntityState.Modified;
                     _currentDbContext.SaveChanges();
                 }
-                if (!string.IsNullOrEmpty(websiteNavigation.SelectedProductIds))
-                {
-                    List<int> productWebMapIds = websiteNavigation.SelectedProductIds.Split(',').Select(Int32.Parse).ToList();
-                    var Toadd = productWebMapIds.Except(_currentDbContext.ProductsNavigationMaps
-                    .Where(a => a.IsDeleted != true && a.NavigationId == websiteNavigation.Id).Select(a => a.ProductWebsiteMapId)
-                    .ToList()).ToList();
-                    var toDelete = _currentDbContext.ProductsNavigationMaps
-                    .Where(a => a.IsDeleted != true && a.NavigationId == websiteNavigation.Id).Select(a => a.ProductWebsiteMapId).Except(productWebMapIds);
-                    foreach (var item in Toadd)
-                    {
-                        ProductsNavigationMap productsNavigation = new ProductsNavigationMap();
-                        productsNavigation.NavigationId = websiteNavigation.Id;
-                        productsNavigation.ProductWebsiteMapId = item;
-                        productsNavigation.SortOrder = websiteNavigation.SortOrder;
-                        productsNavigation.TenantId = TenantId;
-                        productsNavigation.IsActive = websiteNavigation.IsActive;
-                        productsNavigation.UpdateCreatedInfo(UserId);
-                        _currentDbContext.ProductsNavigationMaps.Add(productsNavigation);
-
-                    }
-                    foreach (var item in toDelete)
-                    {
-                        var productsNavigation = _currentDbContext.ProductsNavigationMaps.FirstOrDefault(u=>u.ProductWebsiteMapId==item);
-                        if (productsNavigation != null)
-                        {
-                            productsNavigation.IsDeleted = true;
-                            productsNavigation.UpdateUpdatedInfo(UserId);
-                            _currentDbContext.Entry(productsNavigation).State=System.Data.Entity.EntityState.Modified;
-                        }
-
-                    }
-                    _currentDbContext.SaveChanges();
-                }
-
             }
+
             return websiteNavigation;
         }
         public WebsiteNavigation RemoveWebsiteNavigation(int Id, int UserId)
@@ -309,6 +270,33 @@ namespace Ganedata.Core.Services
             return _currentDbContext.WebsiteNavigations.FirstOrDefault(u => u.IsDeleted != true && u.Id == NavigationId);
         }
 
+        public bool CreateOrUpdateWebsiteNavigationProducts(NavigationProductsViewModel navigationProduct, int UserId, int TenantId)
+        {
+            var navItem = _currentDbContext.ProductsNavigationMaps.Where(x => x.ProductWebsiteMapId == navigationProduct.Id
+            && x.NavigationId == navigationProduct.NavigationId && x.TenantId == TenantId).FirstOrDefault();
 
+            if (navItem == null)
+            {
+                ProductsNavigationMap productsNavigation = new ProductsNavigationMap();
+                productsNavigation.NavigationId = navigationProduct.NavigationId;
+                productsNavigation.ProductWebsiteMapId = navigationProduct.Id;
+                productsNavigation.SortOrder = navigationProduct.SortOrder ?? 1;
+                productsNavigation.TenantId = TenantId;
+                productsNavigation.IsActive = navigationProduct.IsActive ?? true;
+                productsNavigation.IsDeleted = false;
+                productsNavigation.UpdateCreatedInfo(UserId);
+                _currentDbContext.ProductsNavigationMaps.Add(productsNavigation);
+            }
+            else
+            {
+                navItem.IsActive = navigationProduct.IsActive ?? true;
+                navItem.SortOrder = navigationProduct.SortOrder ?? 1;
+                navItem.IsDeleted = false;
+                navItem.UpdateUpdatedInfo(UserId);
+            }
+
+            _currentDbContext.SaveChanges();
+            return true;
+        }
     }
 }

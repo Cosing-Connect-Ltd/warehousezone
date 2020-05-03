@@ -214,6 +214,7 @@
     <Compile Include="Domain\Models\ProductCategory.cs" />
     <Compile Include="Domain\Models\ProductFiles.cs" />
     <Compile Include="Domain\Models\ProductManufacturer.cs" />
+    <Compile Include="Domain\ViewModels\TenantWebsiteViewModel.cs" />
     <Compile Include="Domain\Websites\ProductsNavigationMap.cs" />
     <Compile Include="Domain\Websites\WebsiteNavigation.cs" />
     <Compile Include="Domain\Websites\WebsiteSlider.cs" />

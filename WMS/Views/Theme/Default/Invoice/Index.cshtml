@@ -13,8 +13,6 @@
         new Script { ExtensionType = ExtensionType.PageControl },
         new Script { ExtensionType = ExtensionType.PopupControl }
         )
-
-
 }
 @{
     ViewBag.Title = "Generate Invoices";
@@ -35,7 +33,6 @@
             if (gridValues[i].name == 'gridMasterAwaitingInvoicing$DXEditor5') {
                 e.customArgs["InvoiceDate"] = gridValues[i].value;
             }
-
         }
         var rowIndex = parseInt($("#RowIndexForProductId").val()) || 0;
         e.customArgs["OrderProcessID"] = gridMasterAwaitingInvoicing.GetRowKey(rowIndex);
@@ -68,13 +65,11 @@
 
     function OnDetailsRowExpanding(s, e) {
         s.SetFocusedRowIndex(e.visibleIndex);
-
         return false;
     }
 
     function OnProcessedDetailCallback(s, e) {
         command = e.command;
-
     }
 
     function SelectionChanged(s, e) {
@@ -84,13 +79,12 @@
         s.GetSelectedFieldValues("InvoiceMasterId", GetSelectedFieldValuesCallback);
     }
 
-
     function GetSelectedFieldValuesCallback(values) {
         $("#SelectedOrderProcessIds").val(values.join());
     }
 
     function GenerateInvoiceForSelected() {
-        
+
         var selectedIds = $("#SelectedOrderProcessIds").val();
         if (selectedIds.length <= 0) { alert("Please select order first, which you want to  process"); return; }
 
@@ -117,20 +111,6 @@
         var selectedIds = $("#SelectedOrderProcessIds").val();
         if (selectedIds.length <= 0) { alert("Please select order first, which you want to  process"); return; }
         window.open('/Reports/InvoiceDetails/?InvoiceMasterIds=' + selectedIds, '_blank');
-        //LoadingPanel.Show();
-
-
-        //var obj = { InvoiceMasterIds: selectedIds };
-        //var successCallback = function (data) {
-           
-
-        //    LoadingPanel.Hide();
-        //}
-
-        //var errorCallback = function () {
-        //    LoadingPanel.Hide();
-        //}
-        //Gane.Helpers.AjaxPost('/Invoice/DownloadInvoice/', obj, null, successCallback, true, "Invoices Print Generated Successfully.", errorCallback);
     }
 
     function OnDetailsChanged(s, e) {
@@ -159,23 +139,20 @@
                 alert('Error' + textStatus + "/" + errorThrown);
             }
         });
-
-
     }
 
     function EndCallBackPostToAccount(s, e) {
         if (postcommand == "REFRESH") {
             s.UnselectRows();
         }
-
     }
+
     function OnProcessedDetailPOSTCallback(s, e) {
         postcommand = e.command;
     }
 
     function PostToInvoice()
     {
-
         filename = "";
         var selectedIds = $("#SelectedOrderProcessIds").val();
 
@@ -197,22 +174,13 @@
                     if (result.fileName != "") {
                         filename = result.fileName;
                         window.open("@Url.RouteUrl(new { Controller = "Invoice", Action = "Download"})/?file=" + filename, '_blank');
-
-
                     }
                     else {
                        alert("Data Not Exported")
                     }
-
                 });
-
         }
-
-
     }
-
-
-
 </script>
 <div id="tabs" style="visibility: hidden">
     <ul>
@@ -223,12 +191,10 @@
     <div id="TI">
         @using (Html.BeginForm("SaveInvoiceNumber", "Invoice", FormMethod.Post, new { @id = "frmPriceGroupPrices" }))
         {
-
             @Html.AntiForgeryToken()
             @Html.Hidden("LastEditingRowIndex")
             @Html.Hidden("LastEditingColIndex")
             @Html.Hidden("RowIndexForProductId")
-
             @Html.Action("ProcessedOrdersPartial", new { type = "Active" })
 
         }
@@ -240,44 +206,16 @@
     <div id="TP">
         @Html.Action("InvoicesListPartial", new { type = "Completed" })
         <div class="col-md-offset-2 col-md-10 bottom-right">
-
             <a type="button" class="btn btn-primary" href="javascript:PostToInvoice()"><b class="fa fa-print"></b>Post to Accounts</a>
             <a type="button" class="btn btn-primary" href="javascript:GenerateBulkInvoicesPrint()"><b class="fa fa-file"></b>Print Invoices</a>
             <a type="button" class="btn btn-primary" href="javascript:EmailInvoice()"><b class="fa fa-envelope"></b>Email Invoice</a>
         </div>
-
     </div>
     <div id="VI">
         @Html.Action("InvoicesViewListPartial")
         <div class="col-md-offset-2 col-md-10 bottom-right">
-
-
-
             <a type="button" class="btn btn-primary" href="javascript:EmailInvoice()"><b class="fa fa-envelope"></b>Email Invoice</a>
         </div>
     </div>
-
-
 </div>
-
-
-
-
-@*@Html.DevExpress().PageControl(s =>
-    {
-        s.EnableTabScrolling = true;
-        s.Width = System.Web.UI.WebControls.Unit.Percentage(100);
-        s.Name = "ProcessedOrdersGrid";
-        s.TabPages.Add("To be invoiced").SetContent(() =>
-        {
-            Html.RenderAction("ProcessedOrdersPartial", new { type = "Active" });
-        });
-
-        s.TabPages.Add("Completed").SetContent(() =>
-        {
-            Html.RenderAction("InvoicesListPartial", new { type = "Completed" });
-        });
-
-    }).GetHtml()*@
-
 

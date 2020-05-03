@@ -31,16 +31,6 @@
 
 }
 <script type="text/javascript">
-    function submitformNav() {
-        if ($("#Type").val() == "3") {
-            var productids = $("#SelectedProductIds").val();
-            if (productids == null || productids == "" || productids == undefined) {
-                alert("Select product first");
-                return false;
-            }
-            $("#ProductsWithIds").val(productids);
-        }
-    }
 
     function onFileUploadComplete(s, e) {
         if (e.callbackData) {
@@ -82,11 +72,45 @@
         }
     }
 
+    //MVCxClientGlobalEvents.AddControlsInitializedEventHandler(OnBeginGridCallback);
+
+    function OnBeginGridCallback(s, e) {
+        debugger;
+        e.customArgs = MVCxClientUtils.GetSerializedEditorValuesInContainer("frmPriceGroupPrices");
+        var rowIndex = parseInt($("#RowIndexForProductId").val()) || 0;
+        e.customArgs["ProductID"] = ProductWebNavGridView.GetRowKey(rowIndex);
+    }
+
+    function OnEndGridCallback(s, e) {
+        debugger;
+        var lastIndex = parseInt($("#LastEditingRowIndex").val()) || 0;
+        SetGridEditorToRowIndex(lastIndex);
+    }
+
+    function SetGridEditorToRowIndex(index) {
+        //ProductWebNavGridView.batchEditApi.StartEdit(index, ProductWebNavGridView.GetColumnByField($("#LastEditingColIndex").val()).index);
+    }
+
+    function OnDetailsChanged(s, e) {
+        debugger;
+        ProductWebNavGridView.UpdateEdit();
+    }
+
+    function OnSpecialPricesGridFocusChanged(s, e) {
+        if (e.cellInfo.rowVisibleIndex >= 0) {
+            $("#LastEditingRowIndex").val(e.cellInfo.rowVisibleIndex);
+        }
+
+        $("#RowIndexForProductId").val(e.cellInfo.rowVisibleIndex);
+        $("#LastEditingColIndex").val(e.cellInfo.column.fieldName);
+    }
+
 </script>
+
 <script>
     $(document).ready(function () {
 
-        $("#Type").on("change", function () {
+        $(".navigation-type").on("change", function () {
             var typeId = $("#Type :selected").val();
             if (typeId == "1") {
                 $(".showcontentpage").hide();
@@ -100,42 +124,29 @@
 
                 $(".showcontentpage").hide();
                 $(".ProductsShow").show();
-
             }
-
-
         });
     });
-    function SelectionChangeds(s, e) {
-        s.GetSelectedFieldValues("ProductId", GetSelectedFieldValuesCallback);
-    }
-    function GetSelectedFieldValuesCallback(values) {
-        $("#SelectedProductIds").val(values.join());
-    }
-    var command;
-    function OnStartCallback(s, e) {
-        command = e.command;
 
-    }
-    function OnGridEndCallBack(s, e) {
-        if (command == "REFRESH") {
-            s.UnselectRows();
-        }
-    }
 
 </script>
 <h2><span>Add Website Navigation</span></h2>
 @Html.Hidden("hdPFiles", (Dictionary<string, string>)ViewBag.Files)
-@using (Html.BeginForm("Edit", "WebsiteNavigations", FormMethod.Post, new { @class = "form-navigation", onsubmit = "return submitformNav()" }))
+@using (Html.BeginForm("Edit", "WebsiteNavigations", FormMethod.Post, new { @class = "form-navigation" }))
 {
     @Html.AntiForgeryToken()
+
+    @Html.Hidden("LastEditingRowIndex")
+    @Html.Hidden("LastEditingColIndex")
+    @Html.Hidden("RowIndexForProductId")
+
     @Html.HiddenFor(model => model.SelectedProductIds)
     @Html.Hidden("ProductsWithIds")
     @Html.HiddenFor(model => model.SiteID)
     <div class="col-md-12">
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="col-md-5 p-0 pull-left mb-2">
+        <div class="col-md-4 p-0 pull-left mb-2">
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-4" })
                 <div class="col-md-8">
@@ -154,7 +165,7 @@
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-4" })
                 <div class="col-md-8">
-                    @Html.EnumDropDownListFor(model => model.Type, "Select Type", htmlAttributes: new { @class = "form-control" })
+                    @Html.EnumDropDownListFor(model => model.Type, "Select Type", htmlAttributes: new { @class = "form-control navigation-type" })
                     @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -257,7 +268,7 @@
             </div>
 
         </div>
-        <div class="col-md-7 p-0 pull-left mb-2">
+        <div class="col-md-8 p-0 pull-left mb-2">
             <div class="ProductsShow" style=@(Model.Type==Ganedata.Core.Entities.Enums.WebsiteNavigationType.Category?"":"display:none;")>
                 @Html.Action("_NavigationProductList", new { SiteId = Model.SiteID, NavigationId = Model.Id })
             </div>
@@ -268,7 +279,7 @@
     <div class="input-group h-100 justify-content-center align-items-center">
         <div class="col-md-offset-2 col-md-10 bottom-right">
             <input type="submit" class="btn btn-primary" value="Save" />
-            <div class="back-list">@Html.ActionLink("Back to List", "Index", new { SiteId = Model.SiteID}, new { @class = "btn btn-default" })</div>
+            <div class="back-list">@Html.ActionLink("Back to List", "Index", new { SiteId = Model.SiteID }, new { @class = "btn btn-default" })</div>
         </div>
     </div>
 

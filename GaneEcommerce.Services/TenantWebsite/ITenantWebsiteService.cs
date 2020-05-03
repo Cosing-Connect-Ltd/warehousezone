@@ -1,4 +1,5 @@
 ﻿using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Domain.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,10 +35,11 @@ namespace Ganedata.Core.Services
         //WebsiteNavigation
 
         IEnumerable<WebsiteNavigation> GetAllValidWebsiteNavigation(int TenantId, int? SiteId);
-        IQueryable<object> GetAllValidWebsiteNavigations(int TenantId, int? SiteId);
+        IQueryable<NavigationProductsViewModel> GetAllValidWebsiteNavigations(int TenantId, int SiteId, int navigationId);
         WebsiteNavigation CreateOrUpdateWebsiteNavigation(WebsiteNavigation websiteNavigation, int UserId, int TenantId);
         WebsiteNavigation RemoveWebsiteNavigation(int Id, int UserId);
         WebsiteNavigation GetWebsiteNavigationId(int NavigationId);
+        bool CreateOrUpdateWebsiteNavigationProducts(NavigationProductsViewModel navigationProduct, int UserId, int TenantId);
 
     }
 }

@@ -37,9 +37,6 @@ namespace Ganedata.Core.Entities.Domain
         public bool IsStockItem { get; set; }
         public bool IsRawMaterial { get; set; }
         public bool IsSelectable { get; set; }
-
-
-
         public string UOM { get; set; }
         public bool Kit { get; set; }
         public string BarCode2 { get; set; }
@@ -53,7 +50,6 @@ namespace Ganedata.Core.Entities.Domain
         public double Weight { get; set; }
         public double Depth { get; set; }
         public decimal PercentMargin { get; set; }
-
         public string LotOptionDescription { get; set; }
         public string TaxName { get; set; }
         public string GlobalWeightGrpDescription { get; set; }
@@ -69,7 +65,6 @@ namespace Ganedata.Core.Entities.Domain
         public string ProductCategoryName { get; set; }
         public string DepartmentName { get; set; }
         public string Location { get; set; }
-
         public List<ProductRecipeItemViewModel> AllAvailableSubItems { get; set; }
         public List<ProductRecipeItemViewModel> AllSelectedSubItems { get; set; }
         public bool EnableWarranty { get; set; }
@@ -85,7 +80,6 @@ namespace Ganedata.Core.Entities.Domain
         public bool OnSaleProduct { get; set; }
         public string HoverImage { get; set; }
         public string DefaultImage { get; set; }
-
     }
 
 

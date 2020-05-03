@@ -12,19 +12,18 @@ using System.Web.Mvc;
 
 namespace WMS.CustomBindings
 {
-    public class ProducctListCustomBinding
+    public class WebsiteNavigationProductsCustomBinding
     {
-
-        private static IQueryable<object> GetProductDataset(int tenantId, int warehouseId)
+        private static IQueryable<object> GetProductNavigationDataset(int tenantId, int SiteId, int navigationId)
         {
-            var productServices = DependencyResolver.Current.GetService<IProductServices>();
-            var transactions = productServices.GetAllProductMasterDetail(tenantId, warehouseId);
+            var tenantWebsiteService = DependencyResolver.Current.GetService<ITenantWebsiteService>();
+            var transactions = tenantWebsiteService.GetAllValidWebsiteNavigations(tenantId, SiteId, navigationId);
             return transactions;
         }
 
-        public static void ProductGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId)
+        public static void ProductGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int SiteId, int navigationId)
         {
-            var transactions = GetProductDataset(tenantId, warehouseId);
+            var transactions = GetProductNavigationDataset(tenantId, SiteId, navigationId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
@@ -55,15 +54,13 @@ namespace WMS.CustomBindings
 
             transactions = transactions.Skip(e.StartDataRowIndex).Take(e.DataRowCount);
 
-
-
             e.Data = transactions.ToList();
         }
 
-        public static void ProductGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId)
+        public static void ProductGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int SiteId, int navigationId)
         {
 
-            var transactions = GetProductDataset(tenantId, warehouseId);
+            var transactions = GetProductNavigationDataset(tenantId, SiteId, navigationId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
@@ -92,30 +89,21 @@ namespace WMS.CustomBindings
 
         }
 
-        public static GridViewModel CreateProductGridViewModel()
+        public static GridViewModel CreateProductNavigationViewModel()
         {
             var viewModel = new GridViewModel();
-            viewModel.KeyFieldName = "ProductId";
-            viewModel.Columns.Add("Name");
+            viewModel.KeyFieldName = "Id";
+            viewModel.Columns.Add("ProductId");
+            viewModel.Columns.Add("SiteID");
             viewModel.Columns.Add("SKUCode");
-            viewModel.Columns.Add("BarCode");
-            viewModel.Columns.Add("BarCode2");
-            viewModel.Columns.Add("Location");
-            viewModel.Columns.Add("UOM");
+            viewModel.Columns.Add("Name");
+            viewModel.Columns.Add("Description");
             viewModel.Columns.Add("DepartmentName");
-            viewModel.Columns.Add("Serialisable");
-            viewModel.Columns.Add("IsStockItem");
-            viewModel.Columns.Add("IsRawMaterial");
-            viewModel.Columns.Add("InStock");
-            viewModel.Columns.Add("Property");
-            viewModel.Columns.Add("TopProduct");
-            viewModel.Columns.Add("BestSellerProduct");
-            viewModel.Columns.Add("OnSaleProduct");
-            viewModel.Columns.Add("SpecialProduct");
-
+            viewModel.Columns.Add("ProductGroupName");
+            viewModel.Columns.Add("ProductCategoryName");
+            viewModel.Columns.Add("IsActive");
             viewModel.Pager.PageSize = 10;
             return viewModel;
         }
-
     }
 }

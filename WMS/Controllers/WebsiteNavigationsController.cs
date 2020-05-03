@@ -1,17 +1,14 @@
-﻿using System;
+﻿using DevExpress.Web.Mvc;
+using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Domain.ViewModels;
+using Ganedata.Core.Services;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using DevExpress.Web.Mvc;
-using Ganedata.Core.Data;
-using Ganedata.Core.Entities.Domain;
-using Ganedata.Core.Services;
 using WMS.CustomBindings;
 
 namespace WMS.Controllers
@@ -73,64 +70,77 @@ namespace WMS.Controllers
 
             return PartialView("_HoverUploader");
         }
-        public ActionResult _NavigationProductList(int SiteId, int? NavigationId)
+
+        public ActionResult SaveNavigationProductList(int SiteId, int navigationId, MVCxGridViewBatchUpdateValues<NavigationProductsViewModel, int> updateValues)
+        {
+            List<bool> results = new List<bool>();
+            foreach (var value in updateValues.Update)
+            {
+                value.NavigationId = navigationId;
+                value.SiteID = SiteId;
+                var res = _tenantWebsiteService.CreateOrUpdateWebsiteNavigationProducts(value, CurrentUserId, CurrentTenantId);
+                results.Add(res);
+            }
+
+            return _NavigationProductList(SiteId, navigationId);
+        }
+
+        public ActionResult _NavigationProductList(int SiteId, int navigationId)
         {
             var viewModel = GridViewExtension.GetViewModel("ProductWebNavGridView");
             ViewBag.Controller = "WebsiteNavigations";
             ViewBag.SiteId = SiteId;
-            if (NavigationId.HasValue)
-            {
-                var data = _tenantWebsiteService.GetWebsiteNavigationId(NavigationId ?? 0).ProductsNavigationMap.Select(u => u.ProductWebsiteMapId).ToList();
-                ViewData["NaviagtionProduct"] = data;
-            }
+            ViewBag.NavigationId = navigationId;
+            var data = _tenantWebsiteService.GetWebsiteNavigationId(navigationId).ProductsNavigationMap.Select(u => u.ProductWebsiteMapId).ToList();
+            ViewData["NaviagtionProduct"] = data;
+
             if (viewModel == null)
-                viewModel = ProducctListCustomBinding.CreateProductGridViewModel();
+                viewModel = WebsiteNavigationProductsCustomBinding.CreateProductNavigationViewModel();
 
-
-            return ProductGridActionCore(viewModel, SiteId);
+            return NavigationProductListActionCore(viewModel, SiteId, navigationId);
         }
 
-        public ActionResult _ProductListPaging(GridViewPagerState pager, int SiteId)
+        public ActionResult _NavigationProductListPaging(GridViewPagerState pager, int SiteId, int navigationId)
         {
             ViewBag.SiteId = SiteId;
             var viewModel = GridViewExtension.GetViewModel("ProductWebNavGridView");
             ViewBag.Controller = "WebsiteNavigations";
             viewModel.Pager.Assign(pager);
-            return ProductGridActionCore(viewModel, SiteId);
+            return NavigationProductListActionCore(viewModel, SiteId, navigationId);
         }
 
-        public ActionResult _ProductsFiltering(GridViewFilteringState filteringState, int SiteId)
+        public ActionResult _NavigationProductListFiltering(GridViewFilteringState filteringState, int SiteId, int navigationId)
         {
             ViewBag.SiteId = SiteId;
             ViewBag.Controller = "WebsiteNavigations";
             var viewModel = GridViewExtension.GetViewModel("ProductWebNavGridView");
             viewModel.ApplyFilteringState(filteringState);
-            return ProductGridActionCore(viewModel, SiteId);
+            return NavigationProductListActionCore(viewModel, SiteId, navigationId);
         }
 
 
-        public ActionResult _ProductsGetDataSorting(GridViewColumnState column, int SiteId, bool reset)
+        public ActionResult _NavigationProductListSorting(GridViewColumnState column, int SiteId, bool reset, int navigationId)
         {
             ViewBag.SiteId = SiteId;
             ViewBag.Controller = "WebsiteNavigations";
             var viewModel = GridViewExtension.GetViewModel("ProductWebNavGridView");
             viewModel.ApplySortingState(column, reset);
-            return ProductGridActionCore(viewModel, SiteId);
+            return NavigationProductListActionCore(viewModel, SiteId, navigationId);
         }
 
 
-        public ActionResult ProductGridActionCore(GridViewModel gridViewModel, int SiteId)
+        public ActionResult NavigationProductListActionCore(GridViewModel gridViewModel, int SiteId, int navigationId)
         {
             ViewBag.Controller = "WebsiteNavigations";
             gridViewModel.ProcessCustomBinding(
                 new GridViewCustomBindingGetDataRowCountHandler(args =>
                 {
-                    ProducctListCustomBinding.ProductGetDataRowCount(args, CurrentTenantId, CurrentWarehouseId, true, SiteId);
+                    WebsiteNavigationProductsCustomBinding.ProductGetDataRowCount(args, CurrentTenantId, SiteId, navigationId);
                 }),
 
                     new GridViewCustomBindingGetDataHandler(args =>
                     {
-                        ProducctListCustomBinding.ProductGetData(args, CurrentTenantId, CurrentWarehouseId, true, SiteId);
+                        WebsiteNavigationProductsCustomBinding.ProductGetData(args, CurrentTenantId, SiteId, navigationId);
                     })
             );
             return PartialView("_NavProductList", gridViewModel);
@@ -205,6 +215,7 @@ namespace WMS.Controllers
             {
                 return HttpNotFound();
             }
+
             ViewBag.Files = new Dictionary<string, string>();
             Dictionary<string, string> files = new Dictionary<string, string>();
             if (!string.IsNullOrEmpty(websiteNavigation.Image) || !string.IsNullOrEmpty(websiteNavigation.HoverImage))
@@ -242,7 +253,7 @@ namespace WMS.Controllers
         //// more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(WebsiteNavigation websiteNavigation, string ProductsWithIds, IEnumerable<DevExpress.Web.UploadedFile> ImageDefault, IEnumerable<DevExpress.Web.UploadedFile> HoverImage)
+        public ActionResult Edit(WebsiteNavigation websiteNavigation, string ProductsWithIds, IEnumerable<DevExpress.Web.UploadedFile> ImageDefault, IEnumerable<DevExpress.Web.UploadedFile> HoverImage, int SiteID)
         {
             if (websiteNavigation != null)
             {
@@ -275,11 +286,12 @@ namespace WMS.Controllers
 
                 }
                 _tenantWebsiteService.CreateOrUpdateWebsiteNavigation(websiteNavigation, CurrentUserId, CurrentTenantId);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { SiteId = SiteID });
             }
             ViewBag.ControllerName = "WebsiteNavigations";
             ViewBag.ParentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, websiteNavigation.SiteID).ToList(), "Id", "Name", websiteNavigation.ParentId);
             ViewBag.contentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, websiteNavigation.SiteID), "Id", "MetaTitle", websiteNavigation.ContentPageId);
+            ViewBag.SiteId = SiteID;
             return View(websiteNavigation);
         }
 
