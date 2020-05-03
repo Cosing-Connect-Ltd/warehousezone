@@ -42,12 +42,12 @@ namespace Ganedata.Core.Services
         Task<MarketJobViewModel> CompleteMarketJob(int marketJobId, int userId, int tenantId, string reason, string terminalSerial = null, double? latitude = null, double? longitude = null);
         Task<MarketJobViewModel> CancelMarketJob(int marketJobId, int userId, int tenantId, string reason, string terminalSerial = null, double? latitude = null, double? longitude = null);
         List<MarketJobAllocationModel> GetAllResourceJobs(int resourceId, DateTime? reqDate = null, bool includeIsDeleted = false);
-        List<MarketProductLevelViewModel> GetAllStockLevelsForMarket(int marketId);
+        List<MarketProductLevelViewModel> GetAllStockLevelsForMarket(int marketId, int tenantId);
         ProductMarketStockLevel UpdateProductLevelsForMarkets(int marketId, int productId, decimal stockQty, int userId);
 
 
         IQueryable<MarketRouteProgress> GetMarketRouteProgresses(int? marketRouteId, DateTime dateTime, int tenantId);
 
-        string GetMarketName(int accountId,int MarketId);
+        string GetMarketName(int accountId, int MarketId);
     }
 }

@@ -239,7 +239,6 @@ var loadProductCreateForm = function (code, serialised) {
 
 $(document).ready(function () {
     $(".stockMovement").unbind().on("submit", function () {
-        debugger;
         var bulk = $("#BulkStock").val();
         if (bulk) {
             if ($("#StockMovementList").length > 0)

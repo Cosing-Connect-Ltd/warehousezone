@@ -3156,7 +3156,6 @@ function IsAllowZeroSale() {
                 if (PriceValue <= 0) {
                     if (!data.zeroprice) {
                         allowZPrice = false;
-                        debugger;
                         alert("0 price is not allowed for this product")
                         if (DirectSalestranstype == "15" || DirectSalestranstype == "100") {
                             InvoiceProductPrice.SetValue("");

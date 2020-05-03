@@ -253,7 +253,6 @@ var getTaxAmountById = function (taxId, price, isPercent) {
     }
 }
 var getDiscountAmount = function (totalamount) {
-    debugger;
     var value = DiscountBox.GetValue();
     var percent = (value / 100);
     var taxamount = (totalamount * percent);

@@ -39,7 +39,6 @@
     //MVCxClientGlobalEvents.AddControlsInitializedEventHandler(OnBeginGridCallback);
 
     function OnBeginGridCallback(s, e, gridName) {
-        debugger;
         e.customArgs = MVCxClientUtils.GetSerializedEditorValuesInContainer("frmProductFileDetail");
         var grid = ASPxClientControl.GetControlCollection().GetByName(gridName.name);
         var rowIndex = parseInt($("#RowIndexForProductId").val()) || 0;
@@ -49,7 +48,6 @@
     }
 
     function OnDetailsChanged(s, e, gridName) {
-        debugger;
         var grid = ASPxClientControl.GetControlCollection().GetByName(gridName.name);
         grid.UpdateEdit();
     }

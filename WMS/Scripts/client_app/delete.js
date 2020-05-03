@@ -40,9 +40,7 @@ $(document).on('click', '#modalDialog .modal-footer #deleteConfirm', function (e
         method: 'POST',
         success: function (response)
         {
-            debugger;
             if (response.success) {
-
                 selector.modal('hide');
                 if ($("#gridMaster").length > 0) {
                     gridMaster.Refresh();

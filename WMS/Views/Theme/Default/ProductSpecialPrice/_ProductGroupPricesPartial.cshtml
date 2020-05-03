@@ -48,47 +48,6 @@
 
         settings.Columns.Add(column =>
         {
-            column.FieldName = "StartDate";
-            column.EditorProperties().DateEdit(p =>
-            {
-                p.MinDate = DateTime.UtcNow.AddDays(-1);
-                p.MaxDate = DateTime.MaxValue;
-                p.ClientSideEvents.CloseUp = "function(s,e){ OnDetailsChanged(s,e);}";
-            });
-
-            column.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
-            column.ColumnType = MVCxGridViewColumnType.DateEdit;
-
-            column.SetDataItemTemplateContent(m =>
-            {
-                var date = (DateTime?)DataBinder.Eval(m.DataItem, "StartDate");
-                DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
-                ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
-            });
-        });
-
-        settings.Columns.Add(column =>
-        {
-            column.FieldName = "EndDate";
-            column.EditorProperties().DateEdit(p =>
-            {
-                p.MinDate = DateTime.UtcNow.AddDays(-1);
-                p.MaxDate = DateTime.MaxValue;
-                p.ClientInstanceName =
-                p.ClientSideEvents.CloseUp = "function(s,e){ OnDetailsChanged(s,e);}";
-            });
-            column.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
-            column.ColumnType = MVCxGridViewColumnType.DateEdit;
-            column.SetDataItemTemplateContent(m =>
-            {
-                var date = (DateTime?)DataBinder.Eval(m.DataItem, "EndDate");
-                DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
-                ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
-            });
-        });
-
-        settings.Columns.Add(column =>
-        {
             column.FieldName = "SpecialPrice";
             column.EditorProperties().SpinEdit(p =>
             {
@@ -100,16 +59,43 @@
 
         });
 
-        settings.CustomJSProperties = (sender, e) =>
+        settings.Columns.Add(column =>
         {
-            MVCxGridView gridView = (MVCxGridView)sender;
-            if (gridView.EditingRowVisibleIndex > -1)
+            column.FieldName = "StartDate";
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            column.ColumnType = MVCxGridViewColumnType.DateEdit;
+            column.EditorProperties().DateEdit(p =>
             {
-                e.Properties["sSpecialPrice"] = gridView.GetRowValues(gridView.EditingRowVisibleIndex, "sSpecialPrice");
-                e.Properties["sStartDate"] = gridView.GetRowValues(gridView.EditingRowVisibleIndex, "sStartDate");
-                e.Properties["sEndDate"] = gridView.GetRowValues(gridView.EditingRowVisibleIndex, "sEndDate");
-            }
-        };
+                p.MinDate = DateTime.UtcNow.AddDays(-1);
+                p.MaxDate = DateTime.MaxValue;
+                p.ClientSideEvents.LostFocus = "function(s,e){ OnDetailsChanged(s,e);}";
+            });
+            column.SetDataItemTemplateContent(m =>
+            {
+                var date = (DateTime?)DataBinder.Eval(m.DataItem, "StartDate");
+                DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
+                ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
+            });
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "EndDate";
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            column.ColumnType = MVCxGridViewColumnType.DateEdit;
+            column.EditorProperties().DateEdit(p =>
+            {
+                p.MinDate = DateTime.UtcNow.AddDays(-1);
+                p.MaxDate = DateTime.MaxValue;
+                p.ClientSideEvents.LostFocus = "function(s,e){ OnDetailsChanged(s,e);}";
+            });
+            column.SetDataItemTemplateContent(m =>
+            {
+                var date = (DateTime?)DataBinder.Eval(m.DataItem, "EndDate");
+                DateTime? localDate = DateTimeToLocal.Convert(date, ViewBag.TimeZone);
+                ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
+            });
+        });
 
         settings.CellEditorInitialize = (s, e) =>
         {

@@ -582,7 +582,6 @@ function ProductKitChanges(s, e) {
 
 }
 function AddKitProduct(kitTypes, tab) {
-    debugger;
     var qty = $("#Quantity").val();
     var parentProductId = $(".productIds").val();
     var productId = prdid.GetValue();
@@ -657,7 +656,6 @@ function AddKitGroup() {
 
 }
 function EditKitProductView() {
-    debugger;
     var qty = $("#Quantity").val();
     var kitId = $("#Id").val();
     var kitTypes = $("#ProductKitType").val();
@@ -706,14 +704,12 @@ var producttypekit;
 var ProductKitId;
 var grouped = false;
 function ProductKitPopUpCallBack(s, e) {
-    debugger;
     e.customArgs["kitTypeId"] = producttypekit;
     e.customArgs["ProductKitId"] = ProductKitId;
     e.customArgs["Grouped"] = grouped;
 
 }
 function ProductKitPopUp(isEdit) {
-    debugger;
     if (isEdit == undefined) { grouped = false; }
     producttypekit = isEdit;
     

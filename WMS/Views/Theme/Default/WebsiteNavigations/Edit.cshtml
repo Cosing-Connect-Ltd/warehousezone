@@ -32,8 +32,6 @@
 }
 <script type="text/javascript">
     function submitformNav() {
-        debugger;
-
         if ($("#Type").val() == "3") {
             var productids = $("#SelectedProductIds").val();
             if (productids == null || productids == "" || productids == undefined) {
@@ -41,9 +39,9 @@
                 return false;
             }
             $("#ProductsWithIds").val(productids);
-
         }
     }
+
     function onFileUploadComplete(s, e) {
         if (e.callbackData) {
             $("#dvfiles").show();
@@ -53,11 +51,9 @@
             $("#dvfiles").append(result);
             $('.se-pre-con').hide();
             $("#FileLength").val('True');
-
         }
-
-
     }
+
     function onFileUploadHoverComplete(s, e) {
         if (e.callbackData) {
             $("#dvfilesHover").show();
@@ -67,11 +63,9 @@
             $("#dvfilesHover").append(result);
             $('.se-pre-con').hide();
             $("#FileLengthHover").val('True');
-
         }
-
-
     }
+
     function onFileUploadStart(s, e) {
         if ($("#FileLength").val() == 'True') {
             e.cancel = true;
@@ -79,14 +73,13 @@
             return;
         }
     }
+
     function onFileUploadHoverStart(s, e) {
         if ($("#FileLengthHover").val() == 'True') {
             e.cancel = true;
             alert("Only one file allow to be select");
             return;
         }
-
-
     }
 
 </script>
@@ -114,7 +107,6 @@
         });
     });
     function SelectionChangeds(s, e) {
-        debugger;
         s.GetSelectedFieldValues("ProductId", GetSelectedFieldValuesCallback);
     }
     function GetSelectedFieldValuesCallback(values) {

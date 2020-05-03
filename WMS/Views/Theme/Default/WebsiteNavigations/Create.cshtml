@@ -30,8 +30,6 @@
 }
 <script type="text/javascript">
     function submitformNav() {
-        debugger;
-
         if ($("#Type").val() == "3") {
             var productids = $("#SelectedProductIds").val();
             if (productids == null || productids == "" || productids == undefined) {
@@ -39,7 +37,6 @@
                 return false;
             }
             $("#ProductsWithIds").val(productids);
-
         }
     }
     function onFileUploadComplete(s, e) {
@@ -112,7 +109,6 @@
         });
     });
     function SelectionChangeds(s, e) {
-        debugger;
         s.GetSelectedFieldValues("ProductId", GetSelectedFieldValuesCallback);
     }
     function GetSelectedFieldValuesCallback(values) {

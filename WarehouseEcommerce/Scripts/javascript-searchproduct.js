@@ -3,7 +3,6 @@
 }
 
 function searchPoducts() {
-    debugger;
     var sortvalue = $("#SortedValues").val();
     var groupId = $("#ProductGroups").val();
     if (groupId === "" || groupId === undefined || groupId === null) { groupId = $("#ProductGroupsId").val(); }
@@ -26,7 +25,6 @@ function SearchPostCode() {
         data: { postCode: searchString },
         dataType: 'json',
         success: function (data) {
-            debugger;
             $('#selectAddresss').show();
             if (data.length > 0) {
                 $('#selectApiAddress').empty();
@@ -44,7 +42,6 @@ function SearchPostCode() {
 }
 
 function OnchangeDropdownAddress() {
-    debugger;
     var selOption = $('#selectApiAddress :selected').val().split(",");
     var PostCode = document.getElementById("postCode").value;
 
@@ -98,7 +95,6 @@ $('.text-search').on('input', function () {
         },
         open: function (data) {
             if (seeall) {
-                debugger;
                 var $li = $("<li>");
                 var $link = $("<a>", {
                     href: basePath + "/Products/list?group=" + data.Group + "&search=" + data.SKUCode + "&department=" + data.Department,
@@ -110,7 +106,6 @@ $('.text-search').on('input', function () {
         focus: updateTextBox,
         select: updateTextBox
     }).autocomplete('instance')._renderItem = function (ul, item) {
-        debugger;
         return $('<li class="search-item">').append("<img style='width: 46px; height:46px;' src=" + item.Path + " alt=" + item.Name + "/>")
             .append("<a href=" + basePath + "/Products/list?group=" + item.Group + "&search=" + item.SKUCode + "&department=" + item.Department + ">" + item.Name + "</a>").appendTo(ul);
     };
@@ -307,7 +302,6 @@ function onCurrencyChange(event) {
 }
 
 $("input[type=checkbox]").on("change", function () {
-    debugger;
     var arr = []
     var data = "";
     var str = $(location).attr('href');

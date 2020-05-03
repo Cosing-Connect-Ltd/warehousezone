@@ -95,7 +95,7 @@ namespace WMS.CustomBindings
         public static GridViewModel CreateLocationGridViewModel()
         {
             var viewModel = new GridViewModel();
-            viewModel.KeyFieldName = "SKUCode";
+            viewModel.KeyFieldName = "ProductID";
             viewModel.Columns.Add("ProductName");
             viewModel.Columns.Add("SKUCode");
             viewModel.Columns.Add("ReOrderQuantity");

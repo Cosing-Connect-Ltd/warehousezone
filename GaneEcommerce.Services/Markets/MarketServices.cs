@@ -675,10 +675,10 @@ namespace Ganedata.Core.Services
 
         #region Market Stock Levels
 
-        public List<MarketProductLevelViewModel> GetAllStockLevelsForMarket(int marketId)
+        public List<MarketProductLevelViewModel> GetAllStockLevelsForMarket(int marketId, int tenantId)
         {
             var market = _currentDbContext.Markets.Find(marketId);
-            var allProducts = _productServices.GetAllValidProductMasters(market.TenantId).ToList();
+            var allProducts = _currentDbContext.ProductMaster.Where(m => m.TenantId == tenantId && m.IsDeleted != true);
             var allStockLevels = _currentDbContext.ProductMarketStockLevel.Where(m => m.MarketId == marketId);
             var levels =
                 from p in allProducts

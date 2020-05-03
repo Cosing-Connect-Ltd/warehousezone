@@ -96,7 +96,6 @@ $(function () {
       "data-zoom-image",
       activeImgsrc
     );
-    debugger;
   });
 
   $("#zoomViewTrigger").click(function (e) {

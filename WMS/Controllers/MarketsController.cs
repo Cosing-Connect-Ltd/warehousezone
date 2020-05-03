@@ -19,7 +19,7 @@ namespace WMS.Controllers
         private readonly IMapper _mapper;
 
         public MarketsController(ICoreOrderService orderService,
-            IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IMarketServices marketServices, IEmployeeServices employeeServices, IMapper mapper) 
+            IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IMarketServices marketServices, IEmployeeServices employeeServices, IMapper mapper)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
             _accountServices = accountServices;
@@ -100,7 +100,7 @@ namespace WMS.Controllers
         {
             model.MarketCustomerAccounts = (List<SelectedAccountViewModel>)Newtonsoft.Json.JsonConvert.DeserializeObject(model.MarketCustomerEntries, typeof(List<SelectedAccountViewModel>));
 
-            _marketServices.SaveMarketCustomer(model, CurrentUserId,CurrentTenantId);
+            _marketServices.SaveMarketCustomer(model, CurrentUserId, CurrentTenantId);
 
             return RedirectToAction("MarketCustomers", new { id = model.MarketId });
         }
@@ -131,7 +131,7 @@ namespace WMS.Controllers
             var results = _marketServices.GetAllValidMarketVehicles(CurrentTenantId);
 
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
-            
+
             return View("~/Views/MarketsVehicle/Index.cshtml", results);
         }
 
@@ -180,10 +180,10 @@ namespace WMS.Controllers
         //    return PartialView("~/Views/MarketJob/_GridPartial.cshtml", results);
         //}
 
-        
+
         public ActionResult MarketJobsListPartial()
         {
-            int id= int.Parse(!string.IsNullOrEmpty(Request.Params["id"]) ? Request.Params["id"] : "0");
+            int id = int.Parse(!string.IsNullOrEmpty(Request.Params["id"]) ? Request.Params["id"] : "0");
             ViewBag.MarketJobStatus = id;
             var viewModel = GridViewExtension.GetViewModel("_GridPartial");
 
@@ -267,7 +267,7 @@ namespace WMS.Controllers
         public ActionResult _AllocateMarketJobPartial(int id)
         {
             var marketJob = _marketServices.GetMarketJobById(id);
-           
+
             marketJob.AllResources = _employeeServices.GetAllEmployees(CurrentTenantId).Select(m => new SelectListItem() { Text = m.Name, Value = m.ResourceId.ToString() }).ToList();
             marketJob.AllResources.Insert(0, new SelectListItem() { Text = "Un-Allocated", Value = "0" });
             return PartialView("~/Views/MarketJob/_AllocateMarketJobPartial.cshtml", marketJob);
@@ -282,10 +282,10 @@ namespace WMS.Controllers
         public ActionResult _MarketJobStatus()
         {
 
-          
+
 
             var Cancelled = _marketServices.GetAllValidMarketJobs(CurrentTenantId, MarketJobStatusEnum.Cancelled).Count();
-                
+
             int Declined = _marketServices.GetAllValidMarketJobs(CurrentTenantId, MarketJobStatusEnum.Declined).Count();
             int Completed = _marketServices.GetAllValidMarketJobs(CurrentTenantId, MarketJobStatusEnum.Completed).Count();
             int Unallocated = _marketServices.GetAllValidMarketJobs(CurrentTenantId, MarketJobStatusEnum.UnAllocated).Count();
@@ -314,7 +314,8 @@ namespace WMS.Controllers
 
         public ActionResult _StockLevelsPartial(int id)
         {
-            var model = _marketServices.GetAllStockLevelsForMarket(id);
+            var model = _marketServices.GetAllStockLevelsForMarket(id, CurrentTenantId);
+            ViewBag.MarketId = id;
             return PartialView("_StockLevelsPartial", model);
         }
 

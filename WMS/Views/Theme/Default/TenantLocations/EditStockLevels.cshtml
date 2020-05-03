@@ -13,17 +13,19 @@
 }
 
 @{
-    ViewBag.Title = (ViewBag.WarehouseName ?? "Warehouse")+" - Stock Levels";
+    ViewBag.Title = (ViewBag.WarehouseName ?? "Warehouse") + " - Stock Levels";
 }
 
-<h2><span> @(ViewBag.WarehouseName??"Location") - Replenishment Levels</span></h2>
+<h2><span> @(ViewBag.WarehouseName ?? "Location") - Replenishment Levels</span></h2>
 
 <script type="text/javascript">
-    
+
     MVCxClientGlobalEvents.AddControlsInitializedEventHandler(OnBeginGridCallback);
 
     function OnBeginGridCallback(s, e) {
         e.customArgs = MVCxClientUtils.GetSerializedEditorValuesInContainer("frmProductLocationLevels");
+        var rowIndex = parseInt($("#RowIndexForProductId").val()) || 0;
+        e.customArgs["ProductID"] = StockLevelsGridView.GetRowKey(rowIndex);
     }
 
     function OnEndGridCallback(s, e) {
@@ -34,25 +36,32 @@
     }
 
     function SetGridEditorToRowIndex(index) {
-        warehouseStocksGridView.StartEditRow(index);
+        StockLevelsGridView.StartEditRow(index);
     }
-     
+
     function OnQuantitiesChanged(s, e) {
-        warehouseStocksGridView.UpdateEdit();
+        StockLevelsGridView.UpdateEdit();
     }
-     
+
     function OnStockLevelsGridFocusChanged(s, e) {
-        $("#LastEditingRowIndex").val(e.cellInfo.rowVisibleIndex);
+        if (e.cellInfo.rowVisibleIndex >= 0) {
+            $("#LastEditingRowIndex").val(e.cellInfo.rowVisibleIndex);
+        }
+
+        $("#RowIndexForProductId").val(e.cellInfo.rowVisibleIndex);
+        $("#LastEditingColIndex").val(e.cellInfo.column.fieldName);
     }
 
 </script>
-@using (Html.BeginForm("UpdateProductLevels","TenantLocations", FormMethod.Post, new { @id="frmProductLocationLevels" }))
+@using (Html.BeginForm("UpdateProductLevels", "TenantLocations", FormMethod.Post, new { @id = "frmProductLocationLevels" }))
 {
     @Html.AntiForgeryToken()
     @Html.Hidden("LastEditingRowIndex")
+    @Html.Hidden("LastEditingColIndex")
+    @Html.Hidden("RowIndexForProductId")
 
     <div class="input-group h-100 justify-content-center align-items-center">
-    @Html.Action("_StockLevelsPartial", "TenantLocations")
+        @Html.Action("_StockLevelsPartial", "TenantLocations")
     </div>
 }
 

@@ -1164,7 +1164,6 @@ $(function () {
 
     //only single checkbox allowed wihtin parent div
     $('.single-check-select .checkbox').click(function () {
-        debugger;
         var checkedState = $(this).prop("checked");
         $(this).parents('.single-check-select').find('.checkbox:checked').prop("checked", false);
         $(this).prop("checked", checkedState);

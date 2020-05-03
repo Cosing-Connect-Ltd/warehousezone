@@ -16,7 +16,7 @@
         settings.CallbackRouteValues = new { Controller = "Products", Action = "_ProductDocumentsDetails", id = ViewBag.productid };
         settings.SettingsEditing.BatchUpdateRouteValues = new { Controller = "Products", Action = "SaveProductFiles" };
         settings.SettingsEditing.Mode = GridViewEditingMode.Batch;
-        settings.SettingsEditing.BatchEditSettings.EditMode = GridViewBatchEditMode.Row;
+        settings.SettingsEditing.BatchEditSettings.EditMode = GridViewBatchEditMode.Cell;
         settings.SettingsEditing.BatchEditSettings.StartEditAction = GridViewBatchStartEditAction.DblClick;
         settings.Settings.ShowStatusBar = GridViewStatusBarMode.Hidden;
 

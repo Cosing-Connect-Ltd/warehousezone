@@ -117,7 +117,7 @@ namespace WMS.Controllers
             ViewBag.CountryId = new SelectList(LookupServices.GetAllGlobalCountries(), "CountryId", "CountryName", tenantwarehouse.CountryID);
 
             ViewBag.AllTerminals = _terminalServices.GetAllTerminalsWithoutMobileLocationLinks(CurrentTenantId, tenantwarehouse.SalesTerminalId).Select(m => new SelectListItem() { Value = m.TerminalId.ToString(), Text = m.TerminalName + " " + m.TermainlSerial });
-            ViewBag.AllDrivers = _employeeServices.GetAllEmployeesWithoutResourceLinks(CurrentTenantId, tenantwarehouse.SalesManUserId).Select(m => new SelectListItem() { Value = m.AuthUserId.ToString(), Text = m.SurName + " "+ m.FirstName });
+            ViewBag.AllDrivers = _employeeServices.GetAllEmployeesWithoutResourceLinks(CurrentTenantId, tenantwarehouse.SalesManUserId).Select(m => new SelectListItem() { Value = m.AuthUserId.ToString(), Text = m.SurName + " " + m.FirstName });
 
             return View(tenantwarehouse);
         }
@@ -207,20 +207,18 @@ namespace WMS.Controllers
                 var warehouse = _tenantLocationServices.GetTenantLocationById(warehouseId.Value);
                 ViewBag.WarehouseName = warehouse.WarehouseName;
             }
-            
+
             return View();
         }
 
 
         [ValidateInput(false)]
-        public ActionResult UpdateProductLevels(MVCxGridViewBatchUpdateValues<WarehouseProductLevelViewModel, int> updateValues)
+        public ActionResult UpdateProductLevels(MVCxGridViewBatchUpdateValues<WarehouseProductLevelViewModel, int> updateValues, int productId)
         {
-            foreach (var product in updateValues.Update)
-            {
-                if (updateValues.IsValid(product))
-                    _tenantLocationServices.UpdateProductLevelsForTenantLocation(CurrentWarehouseId, product.ProductID,
-                        product.MinStockQuantity, CurrentUserId);
-            }
+            var product = updateValues.Update.FirstOrDefault();
+            if (updateValues.IsValid(product))
+                _tenantLocationServices.UpdateProductLevelsForTenantLocation(CurrentWarehouseId, product.ProductID,
+                    product.MinStockQuantity, CurrentUserId);
             return _StockLevelsPartial();
         }
 

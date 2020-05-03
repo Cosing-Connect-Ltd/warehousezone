@@ -39,14 +39,11 @@
     }
 
     function OnDetailsChanged(s, e) {
-        debugger;
         SpecialPriceGroupsGridView.UpdateEdit();
     }
 
     function OnSpecialPricesGridFocusChanged(s, e) {
-
-        if (e.cellInfo.rowVisibleIndex > 0) {
-
+        if (e.cellInfo.rowVisibleIndex >= 0) {
             $("#LastEditingRowIndex").val(e.cellInfo.rowVisibleIndex);
         }
 
@@ -74,6 +71,3 @@
     <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
 
 </div>
-
-
-

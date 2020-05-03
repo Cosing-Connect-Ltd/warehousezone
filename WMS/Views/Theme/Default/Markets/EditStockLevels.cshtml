@@ -1,15 +1,8 @@
-﻿
-@using Ganedata.Core.Entities.Helpers
+﻿@using Ganedata.Core.Entities.Helpers
 
 @section scripts {
-
-    @Html.DevExpress().GetStyleSheets(
-        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
-        )
-
-    @Html.DevExpress().GetScripts(
-        new Script { ExtensionType = ExtensionType.GridView }
-        )
+    @Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme })
+    @Html.DevExpress().GetScripts(new Script { ExtensionType = ExtensionType.GridView })
 }
 
 @{
@@ -35,7 +28,7 @@
     }
 
     function SetGridEditorToRowIndex(index) {
-        marketStocksGridView.StartEditRow(index);
+        marketStocksGridView.batchEditApi.StartEdit(index, marketStocksGridView.GetColumnByField($("#LastEditingColIndex").val()).index);
     }
 
     function OnQuantitiesChanged(s, e) {
@@ -43,17 +36,22 @@
     }
 
     function OnStockLevelsGridFocusChanged(s, e) {
-        $("#LastEditingRowIndex").val(e.cellInfo.rowVisibleIndex);
+        if (e.cellInfo.rowVisibleIndex >= 0) {
+            $("#LastEditingRowIndex").val(e.cellInfo.rowVisibleIndex);
+        }
+        $("#LastEditingColIndex").val(e.cellInfo.column.fieldName);
     }
 
 </script>
+
 @using (Html.BeginForm("UpdateProductLevels", "Markets", FormMethod.Post, new { @id = "frmProductLocationLevels" }))
 {
     @Html.AntiForgeryToken()
     @Html.Hidden("LastEditingRowIndex")
+    @Html.Hidden("LastEditingColIndex")
 
     <div class="input-group h-100 justify-content-center align-items-center">
-        @Html.Action("_StockLevelsPartial", "TenantLocations")
+        @Html.Action("_StockLevelsPartial")
     </div>
 }
 
@@ -61,6 +59,3 @@
 <div class="col-md-offset-2 col-md-10 bottom-right">
     <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
 </div>
-
-
-
