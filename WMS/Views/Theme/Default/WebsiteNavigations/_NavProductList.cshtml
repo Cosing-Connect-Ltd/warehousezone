@@ -109,7 +109,7 @@
             {
                 p.MinValue = 0;
                 p.MaxValue = 1000000000;
-                p.ClientSideEvents.ValueChanged = "function(s,e){ OnDetailsChanged(s,e);}";
+                p.ClientSideEvents.LostFocus = "function(s,e){ OnDetailsChanged(s,e);}";
             });
         });
 

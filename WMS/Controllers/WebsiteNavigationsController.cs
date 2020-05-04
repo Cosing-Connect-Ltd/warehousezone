@@ -71,8 +71,15 @@ namespace WMS.Controllers
             return PartialView("_HoverUploader");
         }
 
-        public ActionResult SaveNavigationProductList(int SiteId, int navigationId, MVCxGridViewBatchUpdateValues<NavigationProductsViewModel, int> updateValues)
+        public ActionResult CreateProductNavigation(int SiteId, int navigationId)
         {
+            ViewBag.SiteId = SiteId;
+            ViewBag.navigationId = navigationId;
+            return View();
+        }
+
+        public ActionResult SaveNavigationProductList(int SiteId, int navigationId, MVCxGridViewBatchUpdateValues<NavigationProductsViewModel, int> updateValues)
+            {
             List<bool> results = new List<bool>();
             foreach (var value in updateValues.Update)
             {

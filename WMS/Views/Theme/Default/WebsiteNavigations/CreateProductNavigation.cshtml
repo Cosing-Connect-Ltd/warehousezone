@@ -1,0 +1,67 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@using Ganedata.Core.Models;
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme }
+       )
+
+    @Html.DevExpress().GetScripts(
+    new Script { ExtensionType = ExtensionType.GridView }
+        )
+}
+@{
+    ViewBag.Title = "Edit Navigation Product";
+}
+<script type="text/javascript">
+    MVCxClientGlobalEvents.AddControlsInitializedEventHandler(OnBeginGridCallback);
+    function OnDetailsChanged(s, e) {
+        debugger;
+        ProductWebNavGridView.UpdateEdit();
+    }
+    function OnEndGridCallback(s, e) {
+        debugger;
+        var lastIndex = parseInt($("#LastEditingRowIndex").val()) || 0;
+        SetGridEditorToRowIndex(lastIndex);
+    }
+    function OnSpecialPricesGridFocusChanged(s, e) {
+        if (e.cellInfo.rowVisibleIndex >= 0) {
+            $("#LastEditingRowIndex").val(e.cellInfo.rowVisibleIndex);
+        }
+
+        $("#RowIndexForProductId").val(e.cellInfo.rowVisibleIndex);
+        $("#LastEditingColIndex").val(e.cellInfo.column.fieldName);
+    }
+    function OnBeginGridCallback(s, e) {
+        debugger;
+        e.customArgs = MVCxClientUtils.GetSerializedEditorValuesInContainer("frmPriceGroupPrices");
+        var rowIndex = parseInt($("#RowIndexForProductId").val()) || 0;
+        e.customArgs["ProductID"] = ProductWebNavGridView.GetRowKey(rowIndex);
+    }
+    function SetGridEditorToRowIndex(index) {
+        ProductWebNavGridView.batchEditApi.StartEdit(index, ProductWebNavGridView.GetColumnByField($("#LastEditingColIndex").val()).index);
+    }
+    function OnDetailsChanged(s, e) {
+        debugger;
+        ProductWebNavGridView.UpdateEdit();
+    }
+
+
+
+</script>
+
+<h2><span>Update Navigation Product </span></h2>
+
+@Html.Hidden("LastEditingRowIndex")
+@Html.Hidden("LastEditingColIndex")
+@Html.Hidden("RowIndexForProductId")
+
+@Html.Action("_NavigationProductList", new { SiteId = ViewBag.SiteId, NavigationId = ViewBag.navigationId })
+<div class='col-md-offset-2 col-md-10 bottom-right'>
+    <div class="back-list">
+        <a href="@Url.Action("Index","WebsiteNavigations",new { SiteId=ViewBag.SiteId })" class="btn btn-default">Back to List</a>
+    </div>
+
+</div>
+

@@ -17,7 +17,7 @@
     <AssemblyName>WMS</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -2522,6 +2522,7 @@
     <Content Include="Views\Theme\Default\WebsiteNavigations\_NavigationList.cshtml" />
     <Content Include="Views\Theme\Default\WebsiteContentPages\_WebsiteContentPagesList.cshtml" />
     <Content Include="Views\Theme\Default\WebsiteSliders\_SliderList.cshtml" />
+    <Content Include="Views\Theme\Default\WebsiteNavigations\CreateProductNavigation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
