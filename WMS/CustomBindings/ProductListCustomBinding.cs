@@ -12,7 +12,7 @@ using System.Web.Mvc;
 
 namespace WMS.CustomBindings
 {
-    public class ProducctListCustomBinding
+    public class ProductListCustomBinding
     {
 
         private static IQueryable<object> GetProductDataset(int tenantId, int warehouseId)

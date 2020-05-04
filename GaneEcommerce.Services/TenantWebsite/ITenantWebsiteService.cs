@@ -16,7 +16,7 @@ namespace Ganedata.Core.Services
 
         // WebsiteContentPages//
 
-        IEnumerable<WebsiteContentPages> GetAllValidWebsiteContentPages(int TenantId,int SiteId);
+        IEnumerable<WebsiteContentPages> GetAllValidWebsiteContentPages(int TenantId, int SiteId);
         WebsiteContentPages CreateOrUpdateWebsiteContentPages(WebsiteContentPages WebsiteContentPages, int UserId, int TenantId);
         WebsiteContentPages RemoveWebsiteContentPages(int Id, int UserId);
         WebsiteContentPages GetWebsiteContentById(int Id);
@@ -24,11 +24,9 @@ namespace Ganedata.Core.Services
 
         //ProductsWebsitesMaps
         IEnumerable<ProductsWebsitesMap> GetAllValidProductsWebsitesMap(int TenantId);
-        bool CreateOrUpdateProductsWebsitesMap(List<int> ProductIds,int SiteId, int UserId, int TenantId);
-        bool RemoveProductsWebsitesMap(int Id, int UserId);
 
         //WebsiteSliders
-        IEnumerable<WebsiteSlider> GetAllValidWebsiteSlider(int TenantId,int SiteId);
+        IEnumerable<WebsiteSlider> GetAllValidWebsiteSlider(int TenantId, int SiteId);
         WebsiteSlider CreateOrUpdateProductswebsiteSlider(WebsiteSlider websiteSlider, int UserId, int TenantId);
         WebsiteSlider RemoveWebsiteSlider(int Id, int UserId);
         WebsiteSlider GetWebsiteSliderById(int Id);
@@ -40,6 +38,8 @@ namespace Ganedata.Core.Services
         WebsiteNavigation RemoveWebsiteNavigation(int Id, int UserId);
         WebsiteNavigation GetWebsiteNavigationId(int NavigationId);
         bool CreateOrUpdateWebsiteNavigationProducts(NavigationProductsViewModel navigationProduct, int UserId, int TenantId);
+        IQueryable<NavigationProductsViewModel> GetAllValidWebsiteProducts(int TenantId, int SiteId);
+        bool CreateOrUpdateWebsiteProducts(NavigationProductsViewModel websiteProduct, int UserId, int TenantId);
 
     }
 }

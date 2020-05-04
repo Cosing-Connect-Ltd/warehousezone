@@ -665,7 +665,7 @@ namespace WMS.Controllers
             var viewModel = GridViewExtension.GetViewModel("ProductListGridView");
 
             if (viewModel == null)
-                viewModel = ProducctListCustomBinding.CreateProductGridViewModel();
+                viewModel = ProductListCustomBinding.CreateProductGridViewModel();
 
             if (string.IsNullOrEmpty(viewModel.FilterExpression) && ControllerContext.HttpContext.Request.Cookies.AllKeys.Contains("ProductsList"))
             {
@@ -728,12 +728,12 @@ namespace WMS.Controllers
             gridViewModel.ProcessCustomBinding(
                 new GridViewCustomBindingGetDataRowCountHandler(args =>
                 {
-                    ProducctListCustomBinding.ProductGetDataRowCount(args, CurrentTenantId, CurrentWarehouseId);
+                    ProductListCustomBinding.ProductGetDataRowCount(args, CurrentTenantId, CurrentWarehouseId);
                 }),
 
                     new GridViewCustomBindingGetDataHandler(args =>
                     {
-                        ProducctListCustomBinding.ProductGetData(args, CurrentTenantId, CurrentWarehouseId);
+                        ProductListCustomBinding.ProductGetData(args, CurrentTenantId, CurrentWarehouseId);
                     })
             );
             return PartialView("_ProductList", gridViewModel);
@@ -753,7 +753,7 @@ namespace WMS.Controllers
             var viewModel = GridViewExtension.GetViewModel("ProductEditListGridView");
 
             if (viewModel == null)
-                viewModel = ProducctListCustomBinding.CreateProductGridViewModel();
+                viewModel = ProductListCustomBinding.CreateProductGridViewModel();
 
             return ProductEditGridActionCore(viewModel);
         }
@@ -780,12 +780,12 @@ namespace WMS.Controllers
             gridViewModel.ProcessCustomBinding(
                 new GridViewCustomBindingGetDataRowCountHandler(args =>
                 {
-                    ProducctListCustomBinding.ProductGetDataRowCount(args, CurrentTenantId, CurrentWarehouseId);
+                    ProductListCustomBinding.ProductGetDataRowCount(args, CurrentTenantId, CurrentWarehouseId);
                 }),
 
                     new GridViewCustomBindingGetDataHandler(args =>
                     {
-                        ProducctListCustomBinding.ProductGetData(args, CurrentTenantId, CurrentWarehouseId);
+                        ProductListCustomBinding.ProductGetData(args, CurrentTenantId, CurrentWarehouseId);
                     })
             );
             return PartialView("_EditableProductGrid", gridViewModel);

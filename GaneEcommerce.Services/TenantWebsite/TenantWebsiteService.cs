@@ -110,34 +110,6 @@ namespace Ganedata.Core.Services
         {
             return _currentDbContext.ProductsWebsitesMap.Where(u => u.IsDeleted != true);
         }
-        public bool CreateOrUpdateProductsWebsitesMap(List<int> ProductIds, int siteId, int UserId, int TenantId)
-        {
-
-            var Toadd = ProductIds.Except(_currentDbContext.ProductsWebsitesMap
-                    .Where(a => a.IsDeleted != true && a.SiteID == siteId).Select(a => a.ProductId)
-                    .ToList()).ToList();
-            if (Toadd.Count > 0)
-            {
-                foreach (var item in Toadd)
-                {
-                    ProductsWebsitesMap websitesMap = new ProductsWebsitesMap();
-                    websitesMap.SiteID = siteId;
-                    websitesMap.ProductId = item;
-                    websitesMap.SortOrder = 1;
-                    websitesMap.TenantId = TenantId;
-                    websitesMap.UpdateCreatedInfo(UserId);
-                    _currentDbContext.ProductsWebsitesMap.Add(websitesMap);
-                }
-                _currentDbContext.SaveChanges();
-                return true;
-            }
-
-            return false;
-        }
-        public bool RemoveProductsWebsitesMap(int Id, int UserId)
-        {
-            return true;
-        }
 
         //WebsiteSliders
         public IEnumerable<WebsiteSlider> GetAllValidWebsiteSlider(int TenantId, int SiteId)
@@ -227,6 +199,39 @@ namespace Ganedata.Core.Services
             return res;
 
         }
+
+
+        public IQueryable<NavigationProductsViewModel> GetAllValidWebsiteProducts(int TenantId, int SiteId)
+        {
+            var allProducts = _currentDbContext.ProductMaster.Where(m => m.TenantId == TenantId && m.IsDeleted != true);
+            var websiteMap = _currentDbContext.ProductsWebsitesMap.Where(u => u.IsDeleted != true && u.SiteID == SiteId && u.TenantId == TenantId);
+
+
+
+            var res = (from p in allProducts
+                       join w in websiteMap on p.ProductId equals w.ProductId into tempMap
+                       from d in tempMap.DefaultIfEmpty()
+                       select new NavigationProductsViewModel()
+                       {
+                           Id = p.ProductId,
+                           SiteID = SiteId,
+                           ProductId = p.ProductId,
+                           Name = p.Name,
+                           SKUCode = p.SKUCode,
+                           Description = p.Description,
+                           ProductGroupName = p.ProductGroup.ProductGroup,
+                           ProductCategoryName = p.ProductCategory.ProductCategoryName,
+                           DepartmentName = p.TenantDepartment.DepartmentName,
+                           IsActive = d.IsActive,
+                           SortOrder = d.SortOrder
+                       });
+
+            return res;
+
+        }
+
+
+
         public WebsiteNavigation CreateOrUpdateWebsiteNavigation(WebsiteNavigation websiteNavigation, int UserId, int TenantId)
         {
             if (websiteNavigation.Id <= 0)
@@ -298,5 +303,38 @@ namespace Ganedata.Core.Services
             _currentDbContext.SaveChanges();
             return true;
         }
+
+
+
+        public bool CreateOrUpdateWebsiteProducts(NavigationProductsViewModel websiteProduct, int UserId, int TenantId)
+        {
+            var navItem = _currentDbContext.ProductsWebsitesMap.Where(x => x.ProductId == websiteProduct.ProductId
+            && x.SiteID == websiteProduct.SiteID && x.TenantId == TenantId).FirstOrDefault();
+
+            if (navItem == null)
+            {
+                ProductsWebsitesMap productsNavigation = new ProductsWebsitesMap();
+                productsNavigation.ProductId = websiteProduct.ProductId;
+                productsNavigation.SiteID = websiteProduct.SiteID;
+                productsNavigation.SortOrder = websiteProduct.SortOrder ?? 1;
+                productsNavigation.TenantId = TenantId;
+                productsNavigation.IsActive = websiteProduct.IsActive ?? true;
+                productsNavigation.IsDeleted = false;
+                productsNavigation.UpdateCreatedInfo(UserId);
+                _currentDbContext.ProductsWebsitesMap.Add(productsNavigation);
+            }
+            else
+            {
+                navItem.IsActive = websiteProduct.IsActive ?? true;
+                navItem.SortOrder = websiteProduct.SortOrder ?? 1;
+                navItem.IsDeleted = false;
+                navItem.UpdateUpdatedInfo(UserId);
+            }
+
+            _currentDbContext.SaveChanges();
+            return true;
+        }
+
+
     }
 }

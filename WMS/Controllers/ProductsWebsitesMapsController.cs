@@ -1,15 +1,11 @@
-﻿using System;
+﻿using DevExpress.Web.Mvc;
+using Ganedata.Core.Entities.Domain.ViewModels;
+using Ganedata.Core.Services;
+using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using DevExpress.Web.Mvc;
-using Ganedata.Core.Data;
-using Ganedata.Core.Entities.Domain;
-using Ganedata.Core.Services;
 using WMS.CustomBindings;
 
 namespace WMS.Controllers
@@ -19,10 +15,8 @@ namespace WMS.Controllers
         private readonly IProductLookupService _productLookupService;
         private readonly ILookupServices _LookupService;
         private readonly ITenantWebsiteService _tenantWebsiteService;
-        string UploadDirectory = "~/UploadedFiles/ProductsWebsitesMaps/";
-        string UploadTempDirectory = "~/UploadedFiles/ProductsWebsitesMaps/TempFiles/";
 
-        public ProductsWebsitesMapsController(ICoreOrderService orderService, IPropertyService propertyService,ITenantWebsiteService tenantWebsiteService, IAccountServices accountServices, ILookupServices lookupServices, IProductLookupService productLookupService)
+        public ProductsWebsitesMapsController(ICoreOrderService orderService, IPropertyService propertyService, ITenantWebsiteService tenantWebsiteService, IAccountServices accountServices, ILookupServices lookupServices, IProductLookupService productLookupService)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
             _productLookupService = productLookupService;
@@ -30,81 +24,78 @@ namespace WMS.Controllers
             _tenantWebsiteService = tenantWebsiteService;
         }
 
-
         // GET: ProductsWebsitesMaps
         public ActionResult Index(int SiteId)
         {
-            ViewBag.siteid = SiteId;
+            ViewBag.SiteId = SiteId;
             return PartialView();
         }
-        public ActionResult ProductList()
-        {
-            var viewModel = GridViewExtension.GetViewModel("ProductWebMapsGridView");
-            ViewBag.Controller = "ProductsWebsitesMaps";
-            if (viewModel == null)
-                viewModel = ProducctListCustomBinding.CreateProductGridViewModel();
 
-           
-            return ProductGridActionCore(viewModel);
+        public ActionResult SaveNavigationProductList(int SiteId, MVCxGridViewBatchUpdateValues<NavigationProductsViewModel, int> updateValues)
+        {
+            List<bool> results = new List<bool>();
+            foreach (var value in updateValues.Update)
+            {
+                value.SiteID = SiteId;
+                value.ProductId = value.Id;
+                var res = _tenantWebsiteService.CreateOrUpdateWebsiteProducts(value, CurrentUserId, CurrentTenantId);
+                results.Add(res);
+            }
+
+            return WebsiteProductsList(SiteId);
         }
 
-        public ActionResult _ProductListPaging(GridViewPagerState pager)
+        public ActionResult WebsiteProductsList(int siteId)
         {
-            var viewModel = GridViewExtension.GetViewModel("ProductWebMapsGridView");
+            var viewModel = GridViewExtension.GetViewModel("ProductWebsiteGridView");
+            ViewBag.Controller = "ProductsWebsitesMaps";
+            ViewBag.SiteId = siteId;
+            if (viewModel == null)
+                viewModel = WebsiteProductsCustomBinding.CreateWebsiteProductsViewModel();
+
+            return WebsiteProductsListActionCore(viewModel, siteId);
+        }
+
+        public ActionResult _WebsiteProductsListPaging(GridViewPagerState pager, int siteId)
+        {
+            var viewModel = GridViewExtension.GetViewModel("ProductWebsiteGridView");
             ViewBag.Controller = "ProductsWebsitesMaps";
             viewModel.Pager.Assign(pager);
-            return ProductGridActionCore(viewModel);
+            return WebsiteProductsListActionCore(viewModel, siteId);
         }
 
-        public ActionResult _ProductsFiltering(GridViewFilteringState filteringState)
+        public ActionResult _WebsiteProductsListFiltering(GridViewFilteringState filteringState, int siteId)
         {
             ViewBag.Controller = "ProductsWebsitesMaps";
-            var viewModel = GridViewExtension.GetViewModel("ProductWebMapsGridView");
+            var viewModel = GridViewExtension.GetViewModel("ProductWebsiteGridView");
             viewModel.ApplyFilteringState(filteringState);
-            return ProductGridActionCore(viewModel);
+            return WebsiteProductsListActionCore(viewModel, siteId);
         }
 
-
-        public ActionResult _ProductsGetDataSorting(GridViewColumnState column, bool reset)
+        public ActionResult _WebsiteProductsListSorting(GridViewColumnState column, bool reset, int siteId)
         {
             ViewBag.Controller = "ProductsWebsitesMaps";
-            var viewModel = GridViewExtension.GetViewModel("ProductWebMapsGridView");
+            var viewModel = GridViewExtension.GetViewModel("ProductWebsiteGridView");
             viewModel.ApplySortingState(column, reset);
-            return ProductGridActionCore(viewModel);
+            return WebsiteProductsListActionCore(viewModel, siteId);
         }
 
 
-        public ActionResult ProductGridActionCore(GridViewModel gridViewModel)
+        public ActionResult WebsiteProductsListActionCore(GridViewModel gridViewModel, int siteId)
         {
             ViewBag.Controller = "ProductsWebsitesMaps";
             gridViewModel.ProcessCustomBinding(
                 new GridViewCustomBindingGetDataRowCountHandler(args =>
                 {
-                    ProducctListCustomBinding.ProductGetDataRowCount(args, CurrentTenantId, CurrentWarehouseId);
+                    WebsiteProductsCustomBinding.ProductGetDataRowCount(args, CurrentTenantId, siteId);
                 }),
 
                     new GridViewCustomBindingGetDataHandler(args =>
                     {
-                        ProducctListCustomBinding.ProductGetData(args, CurrentTenantId, CurrentWarehouseId);
+                        WebsiteProductsCustomBinding.ProductGetData(args, CurrentTenantId, siteId);
                     })
             );
-            return PartialView("_AllProductList", gridViewModel);
+            return PartialView("_WebsiteProductsList", gridViewModel);
         }
-
-        public JsonResult Create(int siteId,string ProductIds)
-        {
-            if (!string.IsNullOrEmpty(ProductIds))
-            {
-                List<int> ProductList = ProductIds.Split(',').Select(Int32.Parse).ToList();
-                var productsWebsitesMaps = _tenantWebsiteService.CreateOrUpdateProductsWebsitesMap(ProductList,siteId, CurrentUserId, CurrentTenantId);
-                return Json(productsWebsitesMaps);
-            }
-            return Json(false);
-            
-          
-            
-        }
-
-      
     }
 }

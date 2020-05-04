@@ -537,6 +537,7 @@
     <Compile Include="CustomBindings\CurrencyExRateCustomBinding.cs" />
     <Compile Include="CustomBindings\PalletsCustomBinding.cs" />
     <Compile Include="CustomBindings\LocationListCustomBinding.cs" />
+    <Compile Include="CustomBindings\WebsiteProductsCustomBinding.cs" />
     <Compile Include="CustomBindings\WebsiteNavigationProductsCustomBinding.cs" />
     <Compile Include="CustomBindings\ProductComboboxCustomBinding.cs" />
     <Compile Include="CustomBindings\ProductSerialListCustomBinding.cs" />
@@ -564,7 +565,7 @@
     <Compile Include="Controllers\ResourceRequestsController.cs" />
     <Compile Include="CustomBindings\OrdersCustomBinding.cs" />
     <Compile Include="CustomBindings\PickListCustomBinding.cs" />
-    <Compile Include="CustomBindings\ProducctListCustomBinding.cs" />
+    <Compile Include="CustomBindings\ProductListCustomBinding.cs" />
     <Compile Include="CustomBindings\MarketListCustomBinding.cs" />
     <Compile Include="CustomBindings\ResourceCustomBinding.cs" />
     <Compile Include="CustomBindings\ResourceRequestsSchedulerSettings.cs" />
@@ -2504,10 +2505,6 @@
     <Content Include="Views\Theme\Default\WebsiteContentPages\Details.cshtml" />
     <Content Include="Views\Theme\Default\WebsiteContentPages\Edit.cshtml" />
     <Content Include="Views\Theme\Default\WebsiteContentPages\Index.cshtml" />
-    <Content Include="Views\Theme\Default\ProductsWebsitesMaps\Create.cshtml" />
-    <Content Include="Views\Theme\Default\ProductsWebsitesMaps\Delete.cshtml" />
-    <Content Include="Views\Theme\Default\ProductsWebsitesMaps\Details.cshtml" />
-    <Content Include="Views\Theme\Default\ProductsWebsitesMaps\Edit.cshtml" />
     <Content Include="Views\Theme\Default\ProductsWebsitesMaps\Index.cshtml" />
     <Content Include="Views\Theme\Default\WebsiteNavigations\Create.cshtml" />
     <Content Include="Views\Theme\Default\WebsiteNavigations\Delete.cshtml" />
@@ -2519,7 +2516,7 @@
     <Content Include="Views\Theme\Default\WebsiteSliders\Details.cshtml" />
     <Content Include="Views\Theme\Default\WebsiteSliders\Edit.cshtml" />
     <Content Include="Views\Theme\Default\WebsiteSliders\Index.cshtml" />
-    <Content Include="Views\Theme\Default\ProductsWebsitesMaps\_AllProductList.cshtml" />
+    <Content Include="Views\Theme\Default\ProductsWebsitesMaps\_WebsiteProductsList.cshtml" />
     <Content Include="Views\Theme\Default\WebsiteNavigations\_NavProductList.cshtml" />
     <Content Include="Views\Theme\Default\Shared\_HoverUploader.cshtml" />
     <Content Include="Views\Theme\Default\WebsiteNavigations\_NavigationList.cshtml" />
