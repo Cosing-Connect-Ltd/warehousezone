@@ -1,30 +1,39 @@
 ﻿@using Ganedata.Core.Entities.Helpers
 @{
-    var grid = Html.DevExpress().GridView(settings =>
-    {
-        settings.Name = "WebSiteNavigationGridView";
-        settings.CallbackRouteValues = new { Controller = "WebsiteContentPages", Action = "_WebsiteContentPagesList",  SiteId= ViewBag.SiteId };
-        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
-        settings.Settings.ShowHeaderFilterButton = false;
-        settings.SettingsPopup.HeaderFilter.Height = 200;
-        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
-        settings.KeyFieldName = "Id";
+        var grid = Html.DevExpress().GridView(settings =>
+        {
+            settings.Name = "WebSiteNavigationGridView";
+            settings.CallbackRouteValues = new { Controller = "WebsiteContentPages", Action = "_WebsiteContentPagesList",  SiteId= ViewBag.SiteId };
+            settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+            settings.Settings.ShowHeaderFilterButton = false;
+            settings.SettingsPopup.HeaderFilter.Height = 200;
+            settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+            settings.KeyFieldName = "Id";
 
-        settings.SettingsPager.Visible = true;
-        settings.Settings.ShowGroupPanel = true;
-        settings.Settings.ShowFilterRow = true;
-        settings.SettingsBehavior.AllowFocusedRow = true;
+            settings.SettingsPager.Visible = true;
+            settings.Settings.ShowGroupPanel = true;
+            settings.Settings.ShowFilterRow = true;
+            settings.SettingsBehavior.AllowFocusedRow = true;
 
-        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
-        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
-        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
-        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
-        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
-        settings.Columns.Add("TenantWebsites.SiteName").Caption = "Site Name"; ;
-        settings.Columns.Add("Title");
-        settings.Columns.Add("MetaTitle").Caption = "Meta Title"; ;
-        settings.Columns.Add("MetaDescription").Caption = "Meta Description"; ;
-        settings.Columns.Add("Contant");
+            settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+            settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+            settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+            settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+            settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+            settings.Columns.Add("TenantWebsites.SiteName").Caption = "Site Name"; ;
+            settings.Columns.Add("Title");
+            settings.Columns.Add("MetaTitle").Caption = "Meta Title"; ;
+            settings.Columns.Add("MetaDescription").Caption = "Meta Description";
+            //settings.Columns.Add(c =>
+            //{
+
+            //    c.Caption = "Content";
+            //    c.SetDataItemTemplateContent(m =>
+            //    {
+            //        var htmlContent=DataBinder.Eval(m.DataItem, "Contant").ToString();
+            //        ViewContext.Writer.Write(HttpUtility.HtmlEncode(htmlContent));
+            //    });
+        //});
         settings.Columns.Add("SortOrder").Caption = "Sort Order";
         settings.Columns.Add("IsActive").Caption = "Is Active";
 

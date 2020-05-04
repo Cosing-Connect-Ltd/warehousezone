@@ -50,8 +50,8 @@ namespace WMS.Controllers
         public ActionResult Create(int SiteId)
         {
             ViewBag.SiteId = SiteId;
-            
-            return View();
+            var websitecontentPages = new WebsiteContentPages();
+            return View(websitecontentPages);
         }
 
         // POST: WebsiteContentPages/Create
@@ -59,7 +59,7 @@ namespace WMS.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,SiteID,Title,MetaTitle,MetaDescription,Contant,SortOrder,IsActive,TenantId,DateCreated,DateUpdated,CreatedBy,UpdatedBy,IsDeleted")] WebsiteContentPages websiteContentPages)
+        public ActionResult Create(WebsiteContentPages websiteContentPages)
         {
             if (ModelState.IsValid)
             {

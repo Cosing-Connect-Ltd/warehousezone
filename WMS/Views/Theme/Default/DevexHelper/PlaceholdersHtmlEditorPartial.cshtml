@@ -1,17 +1,20 @@
 ﻿@using System.Web.UI.WebControls
-@model  Ganedata.Core.Services.HtmlEditorModel
+@using WMS.Helpers.DevexHelpers
+@model Ganedata.Core.Services.HtmlEditorModel
 
 @Html.DevExpress().HtmlEditor(
-    settings => {
+    settings =>
+    {
         settings.Name = Model.EditorName;
         settings.Width = Unit.Percentage(100);
         settings.Height = Unit.Pixel(Model.Height);
         settings.Settings.AllowPreview = false;
 
-        settings.CallbackRouteValues = new { Controller = "DevexHelper", Action = Model.CallbackAction};
+        settings.CallbackRouteValues = new { Controller = "DevexHelper", Action = Model.CallbackAction };
+        settings.SettingsDialogs.InsertImageDialog.SettingsImageUpload.UploadCallbackRouteValues = new { Controller = "DevexHelper", Action = "UploadProcessingImageUpload" };
+        settings.Settings.AllowInsertDirectImageUrls = false;
 
-
-        settings.Placeholders.AddRange(LayoutHelpers.MailMergeVariablesList.Select(m=> new HtmlEditorPlaceholderItem(m.Text)));
+        settings.Placeholders.AddRange(LayoutHelpers.MailMergeVariablesList.Select(m => new HtmlEditorPlaceholderItem(m.Text)));
 
         var toolbar = new HtmlEditorToolbar();
         toolbar.Items.Add(new ToolbarUndoButton());
@@ -28,12 +31,15 @@
         toolbar.Items.Add(new ToolbarJustifyRightButton());
         toolbar.Items.Add(new ToolbarBackColorButton(true));
         toolbar.Items.Add(new ToolbarFontColorButton());
-       toolbar.Items.Add(new ToolbarInsertLinkDialogButton(true));
-
+        toolbar.Items.Add(new ToolbarInsertLinkDialogButton(true));
+        toolbar.Items.Add(new ToolbarInsertImageDialogButton(true));
         var tableOperationsButton = new ToolbarTableOperationsDropDownButton(true);
         tableOperationsButton.CreateDefaultItems();
         toolbar.Items.Add(tableOperationsButton);
 
         toolbar.Items.Add(new ToolbarInsertPlaceholderDialogButton(true));
         settings.Toolbars.Add(toolbar);
+        settings.SettingsDialogs.InsertImageDialog.SettingsImageUpload.UploadCallbackRouteValues = new { Controller = "DevexHelper", Action = "ImageUpload" };
+        settings.SettingsDialogs.InsertImageDialog.SettingsImageUpload.UploadFolder = HtmlEditorFeaturesDemosHelper.ImagesDirectory;
+        settings.SettingsDialogs.InsertImageDialog.SettingsImageUpload.ValidationSettings.Assign(HtmlEditorFeaturesDemosHelper.ImageUploadValidationSettings);
     }).Bind(Model.HtmlContent).GetHtml()
