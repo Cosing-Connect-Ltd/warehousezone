@@ -204,6 +204,7 @@ namespace Ganedata.Core.Entities.Domain
         public virtual PalletType PalletType { get; set; }
         public virtual ICollection<ProductFiles> ProductFiles { get; set; }
         public virtual ICollection<ProductsWebsitesMap> ProductsWebsitesMap { get; set; }
+        public virtual ICollection<WebsiteDiscountProductsMap> WebsiteDiscountProductsMap { get; set; }
 
         public string HoverImage
         {

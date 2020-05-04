@@ -110,7 +110,7 @@ namespace Ganedata.Core.Data
         public DbSet<ProductLotOptionsCodes> ProductLotOptionsCodes { get; set; }
         public DbSet<ProductLotProcessTypeCodes> ProductLotProcessTypeCodes { get; set; }
         public DbSet<ProductMaster> ProductMaster { get; set; }
-      
+
         public DbSet<ProductSCCCodes> ProductSCCCodes { get; set; }
         public DbSet<StockMovement> StockMovements { get; set; }
         public DbSet<ProductSerialis> ProductSerialization { get; set; }
@@ -186,7 +186,7 @@ namespace Ganedata.Core.Data
 
         public DbSet<PalletType> PalletTypes { get; set; }
         public DbSet<TenantWebsites> TenantWebsites { get; set; }
-       
+
         public DbSet<OrderSchedule> OrderSchedule { get; set; }
         public DbSet<ProductsWebsitesMap> ProductsWebsitesMap { get; set; }
 
@@ -199,7 +199,11 @@ namespace Ganedata.Core.Data
         public DbSet<WebsiteSlider> WebsiteSliders { get; set; }
 
         public DbSet<ProductsNavigationMap> ProductsNavigationMaps { get; set; }
+        public DbSet<WebsiteVouchers> WebsiteVouchers { get; set; }
+        public DbSet<WebsiteShippingRules> WebsiteShippingRules { get; set; }
+        public DbSet<WebsiteDiscountCodes> WebsiteDiscountCodes { get; set; }
+        public DbSet<WebsiteDiscountProductsMap> websiteDiscountProductsMaps { get; set; }
         //#endregion
     }
-   
+
 }

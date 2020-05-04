@@ -432,4 +432,11 @@ namespace Ganedata.Core.Entities.Enums
         Content = 2,
         Category = 3
     }
+
+    public enum WebsiteDiscountTypeEnum
+    {
+        AllInBasket = 1,
+        AnyInBasket = 2, 
+        ApplyOnCheapest = 3
+    }
 }

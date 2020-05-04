@@ -171,6 +171,10 @@ namespace Ganedata.Core.Data
         DbSet<WebsiteNavigation> WebsiteNavigations { get; set; }
         DbSet<WebsiteSlider> WebsiteSliders { get; set; }
         DbSet<ProductsNavigationMap> ProductsNavigationMaps { get; set; }
+        DbSet<WebsiteVouchers> WebsiteVouchers { get; set; }
+        DbSet<WebsiteShippingRules> WebsiteShippingRules { get; set; }
+        DbSet<WebsiteDiscountCodes> WebsiteDiscountCodes { get; set; }
+        DbSet<WebsiteDiscountProductsMap> websiteDiscountProductsMaps { get; set; }
 
     }
 }

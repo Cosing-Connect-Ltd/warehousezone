@@ -783,6 +783,10 @@
     <Compile Include="Migrations\202004301923264_Website-Theme-Added.designer.cs">
       <DependentUpon>202004301923264_Website-Theme-Added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005040512080_shipping-voucher-discount-tables-added.cs" />
+    <Compile Include="Migrations\202005040512080_shipping-voucher-discount-tables-added.designer.cs">
+      <DependentUpon>202005040512080_shipping-voucher-discount-tables-added.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1690,6 +1694,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004301923264_Website-Theme-Added.resx">
       <DependentUpon>202004301923264_Website-Theme-Added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005040512080_shipping-voucher-discount-tables-added.resx">
+      <DependentUpon>202005040512080_shipping-voucher-discount-tables-added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

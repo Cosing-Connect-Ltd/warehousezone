@@ -216,7 +216,11 @@
     <Compile Include="Domain\Models\ProductManufacturer.cs" />
     <Compile Include="Domain\ViewModels\TenantWebsiteViewModel.cs" />
     <Compile Include="Domain\Websites\ProductsNavigationMap.cs" />
+    <Compile Include="Domain\Websites\WebsiteDiscountProductsMap.cs" />
+    <Compile Include="Domain\Websites\WebsiteDiscountCodes.cs" />
     <Compile Include="Domain\Websites\WebsiteNavigation.cs" />
+    <Compile Include="Domain\Websites\WebsiteShippingRules.cs" />
+    <Compile Include="Domain\Websites\WebsiteVouchers.cs" />
     <Compile Include="Domain\Websites\WebsiteSlider.cs" />
     <Compile Include="Domain\Websites\WebsiteContentPages.cs" />
     <Compile Include="Domain\Websites\ProductsWebsitesMap.cs" />
