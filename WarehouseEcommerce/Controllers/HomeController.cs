@@ -20,7 +20,10 @@ namespace WarehouseEcommerce.Controllers
         private readonly ILookupServices _lookupServices;
         private readonly IProductServices _productServices;
         private readonly IProductLookupService _productlookupServices;
-        public HomeController(ICoreOrderService orderService, IMapper mapper, IProductLookupService productlookupServices, IProductServices productServices, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IUserService userService, IActivityServices activityServices, ITenantsServices tenantServices)
+        private readonly ITenantWebsiteService _tenantWebsiteService;
+        public HomeController(ICoreOrderService orderService, IMapper mapper, IProductLookupService productlookupServices, IProductServices productServices, IPropertyService propertyService,
+            IAccountServices accountServices, ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IUserService userService, IActivityServices activityServices,
+            ITenantsServices tenantServices, ITenantWebsiteService tenantWebsiteService)
             : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices)
         {
             _lookupServices = lookupServices;
@@ -29,6 +32,7 @@ namespace WarehouseEcommerce.Controllers
             _tenantServices = tenantServices;
             _productServices = productServices;
             _productlookupServices = productlookupServices;
+            _tenantWebsiteService = tenantWebsiteService;
 
         }
 
@@ -190,7 +194,7 @@ namespace WarehouseEcommerce.Controllers
 
         public PartialViewResult _HorizontalNavbarPartial()
         {
-            var productDepartments = _lookupServices.GetAllValidTenantDepartments(CurrentTenantId).ToList();
+            var navigation = _tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, CurrentTenantWebsite.SiteID).ToList();
             ViewBag.UserName = CurrentUser.UserFirstName + " " + CurrentUser.UserLastName;
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.CartItemCount = GaneCartItemsSessionHelper.GetCartItemsSession().Count;
@@ -198,7 +202,7 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.ProductGroups = new SelectList(_lookupServices.GetAllValidProductGroups((CurrentTenantId), 12), "ProductGroupId", "ProductGroup");
             ViewBag.Symbol = currencyyDetail.Symbol;
             ViewBag.CurrencyName = currencyyDetail.CurrencyName;
-            return PartialView(productDepartments);
+            return PartialView(navigation);
         }
 
 

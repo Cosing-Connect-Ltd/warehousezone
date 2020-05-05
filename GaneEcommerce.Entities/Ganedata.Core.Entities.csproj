@@ -178,6 +178,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomAttributes\CustomAttributes.cs" />
+    <Compile Include="Domain\Auth\AuthUserGroups.cs" />
     <Compile Include="Domain\Auth\caTenantBase.cs" />
     <Compile Include="Domain\Employee\Address.cs" />
     <Compile Include="Domain\AttLogs\AttLogsStamps.cs" />

@@ -25,7 +25,7 @@ namespace WarehouseEcommerce.Controllers
         private readonly ICommonDbServices _commonDbServices;
         private readonly IMapper _mapper;
         private readonly IProductPriceService _productPriceService;
-        private string [] Images= ConfigurationManager.AppSettings["ImageFormats"].Split(new char[] { ',' });
+        private string[] Images = ConfigurationManager.AppSettings["ImageFormats"].Split(new char[] { ',' });
 
         public ProductsController(IProductServices productServices, IUserService userService, IProductLookupService productlookupServices, IProductPriceService productPriceService, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IMapper mapper, ICommonDbServices commonDbServices, ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IActivityServices activityServices, ITenantsServices tenantServices)
             : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices)
@@ -42,21 +42,21 @@ namespace WarehouseEcommerce.Controllers
         }
         // GET: Products
 
-        public ActionResult list(string group, int? sort, string filter, string search,  int? page, int? pagesize = 20, string department = "", string values="")
+        public ActionResult list(string group, int? sort, string filter, string search, int? page, int? pagesize = 20, string category = "", string values = "")
         {
             try
             {
 
                 var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
                 ViewBag.groupId = group;
-                ViewBag.departmentId = department;
+                ViewBag.departmentId = category;
                 ViewBag.CurrentSort = sort;
                 ViewBag.SortedValues = (sort ?? 1);
                 ViewBag.pageList = new SelectList(from d in Enumerable.Range(1, 5) select new SelectListItem { Text = (d * 10).ToString(), Value = (d * 10).ToString() }, "Value", "Text", pagesize);
                 ViewBag.searchString = search;
                 ViewBag.CurrencySymbol = currencyyDetail.Symbol;
                 ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
-                var product = _productlookupServices.GetAllValidProductGroupAndDeptByName(group, department, "","");
+                var product = _productlookupServices.GetAllValidProductGroupAndDeptByName(group, category, "", "");
 
                 if (!string.IsNullOrEmpty(search))
                 {
@@ -87,7 +87,7 @@ namespace WarehouseEcommerce.Controllers
                         product = product.OrderBy(s => s.Name);
                         break;
                 }
-                
+
                 int pageSize = pagesize ?? 10;
                 int pageNumber = (page ?? 1);
                 var pageedlist = product.ToPagedList(pageNumber, pageSize);
@@ -177,7 +177,7 @@ namespace WarehouseEcommerce.Controllers
                          {
                              Id = product.ProductId,
                              Name = product.Name,
-                             Path = product.ProductFiles.FirstOrDefault(u=>Images.Contains(u.FilePath)).FilePath,
+                             Path = product.ProductFiles.FirstOrDefault(u => Images.Contains(u.FilePath)).FilePath,
                              Department = product.TenantDepartment == null ? "" : product.TenantDepartment.DepartmentName,
                              Group = product.ProductGroup == null ? "" : product.ProductGroup.ProductGroup,
                              SubCategory = product.ProductCategory == null ? "" : product.ProductCategory.ProductCategoryName,
@@ -337,12 +337,12 @@ namespace WarehouseEcommerce.Controllers
             return View();
         }
 
-        public PartialViewResult _DynamicFilters(string department, string groups, string subcategory,string productName)
+        public PartialViewResult _DynamicFilters(string department, string groups, string subcategory, string productName)
         {
             ProductFilteringViewModel productFiltering = new ProductFilteringViewModel();
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.CurrencySymbol = currencyyDetail.Symbol;
-            var products = _productlookupServices.GetAllValidProductGroupAndDeptByName(groups, department, subcategory,productName);
+            var products = _productlookupServices.GetAllValidProductGroupAndDeptByName(groups, department, subcategory, productName);
             productFiltering.Manufacturer = _productlookupServices.GetAllValidProductManufacturerGroupAndDeptByName(products, groups, department, subcategory).Select(u => u.Name).ToList();
             productFiltering.PriceInterval = _productlookupServices.AllPriceListAgainstGroupAndDept(products, groups, department, subcategory);
             productFiltering.AttributeValues = _productlookupServices.GetAllValidProductAttributeValuesByProductIds(products);

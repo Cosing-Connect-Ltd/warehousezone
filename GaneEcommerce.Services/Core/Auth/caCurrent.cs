@@ -59,6 +59,7 @@ namespace Ganedata.Core.Services
                 var tenantWeb = context.TenantWebsites.FirstOrDefault(e => e.HostName == hostName && e.IsActive == true && e.IsDeleted != true);
                 if (tenantWeb != null)
                 {
+                    tenantWebsite.SiteID = tenantWeb.SiteID;
                     tenantWebsite.ApiToken = tenantWeb.ApiToken;
                     tenantWebsite.SiteApiUrl = tenantWeb.SiteApiUrl;
                     tenantWebsite.TenantId = tenantWeb.TenantId;

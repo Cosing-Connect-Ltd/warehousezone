@@ -58,5 +58,8 @@ namespace Ganedata.Core.Entities.Domain
         }
 
         public decimal OrderValueLimit { get; set; }
+        public int? UserGroupId { get; set; }
+        [ForeignKey("UserGroupId")]
+        public virtual AuthUserGroups AuthUserGroups { get; set; }
     }
 }

@@ -96,6 +96,7 @@ namespace WarehouseEcommerce
             container.RegisterType<IVanSalesService, VanSalesService>();
             container.RegisterType<IAssetServices, AssetServices>();
             container.RegisterType<ITenantsCurrencyRateServices, TenantsCurrencyRateServices>();
+            container.RegisterType<ITenantWebsiteService, TenantWebsiteService>();
 
             //Register Auto Mapper
             var newMapper = new AutoMapperBootStrapper();

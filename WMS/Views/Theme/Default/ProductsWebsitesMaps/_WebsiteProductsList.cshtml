@@ -2,8 +2,8 @@
     var grid = Html.DevExpress().GridView(settings =>
     {
         settings.Name = "ProductWebsiteGridView";
-        settings.CallbackRouteValues = new { Controller = ViewBag.Controller, Action = "WebsiteProductsList", SiteId = ViewBag.SiteId};
-        settings.SettingsEditing.BatchUpdateRouteValues = new { Controller = ViewBag.Controller, Action = "SaveNavigationProductList", SiteId = ViewBag.SiteId};
+        settings.CallbackRouteValues = new { Controller = ViewBag.Controller, Action = "WebsiteProductsList", SiteId = ViewBag.SiteId };
+        settings.SettingsEditing.BatchUpdateRouteValues = new { Controller = ViewBag.Controller, Action = "SaveNavigationProductList", SiteId = ViewBag.SiteId };
         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
 
         settings.CustomBindingRouteValuesCollection.Add(
@@ -13,12 +13,12 @@
 
         settings.CustomBindingRouteValuesCollection.Add(
         GridViewOperationType.Filtering,
-        new { Controller = ViewBag.Controller, Action = "_WebsiteProductsListFiltering", SiteId = ViewBag.SiteId}
+        new { Controller = ViewBag.Controller, Action = "_WebsiteProductsListFiltering", SiteId = ViewBag.SiteId }
         );
 
         settings.CustomBindingRouteValuesCollection.Add(
         GridViewOperationType.Sorting,
-        new { Controller = ViewBag.Controller, Action = "_WebsiteProductsListSorting", SiteId = ViewBag.SiteId}
+        new { Controller = ViewBag.Controller, Action = "_WebsiteProductsListSorting", SiteId = ViewBag.SiteId }
         );
 
         settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
@@ -40,6 +40,10 @@
         settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
         settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
         settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.SettingsResizing.ColumnResizeMode = ColumnResizeMode.Control;
+        settings.SettingsResizing.Visualization = ResizingMode.Live;
+        settings.SettingsBehavior.AllowEllipsisInText = true;
 
         settings.Columns.Add(c =>
         {

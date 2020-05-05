@@ -30,7 +30,7 @@ namespace WarehouseEcommerce.Controllers
             AccountServices = accountServices;
             LookupServices = lookupServices;
 
-            caCurrent.CurrentTenantWebSite();
+            var res = CurrentTenantWebsite;
         }
 
         private caTenantWebsites _CurrentTenantWebsite { get; set; }
