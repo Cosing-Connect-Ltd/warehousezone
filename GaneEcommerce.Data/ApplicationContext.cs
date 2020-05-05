@@ -203,6 +203,11 @@ namespace Ganedata.Core.Data
         public DbSet<WebsiteShippingRules> WebsiteShippingRules { get; set; }
         public DbSet<WebsiteDiscountCodes> WebsiteDiscountCodes { get; set; }
         public DbSet<WebsiteDiscountProductsMap> websiteDiscountProductsMaps { get; set; }
+        public DbSet<AuthUserGroups> AuthUserGroups { get; set; }
+        public DbSet<ProductAllowance> ProductAllowance { get; set; }
+        public DbSet<ProductAllowanceAdjustmentLog> ProductAllowanceAdjustmentLog { get; set; }
+        public DbSet<ProductAllowanceGroup> ProductAllowanceGroup { get; set; }
+        public DbSet<ProductAllowanceGroupMap> ProductAllowanceGroupMap { get; set; }
         //#endregion
     }
 

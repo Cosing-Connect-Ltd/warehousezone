@@ -791,6 +791,10 @@
     <Compile Include="Migrations\202005050106322_Auth-User-Groups-Added.designer.cs">
       <DependentUpon>202005050106322_Auth-User-Groups-Added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005050328359_Product-Allowance-tables-added.cs" />
+    <Compile Include="Migrations\202005050328359_Product-Allowance-tables-added.designer.cs">
+      <DependentUpon>202005050328359_Product-Allowance-tables-added.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1704,6 +1708,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005050106322_Auth-User-Groups-Added.resx">
       <DependentUpon>202005050106322_Auth-User-Groups-Added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005050328359_Product-Allowance-tables-added.resx">
+      <DependentUpon>202005050328359_Product-Allowance-tables-added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

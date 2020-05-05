@@ -18,8 +18,6 @@ namespace Ganedata.Core.Entities.Domain
         [Key]
         [Display(Name = "Product Group Id")]
         public int ProductGroupId { get; set; }
-
-
         //[StringLength(20)]
         [Remote("IsProductGroupAvailable", "ProductGroup", AdditionalFields = "ProductGroupId", ErrorMessage = "Product group name already exists.")]
         [Required(ErrorMessage = "Product Group Name is required")]
@@ -42,16 +40,13 @@ namespace Ganedata.Core.Entities.Domain
         public int TenentId { get; set; }
         public int SortOrder { get; set; }
         public virtual ICollection<ProductMaster> Products { get; set; }
-
         public virtual ICollection<ProductCategory> ProductCategories
         {
             get; set;
-
         }
 
         public int? DepartmentId { get; set; }
         [ForeignKey("DepartmentId")]
         public virtual TenantDepartments TenantDepartments { get; set; }
-
     }
 }

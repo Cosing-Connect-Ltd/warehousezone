@@ -436,7 +436,16 @@ namespace Ganedata.Core.Entities.Enums
     public enum WebsiteDiscountTypeEnum
     {
         AllInBasket = 1,
-        AnyInBasket = 2, 
+        AnyInBasket = 2,
         ApplyOnCheapest = 3
+    }
+
+    public enum ProductAllowanceAdjustmentReasons
+    {
+        [Display(Name = "Size Issue")]
+        SizeIssue = 1,
+        [Display(Name = "Incorrectly Ordered")]
+        IncorrectlyOrdered = 2,
+        Other = 3
     }
 }

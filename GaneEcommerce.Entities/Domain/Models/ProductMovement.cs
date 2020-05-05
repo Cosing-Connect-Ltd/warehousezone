@@ -9,10 +9,6 @@ namespace Ganedata.Core.Entities.Domain
     [Serializable]
     public class StockMovement : PersistableEntity<int>
     {
-        public StockMovement()
-        {
-        }
-
         [Key]
         public Guid? StockMovementId { get; set; }
         public int WarehouseId { get; set; }
