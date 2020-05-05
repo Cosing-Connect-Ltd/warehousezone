@@ -96,7 +96,7 @@
                              settings.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
 
                          }
-                         ).Bind(DateTime.UtcNow).GetHtml()
+                         ).GetHtml()
                     @Html.ValidationMessageFor(model => model.FromDate)
                 </div>
             </div>
@@ -114,8 +114,8 @@
                              settings.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
 
                          }
-                         ).Bind(DateTime.UtcNow).GetHtml()
-                    @Html.ValidationMessageFor(model => model.FromDate)
+                         ).GetHtml()
+                    @Html.ValidationMessageFor(model => model.ToDate)
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">

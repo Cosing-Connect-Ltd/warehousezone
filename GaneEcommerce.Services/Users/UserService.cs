@@ -177,5 +177,50 @@ namespace Ganedata.Core.Services
 
             return resp;
         }
+        public IEnumerable<AuthUserGroups> GetAllAuthUserGroups(int TenantId)
+        {
+            return _currentDbContext.AuthUserGroups.Where(u => u.TenantId == TenantId && u.IsDeleted != true);
+        }
+        public bool CreateOrUpdateAuthUserGroup(AuthUserGroups authUserGroup, int UserId, int TenantId)
+        {
+            var authUserGroups = _currentDbContext.AuthUserGroups.AsNoTracking().Where(x => x.TenantId == TenantId
+             && x.GroupId == authUserGroup.GroupId && x.IsDeleted != true).FirstOrDefault();
+            if (authUserGroups == null)
+            {
+                authUserGroup.TenantId = TenantId;
+                authUserGroup.UpdateCreatedInfo(UserId);
+                _currentDbContext.AuthUserGroups.Add(authUserGroup);
+                _currentDbContext.SaveChanges();
+            }
+            else
+            {
+                authUserGroup.TenantId = TenantId;
+                authUserGroup.CreatedBy = authUserGroups.CreatedBy;
+                authUserGroup.DateCreated = authUserGroups.DateCreated;
+                authUserGroup.UpdateUpdatedInfo(UserId);
+                _currentDbContext.Entry(authUserGroup).State = EntityState.Modified;
+
+            }
+
+            _currentDbContext.SaveChanges();
+            return true;
+
+        }
+        public AuthUserGroups GetUserGroupsById(int groupId)
+        {
+            return _currentDbContext.AuthUserGroups.Find(groupId);
+        }
+        public AuthUserGroups RemoveUserGroupsById(int groupId, int UserId)
+        {
+            var authUserGroups = _currentDbContext.AuthUserGroups.Where(x => x.GroupId == groupId && x.IsDeleted != true).FirstOrDefault();
+            if (authUserGroups == null)
+            {
+                authUserGroups.IsDeleted = true;
+                authUserGroups.UpdateUpdatedInfo(UserId);
+                _currentDbContext.Entry(authUserGroups).State = EntityState.Modified;
+                _currentDbContext.SaveChanges();
+            }
+            return authUserGroups;
+        }
     }
 }

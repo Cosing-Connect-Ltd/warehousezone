@@ -66,5 +66,21 @@ namespace Ganedata.Core.Services
         WebsiteDiscountCodes GetWebsiteDiscountCodesById(int discountId);
         IEnumerable<WebsiteDiscountProductsMap> GetAllValidWebsiteDiscountProductsMap(int TenantId, int DiscountId);
 
+        //ProductAllowances
+        IEnumerable<ProductAllowance> GetAllValidProductAllowance(int TenantId);
+        ProductAllowance CreateOrUpdateProductAllowance(ProductAllowance productAllowance, int UserId, int TenantId);
+        ProductAllowance RemoveProductAllowance(int Id, int UserId);
+        ProductAllowance GetProductAllowanceById(int Id);
+
+
+        //ProductAllowancesGroups
+        IEnumerable<ProductAllowanceGroup> GetAllValidProductAllowanceGroups(int TenantId);
+        //ProductAllowance CreateOrUpdateProductAllowance(ProductAllowance productAllowance, int UserId, int TenantId);
+        //ProductAllowance RemoveProductAllowance(int Id, int UserId);
+        //ProductAllowance GetProductAllowanceById(int Id);
+
+
+
+
     }
 }

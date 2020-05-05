@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net;
 using System.Security.Policy;
 using System.Web.Mvc;
 using WMS.CustomBindings;
@@ -43,13 +44,13 @@ namespace WMS.Controllers
         }
 
 
-        public ActionResult _WebsiteDiscountCodesProductList(int siteId,int? DiscountId)
+        public ActionResult _WebsiteDiscountCodesProductList(int siteId, int? DiscountId)
         {
             var viewModel = GridViewExtension.GetViewModel("WebsiteDiscountProductCodesGridView");
             ViewBag.Controller = "WebsiteDiscountCodes";
             if (DiscountId.HasValue)
             {
-                var selectedIds= _tenantWebsiteService.GetAllValidWebsiteDiscountProductsMap(CurrentTenantId, (DiscountId??0)).Select(u => u.ProductId).ToList();
+                var selectedIds = _tenantWebsiteService.GetAllValidWebsiteDiscountProductsMap(CurrentTenantId, (DiscountId ?? 0)).Select(u => u.ProductId).ToList();
                 ViewData["DiscountProduct"] = selectedIds;
             }
             ViewBag.SiteId = siteId;
@@ -143,5 +144,17 @@ namespace WMS.Controllers
 
             return View(websiteDiscountCodes);
         }
+
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var websiteNav = _tenantWebsiteService.RemoveWebsiteDiscountCodes(id ?? 0, CurrentUserId);
+            return RedirectToAction("Index", new { SiteId = websiteNav.SiteID });
+
+        }
+
     }
 }

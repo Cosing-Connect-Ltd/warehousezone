@@ -24,5 +24,10 @@ namespace Ganedata.Core.Services
         Tenant GetTenantBySiteId(int SiteId);
         TenantLocations GetWarehouseBySiteId(int SiteId);
         UserLoginStatusResponseViewModel GetUserLoginStatus(UserLoginStatusViewModel loginStatus);
+
+        bool CreateOrUpdateAuthUserGroup(AuthUserGroups authUserGroups, int UserId, int TenantId);
+        AuthUserGroups GetUserGroupsById(int groupId);
+        AuthUserGroups RemoveUserGroupsById(int groupId, int UserId);
+        IEnumerable<AuthUserGroups> GetAllAuthUserGroups(int TenantId);
     }
 }

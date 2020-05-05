@@ -589,12 +589,89 @@ namespace Ganedata.Core.Services
         }
         public WebsiteDiscountCodes RemoveWebsiteDiscountCodes(int Id, int UserId)
         {
-            return default;
+            var WebsiteShipping = _currentDbContext.WebsiteDiscountCodes.FirstOrDefault(u => u.Id == Id);
+            if (WebsiteShipping != null)
+            {
+                WebsiteShipping.IsDeleted = true;
+                WebsiteShipping.UpdateUpdatedInfo(UserId);
+                _currentDbContext.Entry(WebsiteShipping).State = System.Data.Entity.EntityState.Modified;
+                _currentDbContext.SaveChanges();
+
+            }
+            return WebsiteShipping;
         }
         public WebsiteDiscountCodes GetWebsiteDiscountCodesById(int discountId)
         {
             return _currentDbContext.WebsiteDiscountCodes.Find(discountId);
         }
+
+
+        //ProductAllowances
+        public IEnumerable<ProductAllowance> GetAllValidProductAllowance(int TenantId)
+        {
+            return _currentDbContext.ProductAllowance.Where(u => u.TenantId == TenantId && u.IsDeleted != true);
+        }
+        public ProductAllowance CreateOrUpdateProductAllowance(ProductAllowance productAllowance, int UserId, int TenantId)
+        {
+            var websiteProductAllownce = _currentDbContext.ProductAllowance.Where(x => x.TenantId == TenantId
+                 && x.Id == productAllowance.Id && x.IsDeleted != true).FirstOrDefault();
+            if (websiteProductAllownce == null)
+            {
+                ProductAllowance productAllowances = new ProductAllowance();
+                productAllowances.PerXDays = productAllowance.PerXDays;
+                productAllowances.RolesId = productAllowance.RolesId;
+                productAllowances.Quantity = productAllowance.Quantity;
+                productAllowances.ProductId = productAllowance.ProductId;
+                productAllowances.AllowanceGroupId = productAllowance.AllowanceGroupId;
+                productAllowances.UpdateCreatedInfo(UserId);
+                productAllowances.TenantId = TenantId;
+                _currentDbContext.ProductAllowance.Add(productAllowances);
+                _currentDbContext.SaveChanges();
+                
+            }
+            else
+            {
+                websiteProductAllownce.PerXDays = productAllowance.PerXDays;
+                websiteProductAllownce.RolesId = productAllowance.RolesId;
+                websiteProductAllownce.Quantity = productAllowance.Quantity;
+                websiteProductAllownce.ProductId = productAllowance.ProductId;
+                websiteProductAllownce.AllowanceGroupId = productAllowance.AllowanceGroupId;
+                websiteProductAllownce.TenantId = TenantId;
+
+                websiteProductAllownce.UpdateUpdatedInfo(UserId);
+
+            }
+
+            _currentDbContext.SaveChanges();
+            return productAllowance;
+        }
+        public ProductAllowance RemoveProductAllowance(int Id, int UserId)
+        {
+            var WebsiteShipping = _currentDbContext.ProductAllowance.FirstOrDefault(u => u.Id == Id);
+            if (WebsiteShipping != null)
+            {
+                WebsiteShipping.IsDeleted = true;
+                WebsiteShipping.UpdateUpdatedInfo(UserId);
+                _currentDbContext.Entry(WebsiteShipping).State = System.Data.Entity.EntityState.Modified;
+                _currentDbContext.SaveChanges();
+
+            }
+            return WebsiteShipping;
+        }
+        public ProductAllowance GetProductAllowanceById(int Id)
+        {
+            return _currentDbContext.ProductAllowance.Find(Id);
+        }
+        //ProductAllowancesGroups
+        public IEnumerable<ProductAllowanceGroup> GetAllValidProductAllowanceGroups(int TenantId)
+        {
+            return _currentDbContext.ProductAllowanceGroup.Where(u => u.TenantId == TenantId && u.IsDeleted != true);
+        }
+        //ProductAllowance CreateOrUpdateProductAllowance(ProductAllowance productAllowance, int UserId, int TenantId);
+        //ProductAllowance RemoveProductAllowance(int Id, int UserId);
+        //ProductAllowance GetProductAllowanceById(int Id);
+
+
 
     }
 }

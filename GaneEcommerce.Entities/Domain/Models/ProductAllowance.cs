@@ -10,15 +10,20 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Id")]
         public int Id { get; set; }
         [Required]
+
         public decimal Quantity { get; set; }
         [Required]
+        [Display(Name = "Roles")]
         public int RolesId { get; set; }
+        [Display(Name="Per X Day")]
         public int PerXDays { get; set; }
         public int? ProductId { get; set; }
-        public int AllowanceGroupId { get; set; }
+        [Display(Name = "Allowance Group")]
+        public int? AllowanceGroupId { get; set; }
         [ForeignKey("TenantId")]
         public virtual Tenant Tenant { get; set; }
-        public virtual EmployeeRoles EmployeeRoles { get; set; }
+        [ForeignKey("RolesId")]
+        public virtual Roles Roles { get; set; }
         [ForeignKey("ProductId")]
         public virtual ProductMaster ProductMaster { get; set; }
         [ForeignKey("AllowanceGroupId")]

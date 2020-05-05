@@ -500,12 +500,14 @@
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="App_Start\UnityWebApiActivator.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AuthUserGroupsController.cs" />
     <Compile Include="Controllers\OrderScheduleController.cs" />
     <Compile Include="Controllers\AssetsController.cs" />
     <Compile Include="Controllers\FinancesController.cs" />
     <Compile Include="Controllers\PalletTrackingController.cs" />
     <Compile Include="Controllers\MarketRoutesController.cs" />
     <Compile Include="Controllers\PalletTypesController.cs" />
+    <Compile Include="Controllers\ProductAllowancesController.cs" />
     <Compile Include="Controllers\ProductCategoriesController.cs" />
     <Compile Include="Controllers\ProductKitTypesController.cs" />
     <Compile Include="Controllers\ProductManufacturersController.cs" />
@@ -2546,6 +2548,18 @@
     <Content Include="Views\Theme\Default\WebsiteDiscountCodes\Details.cshtml" />
     <Content Include="Views\Theme\Default\WebsiteDiscountCodes\Edit.cshtml" />
     <Content Include="Views\Theme\Default\WebsiteDiscountCodes\Index.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Theme\Default\AuthUserGroups\Index.cshtml" />
+    <Content Include="Views\Theme\Default\AuthUserGroups\Create.cshtml" />
+    <Content Include="Views\Theme\Default\AuthUserGroups\Edit.cshtml" />
+    <Content Include="Views\Theme\Default\AuthUserGroups\_authUsersGroupsList.cshtml" />
+    <Content Include="Views\Theme\Default\ProductAllowances\Create.cshtml" />
+    <Content Include="Views\Theme\Default\ProductAllowances\Delete.cshtml" />
+    <Content Include="Views\Theme\Default\ProductAllowances\Details.cshtml" />
+    <Content Include="Views\Theme\Default\ProductAllowances\Edit.cshtml" />
+    <Content Include="Views\Theme\Default\ProductAllowances\Index.cshtml" />
+    <Content Include="Views\Theme\Default\ProductAllowances\_ProductAllowanceList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

@@ -102,7 +102,9 @@ $(function () {
     });
 
 
-    $('.Caction').click(function (e) {
+    $('.Caction').click(function (e)
+    {
+        debugger;
         var id = e.target.id;
         if (id === "lnkDetails") {
             var Pid = $("#selkey").val();

@@ -795,6 +795,14 @@
     <Compile Include="Migrations\202005050328359_Product-Allowance-tables-added.designer.cs">
       <DependentUpon>202005050328359_Product-Allowance-tables-added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005052143144_Role-added-AllowanceProduct.cs" />
+    <Compile Include="Migrations\202005052143144_Role-added-AllowanceProduct.designer.cs">
+      <DependentUpon>202005052143144_Role-added-AllowanceProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005052202028_nullable-allowanceGroupId.cs" />
+    <Compile Include="Migrations\202005052202028_nullable-allowanceGroupId.designer.cs">
+      <DependentUpon>202005052202028_nullable-allowanceGroupId.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1711,6 +1719,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005050328359_Product-Allowance-tables-added.resx">
       <DependentUpon>202005050328359_Product-Allowance-tables-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005052143144_Role-added-AllowanceProduct.resx">
+      <DependentUpon>202005052143144_Role-added-AllowanceProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005052202028_nullable-allowanceGroupId.resx">
+      <DependentUpon>202005052202028_nullable-allowanceGroupId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

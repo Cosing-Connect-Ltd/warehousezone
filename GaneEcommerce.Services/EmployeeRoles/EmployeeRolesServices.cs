@@ -33,6 +33,7 @@ namespace Ganedata.Core.Services
             }
         }
 
+
         public void UpdateEmployeeRoles_ByEmployeeId(int employeeId, int rolesId)
         {
             //do inserts
@@ -50,6 +51,10 @@ namespace Ganedata.Core.Services
         {
             _currentDbContext.EmployeeRoles.Add(employeeRoles);
             _currentDbContext.SaveChanges();
+        }
+        public IEnumerable<EmployeeRoles> GetAllEmployeeRoles(int TenantId)
+        {
+            return _currentDbContext.EmployeeRoles.Where(u => u.IsDeleted != null && u.TenantId == TenantId);
         }
     }
 }
