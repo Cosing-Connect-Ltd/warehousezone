@@ -1,0 +1,120 @@
+﻿@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "WebShippingRuleGridView";
+        settings.CallbackRouteValues = new { Controller = "WebsiteShippingRules", Action = "_WebsiteShippingRulesList", SiteId = ViewBag.SiteId};
+
+
+        settings.CustomBindingRouteValuesCollection.Add(
+            GridViewOperationType.Paging,
+            new { Controller = "WebsiteShippingRules", Action = "_WebsiteShippingRuleProductListPaging", SiteId = ViewBag.SiteId }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Filtering,
+        new { Controller = "WebsiteShippingRules", Action = "_WebsiteShippingRuleProductListFiltering", SiteId = ViewBag.SiteId }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Sorting,
+        new { Controller = "WebsiteShippingRules", Action = "_WebsiteShippingRuleProductListSorting", SiteId = ViewBag.SiteId }
+        );
+
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+        settings.KeyFieldName = "Id";
+
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.CommandColumn.SelectAllCheckboxMode = GridViewSelectAllCheckBoxMode.AllPages;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.Settings.ShowFilterRow = true;
+        settings.Styles.Header.CssClass = "";
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "SiteName";
+            c.Caption = "Site Name";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.EditFormSettings.Visible = DefaultBoolean.True;
+            c.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "CountryName";
+            c.Caption = "Country Name";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.EditFormSettings.Visible = DefaultBoolean.True;
+            c.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Courier";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Region";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "PostalArea";
+            c.Caption = "Postal Area";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "WeightinGrams";
+            c.Caption = "Weight in Grams";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            c.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Price";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            c.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "IsActive";
+            c.Caption = "Active";
+
+
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "SortOrder";
+            c.Caption = "Sort Order";
+
+        });
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        //settings.ClientSideEvents.FocusedCellChanging = "OnSpecialPricesGridFocusChanged";
+        //settings.ClientSideEvents.EndCallback = "OnEndGridCallback";
+
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+
+
+
+    });
+
+}
+
+@grid.BindToCustomData(Model).GetHtml()

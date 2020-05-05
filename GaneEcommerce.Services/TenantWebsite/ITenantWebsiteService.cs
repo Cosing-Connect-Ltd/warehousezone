@@ -41,5 +41,30 @@ namespace Ganedata.Core.Services
         IQueryable<NavigationProductsViewModel> GetAllValidWebsiteProducts(int TenantId, int SiteId);
         bool CreateOrUpdateWebsiteProducts(NavigationProductsViewModel websiteProduct, int UserId, int TenantId);
 
+
+        //WebsiteShippingRules
+
+        IQueryable<WebsiteShippingRules> GetAllValidWebsiteShippingRules(int TenantId, int SiteId);
+        WebsiteShippingRules CreateOrUpdateWebsiteShippingRules(WebsiteShippingRules websiteShippingRules, int UserId, int TenantId);
+        WebsiteShippingRules RemoveWebsiteShippingRules(int Id, int UserId);
+        WebsiteShippingRules GetWebsiteShippingRulesById(int Id);
+
+        // website Voucher
+
+        IQueryable<WebsiteVouchers> GetAllValidWebsiteVoucher(int TenantId, int SiteId);
+
+        WebsiteVouchers CreateOrUpdateWebsiteVouchers(WebsiteVouchers websiteVouchers, int UserId, int TenantId);
+
+        WebsiteVouchers RemoveWebsiteVoucher(Guid Id, int UserId);
+        WebsiteVouchers GetWebsiteVoucherById(Guid Id);
+        string GenerateVoucherCode();
+
+        //WebsiteDiscountCodes
+        IEnumerable<WebsiteDiscountCodes> GetAllValidWebsiteDiscountCodes(int TenantId, int SiteId);
+        WebsiteDiscountCodes CreateOrUpdateWebsiteDiscountCodes(WebsiteDiscountCodes websiteDiscount, int UserId, int TenantId);
+        WebsiteDiscountCodes RemoveWebsiteDiscountCodes(int Id, int UserId);
+        WebsiteDiscountCodes GetWebsiteDiscountCodesById(int discountId);
+        IEnumerable<WebsiteDiscountProductsMap> GetAllValidWebsiteDiscountProductsMap(int TenantId, int DiscountId);
+
     }
 }

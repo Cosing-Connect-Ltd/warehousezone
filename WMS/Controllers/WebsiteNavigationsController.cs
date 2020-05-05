@@ -37,6 +37,7 @@ namespace WMS.Controllers
         public ActionResult Index(int SiteId)
         {
             ViewBag.SiteId = SiteId;
+            Session["UploadTenantWebsiteNav"] = null;
             return View();
         }
 
@@ -175,7 +176,7 @@ namespace WMS.Controllers
                         var defultFileName = filesName.FirstOrDefault(u => u.Key == "Default").Value;
                         if (!string.IsNullOrEmpty(defultFileName))
                         {
-                            filePath = MoveFile(file, defultFileName, websiteNavigation.SiteID);
+                            filePath = MoveFile(file, defultFileName, websiteNavigation.Id);
                             websiteNav.Image = filePath;
                         }
                         break;
@@ -185,8 +186,8 @@ namespace WMS.Controllers
                         var hoverFileName = filesName.FirstOrDefault(u => u.Key == "Hover").Value;
                         if (!string.IsNullOrEmpty(hoverFileName))
                         {
-                            filePath = MoveFile(file, hoverFileName, websiteNavigation.SiteID);
-                            websiteNav.Image = filePath;
+                            filePath = MoveFile(file, hoverFileName, websiteNavigation.Id);
+                            websiteNav.HoverImage = filePath;
                         }
                         break;
                     }
@@ -198,6 +199,7 @@ namespace WMS.Controllers
 
 
                 }
+                Session["UploadTenantWebsiteNav"] = null;
                 return RedirectToAction("Index", new { SiteId = websiteNavigation.SiteID });
 
             }
@@ -250,8 +252,9 @@ namespace WMS.Controllers
 
 
             ViewBag.ControllerName = "WebsiteNavigations";
-            ViewBag.ParentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, websiteNavigation.SiteID).ToList(), "Id", "Name", websiteNavigation.ParentId);
+            ViewBag.ParentIds = new SelectList(_tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, websiteNavigation.SiteID).ToList(), "Id", "Name", websiteNavigation.ParentId);
             ViewBag.contentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, websiteNavigation.SiteID), "Id", "MetaTitle", websiteNavigation.ContentPageId);
+
             return View(websiteNavigation);
         }
 
@@ -281,18 +284,32 @@ namespace WMS.Controllers
                     if (ImageDefault != null)
                     {
                         var defaultImage = filesName?.FirstOrDefault(u => u.Key == "Default").Value;
-                        filePath = MoveFile(ImageDefault.FirstOrDefault(), defaultImage, websiteNavigation.Id);
-                        websiteNavigation.Image = filePath;
+                        if (defaultImage != null)
+                        {
+                            filePath = MoveFile(ImageDefault.FirstOrDefault(), defaultImage, websiteNavigation.Id);
+                            websiteNavigation.Image = filePath;
+                        }
+                        else {
+                            websiteNavigation.Image = string.Empty;
+                        }
                     }
                     if (HoverImage != null)
                     {
                         var hoverImage = filesName?.FirstOrDefault(u => u.Key == "Hover").Value;
-                        filePath = MoveFile(HoverImage.FirstOrDefault(), hoverImage, websiteNavigation.Id);
-                        websiteNavigation.HoverImage = filePath;
+                        if (hoverImage != null)
+                        {
+                            filePath = MoveFile(HoverImage.FirstOrDefault(), hoverImage, websiteNavigation.Id);
+                            websiteNavigation.HoverImage = filePath;
+                        }
+                        else
+                        {
+                            websiteNavigation.HoverImage = string.Empty;
+                        }
                     }
 
                 }
                 _tenantWebsiteService.CreateOrUpdateWebsiteNavigation(websiteNavigation, CurrentUserId, CurrentTenantId);
+                Session["UploadTenantWebsiteNav"] = null;
                 return RedirectToAction("Index", new { SiteId = SiteID });
             }
             ViewBag.ControllerName = "WebsiteNavigations";
@@ -364,7 +381,7 @@ namespace WMS.Controllers
 
         private string MoveFile(DevExpress.Web.UploadedFile file, string FileName, int ProductmanuId)
         {
-            Session["UploadTenantWebsiteNav"] = null;
+            
             if (!Directory.Exists(Server.MapPath(UploadDirectory + ProductmanuId.ToString())))
                 Directory.CreateDirectory(Server.MapPath(UploadDirectory + ProductmanuId.ToString()));
 
@@ -373,8 +390,10 @@ namespace WMS.Controllers
             if (!System.IO.File.Exists(destFile))
             {
                 System.IO.File.Move(sourceFile, destFile);
+                
             }
             return (UploadDirectory.Replace("~", "") + ProductmanuId.ToString() + @"/" + FileName);
+
         }
         protected override void Initialize(RequestContext requestContext)
         {

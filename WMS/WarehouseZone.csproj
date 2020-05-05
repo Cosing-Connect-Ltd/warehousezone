@@ -511,6 +511,7 @@
     <Compile Include="Controllers\ProductManufacturersController.cs" />
     <Compile Include="Controllers\ProductSerialController.cs" />
     <Compile Include="Controllers\ProductSpecialPriceController.cs" />
+    <Compile Include="Controllers\WebsiteDiscountCodesController.cs" />
     <Compile Include="Controllers\ProductsWebsitesMapsController.cs" />
     <Compile Include="Controllers\ScanSourceProductController.cs" />
     <Compile Include="Controllers\TenantConfigsController.cs" />
@@ -532,13 +533,17 @@
     <Compile Include="Controllers\WebAPI\ApiLocationSyncController.cs" />
     <Compile Include="Controllers\WebsiteContentPagesController.cs" />
     <Compile Include="Controllers\WebsiteNavigationsController.cs" />
+    <Compile Include="Controllers\WebsiteVouchersController.cs" />
+    <Compile Include="Controllers\WebsiteShippingRulesController.cs" />
     <Compile Include="Controllers\WebsiteSlidersController.cs" />
     <Compile Include="CustomBindings\ConsignmentCustomBinding.cs" />
     <Compile Include="CustomBindings\CurrencyExRateCustomBinding.cs" />
     <Compile Include="CustomBindings\PalletsCustomBinding.cs" />
     <Compile Include="CustomBindings\LocationListCustomBinding.cs" />
-    <Compile Include="CustomBindings\WebsiteProductsCustomBinding.cs" />
     <Compile Include="CustomBindings\WebsiteNavigationProductsCustomBinding.cs" />
+    <Compile Include="CustomBindings\WebsiteProductsCustomBinding.cs" />
+    <Compile Include="CustomBindings\WebsiteVouchersCustomBinding.cs" />
+    <Compile Include="CustomBindings\WebsiteShippingRuleCustomBinding.cs" />
     <Compile Include="CustomBindings\ProductComboboxCustomBinding.cs" />
     <Compile Include="CustomBindings\ProductSerialListCustomBinding.cs" />
     <Compile Include="CustomBindings\OrderSchedulerSettings.cs" />
@@ -2498,8 +2503,6 @@
     <Content Include="Views\Theme\Default\TenantWebsites\Edit.cshtml" />
     <Content Include="Views\Theme\Default\TenantWebsites\Index.cshtml" />
     <Content Include="Views\Theme\Default\TenantWebsites\_TenantWebSiteList.cshtml" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Theme\Default\WebsiteContentPages\Create.cshtml" />
     <Content Include="Views\Theme\Default\WebsiteContentPages\Delete.cshtml" />
     <Content Include="Views\Theme\Default\WebsiteContentPages\Details.cshtml" />
@@ -2523,6 +2526,26 @@
     <Content Include="Views\Theme\Default\WebsiteContentPages\_WebsiteContentPagesList.cshtml" />
     <Content Include="Views\Theme\Default\WebsiteSliders\_SliderList.cshtml" />
     <Content Include="Views\Theme\Default\WebsiteNavigations\CreateProductNavigation.cshtml" />
+    <Content Include="Views\Theme\Default\WebsiteShippingRules\Create.cshtml" />
+    <Content Include="Views\Theme\Default\WebsiteShippingRules\Delete.cshtml" />
+    <Content Include="Views\Theme\Default\WebsiteShippingRules\Details.cshtml" />
+    <Content Include="Views\Theme\Default\WebsiteShippingRules\Edit.cshtml" />
+    <Content Include="Views\Theme\Default\WebsiteShippingRules\Index.cshtml" />
+    <Content Include="Views\Theme\Default\WebsiteShippingRules\_WebsiteShippingRulesList.cshtml" />
+    <Content Include="Views\Theme\Default\WebsiteVouchers\_WebsiteVouchersList.cshtml" />
+    <Content Include="Views\Theme\Default\WebsiteVouchers\Create.cshtml" />
+    <Content Include="Views\Theme\Default\WebsiteVouchers\Delete.cshtml" />
+    <Content Include="Views\Theme\Default\WebsiteVouchers\Details.cshtml" />
+    <Content Include="Views\Theme\Default\WebsiteVouchers\Edit.cshtml" />
+    <Content Include="Views\Theme\Default\WebsiteVouchers\Index.cshtml" />
+    <Content Include="Views\Theme\Default\WebsiteDiscountCodes\_WebsiteDiscountCodesList.cshtml" />
+    <Content Include="Views\Theme\Default\WebsiteDiscountCodes\_WebsiteDiscountCodesProductList.cshtml" />
+    <Content Include="Views\Theme\Default\WebsiteDiscountCodes\Create.cshtml" />
+    <Content Include="Views\Theme\Default\WebsiteDiscountCodes\CreateProductNavigation.cshtml" />
+    <Content Include="Views\Theme\Default\WebsiteDiscountCodes\Delete.cshtml" />
+    <Content Include="Views\Theme\Default\WebsiteDiscountCodes\Details.cshtml" />
+    <Content Include="Views\Theme\Default\WebsiteDiscountCodes\Edit.cshtml" />
+    <Content Include="Views\Theme\Default\WebsiteDiscountCodes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

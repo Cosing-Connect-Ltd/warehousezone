@@ -12,18 +12,31 @@ using System.Web.Mvc;
 
 namespace WMS.CustomBindings
 {
-    public class WebsiteProductsCustomBinding
+    public class WebsiteShippingRuleCustomBinding
     {
-        private static IQueryable<object> GetWebsiteProductsDataset(int tenantId, int SiteId)
+        private static IQueryable<object> GetWebsiteShippingRulesDataset(int tenantId, int SiteId)
         {
             var tenantWebsiteService = DependencyResolver.Current.GetService<ITenantWebsiteService>();
-            var transactions = tenantWebsiteService.GetAllValidWebsiteProducts(tenantId, SiteId);
+            var transactions = tenantWebsiteService.GetAllValidWebsiteShippingRules(tenantId, SiteId).Select(u => new
+            {
+                Id = u.Id,
+                SiteName = u.TenantWebsites == null ? "" : u.TenantWebsites.SiteName,
+                CountryName = u.GlobalCountry == null ? "" : u.GlobalCountry.CountryName,
+                Courier=u.Courier,
+                Region=u.Region,
+                PostalArea=u.PostalArea,
+                WeightinGrams=u.WeightinGrams,
+                Price=u.Price,
+                IsActive=u.IsActive,
+                SortOrder=u.SortOrder
+
+            });
             return transactions;
         }
 
-        public static void ProductGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int SiteId)
+        public static void WebsiteShippingRulesGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int SiteId)
         {
-            var transactions = GetWebsiteProductsDataset(tenantId, SiteId);
+            var transactions = GetWebsiteShippingRulesDataset(tenantId, SiteId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
@@ -38,7 +51,7 @@ namespace WMS.CustomBindings
             }
             else
             {
-                transactions = transactions.OrderBy("SKUCode");
+                transactions = transactions.OrderBy("SortOrder");
             }
 
 
@@ -57,10 +70,10 @@ namespace WMS.CustomBindings
             e.Data = transactions.ToList();
         }
 
-        public static void ProductGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int SiteId)
+        public static void WebsiteShippingRulesDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int SiteId)
         {
 
-            var transactions = GetWebsiteProductsDataset(tenantId, SiteId);
+            var transactions = GetWebsiteShippingRulesDataset(tenantId, SiteId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
@@ -76,7 +89,7 @@ namespace WMS.CustomBindings
             }
             else
             {
-                transactions = transactions.OrderBy("SKUCode");
+                transactions = transactions.OrderBy("SortOrder");
             }
             if (e.FilterExpression != string.Empty)
             {
@@ -89,29 +102,18 @@ namespace WMS.CustomBindings
 
         }
 
-        public static GridViewModel CreateWebsiteProductsViewModel()
+        public static GridViewModel CreateWebsiteShippingRulesViewModel()
         {
             var viewModel = new GridViewModel();
             viewModel.KeyFieldName = "Id";
-            viewModel.Columns.Add("ProductId");
-            viewModel.Columns.Add("SiteID");
-            viewModel.Columns.Add("SKUCode");
-            viewModel.Columns.Add("Name");
-            viewModel.Columns.Add("Description");
-            viewModel.Columns.Add("DepartmentName");
-            viewModel.Columns.Add("ProductGroupName");
-            viewModel.Columns.Add("ProductCategoryName");
-            viewModel.Columns.Add("IsActive");
-            viewModel.Pager.PageSize = 10;
-            return viewModel;
-        }
-        public static GridViewModel CreateWebsiteDiscountCodeProductsViewModel()
-        {
-            var viewModel = new GridViewModel();
-            viewModel.KeyFieldName = "ProductId";
-            viewModel.Columns.Add("SiteID");
-            viewModel.Columns.Add("SKUCode");
-            viewModel.Columns.Add("Name");
+            viewModel.Columns.Add("SiteName");
+            viewModel.Columns.Add("CountryName");
+            viewModel.Columns.Add("Courier");
+            viewModel.Columns.Add("Region");
+            viewModel.Columns.Add("PostalArea");
+            viewModel.Columns.Add("WeightinGrams");
+            viewModel.Columns.Add("Price");
+            viewModel.Columns.Add("SortOrder");
             viewModel.Columns.Add("IsActive");
             viewModel.Pager.PageSize = 10;
             return viewModel;

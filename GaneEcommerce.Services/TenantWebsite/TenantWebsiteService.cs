@@ -200,7 +200,6 @@ namespace Ganedata.Core.Services
 
         }
 
-
         public IQueryable<NavigationProductsViewModel> GetAllValidWebsiteProducts(int TenantId, int SiteId)
         {
             var allProducts = _currentDbContext.ProductMaster.Where(m => m.TenantId == TenantId && m.IsDeleted != true);
@@ -229,8 +228,6 @@ namespace Ganedata.Core.Services
             return res;
 
         }
-
-
 
         public WebsiteNavigation CreateOrUpdateWebsiteNavigation(WebsiteNavigation websiteNavigation, int UserId, int TenantId)
         {
@@ -274,7 +271,6 @@ namespace Ganedata.Core.Services
         {
             return _currentDbContext.WebsiteNavigations.FirstOrDefault(u => u.IsDeleted != true && u.Id == NavigationId);
         }
-
         public bool CreateOrUpdateWebsiteNavigationProducts(NavigationProductsViewModel navigationProduct, int UserId, int TenantId)
         {
             var navItem = _currentDbContext.ProductsNavigationMaps.Where(x => x.ProductWebsiteMapId == navigationProduct.Id
@@ -303,9 +299,6 @@ namespace Ganedata.Core.Services
             _currentDbContext.SaveChanges();
             return true;
         }
-
-
-
         public bool CreateOrUpdateWebsiteProducts(NavigationProductsViewModel websiteProduct, int UserId, int TenantId)
         {
             var navItem = _currentDbContext.ProductsWebsitesMap.Where(x => x.ProductId == websiteProduct.ProductId
@@ -334,7 +327,274 @@ namespace Ganedata.Core.Services
             _currentDbContext.SaveChanges();
             return true;
         }
+        //WebsiteShippingRules
 
+        public IQueryable<WebsiteShippingRules> GetAllValidWebsiteShippingRules(int TenantId, int SiteId)
+        {
+            return _currentDbContext.WebsiteShippingRules.Where(u => u.TenantId == TenantId && u.SiteID == SiteId && u.IsDeleted != true);
+            
+        }
+        public WebsiteShippingRules CreateOrUpdateWebsiteShippingRules(WebsiteShippingRules websiteShippingRules, int UserId, int TenantId)
+        {
+            var websiteShippingRulesItems = _currentDbContext.WebsiteShippingRules.Where(x => x.TenantId == TenantId
+           && x.SiteID == websiteShippingRules.SiteID && x.IsDeleted != true && x.Id==websiteShippingRules.Id).FirstOrDefault();
+            if (websiteShippingRulesItems == null)
+            {
+                WebsiteShippingRules websiteShipping = new WebsiteShippingRules();
+                websiteShipping.SiteID = websiteShippingRules.SiteID;
+                websiteShipping.CountryId = websiteShippingRules.CountryId;
+                websiteShipping.Courier = websiteShippingRules.Courier;
+                websiteShipping.PostalArea = websiteShippingRules.PostalArea;
+                websiteShipping.Region = websiteShippingRules.Region;
+                websiteShipping.Price = websiteShippingRules.Price;
+                websiteShipping.SortOrder = websiteShippingRules.SortOrder;
+                websiteShipping.WeightinGrams = websiteShippingRules.WeightinGrams;
+                websiteShipping.UpdateCreatedInfo(UserId);
+                websiteShipping.TenantId = TenantId;
+                websiteShipping.IsActive = websiteShippingRules.IsActive;
+                _currentDbContext.WebsiteShippingRules.Add(websiteShipping);
+            }
+            else
+            {
+                websiteShippingRulesItems.CountryId = websiteShippingRules.CountryId;
+                websiteShippingRulesItems.Courier = websiteShippingRules.Courier;
+                websiteShippingRulesItems.PostalArea = websiteShippingRules.PostalArea;
+                websiteShippingRulesItems.Region = websiteShippingRules.Region;
+                websiteShippingRulesItems.Price = websiteShippingRules.Price;
+                websiteShippingRulesItems.SortOrder = websiteShippingRules.SortOrder;
+                websiteShippingRulesItems.WeightinGrams = websiteShippingRules.WeightinGrams;
+                websiteShippingRulesItems.IsActive = websiteShippingRules.IsActive;
+                websiteShippingRulesItems.SortOrder = websiteShippingRules.SortOrder;
+                websiteShippingRulesItems.TenantId = TenantId;
+                websiteShippingRulesItems.IsDeleted = false;
+                websiteShippingRulesItems.UpdateUpdatedInfo(UserId);
+            }
+            _currentDbContext.SaveChanges();
+            return websiteShippingRules;
+
+        }
+        public WebsiteShippingRules RemoveWebsiteShippingRules(int Id, int UserId)
+        {
+            var WebsiteShipping = _currentDbContext.WebsiteShippingRules.FirstOrDefault(u => u.Id == Id);
+            if (WebsiteShipping != null)
+            {
+                WebsiteShipping.IsDeleted = true;
+                WebsiteShipping.UpdateUpdatedInfo(UserId);
+                _currentDbContext.Entry(WebsiteShipping).State = System.Data.Entity.EntityState.Modified;
+                _currentDbContext.SaveChanges();
+
+            }
+            return WebsiteShipping;
+
+        }
+        public WebsiteShippingRules GetWebsiteShippingRulesById(int Id)
+        {
+            return _currentDbContext.WebsiteShippingRules.FirstOrDefault(u => u.Id == Id && u.IsDeleted != true);
+
+        }
+
+        // website Voucher
+
+        public IQueryable<WebsiteVouchers> GetAllValidWebsiteVoucher(int TenantId, int SiteId)
+        {
+            return _currentDbContext.WebsiteVouchers.Where(u => u.TenantId == TenantId && u.SiteID == SiteId && u.IsDeleted != true);
+
+        }
+        public WebsiteVouchers CreateOrUpdateWebsiteVouchers(WebsiteVouchers websiteVouchers, int UserId, int TenantId)
+        {
+            var websiteVouchersItems = _currentDbContext.WebsiteVouchers.Where(x => x.TenantId == TenantId
+           && x.SiteID == websiteVouchers.SiteID && x.IsDeleted != true && x.Id == websiteVouchers.Id).FirstOrDefault();
+            if (websiteVouchersItems == null)
+            {
+                WebsiteVouchers websiteVouchers1 = new WebsiteVouchers();
+                websiteVouchers1.Id = Guid.NewGuid();
+                websiteVouchers1.SiteID = websiteVouchers.SiteID;
+                websiteVouchers1.Code = websiteVouchers.Code;
+                websiteVouchers1.Value = websiteVouchers.Value;
+                websiteVouchers1.Shared = websiteVouchers.Shared;
+                websiteVouchers1.UserId = websiteVouchers.UserId;
+                websiteVouchers1.UpdateCreatedInfo(UserId);
+                websiteVouchers1.TenantId = TenantId;
+                websiteVouchers1.IsActive = websiteVouchers.IsActive;
+                _currentDbContext.WebsiteVouchers.Add(websiteVouchers1);
+            }
+            else
+            {
+                websiteVouchersItems.SiteID = websiteVouchers.SiteID;
+                websiteVouchersItems.Code = websiteVouchers.Code;
+                websiteVouchersItems.Value = websiteVouchers.Value;
+                websiteVouchersItems.Shared = websiteVouchers.Shared;
+                websiteVouchersItems.UserId = websiteVouchers.UserId;
+                websiteVouchersItems.IsActive = websiteVouchers.IsActive;
+                websiteVouchersItems.TenantId = TenantId;
+                websiteVouchersItems.IsDeleted = false;
+                websiteVouchersItems.UpdateUpdatedInfo(UserId);
+            }
+            _currentDbContext.SaveChanges();
+            return websiteVouchers;
+
+        }
+        public WebsiteVouchers RemoveWebsiteVoucher(Guid Id, int UserId)
+        {
+            var WebsiteShipping = _currentDbContext.WebsiteVouchers.FirstOrDefault(u => u.Id == Id);
+            if (WebsiteShipping != null)
+            {
+                WebsiteShipping.IsDeleted = true;
+                WebsiteShipping.UpdateUpdatedInfo(UserId);
+                _currentDbContext.Entry(WebsiteShipping).State = System.Data.Entity.EntityState.Modified;
+                _currentDbContext.SaveChanges();
+
+            }
+            return WebsiteShipping;
+
+        }
+        public WebsiteVouchers GetWebsiteVoucherById(Guid Id)
+        {
+            return _currentDbContext.WebsiteVouchers.FirstOrDefault(u => u.Id == Id && u.IsDeleted != true);
+
+        }
+        public string GenerateVoucherCode()
+        {
+            string alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            string small_alphabets = "abcdefghijklmnopqrstuvwxyz";
+            string numbers = "1234567890";
+            string characters = alphabets + small_alphabets + numbers;
+            string otp = string.Empty;
+            for (int i = 0; i < 16; i++)
+            {
+                string character = string.Empty;
+                do
+                {
+                    int index = new Random().Next(0, characters.Length);
+                    character = characters.ToCharArray()[index].ToString();
+                } while (otp.IndexOf(character) != -1);
+                otp += character;
+            }
+            var duplicate = _currentDbContext.WebsiteVouchers.FirstOrDefault(u => u.Code == otp && u.IsDeleted != true);
+            if (duplicate != null)
+            {
+                return GenerateVoucherCode();
+            }
+
+
+            return otp.Insert(4,"-").Insert(9,"-").Insert(14,"-").ToUpper();
+        }
+
+        //WebsiteDiscountCodes
+        public IEnumerable<WebsiteDiscountCodes> GetAllValidWebsiteDiscountCodes(int TenantId, int SiteId)
+        {
+
+            return _currentDbContext.WebsiteDiscountCodes.Where(u=>u.TenantId==TenantId && u.SiteID==SiteId && u.IsDeleted != true);
+        }
+        public IEnumerable<WebsiteDiscountProductsMap> GetAllValidWebsiteDiscountProductsMap(int TenantId, int DiscountId)
+        {
+
+            return _currentDbContext.websiteDiscountProductsMaps.Where(u => u.TenantId == TenantId && u.IsDeleted != true && u.DiscountId==DiscountId);
+        }
+
+        public WebsiteDiscountCodes CreateOrUpdateWebsiteDiscountCodes(WebsiteDiscountCodes websiteDiscount, int UserId, int TenantId)
+        {
+            var websiteDiscountItems = _currentDbContext.WebsiteDiscountCodes.Where(x => x.TenantId == TenantId
+          && x.SiteID == websiteDiscount.SiteID && x.IsDeleted != true && x.Id == websiteDiscount.Id).FirstOrDefault();
+            if (websiteDiscountItems == null)
+            {
+                WebsiteDiscountCodes websiteDiscountCodes  = new WebsiteDiscountCodes();
+                websiteDiscountCodes.SiteID = websiteDiscount.SiteID;
+                websiteDiscountCodes.Code = websiteDiscount.Code;
+                websiteDiscountCodes.FromDate = websiteDiscount.FromDate;
+                websiteDiscountCodes.ToDate = websiteDiscount.ToDate;
+                websiteDiscountCodes.DiscountType = websiteDiscount.DiscountType;
+                websiteDiscountCodes.DiscountPercent = websiteDiscount.DiscountPercent;
+                websiteDiscountCodes.FreeShippig = websiteDiscount.FreeShippig;
+                websiteDiscountCodes.SingleUse = websiteDiscount.SingleUse;
+                websiteDiscountCodes.Title = websiteDiscount.Title;
+                websiteDiscountCodes.MinimumBasketValue = websiteDiscount.MinimumBasketValue;
+                websiteDiscountCodes.UpdateCreatedInfo(UserId);
+                websiteDiscountCodes.TenantId = TenantId;
+                websiteDiscountCodes.IsActive = websiteDiscount.IsActive;
+                _currentDbContext.WebsiteDiscountCodes.Add(websiteDiscountCodes);
+                _currentDbContext.SaveChanges();
+                if (!string.IsNullOrEmpty(websiteDiscount.SelectedProductIds))
+                {
+                    List<int> productWebMapId = websiteDiscount.SelectedProductIds.Split(',').Select(Int32.Parse).ToList();
+                    foreach (var item in productWebMapId)
+                    {
+                        WebsiteDiscountProductsMap DiscountProductsMap = new WebsiteDiscountProductsMap();
+                        DiscountProductsMap.DiscountId = websiteDiscountCodes.Id;
+                        DiscountProductsMap.ProductId = item;
+                        DiscountProductsMap.SortOrder = 1;
+                        DiscountProductsMap.TenantId = TenantId;
+                        DiscountProductsMap.IsActive = true;
+                        DiscountProductsMap.UpdateCreatedInfo(UserId);
+                        _currentDbContext.websiteDiscountProductsMaps.Add(DiscountProductsMap);
+                    }
+                    _currentDbContext.SaveChanges();
+
+                }
+            }
+            else
+            {
+                websiteDiscountItems.Title = websiteDiscount.Title;
+                websiteDiscountItems.MinimumBasketValue = websiteDiscount.MinimumBasketValue;
+                websiteDiscountItems.SiteID = websiteDiscount.SiteID;
+                websiteDiscountItems.Code = websiteDiscount.Code;
+                websiteDiscountItems.FromDate = websiteDiscount.FromDate;
+                websiteDiscountItems.ToDate = websiteDiscount.ToDate;
+                websiteDiscountItems.DiscountType = websiteDiscount.DiscountType;
+                websiteDiscountItems.DiscountPercent = websiteDiscount.DiscountPercent;
+                websiteDiscountItems.FreeShippig = websiteDiscount.FreeShippig;
+                websiteDiscountItems.SingleUse = websiteDiscount.SingleUse;
+                websiteDiscountItems.TenantId = TenantId;
+                websiteDiscountItems.IsActive = websiteDiscount.IsActive;
+                websiteDiscountItems.UpdateUpdatedInfo(UserId);
+                if (!string.IsNullOrEmpty(websiteDiscount.SelectedProductIds))
+                { 
+                    List<int> productWebMapIds = websiteDiscount.SelectedProductIds.Split(',').Select(Int32.Parse).ToList();
+                    var Toadd = productWebMapIds.Except(_currentDbContext.websiteDiscountProductsMaps
+                    .Where(a => a.IsDeleted != true && a.DiscountId == websiteDiscount.Id).Select(a => a.ProductId)
+                    .ToList()).ToList();
+                    var toDelete = _currentDbContext.websiteDiscountProductsMaps
+                    .Where(a => a.IsDeleted != true && a.DiscountId == websiteDiscount.Id).Select(a => a.ProductId).Except(productWebMapIds);
+                    foreach (var item in Toadd)
+                    {
+                        WebsiteDiscountProductsMap DiscountProductsMap = new WebsiteDiscountProductsMap();
+                        DiscountProductsMap.DiscountId = websiteDiscount.Id;
+                        DiscountProductsMap.ProductId = item;
+                        DiscountProductsMap.SortOrder = 1;
+                        DiscountProductsMap.TenantId = TenantId;
+                        DiscountProductsMap.IsActive = true;
+                        DiscountProductsMap.UpdateCreatedInfo(UserId);
+                        _currentDbContext.websiteDiscountProductsMaps.Add(DiscountProductsMap);
+
+                    }
+                    foreach (var item in toDelete)
+                    {
+                        var productsNavigation = _currentDbContext.websiteDiscountProductsMaps.FirstOrDefault(u => u.ProductId == item);
+                        if (productsNavigation != null)
+                        {
+                            productsNavigation.IsDeleted = true;
+                            productsNavigation.UpdateUpdatedInfo(UserId);
+                            _currentDbContext.Entry(productsNavigation).State = System.Data.Entity.EntityState.Modified;
+                        }
+
+                    }
+                    
+                }
+
+            }
+        
+            _currentDbContext.SaveChanges();
+            return websiteDiscount;
+      
+        }
+        public WebsiteDiscountCodes RemoveWebsiteDiscountCodes(int Id, int UserId)
+        {
+            return default;
+        }
+        public WebsiteDiscountCodes GetWebsiteDiscountCodesById(int discountId)
+        {
+            return _currentDbContext.WebsiteDiscountCodes.Find(discountId);
+        }
 
     }
 }

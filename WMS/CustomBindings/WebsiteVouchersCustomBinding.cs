@@ -12,18 +12,28 @@ using System.Web.Mvc;
 
 namespace WMS.CustomBindings
 {
-    public class WebsiteProductsCustomBinding
+    public class WebsiteVouchersCustomBinding
     {
-        private static IQueryable<object> GetWebsiteProductsDataset(int tenantId, int SiteId)
+        private static IQueryable<object> GetWebsiteVouchersDataset(int tenantId, int SiteId)
         {
             var tenantWebsiteService = DependencyResolver.Current.GetService<ITenantWebsiteService>();
-            var transactions = tenantWebsiteService.GetAllValidWebsiteProducts(tenantId, SiteId);
+            var transactions = tenantWebsiteService.GetAllValidWebsiteVoucher(tenantId, SiteId).Select(u => new
+            {
+                Id = u.Id,
+                SiteName = u.TenantWebsites == null ? "" : u.TenantWebsites.SiteName,
+                u.Code,
+                u.Value,
+                u.Shared,
+                UserName=u.AuthUser ==null?"": u.AuthUser.UserLastName + ", " + u.AuthUser.UserFirstName,
+                IsActive=u.IsActive,
+
+            });
             return transactions;
         }
 
-        public static void ProductGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int SiteId)
+        public static void WebsiteVouchersGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int SiteId)
         {
-            var transactions = GetWebsiteProductsDataset(tenantId, SiteId);
+            var transactions = GetWebsiteVouchersDataset(tenantId, SiteId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
@@ -38,7 +48,7 @@ namespace WMS.CustomBindings
             }
             else
             {
-                transactions = transactions.OrderBy("SKUCode");
+                transactions = transactions.OrderBy("Id");
             }
 
 
@@ -57,10 +67,10 @@ namespace WMS.CustomBindings
             e.Data = transactions.ToList();
         }
 
-        public static void ProductGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int SiteId)
+        public static void WebsiteVouchersDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int SiteId)
         {
 
-            var transactions = GetWebsiteProductsDataset(tenantId, SiteId);
+            var transactions = GetWebsiteVouchersDataset(tenantId, SiteId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
@@ -76,7 +86,7 @@ namespace WMS.CustomBindings
             }
             else
             {
-                transactions = transactions.OrderBy("SKUCode");
+                transactions = transactions.OrderBy("Id");
             }
             if (e.FilterExpression != string.Empty)
             {
@@ -89,29 +99,15 @@ namespace WMS.CustomBindings
 
         }
 
-        public static GridViewModel CreateWebsiteProductsViewModel()
+        public static GridViewModel CreateWebsiteVouchersViewModel()
         {
             var viewModel = new GridViewModel();
             viewModel.KeyFieldName = "Id";
-            viewModel.Columns.Add("ProductId");
-            viewModel.Columns.Add("SiteID");
-            viewModel.Columns.Add("SKUCode");
-            viewModel.Columns.Add("Name");
-            viewModel.Columns.Add("Description");
-            viewModel.Columns.Add("DepartmentName");
-            viewModel.Columns.Add("ProductGroupName");
-            viewModel.Columns.Add("ProductCategoryName");
-            viewModel.Columns.Add("IsActive");
-            viewModel.Pager.PageSize = 10;
-            return viewModel;
-        }
-        public static GridViewModel CreateWebsiteDiscountCodeProductsViewModel()
-        {
-            var viewModel = new GridViewModel();
-            viewModel.KeyFieldName = "ProductId";
-            viewModel.Columns.Add("SiteID");
-            viewModel.Columns.Add("SKUCode");
-            viewModel.Columns.Add("Name");
+            viewModel.Columns.Add("SiteName");
+            viewModel.Columns.Add("Code");
+            viewModel.Columns.Add("Value");
+            viewModel.Columns.Add("Shared");
+            viewModel.Columns.Add("UserName");
             viewModel.Columns.Add("IsActive");
             viewModel.Pager.PageSize = 10;
             return viewModel;
