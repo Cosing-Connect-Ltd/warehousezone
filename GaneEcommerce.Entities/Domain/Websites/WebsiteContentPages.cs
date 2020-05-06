@@ -19,6 +19,7 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Meta Description")]
         public string MetaDescription { get; set; }
         [Required]
+        [Display(Name = "Page Url")]
         public string pageUrl { get; set; }
         [Required]
         [AllowHtml]
@@ -29,6 +30,7 @@ namespace Ganedata.Core.Entities.Domain
         public int SortOrder { get; set; }
         [Display(Name = "Is Active")]
         public bool IsActive { get; set; }
+        [Display(Name = "Content Type")]
         public ContentType Type { get; set; }
         [ForeignKey("SiteID")]
         public virtual TenantWebsites TenantWebsites { get; set; }

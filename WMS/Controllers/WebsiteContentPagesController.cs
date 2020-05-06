@@ -91,7 +91,7 @@ namespace WMS.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,SiteID,Title,MetaTitle,MetaDescription,Contant,SortOrder,IsActive,TenantId,DateCreated,DateUpdated,CreatedBy,UpdatedBy,IsDeleted")] WebsiteContentPages websiteContentPages)
+        public ActionResult Edit( WebsiteContentPages websiteContentPages)
         {
             if (ModelState.IsValid)
             {

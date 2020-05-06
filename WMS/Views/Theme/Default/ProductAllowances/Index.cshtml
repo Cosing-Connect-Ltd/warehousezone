@@ -24,13 +24,13 @@
 
 @Html.Hidden("selkey", null, new { @class = "selkey" })
 
-@Html.Action("_ProductAllowanceList")
+@Html.Action("_ProductAllowanceList", new { SiteId = ViewBag.SiteId })
 
 <div class="col-md-12 p-0">
 
     @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TenantWebsites", "Create"))
     {
-        @Html.ActionLink("Create New", "Create",null, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Create New", "Create", new { SiteId = ViewBag.SiteId }, new { @class = "btn btn-primary" })
     }
 
     @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TenantWebsites", "Edit"))
@@ -43,7 +43,12 @@
     {
         @Html.ActionLink("Delete", "Delete", null, new { @class = "btn btn-primary  Caction" })
     }
+    <div class='col-md-offset-2 col-md-10 bottom-right'>
+        <div class="back-list">
+            <a href="@Url.Action("Index","TenantWebsites")" class="btn btn-default">Back to List</a>
+        </div>
 
+    </div>
 
 </div>
 

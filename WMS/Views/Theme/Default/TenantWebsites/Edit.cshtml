@@ -98,6 +98,30 @@
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.WebsiteContactAddress, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.WebsiteContactAddress, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.WebsiteContactAddress, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.WebsiteContactPhone, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.WebsiteContactPhone, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.WebsiteContactPhone, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.WebsiteContactEmail, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.WebsiteContactEmail, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.WebsiteContactEmail, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6 p-0 pull-left mb-2">
+            <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.FacebookUrl, htmlAttributes: new { @class = "control-label col-md-4" })
                 <div class="col-md-8">
                     @Html.EditorFor(model => model.FacebookUrl, new { htmlAttributes = new { @class = "form-control" } })
@@ -111,9 +135,6 @@
                     @Html.ValidationMessageFor(model => model.TwitterUrl, "", new { @class = "text-danger" })
                 </div>
             </div>
-        </div>
-        <div class="col-md-6 p-0 pull-left mb-2">
-
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.LinkedInUrl, htmlAttributes: new { @class = "control-label col-md-4" })
                 <div class="col-md-8">
@@ -168,19 +189,19 @@
                         @foreach (var file in ViewBag.Files)
                         {
 
-                        <table>
-                            <tr>
-                                <td id="tdProductfileName">@file</td>
-                                <td>
-                                    <p>&nbsp;</p>
-                                </td>
-                                <td><a class="LRemove" onclick="_RemoveLogoFile('@file')">Remove</a></td>
-                                <td>
-                                    <p>&nbsp;</p>
-                                </td>
+                            <table>
+                                <tr>
+                                    <td id="tdProductfileName">@file</td>
+                                    <td>
+                                        <p>&nbsp;</p>
+                                    </td>
+                                    <td><a class="LRemove" onclick="_RemoveLogoFile('@file')">Remove</a></td>
+                                    <td>
+                                        <p>&nbsp;</p>
+                                    </td>
 
-                            </tr>
-                        </table>
+                                </tr>
+                            </table>
                         }
                     </div>
                 </div>

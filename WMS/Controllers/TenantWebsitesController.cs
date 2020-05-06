@@ -70,7 +70,7 @@ namespace WMS.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "SiteID,SiteName,SiteDescription,SiteType,SiteApiUrl,ApiToken,DefaultWarehouseId,HostName,Logo,FacebookUrl,TwitterUrl,LinkedInUrl,YoutubeUrl,InstaGramUrl,FooterText,IsActive,TenantId,DateCreated,DateUpdated,CreatedBy,UpdatedBy,IsDeleted")] TenantWebsites tenantWebsites, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
+        public ActionResult Create(TenantWebsites tenantWebsites, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
         {
             if (ModelState.IsValid)
             {
@@ -128,7 +128,7 @@ namespace WMS.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "SiteID,SiteName,SiteDescription,SiteType,SiteApiUrl,ApiToken,DefaultWarehouseId,HostName,Logo,FacebookUrl,TwitterUrl,LinkedInUrl,YoutubeUrl,InstaGramUrl,FooterText,IsActive,TenantId,DateCreated,DateUpdated,CreatedBy,UpdatedBy,IsDeleted")] TenantWebsites tenantWebsites, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
+        public ActionResult Edit( TenantWebsites tenantWebsites, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
         {
             ViewBag.ControllerName = "TenantWebsites";
             tenantWebsites.DefaultWarehouseId = CurrentWarehouseId;
