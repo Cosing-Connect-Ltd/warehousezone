@@ -18,23 +18,32 @@ namespace Ganedata.Core.Entities.Domain
 
         [Key]
         public int SiteID { get; set; }
+        [Display(Name = "Site Name")]
         public string SiteName { get; set; }
+        [Display(Name = "Description")]
         public string SiteDescription { get; set; }
+        [Display(Name = "Site Type")]
         public TenantWebsiteTypes SiteType { get; set; }
         public WebsiteThemeEnum Theme { get; set; }
         public string SiteApiUrl { get; set; }
         public string ApiToken { get; set; }
         public int DefaultWarehouseId { get; set; }
+        [Display(Name = "HostName")]
         public string HostName { get; set; }
         public string Logo { get; set; }
+        [Display(Name = "Facebook Url")]
         [Url]
         public string FacebookUrl { get; set; }
+        [Display(Name = "Twitter Url")]
         [Url]
         public string TwitterUrl { get; set; }
+        [Display(Name = "LinkedIn Url")]
         [Url]
         public string LinkedInUrl { get; set; }
+        [Display(Name = "Youtube Url")]
         [Url]
         public string YoutubeUrl { get; set; }
+        [Display(Name = "Account Code")]
         [Url]
         public string InstaGramUrl { get; set; }
         public string FooterText { get; set; }

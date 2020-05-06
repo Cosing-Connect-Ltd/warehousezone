@@ -256,7 +256,7 @@ $(document).ready(function () {
     $("#selectAddresss").hide();
 
     var id = $('#ProductGroupIds').val();
-    getTopCategoryProducts(id);
+    //getTopCategoryProducts(id);
 });
 function onCurrencyChange(event) {
 

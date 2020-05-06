@@ -288,7 +288,8 @@ input[type="number"]::-webkit-outer-spin-button {
   color: #fff;
 }
 .nb_header .nb_mainnav {
-  float: right;
+  float: left;
+  clear:right;
 }
 .nb_header .nb_mainnav > ul {
   list-style: none;
