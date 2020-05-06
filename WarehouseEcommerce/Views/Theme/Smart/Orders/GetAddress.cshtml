@@ -26,8 +26,6 @@
                         <hr class="custom-hr">
                         @if (address != null)
                         {
-
-
                             for (int i = 0; i < address.Count; i += 2)
                             {
                                 <div class="row">
@@ -125,18 +123,18 @@
                         {
                             <div>
                                 <h4 class="text-uppercase mt-20">@(Model == null ? "Add a new address" : "Edit Address")</h4>
-                                <div class="search-container">
+                                <div class="search-container col-md-6">
                                     <div class="search-box input-group">
-                                        <input id ="postCode" type="text" name="search" value="" placeholder="Enter PostCode" class="text-search-postcode" />
+                                        <input id="postCode" type="text" name="search" value="" placeholder="Enter PostCode" class="text-search-postcode form-control text-uppercase" />
                                         <div id="sp-btn-search" class="input-group-btn">
                                             <div class="col-md-6">
                                                 <button type="button" id="btn-search-category" class="btn btn-search-category" onclick="SearchPostCode();">Find Address</button>
                                             </div>
-                                            <div id="selectAddresss" class="col-md-8">
-                                                <select id="selectApiAddress" name="address" onchange="OnchangeDropdownAddress()">
-                                                </select>
-                                            </div>
                                         </div>
+                                    </div>
+                                    <div id="selectAddresss" class="col-md-6 clearfix">
+                                        <select id="selectApiAddress" name="address" onchange="OnchangeDropdownAddress()">
+                                        </select>
                                     </div>
                                 </div>
 

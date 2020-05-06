@@ -3,17 +3,15 @@
 }
 
 function searchPoducts() {
+    debugger;
     var sortvalue = $("#SortedValues").val();
-    var groupId = $("#ProductGroups").val();
-    if (groupId === "" || groupId === undefined || groupId === null) { groupId = $("#ProductGroupsId").val(); }
+    var category = $("#prod-category").val();
     var pagenumber = $("#pagenumber").val();
-    var departmentId = $("#departmentId").val() == undefined ? "" : $("#departmentId").val();
     var currentFilter = $("#currentFiltervalue").val();
     var searchstring = $("#searchString").val();
     var pageSize = $("#input-limit :selected").val();
     var valuesparam = $("#valuesParameter").val() == undefined ? "" : $("#valuesParameter").val();
-    var SubCategory = $("#SubCategoryId").val() == undefined ? "" : $("#SubCategoryId").val();
-    window.location.href = basePath + "/Products/list?group=" + groupId + "&sort=" + sortvalue + "&filter=" + currentFilter + "&search=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&department=" + departmentId + "&category=" + SubCategory + "&values=" + valuesparam;
+    window.location.href = basePath + "/Products/list?category=" + category + "&sort=" + sortvalue + "&filter=" + currentFilter + "&search=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&values=" + valuesparam;
 }
 
 function SearchPostCode() {
@@ -54,12 +52,9 @@ function OnchangeDropdownAddress() {
 }
 
 function SearchProductCategory() {
-    var productgroupId = $("#ProductGroups").val() == undefined ? "" : $("#valuesParameter").val();
     var searchstring = $(".text-search").val();
     var valuesparam = $("#valuesParameter").val();
-    var SubCategory = $("#SubCategoryId").val() == undefined ? "" : $("#SubCategoryId").val();
-    var departmentId = $("#departmentId").val() == undefined ? "" : $("#departmentId").val();
-    window.location.href = basePath + "/Products/list?group=" + productgroupId + "&department=" + departmentId + "&search=" + searchstring + "&category=" + SubCategory + "&values=" + valuesparam;
+    window.location.href = basePath + "/Products/list?search=" + searchstring + "&values=" + valuesparam;
 }
 
 var searchvalues;
@@ -72,7 +67,7 @@ $('.text-search').on('input', function () {
             $.ajax({
                 url: basePath + '/Products/searchProduct',
                 method: 'post',
-                data: { groupId: $("#ProductGroups").val(), searchkey: request.term },
+                data: { searchkey: request.term },
                 dataType: 'json',
                 success: function (data) {
                     seeall = true;
@@ -95,9 +90,10 @@ $('.text-search').on('input', function () {
         },
         open: function (data) {
             if (seeall) {
+                debugger;
                 var $li = $("<li>");
                 var $link = $("<a>", {
-                    href: basePath + "/Products/list?group=" + data.Group + "&search=" + data.SKUCode + "&department=" + data.Department,
+                    href: basePath + "/Products/list?search=" + $('.text-search').val(),
                     class: "see-all"
                 }).html("See All Results").appendTo($li);
                 $li.appendTo($('.ui-autocomplete'));
@@ -106,8 +102,8 @@ $('.text-search').on('input', function () {
         focus: updateTextBox,
         select: updateTextBox
     }).autocomplete('instance')._renderItem = function (ul, item) {
-        return $('<li class="search-item">').append("<img style='width: 46px; height:46px;' src=" + item.Path + " alt=" + item.Name + "/>")
-            .append("<a href=" + basePath + "/Products/list?group=" + item.Group + "&search=" + item.SKUCode + "&department=" + item.Department + ">" + item.Name + "</a>").appendTo(ul);
+        return $('<li class="search-item">').append("")
+            .append("<a href=" + basePath + "/Products/list?search=" + item.Name + "><img style='width: 46px; height:46px;' src=" + item.Path + " alt=" + item.Name + "/>" + item.Name + "</a>").appendTo(ul);
     };
 });
 

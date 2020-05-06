@@ -803,6 +803,10 @@
     <Compile Include="Migrations\202005052202028_nullable-allowanceGroupId.designer.cs">
       <DependentUpon>202005052202028_nullable-allowanceGroupId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005060101258_properties-add-in-tenant-websites-and-content-pages.cs" />
+    <Compile Include="Migrations\202005060101258_properties-add-in-tenant-websites-and-content-pages.designer.cs">
+      <DependentUpon>202005060101258_properties-add-in-tenant-websites-and-content-pages.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1725,6 +1729,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005052202028_nullable-allowanceGroupId.resx">
       <DependentUpon>202005052202028_nullable-allowanceGroupId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005060101258_properties-add-in-tenant-websites-and-content-pages.resx">
+      <DependentUpon>202005060101258_properties-add-in-tenant-websites-and-content-pages.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

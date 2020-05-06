@@ -1,198 +1,72 @@
 ﻿@model WarehouseEcommerce.ViewModels.UsersViewModel
 @{
-    ViewBag.Title = "Create";
-    Layout = null;
+    ViewBag.Title = "Create Account";
 }
+<div class="row login-row">
+    <div class="col-md-6 signup-col">
+        <div class="row">
+            @using (Html.BeginForm("Create", "User", FormMethod.Post, new { @class = "formNewLestter", id = "formNewLestter" }))
+            {
+                @Html.HiddenFor(model => model.PlaceOrder, (bool?)ViewBag.Placeorder)
+                <div class="col-md-6  float-left">
+                    <div class="webi-newsletter  webi-newsletter leftprobg text-center" id="newsletter_5b2631bae1cb9" data-mode="default">
+                        @Html.AntiForgeryToken()
+                        <div class="remove-inner">
+                            <h3>USER DETAIL</h3>
+                            <hr>
+                            <div class="form-group">
+                                @Html.EditorFor(model => model.FirstName, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Enter First Name" } })
+                                @Html.ValidationMessageFor(model => model.FirstName)
+                                @Html.EditorFor(model => model.LastName, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Enter Last Name" } })
+                                @Html.ValidationMessageFor(model => model.LastName)
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Sign up</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>SmartShop Electronic Shop</title>
-    <meta name="description" content="SmartShop" />
-    @Styles.Render("~/Content/app/css/styles")
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+                                @Html.EditorFor(model => model.ContactNumber, new { htmlattributes = new { @class = "form-control input-md inputNew", @type = "number", @placeholder = "Enter Contact Number" } })
+                                @Html.ValidationMessageFor(model => model.ContactNumber)
+                                @Html.EditorFor(model => model.Email, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Enter Email" } })
+                                @Html.ValidationMessageFor(model => model.Email)
 
-    @*<link href="/Content/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />*@
-    <link href="~/Content/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/plugins/swiper/css/swiper.min.css" type="text/css" rel="stylesheet" media="screen" />
-    <link href="~/Content/plugins/owl.carousel/owl.carousel.css" type="text/css" rel="stylesheet" media="screen" />
-    <link href="~/Content/plugins/owl.carousel/owl.theme.css" type="text/css" rel="stylesheet" media="screen" />
-    <link href="~/Content/plugins/magnific-popup/dist/magnific-popup.css" type="text/css" rel="stylesheet" media="screen" />
-    @*<link href="/Content/app/css/app.css" rel="stylesheet">*@
-    @Scripts.Render("~/bundles/modernizr")
-    <script type="text/javascript"> var basePath = '@ViewBag.BasePath';</script>
-</head>
-<body>
+                                @Html.PasswordFor(model => model.Password, new { @class = "form-control input-md inputNew", @placeholder = "Enter Password" })
+                                @Html.ValidationMessageFor(model => model.Password)
+                                @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control input-md inputNew", @placeholder = " Re Enter Password" })
+                                @Html.ValidationMessageFor(model => model.Password)
 
-    <div class="shipping">
-        <div class="container">
-            <div class="text-center">
-                <p>FREE SHIPPING OVER $12! MONEY BACK GUARANTEE</p>
-            </div>
-        </div>
-    </div>
- 
-    <div id="page-preloader" class="visible">
-        <div class="spinner">
-            <div class="double-bounce1"></div>
-            <div class="double-bounce2"></div>
-        </div>
-    </div>
-
-    <div class="row login-row">
-
-        <div class="register-div">
-            <div class="mb-5">
-                <a class="" href="#">Help</a> |
-                <a class="" href="@Url.Action("Login","User", new {PlaceOrder=(bool?)ViewBag.PlaceOrders})">Login</a>
-            </div>
-            <ul class="list-unstyled list-inline social">
-                @Html.Action("_SocialMediaAccountsPartial", "Default")
-            </ul>
-        </div>
-
-        <div class="col-md-6 signup-col">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <div class="login-logo">
-                        <a href="@Url.Action("Index","Home")">
-                            <img src="~/Content/Theme/Smart/app/img/logo.png" title="SmartShop Multistore" alt="SmartShop Multistore" class="img-responsive ex-center">
-                        </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                @using (Html.BeginForm("Create", "User", FormMethod.Post, new { @class = "formNewLestter", id = "formNewLestter" }))
-                {
-                    @Html.HiddenFor(model => model.PlaceOrder, (bool?)ViewBag.Placeorder)
-                    <div class="col-md-6 col-sm-6  signup-single-side">
-                        <div class="webi-newsletter  webi-newsletter leftprobg text-center" id="newsletter_5b2631bae1cb9" data-mode="default">
+                <div class="col-md-6 signup-single-side float-left">
+                    <div class="webi-newsletter  webi-newsletter leftprobg text-center" id="newsletter_5b2631bae1cb9" data-mode="default">
+                        <div class="remove-inner">
+                            <h3>COMPANY DETAIL</h3>
+                            <hr>
+                            <div class="form-group">
 
-                            @Html.AntiForgeryToken()
+                                @Html.EditorFor(model => model.CompanyName, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Enter Company" } })
+                                @Html.ValidationMessageFor(model => model.ContactNumber)
+                                @Html.EditorFor(model => model.VATNumber, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Enter Vat Number" } })
+                                @Html.ValidationMessageFor(model => model.ContactNumber)
+                                @Html.EditorFor(model => model.RegNumber, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Enter Company Reg No." } })
+                                @Html.ValidationMessageFor(model => model.ContactNumber)
 
-                            <div class="remove-inner">
-                                <h3>USER DETAIL</h3>
-                                <hr>
-                                <div class="form-group">
-
-                                    @Html.EditorFor(model => model.FirstName, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Enter First Name" } })
-                                    @Html.ValidationMessageFor(model => model.FirstName)
-                                    @Html.EditorFor(model => model.LastName, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Enter Last Name" } })
-                                    @Html.ValidationMessageFor(model => model.LastName)
-
-                                    @Html.EditorFor(model => model.ContactNumber, new { htmlattributes = new { @class = "form-control input-md inputNew",@type="number", @placeholder = "Enter Contact Number" } })
-                                    @Html.ValidationMessageFor(model => model.ContactNumber)
-                                    @Html.EditorFor(model => model.Email, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Enter Email" } })
-                                    @Html.ValidationMessageFor(model => model.Email)
-
-                                    @Html.PasswordFor(model => model.Password, new { @class = "form-control input-md inputNew", @placeholder = "Enter Password" })
-                                    @Html.ValidationMessageFor(model => model.Password)
-                                    @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control input-md inputNew", @placeholder = " Re Enter Password" })
-                                    @Html.ValidationMessageFor(model => model.Password)
-
-
-                                </div>
-
-                                @*<div class="seperator position-relative">
-                            <span class="d-inline-block">OR</span>
-                        </div>
-                        <h3>Sign up with Social Media</h3>
-                        <hr>
-                        <div class="login-google">
-                            <button class="btn btn-primary btn-fb">
-                                <i class="fa fa-facebook"></i>CONNECT WITH FACEBOOK
-                            </button>
-                            <button class="btn btn-primary btn-goggle">
-                                <i class="fa fa-google-plus" aria-hidden="true"></i>CONNECT WITH GOOGLE
-                            </button>
-                        </div>*@
                             </div>
 
-
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-sm-6 signup-single-side">
-                        <div class="webi-newsletter  webi-newsletter leftprobg text-center" id="newsletter_5b2631bae1cb9" data-mode="default">
-
-
-
-                            <div class="remove-inner">
-                                <h3>COMPANY DETAIL</h3>
-                                <hr>
-                                <div class="form-group">
-
-                                    @Html.EditorFor(model => model.CompanyName, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Enter Company" } })
-                                    @Html.ValidationMessageFor(model => model.ContactNumber)
-                                    @Html.EditorFor(model => model.VATNumber, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Enter Vat Number" } })
-                                    @Html.ValidationMessageFor(model => model.ContactNumber)
-                                    @Html.EditorFor(model => model.RegNumber, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Enter Company Reg No." } })
-                                    @Html.ValidationMessageFor(model => model.ContactNumber)
-
+                            <div data-v-5f85c551="" class="privacy-policy">
+                                <div class="checkbox-div-signup">
+                                    <input type="checkbox" class="rectangle ">
+                                    <p class="">I agree to <a href="/privacy-policy">terms & conditions,</a> and <a href="/privacy-policy">privacy policy.</a></p>
                                 </div>
-
-                                <div data-v-5f85c551="" class="privacy-policy">
-                                    <div class="checkbox-div-signup">
-                                        <input type="checkbox" class="rectangle ">
-                                        <p  class="">I agree to <a href="/privacy-policy">terms & conditions,</a> and <a href="/privacy-policy">privacy policy.</a></p>
-                                    </div>
-                                </div>
-                                <div class="button-submit">
-                                    <button type="submit" name="submitNewsletter" class="btn btn-block btn-primary signup-button">Create an account</button>
-                                </div>
-                                <div class="signup-text-div mt-30">
-                                    <p class="signup-text">Have an account ?</p>
-                                    <a href="/Shop/User/Login">Login</a>
-                                </div>
-                                @*<div class="seperator position-relative">
-            <span class="d-inline-block">OR</span>
-        </div>
-        <h3>Sign up with Social Media</h3>
-        <hr>
-        <div class="login-google">
-            <button class="btn btn-primary btn-fb">
-                <i class="fa fa-facebook"></i>CONNECT WITH FACEBOOK
-            </button>
-            <button class="btn btn-primary btn-goggle">
-                <i class="fa fa-google-plus" aria-hidden="true"></i>CONNECT WITH GOOGLE
-            </button>
-        </div>*@
                             </div>
-
+                            <div class="button-submit">
+                                <button type="submit" name="submitNewsletter" class="btn btn-block btn-primary signup-button">Create an account</button>
+                            </div>
+                            <div class="signup-text-div mt-30">
+                                <p class="signup-text">Have an account ?</p>
+                                <a href="/User/Login">Login</a>
+                            </div>
                         </div>
                     </div>
-                }
-            </div>
-
+                </div>
+            }
         </div>
     </div>
-
-
-    <footer>
-        <div class="row footer-row text-center">
-            <div class="col-md-12">
-                <div class="ccopy">Powered By <a href="/">GaneData</a> &copy; 2018</div>
-            </div>
-        </div>
-    </footer>
-    <a href="" id="scroll" title="Scroll to Top">
-        <span id="slidetop"></span>
-    </a>
-    <script src="~/Scripts/jquery-3.4.1.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
-    <script src="~/Content/plugins/elevatezoom/jquery.elevateZoom-3.0.8.min.js"></script>
-    <!-- blog image zoom -->
-    <script src="~/Content/plugins/lightbox2/js/lightbox.min.js"></script>
-    <link href="~/Content/plugins/lightbox2/css/lightbox.min.css" rel="stylesheet" type="text/css" />
-    <!-- blog image zoom -->
-    <script src="~/Content/Theme/Smart/app/js/app.js"></script>
-    <script src="~/Content/plugins/swiper/js/swiper.min.js"></script>
-    <script src="~/Content/plugins/owl.carousel/owl.carousel.min.js"></script>
-    <script src="~/Content/plugins/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
-
-
-</body>
-</html>
+</div>

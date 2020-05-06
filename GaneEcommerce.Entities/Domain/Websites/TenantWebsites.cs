@@ -39,6 +39,9 @@ namespace Ganedata.Core.Entities.Domain
         public string InstaGramUrl { get; set; }
         public string FooterText { get; set; }
         public bool IsActive { get; set; }
+        public string WebsiteContactAddress { get; set; }
+        public string WebsiteContactPhone { get; set; }
+        public string WebsiteContactEmail { get; set; }
         [ForeignKey("DefaultWarehouseId")]
         public virtual TenantLocations Warehouse { get; set; }
         [ForeignKey("TenantId")]

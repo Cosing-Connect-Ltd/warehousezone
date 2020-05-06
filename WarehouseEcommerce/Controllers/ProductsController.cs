@@ -42,21 +42,21 @@ namespace WarehouseEcommerce.Controllers
         }
         // GET: Products
 
-        public ActionResult list(string group, int? sort, string filter, string search, int? page, int? pagesize = 20, string category = "", string values = "")
+        public ActionResult list(string category, int? sort, string filter, string search, int? page, int? pagesize = 20, string values = "")
         {
             try
             {
 
                 var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
-                ViewBag.groupId = group;
-                ViewBag.departmentId = category;
+                //ViewBag.groupId = group;
+                ViewBag.Category = category;
                 ViewBag.CurrentSort = sort;
                 ViewBag.SortedValues = (sort ?? 1);
                 ViewBag.pageList = new SelectList(from d in Enumerable.Range(1, 5) select new SelectListItem { Text = (d * 10).ToString(), Value = (d * 10).ToString() }, "Value", "Text", pagesize);
                 ViewBag.searchString = search;
                 ViewBag.CurrencySymbol = currencyyDetail.Symbol;
                 ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
-                var product = _productlookupServices.GetAllValidProductGroupAndDeptByName(group, category, "", "");
+                var product = _productlookupServices.GetAllValidProductGroupAndDeptByName(CurrentTenantWebsite.SiteID, category);
 
                 if (!string.IsNullOrEmpty(search))
                 {
@@ -169,21 +169,16 @@ namespace WarehouseEcommerce.Controllers
 
         }
 
-        public JsonResult searchProduct(int? groupId, string searchkey)
+        public JsonResult searchProduct(string searchkey)
         {
-            var model = (from product in _productlookupServices.GetAllValidProductGroupById(groupId)
-                         where (product.Name.Contains(searchkey.Trim()) || product.SKUCode.Contains(searchkey.Trim()) || product.Description.Contains(searchkey.Trim()) || product.ProductGroup.ProductGroup.Contains(searchkey.Trim()))
+            var model = (from product in _productlookupServices.GetAllValidProductGroupAndDeptByName(CurrentTenantWebsite.SiteID, ProductName: searchkey)
                          select new ProductSearchResult
                          {
                              Id = product.ProductId,
                              Name = product.Name,
                              Path = product.ProductFiles.FirstOrDefault(u => Images.Contains(u.FilePath)).FilePath,
-                             Department = product.TenantDepartment == null ? "" : product.TenantDepartment.DepartmentName,
-                             Group = product.ProductGroup == null ? "" : product.ProductGroup.ProductGroup,
-                             SubCategory = product.ProductCategory == null ? "" : product.ProductCategory.ProductCategoryName,
-                             SKUCode = product.SKUCode
-
-
+                             SKUCode = product.SKUCode,
+                             SearchKey = searchkey
                          }).OrderBy(u => u.Id).Take(10).ToList();
 
 
@@ -337,14 +332,14 @@ namespace WarehouseEcommerce.Controllers
             return View();
         }
 
-        public PartialViewResult _DynamicFilters(string department, string groups, string subcategory, string productName)
+        public PartialViewResult _DynamicFilters(string category, string productName)
         {
             ProductFilteringViewModel productFiltering = new ProductFilteringViewModel();
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.CurrencySymbol = currencyyDetail.Symbol;
-            var products = _productlookupServices.GetAllValidProductGroupAndDeptByName(groups, department, subcategory, productName);
-            productFiltering.Manufacturer = _productlookupServices.GetAllValidProductManufacturerGroupAndDeptByName(products, groups, department, subcategory).Select(u => u.Name).ToList();
-            productFiltering.PriceInterval = _productlookupServices.AllPriceListAgainstGroupAndDept(products, groups, department, subcategory);
+            var products = _productlookupServices.GetAllValidProductGroupAndDeptByName(CurrentTenantWebsite.SiteID, category, ProductName: productName);
+            productFiltering.Manufacturer = _productlookupServices.GetAllValidProductManufacturerGroupAndDeptByName(products).Select(u => u.Name).ToList();
+            productFiltering.PriceInterval = _productlookupServices.AllPriceListAgainstGroupAndDept(products);
             productFiltering.AttributeValues = _productlookupServices.GetAllValidProductAttributeValuesByProductIds(products);
             productFiltering.subCategories = _productlookupServices.GetAllValidSubCategoriesByDepartmentAndGroup(products).ToList();
 
@@ -362,9 +357,8 @@ namespace WarehouseEcommerce.Controllers
         public int Id { get; set; }
         public string Name { get; set; }
         public string Path { get; set; }
-        public string Department { get; set; }
-        public string Group { get; set; }
-        public string SubCategory { get; set; }
+        public string Category { get; set; }
         public string SKUCode { get; set; }
+        public string SearchKey { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ganedata.Core.Entities.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,15 +18,17 @@ namespace Ganedata.Core.Entities.Domain
         public string MetaTitle { get; set; }
         [Display(Name = "Meta Description")]
         public string MetaDescription { get; set; }
+        public string pageUrl { get; set; }
         [Required]
         [AllowHtml]
         [DataType(DataType.MultilineText)]
         [Display(Name = "Content")]
-        public string Contant { get; set; }
+        public string Content { get; set; }
         [Display(Name = "Sort Order")]
         public int SortOrder { get; set; }
         [Display(Name = "Is Active")]
         public bool IsActive { get; set; }
+        public ContentType Type { get; set; }
         [ForeignKey("SiteID")]
         public virtual TenantWebsites TenantWebsites { get; set; }
     }

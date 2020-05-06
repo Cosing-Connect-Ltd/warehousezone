@@ -76,21 +76,6 @@
         </div>
     </div>
     @Html.Action("_TopHeaderPartial", "Home")
-
-    @*@if (ViewBag.cart == null)
-        {
-            <div id="common-home" class="container">
-
-                <div class="row">
-                    @if (ViewBag.cart == null)
-                    {
-                        @Html.Action("_VerticalNavBarPartial", "Home")
-                    }
-                    @RenderBody()
-                </div>
-
-            </div>
-        }*@
     <div class="container-fluid pl-0 pr-0">
 
         @RenderBody()
@@ -128,7 +113,7 @@
             $('#cart').removeClass('open');
         });
         $("#cart").click(function () {
-            location.href = basePath + '/Shop/Products/AddToCart';
+            location.href = basePath + '/Products/AddToCart';
         });
         $("#user_menue").hover(function () {
             $('#user_menue').addClass('open');

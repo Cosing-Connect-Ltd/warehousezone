@@ -5,7 +5,6 @@
 @{
     var UrlQuery = Request.Url.OriginalString;
     string values = "";
-    string SubCategory = "";
     string Manufacturer = "";
     if (UrlQuery.Contains("values="))
     {
@@ -13,9 +12,6 @@
         var lastindex = UrlQuery.Length - startindex;
         values = UrlQuery.Substring(startindex, lastindex).Replace("values=", "");
         var breadcumbstring = values.Split('/');
-        SubCategory = breadcumbstring.FirstOrDefault(u => u.Contains("TypeS-"));
-        Manufacturer = breadcumbstring.FirstOrDefault(u => u.Contains("BrandS-"));
-
     }
 
 }
@@ -24,27 +20,13 @@
 <div id="product-search" class="container custom-max-width">
     <div class="row">
         @Html.Hidden("valuesParameter", (string)values)
-        @Html.Action("_DynamicFilters", new { department = ViewBag.departmentId, groups = ViewBag.groupId, SubCategory = ViewBag.subcategory, productName = ViewBag.CurrentFilter })
+        @Html.Action("_DynamicFilters", new { category = ViewBag.Category, productName = ViewBag.CurrentFilter })
         <div id="content" class="col-md-9 col-sm-12">
             <ul class="breadcrumb">
-                <li><a href="/shop">Home</a></li>
-                @if ((!string.IsNullOrWhiteSpace(ViewBag.departmentId) && ViewBag.department != "null") && (!string.IsNullOrWhiteSpace(ViewBag.groupId)) && (!string.IsNullOrWhiteSpace(values) && values != "null"))
+                <li><a href="/">Home</a></li>
+                @if (!string.IsNullOrWhiteSpace(ViewBag.Category))
                 {
-                    <li><a href="@Url.Action("list","Products",new { department=ViewBag.departmentId})">@ViewBag.departmentId </a></li>
-                    <li><a href="@Url.Action("list","Products",new { group=ViewBag.groupId, department=ViewBag.departmentId})">@ViewBag.groupId </a></li>
-                    <li>@SubCategory.Replace("TypeS-", "").Replace("^", ",").Replace("_"," ").Replace("%5E", ",")</li>
-                    ViewBag.Title = (ViewBag.departmentId ?? "") + " | " + (ViewBag.groupId ?? "") + " | " + (SubCategory.Replace("TypeS-", "").Replace("^", ",").Replace("_", " ").Replace("%5E", ",") ?? "") + " | " + ViewBag.SiteDescription;
-                }
-                else if (!string.IsNullOrWhiteSpace(ViewBag.departmentId) && !string.IsNullOrWhiteSpace(ViewBag.groupId))
-                {
-                    <li><a href="@Url.Action("list","Products",new { department=ViewBag.departmentId})">@ViewBag.departmentId </a></li>
-                    <li>@ViewBag.groupId</li>
-                    ViewBag.Title = (ViewBag.departmentId ?? "") + " | " + (ViewBag.groupId ?? "") + " | " + ViewBag.SiteDescription;
-                }
-                else if (!string.IsNullOrWhiteSpace(ViewBag.departmentId))
-                {
-                    <li>@ViewBag.departmentId</li>
-                    ViewBag.Title = (ViewBag.departmentId ?? "") + " | " + ViewBag.SiteDescription;
+                    <li><a href="@Url.Action("list","Products",new { category=ViewBag.Category})">@ViewBag.Category </a></li>
                 }
                 else if (!string.IsNullOrWhiteSpace(Manufacturer))
                 {
@@ -99,8 +81,8 @@
                         <div class="product-layout product-list col-xs-12">
                             <div class="product-thumb transition single-product-cat">
                                 <div class="image">
-                                    <a href="@Url.Action("ProductDetails","Products", new {sku=item.SKUCode})"><img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + " /UploadedFiles/Products/no_image.gif")" title="@item.Name" alt="@item.Name" class="img-responsive center-block" /></a>
-                                    <a href="@Url.Action("ProductDetails", "Products" , new { sku=item.SKUCode })"><img src="@(!string.IsNullOrEmpty(item.HoverImage) ? ViewBag.BaseFilePath +item.HoverImage : ViewBag.BaseFilePath + " /UploadedFiles/Products/no_image.gif")" class="img-responsive second-img" title="@item.Name" alt="@item.Name" /></a>
+                                    <a href="@Url.Action("ProductDetails","Products", new {sku=item.SKUCode})"><img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" title="@item.Name" alt="@item.Name" class="img-responsive center-block" /></a>
+                                    <a href="@Url.Action("ProductDetails", "Products" , new { sku=item.SKUCode })"><img src="@(!string.IsNullOrEmpty(item.HoverImage) ? ViewBag.BaseFilePath +item.HoverImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive second-img" title="@item.Name" alt="@item.Name" /></a>
                                     <span class="salep">sale</span>
                                     <div class="topbutton">
                                         <button type="button" data-toggle="tooltip" title="Add to Wish List">
@@ -149,14 +131,12 @@
                     }
                 }
 
-                <input type="hidden" id="departmentId" value="@ViewBag.departmentId" />
-                <input type="hidden" id="ProductGroupsId" value="@ViewBag.groupId" />
-                <input type="hidden" id="SubCategoryId" value="@ViewBag.subcategory" />
+                <input type="hidden" id="prod-category" value="@ViewBag.Category" />
             </div>
             <div class="row pagi">
                 <div class="col-sm-6 col-xs-6 text-left pagination">
 
-                    @Html.PagedListPager(Model, page => Url.Action("list", new { group = ViewBag.groupId ?? null, sort = ViewBag.CurrentSort, filter = ViewBag.CurrentFilter, page = page, pagesize = Model.PageSize, department = ViewBag.departmentId, category = ViewBag.subcategory, values = values }))
+                    @Html.PagedListPager(Model, page => Url.Action("list", new { sort = ViewBag.CurrentSort, filter = ViewBag.CurrentFilter, page = page, pagesize = Model.PageSize, category = ViewBag.Category, values = values }))
 
 
                 </div>
@@ -186,7 +166,7 @@
         var pageSize = $("#input-limit :selected").val();
         var valuesparam = $("#valuesParameter").val();
         var subCategory = $("#SubCategoryId").val();
-        window.location.href = basePath + "/shop/Products/ProductCategories?productGroup=" + groupId + "&sortOrder=" + sortvalue + "&currentFilter=" + currentFilter + "&searchString=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&department=" + departmentId + "&SubCategory=" + subCategory + "&values=" + valuesparam;
+        window.location.href = basePath + "/Products/ProductCategories?productGroup=" + groupId + "&sortOrder=" + sortvalue + "&currentFilter=" + currentFilter + "&searchString=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&department=" + departmentId + "&SubCategory=" + subCategory + "&values=" + valuesparam;
     }
 
     function PageSizeChanges(e) {
@@ -200,7 +180,7 @@
         var searchstring = $("#searchString").val();
         var subCategory = $("#SubCategoryId").val();
         var valuesparam = $("#valuesParameter").val();
-        window.location.href = basePath + "/shop/Products/ProductCategories?productGroup=" + groupId + "&sortOrder=" + sortvalue + "&currentFilter=" + currentFilter + "&searchString=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&department=" + departmentId + "&SubCategory=" + subCategory + "&values=" + valuesparam;
+        window.location.href = basePath + "/Products/ProductCategories?productGroup=" + groupId + "&sortOrder=" + sortvalue + "&currentFilter=" + currentFilter + "&searchString=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&department=" + departmentId + "&SubCategory=" + subCategory + "&values=" + valuesparam;
     }
 
 </script>

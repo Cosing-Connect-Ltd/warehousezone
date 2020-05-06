@@ -1,8 +1,4 @@
-﻿
-
-
-
-<div id="top-header" class="sticky-header">
+﻿<div id="top-header" class="sticky-header">
     <header class="custom-header-container">
         <div class="custom-container">
             <div class="header-row custom-max-width m-auto pl-10 pr-10">
@@ -21,11 +17,6 @@
                 <div class="head-without-logo">
 
                     <div class="search-container search-by-category">
-                        <div class="categories-container">
-                            <div class="hover-cate">
-                                @Html.DropDownList("ProductGroups", ViewBag.ProductGroups as SelectList, "All Categories", htmlAttributes: new { @class = "" })
-                            </div>
-                        </div>
                         <div class="search-box input-group">
                             <input type="text" name="search" value="" placeholder="Search" class="text-search" />
                             <div id="sp-btn-search" class="input-group-btn">
@@ -100,7 +91,7 @@
             $('#cart').removeClass('open');
         });
         $("#cart").click(function () {
-            location.href = basePath + '/Shop/Products/AddToCart';
+            location.href = basePath + '/Products/AddToCart';
         });
         $("#user_menue").hover(function () {
             $('#user_menue').addClass('open');

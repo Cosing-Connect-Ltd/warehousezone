@@ -21,11 +21,10 @@ namespace Ganedata.Core.Services
         Locations GetLocationById(int locationId);
         ProductGroups GetProductGroupById(int productGroupId);
         IQueryable<ProductMaster> GetAllValidProductGroupById(int? productGroupId, int? departmentId = null);
-        IQueryable<ProductMaster> GetAllValidProductGroupAndDeptByName(string productGroup, string department = "", string SubCategory = "", string manufacturerName = "", string productName="");
-        IEnumerable<ProductManufacturer> GetAllValidProductManufacturerGroupAndDeptByName(IQueryable<ProductMaster> productMasters, string productGroup, string department = "", string SubCategory = "");
-
+        IQueryable<ProductMaster> GetAllValidProductGroupAndDeptByName(int siteId, string category = "", string manufacturerName = "", string ProductName = "");
+        IEnumerable<ProductManufacturer> GetAllValidProductManufacturerGroupAndDeptByName(IQueryable<ProductMaster> productMasters);
         IEnumerable<string> GetAllValidSubCategoriesByDepartmentAndGroup(IQueryable<ProductMaster> productMasters);
-        List<Tuple<string, string>> AllPriceListAgainstGroupAndDept(IQueryable<ProductMaster> productMasters, string productGroup, string department = "", string SubCategory = "");
+        List<Tuple<string, string>> AllPriceListAgainstGroupAndDept(IQueryable<ProductMaster> productMasters);
 
         ProductGroups GetProductGroupByName(string groupName);
         PalletType GetPalletTypeByName(string palletType);

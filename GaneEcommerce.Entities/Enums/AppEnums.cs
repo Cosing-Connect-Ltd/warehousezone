@@ -448,4 +448,10 @@ namespace Ganedata.Core.Entities.Enums
         IncorrectlyOrdered = 2,
         Other = 3
     }
+
+    public enum ContentType
+    {
+        page = 1,
+        post = 2
+    }
 }
