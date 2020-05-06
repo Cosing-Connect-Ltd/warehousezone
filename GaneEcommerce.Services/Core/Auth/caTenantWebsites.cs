@@ -17,6 +17,15 @@ namespace Ganedata.Core.Services
         public int WarehouseId { get; set; }
         public int TenantId { get; set; }
         public WebsiteThemeEnum Theme { get; set; }
+        public string WebsiteContactAddress { get; set; }
+        public string WebsiteContactPhone { get; set; }
+        public string WebsiteContactEmail { get; set; }
+        public string Logo { get; set; }
+        public string FacebookUrl { get; set; }
+        public string TwitterUrl { get; set; }
+        public string LinkedInUrl { get; set; }
+        public string YoutubeUrl { get; set; }
+        public string InstaGramUrl { get; set; }
 
     }
 }

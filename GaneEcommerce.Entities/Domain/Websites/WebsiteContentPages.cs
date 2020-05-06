@@ -18,6 +18,7 @@ namespace Ganedata.Core.Entities.Domain
         public string MetaTitle { get; set; }
         [Display(Name = "Meta Description")]
         public string MetaDescription { get; set; }
+        [Required]
         public string pageUrl { get; set; }
         [Required]
         [AllowHtml]

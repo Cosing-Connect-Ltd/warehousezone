@@ -58,6 +58,8 @@ namespace Ganedata.Core.Services
         {
             return _currentDbContext.WebsiteContentPages.Where(u => u.IsDeleted != true && u.TenantId == TenantId && u.SiteID == SiteId);
         }
+
+
         public WebsiteContentPages CreateOrUpdateWebsiteContentPages(WebsiteContentPages WebsiteContentPages, int UserId, int TenantId)
         {
             WebsiteContentPages.TenantId = TenantId;

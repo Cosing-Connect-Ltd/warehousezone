@@ -1,5 +1,9 @@
-﻿<li class="facebook"><a href="https://www.facebook.com/GaneData"><i class="fa fa-facebook"></i></a></li>
-<li class="twitter"><a href="https://twitter.com/GaneData"><i class="fa fa-twitter"></i></a></li>
-<li class="rss"><a href="https://www.instagram.com/ganedatapakistan/?igshid=syqrtgm544q6"><i class="fa fa-instagram"></i></a></li>
-<li class="pinterest"><a href="https://www.linkedin.com/company/gane-data-scan"><i class="fa fa-linkedin"></i></a></li>
-<li class="vimeo"><a href="https://www.youtube.com/channel/UC1RWy0Y362z1-Px3KhRev4A"><i class="fa fa-youtube"></i></a></li>
+﻿@using Ganedata.Core.Services
+@{
+    var siteProperties = ViewBag.TenantWebsite as caTenantWebsites;
+}
+<li class="facebook"><a href="@siteProperties.FacebookUrl"><i class="fa fa-facebook"></i></a></li>
+<li class="twitter"><a href="@siteProperties.TwitterUrl"><i class="fa fa-twitter"></i></a></li>
+<li class="rss"><a href="@siteProperties.InstaGramUrl"><i class="fa fa-instagram"></i></a></li>
+<li class="pinterest"><a href="@siteProperties.LinkedInUrl"><i class="fa fa-linkedin"></i></a></li>
+<li class="vimeo"><a href="@siteProperties.YoutubeUrl"><i class="fa fa-youtube"></i></a></li>

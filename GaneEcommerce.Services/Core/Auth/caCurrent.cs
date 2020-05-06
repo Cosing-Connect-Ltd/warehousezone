@@ -67,6 +67,16 @@ namespace Ganedata.Core.Services
                     tenantWebsite.SiteName = tenantWeb.SiteName;
                     tenantWebsite.SiteDescription = tenantWeb.SiteDescription;
                     tenantWebsite.Theme = tenantWeb.Theme;
+                    tenantWebsite.Logo = tenantWeb.Logo;
+                    tenantWebsite.WebsiteContactAddress = tenantWeb.WebsiteContactAddress;
+                    tenantWebsite.WebsiteContactEmail = tenantWeb.WebsiteContactEmail;
+                    tenantWebsite.WebsiteContactPhone = tenantWeb.WebsiteContactPhone;
+                    tenantWebsite.FacebookUrl = tenantWeb.FacebookUrl;
+                    tenantWebsite.InstaGramUrl = tenantWeb.InstaGramUrl;
+                    tenantWebsite.LinkedInUrl = tenantWeb.LinkedInUrl;
+                    tenantWebsite.YoutubeUrl = tenantWeb.YoutubeUrl;
+                    tenantWebsite.TwitterUrl = tenantWeb.TwitterUrl;
+
                     HttpContext.Current.Session["CurrentTenantWebsites"] = tenantWebsite;
                 }
             }

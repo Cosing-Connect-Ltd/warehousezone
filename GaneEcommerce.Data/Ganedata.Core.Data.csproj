@@ -815,6 +815,10 @@
     <Compile Include="Migrations\202005060400443_realtionChangefor-WebsiteDiscountProductsMap.designer.cs">
       <DependentUpon>202005060400443_realtionChangefor-WebsiteDiscountProductsMap.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005060433132_more-properties-added-in-content-pages.cs" />
+    <Compile Include="Migrations\202005060433132_more-properties-added-in-content-pages.designer.cs">
+      <DependentUpon>202005060433132_more-properties-added-in-content-pages.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1746,6 +1750,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005060400443_realtionChangefor-WebsiteDiscountProductsMap.resx">
       <DependentUpon>202005060400443_realtionChangefor-WebsiteDiscountProductsMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005060433132_more-properties-added-in-content-pages.resx">
+      <DependentUpon>202005060433132_more-properties-added-in-content-pages.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

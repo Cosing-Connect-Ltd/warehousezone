@@ -29,6 +29,8 @@ namespace Ganedata.Core.Entities.Domain
         public WebsiteNavigationType Type { get; set; }
         [Display(Name = "Content Page")]
         public int? ContentPageId { get; set; }
+        public bool ShowInNavigation { get; set; }
+        public bool ShowInFooter { get; set; }
         [ForeignKey("SiteID")]
         public virtual TenantWebsites TenantWebsites { get; set; }
         [ForeignKey("ParentId")]
@@ -36,5 +38,7 @@ namespace Ganedata.Core.Entities.Domain
         public virtual ICollection<ProductsNavigationMap> ProductsNavigationMap { get; set; }
         [NotMapped]
         public string SelectedProductIds { get; set; }
+        [ForeignKey("ContentPageId")]
+        public virtual WebsiteContentPages WebsiteContentPages { get; set; }
     }
 }

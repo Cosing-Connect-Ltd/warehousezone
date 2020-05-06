@@ -96,7 +96,6 @@ namespace WarehouseEcommerce.Controllers
 
         public PartialViewResult _VerticalNavBarPartial()
         {
-
             var ProductCategories = _lookupServices.GetAllValidProductGroups((CurrentTenantId), 12);
             return PartialView(ProductCategories);
         }
@@ -179,6 +178,15 @@ namespace WarehouseEcommerce.Controllers
             return PartialView(BestSellerProduct);
 
         }
+
+        public PartialViewResult _SliderPartial()
+        {
+            var slides = _tenantWebsiteService.GetAllValidWebsiteSlider(CurrentTenantId, CurrentTenantWebsite.SiteID).ToList();
+            return PartialView(slides);
+        }
+
+
+
         public PartialViewResult _NewsLetterPartial()
         {
             return PartialView();
@@ -221,6 +229,11 @@ namespace WarehouseEcommerce.Controllers
         {
             var productManufacturer = _lookupServices.GetAllValidProductManufacturer(CurrentTenantId);
             return PartialView(productManufacturer.ToList());
+        }
+
+        public PartialViewResult _SocialMediaAccountsPartial()
+        {
+            return PartialView();
         }
 
         public ActionResult Services()

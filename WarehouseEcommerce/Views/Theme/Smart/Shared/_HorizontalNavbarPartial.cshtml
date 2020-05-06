@@ -64,7 +64,7 @@
                     }
                     else if (item.Type == WebsiteNavigationType.Content)
                     {
-                        <a class="department-a-tag" href="@Url.Action("Index", "Home", new { page = item.ContentPageId })">
+                        <a class="department-a-tag" href="@Url.Action("Index", "Home", new { page = item.WebsiteContentPages.pageUrl })">
                             @item.Name
                             @if (level1.Any())
                             {
@@ -101,7 +101,7 @@
                                     }
                                     else if (item1.Type == WebsiteNavigationType.Content)
                                     {
-                                        <a class="department-a-tag" href="@Url.Action("Index", "Home", new { page = item1.ContentPageId })">
+                                        <a class="department-a-tag" href="@Url.Action("Index", "Home", new { page = item1.WebsiteContentPages.pageUrl })">
                                             @item1.Name
                                             @if (level2.Any())
                                             {
@@ -130,7 +130,7 @@
                                                 }
                                                 else if (item2.Type == WebsiteNavigationType.Content)
                                                 {
-                                                    <a class="department-a-tag" href="@Url.Action("Index", "Home", new { page = item2.ContentPageId })">@item2.Name</a>
+                                                    <a class="department-a-tag" href="@Url.Action("Index", "Home", new { page = item2.WebsiteContentPages.pageUrl })">@item2.Name</a>
                                                 }
                                                 else
                                                 {

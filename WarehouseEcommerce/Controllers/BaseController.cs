@@ -176,6 +176,7 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.BasePath = ConfigurationManager.AppSettings["BasePath"];
             ViewBag.LoginDetail = CurrentUserId > 0 ? "Logout" : "Login";
             ViewBag.Currencies = LookupServices.GetAllGlobalCurrencies();
+            ViewBag.TenantWebsite = CurrentTenantWebsite;
             if (Session["CurrencyDetail"] == null)
             {
                 CurrencyDetail(null);
