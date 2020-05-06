@@ -18,22 +18,26 @@
     <div class="carousel-inner" role="listbox">
         @foreach (var item in Model)
         {
-            <div class="item active">
-                <img src="@ViewBag.BaseFilePath@item.Image" alt="@item.ImageAltTag" class="img-responsive" />
-                <div class="carousel-caption">
+            if (!string.IsNullOrEmpty(item.Image))
+            {
+                <div class="item active">
+                    <img src="@ViewBag.BaseFilePath@item.Image" alt="@item.ImageAltTag" class="img-responsive" />
+                    <div class="carousel-caption">
+                    </div>
                 </div>
-            </div>
+            }
+
         }
         @*<div class="item">
-                <img src="~/Content/Theme/Smart/app/img/slider/1.jpg" alt="MacBookAir" class="img-responsive" />
-                <div class="carousel-caption">
-                </div>
+            <img src="~/Content/Theme/Smart/app/img/slider/1.jpg" alt="MacBookAir" class="img-responsive" />
+            <div class="carousel-caption">
             </div>
-            <div class="item">
-                <img src="~/Content/Theme/Smart/app/img/slider/4.jpg" alt="MacBookAir" class="img-responsive" />
-                <div class="carousel-caption">
-                </div>
-            </div>*@
+        </div>
+        <div class="item">
+            <img src="~/Content/Theme/Smart/app/img/slider/4.jpg" alt="MacBookAir" class="img-responsive" />
+            <div class="carousel-caption">
+            </div>
+        </div>*@
 
     </div>
 

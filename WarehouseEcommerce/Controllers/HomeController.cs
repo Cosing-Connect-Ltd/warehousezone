@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using WarehouseEcommerce.Helpers;
 using WarehouseEcommerce.Models;
 using WarehouseEcommerce.ViewModels;
+using Ganedata.Core.Entities.Enums;
 
 namespace WarehouseEcommerce.Controllers
 {
@@ -42,6 +43,14 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
             ViewBag.ProductGroups = new SelectList(_lookupServices.GetAllValidProductGroups((CurrentTenantId), 12), "ProductGroupId", "ProductGroup", ViewBag.groupId);
             return View();
+        }
+
+        public ActionResult page(string pageUrl)
+        {
+            ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
+            ViewBag.ProductGroups = new SelectList(_lookupServices.GetAllValidProductGroups((CurrentTenantId), 12), "ProductGroupId", "ProductGroup", ViewBag.groupId);
+            var content = _tenantWebsiteService.GetWebsiteContentByUrl(CurrentTenantWebsite.SiteID, pageUrl);
+            return View(content);
         }
 
         public ActionResult About()
@@ -193,7 +202,9 @@ namespace WarehouseEcommerce.Controllers
         }
         public PartialViewResult _TopProductBannerPartial()
         {
-            return PartialView();
+            var categories = _tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, CurrentTenantWebsite.SiteID).Where(x => x.Type == WebsiteNavigationType.Category).ToList();
+            return PartialView(categories);
+
         }
         public PartialViewResult _ImageBlockPartial()
         {

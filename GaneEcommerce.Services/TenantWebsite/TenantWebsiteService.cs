@@ -106,6 +106,11 @@ namespace Ganedata.Core.Services
             return _currentDbContext.WebsiteContentPages.FirstOrDefault(u => u.Id == Id);
         }
 
+        public WebsiteContentPages GetWebsiteContentByUrl(int siteId, string url)
+        {
+            return _currentDbContext.WebsiteContentPages.FirstOrDefault(u => u.pageUrl == url && u.SiteID == siteId);
+        }
+
 
         //ProductsWebsitesMaps
         public IEnumerable<ProductsWebsitesMap> GetAllValidProductsWebsitesMap(int TenantId)
@@ -239,8 +244,8 @@ namespace Ganedata.Core.Services
                     ProductId = u.ProductId,
                     Name = u.ProductMaster.Name,
                     SKUCode = u.ProductMaster.SKUCode,
-                    
-                    
+
+
                 });
 
 

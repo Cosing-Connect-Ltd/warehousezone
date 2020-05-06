@@ -20,6 +20,7 @@ namespace Ganedata.Core.Services
         WebsiteContentPages CreateOrUpdateWebsiteContentPages(WebsiteContentPages WebsiteContentPages, int UserId, int TenantId);
         WebsiteContentPages RemoveWebsiteContentPages(int Id, int UserId);
         WebsiteContentPages GetWebsiteContentById(int Id);
+        WebsiteContentPages GetWebsiteContentByUrl(int siteId, string url);
 
 
         //ProductsWebsitesMaps
@@ -68,13 +69,13 @@ namespace Ganedata.Core.Services
         IQueryable<NavigationProductsViewModel> GetAllValidWebsiteProductsMap(int TenantId, int SiteId);
         //ProductAllowances
         IEnumerable<ProductAllowance> GetAllValidProductAllowance(int TenantId, int SiteId);
-        ProductAllowance CreateOrUpdateProductAllowance(ProductAllowance productAllowance,string Reason, int UserId, int TenantId);
+        ProductAllowance CreateOrUpdateProductAllowance(ProductAllowance productAllowance, string Reason, int UserId, int TenantId);
         ProductAllowance RemoveProductAllowance(int Id, int UserId);
         ProductAllowance GetProductAllowanceById(int Id);
 
 
         //ProductAllowancesGroups
-        IEnumerable<ProductAllowanceGroup> GetAllValidProductAllowanceGroups(int TenantId,int SiteId);
+        IEnumerable<ProductAllowanceGroup> GetAllValidProductAllowanceGroups(int TenantId, int SiteId);
         ProductAllowanceGroup CreateOrUpdateProductGroupAllowance(ProductAllowanceGroup productAllowanceGroup, int UserId, int TenantId);
         ProductAllowanceGroup RemoveProductAllowanceGroup(int Id, int UserId);
         ProductAllowanceGroup GetProductAllowanceGroupById(int Id);

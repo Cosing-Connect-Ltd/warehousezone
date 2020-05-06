@@ -1,0 +1,23 @@
+﻿@model Ganedata.Core.Entities.Domain.WebsiteContentPages
+@{
+    ViewBag.Title = Model.Title;
+
+}
+
+<div class="about bg-white">
+    <div class="container card-container custom-max-width">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 bg-white my-account login">
+                <div class="about-cnt">
+                    <div class="content-wrapper select">
+                        <h2 class="text-uppercase mb-15">@Model.Title</h2>
+                        <div id="updateCart">
+                            <p>@Model.Content</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
