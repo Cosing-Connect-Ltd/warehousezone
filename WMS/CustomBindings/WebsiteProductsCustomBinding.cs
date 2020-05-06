@@ -124,10 +124,8 @@ namespace WMS.CustomBindings
             var viewModel = new GridViewModel();
             viewModel.KeyFieldName = "Id";
             viewModel.Columns.Add("ProductId");
-            viewModel.Columns.Add("SiteID");
             viewModel.Columns.Add("SKUCode");
             viewModel.Columns.Add("Name");
-            viewModel.Columns.Add("IsActive");
             viewModel.Pager.PageSize = 10;
             return viewModel;
         }

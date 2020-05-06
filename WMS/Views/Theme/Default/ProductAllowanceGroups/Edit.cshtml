@@ -84,7 +84,7 @@
         </div>
         <div class="col-md-8 pull-left">
 
-            @Html.Action("_ProductAllowanceGroupProductList", new { SiteId = ViewBag.SiteId })
+            @Html.Action("_ProductAllowanceGroupProductList", new { SiteId = Model.SiteID, ProductAllownceGroupId=Model.Id })
 
         </div>
 

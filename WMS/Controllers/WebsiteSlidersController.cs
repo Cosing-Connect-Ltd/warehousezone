@@ -77,7 +77,7 @@ namespace WMS.Controllers
                 {
                     foreach (var file in files)
                     {
-                        filePath = MoveFile(file, filesName.FirstOrDefault(), websiteSlider.SiteID);
+                        filePath = MoveFile(file, filesName.FirstOrDefault(), slider.Id);
                         websiteSlider.Image = filePath;
                         _tenantWebsiteService.CreateOrUpdateProductswebsiteSlider(websiteSlider, CurrentUserId, CurrentTenantId);
                         break;
@@ -133,7 +133,7 @@ namespace WMS.Controllers
                 {
                     if (UploadControl != null)
                     {
-                        filePath = MoveFile(UploadControl.FirstOrDefault(), filesName.FirstOrDefault(), websiteSlider.SiteID);
+                        filePath = MoveFile(UploadControl.FirstOrDefault(), filesName.FirstOrDefault(), websiteSlider.Id);
                         websiteSlider.Image = filePath;
                     }
 
