@@ -3,8 +3,8 @@
 @{
     var grid = Html.DevExpress().GridView(settings =>
     {
-        settings.Name = "ProductAllowanceGridView";
-        settings.CallbackRouteValues = new { Controller = "ProductAllowances", Action = "_ProductAllowanceList" };
+        settings.Name = "WebsiteDiscountCodesGridView";
+        settings.CallbackRouteValues = new { Controller = "ProductAllowanceGroups", Action = "_ProductAllowanceGroupList", SiteId= ViewBag.SiteId };
         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
         settings.Settings.ShowHeaderFilterButton = false;
         settings.SettingsPopup.HeaderFilter.Height = 200;
@@ -21,13 +21,11 @@
         settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
         settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
         settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
-        settings.Columns.Add("Roles.RoleName").Caption = "Role";
-       
-        settings.Columns.Add("Quantity");
-        settings.Columns.Add("PerXDays");
-        settings.Columns.Add("ProductMaster.Name");
-        settings.Columns.Add("ProductAllowanceGroup.Name");
-        
+        settings.Columns.Add("TenantWebsites.SiteName").Caption = "Site Name";
+        settings.Columns.Add("Name");
+        settings.Columns.Add("Notes");
+
+
         settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
         settings.SettingsPager.PageSizeItemSettings.Visible = true;
         settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
@@ -35,3 +33,4 @@
     });
 }
 @grid.Bind(Model).GetHtml()
+

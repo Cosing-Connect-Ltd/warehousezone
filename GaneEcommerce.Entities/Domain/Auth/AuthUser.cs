@@ -42,7 +42,7 @@ namespace Ganedata.Core.Entities.Domain
         public Boolean? SuperUser { get; set; }
 
         public string UserCulture { get; set; }
-
+        [Display(Name = "Account")]
         public int? AccountId { get; set; }
         public string UserTimeZoneId { get; set; }
         public virtual ICollection<AuthPermission> AuthPermissions { get; set; }
@@ -58,6 +58,7 @@ namespace Ganedata.Core.Entities.Domain
         }
 
         public decimal OrderValueLimit { get; set; }
+        [Display(Name = "User Group")]
         public int? UserGroupId { get; set; }
         [ForeignKey("UserGroupId")]
         public virtual AuthUserGroups AuthUserGroups { get; set; }

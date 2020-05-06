@@ -21,9 +21,20 @@ namespace WMS.CustomBindings
             return transactions;
         }
 
-        public static void ProductGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int SiteId)
+        private static IQueryable<object> GetWebsiteProductsMapsDataset(int tenantId, int SiteId)
+        {
+            var tenantWebsiteService = DependencyResolver.Current.GetService<ITenantWebsiteService>();
+            var transactions = tenantWebsiteService.GetAllValidWebsiteProductsMap(tenantId, SiteId);
+            return transactions;
+        }
+
+        public static void ProductGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int SiteId,bool selected=false)
         {
             var transactions = GetWebsiteProductsDataset(tenantId, SiteId);
+            if (selected)
+            {
+                transactions = GetWebsiteProductsMapsDataset(tenantId, SiteId);
+            }
 
             if (e.State.SortedColumns.Count() > 0)
             {
@@ -57,11 +68,14 @@ namespace WMS.CustomBindings
             e.Data = transactions.ToList();
         }
 
-        public static void ProductGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int SiteId)
+        public static void ProductGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int SiteId, bool selected = false)
         {
 
             var transactions = GetWebsiteProductsDataset(tenantId, SiteId);
-
+            if (selected)
+            {
+                transactions = GetWebsiteProductsMapsDataset(tenantId, SiteId);
+            }
             if (e.State.SortedColumns.Count() > 0)
             {
 
@@ -108,7 +122,8 @@ namespace WMS.CustomBindings
         public static GridViewModel CreateWebsiteDiscountCodeProductsViewModel()
         {
             var viewModel = new GridViewModel();
-            viewModel.KeyFieldName = "ProductId";
+            viewModel.KeyFieldName = "Id";
+            viewModel.Columns.Add("ProductId");
             viewModel.Columns.Add("SiteID");
             viewModel.Columns.Add("SKUCode");
             viewModel.Columns.Add("Name");

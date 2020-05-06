@@ -35,23 +35,25 @@ namespace WMS.Controllers
         }
 
         // GET: ProductAllowances
-        public ActionResult Index()
+        public ActionResult Index(int SiteId)
         {
+            ViewBag.SiteId = SiteId;
             return View();
         }
 
-        public ActionResult _ProductAllowanceList()
+        public ActionResult _ProductAllowanceList(int SiteId)
         {
-            var data = _tenantWebsiteService.GetAllValidProductAllowance(CurrentTenantId).ToList();
+            var data = _tenantWebsiteService.GetAllValidProductAllowance(CurrentTenantId, SiteId).ToList();
             return PartialView(data);
         }
 
 
         // GET: ProductAllowances/Create
-        public ActionResult Create()
+        public ActionResult Create(int SiteId)
         {
+            ViewBag.SiteId = SiteId;
             ViewBag.RolesId = new SelectList(_RolesServices.GetAllRoles(CurrentTenantId), "Id", "RoleName");
-            ViewBag.AllowanceGroupId = new SelectList(_tenantWebsiteService.GetAllValidProductAllowanceGroups(CurrentTenantId), "Id", "Name");
+            ViewBag.AllowanceGroupId = new SelectList(_tenantWebsiteService.GetAllValidProductAllowanceGroups(CurrentTenantId,SiteId), "Id", "Name");
             return View();
         }
 
@@ -64,13 +66,13 @@ namespace WMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                _tenantWebsiteService.CreateOrUpdateProductAllowance(productAllowance,CurrentUserId,CurrentTenantId);
+                _tenantWebsiteService.CreateOrUpdateProductAllowance(productAllowance, string.Empty, CurrentUserId, CurrentTenantId);
                 return RedirectToAction("Index");
             }
             ViewBag.RolesId = new SelectList(_RolesServices.GetAllRoles(CurrentTenantId), "Id", "RoleName", productAllowance.RolesId);
-            ViewBag.AllowanceGroupId = new SelectList(_tenantWebsiteService.GetAllValidProductAllowanceGroups(CurrentTenantId), "Id", "Name", productAllowance.AllowanceGroupId);
-         
-           
+            ViewBag.AllowanceGroupId = new SelectList(_tenantWebsiteService.GetAllValidProductAllowanceGroups(CurrentTenantId, productAllowance.SiteID), "Id", "Name", productAllowance.AllowanceGroupId);
+
+
             return View(productAllowance);
         }
 
@@ -87,8 +89,8 @@ namespace WMS.Controllers
                 return HttpNotFound();
             }
             ViewBag.RolesId = new SelectList(_RolesServices.GetAllRoles(CurrentTenantId), "Id", "RoleName", productAllowance.RolesId);
-            ViewBag.AllowanceGroupId = new SelectList(_tenantWebsiteService.GetAllValidProductAllowanceGroups(CurrentTenantId), "Id", "Name", productAllowance.AllowanceGroupId);
-
+            ViewBag.AllowanceGroupId = new SelectList(_tenantWebsiteService.GetAllValidProductAllowanceGroups(CurrentTenantId, productAllowance.SiteID), "Id", "Name", productAllowance.AllowanceGroupId);
+            ViewBag.productId = productAllowance.ProductId;
             return View(productAllowance);
         }
 
@@ -97,15 +99,15 @@ namespace WMS.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(ProductAllowance productAllowance)
+        public ActionResult Edit(ProductAllowance productAllowance, string Reason)
         {
             if (ModelState.IsValid)
             {
-                _tenantWebsiteService.CreateOrUpdateProductAllowance(productAllowance, CurrentUserId, CurrentTenantId);
-                 return RedirectToAction("Index");
+                _tenantWebsiteService.CreateOrUpdateProductAllowance(productAllowance,Reason, CurrentUserId, CurrentTenantId);
+                return RedirectToAction("Index");
             }
             ViewBag.RolesId = new SelectList(_RolesServices.GetAllRoles(CurrentTenantId), "Id", "RoleName", productAllowance.RolesId);
-            ViewBag.AllowanceGroupId = new SelectList(_tenantWebsiteService.GetAllValidProductAllowanceGroups(CurrentTenantId), "Id", "Name", productAllowance.AllowanceGroupId);
+            ViewBag.AllowanceGroupId = new SelectList(_tenantWebsiteService.GetAllValidProductAllowanceGroups(CurrentTenantId, productAllowance.SiteID), "Id", "Name", productAllowance.AllowanceGroupId);
 
             return View(productAllowance);
         }
@@ -113,11 +115,11 @@ namespace WMS.Controllers
         // GET: ProductAllowances/Delete/5
         public ActionResult Delete(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var websiteNav = _tenantWebsiteService.RemoveWebsiteDiscountCodes(id ?? 0, CurrentUserId);
+            var websiteNav = _tenantWebsiteService.RemoveProductAllowance(id ?? 0, CurrentUserId);
             return RedirectToAction("Index");
         }
 

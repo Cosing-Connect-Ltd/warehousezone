@@ -16,13 +16,16 @@ namespace WMS.Controllers
         private readonly IUserService _userService;
         private readonly IActivityServices _activityServices;
         private readonly ITenantsServices _tenantServices;
-
-        public UserController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IUserService userService, IActivityServices activityServices, ITenantsServices tenantServices)
+        private readonly IAccountServices _accountServices;
+        private readonly ITenantWebsiteService _tenantWebsiteService;
+        public UserController(ICoreOrderService orderService, IPropertyService propertyService, ITenantWebsiteService tenantWebsiteService, IAccountServices accountServices, ILookupServices lookupServices, IUserService userService, IActivityServices activityServices, ITenantsServices tenantServices)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
             _userService = userService;
             _activityServices = activityServices;
             _tenantServices = tenantServices;
+            _accountServices = accountServices;
+            _tenantWebsiteService = tenantWebsiteService;
         }
         // GET: /User/
         public ActionResult Index()
@@ -53,14 +56,15 @@ namespace WMS.Controllers
         public ActionResult Create()
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
-
+            ViewBag.AccountId = new SelectList(_accountServices.GetAllValidAccounts(CurrentTenantId).ToList(), "AccountID", "CompanyName");
+            ViewBag.UserGroupId= new SelectList(_userService.GetAllAuthUserGroups(CurrentTenantId).ToList(), "GroupId", "Name");
             return View();
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "UserName,UserPassword,UserFirstName,UserLastName,UserEmail,IsActive")] AuthUser authuser)
+        public ActionResult Create( AuthUser authuser)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
@@ -74,7 +78,8 @@ namespace WMS.Controllers
 
                 return RedirectToAction("Index");
             }
-
+            ViewBag.AccountId = new SelectList(_accountServices.GetAllValidAccounts(CurrentTenantId).ToList(), "AccountID", "CompanyName",authuser.AccountId);
+            ViewBag.UserGroupId = new SelectList(_userService.GetAllAuthUserGroups(CurrentTenantId).ToList(), "GroupId", "Name",authuser.UserGroupId);
             return View(authuser);
         }
 
@@ -92,7 +97,8 @@ namespace WMS.Controllers
             {
                 return HttpNotFound();
             }
-
+            ViewBag.AccountId = new SelectList(_accountServices.GetAllValidAccounts(CurrentTenantId).ToList(), "AccountID", "CompanyName", authuser.AccountId);
+            ViewBag.UserGroupId = new SelectList(_userService.GetAllAuthUserGroups(CurrentTenantId).ToList(), "GroupId", "Name", authuser.UserGroupId);
             return View(authuser);
         }
 
@@ -101,7 +107,7 @@ namespace WMS.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserId,UserName,UserPassword,UserFirstName,UserLastName,UserEmail,IsActive")] AuthUser authuser)
+        public ActionResult Edit(AuthUser authuser)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
@@ -117,7 +123,8 @@ namespace WMS.Controllers
 
                 return RedirectToAction("Index");
             }
-
+            ViewBag.AccountId = new SelectList(_accountServices.GetAllValidAccounts(CurrentTenantId).ToList(), "AccountID", "CompanyName", authuser.AccountId);
+            ViewBag.UserGroupId = new SelectList(_userService.GetAllAuthUserGroups(CurrentTenantId).ToList(), "GroupId", "Name", authuser.UserGroupId);
             return View(authuser);
         }
 

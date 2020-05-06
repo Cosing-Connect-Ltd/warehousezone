@@ -26,6 +26,8 @@
         settings.Columns.Add("FirstName");
         settings.Columns.Add("LastName");
         settings.Columns.Add("Email");
+        settings.Columns.Add("Account");
+        settings.Columns.Add("UserGroup").Caption="User Group";
 
         settings.Columns.Add(c =>
         {
@@ -50,7 +52,7 @@
             (c.PropertiesEdit as CheckBoxProperties).DisplayTextUnchecked = "False";
 
         });
-      
+
 
         settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
         settings.SettingsPager.PageSizeItemSettings.Visible = true;

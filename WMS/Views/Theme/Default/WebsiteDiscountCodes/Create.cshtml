@@ -39,7 +39,7 @@
 
     }
     function SelectionChangeds(s, e) {
-        s.GetSelectedFieldValues("ProductId", GetSelectedFieldValuesCallback);
+        s.GetSelectedFieldValues("Id", GetSelectedFieldValuesCallback);
     }
     function GetSelectedFieldValuesCallback(values) {
         $("#SelectedProductIds").val(values.join());

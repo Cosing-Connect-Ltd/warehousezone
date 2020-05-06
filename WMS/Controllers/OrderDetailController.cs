@@ -470,7 +470,7 @@ namespace WMS.Controllers
                 ViewBag.productId = ProductId;
             }
 
-            return PartialView("~/Views/Shared/ProductLargeDataComboBoxPartial.cshtml");
+            return PartialView("ProductLargeDataComboBoxPartial");
         }
 
         public JsonResult IsAllowZeroSale(int productid)

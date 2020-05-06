@@ -41,6 +41,8 @@ namespace Ganedata.Core.Entities.Domain
         public string Email { get; set; }
         public DateTime? DateUpdated { get; set; }
         public bool IsActive { get; set; }
+        public string Account { get; set; }
+        public string UserGroup { get; set; }
     }
 
     public class UserLoginStatusViewModel

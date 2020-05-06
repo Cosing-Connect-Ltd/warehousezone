@@ -807,6 +807,14 @@
     <Compile Include="Migrations\202005060101258_properties-add-in-tenant-websites-and-content-pages.designer.cs">
       <DependentUpon>202005060101258_properties-add-in-tenant-websites-and-content-pages.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005060313186_SiteID-added-in-ProductAllownceAndGroup.cs" />
+    <Compile Include="Migrations\202005060313186_SiteID-added-in-ProductAllownceAndGroup.designer.cs">
+      <DependentUpon>202005060313186_SiteID-added-in-ProductAllownceAndGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005060400443_realtionChangefor-WebsiteDiscountProductsMap.cs" />
+    <Compile Include="Migrations\202005060400443_realtionChangefor-WebsiteDiscountProductsMap.designer.cs">
+      <DependentUpon>202005060400443_realtionChangefor-WebsiteDiscountProductsMap.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1732,6 +1740,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005060101258_properties-add-in-tenant-websites-and-content-pages.resx">
       <DependentUpon>202005060101258_properties-add-in-tenant-websites-and-content-pages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005060313186_SiteID-added-in-ProductAllownceAndGroup.resx">
+      <DependentUpon>202005060313186_SiteID-added-in-ProductAllownceAndGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005060400443_realtionChangefor-WebsiteDiscountProductsMap.resx">
+      <DependentUpon>202005060400443_realtionChangefor-WebsiteDiscountProductsMap.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

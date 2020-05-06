@@ -20,6 +20,9 @@ namespace Ganedata.Core.Entities.Domain
         public int? ProductId { get; set; }
         [Display(Name = "Allowance Group")]
         public int? AllowanceGroupId { get; set; }
+        public int SiteID { get; set; }
+        [ForeignKey("SiteID")]
+        public virtual TenantWebsites TenantWebsites { get; set; }
         [ForeignKey("TenantId")]
         public virtual Tenant Tenant { get; set; }
         [ForeignKey("RolesId")]
@@ -29,5 +32,7 @@ namespace Ganedata.Core.Entities.Domain
         [ForeignKey("AllowanceGroupId")]
         public virtual ProductAllowanceGroup ProductAllowanceGroup { get; set; }
         public virtual ICollection<ProductAllowanceAdjustmentLog> ProductAllowanceAdjustmentLogs { get; set; }
+
+
     }
 }

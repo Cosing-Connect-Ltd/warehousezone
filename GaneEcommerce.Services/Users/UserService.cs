@@ -36,7 +36,12 @@ namespace Ganedata.Core.Services
                         LastName = p.UserLastName,
                         Email = p.UserEmail,
                         DateUpdated = p.DateUpdated,
-                        IsActive = p.IsActive
+                        IsActive = p.IsActive,
+                        Account=_currentDbContext.Account.FirstOrDefault(u=>u.AccountID==p.AccountId).CompanyName??"",
+                        UserGroup=p.AuthUserGroups.Name
+
+                        
+
                     }).ToList();
         }
 
@@ -80,7 +85,8 @@ namespace Ganedata.Core.Services
             entry.Property(e => e.DateUpdated).IsModified = true;
             entry.Property(e => e.UpdatedBy).IsModified = true;
             entry.Property(e => e.IsActive).IsModified = true;
-
+            entry.Property(e => e.AccountId).IsModified = true;
+            entry.Property(e => e.UserGroupId).IsModified = true;
             //dont change password if password field is blank/null
             if (user.UserPassword != null)
             {

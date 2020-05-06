@@ -513,6 +513,7 @@
     <Compile Include="Controllers\ProductManufacturersController.cs" />
     <Compile Include="Controllers\ProductSerialController.cs" />
     <Compile Include="Controllers\ProductSpecialPriceController.cs" />
+    <Compile Include="Controllers\ProductAllowanceGroupsController.cs" />
     <Compile Include="Controllers\WebsiteDiscountCodesController.cs" />
     <Compile Include="Controllers\ProductsWebsitesMapsController.cs" />
     <Compile Include="Controllers\ScanSourceProductController.cs" />
@@ -1561,7 +1562,7 @@
     <Content Include="Views\Theme\Default\Shared\_PriceHistory.cshtml" />
     <Content Include="Views\Theme\Default\Shared\_PriceHistoryList.cshtml" />
     <Content Include="Views\Theme\Default\EmailTemplates\Create.cshtml" />
-    <Content Include="Views\Theme\Default\DevexHelper\PlaceholdersHtmlEditorPartial.cshtml" />
+    <Content Include="Views\Theme\Default\Shared\PlaceholdersHtmlEditorPartial.cshtml" />
     <Content Include="Views\Theme\Default\EmailTemplates\_TemplateForm.cshtml" />
     <Content Include="Views\Theme\Default\TenantDataImport\Index.cshtml" />
     <Content Include="Views\Theme\Default\WorksOrders\Create.cshtml" />
@@ -2560,6 +2561,13 @@
     <Content Include="Views\Theme\Default\ProductAllowances\Edit.cshtml" />
     <Content Include="Views\Theme\Default\ProductAllowances\Index.cshtml" />
     <Content Include="Views\Theme\Default\ProductAllowances\_ProductAllowanceList.cshtml" />
+    <Content Include="Views\Theme\Default\ProductAllowanceGroups\_ProductAllowanceGroupList.cshtml" />
+    <Content Include="Views\Theme\Default\ProductAllowanceGroups\_ProductAllowanceGroupProductList.cshtml" />
+    <Content Include="Views\Theme\Default\ProductAllowanceGroups\Create.cshtml" />
+    <Content Include="Views\Theme\Default\ProductAllowanceGroups\Delete.cshtml" />
+    <Content Include="Views\Theme\Default\ProductAllowanceGroups\Details.cshtml" />
+    <Content Include="Views\Theme\Default\ProductAllowanceGroups\Edit.cshtml" />
+    <Content Include="Views\Theme\Default\ProductAllowanceGroups\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -2688,6 +2696,7 @@
     <Folder Include="Areas\HelpPage\SampleGeneration\" />
     <Folder Include="Areas\HelpPage\Views\Help\DisplayTemplates\" />
     <Folder Include="Areas\HelpPage\Views\Shared\" />
+    <Folder Include="Views\Theme\Default\DevexHelper\" />
     <Folder Include="Views\Theme\Default\Elmah\" />
     <Folder Include="Views\Theme\Default\ErrorLog\" />
     <Folder Include="Views\Theme\Modern\Elmah\" />

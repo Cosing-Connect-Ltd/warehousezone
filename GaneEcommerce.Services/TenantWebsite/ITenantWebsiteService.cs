@@ -65,21 +65,20 @@ namespace Ganedata.Core.Services
         WebsiteDiscountCodes RemoveWebsiteDiscountCodes(int Id, int UserId);
         WebsiteDiscountCodes GetWebsiteDiscountCodesById(int discountId);
         IEnumerable<WebsiteDiscountProductsMap> GetAllValidWebsiteDiscountProductsMap(int TenantId, int DiscountId);
-
+        IQueryable<NavigationProductsViewModel> GetAllValidWebsiteProductsMap(int TenantId, int SiteId);
         //ProductAllowances
-        IEnumerable<ProductAllowance> GetAllValidProductAllowance(int TenantId);
-        ProductAllowance CreateOrUpdateProductAllowance(ProductAllowance productAllowance, int UserId, int TenantId);
+        IEnumerable<ProductAllowance> GetAllValidProductAllowance(int TenantId, int SiteId);
+        ProductAllowance CreateOrUpdateProductAllowance(ProductAllowance productAllowance,string Reason, int UserId, int TenantId);
         ProductAllowance RemoveProductAllowance(int Id, int UserId);
         ProductAllowance GetProductAllowanceById(int Id);
 
 
         //ProductAllowancesGroups
-        IEnumerable<ProductAllowanceGroup> GetAllValidProductAllowanceGroups(int TenantId);
-        //ProductAllowance CreateOrUpdateProductAllowance(ProductAllowance productAllowance, int UserId, int TenantId);
-        //ProductAllowance RemoveProductAllowance(int Id, int UserId);
-        //ProductAllowance GetProductAllowanceById(int Id);
-
-
+        IEnumerable<ProductAllowanceGroup> GetAllValidProductAllowanceGroups(int TenantId,int SiteId);
+        ProductAllowanceGroup CreateOrUpdateProductGroupAllowance(ProductAllowanceGroup productAllowanceGroup, int UserId, int TenantId);
+        ProductAllowanceGroup RemoveProductAllowanceGroup(int Id, int UserId);
+        ProductAllowanceGroup GetProductAllowanceGroupById(int Id);
+        IEnumerable<ProductAllowanceGroupMap> GetAllValidProductAllowanceGroupMap(int TenantId, int productAllownceGroupId);
 
 
     }

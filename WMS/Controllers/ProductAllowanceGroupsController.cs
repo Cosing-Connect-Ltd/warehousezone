@@ -15,13 +15,13 @@ using WMS.CustomBindings;
 
 namespace WMS.Controllers
 {
-    public class WebsiteDiscountCodesController : BaseController
+    public class ProductAllowanceGroupsController : BaseController
     {
         private readonly IProductLookupService _productLookupService;
         private readonly ILookupServices _LookupService;
         private readonly ITenantWebsiteService _tenantWebsiteService;
 
-        public WebsiteDiscountCodesController(ICoreOrderService orderService, IPropertyService propertyService, ITenantWebsiteService tenantWebsiteService, IAccountServices accountServices, ILookupServices lookupServices, IProductLookupService productLookupService)
+        public ProductAllowanceGroupsController(ICoreOrderService orderService, IPropertyService propertyService, ITenantWebsiteService tenantWebsiteService, IAccountServices accountServices, ILookupServices lookupServices, IProductLookupService productLookupService)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
             _productLookupService = productLookupService;
@@ -36,50 +36,51 @@ namespace WMS.Controllers
             return View();
         }
 
-        public ActionResult _WebsiteDiscountCodesList(int SiteId)
+        public ActionResult _ProductAllowanceGroupList(int SiteId)
         {
             ViewBag.SiteId = SiteId;
-            var model = _tenantWebsiteService.GetAllValidWebsiteDiscountCodes(CurrentTenantId, SiteId).ToList();
+            var model = _tenantWebsiteService.GetAllValidProductAllowanceGroups(CurrentTenantId, SiteId).ToList();
             return PartialView(model);
         }
 
 
-        public ActionResult _WebsiteDiscountCodesProductList(int siteId, int? DiscountId)
+        public ActionResult _ProductAllowanceGroupProductList(int siteId, int? ProductAllownceGroupId)
         {
-            var viewModel = GridViewExtension.GetViewModel("WebsiteDiscountProductCodesGridView");
-            ViewBag.Controller = "WebsiteDiscountCodes";
-            if (DiscountId.HasValue)
+            var viewModel = GridViewExtension.GetViewModel("ProductAllowanceGroupsGridView");
+            ViewBag.Controller = "ProductAllowanceGroups";
+            if (ProductAllownceGroupId.HasValue)
             {
-                var selectedIds = _tenantWebsiteService.GetAllValidWebsiteDiscountProductsMap(CurrentTenantId, (DiscountId ?? 0)).Select(u => u.ProductsWebsitesMapId).ToList();
+                //need to check
+                var selectedIds = _tenantWebsiteService.GetAllValidProductAllowanceGroupMap(CurrentTenantId, (ProductAllownceGroupId ?? 0)).Select(u => u.ProductwebsiteMapId).ToList();
                 ViewData["DiscountProduct"] = selectedIds;
             }
             ViewBag.SiteId = siteId;
             if (viewModel == null)
                 viewModel = WebsiteProductsCustomBinding.CreateWebsiteDiscountCodeProductsViewModel();
 
-            return WebsiteProductsListActionCore(viewModel, siteId);
+            return WebsiteProductsListActionCore(viewModel,siteId);
         }
 
         public ActionResult _WebsiteProductsListPaging(GridViewPagerState pager, int siteId)
         {
-            var viewModel = GridViewExtension.GetViewModel("WebsiteDiscountProductCodesGridView");
-            ViewBag.Controller = "WebsiteDiscountCodes";
+            var viewModel = GridViewExtension.GetViewModel("ProductAllowanceGroupsGridView");
+            ViewBag.Controller = "ProductAllowanceGroups";
             viewModel.Pager.Assign(pager);
             return WebsiteProductsListActionCore(viewModel, siteId);
         }
 
         public ActionResult _WebsiteProductsListFiltering(GridViewFilteringState filteringState, int siteId)
         {
-            ViewBag.Controller = "WebsiteDiscountCodes";
-            var viewModel = GridViewExtension.GetViewModel("WebsiteDiscountProductCodesGridView");
+            ViewBag.Controller = "ProductAllowanceGroups";
+            var viewModel = GridViewExtension.GetViewModel("ProductAllowanceGroupsGridView");
             viewModel.ApplyFilteringState(filteringState);
             return WebsiteProductsListActionCore(viewModel, siteId);
         }
 
         public ActionResult _WebsiteProductsListSorting(GridViewColumnState column, bool reset, int siteId)
         {
-            ViewBag.Controller = "WebsiteDiscountCodes";
-            var viewModel = GridViewExtension.GetViewModel("WebsiteDiscountProductCodesGridView");
+            ViewBag.Controller = "ProductAllowanceGroups";
+            var viewModel = GridViewExtension.GetViewModel("ProductAllowanceGroupsGridView");
             viewModel.ApplySortingState(column, reset);
             return WebsiteProductsListActionCore(viewModel, siteId);
         }
@@ -87,7 +88,7 @@ namespace WMS.Controllers
 
         public ActionResult WebsiteProductsListActionCore(GridViewModel gridViewModel, int siteId)
         {
-            ViewBag.Controller = "WebsiteDiscountCodes";
+            ViewBag.Controller = "ProductAllowanceGroups";
             gridViewModel.ProcessCustomBinding(
                 new GridViewCustomBindingGetDataRowCountHandler(args =>
                 {
@@ -99,7 +100,7 @@ namespace WMS.Controllers
                         WebsiteProductsCustomBinding.ProductGetData(args, CurrentTenantId, siteId,true);
                     })
             );
-            return PartialView("_WebsiteDiscountCodesProductList", gridViewModel);
+            return PartialView("_ProductAllowanceGroupProductList", gridViewModel);
         }
         // GET: WebsiteNavigations/Create
         public ActionResult Create(int SiteId)
@@ -110,39 +111,39 @@ namespace WMS.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(WebsiteDiscountCodes websiteDiscountCodes, string ProductsWithIds)
+        public ActionResult Create(ProductAllowanceGroup productAllowanceGroup, string ProductsWithIds)
         {
-            if (websiteDiscountCodes != null)
+            if (productAllowanceGroup != null)
             {
-                websiteDiscountCodes.SelectedProductIds = ProductsWithIds;
-                var websiteNav = _tenantWebsiteService.CreateOrUpdateWebsiteDiscountCodes(websiteDiscountCodes, CurrentUserId, CurrentTenantId);
+                productAllowanceGroup.SelectedProductIds = ProductsWithIds;
+                var websiteNav = _tenantWebsiteService.CreateOrUpdateProductGroupAllowance(productAllowanceGroup, CurrentUserId, CurrentTenantId);
                 return RedirectToAction("Index", new { SiteId = websiteNav.SiteID });
 
             }
-            ViewBag.siteid = websiteDiscountCodes.SiteID;
+            ViewBag.siteid = productAllowanceGroup.SiteID;
 
-            return View(websiteDiscountCodes);
+            return View(productAllowanceGroup);
         }
         // GET: WebsiteNavigations/Create
         public ActionResult Edit(int? id)
         {
-            var data = _tenantWebsiteService.GetWebsiteDiscountCodesById(id ?? 0);
+            var data = _tenantWebsiteService.GetProductAllowanceGroupById(id ?? 0);
             return View(data);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(WebsiteDiscountCodes websiteDiscountCodes, string ProductsWithIds)
+        public ActionResult Edit(ProductAllowanceGroup productAllowanceGroup, string ProductsWithIds)
         {
-            if (websiteDiscountCodes != null)
+            if (productAllowanceGroup != null)
             {
-                websiteDiscountCodes.SelectedProductIds = ProductsWithIds;
-                var websiteNav = _tenantWebsiteService.CreateOrUpdateWebsiteDiscountCodes(websiteDiscountCodes, CurrentUserId, CurrentTenantId);
-                return RedirectToAction("Index", new { SiteId = websiteDiscountCodes.SiteID });
+                productAllowanceGroup.SelectedProductIds = ProductsWithIds;
+                var websiteNav = _tenantWebsiteService.CreateOrUpdateProductGroupAllowance(productAllowanceGroup, CurrentUserId, CurrentTenantId);
+                return RedirectToAction("Index", new { SiteId = websiteNav.SiteID });
 
             }
 
-            return View(websiteDiscountCodes);
+            return View(productAllowanceGroup);
         }
 
         public ActionResult Delete(int? id)
@@ -151,7 +152,7 @@ namespace WMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var websiteNav = _tenantWebsiteService.RemoveWebsiteDiscountCodes(id ?? 0, CurrentUserId);
+            var websiteNav = _tenantWebsiteService.RemoveProductAllowanceGroup(id ?? 0, CurrentUserId);
             return RedirectToAction("Index", new { SiteId = websiteNav.SiteID });
 
         }

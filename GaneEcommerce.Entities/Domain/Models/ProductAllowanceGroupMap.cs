@@ -12,11 +12,11 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Id")]
         public int Id { get; set; }
         [Display(Name = "Product")]
-        public int ProductId { get; set; }
+        public int ProductwebsiteMapId { get; set; }
         [Display(Name = "Attribute Value")]
         public int AllowanceGroupId { get; set; }
-        [ForeignKey("ProductId")]
-        public virtual ProductMaster ProductMaster { get; set; }
+        [ForeignKey("ProductwebsiteMapId")]
+        public virtual ProductsWebsitesMap ProductsWebsitesMap { get; set; }
         [ForeignKey("AllowanceGroupId")]
         public virtual ProductAllowanceGroup ProductAllowanceGroup { get; set; }
     }

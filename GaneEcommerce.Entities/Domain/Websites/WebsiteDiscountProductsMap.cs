@@ -9,13 +9,13 @@ namespace Ganedata.Core.Entities.Domain
     public class WebsiteDiscountProductsMap : PersistableEntity<int>
     {
         public int Id { get; set; }
-        public int ProductId { get; set; }
+        public int ProductsWebsitesMapId { get; set; }
         public int DiscountId { get; set; }
         public int SortOrder { get; set; }
         public bool IsActive { get; set; }
         [ForeignKey("DiscountId")]
         public virtual WebsiteDiscountCodes WebsiteDiscountCodes { get; set; }
-        [ForeignKey("ProductId")]
-        public virtual ProductMaster ProductMaster { get; set; }
+        [ForeignKey("ProductsWebsitesMapId")]
+        public virtual ProductsWebsitesMap ProductsWebsitesMap { get; set; }
     }
 }

@@ -39,7 +39,7 @@
 
     }
     function SelectionChangeds(s, e) {
-        s.GetSelectedFieldValues("ProductId", GetSelectedFieldValuesCallback);
+        s.GetSelectedFieldValues("Id", GetSelectedFieldValuesCallback);
     }
     function GetSelectedFieldValuesCallback(values) {
         $("#SelectedProductIds").val(values.join());
@@ -178,7 +178,7 @@
     </div>
     <div class="input-group h-100 justify-content-center align-items-center">
         <div class="col-md-offset-2 col-md-10 bottom-right">
-            <input type="submit" class="btn btn-primary" value="Create" />
+            <input type="submit" class="btn btn-primary" value="Save" />
             <div class="back-list">@Html.ActionLink("Back to List", "Index", new { SiteId = Model.SiteID }, new { @class = "btn btn-default" })</div>
         </div>
     </div>

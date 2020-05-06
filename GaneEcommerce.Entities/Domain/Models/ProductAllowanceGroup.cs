@@ -13,8 +13,14 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Name")]
         public string Name { get; set; }
         public string Notes { get; set; }
+        public int SiteID { get; set; }
+        [ForeignKey("SiteID")]
+        public virtual TenantWebsites TenantWebsites { get; set; }
         [ForeignKey("TenantId")]
         public virtual Tenant Tenant { get; set; }
         public virtual ICollection<ProductAllowanceGroupMap> ProductAllowanceGroupMap { get; set; }
+
+        [NotMapped]
+        public string SelectedProductIds { get; set; }
     }
 }

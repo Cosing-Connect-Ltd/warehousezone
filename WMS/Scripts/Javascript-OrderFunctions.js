@@ -1630,6 +1630,8 @@ function OnchangeDropdown(s, e) {
         s.SetValue(null);
     }
     else {
+
+        var tule = $("#ProductAllowance").val();
         if (type === "6" || type === "7") {
             if (prdid.GetValue() < 1) return false;
             var text = prdid.GetText();
@@ -1698,6 +1700,10 @@ function OnchangeDropdown(s, e) {
             if (jQuery.isNumeric(prdId)) {
                 ModelBS.Show();
             }
+        }
+ 
+        else if ($("#ProductAllowance").val() == "True") {
+            $("#ProductId").val(prdid.GetValue());
         }
         else {
 
@@ -3190,7 +3196,7 @@ function IsAllowZeroSale() {
 }
 
 function suggestedPrice() {
-   
+
     var buyPrice = 0;
     var margin = 0;
     var landedCost = 0;

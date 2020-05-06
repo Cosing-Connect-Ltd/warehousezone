@@ -228,6 +228,34 @@ namespace Ganedata.Core.Services
             return res;
 
         }
+        public IQueryable<NavigationProductsViewModel> GetAllValidWebsiteProductsMap(int TenantId, int SiteId)
+        {
+            var allProducts = _currentDbContext.ProductMaster.Where(m => m.TenantId == TenantId && m.IsDeleted != true);
+            var websiteMap = _currentDbContext.ProductsWebsitesMap.Where(u => u.IsDeleted != true && u.SiteID == SiteId && u.TenantId == TenantId);
+
+
+
+            var res = (from p in allProducts
+                       join w in websiteMap on p.ProductId equals w.ProductId into tempMap
+                       from d in tempMap.DefaultIfEmpty()
+                       select new NavigationProductsViewModel()
+                       {
+                           Id = d.Id,
+                           SiteID = SiteId,
+                           ProductId = p.ProductId,
+                           Name = p.Name,
+                           SKUCode = p.SKUCode,
+                           Description = p.Description,
+                           ProductGroupName = p.ProductGroup.ProductGroup,
+                           ProductCategoryName = p.ProductCategory.ProductCategoryName,
+                           DepartmentName = p.TenantDepartment.DepartmentName,
+                           IsActive = d.IsActive,
+                           SortOrder = d.SortOrder
+                       });
+
+            return res;
+
+        }
 
         public WebsiteNavigation CreateOrUpdateWebsiteNavigation(WebsiteNavigation websiteNavigation, int UserId, int TenantId)
         {
@@ -521,7 +549,7 @@ namespace Ganedata.Core.Services
                     {
                         WebsiteDiscountProductsMap DiscountProductsMap = new WebsiteDiscountProductsMap();
                         DiscountProductsMap.DiscountId = websiteDiscountCodes.Id;
-                        DiscountProductsMap.ProductId = item;
+                        DiscountProductsMap.ProductsWebsitesMapId = item;
                         DiscountProductsMap.SortOrder = 1;
                         DiscountProductsMap.TenantId = TenantId;
                         DiscountProductsMap.IsActive = true;
@@ -551,15 +579,15 @@ namespace Ganedata.Core.Services
                 { 
                     List<int> productWebMapIds = websiteDiscount.SelectedProductIds.Split(',').Select(Int32.Parse).ToList();
                     var Toadd = productWebMapIds.Except(_currentDbContext.websiteDiscountProductsMaps
-                    .Where(a => a.IsDeleted != true && a.DiscountId == websiteDiscount.Id).Select(a => a.ProductId)
+                    .Where(a => a.IsDeleted != true && a.DiscountId == websiteDiscount.Id).Select(a => a.ProductsWebsitesMapId)
                     .ToList()).ToList();
                     var toDelete = _currentDbContext.websiteDiscountProductsMaps
-                    .Where(a => a.IsDeleted != true && a.DiscountId == websiteDiscount.Id).Select(a => a.ProductId).Except(productWebMapIds);
+                    .Where(a => a.IsDeleted != true && a.DiscountId == websiteDiscount.Id).Select(a => a.ProductsWebsitesMapId).Except(productWebMapIds);
                     foreach (var item in Toadd)
                     {
                         WebsiteDiscountProductsMap DiscountProductsMap = new WebsiteDiscountProductsMap();
                         DiscountProductsMap.DiscountId = websiteDiscount.Id;
-                        DiscountProductsMap.ProductId = item;
+                        DiscountProductsMap.ProductsWebsitesMapId = item;
                         DiscountProductsMap.SortOrder = 1;
                         DiscountProductsMap.TenantId = TenantId;
                         DiscountProductsMap.IsActive = true;
@@ -569,7 +597,7 @@ namespace Ganedata.Core.Services
                     }
                     foreach (var item in toDelete)
                     {
-                        var productsNavigation = _currentDbContext.websiteDiscountProductsMaps.FirstOrDefault(u => u.ProductId == item);
+                        var productsNavigation = _currentDbContext.websiteDiscountProductsMaps.FirstOrDefault(u => u.ProductsWebsitesMapId == item);
                         if (productsNavigation != null)
                         {
                             productsNavigation.IsDeleted = true;
@@ -607,11 +635,11 @@ namespace Ganedata.Core.Services
 
 
         //ProductAllowances
-        public IEnumerable<ProductAllowance> GetAllValidProductAllowance(int TenantId)
+        public IEnumerable<ProductAllowance> GetAllValidProductAllowance(int TenantId, int SiteId)
         {
-            return _currentDbContext.ProductAllowance.Where(u => u.TenantId == TenantId && u.IsDeleted != true);
+            return _currentDbContext.ProductAllowance.Where(u => u.TenantId == TenantId && u.IsDeleted != true && u.SiteID==SiteId);
         }
-        public ProductAllowance CreateOrUpdateProductAllowance(ProductAllowance productAllowance, int UserId, int TenantId)
+        public ProductAllowance CreateOrUpdateProductAllowance(ProductAllowance productAllowance,string Reason, int UserId, int TenantId)
         {
             var websiteProductAllownce = _currentDbContext.ProductAllowance.Where(x => x.TenantId == TenantId
                  && x.Id == productAllowance.Id && x.IsDeleted != true).FirstOrDefault();
@@ -637,9 +665,19 @@ namespace Ganedata.Core.Services
                 websiteProductAllownce.ProductId = productAllowance.ProductId;
                 websiteProductAllownce.AllowanceGroupId = productAllowance.AllowanceGroupId;
                 websiteProductAllownce.TenantId = TenantId;
-
                 websiteProductAllownce.UpdateUpdatedInfo(UserId);
+                if (!string.IsNullOrEmpty(Reason))
+                {
+                    ProductAllowanceAdjustmentLog adjustmentLog = new ProductAllowanceAdjustmentLog();
+                    adjustmentLog.Reason = Reason;
+                    adjustmentLog.TenantId = TenantId;
+                    adjustmentLog.AllowanceId = productAllowance.Id;
+                    adjustmentLog.UpdateCreatedInfo(UserId);
+                    _currentDbContext.ProductAllowanceAdjustmentLog.Add(adjustmentLog);
 
+
+
+                }
             }
 
             _currentDbContext.SaveChanges();
@@ -663,13 +701,107 @@ namespace Ganedata.Core.Services
             return _currentDbContext.ProductAllowance.Find(Id);
         }
         //ProductAllowancesGroups
-        public IEnumerable<ProductAllowanceGroup> GetAllValidProductAllowanceGroups(int TenantId)
+        public IEnumerable<ProductAllowanceGroup> GetAllValidProductAllowanceGroups(int TenantId,int SiteId)
         {
-            return _currentDbContext.ProductAllowanceGroup.Where(u => u.TenantId == TenantId && u.IsDeleted != true);
+            return _currentDbContext.ProductAllowanceGroup.Where(u => u.TenantId == TenantId && u.IsDeleted != true && u.SiteID==SiteId);
         }
-        //ProductAllowance CreateOrUpdateProductAllowance(ProductAllowance productAllowance, int UserId, int TenantId);
-        //ProductAllowance RemoveProductAllowance(int Id, int UserId);
-        //ProductAllowance GetProductAllowanceById(int Id);
+        public ProductAllowanceGroup CreateOrUpdateProductGroupAllowance(ProductAllowanceGroup productAllowanceGroup, int UserId, int TenantId)
+        {
+            var websiteDiscountItems = _currentDbContext.ProductAllowanceGroup.Where(x => x.TenantId == TenantId
+                && x.SiteID == productAllowanceGroup.SiteID && x.IsDeleted != true && x.Id == productAllowanceGroup.Id).FirstOrDefault();
+            if (websiteDiscountItems == null)
+            {
+                ProductAllowanceGroup productAllowanceGroups = new ProductAllowanceGroup();
+                productAllowanceGroups.SiteID = productAllowanceGroup.SiteID;
+                productAllowanceGroups.Name = productAllowanceGroup.Name;
+                productAllowanceGroups.Notes = productAllowanceGroup.Notes;
+                productAllowanceGroups.UpdateCreatedInfo(UserId);
+                productAllowanceGroups.TenantId = TenantId;
+                _currentDbContext.ProductAllowanceGroup.Add(productAllowanceGroups);
+                _currentDbContext.SaveChanges();
+                if (!string.IsNullOrEmpty(productAllowanceGroup.SelectedProductIds))
+                {
+                    List<int> productWebMapId = productAllowanceGroup.SelectedProductIds.Split(',').Select(Int32.Parse).ToList();
+                    foreach (var item in productWebMapId)
+                    {
+                        ProductAllowanceGroupMap DiscountProductsMap = new ProductAllowanceGroupMap();
+                        DiscountProductsMap.AllowanceGroupId = productAllowanceGroups.Id;
+                        DiscountProductsMap.ProductwebsiteMapId = item;
+                        DiscountProductsMap.TenantId = TenantId;
+                        DiscountProductsMap.UpdateCreatedInfo(UserId);
+                        _currentDbContext.ProductAllowanceGroupMap.Add(DiscountProductsMap);
+                    }
+                    _currentDbContext.SaveChanges();
+
+                }
+            }
+            else
+            {
+                websiteDiscountItems.SiteID = productAllowanceGroup.SiteID;
+                websiteDiscountItems.Name = productAllowanceGroup.Name;
+                websiteDiscountItems.Notes = productAllowanceGroup.Notes;
+                websiteDiscountItems.TenantId = TenantId;
+               
+                websiteDiscountItems.UpdateUpdatedInfo(UserId);
+                if (!string.IsNullOrEmpty(productAllowanceGroup.SelectedProductIds))
+                {
+                    List<int> productWebMapIds = productAllowanceGroup.SelectedProductIds.Split(',').Select(Int32.Parse).ToList();
+                    var Toadd = productWebMapIds.Except(_currentDbContext.ProductAllowanceGroupMap
+                    .Where(a => a.IsDeleted != true && a.AllowanceGroupId == productAllowanceGroup.Id).Select(a => a.ProductwebsiteMapId)
+                    .ToList()).ToList();
+                    var toDelete = _currentDbContext.ProductAllowanceGroupMap
+                    .Where(a => a.IsDeleted != true && a.AllowanceGroupId == productAllowanceGroup.Id).Select(a => a.ProductwebsiteMapId).Except(productWebMapIds);
+                    foreach (var item in Toadd)
+                    {
+                        ProductAllowanceGroupMap DiscountProductsMap = new ProductAllowanceGroupMap();
+                        DiscountProductsMap.AllowanceGroupId = productAllowanceGroup.Id;
+                        DiscountProductsMap.ProductwebsiteMapId = item;
+                        DiscountProductsMap.TenantId = TenantId;
+                        DiscountProductsMap.UpdateCreatedInfo(UserId);
+                        _currentDbContext.ProductAllowanceGroupMap.Add(DiscountProductsMap);
+
+                    }
+                    foreach (var item in toDelete)
+                    {
+                        var productsNavigation = _currentDbContext.ProductAllowanceGroupMap.FirstOrDefault(u => u.ProductwebsiteMapId == item);
+                        if (productsNavigation != null)
+                        {
+                            productsNavigation.IsDeleted = true;
+                            productsNavigation.UpdateUpdatedInfo(UserId);
+                            _currentDbContext.Entry(productsNavigation).State = System.Data.Entity.EntityState.Modified;
+                        }
+
+                    }
+
+                }
+
+            }
+
+            _currentDbContext.SaveChanges();
+            return productAllowanceGroup;
+
+        }
+        public ProductAllowanceGroup RemoveProductAllowanceGroup(int Id, int UserId)
+        {
+            var websiteDiscountItems = _currentDbContext.ProductAllowanceGroup.Where(x => x.IsDeleted != true && x.Id == Id).FirstOrDefault();
+            if (websiteDiscountItems == null)
+            {
+                websiteDiscountItems.IsDeleted = true;
+                websiteDiscountItems.UpdateUpdatedInfo(UserId);
+                _currentDbContext.Entry(websiteDiscountItems).State = System.Data.Entity.EntityState.Modified;
+                _currentDbContext.SaveChanges();
+            }
+            return websiteDiscountItems;
+        }
+        public ProductAllowanceGroup GetProductAllowanceGroupById(int Id)
+        {
+            return _currentDbContext.ProductAllowanceGroup.Find(Id);
+        }
+        public IEnumerable<ProductAllowanceGroupMap> GetAllValidProductAllowanceGroupMap(int TenantId, int productAllownceGroupId)
+        {
+
+            return _currentDbContext.ProductAllowanceGroupMap.Where(u => u.TenantId == TenantId && u.IsDeleted != true && u.AllowanceGroupId == productAllownceGroupId);
+        }
 
 
 
