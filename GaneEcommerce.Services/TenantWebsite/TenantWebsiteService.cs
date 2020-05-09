@@ -174,6 +174,10 @@ namespace Ganedata.Core.Services
         {
             return _currentDbContext.WebsiteNavigations.Where(u => u.IsDeleted != true && (!SiteId.HasValue || u.SiteID == SiteId) && u.TenantId == TenantId);
         }
+        public IQueryable<WebsiteNavigation> GetAllValidWebsiteNavigationCategory(int TenantId, int? SiteId)
+        {
+            return _currentDbContext.WebsiteNavigations.Where(u => u.IsDeleted != true && (!SiteId.HasValue || u.SiteID == SiteId) && u.TenantId == TenantId && u.Type==Entities.Enums.WebsiteNavigationType.Category);
+        }
 
         public IQueryable<NavigationProductsViewModel> GetAllValidWebsiteNavigations(int TenantId, int SiteId, int navigationId)
         {
@@ -350,6 +354,13 @@ namespace Ganedata.Core.Services
 
             _currentDbContext.SaveChanges();
             return true;
+        }
+
+        public IQueryable<ProductMaster> GetProductByNavigationId(int navigationId)
+        {
+            var productwebsiteMap=_currentDbContext.ProductsNavigationMaps.Where(u => u.NavigationId == navigationId).OrderBy(u=>u.SortOrder).Select(u => u.ProductsWebsitesMap);
+            return productwebsiteMap.OrderBy(u => u.SortOrder).Select(u => u.ProductMaster);
+        
         }
         //WebsiteShippingRules
 

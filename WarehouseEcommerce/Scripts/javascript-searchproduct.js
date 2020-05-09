@@ -111,17 +111,18 @@ function updateTextBox(event, ui) {
     $(this).val(ui.item.Name);
     return false;
 }
-function getTopCategoryProducts(ProductGroupId) {
+function getTopCategoryProducts(ProductnavigationId) {
+    debugger;
     $.ajax({
         type: "GET",
         url: basePath + "/Home/_TopCategoryProductsPartial/",
-        data: { ProductGroupId: ProductGroupId },
+        data: { NavigationId: ProductnavigationId },
         dataType: 'html',
         success: function (data) {
             $('#top_category_products').empty();
             $('#top_category_products').html(data);
             $('li a').removeClass("blue");
-            $("#catID_" + ProductGroupId).addClass("blue");
+            $("#catID_" + ProductnavigationId).addClass("blue");
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert('Error' + textStatus + "/" + errorThrown);

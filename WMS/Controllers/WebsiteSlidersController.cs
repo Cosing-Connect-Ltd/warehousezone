@@ -56,6 +56,7 @@ namespace WMS.Controllers
         {
             ViewBag.SiteId = SiteId;
             ViewBag.ControllerName = "WebsiteSliders";
+            Session["UploadWebsiteSlider"] = null;
             return View();
         }
 
@@ -92,6 +93,7 @@ namespace WMS.Controllers
         // GET: WebsiteSliders/Edit/5
         public ActionResult Edit(int? id)
         {
+            Session["UploadWebsiteSlider"] = null;
             ViewBag.ControllerName = "WebsiteSliders";
             if (id == null)
             {

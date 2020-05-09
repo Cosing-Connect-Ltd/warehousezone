@@ -164,7 +164,7 @@ namespace WarehouseEcommerce.Controllers
 
         public PartialViewResult _TopCategoryPartial()
         {
-            var TopCategory = _lookupServices.GetAllValidProductGroups((CurrentTenantId), 6);
+            var TopCategory  = _tenantWebsiteService.GetAllValidWebsiteNavigationCategory(CurrentTenantId, CurrentTenantWebsite.SiteID).OrderBy(u => u.SortOrder).Take(6).ToList();
             return PartialView(TopCategory);
         }
 
@@ -202,7 +202,7 @@ namespace WarehouseEcommerce.Controllers
         }
         public PartialViewResult _TopProductBannerPartial()
         {
-            var categories = _tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, CurrentTenantWebsite.SiteID).Where(x => x.Type == WebsiteNavigationType.Category).ToList();
+            var categories = _tenantWebsiteService.GetAllValidWebsiteNavigationCategory(CurrentTenantId, CurrentTenantWebsite.SiteID).OrderBy(u=>u.SortOrder).Take(4).ToList();
             return PartialView(categories);
 
         }
@@ -226,9 +226,9 @@ namespace WarehouseEcommerce.Controllers
 
 
 
-        public ActionResult _TopCategoryProductsPartial(int? ProductGroupId)
+        public ActionResult _TopCategoryProductsPartial(int NavigationId)
         {
-            var model = _productlookupServices.GetAllValidProductGroupById(ProductGroupId).Take(5).ToList();
+            var model = _tenantWebsiteService.GetProductByNavigationId(NavigationId).Take(5).ToList();
             return PartialView(model);
         }
         public ActionResult ReturnPath(int productId, bool status)

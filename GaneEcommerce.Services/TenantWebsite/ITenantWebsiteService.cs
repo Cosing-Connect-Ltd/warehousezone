@@ -41,7 +41,8 @@ namespace Ganedata.Core.Services
         bool CreateOrUpdateWebsiteNavigationProducts(NavigationProductsViewModel navigationProduct, int UserId, int TenantId);
         IQueryable<NavigationProductsViewModel> GetAllValidWebsiteProducts(int TenantId, int SiteId);
         bool CreateOrUpdateWebsiteProducts(NavigationProductsViewModel websiteProduct, int UserId, int TenantId);
-
+        IQueryable<WebsiteNavigation> GetAllValidWebsiteNavigationCategory(int TenantId, int? SiteId);
+        IQueryable<ProductMaster> GetProductByNavigationId(int navigationId);
 
         //WebsiteShippingRules
 

@@ -50,6 +50,7 @@ namespace WMS.Controllers
         // GET: WebsiteNavigations/Create
         public ActionResult Create(int SiteId)
         {
+            Session["UploadTenantWebsiteNav"] = null;
             ViewBag.siteid = SiteId;
             ViewBag.ControllerName = "WebsiteNavigations";
             ViewBag.ParentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, SiteId).ToList(), "Id", "Name");
@@ -224,7 +225,7 @@ namespace WMS.Controllers
             {
                 return HttpNotFound();
             }
-
+            Session["UploadTenantWebsiteNav"] = null;
             ViewBag.Files = new Dictionary<string, string>();
             Dictionary<string, string> files = new Dictionary<string, string>();
             if (!string.IsNullOrEmpty(websiteNavigation.Image) || !string.IsNullOrEmpty(websiteNavigation.HoverImage))
