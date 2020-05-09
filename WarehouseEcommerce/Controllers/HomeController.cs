@@ -114,7 +114,7 @@ namespace WarehouseEcommerce.Controllers
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             var specialProduct = new ProductDetailViewModel
             {
-                productMasterList = _productServices.GetProductByCategory(CurrentTenantId, 6, SpecialProduct: true).ToList(),
+                productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID,CurrentTenantId, 6, SpecialProduct: true).ToList(),
 
             };
             specialProduct.productMasterList.ForEach(u => u.SellPrice = (Math.Round((u.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0), 2)));
@@ -132,7 +132,7 @@ namespace WarehouseEcommerce.Controllers
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             var TopProduct = new ProductDetailViewModel
             {
-                productMasterList = _productServices.GetProductByCategory((CurrentTenantId), 12, TopProduct: true).ToList(),
+                productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID,(CurrentTenantId), 12, TopProduct: true).ToList(),
             };
             TopProduct.productMasterList.ForEach(u => u.SellPrice = (Math.Round(((u.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0)), 2)));
             TopProduct.CurrencySign = currencyyDetail.Symbol;
@@ -149,7 +149,7 @@ namespace WarehouseEcommerce.Controllers
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             var onsale = new ProductDetailViewModel
             {
-                productMasterList = _productServices.GetProductByCategory(CurrentTenantId, 6, OnSaleProduct: true).ToList(),
+                productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID,CurrentTenantId, 6, OnSaleProduct: true).ToList(),
             };
             onsale.productMasterList.ForEach(u => u.SellPrice = (Math.Round((u.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0), 2)));
             onsale.CurrencySign = currencyyDetail.Symbol;
@@ -175,7 +175,7 @@ namespace WarehouseEcommerce.Controllers
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             var BestSellerProduct = new ProductDetailViewModel
             {
-                productMasterList = _productServices.GetProductByCategory((CurrentTenantId), 2, BestSellerProduct: true).ToList()
+                productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID, (CurrentTenantId), 2, BestSellerProduct: true).ToList()
             };
             BestSellerProduct.productMasterList.ForEach(u => u.SellPrice = (Math.Round((u.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0), 2)));
             BestSellerProduct.CurrencySign = currencyyDetail.Symbol;

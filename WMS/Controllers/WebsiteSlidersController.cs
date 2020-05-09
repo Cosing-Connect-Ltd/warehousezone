@@ -64,7 +64,7 @@ namespace WMS.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,SiteID,Image,ImageAltTag,Text,ButtonText,ButtonLinkUrl,SortOrder,IsActive,TenantId,DateCreated,DateUpdated,CreatedBy,UpdatedBy,IsDeleted")] WebsiteSlider websiteSlider, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
+        public ActionResult Create( WebsiteSlider websiteSlider, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
         {
             if (ModelState.IsValid)
             {
@@ -120,7 +120,7 @@ namespace WMS.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,SiteID,Image,ImageAltTag,Text,ButtonText,ButtonLinkUrl,SortOrder,IsActive,TenantId,DateCreated,DateUpdated,CreatedBy,UpdatedBy,IsDeleted")] WebsiteSlider websiteSlider, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
+        public ActionResult Edit( WebsiteSlider websiteSlider, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
         {
             if (ModelState.IsValid)
             {

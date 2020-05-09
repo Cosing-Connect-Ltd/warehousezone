@@ -1186,27 +1186,29 @@ namespace Ganedata.Core.Services
             return _currentDbContext.InventoryStocks.FirstOrDefault(a => a.ProductId == productId && a.WarehouseId == tenantLocationId && a.IsDeleted != true);
         }
 
-        public IEnumerable<ProductMaster> GetProductByCategory(int tenantId, int NumberofProducts, bool TopProduct = false, bool BestSellerProduct = false, bool SpecialProduct = false, bool OnSaleProduct = false)
+        public IEnumerable<ProductMaster> GetProductByCategory(int SiteId, int tenantId, int NumberofProducts, bool TopProduct = false, bool BestSellerProduct = false, bool SpecialProduct = false, bool OnSaleProduct = false)
         {
+            var products = _currentDbContext.ProductsWebsitesMap.Where(u=>u.TenantId==tenantId && u.SiteID==SiteId && u.IsDeleted != true).Select(u => u.ProductMaster);
             if (TopProduct)
             {
-                return _currentDbContext.ProductMaster.Where(u => u.TenantId == tenantId && u.TopProduct == TopProduct && u.IsDeleted != true).Take(NumberofProducts);
+                
+                return products.Where(u => u.TopProduct == TopProduct && u.IsDeleted != true).Take(NumberofProducts);
             }
             else if (BestSellerProduct)
             {
-                return _currentDbContext.ProductMaster.Where(u => u.TenantId == tenantId && u.BestSellerProduct == BestSellerProduct && u.IsDeleted != true).Take(NumberofProducts);
+                return products.Where(u => u.TenantId == tenantId && u.BestSellerProduct == BestSellerProduct && u.IsDeleted != true).Take(NumberofProducts);
             }
             else if (SpecialProduct)
             {
-                return _currentDbContext.ProductMaster.Where(u => u.TenantId == tenantId && u.SpecialProduct == SpecialProduct && u.IsDeleted != true).Take(NumberofProducts);
+                return products.Where(u => u.TenantId == tenantId && u.SpecialProduct == SpecialProduct && u.IsDeleted != true).Take(NumberofProducts);
             }
             else if (OnSaleProduct)
             {
-                return _currentDbContext.ProductMaster.Where(u => u.TenantId == tenantId && u.OnSaleProduct == OnSaleProduct && u.IsDeleted != true).Take(NumberofProducts);
+                return products.Where(u => u.TenantId == tenantId && u.OnSaleProduct == OnSaleProduct && u.IsDeleted != true).Take(NumberofProducts);
             }
             else
             {
-                return _currentDbContext.ProductMaster.Where(u => u.TenantId == tenantId && u.IsDeleted != true).Take(NumberofProducts);
+                return products.Where(u => u.TenantId == tenantId && u.IsDeleted != true).Take(NumberofProducts);
             }
         }
         public IQueryable<InventoryStock> GetAllInventoryStocks(int tenantId, int warehouseId, DateTime? reqDate = null)

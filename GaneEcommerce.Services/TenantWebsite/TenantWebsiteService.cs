@@ -134,7 +134,7 @@ namespace Ganedata.Core.Services
             }
             else
             {
-                var slider = _currentDbContext.WebsiteContentPages.AsNoTracking().FirstOrDefault(u => u.Id == websiteSlider.Id);
+                var slider = _currentDbContext.WebsiteSliders.AsNoTracking().FirstOrDefault(u => u.Id == websiteSlider.Id);
                 if (slider != null)
                 {
                     websiteSlider.CreatedBy = slider.CreatedBy;
