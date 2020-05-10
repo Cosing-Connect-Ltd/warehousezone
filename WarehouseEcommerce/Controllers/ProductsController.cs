@@ -338,11 +338,12 @@ namespace WarehouseEcommerce.Controllers
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.CurrencySymbol = currencyyDetail.Symbol;
             var products = _productlookupServices.GetAllValidProductGroupAndDeptByName(CurrentTenantWebsite.SiteID, category, ProductName: productName);
+            
             productFiltering.Manufacturer = _productlookupServices.GetAllValidProductManufacturerGroupAndDeptByName(products).Select(u => u.Name).ToList();
             productFiltering.PriceInterval = _productlookupServices.AllPriceListAgainstGroupAndDept(products);
             productFiltering.AttributeValues = _productlookupServices.GetAllValidProductAttributeValuesByProductIds(products);
             productFiltering.subCategories = _productlookupServices.GetAllValidSubCategoriesByDepartmentAndGroup(products).ToList();
-
+            productFiltering.Count = products.Count();
 
             return PartialView(productFiltering);
         }

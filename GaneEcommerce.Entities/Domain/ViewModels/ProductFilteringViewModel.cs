@@ -19,5 +19,7 @@ namespace Ganedata.Core.Entities.Domain
 
         public List<string> subCategories  { get; set; }
 
+        public int Count { get; set; }
+
     }
 }

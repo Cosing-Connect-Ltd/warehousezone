@@ -1,48 +1,26 @@
-﻿ <!-- top categories section -->
-<section class="nb_sec nb_top_catSection">
-    <div class="container">
-        <div class="nb_header_style1">
-            <h3>Top Categories</h3>
+﻿@model List<Ganedata.Core.Entities.Domain.WebsiteNavigation>
+@if (Model != null && Model.Count > 0)
+{
+    <section class="nb_sec nb_top_catSection">
+        <div class="container">
+            <div class="nb_header_style1">
+                <h3>Top Categories</h3>
+            </div>
+            <div class="accordion">
+                <ul>
+                    @foreach (var item in Model)
+                    {
+                        <li>
+                            <div>
+                                <a href="@Url.Action("list","Products",new {category=item.Name })">
+                                    <h2>@item.Name</h2>
+                                </a>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
         </div>
-        <div class="accordion">
-            <ul>
-                <li>
-                    <div>
-                        <a href="listingpage.html">
-                            <h2>Clothing</h2>
-                        </a>
-                    </div>
-                </li>
-                <li>
-                    <div>
-                        <a href="listingpage.html">
-                            <h2>What's New</h2>
-                        </a>
-                    </div>
-                </li>
-                <li>
-                    <div>
-                        <a href="listingpage.html">
-                            <h2>Graduation</h2>
-                        </a>
-                    </div>
-                </li>
-                <li>
-                    <div>
-                        <a href="listingpage.html">
-                            <h2>Marchandise</h2>
-                        </a>
-                    </div>
-                </li>
-                <li>
-                    <div>
-                        <a href="listingpage.html">
-                            <h2>Contact</h2>
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-</section>
+    </section>
+}
 <!-- top categories section -->

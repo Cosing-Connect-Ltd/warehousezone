@@ -1,0 +1,40 @@
+﻿  <!-- banner section  -->
+@model List<Ganedata.Core.Entities.Domain.WebsiteSlider>
+<section class="nb_sec nb_bannersec">
+    <div id="NorthumbriaCarousle"
+         class="carousel slide nb_hm_bnr_carrousle carousel-fade"
+         data-ride="carousel">
+        <div class="carousel-inner">
+            @foreach (var item in Model)
+            {
+                <div class="carousel-item active">
+                    <img class="d-block w-100"
+                         src="@ViewBag.BaseFilePath@item.Image"
+                         alt="First slide" />
+                    <div class="np_bannerContentOuter">
+                        <div class="nb_bannerCaptionWrap">
+                            <h5>
+                               @item.ImageAltTag
+                            </h5>
+                            <button>Shop Now</button>
+                        </div>
+                    </div>
+                </div>
+
+            }
+            <div class="np_bannerContentOuter CountWrap">
+                <a href="#NorthumbriaCarousle"
+                   role="button"
+                   data-slide="prev"
+                   class="nb_bnr_count lft">
+                </a>
+                <a href="#NorthumbriaCarousle"
+                   role="button"
+                   data-slide="next"
+                   class="nb_bnr_count rgt">
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- banner section  -->

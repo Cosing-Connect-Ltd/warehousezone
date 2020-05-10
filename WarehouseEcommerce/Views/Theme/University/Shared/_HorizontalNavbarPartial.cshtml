@@ -1,0 +1,304 @@
+﻿@using Ganedata.Core.Entities.Domain
+@using Ganedata.Core.Entities.Enums;
+@model List<Ganedata.Core.Entities.Domain.WebsiteNavigation>
+<nav class="nb_mainnav">
+    <ul class="nb_mainnav_list">
+        @foreach (var item in Model.Where(x => x.ParentId == null))
+        {
+            var level1 = Model.Where(x => x.ParentId == item.Id).ToList();
+            if (item.Type == WebsiteNavigationType.Blank)
+            {
+
+                if (level1.Any())
+                {
+                    <li class="hav_mega_nav">
+                        <a href="javascript:;">
+                            @item.Name
+                        </a>
+                        <div class="mega_nav_wrap">
+                            <div class="mega_nav_wrap_inner">
+                                <h3 class="head">@item.Name</h3>
+                                <ul class="meganav_firstcatList">
+                                    @{int i = 1;}
+                                    @foreach (var item1 in level1)
+                                    {
+                                        var level2 = Model.Where(x => x.ParentId == item1.Id).ToList();
+                                        if (i == 1)
+                                        {
+                                            <li data-image-nav-src="@item.Image">
+                                                <a href="javascript:;">
+                                                    @item1.Name
+                                                </a>
+                                                @if (level2.Any())
+                                                {
+                                                    <ul class="subList">
+                                                        @foreach (var item2 in level2)
+                                                        {
+
+                                                            <li><a href="javascript:;">@item2.Name</a></li>
+
+
+
+                                                        }
+
+                                                    </ul>
+                                                }
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li>
+                                                <a href="@Url.Action("list", "Product")">
+                                                    @item1.Name
+                                                </a>
+                                            </li>
+                                        }
+
+                                    }
+
+                                    <li>
+                                        <a href="listingpage.html">
+                                            Women
+                                        </a>
+                                        <ul class="subList">
+                                            <li><a href="#">Jogging Bottom</a></li>
+                                            <li><a href="#">Zip Performance Top</a></li>
+                                            <li><a href="#">Jogging Shorts</a></li>
+                                            <li><a href="#">T-Shirts</a></li>
+                                            <li><a href="#">Leggings </a></li>
+                                        </ul>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                }
+                else
+                {
+
+                    <li>
+                        <a href="javascript:;">
+                            @item.Name
+                        </a>
+                    </li>
+                }
+            }
+            else if (item.Type == WebsiteNavigationType.Content)
+            {
+                if (level1.Any())
+                {
+                    <li class="hav_mega_nav">
+                        <a href="@Url.Action("page", "Home", new { pageUrl = item.WebsiteContentPages.pageUrl })">
+                            @item.Name
+                        </a>
+                        <div class="mega_nav_wrap">
+                            <div class="mega_nav_wrap_inner">
+                                <h3 class="head">@item.Name</h3>
+                                <ul class="meganav_firstcatList">
+                                    @{int i = 1;}
+                                    @foreach (var item1 in level1)
+                                    {
+                                        var level2 = Model.Where(x => x.ParentId == item1.Id).ToList();
+                                        if (i == 1)
+                                        {
+                                            <li data-image-nav-src="@item.Image">
+                                                <a href="@Url.Action("page", "Home", new { pageUrl = item1.WebsiteContentPages.pageUrl })">
+                                                    @item1.Name
+                                                </a>
+                                                @if (level2.Any())
+                                                {
+                                                    <ul class="subList">
+                                                        @foreach (var item2 in level2)
+                                                        {
+
+                                                            <li><a href="@Url.Action("page", "Home", new { pageUrl = item2.WebsiteContentPages.pageUrl })">@item2.Name</a></li>
+
+
+
+                                                        }
+
+                                                    </ul>
+                                                }
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li>
+                                                <a href="@Url.Action("list", "Product")">
+                                                    @item1.Name
+                                                </a>
+                                                @if (level2.Any())
+                                                {
+                                                    <ul class="subList">
+                                                        @foreach (var item2 in level2)
+                                                        {
+
+                                                            <li><a href="@Url.Action("list", "Product")">@item2.Name</a></li>
+
+
+
+                                                        }
+
+                                                    </ul>
+                                                }
+                                            </li>
+                                        }
+
+                                    }
+
+
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                }
+                else
+                {
+
+                    <li>
+                        <a href="@Url.Action("page", "Home", new { pageUrl = item.WebsiteContentPages.pageUrl })">
+                            @item.Name
+                        </a>
+                    </li>
+                }
+            }
+            else if (item.Type == WebsiteNavigationType.Category)
+            {
+                if (level1.Any())
+                {
+                    <li class="hav_mega_nav">
+                        <a href="@Url.Action("list", "Products", new { category = item.Name})">
+                            @item.Name
+                        </a>
+                        <div class="mega_nav_wrap">
+                            <div class="mega_nav_wrap_inner">
+                                <h3 class="head">@item.Name</h3>
+                                <ul class="meganav_firstcatList">
+                                    @{int i = 1;}
+                                    @foreach (var item1 in level1)
+                                    {
+                                        var level2 = Model.Where(x => x.ParentId == item1.Id).ToList();
+                                        if (i == 1)
+                                        {
+                                            <li data-image-nav-src="@item.Image">
+                                                <a href="@Url.Action("list", "Products", new { category = item1.Name})">
+                                                    @item1.Name
+                                                </a>
+                                                @if (level2.Any())
+                                                {
+                                                    <ul class="subList">
+                                                        @foreach (var item2 in level2)
+                                                        {
+
+                                                            <li><a href="@Url.Action("list", "Products", new { category = item2.Name})">@item2.Name</a></li>
+
+
+
+                                                        }
+
+                                                    </ul>
+                                                }
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li>
+                                                <a href="@Url.Action("list", "Product")">
+                                                    @item1.Name
+                                                </a>
+                                                @if (level2.Any())
+                                                {
+                                                    <ul class="subList">
+                                                        @foreach (var item2 in level2)
+                                                        {
+
+                                                            <li><a href="@Url.Action("list", "Product")">@item2.Name</a></li>
+
+
+
+                                                        }
+
+                                                    </ul>
+                                                }
+                                            </li>
+                                        }
+
+                                    }
+
+
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                }
+                else
+                {
+
+                    <li>
+                        <a href="@Url.Action("list", "Products", new { category = item.Name})">
+                            @item.Name
+                        </a>
+                    </li>
+                }
+            }
+
+
+
+            @*<li>
+                <a href="">
+                    New
+                </a>
+            </li>
+            <li class="hav_mega_nav">
+                <a href="listingpage.html">
+                    Clothing
+                </a>
+                <div class="mega_nav_wrap">
+                    <div class="mega_nav_wrap_inner">
+                        <h3 class="head">Clothing</h3>
+                        <ul class="meganav_firstcatList">
+                            <li data-image-nav-src="~/Content/Theme/University/app/images/meganavimg_mens.jpg">
+                                <a href="@Url.Action("list", "Product")">
+                                    Men
+                                </a>
+                            </li>
+                            <li>
+                                <a href="listingpage.html">
+                                    Women
+                                </a>
+                                <ul class="subList">
+                                    <li><a href="#">Jogging Bottom</a></li>
+                                    <li><a href="#">Zip Performance Top</a></li>
+                                    <li><a href="#">Jogging Shorts</a></li>
+                                    <li><a href="#">T-Shirts</a></li>
+                                    <li><a href="#">Leggings </a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="listingpage.html">
+                                    Accessories
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <a href="listingpage.html">
+                    Sportwear
+                </a>
+            </li>
+            <li>
+                <a href="listingpage.html">
+                    Merchandise
+                </a>
+            </li>
+            <li>
+                <a href="listingpage.html">
+                    Graduation
+                </a>
+            </li>*@
+        }
+    </ul>
+</nav>

@@ -87,7 +87,6 @@
                             @foreach (var item1 in level1)
                             {
                                 var level2 = Model.Where(x => x.ParentId == item1.Id).ToList();
-
                                 <li>
                                     @if (item1.Type == WebsiteNavigationType.Blank)
                                     {
