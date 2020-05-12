@@ -6,7 +6,7 @@
     <div class="res_navWrapper">
         <span class="nb_res_nav_closeTrigger">X</span>
         <span class="nb_logowrap_res">
-           
+
             <img src="~/Content/Theme/University/app/images/logo_invert.svg" alt="" />
         </span>
         <div class="nb_firstNav_res_lst_wrap"></div>
@@ -21,11 +21,11 @@
             </form>
         </div>
         <div class="nb_logowrap">
-                @*<a href="index.html">
+            @*<a href="index.html">
                     <img src="~/Content/Theme/University/app/images/logo.png" alt="" />
                 </a>*@
             <a href="@Url.Action("Index","Home")">
-                <img src="@ViewBag.BaseFilePath@siteProperties.Logo" title="@siteProperties.SiteName" alt="@siteProperties.SiteName"/>
+                <img src="@ViewBag.BaseFilePath@siteProperties.Logo" title="@siteProperties.SiteName" alt="@siteProperties.SiteName" />
             </a>
         </div>
         <ul class="nb_headicolst">
@@ -34,11 +34,14 @@
                     <i class="ico icon-search"></i>
                 </a>
             </li>
-            <li>
-                <a href="">
-                    <i class="ico icon-phone-call"></i>
-                </a>
-            </li>
+            @if (!string.IsNullOrEmpty(siteProperties.WebsiteContactPhone))
+            {
+                <li>
+                    <a href="">
+                        <i class="ico icon-phone-call"></i>
+                    </a>
+                </li>
+            }
             <li>
                 <a href="" data-toggle="modal" data-target="#signupPopup">
                     <i class="ico icon-user"></i>
@@ -61,8 +64,7 @@
                 </a>
             </li>
         </ul>
-     @Html.Action("_HorizontalNavbarPartial", "Home")
+        @Html.Action("_HorizontalNavbarPartial", "Home")
     </div>
 </header>
 <!-- header section -->
-

@@ -49,8 +49,9 @@ namespace WarehouseEcommerce.Controllers
         {
             ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
             ViewBag.BlogDetail = BlogDetail;
-            ViewBag.ProductGroups = new SelectList(_lookupServices.GetAllValidProductGroups((CurrentTenantId), 12), "ProductGroupId", "ProductGroup", ViewBag.groupId);
             var content = _tenantWebsiteService.GetWebsiteContentByUrl(CurrentTenantWebsite.SiteID, pageUrl);
+            ViewBag.BlogList = _tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId,CurrentTenantWebsite.SiteID).Where(u=>u.Id != content.Id).OrderByDescending(u=>u.DateCreated).Take(7).ToList();
+           
             return View(content);
         }
 
@@ -243,8 +244,12 @@ namespace WarehouseEcommerce.Controllers
             string path = GetPathAgainstProductId(productId, status);
             return Content(path);
         }
-        public PartialViewResult _FooterPartialArea()
+        public PartialViewResult _FooterPartialArea(bool university=false)
         {
+            if (university)
+            {
+                return PartialView(CurrentTenantWebsite);
+            }
             var productManufacturer = _lookupServices.GetAllValidProductManufacturer(CurrentTenantId);
             return PartialView(productManufacturer.ToList());
         }

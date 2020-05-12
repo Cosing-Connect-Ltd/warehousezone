@@ -74,7 +74,7 @@
 
     </div>
 
-    @Html.Action("_FooterPartialArea", "Home")
+    @Html.Action("_FooterPartialArea", "Home", new { university = true })
     @*@Scripts.Render("~/bundles/modernizr")*@
 
     @RenderSection("scripts", required: false)

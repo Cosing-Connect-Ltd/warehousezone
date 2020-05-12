@@ -1,33 +1,58 @@
 ﻿  <!-- footer section -->
+@model Ganedata.Core.Services.caTenantWebsites
 <footer class="nb_footer">
     <div class="container">
         <div class="nb_footersec_inner">
             <a href="" class="nb_foot_logo">
                 <img src="~/Content/Theme/University/app/images/logo.svg" />
             </a>
-            <div class="followUsWrap">
-                <h5>Follow Us On</h5>
-                <ul>
-                    <li>
-                        <a href=""><i class="ico fb icon-facebook-logo"></i></a>
-                    </li>
-                    <li>
-                        <a href=""><i class="ico tw icon-twitter-logo"></i></a>
-                    </li>
-                    <li>
-                        <a href=""><i class="ico ln icon-linkedin-logo"></i></a>
-                    </li>
-                    <li>
-                        <a href=""><i class="ico ig icon-instagram-logo"></i></a>
-                    </li>
-                </ul>
-            </div>
+            @if (!string.IsNullOrEmpty(Model.FacebookUrl) || !string.IsNullOrEmpty(Model.InstaGramUrl) || !string.IsNullOrEmpty(Model.LinkedInUrl) || !string.IsNullOrEmpty(Model.TwitterUrl))
+            {
+                <div class="followUsWrap">
+                    <h5>Follow Us On</h5>
+                    <ul>
+                        @if (!string.IsNullOrEmpty(Model.FacebookUrl))
+                        {
+                            <li>
+
+                                <a href=""><i class="ico fb icon-facebook-logo"></i></a>
+                            </li>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.TwitterUrl))
+                        {
+                            <li>
+                                <a href=""><i class="ico tw icon-twitter-logo"></i></a>
+                            </li>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.LinkedInUrl))
+                        {
+                            <li>
+                                <a href=""><i class="ico ln icon-linkedin-logo"></i></a>
+                            </li>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.InstaGramUrl))
+                        {
+                            <li>
+                                <a href=""><i class="ico ig icon-instagram-logo"></i></a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
             <div class="nb_footnav_wrap">
                 <ul>
+
                     <li><a href="">Sitemap</a></li>
                     <li><a href="">FAQ</a></li>
-                    <li><a href="">Contact</a></li>
-                    <li><a href="">Delivery</a></li>
+                    @if (!string.IsNullOrEmpty(Model.WebsiteContactPhone)
+                        )
+                    {
+                        <li><a href="">Contact</a></li>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.WebsiteContactAddress))
+                    {
+                        <li><a href="">Delivery</a></li>
+                    }
                 </ul>
             </div>
             <ul class="nb_foot_payment_opt_lst">

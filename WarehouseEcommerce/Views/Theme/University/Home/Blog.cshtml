@@ -2,7 +2,6 @@
 @{
     ViewBag.Title = "Blog";
 }
-
 <section class="nb_sec nb_prdlisting_pgsec">
     <div class="container">
         <div class="breadCrumbtopsec">
@@ -40,7 +39,7 @@
                                     <p class="content">
                                         @item.ShortDescription
                                     </p>
-                                    <a href="@Url.Action("page","Home",new {pageUrl=item.pageUrl})" class="rdmrBtn">Read More</a>
+                                    <a href="@Url.Action("page","Home",new {pageUrl=item.pageUrl,BlogDetail="true"})" class="rdmrBtn">Read More</a>
                                 </div>
                             </div>
                         </div>
