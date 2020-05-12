@@ -14,17 +14,17 @@
                     <div class="col-sm-12 col-md-4">
                         <div class="nb_ftb_box">
                             <span class="nb_fb_img">
-                                <img src="~/Content/Theme/University/app/images/blogimages/1.jpg" alt="" />
+                                <img src="@(!string.IsNullOrEmpty(item.Image)? ViewBag.BaseFilePath + item.Image : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@item.ImageAltTag" />
                             </span>
                             <div class="nb_fb_con">
                                 <div class="date">
-                                    @item.DateCreated
+                                    @item.DateCreated.ToString("MMMM dd, yyyy")
                                 </div>
                                 <h5 class="heading">
                                     @item.Title
                                 </h5>
                                 <p class="content">
-                                    @Html.Raw(item.Content)
+                                    @item.ShortDescription
                                 </p>
                             </div>
                         </div>
@@ -32,7 +32,7 @@
 
                 }
             </div>
-            </div>
+        </div>
     </section>
 }
 <!-- from the blog section -->

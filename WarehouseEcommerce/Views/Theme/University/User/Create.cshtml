@@ -5,7 +5,6 @@
 }
 @using (Html.BeginForm("Create", "User", FormMethod.Post, new { @class = "loginForm", id = "" }))
 {
-    @Html.Hidden("Placecheck", ViewBag.PlaceOrders == null ? "" : "placeorder")
     @Html.AntiForgeryToken()
 
     <div class="form-group">

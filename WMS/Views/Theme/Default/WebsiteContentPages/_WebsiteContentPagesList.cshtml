@@ -26,18 +26,23 @@
         settings.Columns.Add("MetaDescription").Caption = "Meta Description";
         settings.Columns.Add("pageUrl");
         settings.Columns.Add("Type");
-        //settings.Columns.Add(c =>
-        //{
+        settings.Columns.Add("ImageAltTag");
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Image";
 
-        //    c.Caption = "Content";
-        //    c.SetDataItemTemplateContent(m =>
-        //    {
-        //        var htmlContent=DataBinder.Eval(m.DataItem, "Contant").ToString();
-        //        ViewContext.Writer.Write(HttpUtility.HtmlEncode(htmlContent));
-        //    });
-        //});
+            c.SetDataItemTemplateContent(m =>
+            {
+                var Logo = (string)DataBinder.Eval(m.DataItem, "Image");
+                if (!string.IsNullOrEmpty(Logo))
+                {
+
+                    ViewContext.Writer.Write("<img src='" + Logo + "'style='max-height:120px;width:200px'>");
+                }
+            });
+        });
         settings.Columns.Add("SortOrder").Caption = "Sort Order";
-        settings.Columns.Add("IsActive").Caption = "Is Active";
+        settings.Columns.Add("IsActive").Caption = "Active";
 
 
         settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";

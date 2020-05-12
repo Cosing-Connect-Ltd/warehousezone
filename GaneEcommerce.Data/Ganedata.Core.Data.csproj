@@ -819,6 +819,10 @@
     <Compile Include="Migrations\202005060433132_more-properties-added-in-content-pages.designer.cs">
       <DependentUpon>202005060433132_more-properties-added-in-content-pages.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005122012474_imagecolumn-addedin-websitecontenttable.cs" />
+    <Compile Include="Migrations\202005122012474_imagecolumn-addedin-websitecontenttable.designer.cs">
+      <DependentUpon>202005122012474_imagecolumn-addedin-websitecontenttable.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1753,6 +1757,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005060433132_more-properties-added-in-content-pages.resx">
       <DependentUpon>202005060433132_more-properties-added-in-content-pages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005122012474_imagecolumn-addedin-websitecontenttable.resx">
+      <DependentUpon>202005122012474_imagecolumn-addedin-websitecontenttable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

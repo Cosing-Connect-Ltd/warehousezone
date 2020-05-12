@@ -132,11 +132,12 @@ function _RemoveLogoFile(filename,loaderType)
     }
     var websiteSlider = $("#websiteSlider").val();
     var tenantWebsite = $("#tenantWebsite").val();
+    var websiteContent = $("#websiteContent").val();
     $.ajax({
         type: "POST",
         url: "/TenantWebsites/_RemoveLogoFile",
         data: {
-            "filename": filename, "websiteSlider": websiteSlider, "tenantWebsite": tenantWebsite, "navigationWebsite": navigationWebsite,
+            "filename": filename, "websiteSlider": websiteSlider, "tenantWebsite": tenantWebsite, "navigationWebsite": navigationWebsite, "websiteContent": websiteContent,
             "NavType": loaderType
         },
         success: function (files) {

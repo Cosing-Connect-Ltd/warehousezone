@@ -12,6 +12,7 @@ using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
 using System.Web.Routing;
 using Ganedata.Core.Services;
+using DevExpress.CodeParser;
 
 namespace WMS.Controllers
 {
@@ -218,7 +219,7 @@ namespace WMS.Controllers
         }
 
 
-        public JsonResult _RemoveLogoFile(string filename, bool websiteSlider=false,bool tenantWebsite=false, bool navigationWebsite=false, string NavType="")
+        public JsonResult _RemoveLogoFile(string filename, bool websiteSlider=false,bool tenantWebsite=false, bool navigationWebsite=false, bool websiteContent=false, string NavType="")
         {
             if (tenantWebsite)
             {
@@ -248,17 +249,29 @@ namespace WMS.Controllers
             {
                 if (!string.IsNullOrEmpty(NavType))
                 {
-                    var files = Session["UploadTenantWebsiteNav"] as Dictionary<string,string>;
+                    var files = Session["UploadTenantWebsiteNav"] as Dictionary<string, string>;
                     files.Remove(NavType);
                     if (files.Count <= 0)
                     {
                         Session["UploadTenantWebsiteNav"] = null;
                     }
-                    var cfiles = files.Select(a => a.Key==NavType).ToList();
+                    var cfiles = files.Select(a => a.Key == NavType).ToList();
                     return Json(new { files = cfiles.Count == 0 ? null : cfiles });
 
                 }
-                
+
+            }
+            else if (websiteContent)
+            {
+                var files = Session["UploadWebsiteContentPage"] as List<string>;
+                var filetoremove = files.FirstOrDefault(a => a == filename);
+                files.Remove(filetoremove);
+                if (files.Count <= 0)
+                {
+                    Session["UploadWebsiteContentPage"] = null;
+                }
+                var cfiles = files.Select(a => a).ToList();
+                return Json(new { files = cfiles.Count == 0 ? null : cfiles });
             }
             return default;
         }

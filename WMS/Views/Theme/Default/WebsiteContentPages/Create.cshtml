@@ -19,86 +19,143 @@
 }
 
 <h2><span>Add Website Content Page</span></h2>
+<script type="text/javascript">
+    function onFileUploadComplete(s, e) {
+        if (e.callbackData) {
+            $("#dvfiles").show();
+            var fileData = e.callbackData.split('|');
+            var Fileobj = { FileName: fileData };
+            var result = $("#uploaderTenantDept").tmpl(Fileobj);
+            $("#dvfiles").append(result);
+            $('.se-pre-con').hide();
+            $("#FileLength").val('True');
 
+        }
+
+
+    }
+    function onFileUploadStart(s, e) {
+        if ($("#FileLength").val() == 'True') {
+            e.cancel = true;
+            alert("Only one file allow to be select");
+            return;
+        }
+    }
+</script>
+@Html.Hidden("websiteContent", true)
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.SiteID, (int)ViewBag.SiteId)
-<div class="col-md-12">
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="col-md-12">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 
-    <div class="input-group h-100 justify-content-center align-items-center">
-        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-4" })
-        <div class="col-md-8">
-            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ShortDescription, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.TextAreaFor(model => model.ShortDescription, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.MetaTitle, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.MetaTitle, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MetaTitle, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-    <div class="input-group h-100 justify-content-center align-items-center">
-        @Html.LabelFor(model => model.MetaTitle, htmlAttributes: new { @class = "control-label col-md-4" })
-        <div class="col-md-8">
-            @Html.EditorFor(model => model.MetaTitle, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.MetaTitle, "", new { @class = "text-danger" })
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.MetaDescription, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.MetaDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MetaDescription, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
 
-    <div class="input-group h-100 justify-content-center align-items-center">
-        @Html.LabelFor(model => model.MetaDescription, htmlAttributes: new { @class = "control-label col-md-4" })
-        <div class="col-md-8">
-            @Html.EditorFor(model => model.MetaDescription, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.MetaDescription, "", new { @class = "text-danger" })
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.Partial("PlaceholdersHtmlEditorPartial", new HtmlEditorModel() { HtmlContent = Model.Content, EditorName = "Content", CallbackController = "DevexHelper", CallbackAction = "HtmlEditorWebsiteContentEditorPartial", Height = 200 })
+                @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Image", new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.Partial("_Uploader")
+                @Html.Hidden("FileLength", (bool?)ViewBag.FileLength)
+                <br />
+                <div id="dvfiles">
 
-    <div class="input-group h-100 justify-content-center align-items-center">
-        @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-4" })
-        <div class="col-md-8">
-            @Html.Partial("PlaceholdersHtmlEditorPartial", new HtmlEditorModel() { HtmlContent = Model.Content, EditorName = "Content", CallbackController = "DevexHelper", CallbackAction = "HtmlEditorWebsiteContentEditorPartial", Height = 200 })
-            @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+                    <strong>Uploaded Files</strong>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="input-group h-100 justify-content-center align-items-center">
-        @Html.LabelFor(model => model.pageUrl, htmlAttributes: new { @class = "control-label col-md-4" })
-        <div class="col-md-8">
-            @Html.EditorFor(model => model.pageUrl, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.pageUrl, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="input-group h-100 justify-content-center align-items-center">
-        @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-4" })
-        <div class="col-md-8">
-            @Html.EnumDropDownListFor(model => model.Type, htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
-        </div>
-    </div>
 
-    <div class="input-group h-100 justify-content-center align-items-center">
-        @Html.LabelFor(model => model.SortOrder, htmlAttributes: new { @class = "control-label col-md-4" })
-        <div class="col-md-8">
-            @Html.EditorFor(model => model.SortOrder, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.SortOrder, "", new { @class = "text-danger" })
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.ImageAltTag, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Image, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ImageAltTag, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.pageUrl, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.pageUrl, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.pageUrl, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EnumDropDownListFor(model => model.Type, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-    <div class="input-group h-100 justify-content-center align-items-center">
-        @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-4" })
-        <div class="col-md-8">
-            <div class="checkbox">
-                @Html.EditorFor(model => model.IsActive)
-                @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.SortOrder, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.SortOrder, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SortOrder, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.IsActive)
+                    @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <div class="col-md-offset-2 col-md-10 bottom-right">
+                <input type="submit" class="btn btn-primary" value="Create" />
+                <div class="back-list">@Html.ActionLink("Back to List", "Index", new { SiteId = ViewBag.SiteId }, new { @class = "btn btn-default" })</div>
             </div>
         </div>
     </div>
-
-
-    <div class="input-group h-100 justify-content-center align-items-center">
-        <div class="col-md-offset-2 col-md-10 bottom-right">
-            <input type="submit" class="btn btn-primary" value="Create" />
-            <div class="back-list">@Html.ActionLink("Back to List", "Index", new { SiteId = ViewBag.SiteId }, new { @class = "btn btn-default" })</div>
-        </div>
-    </div>
-</div>
 }
 
+<script id="uploaderTenantDept" type="text/x-jquery-tmpl">
+    <tr>
+        <td id="tdfileName">${FileName}</td>
+        <td><p>&nbsp;</p></td>
+        <td><a class="LRemove" onclick="_RemoveLogoFile('${FileName}')">Remove</a></td>
+
+    </tr>
+</script>

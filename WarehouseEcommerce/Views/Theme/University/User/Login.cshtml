@@ -2,11 +2,10 @@
 @{Layout = null;}
 
 
+
 @using (Html.BeginForm("LoginUser", "User", FormMethod.Post, new { @class = "loginForm", id = "" }))
 {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-    @Html.Hidden("Placecheck", ViewBag.PlaceOrders == null ? "" : "placeorder")
+   
     <div class="form-group">
         <input id="UserName" type="text" value="" name="UserName" required autocomplete="off" class="form-control" placeholder="Enter UserName">
         @Html.ValidationMessageFor(model => model.UserName)

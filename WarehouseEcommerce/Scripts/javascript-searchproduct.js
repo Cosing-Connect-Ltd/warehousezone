@@ -381,6 +381,9 @@ function GetLoggedIn(placeholder) {
             debugger;
             $("#login-model-body").html("");
             $("#login-model-body").html(data);
+            if (placeholder !== "") {
+                $("#Placecheck").val(placeholder);
+            }
             $('#signupPopup').modal('show');
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -429,6 +432,7 @@ function LoggedIn() {
     });
 }
 function CreateUsers() {
+    debugger;
     var FirstName = $("#FirstName").val();
     var LastName = $("#LastName").val();
     var Email = $("#Email").val();

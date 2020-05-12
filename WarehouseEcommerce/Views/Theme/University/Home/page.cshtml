@@ -3,21 +3,153 @@
     ViewBag.Title = Model.Title;
 
 }
-
-<div class="about bg-white">
-    <div class="container card-container custom-max-width">
-        <div class="row">
-            <div class="col-md-12 col-sm-12 bg-white my-account login">
-                <div class="about-cnt">
-                    <div class="content-wrapper select">
-                        <h2 class="text-uppercase mb-15">@Model.Title</h2>
-                        <div id="updateCart">
-                            <p>@Model.Content</p>
+@if (Model != null)
+{
+    if (ViewBag.BlogDetail == null)
+    {
+        <div class="about bg-white">
+            <div class="container card-container custom-max-width">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 bg-white my-account login">
+                        <div class="about-cnt">
+                            <div class="content-wrapper select">
+                                <h2 class="text-uppercase mb-15">@Model.Title</h2>
+                                <div id="updateCart">
+                                    <p>@Model.Content</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    }
+    else
+    {
+        if (Model != null)
+        {
+            <section class="nb_sec nb_prdlisting_pgsec">
+                <div class="container">
+                    <div class="nb_sec blogdetWrapsec">
+                        <div class="row">
+                            <div class="col-lg-12 col-xl-12 blogdetWrap">
+                                <span class="blgImgMain">
+                                    <img src="@(!string.IsNullOrEmpty(Model.Image)? ViewBag.BaseFilePath + Model.Image : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@Model.ImageAltTag" />
+                                </span>
+                                <div class="headsec">
+                                    <h2 class="blgHeadmain">
+                                        @Model.Title
+                                    </h2>
+                                    <div class="blogTimesec">
+                                        <span class="ico icon-calander"></span>
+                                        <span class="date">@Model.DateCreated.ToString("MMMM dd, yyyy")</span>
+                                    </div>
+                                </div>
+
+                                <div class="contentSec">
+                               @Html.Raw(Model.Content)
+                                </div>
+                            </div>
+                            @*<div class="col-lg-5 col-xl-4">
+                                <div class="youmayalLikesec">
+                                    <h3 class="head">You may also like</h3>
+                                    <ul class="ymalList">
+                                        <li>
+                                            <div class="ymalBox">
+                                                <span class="imgwrap">
+                                                    <img src="images/blogimages/2.jpg" alt="">
+                                                </span>
+                                                <div class="contwrap">
+                                                    <h3 class="ymalListHead">There are many variations..</h3>
+                                                    <p class="content">
+                                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia...
+                                                    </p>
+                                                    <span class="date">21-07-2019</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="ymalBox">
+                                                <span class="imgwrap">
+                                                    <img src="images/blogimages/3.jpg" alt="">
+                                                </span>
+                                                <div class="contwrap">
+                                                    <h3 class="ymalListHead">There are many variations..</h3>
+                                                    <p class="content">
+                                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia...
+                                                    </p>
+                                                    <span class="date">21-07-2019</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="ymalBox">
+                                                <span class="imgwrap">
+                                                    <img src="images/blogimages/1.jpg" alt="">
+                                                </span>
+                                                <div class="contwrap">
+                                                    <h3 class="ymalListHead">There are many variations..</h3>
+                                                    <p class="content">
+                                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia...
+                                                    </p>
+                                                    <span class="date">21-07-2019</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="ymalBox">
+                                                <span class="imgwrap">
+                                                    <img src="images/blogimages/2.jpg" alt="">
+                                                </span>
+                                                <div class="contwrap">
+                                                    <h3 class="ymalListHead">There are many variations..</h3>
+                                                    <p class="content">
+                                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia...
+                                                    </p>
+                                                    <span class="date">21-07-2019</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="ymalBox">
+                                                <span class="imgwrap">
+                                                    <img src="images/blogimages/3.jpg" alt="">
+                                                </span>
+                                                <div class="contwrap">
+                                                    <h3 class="ymalListHead">There are many variations..</h3>
+                                                    <p class="content">
+                                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia...
+                                                    </p>
+                                                    <span class="date">21-07-2019</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="ymalBox">
+                                                <span class="imgwrap">
+                                                    <img src="images/blogimages/1.jpg" alt="">
+                                                </span>
+                                                <div class="contwrap">
+                                                    <h3 class="ymalListHead">There are many variations..</h3>
+                                                    <p class="content">
+                                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia...
+                                                    </p>
+                                                    <span class="date">21-07-2019</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>*@
+                        </div>
+                    </div>
+                </div>
+            </section>
+        }
+
+
+
+
+    }
+}
 

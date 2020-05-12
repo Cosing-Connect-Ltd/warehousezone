@@ -1,0 +1,54 @@
+﻿@model List<Ganedata.Core.Entities.Domain.WebsiteContentPages>
+@{
+    ViewBag.Title = "Blog";
+}
+
+<section class="nb_sec nb_prdlisting_pgsec">
+    <div class="container">
+        <div class="breadCrumbtopsec">
+            <div class="nb_bread_crumbwrap">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/"><i class="icon-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="#">Blog</a></li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="nb_sec bloglistSec">
+            <div class="nb_header_style1">
+                <h3>Blog</h3>
+            </div>
+            <div class="bloglistSecInner">
+                <div class="row">
+                    @foreach (var item in Model)
+                    {
+
+
+                        <div class="col-md-4 col-sm-6">
+                            <div class="bloglistBox">
+                                <span class="nb_fb_img">
+                                    <img src="@(!string.IsNullOrEmpty(item.Image)? ViewBag.BaseFilePath + item.Image : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@item.ImageAltTag" />
+                                </span>
+                                <div class="nb_fb_con">
+                                    <div class="date"> @item.DateCreated.ToString("MMMM dd, yyyy")</div>
+                                    <h5 class="heading">
+                                        @item.Title
+                                    </h5>
+                                    <p class="content">
+                                        @item.ShortDescription
+                                    </p>
+                                    <a href="@Url.Action("page","Home",new {pageUrl=item.pageUrl})" class="rdmrBtn">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+

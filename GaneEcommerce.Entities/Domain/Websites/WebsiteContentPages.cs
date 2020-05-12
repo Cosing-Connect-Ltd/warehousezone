@@ -14,6 +14,8 @@ namespace Ganedata.Core.Entities.Domain
         public int Id { get; set; }
         public int SiteID { get; set; }
         public string Title { get; set; }
+
+        public string ShortDescription { get; set; }
         [Display(Name = "Meta Title")]
         public string MetaTitle { get; set; }
         [Display(Name = "Meta Description")]
@@ -21,6 +23,8 @@ namespace Ganedata.Core.Entities.Domain
         [Required]
         [Display(Name = "Page Url")]
         public string pageUrl { get; set; }
+        public string Image { get; set; }
+        public string ImageAltTag { get; set; }
         [Required]
         [AllowHtml]
         [DataType(DataType.MultilineText)]

@@ -1090,6 +1090,7 @@
     <Content Include="Views\Theme\University\User\logout.cshtml" />
     <Content Include="Views\Theme\University\User\OrderHistory.cshtml" />
     <Content Include="Views\Theme\University\User\WishList.cshtml" />
+    <Content Include="Views\Theme\University\Home\Blog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

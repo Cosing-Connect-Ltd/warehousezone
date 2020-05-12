@@ -45,9 +45,10 @@ namespace WarehouseEcommerce.Controllers
             return View();
         }
 
-        public ActionResult page(string pageUrl)
+        public ActionResult page(string pageUrl, string BlogDetail=null)
         {
             ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
+            ViewBag.BlogDetail = BlogDetail;
             ViewBag.ProductGroups = new SelectList(_lookupServices.GetAllValidProductGroups((CurrentTenantId), 12), "ProductGroupId", "ProductGroup", ViewBag.groupId);
             var content = _tenantWebsiteService.GetWebsiteContentByUrl(CurrentTenantWebsite.SiteID, pageUrl);
             return View(content);
@@ -308,8 +309,10 @@ namespace WarehouseEcommerce.Controllers
 
         public ActionResult Blog()
         {
-            return View();
+            var data = _tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, CurrentTenantWebsite.SiteID).OrderByDescending(u => u.DateCreated).Take(12).ToList();
+            return View(data);
         }
+
 
         public ActionResult AboutUs()
         {
