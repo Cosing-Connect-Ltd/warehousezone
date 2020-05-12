@@ -11,31 +11,34 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Login</h5>
                 </div>
-                <div class="modal-body">
-                    <form class="loginForm">
-                        <div class="form-group">
-                            <label for="username">Username/Email</label>
-                            <input type="text" id="username" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" />
-                        </div>
-                        <button type="submit" class="btn btn-primary loginBtn">
-                            Login
-                        </button>
-                        <div class="rememberWrap">
-                            <div class="form-check">
-                                <input type="checkbox"
-                                       class="form-check-input"
-                                       id="rememberme" />
-                                <label class="form-check-label" for="rememberme">Remember Me</label>
+                <div class="modal-body login-model-body">
+
+                    @Html.Action("Login", "User")
+
+                    @*<form class="loginForm">
+                            <div class="form-group">
+                                <label for="username">Username/Email</label>
+                                <input type="text" id="username" class="form-control" />
                             </div>
-                            <span class="losturpwd">
-                                Lost your password?
-                            </span>
-                        </div>
-                    </form>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" />
+                            </div>
+                            <button type="submit" class="btn btn-primary loginBtn">
+                                Login
+                            </button>
+                            <div class="rememberWrap">
+                                <div class="form-check">
+                                    <input type="checkbox"
+                                           class="form-check-input"
+                                           id="rememberme" />
+                                    <label class="form-check-label" for="rememberme">Remember Me</label>
+                                </div>
+                                <span class="losturpwd">
+                                    Lost your password?
+                                </span>
+                            </div>
+                        </form>*@
                     <div class="registrationSec">
                         <h3 class="head">Registration</h3>
                         <p>
@@ -54,27 +57,30 @@
                     <h5 class="modal-title" id="exampleModalLabel">Register</h5>
                 </div>
                 <div class="modal-body">
-                    <form class="loginForm">
-                        <div class="form-group">
-                            <label for="username">Username</label>
-                            <input type="text" id="username" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label for="username">Email Address</label>
-                            <input type="email" id="username" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" />
-                        </div>
-                    </form>
+
+                    @Html.Action("Create", "User")
+
+                    @*<form class="loginForm">
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" id="username" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label for="username">Email Address</label>
+                                <input type="email" id="username" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" />
+                            </div>
+                        </form>*@
                     <div class="registrationSec">
                         <p>
                             Your personal data will be used to support your experience
                             throughout this website, to manage access to your account, and
                             for other purposes described in our privacy policy
                         </p>
-                        <button class="regBtn">REGISTER</button>
+                        <button class="regBtn" onclick="CreateUsers();">REGISTER</button>
                     </div>
                     <div class="ahav_acc">
                         Already have an account <span id="showLoginForm">Login</span>

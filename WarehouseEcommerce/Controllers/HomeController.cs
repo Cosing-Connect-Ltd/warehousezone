@@ -224,6 +224,12 @@ namespace WarehouseEcommerce.Controllers
             return PartialView(navigation);
         }
 
+        public PartialViewResult _BlogPartial()
+        {
+           var data= _tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, CurrentTenantWebsite.SiteID).OrderByDescending(u=>u.DateCreated).Take(3).ToList();
+            return PartialView(data);
+        }
+
 
 
         public ActionResult _TopCategoryProductsPartial(int NavigationId)

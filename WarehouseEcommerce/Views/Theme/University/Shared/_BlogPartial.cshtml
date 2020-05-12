@@ -1,62 +1,38 @@
-﻿ <!-- from the blog section -->
-<section class="nb_sec ftb_sec">
-    <div class="container">
-        <div class="nb_header_style1">
-            <h3>From the Blog</h3>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 col-md-4">
-                <div class="nb_ftb_box">
-                    <span class="nb_fb_img">
-                        <img src="~/Content/Theme/University/app/images/blogimages/1.jpg" alt="" />
-                    </span>
-                    <div class="nb_fb_con">
-                        <div class="date">June 04, 2019</div>
-                        <h5 class="heading">
-                            There are many variations of passages of Lorem Ipsum
-                        </h5>
-                        <p class="content">
-                            Quisque nisl sapien, egestas in nisl accumsan, volutpat
-                            euismod velit. Mauris iaculis.
-                        </p>
-                    </div>
-                </div>
+﻿
+@model List<Ganedata.Core.Entities.Domain.WebsiteContentPages>
+<!-- from the blog section -->
+@if (Model.Count > 0)
+{
+    <section class="nb_sec ftb_sec">
+        <div class="container">
+            <div class="nb_header_style1">
+                <h3>From the Blog</h3>
             </div>
-            <div class="col-sm-12 col-md-4">
-                <div class="nb_ftb_box">
-                    <span class="nb_fb_img">
-                        <img src="~/Content/Theme/University/app/images/blogimages/2.jpg" alt="" />
-                    </span>
-                    <div class="nb_fb_con">
-                        <div class="date">June 04, 2019</div>
-                        <h5 class="heading">
-                            There are many variations of passages of Lorem Ipsum
-                        </h5>
-                        <p class="content">
-                            Quisque nisl sapien, egestas in nisl accumsan, volutpat
-                            euismod velit. Mauris iaculis.
-                        </p>
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="col-sm-12 col-md-4">
+                        <div class="nb_ftb_box">
+                            <span class="nb_fb_img">
+                                <img src="~/Content/Theme/University/app/images/blogimages/1.jpg" alt="" />
+                            </span>
+                            <div class="nb_fb_con">
+                                <div class="date">
+                                    @item.DateCreated
+                                </div>
+                                <h5 class="heading">
+                                    @item.Title
+                                </h5>
+                                <p class="content">
+                                    @Html.Raw(item.Content)
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                </div>
+
+                }
             </div>
-            <div class="col-sm-12 col-md-4">
-                <div class="nb_ftb_box">
-                    <span class="nb_fb_img">
-                        <img src="~/Content/Theme/University/app/images/blogimages/3.jpg" alt="" />
-                    </span>
-                    <div class="nb_fb_con">
-                        <div class="date">June 04, 2019</div>
-                        <h5 class="heading">
-                            There are many variations of passages of Lorem Ipsum
-                        </h5>
-                        <p class="content">
-                            Quisque nisl sapien, egestas in nisl accumsan, volutpat
-                            euismod velit. Mauris iaculis.
-                        </p>
-                    </div>
-                </div>
             </div>
-        </div>
-    </div>
-</section>
+    </section>
+}
 <!-- from the blog section -->

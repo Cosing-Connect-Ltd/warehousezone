@@ -1080,6 +1080,16 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Theme\University\Shared\_DeliveryInfoPartial.cshtml" />
     <Content Include="Views\Theme\University\Shared\_HorizontalNavbarPartial.cshtml" />
+    <Content Include="Views\Theme\University\Orders\AddShippingMethod.cshtml" />
+    <Content Include="Views\Theme\University\Orders\ConfirmOrder.cshtml" />
+    <Content Include="Views\Theme\University\Orders\GetAddress.cshtml" />
+    <Content Include="Views\Theme\University\Orders\PaymentInfo.cshtml" />
+    <Content Include="Views\Theme\University\User\Account.cshtml" />
+    <Content Include="Views\Theme\University\User\Create.cshtml" />
+    <Content Include="Views\Theme\University\User\Login.cshtml" />
+    <Content Include="Views\Theme\University\User\logout.cshtml" />
+    <Content Include="Views\Theme\University\User\OrderHistory.cshtml" />
+    <Content Include="Views\Theme\University\User\WishList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

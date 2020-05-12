@@ -215,6 +215,11 @@ namespace WarehouseEcommerce.Controllers
         public PartialViewResult _CartItemsPartial(int? ProductId, decimal? qty, bool? Remove, bool? details)
         {
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
+            if (CurrentUser?.UserId <= 0)
+            {
+                ViewBag.PlaceOrder = true;
+            }
+            ViewBag.cart = true;
             if (!ProductId.HasValue)
             {
 

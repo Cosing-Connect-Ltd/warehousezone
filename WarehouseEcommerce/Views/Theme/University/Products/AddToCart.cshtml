@@ -11,25 +11,24 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a href="#"><i class="icon-home"></i></a>
+                            <a href="/"><i class="icon-home"></i></a>
                         </li>
-
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Basket</a></li>
+                        <li class="breadcrumb-item"><a href="#">Cart</a></li>
                     </ol>
                 </nav>
             </div>
         </div>
         <div class="nb_sec">
             <div class="nb_header_style1">
-                <h3>Basket</h3>
+                <h3>Shopping Basket</h3>
             </div>
 
             <div class="row">
-                <div class="col-lg-8">
+                <div class=@(ViewBag.cart == null?"col-lg-8":"col-lg-12")  id="updateCart">
                     @Html.Action("_CartItemsPartial", "Products")
+                   
                 </div>
-                <div class="col-lg-4">
+                @*<div class="col-lg-4" style="display:@(ViewBag.cart == null?"":"none")">
                     <div class="basketTotalwrap">
                         <h3 class="mainhd">Basket Total</h3>
                         <div class="subTotalwrap">
@@ -84,9 +83,10 @@
                         </div>
                     </div>
                     <button class="cont_shop_btn">Continue Shopping</button>
-                </div>
+                </div>*@
 
             </div>
         </div>
+    </div>
 </section>
 

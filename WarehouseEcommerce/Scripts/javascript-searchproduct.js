@@ -138,6 +138,7 @@ function AddToCart(ProductId) {
         data: { ProductId: ProductId, qty: quantity, details: detail },
         dataType: 'html',
         success: function (data) {
+            debugger;
             var cardItemsValue = parseInt($("#cart-total").text());
             $("#cart-total").text((cardItemsValue + 1));
             $('.modal-body').empty();
@@ -168,6 +169,7 @@ function RemoveCartItem(id) {
 }
 
 function UpdateCartItem(ID, event) {
+    debugger;
     var quantity = event.value;
     $.ajax({
         type: "GET",
@@ -366,4 +368,108 @@ function removeURLParameter(url, parameter) {
     } else {
         return url;
     }
+}
+
+function GetLoggedIn(placeholder) {
+
+    $.ajax({
+        type: "GET",
+        url: basePath + "/User/Login/",
+        data: { PlaceOrder: placeholder },
+        dataType: 'Html',
+        success: function (data) {
+            debugger;
+            $("#login-model-body").html("");
+            $("#login-model-body").html(data);
+            $('#signupPopup').modal('show');
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert('Error' + textStatus + "/" + errorThrown);
+        }
+    });
+    $('#top-header').load(basePath + "/Home/_TopHeaderPartial");
+
+
+}
+
+function LoggedIn() {
+    var UserName = $("#UserName").val();
+    var UserPassword = $("#UserPassword").val();
+    var placecheck = $("#Placecheck").val();
+    var PlaceOrders;
+    if (placecheck !== "" && placecheck !== undefined && placecheck != null) {
+        PlaceOrders = true;
+    }
+    $.ajax({
+        type: "GET",
+        url: basePath + "/User/LoginUsers/",
+        data: { UserName: UserName, UserPassword: UserPassword, PlaceOrder: PlaceOrders, Popup: placecheck },
+        dataType: 'json',
+        success: function (data) {
+            if (PlaceOrders) {
+                $('#signupPopup').modal('hide');
+                location.href = "/Orders/GetAddress?AccountId=" + data.AccountId
+            }
+            else {
+                if (data) {
+                    $('#signupPopup').modal('hide');
+                }
+                else {
+                    alert("User name or password is not correct")
+                }
+
+
+            }
+
+
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert('Error' + textStatus + "/" + errorThrown);
+        }
+    });
+}
+function CreateUsers() {
+    var FirstName = $("#FirstName").val();
+    var LastName = $("#LastName").val();
+    var Email = $("#Email").val();
+    var Password = $("#Password").val();
+    var placecheck = $("#Placecheck").val();
+    var PlaceOrders;
+    if (placecheck !== "" && placecheck !== undefined && placecheck != null) {
+        PlaceOrders = true;
+    }
+    if ((FirstName == "" || FirstName == undefined || FirstName == null)) {
+        alert("First name is required");
+    }
+    if ((Email == "" || Email == undefined || Email == null)) {
+        alert("Email is required");
+    }
+    if ((Password == "" || Password == undefined || Password == null)) {
+        alert("Password is required");
+    }
+
+    if (PlaceOrders !== "" && PlaceOrders !== undefined && PlaceOrders != null) {
+        PlaceOrders = true;
+    }
+    $.ajax({
+        type: "GET",
+        url: basePath + "/User/CreateUser/",
+        data: { FirstName: FirstName, LastName: LastName, Email: Email, Password: Password, PlaceOrder: PlaceOrders },
+        dataType: 'json',
+        success: function (data)
+        {
+
+            if (data) {
+                $('#signupPopup').modal('hide');
+                alert("Please activate your account.")
+            }
+
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert('Error' + textStatus + "/" + errorThrown);
+        }
+    });
+
+
+
 }

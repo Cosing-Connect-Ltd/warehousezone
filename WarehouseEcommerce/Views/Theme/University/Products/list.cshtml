@@ -107,7 +107,7 @@
                                             @if (@item.SellPrice > 0 && @item.SellPrice.HasValue && @item.PercentMargin > 0)
                                             {
                                                 <li>
-                                                    <a href="javascript:;"><i class="icon-shopping-cart" onclick="AddToCart(@item.ProductId)"></i></a>
+                                                    <a href="javascript:;"  onclick="AddToCart(@item.ProductId)"><i class="icon-shopping-cart"></i></a>
                                                 </li>
                                             }
                                             else

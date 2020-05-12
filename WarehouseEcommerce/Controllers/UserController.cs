@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Ganedata.Core.Data.Migrations;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Entities.Helpers;
@@ -18,14 +19,14 @@ namespace WarehouseEcommerce.Controllers
         private readonly IGaneConfigurationsHelper _configurationsHelper;
         string baseUrl = "";
         public UserController(ICoreOrderService orderService, IMapper mapper, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IUserService userService, IActivityServices activityServices, ITenantsServices tenantServices, IGaneConfigurationsHelper configurationsHelper)
-            : base(orderService, propertyService, accountServices, lookupServices,tenantsCurrencyRateServices)
+            : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices)
         {
             _userService = userService;
             _activityServices = activityServices;
             _tenantServices = tenantServices;
             _accountServices = accountServices;
             _configurationsHelper = configurationsHelper;
-            
+
         }
 
 
@@ -51,7 +52,7 @@ namespace WarehouseEcommerce.Controllers
         //[RequireHttps]
         public ActionResult Login(bool? PlaceOrder)
         {
-            
+
             ViewBag.PlaceOrders = PlaceOrder;
             return View();
         }
@@ -68,9 +69,10 @@ namespace WarehouseEcommerce.Controllers
                 caUser user = new caUser();
                 bool status;
                 status = user.AuthoriseWebsiteUser(UserName, UserPassword);
+
                 if (status)
                 {
-                    Session["cawebsiteUser"]  = user;
+                    Session["cawebsiteUser"] = user;
 
 
                     RedirectController = "Home";
@@ -81,7 +83,7 @@ namespace WarehouseEcommerce.Controllers
                     AuthUserLogin Logins = new AuthUserLogin();
                     Session["CurrentUserLogin"] = _userService.SaveAuthUserLogin(Logins, user.UserId, user.TenantId);
 
-                    
+
                 }
                 else
                 {
@@ -146,7 +148,7 @@ namespace WarehouseEcommerce.Controllers
                 authuser.IsActive = false;
                 authuser.AccountId = accountModel.AccountID;
                 _userService.SaveAuthUser(authuser, CurrentUserId, CurrentTenantId);
-                string confirmationLink = Url.Action("ConfirmUser", "User", new { confirmationValue = GaneStaticAppExtensions.HashPassword(authuser.UserId.ToString()) + "_" + authuser.UserId.ToString(), placeOrder = GaneStaticAppExtensions.HashPassword(usersViewModel.PlaceOrder.HasValue? usersViewModel.PlaceOrder.HasValue.ToString():"")});
+                string confirmationLink = Url.Action("ConfirmUser", "User", new { confirmationValue = GaneStaticAppExtensions.HashPassword(authuser.UserId.ToString()) + "_" + authuser.UserId.ToString(), placeOrder = GaneStaticAppExtensions.HashPassword(usersViewModel.PlaceOrder.HasValue ? usersViewModel.PlaceOrder.HasValue.ToString() : "") });
                 confirmationLink = baseUrl + confirmationLink;
                 confirmationLink = "<a href='" + confirmationLink + "' class=btn btn-primary>Activate Account</a>";
                 _configurationsHelper.CreateTenantEmailNotificationQueue("Activate your account", null, sendImmediately: true, worksOrderNotificationType: WorksOrderNotificationTypeEnum.EmailConfirmation, TenantId: CurrentTenantId, accountId: accountModel.AccountID, UserEmail: authuser.UserEmail, confirmationLink: confirmationLink, userId: authuser.UserId);
@@ -176,7 +178,7 @@ namespace WarehouseEcommerce.Controllers
                         authUsers.IsActive = status;
 
                     }
-                    _userService.UpdateAuthUser(authUsers,CurrentUserId, CurrentTenantId);
+                    _userService.UpdateAuthUser(authUsers, CurrentUserId, CurrentTenantId);
 
 
                 }
@@ -209,6 +211,75 @@ namespace WarehouseEcommerce.Controllers
         public ActionResult WishList()
         {
             return View();
+        }
+        public JsonResult LoginUsers(string UserName, string UserPassword, bool? PlaceOrder, string Popup)
+        {
+            if (ModelState.IsValid)
+            {
+
+                caUser user = new caUser();
+                bool status;
+                status = user.AuthoriseWebsiteUser(UserName, UserPassword);
+                if (status && !string.IsNullOrEmpty(Popup))
+                {
+                    Session["cawebsiteUser"] = user;
+                    // store login id into session
+                    AuthUserLogin Logins = new AuthUserLogin();
+                    Session["CurrentUserLogin"] = _userService.SaveAuthUserLogin(Logins, user.UserId, user.TenantId);
+                    if (PlaceOrder.HasValue)
+                    {
+                        return Json(new { status, AccountId = CurrentUser.AccountId }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(status, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    return Json(false, JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult CreateUser(string FirstName, string LastName, string Email, string Password, bool? PlaceOrder)
+        {
+            baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
+            AuthUser authuser = new AuthUser();
+
+            if (ModelState.IsValid)
+            {
+                Account account = new Account();
+                account.AccountCode = FirstName + GaneStaticAppExtensions.GenerateRandomNo();
+                account.CompanyName = account.AccountCode;
+                account.RegNo = "";
+                account.VATNo ="";
+                var accountModel = _accountServices.SaveAccount(account, null, null, 1, 1, 1, 1, 1, null, null, CurrentUserId, CurrentTenantId, null);
+
+                // change user password into MD5 hash value
+                string password = Password;
+                Password = GaneStaticAppExtensions.GetMd5(Password);
+                authuser.UserEmail =Email;
+                authuser.UserFirstName =FirstName;
+                authuser.UserLastName =LastName;
+                authuser.UserPassword = Password;
+                authuser.UserName = Email;
+                authuser.IsActive = false;
+                authuser.AccountId = accountModel.AccountID;
+                _userService.SaveAuthUser(authuser, CurrentUserId, CurrentTenantId);
+                string confirmationLink = Url.Action("ConfirmUser", "User", new { confirmationValue = GaneStaticAppExtensions.HashPassword(authuser.UserId.ToString()) + "_" + authuser.UserId.ToString(), placeOrder = GaneStaticAppExtensions.HashPassword(PlaceOrder.HasValue ? PlaceOrder.HasValue.ToString() : "") });
+                confirmationLink = baseUrl + confirmationLink;
+                confirmationLink = "<a href='" + confirmationLink + "' class=btn btn-primary>Activate Account</a>";
+                _configurationsHelper.CreateTenantEmailNotificationQueue("Activate your account", null, sendImmediately: true, worksOrderNotificationType: WorksOrderNotificationTypeEnum.EmailConfirmation, TenantId: CurrentTenantId, accountId: accountModel.AccountID, UserEmail: authuser.UserEmail, confirmationLink: confirmationLink, userId: authuser.UserId);
+                return Json(true, JsonRequestBehavior.AllowGet);
+                
+            }
+
+            return Json(false, JsonRequestBehavior.AllowGet);
         }
 
     }
