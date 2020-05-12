@@ -1076,8 +1076,6 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Theme\Smart\Home\page.cshtml" />
     <Content Include="Views\Theme\University\Home\page.cshtml" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Theme\University\Shared\_DeliveryInfoPartial.cshtml" />
     <Content Include="Views\Theme\University\Shared\_HorizontalNavbarPartial.cshtml" />
     <Content Include="Views\Theme\University\Orders\AddShippingMethod.cshtml" />

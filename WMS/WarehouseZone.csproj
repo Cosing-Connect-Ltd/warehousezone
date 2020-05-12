@@ -17,7 +17,7 @@
     <AssemblyName>WMS</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -2549,8 +2549,6 @@
     <Content Include="Views\Theme\Default\WebsiteDiscountCodes\Details.cshtml" />
     <Content Include="Views\Theme\Default\WebsiteDiscountCodes\Edit.cshtml" />
     <Content Include="Views\Theme\Default\WebsiteDiscountCodes\Index.cshtml" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Theme\Default\AuthUserGroups\Index.cshtml" />
     <Content Include="Views\Theme\Default\AuthUserGroups\Create.cshtml" />
     <Content Include="Views\Theme\Default\AuthUserGroups\Edit.cshtml" />

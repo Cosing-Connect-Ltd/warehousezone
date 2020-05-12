@@ -27,7 +27,7 @@ namespace Ganedata.Core.Entities.Domain
         [Key]
         //TODO: GdDisplayName attribute (below) was throwing exception in pre compiling EF views, so commented out for time being.
         // Would need to be implemented when translation are implemented.
-        //[GdDisplayName("Account ID")]
+        [GdDisplayName("Account ID")]
         [Display(Name = "Account ID")]
         public int AccountID { get; set; }
         [Display(Name = "Account Code")]
