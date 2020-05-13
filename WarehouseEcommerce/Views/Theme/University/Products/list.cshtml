@@ -98,8 +98,8 @@
                             <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-4">
                                 <div class="prd_lst_boxouter">
                                     <span class="imagewrap">
-                                        <a href="@Url.Action("ProductDetails","Products", new {sku=item.SKUCode})"> @*<img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />*@</a>
-                                        <a href="@Url.Action("ProductDetails","Products", new {sku=item.SKUCode})"> <img src="~/Content/Theme/University/app/images/Runner_Prep.jpg" class="img-fluid" alt="static-image" title="static-image" /></a>
+                                        <a href="@Url.Action("ProductDetails","Products", new {sku=item.SKUCode})"> <img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" /></a>
+                                        @*<a href="@Url.Action("ProductDetails","Products", new {sku=item.SKUCode})"> <img src="~/Content/Theme/University/app/images/Runner_Prep.jpg" class="img-fluid" alt="static-image" title="static-image" /></a>*@
                                     </span>
                                     <h3 class="prdName">@item.Name</h3>
                                     <div class="foot">

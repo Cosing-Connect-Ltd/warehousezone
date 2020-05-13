@@ -20,8 +20,8 @@
                     <td>
                         <div class="prdimgsec">
                             <span class="prdimg">
-                                @*<img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage)? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />*@
-                                <img src="~/Content/Theme/University/app/images/Runner_Prep.jpg" class="img-fluid" alt="static-image" title="static-image" />
+                                <img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage)? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
+                                @*<img src="~/Content/Theme/University/app/images/Runner_Prep.jpg" class="img-fluid" alt="static-image" title="static-image" />*@
                             </span>
                             <span class="prdname">@(item.ProductMaster?.Name)</span>
                         </div>
