@@ -43,11 +43,14 @@
             </div>
         </div>
     </div>
+    
+    
+    
+    <div>
 
-
-    @Html.Partial("_LoginRegisterPartial")
-    @Html.Action("_TopHeaderPartial", "Home")
-    @*@if (ViewBag.cart == null)
+        @Html.Partial("_LoginRegisterPartial")
+        @Html.Action("_TopHeaderPartial", "Home")
+        @*@if (ViewBag.cart == null)
         {
             <div id="common-home" class="container">
 
@@ -61,18 +64,18 @@
 
             </div>
         }*@
-    <div class="container-fluid pl-0 pr-0">
-        @Scripts.Render("~/bundles/jquery")
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-                integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-                crossorigin="anonymous"></script>
+        <div class="container-fluid pl-0 pr-0  uni-pages-pt uni-pages-main">
+            @Scripts.Render("~/bundles/jquery")
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+                    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+                    crossorigin="anonymous"></script>
 
 
 
-        @Scripts.Render("~/bundles/bootstrap")
-        @RenderBody()
+            @Scripts.Render("~/bundles/bootstrap")
+            @RenderBody()
 
-    </div>
+        </div>
 
     @Html.Action("_FooterPartialArea", "Home", new { university = true })
     @*@Scripts.Render("~/bundles/modernizr")*@
@@ -85,6 +88,7 @@
     <script src="~/Content/Theme/University/app/js/nb_custom_script.js"></script>
     <script src="~/Content/Theme/University/app/js/jquery.elevatezoom.js"></script>
 
+ </div>
 </body>
 </html>
 <script>

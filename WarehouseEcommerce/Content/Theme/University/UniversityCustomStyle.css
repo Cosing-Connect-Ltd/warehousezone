@@ -1,0 +1,29 @@
+﻿.nb_header {
+    position: fixed;
+    top: 0;
+    z-index: 999;
+}
+.prd_lst_boxouter .imagewrap  img{
+    width:235px;
+    height:235px;
+}
+.prdimgsec .prdimg img {
+    width: 80px;
+    height: 80px;
+}
+.uni-pages-pt {
+    padding-top: 155px!important;
+}
+    .uni-get-address-page .uni-add-new-address-h4 {
+        font-weight: bold;
+        margin-bottom: 12px;
+    }
+.uni-pages-main .nb_feat_prod_sec .prd_amnt {
+white-space: nowrap;
+}
+.uni-pages-main .nb_feat_prod_sec .prd_name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: unset;
+}

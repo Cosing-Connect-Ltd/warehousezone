@@ -9,7 +9,7 @@
     }
 </style>
 <link href="~/Content/Theme/Smart/app/css/app.css" rel="stylesheet" />
-<div class="about bg-white get-address-page">
+<div class="about bg-white get-address-page uni-get-address-page">
     <div class="container-fluid custom-max-width">
         <div class="row">
             <div class="col-md-3 col-sm-12 ">
@@ -80,7 +80,6 @@
                                     @if (address.ElementAtOrDefault(i + 1) != null)
                                     {
                                         <div class="col-md-6 both-btn">
-                                            <div class="w-25 p-3">
                                                 <p class="p-mt-20">
                                                     @if (!string.IsNullOrEmpty(address[i + 1].AddressLine1))
                                                     {
@@ -106,7 +105,6 @@
 
 
                                                 </p>
-                                            </div>
                                             <div class="">
                                                 <a href="@Url.Action("GetAddress", "Orders", new { AccountId = ViewBag.AccountIds,AccountBillingId=ViewBag.BillingAddressId,AccountShippingId=address[i+1].AddressID, ShipingAddress = true })" role="button" class="btn btn-primary" style="font-size:11px">Select shipping address</a>
                                                 <a href="@Url.Action("GetAddress","Orders",new {AccountId=address[i+1].AccountID,AccountBillingId=ViewBag.BillingAddressId, AccountAddressId=address[i+1].AddressID })" role="button" class="btn btn-success" style="font-size:11px">Edit address</a>
@@ -123,14 +121,12 @@
                         @if (ViewBag.Shiping == true || Model != null || (address == null || address.FirstOrDefault(u => u.AddTypeBilling == true) == null))
                         {
                             <div>
-                                <h4 class="text-uppercase mt-20">@(Model == null ? "Add a new address" : "Edit Address")</h4>
-                                <div class="search-container col-md-6">
-                                    <div class="search-box input-group">
+                                <h4 class="text-uppercase mt-20 uni-add-new-address-h4">@(Model == null ? "Add a new address" : "Edit Address")</h4>
+                                <div class="search-container row">
+                                    <div class="search-box input-group col-md-6">
                                         <input id="postCode" type="text" name="search" value="" placeholder="Enter PostCode" class="text-search-postcode form-control text-uppercase" />
                                         <div id="sp-btn-search" class="input-group-btn">
-                                            <div class="col-md-6">
                                                 <button type="button" id="btn-search-category" class="btn btn-search-category" onclick="SearchPostCode();">Find Address</button>
-                                            </div>
                                         </div>
                                     </div>
                                     <div id="selectAddresss" class="col-md-6 clearfix">
