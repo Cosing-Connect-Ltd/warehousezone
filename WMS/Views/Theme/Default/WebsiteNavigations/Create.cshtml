@@ -165,6 +165,24 @@
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.ShowInNavigation, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.ShowInNavigation)
+                        @Html.ValidationMessageFor(model => model.ShowInNavigation, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.ShowInFooter, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.ShowInFooter)
+                        @Html.ValidationMessageFor(model => model.ShowInFooter, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-4" })
                 <div class="col-md-8">
                     <div class="checkbox">

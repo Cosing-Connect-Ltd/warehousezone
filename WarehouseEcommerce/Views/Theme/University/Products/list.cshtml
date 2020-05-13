@@ -46,7 +46,7 @@
             <div class="sortBy_outer">
                 <span class="srtby_txt">Sort By</span>
                 <div class="sortBysec">
-                    @Html.DropDownList("SortedValues", EnumHelper.GetSelectList(typeof(SortProductTypeEnum)), htmlAttributes: new { id = "nb_prdlst_sortDrpdwn", @class = "form-control", onchange = "searchPoducts();" })
+                    @Html.DropDownList("SortedValues", EnumHelper.GetSelectList(typeof(SortProductTypeEnum)), htmlAttributes: new {  @class = "form-control", onchange = "searchPoducts();" })
                     @*<select id="nb_prdlst_sortDrpdwn">
 
                             <option value="volvo">Most Relevent</option>
@@ -108,7 +108,7 @@
                                             @if (@item.SellPrice > 0 && @item.SellPrice.HasValue && @item.PercentMargin > 0)
                                             {
                                                 <li>
-                                                    <a href="javascript:;"  onclick="AddToCart(@item.ProductId)"><i class="icon-shopping-cart"></i></a>
+                                                    <a href="javascript:;" onclick="AddToCart(@item.ProductId)"><i class="icon-shopping-cart"></i></a>
                                                 </li>
                                             }
                                             else
@@ -130,6 +130,8 @@
                         <input type="text" id="currentsortedvalue" value="@(ViewBag.CurrentSort ?? " ")" style="display:none" />
                         <input type="text" id="currentFiltervalue" value="@(ViewBag.CurrentFilter ?? " ")" style="display:none" />
                         <input type="text" id="searchString" value="@(ViewBag.searchString ?? " ")" style="display:none" />
+
+                        <input type="hidden" id="prod-category" value="@ViewBag.Category" />
                     </div>
                 </div>
             </div>

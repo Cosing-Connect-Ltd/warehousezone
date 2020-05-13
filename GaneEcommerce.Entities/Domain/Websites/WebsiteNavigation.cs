@@ -29,7 +29,9 @@ namespace Ganedata.Core.Entities.Domain
         public WebsiteNavigationType Type { get; set; }
         [Display(Name = "Content Page")]
         public int? ContentPageId { get; set; }
+        [Display(Name = "Show In Navigation")]
         public bool ShowInNavigation { get; set; }
+        [Display(Name = "Show In Footer")]
         public bool ShowInFooter { get; set; }
         [ForeignKey("SiteID")]
         public virtual TenantWebsites TenantWebsites { get; set; }

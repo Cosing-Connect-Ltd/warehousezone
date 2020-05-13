@@ -3328,7 +3328,7 @@ namespace Ganedata.Core.Services
             return discount;
         }
 
-        public Order CreateShopOrder(int accountId, List<OrderDetail> orderDetails, int tenantId, int UserId, int warehouseId)
+        public Order CreateShopOrder(int accountId, List<OrderDetail> orderDetails, int tenantId, int UserId, int warehouseId, int SiteId)
         {
             Order order = new Order();
             var context = DependencyResolver.Current.GetService<IApplicationContext>();
@@ -3357,6 +3357,7 @@ namespace Ganedata.Core.Services
             order.CreatedBy = UserId;
             order.UpdatedBy = UserId;
             order.WarehouseId = warehouseId;
+            order.SiteID = SiteId;
             order.OrderStatusID = context.OrderStatus.First(a => a.OrderStatusID == (int)OrderStatusEnum.Hold).OrderStatusID;
             _currentDbContext.Order.Add(order);
             _currentDbContext.SaveChanges();

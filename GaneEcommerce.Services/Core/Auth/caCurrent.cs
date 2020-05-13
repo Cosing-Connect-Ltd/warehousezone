@@ -76,8 +76,17 @@ namespace Ganedata.Core.Services
                     tenantWebsite.LinkedInUrl = tenantWeb.LinkedInUrl;
                     tenantWebsite.YoutubeUrl = tenantWeb.YoutubeUrl;
                     tenantWebsite.TwitterUrl = tenantWeb.TwitterUrl;
-
+                    tenantWebsite.FooterText = tenantWeb.FooterText;
                     HttpContext.Current.Session["CurrentTenantWebsites"] = tenantWebsite;
+                    HttpContext.Current.Session["caErrors"] = null;
+                }
+                else {
+                    caError error = new caError();
+                    error.ErrorTtile = "Host name Issue";
+                    error.ErrorMessage = "Sorry, system is unable to validate client";
+                    error.ErrorDetail = "Either client is not registered, inactive or ambiguous, please contact support";
+                    HttpContext.Current.Session["caErrors"] = error;
+                    
                 }
             }
             else

@@ -233,6 +233,7 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\TestController.cs" />
@@ -1090,6 +1091,9 @@
     <Content Include="Views\Theme\University\User\OrderHistory.cshtml" />
     <Content Include="Views\Theme\University\User\WishList.cshtml" />
     <Content Include="Views\Theme\University\Home\Blog.cshtml" />
+    <Content Include="Views\Theme\ElecTech\Error\Index.cshtml" />
+    <Content Include="Views\Theme\Smart\Error\Index.cshtml" />
+    <Content Include="Views\Theme\University\Error\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

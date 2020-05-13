@@ -4,7 +4,7 @@
     <div class="container">
         <div class="nb_footersec_inner">
             <a href="" class="nb_foot_logo">
-                <img src="~/Content/Theme/University/app/images/logo.svg" />
+                <img src="@ViewBag.BaseFilePath@Model.Logo" title="@Model.SiteName" alt="@Model.SiteName" />
             </a>
             @if (!string.IsNullOrEmpty(Model.FacebookUrl) || !string.IsNullOrEmpty(Model.InstaGramUrl) || !string.IsNullOrEmpty(Model.LinkedInUrl) || !string.IsNullOrEmpty(Model.TwitterUrl))
             {
@@ -15,46 +15,50 @@
                         {
                             <li>
 
-                                <a href=""><i class="ico fb icon-facebook-logo"></i></a>
+                                <a href="@Model.FacebookUrl" target="_blank"><i class="ico fb icon-facebook-logo"></i></a>
                             </li>
                         }
                         @if (!string.IsNullOrEmpty(Model.TwitterUrl))
                         {
                             <li>
-                                <a href=""><i class="ico tw icon-twitter-logo"></i></a>
+                                <a href="@Model.TwitterUrl" target="_blank"><i class="ico tw icon-twitter-logo"></i></a>
                             </li>
                         }
                         @if (!string.IsNullOrEmpty(Model.LinkedInUrl))
                         {
                             <li>
-                                <a href=""><i class="ico ln icon-linkedin-logo"></i></a>
+                                <a href="@Model.LinkedInUrl" target="_blank"><i class="ico ln icon-linkedin-logo"></i></a>
                             </li>
                         }
                         @if (!string.IsNullOrEmpty(Model.InstaGramUrl))
                         {
                             <li>
-                                <a href=""><i class="ico ig icon-instagram-logo"></i></a>
+                                <a href="@Model.InstaGramUrl" target="_blank"><i class="ico ig icon-instagram-logo"></i></a>
                             </li>
                         }
                     </ul>
                 </div>
             }
+
+            @if (ViewBag.FooterNavigation != null)
+            {
+                var naviagtion = ViewBag.FooterNavigation as List<Ganedata.Core.Entities.Domain.WebsiteNavigation>;
             <div class="nb_footnav_wrap">
                 <ul>
+                    @foreach (var item in naviagtion)
+                    {
+                    <li>
+                        <a href="@Url.Action("page", "Home", new { pageUrl = item.WebsiteContentPages.pageUrl })">
+                            @item.Name
+                        </a>
+                    </li>
 
-                    <li><a href="">Sitemap</a></li>
-                    <li><a href="">FAQ</a></li>
-                    @if (!string.IsNullOrEmpty(Model.WebsiteContactPhone)
-                        )
-                    {
-                        <li><a href="">Contact</a></li>
                     }
-                    @if (!string.IsNullOrEmpty(Model.WebsiteContactAddress))
-                    {
-                        <li><a href="">Delivery</a></li>
-                    }
+
+
                 </ul>
             </div>
+            }
             <ul class="nb_foot_payment_opt_lst">
                 <li>
                     <a href=""><span class="card1"></span></a>
@@ -72,14 +76,7 @@
             <hr />
             <div class="nb_footcontact_wrap">
                 <p>
-                    Official Northumbria University merchandise ordering system
-                    powered by Creative Emporium on behalf of Northumbria
-                    University<br />
-                    Disclaimer | Privacy | Copyright Notice | Accessibility | Freedom
-                    of Information | Charitable Status | Royal Charter Number :
-                    XR11395<br />
-                    Infinity Incorporated Ltd is the legal owner of Northumbria
-                    University e-shop. Company number 3582519
+                    @Model.FooterText
                 </p>
             </div>
         </div>

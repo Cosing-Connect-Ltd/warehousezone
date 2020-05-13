@@ -39,43 +39,48 @@
                         </ul>
                     </div>
                 </div>
-                <div class="nb_filter_head" id="filter2">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link collapsed"
-                                data-toggle="collapse"
-                                data-target="#collapse2"
-                                aria-expanded="true"
-                                aria-controls="collapse2">
-                            Brand
-                        </button>
-                    </h5>
-                </div>
-                <div id="collapse2"
-                     class="collapse"
-                     aria-labelledby="filter2"
-                     data-parent="#accordion">
-                    <div class="nb_filter_body">
-                        <ul class="nb_prd_filter_listouter">
-                            @foreach (var item in Model.Manufacturer)
-                            {
-                                string name = item.Replace(" ", "_").Replace(",", "^");
-                                <li class="list-group-item"><input type="checkbox" id="BrandS" class="checkbox-inline" title="@(item)" value="@(name)" @(Request.Url.OriginalString.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(item)</li>
-
-                            }
-                        </ul>
+                @if (Model.Manufacturer.Count > 0)
+                {
+                    <div class="nb_filter_head" id="filter2">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed"
+                                    data-toggle="collapse"
+                                    data-target="#collapse2"
+                                    aria-expanded="true"
+                                    aria-controls="collapse2">
+                                Brand
+                            </button>
+                        </h5>
                     </div>
-                </div>
-                <div class="nb_filter_head" id="filter3">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link collapsed"
-                                data-toggle="collapse"
-                                data-target="#collapse3"
-                                aria-expanded="true"
-                                aria-controls="collapse3">
-                            By Type
-                        </button>
-                    </h5>
-                </div>
+                    <div id="collapse2"
+                         class="collapse"
+                         aria-labelledby="filter2"
+                         data-parent="#accordion">
+                        <div class="nb_filter_body">
+                            <ul class="nb_prd_filter_listouter">
+                                @foreach (var item in Model.Manufacturer)
+                                {
+                                    string name = item.Replace(" ", "_").Replace(",", "^");
+                                    <li class="list-group-item"><input type="checkbox" id="BrandS" class="checkbox-inline" title="@(item)" value="@(name)" @(Request.Url.OriginalString.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(item)</li>
+
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                }
+                @if (Model.subCategories.Count > 0)
+                {
+                    <div class="nb_filter_head" id="filter3">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed"
+                                    data-toggle="collapse"
+                                    data-target="#collapse3"
+                                    aria-expanded="true"
+                                    aria-controls="collapse3">
+                                By Type
+                            </button>
+                        </h5>
+                    </div>
                 <div id="collapse3"
                      class="collapse"
                      aria-labelledby="filter3"
@@ -92,6 +97,7 @@
                         </ul>
                     </div>
                 </div>
+                }
                 @* Adding dynmic attributes here *@
                 @foreach (var item in Model.AttributeValues)
                 {
@@ -122,7 +128,7 @@
                         </div>
                     </div>
                 }
-                </div>
+            </div>
         </div>
     </div>
 </div>

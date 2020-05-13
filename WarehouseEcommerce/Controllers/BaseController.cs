@@ -1,4 +1,5 @@
 ﻿using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Domain.Models;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Services;
 using System;
@@ -181,6 +182,7 @@ namespace WarehouseEcommerce.Controllers
             {
                 CurrencyDetail(null);
             }
+
 
 
             var queryString = Request.QueryString["fragment"];

@@ -216,7 +216,7 @@
                                                                 <p><b>Brands:</b> <span>@(productitems.KitProductMaster.ProductManufacturer == null ? "" : productitems.KitProductMaster.ProductManufacturer.Name)</span></p>
                                                                 <p><b>SKU Code:</b> <span>@productitems.KitProductMaster.SKUCode</span></p>
                                                                 <p><b>Product Code::</b> <span>@productitems.KitProductMaster.BarCode</span></p>
-                                                                <p><b>Size:</b> <span>@productitems.KitProductMaster.Description.Take(200)</span></p>
+                                                                <p><b>Size:</b> <span>@productitems.KitProductMaster.Description?.Take(200)</span></p>
 
 
 
@@ -262,7 +262,7 @@
                                                                 <p><b>Brands:</b> <span>@(productitems.KitProductMaster.ProductManufacturer == null ? "" : productitems.KitProductMaster.ProductManufacturer.Name)</span></p>
                                                                 <p><b>SKU Code:</b> <span>@productitems.KitProductMaster.SKUCode</span></p>
                                                                 <p><b>Product Code::</b> <span>@productitems.KitProductMaster.BarCode</span></p>
-                                                                <p><b>Size:</b> <span>@productitems.KitProductMaster.Description.Take(200)</span></p>
+                                                                <p><b>Size:</b> <span>@productitems.KitProductMaster.Description?.Take(200)</span></p>
 
 
 

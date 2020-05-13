@@ -40,6 +40,10 @@ namespace WarehouseEcommerce.Controllers
         // GET: Home
         public ActionResult Index()
         {
+            if (HttpContext.Session["caErrors"] != null)
+            {
+                return RedirectToAction("Index", "Error");
+            }
             ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
             ViewBag.ProductGroups = new SelectList(_lookupServices.GetAllValidProductGroups((CurrentTenantId), 12), "ProductGroupId", "ProductGroup", ViewBag.groupId);
             return View();
@@ -246,10 +250,12 @@ namespace WarehouseEcommerce.Controllers
         }
         public PartialViewResult _FooterPartialArea(bool university=false)
         {
+            ViewBag.FooterNavigation = _tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, CurrentTenantWebsite.SiteID).Where(u => u.ShowInFooter == true && u.Type == WebsiteNavigationType.Content).ToList();
             if (university)
             {
                 return PartialView(CurrentTenantWebsite);
             }
+          
             var productManufacturer = _lookupServices.GetAllValidProductManufacturer(CurrentTenantId);
             return PartialView(productManufacturer.ToList());
         }

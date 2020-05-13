@@ -220,7 +220,7 @@ namespace WarehouseEcommerce.Controllers
                 caUser user = new caUser();
                 bool status;
                 status = user.AuthoriseWebsiteUser(UserName, UserPassword);
-                if (status && !string.IsNullOrEmpty(Popup))
+                if (status)
                 {
                     Session["cawebsiteUser"] = user;
                     // store login id into session
@@ -228,11 +228,11 @@ namespace WarehouseEcommerce.Controllers
                     Session["CurrentUserLogin"] = _userService.SaveAuthUserLogin(Logins, user.UserId, user.TenantId);
                     if (PlaceOrder.HasValue)
                     {
-                        return Json(new { status, AccountId = CurrentUser.AccountId }, JsonRequestBehavior.AllowGet);
+                        return Json(new { status, AccountId = user.AccountId }, JsonRequestBehavior.AllowGet);
                     }
                     else
                     {
-                        return Json(status, JsonRequestBehavior.AllowGet);
+                        return Json(new { status, Name = user.UserFirstName + " " + user.UserLastName }, JsonRequestBehavior.AllowGet);
                     }
                 }
                 else
@@ -257,15 +257,15 @@ namespace WarehouseEcommerce.Controllers
                 account.AccountCode = FirstName + GaneStaticAppExtensions.GenerateRandomNo();
                 account.CompanyName = account.AccountCode;
                 account.RegNo = "";
-                account.VATNo ="";
+                account.VATNo = "";
                 var accountModel = _accountServices.SaveAccount(account, null, null, 1, 1, 1, 1, 1, null, null, CurrentUserId, CurrentTenantId, null);
 
                 // change user password into MD5 hash value
                 string password = Password;
                 Password = GaneStaticAppExtensions.GetMd5(Password);
-                authuser.UserEmail =Email;
-                authuser.UserFirstName =FirstName;
-                authuser.UserLastName =LastName;
+                authuser.UserEmail = Email;
+                authuser.UserFirstName = FirstName;
+                authuser.UserLastName = LastName;
                 authuser.UserPassword = Password;
                 authuser.UserName = Email;
                 authuser.IsActive = false;
@@ -276,7 +276,7 @@ namespace WarehouseEcommerce.Controllers
                 confirmationLink = "<a href='" + confirmationLink + "' class=btn btn-primary>Activate Account</a>";
                 _configurationsHelper.CreateTenantEmailNotificationQueue("Activate your account", null, sendImmediately: true, worksOrderNotificationType: WorksOrderNotificationTypeEnum.EmailConfirmation, TenantId: CurrentTenantId, accountId: accountModel.AccountID, UserEmail: authuser.UserEmail, confirmationLink: confirmationLink, userId: authuser.UserId);
                 return Json(true, JsonRequestBehavior.AllowGet);
-                
+
             }
 
             return Json(false, JsonRequestBehavior.AllowGet);

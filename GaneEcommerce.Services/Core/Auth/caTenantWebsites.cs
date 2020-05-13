@@ -26,6 +26,7 @@ namespace Ganedata.Core.Services
         public string LinkedInUrl { get; set; }
         public string YoutubeUrl { get; set; }
         public string InstaGramUrl { get; set; }
+        public string FooterText { get; set; }
 
     }
 }

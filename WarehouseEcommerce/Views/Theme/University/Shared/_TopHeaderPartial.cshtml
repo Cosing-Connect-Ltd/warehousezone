@@ -7,7 +7,7 @@
         <span class="nb_res_nav_closeTrigger">X</span>
         <span class="nb_logowrap_res">
 
-            <img src="~/Content/Theme/University/app/images/logo_invert.svg" alt="" />
+            <img src="@ViewBag.BaseFilePath@siteProperties.Logo" title="@siteProperties.SiteName" alt="@siteProperties.SiteName" />
         </span>
         <div class="nb_firstNav_res_lst_wrap"></div>
         <button class="nb_lgn_btn_res">Login</button>
@@ -43,9 +43,14 @@
                 </li>
             }
             <li>
-                <a href="" data-toggle="modal" data-target="#signupPopup">
-                    <i class="ico icon-user"></i>
-                </a>
+                @if (ViewBag.UserName == null || string.IsNullOrWhiteSpace((string)ViewBag.UserName))
+                {
+                    <a href="" data-toggle="modal" data-target="#signupPopup" id="AccountNameHref">
+                        <i class="ico icon-user temproryShow"></i>
+                    </a>
+                }
+                else
+                { <i class="ico icon-user" title="@ViewBag.UserName"></i>}
             </li>
             <li>
                 <a href="">

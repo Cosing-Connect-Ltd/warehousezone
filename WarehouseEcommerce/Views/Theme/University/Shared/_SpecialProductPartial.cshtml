@@ -1,5 +1,7 @@
 ﻿@using Ganedata.Core.Entities.Domain
 @model WarehouseEcommerce.ViewModels.ProductDetailViewModel
+@if (Model.productMasterList.Count > 0)
+{
 <section class="nb_sec nb_feat_prod_sec">
     <div class="container">
         <div class="nb_header_style1">
@@ -11,9 +13,9 @@
                 {
 
                 <div class="item">
-                    <a href="@Url.Action("ProductDetails","Products", new { sku= item.SKUCode })" class="nb_fp_boxwrap">
+                    <a href="@Url.Action("ProductDetails", "Products", new { sku = item.SKUCode })" class="nb_fp_boxwrap">
                        <span class="prd_img">
-                                <img src="@(!string.IsNullOrEmpty(item.DefaultImage)? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@item.Name" title="@item.Name" class="img-fluid center-block" />
+                                <img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@item.Name" title="@item.Name" class="img-fluid center-block" />
                                 @*<img src="~/Content/Theme/University/app/images/featured_product/1.jpg" alt="" />*@
                             </span>
                             <div class="prd_det_sec">
@@ -29,3 +31,4 @@
         </div>
     </div>
 </section>
+}

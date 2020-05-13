@@ -414,8 +414,11 @@ function LoggedIn() {
                 location.href = "/Orders/GetAddress?AccountId=" + data.AccountId
             }
             else {
-                if (data) {
+                if (data.status) {
+                    debugger;
                     $('#signupPopup').modal('hide');
+                    $('#AccountNameHref').removeAttr("data-target");
+                    $(".temproryShow").prop('title', data.Name);
                 }
                 else {
                     alert("User name or password is not correct")
