@@ -63,33 +63,33 @@
             <div class="col-md-8 col-lg-9">
                 <div class="nb_prd_listing_wrap">
                     @*<h3 class="head">New</h3>
-                <ul class="tagList">
-                    <li>
-                        <a href="">
-                            New In
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            Jumpers
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            Colour Block
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            Roll Neck
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            Zip Neck
-                        </a>
-                    </li>
-                </ul>*@
+        <ul class="tagList">
+            <li>
+                <a href="">
+                    New In
+                </a>
+            </li>
+            <li>
+                <a href="">
+                    Jumpers
+                </a>
+            </li>
+            <li>
+                <a href="">
+                    Colour Block
+                </a>
+            </li>
+            <li>
+                <a href="">
+                    Roll Neck
+                </a>
+            </li>
+            <li>
+                <a href="">
+                    Zip Neck
+                </a>
+            </li>
+        </ul>*@
                     <div class="row">
                         @foreach (var item in Model)
                         {
@@ -132,6 +132,18 @@
                         <input type="text" id="searchString" value="@(ViewBag.searchString ?? " ")" style="display:none" />
 
                         <input type="hidden" id="prod-category" value="@ViewBag.Category" />
+                    </div>
+                    <div class="row pagi">
+                        <div class="col-sm-6 col-xs-6 text-left pagination">
+
+                            @Html.PagedListPager(Model, page => Url.Action("list", new { sort = ViewBag.CurrentSort, filter = ViewBag.CurrentFilter, page = page, pagesize = Model.PageSize, category = ViewBag.Category, values = values }))
+
+
+                        </div>
+                        <div class="col-sm-6 col-xs-6 text-right tot">
+                            Showing @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) to @Model.PageSize of @(Model.TotalItemCount)
+
+                        </div>
                     </div>
                 </div>
             </div>

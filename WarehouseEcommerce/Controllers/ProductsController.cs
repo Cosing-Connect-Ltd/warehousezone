@@ -42,7 +42,7 @@ namespace WarehouseEcommerce.Controllers
         }
         // GET: Products
 
-        public ActionResult list(string category, int? sort, string filter, string search, int? page, int? pagesize = 20, string values = "")
+        public ActionResult list(string category, int? sort, string filter, string search, int? page, int? pagesize = 10, string values = "")
         {
             try
             {

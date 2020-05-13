@@ -219,7 +219,7 @@ namespace WarehouseEcommerce.Controllers
 
         public PartialViewResult _HorizontalNavbarPartial()
         {
-            var navigation = _tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, CurrentTenantWebsite.SiteID).ToList();
+            var navigation = _tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, CurrentTenantWebsite.SiteID).Where(u=>u.ShowInNavigation==true).ToList();
             ViewBag.UserName = CurrentUser.UserFirstName + " " + CurrentUser.UserLastName;
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.CartItemCount = GaneCartItemsSessionHelper.GetCartItemsSession().Count;
@@ -232,7 +232,7 @@ namespace WarehouseEcommerce.Controllers
 
         public PartialViewResult _BlogPartial()
         {
-           var data= _tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, CurrentTenantWebsite.SiteID).OrderByDescending(u=>u.DateCreated).Take(3).ToList();
+           var data= _tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, CurrentTenantWebsite.SiteID).OrderByDescending(u=>u.DateCreated).Where(u=>u.Type==ContentType.post).Take(3).ToList();
             return PartialView(data);
         }
 
@@ -253,7 +253,8 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.FooterNavigation = _tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, CurrentTenantWebsite.SiteID).Where(u => u.ShowInFooter == true && u.Type == WebsiteNavigationType.Content).ToList();
             if (university)
             {
-                return PartialView(CurrentTenantWebsite);
+                var data = _tenantWebsiteService.GetAllValidTenantWebSite(CurrentTenantId).FirstOrDefault(u => u.SiteID == CurrentTenantWebsite.SiteID);
+                return PartialView(data);
             }
           
             var productManufacturer = _lookupServices.GetAllValidProductManufacturer(CurrentTenantId);
@@ -320,7 +321,7 @@ namespace WarehouseEcommerce.Controllers
 
         public ActionResult Blog()
         {
-            var data = _tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, CurrentTenantWebsite.SiteID).OrderByDescending(u => u.DateCreated).Take(12).ToList();
+            var data = _tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, CurrentTenantWebsite.SiteID).Where(u=> u.Type == ContentType.post).OrderByDescending(u => u.DateCreated).Take(12).ToList();
             return View(data);
         }
 

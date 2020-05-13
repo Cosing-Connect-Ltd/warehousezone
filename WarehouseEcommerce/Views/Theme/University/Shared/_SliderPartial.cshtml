@@ -10,13 +10,14 @@
                 <div class="carousel-item active">
                     <img class="d-block w-100"
                          src="@ViewBag.BaseFilePath@item.Image"
-                         alt="First slide" />
+                         alt=" @item.ImageAltTag" />
                     <div class="np_bannerContentOuter">
                         <div class="nb_bannerCaptionWrap">
                             <h5>
-                               @item.ImageAltTag
+                               @item.Text
                             </h5>
-                            <button>Shop Now</button>
+                           
+                            <button>@item.ButtonText</button>
                         </div>
                     </div>
                 </div>
