@@ -27,3 +27,13 @@ white-space: nowrap;
     white-space: nowrap;
     margin-bottom: unset;
 }
+.uni-pages-main .nb_prd_filterwrap .list-group-item {
+    display: flex;
+    align-items: center;
+}
+.uni-pages-main .nb_prd_filterwrap .list-group-item input {
+    margin-right: 6px;
+    margin-top: unset;
+    width: 18px;
+    height: 18px;
+}

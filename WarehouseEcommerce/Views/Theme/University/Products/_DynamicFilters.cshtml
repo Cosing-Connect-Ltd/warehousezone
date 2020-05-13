@@ -7,18 +7,8 @@
         <div class="prod_count_sec">
             <span class="count">@Model.Count Products</span>
             <ul>
-                <li>
-                    <div class="form-group nb_prdpg_fg">
-                        <input type="checkbox" id="stockS" value="In_stock" @(Request.Url.OriginalString.ToLower().Contains("in_stock") ? "checked" : "") />
-                        <label for="stockS">In Stock</label>
-                    </div>
-                </li>
-                <li>
-                    <div class="form-group nb_prdpg_fg">
-                        <input type="checkbox" id="stockS" value="Out_stock" @(Request.Url.OriginalString.ToLower().Contains("out_stock") ? "checked" : "") />
-                        <label for="stockS">Out Stock</label>
-                    </div>
-                </li>
+                <li class="list-group-item"><input type="checkbox" id="stockS" class="checkbox-inline" value="In_stock" @(Request.Url.OriginalString.ToLower().Contains("in_stock") ? "checked" : "")>In stock </li>
+                <li class="list-group-item"><input type="checkbox" id="stockS" class="checkbox-inline" value="Out_stock" @(Request.Url.OriginalString.ToLower().Contains("out_stock") ? "checked" : "")>Out of stock</li>
             </ul>
         </div>
         <div class="nb_fltr_accrd_wrap">
@@ -42,12 +32,7 @@
                         <ul class="nb_prd_filter_listouter">
                             @foreach (var item in Model.PriceInterval)
                             {
-                                <li>
-                                    <div class="form-group nb_prdpg_fg">
-                                        <input type="checkbox" id="priceS" value="@(item.Item1+"_"+item.Item2)" @(Request.Url.OriginalString.ToLower().Contains(item.Item1 + "_" + item.Item2) ? "checked" : "") />
-                                        <label for="priceS">@ViewBag.CurrencySymbol@item.Item1 - @ViewBag.CurrencySymbol@item.Item2</label>
-                                    </div>
-                                </li>
+                                <li class="list-group-item"><input type="checkbox" id="priceS" class="checkbox-inline" value="@(item.Item1+"_"+item.Item2)" @(Request.Url.OriginalString.ToLower().Contains(item.Item1 + "_" + item.Item2) ? "checked" : "")> @ViewBag.CurrencySymbol@item.Item1 - @ViewBag.CurrencySymbol@item.Item2</li>
 
                             }
 
@@ -74,12 +59,7 @@
                             @foreach (var item in Model.Manufacturer)
                             {
                                 string name = item.Replace(" ", "_").Replace(",", "^");
-                                <li>
-                                    <div class="form-group nb_prdpg_fg">
-                                        <input type="checkbox" id="BrandS" value="@(name)" @(Request.Url.OriginalString.ToLower().Contains(name.ToLower()) ? "checked" : "") />
-                                        <label for="BrandS">@(item)</label>
-                                    </div>
-                                </li>
+                                <li class="list-group-item"><input type="checkbox" id="BrandS" class="checkbox-inline" title="@(item)" value="@(name)" @(Request.Url.OriginalString.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(item)</li>
 
                             }
                         </ul>
@@ -105,12 +85,7 @@
                             @foreach (var item in Model.subCategories)
                             {
                                 string name = item.Replace(" ", "_").Replace(",", "^");
-                                <li>
-                                    <div class="form-group nb_prdpg_fg">
-                                        <input type="checkbox" id="TypeS" value="@(name)" @(Request.Url.OriginalString.ToLower().Contains(name.ToLower()) ? "checked" : "") />
-                                        <label for="TypeS">@(item)</label>
-                                    </div>
-                                </li>
+                                <li class="list-group-item" id="type"><input type="checkbox" id="TypeS" class="checkbox-inline" title="@(item)" value="@(name)" @(Request.Url.OriginalString.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(item)</li>
                             }
 
 
@@ -141,14 +116,9 @@
                                 @foreach (var items in item.Value)
                                 {
                                     string name = items.Value.Replace(" ", "_").Replace(",", "^");
-                                    <li>
-                                        <div class="form-group nb_prdpg_fg">
-                                            <input type="checkbox" id="@items.ProductAttributes.AttributeName.Replace(" ", "_")" value="@name" @(Request.Url.OriginalString.ToLower().Contains(name.ToLower()) ? "checked" : "")  />
-                                            <label for="@items.ProductAttributes.AttributeName.Replace(" ", "_")">@(items.Value)</label>
-                                        </div>
-                                    </li>
+                                    <li class="list-group-item"><input type="checkbox" id="@items.ProductAttributes.AttributeName.Replace(" ", "_")" class="checkbox-inline" value="@name" @(Request.Url.OriginalString.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(items.Value)</li>
                                 }
-                                </ul>
+                            </ul>
                         </div>
                     </div>
                 }
