@@ -14,20 +14,23 @@
                         <li class="breadcrumb-item">
                             <a href="/"><i class="icon-home"></i></a>
                         </li>
-                        @if (!string.IsNullOrEmpty(Model?.TenantDepartment?.DepartmentName))
+                        <li class="breadcrumb-item">
+                            <a href="/">Home</a>
+                        </li>
+                        @if (ViewBag.Category != null && !string.IsNullOrEmpty(ViewBag.Category))
                         {
-                            <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { department = @Model.TenantDepartment.DepartmentName})">@(!string.IsNullOrEmpty(Model?.TenantDepartment?.DepartmentName) ? Model.TenantDepartment.DepartmentName : "")</a></li>
+                            <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { category = ViewBag.Category})">@ViewBag.Category</a></li>
                         }
-                        @if (Url.Action() != Url.Action("list", "Products", new { department = Model.TenantDepartment.DepartmentName }))
+                        @*@if (Url.Action() != Url.Action("list", "Products", new { department = Model.TenantDepartment.DepartmentName }))
                         {
                             if (!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup))
                             {
                                 <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { group = Model.ProductGroup.ProductGroup, department = Model.TenantDepartment.DepartmentName})">@(!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup) ? Model.ProductGroup.ProductGroup : "")</a></li>
                             }
-                        }
-                        @if (!string.IsNullOrEmpty(Model?.ProductCategory?.ProductCategoryName))
+                        }*@
+                        @if (ViewBag.SubCategory != null && !string.IsNullOrEmpty(ViewBag.SubCategory))
                         {
-                            <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { group = Model.ProductGroup.ProductGroup, department = Model.TenantDepartment.DepartmentName, values ="TypeS-"+Model.ProductCategory.ProductCategoryName })">@(!string.IsNullOrEmpty(Model?.ProductCategory?.ProductCategoryName) ? Model.ProductCategory.ProductCategoryName : "")</a></li>
+                            <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { category = ViewBag.SubCategory})">@ViewBag.SubCategory</a></li>
                         }
 
                         <li class="breadcrumb-item">@Model.Name</li>

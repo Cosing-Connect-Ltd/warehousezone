@@ -54,7 +54,7 @@ namespace WMS.Controllers
             ViewBag.siteid = SiteId;
             ViewBag.ControllerName = "WebsiteNavigations";
             ViewBag.ParentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, SiteId).ToList(), "Id", "Name");
-            ViewBag.contentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, SiteId), "Id", "MetaTitle");
+            ViewBag.contentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, SiteId), "Id", "Title");
             return View();
         }
 
@@ -209,7 +209,7 @@ namespace WMS.Controllers
             ViewBag.Name = "HoverImage";
 
             ViewBag.ParentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, websiteNavigation.SiteID).ToList(), "Id", "Name");
-            ViewBag.contentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, websiteNavigation.SiteID), "Id", "MetaTitle");
+            ViewBag.contentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, websiteNavigation.SiteID), "Id", "Title");
             return View(websiteNavigation);
         }
 
@@ -254,7 +254,7 @@ namespace WMS.Controllers
 
             ViewBag.ControllerName = "WebsiteNavigations";
             ViewBag.ParentIds = new SelectList(_tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, websiteNavigation.SiteID).ToList(), "Id", "Name", websiteNavigation.ParentId);
-            ViewBag.contentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, websiteNavigation.SiteID), "Id", "MetaTitle", websiteNavigation.ContentPageId);
+            ViewBag.contentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, websiteNavigation.SiteID), "Id", "Title", websiteNavigation.ContentPageId);
 
             return View(websiteNavigation);
         }
@@ -315,7 +315,7 @@ namespace WMS.Controllers
             }
             ViewBag.ControllerName = "WebsiteNavigations";
             ViewBag.ParentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, websiteNavigation.SiteID).ToList(), "Id", "Name", websiteNavigation.ParentId);
-            ViewBag.contentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, websiteNavigation.SiteID), "Id", "MetaTitle", websiteNavigation.ContentPageId);
+            ViewBag.contentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, websiteNavigation.SiteID), "Id", "Title", websiteNavigation.ContentPageId);
             ViewBag.SiteId = SiteID;
             return View(websiteNavigation);
         }

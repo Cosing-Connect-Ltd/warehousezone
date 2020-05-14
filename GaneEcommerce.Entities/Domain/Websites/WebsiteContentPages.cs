@@ -13,6 +13,7 @@ namespace Ganedata.Core.Entities.Domain
     {
         public int Id { get; set; }
         public int SiteID { get; set; }
+        [Key]
         public string Title { get; set; }
 
         public string ShortDescription { get; set; }

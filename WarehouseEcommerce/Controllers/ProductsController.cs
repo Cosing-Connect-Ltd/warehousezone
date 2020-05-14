@@ -25,9 +25,11 @@ namespace WarehouseEcommerce.Controllers
         private readonly ICommonDbServices _commonDbServices;
         private readonly IMapper _mapper;
         private readonly IProductPriceService _productPriceService;
+        private readonly ITenantWebsiteService _tenantWebsiteService;
+
         private string[] Images = ConfigurationManager.AppSettings["ImageFormats"].Split(new char[] { ',' });
 
-        public ProductsController(IProductServices productServices, IUserService userService, IProductLookupService productlookupServices, IProductPriceService productPriceService, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IMapper mapper, ICommonDbServices commonDbServices, ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IActivityServices activityServices, ITenantsServices tenantServices)
+        public ProductsController(IProductServices productServices, IUserService userService, IProductLookupService productlookupServices,ITenantWebsiteService tenantWebsiteService, IProductPriceService productPriceService, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IMapper mapper, ICommonDbServices commonDbServices, ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IActivityServices activityServices, ITenantsServices tenantServices)
             : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices)
         {
             _userService = userService;
@@ -39,6 +41,7 @@ namespace WarehouseEcommerce.Controllers
             _commonDbServices = commonDbServices;
             _mapper = mapper;
             _productPriceService = productPriceService;
+            _tenantWebsiteService = tenantWebsiteService;
         }
         // GET: Products
 
@@ -56,8 +59,16 @@ namespace WarehouseEcommerce.Controllers
                 ViewBag.searchString = search;
                 ViewBag.CurrencySymbol = currencyyDetail.Symbol;
                 ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
-                var product = _productlookupServices.GetAllValidProductGroupAndDeptByName(CurrentTenantWebsite.SiteID, category);
+                var product = _tenantWebsiteService.GetAllValidProductWebsiteSearch(CurrentTenantWebsite.SiteID, category);
+                ViewBag.Categories = _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID, Category:category);
+                ViewBag.SubCategory = _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID, SubCategory: ViewBag.Category);
+                if (ViewBag.SubCategory != null && !string.IsNullOrEmpty(ViewBag.SubCategory))
+                {
+                    var catg = ViewBag.SubCategory;
+                    ViewBag.SubCategory = ViewBag.Category;
+                    ViewBag.Categories = catg;
 
+                }
                 if (!string.IsNullOrEmpty(search))
                 {
                     page = 1;
@@ -87,7 +98,7 @@ namespace WarehouseEcommerce.Controllers
                         product = product.OrderBy(s => s.Name);
                         break;
                 }
-
+                
                 int pageSize = pagesize ?? 10;
                 int pageNumber = (page ?? 1);
                 var pageedlist = product.ToPagedList(pageNumber, pageSize);
@@ -119,6 +130,15 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.CurrencySymbol = currencyyDetail.Symbol;
             ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
             var product = _productServices.GetProductMasterByProductCode(sku, CurrentTenantId);
+            ViewBag.Category = _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID, product.ProductId);
+            ViewBag.SubCategory = _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID, SubCategory: ViewBag.Category);
+            if (ViewBag.SubCategory != null && !string.IsNullOrEmpty(ViewBag.SubCategory))
+            {
+                var category = ViewBag.SubCategory;
+                ViewBag.SubCategory = ViewBag.Category;
+                ViewBag.Category = category;
+
+            }
             product.SellPrice = Math.Round((product.SellPrice ?? 0) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value), 2);
             if (product.GroupedProduct)
             {
@@ -171,7 +191,7 @@ namespace WarehouseEcommerce.Controllers
 
         public JsonResult searchProduct(string searchkey)
         {
-            var model = (from product in _productlookupServices.GetAllValidProductGroupAndDeptByName(CurrentTenantWebsite.SiteID, ProductName: searchkey)
+            var model = (from product in _tenantWebsiteService.GetAllValidProductWebsiteSearch(CurrentTenantWebsite.SiteID, ProductName: searchkey)
                          select new ProductSearchResult
                          {
                              Id = product.ProductId,
@@ -342,11 +362,11 @@ namespace WarehouseEcommerce.Controllers
             ProductFilteringViewModel productFiltering = new ProductFilteringViewModel();
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.CurrencySymbol = currencyyDetail.Symbol;
-            var products = _productlookupServices.GetAllValidProductGroupAndDeptByName(CurrentTenantWebsite.SiteID, category, ProductName: productName);
+            var products = _tenantWebsiteService.GetAllValidProductWebsiteSearch(CurrentTenantWebsite.SiteID, category, ProductName: productName);
             
-            productFiltering.Manufacturer = _productlookupServices.GetAllValidProductManufacturerGroupAndDeptByName(products).Select(u => u.Name).ToList();
-            productFiltering.PriceInterval = _productlookupServices.AllPriceListAgainstGroupAndDept(products);
-            productFiltering.AttributeValues = _productlookupServices.GetAllValidProductAttributeValuesByProductIds(products);
+            productFiltering.Manufacturer = _tenantWebsiteService.GetAllValidProductManufacturerGroupAndDeptByName(products).Select(u => u.Name).ToList();
+            productFiltering.PriceInterval = _tenantWebsiteService.AllPriceListAgainstGroupAndDept(products);
+            productFiltering.AttributeValues = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(products);
             productFiltering.subCategories = _productlookupServices.GetAllValidSubCategoriesByDepartmentAndGroup(products).ToList();
             productFiltering.Count = products.Count();
 

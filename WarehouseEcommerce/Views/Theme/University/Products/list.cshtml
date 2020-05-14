@@ -27,18 +27,24 @@
             <div class="nb_bread_crumbwrap">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="/"><i class="icon-home"></i></a>
-                        </li>
-                        @if (!string.IsNullOrWhiteSpace(ViewBag.Category))
-                        {
-                            <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { category = ViewBag.Category })">@ViewBag.Category </a></li>
-                        }
-                        else if (!string.IsNullOrWhiteSpace(Manufacturer))
-                        {
-                            <li class="breadcrumb-item">@(Manufacturer.Replace("BrandS-", "").Replace("^", ",").Replace("_", " ").Replace("%5E", ",") ?? "")</li>
 
-                            ViewBag.Title = (Manufacturer.Replace("BrandS-", "").Replace("^", ",").Replace("_", " ").Replace("%5E", ",") ?? "") + " | " + ViewBag.SiteDescription;
+                        <li class="breadcrumb-item">
+                            <a href="/">Home</a>
+                        </li>
+                        @if (ViewBag.Categories != null && !string.IsNullOrEmpty(ViewBag.Categories))
+                        {
+                            <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { category = ViewBag.Categories })">@ViewBag.Categories</a></li>
+                        }
+                        @*@if (Url.Action() != Url.Action("list", "Products", new { department = Model.TenantDepartment.DepartmentName }))
+                            {
+                                if (!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup))
+                                {
+                                    <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { group = Model.ProductGroup.ProductGroup, department = Model.TenantDepartment.DepartmentName})">@(!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup) ? Model.ProductGroup.ProductGroup : "")</a></li>
+                                }
+                            }*@
+                        @if (ViewBag.SubCategory != null && !string.IsNullOrEmpty(ViewBag.SubCategory))
+                        {
+                            <li class="breadcrumb-item">@ViewBag.SubCategory</li>
                         }
                     </ol>
                 </nav>
@@ -46,7 +52,7 @@
             <div class="sortBy_outer">
                 <span class="srtby_txt">Sort By</span>
                 <div class="sortBysec">
-                    @Html.DropDownList("SortedValues", EnumHelper.GetSelectList(typeof(SortProductTypeEnum)), htmlAttributes: new {  @class = "form-control", onchange = "searchPoducts();" })
+                    @Html.DropDownList("SortedValues", EnumHelper.GetSelectList(typeof(SortProductTypeEnum)), htmlAttributes: new { @class = "form-control", onchange = "searchPoducts();" })
                     @*<select id="nb_prdlst_sortDrpdwn">
 
                             <option value="volvo">Most Relevent</option>
@@ -63,33 +69,33 @@
             <div class="col-md-8 col-lg-9">
                 <div class="nb_prd_listing_wrap">
                     @*<h3 class="head">New</h3>
-        <ul class="tagList">
-            <li>
-                <a href="">
-                    New In
-                </a>
-            </li>
-            <li>
-                <a href="">
-                    Jumpers
-                </a>
-            </li>
-            <li>
-                <a href="">
-                    Colour Block
-                </a>
-            </li>
-            <li>
-                <a href="">
-                    Roll Neck
-                </a>
-            </li>
-            <li>
-                <a href="">
-                    Zip Neck
-                </a>
-            </li>
-        </ul>*@
+                        <ul class="tagList">
+                            <li>
+                                <a href="">
+                                    New In
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    Jumpers
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    Colour Block
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    Roll Neck
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    Zip Neck
+                                </a>
+                            </li>
+                        </ul>*@
                     <div class="row">
                         @foreach (var item in Model)
                         {

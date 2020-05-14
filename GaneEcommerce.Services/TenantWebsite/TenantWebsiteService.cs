@@ -176,7 +176,7 @@ namespace Ganedata.Core.Services
         }
         public IQueryable<WebsiteNavigation> GetAllValidWebsiteNavigationCategory(int TenantId, int? SiteId)
         {
-            return _currentDbContext.WebsiteNavigations.Where(u => u.IsDeleted != true && (!SiteId.HasValue || u.SiteID == SiteId) && u.TenantId == TenantId && u.Type==Entities.Enums.WebsiteNavigationType.Category);
+            return _currentDbContext.WebsiteNavigations.Where(u => u.IsDeleted != true && (!SiteId.HasValue || u.SiteID == SiteId) && u.TenantId == TenantId && u.Type == Entities.Enums.WebsiteNavigationType.Category);
         }
 
         public IQueryable<NavigationProductsViewModel> GetAllValidWebsiteNavigations(int TenantId, int SiteId, int navigationId)
@@ -358,9 +358,9 @@ namespace Ganedata.Core.Services
 
         public IQueryable<ProductMaster> GetProductByNavigationId(int navigationId)
         {
-            var productwebsiteMap=_currentDbContext.ProductsNavigationMaps.Where(u => u.NavigationId == navigationId).OrderBy(u=>u.SortOrder).Select(u => u.ProductsWebsitesMap);
+            var productwebsiteMap = _currentDbContext.ProductsNavigationMaps.Where(u => u.NavigationId == navigationId).OrderBy(u => u.SortOrder).Select(u => u.ProductsWebsitesMap);
             return productwebsiteMap.OrderBy(u => u.SortOrder).Select(u => u.ProductMaster);
-        
+
         }
         //WebsiteShippingRules
 
@@ -809,8 +809,79 @@ namespace Ganedata.Core.Services
 
             return _currentDbContext.ProductAllowanceGroupMap.Where(u => u.TenantId == TenantId && u.IsDeleted != true && u.AllowanceGroupId == productAllownceGroupId);
         }
+        // WebsiteSearching Realted Queries
+        public IQueryable<ProductMaster> GetAllValidProductWebsiteSearch(int siteId, string category = "", string ProductName = "")
+        {
+            ProductName = ProductName?.Trim();
+            int? categoryId = _currentDbContext.WebsiteNavigations.FirstOrDefault(u => u.Name == category && u.IsDeleted != true)?.Id;
+            //List<int> websiteProductIds = _currentDbContext.ProductsWebsitesMap.Where(x => x.SiteID == siteId && x.IsActive == true && x.IsDeleted != true).Select(a => a.ProductId).ToList();
+            List<int> productIds = _currentDbContext.ProductsNavigationMaps.Where(u => u.NavigationId == categoryId && u.IsDeleted != true && u.IsActive==true).Select(x => x.ProductsWebsitesMap.ProductId).ToList();
+            var products = _currentDbContext.ProductsWebsitesMap.Where(a => a.IsActive == true && a.IsDeleted != true && a.SiteID == siteId).Select(u => u.ProductMaster);
+            return products.Where(a => (productIds.Contains(a.ProductId) || productIds.Count <= 0) &&
+                (string.IsNullOrEmpty(ProductName) || (a.Name.Contains(ProductName) || a.SKUCode.Contains(ProductName) || a.Description.Contains(ProductName))));
+
+        }
+        public Dictionary<string, List<ProductAttributeValues>> GetAllValidProductAttributeValuesByProductIds(IQueryable<ProductMaster> product)
+        {
+            var AttributeValueId = (from prd in product
+                                    join pavm in _currentDbContext.ProductAttributeValuesMap
+                                    on prd.ProductId equals pavm.ProductId
+                                    join pav in _currentDbContext.ProductAttributeValues
+                                    on pavm.AttributeValueId equals pav.AttributeValueId
+                                    select new
+                                    {
+                                        AttributeId = pavm.ProductAttributeValues.AttributeId.ToString(),
+                                        ProductAttributeValues = pavm.ProductAttributeValues
+
+                                    }).Distinct().ToList();
 
 
+            //var valueAttributes = AttributeValueId.Select(u => u.AttributeValueId).ToList();
+            //var productAttributs=  _currentDbContext.ProductAttributeValues.Where(u => valueAttributes.Contains(u.AttributeValueId)).ToList();
+            return AttributeValueId.GroupBy(o => o.AttributeId).ToDictionary(g => g.Key.ToString(), g => g.Select(u => u.ProductAttributeValues).ToList());
+
+        }
+        public List<Tuple<string, string>> AllPriceListAgainstGroupAndDept(IQueryable<ProductMaster> productMasters)
+        {
+            List<Tuple<string, string>> Prices = new List<Tuple<string, string>>();
+
+            var avarageValue = productMasters.Select(u => u.SellPrice);
+
+            var avgValue = avarageValue.Average();
+            var averageInt = Convert.ToInt32(avgValue);
+            var minValue = Convert.ToInt32(avarageValue.Min());
+            var maxValue = Convert.ToInt32(avarageValue.Max());
+            if (minValue == maxValue)
+            {
+                Prices.Add(new Tuple<string, string>(minValue.ToString(), (maxValue + 1).ToString()));
+            }
+            else
+            {
+                var centervalue = Convert.ToInt32(avarageValue.FirstOrDefault(u => u.Value > avgValue && u.Value < maxValue) == null ? 0 : avarageValue.FirstOrDefault(u => u.Value > avgValue && u.Value < maxValue));
+                Prices.Add(new Tuple<string, string>(minValue.ToString(), ((averageInt - 1) < 0 ? 0 : (averageInt - 1)).ToString()));
+                Prices.Add(new Tuple<string, string>((averageInt).ToString(), ((centervalue + 1) > maxValue ? centervalue : (centervalue + 1)).ToString()));
+                Prices.Add(new Tuple<string, string>(((centervalue + 2) > maxValue ? centervalue : (centervalue + 2)).ToString(), (maxValue + 1).ToString()));
+            }
+            return Prices;
+        }
+        public IEnumerable<ProductManufacturer> GetAllValidProductManufacturerGroupAndDeptByName(IQueryable<ProductMaster> productMasters)
+        {
+
+            var productmanufacturerId = productMasters.Select(u => u.ManufacturerId).ToList();
+            return _currentDbContext.ProductManufacturers.Where(u => productmanufacturerId.Contains(u.Id));
+
+        }
+
+        public string CategoryAndSubCategoryBreedCrumb(int siteId, int? productId = null, string Category = "", string SubCategory = "")
+        {
+            var naviagtionMapId = _currentDbContext.ProductsWebsitesMap.FirstOrDefault(u => u.SiteID == siteId && u.ProductId == productId && u.IsDeleted != true && u.IsActive == true)?.Id;
+            if (!string.IsNullOrEmpty(SubCategory))
+            {
+                return _currentDbContext.WebsiteNavigations.FirstOrDefault(u => u.Name == SubCategory)?.Parent?.Name;
+            }
+            int? naviagtionId = _currentDbContext.ProductsNavigationMaps.FirstOrDefault(u => u.ProductWebsiteMapId == naviagtionMapId)?.NavigationId;
+            return _currentDbContext.WebsiteNavigations.FirstOrDefault(u => (u.Id == naviagtionId || !naviagtionId.HasValue) && (string.IsNullOrEmpty(Category) || u.Name == Category)).Name;
+        }
 
     }
 }

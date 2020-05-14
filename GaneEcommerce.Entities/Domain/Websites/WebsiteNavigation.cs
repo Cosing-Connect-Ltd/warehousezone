@@ -19,6 +19,7 @@ namespace Ganedata.Core.Entities.Domain
         public string HoverImage { get; set; }
         [Display(Name = "Hover Alt")]
         public string HoverImageAltTag { get; set; }
+        [Required]
         public string Name { get; set; }
         [Display(Name = "Sort Order")]
         public int SortOrder { get; set; }
