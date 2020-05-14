@@ -142,6 +142,7 @@
             @Html.Partial("_BSPopup")
             @Html.Partial("_EmployeeShiftsPopUp")
             @RenderBody()
+            @{ Html.RenderPartial("_Tooltip");}
         </div>
         <div class="main-right">
 
@@ -179,16 +180,15 @@
     </div>
 
     <script>
-    $(function () {
+        $(function () {
 
-        var newPageGuid = '@(ViewBag.ForceRegeneratedPageToken ?? Guid.NewGuid())';
+            var newPageGuid = '@(ViewBag.ForceRegeneratedPageToken ?? Guid.NewGuid())';
 
-        var forceRegenerate = '@ViewBag.ForceRegeneratePageToken' === "True";
+            var forceRegenerate = '@ViewBag.ForceRegeneratePageToken' === "True";
 
-        updatePageSessionToken(newPageGuid, forceRegenerate);
+            updatePageSessionToken(newPageGuid, forceRegenerate);
 
-    });
-
+        });
     </script>
 
 </body>

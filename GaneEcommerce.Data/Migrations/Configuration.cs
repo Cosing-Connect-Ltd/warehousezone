@@ -32,7 +32,7 @@ namespace Ganedata.Core.Data.Migrations
             SeedCoreSystem(context);
 
             //Test Data Seed
-            //SeedLink(context);
+            SeedLink(context);
 
 
             //Customer Data Seeds
@@ -163,7 +163,7 @@ namespace Ganedata.Core.Data.Migrations
             using (var reader = new StreamReader(fs))
             {
 
-                //ignore headers 
+                //ignore headers
                 string headerLine = reader.ReadLine();
 
                 while (!reader.EndOfStream)
@@ -196,7 +196,7 @@ namespace Ganedata.Core.Data.Migrations
             using (var fs = File.OpenRead(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../Content/Seed/AuthActivities.csv")))
             using (var reader = new StreamReader(fs))
             {
-                //ignore headers 
+                //ignore headers
                 string headerLine = reader.ReadLine();
 
                 while (!reader.EndOfStream)
@@ -232,7 +232,7 @@ namespace Ganedata.Core.Data.Migrations
             using (var fs = File.OpenRead(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../Content/Seed/AuthActivityGroupMaps.csv")))
             using (var reader = new StreamReader(fs))
             {
-                //ignore headers 
+                //ignore headers
                 string headerLine = reader.ReadLine();
 
                 while (!reader.EndOfStream)
@@ -608,7 +608,7 @@ namespace Ganedata.Core.Data.Migrations
             //context.Database.ExecuteSqlCommand("CREATE TRIGGER TRG_DeleteOldElmahLogs ON ELMAH_Error AFTER INSERT AS BEGIN delete from ELMAH_Error where TimeUtc < DATEADD(DAY, -30, GETDATE()) END");
 
             //// create trigger to delete old auth user logins and login activities
-            //// Alter foreign key constraint to cascade delete before trigger to delete child table data as well       
+            //// Alter foreign key constraint to cascade delete before trigger to delete child table data as well
             //context.Database.ExecuteSqlCommand("ALTER TABLE [dbo].[AuthUserLoginActivities] DROP CONSTRAINT [FK_dbo.AuthUserLoginActivities_dbo.AuthUserLogins_UserLoginId]");
             //context.Database.ExecuteSqlCommand("ALTER TABLE [dbo].[AuthUserLoginActivities]  WITH CHECK ADD  CONSTRAINT [FK_dbo.AuthUserLoginActivities_dbo.AuthUserLogins_UserLoginId] FOREIGN KEY([UserLoginId]) REFERENCES[dbo].[AuthUserLogins]([UserLoginId]) ON DELETE CASCADE");
             //context.Database.ExecuteSqlCommand("ALTER TABLE [dbo].[AuthUserLoginActivities] CHECK CONSTRAINT [FK_dbo.AuthUserLoginActivities_dbo.AuthUserLogins_UserLoginId]");
@@ -714,7 +714,7 @@ namespace Ganedata.Core.Data.Migrations
                     TenantId = CurrentTenantId
                 });
 
-            // add Tenant Modules 
+            // add Tenant Modules
             context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
                 new TenantModules()
                 {
@@ -1125,7 +1125,7 @@ namespace Ganedata.Core.Data.Migrations
                     TenantId = CurrentTenantId
                 });
 
-            // add Tenant Modules 
+            // add Tenant Modules
             context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
                 new TenantModules()
                 {
@@ -1529,7 +1529,7 @@ namespace Ganedata.Core.Data.Migrations
                     TenantId = CurrentTenantId
                 });
 
-            // add Tenant Modules 
+            // add Tenant Modules
             context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
                 new TenantModules()
                 {
@@ -1931,7 +1931,7 @@ namespace Ganedata.Core.Data.Migrations
                     TenantId = CurrentTenantId
                 });
 
-            // add Tenant Modules 
+            // add Tenant Modules
             context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
                 new TenantModules()
                 {
@@ -2355,7 +2355,7 @@ namespace Ganedata.Core.Data.Migrations
                     TenantId = CurrentTenantId
                 });
 
-            // add Tenant Modules 
+            // add Tenant Modules
             context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
                 new TenantModules()
                 {

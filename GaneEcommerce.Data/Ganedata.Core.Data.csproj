@@ -823,6 +823,10 @@
     <Compile Include="Migrations\202005122012474_imagecolumn-addedin-websitecontenttable.designer.cs">
       <DependentUpon>202005122012474_imagecolumn-addedin-websitecontenttable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005141828320_Add-Tooltip-table.cs" />
+    <Compile Include="Migrations\202005141828320_Add-Tooltip-table.designer.cs">
+      <DependentUpon>202005141828320_Add-Tooltip-table.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1760,6 +1764,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005122012474_imagecolumn-addedin-websitecontenttable.resx">
       <DependentUpon>202005122012474_imagecolumn-addedin-websitecontenttable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005141828320_Add-Tooltip-table.resx">
+      <DependentUpon>202005141828320_Add-Tooltip-table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

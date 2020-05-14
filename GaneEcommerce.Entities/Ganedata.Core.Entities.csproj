@@ -193,6 +193,7 @@
     <Compile Include="Domain\Auth\AuthUserprofile.cs" />
     <Compile Include="Domain\Auth\Module.cs" />
     <Compile Include="Domain\Models\GlobalApi.cs" />
+    <Compile Include="Domain\Models\Tooltip.cs" />
     <Compile Include="Domain\Models\ProductAllowanceAdjustmentLog.cs" />
     <Compile Include="Domain\Models\ProductAllowance.cs" />
     <Compile Include="Domain\Models\ProductAllowanceGroupMap.cs" />
@@ -220,6 +221,7 @@
     <Compile Include="Domain\Models\ProductAllowanceGroup.cs" />
     <Compile Include="Domain\Models\ProductManufacturer.cs" />
     <Compile Include="Domain\ViewModels\TenantWebsiteViewModel.cs" />
+    <Compile Include="Domain\ViewModels\TooltipViewModel.cs" />
     <Compile Include="Domain\ViewModels\WebsiteDiscountCodesProductsViewModel.cs" />
     <Compile Include="Domain\Websites\ProductsNavigationMap.cs" />
     <Compile Include="Domain\Websites\WebsiteDiscountProductsMap.cs" />

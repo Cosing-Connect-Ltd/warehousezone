@@ -17,7 +17,7 @@
     <AssemblyName>WMS</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -501,6 +501,7 @@
     <Compile Include="App_Start\UnityWebApiActivator.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AuthUserGroupsController.cs" />
+    <Compile Include="Controllers\TooltipsController.cs" />
     <Compile Include="Controllers\OrderScheduleController.cs" />
     <Compile Include="Controllers\AssetsController.cs" />
     <Compile Include="Controllers\FinancesController.cs" />
@@ -1183,6 +1184,7 @@
     <Content Include="Scripts\esm\popper.min.js" />
     <Content Include="Scripts\ext-language_tools.js" />
     <Content Include="Scripts\Gane.EditInvoices.js" />
+    <Content Include="Scripts\Gane.Tooltip.js" />
     <Content Include="Scripts\Gane.Pallets.js" />
     <Content Include="Scripts\Gane.Invoices.js" />
     <Content Include="Scripts\Gane.Utils.js" />
@@ -2566,6 +2568,7 @@
     <Content Include="Views\Theme\Default\ProductAllowanceGroups\Details.cshtml" />
     <Content Include="Views\Theme\Default\ProductAllowanceGroups\Edit.cshtml" />
     <Content Include="Views\Theme\Default\ProductAllowanceGroups\Index.cshtml" />
+    <Content Include="Views\Theme\Default\Shared\_Tooltip.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -2581,6 +2584,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\Designs\DeliveryNotePrint.resx">
       <DependentUpon>DeliveryNotePrint.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\Designs\DileveryReportPrintGroup.resx">
       <DependentUpon>DileveryReportPrintGroup.cs</DependentUpon>
@@ -2749,7 +2753,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>8005</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8005</IISUrl>
+          <IISUrl>http://localhost</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

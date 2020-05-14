@@ -210,6 +210,8 @@
     <Compile Include="TenantCurrencyExchange\TenantsCurrencyRateServices.cs" />
     <Compile Include="TenantWebsite\ITenantWebsiteService.cs" />
     <Compile Include="TenantWebsite\TenantWebsiteService.cs" />
+    <Compile Include="Tooltip\TooltipServices.cs" />
+    <Compile Include="Tooltip\ITooltipServices.cs" />
     <Compile Include="Users\IUserService.cs" />
     <Compile Include="Address\AddressServices.cs" />
     <Compile Include="Address\IAddressServices.cs" />

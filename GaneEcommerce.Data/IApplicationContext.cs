@@ -180,5 +180,6 @@ namespace Ganedata.Core.Data
          DbSet<ProductAllowanceAdjustmentLog> ProductAllowanceAdjustmentLog { get; set; }
          DbSet<ProductAllowanceGroup> ProductAllowanceGroup { get; set; }
          DbSet<ProductAllowanceGroupMap> ProductAllowanceGroupMap { get; set; }
+         DbSet<Tooltip> Tooltips { get; set; }
     }
 }
