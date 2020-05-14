@@ -827,6 +827,10 @@
     <Compile Include="Migrations\202005141828320_Add-Tooltip-table.designer.cs">
       <DependentUpon>202005141828320_Add-Tooltip-table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005141928394_required-field-added-forwebsitecontentandnavigation.cs" />
+    <Compile Include="Migrations\202005141928394_required-field-added-forwebsitecontentandnavigation.designer.cs">
+      <DependentUpon>202005141928394_required-field-added-forwebsitecontentandnavigation.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1767,6 +1771,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005141828320_Add-Tooltip-table.resx">
       <DependentUpon>202005141828320_Add-Tooltip-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005141928394_required-field-added-forwebsitecontentandnavigation.resx">
+      <DependentUpon>202005141928394_required-field-added-forwebsitecontentandnavigation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
