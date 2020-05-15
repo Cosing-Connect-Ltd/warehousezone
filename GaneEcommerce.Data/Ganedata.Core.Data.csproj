@@ -831,6 +831,10 @@
     <Compile Include="Migrations\202005141928394_required-field-added-forwebsitecontentandnavigation.designer.cs">
       <DependentUpon>202005141928394_required-field-added-forwebsitecontentandnavigation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005151518010_fields-size-added-to-tooltips-table.cs" />
+    <Compile Include="Migrations\202005151518010_fields-size-added-to-tooltips-table.designer.cs">
+      <DependentUpon>202005151518010_fields-size-added-to-tooltips-table.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1774,6 +1778,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005141928394_required-field-added-forwebsitecontentandnavigation.resx">
       <DependentUpon>202005141928394_required-field-added-forwebsitecontentandnavigation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005151518010_fields-size-added-to-tooltips-table.resx">
+      <DependentUpon>202005151518010_fields-size-added-to-tooltips-table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

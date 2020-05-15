@@ -104,7 +104,6 @@ $(function () {
 
     $('.Caction').click(function (e)
     {
-        debugger;
         var id = e.target.id;
         if (id === "lnkDetails") {
             var Pid = $("#selkey").val();
@@ -123,6 +122,9 @@ $(function () {
         }
         else if (id === "lnkProductUpdate") {
             value = $('#selkeyProductList').val();
+        }
+        else if (id === "lnkTooltipUpdate") {
+            value = $('#selkeyTooltipList').val();
         }
         else if (id === "lnksavePrdSCCCode") {
             value = $('#selkeyPrdSccCodes').val();
@@ -479,7 +481,7 @@ $(function () {
     });
 
 
-    //////////////////////////////////////////////////////////product categories  
+    //////////////////////////////////////////////////////////product categories
 
     $('#SearchCG').click(function (e) {
         $('#divPG').hide();
@@ -498,7 +500,7 @@ $(function () {
         return false;
     });
 
-    //// /////////////////////////////////////////////////////////////////productGroup 
+    //// /////////////////////////////////////////////////////////////////productGroup
     $('#SearchPG').click(function (e) {
         $('#divCG').hide();
         var y = 150;
@@ -553,7 +555,7 @@ $(function () {
         heightStyle: "content"
     });
 
-    // left navigation toggle settings 
+    // left navigation toggle settings
 
     $("#toggle-button").css("z-index", "100000");
 
@@ -699,7 +701,7 @@ $(function () {
         }, 0);
     });
 
-    //////////////////////////////// auto submit function on change value for warehouse dropdown list 
+    //////////////////////////////// auto submit function on change value for warehouse dropdown list
     $('select[name="wareh-select"]').change(function () {
         $('#wareh-submit').click();
     });
@@ -751,7 +753,7 @@ $(function () {
     // call onhashchange function
     window.onhashchange = locationHashChanged;
 
-    // code for file uplaoding 
+    // code for file uplaoding
     var vhdFiles = $('#hdPFiles').val();
     if (vhdFiles == null || vhdFiles == '') {
         $("#dvfiles").hide();
@@ -771,7 +773,7 @@ $(function () {
     if ($("#chkkit").is(":checked")) {
         $("#dvkit").show();
         $("#dvgrp").hide();
-   
+
     }
     else if ($("#GroupedProduct").is(":checked"))
     {
@@ -1171,14 +1173,14 @@ $(function () {
         $(this).prop("checked", checkedState);
         var checkboxId = this.id;
         if (checkboxId == "GroupedProduct") {
-           
+
             $("#ProductKit").val("");
             $("#dvgrp").show();
             $("#dvkit").hide();
-            
+
         }
         else if (checkboxId == "chkkit") {
-           
+
             $("#ProductKit").val("");
             $("#dvkit").show();
             $("#dvgrp").hide();

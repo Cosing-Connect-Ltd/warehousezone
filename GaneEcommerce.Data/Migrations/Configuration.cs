@@ -32,7 +32,7 @@ namespace Ganedata.Core.Data.Migrations
             SeedCoreSystem(context);
 
             //Test Data Seed
-            SeedLink(context);
+            //SeedLink(context);
 
 
             //Customer Data Seeds

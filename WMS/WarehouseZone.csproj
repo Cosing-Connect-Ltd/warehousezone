@@ -544,6 +544,7 @@
     <Compile Include="CustomBindings\CurrencyExRateCustomBinding.cs" />
     <Compile Include="CustomBindings\PalletsCustomBinding.cs" />
     <Compile Include="CustomBindings\LocationListCustomBinding.cs" />
+    <Compile Include="CustomBindings\TooltipListCustomBinding.cs" />
     <Compile Include="CustomBindings\WebsiteNavigationProductsCustomBinding.cs" />
     <Compile Include="CustomBindings\WebsiteProductsCustomBinding.cs" />
     <Compile Include="CustomBindings\WebsiteVouchersCustomBinding.cs" />
@@ -2569,6 +2570,11 @@
     <Content Include="Views\Theme\Default\ProductAllowanceGroups\Edit.cshtml" />
     <Content Include="Views\Theme\Default\ProductAllowanceGroups\Index.cshtml" />
     <Content Include="Views\Theme\Default\Shared\_Tooltip.cshtml" />
+    <Content Include="Views\Theme\Default\Tooltips\Index.cshtml" />
+    <Content Include="Views\Theme\Default\Tooltips\_TooltipList.cshtml" />
+    <Content Include="Views\Theme\Default\Tooltips\Delete.cshtml" />
+    <Content Include="Views\Theme\Default\Tooltips\Edit.cshtml" />
+    <Content Include="Views\Theme\Default\Tooltips\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

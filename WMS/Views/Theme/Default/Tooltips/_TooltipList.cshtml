@@ -1,0 +1,88 @@
+﻿@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "TooltipListGridView";
+        settings.CallbackRouteValues = new { Controller = "Tooltips", Action = "TooltipList" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.CustomBindingRouteValuesCollection.Add(
+            GridViewOperationType.Paging,
+            new { Controller = "Tooltips", Action = "_TooltipListPaging" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Filtering,
+        new { Controller = "Tooltips", Action = "_TooltipsFiltering" }
+        );
+
+        settings.CustomBindingRouteValuesCollection.Add(
+        GridViewOperationType.Sorting,
+        new { Controller = "Tooltips", Action = "_TooltipsGetDataSorting" }
+        );
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+        settings.KeyFieldName = "TooltipId";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = true;
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.SettingsCookies.Enabled = true;
+        settings.SettingsCookies.CookiesID = "TooltipsList";
+        settings.SettingsCookies.StoreColumnsVisiblePosition = true;
+        settings.SettingsCookies.StoreColumnsWidth = true;
+        settings.SettingsCookies.StoreFiltering = true;
+        settings.SettingsCookies.StoreGroupingAndSorting = true;
+        settings.SettingsCookies.StorePaging = true;
+
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Key";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Title";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Description";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Localization";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "TenantId";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.ClientSideEvents.EndCallback = "OnGridFocusedRowChanged";
+
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+        settings.SettingsDetail.ShowDetailRow = false;
+
+    });
+
+}
+
+@grid.BindToCustomData(Model).GetHtml()
