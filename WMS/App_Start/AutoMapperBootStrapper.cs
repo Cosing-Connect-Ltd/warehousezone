@@ -43,7 +43,8 @@ namespace WMS
                 cfg.CreateMap<OrderDetail, OrderDetailSessionViewModel>().ReverseMap();
                 cfg.CreateMap<ProductMaster, ProductMasterViewModel>().ReverseMap();
                 cfg.CreateMap<ProductAccountCodes, ProductAccountCodesViewModel>().ReverseMap();
-                cfg.CreateMap<Tooltip, TooltipViewModel>().ReverseMap();
+                cfg.CreateMap<Tooltip, TooltipViewModel>()
+                .ForMember(s => s.TenantName, c => c.MapFrom(m => m.Tenant.TenantName)).ReverseMap();
 
                 //APIs
                 cfg.CreateMap<ProductMaster, ProductMasterSync>().ReverseMap();

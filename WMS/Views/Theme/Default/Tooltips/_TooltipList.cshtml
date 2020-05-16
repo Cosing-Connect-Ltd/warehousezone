@@ -1,4 +1,5 @@
 ﻿@{
+
     var grid = Html.DevExpress().GridView(settings =>
     {
         settings.Name = "TooltipListGridView";
@@ -67,11 +68,15 @@
             c.FieldName = "Localization";
             c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
         });
-        settings.Columns.Add(c =>
+
+        if (ViewBag.IsSuperUser)
         {
-            c.FieldName = "TenantId";
-            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
-        });
+            settings.Columns.Add(c =>
+            {
+                c.FieldName = "TenantName";
+                c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            });
+        }
 
 
         settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
@@ -83,6 +88,6 @@
 
     });
 
-}
+    }
 
-@grid.BindToCustomData(Model).GetHtml()
+    @grid.BindToCustomData(Model).GetHtml()

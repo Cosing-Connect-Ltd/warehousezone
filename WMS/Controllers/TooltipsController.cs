@@ -17,12 +17,14 @@ namespace WMS.Controllers
     public class TooltipsController : BaseController
     {
         private readonly ITooltipServices _tooltipServices;
+        private readonly ITenantsServices _tenantsServices;
         private readonly IMapper _mapper;
 
-        public TooltipsController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITooltipServices tooltipServices, IMapper mapper)
+        public TooltipsController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITooltipServices tooltipServices, ITenantsServices tenantsServices, IMapper mapper)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
             _tooltipServices = tooltipServices;
+            _tenantsServices = tenantsServices;
             _mapper = mapper;
         }
 
@@ -36,6 +38,7 @@ namespace WMS.Controllers
 
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+            ViewBag.Tenants = new SelectList(_tenantsServices.GetAllTenants(), "TenantId", "TenantName");
             return View();
         }
 
@@ -44,6 +47,11 @@ namespace WMS.Controllers
         public ActionResult Create(Tooltip tooltip)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+
+            if (CurrentUser.SuperUser != true && tooltip.TenantId != CurrentTenantId)
+            {
+                tooltip.TenantId = CurrentTenantId;
+            }
 
             if (ModelState.IsValid)
             {
@@ -61,12 +69,18 @@ namespace WMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var customer = _tooltipServices.GetById(id.Value);
-            if (customer == null)
+            var tooltip = _tooltipServices.GetById(id.Value, CurrentTenantId, CurrentUser.SuperUser == true);
+            if (tooltip == null)
             {
                 return HttpNotFound();
             }
-            return View(customer);
+
+            if (CurrentUser.SuperUser != true && tooltip.TenantId != CurrentTenantId)
+            {
+                return Redirect((string)Session["ErrorUrl"]);
+            }
+
+            return View(_mapper.Map<TooltipViewModel>(tooltip));
         }
 
         [HttpPost, ActionName("Delete")]
@@ -89,15 +103,19 @@ namespace WMS.Controllers
 
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
-            Tooltip tooltip = _tooltipServices.GetById((int)id);
+            Tooltip tooltip = _tooltipServices.GetById((int)id, CurrentTenantId, CurrentUser.SuperUser == true);
 
             if (tooltip == null)
             {
                 return HttpNotFound();
             }
 
+            if (CurrentUser.SuperUser != true && tooltip.TenantId != CurrentTenantId)
+            {
+                return Redirect((string)Session["ErrorUrl"]);
+            }
 
-            Session["tooltip"] = id;
+            ViewBag.Tenants = new SelectList(_tenantsServices.GetAllTenants(), "TenantId", "TenantName");
 
             return View(tooltip);
         }
@@ -111,6 +129,11 @@ namespace WMS.Controllers
 
             if (ModelState.IsValid)
             {
+                if (CurrentUser.SuperUser != true && tooltip.TenantId != CurrentTenantId)
+                {
+                    tooltip.TenantId = CurrentTenantId;
+                }
+
                 _tooltipServices.Save(tooltip, CurrentUserId);
                 return RedirectToAction("Index");
             }
@@ -187,12 +210,12 @@ namespace WMS.Controllers
             gridViewModel.ProcessCustomBinding(
                 new GridViewCustomBindingGetDataRowCountHandler(args =>
                 {
-                    TooltipListCustomBinding.TooltipGetDataRowCount(args, CurrentTenantId);
+                    TooltipListCustomBinding.TooltipGetDataRowCount(args, CurrentTenantId, CurrentUser.SuperUser == true);
                 }),
 
                     new GridViewCustomBindingGetDataHandler(args =>
                     {
-                        TooltipListCustomBinding.TooltipGetData(args, CurrentTenantId);
+                        TooltipListCustomBinding.TooltipGetData(args, CurrentTenantId, CurrentUser.SuperUser == true);
                     })
             );
             return PartialView("_TooltipList", gridViewModel);
@@ -205,6 +228,13 @@ namespace WMS.Controllers
 
             return Json(_mapper.Map<List<TooltipViewModel>>(tooltips), JsonRequestBehavior.AllowGet);
 
+        }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            ViewBag.IsSuperUser = CurrentUser.SuperUser == true;
+
+            base.OnActionExecuting(filterContext);
         }
 
     }

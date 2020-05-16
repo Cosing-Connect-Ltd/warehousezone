@@ -1,4 +1,4 @@
-﻿@model Ganedata.Core.Entities.Domain.Tooltip
+﻿@model Ganedata.Core.Models.TooltipViewModel
 @using Ganedata.Core.Entities.Helpers
 
 @section scripts {
@@ -40,13 +40,16 @@
         <dd>
             @Html.DisplayFor(model => model.Description)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.TenantId)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.TenantId)
-        </dd>
-    </dl>
+        @if (ViewBag.IsSuperUser)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.TenantName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.TenantName)
+            </dd>
+        }
+        </dl>
     <div class="col-md-offset-2 col-md-10 bottom-right">
         @using (Html.BeginForm())
         {

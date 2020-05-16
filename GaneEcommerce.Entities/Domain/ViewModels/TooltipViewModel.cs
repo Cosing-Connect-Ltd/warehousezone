@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Ganedata.Core.Models
 {
@@ -12,6 +9,8 @@ namespace Ganedata.Core.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public string Localization { get; set; }
+        [Display(Name = "Tenant")]
         public int? TenantId { get; set; }
+        public string TenantName { get; set; }
     }
 }

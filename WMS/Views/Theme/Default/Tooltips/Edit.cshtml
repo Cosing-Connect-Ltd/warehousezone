@@ -51,14 +51,17 @@
                         @Html.ValidationMessageFor(model => model.Localization)
                     </div>
                 </div>
-                <div class="input-group h-100 justify-content-center align-items-center">
-                    @Html.LabelFor(model => model.TenantId, htmlAttributes: new { @class = "col-md-4" })
-                    <div class="col-md-8">
-                        @Html.EditorFor(model => model.TenantId)
-                        @Html.ValidationMessageFor(model => model.TenantId)
+                @if (ViewBag.IsSuperUser)
+                {
+                    <div class="input-group h-100 justify-content-center align-items-center">
+                        @Html.LabelFor(model => model.TenantId, htmlAttributes: new { @class = "col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(u => u.TenantId, ViewBag.Tenants as SelectList, "Select Client", new { @class = "chosen-select" })
+                            @Html.ValidationMessageFor(model => model.TenantId)
+                        </div>
                     </div>
+                }
                 </div>
-            </div>
             <div class="input-group h-100 justify-content-center align-items-center">
                 <div class="col-md-offset-2 col-md-10 bottom-right">
                     <input type="submit" value="Save" class="btn btn-primary" />

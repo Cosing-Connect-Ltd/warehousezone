@@ -1,13 +1,8 @@
 ﻿using DevExpress.Data.Filtering;
 using DevExpress.Web.Mvc;
-using Ganedata.Core.Data;
-using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Services;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic;
-using System.Web;
 using System.Web.Mvc;
 
 namespace WMS.CustomBindings
@@ -15,16 +10,16 @@ namespace WMS.CustomBindings
     public class TooltipListCustomBinding
     {
 
-        private static IQueryable<object> GetTooltipDataset(int tenantId)
+        private static IQueryable<object> GetTooltipDataset(int tenantId, bool isSuperUser)
         {
             var TooltipServices = DependencyResolver.Current.GetService<ITooltipServices>();
-            var transactions = TooltipServices.GetAll(tenantId);
+            var transactions = TooltipServices.GetAll(tenantId, isSuperUser);
             return transactions;
         }
 
-        public static void TooltipGetData(GridViewCustomBindingGetDataArgs e, int tenantId)
+        public static void TooltipGetData(GridViewCustomBindingGetDataArgs e, int tenantId, bool isSuperUser)
         {
-            var transactions = GetTooltipDataset(tenantId);
+            var transactions = GetTooltipDataset(tenantId, isSuperUser);
 
             if (e.State.SortedColumns.Count() > 0)
             {
@@ -60,10 +55,10 @@ namespace WMS.CustomBindings
             e.Data = transactions.ToList();
         }
 
-        public static void TooltipGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId)
+        public static void TooltipGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, bool isSuperUser)
         {
 
-            var transactions = GetTooltipDataset(tenantId);
+            var transactions = GetTooltipDataset(tenantId, isSuperUser);
 
             if (e.State.SortedColumns.Count() > 0)
             {

@@ -1,7 +1,5 @@
-﻿using Ganedata.Core.Entities.Helpers;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ganedata.Core.Entities.Domain
 {
@@ -29,7 +27,6 @@ namespace Ganedata.Core.Entities.Domain
         {
             this.UpdatedBy = userId;
             this.DateUpdated = DateTime.UtcNow;
-
         }
     }
 }

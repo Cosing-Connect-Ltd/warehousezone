@@ -23,7 +23,7 @@ namespace Ganedata.Core.Services
             var tooltips = await _currentDbContext.Tooltips
                                     .Where(t => keys.Contains(t.Key) && t.IsDeleted != true &&
                                             (t.Localization == CultureInfo.CurrentCulture.Name || string.IsNullOrEmpty(t.Localization)) &&
-                                            (t.TenantId == tenantId || t.TenantId == 0 || t.TenantId == null))
+                                            (t.TenantId == tenantId || t.TenantId == 0))
                                     .GroupBy(t => t.Key)
                                     .Select(g => g.OrderByDescending(t => t.Localization)
                                                   .ThenByDescending(t => t.TenantId)
@@ -34,15 +34,19 @@ namespace Ganedata.Core.Services
 
         }
 
-        public Tooltip GetById(int tooltipId)
+        public Tooltip GetById(int tooltipId, int tenantId, bool isSuperUser)
         {
-            return _currentDbContext.Tooltips.AsNoTracking().FirstOrDefault(x => x.TooltipId == tooltipId && x.IsDeleted != true);
+            return _currentDbContext.Tooltips
+                .Include(t => t.Tenant)
+                .AsNoTracking()
+                .FirstOrDefault(x => x.TooltipId == tooltipId && (x.TenantId == tenantId || isSuperUser) && x.IsDeleted != true);
         }
 
 
-        public IQueryable<TooltipViewModel> GetAll(int tenantId)
+        public IQueryable<TooltipViewModel> GetAll(int tenantId, bool isSuperUser)
         {
-            var model = _currentDbContext.Tooltips.AsNoTracking().Where(t => (t.TenantId == tenantId || t.TenantId == 0 || t.TenantId == null) && t.IsDeleted != true)
+            var tooltips = _currentDbContext.Tooltips
+                .AsNoTracking().Where(t => (t.TenantId == tenantId || isSuperUser) && t.IsDeleted != true)
                 .Select(t => new TooltipViewModel
                 {
                     TooltipId = t.TooltipId,
@@ -50,11 +54,12 @@ namespace Ganedata.Core.Services
                     Title = t.Title,
                     Localization = t.Localization,
                     Description = t.Description,
+                    TenantName = t.Tenant.TenantName,
                     TenantId = t.TenantId,
                 })
                 .OrderBy(x => x.Key);
 
-            return model;
+            return tooltips;
         }
 
         public Tooltip Save(Tooltip tooltip, int userId)
