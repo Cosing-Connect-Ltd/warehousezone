@@ -318,6 +318,8 @@
     <Content Include="Content\Theme\Smart\app\js\custom.js" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\Theme\University\app\css\customfontIcons.css" />
+    <Content Include="Content\Theme\University\app\css\jquery-confirm.min.css" />
+    <Content Include="Content\Theme\University\app\js\jquery-confirm.min.js" />
     <Content Include="Content\Theme\University\app\css\northumbria_custom.css" />
     <Content Include="Content\Theme\University\app\css\northumbria_responsive.css" />
     <Content Include="Content\Theme\University\app\css\owl.carousel.min.css" />
@@ -1094,6 +1096,7 @@
     <Content Include="Views\Theme\ElecTech\Error\Index.cshtml" />
     <Content Include="Views\Theme\Smart\Error\Index.cshtml" />
     <Content Include="Views\Theme\University\Error\Index.cshtml" />
+    <Content Include="Views\Theme\University\Products\WishList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

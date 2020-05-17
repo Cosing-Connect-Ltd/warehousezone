@@ -90,11 +90,14 @@
                             <li class="col4"><a href="">xxl</a></li>
                         </ul>
                     </div>*@
+
+
+             
                 <div class="footSec">
                     <div class="qty">
                         <span>quantity</span>
                         <div class="sortBysec">
-                            <input id="input-quantity" type="text" name="quantity" value="1" size="2" data-detail="true" />
+                            <input id="input-quantity" type="text" name="quantity" value="1" size="2" data-detail="true" class="input-number" />
                         </div>
                     </div>
                     @if (@Model.SellPrice > 0 && @Model.SellPrice.HasValue && @Model.PercentMargin > 0)
@@ -109,11 +112,7 @@
                             Add to basket
                         </button>
                     }
-                    <button class="addtowishlistbtn">
-                        Add to Wishlist
-                    </button>
-                    <a href="" class="addtowishlist">
-                        <i class="icon-love"></i>
+                    <button class="addtowishlistbtn">Add to Wishlist</button><a href="javascript:;" class="addtowishlist" onclick="AddWishListItem(@Model.ProductId)"><i class="icon-love"></i>
                     </a>
                 </div>
                 </div>
@@ -129,112 +128,7 @@
         </div>
     </div>
 </section>
-@*<section class="nb_sec nb_feat_prod_sec nb_umayalso_sec">
-    <div class="container">
-        <div class="nb_header_style2">
-            <h3>You may also like</h3>
-        </div>
-        <div class="row">
-            <div class="owl-carousel owl-theme nb_featuredPrdCarrousle">
-                <div class="item" data-toggle="modal" data-target="#quickCartPopup">
-                    <div class="prd_lst_boxouter">
-                        <span class="imagewrap">
-                            <img src="/Content/Theme/University/app/images/productslist/2.jpg" />
-                        </span>
-                        <h3 class="prdName">Bobble Hat</h3>
-                        <div class="foot">
-                            <span class="prd_amnt">£10.00</span>
-                            <ul class="icolist">
-                                <li>
-                                    <a href=""><i class="icon-shopping-cart"></i></a>
-                                </li>
-                                <li>
-                                    <a href=""><i class="icon-love"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="prd_lst_boxouter">
-                        <span class="imagewrap">
-                            <img src="/Content/Theme/University/app/images/productslist/3.jpg" />
-                        </span>
-                        <h3 class="prdName">Bobble Hat</h3>
-                        <div class="foot">
-                            <span class="prd_amnt">£10.00</span>
-                            <ul class="icolist">
-                                <li>
-                                    <a href=""><i class="icon-shopping-cart"></i></a>
-                                </li>
-                                <li>
-                                    <a href=""><i class="icon-love"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="prd_lst_boxouter">
-                        <span class="imagewrap">
-                            <img src="/Content/Theme/University/app/images/productslist/4.jpg" />
-                        </span>
-                        <h3 class="prdName">Bobble Hat</h3>
-                        <div class="foot">
-                            <span class="prd_amnt">£10.00</span>
-                            <ul class="icolist">
-                                <li>
-                                    <a href=""><i class="icon-shopping-cart"></i></a>
-                                </li>
-                                <li>
-                                    <a href=""><i class="icon-love"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="prd_lst_boxouter">
-                        <span class="imagewrap">
-                            <img src="/Content/Theme/University/app/images/productslist/1.jpg" />
-                        </span>
-                        <h3 class="prdName">Bobble Hat</h3>
-                        <div class="foot">
-                            <span class="prd_amnt">£10.00</span>
-                            <ul class="icolist">
-                                <li>
-                                    <a href=""><i class="icon-shopping-cart"></i></a>
-                                </li>
-                                <li>
-                                    <a href=""><i class="icon-love"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="prd_lst_boxouter">
-                        <span class="imagewrap">
-                            <img src="/Content/Theme/University/app/images/productslist/5.jpg" />
-                        </span>
-                        <h3 class="prdName">Bobble Hat</h3>
-                        <div class="foot">
-                            <span class="prd_amnt">£10.00</span>
-                            <ul class="icolist">
-                                <li>
-                                    <a href=""><i class="icon-shopping-cart"></i></a>
-                                </li>
-                                <li>
-                                    <a href=""><i class="icon-love"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>*@
+
 <script>
     $(document).ready(function () {
 

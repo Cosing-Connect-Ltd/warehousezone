@@ -117,7 +117,7 @@
     }
 
 </script>
-<h2><span>Add Website Navigation</span></h2>
+<h2><span>Add Website Navigation (@ViewBag.SiteName)</span></h2>
 @using (Html.BeginForm("Create", "WebsiteNavigations", FormMethod.Post, new { @class = "form-navigation" }))
 {
     @Html.AntiForgeryToken()

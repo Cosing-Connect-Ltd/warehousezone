@@ -37,7 +37,7 @@ namespace WMS.Controllers
         public ActionResult Index(int SiteId)
         {
             ViewBag.SiteId = SiteId;
-           
+            SiteName(SiteId);
             return View();
         }
 
@@ -100,6 +100,7 @@ namespace WMS.Controllers
             WebsiteVouchers vouchers = new WebsiteVouchers();
             vouchers.Code = _tenantWebsiteService.GenerateVoucherCode();
             ViewBag.SiteID = SiteId;
+            SiteName(SiteId);
             return View(vouchers);
         }
 
@@ -115,7 +116,7 @@ namespace WMS.Controllers
                 var shippingRules=_tenantWebsiteService.CreateOrUpdateWebsiteVouchers(websiteVouchers, CurrentUserId, CurrentTenantId);
                 return RedirectToAction("Index", new { SiteId= shippingRules.SiteID });
             }
-
+            SiteName(websiteVouchers.SiteID);
             ViewBag.UserId = new SelectList(_userService.GetAllAuthUsers(CurrentTenantId), "UserId", "UserName", websiteVouchers.UserId);
             return View(websiteVouchers);
         }
@@ -132,6 +133,7 @@ namespace WMS.Controllers
             {
                 return HttpNotFound();
             }
+            SiteName(websiteVouchers.SiteID);
             ViewBag.UserId = new SelectList(_userService.GetAllAuthUsers(CurrentTenantId), "UserId", "UserName", websiteVouchers.UserId);
             return View(websiteVouchers);
         }
@@ -148,7 +150,7 @@ namespace WMS.Controllers
                 var shippingRules = _tenantWebsiteService.CreateOrUpdateWebsiteVouchers(websiteVouchers, CurrentUserId, CurrentTenantId);
                 return RedirectToAction("Index", new { SiteId = shippingRules.SiteID });
             }
-
+            SiteName(websiteVouchers.SiteID);
             ViewBag.UserId = new SelectList(_userService.GetAllAuthUsers(CurrentTenantId), "UserId", "UserName", websiteVouchers.UserId);
             return View(websiteVouchers);
         }

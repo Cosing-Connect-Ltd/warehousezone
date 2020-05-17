@@ -45,7 +45,7 @@
         }
     }
 </script>
-<h2><span>Edit Website Content Page</span></h2>
+<h2><span>Edit Website Content Page (@ViewBag.SiteName)</span></h2>
 @Html.Hidden("websiteContent", true)
 @Html.Hidden("hdPFiles", (List<string>)ViewBag.Files)
 @using (Html.BeginForm())

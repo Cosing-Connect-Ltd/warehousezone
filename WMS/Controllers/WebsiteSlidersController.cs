@@ -40,6 +40,7 @@ namespace WMS.Controllers
         public ActionResult Index(int SiteId)
         {
             ViewBag.SiteId = SiteId;
+            SiteName(SiteId);
             Session["UploadWebsiteSlider"] = null;
             return View();
         }
@@ -55,6 +56,7 @@ namespace WMS.Controllers
         public ActionResult Create(int SiteId)
         {
             ViewBag.SiteId = SiteId;
+            SiteName(SiteId);
             ViewBag.ControllerName = "WebsiteSliders";
             Session["UploadWebsiteSlider"] = null;
             return View();
@@ -86,7 +88,7 @@ namespace WMS.Controllers
                 }
                 return RedirectToAction("Index",new { SiteId= websiteSlider.SiteID });
             }
-
+            SiteName(websiteSlider.SiteID);
             return View(websiteSlider);
         }
 
@@ -114,6 +116,7 @@ namespace WMS.Controllers
                 Session["UploadWebsiteSlider"] = files;
                 ViewBag.Files = files;
             }
+            SiteName(websiteSlider.SiteID);
             return View(websiteSlider);
         }
 
@@ -143,6 +146,7 @@ namespace WMS.Controllers
                 var slider=_tenantWebsiteService.CreateOrUpdateProductswebsiteSlider(websiteSlider, CurrentUserId, CurrentTenantId);
                 return RedirectToAction("Index",new { SiteId=slider.SiteID});
             }
+            SiteName(websiteSlider.SiteID);
             return View(websiteSlider);
         }
 

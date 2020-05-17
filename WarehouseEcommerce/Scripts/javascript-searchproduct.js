@@ -348,7 +348,6 @@ $("input[type=checkbox]").on("change", function () {
 
 
 });
-
 function removeURLParameter(url, parameter) {
     //prefer to use l.search if you have a location/link object
     var urlparts = url.split('?');
@@ -369,7 +368,6 @@ function removeURLParameter(url, parameter) {
         return url;
     }
 }
-
 function GetLoggedIn(placeholder) {
 
     $.ajax({
@@ -394,7 +392,6 @@ function GetLoggedIn(placeholder) {
 
 
 }
-
 function LoggedIn() {
     var UserName = $("#UserName").val();
     var UserPassword = $("#UserPassword").val();
@@ -463,8 +460,7 @@ function CreateUsers() {
         url: basePath + "/User/CreateUser/",
         data: { FirstName: FirstName, LastName: LastName, Email: Email, Password: Password, PlaceOrder: PlaceOrders },
         dataType: 'json',
-        success: function (data)
-        {
+        success: function (data) {
 
             if (data) {
                 $('#signupPopup').modal('hide');
@@ -478,5 +474,62 @@ function CreateUsers() {
     });
 
 
+
+}
+
+function AddWishListItem(ProductId) {
+    debugger;
+    $.confirm({
+        title: 'Confirm!',
+        content: 'Are you want to notify regarding this product!',
+        buttons: {
+            Yes: function () {
+                AddToWishList(ProductId, true);
+            },
+            No: function () {
+                AddToWishList(ProductId, false);
+            },
+
+        }
+    });
+
+}
+
+function AddToWishList(productId, notification) {
+    debugger;
+    $.ajax({
+        type: "GET",
+        url: basePath + "/Products/AddWishListItem/",
+        data: { ProductId: productId, isNotfication: notification },
+        dataType: 'json',
+        success: function (data) {
+            debugger;
+            var cardItemsValue = parseInt($("#WishList-total").text());
+            $("#WishList-total").text((cardItemsValue + 1));
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert('Error' + textStatus + "/" + errorThrown);
+        }
+    });
+
+}
+
+
+function RemoveWishListPopUp(e, RemoveProductId) {
+    debugger;
+    $.ajax({
+        type: "GET",
+        url: basePath + "/Products/RemoveWishList/",
+        data: { ProductId: RemoveProductId },
+        dataType: 'json',
+        success: function (data) {
+            debugger;
+            var cardItemsValue = parseInt($("#WishList-total").text());
+            $("#WishList-total").text(data);
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert('Error' + textStatus + "/" + errorThrown);
+        }
+    });
 
 }

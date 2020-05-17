@@ -77,5 +77,7 @@ namespace Ganedata.Core.Entities.Domain
         public string ProductPath { get; set; }
 
         public int? CurrencyId { get; set; }
+
+        public bool? isNotfication { get; set; }
     }
 }

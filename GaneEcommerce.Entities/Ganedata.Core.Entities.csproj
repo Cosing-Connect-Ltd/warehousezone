@@ -224,10 +224,12 @@
     <Compile Include="Domain\ViewModels\TooltipViewModel.cs" />
     <Compile Include="Domain\ViewModels\WebsiteDiscountCodesProductsViewModel.cs" />
     <Compile Include="Domain\Websites\ProductsNavigationMap.cs" />
+    <Compile Include="Domain\Websites\WebsiteWisListItem.cs" />
     <Compile Include="Domain\Websites\WebsiteDiscountProductsMap.cs" />
     <Compile Include="Domain\Websites\WebsiteDiscountCodes.cs" />
     <Compile Include="Domain\Websites\WebsiteNavigation.cs" />
     <Compile Include="Domain\Websites\WebsiteShippingRules.cs" />
+    <Compile Include="Domain\Websites\WebsiteCartItem.cs" />
     <Compile Include="Domain\Websites\WebsiteVouchers.cs" />
     <Compile Include="Domain\Websites\WebsiteSlider.cs" />
     <Compile Include="Domain\Websites\WebsiteContentPages.cs" />

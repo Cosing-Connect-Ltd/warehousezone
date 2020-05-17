@@ -9,7 +9,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
-
+using WarehouseEcommerce.Helpers;
 
 namespace WarehouseEcommerce.Controllers
 {
@@ -190,7 +190,7 @@ namespace WarehouseEcommerce.Controllers
             {
                 ViewBag.Fragment = queryString;
             }
-
+            GetItemsDetail();
             base.OnActionExecuting(filterContext);
         }
 
@@ -309,7 +309,22 @@ namespace WarehouseEcommerce.Controllers
 
         }
 
-
+        public void GetItemsDetail()
+        {
+            if (CurrentUserId > 0)
+            {
+                var _tenantWebsiteService = DependencyResolver.Current.GetService<ITenantWebsiteService>();
+                ViewBag.CartItemCount = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).Count();
+                ViewBag.CartItems = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).ToList();
+                ViewBag.WishListItemCount = _tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).Count();
+            }
+            else
+            {
+                ViewBag.CartItemCount = GaneCartItemsSessionHelper.GetCartItemsSession().Count;
+                ViewBag.CartItems = GaneCartItemsSessionHelper.GetCartItemsSession().ToList();
+                ViewBag.WishListItemCount = GaneWishListItemsSessionHelper.GetWishListItemsSession().Count();
+            }
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

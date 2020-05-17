@@ -6,10 +6,13 @@ using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
+using Unity;
 using WarehouseEcommerce.Helpers;
+using WebGrease.Css.Extensions;
 
 namespace WarehouseEcommerce.Controllers
 {
@@ -29,7 +32,7 @@ namespace WarehouseEcommerce.Controllers
 
         private string[] Images = ConfigurationManager.AppSettings["ImageFormats"].Split(new char[] { ',' });
 
-        public ProductsController(IProductServices productServices, IUserService userService, IProductLookupService productlookupServices,ITenantWebsiteService tenantWebsiteService, IProductPriceService productPriceService, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IMapper mapper, ICommonDbServices commonDbServices, ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IActivityServices activityServices, ITenantsServices tenantServices)
+        public ProductsController(IProductServices productServices, IUserService userService, IProductLookupService productlookupServices, ITenantWebsiteService tenantWebsiteService, IProductPriceService productPriceService, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IMapper mapper, ICommonDbServices commonDbServices, ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IActivityServices activityServices, ITenantsServices tenantServices)
             : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices)
         {
             _userService = userService;
@@ -60,7 +63,7 @@ namespace WarehouseEcommerce.Controllers
                 ViewBag.CurrencySymbol = currencyyDetail.Symbol;
                 ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
                 var product = _tenantWebsiteService.GetAllValidProductWebsiteSearch(CurrentTenantWebsite.SiteID, category);
-                ViewBag.Categories = _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID, Category:category);
+                ViewBag.Categories = _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID, Category: category);
                 ViewBag.SubCategory = _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID, SubCategory: ViewBag.Category);
                 if (ViewBag.SubCategory != null && !string.IsNullOrEmpty(ViewBag.SubCategory))
                 {
@@ -98,7 +101,7 @@ namespace WarehouseEcommerce.Controllers
                         product = product.OrderBy(s => s.Name);
                         break;
                 }
-                
+
                 int pageSize = pagesize ?? 10;
                 int pageNumber = (page ?? 1);
                 var pageedlist = product.ToPagedList(pageNumber, pageSize);
@@ -106,10 +109,31 @@ namespace WarehouseEcommerce.Controllers
                 var data = product.ToPagedList((pageNumber == 0 ? 1 : pageNumber), pageSize);
                 if (data.Count > 0)
                 {
-                    data.ToList().ForEach(u =>
-                    u.SellPrice = (Math.Round((_productPriceService.GetProductPriceThresholdByAccountId(u.ProductId, null).SellPrice) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value), 2))
+                    data.ToList().ForEach(u => u.SellPrice = (Math.Round((_productPriceService.GetProductPriceThresholdByAccountId(u.ProductId, null).SellPrice) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value), 2)));
+                    if (CurrentUserId <= 0)
+                    {
+                        if (GaneWishListItemsSessionHelper.GetWishListItemsSession().Count > 0)
+                        {
+                            foreach (var item in GaneWishListItemsSessionHelper.GetWishListItemsSession())
+                            {
+                                var wistlist = GaneWishListItemsSessionHelper.GetWishListItemsSession().ToList().Select(u => new WebsiteWishListItem()
+                                {
+                                    ProductMaster = _productServices.GetProductMasterById(item.ProductId),
 
-                    );
+                                }).FirstOrDefault();
+                                var list = data.FirstOrDefault(u => u.ProductId == item.ProductId);
+                                if (list.WebsiteCartItems.Count <= 0)
+                                {
+                                    list.WebsiteWishListItems.Add(wistlist);
+                                }
+
+
+                            }
+                        }
+                    }
+
+
+
                 }
 
 
@@ -242,37 +266,82 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.cart = true;
             if (!ProductId.HasValue)
             {
-
-                var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
-                var data = models.FirstOrDefault(u => u.CurrencyId == currencyyDetail.Id);
-                if (data == null)
+                if (CurrentUserId > 0)
                 {
-                    foreach (var item in models)
-                    {
-                        var product = _productServices.GetProductMasterById(item.ProductId);
-                        item.Price = Math.Round(((product.SellPrice ?? 0) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
-                        item.CurrencySign = currencyyDetail.Symbol;
-                        item.CurrencyId = currencyyDetail.Id;
-                        GaneCartItemsSessionHelper.UpdateCartItemsSession("", item, false, false);
-                    }
-                    models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
+                    var cartItems = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId)
+                        .Select(u => new
+                        {
+                            u.ProductMaster,
+                            u.UnitPrice,
+                            u.Quantity
 
+
+                        }).ToList();
+
+                    var models = _mapper.Map(cartItems, new List<OrderDetailSessionViewModel>());
+                    ViewBag.CurrencySymbol = currencyyDetail.Symbol;
+                    ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
+                    return PartialView(models);
                 }
-                ViewBag.CurrencySymbol = currencyyDetail.Symbol;
-                ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
-                return PartialView(models);
+                else
+                {
+                    var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
+                    ViewBag.CurrencySymbol = currencyyDetail.Symbol;
+                    ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
+                    return PartialView(models);
+                }
+
+
+                //var data = models.FirstOrDefault(u => u.CurrencyId == currencyyDetail.Id);
+                //if (data == null)
+                //{
+                //    foreach (var item in models)
+                //    {
+                //        var product = _productServices.GetProductMasterById(item.ProductId);
+                //        item.Price = Math.Round(((product.SellPrice ?? 0) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
+                //        item.CurrencySign = currencyyDetail.Symbol;
+                //        item.CurrencyId = currencyyDetail.Id;
+                //        GaneCartItemsSessionHelper.UpdateCartItemsSession("", item, false, false);
+                //    }
+                //    models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
+
+                //}
+
 
             }
             else
             {
                 if (Remove == true)
                 {
-                    GaneCartItemsSessionHelper.RemoveCartItemSession(ProductId ?? 0);
-                    var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
-                    ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
-                    models.ForEach(u => u.Price = Math.Round((u.Price) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value), 2));
-                    models.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
-                    return PartialView(models);
+                    if (CurrentUserId > 0)
+                    {
+                        _tenantWebsiteService.RemoveCartItem((ProductId ?? 0), CurrentTenantWebsite.SiteID, CurrentUserId);
+                        GaneCartItemsSessionHelper.RemoveCartItemSession(ProductId ?? 0);
+                        var cartItems = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId)
+                        .Select(u => new
+                        {
+                            u.ProductMaster,
+                            u.UnitPrice,
+                            u.Quantity
+
+
+                        }).ToList();
+
+                        var models = _mapper.Map(cartItems, new List<OrderDetailSessionViewModel>());
+                        ViewBag.CurrencySymbol = currencyyDetail.Symbol;
+                        ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
+                        return PartialView(models);
+                    }
+                    else
+                    {
+                        GaneCartItemsSessionHelper.RemoveCartItemSession(ProductId ?? 0);
+                        var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
+                        ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
+                        models.ForEach(u => u.Price = Math.Round((u.Price) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value), 2));
+                        models.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
+                        return PartialView(models);
+                    }
+
 
                 }
                 else if (qty.HasValue && !details.HasValue)
@@ -288,11 +357,35 @@ namespace WarehouseEcommerce.Controllers
                     Details.Price = Math.Round(((Details.Price) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
                     Details.CurrencyId = currencyyDetail.Id;
                     GaneCartItemsSessionHelper.UpdateCartItemsSession("", Details, false);
-                    var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
-                    ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
-                    //models.ForEach(u => u.Price = (u.Price * (currencyyDetail.Rate ?? 0)));
-                    models.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
-                    return PartialView(models);
+                    if (CurrentUserId > 0)
+                    {
+                        var count = _tenantWebsiteService.AddOrUpdateCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, (GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>()));
+                        var cartItems = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId)
+                       .Select(u => new
+                       {
+                           u.ProductMaster,
+                           u.UnitPrice,
+                           u.Quantity
+
+
+                       }).ToList();
+
+                        var models = _mapper.Map(cartItems, new List<OrderDetailSessionViewModel>());
+                        ViewBag.CurrencySymbol = currencyyDetail.Symbol;
+                        ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
+                        return PartialView(models);
+
+
+                    }
+                    else
+                    {
+
+                        var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
+                        ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
+                        //models.ForEach(u => u.Price = (u.Price * (currencyyDetail.Rate ?? 0)));
+                        models.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
+                        return PartialView(models);
+                    }
                 }
                 else
                 {
@@ -314,14 +407,94 @@ namespace WarehouseEcommerce.Controllers
                         Details.Qty = ProductCheck.Qty + (qty.HasValue ? qty.Value : 1);
                     }
                     GaneCartItemsSessionHelper.UpdateCartItemsSession("", Details, false);
-                    var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
-                    var cartedProduct = models.Where(u => u.ProductId == ProductId).ToList();
-                    cartedProduct.ForEach(u => u.Price = Math.Round((u.Price) * (((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2));
-                    cartedProduct.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
-                    return PartialView(cartedProduct);
+                    if (CurrentUserId > 0)
+                    {
+                        var count = _tenantWebsiteService.AddOrUpdateCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, (GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>()));
+                        var cartItems = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId)
+                       .Select(u => new
+                       {
+                           u.ProductMaster,
+                           u.UnitPrice,
+                           u.Quantity
+
+
+                       }).ToList();
+
+
+                        var models = _mapper.Map(cartItems, new List<OrderDetailSessionViewModel>());
+                        ViewBag.CurrencySymbol = currencyyDetail.Symbol;
+                        ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
+                        var cartedProduct = models.Where(u => u.ProductId == ProductId).ToList();
+                        cartedProduct.ForEach(u => u.Price = Math.Round((u.Price) * (((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2));
+                        cartedProduct.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
+                        return PartialView(cartedProduct);
+
+
+
+
+                    }
+                    else
+                    {
+
+
+                        var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
+                        var cartedProduct = models.Where(u => u.ProductId == ProductId).ToList();
+                        cartedProduct.ForEach(u => u.Price = Math.Round((u.Price) * (((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2));
+                        cartedProduct.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
+                        return PartialView(cartedProduct);
+                    }
+
+
                 }
             }
 
+        }
+
+        public JsonResult AddWishListItem(int ProductId, bool isNotfication)
+        {
+
+            var ProductCheck = GaneWishListItemsSessionHelper.GetWishListItemsSession().FirstOrDefault(u => u.ProductId == ProductId);
+            if (ProductCheck == null)
+            {
+                var Product = _productServices.GetProductMasterById(ProductId);
+                var model = new OrderDetail();
+                model.ProductMaster = Product;
+                model.Qty = 0;
+                model.ProductId = ProductId;
+                model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
+                ViewBag.CartModal = false;
+                var Details = _mapper.Map(model, new OrderDetailSessionViewModel());
+                Details.isNotfication = isNotfication;
+                GaneWishListItemsSessionHelper.UpdateWishListItemsSession("", Details, false);
+                if (CurrentUserId > 0)
+                {
+                    _tenantWebsiteService.AddOrUpdateWishListItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, (GaneWishListItemsSessionHelper.GetWishListItemsSession()));
+                }
+                return Json(GaneWishListItemsSessionHelper.GetWishListItemsSession().Count, JsonRequestBehavior.AllowGet);
+            }
+            return Json(GaneWishListItemsSessionHelper.GetWishListItemsSession().Count, JsonRequestBehavior.AllowGet);
+
+
+
+
+
+
+
+        }
+
+        public ActionResult WishList()
+        {
+            if (CurrentUserId > 0)
+            {
+                var model = _tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId);
+                return View(model);
+            }
+            var data = GaneWishListItemsSessionHelper.GetWishListItemsSession().ToList().Select(u => new WebsiteWishListItem()
+            {
+                ProductMaster = _productServices.GetProductMasterById(u.ProductId),
+
+            });
+            return View(data.ToList());
         }
 
         public void CurrencyChanged(int? CurrencyId)
@@ -363,7 +536,7 @@ namespace WarehouseEcommerce.Controllers
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.CurrencySymbol = currencyyDetail.Symbol;
             var products = _tenantWebsiteService.GetAllValidProductWebsiteSearch(CurrentTenantWebsite.SiteID, category, ProductName: productName);
-            
+
             productFiltering.Manufacturer = _tenantWebsiteService.GetAllValidProductManufacturerGroupAndDeptByName(products).Select(u => u.Name).ToList();
             productFiltering.PriceInterval = _tenantWebsiteService.AllPriceListAgainstGroupAndDept(products);
             productFiltering.AttributeValues = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(products);
@@ -371,6 +544,21 @@ namespace WarehouseEcommerce.Controllers
             productFiltering.Count = products.Count();
 
             return PartialView(productFiltering);
+        }
+
+
+        public JsonResult RemoveWishList(int ProductId)
+        {
+            if (CurrentUserId > 0)
+            {
+                var count = _tenantWebsiteService.RemoveWishListItem(ProductId, CurrentTenantWebsite.SiteID, CurrentUserId);
+                return Json(count, JsonRequestBehavior.AllowGet);
+            }
+
+            GaneWishListItemsSessionHelper.RemoveWishListSession(ProductId);
+            return Json(GaneWishListItemsSessionHelper.GetWishListItemsSession().Count, JsonRequestBehavior.AllowGet);
+
+
         }
 
 

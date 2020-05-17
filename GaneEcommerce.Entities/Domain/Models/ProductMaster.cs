@@ -25,6 +25,10 @@ namespace Ganedata.Core.Entities.Domain
             ProductKitMap = new HashSet<ProductKitMap>();
             ProductsWebsitesMap = new HashSet<ProductsWebsitesMap>();
             ProductFiles = new HashSet<ProductFiles>();
+            WebsiteWishListItems = new HashSet<WebsiteWishListItem>();
+            WebsiteCartItems = new HashSet<WebsiteCartItem>();
+
+
         }
 
         [Key]
@@ -205,6 +209,8 @@ namespace Ganedata.Core.Entities.Domain
         public virtual ICollection<ProductFiles> ProductFiles { get; set; }
         public virtual ICollection<ProductsWebsitesMap> ProductsWebsitesMap { get; set; }
         public virtual ICollection<WebsiteDiscountProductsMap> WebsiteDiscountProductsMap { get; set; }
+        public virtual ICollection<WebsiteCartItem> WebsiteCartItems { get; set; }
+        public virtual ICollection<WebsiteWishListItem> WebsiteWishListItems { get; set; }
 
         public string HoverImage
         {

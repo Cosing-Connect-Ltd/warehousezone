@@ -37,6 +37,7 @@ namespace WMS.Controllers
         public ActionResult Index(int SiteId)
         {
             ViewBag.SiteId = SiteId;
+            SiteName(SiteId);
             Session["UploadTenantWebsiteNav"] = null;
             return View();
         }
@@ -52,6 +53,7 @@ namespace WMS.Controllers
         {
             Session["UploadTenantWebsiteNav"] = null;
             ViewBag.siteid = SiteId;
+            SiteName(SiteId);
             ViewBag.ControllerName = "WebsiteNavigations";
             ViewBag.ParentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, SiteId).ToList(), "Id", "Name");
             ViewBag.contentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, SiteId), "Id", "Title");
@@ -76,6 +78,7 @@ namespace WMS.Controllers
         public ActionResult CreateProductNavigation(int SiteId, int navigationId)
         {
             ViewBag.SiteId = SiteId;
+            SiteName(SiteId);
             ViewBag.navigationId = navigationId;
             return View();
         }
@@ -162,6 +165,7 @@ namespace WMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(WebsiteNavigation websiteNavigation, string ProductsWithIds, IEnumerable<DevExpress.Web.UploadedFile> ImageDefault, IEnumerable<DevExpress.Web.UploadedFile> HoverImage)
         {
+           
             if (websiteNavigation != null)
             {
                 websiteNavigation.SelectedProductIds = ProductsWithIds;
@@ -204,6 +208,7 @@ namespace WMS.Controllers
                 return RedirectToAction("Index", new { SiteId = websiteNavigation.SiteID });
 
             }
+            SiteName(websiteNavigation.SiteID);
             ViewBag.siteid = websiteNavigation.SiteID;
             ViewBag.ControllerName = "WebsiteNavigations";
             ViewBag.Name = "HoverImage";
@@ -255,7 +260,7 @@ namespace WMS.Controllers
             ViewBag.ControllerName = "WebsiteNavigations";
             ViewBag.ParentIds = new SelectList(_tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, websiteNavigation.SiteID).ToList(), "Id", "Name", websiteNavigation.ParentId);
             ViewBag.contentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, websiteNavigation.SiteID), "Id", "Title", websiteNavigation.ContentPageId);
-
+            SiteName(websiteNavigation.SiteID);
             return View(websiteNavigation);
         }
 
@@ -266,6 +271,7 @@ namespace WMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(WebsiteNavigation websiteNavigation, string ProductsWithIds, IEnumerable<DevExpress.Web.UploadedFile> ImageDefault, IEnumerable<DevExpress.Web.UploadedFile> HoverImage, int SiteID)
         {
+           
             if (websiteNavigation != null)
             {
                 websiteNavigation.SelectedProductIds = ProductsWithIds;
@@ -313,6 +319,7 @@ namespace WMS.Controllers
                 Session["UploadTenantWebsiteNav"] = null;
                 return RedirectToAction("Index", new { SiteId = SiteID });
             }
+            SiteName(websiteNavigation.SiteID);
             ViewBag.ControllerName = "WebsiteNavigations";
             ViewBag.ParentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, websiteNavigation.SiteID).ToList(), "Id", "Name", websiteNavigation.ParentId);
             ViewBag.contentId = new SelectList(_tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, websiteNavigation.SiteID), "Id", "Title", websiteNavigation.ContentPageId);

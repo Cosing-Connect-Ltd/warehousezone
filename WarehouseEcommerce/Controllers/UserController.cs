@@ -6,6 +6,7 @@ using Ganedata.Core.Entities.Helpers;
 using Ganedata.Core.Services;
 using System.Net;
 using System.Web.Mvc;
+using WarehouseEcommerce.Helpers;
 using WarehouseEcommerce.ViewModels;
 
 namespace WarehouseEcommerce.Controllers
@@ -17,8 +18,9 @@ namespace WarehouseEcommerce.Controllers
         private readonly ITenantsServices _tenantServices;
         private readonly IAccountServices _accountServices;
         private readonly IGaneConfigurationsHelper _configurationsHelper;
+        private readonly ITenantWebsiteService _tenantWebsiteService;
         string baseUrl = "";
-        public UserController(ICoreOrderService orderService, IMapper mapper, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IUserService userService, IActivityServices activityServices, ITenantsServices tenantServices, IGaneConfigurationsHelper configurationsHelper)
+        public UserController(ICoreOrderService orderService, IMapper mapper, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IUserService userService, IActivityServices activityServices, ITenantsServices tenantServices, IGaneConfigurationsHelper configurationsHelper,ITenantWebsiteService tenantWebsiteService)
             : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices)
         {
             _userService = userService;
@@ -26,6 +28,7 @@ namespace WarehouseEcommerce.Controllers
             _tenantServices = tenantServices;
             _accountServices = accountServices;
             _configurationsHelper = configurationsHelper;
+            _tenantWebsiteService = tenantWebsiteService;
 
         }
 
@@ -226,6 +229,8 @@ namespace WarehouseEcommerce.Controllers
                     // store login id into session
                     AuthUserLogin Logins = new AuthUserLogin();
                     Session["CurrentUserLogin"] = _userService.SaveAuthUserLogin(Logins, user.UserId, user.TenantId);
+                    _tenantWebsiteService.AddOrUpdateCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, GaneCartItemsSessionHelper.GetCartItemsSession());
+                    _tenantWebsiteService.AddOrUpdateWishListItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, GaneWishListItemsSessionHelper.GetWishListItemsSession());
                     if (PlaceOrder.HasValue)
                     {
                         return Json(new { status, AccountId = user.AccountId }, JsonRequestBehavior.AllowGet);

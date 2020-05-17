@@ -43,7 +43,7 @@
     }
 </script>
 
-<h2><span> Add Website Slider</span></h2>
+<h2><span> Add Website Slider (@ViewBag.SiteName)</span></h2>
 @Html.Hidden("websiteSlider", true)
 @Html.HiddenFor(model=> model.SiteID,(int)ViewBag.SiteId)
 @using (Html.BeginForm())

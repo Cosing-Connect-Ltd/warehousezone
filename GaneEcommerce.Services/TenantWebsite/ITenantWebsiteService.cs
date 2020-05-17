@@ -11,6 +11,7 @@ namespace Ganedata.Core.Services
     {
         // TenantWebsite//
         IEnumerable<TenantWebsites> GetAllValidTenantWebSite(int TenantId);
+        TenantWebsites GetTenantWebSiteBySiteId(int SiteId);
         TenantWebsites CreateOrUpdateTenantWebsite(TenantWebsites tenantWebsites, int UserId, int TenantId);
         bool RemoveTenantWebsite(int siteID, int UserId);
 
@@ -89,6 +90,22 @@ namespace Ganedata.Core.Services
         Dictionary<string, List<ProductAttributeValues>> GetAllValidProductAttributeValuesByProductIds(IQueryable<ProductMaster> product);
         List<Tuple<string, string>> AllPriceListAgainstGroupAndDept(IQueryable<ProductMaster> productMasters);
         IEnumerable<ProductManufacturer> GetAllValidProductManufacturerGroupAndDeptByName(IQueryable<ProductMaster> productMasters);
-        string CategoryAndSubCategoryBreedCrumb(int siteId, int? productId=null, string Category="", string SubCategory="");
+        string CategoryAndSubCategoryBreedCrumb(int siteId, int? productId = null, string Category = "", string SubCategory = "");
+
+        // WebsiteCartAndWishlist
+
+        IEnumerable<WebsiteCartItem> GetAllValidCartItemsList(int siteId, int UserId);
+        IEnumerable<WebsiteWishListItem> GetAllValidWishListItemsList(int siteId, int UserId);
+
+        int AddOrUpdateCartItems(int SiteId, int UserId, int TenantId, List<OrderDetailSessionViewModel> orderDetail);
+
+        int AddOrUpdateWishListItems(int SiteId, int UserId, int TenantId, List<OrderDetailSessionViewModel> orderDetails);
+
+        int RemoveCartItem(int ProductId, int SiteId, int UserId);
+        int RemoveWishListItem(int ProductId, int SiteId, int UserId);
+
+
+
+
     }
 }

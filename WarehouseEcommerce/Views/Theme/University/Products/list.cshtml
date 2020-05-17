@@ -110,24 +110,27 @@
                                     <h3 class="prdName">@item.Name</h3>
                                     <div class="foot">
                                         <span class="prd_amnt">@ViewBag.CurrencySymbol @item.SellPrice</span>
-                                        <ul class="icolist">
-                                            @if (@item.SellPrice > 0 && @item.SellPrice.HasValue && @item.PercentMargin > 0)
-                                            {
-                                                <li>
-                                                    <a href="javascript:;" onclick="AddToCart(@item.ProductId)"><i class="icon-shopping-cart"></i></a>
-                                                </li>
-                                            }
-                                            else
-                                            {
-                                                <li>
-                                                    <a href="javascript:;"><i class="icon-shopping-cart"></i></a>
-                                                </li>
+                                        @if (!item.GroupedProduct && !item.Kit)
+                                        {
+                                            <ul class="icolist">
+                                                @if (@item.SellPrice > 0 && @item.SellPrice.HasValue && @item.PercentMargin > 0)
+                                                {
+                                                    <li>
+                                                        <a href="javascript:;" onclick="AddToCart(@item.ProductId)"><i class="icon-shopping-cart"></i></a>
+                                                    </li>
+                                                }
+                                                else
+                                                {
+                                                    <li>
+                                                        <a href="javascript:;"><i class="icon-shopping-cart"></i></a>
+                                                    </li>
 
-                                            }
-                                            <li>
-                                                <a href=""><i class="icon-love"></i></a>
-                                            </li>
-                                        </ul>
+                                                }
+                                                <li>
+                                                    <a href="javascript:;" onclick="AddWishListItem(@item.ProductId)"><i class="icon-love list-icon" style="color:@(item.WebsiteWishListItems.FirstOrDefault()==null?"black":"#f33655")"></i></a>
+                                                </li>
+                                            </ul>
+                                        }
                                     </div>
                                 </div>
                             </div>

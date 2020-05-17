@@ -22,9 +22,10 @@ namespace WarehouseEcommerce.Controllers
         private readonly IProductServices _productServices;
         private readonly IProductLookupService _productlookupServices;
         private readonly ITenantWebsiteService _tenantWebsiteService;
+        private readonly IProductPriceService _productPriceService;
         public HomeController(ICoreOrderService orderService, IMapper mapper, IProductLookupService productlookupServices, IProductServices productServices, IPropertyService propertyService,
             IAccountServices accountServices, ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IUserService userService, IActivityServices activityServices,
-            ITenantsServices tenantServices, ITenantWebsiteService tenantWebsiteService)
+            ITenantsServices tenantServices, ITenantWebsiteService tenantWebsiteService, IProductPriceService productPriceService)
             : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices)
         {
             _lookupServices = lookupServices;
@@ -34,6 +35,7 @@ namespace WarehouseEcommerce.Controllers
             _productServices = productServices;
             _productlookupServices = productlookupServices;
             _tenantWebsiteService = tenantWebsiteService;
+            _productPriceService = productPriceService;
 
         }
 
@@ -49,13 +51,13 @@ namespace WarehouseEcommerce.Controllers
             return View();
         }
 
-        public ActionResult page(string pageUrl, string BlogDetail=null)
+        public ActionResult page(string pageUrl, string BlogDetail = null)
         {
             ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
             ViewBag.BlogDetail = BlogDetail;
             var content = _tenantWebsiteService.GetWebsiteContentByUrl(CurrentTenantWebsite.SiteID, pageUrl);
-            ViewBag.BlogList = _tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId,CurrentTenantWebsite.SiteID).Where(u=>u.Id != content.Id).OrderByDescending(u=>u.DateCreated).Take(7).ToList();
-           
+            ViewBag.BlogList = _tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, CurrentTenantWebsite.SiteID).Where(u => u.Id != content.Id).OrderByDescending(u => u.DateCreated).Take(7).ToList();
+
             return View(content);
         }
 
@@ -74,10 +76,7 @@ namespace WarehouseEcommerce.Controllers
 
         public PartialViewResult _TopHeaderPartial()
         {
-            caCurrent caUser = new caCurrent();
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
-            ViewBag.CartItemCount = GaneCartItemsSessionHelper.GetCartItemsSession().Count;
-            ViewBag.CartItems = GaneCartItemsSessionHelper.GetCartItemsSession().ToList();
             ViewBag.ProductGroups = new SelectList(_lookupServices.GetAllValidProductGroups((CurrentTenantId), 12), "ProductGroupId", "ProductGroup");
             ViewBag.UserName = CurrentUser.UserFirstName + " " + CurrentUser.UserLastName;
             ViewBag.Symbol = currencyyDetail.Symbol;
@@ -86,10 +85,8 @@ namespace WarehouseEcommerce.Controllers
         }
         public PartialViewResult _UserMenuPartial()
         {
-            caCurrent caUser = new caCurrent();
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
-            ViewBag.CartItemCount = GaneCartItemsSessionHelper.GetCartItemsSession().Count;
-            ViewBag.CartItems = GaneCartItemsSessionHelper.GetCartItemsSession().ToList();
+           
             ViewBag.ProductGroups = new SelectList(_lookupServices.GetAllValidProductGroups((CurrentTenantId), 12), "ProductGroupId", "ProductGroup");
             ViewBag.UserName = CurrentUser.UserFirstName + " " + CurrentUser.UserLastName;
             ViewBag.Symbol = currencyyDetail.Symbol;
@@ -98,10 +95,7 @@ namespace WarehouseEcommerce.Controllers
         }
         public PartialViewResult _CartMenuPartial()
         {
-            caCurrent caUser = new caCurrent();
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
-            ViewBag.CartItemCount = GaneCartItemsSessionHelper.GetCartItemsSession().Count;
-            ViewBag.CartItems = GaneCartItemsSessionHelper.GetCartItemsSession().ToList();
             ViewBag.ProductGroups = new SelectList(_lookupServices.GetAllValidProductGroups((CurrentTenantId), 12), "ProductGroupId", "ProductGroup");
             ViewBag.UserName = CurrentUser.UserFirstName + " " + CurrentUser.UserLastName;
             ViewBag.Symbol = currencyyDetail.Symbol;
@@ -120,10 +114,11 @@ namespace WarehouseEcommerce.Controllers
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             var specialProduct = new ProductDetailViewModel
             {
-                productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID,CurrentTenantId, 6, SpecialProduct: true).ToList(),
+                productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID, CurrentTenantId, 6, SpecialProduct: true).ToList(),
 
             };
-            specialProduct.productMasterList.ForEach(u => u.SellPrice = (Math.Round((u.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0), 2)));
+
+            specialProduct.productMasterList.ForEach(u => u.SellPrice = (Math.Round((_productPriceService.GetProductPriceThresholdByAccountId(u.ProductId, null).SellPrice) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value), 2)));
             specialProduct.CurrencySign = currencyyDetail.Symbol;
             if (specialProduct.productMasterList != null)
             {
@@ -138,7 +133,7 @@ namespace WarehouseEcommerce.Controllers
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             var TopProduct = new ProductDetailViewModel
             {
-                productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID,(CurrentTenantId), 12, TopProduct: true).ToList(),
+                productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID, (CurrentTenantId), 12, TopProduct: true).ToList(),
             };
             TopProduct.productMasterList.ForEach(u => u.SellPrice = (Math.Round(((u.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0)), 2)));
             TopProduct.CurrencySign = currencyyDetail.Symbol;
@@ -155,7 +150,7 @@ namespace WarehouseEcommerce.Controllers
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             var onsale = new ProductDetailViewModel
             {
-                productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID,CurrentTenantId, 6, OnSaleProduct: true).ToList(),
+                productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID, CurrentTenantId, 6, OnSaleProduct: true).ToList(),
             };
             onsale.productMasterList.ForEach(u => u.SellPrice = (Math.Round((u.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0), 2)));
             onsale.CurrencySign = currencyyDetail.Symbol;
@@ -170,10 +165,10 @@ namespace WarehouseEcommerce.Controllers
 
         public PartialViewResult _TopCategoryPartial()
         {
-            var TopCategory  = _tenantWebsiteService.GetAllValidWebsiteNavigationCategory(CurrentTenantId, CurrentTenantWebsite.SiteID).OrderBy(u => u.SortOrder).Take(6).ToList();
+            var TopCategory = _tenantWebsiteService.GetAllValidWebsiteNavigationCategory(CurrentTenantId, CurrentTenantWebsite.SiteID).OrderBy(u => u.SortOrder).Take(6).ToList();
             return PartialView(TopCategory);
         }
-
+      
 
 
         public PartialViewResult _BestSellerPartial()
@@ -208,7 +203,7 @@ namespace WarehouseEcommerce.Controllers
         }
         public PartialViewResult _TopProductBannerPartial()
         {
-            var categories = _tenantWebsiteService.GetAllValidWebsiteNavigationCategory(CurrentTenantId, CurrentTenantWebsite.SiteID).OrderBy(u=>u.SortOrder).Take(4).ToList();
+            var categories = _tenantWebsiteService.GetAllValidWebsiteNavigationCategory(CurrentTenantId, CurrentTenantWebsite.SiteID).OrderBy(u => u.SortOrder).Take(4).ToList();
             return PartialView(categories);
 
         }
@@ -219,11 +214,10 @@ namespace WarehouseEcommerce.Controllers
 
         public PartialViewResult _HorizontalNavbarPartial()
         {
-            var navigation = _tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, CurrentTenantWebsite.SiteID).Where(u=>u.ShowInNavigation==true).ToList();
+            var navigation = _tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, CurrentTenantWebsite.SiteID).Where(u => u.ShowInNavigation == true).ToList();
             ViewBag.UserName = CurrentUser.UserFirstName + " " + CurrentUser.UserLastName;
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
-            ViewBag.CartItemCount = GaneCartItemsSessionHelper.GetCartItemsSession().Count;
-            ViewBag.CartItems = GaneCartItemsSessionHelper.GetCartItemsSession().ToList();
+           
             ViewBag.ProductGroups = new SelectList(_lookupServices.GetAllValidProductGroups((CurrentTenantId), 12), "ProductGroupId", "ProductGroup");
             ViewBag.Symbol = currencyyDetail.Symbol;
             ViewBag.CurrencyName = currencyyDetail.CurrencyName;
@@ -232,7 +226,7 @@ namespace WarehouseEcommerce.Controllers
 
         public PartialViewResult _BlogPartial()
         {
-           var data= _tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, CurrentTenantWebsite.SiteID).OrderByDescending(u=>u.DateCreated).Where(u=>u.Type==ContentType.post).Take(3).ToList();
+            var data = _tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, CurrentTenantWebsite.SiteID).OrderByDescending(u => u.DateCreated).Where(u => u.Type == ContentType.post).Take(3).ToList();
             return PartialView(data);
         }
 
@@ -248,7 +242,7 @@ namespace WarehouseEcommerce.Controllers
             string path = GetPathAgainstProductId(productId, status);
             return Content(path);
         }
-        public PartialViewResult _FooterPartialArea(bool university=false)
+        public PartialViewResult _FooterPartialArea(bool university = false)
         {
             ViewBag.FooterNavigation = _tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, CurrentTenantWebsite.SiteID).Where(u => u.ShowInFooter == true && u.Type == WebsiteNavigationType.Content).ToList();
             if (university)
@@ -256,7 +250,7 @@ namespace WarehouseEcommerce.Controllers
                 var data = _tenantWebsiteService.GetAllValidTenantWebSite(CurrentTenantId).FirstOrDefault(u => u.SiteID == CurrentTenantWebsite.SiteID);
                 return PartialView(data);
             }
-          
+
             var productManufacturer = _lookupServices.GetAllValidProductManufacturer(CurrentTenantId);
             return PartialView(productManufacturer.ToList());
         }
@@ -321,7 +315,7 @@ namespace WarehouseEcommerce.Controllers
 
         public ActionResult Blog()
         {
-            var data = _tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, CurrentTenantWebsite.SiteID).Where(u=> u.Type == ContentType.post).OrderByDescending(u => u.DateCreated).Take(12).ToList();
+            var data = _tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, CurrentTenantWebsite.SiteID).Where(u => u.Type == ContentType.post).OrderByDescending(u => u.DateCreated).Take(12).ToList();
             return View(data);
         }
 

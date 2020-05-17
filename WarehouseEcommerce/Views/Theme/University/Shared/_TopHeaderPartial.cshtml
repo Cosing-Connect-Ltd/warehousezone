@@ -52,15 +52,17 @@
                 else
                 { <i class="ico icon-user" title="@ViewBag.UserName"></i>}
             </li>
-            <li>
-                <a href="">
+            <li class="cartIcoWrap sir">
+                <a href="@Url.Action("WishList","Products")">
                     <i class="ico icon-love"></i>
+                    
+                    <span id="WishList-total">@(ViewBag.WishListItemCount ?? "")</span>
                 </a>
             </li>
             <li class="cartIcoWrap sir">
                 <a href="@Url.Action("AddToCart","Products")">
                     <i class="ico icon-shopping-cart"></i>
-                    <span id="cart-total">@(ViewBag.CartItemCount??"")</span>
+                    <span id="cart-total">@(ViewBag.CartItemCount ?? "")</span>
                 </a>
             </li>
             <li class="sir" id="nb_res_navTrigger">

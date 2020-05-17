@@ -40,6 +40,7 @@ namespace WMS.Controllers
         public ActionResult Index(int SiteId)
         {
             ViewBag.SiteId = SiteId;
+            SiteName(SiteId);
             Session["UploadWebsiteContentPage"] = null;
             return View();
         }
@@ -58,6 +59,7 @@ namespace WMS.Controllers
             Session["UploadWebsiteContentPage"] = null;
             ViewBag.ControllerName = "WebsiteContentPages";
             ViewBag.SiteId = SiteId;
+            SiteName(SiteId);
             var websitecontentPages = new WebsiteContentPages();
             return View(websitecontentPages);
         }
@@ -70,6 +72,7 @@ namespace WMS.Controllers
         public ActionResult Create(WebsiteContentPages websiteContentPages, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
         {
             ViewBag.ControllerName = "WebsiteContentPages";
+            SiteName(websiteContentPages.SiteID);
             if (ModelState.IsValid)
             {
                 var files = UploadControl;
@@ -116,6 +119,7 @@ namespace WMS.Controllers
                 Session["UploadWebsiteContentPage"] = files;
                 ViewBag.Files = files;
             }
+            SiteName(websiteContentPages.SiteID);
             return View(websiteContentPages);
         }
 
@@ -126,6 +130,7 @@ namespace WMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit( WebsiteContentPages websiteContentPages, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
         {
+         
             ViewBag.ControllerName = "WebsiteContentPages";
             if (ModelState.IsValid)
             {
@@ -145,7 +150,7 @@ namespace WMS.Controllers
                 var contentPages=_tenantWebsiteService.CreateOrUpdateWebsiteContentPages(websiteContentPages, CurrentUserId, CurrentTenantId);
                 return RedirectToAction("Index",new { SiteId= contentPages.SiteID });
             }
-
+            SiteName(websiteContentPages.SiteID);
             ViewBag.SiteID = new SelectList(_tenantWebsiteService.GetAllValidTenantWebSite(CurrentTenantId), "SiteID", "SiteName", websiteContentPages.SiteID);
             return View(websiteContentPages);
         }

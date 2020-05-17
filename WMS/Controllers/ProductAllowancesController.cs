@@ -38,6 +38,7 @@ namespace WMS.Controllers
         public ActionResult Index(int SiteId)
         {
             ViewBag.SiteId = SiteId;
+            SiteName(SiteId);
             return View();
         }
 
@@ -52,6 +53,7 @@ namespace WMS.Controllers
         public ActionResult Create(int SiteId)
         {
             ViewBag.SiteId = SiteId;
+            SiteName(SiteId);
             ViewBag.RolesId = new SelectList(_RolesServices.GetAllRoles(CurrentTenantId), "Id", "RoleName");
             ViewBag.AllowanceGroupId = new SelectList(_tenantWebsiteService.GetAllValidProductAllowanceGroups(CurrentTenantId,SiteId), "Id", "Name");
             return View();
@@ -69,6 +71,7 @@ namespace WMS.Controllers
                 _tenantWebsiteService.CreateOrUpdateProductAllowance(productAllowance, string.Empty, CurrentUserId, CurrentTenantId);
                 return RedirectToAction("Index");
             }
+            SiteName(productAllowance.SiteID);
             ViewBag.RolesId = new SelectList(_RolesServices.GetAllRoles(CurrentTenantId), "Id", "RoleName", productAllowance.RolesId);
             ViewBag.AllowanceGroupId = new SelectList(_tenantWebsiteService.GetAllValidProductAllowanceGroups(CurrentTenantId, productAllowance.SiteID), "Id", "Name", productAllowance.AllowanceGroupId);
 
@@ -91,6 +94,7 @@ namespace WMS.Controllers
             ViewBag.RolesId = new SelectList(_RolesServices.GetAllRoles(CurrentTenantId), "Id", "RoleName", productAllowance.RolesId);
             ViewBag.AllowanceGroupId = new SelectList(_tenantWebsiteService.GetAllValidProductAllowanceGroups(CurrentTenantId, productAllowance.SiteID), "Id", "Name", productAllowance.AllowanceGroupId);
             ViewBag.productId = productAllowance.ProductId;
+            SiteName(productAllowance.SiteID);
             return View(productAllowance);
         }
 
@@ -106,6 +110,7 @@ namespace WMS.Controllers
                 _tenantWebsiteService.CreateOrUpdateProductAllowance(productAllowance,Reason, CurrentUserId, CurrentTenantId);
                 return RedirectToAction("Index");
             }
+            SiteName(productAllowance.SiteID);
             ViewBag.RolesId = new SelectList(_RolesServices.GetAllRoles(CurrentTenantId), "Id", "RoleName", productAllowance.RolesId);
             ViewBag.AllowanceGroupId = new SelectList(_tenantWebsiteService.GetAllValidProductAllowanceGroups(CurrentTenantId, productAllowance.SiteID), "Id", "Name", productAllowance.AllowanceGroupId);
 

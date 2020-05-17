@@ -835,6 +835,10 @@
     <Compile Include="Migrations\202005151518010_fields-size-added-to-tooltips-table.designer.cs">
       <DependentUpon>202005151518010_fields-size-added-to-tooltips-table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005172319586_websitecartandwishlist-Table-Added.cs" />
+    <Compile Include="Migrations\202005172319586_websitecartandwishlist-Table-Added.designer.cs">
+      <DependentUpon>202005172319586_websitecartandwishlist-Table-Added.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1781,6 +1785,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005151518010_fields-size-added-to-tooltips-table.resx">
       <DependentUpon>202005151518010_fields-size-added-to-tooltips-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005172319586_websitecartandwishlist-Table-Added.resx">
+      <DependentUpon>202005172319586_websitecartandwishlist-Table-Added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

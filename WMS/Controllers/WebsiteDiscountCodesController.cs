@@ -33,6 +33,7 @@ namespace WMS.Controllers
         public ActionResult Index(int SiteId)
         {
             ViewBag.SiteId = SiteId;
+            SiteName(SiteId);
             return View();
         }
 
@@ -105,6 +106,7 @@ namespace WMS.Controllers
         public ActionResult Create(int SiteId)
         {
             ViewBag.siteid = SiteId;
+            SiteName(SiteId);
             return View();
         }
 
@@ -119,6 +121,7 @@ namespace WMS.Controllers
                 return RedirectToAction("Index", new { SiteId = websiteNav.SiteID });
 
             }
+            SiteName(websiteDiscountCodes.SiteID);
             ViewBag.siteid = websiteDiscountCodes.SiteID;
 
             return View(websiteDiscountCodes);
@@ -127,6 +130,7 @@ namespace WMS.Controllers
         public ActionResult Edit(int? id)
         {
             var data = _tenantWebsiteService.GetWebsiteDiscountCodesById(id ?? 0);
+            SiteName(data.SiteID);
             return View(data);
         }
 
@@ -141,7 +145,7 @@ namespace WMS.Controllers
                 return RedirectToAction("Index", new { SiteId = websiteDiscountCodes.SiteID });
 
             }
-
+            SiteName(websiteDiscountCodes.SiteID);
             return View(websiteDiscountCodes);
         }
 

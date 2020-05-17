@@ -37,7 +37,7 @@ namespace WMS.Controllers
         public ActionResult Index(int SiteId)
         {
             ViewBag.SiteId = SiteId;
-           
+            SiteName(SiteId);
             return View();
         }
 
@@ -98,6 +98,7 @@ namespace WMS.Controllers
         {
             ViewBag.CountryId = new SelectList(_lookupServices.GetAllGlobalCountries(), "CountryID", "CountryName");
             ViewBag.SiteID = SiteId;
+            SiteName(SiteId);
             return View();
         }
 
@@ -113,7 +114,7 @@ namespace WMS.Controllers
                 var shippingRules=_tenantWebsiteService.CreateOrUpdateWebsiteShippingRules(websiteShippingRules, CurrentUserId, CurrentTenantId);
                 return RedirectToAction("Index", new { SiteId= shippingRules.SiteID });
             }
-
+            SiteName(websiteShippingRules.SiteID);
             ViewBag.CountryId = new SelectList(_lookupServices.GetAllGlobalCountries(), "CountryID", "CountryName", websiteShippingRules.CountryId);
             return View(websiteShippingRules);
         }
@@ -130,6 +131,7 @@ namespace WMS.Controllers
             {
                 return HttpNotFound();
             }
+            SiteName(websiteShippingRules.SiteID);
             ViewBag.CountryId = new SelectList(_lookupServices.GetAllGlobalCountries(), "CountryID", "CountryName", websiteShippingRules.CountryId);
             return View(websiteShippingRules);
         }
@@ -146,6 +148,7 @@ namespace WMS.Controllers
                 var shippingRules = _tenantWebsiteService.CreateOrUpdateWebsiteShippingRules(websiteShippingRules, CurrentUserId, CurrentTenantId);
                 return RedirectToAction("Index", new { SiteId = shippingRules.SiteID });
             }
+            SiteName(websiteShippingRules.SiteID);
             ViewBag.CountryId = new SelectList(_lookupServices.GetAllGlobalCountries(), "CountryID", "CountryName", websiteShippingRules.CountryId);
             return View(websiteShippingRules);
         }

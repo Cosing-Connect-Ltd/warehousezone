@@ -16,7 +16,7 @@ namespace WMS.Controllers
         private readonly ILookupServices _LookupService;
         private readonly ITenantWebsiteService _tenantWebsiteService;
 
-        public ProductsWebsitesMapsController(ICoreOrderService orderService, IPropertyService propertyService, ITenantWebsiteService tenantWebsiteService, IAccountServices accountServices, ILookupServices lookupServices, IProductLookupService productLookupService)
+        public ProductsWebsitesMapsController(ICoreOrderService orderService, IPropertyService propertyService,  IAccountServices accountServices, ILookupServices lookupServices, IProductLookupService productLookupService, ITenantWebsiteService tenantWebsiteService)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
             _productLookupService = productLookupService;
@@ -28,6 +28,7 @@ namespace WMS.Controllers
         public ActionResult Index(int SiteId)
         {
             ViewBag.SiteId = SiteId;
+            SiteName(SiteId);
             return PartialView();
         }
 

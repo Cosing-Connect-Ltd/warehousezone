@@ -23,6 +23,10 @@ namespace Ganedata.Core.Services
         {
             return _currentDbContext.TenantWebsites.Where(u => u.IsDeleted != true && u.TenantId == TenantId);
         }
+        public TenantWebsites GetTenantWebSiteBySiteId(int SiteId)
+        {
+            return _currentDbContext.TenantWebsites.FirstOrDefault(u => u.IsDeleted != true && u.SiteID == SiteId && u.IsActive == true);
+        }
         public TenantWebsites CreateOrUpdateTenantWebsite(TenantWebsites tenantWebsites, int UserId, int TenantId)
         {
             tenantWebsites.TenantId = TenantId;
@@ -815,7 +819,7 @@ namespace Ganedata.Core.Services
             ProductName = ProductName?.Trim();
             int? categoryId = _currentDbContext.WebsiteNavigations.FirstOrDefault(u => u.Name == category && u.IsDeleted != true)?.Id;
             //List<int> websiteProductIds = _currentDbContext.ProductsWebsitesMap.Where(x => x.SiteID == siteId && x.IsActive == true && x.IsDeleted != true).Select(a => a.ProductId).ToList();
-            List<int> productIds = _currentDbContext.ProductsNavigationMaps.Where(u => u.NavigationId == categoryId && u.IsDeleted != true && u.IsActive==true).Select(x => x.ProductsWebsitesMap.ProductId).ToList();
+            List<int> productIds = _currentDbContext.ProductsNavigationMaps.Where(u => u.NavigationId == categoryId && u.IsDeleted != true && u.IsActive == true).Select(x => x.ProductsWebsitesMap.ProductId).ToList();
             var products = _currentDbContext.ProductsWebsitesMap.Where(a => a.IsActive == true && a.IsDeleted != true && a.SiteID == siteId).Select(u => u.ProductMaster);
             return products.Where(a => (productIds.Contains(a.ProductId) || productIds.Count <= 0) &&
                 (string.IsNullOrEmpty(ProductName) || (a.Name.Contains(ProductName) || a.SKUCode.Contains(ProductName) || a.Description.Contains(ProductName))));
@@ -881,6 +885,112 @@ namespace Ganedata.Core.Services
             }
             int? naviagtionId = _currentDbContext.ProductsNavigationMaps.FirstOrDefault(u => u.ProductWebsiteMapId == naviagtionMapId)?.NavigationId;
             return _currentDbContext.WebsiteNavigations.FirstOrDefault(u => (u.Id == naviagtionId || !naviagtionId.HasValue) && (string.IsNullOrEmpty(Category) || u.Name == Category)).Name;
+        }
+
+        // WebsiteCartAndWishlist
+
+        public IEnumerable<WebsiteCartItem> GetAllValidCartItemsList(int siteId, int UserId)
+        {
+            return _currentDbContext.WebsiteCartItems.Where(u => u.SiteID == siteId && u.UserId == UserId);
+        }
+        public IEnumerable<WebsiteWishListItem> GetAllValidWishListItemsList(int siteId, int UserId)
+        {
+            return _currentDbContext.WebsiteWishListItems.Where(u => u.SiteID == siteId && u.UserId == UserId);
+        }
+
+        public int AddOrUpdateCartItems(int SiteId, int UserId, int TenantId, List<OrderDetailSessionViewModel> orderDetails)
+        {
+            foreach (var orderDetail in orderDetails)
+            {
+
+
+                var cartProduct = _currentDbContext.WebsiteCartItems.FirstOrDefault(u => u.ProductId == orderDetail.ProductId && u.SiteID == SiteId && u.UserId == UserId);
+                if (cartProduct == null)
+                {
+                    WebsiteCartItem cartItem = new WebsiteCartItem();
+                    cartItem.ProductId = orderDetail.ProductId;
+                    cartItem.Quantity = orderDetail.Qty;
+                    cartItem.UnitPrice = orderDetail.Price;
+                    cartItem.UserId = UserId;
+                    cartItem.TenantId = TenantId;
+                    cartItem.UpdateCreatedInfo(UserId);
+                    _currentDbContext.WebsiteCartItems.Add(cartItem);
+
+                }
+                else
+                {
+                    cartProduct.IsDeleted = false;
+                    cartProduct.Quantity = orderDetail.Qty;
+                    cartProduct.UpdateUpdatedInfo(UserId);
+                    _currentDbContext.Entry(cartProduct).State = System.Data.Entity.EntityState.Modified;
+
+                }
+            }
+            _currentDbContext.SaveChanges();
+            return GetAllValidCartItemsList(SiteId, UserId).Count();
+
+
+        }
+
+        public int AddOrUpdateWishListItems(int SiteId, int UserId, int TenantId, List<OrderDetailSessionViewModel> orderDetails)
+        {
+            foreach (var orderDetail in orderDetails)
+            {
+                var wishListProduct = _currentDbContext.WebsiteWishListItems.FirstOrDefault(u => u.ProductId == orderDetail.ProductId && u.SiteID == SiteId && u.UserId == UserId);
+                if (wishListProduct == null)
+                {
+                    WebsiteWishListItem WishListItem = new WebsiteWishListItem();
+                    WishListItem.ProductId = orderDetail.ProductId;
+                    WishListItem.IsNotification = orderDetail.isNotfication ?? false;
+                    WishListItem.SiteID = SiteId;
+                    WishListItem.UserId = UserId;
+                    WishListItem.TenantId = TenantId;
+                    WishListItem.UpdateCreatedInfo(UserId);
+                    _currentDbContext.WebsiteWishListItems.Add(WishListItem);
+                    _currentDbContext.SaveChanges();
+                }
+                else
+                {
+                    wishListProduct.IsDeleted = false;
+                    wishListProduct.IsNotification = orderDetail.isNotfication ?? false;
+                    wishListProduct.UpdateUpdatedInfo(UserId);
+                    _currentDbContext.Entry(wishListProduct).State = System.Data.Entity.EntityState.Modified;
+                    _currentDbContext.SaveChanges();
+                }
+            }
+            return GetAllValidWishListItemsList(SiteId, UserId).Count();
+
+
+        }
+
+
+        public int RemoveCartItem(int ProductId, int SiteId, int UserId)
+        {
+            var cartProduct = _currentDbContext.WebsiteCartItems.FirstOrDefault(u => u.ProductId == ProductId && u.SiteID == SiteId && u.UserId == UserId);
+            if (cartProduct == null)
+            {
+                cartProduct.IsDeleted = true;
+                cartProduct.UpdateUpdatedInfo(UserId);
+                _currentDbContext.Entry(cartProduct).State = System.Data.Entity.EntityState.Modified;
+                _currentDbContext.SaveChanges();
+
+            }
+            return GetAllValidCartItemsList(SiteId, UserId).Count();
+
+        }
+
+        public int RemoveWishListItem(int ProductId, int SiteId, int UserId)
+        {
+            var wishListProduct = _currentDbContext.WebsiteWishListItems.FirstOrDefault(u => u.ProductId == ProductId && u.SiteID == SiteId && u.UserId == UserId);
+            if (wishListProduct == null)
+            {
+                wishListProduct.IsDeleted = true;
+                wishListProduct.UpdateUpdatedInfo(UserId);
+                _currentDbContext.Entry(wishListProduct).State = System.Data.Entity.EntityState.Modified;
+                _currentDbContext.SaveChanges();
+
+            }
+            return GetAllValidWishListItemsList(SiteId, UserId).Count();
         }
 
     }

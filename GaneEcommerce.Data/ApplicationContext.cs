@@ -209,6 +209,9 @@ namespace Ganedata.Core.Data
         public DbSet<ProductAllowanceGroup> ProductAllowanceGroup { get; set; }
         public DbSet<ProductAllowanceGroupMap> ProductAllowanceGroupMap { get; set; }
         public DbSet<Tooltip> Tooltips { get; set; }
+        public DbSet<WebsiteCartItem> WebsiteCartItems { get; set; }
+        public DbSet<WebsiteWishListItem> WebsiteWishListItems { get; set; }
+
 
         //#end region
     }

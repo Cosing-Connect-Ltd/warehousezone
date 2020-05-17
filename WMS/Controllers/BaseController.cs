@@ -17,6 +17,7 @@ namespace WMS.Controllers
         protected readonly IPropertyService PropertyService;
         protected readonly IAccountServices AccountServices;
         protected readonly ILookupServices LookupServices;
+       
 
         public BaseController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices)
         {
@@ -24,6 +25,7 @@ namespace WMS.Controllers
             PropertyService = propertyService;
             AccountServices = accountServices;
             LookupServices = lookupServices;
+         
 
         }
 
@@ -441,6 +443,11 @@ namespace WMS.Controllers
             }
 
 
+        }
+        public void SiteName(int SiteId)
+        {
+            var TenantwebsiteService= DependencyResolver.Current.GetService<ITenantWebsiteService>();
+            ViewBag.SiteName = TenantwebsiteService.GetTenantWebSiteBySiteId(SiteId).SiteName;
         }
 
         protected override void Dispose(bool disposing)

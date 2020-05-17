@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css">
     <link rel="icon" href="~/Content/Theme/University/app/images/favico.ico" />
     <link href="~/Content/Theme/University/app/css/owl.carousel.min.css" rel="stylesheet" />
-
+    <link rel="stylesheet" href="~/Content/Theme/University/app/css/jquery-confirm.min.css">
 
 
     <script type="text/javascript">
@@ -43,27 +43,27 @@
             </div>
         </div>
     </div>
-    
-    
-    
+
+
+
     <div>
 
         @Html.Partial("_LoginRegisterPartial")
         @Html.Action("_TopHeaderPartial", "Home")
         @*@if (ViewBag.cart == null)
-        {
-            <div id="common-home" class="container">
+            {
+                <div id="common-home" class="container">
 
-                <div class="row">
-                    @if (ViewBag.cart == null)
-                    {
-                        @Html.Action("_VerticalNavBarPartial", "Home")
-                    }
-                    @RenderBody()
+                    <div class="row">
+                        @if (ViewBag.cart == null)
+                        {
+                            @Html.Action("_VerticalNavBarPartial", "Home")
+                        }
+                        @RenderBody()
+                    </div>
+
                 </div>
-
-            </div>
-        }*@
+            }*@
         <div class="pl-0 pr-0  uni-pages-pt uni-pages-main">
             @Scripts.Render("~/bundles/jquery")
             <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
@@ -77,18 +77,19 @@
 
         </div>
 
-    @Html.Action("_FooterPartialArea", "Home", new { university = true })
-    @*@Scripts.Render("~/bundles/modernizr")*@
+        @Html.Action("_FooterPartialArea", "Home", new { university = true })
+        @*@Scripts.Render("~/bundles/modernizr")*@
 
-    @RenderSection("scripts", required: false)
-    <script src="~/Scripts/javascript-searchproduct.js"></script>
-    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-    <script src="~/Content/Theme/University/app/js/owl.carousel.min.js"></script>
-    <script src="~/Content/Theme/University/app/js/nb_skew_carousle.js"></script>
-    <script src="~/Content/Theme/University/app/js/nb_custom_script.js"></script>
-    <script src="~/Content/Theme/University/app/js/jquery.elevatezoom.js"></script>
+        @RenderSection("scripts", required: false)
+        <script src="~/Scripts/javascript-searchproduct.js"></script>
+        <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+        <script src="~/Content/Theme/University/app/js/owl.carousel.min.js"></script>
+        <script src="~/Content/Theme/University/app/js/nb_skew_carousle.js"></script>
+        <script src="~/Content/Theme/University/app/js/nb_custom_script.js"></script>
+        <script src="~/Content/Theme/University/app/js/jquery.elevatezoom.js"></script>
+        <script src="~/Content/Theme/University/app/js/jquery-confirm.min.js"></script>
 
- </div>
+    </div>
 </body>
 </html>
 <script>

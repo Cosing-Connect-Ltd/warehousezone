@@ -175,11 +175,14 @@ namespace Ganedata.Core.Data
         DbSet<WebsiteShippingRules> WebsiteShippingRules { get; set; }
         DbSet<WebsiteDiscountCodes> WebsiteDiscountCodes { get; set; }
         DbSet<WebsiteDiscountProductsMap> websiteDiscountProductsMaps { get; set; }
-         DbSet<AuthUserGroups> AuthUserGroups { get; set; }
-         DbSet<ProductAllowance> ProductAllowance { get; set; }
-         DbSet<ProductAllowanceAdjustmentLog> ProductAllowanceAdjustmentLog { get; set; }
-         DbSet<ProductAllowanceGroup> ProductAllowanceGroup { get; set; }
-         DbSet<ProductAllowanceGroupMap> ProductAllowanceGroupMap { get; set; }
-         DbSet<Tooltip> Tooltips { get; set; }
+        DbSet<AuthUserGroups> AuthUserGroups { get; set; }
+        DbSet<ProductAllowance> ProductAllowance { get; set; }
+        DbSet<ProductAllowanceAdjustmentLog> ProductAllowanceAdjustmentLog { get; set; }
+        DbSet<ProductAllowanceGroup> ProductAllowanceGroup { get; set; }
+        DbSet<ProductAllowanceGroupMap> ProductAllowanceGroupMap { get; set; }
+        DbSet<Tooltip> Tooltips { get; set; }
+        DbSet<WebsiteCartItem> WebsiteCartItems { get; set; }
+        DbSet<WebsiteWishListItem> WebsiteWishListItems { get; set; }
+
     }
 }
