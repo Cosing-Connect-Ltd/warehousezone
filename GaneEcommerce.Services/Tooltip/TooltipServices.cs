@@ -23,7 +23,7 @@ namespace Ganedata.Core.Services
             var tooltips = await _currentDbContext.Tooltips
                                     .Where(t => keys.Contains(t.Key) && t.IsDeleted != true &&
                                             (t.Localization == CultureInfo.CurrentCulture.Name || string.IsNullOrEmpty(t.Localization)) &&
-                                            (t.TenantId == tenantId || t.TenantId == 0))
+                                            (t.TenantId == tenantId || t.TenantId == 0 || t.TenantId == null))
                                     .GroupBy(t => t.Key)
                                     .Select(g => g.OrderByDescending(t => t.Localization)
                                                   .ThenByDescending(t => t.TenantId)

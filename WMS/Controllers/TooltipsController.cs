@@ -28,12 +28,14 @@ namespace WMS.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet]
         public ActionResult Index()
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             return View();
         }
 
+        [HttpGet]
         public ActionResult Create()
 
         {
@@ -42,9 +44,9 @@ namespace WMS.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost, ActionName("Create")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Tooltip tooltip)
+        public ActionResult SubmitCreate(Tooltip tooltip)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
@@ -61,6 +63,7 @@ namespace WMS.Controllers
             return View(tooltip);
         }
 
+        [HttpGet]
         public ActionResult Delete(int? id)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
@@ -85,7 +88,7 @@ namespace WMS.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult SubmitDelete(int id)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
@@ -94,6 +97,7 @@ namespace WMS.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -120,9 +124,9 @@ namespace WMS.Controllers
             return View(tooltip);
         }
 
-        [HttpPost]
+        [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Tooltip tooltip)
+        public ActionResult SubmitEdit(Tooltip tooltip)
 
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
@@ -144,6 +148,24 @@ namespace WMS.Controllers
 
         }
 
+        [HttpPost]
+        [OutputCache(Duration = 86400, VaryByParam = "*")]
+        public async Task<JsonResult> GetTooltipsByKey(string[] keys)
+        {
+            var tooltips = await _tooltipServices.GetTooltipsByKey(keys, CurrentTenantId);
+
+            return Json(_mapper.Map<List<TooltipViewModel>>(tooltips), JsonRequestBehavior.AllowGet);
+
+        }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            ViewBag.IsSuperUser = CurrentUser.SuperUser == true;
+
+            base.OnActionExecuting(filterContext);
+        }
+
+        #region GridView Methods
         public ActionResult TooltipList()
         {
             var viewModel = GridViewExtension.GetViewModel("TooltipListGridView");
@@ -220,22 +242,7 @@ namespace WMS.Controllers
             );
             return PartialView("_TooltipList", gridViewModel);
         }
-
-        [OutputCache(Duration = 86400, VaryByParam = "*")]
-        public async Task<JsonResult> GetTooltipsDetailByKey(string[] keys)
-        {
-            var tooltips = await _tooltipServices.GetTooltipsByKey(keys, CurrentTenantId);
-
-            return Json(_mapper.Map<List<TooltipViewModel>>(tooltips), JsonRequestBehavior.AllowGet);
-
-        }
-
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            ViewBag.IsSuperUser = CurrentUser.SuperUser == true;
-
-            base.OnActionExecuting(filterContext);
-        }
+        #endregion
 
     }
 }

@@ -21,8 +21,8 @@
         tooltipKeys = jQuery.unique(tooltipKeys);
 
         $.ajax({
-            type: "post",
-            url: "/Tooltips/GetTooltipsDetailByKey",
+            type: "POST",
+            url: "/Tooltips/GetTooltipsByKey",
             data: JSON.stringify({ 'keys': tooltipKeys }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -118,7 +118,7 @@
             of: tooltipIcon
         }).dialog("open");
     }
-    
+
     $("#tooltipPanel").dialog({
         show: {
             effect: "fade",
