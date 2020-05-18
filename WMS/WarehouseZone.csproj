@@ -2759,7 +2759,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>8005</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost</IISUrl>
+          <IISUrl>http://localhost:8005</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

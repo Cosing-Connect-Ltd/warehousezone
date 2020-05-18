@@ -268,17 +268,17 @@ namespace WarehouseEcommerce.Controllers
             {
                 if (CurrentUserId > 0)
                 {
-                    var cartItems = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId)
-                        .Select(u => new
+                    var models = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId)
+                        .ToList().Select(u => new OrderDetailSessionViewModel
                         {
-                            u.ProductMaster,
-                            u.UnitPrice,
-                            u.Quantity
-
-
+                            ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
+                            Price = u.UnitPrice,
+                            Qty = u.Quantity,
+                            ProductId = u.ProductId
                         }).ToList();
 
-                    var models = _mapper.Map(cartItems, new List<OrderDetailSessionViewModel>());
+
+                    models.ForEach(u => u.TotalAmount = Math.Round((u.Qty * u.Price), 2));
                     ViewBag.CurrencySymbol = currencyyDetail.Symbol;
                     ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
                     return PartialView(models);
@@ -317,17 +317,17 @@ namespace WarehouseEcommerce.Controllers
                     {
                         _tenantWebsiteService.RemoveCartItem((ProductId ?? 0), CurrentTenantWebsite.SiteID, CurrentUserId);
                         GaneCartItemsSessionHelper.RemoveCartItemSession(ProductId ?? 0);
-                        var cartItems = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId)
-                        .Select(u => new
-                        {
-                            u.ProductMaster,
-                            u.UnitPrice,
-                            u.Quantity
+                        var models = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId)
+                         .ToList().Select(u => new OrderDetailSessionViewModel
+                         {
+                             ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
+                             Price = u.UnitPrice,
+                             Qty = u.Quantity,
+                             ProductId = u.ProductId
+                         }).ToList();
 
 
-                        }).ToList();
-
-                        var models = _mapper.Map(cartItems, new List<OrderDetailSessionViewModel>());
+                        models.ForEach(u => u.TotalAmount = Math.Round((u.Qty * u.Price), 2));
                         ViewBag.CurrencySymbol = currencyyDetail.Symbol;
                         ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
                         return PartialView(models);
@@ -360,17 +360,17 @@ namespace WarehouseEcommerce.Controllers
                     if (CurrentUserId > 0)
                     {
                         var count = _tenantWebsiteService.AddOrUpdateCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, (GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>()));
-                        var cartItems = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId)
-                       .Select(u => new
-                       {
-                           u.ProductMaster,
-                           u.UnitPrice,
-                           u.Quantity
+                        var models = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId)
+                        .ToList().Select(u => new OrderDetailSessionViewModel
+                        {
+                            ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
+                            Price = u.UnitPrice,
+                            Qty = u.Quantity,
+                            ProductId = u.ProductId
+                        }).ToList();
 
 
-                       }).ToList();
-
-                        var models = _mapper.Map(cartItems, new List<OrderDetailSessionViewModel>());
+                        models.ForEach(u => u.TotalAmount = Math.Round((u.Qty * u.Price), 2));
                         ViewBag.CurrencySymbol = currencyyDetail.Symbol;
                         ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
                         return PartialView(models);
@@ -410,18 +410,17 @@ namespace WarehouseEcommerce.Controllers
                     if (CurrentUserId > 0)
                     {
                         var count = _tenantWebsiteService.AddOrUpdateCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, (GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>()));
-                        var cartItems = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId)
-                       .Select(u => new
-                       {
-                           u.ProductMaster,
-                           u.UnitPrice,
-                           u.Quantity
+                        var models = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId)
+                         .ToList().Select(u => new OrderDetailSessionViewModel
+                         {
+                             ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
+                             Price = u.UnitPrice,
+                             Qty = u.Quantity,
+                             ProductId = u.ProductId
+                         }).ToList();
 
 
-                       }).ToList();
-
-
-                        var models = _mapper.Map(cartItems, new List<OrderDetailSessionViewModel>());
+                        models.ForEach(u => u.TotalAmount = Math.Round((u.Qty * u.Price), 2));
                         ViewBag.CurrencySymbol = currencyyDetail.Symbol;
                         ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
                         var cartedProduct = models.Where(u => u.ProductId == ProductId).ToList();
@@ -470,9 +469,14 @@ namespace WarehouseEcommerce.Controllers
                 {
                     _tenantWebsiteService.AddOrUpdateWishListItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, (GaneWishListItemsSessionHelper.GetWishListItemsSession()));
                 }
-                return Json(GaneWishListItemsSessionHelper.GetWishListItemsSession().Count, JsonRequestBehavior.AllowGet);
+                return Json(_tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).Count(), JsonRequestBehavior.AllowGet);
+               
             }
-            return Json(GaneWishListItemsSessionHelper.GetWishListItemsSession().Count, JsonRequestBehavior.AllowGet);
+            if (CurrentUserId > 0)
+            {
+                _tenantWebsiteService.AddOrUpdateWishListItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, (GaneWishListItemsSessionHelper.GetWishListItemsSession()));
+            }
+            return Json(_tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).Count(), JsonRequestBehavior.AllowGet);
 
 
 
@@ -486,7 +490,7 @@ namespace WarehouseEcommerce.Controllers
         {
             if (CurrentUserId > 0)
             {
-                var model = _tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId);
+                var model = _tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).ToList();
                 return View(model);
             }
             var data = GaneWishListItemsSessionHelper.GetWishListItemsSession().ToList().Select(u => new WebsiteWishListItem()
@@ -495,6 +499,41 @@ namespace WarehouseEcommerce.Controllers
 
             });
             return View(data.ToList());
+        }
+
+        public PartialViewResult _wishlistItems(int? ProductId)
+        {
+            if (ProductId.HasValue)
+            {
+                if (CurrentUserId > 0)
+                {
+                    var count = _tenantWebsiteService.RemoveWishListItem((ProductId ?? 0), CurrentTenantWebsite.SiteID, CurrentUserId);
+                    return PartialView(_tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).ToList());
+                }
+
+                var data = GaneWishListItemsSessionHelper.GetWishListItemsSession().ToList().Select(u => new WebsiteWishListItem()
+                {
+                    ProductMaster = _productServices.GetProductMasterById(u.ProductId),
+
+                });
+                return PartialView(data.ToList());
+            }
+            else 
+            {
+                if (CurrentUserId > 0)
+                {
+                    var model = _tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).ToList();
+                    return PartialView(model);
+                }
+                var data = GaneWishListItemsSessionHelper.GetWishListItemsSession().ToList().Select(u => new WebsiteWishListItem()
+                {
+                    ProductMaster = _productServices.GetProductMasterById(u.ProductId),
+
+                });
+                return PartialView(data.ToList());
+
+            }
+        
         }
 
         public void CurrencyChanged(int? CurrencyId)

@@ -126,9 +126,20 @@
                                                     </li>
 
                                                 }
-                                                <li>
-                                                    <a href="javascript:;" onclick="AddWishListItem(@item.ProductId)"><i class="icon-love list-icon" style="color:@(item.WebsiteWishListItems.FirstOrDefault()==null?"black":"#f33655")"></i></a>
-                                                </li>
+                                                @if (item.WebsiteWishListItems.Where(u=>u.IsDeleted != true).ToList().Count <= 0)
+                                                {
+
+
+                                                    <li>
+                                                        <a href="javascript:;" id="wish_@item.ProductId" onclick="AddWishListItem(@item.ProductId)"><i class="icon-love list-icon" style="color:black"></i></a>
+                                                    </li>
+                                                }
+                                                else
+                                                {
+                                                    <li>
+                                                        <a href="javascript:;" id="wish_@item.ProductId" onclick="RemoveWishListPopUp(@item.ProductId)"><i class="icon-love list-icon" style="color:red"></i></a>
+                                                    </li>
+                                                }
                                             </ul>
                                         }
                                     </div>

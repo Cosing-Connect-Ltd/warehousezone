@@ -229,8 +229,8 @@ namespace WarehouseEcommerce.Controllers
                     // store login id into session
                     AuthUserLogin Logins = new AuthUserLogin();
                     Session["CurrentUserLogin"] = _userService.SaveAuthUserLogin(Logins, user.UserId, user.TenantId);
-                    _tenantWebsiteService.AddOrUpdateCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, GaneCartItemsSessionHelper.GetCartItemsSession());
-                    _tenantWebsiteService.AddOrUpdateWishListItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, GaneWishListItemsSessionHelper.GetWishListItemsSession());
+                    _tenantWebsiteService.AddOrUpdateCartItems(CurrentTenantWebsite.SiteID, user.UserId, CurrentTenantId, GaneCartItemsSessionHelper.GetCartItemsSession());
+                    _tenantWebsiteService.AddOrUpdateWishListItems(CurrentTenantWebsite.SiteID, user.UserId, CurrentTenantId, GaneWishListItemsSessionHelper.GetWishListItemsSession());
                     if (PlaceOrder.HasValue)
                     {
                         return Json(new { status, AccountId = user.AccountId }, JsonRequestBehavior.AllowGet);

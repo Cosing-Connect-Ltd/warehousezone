@@ -112,8 +112,24 @@
                             Add to basket
                         </button>
                     }
-                    <button class="addtowishlistbtn">Add to Wishlist</button><a href="javascript:;" class="addtowishlist" onclick="AddWishListItem(@Model.ProductId)"><i class="icon-love"></i>
-                    </a>
+                    <button class="addtowishlistbtn">Add to Wishlist</button>
+                    @if (Model.WebsiteWishListItems.Where(u => u.IsDeleted != true).ToList().Count <= 0)
+                    {
+
+
+                        
+                            <a href="javascript:;" class="addtowishlist" id="wish_@Model.ProductId" onclick="AddWishListItem(@Model.ProductId)"><i class="icon-love list-icon" style="color:black"></i></a>
+                       
+                    }
+                    else
+                    {
+                      
+                            <a href="javascript:;" class="addtowishlist" id="wish_@Model.ProductId" onclick="RemoveWishListPopUp(@Model.ProductId)"><i class="icon-love list-icon" style="color:red"></i></a>
+                        
+                    }
+                    @*<a href="javascript:;" class="addtowishlist" onclick="AddWishListItem(@Model.ProductId)">
+                        <i class="icon-love"></i>
+                    </a>*@
                 </div>
                 </div>
             </div>

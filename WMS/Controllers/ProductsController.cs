@@ -26,14 +26,16 @@ namespace WMS.Controllers
         private readonly IProductServices _productServices;
         private readonly ILookupServices _lookupServices;
         private readonly IProductLookupService _productLookupService;
+        private readonly ITenantWebsiteService _tenantWebsiteService;
 
-        public ProductsController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IProductServices productServices, IProductLookupService productLookupService)
+        public ProductsController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IProductServices productServices,ITenantWebsiteService tenantWebsiteService, IProductLookupService productLookupService)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
             _accountServices = accountServices;
             _productServices = productServices;
             _lookupServices = lookupServices;
             _productLookupService = productLookupService;
+            _tenantWebsiteService = tenantWebsiteService;
         }
         string UploadDirectory = "~/UploadedFiles/Products/";
         string UploadTempDirectory = "~/UploadedFiles/Products/TempFiles/";

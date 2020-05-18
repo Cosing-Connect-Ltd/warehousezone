@@ -158,6 +158,9 @@ namespace Ganedata.Core.Entities.Domain
         public bool OnSaleProduct { get; set; }
         [Display(Name = "Preferred Supplier")]
         public int? PreferredSupplier { get; set; }
+
+        public int? SiteId { get; set; }
+
         public string NameWithCode
         {
             get { return Name + " " + SKUCode; }

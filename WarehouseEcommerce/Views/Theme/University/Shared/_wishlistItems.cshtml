@@ -1,0 +1,45 @@
+﻿<div class="row">
+
+    <div class="nb_basket_wrap">
+        <table class="basketTable">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <div class="prdimgsec">
+                                <span class="prdimg">
+                                    <img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage)? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
+                                </span>
+                                <span class="prdname">@(item.ProductMaster?.Name)</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <a href="javascript:;" class="btn btn-success" onclick="AddToCart(@item.ProductMaster.ProductId)">Add to Basket</a> <br /><br />
+                                <a href="javascript:;" class="btn btn-danger" onclick="RemoveWishItem(@item.ProductMaster.ProductId)">Remove</a>
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
+
+        <div class="coupen_codewrap">
+        </div>
+
+
+    </div>
+
+
+</div>

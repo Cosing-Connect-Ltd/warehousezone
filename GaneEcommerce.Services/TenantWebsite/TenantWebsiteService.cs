@@ -217,11 +217,8 @@ namespace Ganedata.Core.Services
 
         public IQueryable<NavigationProductsViewModel> GetAllValidWebsiteProducts(int TenantId, int SiteId)
         {
-            var allProducts = _currentDbContext.ProductMaster.Where(m => m.TenantId == TenantId && m.IsDeleted != true);
+            var allProducts = _currentDbContext.ProductMaster.Where(m => m.TenantId == TenantId && m.IsDeleted != true && (m.SiteId==SiteId || m.SiteId==null));
             var websiteMap = _currentDbContext.ProductsWebsitesMap.Where(u => u.IsDeleted != true && u.SiteID == SiteId && u.TenantId == TenantId);
-
-
-
             var res = (from p in allProducts
                        join w in websiteMap on p.ProductId equals w.ProductId into tempMap
                        from d in tempMap.DefaultIfEmpty()
@@ -891,11 +888,11 @@ namespace Ganedata.Core.Services
 
         public IEnumerable<WebsiteCartItem> GetAllValidCartItemsList(int siteId, int UserId)
         {
-            return _currentDbContext.WebsiteCartItems.Where(u => u.SiteID == siteId && u.UserId == UserId);
+            return _currentDbContext.WebsiteCartItems.Where(u => u.SiteID == siteId && u.UserId == UserId && u.IsDeleted != true);
         }
         public IEnumerable<WebsiteWishListItem> GetAllValidWishListItemsList(int siteId, int UserId)
         {
-            return _currentDbContext.WebsiteWishListItems.Where(u => u.SiteID == siteId && u.UserId == UserId);
+            return _currentDbContext.WebsiteWishListItems.Where(u => u.SiteID == siteId && u.UserId == UserId && u.IsDeleted != true);
         }
 
         public int AddOrUpdateCartItems(int SiteId, int UserId, int TenantId, List<OrderDetailSessionViewModel> orderDetails)
@@ -913,6 +910,7 @@ namespace Ganedata.Core.Services
                     cartItem.UnitPrice = orderDetail.Price;
                     cartItem.UserId = UserId;
                     cartItem.TenantId = TenantId;
+                    cartItem.SiteID = SiteId;
                     cartItem.UpdateCreatedInfo(UserId);
                     _currentDbContext.WebsiteCartItems.Add(cartItem);
 
@@ -982,7 +980,7 @@ namespace Ganedata.Core.Services
         public int RemoveWishListItem(int ProductId, int SiteId, int UserId)
         {
             var wishListProduct = _currentDbContext.WebsiteWishListItems.FirstOrDefault(u => u.ProductId == ProductId && u.SiteID == SiteId && u.UserId == UserId);
-            if (wishListProduct == null)
+            if (wishListProduct != null)
             {
                 wishListProduct.IsDeleted = true;
                 wishListProduct.UpdateUpdatedInfo(UserId);
