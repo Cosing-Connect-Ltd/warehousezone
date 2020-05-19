@@ -21,7 +21,7 @@ $(function () {
         interval: 5000,
         touch: true,
         pause: false,
-        slide: true,
+        slide: true
     });
 
     var totalItems = $(".item").length;
@@ -42,18 +42,18 @@ $(function () {
         nav: true,
         responsive: {
             0: {
-                items: 1,
+                items: 1
             },
             365: {
-                items: 2,
+                items: 2
             },
             768: {
-                items: 2,
+                items: 2
             },
             1000: {
-                items: 4,
-            },
-        },
+                items: 4
+            }
+        }
     });
 
     // image_zoomer_btmslider
@@ -65,18 +65,18 @@ $(function () {
         repeat: false,
         responsive: {
             0: {
-                items: 3,
+                items: 3
             },
             365: {
-                items: 4,
+                items: 4
             },
             768: {
-                items: 4,
+                items: 4
             },
             1000: {
-                items: 4,
-            },
-        },
+                items: 4
+            }
+        }
     });
     let imgInViewarea = $(".img_view_area img");
     // $(".nb_imageZoomCarrousle div.item img").click(function(e) {
@@ -114,7 +114,6 @@ $(function () {
     // basket table counter
 
     $(".basketTable #incre_count").click(function () {
-        debugger;
         let aaa = $("#counter").val();
        
         let currCoutVal = $(".basketTable #counter").val();

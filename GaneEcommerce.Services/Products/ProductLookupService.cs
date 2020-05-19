@@ -94,7 +94,7 @@ namespace Ganedata.Core.Services
             int? categoryId = _currentDbContext.WebsiteNavigations.FirstOrDefault(u => u.Name == category && u.IsDeleted != true)?.Id;
             int? manufacturerId = _currentDbContext.ProductManufacturers.FirstOrDefault(u => u.Name == manufacturerName && u.IsDeleted != true)?.Id;
             List<int> websiteProductIds = _currentDbContext.ProductsWebsitesMap.Where(x => x.SiteID == siteId && x.IsActive == true && x.IsDeleted != true).Select(a => a.ProductId).ToList();
-            List<int> productIds = _currentDbContext.ProductsNavigationMaps.Where(u => u.NavigationId == categoryId && u.IsDeleted != true).Select(x => x.ProductsWebsitesMap.ProductId).ToList();
+            List<int> productIds = _currentDbContext.ProductsNavigationMaps.Where(u => (u.NavigationId == categoryId || !categoryId.HasValue) && u.IsDeleted != true).Select(x => x.ProductsWebsitesMap.ProductId).ToList();
 
             return _currentDbContext.ProductMaster
                 .Where(a => websiteProductIds.Contains(a.ProductId) && a.IsActive == true && a.IsDeleted != true && (productIds.Contains(a.ProductId) || string.IsNullOrEmpty(category))

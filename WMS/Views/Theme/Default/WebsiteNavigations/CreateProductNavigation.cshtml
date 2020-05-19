@@ -17,11 +17,9 @@
 <script type="text/javascript">
     MVCxClientGlobalEvents.AddControlsInitializedEventHandler(OnBeginGridCallback);
     function OnDetailsChanged(s, e) {
-        debugger;
         ProductWebNavGridView.UpdateEdit();
     }
     function OnEndGridCallback(s, e) {
-        debugger;
         var lastIndex = parseInt($("#LastEditingRowIndex").val()) || 0;
         SetGridEditorToRowIndex(lastIndex);
     }
@@ -34,7 +32,6 @@
         $("#LastEditingColIndex").val(e.cellInfo.column.fieldName);
     }
     function OnBeginGridCallback(s, e) {
-        debugger;
         e.customArgs = MVCxClientUtils.GetSerializedEditorValuesInContainer("frmPriceGroupPrices");
         var rowIndex = parseInt($("#RowIndexForProductId").val()) || 0;
         e.customArgs["ProductID"] = ProductWebNavGridView.GetRowKey(rowIndex);
@@ -43,12 +40,8 @@
         ProductWebNavGridView.batchEditApi.StartEdit(index, ProductWebNavGridView.GetColumnByField($("#LastEditingColIndex").val()).index);
     }
     function OnDetailsChanged(s, e) {
-        debugger;
         ProductWebNavGridView.UpdateEdit();
     }
-
-
-
 </script>
 
 <h2><span>Update Navigation Product (@ViewBag.SiteName)</span></h2>

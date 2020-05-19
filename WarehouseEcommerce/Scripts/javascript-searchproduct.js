@@ -3,7 +3,6 @@
 }
 
 function searchPoducts() {
-    debugger;
     var sortvalue = $("#SortedValues").val();
     var category = $("#prod-category").val();
     var pagenumber = $("#pagenumber").val();
@@ -90,7 +89,6 @@ $('.text-search').on('input', function () {
         },
         open: function (data) {
             if (seeall) {
-                debugger;
                 var $li = $("<li>");
                 var $link = $("<a>", {
                     href: basePath + "/Products/list?search=" + $('.text-search').val(),
@@ -112,7 +110,6 @@ function updateTextBox(event, ui) {
     return false;
 }
 function getTopCategoryProducts(ProductnavigationId) {
-    debugger;
     $.ajax({
         type: "GET",
         url: basePath + "/Home/_TopCategoryProductsPartial/",
@@ -138,9 +135,8 @@ function AddToCart(ProductId) {
         data: { ProductId: ProductId, qty: quantity, details: detail },
         dataType: 'html',
         success: function (data) {
-            debugger;
             var cardItemsValue = parseInt($("#cart-total").text());
-            $("#cart-total").text((cardItemsValue + 1));
+            $("#cart-total").text(cardItemsValue + 1);
             $('.modal-body').empty();
             $('.modal-body').html(data);
             $('#myModal').modal('show');
@@ -158,7 +154,7 @@ function RemoveCartItem(id) {
         dataType: 'html',
         success: function (data) {
             var cardItemsValue = parseInt($("#cart-total").val());
-            $("#cart-total").val((cardItemsValue - 1));
+            $("#cart-total").val(cardItemsValue - 1);
             $('#updateCart').empty();
             $('#updateCart').html(data);
         },
@@ -169,7 +165,6 @@ function RemoveCartItem(id) {
 }
 
 function UpdateCartItem(ID, event) {
-    debugger;
     var quantity = event.value;
     $.ajax({
         type: "GET",
@@ -207,7 +202,7 @@ function ConfirmOrder() {
     var paymentMethodId = $("#PaymentType").val();
     var ShippingTypeId = $("#ShippingType").val();
     var AccountAddressIds = $("#AccountAddressId").val();
-    if ((paymentMethodId === undefined || paymentMethodId === 0 || paymentMethodId === null)) {
+    if (paymentMethodId === undefined || paymentMethodId === 0 || paymentMethodId === null) {
 
         alert("Select payment type before placing order");
         return;
@@ -301,11 +296,11 @@ function onCurrencyChange(event) {
 }
 
 $("input[type=checkbox]").on("change", function () {
-    var arr = []
+    var arr = [];
     var data = "";
     var str = $(location).attr('href');
     var pagerep = new RegExp("&page=\\d+");
-    str = str.replace(pagerep, '')
+    str = str.replace(pagerep, '');
     str = removeURLParameter(str, "page");
     str = removeURLParameter(str, "values");
     var parameter = "&values=";
@@ -314,12 +309,12 @@ $("input[type=checkbox]").on("change", function () {
 
         if (this.checked) {
             if (str.indexOf($(this).val()) < 0) {
-                arr.push($(this).val())
+                arr.push($(this).val());
                 data = this.id;
                 if (str.indexOf(data) < 0) {
                     var indexof = str.lastIndexOf("=");
-                    var checkpreviousString = str.substr((indexof - 6), 6);
-                    var found = str.charAt((indexof + 1));
+                    var checkpreviousString = str.substr(indexof - 6, 6);
+                    var found = str.charAt(indexof + 1);
                     if (checkpreviousString === "values" && found === "") {
                         str = str + data + "-" + $(this).val();
                     }
@@ -376,7 +371,6 @@ function GetLoggedIn(placeholder) {
         data: { PlaceOrder: placeholder },
         dataType: 'Html',
         success: function (data) {
-            debugger;
             $("#login-model-body").html("");
             $("#login-model-body").html(data);
             if (placeholder !== "") {
@@ -408,18 +402,17 @@ function LoggedIn() {
         success: function (data) {
             if (PlaceOrders) {
                 $('#signupPopup').modal('hide');
-                location.href = "/Orders/GetAddress?AccountId=" + data.AccountId
+                location.href = "/Orders/GetAddress?AccountId=" + data.AccountId;
             }
             else {
                 if (data.status) {
-                    debugger;
                     $('#signupPopup').modal('hide');
                     $('#AccountNameHref').removeAttr("data-target");
                     $(".temproryShow").prop('title', data.Name);
                     location.reload();
                 }
                 else {
-                    alert("User name or password is not correct")
+                    alert("User name or password is not correct");
                 }
 
 
@@ -433,7 +426,6 @@ function LoggedIn() {
     });
 }
 function CreateUsers() {
-    debugger;
     var FirstName = $("#FirstName").val();
     var LastName = $("#LastName").val();
     var Email = $("#Email").val();
@@ -443,13 +435,13 @@ function CreateUsers() {
     if (placecheck !== "" && placecheck !== undefined && placecheck != null) {
         PlaceOrders = true;
     }
-    if ((FirstName == "" || FirstName == undefined || FirstName == null)) {
+    if (FirstName == "" || FirstName == undefined || FirstName == null) {
         alert("First name is required");
     }
-    if ((Email == "" || Email == undefined || Email == null)) {
+    if (Email == "" || Email == undefined || Email == null) {
         alert("Email is required");
     }
-    if ((Password == "" || Password == undefined || Password == null)) {
+    if (Password == "" || Password == undefined || Password == null) {
         alert("Password is required");
     }
 
@@ -465,7 +457,7 @@ function CreateUsers() {
 
             if (data) {
                 $('#signupPopup').modal('hide');
-                alert("Please activate your account.")
+                alert("Please activate your account.");
             }
 
         },
@@ -479,7 +471,6 @@ function CreateUsers() {
 }
 
 function AddWishListItem(ProductId) {
-    debugger;
     $.confirm({
         title: 'Confirm!',
         content: 'Do you want to notify regarding this product!',
@@ -489,15 +480,13 @@ function AddWishListItem(ProductId) {
             },
             No: function () {
                 AddToWishList(ProductId, false);
-            },
-
+            }
         }
     });
 
 }
 
 function AddToWishList(productId, notification) {
-    debugger;
     var CurrentWisId = $("#wish_" + productId);
     $.ajax({
         type: "GET",
@@ -511,7 +500,7 @@ function AddToWishList(productId, notification) {
             $("#" + CurrentWisId[0].id).attr("onclick", "RemoveWishListPopUp(" + productId + ")");
             var cardItemsValue = parseInt($("#WishList-total").text());
 
-            $("#WishList-total").text((cardItemsValue + 1));
+            $("#WishList-total").text(cardItemsValue + 1);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert('Error' + textStatus + "/" + errorThrown);
@@ -522,8 +511,7 @@ function AddToWishList(productId, notification) {
 
 
 function RemoveWishListPopUp(RemoveProductId) {
-    debugger;
-    var CurrentId = $("#wish_" + RemoveProductId)
+    var CurrentId = $("#wish_" + RemoveProductId);
     $.confirm({
         title: 'Confirm!',
         content: 'Are you sure to delete this product from wishlist!',
@@ -536,7 +524,6 @@ function RemoveWishListPopUp(RemoveProductId) {
                     data: { ProductId: RemoveProductId },
                     dataType: 'json',
                     success: function (data) {
-                        debugger;
                         var ids = "#" + CurrentId[0].id;
                         $(ids).find(".list-icon").css({ "color": "black" });
                         $("#" + CurrentId[0].id).removeAttr("onclick", null);
@@ -551,25 +538,21 @@ function RemoveWishListPopUp(RemoveProductId) {
             },
             No: function () {
 
-            },
-
+            }
         }
     });
-
-
-
 }
 
 function RemoveWishItem(id) {
     $.ajax({
         type: "GET",
         url: basePath + "/Products/_wishlistItems/",
-        data: { ProductId: id},
+        data: { ProductId: id },
         dataType: 'html',
         success: function (data) {
-           
+
             var cardItemsValue = parseInt($("#WishList-total").text());
-            $("#WishList-total").val((cardItemsValue - 1));
+            $("#WishList-total").val(cardItemsValue - 1);
             $('#UpdateWishList').empty();
             $('#UpdateWishList').html(data);
         },

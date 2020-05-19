@@ -66,10 +66,11 @@
     <OutputPath>bin\x86\Release\</OutputPath>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>48BA095DEF252E54549FCF4ED732A2899E79306F</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>5317355AACA01C4ADC73ECE327A8FCA5A1BDBFE9</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>Ganedata.Warehouse.PropertiesSyncServiceTester_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>

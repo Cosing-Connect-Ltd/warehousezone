@@ -156,9 +156,7 @@
 <script>
     function GetSortedList(e)
     {
-        debugger;
         var sortvalue = parseInt(e.currentTarget.value);
-
         var groupId = $("#ProductGroups").val();
         if (groupId === "" || groupId === undefined || groupId === null) { groupId = $("#ProductGroupsId").val(); }
         var pagenumber = $("#pagenumber").val();

@@ -75,14 +75,12 @@
     MVCxClientGlobalEvents.AddControlsInitializedEventHandler(OnBeginGridCallback);
 
     function OnBeginGridCallback(s, e) {
-        debugger;
         e.customArgs = MVCxClientUtils.GetSerializedEditorValuesInContainer("frmPriceGroupPrices");
         var rowIndex = parseInt($("#RowIndexForProductId").val()) || 0;
         e.customArgs["ProductID"] = ProductWebNavGridView.GetRowKey(rowIndex);
     }
 
     function OnEndGridCallback(s, e) {
-        debugger;
         var lastIndex = parseInt($("#LastEditingRowIndex").val()) || 0;
         SetGridEditorToRowIndex(lastIndex);
     }
@@ -92,7 +90,6 @@
     }
 
     function OnDetailsChanged(s, e) {
-        debugger;
         ProductWebNavGridView.UpdateEdit();
     }
 
