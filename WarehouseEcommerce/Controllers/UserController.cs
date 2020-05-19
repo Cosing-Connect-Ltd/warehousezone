@@ -191,6 +191,32 @@ namespace WarehouseEcommerce.Controllers
             return RedirectToAction("Login", new { PlaceOrder = placeOrders });
         }
 
+        public ActionResult ConfirmUsers(string confirmationValue, string placeOrder)
+        {
+            bool? placeOrders = null;
+            if (!string.IsNullOrEmpty(confirmationValue))
+            {
+                string[] data = confirmationValue.Split(new string[] { "_", "_" }, System.StringSplitOptions.RemoveEmptyEntries);
+                if (data.Length > 0)
+                {
+                    bool status = GaneStaticAppExtensions.ValidatePassword(data[data.Length - 1], data[0]);
+                    var UserId = int.Parse(data[data.Length - 1]);
+                    var authUsers = _userService.GetAuthUserById(UserId);
+                    if (authUsers != null)
+                    {
+                        authUsers.IsActive = status;
+
+                    }
+                    _userService.UpdateAuthUser(authUsers, CurrentUserId, CurrentTenantId);
+
+
+                }
+                placeOrders = GaneStaticAppExtensions.ValidatePassword("True", placeOrder);
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
         public ActionResult logout()
         {
 
@@ -276,7 +302,7 @@ namespace WarehouseEcommerce.Controllers
                 authuser.IsActive = false;
                 authuser.AccountId = accountModel.AccountID;
                 _userService.SaveAuthUser(authuser, CurrentUserId, CurrentTenantId);
-                string confirmationLink = Url.Action("ConfirmUser", "User", new { confirmationValue = GaneStaticAppExtensions.HashPassword(authuser.UserId.ToString()) + "_" + authuser.UserId.ToString(), placeOrder = GaneStaticAppExtensions.HashPassword(PlaceOrder.HasValue ? PlaceOrder.HasValue.ToString() : "") });
+                string confirmationLink = Url.Action("ConfirmUsers", "User", new { confirmationValue = GaneStaticAppExtensions.HashPassword(authuser.UserId.ToString()) + "_" + authuser.UserId.ToString(), placeOrder = GaneStaticAppExtensions.HashPassword(PlaceOrder.HasValue ? PlaceOrder.HasValue.ToString() : "") });
                 confirmationLink = baseUrl + confirmationLink;
                 confirmationLink = "<a href='" + confirmationLink + "' class=btn btn-primary>Activate Account</a>";
                 _configurationsHelper.CreateTenantEmailNotificationQueue("Activate your account", null, sendImmediately: true, worksOrderNotificationType: WorksOrderNotificationTypeEnum.EmailConfirmation, TenantId: CurrentTenantId, accountId: accountModel.AccountID, UserEmail: authuser.UserEmail, confirmationLink: confirmationLink, userId: authuser.UserId);
