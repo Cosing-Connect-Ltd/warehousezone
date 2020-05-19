@@ -942,7 +942,7 @@ namespace Ganedata.Core.Services
 
             if (SiteId != null && SiteId.Count > 0)
             {
-                var isdeletedList = _currentDbContext.ProductsWebsitesMap.Where(u => u.ProductId == productMaster.ProductId && !SiteId.Contains(u.SiteID) && u.IsDeleted != true).ToList();
+                var isdeletedList = _currentDbContext.ProductTagMaps.Where(u => u.ProductId == productMaster.ProductId && !SiteId.Contains(u.TagId) && u.IsDeleted != true).ToList();
                 if (isdeletedList.Count > 0)
                 {
                     isdeletedList.ForEach(u => u.IsDeleted = true);
@@ -952,7 +952,7 @@ namespace Ganedata.Core.Services
                 foreach (var item in SiteId)
                 {
                     int siteId = Convert.ToInt32(item);
-                    var websiteslist = _currentDbContext.ProductsWebsitesMap.FirstOrDefault(u => u.ProductId == productMaster.ProductId && u.SiteID == siteId && u.IsDeleted != true);
+                    var websiteslist = _currentDbContext.ProductTagMaps.FirstOrDefault(u => u.ProductId == productMaster.ProductId && u.TagId == siteId && u.IsDeleted != true);
                     if (websiteslist != null)
                     {
                         websiteslist.TenantId = tenantId;
@@ -961,11 +961,11 @@ namespace Ganedata.Core.Services
                     else
                     {
 
-                        var list = new ProductsWebsitesMap();
+                        var list = new ProductTagMap();
                         list.ProductId = productMaster.ProductId;
-                        list.SiteID = siteId;
+                        list.TagId = siteId;
                         list.UpdateCreatedInfo(userId);
-                        productMaster.ProductsWebsitesMap.Add(list);
+                        productMaster.ProductTagMaps.Add(list);
                     }
 
                 }
@@ -973,7 +973,7 @@ namespace Ganedata.Core.Services
             }
             else
             {
-                var isdeletedList = _currentDbContext.ProductsWebsitesMap.Where(u => u.ProductId == productMaster.ProductId && u.IsDeleted != true).ToList();
+                var isdeletedList = _currentDbContext.ProductTagMaps.Where(u => u.ProductId == productMaster.ProductId && u.IsDeleted != true).ToList();
                 if (isdeletedList.Count > 0)
                 {
                     isdeletedList.ForEach(u => u.IsDeleted = true);
@@ -1091,10 +1091,7 @@ namespace Ganedata.Core.Services
                     products.SKUCode = string.IsNullOrEmpty(productMaster.SKUCode) ? products.SKUCode : productMaster.SKUCode;
                     products.Serialisable = productMaster.Serialisable;
                     products.ProcessByPallet = productMaster.ProcessByPallet;
-                    products.TopProduct = productMaster.TopProduct;
-                    products.BestSellerProduct = productMaster.BestSellerProduct;
-                    products.SpecialProduct = productMaster.SpecialProduct;
-                    products.OnSaleProduct = productMaster.OnSaleProduct;
+                   
 
                 }
                 products.TenantId = TenantId;
@@ -1186,30 +1183,13 @@ namespace Ganedata.Core.Services
             return _currentDbContext.InventoryStocks.FirstOrDefault(a => a.ProductId == productId && a.WarehouseId == tenantLocationId && a.IsDeleted != true);
         }
 
-        public IEnumerable<ProductMaster> GetProductByCategory(int SiteId, int tenantId, int NumberofProducts, bool TopProduct = false, bool BestSellerProduct = false, bool SpecialProduct = false, bool OnSaleProduct = false)
+        public IEnumerable<ProductMaster> GetProductByCategory(int SiteId, int tenantId, int NumberofProducts, bool TopProduct = false, bool BestSellerProduct = false, bool SpecialProduct = false, bool OnSaleProduct = false,string TagName="")
         {
             var products = _currentDbContext.ProductsWebsitesMap.Where(u=>u.TenantId==tenantId && u.SiteID==SiteId && u.IsDeleted != true).Select(u => u.ProductMaster);
-            if (TopProduct)
-            {
-                
-                return products.Where(u => u.TopProduct == TopProduct && u.IsDeleted != true).Take(NumberofProducts);
-            }
-            else if (BestSellerProduct)
-            {
-                return products.Where(u => u.TenantId == tenantId && u.BestSellerProduct == BestSellerProduct && u.IsDeleted != true).Take(NumberofProducts);
-            }
-            else if (SpecialProduct)
-            {
-                return products.Where(u => u.TenantId == tenantId && u.SpecialProduct == SpecialProduct && u.IsDeleted != true).Take(NumberofProducts);
-            }
-            else if (OnSaleProduct)
-            {
-                return products.Where(u => u.TenantId == tenantId && u.OnSaleProduct == OnSaleProduct && u.IsDeleted != true).Take(NumberofProducts);
-            }
-            else
-            {
-                return products.Where(u => u.TenantId == tenantId && u.IsDeleted != true).Take(NumberofProducts);
-            }
+            var ProductTagIds = _currentDbContext.ProductTags.Where(u => u.TagName == TagName).Select(u => u.Id);
+            var productids = _currentDbContext.ProductTagMaps.Where(u => ProductTagIds.Contains(u.ProductId)).Select(u => u.ProductId).ToList();
+            return products.Where(u => productids.Contains(u.ProductId) && u.IsDeleted != true).Take(NumberofProducts);
+            
         }
         public IQueryable<InventoryStock> GetAllInventoryStocks(int tenantId, int warehouseId, DateTime? reqDate = null)
         {
@@ -1515,11 +1495,7 @@ namespace Ganedata.Core.Services
                     EnableWarranty = prd.EnableWarranty ?? false,
                     EnableTax = prd.EnableTax ?? false,
                     DontMonitorStock = prd.DontMonitorStock,
-                    ProcessByPallet = prd.ProcessByPallet,
-                    OnSaleProduct = prd.OnSaleProduct,
-                    BestSellerProduct = prd.BestSellerProduct,
-                    TopProduct = prd.TopProduct,
-                    SpecialProduct = prd.SpecialProduct
+                    ProcessByPallet = prd.ProcessByPallet
                 }).OrderBy(x => x.Name);
 
             return model;

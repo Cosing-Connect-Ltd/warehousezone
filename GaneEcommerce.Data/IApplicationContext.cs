@@ -183,6 +183,8 @@ namespace Ganedata.Core.Data
         DbSet<Tooltip> Tooltips { get; set; }
         DbSet<WebsiteCartItem> WebsiteCartItems { get; set; }
         DbSet<WebsiteWishListItem> WebsiteWishListItems { get; set; }
+        DbSet<ProductTag> ProductTags { get; set; }
+        DbSet<ProductTagMap> ProductTagMaps { get; set; }
 
     }
 }

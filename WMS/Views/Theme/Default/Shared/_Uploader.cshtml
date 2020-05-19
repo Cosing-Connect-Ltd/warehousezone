@@ -15,12 +15,13 @@
         controllerName = ViewBag.ControllerName;
         settings.ShowUploadButton = false;
     }
-    if (controllerName == "TenantDepartment" || controllerName == "ProductGroup" || controllerName=="ProductManufacturers" || controllerName== "TenantWebsites" || controllerName== "WebsiteNavigations" || controllerName == "WebsiteSliders" || controllerName == "WebsiteContentPages")
+    if (controllerName == "TenantDepartment" || controllerName == "ProductGroup" || controllerName == "ProductManufacturers" || controllerName == "TenantWebsites" || controllerName == "WebsiteNavigations" || controllerName == "WebsiteSliders" || controllerName == "WebsiteContentPages" || controllerName == "ProductTags")
     {
         settings.AdvancedModeSettings.EnableMultiSelect = false;
         settings.UploadMode = UploadControlUploadMode.Standard;
         settings.AutoStartUpload = true;
         settings.NullText = "Select file...";
+        
     }
     else
     {

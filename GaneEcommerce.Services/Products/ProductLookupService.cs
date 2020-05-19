@@ -730,5 +730,58 @@ namespace Ganedata.Core.Services
             entry.Property(e => e.UpdatedBy).IsModified = true;
             _currentDbContext.SaveChanges();
         }
+
+        //ProductTags
+        public IEnumerable<ProductTag> GetAllValidProductTag(int TenantId)
+        {
+            return _currentDbContext.ProductTags.Where(u => u.IsDeleted != true && u.TenantId == TenantId);
+        }
+        public ProductTag CreateOrUpdateProductTag(ProductTag productTag, int UserId, int TenantId)
+        {
+            if (productTag.Id <= 0)
+            {
+                productTag.TenantId = TenantId;
+                productTag.DateCreated=DateTime.Now;
+                productTag.CreatedBy = UserId;
+                _currentDbContext.ProductTags.Add(productTag);
+                _currentDbContext.SaveChanges();
+            }
+            else
+            {
+                var productTags = _currentDbContext.ProductTags.AsNoTracking().FirstOrDefault(u => u.Id == productTag.Id);
+                if (productTags != null)
+                {
+                    productTag.CreatedBy = productTags.CreatedBy;
+                    productTag.DateCreated = productTags.DateCreated;
+                    productTag.TenantId = TenantId;
+                    productTag.DateUpdated = DateTime.Now;
+                    productTag.UpdatedBy = productTags.UpdatedBy;
+                    _currentDbContext.Entry(productTag).State = System.Data.Entity.EntityState.Modified;
+                    _currentDbContext.SaveChanges();
+
+                }
+
+            }
+            return productTag;
+        }
+        public ProductTag RemoveProductTag(int Id, int UserId)
+        {
+            var productTags = _currentDbContext.ProductTags.FirstOrDefault(u => u.Id == Id);
+            if (productTags != null)
+            {
+                productTags.IsDeleted = true;
+                productTags.DateUpdated = DateTime.Now;
+                productTags.UpdatedBy = productTags.UpdatedBy;
+                _currentDbContext.Entry(productTags).State = System.Data.Entity.EntityState.Modified;
+                _currentDbContext.SaveChanges();
+
+            }
+            return productTags;
+        }
+
+        public ProductTag GetProductTagById(int Id)
+        {
+            return _currentDbContext.ProductTags.FirstOrDefault(u => u.Id == Id);
+        }
     }
 }

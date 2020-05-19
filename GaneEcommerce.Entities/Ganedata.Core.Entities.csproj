@@ -193,6 +193,8 @@
     <Compile Include="Domain\Auth\AuthUserprofile.cs" />
     <Compile Include="Domain\Auth\Module.cs" />
     <Compile Include="Domain\Models\GlobalApi.cs" />
+    <Compile Include="Domain\Models\ProductTagMap .cs" />
+    <Compile Include="Domain\Models\ProductTag.cs" />
     <Compile Include="Domain\Models\Tooltip.cs" />
     <Compile Include="Domain\Models\ProductAllowanceAdjustmentLog.cs" />
     <Compile Include="Domain\Models\ProductAllowance.cs" />

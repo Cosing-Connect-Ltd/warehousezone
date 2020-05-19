@@ -87,6 +87,7 @@ namespace WMS.Controllers
             ViewBag.Departments = new SelectList(_lookupServices.GetAllValidTenantDepartments(CurrentTenantId), "DepartmentId", "DepartmentName");
             ViewBag.PalletType = new SelectList(_lookupServices.GetAllValidPalletTypes(CurrentTenantId), "PalletTypeId", "Description");
             ViewBag.ProductLocations = _productLookupService.GetAllValidProductLocations(CurrentTenantId, CurrentWarehouseId);
+            ViewBag.ProductTag = _productLookupService.GetAllValidProductTag(CurrentTenantId);
             ViewBag.WebsiteIds = WebSites;
             ViewBag.SKUCode = id;
             ViewBag.Manufacturer = new SelectList(_lookupServices.GetAllValidProductManufacturer(CurrentTenantId), "Id", "Name");
@@ -130,7 +131,7 @@ namespace WMS.Controllers
             var weightGroups = _lookupServices.GetAllValidGlobalWeightGroups();
             var lotOptionCodes = _productLookupService.GetAllValidProductLotOptionsCodes();
             var lotProcessTypeCodes = _productLookupService.GetAllValidProductLotProcessTypeCodes();
-            ViewBag.linksiteIds = productMaster.ProductsWebsitesMap.Where(u => u.IsDeleted != true).Select(u => u.SiteID).ToList();
+            ViewBag.linksiteIds = productMaster.ProductTagMaps.Where(u => u.IsDeleted != true).Select(u => u.TagId).ToList();
             ViewBag.DimensionUOMId = new SelectList(dimensionUoms, "UOMId", "UOM", productMaster.DimensionUOMId);
             ViewBag.TaxID = new SelectList(taxes, "TaxID", "TaxName", productMaster.TaxID);
             ViewBag.UOMId = new SelectList(weightUoms, "UOMId", "UOM", productMaster.UOMId);
@@ -140,6 +141,7 @@ namespace WMS.Controllers
 
             ViewBag.ProductLocations = _productLookupService.GetAllValidProductLocations(CurrentTenantId, CurrentWarehouseId);
             ViewBag.WebsiteIds = _lookupServices.GetAllValidWebsites(CurrentTenantId).ToList();
+            ViewBag.ProductTag = _productLookupService.GetAllValidProductTag(CurrentTenantId).ToList();
             ViewBag.ProductLocationIds = _productLookupService.GetAllValidProductLocations(CurrentWarehouseId, CurrentTenantId, id.Value).Select(m => m.LocationId);
             ViewBag.Groups = new SelectList(_lookupServices.GetAllValidProductGroups(CurrentTenantId), "ProductGroupId", "ProductGroup");
             ViewBag.Category = new SelectList(_lookupServices.GetAllValidProductCategories(CurrentTenantId), "ProductCategoryId", "ProductCategoryName");
@@ -801,10 +803,7 @@ namespace WMS.Controllers
             productMaster.SKUCode = string.IsNullOrEmpty(SKUCode) ? productMaster.SKUCode : SKUCode;
             productMaster.Serialisable = Serialisable ?? productMaster.Serialisable;
             productMaster.ProcessByPallet = ProcessByPallet ?? productMaster.ProcessByPallet;
-            productMaster.TopProduct = TopProduct ?? productMaster.TopProduct;
-            productMaster.BestSellerProduct = BestSellerProduct ?? productMaster.BestSellerProduct;
-            productMaster.SpecialProduct = SpecialProduct ?? productMaster.SpecialProduct;
-            productMaster.OnSaleProduct = OnSaleProduct ?? productMaster.OnSaleProduct;
+            
             _productServices.SaveEditProduct(productMaster, CurrentUserId, CurrentTenantId);
             return _EditableProductGrid();
         }

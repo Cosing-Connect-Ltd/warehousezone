@@ -27,6 +27,7 @@ namespace Ganedata.Core.Entities.Domain
             ProductFiles = new HashSet<ProductFiles>();
             WebsiteWishListItems = new HashSet<WebsiteWishListItem>();
             WebsiteCartItems = new HashSet<WebsiteCartItem>();
+            ProductTagMaps = new HashSet<ProductTagMap>();
 
 
         }
@@ -148,15 +149,7 @@ namespace Ganedata.Core.Entities.Domain
         public bool? RequiresBatchNumberOnReceipt { get; set; }
         [Display(Name = "Requires Expiry Date")]
         public bool? RequiresExpiryDateOnReceipt { get; set; }
-        [Display(Name = "Top Product")]
-        public bool TopProduct { get; set; }
-        [Display(Name = "Best Seller Product")]
-        public bool BestSellerProduct { get; set; }
-        [Display(Name = "Special Product")]
-        public bool SpecialProduct { get; set; }
-        [Display(Name = "On Sale Product")]
-        public bool OnSaleProduct { get; set; }
-        [Display(Name = "Preferred Supplier")]
+        
         public int? PreferredSupplier { get; set; }
 
         public int? SiteId { get; set; }
@@ -211,6 +204,7 @@ namespace Ganedata.Core.Entities.Domain
         public virtual PalletType PalletType { get; set; }
         public virtual ICollection<ProductFiles> ProductFiles { get; set; }
         public virtual ICollection<ProductsWebsitesMap> ProductsWebsitesMap { get; set; }
+        public virtual ICollection<ProductTagMap> ProductTagMaps { get; set; }
         public virtual ICollection<WebsiteDiscountProductsMap> WebsiteDiscountProductsMap { get; set; }
         public virtual ICollection<WebsiteCartItem> WebsiteCartItems { get; set; }
         public virtual ICollection<WebsiteWishListItem> WebsiteWishListItems { get; set; }

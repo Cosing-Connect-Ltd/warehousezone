@@ -68,6 +68,10 @@ namespace Ganedata.Core.Services
 
         Dictionary<string, List<ProductAttributeValues>> GetAllValidProductAttributeValuesByProductIds(IQueryable<ProductMaster> product);
 
-
+        //ProductTags
+        IEnumerable<ProductTag> GetAllValidProductTag(int TenantId);
+        ProductTag CreateOrUpdateProductTag(ProductTag productTag, int UserId, int TenantId);
+        ProductTag RemoveProductTag(int Id, int UserId);
+        ProductTag GetProductTagById(int Id);
     }
 }

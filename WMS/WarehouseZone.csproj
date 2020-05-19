@@ -537,6 +537,7 @@
     <Compile Include="Controllers\WebAPI\ApiLocationSyncController.cs" />
     <Compile Include="Controllers\WebsiteContentPagesController.cs" />
     <Compile Include="Controllers\WebsiteNavigationsController.cs" />
+    <Compile Include="Controllers\ProductTagsController.cs" />
     <Compile Include="Controllers\WebsiteVouchersController.cs" />
     <Compile Include="Controllers\WebsiteShippingRulesController.cs" />
     <Compile Include="Controllers\WebsiteSlidersController.cs" />
@@ -2575,6 +2576,12 @@
     <Content Include="Views\Theme\Default\Tooltips\Delete.cshtml" />
     <Content Include="Views\Theme\Default\Tooltips\Edit.cshtml" />
     <Content Include="Views\Theme\Default\Tooltips\Create.cshtml" />
+    <Content Include="Views\Theme\Default\ProductTags\_ProductTagList.cshtml" />
+    <Content Include="Views\Theme\Default\ProductTags\Create.cshtml" />
+    <Content Include="Views\Theme\Default\ProductTags\Delete.cshtml" />
+    <Content Include="Views\Theme\Default\ProductTags\Details.cshtml" />
+    <Content Include="Views\Theme\Default\ProductTags\Edit.cshtml" />
+    <Content Include="Views\Theme\Default\ProductTags\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

@@ -843,6 +843,10 @@
     <Compile Include="Migrations\202005181813167_siteId-added-in-productTable.designer.cs">
       <DependentUpon>202005181813167_siteId-added-in-productTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005191908158_producttagAndProductTagMap-added.cs" />
+    <Compile Include="Migrations\202005191908158_producttagAndProductTagMap-added.designer.cs">
+      <DependentUpon>202005191908158_producttagAndProductTagMap-added.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1795,6 +1799,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005181813167_siteId-added-in-productTable.resx">
       <DependentUpon>202005181813167_siteId-added-in-productTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005191908158_producttagAndProductTagMap-added.resx">
+      <DependentUpon>202005191908158_producttagAndProductTagMap-added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

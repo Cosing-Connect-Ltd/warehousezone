@@ -2097,10 +2097,6 @@ namespace Ganedata.Core.Data.Helpers
                                         productMaster.IsStockItem = false;
                                         productMaster.IsRawMaterial = false;
                                         productMaster.TenantId = tenantId;
-                                        productMaster.BestSellerProduct = false;
-                                        productMaster.TopProduct = false;
-                                        productMaster.SpecialProduct = false;
-                                        productMaster.OnSaleProduct = false;
                                         productMaster.ProductGroupId = productCategories?.ProductGroupId;
 
                                         productMaster.DateCreated = DateTime.UtcNow;
@@ -2461,10 +2457,7 @@ namespace Ganedata.Core.Data.Helpers
                             productMaster.IsStockItem = false;
                             productMaster.IsRawMaterial = false;
                             productMaster.TenantId = TenantId;
-                            productMaster.BestSellerProduct = false;
-                            productMaster.TopProduct = false;
-                            productMaster.SpecialProduct = false;
-                            productMaster.OnSaleProduct = false;
+                           
                             productMaster.ProductGroupId = 1;
                             productMaster.BuyPrice = item.Price;
                             //productMaster.CountryOfOrigion = productDetail.CountryofOrigin;
