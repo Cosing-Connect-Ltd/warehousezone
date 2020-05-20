@@ -222,7 +222,7 @@ namespace WarehouseEcommerce.Controllers
 
             Session.Clear();
             Session.Abandon();
-            return RedirectToAction("Login", "User");
+            return RedirectToAction("Home", "Index");
 
         }
         public ActionResult Account()

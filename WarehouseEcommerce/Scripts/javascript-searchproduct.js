@@ -471,19 +471,24 @@ function CreateUsers() {
 }
 
 function AddWishListItem(ProductId) {
-    $.confirm({
-        title: 'Confirm!',
-        content: 'Would you like to be notified about this product!',
-        buttons: {
-            Yes: function () {
-                AddToWishList(ProductId, true);
-            },
-            No: function () {
-                AddToWishList(ProductId, false);
-            }
-        }
-    });
+    if (userStatus === "Login") {
+        GetLoggedIn(false);
+    }
 
+    else {
+        $.confirm({
+            title: 'Confirm!',
+            content: 'Would you like to be notified about this product!',
+            buttons: {
+                Yes: function () {
+                    AddToWishList(ProductId, true);
+                },
+                No: function () {
+                    AddToWishList(ProductId, false);
+                }
+            }
+        });
+    }
 }
 
 function AddToWishList(productId, notification) {
@@ -542,7 +547,20 @@ function RemoveWishListPopUp(RemoveProductId) {
         }
     });
 }
+function Logout() {
+    $.confirm({
+        title: 'Confirm!',
+        content: 'Do you really want to logout?',
+        buttons: {
+            Yes: function () {
+                window.location.href = basePath + "/User/logout";
+            },
+            No: function () {
 
+            }
+        }
+    });
+}
 function RemoveWishItem(id) {
     $.ajax({
         type: "GET",
@@ -560,4 +578,6 @@ function RemoveWishItem(id) {
             alert('Error' + textStatus + "/" + errorThrown);
         }
     });
+
+    
 }

@@ -217,7 +217,7 @@ namespace Ganedata.Core.Services
 
         public IQueryable<NavigationProductsViewModel> GetAllValidWebsiteProducts(int TenantId, int SiteId)
         {
-            var allProducts = _currentDbContext.ProductMaster.Where(m => m.TenantId == TenantId && m.IsDeleted != true && (m.SiteId==SiteId || m.SiteId==null));
+            var allProducts = _currentDbContext.ProductMaster.Where(m => m.TenantId == TenantId && m.IsDeleted != true && (m.SiteId == SiteId || m.SiteId == null));
             var websiteMap = _currentDbContext.ProductsWebsitesMap.Where(u => u.IsDeleted != true && u.SiteID == SiteId && u.TenantId == TenantId);
             var res = (from p in allProducts
                        join w in websiteMap on p.ProductId equals w.ProductId into tempMap
@@ -854,14 +854,14 @@ namespace Ganedata.Core.Services
             var maxValue = Convert.ToInt32(avarageValue.Max());
             if (minValue == maxValue)
             {
-                Prices.Add(new Tuple<string, string>(minValue.ToString(), (maxValue + 1).ToString()));
+                return Prices;
             }
             else
             {
-                var centervalue = Convert.ToInt32(avarageValue.FirstOrDefault(u => u.Value > avgValue && u.Value < maxValue) == null ? 0 : avarageValue.FirstOrDefault(u => u.Value > avgValue && u.Value < maxValue));
-                Prices.Add(new Tuple<string, string>(minValue.ToString(), ((averageInt - 1) < 0 ? 0 : (averageInt - 1)).ToString()));
-                Prices.Add(new Tuple<string, string>((averageInt).ToString(), ((centervalue + 1) > maxValue ? centervalue : (centervalue + 1)).ToString()));
-                Prices.Add(new Tuple<string, string>(((centervalue + 2) > maxValue ? centervalue : (centervalue + 2)).ToString(), (maxValue + 1).ToString()));
+                var centervalue = Convert.ToInt32(avarageValue.FirstOrDefault(u => u.Value > avgValue && u.Value < maxValue) == null ? Convert.ToInt32(avarageValue.Max() / 3) : avarageValue.FirstOrDefault(u => u.Value > avgValue && u.Value < maxValue));
+                Prices.Add(new Tuple<string, string>(minValue.ToString(), averageInt.ToString()));
+                Prices.Add(new Tuple<string, string>((averageInt + 10) > maxValue ? maxValue.ToString() : (averageInt + 10).ToString(), (averageInt + 20) > maxValue ? maxValue.ToString() : (averageInt + 20).ToString()));
+                Prices.Add(new Tuple<string, string>((averageInt + 30) > maxValue ? maxValue.ToString() : (averageInt + 30).ToString(), (maxValue + 1).ToString()));
             }
             return Prices;
         }

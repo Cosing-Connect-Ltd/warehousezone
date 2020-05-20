@@ -50,12 +50,16 @@
                     </a>
                 }
                 else
-                { <i class="ico icon-user" title="@ViewBag.UserName"></i>}
+                {
+                    <a href="javascript:;" onclick="Logout();">
+                        <i class="ico icon-user" title="@ViewBag.UserName"></i>
+                    </a>
+                }
             </li>
             <li class="cartIcoWrap sir">
                 <a href="@Url.Action("WishList","Products")">
                     <i class="ico icon-love"></i>
-                    
+
                     <span id="WishList-total">@(ViewBag.WishListItemCount ?? "")</span>
                 </a>
             </li>

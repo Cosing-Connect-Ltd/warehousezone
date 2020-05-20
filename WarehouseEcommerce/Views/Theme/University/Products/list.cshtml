@@ -140,7 +140,10 @@
                                                     </li>
 
                                                 }
-                                                @if (item.WebsiteWishListItems.Where(u => u.IsDeleted != true).ToList().Count <= 0)
+                                                @{
+                                                    var totaltems = item.WebsiteWishListItems.Where(u => u.IsDeleted != true && u.UserId== ViewBag.CurrentUserId).ToList();
+                                                }
+                                                @if (totaltems.Count <= 0)
                                                 {
 
 

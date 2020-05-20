@@ -470,7 +470,7 @@ namespace WarehouseEcommerce.Controllers
                     _tenantWebsiteService.AddOrUpdateWishListItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, (GaneWishListItemsSessionHelper.GetWishListItemsSession()));
                 }
                 return Json(_tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).Count(), JsonRequestBehavior.AllowGet);
-               
+
             }
             if (CurrentUserId > 0)
             {
@@ -518,7 +518,7 @@ namespace WarehouseEcommerce.Controllers
                 });
                 return PartialView(data.ToList());
             }
-            else 
+            else
             {
                 if (CurrentUserId > 0)
                 {
@@ -533,7 +533,7 @@ namespace WarehouseEcommerce.Controllers
                 return PartialView(data.ToList());
 
             }
-        
+
         }
 
         public void CurrencyChanged(int? CurrencyId)
@@ -588,14 +588,14 @@ namespace WarehouseEcommerce.Controllers
 
         public JsonResult RemoveWishList(int ProductId)
         {
-            if (CurrentUserId > 0)
-            {
-                var count = _tenantWebsiteService.RemoveWishListItem(ProductId, CurrentTenantWebsite.SiteID, CurrentUserId);
-                return Json(count, JsonRequestBehavior.AllowGet);
-            }
-
+            var count = _tenantWebsiteService.RemoveWishListItem(ProductId, CurrentTenantWebsite.SiteID, CurrentUserId);
             GaneWishListItemsSessionHelper.RemoveWishListSession(ProductId);
-            return Json(GaneWishListItemsSessionHelper.GetWishListItemsSession().Count, JsonRequestBehavior.AllowGet);
+            count = Math.Max(count, GaneWishListItemsSessionHelper.GetWishListItemsSession().Count);
+            return Json(count, JsonRequestBehavior.AllowGet);
+
+
+           
+            
 
 
         }
