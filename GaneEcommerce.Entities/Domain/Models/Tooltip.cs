@@ -25,6 +25,7 @@ namespace Ganedata.Core.Entities.Domain
         [StringLength(4086)]
         public string Description { get; set; }
         [Display(Name = "Client")]
+        public int? TenantId { get; set; }
         public virtual Tenant Tenant { get; set; }
     }
 }

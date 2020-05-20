@@ -32,7 +32,7 @@
         settings.Settings.ShowHeaderFilterButton = true;
         settings.SettingsPopup.HeaderFilter.Height = 200;
         settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
-        settings.KeyFieldName = "ProductName";
+        settings.KeyFieldName = "ProductID";
 
         settings.SettingsPager.Visible = true;
         settings.Settings.ShowGroupPanel = false;
@@ -41,7 +41,7 @@
         settings.SettingsBehavior.AllowFocusedRow = true;
 
 
-settings.SettingsEditing.Mode = GridViewEditingMode.Batch;
+        settings.SettingsEditing.Mode = GridViewEditingMode.Batch;
         settings.SettingsEditing.BatchEditSettings.EditMode = GridViewBatchEditMode.Cell;
         settings.SettingsEditing.BatchEditSettings.StartEditAction = GridViewBatchStartEditAction.DblClick;
         settings.Settings.ShowStatusBar = GridViewStatusBarMode.Hidden;
@@ -60,6 +60,7 @@ settings.SettingsEditing.Mode = GridViewEditingMode.Batch;
         {
             column.FieldName = "ProductName";
             column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            column.EditFormSettings.Visible = DefaultBoolean.False;
         });
 
         settings.Columns.Add(column =>
@@ -67,6 +68,7 @@ settings.SettingsEditing.Mode = GridViewEditingMode.Batch;
             column.Caption = "SKU";
             column.FieldName = "SKUCode";
             column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            column.EditFormSettings.Visible = DefaultBoolean.False;
         });
 
         settings.Columns.Add(column =>

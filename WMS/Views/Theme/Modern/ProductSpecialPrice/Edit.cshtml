@@ -25,25 +25,7 @@
     function OnBeginGridCallback(s, e) {
         e.customArgs = MVCxClientUtils.GetSerializedEditorValuesInContainer("frmPriceGroupPrices");
         e.customArgs["PriceGroupId"] = @ViewBag.PriceGroupId;
-      
-        //WORKAROUND for BULK Update
-        var gridValues = JSON.parse(JSON.stringify($("#frmPriceGroupPrices").serializeArray()));
-        var values = gridValues[gridValues.length - 1].value.split(',');
-
-        for (var i = 0; i < gridValues.length - 1; i++) {
-            if (gridValues[i].name == 'SpecialPriceGroupsGridView$DXEditor2') {
-                e.customArgs["SpecialPrice"] = gridValues[i].value;
-            }
-            if (gridValues[i].name == 'SpecialPriceGroupsGridView$DXEditor3') {
-                e.customArgs["StartDate"] = gridValues[i].value;
-            }
-            if (gridValues[i].name == 'SpecialPriceGroupsGridView$DXEditor4') {
-                e.customArgs["EndDate"] = gridValues[i].value;
-            }
-        }
-
         var rowIndex = parseInt($("#RowIndexForProductId").val()) || 0;
-
         e.customArgs["ProductID"] = SpecialPriceGroupsGridView.GetRowKey(rowIndex);
     }
 
@@ -61,9 +43,7 @@
     }
 
     function OnSpecialPricesGridFocusChanged(s, e) {
-
-        if (e.cellInfo.rowVisibleIndex > 0) {
-
+        if (e.cellInfo.rowVisibleIndex >= 0) {
             $("#LastEditingRowIndex").val(e.cellInfo.rowVisibleIndex);
         }
 
@@ -85,12 +65,9 @@
 }
 
 
-    <div class="col-md-offset-2 col-md-10 bottom-right">
-        <a href="@Url.Action("ImportProductPriceCsv","TenantDataImport",new {PriceGroupId=ViewBag.PriceGroupId })" class="btn btn-success" target="_blank">Import</a>
-        <a href="@Url.Action("PriceGroupReport","Reports",new {PriceGroupId=ViewBag.PriceGroupId })" class="btn btn-primary" target="_blank">Print</a>
-        <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
+<div class="col-md-offset-2 col-md-10 bottom-right">
+    <a href="@Url.Action("ImportProductPriceCsv","TenantDataImport",new {PriceGroupId=ViewBag.PriceGroupId })" class="btn btn-success" target="_blank">Import</a>
+    <a href="@Url.Action("PriceGroupReport","Reports",new {PriceGroupId=ViewBag.PriceGroupId })" class="btn btn-primary" target="_blank">Print</a>
+    <div class="back-list">@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })</div>
 
-    </div>
-
-
-
+</div>

@@ -10,7 +10,7 @@
     @Styles.Render("~/Content/Themes/UI-WZ/uiwz")
     @Styles.Render("~/Content/fontawesome-bundle")
     @Styles.Render("~/Content/css")
-    @Styles.Render("~/Content/css/modern")
+    @Styles.Render("~/Content/css/default")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryui")
@@ -142,6 +142,7 @@
             @Html.Partial("_BSPopup")
             @Html.Partial("_EmployeeShiftsPopUp")
             @RenderBody()
+            @{ Html.RenderPartial("_Tooltip");}
         </div>
         <div class="main-right">
 
@@ -179,16 +180,15 @@
     </div>
 
     <script>
-    $(function () {
+        $(function () {
 
-        var newPageGuid = '@(ViewBag.ForceRegeneratedPageToken ?? Guid.NewGuid())';
+            var newPageGuid = '@(ViewBag.ForceRegeneratedPageToken ?? Guid.NewGuid())';
 
-        var forceRegenerate = '@ViewBag.ForceRegeneratePageToken' === "True";
+            var forceRegenerate = '@ViewBag.ForceRegeneratePageToken' === "True";
 
-        updatePageSessionToken(newPageGuid, forceRegenerate);
+            updatePageSessionToken(newPageGuid, forceRegenerate);
 
-    });
-
+        });
     </script>
 
 </body>

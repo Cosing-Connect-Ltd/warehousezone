@@ -152,6 +152,7 @@
         settings.SettingsPager.PageSizeItemSettings.Visible = true;
         settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
         settings.SettingsDetail.ShowDetailRow = true;
+
         settings.SetDetailRowTemplateContent(c =>
         {
             Html.DevExpress().PageControl(s =>
@@ -205,6 +206,7 @@
                     ViewContext.Writer.Write("<div  class=gridSeperator><b>Account Codes</b></div>");
                     Html.RenderAction("_AccountCodes", new { ProductId = DataBinder.Eval(c.DataItem, "ProductId") });
                 });
+
                 s.TabPages.Add("Product Attributes").SetContent(() =>
                 {
                     Html.RenderAction("_Attributes", new { ProductId = DataBinder.Eval(c.DataItem, "ProductId") });
@@ -216,6 +218,7 @@
                     Html.RenderAction("_ProductLocations", new { productId = DataBinder.Eval(c.DataItem, "ProductId") });
 
                 });
+
                 s.TabPages.Add("Inventory").SetContent(() =>
                 {
                     ViewContext.Writer.Write("<div class=gridSeperator><b>Transactions</b></div>");
@@ -227,9 +230,6 @@
                     Html.RenderAction("_Serializations", new { productId = DataBinder.Eval(c.DataItem, "ProductId") });
                 });
 
-
-
-
                 if ((bool)DataBinder.Eval(c.DataItem, "Kit"))
                 {
                     s.TabPages.Add("Kit Items").SetContent(() =>
@@ -237,8 +237,10 @@
                         Html.RenderAction("_ProductKitItems", new { productId = DataBinder.Eval(c.DataItem, "ProductId") });
                     });
                 }
+
             }).GetHtml();
         });
+
 
         settings.HtmlRowPrepared = (s, e) =>
         {

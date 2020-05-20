@@ -35,14 +35,6 @@
         }
     }
 
-    function SetGridEditorToRowIndex(index) {
-        marketStocksGridView.StartEditRow(index);
-    }
-
-    function OnQuantitiesChanged(s, e) {
-        marketStocksGridView.UpdateEdit();
-    }
-
     function OnStockLevelsGridFocusChanged(s, e) {
         $("#LastEditingRowIndex").val(e.cellInfo.rowVisibleIndex);
     }

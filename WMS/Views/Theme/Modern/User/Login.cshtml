@@ -15,10 +15,10 @@
 }
 
 @{
-    ViewBag.Title = "Login - Modern";
+    ViewBag.Title = "Login";
 }
 
-<h2><span>Login Modern</span></h2>
+<h2><span>Login</span></h2>
 
 
 
@@ -34,7 +34,7 @@
         <div class="input-group h-100 justify-content-center align-items-center">
             @Html.Label("User Name", new { @class = "col-md-4" })
             <div class="col-md-8">
-                <input id="UserName" type="text" value="" name="UserName" required autocomplete="off">
+                <input id="UserName" type="text" value="" name="UserName" required autocomplete="off" tooltipKey="UserloginField">
                 @Html.ValidationMessageFor(model => model.UserName)
             </div>
         </div>

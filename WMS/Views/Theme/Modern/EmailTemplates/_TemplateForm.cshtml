@@ -23,20 +23,20 @@
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(m => m.HtmlHeader, htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
-                    @Html.Partial("~/Views/DevexHelper/PlaceholdersHtmlEditorPartial.cshtml", new HtmlEditorModel() { HtmlContent = Model.HtmlHeader, EditorName = "HtmlHeader", CallbackController = "DevexHelper", CallbackAction = "HtmlEditorEmailTemplateHeaderPartial", Height = 200 })
+                    @Html.Partial("PlaceholdersHtmlEditorPartial", new HtmlEditorModel() { HtmlContent = Model.HtmlHeader, EditorName = "HtmlHeader", CallbackController = "DevexHelper", CallbackAction = "HtmlEditorEmailTemplateHeaderPartial", Height = 200 })
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(m => m.Body, htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
-                    @Html.Partial("~/Views/DevexHelper/PlaceholdersHtmlEditorPartial.cshtml", new HtmlEditorModel() { HtmlContent = Model.Body, EditorName = "Body", CallbackController = "DevexHelper", CallbackAction = "HtmlEditorEmailTemplateBodyPartial" })
+                    @Html.Partial("PlaceholdersHtmlEditorPartial", new HtmlEditorModel() { HtmlContent = Model.Body, EditorName = "Body", CallbackController = "DevexHelper", CallbackAction = "HtmlEditorEmailTemplateBodyPartial" })
                 </div>
             </div>
             <hr />
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(m => m.HtmlFooter, htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
-                    @Html.Partial("~/Views/DevexHelper/PlaceholdersHtmlEditorPartial.cshtml", new HtmlEditorModel() { HtmlContent = Model.HtmlFooter, EditorName = "HtmlFooter", CallbackController = "DevexHelper", CallbackAction = "HtmlEditorEmailTemplateFooterPartial", Height = 200 })
+                    @Html.Partial("PlaceholdersHtmlEditorPartial", new HtmlEditorModel() { HtmlContent = Model.HtmlFooter, EditorName = "HtmlFooter", CallbackController = "DevexHelper", CallbackAction = "HtmlEditorEmailTemplateFooterPartial", Height = 200 })
                 </div>
             </div>
         </div>

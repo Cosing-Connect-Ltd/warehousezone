@@ -20,7 +20,6 @@
         settings.SettingsEditing.BatchEditSettings.StartEditAction = GridViewBatchStartEditAction.DblClick;
         settings.Settings.ShowStatusBar = GridViewStatusBarMode.Hidden;
         settings.EnableCallbackAnimation = false;
-        settings.SettingsBehavior.AllowFocusedRow = true;
         settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
         settings.SettingsPager.PageSizeItemSettings.Visible = true;
         settings.SettingsPager.PageSize = 10;
@@ -39,7 +38,7 @@
             column.EditFormSettings.Visible = DefaultBoolean.False;
         });
 
-         settings.Columns.Add(column =>
+        settings.Columns.Add(column =>
         {
             column.Caption = "SKU";
             column.FieldName = "SKUCode";
@@ -55,6 +54,7 @@
         settings.Columns.Add(column =>
         {
             column.FieldName = "MinStockQuantity";
+            column.Settings.AllowAutoFilter = DefaultBoolean.False;
             column.EditorProperties().SpinEdit(p =>
             {
                 p.MinValue = 0;
@@ -68,7 +68,9 @@
             ASPxEdit editor = (ASPxEdit)e.Editor;
             editor.ValidationSettings.Display = Display.None;
         };
+
         settings.ClientSideEvents.BeginCallback = "OnBeginGridCallback";
         settings.ClientSideEvents.FocusedCellChanging = "OnStockLevelsGridFocusChanged";
         settings.ClientSideEvents.EndCallback = "OnEndGridCallback";
+
     }).Bind(Model).GetHtml()

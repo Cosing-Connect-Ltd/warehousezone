@@ -46,7 +46,6 @@
 
         });
 
-
         settings.Columns.Add(column =>
         {
             column.FieldName = "SpecialPrice";
@@ -59,17 +58,18 @@
             column.Settings.AllowAutoFilter = DefaultBoolean.False;
 
         });
+
         settings.Columns.Add(column =>
         {
             column.FieldName = "StartDate";
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            column.ColumnType = MVCxGridViewColumnType.DateEdit;
             column.EditorProperties().DateEdit(p =>
             {
                 p.MinDate = DateTime.UtcNow.AddDays(-1);
                 p.MaxDate = DateTime.MaxValue;
-                p.ClientSideEvents.DateChanged = "function(s,e){ OnDetailsChanged(s,e);}";
+                p.ClientSideEvents.LostFocus = "function(s,e){ OnDetailsChanged(s,e);}";
             });
-            column.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
-            column.ColumnType = MVCxGridViewColumnType.DateEdit;
             column.SetDataItemTemplateContent(m =>
             {
                 var date = (DateTime?)DataBinder.Eval(m.DataItem, "StartDate");
@@ -81,15 +81,14 @@
         settings.Columns.Add(column =>
         {
             column.FieldName = "EndDate";
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            column.ColumnType = MVCxGridViewColumnType.DateEdit;
             column.EditorProperties().DateEdit(p =>
             {
                 p.MinDate = DateTime.UtcNow.AddDays(-1);
                 p.MaxDate = DateTime.MaxValue;
-                p.ClientInstanceName =
-                p.ClientSideEvents.DateChanged = "function(s,e){ OnDetailsChanged(s,e);}";
+                p.ClientSideEvents.LostFocus = "function(s,e){ OnDetailsChanged(s,e);}";
             });
-            column.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
-            column.ColumnType = MVCxGridViewColumnType.DateEdit;
             column.SetDataItemTemplateContent(m =>
             {
                 var date = (DateTime?)DataBinder.Eval(m.DataItem, "EndDate");
@@ -97,17 +96,6 @@
                 ViewContext.Writer.Write(localDate.HasValue ? localDate.Value.ToString("dd/MM/yyyy HH:mm") : "");
             });
         });
-
-        settings.CustomJSProperties = (sender, e) =>
-        {
-            MVCxGridView gridView = (MVCxGridView)sender;
-            if (gridView.EditingRowVisibleIndex > -1)
-            {
-                e.Properties["sSpecialPrice"] = gridView.GetRowValues(gridView.EditingRowVisibleIndex, "sSpecialPrice");
-                e.Properties["sStartDate"] = gridView.GetRowValues(gridView.EditingRowVisibleIndex, "sStartDate");
-                e.Properties["sEndDate"] = gridView.GetRowValues(gridView.EditingRowVisibleIndex, "sEndDate");
-            }
-        };
 
         settings.CellEditorInitialize = (s, e) =>
         {

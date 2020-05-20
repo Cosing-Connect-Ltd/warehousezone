@@ -44,6 +44,7 @@
                 if (!string.IsNullOrEmpty(path))
                 {
                     ViewContext.Writer.Write("<img src='" + path + "'style='max-height:120px;width:200px'>");
+                    //ViewContext.Writer.Write("<img style='width:100%' src='" + path + "'/>");
                 }
             });
         });

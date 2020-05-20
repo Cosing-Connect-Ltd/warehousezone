@@ -281,16 +281,17 @@
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.Label("Choose Site", htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
-                    @Html.DropDownListFor(u => u.SiteId, new SelectList(ViewBag.WebsiteIds, "SiteID", "SiteName", Model.SiteId), "Select Site", new { @class = "chosen-select" })
+                    @Html.DropDownListFor(u => u.SiteId, new SelectList(ViewBag.WebsiteIds, "SiteID", "SiteName"), "Select Site", new { @class = "chosen-select" })
                     @Html.ValidationMessageFor(model => model.SiteId)
-
+                   
 
                 </div>
             </div>
+
             <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.Label("Product Sites", htmlAttributes: new { @class = "col-md-4" })
+                @Html.Label("Choose Tags", htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
-                    @Html.ListBox("SiteIds", new MultiSelectList(ViewBag.WebsiteIds, "SiteID", "SiteName"), new { Multiple = "multiple", size = "5", @class = "chosen-select", data_placeholder = "Choose Site" })
+                    @Html.ListBox("SiteIds", new MultiSelectList(ViewBag.ProductTag, "Id", "TagName"), new { Multiple = "multiple", @class = "chosen-select", data_placeholder = "Choose Tags" })
 
                 </div>
             </div>
@@ -308,41 +309,7 @@
                     @Html.ValidationMessageFor(model => model.ManufacturerPartNo)
                 </div>
             </div>
-            @if (ViewBag.IsEcommerceEnabled)
-            {
-                <div class="input-group h-100 justify-content-center align-items-center">
-                    @Html.LabelFor(model => model.TopProduct, htmlAttributes: new { @class = "col-md-4" })
-                    <div class="col-md-8">
-                        @Html.EditorFor(model => model.TopProduct)
-                        @Html.ValidationMessageFor(model => model.TopProduct)
-                    </div>
-                </div>
-                <div class="input-group h-100 justify-content-center align-items-center">
-                    @Html.LabelFor(model => model.BestSellerProduct, htmlAttributes: new { @class = "col-md-4" })
-                    <div class="col-md-8">
-                        @Html.EditorFor(model => model.BestSellerProduct)
-                        @Html.ValidationMessageFor(model => model.BestSellerProduct)
-                    </div>
-                </div>
-                <div class="input-group h-100 justify-content-center align-items-center">
-                    @Html.LabelFor(model => model.SpecialProduct, htmlAttributes: new { @class = "col-md-4" })
-                    <div class="col-md-8">
-                        @Html.EditorFor(model => model.SpecialProduct)
-                        @Html.ValidationMessageFor(model => model.SpecialProduct)
-                    </div>
-                </div>
-
-                <div class="input-group h-100 justify-content-center align-items-center">
-                    @Html.LabelFor(model => model.OnSaleProduct, htmlAttributes: new { @class = "col-md-4" })
-                    <div class="col-md-8">
-                        @Html.EditorFor(model => model.OnSaleProduct)
-                        @Html.ValidationMessageFor(model => model.OnSaleProduct)
-                    </div>
-                </div>
-
-
-            }
-
+        
         </div>
         <div class="col-md-6 pull-left">
 

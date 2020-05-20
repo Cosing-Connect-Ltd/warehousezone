@@ -15,12 +15,13 @@
         controllerName = ViewBag.ControllerName;
         settings.ShowUploadButton = false;
     }
-    if (controllerName == "TenantDepartment" || controllerName == "ProductGroup" || controllerName=="ProductManufacturers")
+    if (controllerName == "TenantDepartment" || controllerName == "ProductGroup" || controllerName == "ProductManufacturers" || controllerName == "TenantWebsites" || controllerName == "WebsiteNavigations" || controllerName == "WebsiteSliders" || controllerName == "WebsiteContentPages" || controllerName == "ProductTags")
     {
         settings.AdvancedModeSettings.EnableMultiSelect = false;
         settings.UploadMode = UploadControlUploadMode.Standard;
         settings.AutoStartUpload = true;
         settings.NullText = "Select file...";
+        
     }
     else
     {
@@ -35,9 +36,9 @@
     settings.CallbackRouteValues = new { Controller = controllerName, Action = "UploadFile" };
     settings.Size = 30;
     settings.ValidationSettings.Assign(new UploadControlValidationSettings { AllowedFileExtensions = new string[] { ".jpg", ".jpeg", ".gif", ".png", ".avi", ".mp4", ".pdf", ".docx", ".xlxs" }, MaxFileSize = 100000000 });
-
     settings.ClientSideEvents.FileUploadComplete = "function(s,e) { onFileUploadComplete(s,e); }";
     settings.ClientSideEvents.FilesUploadStart = "function(s,e) { onFileUploadStart(s,e); }";
+
 }).GetHtml()
 <script id="uploaderTemplate" type="text/x-jquery-tmpl">
     <tr>

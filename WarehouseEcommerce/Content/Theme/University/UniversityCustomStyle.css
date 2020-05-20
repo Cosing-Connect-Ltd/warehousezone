@@ -99,3 +99,11 @@
     font-weight: bold;
     font-size: 20px;
 }
+
+.prd_lst_boxouter .badge {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    right: -15px;
+    top: -15px;
+}
