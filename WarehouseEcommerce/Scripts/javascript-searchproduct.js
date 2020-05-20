@@ -473,7 +473,7 @@ function CreateUsers() {
 function AddWishListItem(ProductId) {
     $.confirm({
         title: 'Confirm!',
-        content: 'Do you want to notify regarding this product!',
+        content: 'Would you like to be notified about this product!',
         buttons: {
             Yes: function () {
                 AddToWishList(ProductId, true);

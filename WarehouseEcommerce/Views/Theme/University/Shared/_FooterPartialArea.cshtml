@@ -3,7 +3,7 @@
 <footer class="nb_footer">
     <div class="container">
         <div class="nb_footersec_inner">
-            <a href="" class="nb_foot_logo">
+            <a href="@Url.Action("Index","Home")" class="nb_foot_logo">
                 <img src="@ViewBag.BaseFilePath@Model.Logo" title="@Model.SiteName" alt="@Model.SiteName" />
             </a>
             @if (!string.IsNullOrEmpty(Model.FacebookUrl) || !string.IsNullOrEmpty(Model.InstaGramUrl) || !string.IsNullOrEmpty(Model.LinkedInUrl) || !string.IsNullOrEmpty(Model.TwitterUrl))

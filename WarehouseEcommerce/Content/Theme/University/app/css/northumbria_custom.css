@@ -716,6 +716,13 @@ input[type="number"]::-webkit-outer-spin-button {
     visibility: visible;
 }
 
+.nb_bannersec .carousel-item.active .nb_bannerCaptionWrap a {
+    transform: translateY(0px);
+    opacity: 1;
+    visibility: visible;
+    z-index: 100;
+}
+
 .nb_bannersec .np_bannerContentOuter.CountWrap {
     z-index: 10;
 }
@@ -756,7 +763,8 @@ input[type="number"]::-webkit-outer-spin-button {
             transition-delay: 1s;
         }
 
-        .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap button {
+        .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap button,
+        .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap a {
             background-color: transparent;
             border: none;
             position: relative;
@@ -773,24 +781,25 @@ input[type="number"]::-webkit-outer-spin-button {
             transition-delay: 1s;
         }
 
-            .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap button:after {
-                content: "";
-                font-family: "primaryfont_SemiBold";
-                font-size: 20px;
-                color: #fff;
-                text-transform: uppercase;
-                width: 76px;
-                height: 5px;
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                background-color: #f33655;
-                transition: all 0.3s ease;
-            }
+        .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap button:after,
+        .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap a:after {
+            content: "";
+            font-family: "primaryfont_SemiBold";
+            font-size: 20px;
+            color: #fff;
+            text-transform: uppercase;
+            width: 76px;
+            height: 5px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background-color: #f33655;
+            transition: all 0.3s ease;
+        }
 
-            .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap button:hover:after {
-                width: 100%;
-            }
+        .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap button:hover:after {
+            width: 100%;
+        }
 
     .nb_bannersec .np_bannerContentOuter .nb_bnr_count {
         position: absolute;

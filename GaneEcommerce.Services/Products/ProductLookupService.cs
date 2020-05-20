@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using Elmah;
 using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Helpers;
@@ -151,7 +152,6 @@ namespace Ganedata.Core.Services
             Dictionary<string, List<string>> filters = new Dictionary<string, List<string>>();
             try
             {
-
                 if (!string.IsNullOrEmpty(filterstring))
                 {
                     var data = filterstring.Split('/');
@@ -240,8 +240,7 @@ namespace Ganedata.Core.Services
             }
             catch (Exception ex)
             {
-
-                throw;
+                ErrorSignal.FromCurrentContext().Raise(ex);
             }
             return productMaster;
 
@@ -741,7 +740,7 @@ namespace Ganedata.Core.Services
             if (productTag.Id <= 0)
             {
                 productTag.TenantId = TenantId;
-                productTag.DateCreated=DateTime.Now;
+                productTag.DateCreated = DateTime.Now;
                 productTag.CreatedBy = UserId;
                 _currentDbContext.ProductTags.Add(productTag);
                 _currentDbContext.SaveChanges();
