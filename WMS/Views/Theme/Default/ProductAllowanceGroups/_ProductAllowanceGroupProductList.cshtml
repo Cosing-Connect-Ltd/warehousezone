@@ -49,6 +49,9 @@
         {
             c.FieldName = "ProductId";
             c.Width = System.Web.UI.WebControls.Unit.Percentage(3);
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+
         });
 
         settings.Columns.Add(c =>

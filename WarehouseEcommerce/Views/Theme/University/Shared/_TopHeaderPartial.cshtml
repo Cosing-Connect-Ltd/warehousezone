@@ -1,6 +1,6 @@
-﻿@using Ganedata.Core.Services
+﻿@using Ganedata.Core.Entities.Domain
 @{
-    var siteProperties = ViewBag.TenantWebsite as caTenantWebsites;
+    var siteProperties = ViewBag.TenantWebsite as TenantWebsites;
 }
 <header class="nb_header">
     <div class="res_navWrapper">
@@ -25,7 +25,7 @@
                     <img src="~/Content/Theme/University/app/images/logo.png" alt="" />
                 </a>*@
             <a href="@Url.Action("Index","Home")">
-                <img src="@ViewBag.BaseFilePath@siteProperties.Logo" title="@siteProperties.SiteName" alt="@siteProperties.SiteName" />
+                <img src="@ViewBag.BaseFilePath@siteProperties.Logo" title="@siteProperties.SiteName" alt="@siteProperties.SiteName" style="max-height:224px;" />
             </a>
         </div>
         <ul class="nb_headicolst">

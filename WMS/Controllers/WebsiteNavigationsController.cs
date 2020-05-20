@@ -44,6 +44,7 @@ namespace WMS.Controllers
 
         public ActionResult _NavigationList(int SiteId)
         {
+            ViewBag.SiteId = SiteId;
             var model = _tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, SiteId).ToList();
             return PartialView(model);
         }

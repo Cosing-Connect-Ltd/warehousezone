@@ -44,6 +44,7 @@ namespace WMS.Controllers
 
         public ActionResult _ProductAllowanceList(int SiteId)
         {
+            ViewBag.SiteId = SiteId;
             var data = _tenantWebsiteService.GetAllValidProductAllowance(CurrentTenantId, SiteId).ToList();
             return PartialView(data);
         }

@@ -23,12 +23,49 @@
         settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
         settings.Columns.Add("TenantWebsites.SiteName").Caption = "Site Name";
         settings.Columns.Add("Code");
-        settings.Columns.Add("FromDate");
-        settings.Columns.Add("ToDate");
-        settings.Columns.Add("DiscountType");
-        settings.Columns.Add("DiscountPercent");
-        settings.Columns.Add("FreeShippig");
-        settings.Columns.Add("SingleUse");
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "FromDate";
+            c.ColumnType = MVCxGridViewColumnType.DateEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ToDate";
+            c.ColumnType = MVCxGridViewColumnType.DateEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DiscountType";
+            c.Caption = "Discount Type";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var comboSettings = (ComboBoxProperties)c.PropertiesEdit;
+            comboSettings.DataSource = Enum.GetValues(typeof(WebsiteDiscountTypeEnum));
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DiscountPercent";
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "FreeShippig";
+            c.ColumnType = MVCxGridViewColumnType.CheckBox;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "SingleUse";
+            c.ColumnType = MVCxGridViewColumnType.CheckBox;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+
+        });
 
         settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
         settings.SettingsPager.PageSizeItemSettings.Visible = true;

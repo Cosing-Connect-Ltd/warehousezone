@@ -2,8 +2,8 @@
 @{
     var grid = Html.DevExpress().GridView(settings =>
     {
-        settings.Name = "WebsiteVouchersGridView";
-        settings.CallbackRouteValues = new { Controller = "WebsiteVouchers", Action = "_TenantWebSiteList" };
+        settings.Name = "TenantWebsiteGridView";
+        settings.CallbackRouteValues = new { Controller = "TenantWebsites", Action = "_TenantWebSiteList"};
         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
         settings.Settings.ShowHeaderFilterButton = false;
         settings.SettingsPopup.HeaderFilter.Height = 200;
@@ -22,18 +22,20 @@
         settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
         settings.Columns.Add("SiteName");
         settings.Columns.Add("HostName");
-        settings.Columns.Add("FacebookUrl");
-        settings.Columns.Add("TwitterUrl");
-        settings.Columns.Add("LinkedInUrl");
-        settings.Columns.Add("YoutubeUrl");
-        settings.Columns.Add("InstaGramUrl");
-        settings.Columns.Add("WebsiteContactAddress");
-        settings.Columns.Add("WebsiteContactPhone");
-        settings.Columns.Add("WebsiteContactEmail");
+        //settings.Columns.Add("FacebookUrl");
+        //settings.Columns.Add("TwitterUrl");
+        //settings.Columns.Add("LinkedInUrl");
+        //settings.Columns.Add("YoutubeUrl");
+        //settings.Columns.Add("InstaGramUrl");
+        //settings.Columns.Add("WebsiteContactAddress");
+        //settings.Columns.Add("WebsiteContactPhone");
+        //settings.Columns.Add("WebsiteContactEmail");
         settings.Columns.Add(c =>
         {
             c.FieldName = "ImagePath";
-
+            c.Caption = "Logo";
+            c.Settings.AllowAutoFilter = DefaultBoolean.False;
+            c.Settings.AllowSort = DefaultBoolean.False;
             c.SetDataItemTemplateContent(m =>
             {
                 var Logo = (string)DataBinder.Eval(m.DataItem, "Logo");

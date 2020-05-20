@@ -435,8 +435,11 @@ namespace Ganedata.Core.Entities.Enums
 
     public enum WebsiteDiscountTypeEnum
     {
+        [Display(Name = "All In Basket")]
         AllInBasket = 1,
+        [Display(Name = "Any In Basket")]
         AnyInBasket = 2,
+        [Display(Name = "Apply On Cheapest")]
         ApplyOnCheapest = 3
     }
 

@@ -94,6 +94,8 @@
         {
             c.FieldName = "IsActive";
             c.Caption = "Active";
+            c.ColumnType = MVCxGridViewColumnType.CheckBox;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
 
 
         });
@@ -101,6 +103,8 @@
         {
             c.FieldName = "SortOrder";
             c.Caption = "Sort Order";
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
 
         });
 

@@ -4,7 +4,7 @@
     var grid = Html.DevExpress().GridView(settings =>
     {
         settings.Name = "ProductAllowanceGridView";
-        settings.CallbackRouteValues = new { Controller = "ProductAllowances", Action = "_ProductAllowanceList" };
+        settings.CallbackRouteValues = new { Controller = "ProductAllowances", Action = "_ProductAllowanceList", SiteId = ViewBag.SiteId };
         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
         settings.Settings.ShowHeaderFilterButton = false;
         settings.SettingsPopup.HeaderFilter.Height = 200;
@@ -22,12 +22,21 @@
         settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
         settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
         settings.Columns.Add("Roles.RoleName").Caption = "Role";
-       
-        settings.Columns.Add("Quantity");
-        settings.Columns.Add("PerXDays");
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Quantity";
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "PerXDays";
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
         settings.Columns.Add("ProductMaster.Name");
         settings.Columns.Add("ProductAllowanceGroup.Name");
-        
+
         settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
         settings.SettingsPager.PageSizeItemSettings.Visible = true;
         settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };

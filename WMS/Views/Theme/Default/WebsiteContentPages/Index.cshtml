@@ -28,18 +28,18 @@
 
 <div class="col-md-12 p-0">
 
-    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TenantWebsites", "Create"))
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("WebsiteContentPages", "Create"))
     {
         @Html.ActionLink("Create New", "Create", new { SiteId = ViewBag.SiteId }, new { @class = "btn btn-primary  " })
     }
 
-    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TenantWebsites", "Edit"))
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("WebsiteContentPages", "Edit"))
     {
         @Html.ActionLink("Update", "Edit", null, new { @class = "btn btn-primary  Caction" })
     }
 
 
-    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TenantWebsites", "Delete"))
+    @if (WMS.Helpers.LayoutHelpers.ActivityValidator("WebsiteContentPages", "Delete"))
     {
         @Html.ActionLink("Delete", "Delete", null, new { @class = "btn btn-primary  Caction" })
     }

@@ -61,7 +61,8 @@
         settings.Columns.Add(c =>
         {
             c.FieldName = "Value";
-            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
             c.EditFormSettings.Visible = DefaultBoolean.False;
         });
         settings.Columns.Add(c =>
@@ -80,7 +81,8 @@
         {
             c.FieldName = "IsActive";
             c.Caption = "Active";
-
+            c.ColumnType = MVCxGridViewColumnType.CheckBox;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
 
         });
 
