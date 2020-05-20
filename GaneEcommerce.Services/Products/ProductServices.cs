@@ -964,6 +964,7 @@ namespace Ganedata.Core.Services
                         var list = new ProductTagMap();
                         list.ProductId = productMaster.ProductId;
                         list.TagId = siteId;
+                        list.TenantId = tenantId;
                         list.UpdateCreatedInfo(userId);
                         productMaster.ProductTagMaps.Add(list);
                     }
@@ -1183,7 +1184,7 @@ namespace Ganedata.Core.Services
             return _currentDbContext.InventoryStocks.FirstOrDefault(a => a.ProductId == productId && a.WarehouseId == tenantLocationId && a.IsDeleted != true);
         }
 
-        public IEnumerable<ProductMaster> GetProductByCategory(int SiteId, int tenantId, int NumberofProducts, bool TopProduct = false, bool BestSellerProduct = false, bool SpecialProduct = false, bool OnSaleProduct = false,string TagName="")
+        public IEnumerable<ProductMaster> GetProductByCategory(int SiteId, int tenantId, int NumberofProducts, string TagName)
         {
             var products = _currentDbContext.ProductsWebsitesMap.Where(u=>u.TenantId==tenantId && u.SiteID==SiteId && u.IsDeleted != true).Select(u => u.ProductMaster);
             var ProductTagIds = _currentDbContext.ProductTags.Where(u => u.TagName == TagName).Select(u => u.Id);

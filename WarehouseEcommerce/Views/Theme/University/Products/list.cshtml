@@ -103,8 +103,22 @@
 
                             <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-4">
                                 <div class="prd_lst_boxouter">
+                                    @for (int i = 0; i < item.ProductTagMaps.Count; i++)
+                                    {
+                                        if (i < 3)
+                                        {
+                                            <span class="badge">
+                                                <img src="@(ViewBag.BaseFilePath + item.ProductTagMaps.ToList()[i].ProductTag.IconImage)" alt="" />
+                                            </span>
+                                        }
+
+                                    }
+
                                     <span class="imagewrap">
-                                        <a href="@Url.Action("ProductDetails","Products", new {sku=item.SKUCode})"> <img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" /></a>
+                                        <a href="@Url.Action("ProductDetails","Products", new {sku=item.SKUCode})">
+
+                                            <img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
+                                        </a>
                                         @*<a href="@Url.Action("ProductDetails","Products", new {sku=item.SKUCode})"> <img src="~/Content/Theme/University/app/images/Runner_Prep.jpg" class="img-fluid" alt="static-image" title="static-image" /></a>*@
                                     </span>
                                     <h3 class="prdName">@item.Name</h3>
@@ -126,7 +140,7 @@
                                                     </li>
 
                                                 }
-                                                @if (item.WebsiteWishListItems.Where(u=>u.IsDeleted != true).ToList().Count <= 0)
+                                                @if (item.WebsiteWishListItems.Where(u => u.IsDeleted != true).ToList().Count <= 0)
                                                 {
 
 

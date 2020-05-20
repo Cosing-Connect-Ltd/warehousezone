@@ -17,7 +17,7 @@
 }
 
 @{
-    ViewBag.Title = "Edit Website Slider";
+    ViewBag.Title = "Edit Product Tag";
 }
 <script type="text/javascript">
     function onFileUploadComplete(s, e) {
@@ -42,8 +42,8 @@
         }
     }
 </script>
-<h2><span> Edit Website Slider (@ViewBag.SiteName)</span></h2>
-@Html.Hidden("websiteSlider", true)
+<h2><span> Edit ProductTag</span></h2>
+@Html.Hidden("productTag", true)
 @Html.Hidden("hdPFiles", (List<string>)ViewBag.Files)
 @using (Html.BeginForm())
 {
@@ -95,7 +95,7 @@
             </div>
         </div>
     </div>
-    =
+   
     <div class="input-group h-100 justify-content-center align-items-center">
         <div class="col-md-offset-2 col-md-10 bottom-right">
             <input type="submit" value="Save" class="btn btn-primary" />

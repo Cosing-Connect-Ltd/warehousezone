@@ -47,7 +47,7 @@ namespace Ganedata.Core.Services
         ProductMaster GetProductMasterByOuterBarcode(string outerBarcode, int tenantId);
         IEnumerable<ProductMaster> GetProductMasterDropdown(int productId);
 
-        IEnumerable<ProductMaster> GetProductByCategory(int SitId, int tenantId, int NumberofProducts, bool TopProduct = false, bool BestSellerProduct = false, bool SpecialProduct = false, bool OnSaleProduct = false,string TagName="");
+        IEnumerable<ProductMaster> GetProductByCategory(int SitId, int tenantId, int NumberofProducts, string TagName);
 
         string GenerateNextProductCode(int tenantId);
         bool IsCodeAvailableForUse(string code, int tenantId, EnumProductCodeType codeType = EnumProductCodeType.All, int productId = 0);

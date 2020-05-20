@@ -219,7 +219,7 @@ namespace WMS.Controllers
         }
 
 
-        public JsonResult _RemoveLogoFile(string filename, bool websiteSlider=false,bool tenantWebsite=false, bool navigationWebsite=false, bool websiteContent=false, string NavType="")
+        public JsonResult _RemoveLogoFile(string filename, bool websiteSlider=false,bool tenantWebsite=false, bool navigationWebsite=false, bool websiteContent=false, string NavType="",bool productTag=false)
         {
             if (tenantWebsite)
             {
@@ -269,6 +269,18 @@ namespace WMS.Controllers
                 if (files.Count <= 0)
                 {
                     Session["UploadWebsiteContentPage"] = null;
+                }
+                var cfiles = files.Select(a => a).ToList();
+                return Json(new { files = cfiles.Count == 0 ? null : cfiles });
+            }
+            else if (productTag)
+            {
+                var files = Session["UploadProductTag"] as List<string>;
+                var filetoremove = files.FirstOrDefault(a => a == filename);
+                files.Remove(filetoremove);
+                if (files.Count <= 0)
+                {
+                    Session["UploadProductTag"] = null;
                 }
                 var cfiles = files.Select(a => a).ToList();
                 return Json(new { files = cfiles.Count == 0 ? null : cfiles });
