@@ -116,6 +116,10 @@
                         @Html.ValidationMessageFor(model => model.DontMonitorStock)
                     </div>
                 </div>
+              
+
+            </div>
+            <div class="single-check-select">
                 <div class="input-group h-100 justify-content-center align-items-center divchkgrp">
                     @Html.LabelFor(model => model.GroupedProduct, htmlAttributes: new { @class = "col-md-4" })
                     <div class="col-md-8">
@@ -123,49 +127,24 @@
                         @Html.ValidationMessageFor(model => model.GroupedProduct)
                     </div>
                 </div>
-                <div class="input-group h-100 justify-content-center align-items-center" id="dvgrp">
-                    @Html.LabelFor(model => model.ProductGroup, htmlAttributes: new { @class = "col-md-4 kitlabel" })
-                    <div class="col-md-8">
-                        <div class="col-11 p-0 mt-1 pull-left">
-                            @Html.ListBox("ProductGroupIds", new MultiSelectList(ViewBag.ProductgroupIds, "", ""), new { Multiple = "multiple", @class = "chosen-select", data_placeholder = "Choose Product Groups" })
-                        </div>
-                        <div class="col-1 p-0 pull-left">
-                            <input type="button" onclick="ShowProductGroupPopUp();" id="ProdGroupAdd" class="btn btn-primary" value="+">
-                        </div>
-                    </div>
-                    @*@Html.Action("_ProductKitCombobox", new { ProductId = Model.ProductId })
-                @Html.Hidden("ProductKit")*@
 
-
-                </div>
                 <div class="input-group h-100 justify-content-center align-items-center divchkkit">
                     @Html.LabelFor(model => model.Kit, htmlAttributes: new { @class = "col-md-4" })
                     <div class="col-md-8">
                         @Html.CheckBoxFor(m => m.Kit, new { @id = "chkkit", @class = "form-control checkbox" })
                     </div>
                 </div>
-                <div class="input-group h-100 justify-content-center align-items-center" id="dvkit">
-                    @Html.LabelFor(model => model.Kit, htmlAttributes: new { @class = "col-md-4" })
+
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.IsRawMaterial, htmlAttributes: new { @class = "col-md-4" })
                     <div class="col-md-8">
-                        <div class="col-11 p-0 mt-1 pull-left">
-                            @Html.ListBox("ProductKitIds", new MultiSelectList(ViewBag.ProductKitItems, "", ""), new { Multiple = "multiple", @class = "chosen-select", data_placeholder = "Choose Product Kit" })
-                        </div>
-                        <div class="col-1 p-0 pull-left">
-                            <input type="button" onclick="ProductKitPopUp();" id="ProdkitAdd" class="btn btn-primary" value="+">
-                        </div>
+                        @Html.EditorFor(model => model.IsRawMaterial)
+                        @Html.ValidationMessageFor(model => model.IsRawMaterial)
                     </div>
                 </div>
 
             </div>
-
-            <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.IsRawMaterial, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.IsRawMaterial)
-                    @Html.ValidationMessageFor(model => model.IsRawMaterial)
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
+             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.IsStockItem, htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
                     @Html.EditorFor(model => model.IsStockItem)
@@ -283,7 +262,7 @@
                 <div class="col-md-8">
                     @Html.DropDownListFor(u => u.SiteId, new SelectList(ViewBag.WebsiteIds, "SiteID", "SiteName"), "Select Site", new { @class = "chosen-select" })
                     @Html.ValidationMessageFor(model => model.SiteId)
-                   
+
 
                 </div>
             </div>
@@ -309,7 +288,7 @@
                     @Html.ValidationMessageFor(model => model.ManufacturerPartNo)
                 </div>
             </div>
-        
+
         </div>
         <div class="col-md-6 pull-left">
 

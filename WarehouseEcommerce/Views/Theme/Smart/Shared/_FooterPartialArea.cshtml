@@ -1,14 +1,20 @@
-﻿@using Ganedata.Core.Services
+﻿@using Ganedata.Core.Entities.Domain
 @{
-    var siteProperties = ViewBag.TenantWebsite as caTenantWebsites;
+    var siteProperties = ViewBag.TenantWebsite as TenantWebsites;
 }
 
 <footer>
     <div>
         <div class="custom-max-width m-auto logo-slider">
-            @foreach (var item in Model)
+            @if (ViewBag.FooterNavigation != null)
             {
-                <a href="@Url.Action("list","Products",new { values="BrandS-"+item.Name.Replace(" ", "_").Replace(",", "^")})"><img src="@(!string.IsNullOrEmpty(item.ImagePath)? ViewBag.BaseFilePath + item.ImagePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@item.Name" title="@item.Name" class="img-responsive"> </a>
+                var naviagtion = ViewBag.FooterNavigation as List<Ganedata.Core.Entities.Domain.WebsiteNavigation>;
+                foreach (var item in Model)
+                {
+                    <a href="@Url.Action("page", "Home", new { pageUrl = item.WebsiteContentPages.pageUrl })">
+                        @item.Name
+                    </a>
+                }
             }
 
         </div>

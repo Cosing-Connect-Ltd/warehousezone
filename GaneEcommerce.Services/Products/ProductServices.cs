@@ -831,8 +831,8 @@ namespace Ganedata.Core.Services
                         entity.IsDeleted = true;
                         _currentDbContext.Entry(entity).State = EntityState.Modified;
                     }
-                    productMaster.Kit = false;
-                    productMaster.GroupedProduct = false;
+                    ////productMaster.Kit = false;
+                    ////productMaster.GroupedProduct = false;
                 }
 
                 _currentDbContext.SaveChanges();
