@@ -17,10 +17,6 @@ namespace WMS.Controllers
 {
     public class ProductTagsController : BaseController
     {
-        private readonly IUserService _userService;
-        private readonly IInvoiceService _invoiceService;
-        private readonly ILookupServices _lookupServices;
-        private readonly IMarketServices _marketServices;
         private readonly IProductLookupService _productLookupService;
         string UploadDirectory = "~/UploadedFiles/ProductTags/";
         string UploadTempDirectory = "~/UploadedFiles/ProductTags/TempFiles/";
@@ -29,22 +25,20 @@ namespace WMS.Controllers
         public ProductTagsController(ICoreOrderService orderService, IMarketServices marketServices, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IUserService userService, IInvoiceService invoiceService, IProductLookupService productLookupService)
         : base(orderService, propertyService, accountServices, lookupServices)
         {
-            _marketServices = marketServices;
-            _userService = userService;
-            _invoiceService = invoiceService;
-            _lookupServices = lookupServices;
             _productLookupService = productLookupService;
         }
 
         // GET: WebsiteSliders
         public ActionResult Index()
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             Session["UploadProductTag"] = null;
             return View();
         }
 
         public ActionResult _ProductTagList()
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             var productTags = _productLookupService.GetAllValidProductTag(CurrentTenantId).ToList();
             return PartialView(productTags);
         }
@@ -52,6 +46,7 @@ namespace WMS.Controllers
         // GET: WebsiteSliders/Create
         public ActionResult Create()
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ViewBag.ControllerName = "ProductTags";
             Session["UploadProductTag"] = null;
             return View();
@@ -64,6 +59,7 @@ namespace WMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(ProductTag productTag, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (ModelState.IsValid)
             {
                 ViewBag.ControllerName = "ProductTags";
@@ -89,6 +85,7 @@ namespace WMS.Controllers
         // GET: WebsiteSliders/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             Session["UploadProductTag"] = null;
             ViewBag.ControllerName = "ProductTags";
             if (id == null)
@@ -120,6 +117,7 @@ namespace WMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(ProductTag productTag, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (ModelState.IsValid)
             {
                 string filePath = "";
@@ -145,6 +143,7 @@ namespace WMS.Controllers
         // GET: WebsiteSliders/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             var result = _productLookupService.RemoveProductTag((id ?? 0), CurrentUserId);
             return RedirectToAction("Index");
         }

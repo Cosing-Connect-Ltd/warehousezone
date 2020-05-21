@@ -17,18 +17,13 @@ namespace WMS.Controllers
     public class WebsiteShippingRulesController : BaseController
     {
         private readonly ITenantWebsiteService _tenantWebsiteService;
-        private readonly IUserService _userService;
-        private readonly IInvoiceService _invoiceService;
         private readonly ILookupServices _lookupServices;
-        private readonly IMarketServices _marketServices;
+  
         // GET: WebsiteNavigations
 
         public WebsiteShippingRulesController(ICoreOrderService orderService, IMarketServices marketServices, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IUserService userService, IInvoiceService invoiceService, ITenantWebsiteService tenantWebsiteService)
         : base(orderService, propertyService, accountServices, lookupServices)
         {
-            _marketServices = marketServices;
-            _userService = userService;
-            _invoiceService = invoiceService;
             _lookupServices = lookupServices;
             _tenantWebsiteService = tenantWebsiteService;
         }
@@ -36,6 +31,7 @@ namespace WMS.Controllers
         // GET: WebsiteShippingRules
         public ActionResult Index(int SiteId)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ViewBag.SiteId = SiteId;
             SiteName(SiteId);
             return View();
@@ -96,6 +92,7 @@ namespace WMS.Controllers
         // GET: WebsiteShippingRules/Create
         public ActionResult Create(int SiteId)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ViewBag.CountryId = new SelectList(_lookupServices.GetAllGlobalCountries(), "CountryID", "CountryName");
             ViewBag.SiteID = SiteId;
             SiteName(SiteId);
@@ -109,6 +106,7 @@ namespace WMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create( WebsiteShippingRules websiteShippingRules)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (ModelState.IsValid)
             {
                 var shippingRules=_tenantWebsiteService.CreateOrUpdateWebsiteShippingRules(websiteShippingRules, CurrentUserId, CurrentTenantId);
@@ -122,6 +120,7 @@ namespace WMS.Controllers
         // GET: WebsiteShippingRules/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -143,6 +142,7 @@ namespace WMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit( WebsiteShippingRules websiteShippingRules)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (ModelState.IsValid)
             {
                 var shippingRules = _tenantWebsiteService.CreateOrUpdateWebsiteShippingRules(websiteShippingRules, CurrentUserId, CurrentTenantId);
@@ -156,6 +156,7 @@ namespace WMS.Controllers
         // GET: WebsiteShippingRules/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

@@ -18,10 +18,6 @@ namespace WMS.Controllers
     public class WebsiteContentPagesController : BaseController
     {
         private readonly ITenantWebsiteService _tenantWebsiteService;
-        private readonly IUserService _userService;
-        private readonly IInvoiceService _invoiceService;
-        private readonly ILookupServices _lookupServices;
-        private readonly IMarketServices _marketServices;
         string UploadDirectory = "~/UploadedFiles/WebsiteContentPage/";
         string UploadTempDirectory = "~/UploadedFiles/WebsiteContentPage/TempFiles/";
         // GET: WebsiteNavigations
@@ -29,16 +25,13 @@ namespace WMS.Controllers
         public WebsiteContentPagesController(ICoreOrderService orderService, IMarketServices marketServices, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IUserService userService, IInvoiceService invoiceService, ITenantWebsiteService tenantWebsiteService)
         : base(orderService, propertyService, accountServices, lookupServices)
         {
-            _marketServices = marketServices;
-            _userService = userService;
-            _invoiceService = invoiceService;
-            _lookupServices = lookupServices;
             _tenantWebsiteService = tenantWebsiteService;
         }
 
         // GET: WebsiteContentPages
         public ActionResult Index(int SiteId)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ViewBag.SiteId = SiteId;
             SiteName(SiteId);
             Session["UploadWebsiteContentPage"] = null;
@@ -56,6 +49,7 @@ namespace WMS.Controllers
         // GET: WebsiteContentPages/Create
         public ActionResult Create(int SiteId)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             Session["UploadWebsiteContentPage"] = null;
             ViewBag.ControllerName = "WebsiteContentPages";
             ViewBag.SiteId = SiteId;
@@ -71,6 +65,7 @@ namespace WMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(WebsiteContentPages websiteContentPages, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ViewBag.ControllerName = "WebsiteContentPages";
             SiteName(websiteContentPages.SiteID);
             if (ModelState.IsValid)
@@ -98,6 +93,7 @@ namespace WMS.Controllers
         // GET: WebsiteContentPages/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -130,7 +126,7 @@ namespace WMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit( WebsiteContentPages websiteContentPages, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
         {
-         
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ViewBag.ControllerName = "WebsiteContentPages";
             if (ModelState.IsValid)
             {
@@ -158,6 +154,7 @@ namespace WMS.Controllers
         //GET: WebsiteContentPages/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

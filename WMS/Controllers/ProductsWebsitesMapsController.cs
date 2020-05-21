@@ -27,6 +27,7 @@ namespace WMS.Controllers
         // GET: ProductsWebsitesMaps
         public ActionResult Index(int SiteId)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ViewBag.SiteId = SiteId;
             SiteName(SiteId);
             return PartialView();

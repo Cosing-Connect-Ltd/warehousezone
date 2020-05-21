@@ -16,20 +16,12 @@ namespace WMS.Controllers
     public class ProductAllowancesController : BaseController
     {
         private readonly ITenantWebsiteService _tenantWebsiteService;
-        private readonly IUserService _userService;
-        private readonly IInvoiceService _invoiceService;
-        private readonly ILookupServices _lookupServices;
-        private readonly IMarketServices _marketServices;
         private readonly IRolesServices _RolesServices;
         // GET: WebsiteNavigations
 
         public ProductAllowancesController(ICoreOrderService orderService, IRolesServices RolesServices, IMarketServices marketServices, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IUserService userService, IInvoiceService invoiceService, ITenantWebsiteService tenantWebsiteService)
         : base(orderService, propertyService, accountServices, lookupServices)
         {
-            _marketServices = marketServices;
-            _userService = userService;
-            _invoiceService = invoiceService;
-            _lookupServices = lookupServices;
             _tenantWebsiteService = tenantWebsiteService;
             _RolesServices = RolesServices;
         }
@@ -37,6 +29,7 @@ namespace WMS.Controllers
         // GET: ProductAllowances
         public ActionResult Index(int SiteId)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ViewBag.SiteId = SiteId;
             SiteName(SiteId);
             return View();
@@ -53,6 +46,7 @@ namespace WMS.Controllers
         // GET: ProductAllowances/Create
         public ActionResult Create(int SiteId)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ViewBag.SiteId = SiteId;
             SiteName(SiteId);
             ViewBag.RolesId = new SelectList(_RolesServices.GetAllRoles(CurrentTenantId), "Id", "RoleName");
@@ -67,6 +61,7 @@ namespace WMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(ProductAllowance productAllowance)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (ModelState.IsValid)
             {
                 _tenantWebsiteService.CreateOrUpdateProductAllowance(productAllowance, string.Empty, CurrentUserId, CurrentTenantId);
@@ -83,6 +78,7 @@ namespace WMS.Controllers
         // GET: ProductAllowances/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -106,6 +102,7 @@ namespace WMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(ProductAllowance productAllowance, string Reason)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (ModelState.IsValid)
             {
                 _tenantWebsiteService.CreateOrUpdateProductAllowance(productAllowance,Reason, CurrentUserId, CurrentTenantId);
@@ -121,6 +118,7 @@ namespace WMS.Controllers
         // GET: ProductAllowances/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

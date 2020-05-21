@@ -32,6 +32,7 @@ namespace WMS.Controllers
         // GET: ProductsWebsitesMaps
         public ActionResult Index(int SiteId)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ViewBag.SiteId = SiteId;
             SiteName(SiteId);
             return View();
@@ -106,6 +107,7 @@ namespace WMS.Controllers
         // GET: WebsiteNavigations/Create
         public ActionResult Create(int SiteId)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ViewBag.siteid = SiteId;
             SiteName(SiteId);
             return View();
@@ -115,6 +117,7 @@ namespace WMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(ProductAllowanceGroup productAllowanceGroup, string ProductsWithIds)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (productAllowanceGroup != null)
             {
                 productAllowanceGroup.SelectedProductIds = ProductsWithIds;
@@ -130,6 +133,7 @@ namespace WMS.Controllers
         // GET: WebsiteNavigations/Create
         public ActionResult Edit(int? id)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             var data = _tenantWebsiteService.GetProductAllowanceGroupById(id ?? 0);
             SiteName(data.SiteID);
             return View(data);
@@ -139,6 +143,7 @@ namespace WMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(ProductAllowanceGroup productAllowanceGroup, string ProductsWithIds)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (productAllowanceGroup != null)
             {
                 productAllowanceGroup.SelectedProductIds = ProductsWithIds;
@@ -152,6 +157,7 @@ namespace WMS.Controllers
 
         public ActionResult Delete(int? id)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

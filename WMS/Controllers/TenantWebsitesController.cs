@@ -19,20 +19,13 @@ namespace WMS.Controllers
     public class TenantWebsitesController : BaseController
     {
         private readonly ITenantWebsiteService _tenantWebsiteService;
-        private readonly IUserService _userService;
-        private readonly IInvoiceService _invoiceService;
-        private readonly ILookupServices _lookupServices;
-        private readonly IMarketServices _marketServices;
+      
         string UploadDirectory = "~/UploadedFiles/TenantWebSite/";
         string UploadTempDirectory = "~/UploadedFiles/TenantWebSite/TempFiles/";
 
         public TenantWebsitesController(ICoreOrderService orderService, IMarketServices marketServices, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IUserService userService, IInvoiceService invoiceService, ITenantWebsiteService tenantWebsiteService)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
-            _marketServices = marketServices;
-            _userService = userService;
-            _invoiceService = invoiceService;
-            _lookupServices = lookupServices;
             _tenantWebsiteService = tenantWebsiteService;
         }
 
@@ -41,6 +34,7 @@ namespace WMS.Controllers
         // GET: TenantWebsites
         public ActionResult Index()
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             return View();
         }
 
@@ -62,6 +56,7 @@ namespace WMS.Controllers
         // GET: TenantWebsites/Create
         public ActionResult Create()
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ViewBag.ControllerName = "TenantWebsites";
             return View();
         }
@@ -73,6 +68,7 @@ namespace WMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(TenantWebsites tenantWebsites, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (ModelState.IsValid)
             {
                 tenantWebsites.DefaultWarehouseId = CurrentWarehouseId;
@@ -101,6 +97,7 @@ namespace WMS.Controllers
         // GET: TenantWebsites/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ViewBag.ControllerName = "TenantWebsites";
             if (id == null)
             {
@@ -131,6 +128,7 @@ namespace WMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit( TenantWebsites tenantWebsites, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ViewBag.ControllerName = "TenantWebsites";
             tenantWebsites.DefaultWarehouseId = CurrentWarehouseId;
             if (ModelState.IsValid)
@@ -158,6 +156,7 @@ namespace WMS.Controllers
         // GET: TenantWebsites/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

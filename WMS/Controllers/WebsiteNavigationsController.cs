@@ -16,10 +16,6 @@ namespace WMS.Controllers
     public class WebsiteNavigationsController : BaseController
     {
         private readonly ITenantWebsiteService _tenantWebsiteService;
-        private readonly IUserService _userService;
-        private readonly IInvoiceService _invoiceService;
-        private readonly ILookupServices _lookupServices;
-        private readonly IMarketServices _marketServices;
         string UploadDirectory = "~/UploadedFiles/TenantWebsiteNavigation/";
         string UploadTempDirectory = "~/UploadedFiles/TenantWebsiteNavigation/TempFiles/";
         // GET: WebsiteNavigations
@@ -27,15 +23,12 @@ namespace WMS.Controllers
         public WebsiteNavigationsController(ICoreOrderService orderService, IMarketServices marketServices, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IUserService userService, IInvoiceService invoiceService, ITenantWebsiteService tenantWebsiteService)
         : base(orderService, propertyService, accountServices, lookupServices)
         {
-            _marketServices = marketServices;
-            _userService = userService;
-            _invoiceService = invoiceService;
-            _lookupServices = lookupServices;
             _tenantWebsiteService = tenantWebsiteService;
         }
 
         public ActionResult Index(int SiteId)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ViewBag.SiteId = SiteId;
             SiteName(SiteId);
             Session["UploadTenantWebsiteNav"] = null;
@@ -52,6 +45,7 @@ namespace WMS.Controllers
         // GET: WebsiteNavigations/Create
         public ActionResult Create(int SiteId)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             Session["UploadTenantWebsiteNav"] = null;
             ViewBag.siteid = SiteId;
             SiteName(SiteId);
@@ -166,7 +160,7 @@ namespace WMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(WebsiteNavigation websiteNavigation, string ProductsWithIds, IEnumerable<DevExpress.Web.UploadedFile> ImageDefault, IEnumerable<DevExpress.Web.UploadedFile> HoverImage)
         {
-           
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (websiteNavigation != null)
             {
                 websiteNavigation.SelectedProductIds = ProductsWithIds;
@@ -222,6 +216,7 @@ namespace WMS.Controllers
         //// GET: WebsiteNavigations/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -272,7 +267,7 @@ namespace WMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(WebsiteNavigation websiteNavigation, string ProductsWithIds, IEnumerable<DevExpress.Web.UploadedFile> ImageDefault, IEnumerable<DevExpress.Web.UploadedFile> HoverImage, int SiteID)
         {
-           
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (websiteNavigation != null)
             {
                 websiteNavigation.SelectedProductIds = ProductsWithIds;
@@ -331,6 +326,7 @@ namespace WMS.Controllers
         //// GET: WebsiteNavigations/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

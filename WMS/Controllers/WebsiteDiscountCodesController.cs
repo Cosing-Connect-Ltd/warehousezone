@@ -17,21 +17,18 @@ namespace WMS.Controllers
 {
     public class WebsiteDiscountCodesController : BaseController
     {
-        private readonly IProductLookupService _productLookupService;
-        private readonly ILookupServices _LookupService;
         private readonly ITenantWebsiteService _tenantWebsiteService;
 
         public WebsiteDiscountCodesController(ICoreOrderService orderService, IPropertyService propertyService, ITenantWebsiteService tenantWebsiteService, IAccountServices accountServices, ILookupServices lookupServices, IProductLookupService productLookupService)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
-            _productLookupService = productLookupService;
-            _LookupService = lookupServices;
             _tenantWebsiteService = tenantWebsiteService;
         }
 
         // GET: ProductsWebsitesMaps
         public ActionResult Index(int SiteId)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ViewBag.SiteId = SiteId;
             SiteName(SiteId);
             return View();
@@ -105,6 +102,7 @@ namespace WMS.Controllers
         // GET: WebsiteNavigations/Create
         public ActionResult Create(int SiteId)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ViewBag.siteid = SiteId;
             SiteName(SiteId);
             return View();
@@ -114,6 +112,7 @@ namespace WMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(WebsiteDiscountCodes websiteDiscountCodes, string ProductsWithIds)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (websiteDiscountCodes != null)
             {
                 websiteDiscountCodes.SelectedProductIds = ProductsWithIds;
@@ -129,6 +128,7 @@ namespace WMS.Controllers
         // GET: WebsiteNavigations/Create
         public ActionResult Edit(int? id)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             var data = _tenantWebsiteService.GetWebsiteDiscountCodesById(id ?? 0);
             SiteName(data.SiteID);
             return View(data);
@@ -138,6 +138,7 @@ namespace WMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(WebsiteDiscountCodes websiteDiscountCodes, string ProductsWithIds)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (websiteDiscountCodes != null)
             {
                 websiteDiscountCodes.SelectedProductIds = ProductsWithIds;
@@ -151,6 +152,7 @@ namespace WMS.Controllers
 
         public ActionResult Delete(int? id)
         {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
