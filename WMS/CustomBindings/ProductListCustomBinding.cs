@@ -112,7 +112,7 @@ namespace WMS.CustomBindings
             viewModel.Columns.Add("BestSellerProduct");
             viewModel.Columns.Add("OnSaleProduct");
             viewModel.Columns.Add("SpecialProduct");
-
+            viewModel.Columns.Add("Qty");
             viewModel.Pager.PageSize = 10;
             return viewModel;
         }

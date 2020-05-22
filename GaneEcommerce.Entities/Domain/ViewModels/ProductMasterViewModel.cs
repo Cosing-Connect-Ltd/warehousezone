@@ -80,6 +80,12 @@ namespace Ganedata.Core.Entities.Domain
         public bool OnSaleProduct { get; set; }
         public string HoverImage { get; set; }
         public string DefaultImage { get; set; }
+
+        public decimal? Qty { get; set; }
+
+        public int? ProductKitTypeId { get; set; }
+
+        public bool? IsActive { get; set; }
     }
 
 

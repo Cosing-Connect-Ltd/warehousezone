@@ -847,6 +847,10 @@
     <Compile Include="Migrations\202005191908158_producttagAndProductTagMap-added.designer.cs">
       <DependentUpon>202005191908158_producttagAndProductTagMap-added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005222237270_isactive-coulmn-add-in-productkitMap.cs" />
+    <Compile Include="Migrations\202005222237270_isactive-coulmn-add-in-productkitMap.designer.cs">
+      <DependentUpon>202005222237270_isactive-coulmn-add-in-productkitMap.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1802,6 +1806,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005191908158_producttagAndProductTagMap-added.resx">
       <DependentUpon>202005191908158_producttagAndProductTagMap-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005222237270_isactive-coulmn-add-in-productkitMap.resx">
+      <DependentUpon>202005222237270_isactive-coulmn-add-in-productkitMap.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

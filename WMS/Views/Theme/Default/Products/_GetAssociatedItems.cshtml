@@ -1,0 +1,40 @@
+﻿<script type="text/javascript">
+    function OnGridFocusedRowChanged(s, e) {
+        $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
+    }
+    MVCxClientGlobalEvents.AddControlsInitializedEventHandler(OnBeginGridCallback);
+
+    function OnBeginGridCallback(s, e) {
+        e.customArgs = MVCxClientUtils.GetSerializedEditorValuesInContainer("frmPriceGroupPrices");
+        var rowIndex = parseInt($("#RowIndexForProductId").val()) || 0;
+        e.customArgs["ProductID"] = ProductWebsiteGridView.GetRowKey(rowIndex);
+    }
+
+    function OnEndGridCallback(s, e) {
+        var lastIndex = parseInt($("#LastEditingRowIndex").val()) || 0;
+        SetGridEditorToRowIndex(lastIndex);
+    }
+
+    function SetGridEditorToRowIndex(index) {
+        ProductWebsiteGridView.batchEditApi.StartEdit(index, ProductWebsiteGridView.GetColumnByField($("#LastEditingColIndex").val()).index);
+    }
+
+    function OnDetailsChanged(s, e) {
+        ProductWebsiteGridView.UpdateEdit();
+    }
+
+    function OnSpecialPricesGridFocusChanged(s, e) {
+        if (e.cellInfo.rowVisibleIndex >= 0) {
+            $("#LastEditingRowIndex").val(e.cellInfo.rowVisibleIndex);
+        }
+
+        $("#RowIndexForProductId").val(e.cellInfo.rowVisibleIndex);
+        $("#LastEditingColIndex").val(e.cellInfo.column.fieldName);
+    }
+</script>
+
+@Html.Hidden("LastEditingRowIndex")
+@Html.Hidden("LastEditingColIndex")
+@Html.Hidden("RowIndexForProductId")
+@Html.Hidden("selkey")
+@Html.Action("_EditableProductGrid", new { AssociatedItem = ViewBag.AssociatedItem, KitType = ViewBag.KitTypes })

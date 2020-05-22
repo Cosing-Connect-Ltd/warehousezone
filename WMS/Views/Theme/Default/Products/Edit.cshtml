@@ -79,6 +79,36 @@
             $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
         }
     }
+
+    $(document).ready(function () {
+        $("#tabs").tabs({
+            activate: function (event, ui) {
+                debugger;
+                var active = $('#tabs').tabs('option', 'active');
+                var TabId = $("#tabs ul>li a").eq(active).attr("href");
+                var grouped = $('#GroupedProduct').is(":checked");
+                var kit = $('#Kit').is(":checked");
+                var raw = $("#IsRawMaterial") .is(":checked");
+                if (TabId === "#product-associated-items") {
+                    $.ajax({
+                        type: "GET",
+                        url: "/Products/_GetAssociatedItems/",
+                        data: { grouped: grouped, raw: raw, kit: kit },
+                        dataType: 'html',
+                        success: function (data) {
+                            $('.associatedItems').empty();
+                            $('.associatedItems').html(data);
+
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert('Error' + textStatus + "/" + errorThrown);
+                        }
+                    });
+                }
+
+            }
+        });
+    });
 </script>
 @Html.Hidden("selkey", null, new { @class = "selkey" })
 @Html.Hidden("selkeyPrdSccCodes", null)
@@ -116,18 +146,11 @@
             <li><a href="#product-attributes">Product Attributes</a></li>
             <li><a href="#product-locations">Product Locations</a></li>
             <li><a href="#product-inventory">Inventory</a></li>
-            @if (!Model.IsRawMaterial)
+            @if (Model.IsRawMaterial || Model.Kit || Model.GroupedProduct)
             {
-                <li><a href="#product-recipe-items">Product Recipe Items</a></li>
+                <li><a href="#product-associated-items">Associated Items</a></li>
             }
-            @if (Model.Kit)
-            {
-                <li><a href="#product-kit-items">Kit Items</a></li>
-            }
-            @if (Model.GroupedProduct)
-            {
-                <li><a href="#product-group-items">Grouped Items</a></li>
-            }
+
         </ul>
         <div id="product-detail">
             <div class="col-md-6 pull-left">
@@ -224,7 +247,7 @@
                     <div class="input-group h-100 justify-content-center align-items-center divchkkit">
                         @Html.LabelFor(model => model.Kit, htmlAttributes: new { @class = "col-md-4" })
                         <div class="col-md-8">
-                            @Html.CheckBoxFor(m => m.Kit, new { @id = "chkkit", @class = "form-control checkbox" })
+                            @Html.CheckBoxFor(m => m.Kit, new { @class = "form-control checkbox" })
                         </div>
                     </div>
 
@@ -245,7 +268,7 @@
                         @Html.ValidationMessageFor(model => model.IsStockItem)
                     </div>
                 </div>
-                
+
 
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.LabelFor(model => model.LotOption, htmlAttributes: new { @class = "col-md-4" })
@@ -768,14 +791,12 @@
             </div>
         </div>
 
-        @if (!Model.IsRawMaterial)
+        @if (Model.IsRawMaterial || Model.Kit || Model.GroupedProduct)
         {
-            <div id="product-recipe-items">
-                <div class="input-group h-100 justify-content-center align-items-center">
-                    @Html.Action("_ProductRecipeItems", new { productId = Model.ProductId })
-                </div>
-                <div class="col-md-12 p-0 bottom-right">
-                    <input type="button" class="btn btn-primary" onclick="ProductKitPopUp(3);" value="Add Items" />
+            <div id="product-associated-items">
+                <div class="input-group h-100 justify-content-center align-items-center associatedItems">
+
+
                 </div>
             </div>
         }
@@ -793,31 +814,7 @@
 
             </div>
         </div>
-        @if (Model.Kit)
-        {
-            <div id="product-kit-items">
-                <div class="col-md-12 p-0">
-                    <input type="button" class="btn btn-primary" value="Add Items" onclick="ProductKitPopUp(1);" />
-                </div>
-                <div class="input-group h-100 justify-content-center align-items-center">
-                    @Html.Action("_ProductKitItems", new { productId = Model.ProductId })
-                </div>
-            </div>
-        }
-        @if (Model.GroupedProduct)
-        {
-            <div id="product-group-items">
-                <div class="col-md-12 p-0">
-                    <input type="button" class="btn btn-primary" value="Add Items" onclick="ProductKitPopUp(2);" />
-                </div>
-                <div class="input-group h-100 justify-content-center align-items-center">
-                    @Html.Action("_ProductGroupedItems", new { productId = Model.ProductId })
-                </div>
-            </div>
 
-
-
-        }
 
 
     </div>

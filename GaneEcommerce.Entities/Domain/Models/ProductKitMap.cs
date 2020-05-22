@@ -25,6 +25,7 @@ namespace Ganedata.Core.Entities.Domain
 
         public int? ProductKitTypeId { get; set; }
 
+        public bool IsActive { get; set; }
 
         public ProductKitTypeEnum ProductKitType { get; set; }
 

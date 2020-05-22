@@ -1496,7 +1496,10 @@ namespace Ganedata.Core.Services
                     EnableWarranty = prd.EnableWarranty ?? false,
                     EnableTax = prd.EnableTax ?? false,
                     DontMonitorStock = prd.DontMonitorStock,
-                    ProcessByPallet = prd.ProcessByPallet
+                    ProcessByPallet = prd.ProcessByPallet,
+                    Qty=prd.ProductKitItems.Where(x=>x.ProductId==prd.ProductId && x.IsDeleted !=true && x.TenantId==prd.TenantId).Select(u=>u.Quantity).DefaultIfEmpty(0).Sum(),
+                    ProductKitTypeId=prd.ProductKitItems.FirstOrDefault(x => x.ProductId == prd.ProductId && x.IsDeleted != true && x.TenantId == prd.TenantId).ProductKitTypeId??0,
+                    IsActive= prd.ProductKitItems.FirstOrDefault(x => x.ProductId == prd.ProductId && x.IsDeleted != true && x.TenantId == prd.TenantId).IsActive
                 }).OrderBy(x => x.Name);
 
             return model;

@@ -28,7 +28,7 @@ namespace WMS.Controllers
         private readonly IProductLookupService _productLookupService;
         private readonly ITenantWebsiteService _tenantWebsiteService;
 
-        public ProductsController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IProductServices productServices,ITenantWebsiteService tenantWebsiteService, IProductLookupService productLookupService)
+        public ProductsController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IProductServices productServices, ITenantWebsiteService tenantWebsiteService, IProductLookupService productLookupService)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
             _accountServices = accountServices;
@@ -752,8 +752,14 @@ namespace WMS.Controllers
         {
             return View();
         }
-        public ActionResult _EditableProductGrid()
+        public ActionResult _EditableProductGrid(bool? AssociatedItem, string KitType = "")
         {
+            ViewBag.AssociatedItem = AssociatedItem;
+            ViewBag.KitTypes = KitType;
+            if (KitType == "Grouped")
+            {
+                ViewBag.GetKitTypes = _productLookupService.GetProductKitTypes(CurrentTenantId).ToList();
+            }
             var viewModel = GridViewExtension.GetViewModel("ProductEditListGridView");
 
             if (viewModel == null)
@@ -761,20 +767,23 @@ namespace WMS.Controllers
 
             return ProductEditGridActionCore(viewModel);
         }
-        public ActionResult _ProductEditListPaging(GridViewPagerState pager)
+        public ActionResult _ProductEditListPaging(GridViewPagerState pager, bool? AssociatedItem)
         {
+            ViewBag.AssociatedItem = AssociatedItem;
             var viewModel = GridViewExtension.GetViewModel("ProductEditListGridView");
             viewModel.Pager.Assign(pager);
             return ProductEditGridActionCore(viewModel);
         }
-        public ActionResult _ProductsEditFiltering(GridViewFilteringState filteringState)
+        public ActionResult _ProductsEditFiltering(GridViewFilteringState filteringState, bool? AssociatedItem)
         {
+            ViewBag.AssociatedItem = AssociatedItem;
             var viewModel = GridViewExtension.GetViewModel("ProductEditListGridView");
             viewModel.ApplyFilteringState(filteringState);
             return ProductEditGridActionCore(viewModel);
         }
-        public ActionResult _ProductsEditGetDataSorting(GridViewColumnState column, bool reset)
+        public ActionResult _ProductsEditGetDataSorting(GridViewColumnState column, bool reset, bool? AssociatedItem)
         {
+            ViewBag.AssociatedItem = AssociatedItem;
             var viewModel = GridViewExtension.GetViewModel("ProductEditListGridView");
             viewModel.ApplySortingState(column, reset);
             return ProductEditGridActionCore(viewModel);
@@ -803,9 +812,33 @@ namespace WMS.Controllers
             productMaster.SKUCode = string.IsNullOrEmpty(SKUCode) ? productMaster.SKUCode : SKUCode;
             productMaster.Serialisable = Serialisable ?? productMaster.Serialisable;
             productMaster.ProcessByPallet = ProcessByPallet ?? productMaster.ProcessByPallet;
-            
+
             _productServices.SaveEditProduct(productMaster, CurrentUserId, CurrentTenantId);
-            return _EditableProductGrid();
+            return _EditableProductGrid(null);
+        }
+        public PartialViewResult _GetAssociatedItems(bool grouped = false, bool raw = false, bool kit = false)
+        {
+            ViewBag.AssociatedItem = true;
+            ViewBag.KitTypes = raw ? "Raw" : kit ? "Kit" : "";
+            if (grouped)
+            {
+                ViewBag.KitTypes = "Grouped";
+                
+            }
+            return PartialView();
+        }
+        public ActionResult SaveAssociated(bool? AssociatedItem, MVCxGridViewBatchUpdateValues<ProductMasterViewModel, int> updateValues)
+        {
+            List<bool> results = new List<bool>();
+            foreach (var value in updateValues.Update)
+            {
+                //value.SiteID = SiteId;
+                //value.ProductId = value.Id;
+                //var res = _tenantWebsiteService.CreateOrUpdateWebsiteProducts(value, CurrentUserId, CurrentTenantId);
+                //results.Add(res);
+            }
+
+            return _EditableProductGrid(AssociatedItem);
         }
 
         #endregion
@@ -1674,14 +1707,13 @@ namespace WMS.Controllers
         }
 
         #endregion
-
-
         public ActionResult _ProductKitCombobox(int? ProductId)
         {
             ViewBag.ProductgroupIds = string.Join(",", _productServices.GetAllProductInKitsByProductId(ProductId ?? 0).Where(u => u.ProductKitType == ProductKitTypeEnum.Grouped).Select(a => a.KitProductId).Distinct().ToList());
 
             return PartialView();
         }
+
 
 
 
