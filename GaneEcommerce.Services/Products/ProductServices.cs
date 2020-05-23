@@ -136,9 +136,9 @@ namespace Ganedata.Core.Services
             return product;
         }
 
-        public IEnumerable<ProductKitMap> GetAllProductInKitsByProductId(int productId)
+        public IEnumerable<ProductKitMap> GetAllProductInKitsByProductId(int productId,ProductKitTypeEnum productKitType)
         {
-            return _currentDbContext.ProductKitMaps.Where(a => a.ProductId == productId && a.IsDeleted != true).Include(u=>u.ProductKitTypes)
+            return _currentDbContext.ProductKitMaps.Where(a => a.ProductId == productId && a.IsActive == true && a.ProductKitType==productKitType).Include(u=>u.ProductKitTypes)
                 .Distinct().ToList();
 
             //if (disProdIds.Count > 0)
@@ -1452,9 +1452,9 @@ namespace Ganedata.Core.Services
             return "ITM-100001";
         }
 
-        public IQueryable<ProductMasterViewModel> GetAllProductMasterDetail(int tenantId, int warehouseId)
+        public IQueryable<ProductMasterViewModel> GetAllProductMasterDetail(int tenantId, int warehouseId, ProductKitTypeEnum? KitType = null)
         {
-            var model = _currentDbContext.ProductMaster.AsNoTracking().Where(x => x.TenantId == tenantId && x.IsDeleted != true)
+            var model = _currentDbContext.ProductMaster.AsNoTracking().Include(u=>u.ProductKitMap).Where(x => x.TenantId == tenantId && x.IsDeleted != true)
                 .Select(prd => new ProductMasterViewModel
                 {
                     ProductId = prd.ProductId,
@@ -1462,6 +1462,7 @@ namespace Ganedata.Core.Services
                     SKUCode = prd.SKUCode,
                     Description = prd.Description,
                     BarCode = prd.BarCode,
+                    GroupedProduct=prd.GroupedProduct,
                     Serialisable = prd.Serialisable,
                     IsStockItem = prd.IsStockItem,
                     IsRawMaterial = prd.IsRawMaterial,
@@ -1497,9 +1498,9 @@ namespace Ganedata.Core.Services
                     EnableTax = prd.EnableTax ?? false,
                     DontMonitorStock = prd.DontMonitorStock,
                     ProcessByPallet = prd.ProcessByPallet,
-                    Qty=prd.ProductKitItems.Where(x=>x.ProductId==prd.ProductId && x.IsDeleted !=true && x.TenantId==prd.TenantId).Select(u=>u.Quantity).DefaultIfEmpty(0).Sum(),
-                    ProductKitTypeId=prd.ProductKitItems.FirstOrDefault(x => x.ProductId == prd.ProductId && x.IsDeleted != true && x.TenantId == prd.TenantId).ProductKitTypeId??0,
-                    IsActive= prd.ProductKitItems.FirstOrDefault(x => x.ProductId == prd.ProductId && x.IsDeleted != true && x.TenantId == prd.TenantId).IsActive
+                    Qty=prd.ProductKitMap.Where(x=>x.KitProductId==prd.ProductId && x.IsDeleted !=true && x.TenantId==prd.TenantId && x.ProductKitType==KitType).Select(u=>u.Quantity).DefaultIfEmpty(0).Sum(),
+                    Id=prd.ProductKitMap.FirstOrDefault(x => x.KitProductId == prd.ProductId && x.IsDeleted != true && x.TenantId == prd.TenantId && x.ProductKitType == KitType).ProductKitTypeId,
+                    IsActive= prd.ProductKitMap.FirstOrDefault(x => x.KitProductId == prd.ProductId && x.IsDeleted != true && x.TenantId == prd.TenantId && x.ProductKitType == KitType).IsActive
                 }).OrderBy(x => x.Name);
 
             return model;

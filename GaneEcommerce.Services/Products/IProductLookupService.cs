@@ -1,4 +1,5 @@
 using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,5 +74,10 @@ namespace Ganedata.Core.Services
         ProductTag CreateOrUpdateProductTag(ProductTag productTag, int UserId, int TenantId);
         ProductTag RemoveProductTag(int Id, int UserId);
         ProductTag GetProductTagById(int Id);
+
+        // CreateUpdateProductKitMap
+
+        bool CreateOrUpdateKitMap(ProductMasterViewModel productMaster, int ProductId, ProductKitTypeEnum productKitType,int UserId, int TenantId);
+
     }
 }

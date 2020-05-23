@@ -590,7 +590,8 @@ namespace WMS.Controllers
         }
         public PartialViewResult _ProductKits(int? kitTypeId, int? ProductKitId, bool? Grouped = false)
         {
-            if (kitTypeId.HasValue && kitTypeId == 2) { Grouped = true; }
+            if (kitTypeId.HasValue && kitTypeId == 2)
+            { Grouped = true; }
             ViewBag.kitType = kitTypeId;
             ViewBag.grouped = Grouped;
 
@@ -752,11 +753,11 @@ namespace WMS.Controllers
         {
             return View();
         }
-        public ActionResult _EditableProductGrid(bool? AssociatedItem, string KitType = "")
+        public ActionResult _EditableProductGrid(bool? AssociatedItem, ProductKitTypeEnum? KitType = null)
         {
             ViewBag.AssociatedItem = AssociatedItem;
             ViewBag.KitTypes = KitType;
-            if (KitType == "Grouped")
+            if (KitType == ProductKitTypeEnum.Grouped)
             {
                 ViewBag.GetKitTypes = _productLookupService.GetProductKitTypes(CurrentTenantId).ToList();
             }
@@ -765,40 +766,55 @@ namespace WMS.Controllers
             if (viewModel == null)
                 viewModel = ProductListCustomBinding.CreateProductGridViewModel();
 
-            return ProductEditGridActionCore(viewModel);
+            return ProductEditGridActionCore(viewModel, KitType);
         }
-        public ActionResult _ProductEditListPaging(GridViewPagerState pager, bool? AssociatedItem)
+        public ActionResult _ProductEditListPaging(GridViewPagerState pager, bool? AssociatedItem, ProductKitTypeEnum? KitType = null)
         {
             ViewBag.AssociatedItem = AssociatedItem;
+            ViewBag.KitTypes = KitType;
+            if (KitType == ProductKitTypeEnum.Grouped)
+            {
+                ViewBag.GetKitTypes = _productLookupService.GetProductKitTypes(CurrentTenantId).ToList();
+            }
             var viewModel = GridViewExtension.GetViewModel("ProductEditListGridView");
             viewModel.Pager.Assign(pager);
-            return ProductEditGridActionCore(viewModel);
+            return ProductEditGridActionCore(viewModel, KitType);
         }
-        public ActionResult _ProductsEditFiltering(GridViewFilteringState filteringState, bool? AssociatedItem)
+        public ActionResult _ProductsEditFiltering(GridViewFilteringState filteringState, bool? AssociatedItem, ProductKitTypeEnum? KitType = null)
         {
             ViewBag.AssociatedItem = AssociatedItem;
+            ViewBag.KitTypes = KitType;
+            if (KitType == ProductKitTypeEnum.Grouped)
+            {
+                ViewBag.GetKitTypes = _productLookupService.GetProductKitTypes(CurrentTenantId).ToList();
+            }
             var viewModel = GridViewExtension.GetViewModel("ProductEditListGridView");
             viewModel.ApplyFilteringState(filteringState);
-            return ProductEditGridActionCore(viewModel);
+            return ProductEditGridActionCore(viewModel, KitType);
         }
-        public ActionResult _ProductsEditGetDataSorting(GridViewColumnState column, bool reset, bool? AssociatedItem)
+        public ActionResult _ProductsEditGetDataSorting(GridViewColumnState column, bool reset, bool? AssociatedItem, ProductKitTypeEnum? KitType = null)
         {
             ViewBag.AssociatedItem = AssociatedItem;
+            ViewBag.KitTypes = KitType;
+            if (KitType == ProductKitTypeEnum.Grouped)
+            {
+                ViewBag.GetKitTypes = _productLookupService.GetProductKitTypes(CurrentTenantId).ToList();
+            }
             var viewModel = GridViewExtension.GetViewModel("ProductEditListGridView");
             viewModel.ApplySortingState(column, reset);
-            return ProductEditGridActionCore(viewModel);
+            return ProductEditGridActionCore(viewModel, KitType);
         }
-        public ActionResult ProductEditGridActionCore(GridViewModel gridViewModel)
+        public ActionResult ProductEditGridActionCore(GridViewModel gridViewModel, ProductKitTypeEnum? KitType)
         {
             gridViewModel.ProcessCustomBinding(
                 new GridViewCustomBindingGetDataRowCountHandler(args =>
                 {
-                    ProductListCustomBinding.ProductGetDataRowCount(args, CurrentTenantId, CurrentWarehouseId);
+                    ProductListCustomBinding.ProductGetDataRowCount(args, CurrentTenantId, CurrentWarehouseId, KitType);
                 }),
 
                     new GridViewCustomBindingGetDataHandler(args =>
                     {
-                        ProductListCustomBinding.ProductGetData(args, CurrentTenantId, CurrentWarehouseId);
+                        ProductListCustomBinding.ProductGetData(args, CurrentTenantId, CurrentWarehouseId, KitType);
                     })
             );
             return PartialView("_EditableProductGrid", gridViewModel);
@@ -819,26 +835,25 @@ namespace WMS.Controllers
         public PartialViewResult _GetAssociatedItems(bool grouped = false, bool raw = false, bool kit = false)
         {
             ViewBag.AssociatedItem = true;
-            ViewBag.KitTypes = raw ? "Raw" : kit ? "Kit" : "";
+            ViewBag.KitTypes = raw ? ProductKitTypeEnum.Recipe : kit ? ProductKitTypeEnum.Kit : ProductKitTypeEnum.Grouped;
             if (grouped)
             {
-                ViewBag.KitTypes = "Grouped";
-                
+                ViewBag.KitTypes = ProductKitTypeEnum.Grouped;
+
             }
             return PartialView();
         }
-        public ActionResult SaveAssociated(bool? AssociatedItem, MVCxGridViewBatchUpdateValues<ProductMasterViewModel, int> updateValues)
+        public ActionResult SaveAssociated(bool? AssociatedItem, ProductKitTypeEnum KitType, int ProductID, MVCxGridViewBatchUpdateValues<ProductMasterViewModel, int> updateValues)
         {
             List<bool> results = new List<bool>();
             foreach (var value in updateValues.Update)
             {
-                //value.SiteID = SiteId;
-                //value.ProductId = value.Id;
-                //var res = _tenantWebsiteService.CreateOrUpdateWebsiteProducts(value, CurrentUserId, CurrentTenantId);
+
+                var res = _productLookupService.CreateOrUpdateKitMap(value, ProductID, KitType, CurrentUserId, CurrentTenantId);
                 //results.Add(res);
             }
 
-            return _EditableProductGrid(AssociatedItem);
+            return _EditableProductGrid(AssociatedItem, KitType);
         }
 
         #endregion
@@ -1095,20 +1110,12 @@ namespace WMS.Controllers
 
             return PartialView(product.AllSelectedSubItems);
         }
-        public ActionResult _ProductKitItems(int productId, bool? selectionMode)
+        public ActionResult _ProductKitItems(int productId, ProductKitTypeEnum productKitType)
         {
-            var recipeGridname = productId + "productKitItems" + (selectionMode == true ? "-select" : "");
+            var recipeGridname = productId + "productKitItems" + (productKitType);
             ViewBag.settingsName = recipeGridname;
-
-            ViewBag.routeValues = new { Controller = "Products", Action = "_ProductKitItems", productId, selectionMode };
-
-            if (selectionMode == true)
-            {
-                ViewBag.SelectionMode = true;
-            }
-
-            var product = GetKitProductModelById(productId, ProductKitTypeEnum.Kit);
-
+            ViewBag.routeValues = new { Controller = "Products", Action = "_ProductKitItems", productId, productKitType };
+            var product = GetKitProductModelById(productId, productKitType);
             return PartialView(product.AllSelectedSubItems);
         }
         public ActionResult _ProductGroupedItems(int productId, bool? selectionMode)
@@ -1202,7 +1209,7 @@ namespace WMS.Controllers
 
         private ProductMasterViewModel GetKitProductModelById(int productId, ProductKitTypeEnum productKitType)
         {
-            var product = _productServices.GetAllProductInKitsByProductId(productId).Where(m => m.IsDeleted != true && m.ProductKitType == productKitType).ToList();
+            var product = _productServices.GetAllProductInKitsByProductId(productId, productKitType).ToList();
             var productModel = new ProductMasterViewModel();
             productModel.AllSelectedSubItems = product.
                 Select(r => new ProductRecipeItemViewModel
@@ -1214,7 +1221,8 @@ namespace WMS.Controllers
                     Quantity = r.Quantity,
                     ParentProductId = productId,
                     ProductKitId = r.Id,
-                    ProductKitType = r.ProductKitTypes == null ? "" : r.ProductKitTypes.Name
+                    ProductKitType = r.ProductKitTypes == null ? "" : r.ProductKitTypes.Name,
+                    ProductKitTypeEnum = r.ProductKitType
                 }).ToList();
 
 
@@ -1709,7 +1717,7 @@ namespace WMS.Controllers
         #endregion
         public ActionResult _ProductKitCombobox(int? ProductId)
         {
-            ViewBag.ProductgroupIds = string.Join(",", _productServices.GetAllProductInKitsByProductId(ProductId ?? 0).Where(u => u.ProductKitType == ProductKitTypeEnum.Grouped).Select(a => a.KitProductId).Distinct().ToList());
+            ViewBag.ProductgroupIds = string.Join(",", _productServices.GetAllProductInKitsByProductId(ProductId ?? 0, ProductKitTypeEnum.Grouped).Select(a => a.KitProductId).Distinct().ToList());
 
             return PartialView();
         }

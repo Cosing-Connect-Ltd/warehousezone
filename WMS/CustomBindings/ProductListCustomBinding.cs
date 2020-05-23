@@ -2,6 +2,7 @@
 using DevExpress.Web.Mvc;
 using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -15,16 +16,16 @@ namespace WMS.CustomBindings
     public class ProductListCustomBinding
     {
 
-        private static IQueryable<object> GetProductDataset(int tenantId, int warehouseId)
+        private static IQueryable<object> GetProductDataset(int tenantId, int warehouseId, ProductKitTypeEnum? KitType=null)
         {
             var productServices = DependencyResolver.Current.GetService<IProductServices>();
-            var transactions = productServices.GetAllProductMasterDetail(tenantId, warehouseId);
+            var transactions = productServices.GetAllProductMasterDetail(tenantId, warehouseId,KitType);
             return transactions;
         }
 
-        public static void ProductGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId)
+        public static void ProductGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId, ProductKitTypeEnum? KitType = null)
         {
-            var transactions = GetProductDataset(tenantId, warehouseId);
+            var transactions = GetProductDataset(tenantId, warehouseId,KitType);
 
             if (e.State.SortedColumns.Count() > 0)
             {
@@ -60,10 +61,10 @@ namespace WMS.CustomBindings
             e.Data = transactions.ToList();
         }
 
-        public static void ProductGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId)
+        public static void ProductGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId, ProductKitTypeEnum? KitType=null)
         {
 
-            var transactions = GetProductDataset(tenantId, warehouseId);
+            var transactions = GetProductDataset(tenantId, warehouseId, KitType);
 
             if (e.State.SortedColumns.Count() > 0)
             {
@@ -113,6 +114,7 @@ namespace WMS.CustomBindings
             viewModel.Columns.Add("OnSaleProduct");
             viewModel.Columns.Add("SpecialProduct");
             viewModel.Columns.Add("Qty");
+            viewModel.Columns.Add("Id");
             viewModel.Pager.PageSize = 10;
             return viewModel;
         }

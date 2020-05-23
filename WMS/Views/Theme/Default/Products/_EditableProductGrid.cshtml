@@ -2,7 +2,7 @@
     var grid = Html.DevExpress().GridView(settings =>
     {
         settings.Name = "ProductEditListGridView";
-        settings.CallbackRouteValues = new { Controller = "Products", Action = "_EditableProductGrid", AssociatedItem = ViewBag.AssociatedItem };
+        settings.CallbackRouteValues = new { Controller = "Products", Action = "_EditableProductGrid", AssociatedItem = ViewBag.AssociatedItem, KitType= ViewBag.KitTypes };
 
         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
         settings.SettingsEditing.Mode = GridViewEditingMode.Batch;
@@ -12,17 +12,17 @@
         settings.EnableCallbackAnimation = false;
         settings.CustomBindingRouteValuesCollection.Add(
             GridViewOperationType.Paging,
-            new { Controller = "Products", Action = "_ProductEditListPaging", AssociatedItem = ViewBag.AssociatedItem }
+            new { Controller = "Products", Action = "_ProductEditListPaging", AssociatedItem = ViewBag.AssociatedItem, KitType = ViewBag.KitTypes }
         );
 
         settings.CustomBindingRouteValuesCollection.Add(
         GridViewOperationType.Filtering,
-        new { Controller = "Products", Action = "_ProductsEditFiltering", AssociatedItem = ViewBag.AssociatedItem }
+        new { Controller = "Products", Action = "_ProductsEditFiltering", AssociatedItem = ViewBag.AssociatedItem, KitType = ViewBag.KitTypes }
         );
 
         settings.CustomBindingRouteValuesCollection.Add(
         GridViewOperationType.Sorting,
-        new { Controller = "Products", Action = "_ProductsEditGetDataSorting", AssociatedItem = ViewBag.AssociatedItem }
+        new { Controller = "Products", Action = "_ProductsEditGetDataSorting", AssociatedItem = ViewBag.AssociatedItem, KitType = ViewBag.KitTypes }
         );
 
         settings.Settings.ShowHeaderFilterButton = true;
@@ -143,7 +143,7 @@
         }
         else
         {
-            settings.SettingsEditing.BatchUpdateRouteValues = new { Controller = ViewBag.Controller, Action = "SaveAssociated", AssociatedItem = ViewBag.AssociatedItem };
+            settings.SettingsEditing.BatchUpdateRouteValues = new { Controller = "Products", Action = "SaveAssociated", AssociatedItem = ViewBag.AssociatedItem, KitType = ViewBag.KitTypes };
             settings.Columns.Add(c =>
             {
                 c.FieldName = "Name";
@@ -157,7 +157,7 @@
                 c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
                 c.EditFormSettings.Visible = DefaultBoolean.False;
             });
-            if ((string)ViewBag.KitTypes != "Grouped")
+            if (ViewBag.KitTypes != Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Grouped)
             {
                 settings.Columns.Add(c =>
                 {
@@ -177,17 +177,15 @@
             {
                 settings.Columns.Add(c =>
                 {
-                    c.FieldName = "ProductKitTypeId";
+                    c.FieldName = "Id";
                     c.Caption = "Kit Type";
                     c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
-                    c.ColumnType = MVCxGridViewColumnType.ComboBox;
-                    var comboSettings = (ComboBoxProperties)c.PropertiesEdit;
-                    comboSettings.ValueField = "Id";
-                    comboSettings.TextField = "Name";
-                    comboSettings.ValueType = typeof(Int32);
-                    comboSettings.DataSource = (ViewBag.GetKitTypes);
                     c.EditorProperties().ComboBox(p =>
                     {
+                        p.ValueField = "Id";
+                        p.TextField = "Name";
+                        p.ValueType = typeof(Int32);
+                        p.DataSource = (List<Ganedata.Core.Entities.Domain.ProductKitType>)ViewBag.GetKitTypes;
                         p.ClientSideEvents.ValueChanged = "function(s,e){ OnDetailsChanged(s,e);}";
                     });
 

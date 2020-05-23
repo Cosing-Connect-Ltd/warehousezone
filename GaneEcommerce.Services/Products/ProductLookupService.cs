@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Text;
 using Elmah;
 using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Entities.Helpers;
 
 namespace Ganedata.Core.Services
@@ -781,6 +783,44 @@ namespace Ganedata.Core.Services
         public ProductTag GetProductTagById(int Id)
         {
             return _currentDbContext.ProductTags.FirstOrDefault(u => u.Id == Id);
+        }
+
+        public bool CreateOrUpdateKitMap(ProductMasterViewModel productMaster, int ProductId, ProductKitTypeEnum productKitType, int UserId, int TenantId)
+        {
+            var productKitMaps = _currentDbContext.ProductKitMaps.FirstOrDefault(u => u.ProductId == ProductId && u.KitProductId == productMaster.ProductId && u.ProductKitType == productKitType && u.IsDeleted != true);
+            if (productKitMaps == null)
+            {
+                var newItem = new ProductKitMap()
+                {
+                    CreatedBy = UserId,
+                    DateCreated = DateTime.UtcNow,
+                    KitProductId = productMaster.ProductId,
+                    ProductId = ProductId,
+                    TenantId = TenantId,
+                    ProductKitType = productKitType,
+                    Quantity = productMaster.Qty ?? 1,
+                    ProductKitTypeId = productMaster.Id,
+                    IsActive = productMaster.IsActive ?? false
+                    
+                };
+                _currentDbContext.ProductKitMaps.Add(newItem);
+            }
+            else 
+            {
+                productKitMaps.UpdateUpdatedInfo(UserId);
+                productKitMaps.KitProductId = productMaster.ProductId;
+                productKitMaps.ProductId = ProductId;
+                productKitMaps.TenantId = TenantId;
+                productKitMaps.ProductKitType = productKitType;
+                productKitMaps.Quantity = productMaster.Qty ?? 1;
+                productKitMaps.ProductKitTypeId = productMaster.Id;
+                productKitMaps.IsActive = productMaster.IsActive ?? false;
+                _currentDbContext.Entry(productKitMaps).State = EntityState.Modified;
+            }
+
+            _currentDbContext.SaveChanges();
+            return true;
+
         }
     }
 }

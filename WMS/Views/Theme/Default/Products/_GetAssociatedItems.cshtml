@@ -7,30 +7,30 @@
     function OnBeginGridCallback(s, e) {
         e.customArgs = MVCxClientUtils.GetSerializedEditorValuesInContainer("frmPriceGroupPrices");
         var rowIndex = parseInt($("#RowIndexForProductId").val()) || 0;
-        e.customArgs["ProductID"] = ProductWebsiteGridView.GetRowKey(rowIndex);
+        e.customArgs["ProductID"] = $("#ProductId").val();
     }
 
-    function OnEndGridCallback(s, e) {
-        var lastIndex = parseInt($("#LastEditingRowIndex").val()) || 0;
-        SetGridEditorToRowIndex(lastIndex);
-    }
-
-    function SetGridEditorToRowIndex(index) {
-        ProductWebsiteGridView.batchEditApi.StartEdit(index, ProductWebsiteGridView.GetColumnByField($("#LastEditingColIndex").val()).index);
-    }
-
-    function OnDetailsChanged(s, e) {
-        ProductWebsiteGridView.UpdateEdit();
-    }
-
-    function OnSpecialPricesGridFocusChanged(s, e) {
-        if (e.cellInfo.rowVisibleIndex >= 0) {
-            $("#LastEditingRowIndex").val(e.cellInfo.rowVisibleIndex);
+        function OnEndGridCallback(s, e) {
+            var lastIndex = parseInt($("#LastEditingRowIndex").val()) || 0;
+            SetGridEditorToRowIndex(lastIndex);
         }
 
-        $("#RowIndexForProductId").val(e.cellInfo.rowVisibleIndex);
-        $("#LastEditingColIndex").val(e.cellInfo.column.fieldName);
-    }
+        function SetGridEditorToRowIndex(index) {
+            ProductEditListGridView.batchEditApi.StartEdit(index, ProductEditListGridView.GetColumnByField($("#LastEditingColIndex").val()).index);
+        }
+
+        function OnDetailsChanged(s, e) {
+            ProductEditListGridView.UpdateEdit();
+        }
+
+        function OnSpecialPricesGridFocusChanged(s, e) {
+            if (e.cellInfo.rowVisibleIndex >= 0) {
+                $("#LastEditingRowIndex").val(e.cellInfo.rowVisibleIndex);
+            }
+
+            $("#RowIndexForProductId").val(e.cellInfo.rowVisibleIndex);
+            $("#LastEditingColIndex").val(e.cellInfo.column.fieldName);
+        }
 </script>
 
 @Html.Hidden("LastEditingRowIndex")

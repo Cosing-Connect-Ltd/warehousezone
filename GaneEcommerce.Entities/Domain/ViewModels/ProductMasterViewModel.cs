@@ -1,3 +1,4 @@
+using Ganedata.Core.Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -17,6 +18,7 @@ namespace Ganedata.Core.Entities.Domain
         public int ProductKitId { get; set; }
 
         public string ProductKitType { get; set; }
+        public ProductKitTypeEnum? ProductKitTypeEnum { get; set; }
 
     }
 
@@ -39,6 +41,8 @@ namespace Ganedata.Core.Entities.Domain
         public bool IsSelectable { get; set; }
         public string UOM { get; set; }
         public bool Kit { get; set; }
+
+        public bool GroupedProduct { get; set; }
         public string BarCode2 { get; set; }
         public int? ShelfLifeDays { get; set; }
         public decimal? ReorderQty { get; set; }
@@ -83,7 +87,7 @@ namespace Ganedata.Core.Entities.Domain
 
         public decimal? Qty { get; set; }
 
-        public int? ProductKitTypeId { get; set; }
+        public int? Id { get; set; }
 
         public bool? IsActive { get; set; }
     }
