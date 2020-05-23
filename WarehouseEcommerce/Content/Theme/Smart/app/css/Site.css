@@ -2202,3 +2202,12 @@ ul.mhp-menu {
 .user_account > li > a {
     font-size:14px;
 }
+.added-to-basket-header {
+    flex-direction: row-reverse;
+}
+.smart-container-fluid {
+    width: 97vw;
+}
+.confirm-order-page .order-details p,li{
+    white-space:nowrap;
+}

@@ -79,7 +79,6 @@
                                     @if (address.ElementAtOrDefault(i + 1) != null)
                                     {
                                         <div class="col-md-6 both-btn">
-                                            <div class="w-25 p-3">
                                                 <p class="p-mt-20">
                                                     @if (!string.IsNullOrEmpty(address[i + 1].AddressLine1))
                                                     {
@@ -105,7 +104,6 @@
 
 
                                                 </p>
-                                            </div>
                                             <div class="">
                                                 <a href="@Url.Action("GetAddress", "Orders", new { AccountId = ViewBag.AccountIds,AccountBillingId=ViewBag.BillingAddressId,AccountShippingId=address[i+1].AddressID, ShipingAddress = true })" role="button" class="btn btn-primary" style="font-size:11px">Select shipping address</a>
                                                 <a href="@Url.Action("GetAddress","Orders",new {AccountId=address[i+1].AccountID,AccountBillingId=ViewBag.BillingAddressId, AccountAddressId=address[i+1].AddressID })" role="button" class="btn btn-success" style="font-size:11px">Edit address</a>
@@ -121,82 +119,79 @@
 
                         @if (ViewBag.Shiping == true || Model != null || (address == null || address.FirstOrDefault(u => u.AddTypeBilling == true) == null))
                         {
-                            <div>
-                                <h4 class="text-uppercase mt-20">@(Model == null ? "Add a new address" : "Edit Address")</h4>
-                                <div class="search-container col-md-6">
-                                    <div class="search-box input-group">
-                                        <input id="postCode" type="text" name="search" value="" placeholder="Enter PostCode" class="text-search-postcode form-control text-uppercase" />
-                                        <div id="sp-btn-search" class="input-group-btn">
-                                            <div class="col-md-6">
-                                                <button type="button" id="btn-search-category" class="btn btn-search-category" onclick="SearchPostCode();">Find Address</button>
-                                            </div>
+                    <div>
+                        <h4 class="text-uppercase mt-20">@(Model == null ? "Add a new address" : "Edit Address")</h4>
+                        <div class="search-container row">
+                            <div class="search-box input-group col-md-6">
+                                <input id="postCode" type="text" name="search" value="" placeholder="Enter PostCode" class="text-search-postcode form-control text-uppercase" />
+                                <div id="sp-btn-search" class="input-group-btn">
+                                    <button type="button" id="btn-search-category" class="btn btn-search-category" onclick="SearchPostCode();">Find Address</button>
+                                </div>
+                            </div>
+                            <div id="selectAddresss" class="col-md-6 clearfix">
+                                <select id="selectApiAddress" name="address" onchange="OnchangeDropdownAddress()">
+                                </select>
+                            </div>
+                        </div>
+                        <hr class="custom-hr">
+                        @using (Html.BeginForm("SaveAddress", "Orders"))
+                        {
+                            @Html.HiddenFor(model => model.AddressID)
+                            <div class="">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            @Html.EditorFor(model => model.AddressLine1, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Address Line 1", @required = "Required" } })
+                                            @*<input type="text" class="form-control input-md inputNew" size="18" placeholder="Address Line 1">*@
                                         </div>
                                     </div>
-                                    <div id="selectAddresss" class="col-md-6 clearfix">
-                                        <select id="selectApiAddress" name="address" onchange="OnchangeDropdownAddress()">
-                                        </select>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            @Html.EditorFor(model => model.AddressLine2, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Address Line 2", @required = "Required" } })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            @Html.EditorFor(model => model.AddressLine3, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Address Line 3", @required = "Required" } })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            @Html.EditorFor(model => model.PostCode, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Postal Code", @required = "Required" } })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            @Html.EditorFor(model => model.Telephone, new { htmlattributes = new { @class = "form-control input-md inputNew h-40px", @placeholder = "Telephone Number", @required = "Required" } })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            @Html.DropDownListFor(model => model.CountryID, ViewBag.Country as SelectList, new { @class = "", @required = "Required" })
+
+                                        </div>
+                                    </div>
+                                    @if (ViewBag.Shiping == false)
+                                    {
+                                        <input type="hidden" name="AddTypeBilling" id="AddTypeBilling" value="true" />
+
+                                    }
+                                    else
+                                    {
+                                        <input type="hidden" name="AddTypeShipping" id="AddTypeShipping" value="true" />
+
+                                    }
+                                    @Html.HiddenFor(model => model.AccountID, (int)(ViewBag.AccountIds))
+
+                                    <div class="col-md-12">
+                                        <div class="button-submit">
+                                            <button type="Submit" name="submitNewsletter" class="btn btn-block">Save Address</button>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <hr class="custom-hr">
-                                @using (Html.BeginForm("SaveAddress", "Orders"))
-                                {
-                                    @Html.HiddenFor(model => model.AddressID)
-                                    <div class="">
-                                        <div class="row">
-                                            <div class="col-md-6 col-sm-6">
-                                                <div class="form-group">
-                                                    @Html.EditorFor(model => model.AddressLine1, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Address Line 1", @required = "Required" } })
-                                                    @*<input type="text" class="form-control input-md inputNew" size="18" placeholder="Address Line 1">*@
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-sm-6">
-                                                <div class="form-group">
-                                                    @Html.EditorFor(model => model.AddressLine2, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Address Line 2", @required = "Required" } })
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-sm-6">
-                                                <div class="form-group">
-                                                    @Html.EditorFor(model => model.AddressLine3, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Address Line 3", @required = "Required" } })
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-sm-6">
-                                                <div class="form-group">
-                                                    @Html.EditorFor(model => model.PostCode, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Postal Code", @required = "Required" } })
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-sm-6">
-                                                <div class="form-group">
-                                                    @Html.EditorFor(model => model.Telephone, new { htmlattributes = new { @class = "form-control input-md inputNew h-40px", @placeholder = "Telephone Number", @required = "Required" } })
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-sm-6">
-                                                <div class="form-group">
-                                                    @Html.DropDownListFor(model => model.CountryID, ViewBag.Country as SelectList, new { @class = "", @required = "Required" })
-
-                                                </div>
-                                            </div>
-                                            @if (ViewBag.Shiping == false)
-                                            {
-                                                <input type="hidden" name="AddTypeBilling" id="AddTypeBilling" value="true" />
-
-                                            }
-                                            else
-                                            {
-                                                <input type="hidden" name="AddTypeShipping" id="AddTypeShipping" value="true" />
-
-                                            }
-                                            @Html.HiddenFor(model => model.AccountID, (int)(ViewBag.AccountIds))
-
-                                            <div class="col-md-12">
-                                                <div class="button-submit">
-                                                    <button type="Submit" name="submitNewsletter" class="btn btn-block">Save Address</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
                             </div>
+                        }
+                    </div>
                         }
                     </div>
                 </div>

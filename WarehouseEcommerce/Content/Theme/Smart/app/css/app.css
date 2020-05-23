@@ -2100,7 +2100,11 @@ header {
     top: 7px;
     right: 25px;
 }
-
+.single-product-cat .topbutton {
+    position: absolute;
+    top: 7px;
+    right: 5px;
+}
 .product-list .topbutton {
     right: 12px;
 }
