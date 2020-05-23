@@ -517,7 +517,7 @@
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\Pe-icon-7-stroke.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Theme\Smart\Site.css" />
+    <Content Include="Content\Theme\Smart\app\css\Site.css" />
     <Content Include="Content\Theme\Smart\app\fonts\gotham\Gotham-Book.eot" />
     <Content Include="Content\Theme\Smart\app\fonts\gotham\Gotham-Book.otf" />
     <Content Include="Content\Theme\Smart\app\fonts\gotham\Gotham-Book.ttf" />

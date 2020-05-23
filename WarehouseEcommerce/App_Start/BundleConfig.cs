@@ -26,7 +26,7 @@ namespace WarehouseEcommerce
             bundles.Add(new StyleBundle("~/Content/app/css/styles/smart").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/Theme/Smart/app/css/app.css",
-                      "~/Content/Theme/Smart/site.css"
+                      "~/Content/Theme/Smart/app/css/site.css"
                       ));
             bundles.Add(new StyleBundle("~/Content/app/css/styles/university").Include(
                      "~/Content/bootstrap.css",
