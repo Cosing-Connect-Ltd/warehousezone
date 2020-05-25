@@ -12,6 +12,7 @@ namespace Ganedata.Core.Entities.Domain
             ProductAttributeValuesMap = new HashSet<ProductAttributeValuesMap>();
         }
         [Key]
+        [Required]
         [Display(Name = "Value Id")]
         public int AttributeValueId { get; set; }
         [Display(Name = "Attribute")]

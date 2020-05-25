@@ -139,7 +139,7 @@ namespace WMS.Controllers
             ViewBag.WeightGroupId = new SelectList(weightGroups, "WeightGroupId", "Description", productMaster.WeightGroupId);
             ViewBag.LotOptionCodeId = new SelectList(lotOptionCodes, "LotOptionCodeId", "Description", productMaster.LotOptionCodeId);
             ViewBag.LotProcessTypeCodeId = new SelectList(lotProcessTypeCodes, "LotProcessTypeCodeId", "Description", productMaster.LotProcessTypeCodeId);
-
+            ViewBag.productAttributeids = _productLookupService.GetAllValidProductAttributeMaps(CurrentTenantId).Select(u => u.AttributeId).ToList();
             ViewBag.ProductLocations = _productLookupService.GetAllValidProductLocations(CurrentTenantId, CurrentWarehouseId);
             ViewBag.WebsiteIds = _lookupServices.GetAllValidWebsites(CurrentTenantId).ToList();
             ViewBag.ProductTag = _productLookupService.GetAllValidProductTag(CurrentTenantId).ToList();
@@ -147,6 +147,7 @@ namespace WMS.Controllers
             ViewBag.Groups = new SelectList(_lookupServices.GetAllValidProductGroups(CurrentTenantId), "ProductGroupId", "ProductGroup");
             ViewBag.Category = new SelectList(_lookupServices.GetAllValidProductCategories(CurrentTenantId), "ProductCategoryId", "ProductCategoryName");
             ViewBag.PalletType = new SelectList(_lookupServices.GetAllValidPalletTypes(CurrentTenantId), "PalletTypeId", "Description", productMaster.PalletTypeId);
+            ViewBag.AttributeGroups = _productLookupService.GetAllValidProductAttributes();
             ViewBag.Departments = new SelectList(_lookupServices.GetAllValidTenantDepartments(CurrentTenantId), "DepartmentId", "DepartmentName");
             ViewBag.Manufacturer = new SelectList(_lookupServices.GetAllValidProductManufacturer(CurrentTenantId), "Id", "Name", productMaster.ManufacturerId);
             ViewBag.Accounts = _accountServices.GetAllValidProductAccountCodes(id.Value).Select(o =>
@@ -221,7 +222,7 @@ namespace WMS.Controllers
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             SetProductCreateViewBags(id);
-            return View(new ProductMaster { SKUCode = string.IsNullOrEmpty(id) ? _productServices.GenerateNextProductCode(CurrentTenantId) : id, ProdStartDate = DateTime.Today, IsActive = true, DiscontDate = DateTime.Today.AddDays(15) });
+            return View(new ProductMaster { SKUCode = string.IsNullOrEmpty(id) ? _productServices.GenerateNextProductCode(CurrentTenantId) : id, ProdStartDate = DateTime.Today, IsActive = true, DiscontDate = DateTime.Today.AddDays(15), ProductType = ProductKitTypeEnum.Simple });
         }
 
         // POST: Products/Create
@@ -299,13 +300,13 @@ namespace WMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(ProductMaster productMaster, List<int> ProductGroupIds, List<string> ProductAccountCodeIds, List<int> ProductAttributesIds, List<int> ProductLocationIds, List<int> ProductKitIds, string back, List<int> SiteIds)
+        public ActionResult Edit(ProductMaster productMaster, List<int> AttributeIds, List<string> ProductAccountCodeIds, List<int> ProductAttributesIds, List<int> ProductLocationIds, string back, List<int> SiteIds)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
             try
             {
-                _productServices.SaveProduct(productMaster, ProductAccountCodeIds, ProductAttributesIds, ProductLocationIds, ProductKitIds, CurrentUserId, CurrentTenantId, SiteIds, (List<RecipeProductItemRequest>)Session["ProductKitModelItems"]);
+                _productServices.SaveProduct(productMaster, ProductAccountCodeIds, ProductAttributesIds, ProductLocationIds, AttributeIds, CurrentUserId, CurrentTenantId, SiteIds, (List<RecipeProductItemRequest>)Session["ProductKitModelItems"]);
             }
             catch (Exception ex)
             {
@@ -478,7 +479,7 @@ namespace WMS.Controllers
         public ActionResult _AttributeValueCreate(int? Id)
         {
             ViewBag.AttributeGroups = _productLookupService.GetAllValidProductAttributes();
-
+            ViewBag.AttributeValues = _productLookupService.GetAllValidProductAttributeValues();
             if (Id == null)
             {
                 return PartialView();
@@ -492,6 +493,30 @@ namespace WMS.Controllers
         public ActionResult _AttributeCreate()
         {
             return PartialView();
+        }
+        public ActionResult _AttrValueCreate()
+        {
+            return PartialView();
+        }
+        [HttpPost]
+        public JsonResult _AttributesValueSubmit(ProductAttributeValues model)
+        {
+            try
+            {
+                if (model.AttributeId <= 0)
+                {
+                    return Json(new { error = true, errormessage = "Attribute must be selected first" });
+                }
+                var chkAttribute = _productLookupService.SaveProductAttributeValue(model.AttributeId, model.Value, CurrentUserId);
+                if (chkAttribute == null)
+                    throw new Exception("Attribute Already exists");
+
+                return Json(new { error = false, id = chkAttribute.AttributeValueId, name = chkAttribute.Value });
+            }
+            catch (Exception exp)
+            {
+                return Json(new { error = true, errormessage = exp.Message });
+            }
         }
 
         [HttpPost]
@@ -515,13 +540,27 @@ namespace WMS.Controllers
         {
             try
             {
-                var value = _productLookupService.SaveProductAttributeValue(model.AttributeId, model.Value, CurrentUserId);
+                var value = _productLookupService.GetAllValidProductAttributeValues().FirstOrDefault(u => u.AttributeValueId == model.AttributeValueId);
                 return Json(new { error = false, Id = value.AttributeValueId, value = model.Value });
             }
             catch (Exception exp)
             {
                 return Json(new { error = true, errormessage = exp.Message });
             }
+        }
+        public JsonResult GetAttributeValuesById(int id)
+        {
+            try
+            {
+                var value = _productLookupService.GetAllValidProductAttributeValues().Where(u => u.AttributeId == id).Select(u => new { u.AttributeValueId, u.Value });
+                return Json(new { error = false, data = value });
+            }
+            catch (Exception exp)
+            {
+                return Json(new { error = true, errormessage = exp.Message });
+            }
+
+
         }
 
 

@@ -145,7 +145,7 @@
             <div class="input-group h-100 justify-content-center align-items-center" id="dvgrp" style="display:none">
                 @Html.Label("Product Attribute", htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
-                        @Html.DropDownList("AttributeIds", new MultiSelectList(ViewBag.AttributeGroups, "AttributeId", "AttributeName"), new { Multiple = "multiple", @class = "chosen-select", data_placeholder = "Choose Atttribute" })
+                        @Html.ListBox("AttributeIds", new MultiSelectList(ViewBag.AttributeGroups, "AttributeId", "AttributeName"), new { Multiple = "multiple", @class = "chosen-select", data_placeholder = "Choose Atttribute" })
                   
                 </div>
             </div>
@@ -541,6 +541,15 @@
 
                 </div>
             </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(m => m.ProductCategoryId, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    <div class="col-12 p-0 mt-1 pull-left">
+                        @Html.DropDownListFor(m => m.ProductCategoryId, ViewBag.Category as SelectList, "Select Product Category", new { @id = "drpPC", @class = "chosen-select" })
+                    </div>
+                </div>
+            </div>
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(m => m.DepartmentId, htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
@@ -564,14 +573,6 @@
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(m => m.ProductCategoryId, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    <div class="col-11 p-0 mt-1 pull-left">
-                        @Html.DropDownListFor(m => m.ProductCategoryId, ViewBag.Category as SelectList, "Select Product Category", new { @id = "drpPC", @class = "chosen-select" })
-                    </div>
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.Label("Product Locations", htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
                     <div class="col-11 p-0 mt-1 pull-left">
@@ -582,7 +583,7 @@
                     </div>
                 </div>
             </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
+            <div class="input-group h-100 justify-content-center align-items-center simpleDiv">
                 @Html.Label("Product Attributes", htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
                     <div class="col-11 p-0 mt-1 pull-left">

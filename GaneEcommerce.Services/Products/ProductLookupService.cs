@@ -40,6 +40,11 @@ namespace Ganedata.Core.Services
         {
             return _currentDbContext.ProductAttributes.OrderBy(o => o.AttributeName);
         }
+
+        public IEnumerable<ProductAttributeMap> GetAllValidProductAttributeMaps(int TenantId)
+        {
+            return _currentDbContext.ProductAttributeMaps.Where(u => u.IsDeleted != true && u.TenantId == TenantId);
+        }
         public IEnumerable<ProductAttributeValues> GetAllValidProductAttributeValues()
         {
             return _currentDbContext.ProductAttributeValues.Where(m => m.IsDeleted != true);

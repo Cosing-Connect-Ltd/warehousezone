@@ -18,7 +18,7 @@ namespace Ganedata.Core.Services
         IEnumerable<ProductAttributeValuesMap> GetAllValidProductAttributeValuesMap();
         IEnumerable<ProductSCCCodes> GetAllProductSccCodesByProductId(int productId, int tenantId);
         IEnumerable<ProductLocations> GetAllProductLocationsByProductId(int productId, int warehouseId);
-
+        IEnumerable<ProductAttributeMap> GetAllValidProductAttributeMaps(int TenantId);
         Locations GetLocationById(int locationId);
         ProductGroups GetProductGroupById(int productGroupId);
         IQueryable<ProductMaster> GetAllValidProductGroupById(int? productGroupId, int? departmentId = null);

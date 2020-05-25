@@ -360,45 +360,24 @@ function showlocationpopup() {
 function attributeValueSave() {
     $("#vldAttributeValue").removeClass("validation-summary-errors");
     $("#vldAttributeValue").addClass("validation-summary-valid");
+
     if (IsValidForm('#frmattribute')) {
         LoadingPanel.ContainerElementID = "pcModalAttributesValues";
         LoadingPanel.Show();
-        var data = $("#frmattribute").serialize();
-        $.post("/Products/_AttributeValueSubmit", data, function (result) {
-            // Do something with the response `res`
-            if (result.error == true) {
-                var ul = $("#vldAttributeValue ul");
-                $("#vldAttributeValue").addClass("validation-summary-errors");
-                $("#vldAttributeValue").removeClass("validation-summary-valid");
-                ul.html("");
-                ul.append("<li> " + result.errormessage + "</li>");
-                LoadingPanel.Hide();
-            }
-            else {
-                var $lastOptGroup = $('<optgroup label="' + $("#drpattribute option:selected").text() + '">');
-                $lastOptGroup.append('<option selected value=' + result.Id + '>' + result.value + '</option>');
-                $('#ProductAttributesIds').append($lastOptGroup);
+        var $lastOptGroup = $('<optgroup label="' + $("#drpattribute option:selected").text() + '">');
+        $lastOptGroup.append('<option selected  value=' + $("#AttributeValueId option:selected").val() + '>' + $("#AttributeValueId option:selected").text() + '</option>');
+        $('#ProductAttributesIds').append($lastOptGroup);
+        $("#ProductAttributesIds").trigger("chosen:updated");
+        LoadingPanel.Hide();
+        pcModalAttributesValues.Hide();
+        $("#ProductAttributesIds").trigger("chosen:updated");
 
-                $("#ProductAttributesIds").trigger("chosen:updated");
-                LoadingPanel.Hide();
-                pcModalAttributesValues.Hide();
-
-            }
-            $("#ProductAttributesIds").trigger("chosen:updated");
-
-
-        }).fail(function (response) {
-            var ul = $("#vldAttributeValue ul");
-            $("#vldAttributeValue").addClass("validation-summary-errors");
-            $("#vldAttributeValue").removeClass("validation-summary-valid");
-            ul.html("");
-            ul.append("<li> " + result.errormessage + "</li>");
-            LoadingPanel.Hide();
-        })
 
     }
 
 }
+
+
 function attributeSave() {
     $("#vldAttribute").removeClass("validation-summary-errors");
     $("#vldAttribute").addClass("validation-summary-valid");
@@ -422,6 +401,7 @@ function attributeSave() {
                 //$("#lstattributes").append('<option selected value=' + result.id + '>' + result.name + '</option>');
                 $("#drpattribute").append('<option selected value=' + result.id + '>' + result.name + '</option>');
                 $("#drpattribute").trigger("chosen:updated");
+                GetAttributeValuesById(result.id);
                 LoadingPanel.Hide();
                 pcModalAttributes.Hide();
 
@@ -438,7 +418,76 @@ function attributeSave() {
     }
 
 }
+function pcModalAttributesValues_EndCallback(s, e) {
+    debugger;
+    GetAttributeValuesById($("#drpattribute option:selected").val());
+}
+function GetAttributeValuesById(attributeId) {
+    if (attributeId !== undefined || attributeId !== "" || attributeId !== null) {
+        $.post("/Products/GetAttributeValuesById/" + attributeId, function (result) {
+            if (!result.error) {
+                $('#AttributeValueId').empty();
 
+                if (result.data.length > 0) {
+                    $.each(result.data, function (i, item) {
+                        $('#AttributeValueId').append($('<option></option>').val(item.AttributeValueId).html(item.Value));
+                    });
+                   
+                }
+
+                $("#AttributeValueId").trigger("chosen:updated");
+            }
+        });
+    }
+
+
+
+}
+
+function attributesvalueSave() {
+    debugger;
+    $("#vldAttributesValue").removeClass("validation-summary-errors");
+    $("#vldAttributesValue").addClass("validation-summary-valid");
+    if (IsValidForm('#frmValuename')) {
+        LoadingPanel.ContainerElementID = "pcModalAttributesValues";
+        LoadingPanel.Show();
+        var data = $("#frmValuename").serializeArray();
+        data.push({
+            name: "AttributeId",
+            value: $("#drpattribute :selected").val()
+        });
+        $.post("/Products/_AttributesValueSubmit", data, function (result) {
+            // Do something with the response `res`
+            if (result.error == true) {
+                var ul = $("#vldAttributesValue ul");
+                $("#vldAttributesValue").addClass("validation-summary-errors");
+
+                $("#vldAttributesValue").removeClass("validation-summary-valid");
+                ul.html("");
+                ul.append("<li> " + result.errormessage + "</li>");
+                LoadingPanel.Hide();
+            }
+            else {
+                var newOption = "<option selected value=" + result.id + ">" + result.name + "</option>";
+                //$("#lstattributes").append('<option selected value=' + result.id + '>' + result.name + '</option>');
+                $("#AttributeValueId").append('<option selected value=' + result.id + '>' + result.name + '</option>');
+                $("#AttributeValueId").trigger("chosen:updated");
+                LoadingPanel.Hide();
+                pcModalAttributeValues.Hide();
+
+            }
+        }).fail(function (response) {
+            var ul = $("#vldAttributesValue ul");
+            $("#vldAttributesValue").addClass("validation-summary-errors");
+            $("#vldAttributesValue").removeClass("validation-summary-valid");
+            ul.html("");
+            ul.append("<li> " + result.errormessage + "</li>");
+            LoadingPanel.Hide();
+        })
+
+    }
+
+}
 function cancellocationadd() {
     pcModalLocations.Hide();
 
@@ -582,11 +631,17 @@ function ProductKitChanges(s, e) {
 
 }
 
+function AttributeChange() {
+    GetAttributeValuesById($("#drpattribute option:selected").val());
 
+
+}
 
 /////////////////////////////////////////////////////
 
 
 $(document).ready(function () {
     loadKitProductGridItemEvents();
+
+
 });

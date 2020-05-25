@@ -614,7 +614,7 @@ namespace Ganedata.Core.Services
                     }
 
                 }
-                if (productAttributesIds == null)
+                if (productAttributesIds == null && productMaster.ProductType == ProductKitTypeEnum.Simple)
                 {
                     foreach (var entity in _currentDbContext.ProductAttributeValuesMap.Where(
                         x => x.ProductId == productMaster.ProductId))
@@ -738,7 +738,7 @@ namespace Ganedata.Core.Services
                     }
                 }
 
-                if (productAttributesIds != null)
+                if (productAttributesIds != null && productMaster.ProductType==ProductKitTypeEnum.Simple)
                 {
                     foreach (var item in productAttributesIds)
                     {
@@ -817,7 +817,7 @@ namespace Ganedata.Core.Services
                     _currentDbContext.SaveChanges();
                 }
             }
-            if (AttributeIds != null && AttributeIds.Count > 0)
+            if (AttributeIds != null && AttributeIds.Count > 0 && productMaster.ProductType==ProductKitTypeEnum.ProductByAttribute)
             {
                 var ToDelete = new List<int>();
                 ToDelete = _currentDbContext.ProductAttributeMaps
@@ -827,7 +827,7 @@ namespace Ganedata.Core.Services
                     .Except(AttributeIds)
                     .ToList();
                 var ToAdd = new List<int>();
-                ToAdd = productLocationIds
+                ToAdd = AttributeIds
                     .Except(_currentDbContext.ProductAttributeMaps
                         .Where(x => x.ProductId == productMaster.ProductId && x.IsDeleted != true)
                         .Select(x => x.AttributeId)
@@ -854,6 +854,7 @@ namespace Ganedata.Core.Services
                     };
                     _currentDbContext.ProductAttributeMaps.Add(newItem);
                 }
+                _currentDbContext.SaveChanges();
             }
             else 
             {

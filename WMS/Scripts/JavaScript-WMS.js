@@ -17,8 +17,15 @@ $(function () {
             debugger;
             if ($("#ProductType").val() === "5") {
                 $("#dvgrp").show();
+                $(".simpleDiv").hide();
             }
-            else { $("#dvgrp").hide(); }
+            else if ($("#ProductType").val() === "4")
+            {
+                $(".simpleDiv").show();
+                $("#dvgrp").hide();
+            }
+            else {
+                $("#dvgrp").hide(); }
         });
     });
     $('#dvloan').hide();
