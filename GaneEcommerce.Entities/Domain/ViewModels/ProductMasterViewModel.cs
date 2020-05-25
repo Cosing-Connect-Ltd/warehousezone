@@ -37,12 +37,10 @@ namespace Ganedata.Core.Entities.Domain
         public string BarCode { get; set; }
         public bool Serialisable { get; set; }
         public bool IsStockItem { get; set; }
-        public bool IsRawMaterial { get; set; }
         public bool IsSelectable { get; set; }
         public string UOM { get; set; }
-        public bool Kit { get; set; }
-
-        public bool GroupedProduct { get; set; }
+     
+        public ProductKitTypeEnum ProductType { get; set; }
         public string BarCode2 { get; set; }
         public int? ShelfLifeDays { get; set; }
         public decimal? ReorderQty { get; set; }

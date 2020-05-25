@@ -116,35 +116,10 @@
                         @Html.ValidationMessageFor(model => model.DontMonitorStock)
                     </div>
                 </div>
-              
+
 
             </div>
-            <div class="single-check-select">
-                <div class="input-group h-100 justify-content-center align-items-center divchkgrp">
-                    @Html.LabelFor(model => model.GroupedProduct, htmlAttributes: new { @class = "col-md-4" })
-                    <div class="col-md-8">
-                        @Html.EditorFor(m => m.GroupedProduct, new { @class = "checkbox" })
-                        @Html.ValidationMessageFor(model => model.GroupedProduct)
-                    </div>
-                </div>
-
-                <div class="input-group h-100 justify-content-center align-items-center divchkkit">
-                    @Html.LabelFor(model => model.Kit, htmlAttributes: new { @class = "col-md-4" })
-                    <div class="col-md-8">
-                        @Html.CheckBoxFor(m => m.Kit, new { @id = "chkkit", @class = "form-control checkbox" })
-                    </div>
-                </div>
-
-                <div class="input-group h-100 justify-content-center align-items-center">
-                    @Html.LabelFor(model => model.IsRawMaterial, htmlAttributes: new { @class = "col-md-4" })
-                    <div class="col-md-8">
-                        @Html.EditorFor(model => model.IsRawMaterial)
-                        @Html.ValidationMessageFor(model => model.IsRawMaterial)
-                    </div>
-                </div>
-
-            </div>
-             <div class="input-group h-100 justify-content-center align-items-center">
+            <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.IsStockItem, htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
                     @Html.EditorFor(model => model.IsStockItem)
@@ -157,6 +132,21 @@
                 <div class="col-md-8">
                     @Html.EditorFor(model => model.LotOption)
                     @Html.ValidationMessageFor(model => model.LotOption)
+                </div>
+            </div>
+
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.ProductType, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EnumDropDownListFor(model => model.ProductType, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ProductType, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center" id="dvgrp" style="display:none">
+                @Html.Label("Product Attribute", htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                        @Html.DropDownList("AttributeIds", new MultiSelectList(ViewBag.AttributeGroups, "AttributeId", "AttributeName"), new { Multiple = "multiple", @class = "chosen-select", data_placeholder = "Choose Atttribute" })
+                  
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">

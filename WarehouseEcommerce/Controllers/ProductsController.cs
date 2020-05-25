@@ -164,12 +164,12 @@ namespace WarehouseEcommerce.Controllers
 
             }
             product.SellPrice = Math.Round((product.SellPrice ?? 0) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value), 2);
-            if (product.GroupedProduct)
+            if (product.ProductType==ProductKitTypeEnum.Grouped)
             {
                 return RedirectToAction("GroupedProductDetail", "Products", new { sku = sku });
             }
-            else if (product.Kit)
-            {
+            else if (product.ProductType == ProductKitTypeEnum.Kit)
+                {
                 return RedirectToAction("KitProductDetail", "Products", new { sku = sku });
             }
             return View(product);

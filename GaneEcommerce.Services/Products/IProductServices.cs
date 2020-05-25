@@ -56,7 +56,7 @@ namespace Ganedata.Core.Services
         IQueryable<InventoryTransaction> GetInventoryTransactionsByProductSerialId(int Id);
         ProductMaster SaveProduct(ProductMaster productMaster, List<string> productAccountCodeIds,
             List<int> productAttributesIds,
-            List<int> productLocationIds, List<int> productKitIds, int userId, int tenantId, List<int> SiteId, List<RecipeProductItemRequest> recipeProductItems);
+            List<int> productLocationIds, List<int> AttributeIds, int userId, int tenantId, List<int> SiteId, List<RecipeProductItemRequest> recipeProductItems);
 
         LocationGroup SaveLocationGroup(string locationGroupName, int userId, int tenantId);
         bool AddOrderId(int? orderId, int palletTrackingId, int? type);

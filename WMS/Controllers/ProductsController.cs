@@ -77,6 +77,7 @@ namespace WMS.Controllers
             var WebSites = _lookupServices.GetAllValidWebsites(CurrentTenantId).ToList();
 
             ViewBag.DimensionUOMId = new SelectList(dimensionUoms, "UOMId", "UOM", dimensionUoms.Select(m => m.UOMId).FirstOrDefault());
+            ViewBag.AttributeGroups = _productLookupService.GetAllValidProductAttributes();
             ViewBag.TaxID = new SelectList(taxes, "TaxID", "TaxName", taxes.Select(x => x.TaxID).FirstOrDefault());
             ViewBag.UOMId = new SelectList(weightUoms, "UOMId", "UOM", weightUoms.Select(m => m.UOMId).FirstOrDefault());
             ViewBag.WeightGroupId = new SelectList(weightGroups, "WeightGroupId", "Description", weightGroups.Select(x => x.WeightGroupId).FirstOrDefault());
@@ -228,7 +229,7 @@ namespace WMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(ProductMaster productMaster, List<int> ProductGroupIds, IEnumerable<DevExpress.Web.UploadedFile> UploadControl, List<string> ProductAccountCodeIds, List<int> ProductAttributesIds, List<int> ProductLocationIds, List<int> ProductKitIds, string back, List<int> SiteIds)
+        public ActionResult Create(ProductMaster productMaster, List<int> AttributeIds, IEnumerable<DevExpress.Web.UploadedFile> UploadControl, List<string> ProductAccountCodeIds, List<int> ProductAttributesIds, List<int> ProductLocationIds, string back, List<int> SiteIds)
         {
 
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
@@ -239,17 +240,12 @@ namespace WMS.Controllers
 
                 try
                 {
-                    if (ProductGroupIds != null)
-                    {
-                        ProductKitIds = new List<int>();
-                        ProductKitIds = ProductGroupIds;
-                    }
                     if (!_productServices.IsCodeAvailableForUse(productMaster.SKUCode, CurrentTenantId, EnumProductCodeType.SkuCode))
                     {
                         throw new Exception("Product with same code already exist");
                     }
 
-                    productMaster = _productServices.SaveProduct(productMaster, ProductAccountCodeIds, ProductAttributesIds, ProductLocationIds, ProductKitIds, CurrentUserId, CurrentTenantId, SiteIds, (List<RecipeProductItemRequest>)Session["ProductKitModelItems"]);
+                    productMaster = _productServices.SaveProduct(productMaster, ProductAccountCodeIds, ProductAttributesIds, ProductLocationIds, AttributeIds, CurrentUserId, CurrentTenantId, SiteIds, (List<RecipeProductItemRequest>)Session["ProductKitModelItems"]);
 
                     var files = Session["files"] as List<KeyValuePair<string, UploadedFileViewModel>>;
                     foreach (var file in files)
@@ -309,12 +305,6 @@ namespace WMS.Controllers
 
             try
             {
-                if (ProductGroupIds != null && productMaster.GroupedProduct)
-                {
-                    ProductKitIds = new List<int>();
-                    ProductKitIds = ProductGroupIds;
-                }
-
                 _productServices.SaveProduct(productMaster, ProductAccountCodeIds, ProductAttributesIds, ProductLocationIds, ProductKitIds, CurrentUserId, CurrentTenantId, SiteIds, (List<RecipeProductItemRequest>)Session["ProductKitModelItems"]);
             }
             catch (Exception ex)

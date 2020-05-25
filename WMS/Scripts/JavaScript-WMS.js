@@ -11,6 +11,16 @@ $(function () {
         $(".profiler-results").remove();
     });
 
+    $(document).ready(function () {
+
+        $("#ProductType").change(function () {
+            debugger;
+            if ($("#ProductType").val() === "5") {
+                $("#dvgrp").show();
+            }
+            else { $("#dvgrp").hide(); }
+        });
+    });
     $('#dvloan').hide();
     $('.graccount').hide();
     $('.data-datepicker').datepicker({ dateFormat: 'dd/mm/yy' });
@@ -102,8 +112,7 @@ $(function () {
     });
 
 
-    $('.Caction').click(function (e)
-    {
+    $('.Caction').click(function (e) {
         var id = e.target.id;
         if (id === "lnkDetails") {
             var Pid = $("#selkey").val();
@@ -770,21 +779,6 @@ $(function () {
         $("#dvdisc").hide();
     }
 
-    if ($("#chkkit").is(":checked")) {
-        $("#dvkit").show();
-        $("#dvgrp").hide();
-
-    }
-    else if ($("#GroupedProduct").is(":checked"))
-    {
-        $("#dvgrp").show();
-        $("#dvkit").hide();
-    }
-    else
-    {
-        $("#dvkit").hide();
-        $("#dvgrp").hide()
-    }
 
 
     $('#chkdis').change(function () {
@@ -797,27 +791,6 @@ $(function () {
         }
     });
 
-    $('#chkkit').change(function () {
-
-        if ($(this).is(":checked")) {
-            $("#dvkit").show();
-            $("#dvgrp").hide();
-        }
-        else {
-            $("#dvkit").hide();
-        }
-    });
-
-    $('#chkgrp').change(function () {
-
-        if ($(this).is(":checked")) {
-            $("#dvkit").hide();
-            $("#dvgrp").show();
-        }
-        else {
-            $("#dvgrp").hide();
-        }
-    });
 
 
     $('#LRemove').click(function (e) {

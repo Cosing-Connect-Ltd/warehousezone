@@ -411,6 +411,9 @@ namespace Ganedata.Core.Entities.Enums
         Kit = 1,
         Grouped = 2,
         Recipe = 3,
+        Simple = 4,
+        [Display(Name = "Product By Attribute")]
+        ProductByAttribute = 5
     }
 
     public enum WarehouseThemeEnum

@@ -1,3 +1,4 @@
+using Ganedata.Core.Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -118,8 +119,9 @@ namespace Ganedata.Core.Entities.Domain
         [Required]
         [Display(Name = "Percent Margin")]
         public decimal PercentMargin { get; set; }
-        [Display(Name = " Product Kit")]
-        public bool Kit { get; set; }
+        [Display(Name = "Product Type")]
+        public ProductKitTypeEnum ProductType { get; set; }
+
         [Display(Name = "Active")]
         public bool IsActive { get; set; }
         [Required]
@@ -149,7 +151,7 @@ namespace Ganedata.Core.Entities.Domain
         public bool? RequiresBatchNumberOnReceipt { get; set; }
         [Display(Name = "Requires Expiry Date")]
         public bool? RequiresExpiryDateOnReceipt { get; set; }
-        
+
         public int? PreferredSupplier { get; set; }
 
         public int? SiteId { get; set; }
@@ -158,8 +160,7 @@ namespace Ganedata.Core.Entities.Domain
         {
             get { return Name + " " + SKUCode; }
         }
-        [Display(Name = "Is Raw Material")]
-        public bool IsRawMaterial { get; set; }
+
         [Display(Name = "Enable Warranty")]
         public bool? EnableWarranty { get; set; }
         [Display(Name = "Enable Tax")]
@@ -175,8 +176,6 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Is Stock Item")]
         public bool IsStockItem { get; set; }
         public int? ManufacturerId { get; set; }
-        [Display(Name = "Group Product")]
-        public bool GroupedProduct { get; set; }
 
         [ForeignKey("ManufacturerId")]
         public ProductManufacturer ProductManufacturer { get; set; }

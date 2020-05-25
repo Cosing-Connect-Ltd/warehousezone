@@ -929,7 +929,7 @@ namespace Ganedata.Core.Data.Helpers
                         existingProduct.SKUCode = scanSourceItemNumber;
                         existingProduct.Depth = 1;
                         existingProduct.UOMId = 1;
-                        existingProduct.Kit = false;
+                        existingProduct.ProductType = ProductKitTypeEnum.Simple;
                         existingProduct.TaxID = TaxID;
                         existingProduct.UOMId = UOMId;
                         existingProduct.IsActive = true;
@@ -1291,7 +1291,7 @@ namespace Ganedata.Core.Data.Helpers
                             existingProduct.UOMId = 1;
                             existingProduct.Width = 1;
                             existingProduct.Height = 1;
-                            existingProduct.Kit = false;
+                            existingProduct.ProductType = ProductKitTypeEnum.Simple;
                             existingProduct.UOMId = UOMId;
                             existingProduct.TaxID = TaxID;
                             existingProduct.IsActive = true;
@@ -2087,7 +2087,7 @@ namespace Ganedata.Core.Data.Helpers
                                         productMaster.TaxID = 1;
                                         productMaster.WeightGroupId = 1;
                                         productMaster.PercentMargin = 0;
-                                        productMaster.Kit = false;
+                                        productMaster.ProductType = ProductKitTypeEnum.Simple;
                                         productMaster.IsActive = true;
                                         productMaster.ProdStartDate = DateTime.UtcNow;
                                         productMaster.Discontinued = false;
@@ -2095,7 +2095,7 @@ namespace Ganedata.Core.Data.Helpers
                                         productMaster.ProcessByCase = false;
                                         productMaster.ProcessByPallet = false;
                                         productMaster.IsStockItem = false;
-                                        productMaster.IsRawMaterial = false;
+                                        productMaster.ProductType = ProductKitTypeEnum.Simple;
                                         productMaster.TenantId = tenantId;
                                         productMaster.ProductGroupId = productCategories?.ProductGroupId;
 
@@ -2447,7 +2447,7 @@ namespace Ganedata.Core.Data.Helpers
                             productMaster.TaxID = 1;
                             productMaster.WeightGroupId = 1;
                             productMaster.PercentMargin = 0;
-                            productMaster.Kit = false;
+                            productMaster.ProductType = ProductKitTypeEnum.Simple;
                             productMaster.IsActive = true;
                             productMaster.ProdStartDate = DateTime.UtcNow;
                             productMaster.Discontinued = false;
@@ -2455,7 +2455,7 @@ namespace Ganedata.Core.Data.Helpers
                             productMaster.ProcessByCase = false;
                             productMaster.ProcessByPallet = false;
                             productMaster.IsStockItem = false;
-                            productMaster.IsRawMaterial = false;
+                            productMaster.ProductType = ProductKitTypeEnum.Simple;
                             productMaster.TenantId = TenantId;
                            
                             productMaster.ProductGroupId = 1;
