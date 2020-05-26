@@ -124,7 +124,7 @@
                                     <h3 class="prdName">@item.Name</h3>
                                     <div class="foot">
                                         <span class="prd_amnt">@ViewBag.CurrencySymbol @item.SellPrice</span>
-                                        @if (!item.GroupedProduct && !item.Kit)
+                                        @if (item.ProductType != ProductKitTypeEnum.Grouped && item.ProductType != ProductKitTypeEnum.Kit)
                                         {
                                             <ul class="icolist">
                                                 @if (@item.SellPrice > 0 && @item.SellPrice.HasValue && @item.PercentMargin > 0)
@@ -141,7 +141,7 @@
 
                                                 }
                                                 @{
-                                                    var totaltems = item.WebsiteWishListItems.Where(u => u.IsDeleted != true && u.UserId== ViewBag.CurrentUserId).ToList();
+                                                    var totaltems = item.WebsiteWishListItems.Where(u => u.IsDeleted != true && u.UserId == ViewBag.CurrentUserId).ToList();
                                                 }
                                                 @if (totaltems.Count <= 0)
                                                 {

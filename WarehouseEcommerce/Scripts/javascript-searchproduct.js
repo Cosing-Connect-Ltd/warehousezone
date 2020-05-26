@@ -22,18 +22,23 @@ function SearchPostCode() {
         data: { postCode: searchString },
         dataType: 'json',
         success: function (data) {
-            $('#selectAddresss').show();
-            if (data.length > 0) {
+            debugger;
+            if (data.length > 1) {
+                $('#selectAddresss').show();
                 $('#selectApiAddress').empty();
                 $('#selectApiAddress').append('<option>Select Address</option>');
                 $.each(data, function (i, item) {
                     $('#selectApiAddress').append($('<option></option>').val(data[i]).html(data[i]));
-
+                });
+            }
+            else {
+                $.each(data, function (i, item) {
+                    alert(data[i]);
                 });
             }
         },
         error: function (err) {
-            alert("Invalid Postcode please enter the correct format");
+            alert(err);
         }
     });
 }
@@ -579,5 +584,5 @@ function RemoveWishItem(id) {
         }
     });
 
-    
+
 }

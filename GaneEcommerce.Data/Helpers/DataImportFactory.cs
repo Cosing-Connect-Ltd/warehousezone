@@ -2457,7 +2457,7 @@ namespace Ganedata.Core.Data.Helpers
                             productMaster.IsStockItem = false;
                             productMaster.ProductType = ProductKitTypeEnum.Simple;
                             productMaster.TenantId = TenantId;
-                           
+
                             productMaster.ProductGroupId = 1;
                             productMaster.BuyPrice = item.Price;
                             //productMaster.CountryOfOrigion = productDetail.CountryofOrigin;
@@ -3487,6 +3487,8 @@ namespace Ganedata.Core.Data.Helpers
         public async Task<List<string>> GetAddressByPostCodeAsync(string postCode)
         {
             HttpResponseMessage response = null;
+            List<string> errorString = new List<string>();
+
             try
             {
                 var apiToken = ConfigurationManager.AppSettings["PostCodeKey"];
@@ -3496,6 +3498,7 @@ namespace Ganedata.Core.Data.Helpers
                 apiUrl = apiLink + "?api-key=" + apiToken;
 
                 PostCodeAddressViewModel model = new PostCodeAddressViewModel();
+
 
                 using (HttpClient client = new HttpClient())
                 {
@@ -3507,12 +3510,18 @@ namespace Ganedata.Core.Data.Helpers
                     {
                         model = JsonConvert.DeserializeObject<PostCodeAddressViewModel>(response.Content.ReadAsStringAsync().Result);
                     }
+                    else
+                    {
+                        errorString.Add(response.Content.ReadAsStringAsync().Result);
+                        return errorString;
+                    }
                 }
                 return model.addresses;
             }
             catch (Exception Exp)
             {
-                return null;
+                errorString.Add(Exp.Message.ToString());
+                return errorString;
             }
         }
     }

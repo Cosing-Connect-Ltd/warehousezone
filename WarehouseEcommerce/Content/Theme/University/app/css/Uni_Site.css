@@ -99,10 +99,6 @@
             height: 15px;
             margin-right: -3px;
         }
-
-    min-width: 220px;
-}
-
 }
 
 @media (max-width: 767px) {
@@ -2313,7 +2309,4 @@ ul.mhp-menu {
     position: absolute;
     right: -15px;
     top: -15px;
-}
-.uni-pages-main .nb_header_btm_beedsec {
-    margin-top: -29px;
 }

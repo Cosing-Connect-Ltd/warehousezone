@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>@ViewBag.Title</title>
     <meta name="description" content="" />
-    @Styles.Render("~/Content/app/css/styles/university")
+    @Styles.Render("~/Content/Theme/University/app/css/university")
     <link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css">
     <link rel="icon" href="~/Content/Theme/University/app/images/favico.ico" />
     <link href="~/Content/Theme/University/app/css/owl.carousel.min.css" rel="stylesheet" />
@@ -57,10 +57,12 @@
 
     @Html.Partial("_LoginRegisterPartial")
     @Html.Action("_TopHeaderPartial", "Home")
-
     <div class="pl-0 pr-0  uni-pages-pt uni-pages-main">
         @Html.Partial("_DeliveryInfoPartial")
-        @RenderBody()
+        <div class="content-area">
+            @RenderBody()
+        </div>
+
     </div>
 
     @Html.Action("_FooterPartialArea", "Home", new { university = true })

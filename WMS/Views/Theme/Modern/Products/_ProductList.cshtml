@@ -230,11 +230,22 @@
                     Html.RenderAction("_Serializations", new { productId = DataBinder.Eval(c.DataItem, "ProductId") });
                 });
 
-                if ((bool)DataBinder.Eval(c.DataItem, "Kit"))
+                if ((bool)DataBinder.Eval(c.DataItem, "Kit") || (bool)DataBinder.Eval(c.DataItem, "GroupedProduct") || (bool)DataBinder.Eval(c.DataItem, "IsRawMaterial"))
                 {
-                    s.TabPages.Add("Kit Items").SetContent(() =>
+                    var Enumtype = Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Grouped;
+                    var typeKit = (bool)DataBinder.Eval(c.DataItem, "Kit");
+                    var typeRaw = (bool)DataBinder.Eval(c.DataItem, "IsRawMaterial");
+                    if (typeRaw)
                     {
-                        Html.RenderAction("_ProductKitItems", new { productId = DataBinder.Eval(c.DataItem, "ProductId") });
+                        Enumtype = Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Recipe;
+                    }
+                    if (typeKit)
+                    {
+                        Enumtype = Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Kit;
+                    }
+                    s.TabPages.Add("Associated Items").SetContent(() =>
+                    {
+                        Html.RenderAction("_ProductKitItems", new { productId = DataBinder.Eval(c.DataItem, "ProductId"), productKitType = Enumtype });
                     });
                 }
 

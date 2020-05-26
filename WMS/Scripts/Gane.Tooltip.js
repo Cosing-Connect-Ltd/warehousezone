@@ -9,13 +9,13 @@
         var tooltipKeys = [];
 
         for (var i = 0; i < tooltipElements.length; i++) {
-            tooltipKeys.push($(tooltipElements[i]).attr('tooltipKey'))
+            tooltipKeys.push($(tooltipElements[i]).attr('tooltipKey'));
         }
 
 
         var inputElements = $('input, label');
         for (var i = 0; i < inputElements.length; i++) {
-            tooltipKeys.push(document.location.pathname + '/' + $(inputElements[i]).attr('id'))
+            tooltipKeys.push(document.location.pathname + '/' + $(inputElements[i]).attr('id'));
         }
 
         tooltipKeys = jQuery.unique(tooltipKeys);
