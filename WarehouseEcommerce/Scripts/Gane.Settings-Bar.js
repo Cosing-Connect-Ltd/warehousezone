@@ -16,13 +16,13 @@ function onUISettingChanged(s) {
 
     var itemKey = $("[name='" + s.name.replace('Value', 'UISettingItem.Key') + "']")[0].value
 
-    var uiSettings = JSON.parse(localStorage.getItem("UISettings"));
+    var uiSettings = JSON.parse(localStorage.getItem("ui-settings"));
 
     var itemValue = !!s.color ? s.color : s.value;
 
     uiSettings[itemKey] = itemValue;
 
-    localStorage.setItem("UISettings", JSON.stringify(uiSettings));
+    localStorage.setItem("ui-settings", JSON.stringify(uiSettings));
 
     applyUISettings(itemKey, itemValue);
 }
@@ -38,7 +38,7 @@ function saveUISettings() {
             success: function () {
                 collapseSettingsBar();
 
-                baseUISettings = localStorage.getItem("UISettings");
+                baseUISettings = localStorage.getItem("ui-settings");
             },
             error: function (xhr, status, error) {
                 console.log(error);
@@ -71,7 +71,7 @@ function InitializeValidationRulesForForm(form) {
 }
 
 function undoUISettings() {
-    localStorage.setItem("UISettings", baseUISettings);
+    localStorage.setItem("ui-settings", baseUISettings);
     applyAllUISettings();
     collapseSettingsBar();
 }
