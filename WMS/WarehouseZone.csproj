@@ -1274,6 +1274,10 @@
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\ProductFunctions.js" />
+    <Content Include="Scripts\qTip\jquery.qtip.css" />
+    <Content Include="Scripts\qTip\jquery.qtip.js" />
+    <Content Include="Scripts\qTip\jquery.qtip.min.css" />
+    <Content Include="Scripts\qTip\jquery.qtip.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
@@ -2575,7 +2579,6 @@
     <Content Include="Views\Theme\Default\ProductAllowanceGroups\Details.cshtml" />
     <Content Include="Views\Theme\Default\ProductAllowanceGroups\Edit.cshtml" />
     <Content Include="Views\Theme\Default\ProductAllowanceGroups\Index.cshtml" />
-    <Content Include="Views\Theme\Default\Shared\_Tooltip.cshtml" />
     <Content Include="Views\Theme\Default\Tooltips\Index.cshtml" />
     <Content Include="Views\Theme\Default\Tooltips\_TooltipList.cshtml" />
     <Content Include="Views\Theme\Default\Tooltips\Delete.cshtml" />
@@ -2617,7 +2620,6 @@
     <Content Include="Views\Theme\Modern\Shared\PlaceholdersHtmlEditorPartial.cshtml" />
     <Content Include="Views\Theme\Modern\Shared\_AttrValueCreate.cshtml" />
     <Content Include="Views\Theme\Modern\Shared\_HoverUploader.cshtml" />
-    <Content Include="Views\Theme\Modern\Shared\_Tooltip.cshtml" />
     <Content Include="Views\Theme\Modern\TenantWebsites\Create.cshtml" />
     <Content Include="Views\Theme\Modern\TenantWebsites\Delete.cshtml" />
     <Content Include="Views\Theme\Modern\TenantWebsites\Details.cshtml" />
@@ -2672,6 +2674,7 @@
     <Content Include="Views\Theme\Modern\WebsiteVouchers\_WebsiteVouchersList.cshtml" />
     <Content Include="Views\Theme\Default\UISettings\SettingsBar.cshtml" />
     <Content Include="Views\Theme\Default\UISettings\WebsiteUISettings.cshtml" />
+    <Content Include="Scripts\qTip\jquery.qtip.min.js.map" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

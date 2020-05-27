@@ -1977,6 +1977,10 @@ input[type=text].serial {
     font-weight: bolder;
 }
 
+.tooltip-description{
+    min-height: 200px;
+}
+
 .tooltip-icon {
     cursor: help;
     top: 25%;
@@ -1984,19 +1988,6 @@ input[type=text].serial {
     position: absolute;
     color: gray;
 }
-
-.tooltip-panel {
-    padding: 2px 5px;
-    border: .5px solid #CCCCCC;
-    border-radius: 3px;
-}
-    .tooltip-panel > * {
-        padding: 2px 5px !important;
-    }
-
-    .tooltip-panel > .ui-dialog-titlebar {
-        border-bottom: .5px solid #CCCCCC;
-    }
 
 #ResourceList_DXCTMenu0 {
     position: relative;

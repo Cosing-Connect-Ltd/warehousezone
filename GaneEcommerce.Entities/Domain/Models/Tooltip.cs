@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Mvc;
 
 namespace Ganedata.Core.Entities.Domain
 {
@@ -22,7 +23,7 @@ namespace Ganedata.Core.Entities.Domain
         public string Title { get; set; }
         [Display(Name = "Description")]
         [Required]
-        [StringLength(4086)]
+        [AllowHtml]
         public string Description { get; set; }
         [Display(Name = "Client")]
         public int? TenantId { get; set; }

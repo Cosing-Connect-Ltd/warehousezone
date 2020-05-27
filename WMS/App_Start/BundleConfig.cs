@@ -82,8 +82,9 @@ namespace WMS
                       "~/Scripts/JavaScript-PurchaseOrders.js",
                       "~/Scripts/JavaScript-WorksOrder.js",
                       "~/Scripts/JavaScript-SaleOrders.js",
-                      "~/Scripts/JavaScript-WebsiteSettings"
-
+                      "~/Scripts/JavaScript-WebsiteSettings",
+                      "~/Scripts/qTip/jquery.qtip.min.js",
+                      "~/Scripts/Gane.Tooltip.js"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/ext-language").Include(
@@ -98,7 +99,8 @@ namespace WMS
             bundles.Add(new StyleBundle("~/Content/css").Include(
               "~/Content/bootstrap.min.css",
               "~/Content/Chosen/component-chosen.css",
-              "~/Content/settings-bar.css"));
+              "~/Content/settings-bar.css",
+              "~/Scripts/qTip/jquery.qtip.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/common").Include(
                 "~/Content/themes/base/core.css",

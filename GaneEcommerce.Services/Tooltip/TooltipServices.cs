@@ -76,8 +76,8 @@ namespace Ganedata.Core.Services
             else
             {
                 tooltip.Key = tooltipData.Key.Trim();
-                tooltip.Title = tooltipData.Title.Trim();
-                tooltip.Description = tooltipData.Description.Trim();
+                tooltip.Title = tooltipData.Title;
+                tooltip.Description = tooltipData.Description;
                 tooltip.TenantId = tooltipData.TenantId;
                 tooltip.UpdatedBy = userId;
                 tooltip.Localization = tooltipData.Localization;

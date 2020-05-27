@@ -1,6 +1,8 @@
-﻿jQuery(document).ready(function () {
+﻿$(document).ready(function () {
 
-    var tooltipsDetail = [];
+    var pathParts = document.location.pathname.split('/');
+
+    var tooltipKeyPrefix = pathParts[1] + "/" + pathParts[2] + "/";
 
     var getTooltipsDetail = function () {
 
@@ -14,8 +16,9 @@
 
 
         var inputElements = $('input, label');
+
         for (var i = 0; i < inputElements.length; i++) {
-            tooltipKeys.push(document.location.pathname + '/' + $(inputElements[i]).attr('id'));
+            tooltipKeys.push(tooltipKeyPrefix + $(inputElements[i]).attr('id'));
         }
 
         tooltipKeys = jQuery.unique(tooltipKeys);
@@ -28,9 +31,9 @@
             dataType: "json",
             success: function (data) {
 
-                tooltipsDetail = data.reduce(function (p, c) { p[c.Key.toLowerCase()] = { 'Title': c.Title, 'Description': c.Description }; return p; }, {});
+                var tooltipsDetail = data.reduce(function (p, c) { p[c.Key.toLowerCase()] = { 'Title': c.Title, 'Description': c.Description }; return p; }, {});
 
-                showAvailableTooltipsIcon();
+                showAvailableTooltipsIcon(tooltipsDetail);
             },
             error: function (xhr, status, error) {
                 console.log(error);
@@ -41,12 +44,42 @@
 
     getTooltipsDetail();
 
-    var showAvailableTooltipsIcon = function () {
+    var showAvailableTooltipsIcon = function (tooltipsDetail) {
         $('.tooltip-icon').each(function (index) {
 
             var tooltipKey = $(this).attr('tooltipKey').toLowerCase();
 
             if (!!tooltipKey && !!tooltipsDetail[tooltipKey]) {
+                $(this).qtip({
+                    content: {
+                        text: tooltipsDetail[tooltipKey].Description,
+                        title: tooltipsDetail[tooltipKey].Title
+                    },
+                    style: {
+                        classes: 'qtip-bootstrap',
+                        tip: {
+                            width: 10,
+                            height: 10
+                        }
+                    },
+                    show: {
+                        event: 'click',
+                        solo: true
+                    },
+                    position: {
+                        my: 'top left',
+                        at: 'botton right',
+                        effect: false,
+                        viewport: $('.main-left'),
+                        adjust: {
+                            method: 'shift shift',
+                            x: -6,
+                            y: 15
+                        }
+                    },
+                    hide: 'unfocus'
+                });
+
                 $(this).show();
             }
             else {
@@ -76,79 +109,8 @@
     });
 
     $('input, label').each(function (index) {
-
-        var tooltipKey = document.location.pathname + '/' + $(this).attr('id');
+        var tooltipKey = tooltipKeyPrefix + $(this).attr('id');
 
         addTooltipElement($(this), tooltipKey);
     });
-
-    $(".tooltip-icon").click(function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-
-        closeCurrentTooltip();
-
-        showTooltip($(this));
-    });
-
-    var closeCurrentTooltip = function () {
-        $(".tooltip-icon").not(this).popover('hide');
-
-        if ($("#tooltipPanel").dialog('isOpen') === true) {
-            $("#tooltipPanel").not(this).dialog('close');
-        }
-    }
-
-    var showTooltip = function (tooltipIcon) {
-
-        var tooltipKey = tooltipIcon.attr('tooltipKey');
-
-        $("#tooltipPanel p").html(tooltipsDetail[tooltipKey].Description);
-
-        if (!!tooltipsDetail[tooltipKey].Title) {
-            $("span.ui-dialog-title").text(tooltipsDetail[tooltipKey].Title);
-        }
-        else {
-            $(".ui-dialog-titlebar").hide();
-        }
-
-        $("#tooltipPanel").dialog("option", "position", {
-            my: "left top",
-            at: "left top",
-            of: tooltipIcon
-        }).dialog("open");
-    }
-
-    $("#tooltipPanel").dialog({
-        show: {
-            effect: "fade",
-            duration: 300
-        },
-        hide: {
-            effect: "fade",
-            duration: 100
-        },
-        autoOpen: false,
-        resizable: false,
-        closeOnEscape: true,
-        modal: false,
-        draggable: false,
-        minHeight: "15px",
-        dialogClass: "tooltip-panel",
-        open: function (event, ui) {
-            $(".ui-dialog-titlebar-close").hide();
-        }
-    });
-
-    $(document).bind('click',
-        function (e) {
-            if ( // Check if clicked object is not tool-tip dialog
-                jQuery('#tooltipPanel').dialog('isOpen')
-                && !jQuery(e.target).is('.ui-dialog, a')
-                && !jQuery(e.target).closest('.ui-dialog').length
-            ) {
-                jQuery('#tooltipPanel').dialog('close');
-            }
-        }
-    );
 });
