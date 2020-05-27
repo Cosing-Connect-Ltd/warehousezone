@@ -1546,10 +1546,23 @@ ul.mhp-menu {
     min-width: 25px;
     text-align: center;
 }
-
+.cbanner img {
+    width: 100%;
+}
+@media(min-width:1441px) {
+    .side-banner img {
+        height: 475px;
+    }
+    .cbanner img {
+        height: 230px;
+    }
+}
 @media(max-width:1440px) {
     .side-banner img {
         height: 360px;
+    }
+    .cbanner img {
+        height: 172px;
     }
 }
 
@@ -1557,11 +1570,17 @@ ul.mhp-menu {
     .side-banner img {
         height: 252px;
     }
+    .cbanner img {
+        height: 118px;
+    }
 }
 
 @media (max-width: 991px) {
     .side-banner img {
         display: none;
+    }
+    .cbanner img {
+        height: 118px;
     }
 }
 
@@ -2210,4 +2229,8 @@ ul.mhp-menu {
 }
 .confirm-order-page .order-details p,li{
     white-space:nowrap;
+}
+
+#carouselExampleControls .carousel-control-prev, .carousel-control-next {
+    width: 4%;
 }

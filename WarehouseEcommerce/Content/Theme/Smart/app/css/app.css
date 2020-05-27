@@ -2662,6 +2662,7 @@ footer #contact li {
 
 .f-left li {
     margin-bottom: 10px;
+    white-space:pre-wrap;
 }
 
 @media(min-width: 992px) {
