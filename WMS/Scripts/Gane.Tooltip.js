@@ -28,7 +28,7 @@
             dataType: "json",
             success: function (data) {
 
-                tooltipsDetail = data.reduce(function (p, c) { p[c.Key] = { 'Title': c.Title, 'Description': c.Description }; return p; }, {});
+                tooltipsDetail = data.reduce(function (p, c) { p[c.Key.toLowerCase()] = { 'Title': c.Title, 'Description': c.Description }; return p; }, {});
 
                 showAvailableTooltipsIcon();
             },
@@ -44,7 +44,7 @@
     var showAvailableTooltipsIcon = function () {
         $('.tooltip-icon').each(function (index) {
 
-            var tooltipKey = $(this).attr('tooltipKey');
+            var tooltipKey = $(this).attr('tooltipKey').toLowerCase();
 
             if (!!tooltipKey && !!tooltipsDetail[tooltipKey]) {
                 $(this).show();
@@ -57,7 +57,7 @@
 
     var addTooltipElement = function (targetElement, tooltipKey) {
         if (!!tooltipKey) {
-            var container = $("<i class='tooltip-icon fa fa-info-circle' tooltipKey='" + tooltipKey + "'/>").hide();
+            var container = $("<i class='tooltip-icon fa fa-info-circle' tooltipKey='" + tooltipKey.toLowerCase() + "'/>").hide();
 
             if (targetElement.is("label")) {
                 targetElement.append(container);

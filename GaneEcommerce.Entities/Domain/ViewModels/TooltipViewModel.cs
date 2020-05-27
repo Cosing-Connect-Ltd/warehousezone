@@ -4,7 +4,7 @@ namespace Ganedata.Core.Models
 {
     public class TooltipViewModel
     {
-        public int TooltipId { get; set; }
+        public int Id { get; set; }
         public string Key { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }

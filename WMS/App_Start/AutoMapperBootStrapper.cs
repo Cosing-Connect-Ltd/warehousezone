@@ -45,6 +45,8 @@ namespace WMS
                 cfg.CreateMap<ProductAccountCodes, ProductAccountCodesViewModel>().ReverseMap();
                 cfg.CreateMap<Tooltip, TooltipViewModel>()
                 .ForMember(s => s.TenantName, c => c.MapFrom(m => m.Tenant.TenantName)).ReverseMap();
+                cfg.CreateMap<UISetting, UISettingViewModel>().ReverseMap();
+                cfg.CreateMap<UISettingItem, UISettingItemViewModel>().ReverseMap();
 
                 //APIs
                 cfg.CreateMap<ProductMaster, ProductMasterSync>().ReverseMap();

@@ -223,6 +223,18 @@ namespace WMS.Helpers
             return status;
         }
 
+        public static bool IsSuperUser()
+        {
+            bool isSuperUser = false;
+
+            if (HttpContext.Current.Session["caUser"] != null)
+            {
+                // get properties of user
+                caUser user = (caUser)HttpContext.Current.Session["caUser"];
+                if (user.AuthUserStatus == true) isSuperUser = user.SuperUser == true;
+            }
+            return isSuperUser;
+        }
 
         public static string GetCurrentUserName()
         {

@@ -1,5 +1,9 @@
 ﻿/* Customised theme blue color search for '#0b2f54' and replace if required */
 
+:root {
+    --sidebar-background-color: #005ca0;
+}
+
 tbody {
     border: none !important;
 }
@@ -244,6 +248,10 @@ h4, .h4 {
         margin-bottom: 0px;
         margin-top: 0px;
     }
+
+.side-nav {
+    background-color: var(--sidebar-background-color) !important;
+}
 
 .pre-scrollable {
     max-height: inherit;

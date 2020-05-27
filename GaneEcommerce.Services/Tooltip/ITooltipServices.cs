@@ -9,7 +9,7 @@ namespace Ganedata.Core.Services
     public interface ITooltipServices
     {
         IQueryable<TooltipViewModel> GetAll(int tenantId, bool isSuperUser);
-        Tooltip GetById(int tooltipId, int tenantId, bool isSuperUser);
+        Tooltip GetById(int id, int tenantId, bool isSuperUser);
         Task<IEnumerable<Tooltip>> GetTooltipsByKey(string[] key, int tenantId);
         void Delete(int id, int userId);
         Tooltip Save(Tooltip tooltip, int userId);

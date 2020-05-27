@@ -26,7 +26,7 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(m => m.TooltipId)
+    @Html.HiddenFor(m => m.Id)
 
     <div id="tooltip-detail">
         <div class="col-md-6 pull-left">

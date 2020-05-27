@@ -223,7 +223,11 @@
     <Compile Include="Domain\Models\ProductFiles.cs" />
     <Compile Include="Domain\Models\ProductAllowanceGroup.cs" />
     <Compile Include="Domain\Models\ProductManufacturer.cs" />
+    <Compile Include="Domain\Models\UISettingItem.cs" />
+    <Compile Include="Domain\Models\UISetting.cs" />
     <Compile Include="Domain\ViewModels\TenantWebsiteViewModel.cs" />
+    <Compile Include="Domain\ViewModels\UISettingItemViewModel.cs" />
+    <Compile Include="Domain\ViewModels\UISettingViewModel.cs" />
     <Compile Include="Domain\ViewModels\TooltipViewModel.cs" />
     <Compile Include="Domain\ViewModels\WebsiteDiscountCodesProductsViewModel.cs" />
     <Compile Include="Domain\Websites\ProductsNavigationMap.cs" />

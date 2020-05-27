@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using DevExpress.Web.Mvc;
 using DevExpress.Web;
 using System.Web.UI.WebControls;
+using DocumentFormat.OpenXml.Drawing.Charts;
 
 namespace WMS.Helpers
 {
@@ -28,6 +29,16 @@ namespace WMS.Helpers
             {
                 return CreateColorEditSettingsMethod();
             }
+        }
+
+        public static Action<ColorEditSettings> GetColorEditSettingsMethod(string name = null, string onColorChangedEvent = null)
+        {
+            return CreateColorEditSettingsMethod(name, onColorChangedEvent);
+        }
+
+        public static Action<ColorEditSettings> GetColorEditSettingsMethod(string onColorChangedEvent = null)
+        {
+            return CreateColorEditSettingsMethod(null, onColorChangedEvent);
         }
         public static List<SelectListItem> GetPalettes()
         {
@@ -86,17 +97,23 @@ namespace WMS.Helpers
             }
             return color;
         }
-        static Action<ColorEditSettings> CreateColorEditSettingsMethod()
+        static Action<ColorEditSettings> CreateColorEditSettingsMethod(string name = null, string onColorChangedEvent = null)
         {
 
             return settings =>
             {
+                if (name != null)
+                {
+                    settings.Name = name;
+                }
                 settings.Properties.ClientSideEvents.GotFocus = "function(s, e) { s.ShowDropDown(); }";
                 settings.Width = Unit.Percentage(100);
                 settings.ControlStyle.CssClass = "form-control";
+                settings.Height = Unit.Pixel(37);
                 settings.Properties.EnableCustomColors = Options.EnableCustomColors;
                 settings.Properties.ColumnCount = Options.ColumnCount;
                 settings.Properties.Items.Assign(CreatePalette(Options.Palettes));
+                settings.Properties.ClientSideEvents.ColorChanged = onColorChangedEvent;
             };
         }
     }

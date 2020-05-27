@@ -98,6 +98,7 @@ namespace WMS
             container.RegisterType<ITenantsCurrencyRateServices, TenantsCurrencyRateServices>();
             container.RegisterType<ITenantWebsiteService, TenantWebsiteService>();
             container.RegisterType<ITooltipServices, TooltipServices>();
+            container.RegisterType<IUISettingServices, UISettingServices>();
 
             //Register Auto Mapper
             var newMapper = new AutoMapperBootStrapper();

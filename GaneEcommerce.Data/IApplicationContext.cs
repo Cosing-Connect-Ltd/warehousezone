@@ -1,11 +1,9 @@
-using System;
+using Ganedata.Core.Entities.Domain;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Threading;
 using System.Threading.Tasks;
-using Ganedata.Core.Entities.Domain;
 
 namespace Ganedata.Core.Data
 {
@@ -186,7 +184,7 @@ namespace Ganedata.Core.Data
         DbSet<ProductTag> ProductTags { get; set; }
         DbSet<ProductTagMap> ProductTagMaps { get; set; }
         DbSet<ProductAttributeMap> ProductAttributeMaps { get; set; }
-
-
+        DbSet<UISetting> UISettings { get; set; }
+        DbSet<UISettingItem> UISettingItems { get; set; }
     }
 }

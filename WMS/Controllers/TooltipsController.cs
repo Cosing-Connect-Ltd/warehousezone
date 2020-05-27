@@ -107,7 +107,7 @@ namespace WMS.Controllers
 
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
-            Tooltip tooltip = _tooltipServices.GetById((int)id, CurrentTenantId, CurrentUser.SuperUser == true);
+            var tooltip = _tooltipServices.GetById((int)id, CurrentTenantId, CurrentUser.SuperUser == true);
 
             if (tooltip == null)
             {
@@ -143,9 +143,6 @@ namespace WMS.Controllers
             }
 
             return View(tooltip);
-
-
-
         }
 
         [HttpPost]

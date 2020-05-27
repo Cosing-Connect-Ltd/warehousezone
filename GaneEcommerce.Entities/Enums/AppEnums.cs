@@ -460,4 +460,11 @@ namespace Ganedata.Core.Entities.Enums
         page = 1,
         post = 2
     }
+
+    public enum UISettingItemInputType
+    {
+        Color = 1,
+        Text = 2,
+        Number = 3
+    }
 }

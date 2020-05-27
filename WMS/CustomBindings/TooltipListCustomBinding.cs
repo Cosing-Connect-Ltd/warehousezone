@@ -90,7 +90,7 @@ namespace WMS.CustomBindings
         public static GridViewModel CreateTooltipGridViewModel()
         {
             var viewModel = new GridViewModel();
-            viewModel.KeyFieldName = "TooltipId";
+            viewModel.KeyFieldName = "Id";
             viewModel.Columns.Add("Key");
             viewModel.Columns.Add("Title");
             viewModel.Columns.Add("Description");

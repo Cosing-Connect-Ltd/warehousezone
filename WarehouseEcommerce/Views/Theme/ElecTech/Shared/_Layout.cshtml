@@ -20,6 +20,12 @@
     <link rel="stylesheet" href="~/Content/Theme/ElecTech/style.css">
     <link rel="stylesheet" href="~/Content/responsive.css">
     <link href="~/Content/cookies_eu.css" rel="stylesheet" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/unobtrusive")
+
+    <script src="~/Scripts/Gane.UISettings.js"></script>
     <style>
         .video-banner {
             position: relative;
@@ -67,8 +73,22 @@
             padding: 35px;
         }
     </style>
+    @{ bool loginStatus = WarehouseEcommerce.Helpers.LayoutHelpers.UserLoginStatus(); }
+    @{ bool isSuperUser = WarehouseEcommerce.Helpers.LayoutHelpers.IsSuperUser(); }
 </head>
 <body>
+    @if (loginStatus && isSuperUser)
+    {
+        <div class="settings-bar">
+            <div class="settings-bar-switch" onclick="javascript:toggleSettingsBar();">
+                <b class="fa fa-paint-brush fa-lg" title="Toggle Settings"></b>
+            </div>
+
+            <div id="settings-bar-content">
+                @Html.Action("SettingsBar", "UISettings")
+            </div>
+        </div>
+    }
 
     @Html.Raw(EUCookies.Consent.Instance.Install(linkUrl: "privacy-policy",
                 messageText: "We use cookies to improve user experience and analyze website traffic. By clicking “Accept” you accept our privacy policy and consent to store cookies as described in Privacy and Cookie Policy.",
@@ -92,6 +112,7 @@
     <script src="~/Scripts/animate.js"></script>
     <script src="~/Scripts/plugins.js"></script>
     <script src="~/Scripts/main.js"></script>
+    <script src="~/Scripts/Gane.UISettings.js"></script>
     <script>
         window.onscroll = function () { myFunction() };
 

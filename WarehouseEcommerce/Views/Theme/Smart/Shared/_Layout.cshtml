@@ -12,12 +12,19 @@
     <link href="~/Content/owl.carousel/owl.carousel.css" type="text/css" rel="stylesheet" media="screen" />
     <link href="~/Content/owl.carousel/owl.theme.css" type="text/css" rel="stylesheet" media="screen" />
     <link href="~/Content/magnific-popup/dist/magnific-popup.css" type="text/css" rel="stylesheet" media="screen" />
+    @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/Theme/Smart/app/css/smart")
 
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/unobtrusive")
+
+    <script src="~/Scripts/Gane.UISettings.js"></script>
+
     @Scripts.Render("~/bundles/bootstrap")
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+
     <script type="text/javascript">
         var basePath = '@ViewBag.BasePath';
         var baseFilePath = '@ViewBag.BaseFilePath';
@@ -45,11 +52,23 @@
         }
     </style>
 
-
+    @{ bool loginStatus = WarehouseEcommerce.Helpers.LayoutHelpers.UserLoginStatus(); }
+    @{ bool isSuperUser = WarehouseEcommerce.Helpers.LayoutHelpers.IsSuperUser(); }
 </head>
 
 <body>
+    @if (loginStatus && isSuperUser)
+    {
+        <div class="settings-bar">
+            <div class="settings-bar-switch" onclick="javascript:toggleSettingsBar();">
+                <b class="fa fa-paint-brush fa-lg" title="Toggle Settings"></b>
+            </div>
 
+            <div id="settings-bar-content">
+                @Html.Action("SettingsBar", "UISettings")
+            </div>
+        </div>
+    }
     <div class="modal fade" id="myModal" role="dialog">
         <div class="modal-dialog">
 

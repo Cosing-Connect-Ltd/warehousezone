@@ -243,17 +243,20 @@
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Controllers\UISettingsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\GaneCartItemsSessionHelper.cs" />
+    <Compile Include="Helpers\LayoutHelpers.cs" />
     <Compile Include="Models\DemoBooking.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\ProductDetailViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\settings-bar.css" />
     <Content Include="Content\Theme\Smart\app\css\app.css" />
     <Content Include="Content\Theme\Smart\app\css\app.min.css" />
     <Content Include="Content\Theme\Smart\app\fonts\gotham\Gotham-Book.svg" />
@@ -561,6 +564,11 @@
     <Content Include="fonts\Pe-icon-7-stroke.eot" />
     <Content Include="fonts\Pe-icon-7-stroke.ttf" />
     <Content Include="fonts\Pe-icon-7-stroke.woff" />
+    <Content Include="Scripts\Gane.Settings-Bar.js" />
+    <Content Include="Scripts\Gane.UISettings.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jscolor.js" />
     <Content Include="Views\Theme\Smart\Shared\_TopCategoryProductsPartial.cshtml" />
     <Content Include="Views\Theme\Smart\User\Account.cshtml" />
     <Content Include="Views\Theme\Smart\User\OrderHistory.cshtml" />
@@ -1105,6 +1113,9 @@
     <Content Include="Views\Theme\University\Error\Index.cshtml" />
     <Content Include="Views\Theme\University\Products\WishList.cshtml" />
     <Content Include="Views\Theme\University\Shared\_wishlistItems.cshtml" />
+    <Content Include="Views\Theme\University\UISettings\SettingsBar.cshtml" />
+    <Content Include="Views\Theme\Smart\UISettings\SettingsBar.cshtml" />
+    <Content Include="Views\Theme\ElecTech\UISettings\SettingsBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

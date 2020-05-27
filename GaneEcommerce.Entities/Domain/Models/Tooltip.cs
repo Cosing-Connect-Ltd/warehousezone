@@ -10,7 +10,7 @@ namespace Ganedata.Core.Entities.Domain
     {
         [Key]
         [Display(Name = "Tooltip Id")]
-        public int TooltipId { get; set; }
+        public int Id { get; set; }
         [Display(Name = "Localization")]
         public string Localization { get; set; }
         [Display(Name = "Key")]

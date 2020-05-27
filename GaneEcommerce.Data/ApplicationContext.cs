@@ -1,7 +1,5 @@
 ﻿using Ganedata.Core.Entities.Domain;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Data.Entity.ModelConfiguration;
 using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace Ganedata.Core.Data
@@ -214,6 +212,9 @@ namespace Ganedata.Core.Data
         public DbSet<ProductTag> ProductTags { get; set; }
         public DbSet<ProductTagMap> ProductTagMaps { get; set; }
         public DbSet<ProductAttributeMap> ProductAttributeMaps { get; set; }
+        public DbSet<UISetting> UISettings { get; set; }
+        public DbSet<UISettingItem> UISettingItems { get; set; }
+
         //#end region
     }
 

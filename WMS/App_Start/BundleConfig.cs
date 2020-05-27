@@ -56,6 +56,7 @@ namespace WMS
 
 
             bundles.Add(new ScriptBundle("~/bundles/custom").Include(
+                      "~/Scripts/Gane.UISettings.js",
                       "~/Scripts/JavaScript-PopupFunctions.js",
                       "~/Scripts/JavaScript-AccountSection.js",
                       "~/Scripts/JavaScript-Markets.js",
@@ -96,7 +97,8 @@ namespace WMS
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
               "~/Content/bootstrap.min.css",
-              "~/Content/Chosen/component-chosen.css"));
+              "~/Content/Chosen/component-chosen.css",
+              "~/Content/settings-bar.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/common").Include(
                 "~/Content/themes/base/core.css",

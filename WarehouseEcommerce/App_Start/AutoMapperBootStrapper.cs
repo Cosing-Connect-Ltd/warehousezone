@@ -42,6 +42,8 @@ namespace WarehouseEcommerce
                 cfg.CreateMap<OrderDetail, OrderDetailSessionViewModel>().ReverseMap();
                 cfg.CreateMap<ProductMaster, ProductMasterViewModel>().ReverseMap();
                 cfg.CreateMap<ProductAccountCodes, ProductAccountCodesViewModel>().ReverseMap();
+                cfg.CreateMap<UISetting, UISettingViewModel>().ReverseMap();
+                cfg.CreateMap<UISettingItem, UISettingItemViewModel>().ReverseMap();
 
                 //APIs
                 cfg.CreateMap<ProductMaster, ProductMasterSync>().ReverseMap();

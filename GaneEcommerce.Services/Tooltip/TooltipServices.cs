@@ -31,15 +31,14 @@ namespace Ganedata.Core.Services
                                     .ToListAsync();
 
             return tooltips;
-
         }
 
-        public Tooltip GetById(int tooltipId, int tenantId, bool isSuperUser)
+        public Tooltip GetById(int id, int tenantId, bool isSuperUser)
         {
             return _currentDbContext.Tooltips
                 .Include(t => t.Tenant)
                 .AsNoTracking()
-                .FirstOrDefault(x => x.TooltipId == tooltipId && (x.TenantId == tenantId || isSuperUser) && x.IsDeleted != true);
+                .FirstOrDefault(x => x.Id == id && (x.TenantId == tenantId || isSuperUser) && x.IsDeleted != true);
         }
 
 
@@ -49,7 +48,7 @@ namespace Ganedata.Core.Services
                 .AsNoTracking().Where(t => (t.TenantId == tenantId || isSuperUser) && t.IsDeleted != true)
                 .Select(t => new TooltipViewModel
                 {
-                    TooltipId = t.TooltipId,
+                    Id = t.Id,
                     Key = t.Key,
                     Title = t.Title,
                     Localization = t.Localization,
@@ -62,31 +61,31 @@ namespace Ganedata.Core.Services
             return tooltips;
         }
 
-        public Tooltip Save(Tooltip tooltip, int userId)
+        public Tooltip Save(Tooltip tooltipData, int userId)
         {
-            var account = _currentDbContext.Tooltips.FirstOrDefault(t => t.TooltipId == tooltip.TooltipId);
+            var tooltip = _currentDbContext.Tooltips.FirstOrDefault(t => t.Id == tooltipData.Id);
 
-            if (account == null || tooltip.TooltipId < 1)
+            if (tooltip == null || tooltipData.Id < 1)
             {
 
-                _currentDbContext.Tooltips.Add(tooltip);
-                tooltip.UpdateCreatedInfo(userId);
+                _currentDbContext.Tooltips.Add(tooltipData);
+                tooltipData.UpdateCreatedInfo(userId);
                 _currentDbContext.SaveChanges();
 
             }
             else
             {
-                account.Key = tooltip.Key.Trim();
-                account.Title = tooltip.Title.Trim();
-                account.Description = tooltip.Description.Trim();
-                account.TenantId = tooltip.TenantId;
-                account.UpdatedBy = userId;
-                account.Localization = tooltip.Localization;
+                tooltip.Key = tooltipData.Key.Trim();
+                tooltip.Title = tooltipData.Title.Trim();
+                tooltip.Description = tooltipData.Description.Trim();
+                tooltip.TenantId = tooltipData.TenantId;
+                tooltip.UpdatedBy = userId;
+                tooltip.Localization = tooltipData.Localization;
 
                 _currentDbContext.SaveChanges();
             }
 
-            return tooltip;
+            return tooltipData;
         }
 
         public void Delete(int id, int userId)

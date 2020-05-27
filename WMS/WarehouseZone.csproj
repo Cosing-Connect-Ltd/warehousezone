@@ -17,7 +17,7 @@
     <AssemblyName>WMS</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -501,6 +501,7 @@
     <Compile Include="App_Start\UnityWebApiActivator.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AuthUserGroupsController.cs" />
+    <Compile Include="Controllers\UISettingsController.cs" />
     <Compile Include="Controllers\TooltipsController.cs" />
     <Compile Include="Controllers\OrderScheduleController.cs" />
     <Compile Include="Controllers\AssetsController.cs" />
@@ -956,6 +957,7 @@
     <Content Include="Content\images\WZ_favicon.ico" />
     <Content Include="Content\imports\readme.txt" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\settings-bar.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\Theme\Modern\Site.css" />
     <Content Include="Content\Theme\Default\Site.css" />
@@ -1189,6 +1191,7 @@
     <Content Include="Scripts\Gane.Tooltip.js" />
     <Content Include="Scripts\Gane.Pallets.js" />
     <Content Include="Scripts\Gane.Invoices.js" />
+    <Content Include="Scripts\Gane.Settings-Bar.js" />
     <Content Include="Scripts\Gane.Utils.js" />
     <Content Include="Scripts\globalize.js" />
     <Content Include="Scripts\globalize.min.js" />
@@ -1225,6 +1228,7 @@
     <Content Include="Scripts\bootstrap.js.map" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
     <Content Include="Scripts\bootstrap.bundle.js.map" />
+    <Content Include="Scripts\Gane.UISettings.js" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -1246,6 +1250,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jscolor.js" />
     <Content Include="Scripts\jszip.js" />
     <Content Include="Scripts\jszip.min.js" />
     <Content Include="Scripts\knockout-3.5.1.debug.js" />
@@ -2584,6 +2589,8 @@
     <Content Include="Views\Theme\Default\ProductTags\Index.cshtml" />
     <Content Include="Views\Theme\Default\Products\_GetAssociatedItems.cshtml" />
     <Content Include="Views\Theme\Default\Shared\_AttrValueCreate.cshtml" />
+    <Content Include="Views\Theme\Default\UISettings\SettingsBar.cshtml" />
+    <Content Include="Views\Theme\Default\UISettings\WebsiteUISettings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
