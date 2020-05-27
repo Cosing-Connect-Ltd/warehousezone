@@ -1,0 +1,77 @@
+﻿@using Ganedata.Core.Entities.Helpers
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "TenantWebsiteGridView";
+        settings.CallbackRouteValues = new { Controller = "TenantWebsites", Action = "_TenantWebSiteList"};
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+        settings.KeyFieldName = "SiteID";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+        settings.Columns.Add("SiteName");
+        settings.Columns.Add("HostName");
+        //settings.Columns.Add("FacebookUrl");
+        //settings.Columns.Add("TwitterUrl");
+        //settings.Columns.Add("LinkedInUrl");
+        //settings.Columns.Add("YoutubeUrl");
+        //settings.Columns.Add("InstaGramUrl");
+        //settings.Columns.Add("WebsiteContactAddress");
+        //settings.Columns.Add("WebsiteContactPhone");
+        //settings.Columns.Add("WebsiteContactEmail");
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ImagePath";
+            c.Caption = "Logo";
+            c.Settings.AllowAutoFilter = DefaultBoolean.False;
+            c.Settings.AllowSort = DefaultBoolean.False;
+            c.SetDataItemTemplateContent(m =>
+            {
+                var Logo = (string)DataBinder.Eval(m.DataItem, "Logo");
+                if (!string.IsNullOrEmpty(Logo))
+                {
+
+                    ViewContext.Writer.Write("<img src='" + Logo + "'style='max-height:120px;width:200px'>");
+                }
+            });
+        });
+        var Column = new MVCxGridViewColumn();
+        Column.Caption = "Actions";
+        Column.SetDataItemTemplateContent(m =>
+        {
+            var id = DataBinder.Eval(m.DataItem, "SiteID").ToString();
+            ViewContext.Writer.Write
+            ("<a href='" + Url.Action("Index", "ProductsWebsitesMaps", new { SiteId = id }) + "' data-id='" + id + "'><i class='btn fa fa-list' title='Product Website Map'></i></a>  " +
+             "<a href='" + Url.Action("Index", "WebsiteSliders", new { SiteId = id }) + "' data-id='" + id + "'><i class='btn fa fa-sliders' title='Website Slider List'></i></a>  " +
+             "<a href='" + Url.Action("Index", "WebsiteNavigations", new { SiteId = id }) + "' data-id='" + id + "'><i class='btn fa fa-link' title='Website Navigation List'></i></a>  " +
+             "<a href='" + Url.Action("Index", "WebsiteContentPages", new { SiteId = id }) + "' data-id='" + id + "'><i class='btn fa fa-file' title='Website Content Pages List'></i></a>" +
+             "<a href='" + Url.Action("Index", "WebsiteShippingRules", new { SiteId = id }) + "' data-id='" + id + "'><i class='btn fa fa-list' title='Website Shipping Rules List'></i></a>" +
+             "<a href='" + Url.Action("Index", "WebsiteVouchers", new { SiteId = id }) + "' data-id='" + id + "'><i class='btn fa fa-money' title='Website Vouchers List'></i></a>" +
+             "<a href='" + Url.Action("Index", "WebsiteDiscountCodes", new { SiteId = id }) + "' data-id='" + id + "'><i class='btn fa fa-tags' title='Website Discount List'></i></a>" +
+               "<a href='" + Url.Action("Index", "ProductAllowances", new { SiteId = id }) + "' data-id='" + id + "'><i class='btn fa fa-list-ol' title='Product Allowance List'></i></a>" +
+                 "<a href='" + Url.Action("Index", "ProductAllowanceGroups", new { SiteId = id }) + "' data-id='" + id + "'><i class='btn fa fa-th-list' title='Product Allowance Group List'></i></a>"
+
+
+ );
+
+        });
+        settings.Columns.Add(Column);
+
+        settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+
+    });
+}
+@grid.Bind(Model).GetHtml()

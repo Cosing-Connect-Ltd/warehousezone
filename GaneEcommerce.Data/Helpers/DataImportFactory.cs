@@ -3463,7 +3463,7 @@ namespace Ganedata.Core.Data.Helpers
                 {
                     updateApi.ExpiryDate = DateTime.Today.AddHours(23);
                     updateApi.ApiKey = GeoSession.data.geoSession;
-                    updateApi.UpdatedDate = DateTime.UtcNow;
+                    updateApi.DateUpdated = DateTime.UtcNow;
                     updateApi.UpdatedBy = 1;
                     _currentDbContext.Entry(updateApi).State = EntityState.Modified;
                     _currentDbContext.SaveChanges();

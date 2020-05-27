@@ -395,16 +395,14 @@ namespace Ganedata.Core.Entities.Enums
         DHL = 4,
         ParcelForce = 5
     }
-
-    public enum TenantWebsiteTypes
-    {
-        Internal = 1,
-        PrestaShop = 2,
-    }
     public enum ApiTypes
     {
         MerakiSecretKey = 1,
-        DPD = 2
+        DPD = 2,
+        PrestaShop = 3,
+        PayPal = 4,
+        SagePay = 5,
+        GetAddress = 6
     }
     public enum ProductKitTypeEnum
     {

@@ -863,6 +863,10 @@
     <Compile Include="Migrations\202005270901448_Add-UISettings-tables.designer.cs">
       <DependentUpon>202005270901448_Add-UISettings-tables.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005271206092_Website-Apis-in-seperate-tables.cs" />
+    <Compile Include="Migrations\202005271206092_Website-Apis-in-seperate-tables.designer.cs">
+      <DependentUpon>202005271206092_Website-Apis-in-seperate-tables.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1830,6 +1834,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005270901448_Add-UISettings-tables.resx">
       <DependentUpon>202005270901448_Add-UISettings-tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005271206092_Website-Apis-in-seperate-tables.resx">
+      <DependentUpon>202005271206092_Website-Apis-in-seperate-tables.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

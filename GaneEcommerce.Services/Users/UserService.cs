@@ -153,10 +153,10 @@ namespace Ganedata.Core.Services
             return name;
         }
 
-        public IEnumerable<TenantWebsites> GetTenantWebsites(int TenantId, int WarehouseId, TenantWebsiteTypes SiteType)
+        public IEnumerable<GlobalApi> GetGlobalApis(int TenantId, int WarehouseId, ApiTypes SiteType)
         {
 
-            return _currentDbContext.TenantWebsites.Where(u => u.DefaultWarehouseId == WarehouseId && u.TenantId == TenantId && u.IsDeleted != true && u.SiteType == SiteType);
+            return _currentDbContext.GlobalApis.Where(u => u.DefaultWarehouseId == WarehouseId && u.TenantId == TenantId && u.IsDeleted != true && u.ApiTypes == SiteType);
 
         }
 

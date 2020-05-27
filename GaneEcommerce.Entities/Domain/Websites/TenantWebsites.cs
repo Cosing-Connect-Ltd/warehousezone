@@ -22,14 +22,14 @@ namespace Ganedata.Core.Entities.Domain
         public string SiteName { get; set; }
         [Display(Name = "Description")]
         public string SiteDescription { get; set; }
-        [Display(Name = "Site Type")]
-        public TenantWebsiteTypes SiteType { get; set; }
         public WebsiteThemeEnum Theme { get; set; }
-        public string SiteApiUrl { get; set; }
-        public string ApiToken { get; set; }
         public int DefaultWarehouseId { get; set; }
-        [Display(Name = "HostName")]
+        [Required]
+        [Display(Name = "Host Name")]
         public string HostName { get; set; }
+        [Required]
+        [Display(Name = "Base File Path")]
+        public string BaseFilePath { get; set; }
         public string Logo { get; set; }
         [Display(Name = "Facebook Url")]
         [Url]

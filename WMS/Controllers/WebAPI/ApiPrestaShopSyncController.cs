@@ -47,25 +47,25 @@ namespace WMS.Controllers.WebAPI
         [HttpGet]
         public IHttpActionResult ImportPrestaShopOrders(int TenatId, int WarehouseId)
         {
-            var sites = _userService.GetTenantWebsites(TenatId, WarehouseId, TenantWebsiteTypes.PrestaShop).ToList();
+            var sites = _userService.GetGlobalApis(TenatId, WarehouseId, ApiTypes.PrestaShop).ToList();
             string result = "";
             foreach (var item in sites)
             {
-                 result = dataImportFactory.GetPrestaShopOrdersSync(item.TenantId, item.DefaultWarehouseId, item.SiteApiUrl, item.ApiToken,item.SiteID).Result;
-               
+                result = dataImportFactory.GetPrestaShopOrdersSync(item.TenantId, item.DefaultWarehouseId, item.ApiUrl, item.ApiKey, item.SiteID??0).Result;
+
             }
-            return Ok(!string.IsNullOrEmpty(result)?result:"All orders are syncroized properly");
+            return Ok(!string.IsNullOrEmpty(result) ? result : "All orders are syncroized properly");
         }
         [HttpGet]
         //Post http://localhost:8005/api/sync/Post-PrestaShop-ProductStock/?TenatId=1&WarehouseId=1
         public async Task<IHttpActionResult> PrestaShopStockSync(int TenatId, int WarehouseId)
         {
-            var sites = _userService.GetTenantWebsites(TenatId, WarehouseId, TenantWebsiteTypes.PrestaShop);
+            var sites = _userService.GetGlobalApis(TenatId, WarehouseId, ApiTypes.PrestaShop);
             string result = "";
             foreach (var item in sites)
             {
-                  result = dataImportFactory.PrestaShopStockSync(item.TenantId, item.DefaultWarehouseId, item.SiteApiUrl, item.ApiToken, item.SiteID).Result;
-                
+                result = dataImportFactory.PrestaShopStockSync(item.TenantId, item.DefaultWarehouseId, item.ApiUrl, item.ApiKey, item.SiteID??0).Result;
+
             }
             return Ok(result);
         }
@@ -73,11 +73,11 @@ namespace WMS.Controllers.WebAPI
         //Post http://localhost:8005/api/sync/Get-PrestaShop-country/?TenatId=1&WarehouseId=1
         public async Task<IHttpActionResult> GetPrestaShopCountry(int TenatId, int WarehouseId)
         {
-            var sites = _userService.GetTenantWebsites(TenatId, WarehouseId, TenantWebsiteTypes.PrestaShop);
+            var sites = _userService.GetGlobalApis(TenatId, WarehouseId, ApiTypes.PrestaShop);
             string result = "";
             foreach (var item in sites)
             {
-                var data = dataImportFactory.GetPrestaShopCountry(null,item.SiteApiUrl, item.ApiToken);
+                var data = dataImportFactory.GetPrestaShopCountry(null, item.ApiUrl, item.ApiKey);
                 if (data.Count > 0)
                     result = "Countries Imported";
                 break;
@@ -86,6 +86,6 @@ namespace WMS.Controllers.WebAPI
         }
 
 
-        
+
     }
 }

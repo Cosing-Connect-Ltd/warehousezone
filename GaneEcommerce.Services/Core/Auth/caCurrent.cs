@@ -60,8 +60,6 @@ namespace Ganedata.Core.Services
                 if (tenantWeb != null)
                 {
                     tenantWebsite.SiteID = tenantWeb.SiteID;
-                    tenantWebsite.ApiToken = tenantWeb.ApiToken;
-                    tenantWebsite.SiteApiUrl = tenantWeb.SiteApiUrl;
                     tenantWebsite.TenantId = tenantWeb.TenantId;
                     tenantWebsite.WarehouseId = tenantWeb.DefaultWarehouseId;
                     tenantWebsite.SiteName = tenantWeb.SiteName;

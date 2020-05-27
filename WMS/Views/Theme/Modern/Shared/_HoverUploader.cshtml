@@ -1,0 +1,68 @@
+﻿@{
+    var controllerName = "Products";
+}
+
+@Html.DevExpress().UploadControl(settings =>
+{
+    if (ViewBag.ControllerName == "WebsiteNavigations")
+    {
+        settings.Name = ViewBag.Name;
+    }
+    else
+    {
+        settings.Name = "UploadControl";
+    }
+    settings.ShowAddRemoveButtons = true;
+    settings.ShowProgressPanel = true;
+    settings.ShowClearFileSelectionButton = true;
+    settings.ShowUploadButton = true;
+    if (ViewBag.ControllerName != null)
+    {
+
+        controllerName = ViewBag.ControllerName;
+        settings.ShowUploadButton = false;
+    }
+    if (controllerName == "TenantDepartment" || controllerName == "ProductGroup" || controllerName=="ProductManufacturers" || controllerName== "TenantWebsites" || controllerName== "WebsiteNavigations")
+    {
+        settings.AdvancedModeSettings.EnableMultiSelect = false;
+        settings.UploadMode = UploadControlUploadMode.Standard;
+        settings.AutoStartUpload = true;
+        settings.NullText = "Select file...";
+    }
+    else
+    {
+        settings.AdvancedModeSettings.EnableMultiSelect = true;
+        settings.NullText = "Select multiple files...";
+
+    }
+    settings.AdvancedModeSettings.EnableFileList = true;
+    settings.AdvancedModeSettings.EnableDragAndDrop = true;
+
+
+    settings.CallbackRouteValues = new { Controller = controllerName, Action = "UploadFile" };
+    settings.Size = 30;
+    settings.ValidationSettings.Assign(new UploadControlValidationSettings { AllowedFileExtensions = new string[] { ".jpg", ".jpeg", ".gif", ".png", ".avi", ".mp4", ".pdf", ".docx", ".xlxs" }, MaxFileSize = 100000000 });
+
+    settings.ClientSideEvents.FileUploadComplete = "function(s,e) { onFileUploadHoverComplete(s,e); }";
+     settings.ClientSideEvents.FilesUploadStart = "function(s,e) { onFileUploadHoverStart(s,e); }";
+    
+    
+}).GetHtml()
+<script id="uploaderTemplate" type="text/x-jquery-tmpl">
+    <tr>
+        <td id="tdfileName">${FileName}</td>
+        <td><p>&nbsp;</p></td>
+        <td><a class="LRemove" onclick="removeFile('${FileName}')">Remove</a></td>
+
+    </tr>
+</script>
+<script id="uploaderDownloadTemplate" type="text/x-jquery-tmpl">
+    <tr>
+
+        <td id="tdfileName">${FileName}</td>
+        <td><p>&nbsp;</p></td>
+        <td class="FileRow"><a class="LRemove" onclick="removeFile('${FileName}')">Remove</a></td>
+        <td><p>&nbsp;</p></td>
+        <td class="FileRow"><a class="LRemove" onclick="downloadFile('${FileName}')" download>Download</a></td>
+    </tr>
+</script>
