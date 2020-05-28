@@ -42,7 +42,7 @@
                                 {
 
 
-                                    <div class="col-md-6 col-sm-6">
+                                    <div class="col-md-6 col-sm-6 shipping-address-col">
                                         <h2 class="text-uppercase"> Shipping Address</h2>
                                         <hr class="custom-hr">
                                             <p>
@@ -106,12 +106,12 @@
                         <div class="pull-left orders-total">
                             @if (Model.ToList().Count > 0)
                             {
-                                <label> Total Quantity: @(Model == null ? 0 : Model.ToList().Count) </label>
+                                <label><b> Total Quantity: </b>@(Model == null ? 0 : Model.ToList().Count) </label>
                             }
                             <br />
                             @if (ViewBag.TotalQty != null && (int)ViewBag.TotalQty > 0)
                             {
-                                <label> Total: @ViewBag.Symbol @(ViewBag.TotalQty == null ? 0 : ViewBag.TotalQty) </label>
+                                <label><b> Total: </b>@ViewBag.Symbol @(ViewBag.TotalQty == null ? 0 : ViewBag.TotalQty) </label>
                             }
                         </div>
 

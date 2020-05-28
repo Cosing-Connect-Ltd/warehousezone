@@ -4828,7 +4828,7 @@ body.active {
         color: #6E6E6E;
         font-weight: 200;
         font-size: 13px;
-        max-width: 30px;
+        /*max-width: 30px;*/
         white-space: nowrap;
     }
 

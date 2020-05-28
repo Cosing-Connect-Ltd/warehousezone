@@ -33,14 +33,13 @@ namespace WarehouseEcommerce
 
             bundles.Add(new StyleBundle("~/Content/Theme/Smart/app/css/smart").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/Theme/Smart/app/css/app.css",
-                      "~/Content/Theme/Smart/app/css/site.css"
+                      "~/Content/Theme/Smart/app/css/App.css",
+                      "~/Content/Theme/Smart/app/css/Site.css"
                       ));
             bundles.Add(new StyleBundle("~/Content/Theme/University/app/css/university").Include(
                      "~/Content/bootstrap.css",
-                      //"~/Content/Theme/University/app/css/Uni_App.css",
-                      // "~/Content/Theme/University/app/css/Uni_Site.css",
-                     "~/Content/Theme/University/app/css/northumbria_custom.css",
+                      "~/Content/Theme/University/app/css/App.css",
+                      "~/Content/Theme/University/app/css/Site.css",
                      "~/Content/Theme/University/app/css/customfontIcons.css",
                      "~/Content/Theme/University/app/css/skew_carousle_style.css",
                      "~/Content/Theme/University/app/css/northumbria_responsive.css",

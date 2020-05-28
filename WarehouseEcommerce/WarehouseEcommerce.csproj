@@ -257,7 +257,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\settings-bar.css" />
-    <Content Include="Content\Theme\Smart\app\css\app.css" />
+    <Content Include="Content\Theme\Smart\app\css\App.css" />
     <Content Include="Content\Theme\Smart\app\css\app.min.css" />
     <Content Include="Content\Theme\Smart\app\fonts\gotham\Gotham-Book.svg" />
     <Content Include="Content\Theme\Smart\app\fonts\gotham\Gotham-ExtraLight.svg" />
@@ -328,9 +328,8 @@
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\Theme\University\app\css\customfontIcons.css" />
     <Content Include="Content\Theme\University\app\css\jquery-confirm.min.css" />
-    <Content Include="Content\Theme\University\app\css\Uni_App.css" />
     <Content Include="Content\Theme\University\app\js\jquery-confirm.min.js" />
-    <Content Include="Content\Theme\University\app\css\northumbria_custom.css" />
+    <Content Include="Content\Theme\University\app\css\App.css" />
     <Content Include="Content\Theme\University\app\css\northumbria_responsive.css" />
     <Content Include="Content\Theme\University\app\css\owl.carousel.min.css" />
     <Content Include="Content\Theme\University\app\css\skew_carousle_style.css" />
@@ -514,7 +513,7 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
-    <Content Include="Content\Theme\University\app\css\Uni_Site.css" />
+    <Content Include="Content\Theme\University\app\css\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\fontawesome-webfont.svg" />

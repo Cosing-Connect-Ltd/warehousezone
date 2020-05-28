@@ -1110,7 +1110,12 @@ ul.mhp-menu {
     box-shadow: 1px 4px 4px 0px rgba(0,0,0,.1);
     margin-bottom: 15px;
 }
-
+.find-address-select {
+    width: 100%;
+    height: 40px;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+}
 @media(max-width:768px) {
     .get-address-page .button-submit button {
         width: 100% !important;
@@ -1126,10 +1131,18 @@ ul.mhp-menu {
         font-weight: 300 !important;
         margin-top: 8px;
     }
-
     .shippingMethod input[type="checkbox"], input[type="radio"] {
         margin: 3px 10px 0 !important;
     }
+@media(max-width:991px) {
+    .select-shipping-method-btn, .select-payment-method-btn {
+        width: 100%;
+        height: 33px;
+    }
+    .paypal-btn {
+        width: 100% !important;
+    }
+}
 
 .custom-hr {
     margin-top: 15px !important;
@@ -1226,6 +1239,11 @@ ul.mhp-menu {
     margin-bottom: 15px;
 }
 
+@media(max-width:575px) {
+    .confirm-order-addresses .shipping-address-col {
+        margin-top: 35px;
+    }
+}
 .mt-35 {
     margin-top: 35px;
 }
