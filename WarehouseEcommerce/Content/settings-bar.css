@@ -1,7 +1,7 @@
 ﻿.settings-bar {
     position: fixed;
     height: calc(100% - 340px);
-    min-height: 300px;
+    min-height: 500px;
     top: 250px;
     right: -300px;
     margin-top: 2px;
