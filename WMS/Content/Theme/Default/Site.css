@@ -1989,6 +1989,17 @@ input[type=text].serial {
     color: gray;
 }
 
+.qtip-custom {
+    margin-right: 5px;
+    max-width: 1024px;
+    font-size: 14px;
+    line-height: 1.42857;
+}
+
+    .qtip-custom .qtip-content {
+        white-space: pre-wrap;
+    }
+
 #ResourceList_DXCTMenu0 {
     position: relative;
     width: 120px !important;

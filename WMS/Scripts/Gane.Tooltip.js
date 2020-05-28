@@ -56,7 +56,7 @@
                         title: tooltipsDetail[tooltipKey].Title
                     },
                     style: {
-                        classes: 'qtip-bootstrap',
+                        classes: 'qtip-bootstrap qtip-custom',
                         tip: {
                             width: 10,
                             height: 10
