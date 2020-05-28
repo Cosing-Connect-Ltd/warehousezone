@@ -15,7 +15,7 @@
         }
 
 
-        var inputElements = $('input, label');
+        var inputElements = $('input, label, textarea');
 
         for (var i = 0; i < inputElements.length; i++) {
             tooltipKeys.push(tooltipKeyPrefix + $(inputElements[i]).attr('id'));
@@ -108,7 +108,7 @@
         addTooltipElement($(this), tooltipKey);
     });
 
-    $('input, label').each(function (index) {
+    $('input, label, textarea').each(function (index) {
         var tooltipKey = tooltipKeyPrefix + $(this).attr('id');
 
         addTooltipElement($(this), tooltipKey);
