@@ -45,7 +45,9 @@ function setUIElementValue(key, value) {
     var elements = $('input[settingsKey="' + key + '"]');
 
     for (var i = 0; i < elements.length; i++) {
-        !!elements[i].jscolor ? elements[i].jscolor.fromString(value) : elements[i].value = value;
+        !!elements[i].jscolor && elements[i].jscolor.fromString(value);
+
+        elements[i].value = value;
     }
 }
 
