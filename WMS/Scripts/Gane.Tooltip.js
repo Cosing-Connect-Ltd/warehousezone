@@ -2,7 +2,7 @@
 
     var pathParts = document.location.pathname.split('/');
 
-    var tooltipKeyPrefix = pathParts[1] + "/" + pathParts[2] + "/";
+    var tooltipKeyPrefix = pathParts[1] + "_" + pathParts[2] + "_";
 
     var getTooltipsDetail = function () {
 
@@ -18,7 +18,13 @@
         var inputElements = $('input, label, textarea');
 
         for (var i = 0; i < inputElements.length; i++) {
-            tooltipKeys.push(tooltipKeyPrefix + $(inputElements[i]).attr('id'));
+
+            var element = $(inputElements[i]);
+            if (!element.attr('tooltipKey')) {
+                var tooltipKey = tooltipKeyPrefix + element.attr('id');
+                element.attr('tooltipKey', tooltipKey)
+                tooltipKeys.push(tooltipKey);
+            }
         }
 
         tooltipKeys = jQuery.unique(tooltipKeys);
