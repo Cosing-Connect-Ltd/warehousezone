@@ -24,16 +24,18 @@
                 <div class="col-md-5 float-left">
                     @Html.TextBoxFor(m => m[i].Value, new { @type = (Model[i].UISettingItem.InputType == UISettingItemInputType.Color ? "Text" : Enum.GetName(typeof(UISettingItemInputType), Model[i].UISettingItem.InputType)),
                                                             @class = Model[i].UISettingItem.InputType == UISettingItemInputType.Color ? "jscolor {hash:true, padding:4} form-control" : "form-control",
-                                                            @onchange = "onUISettingChanged(this)"})
+                                                            @onchange = "onUISettingChanged(this)",
+                                                            @settingsKey = Model[i].UISettingItem.Key})
                 </div>
 
                 @Html.ValidationMessageFor(model => model[i].Value, "The " + Model[i].UISettingItem.DisplayName + " field value is required.", new { @class = "col-md-12 text-danger" })
             </div>
         }
 
-        <div class="settings-bar-buttons">
-            <input type="button" onclick='saveUISettings();' value="Save" class="btn btn-primary" />
-            <input type="button" value="Cancel" onclick="undoUISettings();" class="btn btn-default" />
-        </div>
+<div class="settings-bar-buttons">
+    <input type="button" onclick='saveUISettings();' value="Save" class="btn btn-primary" />
+    <input type="button" value="Default" onclick="resetUISettings();" class="btn btn-default" />
+    <input type="button" value="Cancel" onclick="undoUISettings();" class="btn btn-default" />
+</div>
     }
 }

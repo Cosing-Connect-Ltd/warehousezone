@@ -122,14 +122,20 @@ section {
 }
 
 :root {
+    --body-background-color: #ffffff;
     --primary-color: #111111;
     --secondary-color: #f33655;
+    --tertiary-color: #ffffff;
+    --quaternary-color: #504d4d;
+    --dark-font-color: #000000;
+    --light-font-color: #ffffff;
 }
 
 body {
     margin: 0;
     padding: 0;
     font-family: "primaryfont_Normal";
+    background-color: var(--body-background-color);
 }
 
 a {
@@ -179,7 +185,7 @@ h6 {
     margin: 0;
     padding: 0;
     font-family: "primaryfont_Bold";
-    color: #191e24;
+    color: var(--dark-font-color);
 }
 
 input[type="number"]::-webkit-inner-spin-button,
@@ -217,7 +223,7 @@ input[type="number"]::-webkit-outer-spin-button {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    background-color: #fff;
+    background-color: var(--tertiary-color);
     z-index: 150;
     position: fixed;
     top: 0;
@@ -241,7 +247,7 @@ input[type="number"]::-webkit-outer-spin-button {
         border-top: none;
         border-right: none;
         font-family: "primaryfont_Bold";
-        color: #000;
+        color: var(--dark-font-color);
         font-size: 30px;
         letter-spacing: 2px;
         outline: none;
@@ -268,7 +274,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
         .search_wrap_main .search_btn i {
             font-size: 25px;
-            color: #000;
+            color: var(--dark-font-color);
         }
 
 .nb_header {
@@ -298,7 +304,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
             .nb_header .nb_headicolst li i {
                 font-size: 26px;
-                color: #fff;
+                color: var(--light-font-color);
             }
 
             .nb_header .nb_headicolst li a {
@@ -326,7 +332,7 @@ input[type="number"]::-webkit-outer-spin-button {
                     font-family: "primaryfont_SemiBold";
                     font-size: 13px;
                     text-align: center;
-                    color: #fff;
+                    color: var(--light-font-color);
                 }
 
     .nb_header .nb_mainnav {
@@ -348,7 +354,7 @@ input[type="number"]::-webkit-outer-spin-button {
                     display: block;
                     font-family: "primaryfont_Normal";
                     font-size: 16px;
-                    color: #fff;
+                    color: var(--light-font-color);
                     position: relative;
                     text-transform: capitalize;
                 }
@@ -389,7 +395,7 @@ input[type="number"]::-webkit-outer-spin-button {
                     }
 
                         .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList {
-                            background-color: #fff;
+                            color: var(--light-font-color);
                             width: 100%;
                             float: left;
                             margin: 0px;
@@ -434,7 +440,7 @@ input[type="number"]::-webkit-outer-spin-button {
                                         position: absolute;
                                         left: 100%;
                                         top: 0px;
-                                        background-color: #fff;
+                                        color: var(--light-font-color);
                                         box-shadow: 0px 0px 10px -5px #111;
                                         z-index: 100;
                                         opacity: 0;
@@ -502,7 +508,7 @@ input[type="number"]::-webkit-outer-spin-button {
                         height: 0;
                         border-left: 4px solid transparent;
                         border-right: 4px solid transparent;
-                        border-top: 4px solid #fff;
+                        border-top: 4px solid var(--tertiary-color);
                         position: absolute;
                         left: 100%;
                         top: 50%;
@@ -534,7 +540,8 @@ input[type="number"]::-webkit-outer-spin-button {
                         padding-bottom: 20px;
                         overflow: hidden;
                         position: relative;
-                        background-color: #fff;
+                        color: var(--light-font-color);
+                        background-color: var(--body-background-color);
                     }
 
                         .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner .head {
@@ -560,7 +567,7 @@ input[type="number"]::-webkit-outer-spin-button {
                                 .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner .meganav_firstcatList > li > a {
                                     font-family: "primaryfont_Normal";
                                     font-size: 16px;
-                                    color: #000;
+                                    color: var(--dark-font-color);
                                     transition: all 0.3s ease;
                                 }
 
@@ -604,7 +611,7 @@ input[type="number"]::-webkit-outer-spin-button {
                                         .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner .meganav_firstcatList > li > ul.subList li a {
                                             font-family: "primaryfont_Normal";
                                             font-size: 14px;
-                                            color: #000;
+                                            color: var(--dark-font-color);
                                             padding-left: 0px;
                                             transition: all 0.3s ease;
                                         }
@@ -675,7 +682,7 @@ input[type="number"]::-webkit-outer-spin-button {
 .nb_sec_navwrap {
     width: 100%;
     float: left;
-    background-color: #fff;
+    background-color: var(--tertiary-color);
 }
 
     .nb_sec_navwrap .nb_sec_navlist {
@@ -691,7 +698,7 @@ input[type="number"]::-webkit-outer-spin-button {
         .nb_sec_navwrap .nb_sec_navlist li a {
             font-family: "primaryfont_SemiBold";
             font-size: 13px;
-            color: #000;
+            color: var(--dark-font-color);
             display: inline-block;
         }
 
@@ -756,7 +763,7 @@ input[type="number"]::-webkit-outer-spin-button {
         .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap h5 {
             font-family: "primaryfont_Bold";
             font-size: 30px;
-            color: #fff;
+            color: var(--light-font-color);
             width: 100%;
             float: left;
             display: block;
@@ -779,7 +786,7 @@ input[type="number"]::-webkit-outer-spin-button {
             font-family: "primaryfont_SemiBold";
             text-transform: uppercase;
             font-size: 20px;
-            color: #fff;
+            color: var(--light-font-color);
             padding: 0px 0px 15px 0px;
             transform: translateY(20px);
             opacity: 0;
@@ -794,7 +801,7 @@ input[type="number"]::-webkit-outer-spin-button {
                 content: "";
                 font-family: "primaryfont_SemiBold";
                 font-size: 20px;
-                color: #fff;
+                color: var(--light-font-color);
                 text-transform: uppercase;
                 width: 76px;
                 height: 5px;
@@ -817,7 +824,7 @@ input[type="number"]::-webkit-outer-spin-button {
         transform: translateY(-50%);
         padding-top: 6px;
         padding-bottom: 6px;
-        color: #fff;
+        color: var(--light-font-color);
         letter-spacing: 6px;
         transition: all 0.3s ease;
     }
@@ -834,7 +841,7 @@ input[type="number"]::-webkit-outer-spin-button {
         .nb_bannersec .np_bannerContentOuter .nb_bnr_count:after {
             content: "";
             width: 3px;
-            background-color: #fff;
+            color: var(--light-font-color);
             height: 100%;
             position: absolute;
         }
@@ -883,7 +890,7 @@ input[type="number"]::-webkit-outer-spin-button {
     width: 100%;
     float: left;
     padding: 90px 0px 95px 0px;
-    background-color: #fff;
+    color: var(--light-font-color);
 }
 
 .nb_header_style1 {
@@ -899,7 +906,7 @@ input[type="number"]::-webkit-outer-spin-button {
         font-size: 30px;
         position: relative;
         padding-bottom: 17.5px;
-        color: #000;
+        color: var(--dark-font-color);
         letter-spacing: 5px;
     }
 
@@ -998,7 +1005,7 @@ input[type="number"]::-webkit-outer-spin-button {
             .nb_feat_prod_sec .nb_featuredPrdCarrousle .nb_fp_boxwrap .prd_det_sec .prd_name {
                 font-family: "primaryfont_SemiBold";
                 font-size: 20px;
-                color: #000;
+                color: var(--dark-font-color);
                 margin-bottom: 27px;
                 text-align: center;
                 letter-spacing: 4px;
@@ -1008,7 +1015,7 @@ input[type="number"]::-webkit-outer-spin-button {
             .nb_feat_prod_sec .nb_featuredPrdCarrousle .nb_fp_boxwrap .prd_det_sec .prd_amnt {
                 font-family: "primaryfont_Bold";
                 font-size: 25px;
-                color: #fff;
+                color: var(--light-font-color);
                 display: block;
                 width: 100%;
                 text-align: center;
@@ -1056,8 +1063,8 @@ input[type="number"]::-webkit-outer-spin-button {
 .nb_sub_sec {
     width: 100%;
     padding: 45px 0px;
-    background: #504d4d;
-    background: radial-gradient(circle, #504d4d 0%, #000000 35%);
+    background: var(--quaternary-color);
+    background: radial-gradient(circle, var(--quaternary-color) 0%, var(--primary-color) 35%);
 }
 
     .nb_sub_sec .nb_sub_wrap {
@@ -1080,14 +1087,14 @@ input[type="number"]::-webkit-outer-spin-button {
             margin-bottom: 20px;
             font-family: "primaryfont_Bold";
             font-size: 30px;
-            color: #fff;
+            color: var(--light-font-color);
         }
 
         .nb_sub_sec .nb_sub_wrap .sub_form_wrap .sf_des {
             margin-bottom: 17px;
             font-family: "primaryfont_Normal";
             font-size: 16px;
-            color: #fff;
+            color: var(--light-font-color);
         }
 
         .nb_sub_sec .nb_sub_wrap .sub_form_wrap .nb_home_sub_form {
@@ -1097,7 +1104,7 @@ input[type="number"]::-webkit-outer-spin-button {
             .nb_sub_sec .nb_sub_wrap .sub_form_wrap .nb_home_sub_form .sf_input_wrap {
                 width: 100%;
                 position: relative;
-                background-color: #fff;
+                color: var(--light-font-color);
                 padding-right: 50px;
             }
 
@@ -1106,7 +1113,7 @@ input[type="number"]::-webkit-outer-spin-button {
                     height: 52px;
                     border: none;
                     font-family: "primaryfont_SemiBold";
-                    color: #000;
+                    color: var(--dark-font-color);
                     font-size: 15px;
                     outline: none;
                     text-indent: 10px;
@@ -1127,7 +1134,7 @@ input[type="number"]::-webkit-outer-spin-button {
                 }
 
                     .nb_sub_sec .nb_sub_wrap .sub_form_wrap .nb_home_sub_form .sf_input_wrap button i {
-                        color: #fff;
+                        color: var(--light-font-color);
                         font-size: 18px;
                         transition: all 0.3s ease;
                     }
@@ -1173,7 +1180,7 @@ input[type="number"]::-webkit-outer-spin-button {
             .ftb_sec .nb_ftb_box .nb_fb_con .date {
                 font-family: "primaryfont_SemiBold";
                 font-size: 16px;
-                color: #000;
+                color: var(--dark-font-color);
                 letter-spacing: 3px;
                 margin-bottom: 14px;
             }
@@ -1181,7 +1188,7 @@ input[type="number"]::-webkit-outer-spin-button {
             .ftb_sec .nb_ftb_box .nb_fb_con .heading {
                 font-family: "primaryfont_Bold";
                 font-size: 20px;
-                color: #000;
+                color: var(--dark-font-color);
                 letter-spacing: 2px;
                 margin-bottom: 20px;
             }
@@ -1192,7 +1199,7 @@ input[type="number"]::-webkit-outer-spin-button {
                 float: left;
                 font-family: "primaryfont_Normal";
                 font-size: 16px;
-                color: #000;
+                color: var(--dark-font-color);
                 letter-spacing: 1px;
                 line-height: 20px;
             }
@@ -1236,7 +1243,7 @@ input[type="number"]::-webkit-outer-spin-button {
                 margin-bottom: 20px;
                 font-family: "primaryfont_Bold";
                 font-size: 20px;
-                color: #fff;
+                color: var(--light-font-color);
             }
 
             .nb_footer .nb_footersec_inner .followUsWrap ul {
@@ -1254,34 +1261,34 @@ input[type="number"]::-webkit-outer-spin-button {
                         width: 42px;
                         height: 42px;
                         border-radius: 50%;
-                        background-color: #fff;
+                        color: var(--light-font-color);
                         text-align: center;
                         display: flex;
                         align-items: center;
                         justify-content: center;
                         margin: 0px 10px;
-                        color: #000;
+                        color: var(--dark-font-color);
                         transition: all 0.3s ease;
                     }
 
                     .nb_footer .nb_footersec_inner .followUsWrap ul li a i.fb:hover {
                         background-color: #3b5999;
-                        color: #fff;
+                        color: var(--light-font-color);
                     }
 
                     .nb_footer .nb_footersec_inner .followUsWrap ul li a i.tw:hover {
                         background-color: #55acee;
-                        color: #fff;
+                        color: var(--light-font-color);
                     }
 
                     .nb_footer .nb_footersec_inner .followUsWrap ul li a i.ln:hover {
                         background-color: #0077b5;
-                        color: #fff;
+                        color: var(--light-font-color);
                     }
 
                     .nb_footer .nb_footersec_inner .followUsWrap ul li a i.ig:hover {
                         background-color: #e4405f;
-                        color: #fff;
+                        color: var(--light-font-color);
                     }
 
         .nb_footer .nb_footersec_inner .nb_footnav_wrap ul {
@@ -1296,7 +1303,7 @@ input[type="number"]::-webkit-outer-spin-button {
             .nb_footer .nb_footersec_inner .nb_footnav_wrap ul li a {
                 display: block;
                 font-size: 16px;
-                color: #ffffff;
+                color: var(--light-font-color);
                 font-family: "primaryfont_SemiBold";
                 padding: 0px 15px;
                 position: relative;
@@ -1310,7 +1317,7 @@ input[type="number"]::-webkit-outer-spin-button {
                     position: absolute;
                     right: 0;
                     top: 6px;
-                    background-color: #fff;
+                    color: var(--light-font-color);
                 }
 
             .nb_footer .nb_footersec_inner .nb_footnav_wrap ul li:last-child a {
@@ -1376,7 +1383,7 @@ input[type="number"]::-webkit-outer-spin-button {
             .nb_footer .nb_footersec_inner .nb_footcontact_wrap p {
                 width: 100%;
                 float: left;
-                color: #fff;
+                color: var(--light-font-color);
                 display: block;
                 text-align: center;
                 font-family: "primaryfont_Normal";
@@ -1396,7 +1403,7 @@ input[type="number"]::-webkit-outer-spin-button {
     left: 0;
     text-transform: uppercase;
     text-align: center;
-    color: #fff;
+    color: var(--light-font-color);
     padding: 11px 0px;
     transition: all 0.3s ease;
 }
@@ -1433,7 +1440,7 @@ input[type="number"]::-webkit-outer-spin-button {
     position: fixed;
     width: 320px;
     overflow-x: auto;
-    background-color: #fff;
+    color: var(--light-font-color);
     height: 100%;
     left: 0;
     top: 0;
@@ -1483,7 +1490,7 @@ input[type="number"]::-webkit-outer-spin-button {
             .res_navWrapper .nb_firstNav_res_lst li a {
                 font-family: "primaryfont_SemiBold";
                 font-size: 20px;
-                color: #000;
+                color: var(--dark-font-color);
                 display: block;
             }
 
@@ -1494,7 +1501,7 @@ input[type="number"]::-webkit-outer-spin-button {
         padding: 11px 0px;
         font-family: "primaryfont_Bold";
         font-size: 20px;
-        color: #fff;
+        color: var(--light-font-color);
         text-transform: uppercase;
         border: none;
         margin-bottom: 45px;
@@ -1515,7 +1522,7 @@ input[type="number"]::-webkit-outer-spin-button {
             .res_navWrapper .nb_sec_nav_res li a {
                 font-family: "primaryfont_SemiBold";
                 font-size: 16px;
-                color: #000;
+                color: var(--dark-font-color);
                 display: block;
             }
 
@@ -1647,7 +1654,7 @@ input[type="number"]::-webkit-outer-spin-button {
             float: left;
             font-family: "primaryfont_Bold";
             font-size: 20px;
-            color: #000000;
+            color: var(--dark-font-color);
             letter-spacing: 5px;
             padding-bottom: 15px;
             margin-bottom: 20px;
@@ -1730,7 +1737,7 @@ input[type="number"]::-webkit-outer-spin-button {
 .nb_filter_accordion .nb_filter_head h5 {
     font-family: "primaryfont_SemiBold";
     font-size: 15px;
-    color: #000000;
+    color: var(--dark-font-color);
     text-transform: uppercase;
     position: relative;
     display: inline-block;
@@ -1740,7 +1747,7 @@ input[type="number"]::-webkit-outer-spin-button {
     .nb_filter_accordion .nb_filter_head h5 button {
         outline: none;
         width: 100%;
-        color: #000000;
+        color: var(--dark-font-color);
         text-decoration: none;
         text-align: left;
         text-transform: uppercase;
@@ -1778,7 +1785,7 @@ input[type="number"]::-webkit-outer-spin-button {
         text-align: center;
         font-family: "primaryfont_Bold";
         font-size: 20px;
-        color: #000000;
+        color: var(--dark-font-color);
         padding-bottom: 10px;
         margin-bottom: 40px;
         position: relative;
@@ -1814,7 +1821,7 @@ input[type="number"]::-webkit-outer-spin-button {
                 display: block;
                 font-family: "primaryfont_SemiBold";
                 font-size: 15px;
-                color: #000000;
+                color: var(--dark-font-color);
                 padding: 6px 16px;
                 border: solid 1px #000;
                 border-radius: 20px;
@@ -1823,7 +1830,7 @@ input[type="number"]::-webkit-outer-spin-button {
             }
 
                 .nb_prd_listing_wrap .tagList li a:hover {
-                    color: #fff;
+                    color: var(--light-font-color);
                     background-color: var(--secondary-color);
                     border: solid 1px var(--secondary-color);
                 }
@@ -1874,7 +1881,7 @@ input[type="number"]::-webkit-outer-spin-button {
             font-family: "primaryfont_Bold";
             font-size: 20px;
             background-color: #707070;
-            color: #fff;
+            color: var(--light-font-color);
             text-align: center;
             padding: 10px 10px;
             letter-spacing: 4px;
@@ -1925,7 +1932,7 @@ input[type="number"]::-webkit-outer-spin-button {
     }
 
         .nb_prd_viewingsecWrap #zoomViewTrigger i {
-            color: #fff;
+            color: var(--light-font-color);
         }
 
         .nb_prd_viewingsecWrap #zoomViewTrigger:hover {
@@ -1979,7 +1986,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
     .nb_qcvboxwrap .head {
         font-family: "primaryfont_Bold";
-        color: #000;
+        color: var(--dark-font-color);
         margin-bottom: 8px;
         display: inline-block;
         letter-spacing: 2px;
@@ -1990,7 +1997,7 @@ input[type="number"]::-webkit-outer-spin-button {
         font-family: "primaryfont_Normal";
         font-size: 16px;
         letter-spacing: 1px;
-        color: #000;
+        color: var(--dark-font-color);
         display: inline-block;
         margin-bottom: 20px;
     }
@@ -2012,7 +2019,7 @@ input[type="number"]::-webkit-outer-spin-button {
         .nb_qcvboxwrap .col_Sec .col_lbl {
             font-family: "primaryfont_SemiBold";
             font-size: 16px;
-            color: #000000;
+            color: var(--dark-font-color);
             margin-bottom: 16px;
             display: block;
         }
@@ -2021,7 +2028,7 @@ input[type="number"]::-webkit-outer-spin-button {
             display: block;
             width: 30px;
             height: 30px;
-            border: solid 1px #fff;
+            border: solid 1px var(--tertiary-color);
             background-color: #000000;
             box-shadow: 0px 0px 0px 2px #060606;
         }
@@ -2029,7 +2036,7 @@ input[type="number"]::-webkit-outer-spin-button {
     .nb_qcvboxwrap .availibility {
         font-family: "primaryfont_SemiBold";
         font-size: 16px;
-        color: #000000;
+        color: var(--dark-font-color);
         margin-bottom: 20px;
         text-transform: uppercase;
     }
@@ -2053,7 +2060,7 @@ input[type="number"]::-webkit-outer-spin-button {
         }
 
             .nb_qcvboxwrap .sizeWrap p span {
-                color: #000000;
+                color: var(--dark-font-color);
                 display: inline-block;
             }
 
@@ -2080,7 +2087,7 @@ input[type="number"]::-webkit-outer-spin-button {
                     align-items: center;
                     justify-content: center;
                     font-family: "primaryfont_Bold";
-                    color: #000000;
+                    color: var(--dark-font-color);
                     height: 100%;
                     text-transform: uppercase;
                     font-size: 15px;
@@ -2090,12 +2097,12 @@ input[type="number"]::-webkit-outer-spin-button {
 
                     .nb_qcvboxwrap .sizeWrap .size_boxList li a:hover {
                         background-color: #000000;
-                        color: #ffffff;
+                        color: var(--light-font-color);
                     }
 
                 .nb_qcvboxwrap .sizeWrap .size_boxList li.active a {
                     background-color: #000000;
-                    color: #ffffff;
+                    color: var(--light-font-color);
                 }
 
     .nb_qcvboxwrap .footSec {
@@ -2111,7 +2118,7 @@ input[type="number"]::-webkit-outer-spin-button {
             .nb_qcvboxwrap .footSec .qty > span {
                 font-family: "primaryfont_SemiBold";
                 font-size: 16px;
-                color: #000000;
+                color: var(--dark-font-color);
                 text-transform: uppercase;
                 letter-spacing: 1px;
                 margin-bottom: 10px;
@@ -2161,7 +2168,7 @@ input[type="number"]::-webkit-outer-spin-button {
         .nb_qcvboxwrap .footSec button.addTobasket {
             text-transform: uppercase;
             background-color: #292929;
-            color: #fff;
+            color: var(--light-font-color);
             font-size: 20px;
             font-family: "primaryfont_Bold";
             text-align: center;
@@ -2181,7 +2188,7 @@ input[type="number"]::-webkit-outer-spin-button {
         .nb_qcvboxwrap .footSec .addtowishlistbtn {
             text-transform: uppercase;
             background-color: #292929;
-            color: #fff;
+            color: var(--light-font-color);
             font-size: 20px;
             font-family: "primaryfont_Bold";
             text-align: center;
@@ -2205,7 +2212,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
             .nb_qcvboxwrap .footSec .addtowishlist i {
                 font-size: 30px;
-                color: #000000;
+                color: var(--dark-font-color);
                 transition: all 0.3s ease;
             }
 
@@ -2220,7 +2227,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
     .nb_prd_det_rightsec .head {
         font-family: "primaryfont_Bold";
-        color: #000;
+        color: var(--dark-font-color);
         margin-bottom: 8px;
         display: inline-block;
         letter-spacing: 2px;
@@ -2230,7 +2237,7 @@ input[type="number"]::-webkit-outer-spin-button {
         font-family: "primaryfont_Normal";
         font-size: 16px;
         letter-spacing: 1px;
-        color: #000;
+        color: var(--dark-font-color);
         display: inline-block;
         margin-bottom: 20px;
     }
@@ -2251,7 +2258,7 @@ input[type="number"]::-webkit-outer-spin-button {
         .nb_prd_det_rightsec .col_Sec .col_lbl {
             font-family: "primaryfont_SemiBold";
             font-size: 16px;
-            color: #000000;
+            color: var(--dark-font-color);
             margin-bottom: 16px;
             display: block;
         }
@@ -2260,7 +2267,7 @@ input[type="number"]::-webkit-outer-spin-button {
             display: block;
             width: 30px;
             height: 30px;
-            border: solid 1px #fff;
+            border: solid 1px var(--tertiary-color);
             background-color: #000000;
             box-shadow: 0px 0px 0px 2px #060606;
         }
@@ -2268,7 +2275,7 @@ input[type="number"]::-webkit-outer-spin-button {
     .nb_prd_det_rightsec .availibility {
         font-family: "primaryfont_SemiBold";
         font-size: 16px;
-        color: #000000;
+        color: var(--dark-font-color);
         margin-bottom: 20px;
         text-transform: uppercase;
     }
@@ -2292,7 +2299,7 @@ input[type="number"]::-webkit-outer-spin-button {
         }
 
             .nb_prd_det_rightsec .sizeWrap p span {
-                color: #000000;
+                color: var(--dark-font-color);
                 display: inline-block;
             }
 
@@ -2319,7 +2326,7 @@ input[type="number"]::-webkit-outer-spin-button {
                     align-items: center;
                     justify-content: center;
                     font-family: "primaryfont_Bold";
-                    color: #000000;
+                    color: var(--dark-font-color);
                     height: 100%;
                     text-transform: uppercase;
                     font-size: 15px;
@@ -2329,12 +2336,12 @@ input[type="number"]::-webkit-outer-spin-button {
 
                     .nb_prd_det_rightsec .sizeWrap .size_boxList li a:hover {
                         background-color: #000000;
-                        color: #ffffff;
+                        color: var(--light-font-color);
                     }
 
                 .nb_prd_det_rightsec .sizeWrap .size_boxList li.active a {
                     background-color: #000000;
-                    color: #ffffff;
+                    color: var(--light-font-color);
                 }
 
     .nb_prd_det_rightsec .footSec {
@@ -2350,7 +2357,7 @@ input[type="number"]::-webkit-outer-spin-button {
             .nb_prd_det_rightsec .footSec .qty > span {
                 font-family: "primaryfont_SemiBold";
                 font-size: 16px;
-                color: #000000;
+                color: var(--dark-font-color);
                 text-transform: uppercase;
                 letter-spacing: 1px;
                 margin-bottom: 10px;
@@ -2400,7 +2407,7 @@ input[type="number"]::-webkit-outer-spin-button {
         .nb_prd_det_rightsec .footSec button.addTobasket {
             text-transform: uppercase;
             background-color: #292929;
-            color: #fff;
+            color: var(--light-font-color);
             font-size: 20px;
             font-family: "primaryfont_Bold";
             text-align: center;
@@ -2420,7 +2427,7 @@ input[type="number"]::-webkit-outer-spin-button {
         .nb_prd_det_rightsec .footSec .addtowishlistbtn {
             text-transform: uppercase;
             background-color: #292929;
-            color: #fff;
+            color: var(--light-font-color);
             font-size: 20px;
             font-family: "primaryfont_Bold";
             text-align: center;
@@ -2444,7 +2451,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
             .nb_prd_det_rightsec .footSec .addtowishlist i {
                 font-size: 30px;
-                color: #000000;
+                color: var(--dark-font-color);
                 transition: all 0.3s ease;
             }
 
@@ -2461,7 +2468,7 @@ input[type="number"]::-webkit-outer-spin-button {
     .nb_prod_bottomdes .head {
         font-size: 20px;
         font-family: "primaryfont_Bold";
-        color: #000000;
+        color: var(--dark-font-color);
         display: inline-block;
         margin-bottom: 23px;
     }
@@ -2490,7 +2497,7 @@ input[type="number"]::-webkit-outer-spin-button {
         font-size: 30px;
         position: relative;
         padding-bottom: 17.5px;
-        color: #000;
+        color: var(--dark-font-color);
         letter-spacing: 2px;
         border-bottom: solid 1px #707070;
     }
@@ -2506,7 +2513,7 @@ input[type="number"]::-webkit-outer-spin-button {
 .ZoomViewWrapper {
     width: 100%;
     height: 100%;
-    background-color: #fff;
+    color: var(--light-font-color);
     position: fixed;
     z-index: 110;
     left: 0;
@@ -2559,7 +2566,7 @@ input[type="number"]::-webkit-outer-spin-button {
         height: 100px;
         font-family: "primaryfont_Normal";
         font-size: 50px;
-        color: #000000;
+        color: var(--dark-font-color);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -2623,7 +2630,7 @@ body.ZoomerActive {
         display: inline-block;
         text-align: center;
         font-family: "primaryfont_Bold";
-        color: #000000;
+        color: var(--dark-font-color);
         font-size: 20px;
         width: 100%;
         text-transform: uppercase;
@@ -2667,7 +2674,7 @@ body.ZoomerActive {
         display: inline-block;
         margin-bottom: 28px;
         width: 100%;
-        background-color: #fff;
+        color: var(--light-font-color);
         padding: 10px 0px;
         transition: all 0.3s ease;
         box-shadow: 0px 0px 23px 2px #d8d8d8;
@@ -2682,7 +2689,7 @@ body.ZoomerActive {
         display: inline-block;
         text-align: center;
         font-family: "primaryfont_SemiBold";
-        color: #000000;
+        color: var(--dark-font-color);
         font-size: 20px;
         width: 100%;
         letter-spacing: 1px;
@@ -2693,7 +2700,7 @@ body.ZoomerActive {
     .nb_prd_namewamnt_box .amnt {
         background-color: #707070;
         text-align: center;
-        color: #fff;
+        color: var(--light-font-color);
         font-family: "primaryfont_Bold";
         padding: 10px 35px;
         letter-spacing: 3px;
@@ -2720,7 +2727,7 @@ body.ZoomerActive {
     text-align: center;
     font-family: "primaryfont_Normal";
     font-size: 16px;
-    color: #000000;
+    color: var(--dark-font-color);
     line-height: 24px;
     letter-spacing: 2px;
     padding: 0% 20%;
@@ -2747,7 +2754,7 @@ body.ZoomerActive {
             display: inline-block;
             font-family: "primaryfont_SemiBold";
             font-size: 16px;
-            color: #000000;
+            color: var(--dark-font-color);
             margin-bottom: 30px;
         }
 
@@ -2792,7 +2799,7 @@ body.ZoomerActive {
             .contact_form_sec .contact_pg_wrap .nb_contact_form .callus_frmgrp p {
                 font-family: "primaryfont_Bold";
                 font-size: 20px;
-                color: #000;
+                color: var(--dark-font-color);
                 display: inline-block;
                 text-align: center;
                 letter-spacing: 2px;
@@ -2816,7 +2823,7 @@ body.ZoomerActive {
             .contact_form_sec .contact_pg_wrap .nb_contact_form .form-group label {
                 font-family: "primaryfont_SemiBold";
                 font-size: 16px;
-                color: #000000;
+                color: var(--dark-font-color);
                 display: inline-block;
                 margin-bottom: 10px;
             }
@@ -2830,7 +2837,7 @@ body.ZoomerActive {
                 width: 100%;
                 font-family: "primaryfont_SemiBold";
                 font-size: 16px;
-                color: #000000;
+                color: var(--dark-font-color);
                 outline: none;
                 border-radius: 0px;
             }
@@ -2856,7 +2863,7 @@ body.ZoomerActive {
             .contact_form_sec .contact_pg_wrap .nb_contact_form .form-group .submitBtn {
                 font-family: "primaryfont_Bold";
                 font-size: 20px;
-                color: #fff;
+                color: var(--light-font-color);
                 background-color: #414343;
                 margin: 0 auto;
                 display: block;
@@ -2888,7 +2895,7 @@ body.ZoomerActive {
             .nb_basket_wrap table.basketTable thead tr th {
                 font-family: "primaryfont_Bold";
                 font-size: 16px;
-                color: #000;
+                color: var(--dark-font-color);
                 text-align: center;
                 padding-bottom: 16px;
             }
@@ -2922,14 +2929,14 @@ body.ZoomerActive {
                     .nb_basket_wrap table.basketTable tbody tr td .prdimgsec .prdname {
                         font-family: "primaryfont_SemiBold";
                         font-size: 16px;
-                        color: #000000;
+                        color: var(--dark-font-color);
                         width: 120px;
                     }
 
                 .nb_basket_wrap table.basketTable tbody tr td .price {
                     font-family: "primaryfont_SemiBold";
                     font-size: 16px;
-                    color: #000000;
+                    color: var(--dark-font-color);
                 }
 
                 .nb_basket_wrap table.basketTable tbody tr td .qtyboxwrap {
@@ -2950,7 +2957,7 @@ body.ZoomerActive {
                         text-align: center;
                         font-family: "primaryfont_SemiBold";
                         font-size: 16px;
-                        color: #000000;
+                        color: var(--dark-font-color);
                         -webkit-appearance: none;
                         -moz-appearance: textfield;
                     }
@@ -2961,7 +2968,7 @@ body.ZoomerActive {
                         height: 100%;
                         text-align: center;
                         font-family: "primaryfont_Bold";
-                        color: #000;
+                        color: var(--dark-font-color);
                         display: flex;
                         align-items: center;
                         justify-content: center;
@@ -3005,7 +3012,7 @@ body.ZoomerActive {
             border: solid 1px #707070;
             text-indent: 10px;
             font-family: "primaryfont_Bold";
-            color: #000;
+            color: var(--dark-font-color);
             letter-spacing: 1px;
             font-size: 15px;
         }
@@ -3027,7 +3034,7 @@ body.ZoomerActive {
             }
 
             .nb_basket_wrap div.coupen_codewrap .coupenSubmitbtn i {
-                color: #fff;
+                color: var(--light-font-color);
             }
 
 .basketTotalwrap {
@@ -3041,7 +3048,7 @@ body.ZoomerActive {
     .basketTotalwrap .mainhd {
         display: inline-block;
         font-family: "primaryfont_Bold";
-        color: #000;
+        color: var(--dark-font-color);
         width: 100%;
         font-size: 20px;
         padding-bottom: 15px;
@@ -3052,7 +3059,7 @@ body.ZoomerActive {
     .basketTotalwrap .subTotalwrap {
         font-family: "primaryfont_Bold";
         font-size: 16px;
-        color: #000;
+        color: var(--dark-font-color);
         display: flex;
         width: 100%;
         flex-direction: row;
@@ -3075,7 +3082,7 @@ body.ZoomerActive {
             display: inline-block;
             width: 100%;
             font-family: "primaryfont_Bold";
-            color: #000;
+            color: var(--dark-font-color);
             font-size: 16px;
             margin-bottom: 17px;
         }
@@ -3096,7 +3103,7 @@ body.ZoomerActive {
                 font-family: "primaryfont_Normal";
                 font-size: 16px;
                 margin-bottom: 8px;
-                color: #000000;
+                color: var(--dark-font-color);
             }
 
                 .basketTotalwrap .shipping_radiosec .shippingtyp_list li:hover {
@@ -3116,7 +3123,7 @@ body.ZoomerActive {
                         cursor: pointer;
                         line-height: 20px;
                         display: inline-block;
-                        color: #000;
+                        color: var(--dark-font-color);
                     }
 
                         .basketTotalwrap .shipping_radiosec .shippingtyp_list li [type="radio"]:checked + label:before,
@@ -3129,7 +3136,7 @@ body.ZoomerActive {
                             height: 18px;
                             border: 1px solid #707070;
                             border-radius: 100%;
-                            background: #fff;
+                            background: var(--tertiary-color);
                         }
 
                         .basketTotalwrap .shipping_radiosec .shippingtyp_list li [type="radio"]:checked + label:after,
@@ -3166,7 +3173,7 @@ body.ZoomerActive {
                 width: 100%;
                 font-family: "primaryfont_Bold";
                 font-size: 16px;
-                color: #000;
+                color: var(--dark-font-color);
                 display: inline-block;
                 margin-bottom: 8px;
             }
@@ -3174,7 +3181,7 @@ body.ZoomerActive {
             .basketTotalwrap .shipping_radiosec .estimateWrap a {
                 font-family: "primaryfont_Bold";
                 font-size: 16px;
-                color: #000;
+                color: var(--dark-font-color);
                 display: inline-block;
             }
 
@@ -3186,7 +3193,7 @@ body.ZoomerActive {
             text-transform: uppercase;
             font-family: "primaryfont_Bold";
             font-size: 20px;
-            color: #000000;
+            color: var(--dark-font-color);
             margin-bottom: 30px;
             justify-content: space-between;
         }
@@ -3199,7 +3206,7 @@ body.ZoomerActive {
             width: 100%;
             display: inline-block;
             text-align: center;
-            color: #fff;
+            color: var(--light-font-color);
             background-color: #414343;
             padding: 13px 0px;
             font-family: "primaryfont_Bold";
@@ -3217,7 +3224,7 @@ body.ZoomerActive {
     width: 100%;
     font-family: "primaryfont_Bold";
     padding: 12px 0px;
-    color: #000;
+    color: var(--dark-font-color);
     font-size: 16px;
     text-transform: uppercase;
     text-align: center;
@@ -3227,7 +3234,7 @@ body.ZoomerActive {
 
     .cont_shop_btn:hover {
         background-color: #434343;
-        color: #fff;
+        color: var(--light-font-color);
     }
 
 .registration_form_sec {
@@ -3243,7 +3250,7 @@ body.ZoomerActive {
         display: inline-block;
         width: 100%;
         font-family: "primaryfont_Normal";
-        color: #000000;
+        color: var(--dark-font-color);
         text-align: center;
     }
 
@@ -3290,7 +3297,7 @@ body.ZoomerActive {
             #signupPopup .modal-dialog .modal-content .modal-header .modal-title {
                 font-family: "primaryfont_Bold";
                 font-size: 30px;
-                color: #000;
+                color: var(--dark-font-color);
             }
 
         #signupPopup .modal-dialog .modal-content .close {
@@ -3328,7 +3335,7 @@ body.ZoomerActive {
                 #signupPopup .modal-dialog .modal-content .modal-body .loginForm .loginBtn {
                     width: 100%;
                     background-color: #000000;
-                    color: #fff;
+                    color: var(--light-font-color);
                     text-transform: uppercase;
                     font-family: "primaryfont_Bold";
                     font-size: 20px;
@@ -3361,7 +3368,7 @@ body.ZoomerActive {
                 #signupPopup .modal-dialog .modal-content .modal-body .registrationSec .head {
                     font-family: "primaryfont_Bold";
                     font-size: 30px;
-                    color: #000;
+                    color: var(--dark-font-color);
                     width: 100%;
                     text-align: center;
                     margin-bottom: 22px;
@@ -3380,7 +3387,7 @@ body.ZoomerActive {
                 #signupPopup .modal-dialog .modal-content .modal-body .registrationSec .regBtn {
                     width: 100%;
                     background-color: #000000;
-                    color: #fff;
+                    color: var(--light-font-color);
                     text-transform: uppercase;
                     font-family: "primaryfont_Bold";
                     font-size: 20px;
@@ -3429,7 +3436,7 @@ body.ZoomerActive {
             #quickCartPopup .modal-dialog .modal-content .modal-header .modal-title {
                 font-family: "primaryfont_Bold";
                 font-size: 30px;
-                color: #000;
+                color: var(--dark-font-color);
             }
 
         #quickCartPopup .modal-dialog .modal-content .close {
@@ -3467,7 +3474,7 @@ body.ZoomerActive {
                 #quickCartPopup .modal-dialog .modal-content .modal-body .loginForm .loginBtn {
                     width: 100%;
                     background-color: #000000;
-                    color: #fff;
+                    color: var(--light-font-color);
                     text-transform: uppercase;
                     font-family: "primaryfont_Bold";
                     font-size: 20px;
@@ -3500,7 +3507,7 @@ body.ZoomerActive {
                 #quickCartPopup .modal-dialog .modal-content .modal-body .registrationSec .head {
                     font-family: "primaryfont_Bold";
                     font-size: 30px;
-                    color: #000;
+                    color: var(--dark-font-color);
                     width: 100%;
                     text-align: center;
                     margin-bottom: 22px;
@@ -3519,7 +3526,7 @@ body.ZoomerActive {
                 #quickCartPopup .modal-dialog .modal-content .modal-body .registrationSec .regBtn {
                     width: 100%;
                     background-color: #000000;
-                    color: #fff;
+                    color: var(--light-font-color);
                     text-transform: uppercase;
                     font-family: "primaryfont_Bold";
                     font-size: 20px;
@@ -3551,7 +3558,7 @@ body.ZoomerActive {
 }
 
     #res_filterBox_trigger i {
-        color: #fff;
+        color: var(--light-font-color);
         font-size: 20px;
     }
 
@@ -3630,7 +3637,7 @@ body.ZoomerActive {
         .bloglistSec .bloglistSecInner .bloglistBox .nb_fb_con .date {
             font-family: "primaryfont_SemiBold";
             font-size: 16px;
-            color: #000;
+            color: var(--dark-font-color);
             letter-spacing: 3px;
             margin-bottom: 14px;
         }
@@ -3638,7 +3645,7 @@ body.ZoomerActive {
         .bloglistSec .bloglistSecInner .bloglistBox .nb_fb_con .heading {
             font-family: "primaryfont_Bold";
             font-size: 20px;
-            color: #000;
+            color: var(--dark-font-color);
             letter-spacing: 2px;
             margin-bottom: 20px;
         }
@@ -3649,7 +3656,7 @@ body.ZoomerActive {
             float: left;
             font-family: "primaryfont_Normal";
             font-size: 16px;
-            color: #000;
+            color: var(--dark-font-color);
             letter-spacing: 1px;
             line-height: 20px;
             margin-bottom: 15px;
@@ -3660,7 +3667,7 @@ body.ZoomerActive {
             font-family: "primaryfont_Bold";
             font-size: 16px;
             letter-spacing: 1.5px;
-            color: #000;
+            color: var(--dark-font-color);
             transition: all 0.3s ease;
             position: relative;
         }
@@ -3726,7 +3733,7 @@ body.ZoomerActive {
             border: solid 1.5px #000;
             font-family: "primaryfont_Normal";
             font-size: 16px;
-            color: #000;
+            color: var(--dark-font-color);
             text-align: center;
             border-radius: 50%;
             margin: 0px 5px;
@@ -3736,12 +3743,12 @@ body.ZoomerActive {
 
             .bloglistSec .blgpaginationwrap .paginationList li a:hover {
                 background-color: #000;
-                color: #fff;
+                color: var(--light-font-color);
             }
 
         .bloglistSec .blgpaginationwrap .paginationList li.active a {
             background-color: #000;
-            color: #fff;
+            color: var(--light-font-color);
         }
 
 .blogdetWrap {
@@ -3772,7 +3779,7 @@ body.ZoomerActive {
             .blogdetWrap .headsec .blogTimesec span {
                 margin-right: 10px;
                 font-size: 18px;
-                color: #000;
+                color: var(--dark-font-color);
             }
 
                 .blogdetWrap .headsec .blogTimesec span.date {
@@ -3788,7 +3795,7 @@ body.ZoomerActive {
             width: 100%;
             font-family: "primaryfont_Normal";
             font-size: 18px;
-            color: #000;
+            color: var(--dark-font-color);
             margin-bottom: 15px;
         }
 
@@ -3860,7 +3867,7 @@ body.ZoomerActive {
                         margin-bottom: 8px;
                         font-size: 15px;
                         font-family: "primaryfont_Bold";
-                        color: #000;
+                        color: var(--dark-font-color);
                         transition: all 0.3s ease;
                     }
 
@@ -3868,7 +3875,7 @@ body.ZoomerActive {
                         width: 100%;
                         font-size: 14px;
                         font-family: "primaryfont_Normal";
-                        color: #000;
+                        color: var(--dark-font-color);
                         margin-bottom: 8px;
                         line-height: 22px;
                         height: 44px;
@@ -3880,7 +3887,7 @@ body.ZoomerActive {
                         display: block;
                         font-size: 11px;
                         font-family: "primaryfont_Bold";
-                        color: #000;
+                        color: var(--dark-font-color);
                         width: 100%;
                     }
 
@@ -3914,7 +3921,7 @@ body.ZoomerActive {
         }
 
         .checkconfInner .checkconfirm_lftsec .subhead {
-            color: #000;
+            color: var(--dark-font-color);
             font-family: "primaryfont_Bold";
             margin-bottom: 15px;
             font-size: 18px;
@@ -3954,7 +3961,7 @@ body.ZoomerActive {
                     cursor: pointer;
                     line-height: 20px;
                     display: inline-block;
-                    color: #000;
+                    color: var(--dark-font-color);
                     font-family: "primaryfont_Normal";
                     width: 100%;
                 }
@@ -3969,7 +3976,7 @@ body.ZoomerActive {
                         height: 18px;
                         border: 1px solid #ddd;
                         border-radius: 100%;
-                        background: #fff;
+                        background: var(--tertiary-color);
                     }
 
                     .checkconfInner .checkconfirm_lftsec ul.paymentMthdlist li [type="radio"]:checked + label:after,
@@ -4008,7 +4015,7 @@ body.ZoomerActive {
         }
 
         .checkconfInner .checkconfirm_rgtsec .subhead {
-            color: #000;
+            color: var(--dark-font-color);
             font-family: "primaryfont_Bold";
             margin-bottom: 15px;
             font-size: 18px;
@@ -4116,7 +4123,7 @@ body.ZoomerActive {
             width: 100%;
             height: 50px;
             background-color: var(--secondary-color);
-            color: #fff;
+            color: var(--light-font-color);
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -4180,7 +4187,7 @@ body.ZoomerActive {
                 z-index: 5;
                 top: 50%;
                 transform: translate(-50%, -50%);
-                color: #000;
+                color: var(--dark-font-color);
                 font-family: "primaryfont_Bold";
             }
 
@@ -4202,12 +4209,12 @@ body.ZoomerActive {
 
                 .progressBarStep ul#progressList li.active:after {
                     background-color: #4cb71a;
-                    border: solid 2px #fff;
+                    border: solid 2px var(--tertiary-color);
                     box-shadow: 0px 0px 0px 2px #4cb71a;
                 }
 
                 .progressBarStep ul#progressList li.active span.count {
-                    color: #fff;
+                    color: var(--light-font-color);
                 }
 
                 .progressBarStep ul#progressList li.active span.txt {
@@ -4227,7 +4234,7 @@ body.ZoomerActive {
         width: 100px;
         height: 40px;
         background-color: var(--secondary-color);
-        color: #fff;
+        color: var(--light-font-color);
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -4252,7 +4259,7 @@ body.ZoomerActive {
         font-family: "primaryfont_Normal";
         margin-bottom: 5px;
         font-size: 16px;
-        color: #000;
+        color: var(--dark-font-color);
         background-color: #f9f9f9;
     }
 
@@ -4262,7 +4269,7 @@ body.ZoomerActive {
 
         .myAccLeftNavsec .leftsideNavWrap a.active {
             background-color: #000;
-            color: #fff;
+            color: var(--light-font-color);
         }
 
 .myAccLeftNavsec .tabcontentInner {
@@ -4311,7 +4318,7 @@ body.ZoomerActive {
         box-shadow: none;
         font-family: "primaryfont_Normal";
         font-size: 16px;
-        color: #000;
+        color: var(--dark-font-color);
     }
 
     .myAccLeftNavsec .tabcontentInner select {
@@ -4330,7 +4337,7 @@ body.ZoomerActive {
         font-size: 14px;
         border: none;
         background-color: var(--secondary-color);
-        color: #fff;
+        color: var(--light-font-color);
         text-align: center;
         display: flex;
         flex-direction: row;
@@ -4376,7 +4383,7 @@ body.ZoomerActive {
                     .myAccLeftNavsec .tabcontentInner .myAccwishlistList > li .myAccwishlistList_inner .cont_left .prod_det .prdhead {
                         margin-bottom: 10px;
                         font-family: "primaryfont_Bold";
-                        color: #000;
+                        color: var(--dark-font-color);
                         font-size: 16px;
                     }
 
@@ -4454,7 +4461,7 @@ body.ZoomerActive {
                             height: 30px;
                             vertical-align: middle;
                             text-align: center;
-                            color: #fff;
+                            color: var(--light-font-color);
                             background-color: #000;
                             display: inline-block;
                         }
@@ -4486,7 +4493,7 @@ body.ZoomerActive {
     .orderDetls label {
         font-size: 12px;
         font-weight: 500;
-        color: #000;
+        color: var(--dark-font-color);
         font-family: "primaryfont_Bold";
         margin-bottom: 5px;
     }
@@ -4525,7 +4532,7 @@ body.ZoomerActive {
     font-size: 14px;
     font-weight: 500;
     background-color: var(--secondary-color);
-    color: #fff;
+    color: var(--light-font-color);
     font-family: "primaryfont_Normal";
     padding: 5px 15px;
     border-radius: 3px;
@@ -4579,7 +4586,7 @@ body.ZoomerActive {
 
 .orderItems h3 {
     font-size: 16px;
-    color: #000;
+    color: var(--dark-font-color);
     display: flex;
     flex-direction: column;
     font-family: "primaryfont_Bold";
@@ -4589,7 +4596,7 @@ body.ZoomerActive {
 .orderItems .itemNum {
     font-size: 18px;
     font-weight: 500;
-    color: #000 !important;
+    color: var(--dark-font-color) !important;
     font-family: "primaryfont_Normal";
 }
 

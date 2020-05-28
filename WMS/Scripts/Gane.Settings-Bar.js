@@ -53,14 +53,32 @@ function saveUISettings() {
 
 function applyUISettings(settingsKey, itemValue) {
     $("body *").css({ "transition": "background-color 0.5s ease" });
-    document.documentElement.style.setProperty(settingsKey, itemValue);
+    $('body')[0].style.setProperty(settingsKey, itemValue);
     setTimeout(function () { $("body *").css({ "transition": "" }) }, 500);
 }
 
 function undoUISettings() {
     localStorage.setItem("ui-settings", baseUISettings);
     applyAllUISettings();
+    setModelValues(JSON.parse(baseUISettings));
     collapseSettingsBar();
+}
+
+function resetUISettings() {
+    var uiSettings = JSON.parse(localStorage.getItem("ui-settings"));
+    var defaultUISettings = {}
+    for (var key in uiSettings) {
+        defaultUISettings[key] = getComputedStyle(document.documentElement).getPropertyValue(key);
+    }
+    localStorage.setItem("ui-settings", JSON.stringify(defaultUISettings));
+    setModelValues(defaultUISettings);
+    applyAllUISettings();
+}
+
+function setModelValues(uiSettings) {
+    for (var key in uiSettings) {
+        setUIElementValue(key, uiSettings[key]);
+    }
 }
 
 function toggleSettingsBar() {

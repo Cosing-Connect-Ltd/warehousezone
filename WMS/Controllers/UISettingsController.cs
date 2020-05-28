@@ -89,10 +89,18 @@ namespace WMS.Controllers
         [HttpGet]
         public JsonResult GetWarehouseUISetting()
         {
-            var uiSettings = _uiSettingServices.GetWarehouseUISettings(CurrentTenantId, CurrentTenant.Theme)
-                                .ToDictionary(t => t.UISettingItem.Key, t => t.Value);
+            var uiSettings = _uiSettingServices.GetWarehouseUISettings(CurrentTenantId, CurrentTenant.Theme);
 
-            return Json(uiSettings, JsonRequestBehavior.AllowGet);
+            if (uiSettings == null)
+            {
+                uiSettings = new List<UISettingViewModel>();
+            }
+            var NewUISettingItems = _uiSettingServices.GetWarehouseUISettingItems(CurrentTenantId, CurrentTenant.Theme)
+                                    .Where(k => !uiSettings.Select(s => s.UISettingItem.Id).Contains(k.Id));
+
+            uiSettings.AddRange(NewUISettingItems.Select(k => new UISettingViewModel { UISettingItem = k }).ToList());
+
+            return Json(uiSettings.ToDictionary(t => t.UISettingItem.Key, t => t.Value), JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
