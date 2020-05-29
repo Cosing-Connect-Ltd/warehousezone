@@ -1565,7 +1565,7 @@ input[type="number"]::-webkit-outer-spin-button {
             .nb_prdlisting_pgsec .breadCrumbtopsec .nb_bread_crumbwrap nav ol li {
                 font-family: "primaryfont_SemiBold";
                 font-size: 13px;
-                color: var(--primary-color);
+                color: var(--dark-font-color);
                 padding: 0px 6px;
             }
 
@@ -1578,7 +1578,7 @@ input[type="number"]::-webkit-outer-spin-button {
                 .nb_prdlisting_pgsec .breadCrumbtopsec .nb_bread_crumbwrap nav ol li a {
                     font-family: "primaryfont_SemiBold";
                     font-size: 13px;
-                    color: var(--primary-color);
+                    color: var(--dark-font-color);
                 }
 
                 .nb_prdlisting_pgsec .breadCrumbtopsec .nb_bread_crumbwrap nav ol li:first-child:before {
@@ -1596,7 +1596,7 @@ input[type="number"]::-webkit-outer-spin-button {
             font-family: "primaryfont_SemiBold";
             font-size: 13px;
             margin-right: 23px;
-            color: var(--primary-color);
+            color: var(--dark-font-color);
         }
 
     .nb_prdlisting_pgsec .breadCrumbtopsec .sortBysec {
@@ -1613,7 +1613,7 @@ input[type="number"]::-webkit-outer-spin-button {
             -webkit-appearance: none;
             -moz-appearance: none;
             font-family: "primaryfont_SemiBold";
-            color: var(--primary-color);
+            color: var(--dark-font-color);
             font-size: 13px;
             padding: 8px 30px 8px 10px;
         }
@@ -1667,6 +1667,12 @@ input[type="number"]::-webkit-outer-spin-button {
             padding: 0px;
         }
 
+            .nb_prdlisting_pgsec .nb_prd_filterwrap * > ul * {
+                background-color: var(--body-background-color);
+                color: var(--dark-font-color);
+                border-color: var(--dark-font-color);
+            }
+
     .nb_prdlisting_pgsec .nb_prd_filterwrap .nb_fltr_accrd_wrap {
         width: 100%;
         float: left;
@@ -1704,7 +1710,7 @@ input[type="number"]::-webkit-outer-spin-button {
         cursor: pointer;
         font-family: "primaryfont_SemiBold";
         font-size: 15;
-        color: var(--primary-color);
+        color: var(--dark-font-color);
         letter-spacing: 2px;
     }
 
@@ -1900,7 +1906,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
                 .prd_lst_boxouter .foot .icolist li a i {
                     font-size: 30px;
-                    color: var(--primary-color);
+                    color: var(--dark-font-color);
                     transition: all 0.3s ease;
                 }
 
@@ -2140,7 +2146,7 @@ input[type="number"]::-webkit-outer-spin-button {
                     -webkit-appearance: none;
                     -moz-appearance: none;
                     font-family: "primaryfont_SemiBold";
-                    color: var(--primary-color);
+                    color: var(--dark-font-color);
                     font-size: 13px;
                     border-radius: 5px;
                     padding: 14px 30px 14px 10px;
@@ -2379,7 +2385,7 @@ input[type="number"]::-webkit-outer-spin-button {
                     -webkit-appearance: none;
                     -moz-appearance: none;
                     font-family: "primaryfont_SemiBold";
-                    color: var(--primary-color);
+                    color: var(--dark-font-color);
                     font-size: 13px;
                     border-radius: 5px;
                     padding: 14px 30px 14px 10px;
