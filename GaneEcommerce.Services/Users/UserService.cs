@@ -153,10 +153,10 @@ namespace Ganedata.Core.Services
             return name;
         }
 
-        public IEnumerable<ApiCredentials> GetGlobalApis(int TenantId, int WarehouseId, ApiTypes SiteType)
+        public IEnumerable<ApiCredentials> GetApiCredentials(int TenantId, int WarehouseId, ApiTypes SiteType)
         {
 
-            return _currentDbContext.GlobalApis.Where(u => u.DefaultWarehouseId == WarehouseId && u.TenantId == TenantId && u.IsDeleted != true && u.ApiTypes == SiteType);
+            return _currentDbContext.ApiCredentials.Where(u => u.DefaultWarehouseId == WarehouseId && u.TenantId == TenantId && u.IsDeleted != true && u.ApiTypes == SiteType);
 
         }
 

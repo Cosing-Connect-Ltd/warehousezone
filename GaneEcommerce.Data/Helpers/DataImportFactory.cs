@@ -262,7 +262,7 @@ namespace Ganedata.Core.Data.Helpers
                                 }
                                 else if (values[2] == "3")
                                 {
-                                    //FOR ENDUSER 
+                                    //FOR ENDUSER
                                     existingAccount.AccountTypeEndUser = true;
 
                                     existingAccount.AccountTypeCustomer = false;
@@ -1365,7 +1365,7 @@ namespace Ganedata.Core.Data.Helpers
 
             try
             {
-                // department on 
+                // department on
                 var department = context.TenantDepartments.FirstOrDefault();
                 if (department == null)
                 {
@@ -2126,7 +2126,7 @@ namespace Ganedata.Core.Data.Helpers
                             context.SaveChanges();
 
                             // get prices for all items.
-                            //TODO: customer number to be added in database against tenant config, static value should be replaced by DB value asap. 
+                            //TODO: customer number to be added in database against tenant config, static value should be replaced by DB value asap.
                             var productPrices = GetScanSourceProductPrice("1000003502", itemCodes);
                             if (productPrices != null)
                             {
@@ -3309,8 +3309,8 @@ namespace Ganedata.Core.Data.Helpers
             {
 
                 var _currentDbContext = new ApplicationContext();
-                var globalapis = _currentDbContext.GlobalApis.FirstOrDefault(u => u.ApiTypes == ApiTypes.DPD);
-                url = globalapis?.ApiUrl;
+                var apiCredential = _currentDbContext.ApiCredentials.FirstOrDefault(u => u.ApiTypes == ApiTypes.DPD);
+                url = apiCredential?.ApiUrl;
                 url = url + "network/?businessUnit=0&deliveryDirection=1&numberOfParcels=1&shipmentType=0&totalWeight=1.0&deliveryDetails.address.countryCode=GB&deliveryDetails.address.countryName=United Kingdom&deliveryDetails.address.locality=&deliveryDetails.address.organisation=Gane DataScan Ltd&deliveryDetails.address.postcode=LS16 6RF&deliveryDetails.address.property=Airedale House&deliveryDetails.address.street=Clayton Wood Rise&deliveryDetails.address.town=Leeds&deliveryDetails.address.county=West Yorkshire&collectionDetails.address.countryCode=GB&collectionDetails.address.countryName=United Kingdom&collectionDetails.address.locality=&collectionDetails.address.organisation=&collectionDetails.address.postcode=BD4 6BU&collectionDetails.address.property=1 School View&collectionDetails.address.street=Bierley House Avenue&collectionDetails.address.town=Bradford&collectionDetails.address.county=West Yorkshire";
                 DPDViewModel dpdServices = new DPDViewModel();
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
@@ -3366,23 +3366,23 @@ namespace Ganedata.Core.Data.Helpers
             try
             {
                 var _currentDbContext = new ApplicationContext();
-                var globalapis = _currentDbContext.GlobalApis.FirstOrDefault(u => u.ApiTypes == ApiTypes.DPD);
-                if (globalapis == null || string.IsNullOrEmpty(globalapis.ApiUrl) || string.IsNullOrEmpty(globalapis.ApiKey) || string.IsNullOrEmpty(globalapis.AccountNumber))
+                var apiCredential = _currentDbContext.ApiCredentials.FirstOrDefault(u => u.ApiTypes == ApiTypes.DPD);
+                if (apiCredential == null || string.IsNullOrEmpty(apiCredential.ApiUrl) || string.IsNullOrEmpty(apiCredential.ApiKey) || string.IsNullOrEmpty(apiCredential.AccountNumber))
                 {
                     return "Api Configuration is invalid, Either Api url, Api key or Api account fields are empty";
                 }
-                if (globalapis.ExpiryDate == null || (globalapis.ExpiryDate.HasValue && globalapis.ExpiryDate.Value.Day != DateTime.Today.Day))
+                if (apiCredential.ExpiryDate == null || (apiCredential.ExpiryDate.HasValue && apiCredential.ExpiryDate.Value.Day != DateTime.Today.Day))
                 {
-                    globalapis.ApiKey = GetDPDGeoSession(globalapis);
+                    apiCredential.ApiKey = GetDPDGeoSession(apiCredential);
 
                 }
-                url = globalapis.ApiUrl + "shipping/shipment";
+                url = apiCredential.ApiUrl + "shipping/shipment";
                 DpdReponseViewModel dpdResponse = new DpdReponseViewModel();
                 DpdErrorViewModel errorViewModel = new DpdErrorViewModel();
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                 httpWebRequest.Method = "POST";
-                httpWebRequest.Headers.Add("GeoSession", globalapis.ApiKey);
-                httpWebRequest.Headers.Add("GeoClient", "account/" + globalapis.AccountNumber);
+                httpWebRequest.Headers.Add("GeoSession", apiCredential.ApiKey);
+                httpWebRequest.Headers.Add("GeoClient", "account/" + apiCredential.AccountNumber);
                 httpWebRequest.ContentType = "application/json";
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
                 {
@@ -3438,12 +3438,12 @@ namespace Ganedata.Core.Data.Helpers
 
         }
 
-        public string GetDPDGeoSession(ApiCredentials globalApi)
+        public string GetDPDGeoSession(ApiCredentials apiCredential)
         {
             var _currentDbContext = new ApplicationContext();
-            string authorization = GetEncodeUserNameBas64(globalApi.UserName, globalApi.Password);
+            string authorization = GetEncodeUserNameBas64(apiCredential.UserName, apiCredential.Password);
             WebResponse httpResponse = null;
-            string url = globalApi.ApiUrl;
+            string url = apiCredential.ApiUrl;
             url += "user/?action=login";
             GeoSession GeoSession = new GeoSession();
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
@@ -3458,7 +3458,7 @@ namespace Ganedata.Core.Data.Helpers
             }
             if (GeoSession != null)
             {
-                var updateApi = _currentDbContext.GlobalApis.FirstOrDefault(u => u.Id == globalApi.Id);
+                var updateApi = _currentDbContext.ApiCredentials.FirstOrDefault(u => u.Id == apiCredential.Id);
                 if (updateApi != null)
                 {
                     updateApi.ExpiryDate = DateTime.Today.AddHours(23);

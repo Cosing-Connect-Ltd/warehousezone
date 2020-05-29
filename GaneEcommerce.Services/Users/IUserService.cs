@@ -19,7 +19,7 @@ namespace Ganedata.Core.Services
         void UpdateAuthUserForPermissions(AuthUser user, int userId, int tenantId);
         int GetResourceIdByUserId(int userId);
         string GetResourceNameByUserId(int? userId);
-        IEnumerable<ApiCredentials> GetGlobalApis(int TenantId, int WarehouseId, ApiTypes SiteType);
+        IEnumerable<ApiCredentials> GetApiCredentials(int TenantId, int WarehouseId, ApiTypes SiteType);
 
         Tenant GetTenantBySiteId(int SiteId);
         TenantLocations GetWarehouseBySiteId(int SiteId);

@@ -47,7 +47,7 @@ namespace WMS.Controllers.WebAPI
         [HttpGet]
         public IHttpActionResult ImportPrestaShopOrders(int TenatId, int WarehouseId)
         {
-            var sites = _userService.GetGlobalApis(TenatId, WarehouseId, ApiTypes.PrestaShop).ToList();
+            var sites = _userService.GetApiCredentials(TenatId, WarehouseId, ApiTypes.PrestaShop).ToList();
             string result = "";
             foreach (var item in sites)
             {
@@ -60,7 +60,7 @@ namespace WMS.Controllers.WebAPI
         //Post http://localhost:8005/api/sync/Post-PrestaShop-ProductStock/?TenatId=1&WarehouseId=1
         public async Task<IHttpActionResult> PrestaShopStockSync(int TenatId, int WarehouseId)
         {
-            var sites = _userService.GetGlobalApis(TenatId, WarehouseId, ApiTypes.PrestaShop);
+            var sites = _userService.GetApiCredentials(TenatId, WarehouseId, ApiTypes.PrestaShop);
             string result = "";
             foreach (var item in sites)
             {
@@ -73,7 +73,7 @@ namespace WMS.Controllers.WebAPI
         //Post http://localhost:8005/api/sync/Get-PrestaShop-country/?TenatId=1&WarehouseId=1
         public async Task<IHttpActionResult> GetPrestaShopCountry(int TenatId, int WarehouseId)
         {
-            var sites = _userService.GetGlobalApis(TenatId, WarehouseId, ApiTypes.PrestaShop);
+            var sites = _userService.GetApiCredentials(TenatId, WarehouseId, ApiTypes.PrestaShop);
             string result = "";
             foreach (var item in sites)
             {

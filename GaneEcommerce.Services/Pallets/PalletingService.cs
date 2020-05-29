@@ -687,7 +687,7 @@ namespace Ganedata.Core.Services
         public PalletDispatchLabelPrintViewModel PalletDispatchForLabels(int tenantId, int userId)
         {
             var result = new PalletDispatchLabelPrintViewModel();
-            var apiCredentials = _currentDbContext.GlobalApis.Where(x => x.TenantId == tenantId && x.ApiTypes == ApiTypes.DPD).FirstOrDefault();
+            var apiCredentials = _currentDbContext.ApiCredentials.Where(x => x.TenantId == tenantId && x.ApiTypes == ApiTypes.DPD).FirstOrDefault();
             var palletDispatch = _currentDbContext.PalletsDispatches.Where(u => u.CreatedBy == userId && u.LabelPrintStatus == false
             && u.DeliveryMethod == DeliveryMethods.DPD && !String.IsNullOrEmpty(u.ShipmentId)).FirstOrDefault();
 

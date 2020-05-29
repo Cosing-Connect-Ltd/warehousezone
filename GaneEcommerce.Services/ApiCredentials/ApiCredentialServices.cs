@@ -15,7 +15,7 @@ namespace Ganedata.Core.Services
 
         public ApiCredentials GetById(int id, int tenantId)
         {
-            return _currentDbContext.GlobalApis
+            return _currentDbContext.ApiCredentials
                                     .AsNoTracking()
                                     .FirstOrDefault(x => x.Id == id && x.TenantId == tenantId && x.IsDeleted != true);
         }
@@ -23,7 +23,7 @@ namespace Ganedata.Core.Services
 
         public IQueryable<ApiCredentials> GetAll(int tenantId)
         {
-            var apiCredentials = _currentDbContext.GlobalApis
+            var apiCredentials = _currentDbContext.ApiCredentials
                                                     .AsNoTracking()
                                                     .Where(t => t.TenantId == tenantId && t.IsDeleted != true);
 
@@ -32,12 +32,12 @@ namespace Ganedata.Core.Services
 
         public ApiCredentials Save(ApiCredentials apiCredentialData, int userId)
         {
-            var apiCredential = _currentDbContext.GlobalApis.FirstOrDefault(t => t.Id == apiCredentialData.Id);
+            var apiCredential = _currentDbContext.ApiCredentials.FirstOrDefault(t => t.Id == apiCredentialData.Id);
 
             if (apiCredential == null || apiCredentialData.Id < 1)
             {
 
-                _currentDbContext.GlobalApis.Add(apiCredentialData);
+                _currentDbContext.ApiCredentials.Add(apiCredentialData);
                 apiCredentialData.UpdateCreatedInfo(userId);
                 _currentDbContext.SaveChanges();
             }
@@ -60,11 +60,11 @@ namespace Ganedata.Core.Services
 
         public void Delete(int id, int userId)
         {
-            var apiCredential = _currentDbContext.GlobalApis.Find(id);
+            var apiCredential = _currentDbContext.ApiCredentials.Find(id);
             apiCredential.UpdateUpdatedInfo(userId);
             apiCredential.IsDeleted = true;
 
-            _currentDbContext.GlobalApis.Attach(apiCredential);
+            _currentDbContext.ApiCredentials.Attach(apiCredential);
             var entry = _currentDbContext.Entry(apiCredential);
             entry.Property(e => e.IsDeleted).IsModified = true;
             entry.Property(e => e.DateUpdated).IsModified = true;
