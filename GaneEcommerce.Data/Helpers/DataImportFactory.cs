@@ -3438,7 +3438,7 @@ namespace Ganedata.Core.Data.Helpers
 
         }
 
-        public string GetDPDGeoSession(GlobalApi globalApi)
+        public string GetDPDGeoSession(ApiCredentials globalApi)
         {
             var _currentDbContext = new ApplicationContext();
             string authorization = GetEncodeUserNameBas64(globalApi.UserName, globalApi.Password);

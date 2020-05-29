@@ -702,12 +702,19 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
     width: 60px;
     height: 60px;
     position: absolute;
-    right: -15px;
     top: -15px;
 }
 
-.content-area {
-    margin-top: 68px;
+.prd_lst_boxouter .badge-0 {
+    right: -14px;
+}
+
+.prd_lst_boxouter .badge-1 {
+    right: 38px;
+}
+
+.prd_lst_boxouter .badge-2 {
+    right: 90px;
 }
 
 /* --------------------------
@@ -788,7 +795,8 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
 
 .about-cnt h2 {
     margin: 0;
-    padding-bottom: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     color: #434343;
 }
 
@@ -928,6 +936,7 @@ h2 {
         margin-top: 35px;
     }
 }
+
 .no-f-wrap {
     flex-wrap: nowrap;
 }
@@ -948,9 +957,25 @@ h2 {
     flex: unset;
     max-width: unset;
 }
+
 .find-address-select {
     width: 100%;
     height: 40px;
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
+}
+
+.blogdetWrapsec {
+    margin-top: 10px;
+}
+
+.list-group-item {
+    border: none;
+}
+
+.search_wrap_main .search-close {
+    width: 8%;
+    float:left;
+    border: none;
+    background-color: transparent;
 }

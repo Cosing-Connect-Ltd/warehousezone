@@ -136,9 +136,9 @@ namespace Ganedata.Core.Services
             return product;
         }
 
-        public IEnumerable<ProductKitMap> GetAllProductInKitsByProductId(int productId,ProductKitTypeEnum productKitType)
+        public IEnumerable<ProductKitMap> GetAllProductInKitsByProductId(int productId, ProductKitTypeEnum productKitType)
         {
-            return _currentDbContext.ProductKitMaps.Where(a => a.ProductId == productId && a.IsActive == true && a.ProductKitType==productKitType).Include(u=>u.ProductKitTypes)
+            return _currentDbContext.ProductKitMaps.Where(a => a.ProductId == productId && a.IsActive == true && a.ProductKitType == productKitType).Include(u => u.ProductKitTypes)
                 .Distinct().ToList();
 
             //if (disProdIds.Count > 0)
@@ -738,7 +738,7 @@ namespace Ganedata.Core.Services
                     }
                 }
 
-                if (productAttributesIds != null && productMaster.ProductType==ProductKitTypeEnum.Simple)
+                if (productAttributesIds != null && productMaster.ProductType == ProductKitTypeEnum.Simple)
                 {
                     foreach (var item in productAttributesIds)
                     {
@@ -771,7 +771,7 @@ namespace Ganedata.Core.Services
                     }
 
                 }
-                
+
 
                 _currentDbContext.SaveChanges();
             }
@@ -817,7 +817,7 @@ namespace Ganedata.Core.Services
                     _currentDbContext.SaveChanges();
                 }
             }
-            if (AttributeIds != null && AttributeIds.Count > 0 && productMaster.ProductType==ProductKitTypeEnum.ProductByAttribute)
+            if (AttributeIds != null && AttributeIds.Count > 0 && productMaster.ProductType == ProductKitTypeEnum.ProductByAttribute)
             {
                 var ToDelete = new List<int>();
                 ToDelete = _currentDbContext.ProductAttributeMaps
@@ -856,7 +856,7 @@ namespace Ganedata.Core.Services
                 }
                 _currentDbContext.SaveChanges();
             }
-            else 
+            else
             {
                 var isdeletedList = _currentDbContext.ProductAttributeMaps.Where(u => u.ProductId == productMaster.ProductId && u.IsDeleted != true).ToList();
                 if (isdeletedList.Count > 0)
@@ -976,7 +976,7 @@ namespace Ganedata.Core.Services
                     products.SKUCode = string.IsNullOrEmpty(productMaster.SKUCode) ? products.SKUCode : productMaster.SKUCode;
                     products.Serialisable = productMaster.Serialisable;
                     products.ProcessByPallet = productMaster.ProcessByPallet;
-                   
+
 
                 }
                 products.TenantId = TenantId;
@@ -1070,11 +1070,11 @@ namespace Ganedata.Core.Services
 
         public IEnumerable<ProductMaster> GetProductByCategory(int SiteId, int tenantId, int NumberofProducts, string TagName)
         {
-            var products = _currentDbContext.ProductsWebsitesMap.Where(u=>u.TenantId==tenantId && u.SiteID==SiteId && u.IsDeleted != true).Select(u => u.ProductMaster);
+            var products = _currentDbContext.ProductsWebsitesMap.Where(u => u.TenantId == tenantId && u.SiteID == SiteId && u.IsDeleted != true).Select(u => u.ProductMaster);
             var ProductTagIds = _currentDbContext.ProductTags.Where(u => u.TagName == TagName).Select(u => u.Id);
             var productids = _currentDbContext.ProductTagMaps.Where(u => ProductTagIds.Contains(u.ProductId)).Select(u => u.ProductId).ToList();
             return products.Where(u => productids.Contains(u.ProductId) && u.IsDeleted != true).Take(NumberofProducts);
-            
+
         }
         public IQueryable<InventoryStock> GetAllInventoryStocks(int tenantId, int warehouseId, DateTime? reqDate = null)
         {
@@ -1185,7 +1185,7 @@ namespace Ganedata.Core.Services
                 .Include(x => x.ProductMaster.InventoryStocks)
                 .Include(x => x.ProductSerial)
                 .Include(x => x.Order)
-                .Include(x => x.Order.PProperties); 
+                .Include(x => x.Order.PProperties);
         }
 
         public IEnumerable<InventoryTransaction> GetAllInventoryTransactionsByProductId(int productId, int warehouseId)
@@ -1337,7 +1337,10 @@ namespace Ganedata.Core.Services
 
         public IQueryable<ProductMasterViewModel> GetAllProductMasterDetail(int tenantId, int warehouseId, ProductKitTypeEnum? KitType = null)
         {
-            var model = _currentDbContext.ProductMaster.AsNoTracking().Include(u=>u.ProductKitMap).Where(x => x.TenantId == tenantId && x.IsDeleted != true)
+            var model = _currentDbContext.ProductMaster.AsNoTracking()
+                .Include(u => u.ProductKitMap)
+                .Include(x => x.ProductAttributeValuesMap)
+                .Where(x => x.TenantId == tenantId && x.IsDeleted != true)
                 .Select(prd => new ProductMasterViewModel
                 {
                     ProductId = prd.ProductId,
@@ -1347,7 +1350,7 @@ namespace Ganedata.Core.Services
                     BarCode = prd.BarCode,
                     Serialisable = prd.Serialisable,
                     IsStockItem = prd.IsStockItem,
-                    ProductType=prd.ProductType,
+                    ProductType = prd.ProductType,
                     UOM = prd.GlobalUOM.UOM,
                     BarCode2 = prd.BarCode2,
                     ShelfLifeDays = prd.ShelfLifeDays,
@@ -1379,9 +1382,10 @@ namespace Ganedata.Core.Services
                     EnableTax = prd.EnableTax ?? false,
                     DontMonitorStock = prd.DontMonitorStock,
                     ProcessByPallet = prd.ProcessByPallet,
-                    Qty=prd.ProductKitMap.Where(x=>x.KitProductId==prd.ProductId && x.IsDeleted !=true && x.TenantId==prd.TenantId && x.ProductKitType==KitType).Select(u=>u.Quantity).DefaultIfEmpty(0).Sum(),
-                    Id=prd.ProductKitMap.FirstOrDefault(x => x.KitProductId == prd.ProductId && x.IsDeleted != true && x.TenantId == prd.TenantId && x.ProductKitType == KitType).ProductKitTypeId,
-                    IsActive= prd.ProductKitMap.FirstOrDefault(x => x.KitProductId == prd.ProductId && x.IsDeleted != true && x.TenantId == prd.TenantId && x.ProductKitType == KitType).IsActive
+                    Qty = prd.ProductKitMap.Where(x => x.KitProductId == prd.ProductId && x.IsDeleted != true && x.TenantId == prd.TenantId && x.ProductKitType == KitType).Select(u => u.Quantity).DefaultIfEmpty(0).Sum(),
+                    Id = prd.ProductKitMap.FirstOrDefault(x => x.KitProductId == prd.ProductId && x.IsDeleted != true && x.TenantId == prd.TenantId && x.ProductKitType == KitType).ProductKitTypeId,
+                    IsActive = prd.ProductKitMap.FirstOrDefault(x => x.KitProductId == prd.ProductId && x.IsDeleted != true && x.TenantId == prd.TenantId && x.ProductKitType == KitType).IsActive,
+                    AttributeValueNames = prd.ProductAttributeValuesMap.Select(x => x.ProductAttributeValues.Value).ToList()
                 }).OrderBy(x => x.Name);
 
             return model;

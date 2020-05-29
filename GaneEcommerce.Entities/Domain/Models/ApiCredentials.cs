@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Ganedata.Core.Entities.Domain
 {
-    public class GlobalApi : PersistableEntity<int>
+    public class ApiCredentials : PersistableEntity<int>
     {
         public int Id { get; set; }
         public string UserName { get; set; }

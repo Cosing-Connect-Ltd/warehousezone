@@ -263,13 +263,16 @@ input[type="number"]::-webkit-outer-spin-button {
         }
 
     .search_wrap_main .search_btn {
-        width: 8%;
+        width: 4%;
         border: none;
         background-color: transparent;
+        color: black;
     }
 
         .search_wrap_main .search_btn:hover {
             cursor: pointer;
+            background-color: transparent;
+            color: black;
         }
 
         .search_wrap_main .search_btn i {
@@ -1108,7 +1111,8 @@ input[type="number"]::-webkit-outer-spin-button {
                 padding-right: 50px;
             }
 
-                .nb_sub_sec .nb_sub_wrap .sub_form_wrap .nb_home_sub_form .sf_input_wrap input[type="text"] {
+                .nb_sub_sec .nb_sub_wrap .sub_form_wrap .nb_home_sub_form .sf_input_wrap input[type="text"],
+                .nb_sub_sec .nb_sub_wrap .sub_form_wrap .nb_home_sub_form .sf_input_wrap input[type="email"] {
                     width: 100%;
                     height: 52px;
                     border: none;
@@ -1549,7 +1553,8 @@ input[type="number"]::-webkit-outer-spin-button {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
+    margin-top: 16px;
 }
 
     .nb_prdlisting_pgsec .breadCrumbtopsec .nb_bread_crumbwrap {
@@ -1600,7 +1605,7 @@ input[type="number"]::-webkit-outer-spin-button {
         }
 
     .nb_prdlisting_pgsec .breadCrumbtopsec .sortBysec {
-        width: 160px;
+        width: 220px;
         border: solid 1px #707070;
         position: relative;
     }

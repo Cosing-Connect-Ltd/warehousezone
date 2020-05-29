@@ -39,7 +39,7 @@ namespace Ganedata.Core.Entities.Domain
         public bool IsStockItem { get; set; }
         public bool IsSelectable { get; set; }
         public string UOM { get; set; }
-     
+
         public ProductKitTypeEnum ProductType { get; set; }
         public string BarCode2 { get; set; }
         public int? ShelfLifeDays { get; set; }
@@ -88,6 +88,7 @@ namespace Ganedata.Core.Entities.Domain
         public int? Id { get; set; }
 
         public bool? IsActive { get; set; }
+        public List<string> AttributeValueNames { get; set; }
     }
 
 

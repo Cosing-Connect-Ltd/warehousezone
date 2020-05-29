@@ -172,6 +172,7 @@ namespace WarehouseEcommerce.Controllers
                 {
                 return RedirectToAction("KitProductDetail", "Products", new { sku = sku });
             }
+
             return View(product);
         }
 

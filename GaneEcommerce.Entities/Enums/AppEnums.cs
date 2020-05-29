@@ -397,7 +397,7 @@ namespace Ganedata.Core.Entities.Enums
     }
     public enum ApiTypes
     {
-        MerakiSecretKey = 1,
+        Meraki = 1,
         DPD = 2,
         PrestaShop = 3,
         PayPal = 4,

@@ -31,9 +31,11 @@
                         <li class="breadcrumb-item">
                             <a href="/">Home</a>
                         </li>
+                        <li>></li>
                         @if (ViewBag.Categories != null && !string.IsNullOrEmpty(ViewBag.Categories))
                         {
                             <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { category = ViewBag.Categories })">@ViewBag.Categories</a></li>
+                            <li>></li>
                         }
                         @*@if (Url.Action() != Url.Action("list", "Products", new { department = Model.TenantDepartment.DepartmentName }))
                             {
@@ -101,13 +103,14 @@
                         {
 
 
+                            item.ProductTagMaps = item.ProductTagMaps.OrderBy(x => x.ProductTag.SortOrder).ToList();
                             <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-4">
                                 <div class="prd_lst_boxouter">
                                     @for (int i = 0; i < item.ProductTagMaps.Count; i++)
                                     {
                                         if (i < 3)
                                         {
-                                            <span class="badge">
+                                            <span class="badge badge-@i">
                                                 <img src="@(ViewBag.BaseFilePath + item.ProductTagMaps.ToList()[i].ProductTag.IconImage)" alt="" />
                                             </span>
                                         }

@@ -59,7 +59,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
 
                 </div>
-                <div class="modal-body" style="overflow:auto;max-height:430px;">
+                <div class="modal-body" style="max-height:430px;">
 
                 </div>
                 <div class="modal-footer">
@@ -73,12 +73,9 @@
 
     @Html.Partial("_LoginRegisterPartial")
     @Html.Action("_TopHeaderPartial", "Home")
-    <div class="pl-0 pr-0  uni-pages-pt uni-pages-main">
+    <div class="pl-0 pr-0 uni-pages-pt uni-pages-main">
         @Html.Partial("_DeliveryInfoPartial")
-        <div class="content-area">
-            @RenderBody()
-        </div>
-
+        @RenderBody()
     </div>
 
     @Html.Action("_FooterPartialArea", "Home", new { university = true })

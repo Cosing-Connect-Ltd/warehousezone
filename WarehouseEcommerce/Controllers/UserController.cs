@@ -20,7 +20,7 @@ namespace WarehouseEcommerce.Controllers
         private readonly IGaneConfigurationsHelper _configurationsHelper;
         private readonly ITenantWebsiteService _tenantWebsiteService;
         string baseUrl = "";
-        public UserController(ICoreOrderService orderService, IMapper mapper, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IUserService userService, IActivityServices activityServices, ITenantsServices tenantServices, IGaneConfigurationsHelper configurationsHelper,ITenantWebsiteService tenantWebsiteService)
+        public UserController(ICoreOrderService orderService, IMapper mapper, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IUserService userService, IActivityServices activityServices, ITenantsServices tenantServices, IGaneConfigurationsHelper configurationsHelper, ITenantWebsiteService tenantWebsiteService)
             : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices)
         {
             _userService = userService;
@@ -110,7 +110,6 @@ namespace WarehouseEcommerce.Controllers
                     return Redirect(url);
                 }
             }
-
 
             return RedirectToAction(ReditectAction, RedirectController);
 
@@ -222,7 +221,7 @@ namespace WarehouseEcommerce.Controllers
 
             Session.Clear();
             Session.Abandon();
-            return RedirectToAction("Home", "Index");
+            return RedirectToAction("Index", "Home");
 
         }
         public ActionResult Account()

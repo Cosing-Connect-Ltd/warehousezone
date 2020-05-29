@@ -56,7 +56,7 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
             ViewBag.BlogDetail = BlogDetail;
             var content = _tenantWebsiteService.GetWebsiteContentByUrl(CurrentTenantWebsite.SiteID, pageUrl);
-            ViewBag.BlogList = _tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, CurrentTenantWebsite.SiteID).Where(u => u.Id != content.Id).OrderByDescending(u => u.DateCreated).Take(7).ToList();
+            ViewBag.BlogList = _tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, CurrentTenantWebsite.SiteID).Where(u => u.Id != content.Id && u.Type == ContentType.post).OrderByDescending(u => u.DateCreated).Take(7).ToList();
 
             return View(content);
         }
@@ -86,7 +86,7 @@ namespace WarehouseEcommerce.Controllers
         public PartialViewResult _UserMenuPartial()
         {
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
-           
+
             ViewBag.ProductGroups = new SelectList(_lookupServices.GetAllValidProductGroups((CurrentTenantId), 12), "ProductGroupId", "ProductGroup");
             ViewBag.UserName = CurrentUser.UserFirstName + " " + CurrentUser.UserLastName;
             ViewBag.Symbol = currencyyDetail.Symbol;
@@ -168,7 +168,7 @@ namespace WarehouseEcommerce.Controllers
             var TopCategory = _tenantWebsiteService.GetAllValidWebsiteNavigationCategory(CurrentTenantId, CurrentTenantWebsite.SiteID).OrderBy(u => u.SortOrder).Take(6).ToList();
             return PartialView(TopCategory);
         }
-      
+
 
 
         public PartialViewResult _BestSellerPartial()
@@ -217,7 +217,7 @@ namespace WarehouseEcommerce.Controllers
             var navigation = _tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, CurrentTenantWebsite.SiteID).Where(u => u.ShowInNavigation == true).ToList();
             ViewBag.UserName = CurrentUser.UserFirstName + " " + CurrentUser.UserLastName;
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
-           
+
             ViewBag.ProductGroups = new SelectList(_lookupServices.GetAllValidProductGroups((CurrentTenantId), 12), "ProductGroupId", "ProductGroup");
             ViewBag.Symbol = currencyyDetail.Symbol;
             ViewBag.CurrencyName = currencyyDetail.CurrencyName;

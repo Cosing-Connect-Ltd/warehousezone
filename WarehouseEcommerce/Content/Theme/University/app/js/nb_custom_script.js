@@ -115,7 +115,7 @@ $(function () {
 
     $(".basketTable #incre_count").click(function () {
         let aaa = $("#counter").val();
-       
+
         let currCoutVal = $(".basketTable #counter").val();
         currCoutVal = parseInt(currCoutVal);
         let increVal = currCoutVal + 1;
@@ -153,6 +153,11 @@ $(function () {
         e.preventDefault();
         $(".search_wrap_main").removeClass("show");
     });
+    $("#serchBtnClose").click(function (e) {
+        e.preventDefault();
+        $(".search_wrap_main").removeClass("show");
+    });
+
 });
 function getVoidData() {
     return false;
