@@ -1667,11 +1667,12 @@ input[type="number"]::-webkit-outer-spin-button {
             padding: 0px;
         }
 
-            .nb_prdlisting_pgsec .nb_prd_filterwrap * > ul * {
-                background-color: var(--body-background-color);
-                color: var(--dark-font-color);
-                border-color: var(--dark-font-color);
-            }
+        .uni-pages-main .nb_prdlisting_pgsec .breadCrumbtopsec .sortBysec select,
+        .nb_prdlisting_pgsec .nb_prd_filterwrap * > ul * {
+            background-color: var(--tertiary-color);
+            color: var(--dark-font-color);
+            border-color: var(--dark-font-color);
+        }
 
     .nb_prdlisting_pgsec .nb_prd_filterwrap .nb_fltr_accrd_wrap {
         width: 100%;
@@ -2957,7 +2958,8 @@ body.ZoomerActive {
                 }
 
                     .nb_basket_wrap table.basketTable tbody tr td .qtyboxwrap input[type="number"] {
-                        width: 30px;
+                        background-color: var(--tertiary-color);
+                        width: 100%;
                         border: none;
                         outline: none;
                         text-align: center;
@@ -2969,7 +2971,8 @@ body.ZoomerActive {
                     }
 
                     .nb_basket_wrap table.basketTable tbody tr td .qtyboxwrap > span {
-                        width: 30px;
+                        background-color: var(--tertiary-color);
+                        width: 100%;
                         position: absolute;
                         height: 100%;
                         text-align: center;
