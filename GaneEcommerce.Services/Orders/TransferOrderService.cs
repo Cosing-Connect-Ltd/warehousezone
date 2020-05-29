@@ -54,7 +54,7 @@ namespace Ganedata.Core.Services
                         CreatedBy = 0,
                         Qty = o.RequiredQuantity
                     })).ToList();
-                    var tInOrder = new Order() { TransferWarehouseId = mLocation.ParentWarehouseId, WarehouseId = mLocation.WarehouseId, AuthorisedUserID = 0, DateCreated = DateTime.UtcNow, CreatedBy = 0, InventoryTransactionTypeId = (int)InventoryTransactionTypeEnum.TransferIn, OrderNumber = _orderService.GenerateNextOrderNumber(InventoryTransactionTypeEnum.TransferIn, tenantId) };
+                    var tInOrder = new Order() { TransferWarehouseId = mLocation.ParentWarehouseId, WarehouseId = mLocation.WarehouseId, AuthorisedUserID = 0, DateCreated = DateTime.UtcNow, CreatedBy = 0, InventoryTransactionTypeId = InventoryTransactionTypeEnum.TransferIn, OrderNumber = _orderService.GenerateNextOrderNumber(InventoryTransactionTypeEnum.TransferIn, tenantId) };
                     CreateTransferOrder(tInOrder, orderDetails, tenantId, mLocation.WarehouseId, 0);
                 }
                 results.AddRange(finalVanStocksRequired);
@@ -67,7 +67,7 @@ namespace Ganedata.Core.Services
         public Order CreateTransferOrder(Order Order, List<OrderDetail> orderDetails, int tenantId, int warehouseId, int userId)
         {
             var t_Type = Order.InventoryTransactionTypeId;
-            if (t_Type == (int)InventoryTransactionTypeEnum.TransferIn)
+            if (t_Type == InventoryTransactionTypeEnum.TransferIn)
             {
                 Order.IsShippedToTenantMainLocation = true;
             }
@@ -140,17 +140,17 @@ namespace Ganedata.Core.Services
             Inventory.StockRecalculateByOrderId(Order.OrderID, Order.WarehouseId??0, tenantId, caCurrent.CurrentUser().UserId);
 
             // create an alternate order
-            int InventoryTransactionTypeId = 0;
+            InventoryTransactionTypeEnum InventoryTransactionTypeId = 0;
             bool shipmentTobool = false;
 
-            if (t_Type == 3)
+            if (t_Type == InventoryTransactionTypeEnum.TransferIn)
             {
-                InventoryTransactionTypeId = (int)InventoryTransactionTypeEnum.TransferOut;
+                InventoryTransactionTypeId = InventoryTransactionTypeEnum.TransferOut;
             }
 
-            else if (t_Type == 4)
+            else if (t_Type == InventoryTransactionTypeEnum.TransferOut)
             {
-                InventoryTransactionTypeId = (int)InventoryTransactionTypeEnum.TransferIn;
+                InventoryTransactionTypeId = InventoryTransactionTypeEnum.TransferIn;
                 shipmentTobool = true;
             }
             

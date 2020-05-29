@@ -38,7 +38,7 @@ namespace Ganedata.Core.Services
             order.WarehouseId = warehouseId;
             order.CreatedBy = userId;
             order.UpdatedBy = userId;
-            order.InventoryTransactionTypeId = _currentDbContext.InventoryTransactionTypes.First(a => a.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.WorksOrder).InventoryTransactionTypeId;
+            order.InventoryTransactionTypeId = InventoryTransactionTypeEnum.WorksOrder;
             order.OrderStatusID = (int)OrderStatusEnum.NotScheduled;
             order.ShipmentPropertyId = shipmentAndRecipientInfo.PPropertyID;
 
@@ -290,7 +290,7 @@ namespace Ganedata.Core.Services
             order.CreatedBy = userId;
             order.UpdatedBy = userId;
 
-            order.InventoryTransactionTypeId = (int)InventoryTransactionTypeEnum.WorksOrder;
+            order.InventoryTransactionTypeId = InventoryTransactionTypeEnum.WorksOrder;
             order.OrderStatusID = (int)OrderStatusEnum.NotScheduled;
             order.ShipmentPropertyId = shipmentAndRecipientInfo.PPropertyID;
 
@@ -347,7 +347,7 @@ namespace Ganedata.Core.Services
             Order.WarehouseId = warehouseId;
             Order.CreatedBy = userId;
             Order.UpdatedBy = userId;
-            Order.InventoryTransactionTypeId = (int)InventoryTransactionTypeEnum.WorksOrder;
+            Order.InventoryTransactionTypeId = InventoryTransactionTypeEnum.WorksOrder;
             Order.OrderStatusID = (int)OrderStatusEnum.NotScheduled;
             Order.ShipmentPropertyId = shipmentAndRecipientInfo.PPropertyID;
 
@@ -450,7 +450,7 @@ namespace Ganedata.Core.Services
         {
 
             return _currentDbContext.Order
-                .Where(o => o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.WorksOrder && o.OrderStatusID != (int)OrderStatusEnum.Complete && (!groupToken.HasValue || o.OrderGroupToken == groupToken) && o.IsDeleted != true)
+                .Where(o => o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder && o.OrderStatusID != (int)OrderStatusEnum.Complete && (!groupToken.HasValue || o.OrderGroupToken == groupToken) && o.IsDeleted != true)
                 .OrderByDescending(m => m.SLAPriorityId).ThenByDescending(x => x.DateCreated)
                 .Include(x => x.Appointmentses)
                 .Select(p => new WorksOrderViewModel()
@@ -470,8 +470,8 @@ namespace Ganedata.Core.Services
                     POStatus = p.OrderStatus.Status,
                     Account = p.Account.AccountCode,
                     Property = p.PProperties.AddressLine1,
-                    OrderTypeId = p.TransactionType.InventoryTransactionTypeId,
-                    OrderType = p.TransactionType.OrderType,
+                    OrderTypeId = p.InventoryTransactionTypeId,
+                    OrderType = p.InventoryTransactionTypeId,
                     OrderNotesList = p.OrderNotes.Where(m => m.IsDeleted != true).Select(s => new OrderNotesViewModel()
                     {
                         OrderNoteId = s.OrderNoteId,
@@ -491,7 +491,7 @@ namespace Ganedata.Core.Services
         {
 
             var result = _currentDbContext.Order
-                .Where(o => o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.WorksOrder && (o.OrderStatusID == (int)OrderStatusEnum.Active || o.OrderStatusID == (int)OrderStatusEnum.NotScheduled
+                .Where(o => o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder && (o.OrderStatusID == (int)OrderStatusEnum.Active || o.OrderStatusID == (int)OrderStatusEnum.NotScheduled
                 || o.OrderStatusID == (int)OrderStatusEnum.Scheduled || o.OrderStatusID == (int)OrderStatusEnum.ReAllocationRequired || o.OrderStatusID == (int)OrderStatusEnum.Hold)
                 && (!groupToken.HasValue
                 || o.OrderGroupToken == groupToken) && o.IsDeleted != true && (!propertyId.HasValue || o.PPropertyId == propertyId))
@@ -502,7 +502,6 @@ namespace Ganedata.Core.Services
                 .Include(x => x.JobSubType)
                 .Include(x => x.OrderStatus)
                 .Include(x => x.Account)
-                .Include(x => x.TransactionType)
                 .Include(x => x.PProperties)
                 .Select(p => new WorksOrderViewModel()
                 {
@@ -521,8 +520,8 @@ namespace Ganedata.Core.Services
                     POStatus = p.OrderStatus.Status,
                     Account = p.Account.AccountCode,
                     Property = p.PProperties.AddressLine1,
-                    OrderTypeId = p.TransactionType.InventoryTransactionTypeId,
-                    OrderType = p.TransactionType.OrderType,
+                    OrderTypeId = p.InventoryTransactionTypeId,
+                    OrderType = p.InventoryTransactionTypeId,
                     EmailCount = _currentDbContext.TenantEmailNotificationQueues.Count(u => u.OrderId == p.OrderID),
                     OrderNotesList = p.OrderNotes.Where(m => m.IsDeleted != true).Select(s => new OrderNotesViewModel()
                     {
@@ -542,11 +541,11 @@ namespace Ganedata.Core.Services
             return result;
         }
 
-        public IQueryable<WorksOrderViewModel> GetAllCompletedWorksOrdersIq(int tenantId, int? propertyId,int?type=null)
+        public IQueryable<WorksOrderViewModel> GetAllCompletedWorksOrdersIq(int tenantId, int? propertyId, int? type = null)
         {
-          
+
             var result = _currentDbContext.Order
-                .Where(o => o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.WorksOrder && ((type.HasValue && o.OrderStatusID == (int)OrderStatusEnum.Complete) || !type.HasValue) && o.IsDeleted != true && (!propertyId.HasValue || o.PPropertyId == propertyId))
+                .Where(o => o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder && ((type.HasValue && o.OrderStatusID == (int)OrderStatusEnum.Complete) || !type.HasValue) && o.IsDeleted != true && (!propertyId.HasValue || o.PPropertyId == propertyId))
                 .OrderByDescending(m => m.SLAPriorityId).ThenByDescending(x => x.DateCreated)
                 .Include(x => x.Appointmentses)
                 .Include(x => x.OrderNotes)
@@ -554,7 +553,6 @@ namespace Ganedata.Core.Services
                 .Include(x => x.JobSubType)
                 .Include(x => x.OrderStatus)
                 .Include(x => x.Account)
-                .Include(x => x.TransactionType)
                 .Include(x => x.PProperties)
                 .Select(p => new WorksOrderViewModel()
                 {
@@ -573,10 +571,10 @@ namespace Ganedata.Core.Services
                     POStatus = p.OrderStatus.Status,
                     Account = p.Account.AccountCode,
                     Property = p.PProperties.AddressLine1,
-                    OrderTypeId = p.TransactionType.InventoryTransactionTypeId,
+                    OrderTypeId = p.InventoryTransactionTypeId,
                     EmailCount = _currentDbContext.TenantEmailNotificationQueues.Count(u => u.OrderId == p.OrderID),
                     OrderNotesList = p.OrderNotes.Where(m => m.IsDeleted != true).Select(s => new OrderNotesViewModel() { OrderNoteId = s.OrderNoteId, Notes = s.Notes, NotesByName = s.User.UserName, NotesDate = s.DateCreated }).ToList(),
-                    OrderType = p.TransactionType.OrderType,
+                    OrderType = p.InventoryTransactionTypeId,
                     ScheduledStartTime = p.Appointmentses.OrderByDescending(x => x.StartTime).FirstOrDefault(x => x.IsCanceled != true).StartTime,
                     ScheduledEndTime = p.Appointmentses.OrderByDescending(x => x.StartTime).FirstOrDefault(x => x.IsCanceled != true).EndTime,
                     ResourceId = p.Appointmentses.OrderByDescending(x => x.StartTime).FirstOrDefault(x => x.IsCanceled != true).ResourceId,
@@ -587,7 +585,7 @@ namespace Ganedata.Core.Services
         public IQueryable<Order> GetAllWorksOrders(int tenantId)
         {
             return _currentDbContext.Order
-                .Where(o => o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.WorksOrder && o.IsDeleted != true && o.IsCancel != true);
+                .Where(o => o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder && o.IsDeleted != true && o.IsCancel != true);
         }
     }
 }

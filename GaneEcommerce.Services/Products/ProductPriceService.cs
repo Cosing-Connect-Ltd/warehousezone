@@ -94,7 +94,7 @@ namespace Ganedata.Core.Services
                         Timestamp = odets.DateCreated.ToString("dd/MM/yyyy HH:mm"),
                         CurrencySymbol = odets.Order.Account.GlobalCurrency.Symbol,
                         PriceWithDate = odets.DateCreated.ToString("dd/MM/yyyy HH:mm - ") + odets.Order.Account.GlobalCurrency.Symbol + odets.Price.ToString("0.00"),
-                        TypeIdentifier = odets.Order.TransactionType.InventoryTransactionTypeId
+                        TypeIdentifier = (int)odets.Order.InventoryTransactionTypeId
                     }).Take(5).ToList();
         }
 

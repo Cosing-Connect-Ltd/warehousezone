@@ -254,7 +254,7 @@ namespace WMS.Controllers.TA
         public ActionResult ShiftsGridViewPartial()
         {
             var model = _mapper.Map(_shiftsServices.GetAllEmployeeShifts(CurrentTenantId), new List<ShiftsViewModel>());
-            return PartialView("~/Views/Shifts/_ShiftsGridViewPartial.cshtml", model);
+            return PartialView("_ShiftsGridViewPartial", model);
         }
     }
 }

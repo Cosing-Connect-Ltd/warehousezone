@@ -21,7 +21,7 @@ namespace WMS.Controllers
         private readonly ILookupServices _lookupServices;
         private readonly IPurchaseOrderService _purchaseOrderService;
 
-        public InventoryTransactionController(ICoreOrderService orderService, IPurchaseOrderService purchaseOrderService , IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IProductServices productServices, IProductLookupService productLookupService) : base(orderService, propertyService, accountServices, lookupServices)
+        public InventoryTransactionController(ICoreOrderService orderService, IPurchaseOrderService purchaseOrderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IProductServices productServices, IProductLookupService productLookupService) : base(orderService, propertyService, accountServices, lookupServices)
         {
             _productServices = productServices;
             _productLookupService = productLookupService;
@@ -53,9 +53,6 @@ namespace WMS.Controllers
             }
             var allOrders = OrderService.GetAllOrders(CurrentTenantId, CurrentWarehouseId);
             ViewBag.OrderID = new SelectList(allOrders, "OrderId", "OrderNumber", allOrders.FirstOrDefault());
-            var inventoryTransactionTypes = LookupServices.GetAllInventoryTransactionTypes().ToList();
-            ViewBag.InventoryTransactionTypeId = new SelectList(inventoryTransactionTypes, "InventoryTransactionTypeId", "InventoryTransactionTypeName", inventoryTransactionTypes.First().InventoryTransactionTypeId);
-
             return View();
         }
 
@@ -64,7 +61,7 @@ namespace WMS.Controllers
         {
             try
             {
-                int transportType = model.InventoryTransactionTypeId;
+                InventoryTransactionTypeEnum transportType = model.InventoryTransactionTypeId;
                 int productId = (int)Session["pId"];
                 decimal qty = model.Quantity;
                 int orderId = model.OrderID ?? default(int);
@@ -77,20 +74,16 @@ namespace WMS.Controllers
             }
             catch (Exception exp)
             {
-                var orders = OrderService.GetAllOrders(CurrentTenantId).ToList();
-
-                var inventoryTransactionTypes = LookupServices.GetAllInventoryTransactionTypes().ToList();
+                var allOrders = OrderService.GetAllOrders(CurrentTenantId, CurrentWarehouseId);
 
                 ModelState.AddModelError("", exp.Message);
-                ViewBag.OrderID = new SelectList(orders, "OrderId", "OrderNumber", orders.FirstOrDefault(a => a.OrderID == model.OrderID));
-                ViewBag.InventoryTransactionTypeId = new SelectList(inventoryTransactionTypes, "InventoryTransactionTypeId", "InventoryTransactionTypeName", inventoryTransactionTypes.FirstOrDefault(a => a.InventoryTransactionTypeId == model.InventoryTransactionTypeId));
+                ViewBag.OrderID = new SelectList(allOrders, "OrderId", "OrderNumber", allOrders.FirstOrDefault(a => a.OrderID == model.OrderID));
                 return View(model);
             }
         }
 
         public ActionResult _InventoryTransList()
         {
-
             var viewModel = GridViewExtension.GetViewModel("_InventoryTransListGridView");
 
             if (viewModel == null)
@@ -136,7 +129,8 @@ namespace WMS.Controllers
                     })
             );
 
-            ViewData["TransactionTypesList"] = _lookupServices.GetAllInventoryTransactionTypes().Select(x => x.InventoryTransactionTypeName).ToList();
+            ViewData["TransactionTypesList"] = Enum.GetNames(typeof(InventoryTransactionTypeEnum)).ToList();
+
             return PartialView("_InventoryTransList", gridViewModel);
         }
 
@@ -154,7 +148,7 @@ namespace WMS.Controllers
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             Guid guid = Guid.NewGuid();
-            ViewBag.DeliveryNo= GaneStaticAppExtensions.GenerateDateRandomNo();
+            ViewBag.DeliveryNo = GaneStaticAppExtensions.GenerateDateRandomNo();
             ViewBag.groupToken = guid.ToString();
 
 
@@ -220,23 +214,24 @@ namespace WMS.Controllers
             return Json(new { error = false }, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult _ReturnNon_SerProduct(int? order, int product, int quantity, int type,string groupToken=null ,int? locationid = null, int? lineId = null,string deliveryNumber=null)
+        public JsonResult _ReturnNon_SerProduct(int? order, int product, int quantity, InventoryTransactionTypeEnum type, string groupToken = null, int? locationid = null, int? lineId = null, string deliveryNumber = null)
         {
-           string orderNumber = "";
-           if (order.HasValue)
+            string orderNumber = "";
+            if (order.HasValue)
             {
-                GoodsReturnRequestSync goodsReturnRequestSync= new GoodsReturnRequestSync {
-                    OrderId=order??0,
-                    ProductId=product,
-                    Quantity=quantity,
-                    InventoryTransactionType=type,
-                    deliveryNumber=deliveryNumber,
-                    LocationId=locationid??0,
-                    tenantId=CurrentTenantId,
-                    warehouseId=CurrentWarehouseId,
+                GoodsReturnRequestSync goodsReturnRequestSync = new GoodsReturnRequestSync
+                {
+                    OrderId = order ?? 0,
+                    ProductId = product,
+                    Quantity = quantity,
+                    InventoryTransactionType = type,
+                    deliveryNumber = deliveryNumber,
+                    LocationId = locationid ?? 0,
+                    tenantId = CurrentTenantId,
+                    warehouseId = CurrentWarehouseId,
                     userId = CurrentUserId
 
-            };
+                };
                 Inventory.StockTransaction(goodsReturnRequestSync, groupToken);
             }
             else
@@ -251,17 +246,17 @@ namespace WMS.Controllers
                     LocationId = locationid ?? 0,
                     tenantId = CurrentTenantId,
                     warehouseId = CurrentWarehouseId,
-                    OrderDetailID=lineId,
-                    deliveryNumber=deliveryNumber,
-                    OrderNumber=orderNumber,
-                     userId = CurrentUserId
+                    OrderDetailID = lineId,
+                    deliveryNumber = deliveryNumber,
+                    OrderNumber = orderNumber,
+                    userId = CurrentUserId
 
-            };
+                };
 
-                Inventory.StockTransaction(goodsReturnRequestSync,groupToken);
-                
+                Inventory.StockTransaction(goodsReturnRequestSync, groupToken);
+
             }
-            if (type == (int)InventoryTransactionTypeEnum.Returns || type == (int)InventoryTransactionTypeEnum.Wastage || type == (int)InventoryTransactionTypeEnum.WastedReturn)
+            if (type == InventoryTransactionTypeEnum.Returns || type == InventoryTransactionTypeEnum.Wastage || type == InventoryTransactionTypeEnum.WastedReturn)
             {
                 return Json(new { orderid = order ?? 0, productId = product, orderNumber = orderNumber, groupToken = groupToken }, JsonRequestBehavior.AllowGet);
 
@@ -275,18 +270,18 @@ namespace WMS.Controllers
             var groupToken = Request.Params["groupToken"];
             var orderId = int.Parse(!string.IsNullOrEmpty(Request.Params["orderId"]) ? Request.Params["orderId"] : "0");
             var InventorytType = int.Parse(!string.IsNullOrEmpty(Request.Params["InType"]) ? Request.Params["InType"] : "0");
-            
-            if (pid>0 && (!string.IsNullOrEmpty(orderNumber)|| orderId>0) && InventorytType>0)
+
+            if (pid > 0 && (!string.IsNullOrEmpty(orderNumber) || orderId > 0) && InventorytType > 0)
             {
-                
-                var model = _productServices.GetInventoryTransactionsReturns(pid,orderId,orderNumber,InventorytType,groupToken).Select(md=> new
-                             {
-                                 md.InventoryTransactionId,
-                                 LocationName = _productLookupService.GetLocationById(md.LocationId ?? 0) != null ? _productLookupService.GetLocationById(md.LocationId ?? 0).LocationName : "",
-                                 md.Quantity,
-                                 SerialNo = md?.ProductSerial?.SerialNo,
-                                 Product = _productServices.GetProductMasterById(md.ProductId).Name
-                             }).ToList();
+
+                var model = _productServices.GetInventoryTransactionsReturns(pid, orderId, orderNumber, InventorytType, groupToken).Select(md => new
+                {
+                    md.InventoryTransactionId,
+                    LocationName = _productLookupService.GetLocationById(md.LocationId ?? 0) != null ? _productLookupService.GetLocationById(md.LocationId ?? 0).LocationName : "",
+                    md.Quantity,
+                    SerialNo = md?.ProductSerial?.SerialNo,
+                    Product = _productServices.GetProductMasterById(md.ProductId).Name
+                }).ToList();
                 return PartialView(model);
             }
             return PartialView();
@@ -522,7 +517,7 @@ namespace WMS.Controllers
             if (pid > 0 && (!string.IsNullOrEmpty(orderNumber) || orderId > 0) && InventorytType > 0)
             {
 
-                var model = _productServices.GetInventoryTransactionsReturns(pid, orderId, orderNumber, InventorytType,groupToken).Select(md => new
+                var model = _productServices.GetInventoryTransactionsReturns(pid, orderId, orderNumber, InventorytType, groupToken).Select(md => new
                 {
                     md.InventoryTransactionId,
                     LocationName = _productLookupService.GetLocationById(md.LocationId ?? 0) != null ? _productLookupService.GetLocationById(md.LocationId ?? 0).LocationName : "",
@@ -533,7 +528,7 @@ namespace WMS.Controllers
                 return PartialView(model);
             }
             return PartialView();
-            
+
         }
 
         #endregion
@@ -560,9 +555,9 @@ namespace WMS.Controllers
             }
             return Json(status, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult _SubmitPalleteSerials(List<string> serialList, int? pid, int? orderId, int? type, int? palletTrackingId,string groupToken, string deliveryNumber = null)
+        public JsonResult _SubmitPalleteSerials(List<string> serialList, int? pid, int? orderId, InventoryTransactionTypeEnum? type, int? palletTrackingId, string groupToken, string deliveryNumber = null)
         {
-            
+
             var _inventoryTransactionsService = DependencyResolver.Current.GetService<IOrderService>();
             int warehouseId = caCurrent.CurrentWarehouse().WarehouseId;
             List<PalleTrackingProcess> palleTrackingProcessList = new List<PalleTrackingProcess>();
@@ -603,15 +598,15 @@ namespace WMS.Controllers
                     tenantId = CurrentTenantId,
                     warehouseId = warehouseId,
                     userId = CurrentUserId,
-                    deliveryNumber=deliveryNumber
+                    deliveryNumber = deliveryNumber
 
                 };
                 _purchaseOrderService.ProcessPalletTrackingSerial(goodsReturnRequestSync, groupToken, true);
                 return Json(new { orderid = orderId ?? 0, productId = pid ?? 0, orderNumber = "", groupToken = groupToken }, JsonRequestBehavior.AllowGet);
             }
-            else if (serialList == null && type == (int)InventoryTransactionTypeEnum.AdjustmentIn)
+            else if (serialList == null && type == InventoryTransactionTypeEnum.AdjustmentIn)
             {
-                _inventoryTransactionsService.AddGoodsReturnPallet(serialList, "", pid ?? 0, type??0, 0, orderId, CurrentTenantId, CurrentWarehouseId, CurrentUserId, palletTrackigId:palletTrackingId??0);
+                _inventoryTransactionsService.AddGoodsReturnPallet(serialList, "", pid ?? 0, type ?? 0, 0, orderId, CurrentTenantId, CurrentWarehouseId, CurrentUserId, palletTrackigId: palletTrackingId ?? 0);
             }
 
             else
@@ -620,7 +615,7 @@ namespace WMS.Controllers
                 if (serialList != null)
                 {
                     string orderNumber = GenerateNextOrderNumber((InventoryTransactionTypeEnum)type);
-                    if ((!orderId.HasValue && type == (int)InventoryTransactionTypeEnum.Wastage) || type == (int)InventoryTransactionTypeEnum.AdjustmentIn || type == (int)InventoryTransactionTypeEnum.AdjustmentOut)
+                    if ((!orderId.HasValue && type == InventoryTransactionTypeEnum.Wastage) || type == InventoryTransactionTypeEnum.AdjustmentIn || type == InventoryTransactionTypeEnum.AdjustmentOut)
                     {
                         foreach (var pallet in serialList)
                         {
@@ -656,7 +651,7 @@ namespace WMS.Controllers
                             warehouseId = warehouseId,
                             OrderNumber = orderNumber,
                             userId = CurrentUserId,
-                            deliveryNumber=deliveryNumber
+                            deliveryNumber = deliveryNumber
                         };
                         int result = _purchaseOrderService.ProcessPalletTrackingSerial(goodsReturnRequestSync, groupToken, true);
                         if (result > 0)
@@ -704,7 +699,7 @@ namespace WMS.Controllers
                             warehouseId = warehouseId,
                             OrderNumber = orderNumber,
                             userId = CurrentUserId,
-                            deliveryNumber=deliveryNumber
+                            deliveryNumber = deliveryNumber
 
                         };
 

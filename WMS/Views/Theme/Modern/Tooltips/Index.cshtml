@@ -30,10 +30,10 @@
 
     function OnBeginGridCallback(s, e, gridName) {
         var grid = ASPxClientControl.GetControlCollection().GetByName(gridName.name);
-        var rowIndex = parseInt($("#RowIndexForTooltipId").val()) || 0;
+        var rowIndex = parseInt($("#RowIndexForId").val()) || 0;
         e.customArgs["Id"] = grid.GetRowKey(rowIndex);
         var arr = gridName.name.split("_");
-        e.customArgs["TooltipId"] = arr[1];
+        e.customArgs["Id"] = arr[1];
     }
 
 </script>

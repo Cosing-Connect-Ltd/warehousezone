@@ -20,7 +20,7 @@ namespace Ganedata.Core.Entities.Domain
 
         [Key]
         [Display(Name = "Order Id")]
-       
+
         public int OrderID { get; set; }
 
         [Remote("IsOrderNumberAvailable", "Order", AdditionalFields = "OrderID", ErrorMessage = "Order Number has been taken, Please regenerate")]
@@ -28,7 +28,7 @@ namespace Ganedata.Core.Entities.Domain
         //[RegularExpression("^.{3}[0-9]{8}$", ErrorMessage = "Order No must be 11 characters long and last eight digits should be numeric")]
         // order number sent from customer
         [Display(Name = "Order No.")]
-        
+
         public string OrderNumber { get; set; }
 
         [Column(TypeName = "date")]
@@ -43,7 +43,7 @@ namespace Ganedata.Core.Entities.Domain
         public string Note { get; set; }
 
         [Display(Name = "Transaction Type")]
-        public int InventoryTransactionTypeId { get; set; }
+        public InventoryTransactionTypeEnum InventoryTransactionTypeId { get; set; }
 
         [Display(Name = "Account")]
         public int? AccountID { get; set; }
@@ -194,8 +194,6 @@ namespace Ganedata.Core.Entities.Domain
         public int? AccountCurrencyID { get; set; }
         [ForeignKey("AccountCurrencyID")]
         public virtual GlobalCurrency AccountCurrency { get; set; }
-
-        public virtual InventoryTransactionType TransactionType { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
         public virtual ICollection<OrderProcess> OrderProcess { get; set; }
         public virtual ICollection<InventoryTransaction> InventoryTransaction { get; set; }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ganedata.Core.Entities.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace Ganedata.Core.Models
@@ -41,7 +42,7 @@ namespace Ganedata.Core.Models
         public string OrderNotes { get; set; }
         public decimal OrderProcessDiscount { get; set; }
         public decimal OrderProcessTotal { get; set; }
-        public int InventoryTransactionTypeId { get; set; }
+        public InventoryTransactionTypeEnum InventoryTransactionTypeId { get; set; }
         public int? OrderStatusID { get; set; }
         public int? TransferToWarehouseId { get; set; }
         public string TransferToWarehouseName { get; set; }

@@ -44,12 +44,7 @@ namespace WMS.Controllers
         //stock adjustments controller
         public ActionResult InventoryAdjustments(int id)
         {
-
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
-
-            //if (string.IsNullOrEmpty(id)) return  RedirectToAction("Index", "Products");
-
-            //var productId = int.Parse(id);
 
             var product = _productService.GetProductMasterById(id);
 
@@ -64,7 +59,13 @@ namespace WMS.Controllers
                 ViewBag.CurrentQuantity = inventoryStock.InStock;
             }
             ViewBag.ProductDescription = product.Description;
-            ViewBag.InventoryTransactionTypeId = new SelectList(LookupServices.GetAllInventoryTransactionTypes().Where(e => e.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.AdjustmentIn || e.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.AdjustmentOut), "InventoryTransactionTypeId", "InventoryTransactionTypeName");
+
+            var transactionTypes = from InventoryTransactionTypeEnum d in Enum.GetValues(typeof(InventoryTransactionTypeEnum))
+                                   where d == InventoryTransactionTypeEnum.AdjustmentIn || d == InventoryTransactionTypeEnum.AdjustmentOut
+                                   select new { InventoryTransactionTypeId = (int)d, InventoryTransactionTypeName = d.ToString() };
+
+            ViewBag.InventoryTransactionTypeId = new SelectList(transactionTypes, "InventoryTransactionTypeId", "InventoryTransactionTypeName");
+
             ViewBag.Groups = new SelectList(from p in LookupServices.GetAllValidProductGroups(CurrentTenantId)
                                             where (p.TenentId == CurrentTenantId && p.IsDeleted != true)
                                             select new
@@ -88,8 +89,6 @@ namespace WMS.Controllers
 
         public ActionResult InventoryAdjustmentsSerial(int id)
         {
-            //if (string.IsNullOrEmpty(id)) return null;
-            //var productId = int.Parse(id);
             var product = _productService.GetProductMasterById(id);
             return PartialView("_InventoryAdjustmentsSerial", product);
         }
@@ -114,7 +113,13 @@ namespace WMS.Controllers
             ViewBag.productId = product.ProductId;
             ViewBag.ProductName = product.Name;
             ViewBag.ProductDescription = product.Description;
-            ViewBag.InventoryTransactionTypeId = new SelectList(LookupServices.GetAllInventoryTransactionTypes().Where(e => e.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.AdjustmentIn || e.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.AdjustmentOut), "InventoryTransactionTypeId", "InventoryTransactionTypeName");
+
+            var transactionTypes = from InventoryTransactionTypeEnum d in Enum.GetValues(typeof(InventoryTransactionTypeEnum))
+                                   where d == InventoryTransactionTypeEnum.AdjustmentIn || d == InventoryTransactionTypeEnum.AdjustmentOut
+                                   select new { InventoryTransactionTypeId = (int)d, InventoryTransactionTypeName = d.ToString() };
+
+            ViewBag.InventoryTransactionTypeId = new SelectList(transactionTypes, "InventoryTransactionTypeId", "InventoryTransactionTypeName");
+
             ViewBag.Groups = new SelectList(from p in LookupServices.GetAllValidProductGroups(CurrentTenantId)
                                             where (p.TenentId == CurrentTenantId && p.IsDeleted != true)
                                             select new
@@ -123,7 +128,7 @@ namespace WMS.Controllers
                                                 p.ProductGroup
                                             }, "ProductGroupId", "ProductGroup");
 
-            if (!product.Serialisable && (!model.Quantity.HasValue || model.InventoryTransactionTypeId < 1))
+            if (!product.Serialisable && (!model.Quantity.HasValue || model.InventoryTransactionTypeId < InventoryTransactionTypeEnum.PurchaseOrder))
             {
                 ViewBag.Error = "Please specify the quantity and transaction type to complete the stock adjustment";
                 return View();
@@ -317,11 +322,11 @@ namespace WMS.Controllers
         }
 
         [HttpPost]
-        public ActionResult MoveStock(StockMovementViewModel data, bool BulkStock=false)
+        public ActionResult MoveStock(StockMovementViewModel data, bool BulkStock = false)
         {
             StockMovementCollectionViewModel model = new StockMovementCollectionViewModel();
             model.StockMovements = new List<StockMovementViewModel>();
-          
+
             if (BulkStock)
             {
                 var bulkdata = GaneStockMovementItemsSessionHelper.GetStockMovementsSession();
@@ -335,7 +340,7 @@ namespace WMS.Controllers
                 data.WarehouseId = CurrentWarehouseId;
                 model.StockMovements.Add(data);
             }
-         
+
             var result = _lookupServices.UpdateStockMovement(model);
             if (result)
             {
@@ -347,7 +352,7 @@ namespace WMS.Controllers
             }
             if (BulkStock)
             {
-                return RedirectToAction("MoveStock", new { id = string.Empty});
+                return RedirectToAction("MoveStock", new { id = string.Empty });
             }
             else
             {

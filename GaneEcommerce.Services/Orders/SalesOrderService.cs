@@ -86,8 +86,8 @@ namespace Ganedata.Core.Services
 
                 }
                 order.OrderCost = ordTotal;
-                order.OrderDiscount = _orderService.GetDiscountOnTotalCost(order.AccountID??0, ordTotal??0);
-                order.OrderTotal = (decimal)ordTotal-order.OrderDiscount;
+                order.OrderDiscount = _orderService.GetDiscountOnTotalCost(order.AccountID ?? 0, ordTotal ?? 0);
+                order.OrderTotal = (decimal)ordTotal - order.OrderDiscount;
 
                 if (_orderService.CheckOrdersAuthroization(order.OrderTotal, order.InventoryTransactionTypeId, tenantId, userId, AccountCredit))
                 {
@@ -213,11 +213,11 @@ namespace Ganedata.Core.Services
 
                     if (item.WarrantyID > 0)
                     {
-                      
+
                         var warranty = _currentDbContext.TenantWarranty.AsNoTracking().FirstOrDefault(x => x.WarrantyID == item.WarrantyID);
                         if (warranty != null)
                         {
-                             
+
                             if (warranty.IsPercent)
                             {
                                 item.WarrantyAmount = (item.TotalAmount / 100) * item.Warranty.PercentageOfPrice;
@@ -227,7 +227,7 @@ namespace Ganedata.Core.Services
                                 item.WarrantyAmount = warranty.FixedPrice;
                             }
                         }
-                        
+
                     }
 
                     // fix navigation issue
@@ -306,7 +306,7 @@ namespace Ganedata.Core.Services
                     });
                 }
             }
-           
+
             order.OrderCost = total;
             order.OrderDiscount = _orderService.GetDiscountOnTotalCost(order.AccountID ?? 0, total);
             order.OrderTotal = (decimal)total - order.OrderDiscount;
@@ -337,14 +337,13 @@ namespace Ganedata.Core.Services
                 _currentDbContext.Entry(obj).State = System.Data.Entity.EntityState.Detached;
                 order.CreatedBy = obj.CreatedBy;
                 order.DateCreated = obj.DateCreated;
-                //order.OrderStatusID = obj.OrderStatusID;
                 order.TenentId = obj.TenentId;
                 order.WarehouseId = obj.WarehouseId;
                 if (order.ShipmentAccountAddressId < 1)
                 {
-                    order.ShipmentAccountAddressId = (int?)null;
+                    order.ShipmentAccountAddressId = null;
                 }
-                order.InventoryTransactionTypeId = obj.InventoryTransactionTypeId;
+
                 obj.OrderNumber = order.OrderNumber.Trim();
                 obj.DateUpdated = DateTime.UtcNow;
                 obj.UpdatedBy = userId;
@@ -356,7 +355,7 @@ namespace Ganedata.Core.Services
                     order.ShipmentAddressLine3 = null;
                     order.ShipmentAddressLine4 = null;
                     order.ShipmentAddressPostcode = null;
-                    order.ShipmentAccountAddressId = (int?)null;
+                    order.ShipmentAccountAddressId = null;
 
                 }
 
@@ -456,25 +455,25 @@ namespace Ganedata.Core.Services
             {
                 if (InventoryTransactionId == (int)InventoryTransactionTypeEnum.Returns)
                 {
-                    return _currentDbContext.OrderProcess.Where(a => (a.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Returns || a.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.WastedReturn)
+                    return _currentDbContext.OrderProcess.Where(a => (a.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Returns || a.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WastedReturn)
                     && (a.WarehouseId == warehouseId || a.Order.Warehouse.ParentWarehouseId == warehouseId) && a.TenentId == tenantId && a.IsDeleted != true);
                 }
                 else
                 {
-                    return _currentDbContext.OrderProcess.Where(a => a.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Wastage && a.WarehouseId == warehouseId && a.TenentId == tenantId && a.IsDeleted != true);
+                    return _currentDbContext.OrderProcess.Where(a => a.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Wastage && a.WarehouseId == warehouseId && a.TenentId == tenantId && a.IsDeleted != true);
                 }
 
             }
 
 
-            return _currentDbContext.OrderProcess.Where(a => (a.InventoryTransactionTypeId != (int)InventoryTransactionTypeEnum.Returns &&
-            a.InventoryTransactionTypeId != (int)InventoryTransactionTypeEnum.WastedReturn &&
-            a.InventoryTransactionTypeId != (int)InventoryTransactionTypeEnum.Wastage) &&
+            return _currentDbContext.OrderProcess.Where(a => (a.InventoryTransactionTypeId != InventoryTransactionTypeEnum.Returns &&
+            a.InventoryTransactionTypeId != InventoryTransactionTypeEnum.WastedReturn &&
+            a.InventoryTransactionTypeId != InventoryTransactionTypeEnum.Wastage) &&
 
-            (a.Order.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.SalesOrder
-            || a.Order.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Loan
-            || a.Order.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.WorksOrder
-            || a.Order.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Samples)
+            (a.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder
+            || a.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Loan
+            || a.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder
+            || a.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Samples)
             && a.WarehouseId == warehouseId && (!orderstatusId.HasValue || a.OrderProcessStatusId == orderstatusId) && a.TenentId == tenantId && a.IsDeleted != true)
 
             .Include(x => x.Order);
@@ -484,10 +483,10 @@ namespace Ganedata.Core.Services
         {
 
             var result = _currentDbContext.Order.AsNoTracking().Where(o =>
-                    o.TenentId == tenantId && o.WarehouseId == warehouseId && (!statusId.HasValue || o.OrderStatusID == statusId.Value) && (o.OrderStatusID == (int)OrderStatusEnum.Active || o.OrderStatusID == (int)OrderStatusEnum.Hold || o.OrderStatusID == (int)OrderStatusEnum.BeingPicked || o.OrderStatusID == (int)OrderStatusEnum.AwaitingAuthorisation) && (o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.SalesOrder
-                            || o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Proforma || o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Quotation ||
-                            o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Samples || o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Loan) && o.IsDeleted != true)
-                .OrderBy(u=>u.SLAPriorityId).ThenByDescending(x => x.DateCreated)
+                    o.TenentId == tenantId && o.WarehouseId == warehouseId && (!statusId.HasValue || o.OrderStatusID == statusId.Value) && (o.OrderStatusID == (int)OrderStatusEnum.Active || o.OrderStatusID == (int)OrderStatusEnum.Hold || o.OrderStatusID == (int)OrderStatusEnum.BeingPicked || o.OrderStatusID == (int)OrderStatusEnum.AwaitingAuthorisation) && (o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder
+                            || o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Proforma || o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Quotation ||
+                            o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Samples || o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Loan) && o.IsDeleted != true)
+                .OrderBy(u => u.SLAPriorityId).ThenByDescending(x => x.DateCreated)
                 .Select(p => new SalesOrderViewModel()
                 {
                     OrderID = p.OrderID,
@@ -501,12 +500,12 @@ namespace Ganedata.Core.Services
                     InvoiceNo = p.InvoiceNo,
                     InvoiceDetails = p.InvoiceDetails,
                     OrderCost = p.OrderCost,
-                    OrderTypeId = p.TransactionType.InventoryTransactionTypeId,
-                    OrderType = p.TransactionType.OrderType,
+                    OrderTypeId = p.InventoryTransactionTypeId,
+                    OrderType = p.InventoryTransactionTypeId,
                     AccountName = p.Account.CompanyName,
                     Currecny = p.AccountCurrency.CurrencyName,
                     OrderTotal = p.OrderTotal,
-                    SLAPriorityId=p.SLAPriorityId,
+                    SLAPriorityId = p.SLAPriorityId,
                     PickerName = p.Picker == null ? "" : p.Picker.UserLastName + ", " + p.Picker.UserFirstName,
                     EmailCount = _currentDbContext.TenantEmailNotificationQueues.Count(u => u.OrderId == p.OrderID),
                     OrderNotesList = p.OrderNotes.Where(m => m.IsDeleted != true).Select(s => new OrderNotesViewModel()
@@ -526,9 +525,9 @@ namespace Ganedata.Core.Services
 
 
             var result = _currentDbContext.Order.AsNoTracking().Where(o =>
-                    o.TenentId == tenantId && o.WarehouseId == warehouseId && ((type.HasValue && o.OrderStatusID == type) || !type.HasValue) && (o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.SalesOrder
-                            || o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Proforma || o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Quotation ||
-                            o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Samples || o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Loan) && o.IsDeleted != true)
+                    o.TenentId == tenantId && o.WarehouseId == warehouseId && ((type.HasValue && o.OrderStatusID == type) || !type.HasValue) && (o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder
+                            || o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Proforma || o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Quotation ||
+                            o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Samples || o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Loan) && o.IsDeleted != true)
                 .OrderByDescending(x => x.DateCreated)
                 .Select(p => new SalesOrderViewModel()
                 {
@@ -543,8 +542,8 @@ namespace Ganedata.Core.Services
                     InvoiceNo = p.InvoiceNo,
                     InvoiceDetails = p.InvoiceDetails,
                     OrderCost = p.OrderCost,
-                    OrderTypeId = p.TransactionType.InventoryTransactionTypeId,
-                    OrderType = p.TransactionType.OrderType,
+                    OrderTypeId = p.InventoryTransactionTypeId,
+                    OrderType = p.InventoryTransactionTypeId,
                     AccountName = p.Account.CompanyName,
                     Currecny = p.AccountCurrency.CurrencyName,
                     OrderTotal = p.OrderTotal,
@@ -568,7 +567,7 @@ namespace Ganedata.Core.Services
             IQueryable<TenantLocations> childWarehouseIds = _currentDbContext.TenantWarehouses.Where(x => x.ParentWarehouseId == warehouseId);
 
             var result = _currentDbContext.Order.AsNoTracking().Where(o =>
-                     o.TenentId == tenantId && (o.WarehouseId == warehouseId || childWarehouseIds.Any(x => x.ParentWarehouseId == warehouseId)) && (!statusId.HasValue || o.OrderStatusID == statusId.Value) && (o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.DirectSales) && o.IsDeleted != true)
+                     o.TenentId == tenantId && (o.WarehouseId == warehouseId || childWarehouseIds.Any(x => x.ParentWarehouseId == warehouseId)) && (!statusId.HasValue || o.OrderStatusID == statusId.Value) && (o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.DirectSales) && o.IsDeleted != true)
                 .OrderByDescending(x => x.DateCreated)
                 .Select(p => new SalesOrderViewModel()
                 {
@@ -583,8 +582,8 @@ namespace Ganedata.Core.Services
                     InvoiceDetails = p.InvoiceDetails,
                     OrderCost = p.OrderCost,
                     OrderDiscount = p.OrderDiscount,
-                    OrderTypeId = p.TransactionType.InventoryTransactionTypeId,
-                    OrderType = p.TransactionType.OrderType,
+                    OrderTypeId = p.InventoryTransactionTypeId,
+                    OrderType = p.InventoryTransactionTypeId,
                     AccountName = p.Account != null ? p.Account.CompanyName : p.Note,
                     Currecny = p.AccountCurrency != null ? p.AccountCurrency.CurrencyName : "",
                     OrderTotal = p.OrderTotal,
@@ -609,7 +608,9 @@ namespace Ganedata.Core.Services
             IQueryable<TenantLocations> childWarehouseIds = _currentDbContext.TenantWarehouses.Where(x => x.ParentWarehouseId == warehouseId);
 
             var result = _currentDbContext.Order.AsNoTracking().Where(o =>
-                     o.TenentId == tenantId && (o.WarehouseId == warehouseId || childWarehouseIds.Any(x => x.ParentWarehouseId == warehouseId)) && (!statusId.HasValue || o.OrderStatusID == statusId.Value) && (o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Returns || o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.WastedReturn) && o.IsDeleted != true)
+                     o.TenentId == tenantId && (o.WarehouseId == warehouseId || childWarehouseIds.Any(x => x.ParentWarehouseId == warehouseId)) && (!statusId.HasValue
+                     || o.OrderStatusID == statusId.Value) && (o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Returns
+                     || o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WastedReturn) && o.IsDeleted != true)
                 .OrderByDescending(x => x.DateCreated)
                 .Select(p => new SalesOrderViewModel()
                 {
@@ -624,8 +625,8 @@ namespace Ganedata.Core.Services
                     InvoiceDetails = p.InvoiceDetails,
                     OrderCost = p.OrderCost,
                     OrderDiscount = p.OrderDiscount,
-                    OrderTypeId = p.TransactionType.InventoryTransactionTypeId,
-                    OrderType = p.TransactionType.OrderType,
+                    OrderTypeId = p.InventoryTransactionTypeId,
+                    OrderType = p.InventoryTransactionTypeId,
                     AccountName = p.Account != null ? p.Account.CompanyName : p.Note,
                     Currecny = p.AccountCurrency != null ? p.AccountCurrency.CurrencyName : "",
                     OrderTotal = p.OrderTotal,
@@ -653,8 +654,8 @@ namespace Ganedata.Core.Services
 
             return _currentDbContext.Order.AsNoTracking().Where(o => o.AccountID == accountId &&
                     o.TenentId == tenantId && (o.OrderStatusID == (int)OrderStatusEnum.Active || o.OrderStatusID == (int)OrderStatusEnum.Complete) &&
-                    (o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.SalesOrder || o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.TransferOut
-                    || o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Loan || o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Samples)
+                    (o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder || o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferOut
+                    || o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Loan || o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Samples)
                     && o.IsDeleted != true && o.DateUpdated > dispatchInitialDate)
                 .OrderByDescending(x => x.DateCreated)
                 .Select(p => new SalesOrderViewModel()
@@ -668,8 +669,8 @@ namespace Ganedata.Core.Services
                     InvoiceNo = p.InvoiceNo,
                     InvoiceDetails = p.InvoiceDetails,
                     OrderCost = p.OrderCost,
-                    OrderTypeId = p.TransactionType.InventoryTransactionTypeId,
-                    OrderType = p.TransactionType.OrderType
+                    OrderTypeId = p.InventoryTransactionTypeId,
+                    OrderType = p.InventoryTransactionTypeId
                 }).ToList();
         }
 
@@ -683,7 +684,7 @@ namespace Ganedata.Core.Services
             if (!unauthorize)
             {
                 order.OrderStatusID = (int)OrderStatusEnum.Approved;
-                if (order.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.SalesOrder)
+                if (order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder)
                 {
                     if (!caCurrent.CurrentWarehouse().AutoAllowProcess)
                     {
@@ -773,7 +774,7 @@ namespace Ganedata.Core.Services
 
         public List<Order> GetDirectSaleOrders(int? orderId)
         {
-            return _currentDbContext.Order.Where(u => ((!orderId.HasValue) || (u.OrderID == orderId)) && u.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.SalesOrder && u.DirectShip == true && u.IsDeleted != true).ToList();
+            return _currentDbContext.Order.Where(u => ((!orderId.HasValue) || (u.OrderID == orderId)) && u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder && u.DirectShip == true && u.IsDeleted != true).ToList();
 
         }
     }

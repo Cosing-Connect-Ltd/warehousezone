@@ -42,11 +42,6 @@ namespace Ganedata.Core.Services
             return _currentDbContext.TenantDepartments.Where(m => m.IsDeleted != true && m.TenantId == tenantId);
         }
 
-        public IEnumerable<InventoryTransactionType> GetAllInventoryTransactionTypes()
-        {
-            return _currentDbContext.InventoryTransactionTypes;
-        }
-
         public IEnumerable<GlobalWeightGroups> GetAllValidGlobalWeightGroups()
         {
             return _currentDbContext.GlobalWeightGroups;

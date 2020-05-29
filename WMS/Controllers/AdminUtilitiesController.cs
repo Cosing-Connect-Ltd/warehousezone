@@ -146,7 +146,7 @@ namespace WMS.Controllers
             foreach (var item in res)
             {
                 var caseQuantity = item.ProductMaster.ProductsPerCase ?? 1;
-                var trans = Inventory.StockTransactionApi(item.ProductId, (int)InventoryTransactionTypeEnum.AdjustmentIn, (item.RemainingCases * caseQuantity), null, CurrentTenantId, CurrentWarehouseId, CurrentUserId, null, item.PalletTrackingId);
+                var trans = Inventory.StockTransactionApi(item.ProductId, InventoryTransactionTypeEnum.AdjustmentIn, (item.RemainingCases * caseQuantity), null, CurrentTenantId, CurrentWarehouseId, CurrentUserId, null, item.PalletTrackingId);
 
                 if (trans != null)
                 {
@@ -177,7 +177,7 @@ namespace WMS.Controllers
                 counter++;
                 remaining--;
                 var caseQuantity = item.ProductMaster.ProductsPerCase ?? 1;
-                var trans = Inventory.StockTransactionApi(item.ProductId, (int)InventoryTransactionTypeEnum.AdjustmentOut, (item.RemainingCases * caseQuantity), null, CurrentTenantId, CurrentWarehouseId, CurrentUserId, null, item.PalletTrackingId);
+                var trans = Inventory.StockTransactionApi(item.ProductId, InventoryTransactionTypeEnum.AdjustmentOut, (item.RemainingCases * caseQuantity), null, CurrentTenantId, CurrentWarehouseId, CurrentUserId, null, item.PalletTrackingId);
                 if (trans != null)
                 {
                     item.DateUpdated = DateTime.UtcNow;

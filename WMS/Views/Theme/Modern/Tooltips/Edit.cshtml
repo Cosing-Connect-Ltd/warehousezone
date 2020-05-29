@@ -26,7 +26,7 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(m => m.TooltipId)
+    @Html.HiddenFor(m => m.Id)
 
     <div id="tooltip-detail">
         <div class="col-md-6 pull-left">
@@ -47,7 +47,7 @@
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
-                    @Html.EditorFor(model => model.Description)
+                    @Html.TextAreaFor(model => model.Description, new { @class = "tooltip-description" })
                     @Html.ValidationMessageFor(model => model.Description)
                 </div>
             </div>

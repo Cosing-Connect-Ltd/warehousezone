@@ -595,7 +595,7 @@ namespace WMS.Controllers
                 {
                     var Id = item.AsInt();
                     var orderprocesses = context.OrderProcess.FirstOrDefault(u => u.OrderProcessID == Id);
-                    if (orderprocesses != null && orderprocesses?.Order?.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.PurchaseOrder)
+                    if (orderprocesses != null && orderprocesses?.Order?.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder)
                     {
                         orderprocesses.OrderProcessStatusId = (int)OrderProcessStatusEnum.PostedToAccounts;
                         orderprocesses.UpdatedBy = CurrentUserId;

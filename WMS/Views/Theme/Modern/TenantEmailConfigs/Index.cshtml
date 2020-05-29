@@ -39,7 +39,7 @@
 <div>
     @Html.Hidden("selkey", null, new { @class = "selkey" })
 
-    @Html.Partial("~/Views/TenantEmailConfigs/_TenantEmailConfigGridViewPartial.cshtml", Model)
+    @Html.Partial("_TenantEmailConfigGridViewPartial", Model)
     <div class="col-md-12 pull-right bottom-right">
 
         @if (WMS.Helpers.LayoutHelpers.ActivityValidator("TenantEmailConfigs", "Create"))

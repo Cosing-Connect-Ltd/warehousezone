@@ -24,7 +24,6 @@ namespace WMS.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
         public ActionResult SettingsBar()
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }

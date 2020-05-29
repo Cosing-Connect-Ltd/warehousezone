@@ -985,7 +985,7 @@ namespace Ganedata.Core.Services
                             _context.Entry(productSerial).State = EntityState.Modified;
                             _context.SaveChanges();
 
-                            Inventory.StockTransaction(inventoryProduct.ProductId, (int)productSerial.CurrentStatus, 1, null, serialStocktakeDetail.FirstOrDefault().StockTakeDetail.LocationId, null, productSerial.SerialID);
+                            Inventory.StockTransaction(inventoryProduct.ProductId, productSerial.CurrentStatus, 1, null, serialStocktakeDetail.FirstOrDefault().StockTakeDetail.LocationId, null, productSerial.SerialID);
 
                         }
                     }
@@ -996,7 +996,7 @@ namespace Ganedata.Core.Services
                         foreach (var palletSerial in palletSerials)
                         {
                             decimal casesDifference = 0;
-                            int transType = 0;
+                            InventoryTransactionTypeEnum transType = 0;
                             int? locationId = null;
 
                             var stocktakePallet = _context.StockTakeDetailsPallets.FirstOrDefault(x => x.ProductPalletId == palletSerial.PalletTrackingId);
@@ -1010,7 +1010,7 @@ namespace Ganedata.Core.Services
                                     if (stocktakePallet.StockTakeDetail.Quantity > palletSerial.RemainingCases)
                                     {
                                         casesDifference = stocktakePallet.StockTakeDetail.Quantity - palletSerial.RemainingCases;
-                                        transType = (int)InventoryTransactionTypeEnum.AdjustmentIn;
+                                        transType = InventoryTransactionTypeEnum.AdjustmentIn;
 
                                         palletSerial.RemainingCases = stocktakePallet.StockTakeDetail.Quantity;
                                         palletSerial.Status = PalletTrackingStatusEnum.Active;
@@ -1021,7 +1021,7 @@ namespace Ganedata.Core.Services
                                     else if (stocktakePallet.StockTakeDetail.Quantity < palletSerial.RemainingCases)
                                     {
                                         casesDifference = palletSerial.RemainingCases - stocktakePallet.StockTakeDetail.Quantity;
-                                        transType = (int)InventoryTransactionTypeEnum.AdjustmentOut;
+                                        transType = InventoryTransactionTypeEnum.AdjustmentOut;
 
                                         palletSerial.RemainingCases = stocktakePallet.StockTakeDetail.Quantity;
                                         palletSerial.Status = PalletTrackingStatusEnum.Active;
@@ -1035,7 +1035,7 @@ namespace Ganedata.Core.Services
                                             (palletSerial.Status == PalletTrackingStatusEnum.Completed && stocktakePallet.StockTakeDetail.Quantity > 0))
                                         {
                                             casesDifference = stocktakePallet.StockTakeDetail.Quantity;
-                                            transType = (int)InventoryTransactionTypeEnum.AdjustmentIn;
+                                            transType = InventoryTransactionTypeEnum.AdjustmentIn;
 
                                             palletSerial.RemainingCases = stocktakePallet.StockTakeDetail.Quantity;
                                             palletSerial.Status = PalletTrackingStatusEnum.Active;
@@ -1053,7 +1053,7 @@ namespace Ganedata.Core.Services
                                 if (palletSerial.Status == PalletTrackingStatusEnum.Active)
                                 {
                                     casesDifference = palletSerial.RemainingCases;
-                                    transType = (int)InventoryTransactionTypeEnum.AdjustmentOut;
+                                    transType = InventoryTransactionTypeEnum.AdjustmentOut;
 
                                     palletSerial.RemainingCases = 0;
                                     palletSerial.Status = PalletTrackingStatusEnum.Completed;
@@ -1080,7 +1080,7 @@ namespace Ganedata.Core.Services
                             if (currentAdjustment != 0)
                             {
 
-                                int inventoryTransactionTypeId = currentAdjustment < 0 ? (int)InventoryTransactionTypeEnum.AdjustmentOut : (int)InventoryTransactionTypeEnum.AdjustmentIn;
+                                InventoryTransactionTypeEnum inventoryTransactionTypeId = currentAdjustment < 0 ? InventoryTransactionTypeEnum.AdjustmentOut : InventoryTransactionTypeEnum.AdjustmentIn;
 
                                 Inventory.StockTransaction(inventoryProduct.ProductId, inventoryTransactionTypeId, Math.Abs(currentAdjustment), null);
 

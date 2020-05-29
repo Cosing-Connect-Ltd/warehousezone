@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ganedata.Core.Entities.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -27,11 +28,9 @@ namespace Ganedata.Core.Entities.Domain
         [Key]
         [Display(Name = "Process Id")]
         public int OrderProcessID { get; set; }
-        //  [Required]
         [Display(Name = "Delivery Number")]
         public string DeliveryNO { get; set; }
         [Display(Name = "Consignment Type")]
-        // [Required]
         public int? ConsignmentTypeId { get; set; }
         [Required]
         [Display(Name = "Order Id")]
@@ -56,9 +55,7 @@ namespace Ganedata.Core.Entities.Domain
 
         public string InvoiceNo { get; set; }
 
-        public int? InventoryTransactionTypeId { get; set; }
-        [ForeignKey("InventoryTransactionTypeId")]
-        public virtual InventoryTransactionType InventoryTransactionType { get; set; }
+        public InventoryTransactionTypeEnum? InventoryTransactionTypeId { get; set; }
 
         public int? OrderProcessStatusId { get; set; }
         [ForeignKey("OrderProcessStatusId")]

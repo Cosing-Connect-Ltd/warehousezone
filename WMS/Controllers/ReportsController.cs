@@ -142,18 +142,16 @@ namespace WMS.Controllers
             marketTotal.paramStartDate.Value = DateTime.Today.AddMonths(-1);
             marketTotal.paramEndDate.Value = DateTime.Today;
             MarketListViewModel markets = _marketServices.GetAllValidMarkets(CurrentTenantId);
-            var model = LookupServices.GetAllInventoryTransactionTypes().Select(u => new
-            {
-                u.InventoryTransactionTypeId,
-                u.InventoryTransactionTypeName
 
-            }).Where(u => u.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.DirectSales || u.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Returns || u.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Exchange).ToList();
+            var transactionTypes = from InventoryTransactionTypeEnum d in Enum.GetValues(typeof(InventoryTransactionTypeEnum))
+                                   where d == InventoryTransactionTypeEnum.DirectSales || d == InventoryTransactionTypeEnum.Returns || d == InventoryTransactionTypeEnum.Exchange
+                                   select new { InventoryTransactionTypeId = (int)d, InventoryTransactionTypeName = d.ToString() };
 
             StaticListLookUpSettings setting = (StaticListLookUpSettings)marketTotal.MarketId.LookUpSettings;
             var marketlist = markets.Markets.ToList();
             setting.LookUpValues.AddRange(marketlist.Select(u => new LookUpValue(u.Id, u.Name)));
             StaticListLookUpSettings invtrans = (StaticListLookUpSettings)marketTotal.InventoryTransType.LookUpSettings;
-            invtrans.LookUpValues.AddRange(model.Select(u => new LookUpValue(u.InventoryTransactionTypeId, u.InventoryTransactionTypeName)));
+            invtrans.LookUpValues.AddRange(transactionTypes.Select(u => new LookUpValue(u.InventoryTransactionTypeId, u.InventoryTransactionTypeName)));
 
 
 
@@ -1024,7 +1022,9 @@ namespace WMS.Controllers
             StaticListLookUpSettings propertiesSettings = (StaticListLookUpSettings)OrderReport.paramProperty.LookUpSettings;
             StaticListLookUpSettings accountsSettings = (StaticListLookUpSettings)OrderReport.paramAccountIds.LookUpSettings;
 
-            var transactionTypes = LookupServices.GetAllInventoryTransactionTypes();
+            var transactionTypes = from InventoryTransactionTypeEnum d in Enum.GetValues(typeof(InventoryTransactionTypeEnum))
+                                   select new { InventoryTransactionTypeId = (int)d, InventoryTransactionTypeName = d.ToString() };
+
             transactionTypesSettings.LookUpValues.AddRange(transactionTypes.Select(m => new LookUpValue(m.InventoryTransactionTypeId, m.InventoryTransactionTypeName)));
 
             var accounts = _accountServices.GetAllValidAccounts(CurrentTenantId).ToList();
@@ -1078,16 +1078,11 @@ namespace WMS.Controllers
             OrderTotal.paramEndDate.Value = DateTime.Now;
             OrderTotal.paramTenantId.Value = CurrentTenantId;
             StaticListLookUpSettings transactionTypesSettings = (StaticListLookUpSettings)OrderTotal.paramTransactionTypes.LookUpSettings;
-            var transactionTypes = LookupServices.GetAllInventoryTransactionTypes();
+
+            var transactionTypes = from InventoryTransactionTypeEnum d in Enum.GetValues(typeof(InventoryTransactionTypeEnum))
+                                   select new { InventoryTransactionTypeId = (int)d, InventoryTransactionTypeName = d.ToString() };
+
             transactionTypesSettings.LookUpValues.AddRange(transactionTypes.Select(m => new LookUpValue(m.InventoryTransactionTypeId, m.InventoryTransactionTypeName)));
-
-            //var accounts = _accountServices.GetAllValidAccounts(CurrentTenantId).ToList();
-            //accountsSettings.LookUpValues.AddRange(accounts.Select(m => new LookUpValue(m.AccountID, m.CompanyName)));
-
-            //var properties = PropertyService.GetAllValidProperties().ToList();
-            //propertiesSettings.LookUpValues.AddRange(properties.Select(m => new LookUpValue(m.PPropertyId, m.AddressLine1)));
-
-            //OrderReport.DataSourceDemanded += OrderReport_DataSourceDemanded;
 
             return OrderTotal;
         }

@@ -231,18 +231,18 @@ namespace WMS.Controllers
             }
         }
 
-        public string GetAnchorForInventoryTransactionTypeId(int id)
+        public string GetAnchorForInventoryTransactionTypeId(InventoryTransactionTypeEnum id)
         {
             switch (id)
             {
                 default:
-                case (int)InventoryTransactionTypeEnum.PurchaseOrder:
+                case InventoryTransactionTypeEnum.PurchaseOrder:
                     return "PO";
-                case (int)InventoryTransactionTypeEnum.SalesOrder:
+                case InventoryTransactionTypeEnum.SalesOrder:
                     return "SO";
-                case (int)InventoryTransactionTypeEnum.WorksOrder:
+                case InventoryTransactionTypeEnum.WorksOrder:
                     return "WO";
-                case (int)InventoryTransactionTypeEnum.TransferIn:
+                case InventoryTransactionTypeEnum.TransferIn:
                     return "TO";
             }
         }

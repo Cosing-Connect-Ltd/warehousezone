@@ -93,7 +93,7 @@ namespace WMS.Controllers
             goodsReturnRequestSync.OrderId = orderId ?? 0;
             goodsReturnRequestSync.deliveryNumber = DeliveryNo;
             goodsReturnRequestSync.OrderDetailID = OrderDetailID;
-            goodsReturnRequestSync.InventoryTransactionType = type;
+            goodsReturnRequestSync.InventoryTransactionType = (InventoryTransactionTypeEnum)type;
             goodsReturnRequestSync.tenantId = CurrentTenantId;
             goodsReturnRequestSync.warehouseId = warehouseId;
             goodsReturnRequestSync.userId = CurrentUserId;
@@ -109,10 +109,13 @@ namespace WMS.Controllers
             ViewBag.Accounts = new SelectList(AccountServices.GetAllValidAccounts(CurrentTenantId, accountType), "AccountID", "AccountNameCode");
 
             ViewBag.OrderStatus = new SelectList(LookupServices.GetAllOrderStatuses(), "OrderStatusID", "Status");
-            ViewBag.TransTypes = new SelectList(LookupServices.GetAllInventoryTransactionTypes()
-                .Where(a => a.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.SalesOrder || a.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Proforma
-                || a.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Loan || a.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Exchange
-                || a.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Quotation || a.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Samples).ToList(), "InventoryTransactionTypeId", "OrderType");
+
+            var transactionTypes = from InventoryTransactionTypeEnum d in Enum.GetValues(typeof(InventoryTransactionTypeEnum))
+                                   where d == InventoryTransactionTypeEnum.SalesOrder || d == InventoryTransactionTypeEnum.Proforma || d == InventoryTransactionTypeEnum.Loan
+                                   || d == InventoryTransactionTypeEnum.Exchange || d == InventoryTransactionTypeEnum.Quotation || d == InventoryTransactionTypeEnum.Samples
+                                   select new { InventoryTransactionTypeId = (int)d, InventoryTransactionTypeName = d.ToString() };
+
+            ViewBag.TransTypes = new SelectList(transactionTypes, "InventoryTransactionTypeId", "InventoryTransactionTypeName");
 
             var loans = (from ln in LookupServices.GetAllValidTenantLoanTypes(CurrentTenantId)
                          select new
@@ -213,7 +216,7 @@ namespace WMS.Controllers
                     //send ingredients email for certain categories
                     var productCategoryTc = _tenantServices.GetTenantConfigById(Order.TenentId)?.ProductCatagories;
 
-                    if (Order.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.SalesOrder && !string.IsNullOrEmpty(productCategoryTc))
+                    if (Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder && !string.IsNullOrEmpty(productCategoryTc))
                     {
                         var productcategoryList = productCategoryTc.Split(',').Select(int.Parse).ToList();
                         if (Order.OrderDetails.Any(x => productcategoryList.Contains((int?)x.ProductMaster?.ProductGroupId ?? 0)))
@@ -472,7 +475,7 @@ namespace WMS.Controllers
                 ViewBag.PreventProcessing = true;
                 ViewBag.Error = "This order is awaiting authorisation and cannot be processed";
             }
-            if (order.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Proforma || order.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Quotation)
+            if (order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Proforma || order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Quotation)
             {
                 ViewBag.PreventProcessing = true;
                 ViewBag.Error = "This order requires approval to a sales order for processing.";
@@ -844,7 +847,7 @@ namespace WMS.Controllers
                 int OrderId = int.Parse(Request.Params["orderId"].ToString());
                 ViewBag.OrdersId = OrderId;
                 var orders = OrderService.GetOrderById(OrderId);
-                var accountContact = AccountServices.GetAllValidAccountContactsByAccountId(orders?.Account?.AccountID??0, CurrentTenantId).Where(u => u.ConTypeInvoices = true).ToList();
+                var accountContact = AccountServices.GetAllValidAccountContactsByAccountId(orders?.Account?.AccountID ?? 0, CurrentTenantId).Where(u => u.ConTypeInvoices = true).ToList();
                 if (accountContact.Count > 0)
                 {
                     var selected = accountContact.Select(u => u.AccountContactId.ToString()).ToList();
@@ -863,7 +866,7 @@ namespace WMS.Controllers
 
             }
 
-            return PartialView("~/Views/EmailTemplates/_EmailRecipientsPartial.cshtml");
+            return PartialView("EmailRecipientsPartial");
 
         }
 
@@ -898,7 +901,7 @@ namespace WMS.Controllers
                         worksOrderNotificationType: WorksOrderNotificationTypeEnum.SalesOrderUpdateTemplate);
                     return Json(result, JsonRequestBehavior.AllowGet);
                 }
-                else if (Order.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.SalesOrder)
+                else if (Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder)
                 {
                     var report = CreateSalesOrderPrint(Order.OrderID);
                     PrepareDirectory("~/UploadedFiles/reports/so/");
@@ -923,24 +926,24 @@ namespace WMS.Controllers
         public async Task<JsonResult> SendEmailReport(OrderRecipientInfo shipmentAndRecipientInfo)
         {
 
-            if (string.IsNullOrEmpty(shipmentAndRecipientInfo.CustomRecipients) &&shipmentAndRecipientInfo.AccountEmailContacts == null)
+            if (string.IsNullOrEmpty(shipmentAndRecipientInfo.CustomRecipients) && shipmentAndRecipientInfo.AccountEmailContacts == null)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                
+
                 if (shipmentAndRecipientInfo.AccountEmailContacts != null)
                 {
                     var accountContact = _accountServices.GetAllValidAccountContactsByAccountContactIds(shipmentAndRecipientInfo.AccountEmailContacts).ToList();
                     var accountContactEmails = string.Join(";", accountContact.Select(u => u.ContactEmail));
                     shipmentAndRecipientInfo.CustomRecipients = string.IsNullOrEmpty(accountContactEmails) ? shipmentAndRecipientInfo.CustomRecipients : (shipmentAndRecipientInfo.CustomRecipients + ";" + accountContactEmails);
                 }
-               
+
                 if (shipmentAndRecipientInfo.orderId.HasValue)
                 {
                     var orders = OrderService.GetOrderById(shipmentAndRecipientInfo.orderId ?? 0);
-                    var report = CreateSalesOrderPrint((shipmentAndRecipientInfo.orderId??0),true);
+                    var report = CreateSalesOrderPrint((shipmentAndRecipientInfo.orderId ?? 0), true);
                     PrepareDirectory("~/UploadedFiles/reports/dso/");
                     var reportPath = "~/UploadedFiles/reports/dso/" + orders.OrderNumber + ".pdf";
                     report.ExportToPdf(Server.MapPath(reportPath));
@@ -999,7 +1002,7 @@ namespace WMS.Controllers
                         Qty = _productServices.GetInventoryTransactionsByPalletTrackingId(PalletTrackingId, OrderProcessDetailId);
                         orderprocessDetail.QtyProcessed = Qty;
                     }
-                   
+
                     return View(orderprocessDetail);
                 }
             }
@@ -1032,10 +1035,10 @@ namespace WMS.Controllers
 
         }
 
-        public JsonResult UpdateOrderProcessDetail(int OrderProcessDetailId, decimal Quantity, int? serialId,int?PalletTrackingId, bool? wastedReturn)
+        public JsonResult UpdateOrderProcessDetail(int OrderProcessDetailId, decimal Quantity, int? serialId, int? PalletTrackingId, bool? wastedReturn)
         {
 
-            string status = OrderService.UpdateOrderProcessDetail(OrderProcessDetailId, Quantity, CurrentUserId, CurrentTenantId, serialId,PalletTrackingId, wastedReturn);
+            string status = OrderService.UpdateOrderProcessDetail(OrderProcessDetailId, Quantity, CurrentUserId, CurrentTenantId, serialId, PalletTrackingId, wastedReturn);
 
 
             return Json(status, JsonRequestBehavior.AllowGet);
@@ -1061,13 +1064,13 @@ namespace WMS.Controllers
         {
             ViewBag.OrderIds = OrderId;
             var UserId = OrderService.GetOrderById(OrderId).PickerId;
-            ViewBag.Picker = new SelectList(_userService.GetAllAuthUsers(CurrentTenantId), "UserId", "DisplayName",UserId);
+            ViewBag.Picker = new SelectList(_userService.GetAllAuthUsers(CurrentTenantId), "UserId", "DisplayName", UserId);
             return View();
         }
 
         public JsonResult SaveAssignPicker(int OrderId, int? PickerId)
         {
-            var status = OrderService.UpdatePickerId(OrderId, PickerId,CurrentUserId);
+            var status = OrderService.UpdatePickerId(OrderId, PickerId, CurrentUserId);
             return Json(status, JsonRequestBehavior.AllowGet);
         }
 

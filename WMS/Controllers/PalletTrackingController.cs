@@ -90,7 +90,7 @@ namespace WMS.Controllers
                             opd.Quantity,
                             opd.DateCreated,
                             OrderNumber = opd.Order != null ? opd.Order.OrderNumber : "",
-                            opd.InventoryTransactionType.InventoryTransactionTypeName,
+                            opd.InventoryTransactionTypeId,
                             opd.LastQty
                         }).ToList();
 
@@ -144,7 +144,7 @@ namespace WMS.Controllers
         public ActionResult OrderAuthzComboBoxPartial()
         {
             ViewBag.OrderAuth = true;
-            return PartialView("~/Views/Shared/OrderAuthComboBoxPartial.cshtml");
+            return PartialView("OrderAuthComboBoxPartial");
         }
 
         public JsonResult SyncDate(int palletTrackingId)

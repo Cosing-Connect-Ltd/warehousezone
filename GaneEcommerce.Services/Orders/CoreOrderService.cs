@@ -28,7 +28,7 @@ namespace Ganedata.Core.Services
         {
             return OrderService.GenerateNextOrderNumber(type, tenantId);
         }
-        public Order CreateOrderByOrderNumber(string orderNumber, int productId, int tenantId, int warehouseId, int transType, int userId,decimal quantity)
+        public Order CreateOrderByOrderNumber(string orderNumber, int productId, int tenantId, int warehouseId, InventoryTransactionTypeEnum transType, int userId,decimal quantity)
         {
             return OrderService.CreateOrderByOrderNumber(orderNumber, productId, tenantId, warehouseId, transType, userId,quantity);
 
@@ -170,7 +170,7 @@ namespace Ganedata.Core.Services
             return OrderService.GetAllReturnsForOrderProduct(orderId, productId);
         }
 
-        public OrderProcess GetOrderProcessByDeliveryNumber(int orderId, int transactiontypeId, string deliveryNumber, int userId, DateTime? createdDate, int warehouseId = 0, AccountShipmentInfo shipmentInfo = null)
+        public OrderProcess GetOrderProcessByDeliveryNumber(int orderId, InventoryTransactionTypeEnum transactiontypeId, string deliveryNumber, int userId, DateTime? createdDate, int warehouseId = 0, AccountShipmentInfo shipmentInfo = null)
         {
             return OrderService.GetOrderProcessByDeliveryNumber(orderId, transactiontypeId, deliveryNumber, userId, createdDate, warehouseId, shipmentInfo);
         }
@@ -236,7 +236,7 @@ namespace Ganedata.Core.Services
             return OrderService.GetAllOrderProcessesByOrderDetailId(orderDetailId, warehouseId);
         }
 
-        public IQueryable<OrderProcess> GetAllOrderProcesses(DateTime? ordersAfter, int? orderId, int? orderProcessStatusId = null, int? transactionTypeId = null, bool includeDeleted = false)
+        public IQueryable<OrderProcess> GetAllOrderProcesses(DateTime? ordersAfter, int? orderId, int? orderProcessStatusId = null, InventoryTransactionTypeEnum? transactionTypeId = null, bool includeDeleted = false)
         {
             return OrderService.GetAllOrderProcesses(ordersAfter, orderId, orderProcessStatusId, transactionTypeId, includeDeleted);
         }
@@ -346,12 +346,6 @@ namespace Ganedata.Core.Services
             return PurchaseOrderService.GetAllPurchaseOrders(tenantId);
         }
 
-
-        public InventoryTransactionType GetInventoryTransactionTypeById(int inventoryTransactionTypeId)
-        {
-            return OrderService.GetInventoryTransactionTypeById(inventoryTransactionTypeId);
-        }
-
         public OrderStatus GetOrderstatusByName(string statusName)
         {
             return OrderService.GetOrderstatusByName(statusName);
@@ -394,7 +388,7 @@ namespace Ganedata.Core.Services
         }
 
         public Order CreateBlindShipmentOrder(List<BSDto> bsList, int accountId, string deliveryNumber, string poNumber, int tenantId,
-            int warehouseId, int userId, int transType, AccountShipmentInfo accountShipmentInfo = null)
+            int warehouseId, int userId, InventoryTransactionTypeEnum transType, AccountShipmentInfo accountShipmentInfo = null)
         {
             return PurchaseOrderService.CreateBlindShipmentOrder(bsList, accountId, deliveryNumber, poNumber, tenantId, warehouseId, userId, transType, accountShipmentInfo);
         }
@@ -611,7 +605,7 @@ namespace Ganedata.Core.Services
 
             return TransferOrderService.DeleteTransferOrder(orderId, tenantId, warehouseId, userId);
         }
-        public InventoryTransaction AddGoodsReturnPallet(List<string> serials, string orderNumber, int prodId, int transactionTypeId, decimal quantity, int? OrderId, int tenantId, int currentWarehouseId, int UserId, int palletTrackingId = 0)
+        public InventoryTransaction AddGoodsReturnPallet(List<string> serials, string orderNumber, int prodId, InventoryTransactionTypeEnum transactionTypeId, decimal quantity, int? OrderId, int tenantId, int currentWarehouseId, int UserId, int palletTrackingId = 0)
         {
             return OrderService.AddGoodsReturnPallet(serials, orderNumber, prodId, transactionTypeId, quantity, OrderId, tenantId, currentWarehouseId, UserId, palletTrackingId);
         }
@@ -653,7 +647,7 @@ namespace Ganedata.Core.Services
         {
             return OrderService.GetOrderProcessbyOrderId(OrderId);
         }
-        public bool CheckOrdersAuthroization(decimal OrderTotal, int InventoryTransactionType, int TenantId, int UserId, double? CreditLimit = null)
+        public bool CheckOrdersAuthroization(decimal OrderTotal, InventoryTransactionTypeEnum InventoryTransactionType, int TenantId, int UserId, double? CreditLimit = null)
         {
             return OrderService.CheckOrdersAuthroization(OrderTotal, InventoryTransactionType, TenantId, UserId, CreditLimit);
         }

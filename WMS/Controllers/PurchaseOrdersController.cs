@@ -80,7 +80,7 @@ namespace WMS.Controllers
                     ViewBag.ForceRegeneratePageToken = "True";
                     ViewBag.ForceRegeneratedPageToken = Guid.NewGuid().ToString();
                 }
-                NewOrder.InventoryTransactionTypeId =(int)InventoryTransactionTypeEnum.PurchaseOrder;
+                NewOrder.InventoryTransactionTypeId = InventoryTransactionTypeEnum.PurchaseOrder;
                 GaneOrderDetailsSessionHelper.SetOrderDetailSessions(ViewBag.ForceRegeneratedPageToken, new List<OrderDetailSessionViewModel>());
                 GaneOrderNotesSessionHelper.SetOrderNotesSessions(ViewBag.ForceRegeneratedPageToken, new List<OrderNotes>());
                 return View(NewOrder);
@@ -802,7 +802,7 @@ namespace WMS.Controllers
             {
                 product.Id = 1;
             }
-          
+
             lst.Add(product);
             return null;
         }
@@ -826,7 +826,7 @@ namespace WMS.Controllers
 
 
 
-        public JsonResult _ConfirmBS(int account, string delivery, int type, AccountShipmentInfo accountShipmentInfo)
+        public JsonResult _ConfirmBS(int account, string delivery, InventoryTransactionTypeEnum type, AccountShipmentInfo accountShipmentInfo)
         {
 
             try
@@ -834,7 +834,7 @@ namespace WMS.Controllers
                 var bsList = Session["bsList"] as List<BSDto>;
                 if (bsList == null || bsList.Count == 0)
                     return Json(new { error = true, msg = "Session expired" });
-                var order = OrderService.CreateBlindShipmentOrder(bsList, account, delivery, GeneratePO(type), CurrentTenantId, CurrentWarehouseId, CurrentUserId, type, accountShipmentInfo);
+                var order = OrderService.CreateBlindShipmentOrder(bsList, account, delivery, GeneratePO((int)type), CurrentTenantId, CurrentWarehouseId, CurrentUserId, type, accountShipmentInfo);
                 return null;
             }
             catch (Exception exp)
@@ -856,7 +856,7 @@ namespace WMS.Controllers
             var bsList = Session["bsList"] as List<BSDto>;
             var itemtoedit = bsList.Find(a => a.Id == Id);
             return Json(itemtoedit, JsonRequestBehavior.AllowGet);
-           
+
         }
         #endregion
 
@@ -968,7 +968,7 @@ namespace WMS.Controllers
         {
             if (value == "Group")
             {
-               var Groups = new SelectList(LookupServices.GetAllValidProductGroups(CurrentTenantId), "ProductGroupId", "ProductGroup");
+                var Groups = new SelectList(LookupServices.GetAllValidProductGroups(CurrentTenantId), "ProductGroupId", "ProductGroup");
                 return Json(Groups, JsonRequestBehavior.AllowGet);
             }
             else
@@ -981,9 +981,10 @@ namespace WMS.Controllers
 
         public JsonResult GetAccountAddressByAccountId(int id)
         {
-            var accountaddress = _accountServices.GetAllValidAccountAddressesByAccountId(id).OrderBy(u => u.AddTypeShipping).Select(u=> new{
-                AccountAddressId=u.AddressID,
-                AccountAddress=u.FullAddressValue
+            var accountaddress = _accountServices.GetAllValidAccountAddressesByAccountId(id).OrderBy(u => u.AddTypeShipping).Select(u => new
+            {
+                AccountAddressId = u.AddressID,
+                AccountAddress = u.FullAddressValue
 
             });
             return Json(accountaddress, JsonRequestBehavior.AllowGet);

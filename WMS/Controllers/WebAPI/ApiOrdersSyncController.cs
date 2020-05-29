@@ -125,7 +125,7 @@ namespace WMS.Controllers.WebAPI
                     }
                     if (product.ProcessByPallet)
                     {
-                        if (model.InventoryTransactionType.HasValue && (model.InventoryTransactionType == (int)InventoryTransactionTypeEnum.PurchaseOrder || model.InventoryTransactionType == (int)InventoryTransactionTypeEnum.SalesOrder))
+                        if (model.InventoryTransactionType.HasValue && (model.InventoryTransactionType == InventoryTransactionTypeEnum.PurchaseOrder || model.InventoryTransactionType == InventoryTransactionTypeEnum.SalesOrder))
                         {
                             proccess = false;
                         }

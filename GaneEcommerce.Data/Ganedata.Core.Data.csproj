@@ -867,6 +867,10 @@
     <Compile Include="Migrations\202005271206092_Website-Apis-in-seperate-tables.designer.cs">
       <DependentUpon>202005271206092_Website-Apis-in-seperate-tables.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005282319067_Inventory-Transaction-Types-Table-Removed.cs" />
+    <Compile Include="Migrations\202005282319067_Inventory-Transaction-Types-Table-Removed.designer.cs">
+      <DependentUpon>202005282319067_Inventory-Transaction-Types-Table-Removed.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1837,6 +1841,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005271206092_Website-Apis-in-seperate-tables.resx">
       <DependentUpon>202005271206092_Website-Apis-in-seperate-tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005282319067_Inventory-Transaction-Types-Table-Removed.resx">
+      <DependentUpon>202005282319067_Inventory-Transaction-Types-Table-Removed.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

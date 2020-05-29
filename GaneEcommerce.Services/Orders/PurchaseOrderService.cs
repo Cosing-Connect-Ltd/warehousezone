@@ -32,7 +32,7 @@ namespace Ganedata.Core.Services
 
         public List<PurchaseOrderViewModel> GetAllPurchaseOrders(int tenantId)
         {
-            return _currentDbContext.Order.Where(o => o.TenentId == tenantId && o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.PurchaseOrder && o.IsDeleted != true).Select(p => new PurchaseOrderViewModel()
+            return _currentDbContext.Order.Where(o => o.TenentId == tenantId && o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder && o.IsDeleted != true).Select(p => new PurchaseOrderViewModel()
             {
                 OrderID = p.OrderID,
                 OrderNumber = p.OrderNumber,
@@ -65,7 +65,7 @@ namespace Ganedata.Core.Services
             order.WarehouseId = warehouseId;
             order.UpdatedBy = userId;
 
-            order.InventoryTransactionTypeId = (int)InventoryTransactionTypeEnum.PurchaseOrder;
+            order.InventoryTransactionTypeId = InventoryTransactionTypeEnum.PurchaseOrder;
             if (!caCurrent.CurrentWarehouse().AutoAllowProcess)
             {
                 order.OrderStatusID = (int)OrderStatusEnum.Hold;
@@ -535,7 +535,7 @@ namespace Ganedata.Core.Services
         public IQueryable<OrderProcess> GetAllPurchaseOrderProcesses(int tenantId, int warehouseId)
         {
             return _currentDbContext.OrderProcess
-                .Where(a => a.Order.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.PurchaseOrder && a.IsDeleted != true && a.WarehouseId == warehouseId && a.TenentId == tenantId)
+                .Where(a => a.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder && a.IsDeleted != true && a.WarehouseId == warehouseId && a.TenentId == tenantId)
                 .Include(x => x.Order);
         }
 
@@ -564,7 +564,7 @@ namespace Ganedata.Core.Services
 
 
         public Order CreateBlindShipmentOrder(List<BSDto> bsList, int accountId, string deliveryNumber, string poNumber, int tenantId, int warehouseId,
-            int userId, int transType, AccountShipmentInfo accountShipmentInfo = null)
+            int userId, InventoryTransactionTypeEnum transType, AccountShipmentInfo accountShipmentInfo = null)
         {
 
             Order order = new Order
@@ -739,7 +739,7 @@ namespace Ganedata.Core.Services
                         var newpallet = _currentDbContext.PalletTracking.Find(PalletTrackingId);
                         if (newpallet != null)
                         {
-                            if (transType == (int)InventoryTransactionTypeEnum.PurchaseOrder)
+                            if (transType == InventoryTransactionTypeEnum.PurchaseOrder)
                             {
                                 newpallet.Status = PalletTrackingStatusEnum.Active;
                                 newpallet.RemainingCases = newpallet.RemainingCases;
@@ -748,7 +748,7 @@ namespace Ganedata.Core.Services
                             {
                                 newpallet.RemainingCases = newpallet.RemainingCases - newpallet.RemainingCases;
 
-                                if (transType == (int)InventoryTransactionTypeEnum.SalesOrder && newpallet.RemainingCases == 0)
+                                if (transType == InventoryTransactionTypeEnum.SalesOrder && newpallet.RemainingCases == 0)
                                 {
                                     newpallet.Status = PalletTrackingStatusEnum.Completed;
                                 }
@@ -795,7 +795,7 @@ namespace Ganedata.Core.Services
                 TaxAmount = ord.TaxAmount,
                 ExpectedDate = ord.ExpectedDate,
                 TotalAmount = ord.TotalAmount,
-                TransType = ord.Order.TransactionType.InventoryTransactionTypeId,
+                TransType = ord.Order.InventoryTransactionTypeId,
                 EnableGlobalProcessByPallet = ord.TenantWarehouse.EnableGlobalProcessByPallet,
                 QtyReceived = ord.ProcessedQty,
                 DirectPostAllowed = !ord.ProductMaster.Serialisable && !ord.ProductMaster.ProcessByPallet && ord.ProductMaster.RequiresBatchNumberOnReceipt != true && ord.ProductMaster.RequiresExpiryDateOnReceipt != true
@@ -805,7 +805,7 @@ namespace Ganedata.Core.Services
         public InventoryTransaction SubmitReceiveInventoryTransaction(InventoryTransaction model, string deliveryNumber, int tenantId, int warehouseId, int userId)
         {
             int? serialId = null;
-            var oprocess = _orderService.GetOrderProcessByDeliveryNumber(model.OrderID ?? 0, model.InventoryTransactionId, deliveryNumber, userId, null, warehouseId);
+            var oprocess = _orderService.GetOrderProcessByDeliveryNumber(model.OrderID ?? 0, model.InventoryTransactionTypeId, deliveryNumber, userId, null, warehouseId);
 
             var odet = new OrderProcessDetail
             {
@@ -912,7 +912,7 @@ namespace Ganedata.Core.Services
 
         public IQueryable<PurchaseOrderViewModel> GetAllPurchaseOrdersInProgress(int tenantId, int warehouseId)
         {
-            return _currentDbContext.Order.AsNoTracking().Where(o => o.TenentId == tenantId && o.WarehouseId == warehouseId && o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.PurchaseOrder
+            return _currentDbContext.Order.AsNoTracking().Where(o => o.TenentId == tenantId && o.WarehouseId == warehouseId && o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder
             && (o.OrderStatusID == (int)OrderStatusEnum.Active || o.OrderStatusID == (int)OrderStatusEnum.Hold || o.OrderStatusID == (int)OrderStatusEnum.BeingPicked || o.OrderStatusID == (int)OrderStatusEnum.AwaitingAuthorisation) && o.IsDeleted != true)
                 .Select(p => new PurchaseOrderViewModel()
                 {
@@ -953,7 +953,7 @@ namespace Ganedata.Core.Services
         public IQueryable<PurchaseOrderViewModel> GetAllPurchaseOrdersCompleted(int tenantId, int warehouseId, int? type = null)
         {
 
-            return _currentDbContext.Order.AsNoTracking().Where(o => o.TenentId == tenantId && o.WarehouseId == warehouseId && ((type.HasValue && o.OrderStatusID == type) || !type.HasValue) && o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.PurchaseOrder
+            return _currentDbContext.Order.AsNoTracking().Where(o => o.TenentId == tenantId && o.WarehouseId == warehouseId && ((type.HasValue && o.OrderStatusID == type) || !type.HasValue) && o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder
              && o.IsDeleted != true)
            .Select(p => new PurchaseOrderViewModel()
            {
@@ -1053,7 +1053,7 @@ namespace Ganedata.Core.Services
                 caCurrent caCurrent = new caCurrent();
                 decimal totalquantity = 0;
                 var product = _productServices.GetProductMasterById(serials.ProductId);
-                if ((serials.OrderId <= 0 && process && serials.InventoryTransactionType == (int)InventoryTransactionTypeEnum.Wastage) || serials.InventoryTransactionType == (int)InventoryTransactionTypeEnum.AdjustmentIn || serials.InventoryTransactionType == (int)InventoryTransactionTypeEnum.AdjustmentOut)
+                if ((serials.OrderId <= 0 && process && serials.InventoryTransactionType == InventoryTransactionTypeEnum.Wastage) || serials.InventoryTransactionType == InventoryTransactionTypeEnum.AdjustmentIn || serials.InventoryTransactionType == InventoryTransactionTypeEnum.AdjustmentOut)
                 {
                     int? orderId = serials.OrderId;
                     orderId = orderId == 0 ? null : orderId;
@@ -1063,7 +1063,7 @@ namespace Ganedata.Core.Services
                         var newpallet = _currentDbContext.PalletTracking.Find(serials.PalletTrackingId);
                         var products = _currentDbContext.ProductMaster.Find(newpallet.ProductId);
 
-                        if (serials.InventoryTransactionType == (int)InventoryTransactionTypeEnum.AdjustmentIn)
+                        if (serials.InventoryTransactionType == InventoryTransactionTypeEnum.AdjustmentIn)
                         {
                             if (newpallet.Status == PalletTrackingStatusEnum.Created)
                             {
@@ -1074,8 +1074,6 @@ namespace Ganedata.Core.Services
                             _currentDbContext.Entry(newpallet).State = EntityState.Modified;
                             _currentDbContext.SaveChanges();
                             Inventory.StockTransactionApi(newpallet.ProductId, serials.InventoryTransactionType ?? 0, (newpallet.RemainingCases * (products.ProductsPerCase ?? 1)), orderId, serials.tenantId, serials.warehouseId, serials.userId, null, serials.PalletTrackingId, null, groupToken);
-
-
                         }
 
                         return 0;
@@ -1089,7 +1087,7 @@ namespace Ganedata.Core.Services
                         PalletTrackingId = pallet.PalletTrackingId;
                         qty = pallet.ProcessedQuantity;
                         var newpallet = _currentDbContext.PalletTracking.Find(pallet.PalletTrackingId);
-                        if (serials.InventoryTransactionType == (int)InventoryTransactionTypeEnum.AdjustmentIn)
+                        if (serials.InventoryTransactionType == InventoryTransactionTypeEnum.AdjustmentIn)
                         {
                             if (newpallet.Status == PalletTrackingStatusEnum.Active)
                             {
@@ -1186,7 +1184,7 @@ namespace Ganedata.Core.Services
 
                             var newpallet = _currentDbContext.PalletTracking.Find(PalletTrackingId);
                             newpallet.Status = PalletTrackingStatusEnum.Active;
-                            if (serials.InventoryTransactionType == (int)InventoryTransactionTypeEnum.AdjustmentIn || serials.InventoryTransactionType == (int)InventoryTransactionTypeEnum.AdjustmentOut)
+                            if (serials.InventoryTransactionType == InventoryTransactionTypeEnum.AdjustmentIn || serials.InventoryTransactionType == InventoryTransactionTypeEnum.AdjustmentOut)
                             {
                                 if (newpallet.TotalCases < qty)
                                 {
@@ -1195,11 +1193,11 @@ namespace Ganedata.Core.Services
                             }
 
 
-                            else if (serials.InventoryTransactionType == (int)InventoryTransactionTypeEnum.Returns)
+                            else if (serials.InventoryTransactionType == InventoryTransactionTypeEnum.Returns)
                             {
                                 newpallet.RemainingCases = newpallet.RemainingCases + qty;
                             }
-                            else if (serials.InventoryTransactionType == (int)InventoryTransactionTypeEnum.WastedReturn) { }
+                            else if (serials.InventoryTransactionType == InventoryTransactionTypeEnum.WastedReturn) { }
                             else
                             {
                                 newpallet.RemainingCases = newpallet.RemainingCases - qty;
@@ -1267,7 +1265,7 @@ namespace Ganedata.Core.Services
                             var newpallet = _currentDbContext.PalletTracking.Find(PalletTrackingId);
                             newpallet.Status = PalletTrackingStatusEnum.Active;
 
-                            if (serials.InventoryTransactionType == (int)InventoryTransactionTypeEnum.Returns)
+                            if (serials.InventoryTransactionType == InventoryTransactionTypeEnum.Returns)
                             {
                                 newpallet.RemainingCases = newpallet.RemainingCases + qty;
                             }
@@ -1341,22 +1339,22 @@ namespace Ganedata.Core.Services
                         _currentDbContext.SaveChanges();
                         if (!serials.InventoryTransactionType.HasValue)
                         {
-                            Inventory.StockTransactionApi(serials.ProductId, (int)InventoryTransactionTypeEnum.PurchaseOrder, Math.Round(quantity * (product.ProductsPerCase ?? 1),2), serials.OrderId,
+                            Inventory.StockTransactionApi(serials.ProductId, InventoryTransactionTypeEnum.PurchaseOrder, Math.Round(quantity * (product.ProductsPerCase ?? 1),2), serials.OrderId,
                                 serials.tenantId, serials.warehouseId, serials.userId, null, PalletTrackingId, null, groupToken,
                                 orderProcessId: orderProcess?.OrderProcessID, OrderProcessDetialId: o?.OrderProcessDetailID);
                         }
                         else
                         {
-                            if (serials.InventoryTransactionType == (int)InventoryTransactionTypeEnum.WorksOrder)
+                            if (serials.InventoryTransactionType == InventoryTransactionTypeEnum.WorksOrder)
                             {
-                                Inventory.StockTransactionApi(serials.ProductId, (int)InventoryTransactionTypeEnum.WorksOrder, Math.Round(quantity * (product.ProductsPerCase ?? 1),2), serials.OrderId, serials.tenantId, serials.warehouseId,
+                                Inventory.StockTransactionApi(serials.ProductId, InventoryTransactionTypeEnum.WorksOrder, Math.Round(quantity * (product.ProductsPerCase ?? 1),2), serials.OrderId, serials.tenantId, serials.warehouseId,
                                     serials.userId, null, PalletTrackingId, null, groupToken,
                                     orderProcessId: orderProcess?.OrderProcessID, OrderProcessDetialId: o?.OrderProcessDetailID);
 
                             }
                             else
                             {
-                                Inventory.StockTransactionApi(serials.ProductId, (int)InventoryTransactionTypeEnum.SalesOrder, Math.Round(quantity * (product.ProductsPerCase ?? 1),2), serials.OrderId, serials.tenantId, serials.warehouseId, serials.userId, null, PalletTrackingId, null,
+                                Inventory.StockTransactionApi(serials.ProductId, InventoryTransactionTypeEnum.SalesOrder, Math.Round(quantity * (product.ProductsPerCase ?? 1),2), serials.OrderId, serials.tenantId, serials.warehouseId, serials.userId, null, PalletTrackingId, null,
                                     groupToken, orderProcessId: orderProcess?.OrderProcessID, OrderProcessDetialId: o?.OrderProcessDetailID);
                             }
                         }

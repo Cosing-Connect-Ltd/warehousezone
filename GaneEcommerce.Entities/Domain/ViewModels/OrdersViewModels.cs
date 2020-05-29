@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ganedata.Core.Entities.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace Ganedata.Core.Entities.Domain.ViewModels
         public string POStatus { get; set; }
         public string Account { get; set; }
         public string Property { get; set; }
-        public int OrderTypeId { get; set; }
+        public InventoryTransactionTypeEnum OrderTypeId { get; set; }
         public IEnumerable<OrderNotesViewModel> OrderNotesList { get; set; }
         public string OrderType { get; set; }
     }

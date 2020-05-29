@@ -1455,7 +1455,7 @@ namespace WMS.Controllers
                     intrans.InventoryTransactionId,
                     intrans.TenantWarehouse.WarehouseName,
                     LocationName = intrans.Location != null ? intrans.Location.LocationName : "",
-                    intrans.InventoryTransactionType.InventoryTransactionTypeName,
+                    intrans.InventoryTransactionTypeId,
                     intrans.Quantity,
                     intrans.DateCreated,
                     intrans.InventoryTransactionRef

@@ -1,7 +1,9 @@
 ﻿using DevExpress.Data.Filtering;
 using DevExpress.Data.Linq.Helpers;
 using DevExpress.Web.Mvc;
+using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Services;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Dynamic;
@@ -21,7 +23,7 @@ namespace WMS.CustomBindings
                                {
 
                                    InventoryTransactionId = p.InventoryTransactionId,
-                                   InventoryTransactionTypeName = p.InventoryTransactionType.InventoryTransactionTypeName,
+                                   InventoryTransactionTypeName = p.InventoryTransactionTypeId,
                                    SerialNo = p.ProductSerial != null ? p.ProductSerial.SerialNo : "",
                                    PalletSerial = p.PalletTracking != null ? p.PalletTracking.PalletSerial : "",
                                    Name = p.ProductMaster.Name,

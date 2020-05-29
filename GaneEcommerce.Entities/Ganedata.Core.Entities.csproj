@@ -264,7 +264,6 @@
     <Compile Include="Domain\Global\GlobalWeightGroups.cs" />
     <Compile Include="Domain\Models\InventoryStock.cs" />
     <Compile Include="Domain\Models\InventoryTransaction.cs" />
-    <Compile Include="Domain\Models\InventoryTransactionType.cs" />
     <Compile Include="Domain\Models\JobSubType.cs" />
     <Compile Include="Domain\Models\JobType.cs" />
     <Compile Include="Domain\Models\LocationGroup.cs" />

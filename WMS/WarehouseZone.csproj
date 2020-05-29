@@ -1627,7 +1627,6 @@
     <Content Include="Views\Theme\Default\Reports\TransferOrderPrint.cshtml" />
     <Content Include="Views\Theme\Default\Reports\SlaWorkOrderReport.cshtml" />
     <Content Include="Views\Theme\Default\Reports\WorksOrderExpensiveProperties.cshtml" />
-    <Content Include="Views\Theme\Default\EmailTemplates\_EmailRecipientsPartial.cshtml" />
     <Content Include="Views\Theme\Default\PurchaseOrders\_POShippingDetails.cshtml" />
     <Content Include="Views\Theme\Default\Reports\WorksOrderDayPrint.cshtml" />
     <Content Include="Views\Theme\Default\Shared\_JobAlocationStats.cshtml" />
@@ -2009,7 +2008,6 @@
     <Content Include="Views\Theme\Modern\DirectSales\EditDirectSales.cshtml" />
     <Content Include="Views\Theme\Modern\DirectSales\Index.cshtml" />
     <Content Include="Views\Theme\Modern\DirectSales\VanSalesCashReport.cshtml" />
-    <Content Include="Views\Theme\Modern\EmailTemplates\_EmailRecipientsPartial.cshtml" />
     <Content Include="Views\Theme\Modern\EmailTemplates\_EmailTemplates.cshtml" />
     <Content Include="Views\Theme\Modern\EmailTemplates\_TemplateForm.cshtml" />
     <Content Include="Views\Theme\Modern\EmailTemplates\_TempList.cshtml" />
@@ -2675,6 +2673,8 @@
     <Content Include="Views\Theme\Default\UISettings\SettingsBar.cshtml" />
     <Content Include="Views\Theme\Default\UISettings\WebsiteUISettings.cshtml" />
     <Content Include="Scripts\qTip\jquery.qtip.min.js.map" />
+    <Content Include="Views\Theme\Default\Shared\_EmailRecipientsPartial.cshtml" />
+    <Content Include="Views\Theme\Modern\Shared\_EmailRecipientsPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

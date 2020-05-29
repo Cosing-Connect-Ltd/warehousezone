@@ -78,7 +78,6 @@ namespace WMS.Controllers
         public ActionResult _ProductSerialInventoryTransactions(int Id)
         {
             ViewBag.Id = Id;
-
             var data = (from opd in _productServices.GetInventoryTransactionsByProductSerialId(Id)
                         .OrderByDescending(x => x.DateCreated)
                         select new
@@ -88,7 +87,7 @@ namespace WMS.Controllers
                             opd.Quantity,
                             opd.DateCreated,
                             OrderNumber = opd.Order != null ? opd.Order.OrderNumber : "",
-                            opd.InventoryTransactionType.InventoryTransactionTypeName,
+                            InventoryTransactionTypeName = opd.InventoryTransactionTypeId,
                             opd.LastQty
                         }).ToList();
 

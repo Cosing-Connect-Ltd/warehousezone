@@ -68,7 +68,7 @@ namespace WMS.Controllers
                 return HttpNotFound();
             }
 
-            if (Order.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.WorksOrder)
+            if (Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder)
             {
                 var result = await GaneConfigurationsHelper.CreateTenantEmailNotificationQueue($"#{Order.OrderNumber} - Works order completed", _mapper.Map(Order, new OrderViewModel()), sendImmediately: true,
                     worksOrderNotificationType: WorksOrderNotificationTypeEnum.WorksOrderCompletedTemplate);
@@ -127,7 +127,7 @@ namespace WMS.Controllers
                 {
                     return Json(new { RequiresProcessing = true, Success = false, Message = "There are still some items that are not dispatched for this order. What would you like to do?", Suffix = suffix }, JsonRequestBehavior.AllowGet);
                 }
-                if (order.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.WorksOrder)
+                if (order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder)
                 {
                     await GaneConfigurationsHelper.CreateTenantEmailNotificationQueue($"#{order.OrderNumber} - Works order completed", _mapper.Map(order, new OrderViewModel()), sendImmediately: true,
                         worksOrderNotificationType: WorksOrderNotificationTypeEnum.WorksOrderCompletedTemplate);
@@ -191,14 +191,14 @@ namespace WMS.Controllers
             var fragment = "PO";
             switch (orderTypeId)
             {
-                case 1:
+                case InventoryTransactionTypeEnum.PurchaseOrder:
                     report = CreatePurchaseOrderPrint(int.Parse(id));
                     PrepareDirectory(reportsDirectory + "/po");
                     reportPath = reportsDirectory + "po/" + order.OrderNumber + ".pdf";
                     orderTypeString = "Purchase order";
                     break;
 
-                case 2:
+                case InventoryTransactionTypeEnum.SalesOrder:
                     report = CreateSalesOrderPrint(int.Parse(id));
                     PrepareDirectory(reportsDirectory + "/so");
                     reportPath = reportsDirectory + "/so/" + order.OrderNumber + ".pdf";
@@ -208,7 +208,7 @@ namespace WMS.Controllers
                     fragment = "SO";
                     break;
 
-                case 8:
+                case InventoryTransactionTypeEnum.WorksOrder:
                     report = CreateWorksOrderPrint(int.Parse(id));
                     PrepareDirectory(reportsDirectory + "/wo");
                     reportPath = reportsDirectory + "/wo/" + order.OrderNumber + ".pdf";
@@ -977,13 +977,13 @@ namespace WMS.Controllers
             var lastTransaction = OrderService.GetLastInventoryTransactionsForSerial(serial, CurrentTenantId);
             if (lastTransaction != null)
             {
-                if (lastTransaction.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.PurchaseOrder ||
-                   lastTransaction.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Wastage ||
-                   lastTransaction.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.WastedReturn ||
-                   lastTransaction.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.TransferIn ||
-                   lastTransaction.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.AdjustmentIn ||
-                   lastTransaction.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Returns ||
-                   lastTransaction.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Allocated
+                if (lastTransaction.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder ||
+                   lastTransaction.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Wastage ||
+                   lastTransaction.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WastedReturn ||
+                   lastTransaction.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferIn ||
+                   lastTransaction.InventoryTransactionTypeId == InventoryTransactionTypeEnum.AdjustmentIn ||
+                   lastTransaction.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Returns ||
+                   lastTransaction.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Allocated
                    && lastTransaction.WarehouseId == warehouseId)
                 {
 
@@ -1023,7 +1023,7 @@ namespace WMS.Controllers
                     else { status = true; }
                     break;
                 case (int)InventoryTransactionTypeEnum.TransferIn:
-                    status = (stockStatus == VerifySerilaStockStatusEnum.OutofStock && lastTransaction.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.TransferOut) ? status = true : false;
+                    status = (stockStatus == VerifySerilaStockStatusEnum.OutofStock && lastTransaction.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferOut) ? status = true : false;
                     break;
                 case (int)InventoryTransactionTypeEnum.TransferOut:
                     status = (stockStatus == VerifySerilaStockStatusEnum.InStock) ? status = true : false;
@@ -1035,7 +1035,7 @@ namespace WMS.Controllers
             return Json(status, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult _SubmitSerials(List<string> serialList, int product, string delivery, int? cons_Type, int? order, int? location, int type, int? lineid, FormCollection form, AccountShipmentInfo shipmentInfo, string groupToken = null)
+        public ActionResult _SubmitSerials(List<string> serialList, int product, string delivery, int? cons_Type, int? order, int? location, InventoryTransactionTypeEnum type, int? lineid, FormCollection form, AccountShipmentInfo shipmentInfo, string groupToken = null)
         {
             GoodsReturnRequestSync goodsReturnRequestSync = new GoodsReturnRequestSync();
             try
@@ -1075,7 +1075,7 @@ namespace WMS.Controllers
 
                     Inventory.StockTransaction(goodsReturnRequestSync, cons_Type, groupToken, shipmentInfo);
                 }
-                if (type == (int)InventoryTransactionTypeEnum.Returns || type == (int)InventoryTransactionTypeEnum.Wastage || type == (int)InventoryTransactionTypeEnum.WastedReturn)
+                if (type == InventoryTransactionTypeEnum.Returns || type == InventoryTransactionTypeEnum.Wastage || type == InventoryTransactionTypeEnum.WastedReturn)
                 {
                     return Json(new { orderid = order ?? 0, productId = product, orderNumber = orderNumber, groupToken = groupToken }, JsonRequestBehavior.AllowGet);
 
@@ -1170,7 +1170,7 @@ namespace WMS.Controllers
                 }
             }
             ViewBag.quantity = quantity;
-            return PartialView(new InventoryTransaction { ProductId = pid, InventoryTransactionTypeId = type, OrderID = orderid, Quantity = quantity });
+            return PartialView(new InventoryTransaction { ProductId = pid, InventoryTransactionTypeId = (InventoryTransactionTypeEnum)type, OrderID = orderid, Quantity = quantity });
         }
 
         public JsonResult GetProductLocations(int id)
@@ -1221,7 +1221,7 @@ namespace WMS.Controllers
                     pickLocations.Add(cItem);
                 }
 
-                Inventory.StockTransaction(model, type, cons_type, delivery, line_id, pickLocations, shipmentInfo);
+                Inventory.StockTransaction(model, (InventoryTransactionTypeEnum)type, cons_type, delivery, line_id, pickLocations, shipmentInfo);
 
                 return Json(new { error = false }, JsonRequestBehavior.AllowGet);
             }
@@ -1275,13 +1275,13 @@ namespace WMS.Controllers
                     Quantity = qtyToBeProcessed,
                     OrderID = processModel.OrderID,
                     WarehouseId = CurrentWarehouseId,
-                    InventoryTransactionTypeId = type,
+                    InventoryTransactionTypeId = (InventoryTransactionTypeEnum)type,
                     TenentId = CurrentTenantId,
                     CreatedBy = CurrentUserId,
                     DateCreated = DateTime.UtcNow,
                 };
 
-                Inventory.StockTransaction(model, type, 0, processModel.DeliveryNo, processModel.OrderDetailID, null, shipmentInfo);
+                Inventory.StockTransaction(model, (InventoryTransactionTypeEnum)type, 0, processModel.DeliveryNo, processModel.OrderDetailID, null, shipmentInfo);
 
                 return Json(new { error = false }, JsonRequestBehavior.AllowGet);
             }

@@ -52,9 +52,6 @@ public class InvoiceByProductReport : DevExpress.XtraReports.UI.XtraReport
     public InvoiceByProductReport()
     {
         InitializeComponent();
-        //
-        // TODO: Add constructor logic here
-        //
     }
 
     /// <summary> 

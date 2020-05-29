@@ -18,7 +18,7 @@ namespace WMS.CustomBindings
         {
             var productServices = DependencyResolver.Current.GetService<IProductServices>();
 
-            var transactions = from p in productServices.GetAllInventoryTransactions(tenantId, warehouseId).Where(x => x.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Wastage)
+            var transactions = from p in productServices.GetAllInventoryTransactions(tenantId, warehouseId).Where(x => x.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Wastage)
                                select new
                                {
                                    InventoryTransactionId = p.InventoryTransactionId,

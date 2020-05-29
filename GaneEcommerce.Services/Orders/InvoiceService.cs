@@ -474,7 +474,7 @@ namespace Ganedata.Core.Services
 
             foreach (var item in InvocieDetaildata)
             {
-                var itemBuyPrice = _currentDbContext.OrderDetail.Where(u => u.DateCreated < item.DateCreated && u.ProductId == item.ProductId && u.Order.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.PurchaseOrder && u.IsDeleted != true).OrderByDescending(u => u.OrderDetailID).FirstOrDefault();
+                var itemBuyPrice = _currentDbContext.OrderDetail.Where(u => u.DateCreated < item.DateCreated && u.ProductId == item.ProductId && u.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder && u.IsDeleted != true).OrderByDescending(u => u.OrderDetailID).FirstOrDefault();
                 var buyPrice = itemBuyPrice?.Price;
                 if (buyPrice == null || buyPrice == 0) buyPrice = item.Product.BuyPrice;
                 buyPrice = buyPrice + (item.Product?.LandedCost ?? 0);

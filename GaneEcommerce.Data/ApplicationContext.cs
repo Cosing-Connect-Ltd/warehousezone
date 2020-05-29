@@ -82,7 +82,6 @@ namespace Ganedata.Core.Data
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<InventoryStock> InventoryStocks { get; set; }
         public DbSet<InventoryTransaction> InventoryTransactions { get; set; }
-        public DbSet<InventoryTransactionType> InventoryTransactionTypes { get; set; }
         public DbSet<TenantDeliveryService> TenantDeliveryServices { get; set; }
         public DbSet<GlobalApi> GlobalApis { get; set; }
         public DbSet<JobType> JobTypes { get; set; }

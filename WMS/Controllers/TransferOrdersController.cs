@@ -37,8 +37,8 @@ namespace WMS.Controllers
                 Order NewOrder = new Order();
                 NewOrder.OrderNumber = GenerateNextOrderNumber(InventoryTransactionTypeEnum.TransferIn);
                 NewOrder.IssueDate = DateTime.Today;
-                NewOrder.InventoryTransactionTypeId = (int)Id;
-                SetViewBagItems(Id);
+                NewOrder.InventoryTransactionTypeId = (InventoryTransactionTypeEnum)Id;
+                SetViewBagItems();
                 ViewBag.OrderDetails = new List<OrderDetail>();
                 ViewBag.OrderProcesses = new List<OrderProcess>();
 
@@ -77,7 +77,7 @@ namespace WMS.Controllers
                 }
                 ViewBag.ForceRegeneratePageToken = "True";
                 ViewBag.ForceRegeneratedPageToken = pageSessionToken ?? Guid.NewGuid().ToString();
-                SetViewBagItems(Order.TransactionType.InventoryTransactionTypeId);
+                SetViewBagItems();
                 return View(Order);
             }
         }
@@ -95,7 +95,7 @@ namespace WMS.Controllers
                 return HttpNotFound();
             }
 
-            SetViewBagItems(Order.TransactionType.InventoryTransactionTypeId);
+            SetViewBagItems();
             var odList = OrderService.GetAllValidOrderDetailsByOrderId(id.Value).ToList();
             if (odList.Count > 0)
             {
@@ -158,9 +158,9 @@ namespace WMS.Controllers
                 OrderID = Order.OrderID,
                 OrderNumber = Order.OrderNumber,
                 DeliveryNumber = GaneStaticAppExtensions.GenerateDateRandomNo(),
-                Type = Order.TransactionType.InventoryTransactionTypeId,
-                InventoryTransactionTypeId = Order.TransactionType.InventoryTransactionTypeId,
-                Warehouse = Order.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.TransferIn ? Order.TransferWarehouse.WarehouseName : Order.TransferWarehouse.WarehouseName
+                Type = (int)Order.InventoryTransactionTypeId,
+                InventoryTransactionTypeId = Order.InventoryTransactionTypeId,
+                Warehouse = Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferIn ? Order.TransferWarehouse.WarehouseName : Order.TransferWarehouse.WarehouseName
             };
 
             return View(orderDto);
@@ -175,7 +175,7 @@ namespace WMS.Controllers
             return Json(true,JsonRequestBehavior.AllowGet); ;
         }
 
-        private void SetViewBagItems(int? Id)
+        private void SetViewBagItems()
         {
             var whouses = LookupServices.GetAllWarehousesForTenant(CurrentTenantId, CurrentWarehouseId).Select(
                 whs => new

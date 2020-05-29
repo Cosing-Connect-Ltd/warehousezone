@@ -68,9 +68,6 @@ namespace WMS.Controllers
         public ActionResult Create()
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
-
-            ViewBag.InventoryTransactionTypeId = new SelectList(LookupServices.GetAllInventoryTransactionTypes(), "InventoryTransactionTypeId", "OrderType", LookupServices.GetAllInventoryTransactionTypes().Select(x => x.OrderType).FirstOrDefault());
-
             return View("Create", new TenantEmailTemplates());
         }
 
@@ -90,7 +87,6 @@ namespace WMS.Controllers
 
             }
 
-            ViewBag.InventoryTransactionTypeId = new SelectList(LookupServices.GetAllInventoryTransactionTypes(), "InventoryTransactionTypeId", "OrderType", LookupServices.GetAllInventoryTransactionTypes().Select(x => x.OrderType).FirstOrDefault());
             return View(template);
 
 

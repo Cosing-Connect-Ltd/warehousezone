@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Mvc;
+using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Entities.Helpers;
 
 namespace Ganedata.Core.Entities.Domain
@@ -54,7 +55,7 @@ namespace Ganedata.Core.Entities.Domain
     public class StockAdjustSerialsRequest
     {
         public int ProductId { get; set; }
-        public int InventoryTransactionTypeId { get; set; }
+        public InventoryTransactionTypeEnum InventoryTransactionTypeId { get; set; }
         public int? Quantity { get; set; }
         public string InventoryTransactionRef { get; set; }
 

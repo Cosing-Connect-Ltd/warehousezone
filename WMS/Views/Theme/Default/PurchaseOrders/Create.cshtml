@@ -175,7 +175,7 @@
                 <div class="col-md-8">
                     <div>
                         <div class="col-11 p-0 mt-1 pull-left">
-                            
+
                             @Html.DropDownList("DirectShipOrders", ViewBag.DirectOrderList as SelectList, "Select Orders", new { @class = "chosen-select" })
 
                         </div>
@@ -208,9 +208,9 @@
         <div class="card">
             <div class="card-body">
                 <div class="card-title"><h3>Delivery Address</h3></div>
-                @Html.Partial("~/Views/PurchaseOrders/_POShippingDetails.cshtml")
+                @Html.Partial("_POShippingDetails")
                 <div class="col-md-12 order-shipmentinfo-panes">
-                    @Html.Partial("~/Views/EmailTemplates/_EmailRecipientsPartial.cshtml")
+                    @Html.Partial("_EmailRecipientsPartial")
                 </div>
             </div>
         </div>

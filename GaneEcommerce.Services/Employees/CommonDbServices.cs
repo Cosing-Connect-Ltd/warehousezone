@@ -21,13 +21,12 @@ namespace Ganedata.Core.Services
         {
             var data = (from prd in _currentDbContext.InventoryTransactions.Where(a => a.LocationId == locationId &&
                                                                                        a.ProductSerial == null &&
-                                                                                       a.InventoryTransactionType
-                                                                                           .InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.PurchaseOrder && a
+                                                                                       a.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder && a
                                                                                            .IsCurrentLocation && a.IsDeleted != true)
                         .GroupBy(g => g.ProductId)
                         select new ProductLocationsDetailResponse
                         {
-                            Id = prd.FirstOrDefault().InventoryTransactionId,
+                            Id = (int)prd.FirstOrDefault().InventoryTransactionId,
                             Quantity = (int)prd.Sum(s => s.Quantity),
                             Serial = null,
                             ProductName = prd.FirstOrDefault().ProductMaster.Name,
@@ -39,7 +38,7 @@ namespace Ganedata.Core.Services
                 .Union
                 (from prd1 in _currentDbContext.InventoryTransactions.Where(
                         a => a.LocationId == locationId && a.ProductSerial != null && a.IsCurrentLocation &&
-                             a.InventoryTransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.PurchaseOrder)
+                             a.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder)
                  select new ProductLocationsDetailResponse
                  {
                      Id = prd1.InventoryTransactionId,
@@ -60,18 +59,18 @@ namespace Ganedata.Core.Services
                            {
                                Id = prd.First().InventoryTransactionId,
                                Quantity = prd.Where(a =>
-                                                  (a.InventoryTransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.PurchaseOrder ||
-                                                   a.InventoryTransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.AdjustmentIn ||
-                                                   a.InventoryTransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.TransferIn ||
-                                                   a.InventoryTransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Returns))
+                                                  (a.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder ||
+                                                   a.InventoryTransactionTypeId == InventoryTransactionTypeEnum.AdjustmentIn ||
+                                                   a.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferIn ||
+                                                   a.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Returns))
                                               .Select(s => s.Quantity).ToList().Sum() -
-                                          prd.Where(a => (a.InventoryTransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.SalesOrder ||
-                                                          a.InventoryTransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.TransferOut ||
-                                                          a.InventoryTransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.AdjustmentOut ||
-                                                          a.InventoryTransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.WorksOrder ||
-                                                          a.InventoryTransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Proforma ||
-                                                          a.InventoryTransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Quotation ||
-                                                          a.InventoryTransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Loan))
+                                          prd.Where(a => (a.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder ||
+                                                          a.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferOut ||
+                                                          a.InventoryTransactionTypeId == InventoryTransactionTypeEnum.AdjustmentOut ||
+                                                          a.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder ||
+                                                          a.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Proforma ||
+                                                          a.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Quotation ||
+                                                          a.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Loan))
                                               .Select(s => s.Quantity).ToList().Sum(),
                                Batches = (from m in prd where !string.IsNullOrEmpty(m.BatchNumber) select new ProductLocationBatchResponse() { Quantity = m.Quantity, BatchNumber = m.BatchNumber, ExpiryDate = (m.ExpiryDate.HasValue ? m.ExpiryDate.Value : DateTime.MaxValue), ExpiryDateString = m.ExpiryDate?.ToString("dd/MM/yyyy") ?? "", LocationId = m.LocationId ?? 0 }).ToList(),
                                LocationCode = (prd.FirstOrDefault() != null && prd.First().Location != null) ? prd.First().Location.LocationCode : "UNKNOWN",
@@ -203,7 +202,7 @@ namespace Ganedata.Core.Services
             int quantity = (int)_currentDbContext.InventoryTransactions
                 .Where(a => a.LocationId == transaction.LocationId &&
                             a.ProductId == transaction.ProductId && a.IsDeleted != true
-                            && a.IsCurrentLocation && a.InventoryTransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.PurchaseOrder).Sum(a => a.Quantity);
+                            && a.IsCurrentLocation && a.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder).Sum(a => a.Quantity);
             return quantity;
         }
 

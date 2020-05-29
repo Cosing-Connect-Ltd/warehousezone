@@ -24,7 +24,7 @@ namespace WMS.CustomBindings
 
             if (selectedJobType > 0)
             {
-                var transactions = from p in orderServices.GetAllOrdersIncludingNavProperties(CurrentTenantId).Where(o => o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.WorksOrder
+                var transactions = from p in orderServices.GetAllOrdersIncludingNavProperties(CurrentTenantId).Where(o => o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder
                                    && o.OrderStatusID == (int)OrderStatusEnum.NotScheduled && o.JobTypeId == selectedJobType)
                                    select new
                                    {
@@ -38,16 +38,16 @@ namespace WMS.CustomBindings
                                        POStatus = p.OrderStatus.Status ?? "",
                                        Account = p.Account.AccountCode ?? "",
                                        Property = p.PProperties.AddressLine1 ?? "",
-                                       OrderTypeId = p.TransactionType.InventoryTransactionTypeId,
+                                       OrderTypeId = p.InventoryTransactionTypeId,
                                        OrderNotesList = p.OrderNotes.Where(x => x.IsDeleted != true).Select(s => new OrderNotesViewModel() { OrderNoteId = s.OrderNoteId, Notes = s.Notes, NotesByName = s.User.UserName, NotesDate = s.DateCreated }),
-                                       OrderType = p.TransactionType.OrderType
+                                       OrderType = nameof(p.InventoryTransactionTypeId)
                                    };
 
                 return transactions;
             }
             else
             {
-                var transactions = from p in orderServices.GetAllOrdersIncludingNavProperties(CurrentTenantId).Where(o => o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.WorksOrder
+                var transactions = from p in orderServices.GetAllOrdersIncludingNavProperties(CurrentTenantId).Where(o => o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder
                                    && o.OrderStatusID == (int)OrderStatusEnum.NotScheduled)
                                    select new
                                    {
@@ -61,9 +61,9 @@ namespace WMS.CustomBindings
                                        POStatus = p.OrderStatus.Status ?? "",
                                        Account = p.Account.AccountCode ?? "",
                                        Property = p.PProperties.AddressLine1 ?? "",
-                                       OrderTypeId = p.TransactionType.InventoryTransactionTypeId,
+                                       OrderTypeId = p.InventoryTransactionTypeId,
                                        OrderNotesList = p.OrderNotes.Where(x => x.IsDeleted != true).Select(s => new OrderNotesViewModel() { OrderNoteId = s.OrderNoteId, Notes = s.Notes, NotesByName = s.User.UserName, NotesDate = s.DateCreated }),
-                                       OrderType = p.TransactionType.OrderType
+                                       OrderType = nameof(p.InventoryTransactionTypeId)
                                    };
 
                 return transactions;
@@ -182,7 +182,7 @@ namespace WMS.CustomBindings
 
 
             var transactions = from p in orderServices.GetAllOrdersIncludingNavProperties(CurrentTenantId)
-            .Where(o => o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.WorksOrder && o.OrderStatusID == (int)OrderStatusEnum.Scheduled
+            .Where(o => o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder && o.OrderStatusID == (int)OrderStatusEnum.Scheduled
             && (DbFunctions.TruncateTime(o.Appointmentses.OrderByDescending(x => x.StartTime).FirstOrDefault(x => x.IsCanceled != true).StartTime) == chosenDate.Date || chosenDate == DateTime.MinValue)
             && (o.Appointmentses.OrderByDescending(x => x.StartTime).FirstOrDefault(x => x.IsCanceled != true).ResourceId == resourceId || resourceId == 0))
                                select new
@@ -197,9 +197,9 @@ namespace WMS.CustomBindings
                                    POStatus = p.OrderStatus.Status ?? "",
                                    Account = p.Account.AccountCode ?? "",
                                    Property = p.PProperties.AddressLine1 ?? "",
-                                   OrderTypeId = p.TransactionType.InventoryTransactionTypeId,
+                                   OrderTypeId = p.InventoryTransactionTypeId,
                                    OrderNotesList = p.OrderNotes.Where(x => x.IsDeleted != true).Select(s => new OrderNotesViewModel() { OrderNoteId = s.OrderNoteId, Notes = s.Notes, NotesByName = s.User.UserName, NotesDate = s.DateCreated }),
-                                   OrderType = p.TransactionType.OrderType,
+                                   OrderType = nameof(p.InventoryTransactionTypeId),
                                    Appointment = p.Appointmentses.OrderByDescending(x => x.StartTime).FirstOrDefault(x => x.IsCanceled != true),
                                    ResourceName = p.Appointmentses.OrderByDescending(x => x.StartTime).FirstOrDefault(x => x.IsCanceled != true).AppointmentResources.FirstName + " "
                                    + p.Appointmentses.OrderByDescending(x => x.StartTime).FirstOrDefault(x => x.IsCanceled != true).AppointmentResources.SurName
@@ -308,7 +308,7 @@ namespace WMS.CustomBindings
             if (selectedJobType > 0)
             {
                 var transactions = orderServices.GetAllOrdersIncludingNavProperties(CurrentTenantId)
-                    .Where(o => o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.WorksOrder && o.OrderStatusID == (int)OrderStatusEnum.ReAllocationRequired && o.JobTypeId == selectedJobType)
+                    .Where(o => o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder && o.OrderStatusID == (int)OrderStatusEnum.ReAllocationRequired && o.JobTypeId == selectedJobType)
                     .Select(p => new WorksOrdersGridViewModel
                     {
                         OrderID = p.OrderID,
@@ -321,9 +321,9 @@ namespace WMS.CustomBindings
                         POStatus = p.OrderStatus.Status ?? "",
                         Account = p.Account.AccountCode ?? "",
                         Property = p.PProperties.AddressLine1 ?? "",
-                        OrderTypeId = p.TransactionType.InventoryTransactionTypeId,
+                        OrderTypeId = p.InventoryTransactionTypeId,
                         OrderNotesList = p.OrderNotes.Where(x => x.IsDeleted != true).Select(s => new OrderNotesViewModel() { OrderNoteId = s.OrderNoteId, Notes = s.Notes, NotesByName = s.User.UserName, NotesDate = s.DateCreated }),
-                        OrderType = p.TransactionType.OrderType
+                        OrderType = nameof(p.InventoryTransactionTypeId)
 
                     });
 
@@ -332,7 +332,7 @@ namespace WMS.CustomBindings
             else
             {
                 var transactions = orderServices.GetAllOrdersIncludingNavProperties(CurrentTenantId)
-                    .Where(o => o.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.WorksOrder && o.OrderStatusID == (int)OrderStatusEnum.ReAllocationRequired)
+                    .Where(o => o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder && o.OrderStatusID == (int)OrderStatusEnum.ReAllocationRequired)
                     .Select(p => new WorksOrdersGridViewModel
                     {
                         OrderID = p.OrderID,
@@ -345,9 +345,9 @@ namespace WMS.CustomBindings
                         POStatus = p.OrderStatus.Status ?? "",
                         Account = p.Account.AccountCode ?? "",
                         Property = p.PProperties.AddressLine1 ?? "",
-                        OrderTypeId = p.TransactionType.InventoryTransactionTypeId,
+                        OrderTypeId = p.InventoryTransactionTypeId,
                         OrderNotesList = p.OrderNotes.Where(x => x.IsDeleted != true).Select(s => new OrderNotesViewModel() { OrderNoteId = s.OrderNoteId, Notes = s.Notes, NotesByName = s.User.UserName, NotesDate = s.DateCreated }),
-                        OrderType = p.TransactionType.OrderType
+                        OrderType = nameof(p.InventoryTransactionTypeId)
                     });
 
                 return transactions;

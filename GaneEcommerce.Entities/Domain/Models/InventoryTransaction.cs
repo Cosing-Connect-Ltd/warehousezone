@@ -1,3 +1,4 @@
+using Ganedata.Core.Entities.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,7 +12,7 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Transaction Id")]
         public int InventoryTransactionId { get; set; }
         [Display(Name = "Transaction Type Id")]
-        public int InventoryTransactionTypeId { get; set; }
+        public InventoryTransactionTypeEnum InventoryTransactionTypeId { get; set; }
         [Display(Name = "Order")]
         public int? OrderID { get; set; }
         [Display(Name = "Reference")]
@@ -51,7 +52,6 @@ namespace Ganedata.Core.Entities.Domain
         public bool? DontMonitorStock { get; set; }
         [Display(Name = "Terminal Id")]
         public int? TerminalId { get; set; }
-        public virtual InventoryTransactionType InventoryTransactionType { get; set; }
         public virtual ProductMaster ProductMaster { get; set; }
         public virtual Tenant Tenant { get; set; }
         public virtual TenantLocations TenantWarehouse { get; set; }

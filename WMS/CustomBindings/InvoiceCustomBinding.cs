@@ -18,14 +18,14 @@ namespace WMS.CustomBindings
 {
     public class InvoiceCustomBinding
     {
-        
+
         private static IQueryable<OrderProcessViewModel> InvoiceDataset(string type)
         {
-            
+
             var OrderService = DependencyResolver.Current.GetService<IOrderService>();
             if (type == "PO")
             {
-                return OrderService.GetAllOrderProcesses(null, null, (int)OrderProcessStatusEnum.Complete, (int)InventoryTransactionTypeEnum.PurchaseOrder).
+                return OrderService.GetAllOrderProcesses(null, null, (int)OrderProcessStatusEnum.Complete, InventoryTransactionTypeEnum.PurchaseOrder).
                 Select(m => new OrderProcessViewModel()
                 {
                     DateCreated = m.DateCreated,
@@ -36,7 +36,7 @@ namespace WMS.CustomBindings
                     InvoiceNumber = m.InvoiceNo != null ? m.InvoiceNo : "",
                     InvoiceTotal = 0,
                     AccountId = m.Order.AccountID,
-                    InvoiceDate =m.InvoiceDate??DateTime.UtcNow
+                    InvoiceDate = m.InvoiceDate ?? DateTime.UtcNow
 
 
 
@@ -45,7 +45,7 @@ namespace WMS.CustomBindings
             }
             else if (type == "VI")
             {
-                return OrderService.GetAllOrderProcesses(null, null, (int)OrderProcessStatusEnum.PostedToAccounts, (int)InventoryTransactionTypeEnum.PurchaseOrder).
+                return OrderService.GetAllOrderProcesses(null, null, (int)OrderProcessStatusEnum.PostedToAccounts, InventoryTransactionTypeEnum.PurchaseOrder).
                Select(m => new OrderProcessViewModel()
                {
                    DateCreated = m.DateCreated,
@@ -57,12 +57,12 @@ namespace WMS.CustomBindings
                    InvoiceTotal = 0,
                    AccountId = m.Order.AccountID,
                    InvoiceDate = m.InvoiceDate ?? DateTime.UtcNow,
-                   
+
                });
 
             }
 
-            var transactions = OrderService.GetAllOrderProcesses(null, null, (type == "Active" ? (int)OrderProcessStatusEnum.Dispatched : (int)OrderProcessStatusEnum.Invoiced), (int)InventoryTransactionTypeEnum.SalesOrder).
+            var transactions = OrderService.GetAllOrderProcesses(null, null, (type == "Active" ? (int)OrderProcessStatusEnum.Dispatched : (int)OrderProcessStatusEnum.Invoiced), InventoryTransactionTypeEnum.SalesOrder).
                 Select(m => new OrderProcessViewModel()
                 {
                     DateCreated = m.DateCreated,
@@ -70,7 +70,7 @@ namespace WMS.CustomBindings
                     OrderProcessID = m.OrderProcessID,
                     PONumber = m.Order.OrderNumber,
                     Supplier = m.Order.Account != null ? m.Order.Account.CompanyName : "",
-                    InvoiceTotal=0,
+                    InvoiceTotal = 0,
                     AccountId = m.Order.AccountID,
                     InvoiceDate = m.InvoiceDate ?? DateTime.UtcNow
 
@@ -122,7 +122,7 @@ namespace WMS.CustomBindings
             viewModel.Pager.PageSize = 10;
             return viewModel;
         }
-         public static void InvoiceGetData(GridViewCustomBindingGetDataArgs e, string type)
+        public static void InvoiceGetData(GridViewCustomBindingGetDataArgs e, string type)
         {
 
             var transactions = InvoiceDataset(type);
@@ -161,9 +161,9 @@ namespace WMS.CustomBindings
             invoices.ForEach(m =>
             {
                 m.InvoiceTotal = InvoiceService.LoadInvoiceProductValuesByOrderProcessId(m.OrderProcessID).InvoiceTotal;
-                m.Email= string.Join(";", _currentDbContext.AccountContacts.Where(u => u.AccountID == m.AccountId && u.IsDeleted != true && u.ConTypeInvoices == true).Select(u => u.ContactEmail).ToList());
+                m.Email = string.Join(";", _currentDbContext.AccountContacts.Where(u => u.AccountID == m.AccountId && u.IsDeleted != true && u.ConTypeInvoices == true).Select(u => u.ContactEmail).ToList());
             });
-            e.Data=invoices;
+            e.Data = invoices;
 
         }
 
@@ -173,21 +173,22 @@ namespace WMS.CustomBindings
         {
             var InvoiceService = DependencyResolver.Current.GetService<IInvoiceService>();
             int currentId = caCurrent.CurrentTenant().TenantId;
-            var transactions = InvoiceService.GetAllInvoiceMasters(currentId).Select(u=>new InvoiceViewModel(){
-                InvoiceMasterId=u.InvoiceMasterId,
-                InvoiceNumber=u.InvoiceNumber,
-                OrderNumber=u.OrderProcess.Order.OrderNumber,
-                NetAmount=u.NetAmount,
-                TaxAmount=u.TaxAmount,
-                WarrantyAmount=u.WarrantyAmount,
-                CardCharges=u.CardCharges,
-                PostageCharges=u.PostageCharges,
-                InvoiceTotal=u.InvoiceTotal,
-                InvoiceDate=u.InvoiceDate,
-                AccountName=u.Account.CompanyName
+            var transactions = InvoiceService.GetAllInvoiceMasters(currentId).Select(u => new InvoiceViewModel()
+            {
+                InvoiceMasterId = u.InvoiceMasterId,
+                InvoiceNumber = u.InvoiceNumber,
+                OrderNumber = u.OrderProcess.Order.OrderNumber,
+                NetAmount = u.NetAmount,
+                TaxAmount = u.TaxAmount,
+                WarrantyAmount = u.WarrantyAmount,
+                CardCharges = u.CardCharges,
+                PostageCharges = u.PostageCharges,
+                InvoiceTotal = u.InvoiceTotal,
+                InvoiceDate = u.InvoiceDate,
+                AccountName = u.Account.CompanyName
 
             });
-             
+
             return transactions;
         }
         public static void InvoiceCompletedGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e)
@@ -283,7 +284,7 @@ namespace WMS.CustomBindings
             {
                 results.Add(InvoiceService.GetInvoiceMasterById(m.InvoiceMasterId));
             });
-            
+
 
             e.Data = results.ToList();
         }

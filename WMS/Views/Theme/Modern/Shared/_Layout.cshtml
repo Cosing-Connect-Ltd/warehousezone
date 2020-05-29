@@ -26,12 +26,11 @@
     @RenderSection("scripts", required: false)
 
     @{ bool loginStatus = LayoutHelpers.UserLoginStatus(); }
+    @{ bool isSuperUser = LayoutHelpers.IsSuperUser(); }
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
-
-
 </head>
 <body>
     <div id="dvbusy" class="se-pre-con"></div>
@@ -82,7 +81,19 @@
         </div>
     </div>
 
-    <div class="container body-content">
+<div class="container body-content">
+        @if (loginStatus && isSuperUser)
+        {
+            <div class="settings-bar">
+                    <div class="settings-bar-switch" onclick="javascript:toggleSettingsBar();">
+                        <b class="fa fa-paint-brush fa-lg" title="Toggle Settings"></b>
+                    </div>
+
+                    <div id="settings-bar-content">
+                        @Html.Action("SettingsBar", "UISettings")
+                    </div>
+            </div>
+        }
         <div class="main-left">
             @*Error / warning / info / success Mesagess*@
             @*Error Message*@
@@ -143,7 +154,7 @@
             @Html.Partial("_EmployeeShiftsPopUp")
             @RenderBody()
         </div>
-        <div class="main-right">
+        <div class="main-right side-nav">
 
             @if (loginStatus)
             {

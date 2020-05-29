@@ -21,7 +21,7 @@ namespace Ganedata.Core.Models
         public int? OrderDetailID { get; set; }
         public bool? sellableFormat { get; set; }
         public bool? MissingTrackingNo { get; set; }
-        public int? InventoryTransactionType { get; set; }
+        public InventoryTransactionTypeEnum? InventoryTransactionType { get; set; }
         public List<string> ProductSerials { get; set; }
         public List<PalleTrackingProcess> PalleTrackingProcess { get; set; }
         public Guid TransactionLogId { get; set; }

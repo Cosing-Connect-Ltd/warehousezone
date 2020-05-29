@@ -15,7 +15,6 @@ namespace Ganedata.Core.Services
         IEnumerable<AuthUser> GetAllAuthorisedUsers(int tenantId, bool includeSuperUser = false);
         IEnumerable<JobType> GetAllValidJobTypes(int tenantId);
         IEnumerable<JobSubType> GetAllValidJobSubTypes(int tenantId);
-        InventoryTransactionType GetInventoryTransactionTypeById(int inventoryTransactionTypeId);
         OrderStatus GetOrderstatusByName(string statusName);
         OrderStatus GetOrderstatusById(int id);
         IEnumerable<OrderConsignmentTypes> GetAllValidConsignmentTypes(int tenantId);
@@ -49,7 +48,7 @@ namespace Ganedata.Core.Services
         List<OrderProcessDetail> GetOrderProcessesDetailsForOrderProduct(int orderId, int productId);
         List<InventoryTransaction> GetAllReturnsForOrderProduct(int orderId, int productId);
        
-        OrderProcess GetOrderProcessByDeliveryNumber(int orderId, int InventoryTransactionTypeId, string deliveryNumber, int userId, DateTime? createdDate = null, int warehouseId = 0, AccountShipmentInfo shipmentInfo = null);
+        OrderProcess GetOrderProcessByDeliveryNumber(int orderId, InventoryTransactionTypeEnum InventoryTransactionTypeId, string deliveryNumber, int userId, DateTime? createdDate = null, int warehouseId = 0, AccountShipmentInfo shipmentInfo = null);
         IQueryable<Order> GetAllOrders(int tenantId, int warehouseId = 0, bool excludeProforma = false, DateTime? reqDate = null, bool includeDeleted = false);
         IEnumerable<OrderIdsWithStatus> GetAllOrderIdsWithStatus(int tenantId, int warehouseId = 0);
         IQueryable<Order> GetAllOrdersIncludingNavProperties(int tenantId, int warehouseId = 0);
@@ -64,7 +63,7 @@ namespace Ganedata.Core.Services
         OrderDetail GetOrderDetailsById(int orderDetailId);
         List<OrderDetail> GetAllOrderDetailsForOrderAccount(int supplierAccountId, int poOrderId, int tenantId);
         List<OrderProcessDetail> GetAllOrderProcessesByOrderDetailId(int orderDetailId, int warehouseId);
-        IQueryable<OrderProcess> GetAllOrderProcesses(DateTime? ordersAfter, int? orderId = 0, int? orderProcessStatusId = null, int? transactionTypeId = null, bool includeDeleted = false);
+        IQueryable<OrderProcess> GetAllOrderProcesses(DateTime? ordersAfter, int? orderId = 0, int? orderProcessStatusId = null, InventoryTransactionTypeEnum? transactionTypeId = null, bool includeDeleted = false);
         List<OrderProcessDetail> GetAllOrderProcessesDetails(DateTime? updatedAfter, int? orderProcessId = 0);
 
         OrderProcess CreateOrderProcess(int orderId, string deliveryNo, int[] product, decimal[] qty,
@@ -90,7 +89,7 @@ namespace Ganedata.Core.Services
         List<ProductSerialis> GetProductSerialsByNumber(string serialNo, int tenantId);
 
         InventoryTransaction GetLastInventoryTransactionsForSerial(string serial, int tenantId);
-        Order CreateOrderByOrderNumber(string orderNumber,int productId, int tenantId, int warehouseId, int transType, int userId,decimal Quantity);
+        Order CreateOrderByOrderNumber(string orderNumber,int productId, int tenantId, int warehouseId, InventoryTransactionTypeEnum transType, int userId,decimal Quantity);
         IQueryable<Order> GetAllPendingOrdersForProcessingForDate();
 
         Order DeleteOrderById(int orderId, int userId);
@@ -104,7 +103,7 @@ namespace Ganedata.Core.Services
         List<AwaitingAuthorisationOrdersViewModel> GetAllOrdersAwaitingAuthorisation(int tenantId, int warehouseId, int? OrderStatusId = null);
         IQueryable<OrderReceiveCount> GetAllOrderReceiveCounts(int tenantId, int warehouseId, DateTime? dateUpdated);
         OrderReceiveCountSync SaveOrderReceiveCount(OrderReceiveCountSync countRecord, Terminals terminal);
-        InventoryTransaction AddGoodsReturnPallet(List<string> serials, string orderNumber, int prodId, int transactionTypeId, decimal quantity, int? OrderId, int tenantId, int currentWarehouseId, int UserId, int palletTrackigId = 0);
+        InventoryTransaction AddGoodsReturnPallet(List<string> serials, string orderNumber, int prodId, InventoryTransactionTypeEnum transactionTypeId, decimal quantity, int? OrderId, int tenantId, int currentWarehouseId, int UserId, int palletTrackigId = 0);
 
         decimal QunatityForOrderDetail(int orderDetail);
         bool UpdateOrderProcessStatus(int orderProcessId, int UserId);
@@ -118,7 +117,7 @@ namespace Ganedata.Core.Services
         bool UpdateDateInOrder(int OrderId);
         int [] GetOrderProcessbyOrderId(int OrderId);
 
-        bool CheckOrdersAuthroization(decimal OrderTotal, int InventoryTransactionType,int TenantId,int UserId, double? CreditLimit = null);
+        bool CheckOrdersAuthroization(decimal OrderTotal, InventoryTransactionTypeEnum InventoryTransactionType,int TenantId,int UserId, double? CreditLimit = null);
         decimal GetDiscountOnTotalCost(int accountId, decimal OrdersTotal);
 
         Order CreateShopOrder(int accountId, List<OrderDetail> orderDetail, int tenantId, int UserId, int warehouseId, int SiteId);

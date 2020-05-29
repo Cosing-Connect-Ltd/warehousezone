@@ -80,8 +80,8 @@ namespace Ganedata.Core.Entities.Domain
             get
             {
                 if (Order == null || Order.OrderProcess == null || !Order.OrderProcess.Any()) return 0;
-                return this.Order.OrderProcess.Where(d => d.IsDeleted != true && d.InventoryTransactionTypeId != (int)InventoryTransactionTypeEnum.Returns && d.InventoryTransactionTypeId != (int)InventoryTransactionTypeEnum.Wastage
-                && d.InventoryTransactionTypeId != (int)InventoryTransactionTypeEnum.WastedReturn)
+                return this.Order.OrderProcess.Where(d => d.IsDeleted != true && d.InventoryTransactionTypeId != InventoryTransactionTypeEnum.Returns && d.InventoryTransactionTypeId != InventoryTransactionTypeEnum.Wastage
+                && d.InventoryTransactionTypeId != InventoryTransactionTypeEnum.WastedReturn)
                 .SelectMany(m => m.OrderProcessDetail).Where(d => d.IsDeleted != true)
                     .Where(x => x.OrderDetailID == this.OrderDetailID).Sum(x => x.QtyProcessed);
             }
@@ -91,8 +91,8 @@ namespace Ganedata.Core.Entities.Domain
             get
             {
                 if (Order == null || Order.OrderProcess == null || !Order.OrderProcess.Any()) return 0;
-                return this.Order.OrderProcess.Where(d => d.IsDeleted != true && (d.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Returns || d.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Wastage
-                || d.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.WastedReturn))
+                return this.Order.OrderProcess.Where(d => d.IsDeleted != true && (d.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Returns || d.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Wastage
+                || d.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WastedReturn))
                 .SelectMany(m => m.OrderProcessDetail).Where(d => d.IsDeleted != true)
                     .Where(x => x.OrderDetailID == this.OrderDetailID).Sum(x => x.QtyProcessed);
             }

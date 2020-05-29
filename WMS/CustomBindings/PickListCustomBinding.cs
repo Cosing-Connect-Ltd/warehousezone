@@ -53,14 +53,13 @@ namespace WMS.CustomBindings
             bool success = DateTime.TryParse(expectedDate.ToString(), out recurrenceDate);
             var productServices = DependencyResolver.Current.GetService<IOrderService>();
             var transactions = productServices.GetAllPendingOrdersForProcessingForDate();
-            var PendingListDto = transactions.Where(o => ((o.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.SalesOrder && (!expectedDate.HasValue ||
+            var PendingListDto = transactions.Where(o => ((o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder && (!expectedDate.HasValue ||
                                  DbFunctions.TruncateTime(o.ExpectedDate) == expectedDate) && o.OrderStatusID == (int)OrderStatusEnum.Active)
                                  ||
-                                 (o.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.WorksOrder && (!expectedDate.HasValue ||
+                                 (o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder && (!expectedDate.HasValue ||
                                  DbFunctions.TruncateTime(o.Appointmentses.Max(m => m.StartTime)) == expectedDate || o.Appointmentses.Max(x => x.RecurrenceInfo) != null)
                                  && (o.OrderStatusID == (int)OrderStatusEnum.Scheduled))) && o.TenentId == tenantId && o.IsDeleted != true && (o.PickerId==UserId || o.PickerId==null))
                                .Include(m => m.OrderStatus)
-                               .Include(m => m.TransactionType)
                                .Include(m => m.Account)
                                .Include(m => m.Account.GlobalAccountStatus)
                                .Include(m => m.Account.AccountAddresses)
@@ -82,7 +81,7 @@ namespace WMS.CustomBindings
                                    POStatus = p.OrderStatus.Status,
                                    Account = p.Account != null ? p.Account.AccountCode : "",
                                    OrderTypeId = p.InventoryTransactionTypeId,
-                                   OrderType = p.TransactionType.OrderType,
+                                   OrderType = nameof(p.InventoryTransactionTypeId),
                                    AccountStatus = (p.Account != null && p.Account.GlobalAccountStatus != null) ? p.Account.GlobalAccountStatus.AccountStatus : "",
                                    OrderTotal = p.OrderTotal,
                                    Property = p.PProperties != null ? p.PProperties.AddressLine1 : "",

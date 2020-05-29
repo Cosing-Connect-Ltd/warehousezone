@@ -1,3 +1,4 @@
+using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Entities.Helpers;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace Ganedata.Core.Entities.Domain
         [DataType(DataType.MultilineText)]
         public string Note { get; set; }
         [Display(Name = "Transaction Type")]
-        public int InventoryTransactionTypeId { get; set; }
+        public InventoryTransactionTypeEnum InventoryTransactionTypeId { get; set; }
         [Display(Name = "Account")]
         public int? AccountID { get; set; }
         [Display(Name = "Job Type")]
@@ -121,7 +122,7 @@ namespace Ganedata.Core.Entities.Domain
     {
         public string Status { get; set; }
         public string Account { get; set; }
-        public int TransType { get; set; }
+        public InventoryTransactionTypeEnum TransType { get; set; }
         public string OrderType { get; set; }
         public string TransferWarehouse { get; set; }
 
@@ -132,9 +133,9 @@ namespace Ganedata.Core.Entities.Domain
         public string POStatus { get; set; }
         [Display(Name = "Account Code")]
         public string Account { get; set; }
-        public int OrderTypeId { get; set; }
+        public InventoryTransactionTypeEnum OrderTypeId { get; set; }
         [Display(Name = "Order Type")]
-        public string OrderType { get; set; }
+        public InventoryTransactionTypeEnum OrderType { get; set; }
         [Display(Name = "Account Name")]
         public string AccountName { get; set; }
         [Display(Name = "Currency")]
@@ -210,7 +211,7 @@ namespace Ganedata.Core.Entities.Domain
         public DateTime? ExpectedDate { get; set; }
         public DateTime DateCreated { get; set; }
         public decimal TotalAmount { get; set; }
-        public int TransType { get; set; }
+        public InventoryTransactionTypeEnum TransType { get; set; }
         public bool? EnableGlobalProcessByPallet { get; set; }
         public bool? DirectShip { get; set; }
         public bool? AutoAllowProcess { get; set; }
@@ -252,7 +253,7 @@ namespace Ganedata.Core.Entities.Domain
     {
         public int OrderID { get; set; }
         public int WarehouseID { get; set; }
-        public int OrderTypeId { get; set; }
+        public InventoryTransactionTypeEnum OrderTypeId { get; set; }
         public string OrderNumber { get; set; }
         public DateTime? IssueDate { get; set; }
         public DateTime? ScheduledStartTime { get; set; }

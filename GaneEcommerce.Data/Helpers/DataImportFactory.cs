@@ -920,7 +920,7 @@ namespace Ganedata.Core.Data.Helpers
                                         Quantity = decimal.Parse(readText[12]),
                                         LastQty = context.InventoryStocks.FirstOrDefault(x => x.ProductId == existingProduct.ProductId && x.TenantId == tenantId && x.WarehouseId == warehouseId)?.InStock ?? 0,
                                         IsCurrentLocation = true,
-                                        InventoryTransactionTypeId = 6
+                                        InventoryTransactionTypeId = InventoryTransactionTypeEnum.AdjustmentIn
                                     });
                                 }
                             }
@@ -1588,7 +1588,7 @@ namespace Ganedata.Core.Data.Helpers
                                         Quantity = decimal.Parse(values[11]),
                                         LastQty = context.InventoryStocks.FirstOrDefault(x => x.ProductId == existingProduct.ProductId && x.TenantId == tenantId && x.WarehouseId == warehouseId)?.InStock ?? 0,
                                         IsCurrentLocation = true,
-                                        InventoryTransactionTypeId = (int)InventoryTransactionTypeEnum.AdjustmentIn
+                                        InventoryTransactionTypeId = InventoryTransactionTypeEnum.AdjustmentIn
                                     });
                                 }
 
@@ -2824,7 +2824,7 @@ namespace Ganedata.Core.Data.Helpers
 
                     }
 
-                    order.InventoryTransactionTypeId = (int)InventoryTransactionTypeEnum.SalesOrder;
+                    order.InventoryTransactionTypeId = InventoryTransactionTypeEnum.SalesOrder;
                     if (item.Urgent > 0)
                     {
                         order.SLAPriorityId = 2;
@@ -3083,7 +3083,7 @@ namespace Ganedata.Core.Data.Helpers
         {
 
             var _currentDbContext = new ApplicationContext();
-            var lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == (int)type)
+            var lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == type)
                 .OrderByDescending(m => m.OrderNumber)
                 .FirstOrDefault();
 
@@ -3099,10 +3099,10 @@ namespace Ganedata.Core.Data.Helpers
                 case InventoryTransactionTypeEnum.Samples:
                     prefix = "SO-";
                     lastOrder = _currentDbContext.Order.Where(p =>
-                    p.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.SalesOrder ||
-                    p.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Proforma ||
-                    p.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Quotation ||
-                    p.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Samples
+                    p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder ||
+                    p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Proforma ||
+                    p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Quotation ||
+                    p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Samples
                     ).OrderByDescending(m => m.OrderNumber)
                      .FirstOrDefault();
                     break;
@@ -3114,26 +3114,26 @@ namespace Ganedata.Core.Data.Helpers
                     break;
                 case InventoryTransactionTypeEnum.TransferIn:
                 case InventoryTransactionTypeEnum.TransferOut:
-                    lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.TransferIn ||
-                    p.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.TransferOut && p.OrderNumber.Length == 11)
+                    lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferIn ||
+                    p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferOut && p.OrderNumber.Length == 11)
                     .OrderByDescending(m => m.OrderNumber)
                     .FirstOrDefault();
                     prefix = "TO-";
                     break;
                 case InventoryTransactionTypeEnum.Returns:
-                    lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Returns && p.OrderNumber.Length == 11)
+                    lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Returns && p.OrderNumber.Length == 11)
                    .OrderByDescending(m => m.OrderNumber).FirstOrDefault();
                     prefix = "RO-";
                     break;
                 case InventoryTransactionTypeEnum.Wastage:
-                    lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.Wastage && p.OrderNumber.Length == 11)
+                    lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Wastage && p.OrderNumber.Length == 11)
                   .OrderByDescending(m => m.OrderNumber).FirstOrDefault();
                     prefix = "WO-";
                     break;
                 case InventoryTransactionTypeEnum.AdjustmentIn:
                 case InventoryTransactionTypeEnum.AdjustmentOut:
-                    lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.AdjustmentIn ||
-                     p.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.AdjustmentOut && p.OrderNumber.Length == 11)
+                    lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.AdjustmentIn ||
+                     p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.AdjustmentOut && p.OrderNumber.Length == 11)
                      .OrderByDescending(m => m.OrderNumber)
                      .FirstOrDefault();
                     prefix = "AO-";

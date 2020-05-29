@@ -1,6 +1,8 @@
 using AutoMapper;
 using DevExpress.Web.Mvc;
+using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Services;
+using System;
 using System.Linq;
 using System.Web.Mvc;
 using WMS.CustomBindings;
@@ -14,7 +16,7 @@ namespace WMS.Controllers
         private readonly IMapper _mapper;
         private readonly ILookupServices _lookupServices;
 
-        public ReturnOrdersController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IProductServices productServices, 
+        public ReturnOrdersController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IProductServices productServices,
             IVanSalesService vanSalesService, IMapper mapper) : base(orderService, propertyService, accountServices, lookupServices)
         {
             _productServices = productServices;
@@ -30,7 +32,7 @@ namespace WMS.Controllers
             return View();
         }
 
-      
+
         public ActionResult _ReturnOrders()
         {
             var viewModel = GridViewExtension.GetViewModel("_ReturnOrderListGridView");
@@ -76,7 +78,8 @@ namespace WMS.Controllers
                         OrdersCustomBinding.ReturnOrderGetData(args, CurrentTenantId, CurrentWarehouseId);
                     })
             );
-            ViewData["TransactionTypesList"] = _lookupServices.GetAllInventoryTransactionTypes().Select(x => x.InventoryTransactionTypeName).ToList();
+
+            ViewData["TransactionTypesList"] = Enum.GetNames(typeof(InventoryTransactionTypeEnum)).ToList();
             return PartialView("_ReturnOrders", gridViewModel);
         }
 

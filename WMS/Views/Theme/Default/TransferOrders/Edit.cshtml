@@ -34,7 +34,7 @@
         $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
     }
 </script>
-@if (Model.TransactionType.InventoryTransactionTypeId == (int)InventoryTransactionTypeEnum.TransferIn)
+@if (Model.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferIn)
 {
     <h2><span>Edit Transfer In Order</span></h2>
 }

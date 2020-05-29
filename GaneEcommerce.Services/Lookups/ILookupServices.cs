@@ -13,7 +13,6 @@ namespace Ganedata.Core.Services
         IEnumerable<GlobalTax> GetAllValidGlobalTaxes(int? countryId = null);
         IEnumerable<TenantLoanTypes> GetAllValidTenantLoanTypes(int tenantId);
         IEnumerable<TenantDepartments> GetAllValidTenantDepartments(int tenantId);
-        IEnumerable<InventoryTransactionType> GetAllInventoryTransactionTypes();
         IEnumerable<GlobalWeightGroups> GetAllValidGlobalWeightGroups();
         IEnumerable<SLAPriorit> GetAllValidSlaPriorities(int tenantId);
 
