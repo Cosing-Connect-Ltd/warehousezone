@@ -47,6 +47,9 @@ namespace WMS
                 .ForMember(s => s.TenantName, c => c.MapFrom(m => m.Tenant.TenantName)).ReverseMap();
                 cfg.CreateMap<UISetting, UISettingViewModel>().ReverseMap();
                 cfg.CreateMap<UISettingItem, UISettingItemViewModel>().ReverseMap();
+                cfg.CreateMap<ApiCredentials, ApiCredentialsViewModel>()
+                .ForMember(s => s.SiteName, c => c.MapFrom(m => m.TenantWebsites.SiteName))
+                .ForMember(s => s.Location, c => c.MapFrom(m => m.Warehouse.WarehouseName)).ReverseMap();
 
                 //APIs
                 cfg.CreateMap<ProductMaster, ProductMasterSync>().ReverseMap();

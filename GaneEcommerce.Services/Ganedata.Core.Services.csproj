@@ -210,6 +210,8 @@
     <Compile Include="TenantCurrencyExchange\TenantsCurrencyRateServices.cs" />
     <Compile Include="TenantWebsite\ITenantWebsiteService.cs" />
     <Compile Include="TenantWebsite\TenantWebsiteService.cs" />
+    <Compile Include="ApiCredentials\IApiCredentialServices.cs" />
+    <Compile Include="ApiCredentials\ApiCredentialServices.cs" />
     <Compile Include="UISetting\IUISettingServices.cs" />
     <Compile Include="UISetting\UISettingServices.cs" />
     <Compile Include="Tooltip\TooltipServices.cs" />

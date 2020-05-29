@@ -501,6 +501,7 @@
     <Compile Include="App_Start\UnityWebApiActivator.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AuthUserGroupsController.cs" />
+    <Compile Include="Controllers\ApiCredentialsController.cs" />
     <Compile Include="Controllers\UISettingsController.cs" />
     <Compile Include="Controllers\TooltipsController.cs" />
     <Compile Include="Controllers\OrderScheduleController.cs" />
@@ -546,6 +547,7 @@
     <Compile Include="CustomBindings\CurrencyExRateCustomBinding.cs" />
     <Compile Include="CustomBindings\PalletsCustomBinding.cs" />
     <Compile Include="CustomBindings\LocationListCustomBinding.cs" />
+    <Compile Include="CustomBindings\ApiCredentialListCustomBinding.cs" />
     <Compile Include="CustomBindings\TooltipListCustomBinding.cs" />
     <Compile Include="CustomBindings\WebsiteNavigationProductsCustomBinding.cs" />
     <Compile Include="CustomBindings\WebsiteProductsCustomBinding.cs" />
@@ -2675,6 +2677,11 @@
     <Content Include="Scripts\qTip\jquery.qtip.min.js.map" />
     <Content Include="Views\Theme\Default\Shared\_EmailRecipientsPartial.cshtml" />
     <Content Include="Views\Theme\Modern\Shared\_EmailRecipientsPartial.cshtml" />
+    <Content Include="Views\Theme\Default\ApiCredentials\_ApiCredentialList.cshtml" />
+    <Content Include="Views\Theme\Default\ApiCredentials\Create.cshtml" />
+    <Content Include="Views\Theme\Default\ApiCredentials\Delete.cshtml" />
+    <Content Include="Views\Theme\Default\ApiCredentials\Edit.cshtml" />
+    <Content Include="Views\Theme\Default\ApiCredentials\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

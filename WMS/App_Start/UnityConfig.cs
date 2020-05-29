@@ -99,6 +99,7 @@ namespace WMS
             container.RegisterType<ITenantWebsiteService, TenantWebsiteService>();
             container.RegisterType<ITooltipServices, TooltipServices>();
             container.RegisterType<IUISettingServices, UISettingServices>();
+            container.RegisterType<IApiCredentialServices, ApiCredentialServices>();
 
             //Register Auto Mapper
             var newMapper = new AutoMapperBootStrapper();

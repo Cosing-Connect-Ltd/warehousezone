@@ -1,25 +1,20 @@
-﻿using System;
+﻿using DevExpress.Web.Mvc;
+using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Services;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using DevExpress.Web.Mvc;
-using Ganedata.Core.Data;
-using Ganedata.Core.Entities.Domain;
 using System.Web.Routing;
-using Ganedata.Core.Services;
-using DevExpress.CodeParser;
 
 namespace WMS.Controllers
 {
     public class TenantWebsitesController : BaseController
     {
         private readonly ITenantWebsiteService _tenantWebsiteService;
-      
+
         string UploadDirectory = "~/UploadedFiles/TenantWebSite/";
         string UploadTempDirectory = "~/UploadedFiles/TenantWebSite/TempFiles/";
 
@@ -62,7 +57,7 @@ namespace WMS.Controllers
         }
 
         // POST: TenantWebsites/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -122,7 +117,7 @@ namespace WMS.Controllers
         }
 
         // POST: TenantWebsites/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -163,7 +158,7 @@ namespace WMS.Controllers
             }
             _tenantWebsiteService.RemoveTenantWebsite((id ?? 0), CurrentUserId);
             return RedirectToAction("Index");
-           
+
         }
 
         // POST: TenantWebsites/Delete/5

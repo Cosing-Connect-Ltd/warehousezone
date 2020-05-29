@@ -142,6 +142,9 @@ $(function () {
         else if (id === "lnkTooltipUpdate") {
             value = $('#selkeyTooltipList').val();
         }
+        else if (id === "lnkApiCredentialUpdate") {
+            value = $('#selkeyApiCredentialList').val();
+        }
         else if (id === "lnksavePrdSCCCode") {
             value = $('#selkeyPrdSccCodes').val();
         }

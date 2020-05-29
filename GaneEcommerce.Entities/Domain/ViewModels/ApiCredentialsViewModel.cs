@@ -1,11 +1,10 @@
 ﻿using Ganedata.Core.Entities.Enums;
 using System;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Ganedata.Core.Entities.Domain
+namespace Ganedata.Core.Models
 {
-    public class ApiCredentials : PersistableEntity<int>
+    public class ApiCredentialsViewModel
     {
         public int Id { get; set; }
         public string UserName { get; set; }
@@ -20,14 +19,11 @@ namespace Ganedata.Core.Entities.Domain
         public DateTime? ExpiryDate { get; set; }
         [DisplayName("Account Number")]
         public string AccountNumber { get; set; }
-        [DisplayName("Location")]
         public int DefaultWarehouseId { get; set; }
-        [DisplayName("Website")]
         public int? SiteID { get; set; }
-        [ForeignKey("SiteID")]
-        public virtual TenantWebsites TenantWebsites { get; set; }
-        [ForeignKey("DefaultWarehouseId")]
-        public virtual TenantLocations Warehouse { get; set; }
+        [DisplayName("Website")]
+        public string SiteName { get; set; }
+        public string Location { get; set; }
 
 
     }
