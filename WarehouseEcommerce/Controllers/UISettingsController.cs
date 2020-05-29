@@ -43,12 +43,15 @@ namespace WMS.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task Save(List<UISettingViewModel> uiSettings)
+        public JsonResult Save(List<UISettingViewModel> uiSettings)
         {
             if (ModelState.IsValid)
             {
-                await _uiSettingServices.Save(uiSettings, CurrentUserId, CurrentTenantId);
+                var result = _uiSettingServices.Save(uiSettings, CurrentUserId, CurrentTenantId);
+                return Json(result.ToDictionary(t => t.UISettingItem.Key, t => t.Id), JsonRequestBehavior.AllowGet);
             }
+
+            return null;
         }
 
         [HttpGet]

@@ -6,7 +6,6 @@ using Ganedata.Core.Models;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Ganedata.Core.Services
 {
@@ -72,9 +71,9 @@ namespace Ganedata.Core.Services
                         .Where(s => s.IsDeleted != true && s.TenantId == tenantId);
         }
 
-        public async Task Save(List<UISettingViewModel> uiSettingData, int userId, int tenantId)
+        public List<UISettingViewModel> Save(List<UISettingViewModel> uiSettingData, int userId, int tenantId)
         {
-            uiSettingData.ForEach(s => {
+            uiSettingData.ForEach( s => {
 
                 if (s.Id != 0)
                 {
@@ -102,11 +101,13 @@ namespace Ganedata.Core.Services
 
                 _currentDbContext.UISettings.Add(uiSetting);
 
+                _currentDbContext.SaveChanges();
+
+                s.Id = uiSetting.Id;
+
             });
 
-            await _currentDbContext.SaveChangesAsync();
-
-
+            return uiSettingData;
         }
     }
 }

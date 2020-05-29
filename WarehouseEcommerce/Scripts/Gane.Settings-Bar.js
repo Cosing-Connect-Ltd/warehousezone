@@ -35,8 +35,10 @@ function saveUISettings() {
             type: "POST",
             url: "/UISettings/Save",
             data: data,
-            success: function () {
+            success: function (result) {
                 collapseSettingsBar();
+
+                setUISettingIdsInModel(result);
 
                 baseUISettings = localStorage.getItem("ui-settings");
             },
@@ -45,6 +47,12 @@ function saveUISettings() {
             }
 
         });
+    }
+}
+
+function setUISettingIdsInModel(data) {
+    for (var i = 0; i < Object.keys(data).length; i++) {
+        $("[name='[" + i + "].Id']")[0].value = data[$("[name='[" + i + "].UISettingItem.Key']")[0].value];
     }
 }
 
