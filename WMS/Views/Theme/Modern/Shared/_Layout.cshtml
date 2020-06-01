@@ -11,6 +11,7 @@
     @Styles.Render("~/Content/fontawesome-bundle")
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/css/default")
+    <link href="@Url.Action("AppStyle", "UISettings", new { filePath = "/Content/Theme/Modern/site.css"})" rel="stylesheet" type="text/css" />
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryui")
@@ -81,17 +82,17 @@
         </div>
     </div>
 
-<div class="container body-content">
+    <div class="container body-content">
         @if (loginStatus && isSuperUser)
         {
             <div class="settings-bar">
-                    <div class="settings-bar-switch" onclick="javascript:toggleSettingsBar();">
-                        <b class="fa fa-paint-brush fa-lg" title="Toggle Settings"></b>
-                    </div>
+                <div class="settings-bar-switch" onclick="javascript:toggleSettingsBar();">
+                    <b class="fa fa-paint-brush fa-lg" title="Toggle Settings"></b>
+                </div>
 
-                    <div id="settings-bar-content">
-                        @Html.Action("SettingsBar", "UISettings")
-                    </div>
+                <div id="settings-bar-content">
+                    @Html.Action("SettingsBar", "UISettings")
+                </div>
             </div>
         }
         <div class="main-left">

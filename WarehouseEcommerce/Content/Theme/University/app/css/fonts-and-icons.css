@@ -1,0 +1,39 @@
+﻿@font-face {
+    font-family: "primaryfont_Bold";
+    src: url("../fonts/SegoeUI-Bold.eot");
+    src: url("../fonts/SegoeUI-Bold.eot?#iefix") format("embedded-opentype"), url("../fonts/SegoeUI-Bold.woff") format("woff"), url("../fonts/SegoeUI-Bold.ttf") format("truetype"), url("../fonts/SegoeUI-Bold.svg") format("svg");
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "primaryfont_SemiBold";
+    src: url("../fonts/SegoeUI-Semibold.eot");
+    src: url("../fonts/SegoeUI-Semibold.eot?#iefix") format("embedded-opentype"), url("../fonts/SegoeUI-Semibold.woff") format("woff"), url("../fonts/SegoeUI-Semibold.ttf") format("truetype"), url("../fonts/SegoeUI-Semibold.svg") format("svg");
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "primaryfont_Normal";
+    src: url("../fonts/SegoeUI.eot");
+    src: url("../fonts/SegoeUI.eot?#iefix") format("embedded-opentype"), url("../fonts/SegoeUI.woff") format("woff"), url("../fonts/SegoeUI.ttf") format("truetype"), url("../fonts/SegoeUI.svg") format("svg");
+    font-weight: 400;
+    font-style: normal;
+}
+
+.nb_footer .nb_footersec_inner .nb_foot_payment_opt_lst li a span.card1 {
+    background: transparent url("../images/payment_cards_sprites.png") 0px 0px no-repeat;
+}
+
+.nb_footer .nb_footersec_inner .nb_foot_payment_opt_lst li a span.card2 {
+    background: transparent url("../images/payment_cards_sprites.png") -72px 0px no-repeat;
+}
+
+.nb_footer .nb_footersec_inner .nb_foot_payment_opt_lst li a span.card3 {
+    background: transparent url("../images/payment_cards_sprites.png") -142px 0px no-repeat;
+}
+
+.nb_footer .nb_footersec_inner .nb_foot_payment_opt_lst li a span.card4 {
+    background: transparent url("../images/payment_cards_sprites.png") -213px 0px no-repeat;
+}

@@ -13,6 +13,7 @@ namespace Ganedata.Core.Entities.Domain
         public int Id { get; set; }
         public string Key { get; set; }
         public string DisplayName { get; set; }
+        public string DefaultValue { get; set; }
         public int DisplayOrder { get; set; }
         public UISettingItemInputType InputType { get; set; }
         public int? WebsiteThemeId { get; set; }

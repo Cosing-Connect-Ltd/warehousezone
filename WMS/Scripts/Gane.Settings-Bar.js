@@ -2,47 +2,23 @@
     setSettingsBarState();
 });
 
-var baseUISetting = {};
-
-function setSettingsBarState() {
-    var isSettingsBarExpanded = parseInt(localStorage.getItem('is-settings-bar-expanded')) == 1;
-    if (isSettingsBarExpanded) {
-        expandSettingsBar();
-    }
-}
-
 function onUISettingChanged(s) {
+    var itemKey = s.getAttribute('data-settingsKey');
 
-    var itemKey = $("[name='" + s.name.replace('Value', 'UISettingItem.Key') + "']")[0].value
-
-    var uiSettings = JSON.parse(localStorage.getItem("ui-settings"));
-
-    var itemValue = !!s.color ? s.color : s.value;
-
-    uiSettings[itemKey] = itemValue;
-
-    localStorage.setItem("ui-settings", JSON.stringify(uiSettings));
-
-    applyUISettings(itemKey, itemValue);
+    applyUISettings(itemKey, s.value);
 }
 
 function saveUISettings() {
     if (IsValidForm('#frmSettingsBar')) {
         var data = $("#frmSettingsBar").serializeArray();
 
-        LoadingPanel.Show();
-
         $.ajax({
             type: "POST",
             url: "/UISettings/Save",
             data: data,
-            success: function (data) {
+            success: function () {
                 LoadingPanel.Hide();
                 collapseSettingsBar();
-
-                setUISettingIdsInModel(data);
-
-                baseUISettings = localStorage.getItem("ui-settings");
             },
             error: function (xhr, status, error) {
                 console.log(error);
@@ -60,32 +36,69 @@ function setUISettingIdsInModel(data) {
 }
 
 function applyUISettings(settingsKey, itemValue) {
+    if (itemValue == undefined || itemValue == null || itemValue == '') { return; }
+
     $("body *").css({ "transition": "background-color 0.5s ease" });
     $('body')[0].style.setProperty(settingsKey, itemValue);
     setTimeout(function () { $("body *").css({ "transition": "" }) }, 500);
 }
 
-function undoUISettings() {
-    localStorage.setItem("ui-settings", baseUISettings);
-    applyAllUISettings();
-    setModelValues(JSON.parse(baseUISettings));
+function cancelChanges() {
+    setUISettings(false);
     collapseSettingsBar();
 }
 
-function resetUISettings() {
-    var uiSettings = JSON.parse(localStorage.getItem("ui-settings"));
-    var defaultUISettings = {}
-    for (var key in uiSettings) {
-        defaultUISettings[key] = getComputedStyle(document.documentElement).getPropertyValue(key);
-    }
-    localStorage.setItem("ui-settings", JSON.stringify(defaultUISettings));
-    setModelValues(defaultUISettings);
-    applyAllUISettings();
+function setDefaultValues() {
+    setUISettings(true);
 }
 
-function setModelValues(uiSettings) {
-    for (var key in uiSettings) {
-        setUIElementValue(key, uiSettings[key]);
+function setUISettings(isResetToDefault) {
+    $.ajax({
+        type: "GET",
+        url: "/UISettings/GetUISettingValues",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (uiSettings) {
+            for (var key in uiSettings) {
+                var value = uiSettings[key][isResetToDefault ? 'DefaultValue' : 'Value'];
+
+                applyUISettings(key, value);
+
+                var elements = $('input[data-settingsKey="' + key + '"]');
+
+                for (var i in elements) {
+                    !!elements[i].jscolor && elements[i].jscolor.fromString(value);
+
+                    elements[i].value = value;
+                }
+            }
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+
+function IsValidForm(form) {
+    InitializeValidationRulesForForm(form);
+    var validator = $.data($(form)[0], 'validator');
+    if (validator == null) return true;
+    return validator.form();
+}
+
+function InitializeValidationRulesForForm(form) {
+    var form = $(form);
+    if (form.attr("executed"))
+        return;
+    form.removeData("validator");
+    $.validator.unobtrusive.parse(document);
+    form.executed = true;
+}
+
+function setSettingsBarState() {
+    var isSettingsBarExpanded = parseInt(localStorage.getItem('is-settings-bar-expanded')) == 1;
+    if (isSettingsBarExpanded) {
+        expandSettingsBar();
     }
 }
 

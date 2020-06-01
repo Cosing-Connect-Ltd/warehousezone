@@ -56,7 +56,6 @@ namespace WMS
 
 
             bundles.Add(new ScriptBundle("~/bundles/custom").Include(
-                      "~/Scripts/Gane.UISettings.js",
                       "~/Scripts/JavaScript-PopupFunctions.js",
                       "~/Scripts/JavaScript-AccountSection.js",
                       "~/Scripts/JavaScript-Markets.js",
@@ -117,10 +116,10 @@ namespace WMS
                 "~/Content/themes/base/theme.css"));
 
             bundles.Add(new StyleBundle("~/Content/css/default").Include(
-             "~/Content/Theme/Default/site.css"));
+             "~/Content/Theme/Default/fonts-and-icons.css"));
 
             bundles.Add(new StyleBundle("~/Content/css/modern").Include(
-             "~/Content/Theme/Modern/site.css"));
+             "~/Content/Theme/Modern/fonts-and-icons.css"));
         }
     }
 }

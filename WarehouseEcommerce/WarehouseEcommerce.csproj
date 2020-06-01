@@ -259,6 +259,7 @@
     <Content Include="Content\settings-bar.css" />
     <Content Include="Content\Theme\Smart\app\css\App.css" />
     <Content Include="Content\Theme\Smart\app\css\app.min.css" />
+    <Content Include="Content\Theme\Smart\app\css\fonts-and-icons.css" />
     <Content Include="Content\Theme\Smart\app\fonts\gotham\Gotham-Book.svg" />
     <Content Include="Content\Theme\Smart\app\fonts\gotham\Gotham-ExtraLight.svg" />
     <Content Include="Content\Theme\Smart\app\fonts\gotham\Gotham-Light.svg" />
@@ -327,6 +328,7 @@
     <Content Include="Content\Theme\Smart\app\js\custom.js" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\Theme\University\app\css\customfontIcons.css" />
+    <Content Include="Content\Theme\University\app\css\fonts-and-icons.css" />
     <Content Include="Content\Theme\University\app\css\jquery-confirm.min.css" />
     <Content Include="Content\Theme\University\app\js\jquery-confirm.min.js" />
     <Content Include="Content\Theme\University\app\css\App.css" />
@@ -564,7 +566,6 @@
     <Content Include="fonts\Pe-icon-7-stroke.ttf" />
     <Content Include="fonts\Pe-icon-7-stroke.woff" />
     <Content Include="Scripts\Gane.Settings-Bar.js" />
-    <Content Include="Scripts\Gane.UISettings.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jscolor.js" />

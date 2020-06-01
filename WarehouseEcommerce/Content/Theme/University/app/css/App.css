@@ -1,31 +1,6 @@
 ﻿@charset "utf-8";
 /* Northumbria CSS Document */
 
-@font-face {
-    font-family: "primaryfont_Bold";
-    src: url("../fonts/SegoeUI-Bold.eot");
-    src: url("../fonts/SegoeUI-Bold.eot?#iefix") format("embedded-opentype"), url("../fonts/SegoeUI-Bold.woff") format("woff"), url("../fonts/SegoeUI-Bold.ttf") format("truetype"), url("../fonts/SegoeUI-Bold.svg") format("svg");
-    font-weight: 800;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: "primaryfont_SemiBold";
-    src: url("../fonts/SegoeUI-Semibold.eot");
-    src: url("../fonts/SegoeUI-Semibold.eot?#iefix") format("embedded-opentype"), url("../fonts/SegoeUI-Semibold.woff") format("woff"), url("../fonts/SegoeUI-Semibold.ttf") format("truetype"), url("../fonts/SegoeUI-Semibold.svg") format("svg");
-    font-weight: 600;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: "primaryfont_Normal";
-    src: url("../fonts/SegoeUI.eot");
-    src: url("../fonts/SegoeUI.eot?#iefix") format("embedded-opentype"), url("../fonts/SegoeUI.woff") format("woff"), url("../fonts/SegoeUI.ttf") format("truetype"), url("../fonts/SegoeUI.svg") format("svg");
-    font-weight: 400;
-    font-style: normal;
-}
-
-
 html,
 body,
 div,
@@ -122,13 +97,13 @@ section {
 }
 
 :root {
-    --body-background-color: #ffffff;
+    --body-background-color: #FFFFFF;
     --primary-color: #111111;
-    --secondary-color: #f33655;
-    --tertiary-color: #ffffff;
-    --quaternary-color: #504d4d;
+    --secondary-color: #F33655;
+    --tertiary-color: #FFFFFF;
+    --quaternary-color: #504D4D;
     --dark-font-color: #000000;
-    --light-font-color: #ffffff;
+    --light-font-color: #FFFFFF;
 }
 
 body {
@@ -1357,22 +1332,6 @@ input[type="number"]::-webkit-outer-spin-button {
                     background-color: #f00;
                 }
 
-                    .nb_footer .nb_footersec_inner .nb_foot_payment_opt_lst li a span.card1 {
-                        background: transparent url("../images/payment_cards_sprites.png") 0px 0px no-repeat;
-                    }
-
-                    .nb_footer .nb_footersec_inner .nb_foot_payment_opt_lst li a span.card2 {
-                        background: transparent url("../images/payment_cards_sprites.png") -72px 0px no-repeat;
-                    }
-
-                    .nb_footer .nb_footersec_inner .nb_foot_payment_opt_lst li a span.card3 {
-                        background: transparent url("../images/payment_cards_sprites.png") -142px 0px no-repeat;
-                    }
-
-                    .nb_footer .nb_footersec_inner .nb_foot_payment_opt_lst li a span.card4 {
-                        background: transparent url("../images/payment_cards_sprites.png") -213px 0px no-repeat;
-                    }
-
         .nb_footer .nb_footersec_inner hr {
             margin: 0px;
             border: solid 1px #707070;
@@ -1843,7 +1802,8 @@ input[type="number"]::-webkit-outer-spin-button {
                 .nb_prd_listing_wrap .tagList li a:hover {
                     color: var(--light-font-color);
                     background-color: var(--secondary-color);
-                    border: solid 1px var(--secondary-color);
+                    border: solid 1px;
+                    border-color: var(--secondary-color);
                 }
 
 .prd_lst_boxouter {
@@ -2039,7 +1999,8 @@ input[type="number"]::-webkit-outer-spin-button {
             display: block;
             width: 30px;
             height: 30px;
-            border: solid 1px var(--tertiary-color);
+            border: solid 1px;
+            border-color: var(--tertiary-color);
             background-color: #000000;
             box-shadow: 0px 0px 0px 2px #060606;
         }
@@ -2278,7 +2239,8 @@ input[type="number"]::-webkit-outer-spin-button {
             display: block;
             width: 30px;
             height: 30px;
-            border: solid 1px var(--tertiary-color);
+            border: solid 1px;
+            border-color: var(--tertiary-color);
             background-color: #000000;
             box-shadow: 0px 0px 0px 2px #060606;
         }
@@ -3399,7 +3361,7 @@ body.ZoomerActive {
 
                 #signupPopup .modal-dialog .modal-content .modal-body .registrationSec .regBtn {
                     width: 100%;
-                    background-color: #000000;
+                    background-color: var(--primary-color);
                     color: var(--light-font-color);
                     text-transform: uppercase;
                     font-family: "primaryfont_Bold";
@@ -3709,7 +3671,8 @@ body.ZoomerActive {
     }
 
         .bloglistSec .bloglistSecInner .bloglistBox:hover .nb_fb_img {
-            border: solid 1px var(--secondary-color);
+            border: solid 1px;
+            border-color: var(--secondary-color);
         }
 
             .bloglistSec .bloglistSecInner .bloglistBox:hover .nb_fb_img img {
@@ -3909,7 +3872,8 @@ body.ZoomerActive {
             }
 
                 .youmayalLikesec .ymalList li:hover .imgwrap {
-                    border: solid 1px var(--secondary-color);
+                    border: solid 1px;
+                    border-color: var(--secondary-color);
                 }
 
                 .youmayalLikesec .ymalList li:hover .contwrap .ymalListHead {
@@ -4222,7 +4186,8 @@ body.ZoomerActive {
 
                 .progressBarStep ul#progressList li.active:after {
                     background-color: #4cb71a;
-                    border: solid 2px var(--tertiary-color);
+                    border: solid 2px;
+                    border-color: var(--tertiary-color);
                     box-shadow: 0px 0px 0px 2px #4cb71a;
                 }
 

@@ -1,6 +1,7 @@
 ﻿using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Models;
 using System.Collections.Generic;
+using System.Web;
 
 namespace Ganedata.Core.Services
 {
@@ -10,6 +11,8 @@ namespace Ganedata.Core.Services
         List<UISettingViewModel> GetWarehouseUISettings(int tenantId, WarehouseThemeEnum warehouseTheme);
         List<UISettingItemViewModel> GetWebsiteUISettingItems(int tenantId, WebsiteThemeEnum websiteTheme);
         List<UISettingItemViewModel> GetWarehouseUISettingItems(int tenantId, WarehouseThemeEnum warehouseTheme);
-        List<UISettingViewModel> Save(List<UISettingViewModel> uiSettingData, int userId, int tenantId);
+        void Save(List<UISettingViewModel> uiSettingData, int userId, int tenantId, int? siteId = null);
+        string GetWarehouseCustomStylesContent(string filePath, HttpBrowserCapabilitiesBase browser, int tenantId, WarehouseThemeEnum warehouseTheme);
+        string GetWebsiteCustomStylesContent(string filePath, HttpBrowserCapabilitiesBase browser, int tenantId, int siteId, WebsiteThemeEnum websiteTheme);
     }
 }

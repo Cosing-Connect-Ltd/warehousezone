@@ -879,6 +879,10 @@
     <Compile Include="Migrations\202006011754200_OrderStatus-table-dropped.designer.cs">
       <DependentUpon>202006011754200_OrderStatus-table-dropped.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202006011852551_add-DefaultValue-column-to-UISettingItems-table.cs" />
+    <Compile Include="Migrations\202006011852551_add-DefaultValue-column-to-UISettingItems-table.designer.cs">
+      <DependentUpon>202006011852551_add-DefaultValue-column-to-UISettingItems-table.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1858,6 +1862,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202006011754200_OrderStatus-table-dropped.resx">
       <DependentUpon>202006011754200_OrderStatus-table-dropped.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006011852551_add-DefaultValue-column-to-UISettingItems-table.resx">
+      <DependentUpon>202006011852551_add-DefaultValue-column-to-UISettingItems-table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

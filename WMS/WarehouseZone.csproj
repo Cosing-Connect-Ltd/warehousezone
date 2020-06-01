@@ -961,6 +961,8 @@
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\settings-bar.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\Theme\Default\fonts-and-icons.css" />
+    <Content Include="Content\Theme\Modern\fonts-and-icons.css" />
     <Content Include="Content\Theme\Modern\Site.css" />
     <Content Include="Content\Theme\Default\Site.css" />
     <Content Include="Content\Themes\base\accordion.css" />
@@ -1230,7 +1232,6 @@
     <Content Include="Scripts\bootstrap.js.map" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
     <Content Include="Scripts\bootstrap.bundle.js.map" />
-    <Content Include="Scripts\Gane.UISettings.js" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

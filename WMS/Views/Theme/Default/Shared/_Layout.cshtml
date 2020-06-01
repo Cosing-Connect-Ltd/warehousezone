@@ -12,6 +12,7 @@
     @Styles.Render("~/Content/fontawesome-bundle")
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/css/default")
+    <link href="@Url.Action("AppStyle", "UISettings", new { filePath = "/Content/Theme/Default/site.css"})" rel="stylesheet" type="text/css" />
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryui")

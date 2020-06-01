@@ -3,9 +3,6 @@ using Ganedata.Core.Models;
 using Ganedata.Core.Services;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Dynamic;
-using System.Security.Authentication;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace WMS.Controllers
@@ -30,17 +27,6 @@ namespace WMS.Controllers
 
             var uiSettings = _uiSettingServices.GetWarehouseUISettings(CurrentTenantId, CurrentTenant.Theme);
 
-            if (uiSettings == null)
-            {
-                uiSettings = new List<UISettingViewModel>();
-            }
-            var NewUISettingItems = _uiSettingServices.GetWarehouseUISettingItems(CurrentTenantId, CurrentTenant.Theme)
-                                    .Where(k => !uiSettings.Select(s => s.UISettingItem.Id).Contains(k.Id));
-
-            uiSettings.AddRange(NewUISettingItems.Select(k => new UISettingViewModel { UISettingItem = k }).ToList());
-
-            uiSettings.Sort((item1, item2) => item1.UISettingItem.DisplayOrder.CompareTo(item2.UISettingItem.DisplayOrder));
-
             return PartialView("SettingsBar", uiSettings);
         }
 
@@ -55,17 +41,6 @@ namespace WMS.Controllers
             ViewBag.SiteName = tenantWebsite.SiteName;
 
             var uiSettings = _uiSettingServices.GetWebsiteUISettings(CurrentTenantId, siteId, tenantWebsite.Theme);
-
-            if (uiSettings == null)
-            {
-                uiSettings = new List<UISettingViewModel>();
-            }
-            var NewUISettingItems = _uiSettingServices.GetWebsiteUISettingItems(CurrentTenantId, tenantWebsite.Theme)
-                                    .Where(k => !uiSettings.Select(s => s.UISettingItem.Id).Contains(k.Id));
-
-            uiSettings.AddRange(NewUISettingItems.Select(k => new UISettingViewModel { UISettingItem = k, SiteId = siteId }).ToList());
-
-            uiSettings.Sort((item1, item2) => item1.UISettingItem.DisplayOrder.CompareTo(item2.UISettingItem.DisplayOrder));
 
             return View("WebsiteUISettings", uiSettings);
         }
@@ -85,34 +60,35 @@ namespace WMS.Controllers
             return View(uiSettings);
         }
 
-        [HttpGet]
-        public JsonResult GetWarehouseUISetting()
-        {
-            var uiSettings = _uiSettingServices.GetWarehouseUISettings(CurrentTenantId, CurrentTenant.Theme);
-
-            if (uiSettings == null)
-            {
-                uiSettings = new List<UISettingViewModel>();
-            }
-            var NewUISettingItems = _uiSettingServices.GetWarehouseUISettingItems(CurrentTenantId, CurrentTenant.Theme)
-                                    .Where(k => !uiSettings.Select(s => s.UISettingItem.Id).Contains(k.Id));
-
-            uiSettings.AddRange(NewUISettingItems.Select(k => new UISettingViewModel { UISettingItem = k }).ToList());
-
-            return Json(uiSettings.ToDictionary(t => t.UISettingItem.Key, t => t.Value), JsonRequestBehavior.AllowGet);
-        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult Save(List<UISettingViewModel> uiSettings)
+        public void Save(List<UISettingViewModel> uiSettings)
         {
             if (ModelState.IsValid)
             {
-                var result = _uiSettingServices.Save(uiSettings, CurrentUserId, CurrentTenantId);
-                return Json(result.ToDictionary(t => t.UISettingItem.Key, t => t.Id), JsonRequestBehavior.AllowGet);
+                _uiSettingServices.Save(uiSettings, CurrentUserId, CurrentTenantId);
             }
+        }
 
-            return null;
+        [HttpGet]
+        public JsonResult GetUISettingValues()
+        {
+            var uiSettings = _uiSettingServices.GetWarehouseUISettings(CurrentTenantId, CurrentTenant.Theme);
+
+            return Json(uiSettings.ToDictionary(t => t.UISettingItem.Key,
+                                                     t => new
+                                                     {
+                                                         t.UISettingItem.DefaultValue,
+                                                         t.Value
+                                                     }), JsonRequestBehavior.AllowGet);
+        }
+
+        public ContentResult AppStyle(string filePath)
+        {
+            var cssContent = _uiSettingServices.GetWarehouseCustomStylesContent(Server.MapPath(filePath), Request.Browser, CurrentTenantId, CurrentTenant.Theme);
+
+            return Content(cssContent, "text/css");
         }
     }
 }
