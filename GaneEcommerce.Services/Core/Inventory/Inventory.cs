@@ -864,13 +864,13 @@ namespace Ganedata.Core.Services
             //On Order
             var itemsOrdered = context.Order
                 .Where(m => (m.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder || m.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferIn) && m.WarehouseId == WarehouseId &&
-                            m.OrderStatusID != (int)OrderStatusEnum.Complete && m.OrderStatusID != (int)OrderStatusEnum.Cancelled && m.OrderStatusID != (int)OrderStatusEnum.PostedToAccounts && m.OrderStatusID != (int)OrderStatusEnum.Invoiced &&
+                            m.OrderStatusID != OrderStatusEnum.Complete && m.OrderStatusID != OrderStatusEnum.Cancelled && m.OrderStatusID != OrderStatusEnum.PostedToAccounts && m.OrderStatusID != OrderStatusEnum.Invoiced &&
                             m.ShipmentPropertyId == null && m.IsDeleted != true && m.IsCancel != true && m.DirectShip != true)
                             .Select(m => m.OrderDetails.Where(p => p.ProductId == ProductId && p.IsDeleted != true).Select(x => x.Qty).DefaultIfEmpty(0).Sum()).DefaultIfEmpty(0).Sum();
 
             var itemsReceived = context.Order
                 .Where(m => (m.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder || m.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferIn) && m.WarehouseId == WarehouseId &&
-                            m.OrderStatusID != (int)OrderStatusEnum.Complete && m.OrderStatusID != (int)OrderStatusEnum.Cancelled && m.OrderStatusID != (int)OrderStatusEnum.PostedToAccounts && m.OrderStatusID != (int)OrderStatusEnum.Invoiced
+                            m.OrderStatusID != OrderStatusEnum.Complete && m.OrderStatusID != OrderStatusEnum.Cancelled && m.OrderStatusID != OrderStatusEnum.PostedToAccounts && m.OrderStatusID != OrderStatusEnum.Invoiced
                             && m.ShipmentPropertyId == null && m.IsDeleted != true && m.IsCancel != true && m.DirectShip != true)
                             .Select(m => m.OrderProcess.Where(u => u.IsDeleted != true).Select(o => o.OrderProcessDetail.Where(p => p.ProductId == ProductId && p.IsDeleted != true &&
                             p.OrderDetail.DontMonitorStock != true).Select(q => q.QtyProcessed).DefaultIfEmpty(0)
@@ -887,7 +887,7 @@ namespace Ganedata.Core.Services
                 || m.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Loan || m.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Samples
                 || m.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Exchange || m.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferOut
                 || m.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Wastage) && m.WarehouseId == WarehouseId &&
-                            m.OrderStatusID != (int)OrderStatusEnum.Complete && m.OrderStatusID != (int)OrderStatusEnum.Cancelled && m.OrderStatusID != (int)OrderStatusEnum.PostedToAccounts && m.OrderStatusID != (int)OrderStatusEnum.Invoiced
+                            m.OrderStatusID != OrderStatusEnum.Complete && m.OrderStatusID != OrderStatusEnum.Cancelled && m.OrderStatusID != OrderStatusEnum.PostedToAccounts && m.OrderStatusID != OrderStatusEnum.Invoiced
                             && m.IsDeleted != true && m.IsCancel != true && m.DirectShip != true)
                             .Select(m => m.OrderDetails.Where(p => p.ProductId == ProductId && p.IsDeleted != true).Select(x => x.Qty).DefaultIfEmpty(0).Sum()).DefaultIfEmpty(0).Sum();
 
@@ -895,7 +895,7 @@ namespace Ganedata.Core.Services
                 .Where(m => (m.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder || m.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder
                 || m.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Loan || m.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Samples
                 || m.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Exchange || m.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferOut || m.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Wastage) && m.WarehouseId == WarehouseId &&
-                            m.OrderStatusID != (int)OrderStatusEnum.Complete && m.OrderStatusID != (int)OrderStatusEnum.Cancelled && m.OrderStatusID != (int)OrderStatusEnum.PostedToAccounts && m.OrderStatusID != (int)OrderStatusEnum.Invoiced
+                            m.OrderStatusID != OrderStatusEnum.Complete && m.OrderStatusID != OrderStatusEnum.Cancelled && m.OrderStatusID != OrderStatusEnum.PostedToAccounts && m.OrderStatusID != OrderStatusEnum.Invoiced
                             && m.IsDeleted != true && m.IsCancel != true && m.DirectShip != true)
                 .Select(m => m.OrderProcess.Where(u => u.IsDeleted != true).Select(o => o.OrderProcessDetail.Where(p => p.ProductId == ProductId && p.IsDeleted != true).Select(q => q.QtyProcessed).DefaultIfEmpty(0)
                           .Sum()).DefaultIfEmpty(0).Sum()).DefaultIfEmpty(0).Sum();

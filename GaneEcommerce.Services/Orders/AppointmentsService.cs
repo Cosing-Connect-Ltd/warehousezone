@@ -104,7 +104,7 @@ namespace Ganedata.Core.Services
 
         public IQueryable<Appointments> GetAllActiveAppointments(int tenantId)
         {
-            return _currentDbContext.Appointments.AsNoTracking().Where(x => x.IsCanceled != true && x.Orders.OrderStatusID != (int)OrderStatusEnum.Complete);
+            return _currentDbContext.Appointments.AsNoTracking().Where(x => x.IsCanceled != true && x.Orders.OrderStatusID != OrderStatusEnum.Complete);
         }
 
         public bool CreateAppointment(Appointments appointment)

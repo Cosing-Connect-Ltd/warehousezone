@@ -96,7 +96,7 @@ namespace Ganedata.Core.Entities.Domain
 
 
         [Display(Name = "Order Status")]
-        public int OrderStatusID { get; set; }
+        public OrderStatusEnum OrderStatusID { get; set; }
 
         [Display(Name = "Loan Type")]
         public int? LoanID { get; set; }
@@ -159,11 +159,7 @@ namespace Ganedata.Core.Entities.Domain
 
         [ForeignKey("WarehouseId")]
         public virtual TenantLocations Warehouse { get; set; }
-
         public virtual AccountContacts AccountContacts { get; set; }
-        public virtual OrderStatus OrderStatus { get; set; }
-
-
         public string ShipmentAddressLine1 { get; set; }
         public string ShipmentAddressLine2 { get; set; }
         public string ShipmentAddressLine3 { get; set; }

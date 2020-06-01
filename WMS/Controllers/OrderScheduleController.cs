@@ -23,7 +23,7 @@ namespace WMS.Controllers
         private readonly IMapper _mapper;
 
         public OrderScheduleController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IEmployeeServices employeeServices,
-            IAppointmentsService appointmentsService, IUserService userService, IGaneConfigurationsHelper emailNotificationsHelper, IMapper mapper,IPalletingService palletingService) : base(orderService, propertyService, accountServices, lookupServices)
+            IAppointmentsService appointmentsService, IUserService userService, IGaneConfigurationsHelper emailNotificationsHelper, IMapper mapper, IPalletingService palletingService) : base(orderService, propertyService, accountServices, lookupServices)
         {
             _employeeServices = employeeServices;
             _appointmentsService = appointmentsService;
@@ -45,7 +45,7 @@ namespace WMS.Controllers
         {
 
 
-            var allOrders = _palletingService.GetAllPalletsDispatch(); 
+            var allOrders = _palletingService.GetAllPalletsDispatch();
 
 
             return PartialView(allOrders);
@@ -62,7 +62,7 @@ namespace WMS.Controllers
         {
             try
             {
-               OrderSchedulerSettings.UpdateEditableDataObject();
+                OrderSchedulerSettings.UpdateEditableDataObject();
             }
             catch (Exception e)
             {
@@ -78,15 +78,15 @@ namespace WMS.Controllers
         {
             if (!caSession.AuthoriseSession()) { return Json(new { Message = "You are not authorised to perofrm this operation" }); }
 
-            var appointment = _appointmentsService.CreateOrderScheduleAppointment(start, end, subject, resourceId,joblabel??0, tenantId,dispatchId);
+            var appointment = _appointmentsService.CreateOrderScheduleAppointment(start, end, subject, resourceId, joblabel ?? 0, tenantId, dispatchId);
             if (appointment != null)
             {
-                var order = _palletingService.UpdatePalletsDispatchStatus(dispatchId,Convert.ToInt32(string.IsNullOrEmpty(resourceId)?"0":resourceId), CurrentUserId);
+                var order = _palletingService.UpdatePalletsDispatchStatus(dispatchId, Convert.ToInt32(string.IsNullOrEmpty(resourceId) ? "0" : resourceId), CurrentUserId);
 
             }
 
             // send resources as per filter values
-           return PartialView("_SchedulerPartial", OrderSchedulerSettings.DataObject);
+            return PartialView("_SchedulerPartial", OrderSchedulerSettings.DataObject);
         }
 
         public ActionResult FixAppts()

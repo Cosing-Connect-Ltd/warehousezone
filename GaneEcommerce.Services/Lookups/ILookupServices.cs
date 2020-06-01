@@ -23,8 +23,6 @@ namespace Ganedata.Core.Services
         IEnumerable<ProductManufacturer> GetAllValidProductManufacturer(int tenantId,int? Id=null);
         bool RemoveProductManufacturer(int Id);
         IEnumerable<ReportType> GetAllReportTypes(int tenantId);
-        IEnumerable<OrderStatus> GetAllOrderStatuses();
-        OrderStatus GetOrderStatusById(int statusId);
         TenantDepartments GetTenantDepartmentById(int departmentId);
         TenantDepartments SaveTenantDepartment(string departmentName,int? accountID, int userId, int tenantId);
         TenantDepartments UpdateTenantDepartment(TenantDepartments tenantDepartments);

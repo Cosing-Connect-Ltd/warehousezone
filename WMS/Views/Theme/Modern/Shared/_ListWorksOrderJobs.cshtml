@@ -31,7 +31,7 @@
                                     {
                                         <textarea title="@(string.Join("\r\n",Order.OrderNotes.Where(x => x.IsDeleted != true).Select(m=> m.Notes)))" readonly>  @(string.Join("\r\n", Order.OrderNotes.Where(x => x.IsDeleted != true).Select(m=> m.Notes)))</textarea>
                                     }
-                                    @if (Order.OrderStatusID == (int)OrderStatusEnum.ReAllocationRequired)
+                                    @if (Order.OrderStatusID == OrderStatusEnum.ReAllocationRequired)
                                     {<p class="reallocation">(R)</p>}
                                 </li>
                             }
@@ -62,7 +62,7 @@
                                 <textarea title="@(string.Join("\r\n", Order.OrderNotes.Where(x => x.IsDeleted != true).Select(m=> m.Notes)))" readonly>  @(string.Join("\r\n", Order.OrderNotes.Where(x => x.IsDeleted != true).Select(m=> m.Notes)))</textarea>
                             }
 
-                            @if (Order.OrderStatusID == (int)OrderStatusEnum.ReAllocationRequired)
+                            @if (Order.OrderStatusID == OrderStatusEnum.ReAllocationRequired)
                             {<p class="reallocation">(R)</p>}
                         </li>
                     }

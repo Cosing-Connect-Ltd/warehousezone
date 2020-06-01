@@ -276,22 +276,6 @@ namespace Ganedata.Core.Data.Migrations
             context.GlobalCurrencies.AddOrUpdate(c => c.CurrencyID, new GlobalCurrency { CurrencyID = 2, CurrencyName = "Euro", Symbol = "€", CountryID = 81 });
             context.GlobalCurrencies.AddOrUpdate(c => c.CurrencyID, new GlobalCurrency { CurrencyID = 3, CurrencyName = "USD", Symbol = "$", CountryID = 226 });
 
-            // Add Order Status
-            context.OrderStatus.AddOrUpdate(m => m.OrderStatusID, new OrderStatus { OrderStatusID = 1, Status = "Active" });
-            context.OrderStatus.AddOrUpdate(m => m.OrderStatusID, new OrderStatus { OrderStatusID = 2, Status = "Complete" });
-            context.OrderStatus.AddOrUpdate(m => m.OrderStatusID, new OrderStatus { OrderStatusID = 3, Status = "Hold" });
-            context.OrderStatus.AddOrUpdate(m => m.OrderStatusID, new OrderStatus { OrderStatusID = 4, Status = "Pending" });
-            context.OrderStatus.AddOrUpdate(m => m.OrderStatusID, new OrderStatus { OrderStatusID = 6, Status = "Scheduled" });
-            context.OrderStatus.AddOrUpdate(m => m.OrderStatusID, new OrderStatus { OrderStatusID = 5, Status = "Not Scheduled" });
-            context.OrderStatus.AddOrUpdate(m => m.OrderStatusID, new OrderStatus { OrderStatusID = 7, Status = "Reallocation Required" });
-            context.OrderStatus.AddOrUpdate(m => m.OrderStatusID, new OrderStatus { OrderStatusID = 8, Status = "Awaiting Authorisation" });
-            context.OrderStatus.AddOrUpdate(m => m.OrderStatusID, new OrderStatus { OrderStatusID = 9, Status = "Cancelled" });
-            context.OrderStatus.AddOrUpdate(m => m.OrderStatusID, new OrderStatus { OrderStatusID = 10, Status = "BeingPicked" });
-            context.OrderStatus.AddOrUpdate(m => m.OrderStatusID, new OrderStatus { OrderStatusID = 11, Status = "AwaitingArrival" });
-            context.OrderStatus.AddOrUpdate(m => m.OrderStatusID, new OrderStatus { OrderStatusID = 12, Status = "Approved" });
-            context.OrderStatus.AddOrUpdate(m => m.OrderStatusID, new OrderStatus { OrderStatusID = 13, Status = "PostedToAccounts" });
-            context.OrderStatus.AddOrUpdate(m => m.OrderStatusID, new OrderStatus { OrderStatusID = 14, Status = "Invoiced" });
-
             // add account status
             context.GlobalAccountStatus.AddOrUpdate(m => m.AccountStatusID, new GlobalAccountStatus { AccountStatusID = 1, AccountStatus = "Active" });
             context.GlobalAccountStatus.AddOrUpdate(m => m.AccountStatusID, new GlobalAccountStatus { AccountStatusID = 2, AccountStatus = "Inactive" });

@@ -117,7 +117,7 @@ namespace WMS.Controllers.WebAPI
 
                         results.Add(order);
 
-                        if (order.OrderStatusID == (int)OrderStatusEnum.AwaitingAuthorisation)
+                        if (order.OrderStatusID == OrderStatusEnum.AwaitingAuthorisation)
                         {
                             OrderViewModel orderViewModel = new OrderViewModel();
                             orderViewModel.OrderID = order.OrderID;

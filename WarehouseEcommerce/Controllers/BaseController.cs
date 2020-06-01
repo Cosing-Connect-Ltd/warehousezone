@@ -215,7 +215,7 @@ namespace WarehouseEcommerce.Controllers
         public void VerifyOrderStatus(int orderId)
         {
             var order = OrderService.GetOrderById(orderId);
-            if (order.OrderStatusID == (int)OrderStatusEnum.Active)
+            if (order.OrderStatusID == OrderStatusEnum.Active)
             {
                 ViewBag.PreventProcessing = false;
 

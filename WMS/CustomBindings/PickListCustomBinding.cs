@@ -54,12 +54,11 @@ namespace WMS.CustomBindings
             var productServices = DependencyResolver.Current.GetService<IOrderService>();
             var transactions = productServices.GetAllPendingOrdersForProcessingForDate();
             var PendingListDto = transactions.Where(o => ((o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder && (!expectedDate.HasValue ||
-                                 DbFunctions.TruncateTime(o.ExpectedDate) == expectedDate) && o.OrderStatusID == (int)OrderStatusEnum.Active)
+                                 DbFunctions.TruncateTime(o.ExpectedDate) == expectedDate) && o.OrderStatusID == OrderStatusEnum.Active)
                                  ||
                                  (o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder && (!expectedDate.HasValue ||
                                  DbFunctions.TruncateTime(o.Appointmentses.Max(m => m.StartTime)) == expectedDate || o.Appointmentses.Max(x => x.RecurrenceInfo) != null)
-                                 && (o.OrderStatusID == (int)OrderStatusEnum.Scheduled))) && o.TenentId == tenantId && o.IsDeleted != true && (o.PickerId==UserId || o.PickerId==null))
-                               .Include(m => m.OrderStatus)
+                                 && (o.OrderStatusID == OrderStatusEnum.Scheduled))) && o.TenentId == tenantId && o.IsDeleted != true && (o.PickerId == UserId || o.PickerId == null))
                                .Include(m => m.Account)
                                .Include(m => m.Account.GlobalAccountStatus)
                                .Include(m => m.Account.AccountAddresses)
@@ -78,7 +77,7 @@ namespace WMS.CustomBindings
                           && p.Appointmentses.Where(m => !m.IsCanceled).OrderByDescending(m => m.StartTime).FirstOrDefault().AppointmentResources != null)
                           ? p.Appointmentses.Where(m => !m.IsCanceled).OrderByDescending(m => m.StartTime).FirstOrDefault().AppointmentResources.FirstName
                           + " " + p.Appointmentses.Where(m => !m.IsCanceled).OrderByDescending(m => m.StartTime).FirstOrDefault().AppointmentResources.SurName : String.Empty,
-                                   POStatus = p.OrderStatus.Status,
+                                   POStatus = p.OrderStatusID.ToString(),
                                    Account = p.Account != null ? p.Account.AccountCode : "",
                                    OrderTypeId = p.InventoryTransactionTypeId,
                                    OrderType = nameof(p.InventoryTransactionTypeId),
@@ -109,10 +108,10 @@ namespace WMS.CustomBindings
             return PendingListDto;
         }
 
-        public static void PickListGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId,int UserId)
+        public static void PickListGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId, int UserId)
         {
 
-            var transactions = GetPickListDataset(tenantId, warehouseId,UserId);
+            var transactions = GetPickListDataset(tenantId, warehouseId, UserId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
@@ -144,9 +143,9 @@ namespace WMS.CustomBindings
 
         }
 
-        public static void PickListGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId,int UserId)
+        public static void PickListGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId, int UserId)
         {
-            var transactions = GetPickListDataset(tenantId, warehouseId,UserId);
+            var transactions = GetPickListDataset(tenantId, warehouseId, UserId);
 
             if (e.State.SortedColumns.Count() > 0)
             {

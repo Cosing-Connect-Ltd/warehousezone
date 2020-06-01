@@ -68,8 +68,9 @@ namespace WMS.Controllers.WebAPI
 
         // GET http://ganetest.qsrtime.net/api/sync/order-status/{serialNo}
         // GET http://ganetest.qsrtime.net/api/sync/order-status/920013c000814
+        //TODO: UserId should be passed to this method rather than using 0 as user id
         [HttpGet]
-        public IHttpActionResult UpdateOrderStatus(string serialNo, int orderId, int statusId)
+        public IHttpActionResult UpdateOrderStatus(string serialNo, int orderId, OrderStatusEnum statusId)
         {
             serialNo = serialNo.Trim().ToLower();
 

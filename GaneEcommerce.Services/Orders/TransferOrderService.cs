@@ -84,10 +84,10 @@ namespace Ganedata.Core.Services
             Order.TenentId = tenantId;
             Order.CreatedBy = userId;
             Order.UpdatedBy = userId;
-            
+
             Order.WarehouseId = warehouseId;
-            if (!caCurrent.CurrentWarehouse().AutoAllowProcess) { Order.OrderStatusID = _currentDbContext.OrderStatus.AsNoTracking().FirstOrDefault(a => a.OrderStatusID == (int)OrderStatusEnum.Hold).OrderStatusID; }
-            else { Order.OrderStatusID = _currentDbContext.OrderStatus.AsNoTracking().FirstOrDefault(a => a.OrderStatusID == (int)OrderStatusEnum.Active).OrderStatusID; }
+            if (!caCurrent.CurrentWarehouse().AutoAllowProcess) { Order.OrderStatusID = OrderStatusEnum.Hold; }
+            else { Order.OrderStatusID = OrderStatusEnum.Active; }
 
             List<OrderDetail> ToDetails = null;
             if (orderDetails != null)
@@ -137,7 +137,7 @@ namespace Ganedata.Core.Services
             Order.OrderGroupToken = Guid.NewGuid();
             _currentDbContext.Order.Add(Order);
             _currentDbContext.SaveChanges();
-            Inventory.StockRecalculateByOrderId(Order.OrderID, Order.WarehouseId??0, tenantId, caCurrent.CurrentUser().UserId);
+            Inventory.StockRecalculateByOrderId(Order.OrderID, Order.WarehouseId ?? 0, tenantId, caCurrent.CurrentUser().UserId);
 
             // create an alternate order
             InventoryTransactionTypeEnum InventoryTransactionTypeId = 0;
@@ -153,7 +153,7 @@ namespace Ganedata.Core.Services
                 InventoryTransactionTypeId = InventoryTransactionTypeEnum.TransferIn;
                 shipmentTobool = true;
             }
-            
+
             var inOrder = new Order
             {
                 IssueDate = DateTime.UtcNow,
@@ -163,17 +163,17 @@ namespace Ganedata.Core.Services
                 CreatedBy = userId,
                 UpdatedBy = userId,
                 OrderNumber = _orderService.GenerateNextOrderNumber(InventoryTransactionTypeEnum.TransferIn, tenantId),
-                OrderStatusID = _currentDbContext.OrderStatus.First(a => a.OrderStatusID == (int)OrderStatusEnum.Active).OrderStatusID,
-            TransferWarehouseId = Order.WarehouseId,
+                OrderStatusID = OrderStatusEnum.Active,
+                TransferWarehouseId = Order.WarehouseId,
                 Note = Order.Note,
                 OrderGroupToken = Order.OrderGroupToken,
                 OrderTotal = 0,
-                IsShippedToTenantMainLocation=shipmentTobool,
+                IsShippedToTenantMainLocation = shipmentTobool,
                 ExpectedDate = Order.ExpectedDate,
                 InventoryTransactionTypeId = InventoryTransactionTypeId,
                 WarehouseId = Order.TransferWarehouseId
             };
-        
+
             foreach (var item in ToDetails)
             {
                 int? taxId = item.TaxID;
@@ -196,7 +196,7 @@ namespace Ganedata.Core.Services
             }
             _currentDbContext.Order.Add(inOrder);
             _currentDbContext.SaveChanges();
-            Inventory.StockRecalculateByOrderId(inOrder.OrderID, inOrder.WarehouseId??0, tenantId, caCurrent.CurrentUser().UserId);
+            Inventory.StockRecalculateByOrderId(inOrder.OrderID, inOrder.WarehouseId ?? 0, tenantId, caCurrent.CurrentUser().UserId);
 
             return Order;
         }
@@ -302,12 +302,12 @@ namespace Ganedata.Core.Services
                 Order.OrderStatusID = obj.OrderStatusID;
                 Trnsferout.OrderStatusID = obj.OrderStatusID;
             }
-            
+
             _currentDbContext.Entry(obj).State = System.Data.Entity.EntityState.Detached;
             _currentDbContext.Entry(Trnsferout).State = System.Data.Entity.EntityState.Detached;
 
             _currentDbContext.Order.Attach(Order);
-          
+
             var entry = _currentDbContext.Entry(Order);
 
             entry.Property(e => e.OrderID).IsModified = true;
@@ -320,7 +320,7 @@ namespace Ganedata.Core.Services
             entry.Property(e => e.UpdatedBy).IsModified = true;
             entry.Property(e => e.OrderTotal).IsModified = true;
             entry.Property(e => e.DepartmentId).IsModified = true;
-          
+
             _currentDbContext.SaveChanges();
             Inventory.StockRecalculateByOrderId(Order.OrderID, warehouseId, tenantId, caCurrent.CurrentUser().UserId);
             Inventory.StockRecalculateByOrderId(Trnsferout.OrderID, Trnsferout.WarehouseId ?? warehouseId, tenantId, caCurrent.CurrentUser().UserId);
@@ -330,7 +330,7 @@ namespace Ganedata.Core.Services
 
         public Order DeleteTransferOrder(int orderId, int tenantId, int warehouseId, int userId)
         {
-            var order= _currentDbContext.Order.FirstOrDefault(u => u.OrderID == orderId);
+            var order = _currentDbContext.Order.FirstOrDefault(u => u.OrderID == orderId);
             var group = _currentDbContext.Order.FirstOrDefault(u => u.OrderNumber == order.OrderNumber)?.OrderGroupToken;
             var Trnsferout = _currentDbContext.Order.FirstOrDefault(u => u.OrderNumber != order.OrderNumber && u.OrderGroupToken == group);
             order.DateUpdated = DateTime.UtcNow;
@@ -348,7 +348,7 @@ namespace Ganedata.Core.Services
             Inventory.StockRecalculateByOrderId(Trnsferout.OrderID, caCurrent.CurrentWarehouse().WarehouseId, caCurrent.CurrentTenant().TenantId, caCurrent.CurrentUser().UserId, true);
 
             return order;
-        
+
+        }
     }
-}
 }

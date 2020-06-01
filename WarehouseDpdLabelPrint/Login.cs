@@ -93,7 +93,7 @@ namespace WarehouseDpdLabelPrint
             }
             catch (Exception ex)
             {
-                label3.Text = "failed";
+                label3.Text = "failed: " + ex.Message;
                 label3.Visible = true;
                 label3.ForeColor = Color.Red;
             }
@@ -122,7 +122,7 @@ namespace WarehouseDpdLabelPrint
                     labelPrintData = JsonConvert.DeserializeObject<PalletDispatchLabelPrintViewModel>(result);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return;
             }
@@ -185,7 +185,7 @@ namespace WarehouseDpdLabelPrint
                         var result = streamReader.ReadToEnd();
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     //log exceptions
                     return;

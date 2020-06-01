@@ -1,4 +1,5 @@
 ﻿using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Enums;
 using System.Collections.Generic;
 
 namespace Ganedata.Core.Models
@@ -36,7 +37,7 @@ namespace Ganedata.Core.Models
 
         public string AddressLine1 { get; set; }
 
-        public int OrderStatusID { get; set; }
+        public OrderStatusEnum OrderStatusID { get; set; }
 
         public short? ExpectedHours { get; set; }
 

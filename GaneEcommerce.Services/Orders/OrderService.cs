@@ -176,7 +176,7 @@ namespace Ganedata.Core.Services
         {
             var order = _currentDbContext.Order.Find(orderId);
             if (order == null) return null;
-            order.OrderStatusID = (int)OrderStatusEnum.Complete;
+            order.OrderStatusID = OrderStatusEnum.Complete;
 
             foreach (var process in order.OrderProcess)
             {
@@ -198,7 +198,7 @@ namespace Ganedata.Core.Services
             var order = _currentDbContext.Order.FirstOrDefault(u => u.OrderID == orderId);
 
             if (order == null) return null;
-            order.OrderStatusID = (int)OrderStatusEnum.Complete;
+            order.OrderStatusID = OrderStatusEnum.Complete;
             if (order.OrderProcess.Count > 0)
             {
                 foreach (var process in order.OrderProcess)
@@ -247,7 +247,7 @@ namespace Ganedata.Core.Services
         {
             order.OrderNumber = order.OrderNumber.Trim();
             order.IssueDate = DateTime.UtcNow;
-            order.OrderStatusID = order.OrderStatusID > 0 ? order.OrderStatusID : (int)OrderStatusEnum.Active;
+            order.OrderStatusID = order.OrderStatusID > 0 ? order.OrderStatusID : OrderStatusEnum.Active;
             order.DateCreated = DateTime.UtcNow;
             order.DateUpdated = DateTime.UtcNow;
             order.TenentId = tenantId;
@@ -416,11 +416,6 @@ namespace Ganedata.Core.Services
             return _currentDbContext.OrderDetail.Where(a => a.OrderID == orderId && a.IsDeleted != true).ToList();
         }
 
-        public IEnumerable<OrderStatus> GetOrderStatusThatCanbeManaged()
-        {
-            return _currentDbContext.OrderStatus.Where(x => x.OrderStatusID <= 3);
-        }
-
         public string GenerateNextOrderNumber(string type, int tenantId)
         {
             switch (type)
@@ -438,21 +433,10 @@ namespace Ganedata.Core.Services
             return GenerateNextOrderNumber(InventoryTransactionTypeEnum.WorksOrder, tenantId);
         }
 
-        public OrderStatus GetOrderstatusById(int id)
-        {
-            return _currentDbContext.OrderStatus.Find(id);
-        }
-
         public IEnumerable<OrderConsignmentTypes> GetAllValidConsignmentTypes(int tenantId)
         {
             return _currentDbContext.ConsignmentTypes.Where(a => a.IsDeleted != true && a.TenantId == tenantId);
         }
-
-        public OrderStatus GetOrderstatusByName(string statusName)
-        {
-            return _currentDbContext.OrderStatus.FirstOrDefault(m => m.Status == statusName);
-        }
-
 
         public Order CreateOrderByOrderNumber(string orderNumber, int productId, int tenantId, int warehouseId, InventoryTransactionTypeEnum transType, int userId, decimal quantity)
         {
@@ -475,14 +459,14 @@ namespace Ganedata.Core.Services
             order.InventoryTransactionTypeId = transType;
             order.IssueDate = DateTime.UtcNow;
             order.ExpectedDate = DateTime.UtcNow;
-            order.OrderStatusID = (int)OrderStatusEnum.Active;
+            order.OrderStatusID = OrderStatusEnum.Active;
             order.DateCreated = DateTime.UtcNow;
             order.DateUpdated = DateTime.UtcNow;
             order.TenentId = tenantId;
             order.CreatedBy = userId;
             order.UpdatedBy = userId;
             order.WarehouseId = warehouseId;
-            order.OrderStatusID = context.OrderStatus.First(a => a.OrderStatusID == (int)OrderStatusEnum.Active).OrderStatusID;
+            order.OrderStatusID = OrderStatusEnum.Active;
             context.Order.Add(order);
             context.SaveChanges();
             OrderDetail orderDetail = new OrderDetail();
@@ -688,7 +672,7 @@ namespace Ganedata.Core.Services
         }
 
 
-        public IQueryable<TransferOrderViewModel> GetTransferInOrderViewModelDetails(int toWarehouseId, int tenantId, int? type = null)
+        public IQueryable<TransferOrderViewModel> GetTransferInOrderViewModelDetails(int toWarehouseId, int tenantId, OrderStatusEnum? type = null)
         {
             var result = _currentDbContext.Order.AsNoTracking()
                   .Where(o => o.IsDeleted != true && o.WarehouseId == toWarehouseId && ((type.HasValue && o.OrderStatusID == type) || !type.HasValue) && o.TenentId == tenantId &&
@@ -702,8 +686,7 @@ namespace Ganedata.Core.Services
                       DateUpdated = p.DateUpdated,
                       EmailCount = _currentDbContext.TenantEmailNotificationQueues.Count(u => u.OrderId == p.OrderID),
                       DateCreated = p.DateCreated,
-                      Status = _currentDbContext.OrderStatus.Where(s => s.OrderStatusID == p.OrderStatusID)
-                          .Select(s => s.Status).FirstOrDefault(),
+                      Status = p.OrderStatusID.ToString(),
                       Account = _currentDbContext.Account.Where(s => s.AccountID == p.AccountID)
                           .Select(s => s.CompanyName).FirstOrDefault(),
                       OrderType = nameof(p.InventoryTransactionTypeId),
@@ -714,7 +697,7 @@ namespace Ganedata.Core.Services
             return result;
         }
 
-        public IQueryable<TransferOrderViewModel> GetTransferOutOrderViewModelDetailsIq(int fromWarehouseId, int tenantId, int? type = null)
+        public IQueryable<TransferOrderViewModel> GetTransferOutOrderViewModelDetailsIq(int fromWarehouseId, int tenantId, OrderStatusEnum? type = null)
         {
             var result = _currentDbContext.Order.AsNoTracking()
                 .Where(o => o.IsDeleted != true && o.WarehouseId == fromWarehouseId && ((type.HasValue && o.OrderStatusID == type) || !type.HasValue) && o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferOut).OrderByDescending(x => x.DateCreated)
@@ -727,7 +710,7 @@ namespace Ganedata.Core.Services
                     DateCreated = p.DateCreated,
                     DateUpdated = p.DateUpdated,
                     EmailCount = _currentDbContext.TenantEmailNotificationQueues.Count(u => u.OrderId == p.OrderID),
-                    Status = _currentDbContext.OrderStatus.Where(s => s.OrderStatusID == p.OrderStatusID).Select(s => s.Status).FirstOrDefault(),
+                    Status = p.OrderStatusID.ToString(),
                     Account = _currentDbContext.Account.Where(s => s.AccountID == p.AccountID).Select(s => s.CompanyName).FirstOrDefault(),
                     OrderType = nameof(p.InventoryTransactionTypeId),
                     TransType = p.InventoryTransactionTypeId
@@ -795,7 +778,6 @@ namespace Ganedata.Core.Services
                .Include(x => x.JobType)
                     .Include(x => x.JobSubType)
                     .Include(x => x.PProperties)
-                    .Include(x => x.OrderStatus)
                     .Include(x => x.Account)
                     .Include(x => x.Appointmentses)
                     .Include(x => x.OrderNotes)
@@ -804,7 +786,7 @@ namespace Ganedata.Core.Services
             return result;
         }
 
-        public Order UpdateOrderStatus(int orderId, int statusId, int userId)
+        public Order UpdateOrderStatus(int orderId, OrderStatusEnum statusId, int userId)
         {
             var schOrder = _currentDbContext.Order.Find(orderId);
             schOrder.OrderStatusID = statusId;
@@ -857,7 +839,7 @@ namespace Ganedata.Core.Services
         public IQueryable<Order> GetValidSalesOrder(int tenantId, int warehouseId)
         {
             return _currentDbContext.Order.Where(a => a.IsDeleted != true && (a.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder ||
-            a.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder) && a.TenentId == tenantId && a.WarehouseId == warehouseId && a.OrderStatusID != (int)OrderStatusEnum.Complete);
+            a.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder) && a.TenentId == tenantId && a.WarehouseId == warehouseId && a.OrderStatusID != OrderStatusEnum.Complete);
         }
         public IQueryable<ProductMaster> GetAllValidProduct(int tenantId)
         {
@@ -1242,7 +1224,7 @@ namespace Ganedata.Core.Services
                     InventoryTransactionTypeId = item.InventoryTransactionTypeId,
                     DateCreated = item.DateCreated,
                     CreatedBy = item.CreatedBy,
-                    OrderStatusID = (item.OrderStatusID.HasValue && item.OrderStatusID > 0) ? item.OrderStatusID.Value : (int)OrderStatusEnum.Active,
+                    OrderStatusID = (item.OrderStatusID.HasValue && item.OrderStatusID > 0) ? item.OrderStatusID.Value : OrderStatusEnum.Active,
                     IsCancel = false,
                     IsActive = false,
                     OrderTotal = (item.OrderProcessDetails.Sum(m => m.Price * m.QtyProcessed) + item.OrderProcessDetails.Sum(m => m.TaxAmount) + item.OrderProcessDetails.Sum(m => m.WarrantyAmount)) - item.OrderProcessDiscount,
@@ -1260,7 +1242,7 @@ namespace Ganedata.Core.Services
                     DateCreated = m.DateCreated ?? DateTime.UtcNow,
                     DateUpdated = DateTime.UtcNow,
                     IsDeleted = m.IsDeleted,
-                    OrderDetailStatusId = m.OrderDetailStatusID > 0 ? m.OrderDetailStatusID : (int)OrderStatusEnum.Active,
+                    OrderDetailStatusId = m.OrderDetailStatusID > 0 ? m.OrderDetailStatusID : OrderStatusEnum.Active,
                     Price = m.Price,
                     ProductId = m.ProductId,
                     Qty = m.QtyProcessed,
@@ -1277,7 +1259,7 @@ namespace Ganedata.Core.Services
 
                 //Order has to be created and processed immediately
                 // If OrderStatus is AwaitingAuthorisation then dont process the items
-                if (item?.OrderStatusID != (int)OrderStatusEnum.AwaitingAuthorisation)
+                if (item?.OrderStatusID != OrderStatusEnum.AwaitingAuthorisation)
                 {
                     var process = new OrderProcess()
                     {
@@ -1350,14 +1332,14 @@ namespace Ganedata.Core.Services
                 }
                 else
                 {
-                    order.OrderStatusID = (int)OrderStatusEnum.AwaitingAuthorisation;
+                    order.OrderStatusID = OrderStatusEnum.AwaitingAuthorisation;
                 }
 
                 if (item.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferIn || item.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferOut)
                 {
                     order.OrderGroupToken = groupToken;
                     order.WarehouseId = terminal.WarehouseId;
-                    order.OrderStatusID = (int)OrderStatusEnum.Active;
+                    order.OrderStatusID = OrderStatusEnum.Active;
                     order.TransferWarehouseId = terminal.TenantWarehous.ParentWarehouseId;
                     if (order.DateCreated == null || order.DateCreated == DateTime.MinValue)
                     {
@@ -1377,7 +1359,7 @@ namespace Ganedata.Core.Services
                         InventoryTransactionTypeId = item.InventoryTransactionTypeId,
                         DateCreated = DateTime.UtcNow,
                         CreatedBy = item.CreatedBy,
-                        OrderStatusID = (int)OrderStatusEnum.Active,
+                        OrderStatusID = OrderStatusEnum.Active,
                         IsCancel = false,
                         IsActive = false,
                         OrderTotal = item.OrderProcessDetails.Sum(m => m.Price),
@@ -1398,7 +1380,7 @@ namespace Ganedata.Core.Services
                     {
                         DateCreated = m.DateCreated ?? DateTime.UtcNow,
                         IsDeleted = m.IsDeleted,
-                        OrderDetailStatusId = (int)OrderStatusEnum.Active,
+                        OrderDetailStatusId = OrderStatusEnum.Active,
                         Price = m.Price,
                         ProductId = m.ProductId,
                         Qty = m.QtyProcessed,
@@ -1460,7 +1442,7 @@ namespace Ganedata.Core.Services
                 result.OrderID = order.OrderID;
                 result.OrderStatusID = order.OrderStatusID;
 
-                if (item.AccountTransactionInfo != null && item.OrderStatusID != (int)OrderStatusEnum.AwaitingAuthorisation)
+                if (item.AccountTransactionInfo != null && item.OrderStatusID != OrderStatusEnum.AwaitingAuthorisation)
                 {
                     if (item.AccountTransactionInfo.AccountId > 0)
                     {
@@ -1664,7 +1646,7 @@ namespace Ganedata.Core.Services
 
                 _currentDbContext.SaveChanges();
                 item.OrderProcessID = orderProcess.OrderProcessID;
-                if (item.AccountTransactionInfo != null && item.OrderStatusID != (int)OrderStatusEnum.AwaitingAuthorisation)
+                if (item.AccountTransactionInfo != null && item.OrderStatusID != OrderStatusEnum.AwaitingAuthorisation)
                 {
                     if (item.AccountTransactionInfo.AccountId > 0)
                     {
@@ -1729,7 +1711,7 @@ namespace Ganedata.Core.Services
                 _currentDbContext.SaveChanges();
 
                 //update order status to complete if order status is awaiting authorisation.
-                if (item.InventoryTransactionTypeId == InventoryTransactionTypeEnum.DirectSales && item.OrderStatusID == (int)OrderStatusEnum.Complete)
+                if (item.InventoryTransactionTypeId == InventoryTransactionTypeEnum.DirectSales && item.OrderStatusID == OrderStatusEnum.Complete)
                 {
                     order.OrderProcess = null;
                     _currentDbContext.Order.Attach(order);
@@ -1747,7 +1729,7 @@ namespace Ganedata.Core.Services
                         order.AccountBalanceBeforePayment = item.AccountTransactionInfo.OpeningAccountBalance;
                     }
 
-                    order.OrderStatusID = (int)OrderStatusEnum.Complete;
+                    order.OrderStatusID = OrderStatusEnum.Complete;
                     order.InvoiceNo = item.TerminalInvoiceNumber;
                     order.DateUpdated = DateTime.UtcNow;
                     _currentDbContext.SaveChanges();
@@ -2119,16 +2101,6 @@ namespace Ganedata.Core.Services
                 }).ToList();
         }
 
-        public List<OrderStatus> GetAllOrderStatus()
-        {
-            return _currentDbContext.OrderStatus.ToList();
-        }
-
-        public OrderStatus GetOrderStatusByName(string orderStatusName)
-        {
-            return _currentDbContext.OrderStatus.First(m => m.Status == orderStatusName);
-        }
-
         private bool ProductStockTransactionRecord(int productId, InventoryTransactionTypeEnum transType, decimal quantity, int orderId, int tenantId, int userId, int warehouseId, int? OrderprocessId = null, int? OrderProcessDetailId = null)
         {
 
@@ -2180,7 +2152,7 @@ namespace Ganedata.Core.Services
             {
                 cItem.IsDeleted = true;
                 cItem.UpdatedBy = userId;
-                cItem.OrderStatusID = (int)OrderStatusEnum.Cancelled;
+                cItem.OrderStatusID = OrderStatusEnum.Cancelled;
                 cItem.DateUpdated = DateTime.UtcNow;
                 int res = _currentDbContext.SaveChanges();
                 if (res == 1)
@@ -2266,7 +2238,7 @@ namespace Ganedata.Core.Services
                 DateCreated = DateTime.UtcNow,
                 InventoryTransactionTypeId = InventoryTransactionTypeEnum.DirectSales,
                 CreatedBy = userId,
-                OrderStatusID = (int)OrderStatusEnum.Complete,
+                OrderStatusID = OrderStatusEnum.Complete,
                 Note = model.InvoiceAddress,
                 WarehouseId = warehouseId,
                 AccountID = model.AccountId,
@@ -2562,7 +2534,7 @@ namespace Ganedata.Core.Services
                 order = GetOrderById(orderId);
                 var OrderProcess = _currentDbContext.OrderProcess.Where(u => u.OrderID == orderId && u.IsDeleted != true).ToList();
                 OrderProcess.ForEach(u => u.OrderProcessStatusId = (int)OrderProcessStatusEnum.Complete);
-                order.OrderStatusID = (int)OrderStatusEnum.Complete;
+                order.OrderStatusID = OrderStatusEnum.Complete;
 
                 order.UpdatedBy = userId;
                 order.DateUpdated = DateTime.UtcNow;
@@ -2594,14 +2566,14 @@ namespace Ganedata.Core.Services
             return order;
 
         }
-        public List<AwaitingAuthorisationOrdersViewModel> GetAllOrdersAwaitingAuthorisation(int tenantId, int warehouseId, int? OrderStatusId = null)
+        public List<AwaitingAuthorisationOrdersViewModel> GetAllOrdersAwaitingAuthorisation(int tenantId, int warehouseId, OrderStatusEnum? OrderStatusId = null)
         {
 
             IQueryable<TenantLocations> childWarehouseIds = _currentDbContext.TenantWarehouses.Where(x => x.ParentWarehouseId == warehouseId);
 
             return _currentDbContext.Order.Where(o => o.TenentId == tenantId &&
             (o.WarehouseId == warehouseId || childWarehouseIds.Any(x => x.ParentWarehouseId == warehouseId))
-            && (OrderStatusId == 0 ? o.OrderStatusID == (int)OrderStatusEnum.AwaitingAuthorisation || o.OrderStatusID == (int)OrderStatusEnum.Approved : o.OrderStatusID == OrderStatusId) && o.IsDeleted != true)
+            && (OrderStatusId == 0 ? o.OrderStatusID == OrderStatusEnum.AwaitingAuthorisation || o.OrderStatusID == OrderStatusEnum.Approved : o.OrderStatusID == OrderStatusId) && o.IsDeleted != true)
                 .OrderByDescending(x => x.DateCreated)
                 .Select(p => new AwaitingAuthorisationOrdersViewModel()
                 {
@@ -2610,7 +2582,7 @@ namespace Ganedata.Core.Services
                     IssueDate = p.IssueDate,
                     DateUpdated = p.DateUpdated,
                     DateCreated = p.DateCreated,
-                    POStatus = p.OrderStatus.Status,
+                    POStatus = p.OrderStatusID.ToString(),
                     Account = p.Account.AccountCode,
                     InvoiceNo = p.InvoiceNo,
                     InvoiceDetails = p.InvoiceDetails,
@@ -2854,14 +2826,13 @@ namespace Ganedata.Core.Services
                     order.InventoryTransactionTypeId = transactionTypeId;
                     order.IssueDate = DateTime.UtcNow;
                     order.ExpectedDate = DateTime.UtcNow;
-                    order.OrderStatusID = (int)OrderStatusEnum.Active;
+                    order.OrderStatusID = OrderStatusEnum.Active;
                     order.DateCreated = DateTime.UtcNow;
                     order.DateUpdated = DateTime.UtcNow;
                     order.TenentId = tenantId;
                     order.CreatedBy = UserId;
                     order.UpdatedBy = UserId;
                     order.WarehouseId = currentWarehouseId;
-                    order.OrderStatusID = _currentDbContext.OrderStatus.First(a => a.OrderStatusID == (int)OrderStatusEnum.Active).OrderStatusID;
 
                     _currentDbContext.Order.Add(order);
                     _currentDbContext.SaveChanges();
@@ -3347,7 +3318,7 @@ namespace Ganedata.Core.Services
             order.InventoryTransactionTypeId = InventoryTransactionTypeEnum.SalesOrder;
             order.IssueDate = DateTime.UtcNow;
             order.ExpectedDate = DateTime.UtcNow;
-            order.OrderStatusID = (int)OrderStatusEnum.Hold;
+            order.OrderStatusID = OrderStatusEnum.Hold;
             order.DateCreated = DateTime.UtcNow;
             order.DateUpdated = DateTime.UtcNow;
             order.TenentId = tenantId;
@@ -3355,7 +3326,7 @@ namespace Ganedata.Core.Services
             order.UpdatedBy = UserId;
             order.WarehouseId = warehouseId;
             order.SiteID = SiteId;
-            order.OrderStatusID = context.OrderStatus.First(a => a.OrderStatusID == (int)OrderStatusEnum.Hold).OrderStatusID;
+            order.OrderStatusID = OrderStatusEnum.Hold;
             _currentDbContext.Order.Add(order);
             _currentDbContext.SaveChanges();
             if (orderDetails != null)

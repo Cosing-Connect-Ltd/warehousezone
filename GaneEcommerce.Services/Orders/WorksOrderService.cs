@@ -39,7 +39,7 @@ namespace Ganedata.Core.Services
             order.CreatedBy = userId;
             order.UpdatedBy = userId;
             order.InventoryTransactionTypeId = InventoryTransactionTypeEnum.WorksOrder;
-            order.OrderStatusID = (int)OrderStatusEnum.NotScheduled;
+            order.OrderStatusID = OrderStatusEnum.NotScheduled;
             order.ShipmentPropertyId = shipmentAndRecipientInfo.PPropertyID;
 
 
@@ -291,7 +291,7 @@ namespace Ganedata.Core.Services
             order.UpdatedBy = userId;
 
             order.InventoryTransactionTypeId = InventoryTransactionTypeEnum.WorksOrder;
-            order.OrderStatusID = (int)OrderStatusEnum.NotScheduled;
+            order.OrderStatusID = OrderStatusEnum.NotScheduled;
             order.ShipmentPropertyId = shipmentAndRecipientInfo.PPropertyID;
 
             _currentDbContext.Order.Add(order);
@@ -348,7 +348,7 @@ namespace Ganedata.Core.Services
             Order.CreatedBy = userId;
             Order.UpdatedBy = userId;
             Order.InventoryTransactionTypeId = InventoryTransactionTypeEnum.WorksOrder;
-            Order.OrderStatusID = (int)OrderStatusEnum.NotScheduled;
+            Order.OrderStatusID = OrderStatusEnum.NotScheduled;
             Order.ShipmentPropertyId = shipmentAndRecipientInfo.PPropertyID;
 
             _currentDbContext.Order.Attach(Order);
@@ -450,7 +450,7 @@ namespace Ganedata.Core.Services
         {
 
             return _currentDbContext.Order
-                .Where(o => o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder && o.OrderStatusID != (int)OrderStatusEnum.Complete && (!groupToken.HasValue || o.OrderGroupToken == groupToken) && o.IsDeleted != true)
+                .Where(o => o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder && o.OrderStatusID != OrderStatusEnum.Complete && (!groupToken.HasValue || o.OrderGroupToken == groupToken) && o.IsDeleted != true)
                 .OrderByDescending(m => m.SLAPriorityId).ThenByDescending(x => x.DateCreated)
                 .Include(x => x.Appointmentses)
                 .Select(p => new WorksOrderViewModel()
@@ -467,7 +467,7 @@ namespace Ganedata.Core.Services
                     InvoiceDetails = p.InvoiceDetails,
                     OrderCost = p.OrderCost,
                     OrderGroupToken = p.OrderGroupToken,
-                    POStatus = p.OrderStatus.Status,
+                    POStatus = p.OrderStatusID.ToString(),
                     Account = p.Account.AccountCode,
                     Property = p.PProperties.AddressLine1,
                     OrderTypeId = p.InventoryTransactionTypeId,
@@ -491,8 +491,8 @@ namespace Ganedata.Core.Services
         {
 
             var result = _currentDbContext.Order
-                .Where(o => o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder && (o.OrderStatusID == (int)OrderStatusEnum.Active || o.OrderStatusID == (int)OrderStatusEnum.NotScheduled
-                || o.OrderStatusID == (int)OrderStatusEnum.Scheduled || o.OrderStatusID == (int)OrderStatusEnum.ReAllocationRequired || o.OrderStatusID == (int)OrderStatusEnum.Hold)
+                .Where(o => o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder && (o.OrderStatusID == OrderStatusEnum.Active || o.OrderStatusID == OrderStatusEnum.NotScheduled
+                || o.OrderStatusID == OrderStatusEnum.Scheduled || o.OrderStatusID == OrderStatusEnum.ReAllocationRequired || o.OrderStatusID == OrderStatusEnum.Hold)
                 && (!groupToken.HasValue
                 || o.OrderGroupToken == groupToken) && o.IsDeleted != true && (!propertyId.HasValue || o.PPropertyId == propertyId))
                 .OrderByDescending(m => m.SLAPriorityId).ThenByDescending(x => x.DateCreated)
@@ -500,7 +500,6 @@ namespace Ganedata.Core.Services
                 .Include(x => x.OrderNotes)
                 .Include(x => x.JobType)
                 .Include(x => x.JobSubType)
-                .Include(x => x.OrderStatus)
                 .Include(x => x.Account)
                 .Include(x => x.PProperties)
                 .Select(p => new WorksOrderViewModel()
@@ -517,7 +516,7 @@ namespace Ganedata.Core.Services
                     InvoiceDetails = p.InvoiceDetails,
                     OrderCost = p.OrderCost,
                     OrderGroupToken = p.OrderGroupToken,
-                    POStatus = p.OrderStatus.Status,
+                    POStatus = p.OrderStatusID.ToString(),
                     Account = p.Account.AccountCode,
                     Property = p.PProperties.AddressLine1,
                     OrderTypeId = p.InventoryTransactionTypeId,
@@ -545,13 +544,12 @@ namespace Ganedata.Core.Services
         {
 
             var result = _currentDbContext.Order
-                .Where(o => o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder && ((type.HasValue && o.OrderStatusID == (int)OrderStatusEnum.Complete) || !type.HasValue) && o.IsDeleted != true && (!propertyId.HasValue || o.PPropertyId == propertyId))
+                .Where(o => o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder && ((type.HasValue && o.OrderStatusID == OrderStatusEnum.Complete) || !type.HasValue) && o.IsDeleted != true && (!propertyId.HasValue || o.PPropertyId == propertyId))
                 .OrderByDescending(m => m.SLAPriorityId).ThenByDescending(x => x.DateCreated)
                 .Include(x => x.Appointmentses)
                 .Include(x => x.OrderNotes)
                 .Include(x => x.JobType)
                 .Include(x => x.JobSubType)
-                .Include(x => x.OrderStatus)
                 .Include(x => x.Account)
                 .Include(x => x.PProperties)
                 .Select(p => new WorksOrderViewModel()
@@ -568,7 +566,7 @@ namespace Ganedata.Core.Services
                     InvoiceNo = p.InvoiceNo,
                     InvoiceDetails = p.InvoiceDetails,
                     OrderCost = p.OrderCost,
-                    POStatus = p.OrderStatus.Status,
+                    POStatus = p.OrderStatusID.ToString(),
                     Account = p.Account.AccountCode,
                     Property = p.PProperties.AddressLine1,
                     OrderTypeId = p.InventoryTransactionTypeId,

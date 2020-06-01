@@ -875,6 +875,10 @@
     <Compile Include="Migrations\202005290413406_GlobalApi-changed-to-ApiCredentials.designer.cs">
       <DependentUpon>202005290413406_GlobalApi-changed-to-ApiCredentials.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202006011754200_OrderStatus-table-dropped.cs" />
+    <Compile Include="Migrations\202006011754200_OrderStatus-table-dropped.designer.cs">
+      <DependentUpon>202006011754200_OrderStatus-table-dropped.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1851,6 +1855,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005290413406_GlobalApi-changed-to-ApiCredentials.resx">
       <DependentUpon>202005290413406_GlobalApi-changed-to-ApiCredentials.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006011754200_OrderStatus-table-dropped.resx">
+      <DependentUpon>202006011754200_OrderStatus-table-dropped.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

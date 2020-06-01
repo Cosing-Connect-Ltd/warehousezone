@@ -159,7 +159,7 @@ namespace Ganedata.Core.Services
                 var orderPorcessCount = _currentDbContext.OrderProcess.Count(u => u.OrderID == process.OrderID && (u.OrderProcessStatusId != (int)OrderProcessStatusEnum.Invoiced && u.OrderProcessStatusId != (int)OrderProcessStatusEnum.PostedToAccounts));
                 if (orderPorcessCount <= 0)
                 {
-                    process.Order.OrderStatusID = (int)OrderStatusEnum.Invoiced;
+                    process.Order.OrderStatusID = OrderStatusEnum.Invoiced;
                     _currentDbContext.SaveChanges();
                 }
             }
@@ -283,7 +283,7 @@ namespace Ganedata.Core.Services
                         var orderPorcessCount = _currentDbContext.OrderProcess.Count(u => u.OrderID == process.OrderID && u.OrderProcessStatusId != (int)OrderProcessStatusEnum.Invoiced);
                         if (orderPorcessCount <= 0)
                         {
-                            process.Order.OrderStatusID = (int)OrderStatusEnum.Invoiced;
+                            process.Order.OrderStatusID = OrderStatusEnum.Invoiced;
                             _currentDbContext.SaveChanges();
                         }
                     }

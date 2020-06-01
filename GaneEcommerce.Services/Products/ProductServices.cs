@@ -368,7 +368,16 @@ namespace Ganedata.Core.Services
                     join pd in _currentDbContext.OrderDetail on Order.OrderID equals pd.OrderID
                     where (pd.ProductId == productId && pd.TenentId == tenantId && pd.IsDeleted != true)
                     orderby (s.AccountID)
-                    select new OrderPriceViewModel() { ProductId = pd.ProductId, CompanyName = s.CompanyName, Price = pd.Price, CurrencyName = c.CurrencyName, OrderID = Order.OrderID, OrderNumber = Order.OrderNumber, Status = Order.OrderStatus.Status }).ToList();
+                    select new OrderPriceViewModel()
+                    {
+                        ProductId = pd.ProductId,
+                        CompanyName = s.CompanyName,
+                        Price = pd.Price,
+                        CurrencyName = c.CurrencyName,
+                        OrderID = Order.OrderID,
+                        OrderNumber = Order.OrderNumber,
+                        Status = Order.OrderStatusID.ToString()
+                    }).ToList();
         }
 
         public List<ProductAttributes> GetAllProductAttributes()
@@ -1662,7 +1671,7 @@ namespace Ganedata.Core.Services
                 var orderId = _currentDbContext.OrderDetail.Where(m => m.ProductId == productId && (m.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder || m.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder
                     || m.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Loan || m.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Samples
                     || m.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Exchange || m.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferOut) && m.Order.WarehouseId == WarehouseId &&
-                                m.Order.OrderStatusID != (int)OrderStatusEnum.Complete && m.Order.OrderStatusID != (int)OrderStatusEnum.Cancelled && m.Order.OrderStatusID != (int)OrderStatusEnum.PostedToAccounts && m.Order.OrderStatusID != (int)OrderStatusEnum.Invoiced
+                                m.Order.OrderStatusID != OrderStatusEnum.Complete && m.Order.OrderStatusID != OrderStatusEnum.Cancelled && m.Order.OrderStatusID != OrderStatusEnum.PostedToAccounts && m.Order.OrderStatusID != OrderStatusEnum.Invoiced
                                 && m.Order.IsDeleted != true).Select(u => u.OrderID).ToList();
 
                 List<Tuple<string, string, decimal, bool>> detail = new List<Tuple<string, string, decimal, bool>>();
@@ -1690,7 +1699,7 @@ namespace Ganedata.Core.Services
             {
                 var orderId = _currentDbContext.OrderDetail.Where(m => m.ProductId == productId && (m.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder || m.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferIn
                || m.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Returns) && m.Order.WarehouseId == WarehouseId &&
-                           m.Order.OrderStatusID != (int)OrderStatusEnum.Complete && m.Order.OrderStatusID != (int)OrderStatusEnum.Cancelled && m.Order.OrderStatusID != (int)OrderStatusEnum.PostedToAccounts && m.Order.OrderStatusID != (int)OrderStatusEnum.Invoiced
+                           m.Order.OrderStatusID != OrderStatusEnum.Complete && m.Order.OrderStatusID != OrderStatusEnum.Cancelled && m.Order.OrderStatusID != OrderStatusEnum.PostedToAccounts && m.Order.OrderStatusID != OrderStatusEnum.Invoiced
                            && m.Order.ShipmentPropertyId == null && m.Order.IsDeleted != true).Select(u => u.OrderID).ToList();
 
                 List<Tuple<string, string, decimal, bool>> detail = new List<Tuple<string, string, decimal, bool>>();

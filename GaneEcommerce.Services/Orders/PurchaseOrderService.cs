@@ -41,7 +41,7 @@ namespace Ganedata.Core.Services
                 Property = _currentDbContext.PProperties.Where(s => s.PPropertyId == p.ShipmentPropertyId)
                     .Select(s => s.AddressLine1)
                     .FirstOrDefault(),
-                POStatus = _currentDbContext.OrderStatus.Where(s => s.OrderStatusID == p.OrderStatusID).Select(s => s.Status).FirstOrDefault(),
+                POStatus = p.OrderStatusID.ToString(),
                 Account = _currentDbContext.Account.Where(s => s.AccountID == p.AccountID).Select(s => s.CompanyName).FirstOrDefault(),
             }).ToList();
         }
@@ -68,11 +68,11 @@ namespace Ganedata.Core.Services
             order.InventoryTransactionTypeId = InventoryTransactionTypeEnum.PurchaseOrder;
             if (!caCurrent.CurrentWarehouse().AutoAllowProcess)
             {
-                order.OrderStatusID = (int)OrderStatusEnum.Hold;
+                order.OrderStatusID = OrderStatusEnum.Hold;
             }
             else
             {
-                order.OrderStatusID = (int)OrderStatusEnum.Active;
+                order.OrderStatusID = OrderStatusEnum.Active;
             }
 
 
@@ -210,7 +210,7 @@ namespace Ganedata.Core.Services
                 order.OrderTotal = (decimal)ordTotal;
                 if (_orderService.CheckOrdersAuthroization(order.OrderTotal, order.InventoryTransactionTypeId, tenantId, userId))
                 {
-                    order.OrderStatusID = (int)OrderStatusEnum.AwaitingAuthorisation;
+                    order.OrderStatusID = OrderStatusEnum.AwaitingAuthorisation;
                 }
 
             }
@@ -360,8 +360,8 @@ namespace Ganedata.Core.Services
                     order.ShipmentAddressLine4 = shipmentAndRecipientInfo.ShipmentAddressLine4;
                     order.ShipmentAddressPostcode = shipmentAndRecipientInfo.ShipmentAddressPostcode;
                     order.PPropertyId = null;
-                   
-                    
+
+
                 }
 
 
@@ -503,20 +503,20 @@ namespace Ganedata.Core.Services
 
             if (_orderService.CheckOrdersAuthroization(order.OrderTotal, order.InventoryTransactionTypeId, tenantId, userId))
             {
-                order.OrderStatusID = (int)OrderStatusEnum.AwaitingAuthorisation;
+                order.OrderStatusID = OrderStatusEnum.AwaitingAuthorisation;
             }
             else
             {
-                if (order.OrderStatusID == (int)OrderStatusEnum.AwaitingAuthorisation)
+                if (order.OrderStatusID == OrderStatusEnum.AwaitingAuthorisation)
                 {
                     if (!caCurrent.CurrentWarehouse().AutoAllowProcess)
                     {
-                        order.OrderStatusID = _currentDbContext.OrderStatus.First(a => a.OrderStatusID == (int)OrderStatusEnum.Hold).OrderStatusID;
+                        order.OrderStatusID = OrderStatusEnum.Hold;
 
                     }
                     else
                     {
-                        order.OrderStatusID = _currentDbContext.OrderStatus.First(a => a.OrderStatusID == (int)OrderStatusEnum.Active).OrderStatusID;
+                        order.OrderStatusID = OrderStatusEnum.Active;
                     }
                 }
             }
@@ -576,7 +576,7 @@ namespace Ganedata.Core.Services
                 IssueDate = DateTime.Today,
                 WarehouseId = warehouseId,
                 Note = "Blind order",
-                OrderStatusID = (int)OrderStatusEnum.Complete,
+                OrderStatusID = OrderStatusEnum.Complete,
                 TenentId = tenantId,
                 OrderNumber = poNumber,
                 ShipmentWarehouseId = warehouseId
@@ -840,13 +840,13 @@ namespace Ganedata.Core.Services
             return model;
         }
 
-        public Order UpdatePurchaseOrderStatus(int orderId, int orderStatusId, int userId)
+        public Order UpdatePurchaseOrderStatus(int orderId, OrderStatusEnum orderStatusId, int userId)
         {
             var order = _orderService.GetOrderById(orderId);
 
-            var status = _orderService.GetOrderstatusById(orderStatusId);
+            var status = orderStatusId;
 
-            if (status.OrderStatusID == (int)OrderStatusEnum.Complete)
+            if (status == OrderStatusEnum.Complete)
             {
                 var pd = order.OrderDetails.Where(x => x.IsDeleted != true);
                 foreach (var item in pd)
@@ -895,7 +895,7 @@ namespace Ganedata.Core.Services
             order.CancelDate = DateTime.UtcNow;
             order.IsCancel = true;
             order.CancelBy = userId;
-            order.OrderStatusID = (int)OrderStatusEnum.NotScheduled;
+            order.OrderStatusID = OrderStatusEnum.NotScheduled;
             order.WarehouseId = warehouseId;
             _currentDbContext.Order.Attach(order);
             var entry1 = _currentDbContext.Entry(order);
@@ -913,7 +913,7 @@ namespace Ganedata.Core.Services
         public IQueryable<PurchaseOrderViewModel> GetAllPurchaseOrdersInProgress(int tenantId, int warehouseId)
         {
             return _currentDbContext.Order.AsNoTracking().Where(o => o.TenentId == tenantId && o.WarehouseId == warehouseId && o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder
-            && (o.OrderStatusID == (int)OrderStatusEnum.Active || o.OrderStatusID == (int)OrderStatusEnum.Hold || o.OrderStatusID == (int)OrderStatusEnum.BeingPicked || o.OrderStatusID == (int)OrderStatusEnum.AwaitingAuthorisation) && o.IsDeleted != true)
+            && (o.OrderStatusID == OrderStatusEnum.Active || o.OrderStatusID == OrderStatusEnum.Hold || o.OrderStatusID == OrderStatusEnum.BeingPicked || o.OrderStatusID == OrderStatusEnum.AwaitingAuthorisation) && o.IsDeleted != true)
                 .Select(p => new PurchaseOrderViewModel()
                 {
                     OrderID = p.OrderID,
@@ -921,11 +921,11 @@ namespace Ganedata.Core.Services
                     IssueDate = p.IssueDate,
                     DateCreated = p.DateCreated,
                     DateUpdated = p.DateUpdated,
-                    POStatus = p.OrderStatus.Status,
+                    POStatus = p.OrderStatusID.ToString(),
                     OrderStatusID = p.OrderStatusID,
                     Account = p.Account.AccountCode,
                     AccountName = p.Account.CompanyName,
-                    PickerName=p.Picker==null?"" :p.Picker.UserLastName + ", " + p.Picker.UserFirstName,
+                    PickerName = p.Picker == null ? "" : p.Picker.UserLastName + ", " + p.Picker.UserFirstName,
                     Currecny = p.AccountCurrency.CurrencyName,
                     InvoiceNo = p.InvoiceNo,
                     InvoiceDetails = p.InvoiceDetails,
@@ -950,7 +950,7 @@ namespace Ganedata.Core.Services
 
         }
 
-        public IQueryable<PurchaseOrderViewModel> GetAllPurchaseOrdersCompleted(int tenantId, int warehouseId, int? type = null)
+        public IQueryable<PurchaseOrderViewModel> GetAllPurchaseOrdersCompleted(int tenantId, int warehouseId, OrderStatusEnum? type = null)
         {
 
             return _currentDbContext.Order.AsNoTracking().Where(o => o.TenentId == tenantId && o.WarehouseId == warehouseId && ((type.HasValue && o.OrderStatusID == type) || !type.HasValue) && o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder
@@ -962,7 +962,7 @@ namespace Ganedata.Core.Services
                IssueDate = p.IssueDate,
                DateCreated = p.DateCreated,
                DateUpdated = p.DateUpdated,
-               POStatus = p.OrderStatus.Status,
+               POStatus = p.OrderStatusID.ToString(),
                OrderStatusID = p.OrderStatusID,
                Account = p.Account.AccountCode,
                AccountName = p.Account.CompanyName,
@@ -1012,7 +1012,7 @@ namespace Ganedata.Core.Services
                 }
                 var shelflife = _currentDbContext.Order.Find(orderId)?.Account?.AcceptedShelfLife;
                 var expiryDate = _currentDbContext.PalletTracking.FirstOrDefault(u => u.PalletSerial == serial && u.ProductId == productId)?.ExpiryDate;
-                var days =  (expiryDate.Value - DateTime.Today).TotalDays;
+                var days = (expiryDate.Value - DateTime.Today).TotalDays;
                 if (days <= shelflife)
                 {
                     PalletTracking palletTracking = new PalletTracking();
@@ -1143,7 +1143,7 @@ namespace Ganedata.Core.Services
 
                     if (serials.OrderId <= 0 && serials.InventoryTransactionType > 0)
                     {
-                        cOrder = _orderService.CreateOrderByOrderNumber(serials.OrderNumber, serials.ProductId, serials.tenantId, serials.warehouseId, serials.InventoryTransactionType ?? 0, serials.userId,(serials.Quantity??1));
+                        cOrder = _orderService.CreateOrderByOrderNumber(serials.OrderNumber, serials.ProductId, serials.tenantId, serials.warehouseId, serials.InventoryTransactionType ?? 0, serials.userId, (serials.Quantity ?? 1));
                     }
 
                     if (serials.OrderDetailID == null || serials.OrderDetailID < 1)
@@ -1152,7 +1152,7 @@ namespace Ganedata.Core.Services
                     }
                     if (cOrder.OrderID > 0)
                     {
-                        
+
 
 
                         var oprocess = _orderService.GetOrderProcessByDeliveryNumber(cOrder.OrderID, serials.InventoryTransactionType ?? 0, serials.deliveryNumber, serials.userId, warehouseId: serials.warehouseId);
@@ -1325,7 +1325,7 @@ namespace Ganedata.Core.Services
                             UpdatedBy = serials.userId,
 
                             ProductId = serials.ProductId,
-                            QtyProcessed = Math.Round(quantity * (product.ProductsPerCase ?? 1),2),
+                            QtyProcessed = Math.Round(quantity * (product.ProductsPerCase ?? 1), 2),
                             TenentId = serials.tenantId,
                             OrderProcessId = orderProcess.OrderProcessID,
                             OrderDetailID = serials.OrderDetailID,
@@ -1339,7 +1339,7 @@ namespace Ganedata.Core.Services
                         _currentDbContext.SaveChanges();
                         if (!serials.InventoryTransactionType.HasValue)
                         {
-                            Inventory.StockTransactionApi(serials.ProductId, InventoryTransactionTypeEnum.PurchaseOrder, Math.Round(quantity * (product.ProductsPerCase ?? 1),2), serials.OrderId,
+                            Inventory.StockTransactionApi(serials.ProductId, InventoryTransactionTypeEnum.PurchaseOrder, Math.Round(quantity * (product.ProductsPerCase ?? 1), 2), serials.OrderId,
                                 serials.tenantId, serials.warehouseId, serials.userId, null, PalletTrackingId, null, groupToken,
                                 orderProcessId: orderProcess?.OrderProcessID, OrderProcessDetialId: o?.OrderProcessDetailID);
                         }
@@ -1347,14 +1347,14 @@ namespace Ganedata.Core.Services
                         {
                             if (serials.InventoryTransactionType == InventoryTransactionTypeEnum.WorksOrder)
                             {
-                                Inventory.StockTransactionApi(serials.ProductId, InventoryTransactionTypeEnum.WorksOrder, Math.Round(quantity * (product.ProductsPerCase ?? 1),2), serials.OrderId, serials.tenantId, serials.warehouseId,
+                                Inventory.StockTransactionApi(serials.ProductId, InventoryTransactionTypeEnum.WorksOrder, Math.Round(quantity * (product.ProductsPerCase ?? 1), 2), serials.OrderId, serials.tenantId, serials.warehouseId,
                                     serials.userId, null, PalletTrackingId, null, groupToken,
                                     orderProcessId: orderProcess?.OrderProcessID, OrderProcessDetialId: o?.OrderProcessDetailID);
 
                             }
                             else
                             {
-                                Inventory.StockTransactionApi(serials.ProductId, InventoryTransactionTypeEnum.SalesOrder, Math.Round(quantity * (product.ProductsPerCase ?? 1),2), serials.OrderId, serials.tenantId, serials.warehouseId, serials.userId, null, PalletTrackingId, null,
+                                Inventory.StockTransactionApi(serials.ProductId, InventoryTransactionTypeEnum.SalesOrder, Math.Round(quantity * (product.ProductsPerCase ?? 1), 2), serials.OrderId, serials.tenantId, serials.warehouseId, serials.userId, null, PalletTrackingId, null,
                                     groupToken, orderProcessId: orderProcess?.OrderProcessID, OrderProcessDetialId: o?.OrderProcessDetailID);
                             }
                         }

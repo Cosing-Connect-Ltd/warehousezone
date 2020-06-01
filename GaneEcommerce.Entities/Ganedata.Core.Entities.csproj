@@ -276,7 +276,6 @@
     <Compile Include="Domain\Models\OrderNotes.cs" />
     <Compile Include="Domain\Models\OrderProcess.cs" />
     <Compile Include="Domain\Models\OrderPTenantEmailRecipient.cs" />
-    <Compile Include="Domain\Models\OrderStatus.cs" />
     <Compile Include="Domain\Models\PContactInfo.cs" />
     <Compile Include="Domain\Models\PLandlord.cs" />
     <Compile Include="Domain\Models\PProperty.cs" />

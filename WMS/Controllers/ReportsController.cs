@@ -1138,16 +1138,16 @@ namespace WMS.Controllers
             endDate = endDate.AddHours(24);
             int tenantId = (int)report.Parameters["paramTenantId"].Value;
             var Logged = OrderService.GetAllWorksOrders(tenantId).Where(x => x.DateCreated >= startDate && x.DateCreated < endDate && x.IsDeleted != true);
-            var Completed = OrderService.GetAllWorksOrders(tenantId).Where(x => x.DateUpdated >= startDate && x.DateUpdated < endDate && x.OrderStatusID == (int)OrderStatusEnum.Complete && x.IsDeleted != true);
+            var Completed = OrderService.GetAllWorksOrders(tenantId).Where(x => x.DateUpdated >= startDate && x.DateUpdated < endDate && x.OrderStatusID == OrderStatusEnum.Complete && x.IsDeleted != true);
             var jobTypes = LookupServices.GetAllJobTypes(tenantId).ToList();
             var dataSource = new List<WorksorderKpiReportViewModel>();
             foreach (var type in jobTypes)
             {
                 var loggedForType = Logged.Where(x => x.JobTypeId == type.JobTypeId);
                 var completedForType = Completed.Where(x => x.JobTypeId == type.JobTypeId).Count();
-                var reallocated = loggedForType.Where(x => x.OrderStatusID == (int)OrderStatusEnum.ReAllocationRequired).Count();
-                var unallocated = loggedForType.Where(x => x.OrderStatusID == (int)OrderStatusEnum.NotScheduled).Count();
-                var oldestJob = OrderService.GetAllWorksOrders(tenantId).FirstOrDefault(x => x.OrderStatusID != (int)OrderStatusEnum.Complete && x.JobTypeId == type.JobTypeId)?.DateCreated.ToString("dd/MM/yyyy");
+                var reallocated = loggedForType.Where(x => x.OrderStatusID == OrderStatusEnum.ReAllocationRequired).Count();
+                var unallocated = loggedForType.Where(x => x.OrderStatusID == OrderStatusEnum.NotScheduled).Count();
+                var oldestJob = OrderService.GetAllWorksOrders(tenantId).FirstOrDefault(x => x.OrderStatusID != OrderStatusEnum.Complete && x.JobTypeId == type.JobTypeId)?.DateCreated.ToString("dd/MM/yyyy");
 
                 if (loggedForType.Count() > 0 || completedForType > 0 || reallocated > 0 || unallocated > 0)
                 {

@@ -108,8 +108,6 @@ namespace WMS.Controllers
         {
             ViewBag.Accounts = new SelectList(AccountServices.GetAllValidAccounts(CurrentTenantId, accountType), "AccountID", "AccountNameCode");
 
-            ViewBag.OrderStatus = new SelectList(LookupServices.GetAllOrderStatuses(), "OrderStatusID", "Status");
-
             var transactionTypes = from InventoryTransactionTypeEnum d in Enum.GetValues(typeof(InventoryTransactionTypeEnum))
                                    where d == InventoryTransactionTypeEnum.SalesOrder || d == InventoryTransactionTypeEnum.Proforma || d == InventoryTransactionTypeEnum.Loan
                                    || d == InventoryTransactionTypeEnum.Exchange || d == InventoryTransactionTypeEnum.Quotation || d == InventoryTransactionTypeEnum.Samples
@@ -202,7 +200,7 @@ namespace WMS.Controllers
                         }
                     }
 
-                    if (Order.OrderStatusID == (int)OrderStatusEnum.AwaitingAuthorisation)
+                    if (Order.OrderStatusID == OrderStatusEnum.AwaitingAuthorisation)
                     {
                         var result = await GaneConfigurationsHelper.CreateTenantEmailNotificationQueue($"#{Order.OrderNumber} - Order Requires Authorisation", _mapper.Map(Order, new OrderViewModel()), null, shipmentAndRecipientInfo: shipmentAndRecipientInfo,
                             worksOrderNotificationType: WorksOrderNotificationTypeEnum.AwaitingOrderTemplate);
@@ -391,7 +389,7 @@ namespace WMS.Controllers
 
                 }
 
-                if (Order.OrderStatusID == (int)OrderStatusEnum.AwaitingAuthorisation)
+                if (Order.OrderStatusID == OrderStatusEnum.AwaitingAuthorisation)
                 {
                     var result = await GaneConfigurationsHelper.CreateTenantEmailNotificationQueue($"#{Order.OrderNumber} - Order Requires Authorisation", _mapper.Map(Order, new OrderViewModel()), null, shipmentAndRecipientInfo: shipmentAndRecipientInfo,
                              worksOrderNotificationType: WorksOrderNotificationTypeEnum.AwaitingOrderTemplate);
@@ -464,13 +462,13 @@ namespace WMS.Controllers
                         break;
                 }
             }
-            if (order.OrderStatusID == (int)OrderStatusEnum.Hold)
+            if (order.OrderStatusID == OrderStatusEnum.Hold)
             {
                 ViewBag.PreventProcessing = true;
                 ViewBag.Error = "This order is on hold and cannot be processed";
             }
 
-            if (order.OrderStatusID == (int)OrderStatusEnum.AwaitingAuthorisation)
+            if (order.OrderStatusID == OrderStatusEnum.AwaitingAuthorisation)
             {
                 ViewBag.PreventProcessing = true;
                 ViewBag.Error = "This order is awaiting authorisation and cannot be processed";

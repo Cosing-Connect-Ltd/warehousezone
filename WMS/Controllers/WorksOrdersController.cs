@@ -139,7 +139,6 @@ namespace WMS.Controllers
 
             SetViewBagItems(Order);
 
-            ViewBag.OrderStatus = new SelectList(LookupServices.GetAllOrderStatuses(), "OrderStatusID", "Status");
             ViewBag.AccountContacts = new SelectList(AccountServices.GetAllValidAccountContactsByAccountId(Order.AccountID ?? 0, CurrentTenantId), "AccountContactId", "ContactName");
 
             if (string.IsNullOrEmpty(pageToken))
@@ -165,7 +164,7 @@ namespace WMS.Controllers
             var orderCompleted = false;
             if (orderSaveAndComplete == "1")
             {
-                Order.OrderStatusID = (int)OrderStatusEnum.Complete;
+                Order.OrderStatusID = OrderStatusEnum.Complete;
                 orderCompleted = true;
             }
 
@@ -208,7 +207,7 @@ namespace WMS.Controllers
             ViewBag.ForceRegeneratePageToken = "True";
             ViewBag.ForceRegeneratedPageToken = shipmentAndRecipientInfo.PageSessionToken ?? Guid.NewGuid().ToString();
             SetViewBagItems(Order);
-            ViewBag.POStatusID = new SelectList(LookupServices.GetAllOrderStatuses(), "OrderStatusID", "Status", Order.OrderStatusID);
+
             ViewBag.SupplierID = new SelectList(AccountServices.GetAllValidAccounts(CurrentTenantId, EnumAccountType.Supplier), "SupplierID", "CompanyName", Order.AccountID);
             return View(Order);
         }

@@ -24,10 +24,10 @@ namespace Ganedata.Core.Services
         List<OrderDetailsViewModel> GetPurchaseOrderDetailsById(int orderId, int tenantId);
         InventoryTransaction SubmitReceiveInventoryTransaction(InventoryTransaction model, string deliveryNumber,
             int tenantId, int warehouseId, int userId);
-        Order UpdatePurchaseOrderStatus(int orderId, int orderStatusId, int userId);
+        Order UpdatePurchaseOrderStatus(int orderId, OrderStatusEnum orderStatusId, int userId);
         Order CancelPurchaseOrder(int orderId, int userId, int warehouseId);
         IQueryable<PurchaseOrderViewModel> GetAllPurchaseOrdersInProgress(int tenantId, int warehouseId);
-        IQueryable<PurchaseOrderViewModel> GetAllPurchaseOrdersCompleted(int tenantId, int warehouseId, int? type = null);
+        IQueryable<PurchaseOrderViewModel> GetAllPurchaseOrdersCompleted(int tenantId, int warehouseId, OrderStatusEnum? type = null);
         PalletTracking GetVerifedPallet(string serial, int productId, int tenantId, int warehouseId, int? type = null, int? palletTrackingId = null, DateTime? dates = null, int? orderId = null);
         int ProcessPalletTrackingSerial(GoodsReturnRequestSync serials, string groupToken = null, bool process = false);
 

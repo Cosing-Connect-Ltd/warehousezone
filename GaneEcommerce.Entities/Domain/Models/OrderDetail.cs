@@ -62,9 +62,7 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Don't Monitor Stock")]
         public bool? DontMonitorStock { get; set; }
         public int SortOrder { get; set; }
-        public int? OrderDetailStatusId { get; set; }
-        [ForeignKey("OrderDetailStatusId")]
-        public OrderStatus OrderDetailStatus { get; set; }
+        public OrderStatusEnum? OrderDetailStatusId { get; set; }
         public int? ProductGroupId { get; set; }
         [ForeignKey("ProductGroupId")]
         public virtual ProductGroups ProductGroups { get; set; }
@@ -98,7 +96,7 @@ namespace Ganedata.Core.Entities.Domain
             }
         }
 
-       
+
     }
 
 }

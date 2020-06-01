@@ -1,4 +1,5 @@
-﻿using Ganedata.Core.Models;
+﻿using Ganedata.Core.Entities.Enums;
+using Ganedata.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -36,7 +37,7 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Price")]
         [Required(ErrorMessage = "Price is required")]
         public decimal Price { get; set; }
-        
+
         public decimal? CaseQuantity { get; set; }
 
         [Display(Name = "Warranty")]
@@ -64,10 +65,10 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Don't Monitor Stock")]
         public bool? DontMonitorStock { get; set; }
         public int SortOrder { get; set; }
-        public int? OrderDetailStatusId { get; set; }
+        public OrderStatusEnum? OrderDetailStatusId { get; set; }
 
         [Display(Name = "Ordering Notes")]
-        public string OrderingNotes { get; set; } 
+        public string OrderingNotes { get; set; }
         public virtual ProductMasterViewModel ProductMaster { get; set; }
         public virtual GlobalTaxViewModel TaxName { get; set; }
         public virtual ProductAccountCodesViewModel AccountCode { get; set; }

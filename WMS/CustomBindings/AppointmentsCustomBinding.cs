@@ -25,7 +25,7 @@ namespace WMS.CustomBindings
             if (selectedJobType > 0)
             {
                 var transactions = from p in orderServices.GetAllOrdersIncludingNavProperties(CurrentTenantId).Where(o => o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder
-                                   && o.OrderStatusID == (int)OrderStatusEnum.NotScheduled && o.JobTypeId == selectedJobType)
+                                   && o.OrderStatusID == OrderStatusEnum.NotScheduled && o.JobTypeId == selectedJobType)
                                    select new
                                    {
                                        OrderID = p.OrderID,
@@ -35,7 +35,7 @@ namespace WMS.CustomBindings
                                        JobTypeName = p.JobType.Name ?? "",
                                        JobSubTypeName = p.JobSubType.Description ?? "",
                                        DateUpdated = p.DateUpdated,
-                                       POStatus = p.OrderStatus.Status ?? "",
+                                       POStatus = p.OrderStatusID.ToString() ?? "",
                                        Account = p.Account.AccountCode ?? "",
                                        Property = p.PProperties.AddressLine1 ?? "",
                                        OrderTypeId = p.InventoryTransactionTypeId,
@@ -48,7 +48,7 @@ namespace WMS.CustomBindings
             else
             {
                 var transactions = from p in orderServices.GetAllOrdersIncludingNavProperties(CurrentTenantId).Where(o => o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder
-                                   && o.OrderStatusID == (int)OrderStatusEnum.NotScheduled)
+                                   && o.OrderStatusID == OrderStatusEnum.NotScheduled)
                                    select new
                                    {
                                        OrderID = p.OrderID,
@@ -58,7 +58,7 @@ namespace WMS.CustomBindings
                                        JobTypeName = p.JobType.Name ?? "",
                                        JobSubTypeName = p.JobSubType.Description ?? "",
                                        DateUpdated = p.DateUpdated,
-                                       POStatus = p.OrderStatus.Status ?? "",
+                                       POStatus = p.OrderStatusID.ToString() ?? "",
                                        Account = p.Account.AccountCode ?? "",
                                        Property = p.PProperties.AddressLine1 ?? "",
                                        OrderTypeId = p.InventoryTransactionTypeId,
@@ -182,7 +182,7 @@ namespace WMS.CustomBindings
 
 
             var transactions = from p in orderServices.GetAllOrdersIncludingNavProperties(CurrentTenantId)
-            .Where(o => o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder && o.OrderStatusID == (int)OrderStatusEnum.Scheduled
+            .Where(o => o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder && o.OrderStatusID == OrderStatusEnum.Scheduled
             && (DbFunctions.TruncateTime(o.Appointmentses.OrderByDescending(x => x.StartTime).FirstOrDefault(x => x.IsCanceled != true).StartTime) == chosenDate.Date || chosenDate == DateTime.MinValue)
             && (o.Appointmentses.OrderByDescending(x => x.StartTime).FirstOrDefault(x => x.IsCanceled != true).ResourceId == resourceId || resourceId == 0))
                                select new
@@ -194,7 +194,7 @@ namespace WMS.CustomBindings
                                    JobTypeName = p.JobType.Name ?? "",
                                    JobSubTypeName = p.JobSubType.Description ?? "",
                                    DateUpdated = p.DateUpdated,
-                                   POStatus = p.OrderStatus.Status ?? "",
+                                   POStatus = p.OrderStatusID.ToString() ?? "",
                                    Account = p.Account.AccountCode ?? "",
                                    Property = p.PProperties.AddressLine1 ?? "",
                                    OrderTypeId = p.InventoryTransactionTypeId,
@@ -308,7 +308,7 @@ namespace WMS.CustomBindings
             if (selectedJobType > 0)
             {
                 var transactions = orderServices.GetAllOrdersIncludingNavProperties(CurrentTenantId)
-                    .Where(o => o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder && o.OrderStatusID == (int)OrderStatusEnum.ReAllocationRequired && o.JobTypeId == selectedJobType)
+                    .Where(o => o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder && o.OrderStatusID == OrderStatusEnum.ReAllocationRequired && o.JobTypeId == selectedJobType)
                     .Select(p => new WorksOrdersGridViewModel
                     {
                         OrderID = p.OrderID,
@@ -318,7 +318,7 @@ namespace WMS.CustomBindings
                         JobTypeName = p.JobType.Name ?? "",
                         JobSubTypeName = p.JobSubType.Description ?? "",
                         DateUpdated = p.DateUpdated,
-                        POStatus = p.OrderStatus.Status ?? "",
+                        POStatus = p.OrderStatusID.ToString() ?? "",
                         Account = p.Account.AccountCode ?? "",
                         Property = p.PProperties.AddressLine1 ?? "",
                         OrderTypeId = p.InventoryTransactionTypeId,
@@ -332,7 +332,7 @@ namespace WMS.CustomBindings
             else
             {
                 var transactions = orderServices.GetAllOrdersIncludingNavProperties(CurrentTenantId)
-                    .Where(o => o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder && o.OrderStatusID == (int)OrderStatusEnum.ReAllocationRequired)
+                    .Where(o => o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder && o.OrderStatusID == OrderStatusEnum.ReAllocationRequired)
                     .Select(p => new WorksOrdersGridViewModel
                     {
                         OrderID = p.OrderID,
@@ -342,7 +342,7 @@ namespace WMS.CustomBindings
                         JobTypeName = p.JobType.Name ?? "",
                         JobSubTypeName = p.JobSubType.Description ?? "",
                         DateUpdated = p.DateUpdated,
-                        POStatus = p.OrderStatus.Status ?? "",
+                        POStatus = p.OrderStatusID.ToString() ?? "",
                         Account = p.Account.AccountCode ?? "",
                         Property = p.PProperties.AddressLine1 ?? "",
                         OrderTypeId = p.InventoryTransactionTypeId,

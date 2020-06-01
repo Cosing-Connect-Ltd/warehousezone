@@ -255,12 +255,10 @@
         <div class="col-md-offset-2 col-md-10 bottom-right">
             <input name="commit" type="submit" value="Save Changes" class="btn btn-primary" />
             <input name="commit" type="submit" value="Save and Process" id="CommandSaveAndProcess" class="btn btn-primary orderSaveAndProcess" />
-            <input name="commit" type="submit" value="Complete Order" id="WorksOrderCommandComplete" class="btn btn-primary orderSaveAndComplete" style="display:@(Model.OrderStatusID==(int)OrderStatusEnum.Scheduled?"block":"none")" />
+            <input name="commit" type="submit" value="Complete Order" id="WorksOrderCommandComplete" class="btn btn-primary orderSaveAndComplete" style="display:@(Model.OrderStatusID == OrderStatusEnum.Scheduled?"block":"none")" />
             <div class="btn btn-default">
 
                 @Html.ActionLink("Back to List", "Index", "WorksOrders", null, null, ViewBag.Fragment as string, null, null)
-                @* @Html.ActionLink("Back to List", "AnchoredOrderIndex", new { id = "WO" })*@
-
             </div>
         </div>
 

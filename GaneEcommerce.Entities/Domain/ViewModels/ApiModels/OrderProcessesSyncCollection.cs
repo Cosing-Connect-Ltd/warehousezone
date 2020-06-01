@@ -43,7 +43,7 @@ namespace Ganedata.Core.Models
         public decimal OrderProcessDiscount { get; set; }
         public decimal OrderProcessTotal { get; set; }
         public InventoryTransactionTypeEnum InventoryTransactionTypeId { get; set; }
-        public int? OrderStatusID { get; set; }
+        public OrderStatusEnum? OrderStatusID { get; set; }
         public int? TransferToWarehouseId { get; set; }
         public string TransferToWarehouseName { get; set; }
         public List<OrderProcessDetailSync> OrderProcessDetails { get; set; }
@@ -79,7 +79,7 @@ namespace Ganedata.Core.Models
         public int OrderProcessId { get; set; }
         public int ProductId { get; set; }
         public decimal QtyProcessed { get; set; }
-        public int OrderDetailStatusID { get; set; }
+        public OrderStatusEnum OrderDetailStatusID { get; set; }
         public int? WarrantyID { get; set; }
         public decimal WarrantyAmount { get; set; }
         public int? TaxID { get; set; }

@@ -319,7 +319,7 @@ namespace WMS.Controllers
             var account = _accountService.GetAccountsById(model.AccountId);
             var PercentMargin = (_priceService.GetPercentageMarginPrice(product.BuyPrice, product.PercentMargin)) + (product.LandedCost ?? 0);
             int? taxId = (account?.GlobalTax?.PercentageOfAmount <= 0 ? account.TaxID : 0);
-            return Json(new { productPriceData?.MinimumThresholdPrice, productPriceData?.SellPrice, ProductTaxID = taxId > 0 ? (taxId):(product?.GlobalTax?.TaxID), product?.AllowModifyPrice, product?.EnableTax, product?.BuyPrice, PercentMargin, ShowPriceAlert = CurrentWarehouse.ShowPriceAlertInSalesOrder, product.EnableWarranty, percentageValue = product.PercentMargin, minimumSalePrice = Math.Round((productPriceData.MinimumSellPrice ?? 0), 2) }, JsonRequestBehavior.AllowGet);
+            return Json(new { productPriceData?.MinimumThresholdPrice, productPriceData?.SellPrice, ProductTaxID = taxId > 0 ? (taxId) : (product?.GlobalTax?.TaxID), product?.AllowModifyPrice, product?.EnableTax, product?.BuyPrice, PercentMargin, ShowPriceAlert = CurrentWarehouse.ShowPriceAlertInSalesOrder, product.EnableWarranty, percentageValue = product.PercentMargin, minimumSalePrice = Math.Round((productPriceData.MinimumSellPrice ?? 0), 2) }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult SaveInvoice(InvoiceViewModel model)
@@ -607,7 +607,7 @@ namespace WMS.Controllers
                         var orderPorcessCount = context.OrderProcess.Where(u => u.OrderID == (orderprocesses.OrderID ?? 0) && u.OrderProcessStatusId != (int)OrderProcessStatusEnum.PostedToAccounts).Count();
                         if (orderPorcessCount <= 0)
                         {
-                            orderprocesses.Order.OrderStatusID = (int)OrderStatusEnum.PostedToAccounts;
+                            orderprocesses.Order.OrderStatusID = OrderStatusEnum.PostedToAccounts;
                         }
 
                         InvoiceViewModel InvoiceReport = _invoiceService.LoadInvoiceProductValuesByOrderProcessId(Id, (int)InventoryTransactionTypeEnum.PurchaseOrder);
@@ -665,7 +665,7 @@ namespace WMS.Controllers
                         var orderPorcessCount = context.OrderProcess.Count(u => u.OrderID == (orderprocess.OrderID ?? 0) && u.OrderProcessStatusId != (int)OrderProcessStatusEnum.PostedToAccounts);
                         if (orderPorcessCount <= 0)
                         {
-                            orderprocess.Order.OrderStatusID = (int)OrderStatusEnum.PostedToAccounts;
+                            orderprocess.Order.OrderStatusID = OrderStatusEnum.PostedToAccounts;
 
 
                         }

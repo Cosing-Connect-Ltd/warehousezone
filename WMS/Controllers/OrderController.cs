@@ -736,12 +736,12 @@ namespace WMS.Controllers
 
         public ActionResult _AwaitingAuthorisationOrders()
         {
-            int? OrderStatusid = 8;
+            OrderStatusEnum? OrderStatusid = OrderStatusEnum.AwaitingAuthorisation;
             if (Request.Params.AllKeys.Contains("selectedStatus"))
             {
                 if (!string.IsNullOrEmpty(Request.Params["selectedStatus"].ToString()))
                 {
-                    OrderStatusid = int.Parse(Request.Params["selectedStatus"].ToString());
+                    OrderStatusid = (OrderStatusEnum)int.Parse(Request.Params["selectedStatus"].ToString());
 
                 }
             }
@@ -1376,7 +1376,7 @@ namespace WMS.Controllers
             gridViewModel.ProcessCustomBinding(
                 new GridViewCustomBindingGetDataRowCountHandler(args =>
                 {
-                    PickListCustomBinding.PickListGetDataRowCount(args, CurrentTenantId, CurrentWarehouseId,CurrentUserId);
+                    PickListCustomBinding.PickListGetDataRowCount(args, CurrentTenantId, CurrentWarehouseId, CurrentUserId);
                 }),
                     new GridViewCustomBindingGetDataHandler(args =>
                     {
@@ -1466,7 +1466,7 @@ namespace WMS.Controllers
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult UpdateOrderStatus(int orderId, int statusId)
+        public ActionResult UpdateOrderStatus(int orderId, OrderStatusEnum statusId)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 

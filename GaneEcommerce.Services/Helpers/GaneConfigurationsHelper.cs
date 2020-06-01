@@ -1008,7 +1008,7 @@ namespace Ganedata.Core.Services
                         variableValue = order?.OrderNumber;
                         break;
                     case MailMergeVariableEnum.OrderStatus:
-                        variableValue = order?.OrderStatus?.Status;
+                        variableValue = order?.OrderStatusID.ToString();
                         break;
                     case MailMergeVariableEnum.BillingAccountToEmail:
                         var billingEmailContact = account?.AccountContacts?.FirstOrDefault(m => m.ConTypeInvoices);
@@ -1164,7 +1164,7 @@ namespace Ganedata.Core.Services
                     return false;
             }
 
-            _orderService.UpdateOrderStatus(POID ?? 0, _orderService.GetOrderStatusByName("Close").OrderStatusID, UserId);
+            _orderService.UpdateOrderStatus(POID ?? 0, OrderStatusEnum.Complete, UserId);
             return true;
         }
         public bool ActiveStocktake(int warehouseId)

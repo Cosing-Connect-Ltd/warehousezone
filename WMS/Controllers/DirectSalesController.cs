@@ -78,7 +78,7 @@ namespace WMS.Controllers
             {
                 return HttpNotFound();
             }
-            if (Order.OrderStatusID != (int)OrderStatusEnum.AwaitingAuthorisation)
+            if (Order.OrderStatusID != OrderStatusEnum.AwaitingAuthorisation)
             {
                TempData["ErrorAwaitingAuthorization"] = $"Order is not available to modify because order status not matched with required status.";
                 return RedirectToAction("AwaitingAuthorisation", "Order");

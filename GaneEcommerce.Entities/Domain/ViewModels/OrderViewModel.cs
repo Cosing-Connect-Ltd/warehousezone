@@ -51,7 +51,7 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Deleted")]
         public bool? IsDeleted { get; set; }
         [Display(Name = "Order Status")]
-        public int OrderStatusID { get; set; }
+        public OrderStatusEnum OrderStatusID { get; set; }
         [Display(Name = "Loan Type")]
         public int? LoanID { get; set; }
         // Account contact person for this specific order
@@ -229,7 +229,7 @@ namespace Ganedata.Core.Entities.Domain
 
         public string ProductGroup { get; set; }
         public string ProductCategory { get; set; }
-        public int? orderstatusId { get; set; }
+        public OrderStatusEnum? orderstatusId { get; set; }
         public int? orderProcessstatusId { get; set; }
         public ProductGroups ProductGroups { get; set; }
 
@@ -326,7 +326,7 @@ namespace Ganedata.Core.Entities.Domain
     public class OrderIdsWithStatus
     {
         public int OrderID { get; set; }
-        public int OrderStatusID { get; set; }
+        public OrderStatusEnum OrderStatusID { get; set; }
 
     }
 
@@ -350,7 +350,7 @@ namespace Ganedata.Core.Entities.Domain
         public string CompanyName { get; set; }
         public int? Status { get; set; }
 
-        public int? orderstatus { get; set; }
+        public OrderStatusEnum? orderstatus { get; set; }
 
         public int? EmailCount { get; set; }
 

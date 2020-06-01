@@ -191,7 +191,7 @@ namespace WMS.CustomBindings
                 // set order status for rescheduling
                 if (SchOrder != null)
                 {
-                    orderServices.UpdateOrderStatus(SchOrder.OrderID, (int)OrderStatusEnum.ReAllocationRequired, currentUser.UserId);
+                    orderServices.UpdateOrderStatus(SchOrder.OrderID, OrderStatusEnum.ReAllocationRequired, currentUser.UserId);
                 }
 
                 //cancel notification queues

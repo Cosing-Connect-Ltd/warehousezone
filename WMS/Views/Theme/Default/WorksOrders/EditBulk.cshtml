@@ -244,7 +244,7 @@
 
         <div class="col-md-offset-2 col-md-10 bottom-right">
             <input type="submit" value="Confirm Order" name="WorksOrderCommand" class="btn btn-primary" />
-            <input type="submit" value="Complete Order" id="WorksOrderCommandComplete" name="WorksOrderCommand" class="btn btn-primary" style="display:@(Model.OrderStatusID==(int)OrderStatusEnum.Scheduled?"block":"none")" />
+            <input type="submit" value="Complete Order" id="WorksOrderCommandComplete" name="WorksOrderCommand" class="btn btn-primary" style="display:@(Model.OrderStatusID == OrderStatusEnum.Scheduled?"block":"none")" />
             <div class="btn btn-default"> @Html.ActionLink("Back to List", "AnchoredOrderIndex", new { id = "WO" })</div>
         </div>
 

@@ -201,7 +201,7 @@ namespace WMS.Controllers
                 if (model.Price < minPrice.MinimumThresholdPrice)
                 {
                     minPrice.Success = false;
-                    model.OrderDetailStatusId = (int)OrderStatusEnum.AwaitingAuthorisation;
+                    model.OrderDetailStatusId = OrderStatusEnum.AwaitingAuthorisation;
                     if (productRequest.ThresholdAcknowledged)
                     {
                         UpdatedOrderDetails(model, productRequest.CaseQuantity, productRequest.PageSessionToken);

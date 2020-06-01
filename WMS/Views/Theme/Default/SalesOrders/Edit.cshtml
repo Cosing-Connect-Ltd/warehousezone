@@ -140,7 +140,8 @@
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.OrderStatusID, htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
-                    @Html.DropDownListFor(m => m.OrderStatusID, ViewBag.OrderStatus as IEnumerable<SelectListItem>, new { @class = "chosen-select" })
+                    @Html.EnumDropDownListFor(x => x.OrderStatusID, "Select Status", new { @class = "chosen-select" })
+                    @Html.ValidationMessageFor(model => model.OrderStatusID)
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">

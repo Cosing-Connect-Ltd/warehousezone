@@ -103,12 +103,12 @@ namespace WMS.CustomBindings
         }
         public static IQueryable<PurchaseOrderViewModel> GetPurchaseOrdersDataset(int CurrentTenantId, int CurrentWarehouseId)
         {
-            int? type = 2;
+            OrderStatusEnum? type = OrderStatusEnum.Complete;
             if (HttpContext.Current.Request.Params.AllKeys.Contains("selectedStatus"))
             {
                 if (!string.IsNullOrEmpty(HttpContext.Current.Request.Params["selectedStatus"].ToString()))
                 {
-                    type = int.Parse(HttpContext.Current.Request.Params["selectedStatus"].ToString());
+                    type = (OrderStatusEnum)int.Parse(HttpContext.Current.Request.Params["selectedStatus"].ToString());
                     if (type == 0)
                     {
                         type = null;
@@ -233,12 +233,12 @@ namespace WMS.CustomBindings
         }
         private static IQueryable<SalesOrderViewModel> GetSalesOrderCompletedDataset(int CurrentTenantId, int CurrentWarehouseId)
         {
-            int? type = 2;
+            OrderStatusEnum? type = OrderStatusEnum.Complete;
             if (HttpContext.Current.Request.Params.AllKeys.Contains("selectedStatus"))
             {
                 if (!string.IsNullOrEmpty(HttpContext.Current.Request.Params["selectedStatus"].ToString()))
                 {
-                    type = int.Parse(HttpContext.Current.Request.Params["selectedStatus"].ToString());
+                    type = (OrderStatusEnum)int.Parse(HttpContext.Current.Request.Params["selectedStatus"].ToString());
                     if (type == 0)
                     {
                         type = null;
@@ -322,13 +322,13 @@ namespace WMS.CustomBindings
             sodata.ForEach(u =>
                 u.ReturnQty = context.OrderProcess.Where(d => d.OrderID == u.OrderID && d.IsDeleted != true && (d.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Returns || d.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Wastage
                 || d.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WastedReturn))?.SelectMany(m => m.OrderProcessDetail).Where(d => d.IsDeleted != true).Select(c => c.QtyProcessed).DefaultIfEmpty(0).Sum());
-            
+
             e.Data = sodata;
         }
         private static IQueryable<SalesOrderViewModel> GetSalesOrderAwaitingDataset(int CurrentTenantId, int CurrentWarehouseId)
         {
             var orderServices = DependencyResolver.Current.GetService<ISalesOrderService>();
-            var transactions = orderServices.GetAllActiveSalesOrdersIq(CurrentTenantId, CurrentWarehouseId, (int)OrderStatusEnum.AwaitingAuthorisation);
+            var transactions = orderServices.GetAllActiveSalesOrdersIq(CurrentTenantId, CurrentWarehouseId, OrderStatusEnum.AwaitingAuthorisation);
 
             return transactions;
         }
@@ -486,7 +486,7 @@ namespace WMS.CustomBindings
         {
 
             var orderServices = DependencyResolver.Current.GetService<ICoreOrderService>();
-            var transactions = orderServices.GetAllDirectSalesOrdersIq(CurrentTenantId, CurrentWarehouseId, (int)OrderStatusEnum.Complete);
+            var transactions = orderServices.GetAllDirectSalesOrdersIq(CurrentTenantId, CurrentWarehouseId, OrderStatusEnum.Complete);
 
             return transactions;
         }
@@ -681,12 +681,12 @@ namespace WMS.CustomBindings
         }
         private static IQueryable<TransferOrderViewModel> GetTransferOutDataset(int CurrentTenantId, int CurrentWarehouseId)
         {
-            int? type = 1;
+            OrderStatusEnum? type = OrderStatusEnum.Active;
             if (HttpContext.Current.Request.Params.AllKeys.Contains("selectedStatusTO"))
             {
                 if (!string.IsNullOrEmpty(HttpContext.Current.Request.Params["selectedStatusTO"].ToString()))
                 {
-                    type = int.Parse(HttpContext.Current.Request.Params["selectedStatusTO"].ToString());
+                    type = (OrderStatusEnum)int.Parse(HttpContext.Current.Request.Params["selectedStatusTO"].ToString());
                     if (type == 0)
                     {
                         type = null;
@@ -923,12 +923,12 @@ namespace WMS.CustomBindings
         private static IQueryable<TransferOrderViewModel> GetTransferInDataset(int CurrentTenantId, int CurrentWarehouseId)
         {
             var orderServices = DependencyResolver.Current.GetService<ICoreOrderService>();
-            int? type = 1;
+            OrderStatusEnum? type = OrderStatusEnum.Active;
             if (HttpContext.Current.Request.Params.AllKeys.Contains("selectedStatus"))
             {
                 if (!string.IsNullOrEmpty(HttpContext.Current.Request.Params["selectedStatus"].ToString()))
                 {
-                    type = int.Parse(HttpContext.Current.Request.Params["selectedStatus"].ToString());
+                    type = (OrderStatusEnum)int.Parse(HttpContext.Current.Request.Params["selectedStatus"].ToString());
                     if (type == 0)
                     {
                         type = null;

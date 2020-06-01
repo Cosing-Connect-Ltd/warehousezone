@@ -70,9 +70,9 @@ namespace WMS.Controllers
 
             var allOrders = OrderService.GetAllOrderIdsWithStatus(CurrentTenantId).ToList();
 
-            var allocated = allOrders.Count(c => c.OrderStatusID == (int)OrderStatusEnum.Scheduled);
-            int unallocated = allOrders.Count(c => c.OrderStatusID == (int)OrderStatusEnum.NotScheduled);
-            int reallocation = allOrders.Count(c => c.OrderStatusID == (int)OrderStatusEnum.ReAllocationRequired);
+            var allocated = allOrders.Count(c => c.OrderStatusID == OrderStatusEnum.Scheduled);
+            int unallocated = allOrders.Count(c => c.OrderStatusID == OrderStatusEnum.NotScheduled);
+            int reallocation = allOrders.Count(c => c.OrderStatusID == OrderStatusEnum.ReAllocationRequired);
 
             ViewBag.Allocated = allocated;
             ViewBag.Unallocated = unallocated;
@@ -117,7 +117,7 @@ namespace WMS.Controllers
             var appointment = _appointmentsService.CreateAppointment(start, end, subject, resourceId, orderId, joblabel, tenantId);
             if (appointment != null)
             {
-                var order = OrderService.UpdateOrderStatus(orderId, 6, CurrentUserId);
+                var order = OrderService.UpdateOrderStatus(orderId, OrderStatusEnum.Scheduled, CurrentUserId);
 
                 var result = await _emailNotificationsHelper.CreateTenantEmailNotificationQueue($"#{order.OrderNumber} - Works order scheduled", _mapper.Map(order, new OrderViewModel()), worksOrderNotificationType:
                     WorksOrderNotificationTypeEnum.WorksOrderScheduledTemplate, appointment: appointment, sendImmediately: false);

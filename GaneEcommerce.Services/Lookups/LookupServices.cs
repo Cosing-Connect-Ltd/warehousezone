@@ -111,17 +111,6 @@ namespace Ganedata.Core.Services
             return reportTypes;
         }
 
-        public IEnumerable<OrderStatus> GetAllOrderStatuses()
-        {
-            return _currentDbContext.OrderStatus;
-        }
-
-        public OrderStatus GetOrderStatusById(int statusId)
-        {
-            OrderStatus status = _currentDbContext.OrderStatus.FirstOrDefault(s => s.OrderStatusID == statusId);
-            return status;
-        }
-
         public TenantDepartments GetTenantDepartmentById(int departmentId)
         {
             return _currentDbContext.TenantDepartments.Find(departmentId);
@@ -211,13 +200,13 @@ namespace Ganedata.Core.Services
 
         public IEnumerable<SlaWorksOrderListViewModel> GetAllJobTypesIncludingNavProperties(int tenantId)
         {
-            return _currentDbContext.JobTypes.AsNoTracking().Where(x => x.Orders.Count > 0 && x.Orders.Any(y => y.OrderStatusID == (int)OrderStatusEnum.NotScheduled
-            || y.OrderStatusID == (int)OrderStatusEnum.ReAllocationRequired) && x.IsDeleted != true)
+            return _currentDbContext.JobTypes.AsNoTracking().Where(x => x.Orders.Count > 0 && x.Orders.Any(y => y.OrderStatusID == OrderStatusEnum.NotScheduled
+            || y.OrderStatusID == OrderStatusEnum.ReAllocationRequired) && x.IsDeleted != true)
                .Select(p => new SlaWorksOrderListViewModel
                {
                    JobTypeId = p.JobTypeId,
                    Name = p.Name,
-                   Orders = p.Orders.Where(c => c.OrderStatusID == (int)OrderStatusEnum.NotScheduled || c.OrderStatusID == (int)OrderStatusEnum.ReAllocationRequired)
+                   Orders = p.Orders.Where(c => c.OrderStatusID == OrderStatusEnum.NotScheduled || c.OrderStatusID == OrderStatusEnum.ReAllocationRequired)
                    .Select(m => new SlaWorksOrderViewModel
                    {
                        OrderID = m.OrderID,

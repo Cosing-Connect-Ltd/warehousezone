@@ -2587,7 +2587,7 @@ namespace Ganedata.Core.Data.Helpers
 
             catch (Exception ex)
             {
-
+                ErrorSignal.FromCurrentContext().Raise(ex);
 
             }
             return accountaddress;
@@ -2756,7 +2756,7 @@ namespace Ganedata.Core.Data.Helpers
                         }
 
                         order.IssueDate = DateTime.UtcNow;
-                        order.OrderStatusID = (int)OrderStatusEnum.Active;
+                        order.OrderStatusID = OrderStatusEnum.Active;
                         order.DateCreated = DateTime.UtcNow;
                         order.DateUpdated = DateTime.UtcNow;
                         order.TenentId = tenantId;
@@ -2788,7 +2788,7 @@ namespace Ganedata.Core.Data.Helpers
 
 
                         }
-                        order.OrderStatusID = _currentDbContext.OrderStatus.First(a => a.OrderStatusID == (int)OrderStatusEnum.Active).OrderStatusID;
+                        order.OrderStatusID = OrderStatusEnum.Active;
                     }
                     else
                     {
@@ -3307,7 +3307,6 @@ namespace Ganedata.Core.Data.Helpers
             string url = "";
             try
             {
-
                 var _currentDbContext = new ApplicationContext();
                 var apiCredential = _currentDbContext.ApiCredentials.FirstOrDefault(u => u.ApiTypes == ApiTypes.DPD);
                 url = apiCredential?.ApiUrl;
@@ -3352,8 +3351,7 @@ namespace Ganedata.Core.Data.Helpers
             }
             catch (Exception ex)
             {
-
-                throw;
+                ErrorSignal.FromCurrentContext().Raise(ex);
             }
 
             return "";
@@ -3430,8 +3428,7 @@ namespace Ganedata.Core.Data.Helpers
             }
             catch (Exception ex)
             {
-
-                throw;
+                ErrorSignal.FromCurrentContext().Raise(ex);
             }
 
             return "Data Posted";

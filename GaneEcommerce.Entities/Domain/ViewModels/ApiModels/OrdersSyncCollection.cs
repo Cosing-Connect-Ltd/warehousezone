@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ganedata.Core.Entities.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace Ganedata.Core.Models
@@ -37,7 +38,7 @@ namespace Ganedata.Core.Models
         public bool IsCancel { get; set; }
         public bool IsActive { get; set; }
         public bool? IsDeleted { get; set; }
-        public int OrderStatusID { get; set; }
+        public OrderStatusEnum OrderStatusID { get; set; }
         public int? LoanID { get; set; }
         // Account contact person for this specific order
         public int? AccountContactId { get; set; }
@@ -111,7 +112,7 @@ namespace Ganedata.Core.Models
         public int UpdatedBy { get; set; }
         public int TenentId { get; set; }
         public bool? IsDeleted { get; set; }
-        public int? OrderDetailStatusId { get; set; }
+        public OrderStatusEnum? OrderDetailStatusId { get; set; }
         public int SortOrder { get; set; }
     }
 
