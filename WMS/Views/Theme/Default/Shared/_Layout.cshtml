@@ -3,7 +3,8 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow, noimageindex">
     <link rel="shortcut icon" type="image/x-icon" href="~/Content/images/WZ_favicon.ico" />
     <title>@ViewBag.Title</title>
 
@@ -81,17 +82,17 @@
         </div>
     </div>
 
-<div class="container body-content">
+    <div class="container body-content">
         @if (loginStatus && isSuperUser)
         {
             <div class="settings-bar">
-                    <div class="settings-bar-switch" onclick="javascript:toggleSettingsBar();">
-                        <b class="fa fa-paint-brush fa-lg" title="Toggle Settings"></b>
-                    </div>
+                <div class="settings-bar-switch" onclick="javascript:toggleSettingsBar();">
+                    <b class="fa fa-paint-brush fa-lg" title="Toggle Settings"></b>
+                </div>
 
-                    <div id="settings-bar-content">
-                        @Html.Action("SettingsBar", "UISettings")
-                    </div>
+                <div id="settings-bar-content">
+                    @Html.Action("SettingsBar", "UISettings")
+                </div>
             </div>
         }
         <div class="main-left">
