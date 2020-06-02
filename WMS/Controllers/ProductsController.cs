@@ -861,15 +861,10 @@ namespace WMS.Controllers
             _productServices.SaveEditProduct(productMaster, CurrentUserId, CurrentTenantId);
             return _EditableProductGrid(null);
         }
-        public PartialViewResult _GetAssociatedItems(bool grouped = false, bool raw = false, bool kit = false)
+        public PartialViewResult _GetAssociatedItems(ProductKitTypeEnum productKitType)
         {
             ViewBag.AssociatedItem = true;
-            ViewBag.KitTypes = raw ? ProductKitTypeEnum.Recipe : kit ? ProductKitTypeEnum.Kit : ProductKitTypeEnum.Grouped;
-            if (grouped)
-            {
-                ViewBag.KitTypes = ProductKitTypeEnum.Grouped;
-
-            }
+            ViewBag.KitTypes = productKitType;
             return PartialView();
         }
         public ActionResult SaveAssociated(bool? AssociatedItem, ProductKitTypeEnum KitType, int ProductID, MVCxGridViewBatchUpdateValues<ProductMasterViewModel, int> updateValues)

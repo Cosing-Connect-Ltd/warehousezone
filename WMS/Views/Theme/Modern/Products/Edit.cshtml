@@ -86,14 +86,13 @@
                 debugger;
                 var active = $('#tabs').tabs('option', 'active');
                 var TabId = $("#tabs ul>li a").eq(active).attr("href");
-                var grouped = $('#ProductType').val();
-                var kit = $('#Kit').is(":checked");
-                var raw = $("#IsRawMaterial").is(":checked");
+                var kit = $('#ProductType :selected').val();
+                
                 if (TabId === "#product-associated-items") {
                     $.ajax({
                         type: "GET",
                         url: "/Products/_GetAssociatedItems/",
-                        data: { grouped: grouped, raw: raw, kit: kit },
+                        data: { productKitType: kit },
                         dataType: 'html',
                         success: function (data) {
                             $('.associatedItems').empty();

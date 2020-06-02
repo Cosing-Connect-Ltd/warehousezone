@@ -86,14 +86,13 @@
                 debugger;
                 var active = $('#tabs').tabs('option', 'active');
                 var TabId = $("#tabs ul>li a").eq(active).attr("href");
-                var grouped = $('#ProductType').val();
-                var kit = $('#Kit').is(":checked");
-                var raw = $("#IsRawMaterial").is(":checked");
+                var kit = $('#ProductType :selected').val();
+
                 if (TabId === "#product-associated-items") {
                     $.ajax({
                         type: "GET",
                         url: "/Products/_GetAssociatedItems/",
-                        data: { grouped: grouped, raw: raw, kit: kit },
+                        data: { productKitType: kit },
                         dataType: 'html',
                         success: function (data) {
                             $('.associatedItems').empty();
@@ -107,6 +106,18 @@
                 }
 
             }
+        });
+        $("#ProductType").change(function () {
+            var kit = $('#ProductType :selected').val();
+            if (kit == "4") {
+                $(".associated-items").hide();
+            }
+            else {
+                $(".associated-items").show();
+            }
+
+
+
         });
     });
 </script>
@@ -146,10 +157,8 @@
             <li><a href="#product-attributes">Product Attributes</a></li>
             <li><a href="#product-locations">Product Locations</a></li>
             <li><a href="#product-inventory">Inventory</a></li>
-            @if (Model.ProductType > 0 && Model.ProductType != Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Simple)
-            {
-                <li><a href="#product-associated-items">Associated Items</a></li>
-            }
+            <li><a href="#product-associated-items" class="associated-items" style=@(Model.ProductType!=Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Simple?"":"display:none")>Associated Items</a></li>
+
 
         </ul>
         <div id="product-detail">
@@ -783,15 +792,14 @@
             </div>
         </div>
 
-        @if (Model.ProductType > 0 && Model.ProductType != Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Simple)
-        {
-            <div id="product-associated-items">
-                <div class="input-group h-100 justify-content-center align-items-center associatedItems">
+
+        <div id="product-associated-items" style=@(Model.ProductType!=Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Simple?"":"display:none")>
+            <div class="input-group h-100 justify-content-center align-items-center associatedItems">
 
 
-                </div>
             </div>
-        }
+        </div>
+
 
         <div id="product-inventory">
             <div class="input-group h-100 justify-content-center align-items-center">

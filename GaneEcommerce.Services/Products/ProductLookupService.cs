@@ -406,6 +406,7 @@ namespace Ganedata.Core.Services
         {
             if (model.LocationId < 1)
             {
+
                 var cLocation =
                     _currentDbContext.Locations.FirstOrDefault(a => a.WarehouseId == warehouseId &&
                                                                     a.TenentId == tenantId && a.LocationCode ==
