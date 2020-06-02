@@ -122,7 +122,7 @@
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.AccountID, htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
-                    @Html.DropDownListFor(m => m.AccountID, ViewBag.Accounts as IEnumerable<SelectListItem>, new { @class = "chosen-select orderactcnts" })
+                    @Html.DropDownListFor(m => m.AccountID, ViewBag.Accounts as IEnumerable<SelectListItem>, "Select Account", new { @class = "chosen-select orderactcnts" })
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">

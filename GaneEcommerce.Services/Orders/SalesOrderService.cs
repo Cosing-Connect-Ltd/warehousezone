@@ -406,7 +406,11 @@ namespace Ganedata.Core.Services
 
                 #endregion
 
-                AccountCredit = _accountServices.GetAccountsById(order.AccountID.Value)?.CreditLimit;
+                if (order.AccountID != null)
+                {
+                    AccountCredit = _accountServices.GetAccountsById(order.AccountID.Value)?.CreditLimit;
+                }
+
                 if (_orderService.CheckOrdersAuthroization(order.OrderTotal, order.InventoryTransactionTypeId, tenantId, userId, AccountCredit))
                 {
                     order.OrderStatusID = OrderStatusEnum.AwaitingAuthorisation;

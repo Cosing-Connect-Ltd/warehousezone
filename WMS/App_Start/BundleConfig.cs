@@ -93,10 +93,10 @@ namespace WMS
                 "~/Content/Themes/UI-WZ/jquery-ui.css"));
 
             bundles.Add(new StyleBundle("~/Content/fontawesome-bundle").Include(
-                "~/Content/font-awesome.min.css"));
+                "~/Content/font-awesome.css"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-              "~/Content/bootstrap.min.css",
+              "~/Content/bootstrap.css",
               "~/Content/Chosen/component-chosen.css",
               "~/Content/settings-bar.css",
               "~/Scripts/qTip/jquery.qtip.css"));

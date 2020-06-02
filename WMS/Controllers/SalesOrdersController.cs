@@ -317,7 +317,7 @@ namespace WMS.Controllers
             GaneOrderDetailsSessionHelper.SetOrderDetailSessions(ViewBag.ForceRegeneratedPageToken, _mapper.Map(odList, new List<OrderDetailSessionViewModel>()));
 
             SetViewBagItems(tenant, EnumAccountType.Customer, Order);
-            //ViewBag.AccountContacts = new SelectList(AccountServices.GetAllTopAccountContactsByTenantId(CurrentTenantId), "AccountContactId", "ContactName");
+
             int ids = 0;
             var accountaddress = _accountServices.GetAllValidAccountContactsByAccountId(ids, CurrentTenantId);
             ViewBag.AccountContactes = new SelectList(accountaddress, "AccountContactId", "ContactEmail", accountaddress.Select(x => x.AccountID).FirstOrDefault());
@@ -329,7 +329,15 @@ namespace WMS.Controllers
             if (Order.AccountID > 0)
             {
                 var account = AccountServices.GetAccountsById(Order.AccountID.Value);
-                ViewBag.AccountAddresses = new SelectList(account.AccountAddresses, "AddressID", "FullAddressValue", Order.ShipmentAccountAddressId);
+                if (account != null && account.AccountAddresses != null)
+                {
+                    ViewBag.AccountAddresses = new SelectList(account.AccountAddresses, "AddressID", "FullAddressValue", Order.ShipmentAccountAddressId);
+                }
+                else
+                {
+                    ViewBag.Warning = "No account address found";
+                }
+
                 if (Order.ConsignmentTypeId.HasValue && Order.ConsignmentTypeId.Value != (int)ConsignmentTypeEnum.Collection && Order.ShipmentAccountAddressId > 0)
                 {
                     ViewBag.ShipmentAccountAddressId = Order.ShipmentAccountAddressId;

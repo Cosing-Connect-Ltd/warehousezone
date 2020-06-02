@@ -136,6 +136,7 @@ namespace Ganedata.Core.Entities.Enums
         NotScheduled = 5,
         Scheduled = 6,
         ReAllocationRequired = 7,
+        [Display(Name = "Awaiting Authorisation")]
         AwaitingAuthorisation = 8,
         Cancelled = 9,
         BeingPicked = 10,
