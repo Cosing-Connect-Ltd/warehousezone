@@ -5,12 +5,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ganedata.Core.Entities.Domain
 {
+    [Serializable]
     public class AuthUserGroups : PersistableEntity<int>
     {
         [Key]
         public int GroupId { get; set; }
         public string Name { get; set; }
-        [Display(Name = "Profile Value")]
+        [Display(Name = "Group administrators")]
         //comma delimated email addresses
         public string GroupAdministrators { get; set; }
         [Display(Name = "Allow Enquiries")]
@@ -37,7 +38,7 @@ namespace Ganedata.Core.Entities.Domain
         public string BillingAddressLine1 { get; set; }
         [Display(Name = "Billing Address Line2")]
         public string BillingAddressLine2 { get; set; }
-        
+
         public string City { get; set; }
         public string Region { get; set; }
         [Display(Name = "Post Code")]

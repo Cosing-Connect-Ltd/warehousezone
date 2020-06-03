@@ -61,7 +61,7 @@ namespace Ganedata.Core.Services
                 {
                     tenantWebsite.SiteID = tenantWeb.SiteID;
                     tenantWebsite.TenantId = tenantWeb.TenantId;
-                    tenantWebsite.WarehouseId = tenantWeb.DefaultWarehouseId;
+                    tenantWebsite.DefaultWarehouseId = tenantWeb.DefaultWarehouseId;
                     tenantWebsite.SiteName = tenantWeb.SiteName;
                     tenantWebsite.SiteDescription = tenantWeb.SiteDescription;
                     tenantWebsite.Theme = tenantWeb.Theme;
@@ -78,13 +78,14 @@ namespace Ganedata.Core.Services
                     HttpContext.Current.Session["CurrentTenantWebsites"] = tenantWebsite;
                     HttpContext.Current.Session["caErrors"] = null;
                 }
-                else {
+                else
+                {
                     caError error = new caError();
                     error.ErrorTtile = "Host name Issue";
                     error.ErrorMessage = "Sorry, system is unable to validate client";
                     error.ErrorDetail = "Either client is not registered, inactive or ambiguous, please contact support";
                     HttpContext.Current.Session["caErrors"] = error;
-                    
+
                 }
             }
             else

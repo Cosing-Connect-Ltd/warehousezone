@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using WarehouseEcommerce.Helpers;
+using System.Web;
 
 namespace WarehouseEcommerce.Controllers
 {
@@ -30,8 +31,6 @@ namespace WarehouseEcommerce.Controllers
             PropertyService = propertyService;
             AccountServices = accountServices;
             LookupServices = lookupServices;
-
-            var res = CurrentTenantWebsite;
         }
 
         private caTenantWebsites _CurrentTenantWebsite { get; set; }
@@ -74,7 +73,7 @@ namespace WarehouseEcommerce.Controllers
         }
         public int CurrentWarehouseId
         {
-            get { return _CurrentTenantWebsite.WarehouseId; }
+            get { return _CurrentTenantWebsite.DefaultWarehouseId; }
         }
 
         protected void PrepareDirectory(string virtualDirPath)
@@ -173,12 +172,10 @@ namespace WarehouseEcommerce.Controllers
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             ViewBag.TimeZone = GetCurrentTimeZone();
-            ViewBag.BaseFilePath = ConfigurationManager.AppSettings["BaseFilePath"];
-            ViewBag.BasePath = ConfigurationManager.AppSettings["BasePath"];
             ViewBag.LoginDetail = CurrentUserId > 0 ? "Logout" : "Login";
             ViewBag.CurrentUserId = CurrentUserId;
             ViewBag.Currencies = LookupServices.GetAllGlobalCurrencies();
-            GetTenantWebsite();
+            SetTenantWebsiteProperties();
             if (Session["CurrencyDetail"] == null)
             {
                 CurrencyDetail(null);
@@ -326,10 +323,13 @@ namespace WarehouseEcommerce.Controllers
                 ViewBag.WishListItemCount = GaneWishListItemsSessionHelper.GetWishListItemsSession().Count();
             }
         }
-        public void GetTenantWebsite()
+        public void SetTenantWebsiteProperties()
         {
             var _tenantWebsiteService = DependencyResolver.Current.GetService<ITenantWebsiteService>();
-            ViewBag.TenantWebsite=_tenantWebsiteService.GetTenantWebSiteBySiteId(CurrentTenantWebsite.SiteID);
+            var website = _tenantWebsiteService.GetTenantWebSiteBySiteId(CurrentTenantWebsite.SiteID);
+            ViewBag.TenantWebsite = website;
+            ViewBag.BaseFilePath = website.BaseFilePath;
+            ViewBag.BasePath = Request.Url.Scheme + "://" + website.HostName;
         }
         protected override void Dispose(bool disposing)
         {
