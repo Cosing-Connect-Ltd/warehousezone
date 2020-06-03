@@ -60,11 +60,13 @@
              "<a href='" + Url.Action("Index", "WebsiteVouchers", new { SiteId = id }) + "' data-id='" + id + "'><i class='btn fa fa-money' title='Website Vouchers List'></i></a>" +
              "<a href='" + Url.Action("Index", "WebsiteDiscountCodes", new { SiteId = id }) + "' data-id='" + id + "'><i class='btn fa fa-tags' title='Website Discount List'></i></a>" +
              "<a href='" + Url.Action("Index", "ProductAllowances", new { SiteId = id }) + "' data-id='" + id + "'><i class='btn fa fa-list-ol' title='Product Allowance List'></i></a>" +
-             "<a href='" + Url.Action("Index", "ProductAllowanceGroups", new { SiteId = id }) + "' data-id='" + id + "'><i class='btn fa fa-th-list' title='Product Allowance Group List'></i></a>" +
-             "<a href='" + Url.Action("WebsiteUISettings", "UISettings", new { SiteId = id }) + "' data-id='" + id + "'><i class='btn fa fa-paint-brush' title='Website UI Customization'></i></a>"
+             "<a href='" + Url.Action("Index", "ProductAllowanceGroups", new { SiteId = id }) + "' data-id='" + id + "'><i class='btn fa fa-th-list' title='Product Allowance Group List'></i></a>"
+         );
 
-
- );
+        if (LayoutHelpers.IsSuperUser())
+        {
+            ViewContext.Writer.Write("<a href='" + Url.Action("WebsiteUISettings", "UISettings", new { SiteId = id }) + "' data-id='" + id + "'><i class='btn fa fa-paint-brush' title='Website UI Customization'></i></a>");
+        }
 
         });
         settings.Columns.Add(Column);
