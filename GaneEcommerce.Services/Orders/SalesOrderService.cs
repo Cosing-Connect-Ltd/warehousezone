@@ -453,7 +453,7 @@ namespace Ganedata.Core.Services
             return true;
         }
 
-        public IQueryable<OrderProcess> GetAllSalesConsignments(int tenantId, int warehouseId, int? InventoryTransactionId = null, int? orderstatusId = null)
+        public IQueryable<OrderProcess> GetAllSalesConsignments(int tenantId, int warehouseId, int? InventoryTransactionId = null, OrderProcessStatusEnum? orderstatusId = null)
         {
             if (InventoryTransactionId.HasValue)
             {

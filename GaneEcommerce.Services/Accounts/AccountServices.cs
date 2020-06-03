@@ -24,7 +24,7 @@ namespace Ganedata.Core.Services
 
         public IEnumerable<Account> GetAllValidAccounts(int tenantId, EnumAccountType customerType = EnumAccountType.All, string searchString = null, DateTime? lastUpdated = null, bool includeIsDeleted = false)
         {
-            var accounts = _currentDbContext.Account.Where(a => a.TenantId == tenantId && (includeIsDeleted || a.IsDeleted != true)&& (customerType == EnumAccountType.All ||
+            var accounts = _currentDbContext.Account.Where(a => a.TenantId == tenantId && (includeIsDeleted || a.IsDeleted != true) && (customerType == EnumAccountType.All ||
             (customerType == EnumAccountType.Customer && (a.AccountTypeCustomer || a.AccountTypeEndUser)) || (customerType == EnumAccountType.Supplier && a.AccountTypeSupplier) || (customerType == EnumAccountType.EndUser && a.AccountTypeEndUser)));
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -62,7 +62,7 @@ namespace Ganedata.Core.Services
 
         public IQueryable<Account> GetAllValidAccountbyList(List<int> accountId)
         {
-            return _currentDbContext.Account.AsNoTracking().Where(m => accountId.Contains(m.AccountID) && m.IsDeleted !=true);
+            return _currentDbContext.Account.AsNoTracking().Where(m => accountId.Contains(m.AccountID) && m.IsDeleted != true);
         }
 
         public IEnumerable<ProductAccountCodes> GetAllProductAccountCodesByAccount(int accountId)
@@ -72,7 +72,7 @@ namespace Ganedata.Core.Services
 
         public Account GetAccountsById(int accountId)
         {
-            return _currentDbContext.Account.AsNoTracking().FirstOrDefault(x => x.AccountID == accountId && x.IsDeleted !=true);
+            return _currentDbContext.Account.AsNoTracking().FirstOrDefault(x => x.AccountID == accountId && x.IsDeleted != true);
         }
 
         public Account GetAccountsByCode(string accountCode, int tenantId)
@@ -152,7 +152,7 @@ namespace Ganedata.Core.Services
         }
         public IEnumerable<AccountAddresses> GetAccountAddress()
         {
-            return _currentDbContext.AccountAddresses.Where(u=>u.IsDeleted != true);
+            return _currentDbContext.AccountAddresses.Where(u => u.IsDeleted != true);
         }
 
         public AccountAddresses DeleteAccountAddress(int addressId, int currentUserId)
@@ -208,7 +208,7 @@ namespace Ganedata.Core.Services
             marketCustomer.ForEach(u => u.IsDeleted = true);
             marketCustomer.ForEach(u => u.DateUpdated = DateTime.UtcNow);
             marketCustomer.ForEach(u => u.UpdatedBy = userId);
-            
+
             _currentDbContext.SaveChanges();
         }
 
@@ -217,7 +217,7 @@ namespace Ganedata.Core.Services
             return _currentDbContext.AccountContacts.Find(id);
         }
 
-        public Account SaveAccount(Account model, List<int> accountAddressIds, List<int> accountContactIds, int globalCountryIds, int globalCurrencyIds, int accountStatusIds, int priceGroupId, int ownerUserId, List<AccountAddresses> addresses, List<AccountContacts> contacts, int userId, int tenantId, string stopReason = null)
+        public Account SaveAccount(Account model, List<int> accountAddressIds, List<int> accountContactIds, int globalCountryIds, int globalCurrencyIds, AccountStatusEnum accountStatusIds, int priceGroupId, int ownerUserId, List<AccountAddresses> addresses, List<AccountContacts> contacts, int userId, int tenantId, string stopReason = null)
         {
             var account = _currentDbContext.Account.FirstOrDefault(m => m.AccountID == model.AccountID);
 
@@ -289,7 +289,7 @@ namespace Ganedata.Core.Services
                     AccountId = model.AccountID,
                     LastStatusId = account.AccountStatusID,
                     NewStatusId = model.AccountStatusID,
-                    Reason = (model.AccountStatusID == (int)AccountStatusEnum.OnStop ? stopReason : "")
+                    Reason = (model.AccountStatusID == AccountStatusEnum.OnStop ? stopReason : "")
                 };
                 account.AccountStatusAudits.Add(audit);
 
@@ -505,27 +505,16 @@ namespace Ganedata.Core.Services
             if (trans == null)
                 return new AccountTransactionViewModel()
                 {
-                    AccountTransactionTypeId = (int)AccountTransactionTypeEnum.PaidByAccount
+                    AccountTransactionTypeId = AccountTransactionTypeEnum.PaidByAccount
                 };
 
             var model = _mapper.Map<AccountTransaction, AccountTransactionViewModel>(trans);
-            model.AccountPaymentMode = trans.AccountPaymentMode?.Description ?? "Invoiced";
-            model.AccountTransactionType = trans.AccountTransactionType.Description;
+            model.AccountPaymentMode = trans.AccountPaymentModeId.ToString() ?? "Invoiced";
+            model.AccountTransactionType = trans.AccountTransactionTypeId.ToString();
             model.AccountId = trans.AccountId;
             model.AccountName = trans.Account?.AccountNameCode;
             model.AccountTransactionTypeId = trans.AccountTransactionTypeId;
             return model;
-        }
-
-        public List<SelectListItem> GetAllAccountPaymentModesSelectList()
-        {
-            return _currentDbContext.AccountPaymentModes
-                .Select(m => new SelectListItem()
-                {
-                    Value = m.AccountPaymentModeId.ToString(),
-                    Text = m.Description
-                })
-                .ToList();
         }
 
         public List<SelectListItem> GetAllAccountsSelectList(int tenantId)
@@ -546,7 +535,7 @@ namespace Ganedata.Core.Services
                 DateCreated = m.DateCreated,
                 AccountId = m.AccountId,
                 Amount = m.Amount,
-                AccountPaymentMode = m.AccountPaymentMode.Description.ToString(),
+                AccountPaymentMode = m.AccountPaymentModeId.ToString(),
                 AccountTransactionTypeId = m.AccountTransactionTypeId,
                 AccountTransactionId = m.AccountTransactionId,
                 Notes = m.Notes,
@@ -554,13 +543,13 @@ namespace Ganedata.Core.Services
                 FinalBalance = m.FinalBalance,
                 AccountName = m.Account.CompanyName,
                 AccountCode = m.Account.AccountCode,
-                AccountTransactionType = m.AccountTransactionType.Description
+                AccountTransactionType = m.AccountTransactionTypeId.ToString()
             });
         }
 
-        public string GetLatestAuditComment(int accountId,int TenantId)
+        public string GetLatestAuditComment(int accountId, int TenantId)
         {
-            var latestAudit = _currentDbContext.AccountStatusAudits.Where(x => x.AccountId == accountId && x.NewStatusId == (int)AccountStatusEnum.OnStop && x.IsDeleted != true && x.TenantId==TenantId)
+            var latestAudit = _currentDbContext.AccountStatusAudits.Where(x => x.AccountId == accountId && x.NewStatusId == AccountStatusEnum.OnStop && x.IsDeleted != true && x.TenantId == TenantId)
                 .OrderByDescending(m => m.DateCreated).FirstOrDefault();
             return latestAudit != null ? latestAudit.Reason : "";
         }
@@ -581,7 +570,6 @@ namespace Ganedata.Core.Services
         {
             var audits =
                 (from a in _currentDbContext.AccountStatusAudits
-                 join st in _currentDbContext.GlobalAccountStatus on a.LastStatusId equals st.AccountStatusID
                  join usr in _currentDbContext.AuthUsers on a.CreatedBy equals usr.UserId
                  where a.AccountId == accountId
                  select new AccountStatusAuditViewModel()
@@ -592,8 +580,8 @@ namespace Ganedata.Core.Services
                      AccountStatusAuditId = a.AccountStatusAuditId,
                      Reason = a.Reason,
                      DateUpdated = (a.DateUpdated ?? a.DateCreated),
-                     LastStatus = st.AccountStatus,
-                     NewStatus = a.NewStatus.AccountStatus
+                     LastStatus = a.LastStatusId.ToString(),
+                     NewStatus = a.NewStatusId.ToString(),
                  }).OrderByDescending(m => m.DateUpdated);
             return audits.ToList();
         }
@@ -605,7 +593,7 @@ namespace Ganedata.Core.Services
 
         }
 
-        public IEnumerable<AccountContacts> GetAllValidAccountContactsByAccountContactIds( int?[] accountContactIds)
+        public IEnumerable<AccountContacts> GetAllValidAccountContactsByAccountContactIds(int?[] accountContactIds)
         {
 
             return _currentDbContext.AccountContacts.Where(u => accountContactIds.Contains(u.AccountContactId) && u.IsDeleted != true);

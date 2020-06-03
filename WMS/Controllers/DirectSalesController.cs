@@ -17,7 +17,7 @@ namespace WMS.Controllers
         private readonly IVanSalesService _vanSalesService;
         private readonly IMapper _mapper;
 
-        public DirectSalesController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IProductServices productServices, 
+        public DirectSalesController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IProductServices productServices,
             IVanSalesService vanSalesService, IMapper mapper) : base(orderService, propertyService, accountServices, lookupServices)
         {
             _productServices = productServices;
@@ -36,22 +36,22 @@ namespace WMS.Controllers
         {
             var allTaxes = LookupServices.GetAllValidGlobalTaxes().ToList();
             var allWarranties = LookupServices.GetAllTenantWarrenties(CurrentTenantId).ToList();
-           
+
             model.AllAccounts = AccountServices.GetAllValidAccounts(CurrentTenantId, EnumAccountType.Customer)
-                .Select(m => new SelectListItem {Text = m.CompanyName, Value = m.AccountID.ToString()}).ToList();
+                .Select(m => new SelectListItem { Text = m.CompanyName, Value = m.AccountID.ToString() }).ToList();
             //model.AllAccounts.Insert(0, new SelectListItem { Text = "None", Value = "0" });
 
             model.AllProducts = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList()
-                .Select(m => new SelectListItem {Text = m.NameWithCode, Value = m.ProductId.ToString()}).ToList();
-            model.AllTaxes = allTaxes.Select(m => new SelectListItem {Text = m.TaxName, Value = m.TaxID.ToString()})
+                .Select(m => new SelectListItem { Text = m.NameWithCode, Value = m.ProductId.ToString() }).ToList();
+            model.AllTaxes = allTaxes.Select(m => new SelectListItem { Text = m.TaxName, Value = m.TaxID.ToString() })
                 .ToList();
             model.TaxDataHelper =
-                Newtonsoft.Json.JsonConvert.SerializeObject(allTaxes.Select(m => new {m.TaxID, m.PercentageOfAmount}));
+                Newtonsoft.Json.JsonConvert.SerializeObject(allTaxes.Select(m => new { m.TaxID, m.PercentageOfAmount }));
             model.AllWarranties = allWarranties
-                .Select(m => new SelectListItem {Text = m.WarrantyName, Value = m.WarrantyID.ToString()}).ToList();
+                .Select(m => new SelectListItem { Text = m.WarrantyName, Value = m.WarrantyID.ToString() }).ToList();
             model.WarrantyDataHelper =
                 Newtonsoft.Json.JsonConvert.SerializeObject(
-                    allWarranties.Select(m => new {m.WarrantyID, m.IsPercent, m.PercentageOfPrice, m.FixedPrice}));
+                    allWarranties.Select(m => new { m.WarrantyID, m.IsPercent, m.PercentageOfPrice, m.FixedPrice }));
             return model;
         }
 
@@ -80,12 +80,12 @@ namespace WMS.Controllers
             }
             if (Order.OrderStatusID != OrderStatusEnum.AwaitingAuthorisation)
             {
-               TempData["ErrorAwaitingAuthorization"] = $"Order is not available to modify because order status not matched with required status.";
+                TempData["ErrorAwaitingAuthorization"] = $"Order is not available to modify because order status not matched with required status.";
                 return RedirectToAction("AwaitingAuthorisation", "Order");
-                 
+
             }
-                    
-            ViewBag.AllAccounts = new SelectList(AccountServices.GetAllValidAccounts(CurrentTenantId, EnumAccountType.Customer).ToList(), "AccountID", "CompanyName",Order.AccountID);
+
+            ViewBag.AllAccounts = new SelectList(AccountServices.GetAllValidAccounts(CurrentTenantId, EnumAccountType.Customer).ToList(), "AccountID", "CompanyName", Order.AccountID);
 
             if (string.IsNullOrEmpty(pageToken))
             {
@@ -110,14 +110,15 @@ namespace WMS.Controllers
             }
             else
             {
-                model.AllPaymentModes = LookupServices.GetAllAccountPaymentModes()
-                    .Select(m => new SelectListItem { Text = m.Description, Value = m.AccountPaymentModeId.ToString() })
-                    .ToList();
+                var paymentModes = from AccountPaymentModeEnum d in Enum.GetValues(typeof(AccountPaymentModeEnum))
+                                   select new { ID = (int)d, Name = d.ToString() };
+                model.AllPaymentModes = new SelectList(paymentModes, "Value", "Text", paymentModes.FirstOrDefault()).ToList();
+
             }
-            
+
             return PartialView("_DirectSalesPreviewPartial", model);
         }
-          
+
         public ActionResult SaveDirectSales(DirectSalesViewModel model)
         {
             try
@@ -128,17 +129,17 @@ namespace WMS.Controllers
             catch (System.Exception ex)
             {
                 ViewBag.Error = ex.Message;
-                
+
                 return View("CreateDirectSales", LoadLookups(new DirectSalesViewModel()));
             }
             //var response = AutoMapper.Mapper.Map<Order, OrderViewModel>(order);
-            return AnchoredOrderIndex("DirectSales","Index", ViewBag.Fragment as string);
+            return AnchoredOrderIndex("DirectSales", "Index", ViewBag.Fragment as string);
         }
         [HttpPost]
-        public ActionResult EditDirectSales(Order order, string PageSession,DateTime? InvoiceDate)
+        public ActionResult EditDirectSales(Order order, string PageSession, DateTime? InvoiceDate)
         {
             var items = GaneOrderDetailsSessionHelper.GetOrderDetailSession(PageSession);
-           
+
             var orders = OrderService.SaveDirectSalesOrder(order, CurrentTenantId, CurrentWarehouseId, CurrentUserId, _mapper.Map(items, new List<OrderDetail>()), null);
             TempData["SuccessDS"] = $"Order Updated Successfully";
 
@@ -149,8 +150,8 @@ namespace WMS.Controllers
 
         public ActionResult VanSalesCashReport()
         {
-           ViewBag.MobileLocations = LookupServices.GetAllWarehousesForTenant(CurrentTenantId, null, true).Select(x=> new SelectListItem() { Text = x.WarehouseName, Value= x.WarehouseId.ToString()  }).ToList();
-           return View("VanSalesCashReport");
+            ViewBag.MobileLocations = LookupServices.GetAllWarehousesForTenant(CurrentTenantId, null, true).Select(x => new SelectListItem() { Text = x.WarehouseName, Value = x.WarehouseId.ToString() }).ToList();
+            return View("VanSalesCashReport");
         }
 
         public ActionResult _VanSalesCashReport()

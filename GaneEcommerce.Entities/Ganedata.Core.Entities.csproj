@@ -213,7 +213,6 @@
     <Compile Include="Domain\Models\MarketRouteProgress.cs" />
     <Compile Include="Domain\Models\MerakiScanningApiViewModel.cs" />
     <Compile Include="Domain\Models\OrderConsignmentTypes.cs" />
-    <Compile Include="Domain\Global\GlobalAccountStatus.cs" />
     <Compile Include="Domain\Models\OrderProcessDetail.cs" />
     <Compile Include="Domain\Models\OrderProofOfDelivery.cs" />
     <Compile Include="Domain\Models\OrderReceiveCount.cs" />

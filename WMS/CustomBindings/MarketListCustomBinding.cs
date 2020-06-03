@@ -104,7 +104,7 @@ namespace WMS.CustomBindings
             {
                 var model = _mapper.Map(item, new MarketJobViewModel());
                 model.DisplayText = item.MarketRoute != null ? item.MarketRoute.Description : "";
-                var jobAllocation = _currentDbContext.MarketJobAllocations.FirstOrDefault(x => x.MarketJobId == item.Id && (x.MarketJobStatusId != (int)MarketJobStatusEnum.Cancelled));
+                var jobAllocation = _currentDbContext.MarketJobAllocations.FirstOrDefault(x => x.MarketJobId == item.Id && (x.MarketJobStatusId != MarketJobStatusEnum.Cancelled));
                 model.MarketJobStatusEnum = (MarketJobStatusEnum)item.LatestJobStatusId;
                 if (jobAllocation != null)
                 {

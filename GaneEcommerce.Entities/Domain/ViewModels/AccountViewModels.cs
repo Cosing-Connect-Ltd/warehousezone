@@ -1,4 +1,5 @@
 ﻿using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -136,9 +137,9 @@ namespace Ganedata.Core.Models
         public decimal FinalBalance { get; set; }
         public string Notes { get; set; }
         public DateTime DateCreated { get; set; }
-        public int? AccountPaymentModeId { get; set; }
+        public AccountPaymentModeEnum? AccountPaymentModeId { get; set; }
         public string AccountPaymentMode { get; set; }
-        public int AccountTransactionTypeId { get; set; }
+        public AccountTransactionTypeEnum AccountTransactionTypeId { get; set; }
         public string AccountTransactionType { get; set; }
         public string AccountCode { get; set; }
     }

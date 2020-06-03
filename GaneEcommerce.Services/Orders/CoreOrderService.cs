@@ -231,7 +231,7 @@ namespace Ganedata.Core.Services
             return OrderService.GetAllOrderProcessesByOrderDetailId(orderDetailId, warehouseId);
         }
 
-        public IQueryable<OrderProcess> GetAllOrderProcesses(DateTime? ordersAfter, int? orderId, int? orderProcessStatusId = null, InventoryTransactionTypeEnum? transactionTypeId = null, bool includeDeleted = false)
+        public IQueryable<OrderProcess> GetAllOrderProcesses(DateTime? ordersAfter, int? orderId, OrderProcessStatusEnum? orderProcessStatusId = null, InventoryTransactionTypeEnum? transactionTypeId = null, bool includeDeleted = false)
         {
             return OrderService.GetAllOrderProcesses(ordersAfter, orderId, orderProcessStatusId, transactionTypeId, includeDeleted);
         }
@@ -482,7 +482,7 @@ namespace Ganedata.Core.Services
             return SalesOrderService.DeleteSalesOrderDetailById(orderDetailId, userId);
         }
 
-        public IQueryable<OrderProcess> GetAllSalesConsignments(int tenantId, int warehouseId, int? InventoryTransactionId = null, int? orderstatusId = null)
+        public IQueryable<OrderProcess> GetAllSalesConsignments(int tenantId, int warehouseId, int? InventoryTransactionId = null, OrderProcessStatusEnum? orderstatusId = null)
         {
             return SalesOrderService.GetAllSalesConsignments(tenantId, warehouseId, InventoryTransactionId, orderstatusId);
         }

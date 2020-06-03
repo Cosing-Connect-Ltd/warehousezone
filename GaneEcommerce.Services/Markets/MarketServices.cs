@@ -446,31 +446,7 @@ namespace Ganedata.Core.Services
 
         public IQueryable<MarketJob> GetAllValidMarketJobs(int tenantId, MarketJobStatusEnum? statusEnum = null)
         {
-            //var results = new List<MarketJobViewModel>();
-
-            var statusId = 0;
-            if (statusEnum.HasValue)
-            {
-                statusId = (int)statusEnum.Value;
-            }
-
-            var marketJobs = _currentDbContext.MarketJobs.Where(m => m.TenantId == tenantId && m.IsDeleted != true && (statusEnum == 0 || m.LatestJobStatusId == statusId));
-
-            //if (marketJobs.Any())
-            //{
-            //    marketJobs.ForEach(m =>
-            //    {
-            //        var model = _mapper.Map(m, new MarketJobViewModel());
-            //        model.DisplayText = m.MarketRoute != null ? m.MarketRoute.Description : "";
-            //        var jobAllocation = _currentDbContext.MarketJobAllocations.FirstOrDefault(x => x.MarketJobId == m.Id && (x.MarketJobStatusId != (int)MarketJobStatusEnum.Cancelled));
-            //        if (jobAllocation != null)
-            //        {
-            //            model.ResourceName = jobAllocation.Resource.Name;
-            //            model.ResourceID = jobAllocation.ResourceId;
-            //        }
-            //        results.Add(model);
-            //    });
-            //}
+            var marketJobs = _currentDbContext.MarketJobs.Where(m => m.TenantId == tenantId && m.IsDeleted != true && (statusEnum == null || m.LatestJobStatusId == statusEnum));
             return marketJobs;
         }
         public MarketJobViewModel GetMarketJobById(int marketJobId)
@@ -502,11 +478,11 @@ namespace Ganedata.Core.Services
         {
             return _currentDbContext.MarketJobAllocations.OrderByDescending(x => x.DateCreated)
                    .FirstOrDefault(x => x.MarketJobId == jobId &&
-                                        (x.MarketJobStatusId != (int)MarketJobStatusEnum.Declined || x.MarketJobStatusId != (int)MarketJobStatusEnum.Cancelled ||
-                                         x.MarketJobStatusId != (int)MarketJobStatusEnum.Completed));
+                                        (x.MarketJobStatusId != MarketJobStatusEnum.Declined || x.MarketJobStatusId != MarketJobStatusEnum.Cancelled ||
+                                         x.MarketJobStatusId != MarketJobStatusEnum.Completed));
         }
 
-        public MarketJobViewModel SaveMarketJob(MarketJob marketJob, int? resourceId, int? latestjobStatusId, int userId, int tenantId)
+        public MarketJobViewModel SaveMarketJob(MarketJob marketJob, int? resourceId, MarketJobStatusEnum? latestjobStatusId, int userId, int tenantId)
         {
             if (marketJob.Id == 0)
             {
@@ -534,12 +510,12 @@ namespace Ganedata.Core.Services
 
             if (resourceId.HasValue)
             {
-                var allJobs = _currentDbContext.MarketJobAllocations.Where(m => m.ResourceId != resourceId.Value && m.MarketJobId != marketJob.Id && m.MarketJobStatusId != (int)MarketJobStatusEnum.Cancelled);
+                var allJobs = _currentDbContext.MarketJobAllocations.Where(m => m.ResourceId != resourceId.Value && m.MarketJobId != marketJob.Id && m.MarketJobStatusId != MarketJobStatusEnum.Cancelled);
                 if (allJobs.Any())
                 {
                     foreach (var job in allJobs)
                     {
-                        job.MarketJobStatusId = (int)MarketJobStatusEnum.Cancelled;
+                        job.MarketJobStatusId = MarketJobStatusEnum.Cancelled;
                         _currentDbContext.Entry(job).State = EntityState.Modified;
                     }
                     _currentDbContext.SaveChanges();
@@ -551,14 +527,14 @@ namespace Ganedata.Core.Services
             return _mapper.Map(marketJob, new MarketJobViewModel());
         }
 
-        public async Task<MarketJobViewModel> UpdateMarketJobAllocationApi(int marketJobId, int userId, int tenantId, int? latestJobStatusId = null, string reason = null, DateTime? actionDate = null,
+        public async Task<MarketJobViewModel> UpdateMarketJobAllocationApi(int marketJobId, int userId, int tenantId, MarketJobStatusEnum? latestJobStatusId = null, string reason = null, DateTime? actionDate = null,
             double? latitude = null, double? longitude = null, string terminalSerial = null)
         {
             var resourceId = _userService.GetResourceIdByUserId(userId);
-            return await UpdateMarketJobAllocation(marketJobId, resourceId, userId, tenantId, latestJobStatusId ?? (int)MarketJobStatusEnum.Allocated, reason, actionDate, latitude, longitude);
+            return await UpdateMarketJobAllocation(marketJobId, resourceId, userId, tenantId, latestJobStatusId ?? MarketJobStatusEnum.Allocated, reason, actionDate, latitude, longitude);
         }
 
-        public async Task<MarketJobViewModel> UpdateMarketJobAllocation(int marketJobId, int resourceId, int userId, int tenantId, int? latestJobStatusId = null, string reason = null, DateTime? actionDate = null, double? latitude = null, double? longitude = null, string terminalSerial = null)
+        public async Task<MarketJobViewModel> UpdateMarketJobAllocation(int marketJobId, int resourceId, int userId, int tenantId, MarketJobStatusEnum? latestJobStatusId = null, string reason = null, DateTime? actionDate = null, double? latitude = null, double? longitude = null, string terminalSerial = null)
         {
             var marketJob = _currentDbContext.MarketJobs.Find(marketJobId);
             marketJob.UpdatedBy = userId;
@@ -569,16 +545,16 @@ namespace Ganedata.Core.Services
 
             if (resourceId == 0)
             {
-                var allJobs = _currentDbContext.MarketJobAllocations.Where(m => m.MarketJobId == marketJobId && m.MarketJobStatusId != (int)MarketJobStatusEnum.Cancelled);
+                var allJobs = _currentDbContext.MarketJobAllocations.Where(m => m.MarketJobId == marketJobId && m.MarketJobStatusId != MarketJobStatusEnum.Cancelled);
                 if (allJobs.Any())
                 {
                     foreach (var job in allJobs)
                     {
-                        job.MarketJobStatusId = (int)MarketJobStatusEnum.Cancelled;
+                        job.MarketJobStatusId = MarketJobStatusEnum.Cancelled;
                         _currentDbContext.Entry(job).State = EntityState.Modified;
                     }
                 }
-                marketJob.LatestJobStatusId = (int)MarketJobStatusEnum.UnAllocated;
+                marketJob.LatestJobStatusId = MarketJobStatusEnum.UnAllocated;
                 marketJob.LatestJobAllocationId = null;
             }
             else
@@ -586,22 +562,22 @@ namespace Ganedata.Core.Services
 
                 if (latestJobStatusId.HasValue && marketJobAllocation != null)
                 {
-                    marketJobAllocation.MarketJobStatusId = (int)latestJobStatusId.Value;
+                    marketJobAllocation.MarketJobStatusId = latestJobStatusId.Value;
                     marketJobAllocation.ResourceId = resourceId;
                     marketJobAllocation.DeviceSerial = terminalSerial;
 
-                    if (latestJobStatusId == (int)MarketJobStatusEnum.Completed)
+                    if (latestJobStatusId == MarketJobStatusEnum.Completed)
                     {
                         marketJobAllocation.Latitude = latitude;
                         marketJobAllocation.Longitude = longitude;
                         marketJobAllocation.ActionDate = actionDate ?? DateTime.UtcNow;
                         marketJobAllocation.Reason = reason;
                     }
-                    if (latestJobStatusId == (int)MarketJobStatusEnum.FailedToComplete)
+                    if (latestJobStatusId == MarketJobStatusEnum.FailedToComplete)
                     {
                         marketJobAllocation.Reason = "Failed to complete: " + reason;
                     }
-                    if (latestJobStatusId == (int)MarketJobStatusEnum.Declined)
+                    if (latestJobStatusId == MarketJobStatusEnum.Declined)
                     {
                         marketJobAllocation.Reason = reason;
                         marketJobAllocation.ActionDate = actionDate ?? DateTime.UtcNow;
@@ -618,14 +594,14 @@ namespace Ganedata.Core.Services
                         DateCreated = actionDate ?? DateTime.UtcNow,
                         MarketJobId = marketJobId,
                         ResourceId = resourceId,
-                        MarketJobStatusId = (int)MarketJobStatusEnum.Allocated,
+                        MarketJobStatusId = MarketJobStatusEnum.Allocated,
                         TenantId = tenantId,
                         DateUpdated = actionDate ?? DateTime.UtcNow,
                         DeviceSerial = terminalSerial
                     };
 
                     _currentDbContext.Entry(marketJobAllocation).State = EntityState.Added;
-                    marketJob.LatestJobStatusId = (int)MarketJobStatusEnum.Allocated;
+                    marketJob.LatestJobStatusId = MarketJobStatusEnum.Allocated;
                 }
 
                 _currentDbContext.SaveChanges();
@@ -638,7 +614,7 @@ namespace Ganedata.Core.Services
                 DateCreated = actionDate ?? DateTime.UtcNow,
                 MarketJobId = marketJobId,
                 ResourceId = resourceId,
-                MarketJobStatusId = (int)MarketJobStatusEnum.Allocated,
+                MarketJobStatusId = MarketJobStatusEnum.Allocated,
                 TenantId = tenantId,
                 DateUpdated = actionDate ?? DateTime.UtcNow,
                 DeviceSerial = terminalSerial
@@ -654,21 +630,21 @@ namespace Ganedata.Core.Services
 
         public async Task<MarketJobViewModel> AcceptMarketJob(int marketJobId, int userId, int tenantId, string terminalSerial = null, double? latitude = null, double? longitude = null)
         {
-            return await UpdateMarketJobAllocationApi(marketJobId, userId, tenantId, (int)MarketJobStatusEnum.Accepted, null, DateTime.UtcNow, latitude, longitude, terminalSerial);
+            return await UpdateMarketJobAllocationApi(marketJobId, userId, tenantId, MarketJobStatusEnum.Accepted, null, DateTime.UtcNow, latitude, longitude, terminalSerial);
         }
         public async Task<MarketJobViewModel> DeclineMarketJob(int marketJobId, int userId, int tenantId, string declineReason, string terminalSerial = null, double? latitude = null, double? longitude = null)
         {
-            return await UpdateMarketJobAllocationApi(marketJobId, userId, tenantId, (int)MarketJobStatusEnum.Declined, declineReason, DateTime.UtcNow, latitude, longitude, terminalSerial);
+            return await UpdateMarketJobAllocationApi(marketJobId, userId, tenantId, MarketJobStatusEnum.Declined, declineReason, DateTime.UtcNow, latitude, longitude, terminalSerial);
         }
 
         public async Task<MarketJobViewModel> CompleteMarketJob(int marketJobId, int userId, int tenantId, string reason, string terminalSerial = null, double? latitude = null, double? longitude = null)
         {
-            return await UpdateMarketJobAllocationApi(marketJobId, userId, tenantId, (int)MarketJobStatusEnum.Completed, reason, DateTime.UtcNow, latitude, longitude, terminalSerial);
+            return await UpdateMarketJobAllocationApi(marketJobId, userId, tenantId, MarketJobStatusEnum.Completed, reason, DateTime.UtcNow, latitude, longitude, terminalSerial);
         }
 
         public async Task<MarketJobViewModel> CancelMarketJob(int marketJobId, int userId, int tenantId, string cancelReason, string terminalSerial = null, double? latitude = null, double? longitude = null)
         {
-            return await UpdateMarketJobAllocationApi(marketJobId, userId, tenantId, (int)MarketJobStatusEnum.Cancelled, cancelReason, DateTime.UtcNow, latitude, longitude, terminalSerial);
+            return await UpdateMarketJobAllocationApi(marketJobId, userId, tenantId, MarketJobStatusEnum.Cancelled, cancelReason, DateTime.UtcNow, latitude, longitude, terminalSerial);
         }
 
         #endregion

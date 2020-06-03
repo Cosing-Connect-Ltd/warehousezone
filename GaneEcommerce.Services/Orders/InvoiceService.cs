@@ -131,7 +131,7 @@ namespace Ganedata.Core.Services
             if (process != null)
             {
                 process.InvoiceNo = invoice.InvoiceNumber;
-                process.OrderProcessStatusId = (int)OrderProcessStatusEnum.Invoiced;
+                process.OrderProcessStatusId = OrderProcessStatusEnum.Invoiced;
                 process.DateUpdated = DateTime.UtcNow;
                 process.UpdatedBy = userId;
 
@@ -143,7 +143,7 @@ namespace Ganedata.Core.Services
             var accountTransaction = new AccountTransaction()
             {
                 AccountId = account.AccountID,
-                AccountTransactionTypeId = (int)AccountTransactionTypeEnum.InvoicedToAccount,
+                AccountTransactionTypeId = AccountTransactionTypeEnum.InvoicedToAccount,
                 CreatedBy = userId,
                 Notes = ("Invoiced : " + (process != null ? process.Order.OrderNumber : "")).Trim(),
                 DateCreated = DateTime.UtcNow,
@@ -156,7 +156,7 @@ namespace Ganedata.Core.Services
             _currentDbContext.SaveChanges();
             if (process != null)
             {
-                var orderPorcessCount = _currentDbContext.OrderProcess.Count(u => u.OrderID == process.OrderID && (u.OrderProcessStatusId != (int)OrderProcessStatusEnum.Invoiced && u.OrderProcessStatusId != (int)OrderProcessStatusEnum.PostedToAccounts));
+                var orderPorcessCount = _currentDbContext.OrderProcess.Count(u => u.OrderID == process.OrderID && (u.OrderProcessStatusId != OrderProcessStatusEnum.Invoiced && u.OrderProcessStatusId != OrderProcessStatusEnum.PostedToAccounts));
                 if (orderPorcessCount <= 0)
                 {
                     process.Order.OrderStatusID = OrderStatusEnum.Invoiced;
@@ -173,7 +173,7 @@ namespace Ganedata.Core.Services
             var account = _currentDbContext.Account.Find(invoiceData.AccountId);
             var invoiceMaster = _currentDbContext.InvoiceMasters.FirstOrDefault(u => u.InvoiceMasterId == invoiceData.InvoiceMasterId);
             decimal amount = invoiceMaster.InvoiceTotal;
-            int accountTransactionTypeId = (int)AccountTransactionTypeEnum.InvoicedToAccount;
+            AccountTransactionTypeEnum accountTransactionTypeId = AccountTransactionTypeEnum.InvoicedToAccount;
             if (invoiceMaster != null)
             {
                 invoiceMaster.OrderProcessId = invoiceData.OrderProcessId < 1 ? (int?)null : invoiceData.OrderProcessId;
@@ -256,7 +256,7 @@ namespace Ganedata.Core.Services
                 if (amount > invoiceData.InvoiceTotal)
                 {
                     amount = (amount - invoiceData.InvoiceTotal);
-                    accountTransactionTypeId = (int)AccountTransactionTypeEnum.Refund;
+                    accountTransactionTypeId = AccountTransactionTypeEnum.Refund;
                 }
                 else
                 {
@@ -280,7 +280,7 @@ namespace Ganedata.Core.Services
 
                     if (process != null)
                     {
-                        var orderPorcessCount = _currentDbContext.OrderProcess.Count(u => u.OrderID == process.OrderID && u.OrderProcessStatusId != (int)OrderProcessStatusEnum.Invoiced);
+                        var orderPorcessCount = _currentDbContext.OrderProcess.Count(u => u.OrderID == process.OrderID && u.OrderProcessStatusId != OrderProcessStatusEnum.Invoiced);
                         if (orderPorcessCount <= 0)
                         {
                             process.Order.OrderStatusID = OrderStatusEnum.Invoiced;
@@ -297,7 +297,7 @@ namespace Ganedata.Core.Services
             return null;
         }
 
-        public AccountTransaction AddAccountTransaction(AccountTransactionTypeEnum type, decimal amount, string notes, int accountId, int tenantId, int userId, int? accountPaymentModeId = null)
+        public AccountTransaction AddAccountTransaction(AccountTransactionTypeEnum type, decimal amount, string notes, int accountId, int tenantId, int userId, AccountPaymentModeEnum? accountPaymentModeId = null)
         {
             //TODO: add account opening nad closing balance in here if required
             return SaveAccountTransaction(new AccountTransaction
@@ -305,7 +305,7 @@ namespace Ganedata.Core.Services
                 Notes = notes,
                 AccountPaymentModeId = accountPaymentModeId,
                 Amount = amount,
-                AccountTransactionTypeId = (int)type,
+                AccountTransactionTypeId = type,
                 AccountId = accountId
             }, tenantId, userId);
         }
@@ -318,8 +318,8 @@ namespace Ganedata.Core.Services
             {
                 var accountBalance = Financials.CalcAccountBalance(accountTransaction.AccountId ?? 0);
 
-                if (accountTransaction.AccountTransactionTypeId == (int)AccountTransactionTypeEnum.PaidByAccount || accountTransaction.AccountTransactionTypeId == (int)AccountTransactionTypeEnum.Refund
-                    || accountTransaction.AccountTransactionTypeId == (int)AccountTransactionTypeEnum.CreditNote || accountTransaction.AccountTransactionTypeId == (int)AccountTransactionTypeEnum.Discount)
+                if (accountTransaction.AccountTransactionTypeId == AccountTransactionTypeEnum.PaidByAccount || accountTransaction.AccountTransactionTypeId == AccountTransactionTypeEnum.Refund
+                    || accountTransaction.AccountTransactionTypeId == AccountTransactionTypeEnum.CreditNote || accountTransaction.AccountTransactionTypeId == AccountTransactionTypeEnum.Discount)
                 {
                     accountBalance = accountBalance - accountTransaction.Amount;
                 }

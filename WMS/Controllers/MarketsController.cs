@@ -247,11 +247,11 @@ namespace WMS.Controllers
         {
             model.TenantId = CurrentTenantId;
 
-            int status = (int)MarketJobStatusEnum.UnAllocated;
+            MarketJobStatusEnum status = MarketJobStatusEnum.UnAllocated;
 
             if (model.ResourceID != null)
             {
-                status = (int)MarketJobStatusEnum.Allocated;
+                status = MarketJobStatusEnum.Allocated;
             }
 
             _marketServices.SaveMarketJob(_mapper.Map(model, new MarketJob()), model.ResourceID, status, CurrentUserId, CurrentTenantId);

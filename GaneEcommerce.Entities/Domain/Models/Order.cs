@@ -225,9 +225,7 @@ namespace Ganedata.Core.Entities.Domain
         public int? PrestaShopOrderId { get; set; }
         [Display(Name = "Site Id")]
         public int? SiteID { get; set; }
-        public int? AccountPaymentModeId { get; set; }
-        [ForeignKey("AccountPaymentModeId")]
-        public virtual AccountPaymentMode AccountPaymentMode { get; set; }
+        public AccountPaymentModeEnum? AccountPaymentModeId { get; set; }
         public bool EndOfDayGenerated { get; set; }
         public int? VanSalesDailyCashId { get; set; }
         [ForeignKey("VanSalesDailyCashId")]

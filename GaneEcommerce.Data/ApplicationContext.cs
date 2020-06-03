@@ -63,8 +63,6 @@ namespace Ganedata.Core.Data
         public DbSet<AccountStatusAudit> AccountStatusAudits { get; set; }
         public DbSet<AccountContacts> AccountContacts { get; set; }
         public DbSet<AccountTransaction> AccountTransactions { get; set; }
-        public DbSet<AccountTransactionType> AccountTransactionTypes { get; set; }
-        public DbSet<AccountPaymentMode> AccountPaymentModes { get; set; }
         public DbSet<ResourceShifts> ResourceShifts { get; set; }
         public DbSet<Appointments> Appointments { get; set; }
         public DbSet<MarketRouteSchedule> MarketRouteSchedules { get; set; }
@@ -76,7 +74,6 @@ namespace Ganedata.Core.Data
         public DbSet<GlobalTax> GlobalTax { get; set; }
         public DbSet<TenantWarranty> TenantWarranty { get; set; }
         public DbSet<TenantPriceGroups> TenantPriceGroups { get; set; }
-        public DbSet<GlobalAccountStatus> GlobalAccountStatus { get; set; }
         public DbSet<TenantDepartments> TenantDepartments { get; set; }
         public DbSet<ProductGroups> ProductGroups { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
@@ -146,7 +143,6 @@ namespace Ganedata.Core.Data
         public DbSet<MarketRoute> MarketRoutes { get; set; }
         public DbSet<MarketVehicle> MarketVehicles { get; set; }
         public DbSet<MarketJob> MarketJobs { get; set; }
-        public DbSet<MarketJobStatus> MarketJobStatus { get; set; }
         public DbSet<MarketCustomer> MarketCustomers { get; set; }
         public DbSet<MarketRouteMap> MarketRouteMap { get; set; }
 
@@ -161,7 +157,6 @@ namespace Ganedata.Core.Data
         public DbSet<VehicleInspection> VehicleInspections { get; set; }
         public DbSet<VehicleInspectionConfirmedList> VehicleInspectionConfirmedLists { get; set; }
         public DbSet<AccountTransactionFile> AccountTransactionFiles { get; set; }
-        public DbSet<OrderProcessStatus> OrderProcessStatuses { get; set; }
         public DbSet<ProductMarketStockLevel> ProductMarketStockLevel { get; set; }
         public DbSet<MarketRouteProgress> MarketRouteProgresses { get; set; }
         public DbSet<VanSalesDailyCash> VanSalesDailyCashes { get; set; }

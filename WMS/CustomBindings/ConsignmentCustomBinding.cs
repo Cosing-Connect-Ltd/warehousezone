@@ -8,7 +8,6 @@ using Ganedata.Core.Services;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Dynamic;
-using System.Web;
 using System.Web.Mvc;
 
 namespace WMS.CustomBindings
@@ -16,37 +15,33 @@ namespace WMS.CustomBindings
     public class ConsignmentCustomBinding
     {
 
-        private static IQueryable<DelieveryViewModel> ConsignmentDataset(int tenantId, int warehouseId, int? orderStatusId)
+        private static IQueryable<DelieveryViewModel> ConsignmentDataset(int tenantId, int warehouseId, OrderProcessStatusEnum? orderStatusId)
         {
             var orderServices = DependencyResolver.Current.GetService<ICoreOrderService>();
-            if (!orderStatusId.HasValue)
-            {
-                 orderStatusId = int.Parse(!string.IsNullOrEmpty(HttpContext.Current.Request.Params["OrderStatusId"]) ? HttpContext.Current.Request.Params["OrderStatusId"] : "0");
-            }
-           
-            var transactions = orderServices.GetAllSalesConsignments(tenantId, warehouseId,orderstatusId:(orderStatusId==0?null:orderStatusId)).OrderByDescending(x => x.DateCreated)
-                        .Select(ops => new DelieveryViewModel
-                         {
-                            DeliveryNO = ops.DeliveryNO,
-                             OrderID = ops.OrderID,
-                             DateCreated = ops.DateCreated,
-                             OrderProcessID = ops.OrderProcessID,
-                             OrderNumber = ops.Order.OrderNumber,
-                             AccountCode=ops.Order.Account.AccountCode,
-                             CompanyName=ops.Order.Account.CompanyName,
-                            Status = ops.OrderProcessStatusId,
-                            orderstatus=ops.Order.OrderStatusID,
 
-                            
+            var transactions = orderServices.GetAllSalesConsignments(tenantId, warehouseId, orderstatusId: orderStatusId).OrderByDescending(x => x.DateCreated)
+                        .Select(ops => new DelieveryViewModel
+                        {
+                            DeliveryNO = ops.DeliveryNO,
+                            OrderID = ops.OrderID,
+                            DateCreated = ops.DateCreated,
+                            OrderProcessID = ops.OrderProcessID,
+                            OrderNumber = ops.Order.OrderNumber,
+                            AccountCode = ops.Order.Account.AccountCode,
+                            CompanyName = ops.Order.Account.CompanyName,
+                            Status = ops.OrderProcessStatusId,
+                            orderstatus = ops.Order.OrderStatusID,
+
+
                         });
 
             return transactions;
         }
 
-        public static void ConsignmentDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId,int? consignmentId)
+        public static void ConsignmentDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId, OrderProcessStatusEnum? orderProcessStatus)
         {
 
-            var transactions = ConsignmentDataset(tenantId, warehouseId,consignmentId);
+            var transactions = ConsignmentDataset(tenantId, warehouseId, orderProcessStatus);
 
             if (e.State.SortedColumns.Count() > 0)
             {
@@ -75,9 +70,9 @@ namespace WMS.CustomBindings
 
         }
 
-        public static void ConsignmentData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId, int? consignmentId)
+        public static void ConsignmentData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId, OrderProcessStatusEnum? orderProcessStatus)
         {
-            var transactions = ConsignmentDataset(tenantId, warehouseId,consignmentId);
+            var transactions = ConsignmentDataset(tenantId, warehouseId, orderProcessStatus);
 
             if (e.State.SortedColumns.Count() > 0)
             {

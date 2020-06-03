@@ -180,7 +180,7 @@ namespace Ganedata.Core.Services
 
             foreach (var process in order.OrderProcess)
             {
-                process.OrderProcessStatusId = (int)OrderProcessStatusEnum.Complete;
+                process.OrderProcessStatusId = OrderProcessStatusEnum.Complete;
                 process.DateUpdated = DateTime.UtcNow;
                 process.UpdatedBy = userId;
                 _currentDbContext.Entry(process).State = EntityState.Modified;
@@ -203,7 +203,7 @@ namespace Ganedata.Core.Services
             {
                 foreach (var process in order.OrderProcess)
                 {
-                    process.OrderProcessStatusId = (int)OrderProcessStatusEnum.Complete;
+                    process.OrderProcessStatusId = OrderProcessStatusEnum.Complete;
                     process.DateUpdated = DateTime.UtcNow;
                     process.UpdatedBy = userId;
                     _currentDbContext.Entry(process).State = EntityState.Modified;
@@ -213,7 +213,7 @@ namespace Ganedata.Core.Services
             {
                 var orderProcess = new OrderProcess()
                 {
-                    OrderProcessStatusId = (int)OrderProcessStatusEnum.Complete,
+                    OrderProcessStatusId = OrderProcessStatusEnum.Complete,
                     OrderID = orderId,
                     TenentId = userId,
                     WarehouseId = warehouseId,
@@ -808,7 +808,7 @@ namespace Ganedata.Core.Services
             {
 
                 var orderprocess = _currentDbContext.OrderProcess.Find(orderProcessId);
-                orderprocess.OrderProcessStatusId = (int)OrderProcessStatusEnum.Complete;
+                orderprocess.OrderProcessStatusId = OrderProcessStatusEnum.Complete;
                 orderprocess.UpdatedBy = UserId;
                 orderprocess.DateUpdated = DateTime.UtcNow;
                 _currentDbContext.OrderProcess.Attach(orderprocess);
@@ -932,7 +932,7 @@ namespace Ganedata.Core.Services
                 .Where(x => x.OrderDetailID == orderDetailId && x.IsDeleted != true && x.OrderProcess.WarehouseId == warehouseId).ToList();
         }
 
-        public IQueryable<OrderProcess> GetAllOrderProcesses(DateTime? updatedAfter, int? orderId = 0, int? orderProcessStatusId = null, InventoryTransactionTypeEnum? transTypeId = null, bool includeDeleted = false)
+        public IQueryable<OrderProcess> GetAllOrderProcesses(DateTime? updatedAfter, int? orderId = 0, OrderProcessStatusEnum? orderProcessStatusId = null, InventoryTransactionTypeEnum? transTypeId = null, bool includeDeleted = false)
         {
             return _currentDbContext.OrderProcess.Where(x => (updatedAfter == null || x.DateCreated > updatedAfter || x.DateUpdated > updatedAfter)
                  && (!transTypeId.HasValue || x.Order.InventoryTransactionTypeId == transTypeId)
@@ -968,7 +968,7 @@ namespace Ganedata.Core.Services
                     DeliveryNO = deliveryNumber,
                     InventoryTransactionTypeId = transtypeId,
                     TenentId = order.TenentId,
-                    OrderProcessStatusId = (int)OrderProcessStatusEnum.Complete,
+                    OrderProcessStatusId = OrderProcessStatusEnum.Complete,
                     DateCreated = createdDate ?? DateTime.UtcNow,
                     WarehouseId = warehouseId,
                     IsDeleted = false,
@@ -1025,7 +1025,7 @@ namespace Ganedata.Core.Services
                         CreatedBy = currentUserId,
                         UpdatedBy = currentUserId,
                         IsDeleted = false,
-                        OrderProcessStatusId = (int)OrderProcessStatusEnum.Active,
+                        OrderProcessStatusId = OrderProcessStatusEnum.Active,
                         ShipmentAddressLine1 = po.ShipmentAddressLine1,
                         ShipmentAddressLine2 = po.ShipmentAddressLine2,
                         ShipmentAddressLine3 = po.ShipmentAddressLine3,
@@ -1269,7 +1269,7 @@ namespace Ganedata.Core.Services
                         TenentId = terminal.TenantId,
                         WarehouseId = terminal.WarehouseId,
                         IsActive = true,
-                        OrderProcessStatusId = (int)OrderProcessStatusEnum.Complete,
+                        OrderProcessStatusId = OrderProcessStatusEnum.Complete,
                         InventoryTransactionTypeId = item.InventoryTransactionTypeId,
                         OrderID = order.OrderID,
                         ShipmentAddressLine1 = order.ShipmentAddressLine1,
@@ -1770,7 +1770,7 @@ namespace Ganedata.Core.Services
                 transaction.AccountPaymentModeId = item.AccountTransactionInfo.AccountPaymentModeId;
             }
 
-            transaction.AccountTransactionTypeId = (int)type;
+            transaction.AccountTransactionTypeId = type;
             transaction.OpeningBalance = item.AccountTransactionInfo.OpeningAccountBalance;
             transaction.CreatedBy = item.CreatedBy;
 
@@ -2262,7 +2262,7 @@ namespace Ganedata.Core.Services
 
             var process = new OrderProcess()
             {
-                OrderProcessStatusId = (int)OrderProcessStatusEnum.Complete,
+                OrderProcessStatusId = OrderProcessStatusEnum.Complete,
                 DateUpdated = DateTime.UtcNow,
                 UpdatedBy = userId,
                 TenentId = tenantId,
@@ -2314,7 +2314,7 @@ namespace Ganedata.Core.Services
 
             }
 
-            _invoiceService.AddAccountTransaction(AccountTransactionTypeEnum.InvoicedToAccount, model.InvoiceTotal, ("Invoiced for Direct Sales Order #" + order.OrderNumber).Trim(), account.AccountID, tenantId, userId, (int)AccountPaymentModeEnum.Cash);
+            _invoiceService.AddAccountTransaction(AccountTransactionTypeEnum.InvoicedToAccount, model.InvoiceTotal, ("Invoiced for Direct Sales Order #" + order.OrderNumber).Trim(), account.AccountID, tenantId, userId, AccountPaymentModeEnum.Cash);
 
             if (model.PaymentToday > 0)
             {
@@ -2481,9 +2481,11 @@ namespace Ganedata.Core.Services
             model.InvoiceAddress = order.Note;
             model.InvoiceCurrency = order.AccountCurrency.Symbol;
             model.NetAmount = order.OrderTotal;
-            model.AllPaymentModes = _lookupServices.GetAllAccountPaymentModes()
-                .Select(m => new SelectListItem { Text = m.Description, Value = m.AccountPaymentModeId.ToString() })
-                .ToList();
+
+            var paymentModes = from AccountPaymentModeEnum d in Enum.GetValues(typeof(AccountPaymentModeEnum))
+                             select new { ID = (int)d, Name = d.ToString() };
+            model.AllPaymentModes = new SelectList(paymentModes, "Value", "Text", paymentModes.FirstOrDefault()).ToList();
+
             model.AllInvoiceProducts = order.OrderDetails.Select(m => new DirectSaleProductsViewModel()
             {
                 QtyProcessed = m.Qty,
@@ -2533,7 +2535,7 @@ namespace Ganedata.Core.Services
             {
                 order = GetOrderById(orderId);
                 var OrderProcess = _currentDbContext.OrderProcess.Where(u => u.OrderID == orderId && u.IsDeleted != true).ToList();
-                OrderProcess.ForEach(u => u.OrderProcessStatusId = (int)OrderProcessStatusEnum.Complete);
+                OrderProcess.ForEach(u => u.OrderProcessStatusId = OrderProcessStatusEnum.Complete);
                 order.OrderStatusID = OrderStatusEnum.Complete;
 
                 order.UpdatedBy = userId;

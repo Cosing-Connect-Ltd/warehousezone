@@ -597,14 +597,14 @@ namespace WMS.Controllers
                     var orderprocesses = context.OrderProcess.FirstOrDefault(u => u.OrderProcessID == Id);
                     if (orderprocesses != null && orderprocesses?.Order?.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder)
                     {
-                        orderprocesses.OrderProcessStatusId = (int)OrderProcessStatusEnum.PostedToAccounts;
+                        orderprocesses.OrderProcessStatusId = OrderProcessStatusEnum.PostedToAccounts;
                         orderprocesses.UpdatedBy = CurrentUserId;
                         orderprocesses.DateUpdated = DateTime.UtcNow;
 
                         context.OrderProcess.Attach(orderprocesses);
                         context.Entry(orderprocesses).State = System.Data.Entity.EntityState.Modified;
                         context.SaveChanges();
-                        var orderPorcessCount = context.OrderProcess.Where(u => u.OrderID == (orderprocesses.OrderID ?? 0) && u.OrderProcessStatusId != (int)OrderProcessStatusEnum.PostedToAccounts).Count();
+                        var orderPorcessCount = context.OrderProcess.Where(u => u.OrderID == (orderprocesses.OrderID ?? 0) && u.OrderProcessStatusId != OrderProcessStatusEnum.PostedToAccounts).Count();
                         if (orderPorcessCount <= 0)
                         {
                             orderprocesses.Order.OrderStatusID = OrderStatusEnum.PostedToAccounts;
@@ -653,7 +653,7 @@ namespace WMS.Controllers
                     var InvoiceReport = context.InvoiceMasters.FirstOrDefault(u => u.InvoiceMasterId == Id);
                     if (orderprocess != null)
                     {
-                        orderprocess.OrderProcessStatusId = (int)OrderProcessStatusEnum.PostedToAccounts;
+                        orderprocess.OrderProcessStatusId = OrderProcessStatusEnum.PostedToAccounts;
                         orderprocess.UpdatedBy = CurrentUserId;
                         orderprocess.InvoiceNo = InvoiceReport.InvoiceNumber;
                         orderprocess.DateUpdated = DateTime.UtcNow;
@@ -662,7 +662,7 @@ namespace WMS.Controllers
                         context.OrderProcess.Attach(orderprocess);
                         context.Entry(orderprocess).State = System.Data.Entity.EntityState.Modified;
                         context.SaveChanges();
-                        var orderPorcessCount = context.OrderProcess.Count(u => u.OrderID == (orderprocess.OrderID ?? 0) && u.OrderProcessStatusId != (int)OrderProcessStatusEnum.PostedToAccounts);
+                        var orderPorcessCount = context.OrderProcess.Count(u => u.OrderID == (orderprocess.OrderID ?? 0) && u.OrderProcessStatusId != OrderProcessStatusEnum.PostedToAccounts);
                         if (orderPorcessCount <= 0)
                         {
                             orderprocess.Order.OrderStatusID = OrderStatusEnum.PostedToAccounts;

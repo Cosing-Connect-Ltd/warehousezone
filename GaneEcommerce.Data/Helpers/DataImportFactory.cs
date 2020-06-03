@@ -376,7 +376,7 @@ namespace Ganedata.Core.Data.Helpers
                                 shippingPostcode = IsValidUkPostcode(values[18]) ? values[18] : "";
                             }
 
-                            existingAccount.AccountStatusID = 1;
+                            existingAccount.AccountStatusID = AccountStatusEnum.Active;
                             existingAccount.DateCreated = DateTime.UtcNow;
 
                             existingAccount.CreatedBy = userId ?? adminUserId;
@@ -2627,7 +2627,7 @@ namespace Ganedata.Core.Data.Helpers
                         account.CompanyName = string.IsNullOrEmpty(item.Company) ? "P" : item.Company;
                         account.AccountCode = item.Secure_key;
                         account.website = item.Website;
-                        account.AccountStatusID = 1;
+                        account.AccountStatusID = AccountStatusEnum.Active;
                         account.DateCreated = DateTime.UtcNow;
                         account.AccountTypeCustomer = true;
                         account.CreatedBy = UserId;

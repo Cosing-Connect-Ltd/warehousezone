@@ -183,11 +183,6 @@ namespace Ganedata.Core.Services
 
         }
 
-        public IEnumerable<GlobalAccountStatus> GetAllAccountStatuses()
-        {
-            return _currentDbContext.GlobalAccountStatus.OrderBy(o => o.AccountStatus);
-        }
-
         public IEnumerable<TenantPriceGroups> GetAllPriceGroups(int tenantId, int filterById = 0)
         {
             return _currentDbContext.TenantPriceGroups.Where(e => e.TenantId == tenantId && e.IsDeleted != true && (filterById == 0 || e.PriceGroupID == filterById));
@@ -553,11 +548,6 @@ namespace Ganedata.Core.Services
             return _currentDbContext.LocationGroups.FirstOrDefault(a => a.Locdescription == locationGroupName && a.IsDeleted != true && a.TenentId == tenantId && (!excludeLocGroupTypeId.HasValue || excludeLocGroupTypeId != a.LocationGroupId));
         }
 
-        public List<AccountPaymentMode> GetAllAccountPaymentModes()
-        {
-            return _currentDbContext.AccountPaymentModes.ToList();
-        }
-
         public IEnumerable<object> GetProductDepartments(int accountId)
         {
             var obj = _currentDbContext.TenantDepartments.Where(u => (u.AccountID == accountId || u.AccountID == null) && u.IsDeleted != true).Select(
@@ -653,17 +643,17 @@ namespace Ganedata.Core.Services
             {
                 foreach (var item in data.StockMovements)
                 {
-                    status=Inventory.AdjustStockMovementTransactions(item);
+                    status = Inventory.AdjustStockMovementTransactions(item);
                 }
                 return status;
             }
             return status;
         }
 
-        public Guid CreateStockMovement(int userId, int TenantId,int WarehouseId)
+        public Guid CreateStockMovement(int userId, int TenantId, int WarehouseId)
         {
             Guid stockMovementId = Guid.NewGuid();
-           StockMovement stockMovement = new StockMovement();
+            StockMovement stockMovement = new StockMovement();
             stockMovement.StockMovementId = stockMovementId;
             stockMovement.TenantId = TenantId;
             stockMovement.WarehouseId = WarehouseId;

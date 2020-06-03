@@ -31,7 +31,6 @@ namespace Ganedata.Core.Services
         IEnumerable<GlobalCountry> GetAllGlobalCountries();
         IEnumerable<GlobalCurrency> GetAllGlobalCurrencies();
         IEnumerable<TenantWarranty> GetAllTenantWarrenties(int tenantId);
-        IEnumerable<GlobalAccountStatus> GetAllAccountStatuses();
         IEnumerable<TenantPriceGroups> GetAllPriceGroups(int tenantId, int filterById = 0);
         IEnumerable<JobType> GetAllJobTypes(int tenantId);
         IEnumerable<SlaWorksOrderListViewModel> GetAllJobTypesIncludingNavProperties(int tenantId);
@@ -64,8 +63,6 @@ namespace Ganedata.Core.Services
         LocationGroup GetLocationGroupById(int locationGroupId);
 
         LocationGroup GetLocationGroupByName(string locationGroupName, int tenantId, int? excludeLocGroupTypeId = null);
-
-        List<AccountPaymentMode> GetAllAccountPaymentModes();
 
         IEnumerable<object> GetProductDepartments(int accountId);
 

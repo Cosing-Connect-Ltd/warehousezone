@@ -60,7 +60,7 @@ namespace Ganedata.Core.Services
         OrderDetail GetOrderDetailsById(int orderDetailId);
         List<OrderDetail> GetAllOrderDetailsForOrderAccount(int supplierAccountId, int poOrderId, int tenantId);
         List<OrderProcessDetail> GetAllOrderProcessesByOrderDetailId(int orderDetailId, int warehouseId);
-        IQueryable<OrderProcess> GetAllOrderProcesses(DateTime? ordersAfter, int? orderId = 0, int? orderProcessStatusId = null, InventoryTransactionTypeEnum? transactionTypeId = null, bool includeDeleted = false);
+        IQueryable<OrderProcess> GetAllOrderProcesses(DateTime? ordersAfter, int? orderId = 0, OrderProcessStatusEnum? orderProcessStatusId = null, InventoryTransactionTypeEnum? transactionTypeId = null, bool includeDeleted = false);
         List<OrderProcessDetail> GetAllOrderProcessesDetails(DateTime? updatedAfter, int? orderProcessId = 0);
 
         OrderProcess CreateOrderProcess(int orderId, string deliveryNo, int[] product, decimal[] qty,

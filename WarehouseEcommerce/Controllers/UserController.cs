@@ -137,7 +137,7 @@ namespace WarehouseEcommerce.Controllers
                 account.CompanyName = account.AccountCode;
                 account.RegNo = usersViewModel.RegNumber;
                 account.VATNo = usersViewModel.VATNumber;
-                var accountModel = _accountServices.SaveAccount(account, null, null, 1, 1, 1, 1, 1, null, null, CurrentUserId, CurrentTenantId, null);
+                var accountModel = _accountServices.SaveAccount(account, null, null, 1, 1, AccountStatusEnum.Active, 1, 1, null, null, CurrentUserId, CurrentTenantId, null);
 
                 // change user password into MD5 hash value
                 string password = usersViewModel.Password;
@@ -288,7 +288,7 @@ namespace WarehouseEcommerce.Controllers
                 account.CompanyName = account.AccountCode;
                 account.RegNo = "";
                 account.VATNo = "";
-                var accountModel = _accountServices.SaveAccount(account, null, null, 1, 1, 1, 1, 1, null, null, CurrentUserId, CurrentTenantId, null);
+                var accountModel = _accountServices.SaveAccount(account, null, null, 1, 1, AccountStatusEnum.Active, 1, 1, null, null, CurrentUserId, CurrentTenantId, null);
 
                 // change user password into MD5 hash value
                 string password = Password;

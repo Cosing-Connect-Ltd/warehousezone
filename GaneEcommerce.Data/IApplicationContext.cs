@@ -40,8 +40,6 @@ namespace Ganedata.Core.Data
         DbSet<AccountStatusAudit> AccountStatusAudits { get; set; }
         DbSet<AccountContacts> AccountContacts { get; set; }
         DbSet<AccountTransaction> AccountTransactions { get; set; }
-        DbSet<AccountTransactionType> AccountTransactionTypes { get; set; }
-        DbSet<AccountPaymentMode> AccountPaymentModes { get; set; }
         DbSet<ResourceShifts> ResourceShifts { get; set; }
         DbSet<Appointments> Appointments { get; set; }
         DbSet<MarketRouteSchedule> MarketRouteSchedules { get; set; }
@@ -54,7 +52,6 @@ namespace Ganedata.Core.Data
         DbSet<GlobalTax> GlobalTax { get; set; }
         DbSet<TenantWarranty> TenantWarranty { get; set; }
         DbSet<TenantPriceGroups> TenantPriceGroups { get; set; }
-        DbSet<GlobalAccountStatus> GlobalAccountStatus { get; set; }
         DbSet<TenantDepartments> TenantDepartments { get; set; }
         DbSet<InventoryStock> InventoryStocks { get; set; }
         DbSet<InventoryTransaction> InventoryTransactions { get; set; }
@@ -68,7 +65,6 @@ namespace Ganedata.Core.Data
         DbSet<OrderNotes> OrderNotes { get; set; }
         DbSet<OrderDetail> OrderDetail { get; set; }
         DbSet<OrderProcess> OrderProcess { get; set; }
-        DbSet<OrderProcessStatus> OrderProcessStatuses { get; set; }
         DbSet<OrderProcessDetail> OrderProcessDetail { get; set; }
         DbSet<InvoiceMaster> InvoiceMasters { get; set; }
         DbSet<InvoiceDetail> InvoiceDetails { get; set; }
@@ -127,7 +123,6 @@ namespace Ganedata.Core.Data
         DbSet<MarketRoute> MarketRoutes { get; set; }
         DbSet<MarketVehicle> MarketVehicles { get; set; }
         DbSet<MarketJob> MarketJobs { get; set; }
-        DbSet<MarketJobStatus> MarketJobStatus { get; set; }
         DbSet<MarketCustomer> MarketCustomers { get; set; }
         DbSet<MarketRouteMap> MarketRouteMap { get; set; }
 

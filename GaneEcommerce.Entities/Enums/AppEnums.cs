@@ -226,7 +226,8 @@ namespace Ganedata.Core.Entities.Enums
     {
         Active = 1,
         InActive = 2,
-        OnStop = 3
+        OnStop = 3,
+        OnHold = 4
     }
 
     public enum TerminalLogTypeEnum

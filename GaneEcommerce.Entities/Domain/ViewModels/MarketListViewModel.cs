@@ -224,7 +224,7 @@ namespace Ganedata.Core.Entities.Domain
     {
         public int MarketJobId { get; set; }
         public int ResourceId { get; set; }
-        public int LatestJobStatusId { get; set; }
+        public MarketJobStatusEnum LatestJobStatusId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Reason { get; set; }

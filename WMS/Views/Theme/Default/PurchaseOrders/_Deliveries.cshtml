@@ -78,9 +78,9 @@
             column.SetDataItemTemplateContent(m =>
             {
                 int? orderstatus = (int?)DataBinder.Eval(m.DataItem, "OrderStatusID");
-                int? OrderProcessStatusId=(int?)DataBinder.Eval(m.DataItem, "OrderProcessStatusId"); 
+                OrderProcessStatusEnum? OrderProcessStatusId = (OrderProcessStatusEnum?)DataBinder.Eval(m.DataItem, "OrderProcessStatusId");
                 var id = (int)DataBinder.Eval(m.DataItem, "OrderProcessID");
-                if (OrderProcessStatusId != (int)OrderProcessStatusEnum.Active && (orderstatus.HasValue && (OrderStatusEnum)orderstatus != OrderStatusEnum.BeingPicked
+                if (OrderProcessStatusId != OrderProcessStatusEnum.Active && (orderstatus.HasValue && (OrderStatusEnum)orderstatus != OrderStatusEnum.BeingPicked
                     && (OrderStatusEnum)orderstatus != OrderStatusEnum.Hold && (OrderStatusEnum)orderstatus != OrderStatusEnum.Active))
                 {
                     ViewContext.Writer.Write("<form class='form-horizontal'>" + Html.AntiForgeryToken() + "<a target='_blank' alt='Print Delivery Note' class='btn fa fa-print' href='/Reports/GoodsBookInNotePrint/" + id + "' role='button'></a></form>");

@@ -33,9 +33,9 @@ namespace Ganedata.Core.Services
 
         IQueryable<MarketJob> GetAllValidMarketJobs(int tenantId, MarketJobStatusEnum? statusEnum = null);
         MarketJobViewModel GetMarketJobById(int marketJobId);
-        MarketJobViewModel SaveMarketJob(MarketJob marketJob, int? resourceId, int? latestjobStatusId, int userId, int tenantId);
+        MarketJobViewModel SaveMarketJob(MarketJob marketJob, int? resourceId, MarketJobStatusEnum? latestjobStatusId, int userId, int tenantId);
         Task<MarketJobViewModel> UpdateMarketJobAllocation(int marketJobId, int resourceId, int userId, int tenantId,
-            int? latestJobStatusId = null, string reason = null, DateTime? actionDate = null, double? latitude = null, double? longitude = null, string terminalSerial = null);
+            MarketJobStatusEnum? latestJobStatusId = null, string reason = null, DateTime? actionDate = null, double? latitude = null, double? longitude = null, string terminalSerial = null);
 
         Task<MarketJobViewModel> AcceptMarketJob(int marketJobId, int userId, int tenantId, string terminalSerial = null, double? latitude = null, double? longitude = null);
         Task<MarketJobViewModel> DeclineMarketJob(int marketJobId, int userId, int tenantId, string reason, string terminalSerial = null, double? latitude = null, double? longitude = null);

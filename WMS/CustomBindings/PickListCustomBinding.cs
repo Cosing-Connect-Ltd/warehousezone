@@ -60,7 +60,6 @@ namespace WMS.CustomBindings
                                  DbFunctions.TruncateTime(o.Appointmentses.Max(m => m.StartTime)) == expectedDate || o.Appointmentses.Max(x => x.RecurrenceInfo) != null)
                                  && (o.OrderStatusID == OrderStatusEnum.Scheduled))) && o.TenentId == tenantId && o.IsDeleted != true && (o.PickerId == UserId || o.PickerId == null))
                                .Include(m => m.Account)
-                               .Include(m => m.Account.GlobalAccountStatus)
                                .Include(m => m.Account.AccountAddresses)
                                .Include(m => m.Appointmentses)
                                .Include(m => m.Appointmentses.Select(n => n.AppointmentResources))
@@ -81,7 +80,7 @@ namespace WMS.CustomBindings
                                    Account = p.Account != null ? p.Account.AccountCode : "",
                                    OrderTypeId = p.InventoryTransactionTypeId,
                                    OrderType = nameof(p.InventoryTransactionTypeId),
-                                   AccountStatus = (p.Account != null && p.Account.GlobalAccountStatus != null) ? p.Account.GlobalAccountStatus.AccountStatus : "",
+                                   AccountStatus = (p.Account != null) ? p.Account.AccountStatusID.ToString() : "",
                                    OrderTotal = p.OrderTotal,
                                    Property = p.PProperties != null ? p.PProperties.AddressLine1 : "",
                                    OrderNotesList = p.OrderNotes.Where(m => m.IsDeleted != true).Select(s => new OrderNotesViewModel()

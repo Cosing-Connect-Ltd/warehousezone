@@ -111,7 +111,7 @@ namespace Ganedata.Core.Models
         public decimal FinalAccountBalance { get; set; }
         public string Notes { get; set; }
         public DateTime DateCreated { get; set; }
-        public int? AccountPaymentModeId { get; set; }
+        public AccountPaymentModeEnum? AccountPaymentModeId { get; set; }
         public string AccountPaymentMode { get; set; }
     }
 

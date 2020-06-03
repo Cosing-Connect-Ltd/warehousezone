@@ -7,14 +7,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Ganedata.Core.Entities.Domain
 {
     [Serializable]
-    [Table("OrderProcessStatus")]
-    public class OrderProcessStatus
-    {
-        [Key]
-        public int OrderProcessStatusId { get; set; }
-        public string Status { get; set; }
-    }
-    [Serializable]
     public class OrderProcess
     {
         public OrderProcess()
@@ -57,9 +49,7 @@ namespace Ganedata.Core.Entities.Domain
 
         public InventoryTransactionTypeEnum? InventoryTransactionTypeId { get; set; }
 
-        public int? OrderProcessStatusId { get; set; }
-        [ForeignKey("OrderProcessStatusId")]
-        public virtual OrderProcessStatus OrderProcessStatus { get; set; }
+        public OrderProcessStatusEnum? OrderProcessStatusId { get; set; }
         public virtual Order Order { get; set; }
         public virtual OrderConsignmentTypes ConsignmentType { get; set; }
         public virtual ICollection<OrderProcessDetail> OrderProcessDetail { get; set; }

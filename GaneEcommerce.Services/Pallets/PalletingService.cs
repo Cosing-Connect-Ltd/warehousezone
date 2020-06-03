@@ -159,7 +159,7 @@ namespace Ganedata.Core.Services
                         }
                         if (orderProcess != null)
                         {
-                            orderProcess.OrderProcessStatusId = (int)OrderProcessStatusEnum.Dispatched;
+                            orderProcess.OrderProcessStatusId = OrderProcessStatusEnum.Dispatched;
                             orderProcess.DateUpdated = DateTime.UtcNow;
                             orderProcess.UpdatedBy = userId;
                             _currentDbContext.Entry(orderProcess).State = EntityState.Modified;
@@ -218,7 +218,7 @@ namespace Ganedata.Core.Services
                     }
                     if (orderProcess != null)
                     {
-                        orderProcess.OrderProcessStatusId = (int)OrderProcessStatusEnum.Dispatched;
+                        orderProcess.OrderProcessStatusId = OrderProcessStatusEnum.Dispatched;
                         orderProcess.DateUpdated = DateTime.UtcNow;
                         orderProcess.UpdatedBy = userId;
                         _currentDbContext.Entry(orderProcess).State = EntityState.Modified;
@@ -441,7 +441,7 @@ namespace Ganedata.Core.Services
 
             //update order process status to dispatched as well
             var orderProcess = _currentDbContext.OrderProcess.Find(currentDispatch.OrderProcessID);
-            orderProcess.OrderProcessStatusId = (int)OrderProcessStatusEnum.Dispatched;
+            orderProcess.OrderProcessStatusId = OrderProcessStatusEnum.Dispatched;
             orderProcess.DateUpdated = DateTime.UtcNow;
             orderProcess.UpdatedBy = userId;
             _currentDbContext.Entry(orderProcess).State = EntityState.Modified;
@@ -538,12 +538,12 @@ namespace Ganedata.Core.Services
             var orderProcess = _currentDbContext.OrderProcess.Find(dispatch.OrderProcessID);
             if (currentDispatch.DispatchStatus == PalletDispatchStatusEnum.Loaded)
             {
-                orderProcess.OrderProcessStatusId = 4;
+                orderProcess.OrderProcessStatusId = OrderProcessStatusEnum.Loaded;
                 orderProcess.DateUpdated = DateTime.UtcNow;
             }
             else if (currentDispatch.DispatchStatus == PalletDispatchStatusEnum.Delivered)
             {
-                orderProcess.OrderProcessStatusId = 5;
+                orderProcess.OrderProcessStatusId = OrderProcessStatusEnum.Delivered;
                 orderProcess.DateUpdated = DateTime.UtcNow;
             }
             _currentDbContext.Entry(orderProcess).State = EntityState.Modified;
@@ -584,7 +584,7 @@ namespace Ganedata.Core.Services
             var orderprocess = _currentDbContext.OrderProcess.FirstOrDefault(u => u.OrderProcessID == OrderProcessId);
             if (orderprocess != null)
             {
-                orderprocess.OrderProcessStatusId = (int)OrderProcessStatusEnum.Dispatched;
+                orderprocess.OrderProcessStatusId = OrderProcessStatusEnum.Dispatched;
                 _currentDbContext.Entry(orderprocess).State = EntityState.Modified;
             }
 

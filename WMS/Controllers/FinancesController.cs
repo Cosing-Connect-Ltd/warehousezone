@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using DevExpress.Web.Mvc;
 using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Models;
 using Ganedata.Core.Services;
+using System;
+using System.Linq;
 using System.Web.Mvc;
 using WMS.CustomBindings;
 
@@ -13,14 +16,14 @@ namespace WMS.Controllers
         private readonly InvoiceService _invoiceService;
         private readonly IMapper _mapper;
 
-        public FinancesController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, InvoiceService invoiceService, IMapper mapper) 
+        public FinancesController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, InvoiceService invoiceService, IMapper mapper)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
             _invoiceService = invoiceService;
             _mapper = mapper;
         }
 
-        public ActionResult Index(int? id=null)
+        public ActionResult Index(int? id = null)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
@@ -35,14 +38,18 @@ namespace WMS.Controllers
         {
             ViewData["AccountTransactionID"] = id;
             var model = AccountServices.GetAccountTransactionById(id ?? 0);
-            ViewBag.PaymentModes = AccountServices.GetAllAccountPaymentModesSelectList();
+
+            var paymentModes = from AccountPaymentModeEnum d in Enum.GetValues(typeof(AccountPaymentModeEnum))
+                               select new { ID = (int)d, Name = d.ToString() };
+
+            ViewBag.PaymentModes = paymentModes;
             ViewBag.Accounts = new SelectList(AccountServices.GetAllValidAccounts(CurrentTenantId), "AccountID", "AccountNameCode");
             return PartialView("_AccountTransactionCreateEdit", model);
         }
 
         public ActionResult _AccountTransactionsGrid(int? accountId)
         {
-            var viewModel = GridViewExtension.GetViewModel("gridviewAccountTransactions"+accountId);
+            var viewModel = GridViewExtension.GetViewModel("gridviewAccountTransactions" + accountId);
             ViewBag.accountId = accountId;
             if (viewModel == null)
                 viewModel = FinancialTransactionsCustomBinding.CreateFinancialTransactionsGridViewModel();
@@ -56,7 +63,7 @@ namespace WMS.Controllers
             ViewBag.accountId = accountId;
             var viewModel = GridViewExtension.GetViewModel("gridviewAccountTransactions" + accountId);
             viewModel.Pager.Assign(pager);
-            return AccountTransactionsGridActionCore(viewModel,accountId);
+            return AccountTransactionsGridActionCore(viewModel, accountId);
         }
 
         public ActionResult _AccountTransactionsListFiltering(GridViewFilteringState filteringState, int? accountId)
@@ -65,7 +72,7 @@ namespace WMS.Controllers
             ViewBag.accountId = accountId;
             var viewModel = GridViewExtension.GetViewModel("gridviewAccountTransactions" + accountId);
             viewModel.ApplyFilteringState(filteringState);
-            return AccountTransactionsGridActionCore(viewModel,accountId);
+            return AccountTransactionsGridActionCore(viewModel, accountId);
         }
 
         public ActionResult _AccountTransactionsDataSorting(GridViewColumnState column, bool reset, int? accountId)
@@ -73,7 +80,7 @@ namespace WMS.Controllers
             ViewBag.accountId = accountId;
             var viewModel = GridViewExtension.GetViewModel("gridviewAccountTransactions" + accountId);
             viewModel.ApplySortingState(column, reset);
-            return AccountTransactionsGridActionCore(viewModel,accountId);
+            return AccountTransactionsGridActionCore(viewModel, accountId);
         }
         public ActionResult AccountTransactionsGridActionCore(GridViewModel gridViewModel, int? accountId)
         {
@@ -88,7 +95,7 @@ namespace WMS.Controllers
                         FinancialTransactionsCustomBinding.FinancialTransactionsGetData(args, CurrentTenantId, CurrentWarehouseId, accountId);
                     })
             );
-             
+
             return PartialView("_AccountTransactionsGridPartial", gridViewModel);
         }
 
@@ -105,7 +112,7 @@ namespace WMS.Controllers
             //var Details = int.Parse(!string.IsNullOrEmpty(Request.Params["detail"]) ? Request.Params["detail"] : "0");
             if (accounttransId > 0)
             {
-                
+
                 var model = _invoiceService.GetaccountTransactionFiles(accounttransId, CurrentTenantId);
                 return PartialView("_Chequedetail", model);
             }

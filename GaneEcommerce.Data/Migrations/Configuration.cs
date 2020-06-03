@@ -1,13 +1,12 @@
 using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Entities.Helpers;
-using System.IO;
 using System;
 using System.Data.Entity.Migrations;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
-using System.Threading;
-using Ganedata.Core.Data.Helpers;
 
 namespace Ganedata.Core.Data.Migrations
 {
@@ -276,11 +275,6 @@ namespace Ganedata.Core.Data.Migrations
             context.GlobalCurrencies.AddOrUpdate(c => c.CurrencyID, new GlobalCurrency { CurrencyID = 2, CurrencyName = "Euro", Symbol = "€", CountryID = 81 });
             context.GlobalCurrencies.AddOrUpdate(c => c.CurrencyID, new GlobalCurrency { CurrencyID = 3, CurrencyName = "USD", Symbol = "$", CountryID = 226 });
 
-            // add account status
-            context.GlobalAccountStatus.AddOrUpdate(m => m.AccountStatusID, new GlobalAccountStatus { AccountStatusID = 1, AccountStatus = "Active" });
-            context.GlobalAccountStatus.AddOrUpdate(m => m.AccountStatusID, new GlobalAccountStatus { AccountStatusID = 2, AccountStatus = "Inactive" });
-            context.GlobalAccountStatus.AddOrUpdate(m => m.AccountStatusID, new GlobalAccountStatus { AccountStatusID = 3, AccountStatus = "On Stop" });
-
             // Add Global Measurment Types
             context.GlobalUOMTypes.AddOrUpdate(m => m.UOMTypeId, new GlobalUOMTypes { UOMTypeId = 1, UOMType = "General" });
             context.GlobalUOMTypes.AddOrUpdate(m => m.UOMTypeId, new GlobalUOMTypes { UOMTypeId = 2, UOMType = "Measurement" });
@@ -368,37 +362,9 @@ namespace Ganedata.Core.Data.Migrations
                     CountryID = 1
                 });
 
-            context.MarketJobStatus.AddOrUpdate(m => m.Id, new MarketJobStatus() { Id = 1, Name = "Queued" });
-            context.MarketJobStatus.AddOrUpdate(m => m.Id, new MarketJobStatus() { Id = 2, Name = "Awaiting" });
-            context.MarketJobStatus.AddOrUpdate(m => m.Id, new MarketJobStatus() { Id = 3, Name = "Accepted" });
-            context.MarketJobStatus.AddOrUpdate(m => m.Id, new MarketJobStatus() { Id = 4, Name = "Declined" });
-            context.MarketJobStatus.AddOrUpdate(m => m.Id, new MarketJobStatus() { Id = 5, Name = "Completed" });
-            context.MarketJobStatus.AddOrUpdate(m => m.Id, new MarketJobStatus() { Id = 5, Name = "FailedToComplete" });
-            context.MarketJobStatus.AddOrUpdate(m => m.Id, new MarketJobStatus() { Id = 7, Name = "Cancelled" });
-
-            context.AccountTransactionTypes.AddOrUpdate(m => m.AccountTransactionTypeId, new AccountTransactionType() { AccountTransactionTypeId = 1, Description = "Credit" });
-            context.AccountTransactionTypes.AddOrUpdate(m => m.AccountTransactionTypeId, new AccountTransactionType() { AccountTransactionTypeId = 2, Description = "Debit" });
-            context.AccountTransactionTypes.AddOrUpdate(m => m.AccountTransactionTypeId, new AccountTransactionType() { AccountTransactionTypeId = 3, Description = "Refund" });
-            context.AccountTransactionTypes.AddOrUpdate(m => m.AccountTransactionTypeId, new AccountTransactionType() { AccountTransactionTypeId = 4, Description = "CreditNote" });
-            context.AccountTransactionTypes.AddOrUpdate(m => m.AccountTransactionTypeId, new AccountTransactionType() { AccountTransactionTypeId = 5, Description = "Discount" });
-
             context.WastageReasons.AddOrUpdate(m => m.Id, new WastageReason() { Id = 1, Description = "Broken" });
             context.WastageReasons.AddOrUpdate(m => m.Id, new WastageReason() { Id = 2, Description = "Expired" });
             context.WastageReasons.AddOrUpdate(m => m.Id, new WastageReason() { Id = 3, Description = "Repairable Fault" });
-
-            context.AccountPaymentModes.AddOrUpdate(m => m.AccountPaymentModeId, new AccountPaymentMode() { AccountPaymentModeId = 1, Description = "Cash" });
-            context.AccountPaymentModes.AddOrUpdate(m => m.AccountPaymentModeId, new AccountPaymentMode() { AccountPaymentModeId = 2, Description = "Card" });
-            context.AccountPaymentModes.AddOrUpdate(m => m.AccountPaymentModeId, new AccountPaymentMode() { AccountPaymentModeId = 3, Description = "Online Transfer" });
-            context.AccountPaymentModes.AddOrUpdate(m => m.AccountPaymentModeId, new AccountPaymentMode() { AccountPaymentModeId = 4, Description = "Bank Deposit" });
-            context.AccountPaymentModes.AddOrUpdate(m => m.AccountPaymentModeId, new AccountPaymentMode() { AccountPaymentModeId = 5, Description = "Cheque" });
-
-            context.OrderProcessStatuses.AddOrUpdate(m => m.OrderProcessStatusId, new OrderProcessStatus() { OrderProcessStatusId = 1, Status = "Active" });
-            context.OrderProcessStatuses.AddOrUpdate(m => m.OrderProcessStatusId, new OrderProcessStatus() { OrderProcessStatusId = 2, Status = "Complete" });
-            context.OrderProcessStatuses.AddOrUpdate(m => m.OrderProcessStatusId, new OrderProcessStatus() { OrderProcessStatusId = 3, Status = "Dispatched" });
-            context.OrderProcessStatuses.AddOrUpdate(m => m.OrderProcessStatusId, new OrderProcessStatus() { OrderProcessStatusId = 4, Status = "Loaded" });
-            context.OrderProcessStatuses.AddOrUpdate(m => m.OrderProcessStatusId, new OrderProcessStatus() { OrderProcessStatusId = 5, Status = "Delivered" });
-            context.OrderProcessStatuses.AddOrUpdate(m => m.OrderProcessStatusId, new OrderProcessStatus() { OrderProcessStatusId = 6, Status = "Invoiced" });
-            context.OrderProcessStatuses.AddOrUpdate(m => m.OrderProcessStatusId, new OrderProcessStatus() { OrderProcessStatusId = 7, Status = "Posted to Accounts" });
 
             context.SaveChanges();
 
@@ -714,7 +680,7 @@ namespace Ganedata.Core.Data.Migrations
                 TenantId = tenant.TenantId,
                 CurrencyID = tenant.CurrencyID,
                 PriceGroupID = 1,
-                AccountStatusID = 2,
+                AccountStatusID = AccountStatusEnum.Active,
                 TaxID = 4,
                 OwnerUserId = 1
             };
@@ -1119,7 +1085,7 @@ namespace Ganedata.Core.Data.Migrations
                 TenantId = tenant.TenantId,
                 CurrencyID = tenant.CurrencyID,
                 PriceGroupID = 1,
-                AccountStatusID = 2,
+                AccountStatusID = AccountStatusEnum.Active,
                 TaxID = 4,
                 OwnerUserId = 1
             };
@@ -1523,7 +1489,7 @@ namespace Ganedata.Core.Data.Migrations
                 TenantId = tenant.TenantId,
                 CurrencyID = tenant.CurrencyID,
                 PriceGroupID = 1,
-                AccountStatusID = 2,
+                AccountStatusID = AccountStatusEnum.Active,
                 TaxID = 4,
                 OwnerUserId = 1
             };
@@ -1947,7 +1913,7 @@ namespace Ganedata.Core.Data.Migrations
                 TenantId = tenant.TenantId,
                 CurrencyID = tenant.CurrencyID,
                 PriceGroupID = 1,
-                AccountStatusID = 2,
+                AccountStatusID = AccountStatusEnum.Active,
                 TaxID = 4,
                 OwnerUserId = 1
             };
@@ -2371,7 +2337,7 @@ namespace Ganedata.Core.Data.Migrations
                 TenantId = tenant.TenantId,
                 CurrencyID = tenant.CurrencyID,
                 PriceGroupID = 1,
-                AccountStatusID = 2,
+                AccountStatusID = AccountStatusEnum.Active,
                 TaxID = 4,
                 OwnerUserId = 1
             };

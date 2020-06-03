@@ -9,6 +9,7 @@ using Ganedata.Core.Models;
 using DevExpress.Web.Mvc;
 using WMS.CustomBindings;
 using System.Web;
+using Ganedata.Core.Entities.Enums;
 
 namespace WMS.Controllers
 {
@@ -84,7 +85,7 @@ namespace WMS.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Account model, List<int> AccountAddressIds, List<int> AccountContactIds, int GlobalCountryIds, int GlobalCurrencyIds, int AccountStatusIds, int PriceGroupId, int OwnerUserId, string StopComment)
+        public ActionResult Create(Account model, List<int> AccountAddressIds, List<int> AccountContactIds, int GlobalCountryIds, int GlobalCurrencyIds, AccountStatusEnum AccountStatusIds, int PriceGroupId, int OwnerUserId, string StopComment)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
@@ -125,7 +126,7 @@ namespace WMS.Controllers
             Session["account"] = id;
             ViewBag.AccountAddresses = AccountServices.GetAllValidAccountAddressesByAccountId((int)id);
             ViewBag.AccountContacts = AccountServices.GetAllValidAccountContactsByAccountId((int)id, CurrentTenantId);
-            ViewBag.LatestStopComment = AccountServices.GetLatestAuditComment(id.Value,CurrentTenantId);
+            ViewBag.LatestStopComment = AccountServices.GetLatestAuditComment(id.Value, CurrentTenantId);
             ViewBag.SelectedAddresses = AccountServices.GetAllValidAccountAddressesByAccountId((int)id).Select(a => a.AddressID).ToList();
             ViewBag.SelectedContacts = AccountServices.GetAllValidAccountContactsByAccountId((int)id, CurrentTenantId).Select(a => a.AccountContactId).ToList();
 
@@ -144,7 +145,7 @@ namespace WMS.Controllers
         public ActionResult Edit(Account model, List<int> AccountAddressIds, List<int> AccountContactIds, string StopComment, int? MarketIds)
 
         {
-                if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
             if (ModelState.IsValid)
             {
@@ -163,7 +164,7 @@ namespace WMS.Controllers
             Session["account"] = model.AccountID;
             ViewBag.AccountAddresses = AccountServices.GetAllValidAccountAddressesByAccountId(model.AccountID);
             ViewBag.AccountContacts = AccountServices.GetAllValidAccountContactsByAccountId(model.AccountID, CurrentTenantId);
-            ViewBag.LatestStopComment = AccountServices.GetLatestAuditComment(model.AccountID,CurrentTenantId);
+            ViewBag.LatestStopComment = AccountServices.GetLatestAuditComment(model.AccountID, CurrentTenantId);
             ViewBag.SelectedAddresses = AccountServices.GetAllValidAccountAddressesByAccountId(model.AccountID).Select(a => a.AddressID).ToList();
             ViewBag.SelectedContacts = AccountServices.GetAllValidAccountContactsByAccountId(model.AccountID, CurrentTenantId).Select(a => a.AccountContactId).ToList();
             var taxes = _lookupServices.GetAllValidGlobalTaxes().ToList();
@@ -391,7 +392,7 @@ namespace WMS.Controllers
             lst.Add(contact);
         }
 
-        public void AccountAddressSessionInit(int? owneruserId=null)
+        public void AccountAddressSessionInit(int? owneruserId = null)
         {
             Session["addresses"] = null;
             Session["contacts"] = null;
@@ -412,10 +413,9 @@ namespace WMS.Controllers
 
             ViewBag.Countries = new SelectList(cntries.OrderBy(o => o.CountryId), "CountryID", "CountryName");
             ViewBag.Currencies = new MultiSelectList(LookupServices.GetAllGlobalCurrencies().OrderBy(o => o.CurrencyID), "CurrencyId", "CurrencyName");
-            ViewBag.AccountStatus = new SelectList(LookupServices.GetAllAccountStatuses(), "AccountStatusID", "AccountStatus");
             ViewBag.PriceGroups = new MultiSelectList(LookupServices.GetAllPriceGroups(CurrentTenantId), "PriceGroupID", "Name");
             ViewBag.OwnerUsers = new SelectList(_userService.GetAllAuthUsers(CurrentTenantId), "UserId", "UserName", owneruserId);
-            ViewBag.OwnerUserId = owneruserId.HasValue?owneruserId : user.UserId;
+            ViewBag.OwnerUserId = owneruserId.HasValue ? owneruserId : user.UserId;
 
         }
 
@@ -518,9 +518,9 @@ namespace WMS.Controllers
         }
 
 
-        public string _Market(int AccountID,int MarketId)
+        public string _Market(int AccountID, int MarketId)
         {
-            var Market = _marketServices.GetMarketName(AccountID,MarketId);
+            var Market = _marketServices.GetMarketName(AccountID, MarketId);
             return Market;
 
         }

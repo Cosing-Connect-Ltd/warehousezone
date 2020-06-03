@@ -453,19 +453,19 @@ namespace WMS.Controllers
 
         private void VerifyOrderAccountStatus(Order order)
         {
-            if (order.Account != null && order.Account.GlobalAccountStatus.AccountStatusID != (int)AccountStatusEnum.Active)
+            if (order.Account != null && order.Account.AccountStatusID != AccountStatusEnum.Active)
             {
                 ViewBag.PreventProcessing = true;
 
-                switch (order.Account.GlobalAccountStatus.AccountStatusID)
+                switch (order.Account.AccountStatusID)
                 {
-                    case 2:
+                    case AccountStatusEnum.InActive:
                         ViewBag.Error = "The Account is inactive. This order cannot be processed";
                         break;
-                    case 3:
+                    case AccountStatusEnum.OnHold:
                         ViewBag.Error = "The Account is on Hold. This order cannot be processed";
                         break;
-                    case 4:
+                    case AccountStatusEnum.OnStop:
                         ViewBag.Error = "The Account is on Stop. This order cannot be processed";
                         break;
                 }
@@ -582,7 +582,7 @@ namespace WMS.Controllers
         //}
 
 
-        public ActionResult _Consignments(int? consignmentId)
+        public ActionResult _Consignments(OrderProcessStatusEnum? consignmentId)
         {
             var viewModel = GridViewExtension.GetViewModel(ViewBag.productId + "consignmentgridview");
             if (viewModel == null)
@@ -594,14 +594,14 @@ namespace WMS.Controllers
         }
 
 
-        public ActionResult _ConsignmentsPaging(GridViewPagerState pager, int? id)
+        public ActionResult _ConsignmentsPaging(GridViewPagerState pager, OrderProcessStatusEnum? id)
         {
             var viewModel = GridViewExtension.GetViewModel(ViewBag.productId + "consignmentgridview");
             viewModel.Pager.Assign(pager);
             return _ConsignmentsGridActionCore(viewModel, id);
         }
 
-        public ActionResult _ConsignmentsFiltering(GridViewFilteringState filteringState, int? id)
+        public ActionResult _ConsignmentsFiltering(GridViewFilteringState filteringState, OrderProcessStatusEnum? id)
 
         {
             var viewModel = GridViewExtension.GetViewModel(ViewBag.productId + "consignmentgridview");
@@ -609,14 +609,14 @@ namespace WMS.Controllers
             return _ConsignmentsGridActionCore(viewModel, id);
         }
 
-        public ActionResult _ConsignmentsSorting(GridViewColumnState column, bool reset, int? id)
+        public ActionResult _ConsignmentsSorting(GridViewColumnState column, bool reset, OrderProcessStatusEnum? id)
         {
             var viewModel = GridViewExtension.GetViewModel(ViewBag.productId + "consignmentgridview");
             viewModel.ApplySortingState(column, reset);
             return _ConsignmentsGridActionCore(viewModel, id);
         }
 
-        public ActionResult _ConsignmentsGridActionCore(GridViewModel gridViewModel, int? Id)
+        public ActionResult _ConsignmentsGridActionCore(GridViewModel gridViewModel, OrderProcessStatusEnum? Id)
         {
             gridViewModel.ProcessCustomBinding(
                 new GridViewCustomBindingGetDataRowCountHandler(args =>

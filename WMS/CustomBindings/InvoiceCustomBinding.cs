@@ -25,7 +25,7 @@ namespace WMS.CustomBindings
             var OrderService = DependencyResolver.Current.GetService<IOrderService>();
             if (type == "PO")
             {
-                return OrderService.GetAllOrderProcesses(null, null, (int)OrderProcessStatusEnum.Complete, InventoryTransactionTypeEnum.PurchaseOrder).
+                return OrderService.GetAllOrderProcesses(null, null, OrderProcessStatusEnum.Complete, InventoryTransactionTypeEnum.PurchaseOrder).
                 Select(m => new OrderProcessViewModel()
                 {
                     DateCreated = m.DateCreated,
@@ -45,7 +45,7 @@ namespace WMS.CustomBindings
             }
             else if (type == "VI")
             {
-                return OrderService.GetAllOrderProcesses(null, null, (int)OrderProcessStatusEnum.PostedToAccounts, InventoryTransactionTypeEnum.PurchaseOrder).
+                return OrderService.GetAllOrderProcesses(null, null, OrderProcessStatusEnum.PostedToAccounts, InventoryTransactionTypeEnum.PurchaseOrder).
                Select(m => new OrderProcessViewModel()
                {
                    DateCreated = m.DateCreated,
@@ -62,7 +62,7 @@ namespace WMS.CustomBindings
 
             }
 
-            var transactions = OrderService.GetAllOrderProcesses(null, null, (type == "Active" ? (int)OrderProcessStatusEnum.Dispatched : (int)OrderProcessStatusEnum.Invoiced), InventoryTransactionTypeEnum.SalesOrder).
+            var transactions = OrderService.GetAllOrderProcesses(null, null, (type == "Active" ? OrderProcessStatusEnum.Dispatched : OrderProcessStatusEnum.Invoiced), InventoryTransactionTypeEnum.SalesOrder).
                 Select(m => new OrderProcessViewModel()
                 {
                     DateCreated = m.DateCreated,

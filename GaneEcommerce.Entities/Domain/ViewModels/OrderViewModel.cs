@@ -230,7 +230,7 @@ namespace Ganedata.Core.Entities.Domain
         public string ProductGroup { get; set; }
         public string ProductCategory { get; set; }
         public OrderStatusEnum? orderstatusId { get; set; }
-        public int? orderProcessstatusId { get; set; }
+        public OrderProcessStatusEnum? orderProcessstatusId { get; set; }
         public ProductGroups ProductGroups { get; set; }
 
         public string IdentifiersText
@@ -348,7 +348,7 @@ namespace Ganedata.Core.Entities.Domain
         public string AccountCode { get; set; }
         public string OrderNumber { get; set; }
         public string CompanyName { get; set; }
-        public int? Status { get; set; }
+        public OrderProcessStatusEnum? Status { get; set; }
 
         public OrderStatusEnum? orderstatus { get; set; }
 

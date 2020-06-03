@@ -44,7 +44,7 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Account Tax Status")]
         public int TaxID { get; set; }
         [Display(Name = "Account Status")]
-        public int AccountStatusID { get; set; }
+        public AccountStatusEnum AccountStatusID { get; set; }
         [Display(Name = "Price Group")]
         public int PriceGroupID { get; set; }
         [StringLength(50)]
@@ -103,7 +103,6 @@ namespace Ganedata.Core.Entities.Domain
         public virtual TenantPriceGroups TenantPriceGroups { get; set; }
         public virtual GlobalCountry GlobalCountry { get; set; }
         public virtual GlobalCurrency GlobalCurrency { get; set; }
-        public virtual GlobalAccountStatus GlobalAccountStatus { get; set; }
         public virtual ICollection<AccountAddresses> AccountAddresses { get; set; }
         public virtual ICollection<AccountContacts> AccountContacts { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
@@ -182,12 +181,8 @@ namespace Ganedata.Core.Entities.Domain
         public string Memo { get; set; }
         public string Status { get; set; }
         public string IPNData { get; set; }
-        public int? AccountPaymentModeId { get; set; }
-        [ForeignKey("AccountPaymentModeId")]
-        public virtual AccountPaymentMode AccountPaymentMode { get; set; }
-        public int AccountTransactionTypeId { get; set; }
-        [ForeignKey("AccountTransactionTypeId")]
-        public virtual AccountTransactionType AccountTransactionType { get; set; }
+        public AccountPaymentModeEnum? AccountPaymentModeId { get; set; }
+        public AccountTransactionTypeEnum AccountTransactionTypeId { get; set; }
         public virtual ICollection<AccountTransactionFile> AccountTransactionFiles { get; set; }
         [ForeignKey("InvoiceMasterId")]
         public virtual InvoiceMaster InvoiceMaster { get; set; }
@@ -206,34 +201,12 @@ namespace Ganedata.Core.Entities.Domain
 
         public string Reason { get; set; }
 
-        public int LastStatusId { get; set; }
+        public AccountStatusEnum LastStatusId { get; set; }
 
-        public int NewStatusId { get; set; }
-        [ForeignKey("NewStatusId")]
-        public virtual GlobalAccountStatus NewStatus { get; set; }
+        public AccountStatusEnum NewStatusId { get; set; }
+        public AccountStatusEnum LastStatusEnum => LastStatusId == 0 ? AccountStatusEnum.InActive : LastStatusId;
 
-
-        public AccountStatusEnum LastStatusEnum => LastStatusId == 0 ? AccountStatusEnum.InActive : (AccountStatusEnum)LastStatusId;
-
-        public AccountStatusEnum NewStatusEnum => NewStatusId == 0 ? AccountStatusEnum.InActive : (AccountStatusEnum)NewStatusId;
-    }
-
-    [Serializable]
-    public class AccountTransactionType
-    {
-        [Key]
-        public int AccountTransactionTypeId { get; set; }
-
-        public string Description { get; set; }
-    }
-
-    [Serializable]
-    public class AccountPaymentMode
-    {
-        [Key]
-        public int AccountPaymentModeId { get; set; }
-
-        public string Description { get; set; }
+        public AccountStatusEnum NewStatusEnum => NewStatusId == 0 ? AccountStatusEnum.InActive : NewStatusId;
     }
 
     [Serializable]

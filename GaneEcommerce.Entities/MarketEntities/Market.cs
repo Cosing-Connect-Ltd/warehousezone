@@ -140,13 +140,6 @@ namespace Ganedata.Core.Entities.Domain
         public virtual ICollection<TenantLocations> TenantLocations { get; set; }
     }
 
-    public class MarketJobStatus
-    {
-        [Key]
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
-
     public class MarketJob : PersistableEntity<int>
     {
         [Key]
@@ -162,7 +155,7 @@ namespace Ganedata.Core.Entities.Domain
         public int? MarketId { get; set; }
         [ForeignKey("MarketId")]
         public virtual Market Market { get; set; }
-        public int? LatestJobStatusId { get; set; }
+        public MarketJobStatusEnum? LatestJobStatusId { get; set; }
         public int? LatestJobAllocationId { get; set; }
 
     }
@@ -182,9 +175,7 @@ namespace Ganedata.Core.Entities.Domain
         public int MarketJobId { get; set; }
         [ForeignKey("MarketJobId")]
         public virtual MarketJob MarketJob { get; set; }
-        public int MarketJobStatusId { get; set; }
-        [ForeignKey("MarketJobStatusId")]
-        public virtual MarketJobStatus MarketJobStatus { get; set; }
+        public MarketJobStatusEnum MarketJobStatusId { get; set; }
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
 

@@ -51,7 +51,7 @@ namespace WMS.Controllers.WebAPI
             string result = "";
             foreach (var item in sites)
             {
-                result = dataImportFactory.GetPrestaShopOrdersSync(item.TenantId, item.DefaultWarehouseId, item.ApiUrl, item.ApiKey, item.SiteID??0).Result;
+                result = dataImportFactory.GetPrestaShopOrdersSync(item.TenantId, item.DefaultWarehouseId, item.ApiUrl, item.ApiKey, item.SiteID ?? 0).Result;
 
             }
             return Ok(!string.IsNullOrEmpty(result) ? result : "All orders are syncroized properly");
@@ -64,7 +64,7 @@ namespace WMS.Controllers.WebAPI
             string result = "";
             foreach (var item in sites)
             {
-                result = dataImportFactory.PrestaShopStockSync(item.TenantId, item.DefaultWarehouseId, item.ApiUrl, item.ApiKey, item.SiteID??0).Result;
+                result = dataImportFactory.PrestaShopStockSync(item.TenantId, item.DefaultWarehouseId, item.ApiUrl, item.ApiKey, item.SiteID ?? 0).Result;
 
             }
             return Ok(result);

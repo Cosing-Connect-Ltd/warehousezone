@@ -15,7 +15,7 @@ namespace Ganedata.Core.Services
             int warehouseId, int userId, List<OrderDetail> orderDetails = null, List<OrderNotes> orderNotes = null);
 
         bool DeleteSalesOrderDetailById(int orderDetailId, int userId);
-        IQueryable<OrderProcess> GetAllSalesConsignments(int tenantId, int warehouseId, int? InventoryTransactionId = null, int? orderstatusId = null);
+        IQueryable<OrderProcess> GetAllSalesConsignments(int tenantId, int warehouseId, int? InventoryTransactionId = null, OrderProcessStatusEnum? orderstatusId = null);
 
         IQueryable<SalesOrderViewModel> GetAllActiveSalesOrdersIq(int tenantId, int warehouseId, OrderStatusEnum? statusId = null);
 
