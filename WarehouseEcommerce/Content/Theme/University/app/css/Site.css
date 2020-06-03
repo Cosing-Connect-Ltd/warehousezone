@@ -601,7 +601,19 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
     top: 0;
     z-index: 999;
 }
-
+    .nb_header .head-container .show span {
+        display: flex;
+        flex-direction: column;
+    }
+    .nb_header form .btn-primary:focus {
+        box-shadow:none;
+    }
+    .nb_header form .btn-primary:active {
+        border: none;
+        background-color: white !important;
+        color: black !important;
+        box-shadow: none;
+    }
 .prd_lst_boxouter .imagewrap img {
     width: 235px;
     height: 235px;
@@ -979,3 +991,28 @@ h2 {
     border: none;
     background-color: transparent;
 }
+body.modal-open {
+    overflow: auto !important;
+    padding-right: unset !important;
+}
+/*Scrollbar css start*/
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+/*Scrollbar css end*/

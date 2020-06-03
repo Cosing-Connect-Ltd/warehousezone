@@ -69,8 +69,9 @@
         </div>
     </div>
 
-
-    @Html.Partial("_LoginRegisterPartial")
+    <div class="login-register-prtial">
+        @Html.Partial("_LoginRegisterPartial")
+    </div>
     @Html.Action("_TopHeaderPartial", "Home")
     <div class="pl-0 pr-0 uni-pages-pt uni-pages-main">
         @Html.Partial("_DeliveryInfoPartial")

@@ -242,6 +242,7 @@ input[type="number"]::-webkit-outer-spin-button {
         border: none;
         background-color: transparent;
         color: black;
+        font-size: 25px;
     }
 
         .search_wrap_main .search_btn:hover {
@@ -251,7 +252,7 @@ input[type="number"]::-webkit-outer-spin-button {
         }
 
         .search_wrap_main .search_btn i {
-            font-size: 25px;
+            font-size: 24px;
             color: var(--dark-font-color);
         }
 
