@@ -222,11 +222,13 @@ input[type="number"]::-webkit-outer-spin-button {
         width: 92%;
         border-radius: 0px;
         height: 55px;
-        border-bottom: solid 1px #707070;
+        border-bottom: solid 1px;
+        border-color: var(--dark-font-color);;
         border-left: none;
         border-top: none;
         border-right: none;
         font-weight: 800;
+        background-color: var(--tertiary-color);
         color: var(--dark-font-color);
         font-size: 30px;
         letter-spacing: 2px;
@@ -260,9 +262,12 @@ input[type="number"]::-webkit-outer-spin-button {
             color: var(--light-font-color);
         }
 
+            .search_wrap_main .search_btn:hover i {
+                color: var(--light-font-color);
+            }
+
         .search_wrap_main .search_btn i {
             font-size: 24px;
-            color: var(--dark-font-color);
         }
 
 .nb_header {
