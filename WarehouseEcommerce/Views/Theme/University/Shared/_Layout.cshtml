@@ -12,8 +12,9 @@
     <link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css">
     <link rel="icon" href="~/Content/Theme/University/app/images/favico.ico" />
     <link href="~/Content/Theme/University/app/css/owl.carousel.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/Content/Theme/University/app/css/jquery-confirm.min.css">
+    <link href="@Url.Action("AppStyle", "UISettings", new { filePath = "/Content/Theme/University/app/css/jquery-confirm.min.css"})" rel="stylesheet" type="text/css" />
     <link href="@Url.Action("AppStyle", "UISettings", new { filePath = "/Content/Theme/University/app/css/App.css"})" rel="stylesheet" type="text/css" />
+    <link href="@Url.Action("AppStyle", "UISettings", new { filePath = "/Content/Theme/University/app/css/Site.css"})" rel="stylesheet" type="text/css" />
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")

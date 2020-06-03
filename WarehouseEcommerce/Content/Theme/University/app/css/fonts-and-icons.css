@@ -1,23 +1,104 @@
 ﻿@font-face {
-    font-family: "primaryfont_Bold";
-    src: url("../fonts/SegoeUI-Bold.eot");
-    src: url("../fonts/SegoeUI-Bold.eot?#iefix") format("embedded-opentype"), url("../fonts/SegoeUI-Bold.woff") format("woff"), url("../fonts/SegoeUI-Bold.ttf") format("truetype"), url("../fonts/SegoeUI-Bold.svg") format("svg");
+    font-family: "SegoeUI";
+    src: url("../../../../../fonts/segoeui/SegoeUI-Bold.eot"), url("../../../../../fonts/segoeui/SegoeUI-Bold.eot?#iefix") format("embedded-opentype"), url("../../../../../fonts/segoeui/SegoeUI-Bold.woff") format("woff"), url("../../../../../fonts/segoeui/SegoeUI-Bold.ttf") format("truetype"), url("../../../../../fonts/segoeui/SegoeUI-Bold.svg") format("svg");
     font-weight: 800;
     font-style: normal;
 }
 
 @font-face {
-    font-family: "primaryfont_SemiBold";
-    src: url("../fonts/SegoeUI-Semibold.eot");
-    src: url("../fonts/SegoeUI-Semibold.eot?#iefix") format("embedded-opentype"), url("../fonts/SegoeUI-Semibold.woff") format("woff"), url("../fonts/SegoeUI-Semibold.ttf") format("truetype"), url("../fonts/SegoeUI-Semibold.svg") format("svg");
+    font-family: "SegoeUI";
+    src: url("../../../../../fonts/segoeui/SegoeUI-Semibold.eot"), url("../../../../../fonts/segoeui/SegoeUI-Semibold.eot?#iefix") format("embedded-opentype"), url("../../../../../fonts/segoeui/SegoeUI-Semibold.woff") format("woff"), url("../../../../../fonts/segoeui/SegoeUI-Semibold.ttf") format("truetype"), url("../../../../../fonts/segoeui/SegoeUI-Semibold.svg") format("svg");
     font-weight: 600;
     font-style: normal;
 }
 
 @font-face {
-    font-family: "primaryfont_Normal";
-    src: url("../fonts/SegoeUI.eot");
-    src: url("../fonts/SegoeUI.eot?#iefix") format("embedded-opentype"), url("../fonts/SegoeUI.woff") format("woff"), url("../fonts/SegoeUI.ttf") format("truetype"), url("../fonts/SegoeUI.svg") format("svg");
+    font-family: "SegoeUI";
+    src: url("../../../../../fonts/segoeui/SegoeUI.eot"), url("../../../../../fonts/segoeui/SegoeUI.eot?#iefix") format("embedded-opentype"), url("../../../../../fonts/segoeui/SegoeUI.woff") format("woff"), url("../../../../../fonts/segoeui/SegoeUI.ttf") format("truetype"), url("../../../../../fonts/segoeui/SegoeUI.svg") format("svg");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Gotham";
+    src: url(../../../../../fonts/gotham/GothamBlack.eot?#iefix) format("embedded-opentype"), url(../../../../../fonts/gotham/GothamBlack.woff) format("woff"), url(../../../../../fonts/gotham/GothamBlack.ttf) format("truetype"), url(../../../../../fonts/gotham/GothamBlack.svg#GothamBlack) format("svg");
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Gotham";
+    src: url(../../../../../fonts/gotham/GothamBold.eot?#iefix) format("embedded-opentype"), url(../../../../../fonts/gotham/GothamBold.woff) format("woff"), url(../../../../../fonts/gotham/GothamBold.ttf) format("truetype"), url(../../../../../fonts/gotham/GothamBold.svg#GothamBold) format("svg");
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Gotham";
+    src: url(../../../../../fonts/gotham/Gotham-Medium.eot?#iefix) format("embedded-opentype"), url(../../../../../fonts/gotham/Gotham-Medium.otf) format("opentype"), url(../../../../../fonts/gotham/Gotham-Medium.woff) format("woff"), url(../../../../../fonts/gotham/Gotham-Medium.ttf) format("truetype"), url(../../../../../fonts/gotham/Gotham-Medium.svg#Gotham-Medium) format("svg");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url(../../../../../fonts/roboto/Roboto-Black.ttf) format("truetype");
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src:, url(../../../../../fonts/roboto/Roboto-Bold.ttf) format("truetype");
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url(../../../../../fonts/roboto/Roboto-Medium.ttf) format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "OpenSans";
+    src: url(../../../../../fonts/opensans/OpenSans-Bold.ttf) format("truetype");
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "OpenSans";
+    src:, url(../../../../../fonts/opensans/OpenSans-SemiBold.ttf) format("truetype");
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "OpenSans";
+    src: url(../../../../../fonts/opensans/OpenSans-Regular.ttf) format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Montserrat";
+    src: url(../../../../../fonts/montserrat/Montserrat-Bold.ttf) format("truetype");
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Montserrat";
+    src:, url(../../../../../fonts/montserrat/Montserrat-SemiBold.ttf) format("truetype");
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Montserrat";
+    src: url(../../../../../fonts/montserrat/Montserrat-Medium.ttf) format("truetype");
     font-weight: 400;
     font-style: normal;
 }

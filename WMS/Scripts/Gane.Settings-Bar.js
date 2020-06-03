@@ -64,11 +64,10 @@ function setUISettings(isResetToDefault) {
 
                 applyUISettings(key, value);
 
-                var elements = $('input[data-settingsKey="' + key + '"]');
+                var elements = $('.settings-bar-content-items input[data-settingsKey="' + key + '"], .settings-bar-content-items select[data-settingsKey="' + key + '"]');
 
-                for (var i in elements) {
+                for (var i = 0; i < elements.length; i++) {
                     !!elements[i].jscolor && elements[i].jscolor.fromString(value);
-
                     elements[i].value = value;
                 }
             }
@@ -116,13 +115,13 @@ function toggleSettingsBar() {
 function collapseSettingsBar() {
     $(".settings-bar").removeAttr("expanded");
     $(".settings-bar-switch").animate({ left: "-36px", borderWidth: "1px" }, 400);
-    $(".settings-bar").animate({ right: "-300px" }, 400);
+    $(".settings-bar").animate({ right: "-350px" }, 400);
     localStorage.setItem("is-settings-bar-expanded", 0);
 }
 
 function expandSettingsBar() {
     $(".settings-bar").attr("expanded", '');
     $(".settings-bar-switch").animate({ left: "0px", borderWidth: "0px" }, 400);
-    $(".settings-bar").animate({ right: "20px" }, 400);
+    $(".settings-bar").animate({ right: "10px" }, 400);
     localStorage.setItem("is-settings-bar-expanded", 1);
 }

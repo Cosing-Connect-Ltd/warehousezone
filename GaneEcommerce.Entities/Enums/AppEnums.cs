@@ -465,6 +465,35 @@ namespace Ganedata.Core.Entities.Enums
     {
         Color = 1,
         Text = 2,
-        Number = 3
+        Number = 3,
+        Font = 4
+    }
+
+    public enum UISettingFonts
+    {
+        Arial,
+        Calibri,
+        Cambria,
+        Candara,
+        Courior,
+        Cursive,
+        Didot,
+        Fantasy,
+        Garamond,
+        Geneva,
+        Gotham,
+        Helvetica,
+        Monaco,
+        Monospace,
+        Montserrat,
+        OpenSans,
+        Optima,
+        Perpetua,
+        Roboto,
+        SegoeUI,
+        Serif,
+        Tahoma,
+        Times,
+        Verdana,
     }
 }

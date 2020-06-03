@@ -5,7 +5,7 @@
 .uni-pages-main .nb_prd_filterwrap .list-group-item {
     display: flex;
     align-items: center;
-    font-family: primaryfont_Bold;
+    font-weight: 800;
 }
 
     .uni-pages-main .nb_prd_filterwrap .list-group-item input {
@@ -68,7 +68,7 @@
 
 .pagination > li > a,
 .pagination > li > span {
-    color: #000;
+    color: var(--dark-font-color);
     padding: 7px 12px 5px 12px;
 }
 
@@ -83,10 +83,11 @@
 
 .pagi .tot {
     line-height: 34px;
+    color: var(--dark-font-color);
 }
 
 .btn .button {
-    font-family: primaryfont_Bold;
+    font-weight: 800;
 }
 
 /* --------------------------
@@ -97,7 +98,7 @@
 .my-account.login .button-submit button:focus,
 .my-account.login .button-submit input[type="submit"]:hover,
 .my-account.login .button-submit input[type="submit"]:focus {
-    background: #000;
+    background-color: #000;
     -webkit-transition: 0.5s;
     -moz-transition: 0.5s;
     transition: 0.5s;
@@ -106,7 +107,7 @@
 .my-account.login .button-submit button,
 .my-account.login .button-submit input[type="submit"] {
     height: 40px;
-    background: #1455a6;
+    background-color: #1455a6;
     color: #fff;
     -webkit-transition: 0.5s;
     -moz-transition: 0.5s;
@@ -117,7 +118,7 @@
 
 a.cashbtn {
     height: 40px;
-    background: #1455a6;
+    background-color: #1455a6;
     color: #fff;
     -webkit-transition: 0.5s;
     -moz-transition: 0.5s;
@@ -284,7 +285,7 @@ a.cashbtn {
     border-top: 2px solid #ccc;
     padding: 30px;
     margin-bottom: 45px;
-    font-weight: bold;
+    font-weight: 800;
     line-height: 36px;
     border-left: none;
 }
@@ -629,7 +630,7 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
 }
 
 .uni-get-address-page .uni-add-new-address-h4 {
-    font-weight: bold;
+    font-weight: 800;
     margin-bottom: 12px;
 }
 
@@ -693,20 +694,19 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
     }
 
 .uni-pages-main .nb_prdlisting_pgsec .breadCrumbtopsec {
-    font-family: "primaryfont_SemiBold";
+    font-weight: 600;
 }
 
 .uni-pages-main .nb_prd_filterwrap {
-    font-family: "primaryfont_SemiBold";
+    font-weight: 600;
 }
 
 .modal-dialog {
-    font-family: "primaryfont_SemiBold";
+    font-weight: 600;
 }
 
 .modal-title {
-    font-family: "primaryfont_SemiBold";
-    font-weight: bold;
+    font-weight: 800;
     font-size: 20px;
 }
 

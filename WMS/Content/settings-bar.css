@@ -1,23 +1,24 @@
 ﻿.settings-bar {
     position: fixed;
-    height: calc(100% - 340px);
-    min-height: 500px;
-    top: 230px;
-    right: -300px;
+    height: 80%;
+    min-height: 200px;
+    top: 10%;
+    right: -350px;
     margin-top: 2px;
-    width: 300px;
+    width: 350px;
     padding-top: 10px;
     border-top: none;
     background-color: #fcfcfc !important;
     border: 1px solid lightgray;
     border-radius: 5px;
-    z-index: 9;
+    z-index: 9999;
 }
 
-    .settings-bar h2 {
+    .settings-bar h3 {
         font-size: 20px;
         padding-bottom: 10px;
         margin: 0 10px 10px 10px;
+        border-bottom: 1px gray solid;
     }
 
     .settings-bar .col-md-5 {
@@ -54,4 +55,15 @@
 #frmUISettings label {
     padding-right: 0 !important;
     line-height: 35px;
+}
+
+#settings-bar-content,
+#settings-bar-content > #frmSettingsBar {
+    height: 100%;
+}
+
+.settings-bar-content-items {
+    padding-top: 10px;
+    height: calc(100% - 90px);
+    overflow: auto;
 }
