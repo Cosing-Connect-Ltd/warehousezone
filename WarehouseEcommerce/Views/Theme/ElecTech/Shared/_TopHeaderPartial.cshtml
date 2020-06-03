@@ -1,0 +1,83 @@
+﻿<!-- header start -->
+@using Ganedata.Core.Entities.Domain
+@{
+    var siteProperties = ViewBag.TenantWebsite as TenantWebsites;
+}
+<header>
+    <div class="header-top-area hide-this">
+        <div class="pr-30 pl-30">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <ul class="top-right">
+                        <li class="phone-1">
+                            <i class="fa fa-phone"></i>
+                            <span>@siteProperties.WebsiteContactPhone</span>
+                        </li>
+                        <li>
+                            <i class="fa fa-user"></i>
+                            <a href="#">Login</a>
+                            <span> / </span>
+                            <a href="#">Help</a>
+                            <!--<span>Support@mail.com</span>-->
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-6 col-md-6 hide-this">
+                    <div class="header-icon floatright">
+                        @if (!string.IsNullOrEmpty(siteProperties.FacebookUrl))
+                        {
+                            <a href="@siteProperties.FacebookUrl"><i class="fa fa-facebook"></i></a>
+                        }
+                        @if (!string.IsNullOrEmpty(siteProperties.TwitterUrl))
+                        {
+                            <a href="@siteProperties.TwitterUrl"><i class="fa fa-twitter"></i></a>
+                        }
+                        @if (!string.IsNullOrEmpty(siteProperties.InstaGramUrl))
+                        {
+
+                            <a href="@siteProperties.InstaGramUrl"><i class="fa fa-instagram"></i></a>
+                        }
+                        @if (!string.IsNullOrEmpty(siteProperties.LinkedInUrl))
+                        {
+
+                            <a href="@siteProperties.LinkedInUrl"><i class="fa fa-linkedin"></i></a>
+                        }
+                        @if (!string.IsNullOrEmpty(siteProperties.YoutubeUrl))
+                        {
+                            <a href="@siteProperties.YoutubeUrl"><i class="fa fa-youtube"></i></a>
+                        }
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- main-menu-area-start -->
+    <div class="main-menu-area" id="navbar">
+        <div class="pr-30 pl-30 header-pr">
+            <div class="row ptb-10 navbar-row">
+                <div class="col-lg-3 col-md-3 col-xl-2 logo-div">
+                    <div class="logo">
+                        <a href="/"><img src="@ViewBag.BaseFilePath@siteProperties.Logo" alt="" width="200" /></a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-xl-6 top-menu">
+                    <div class="main-menu">
+                      @Html.Action("_HorizontalNavbarPartial","Home")
+                    </div>
+                    <div class="mobile-menu-area"></div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-xl-4 text-right phone-n-demo">
+                    <ul class="phone-2">
+                        <li>
+                            <i class="fa fa-phone"></i>
+                            <span>@siteProperties.WebsiteContactPhone</span>
+                        </li>
+                    </ul>
+                    <span class="book-demo-2"><a href="get-started">Book A Demo</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- main-menu-area-end -->
+</header>
+<!-- header end -->

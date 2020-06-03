@@ -84,6 +84,13 @@
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.BaseFilePath, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.BaseFilePath, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.BaseFilePath, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.FooterText, htmlAttributes: new { @class = "control-label col-md-4" })
                 <div class="col-md-8">
                     @Html.TextAreaFor(model => model.FooterText, htmlAttributes: new { @class = "form-control" })
@@ -122,6 +129,13 @@
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.InstaGramUrl, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.InstaGramUrl, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.InstaGramUrl, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.TwitterUrl, htmlAttributes: new { @class = "control-label col-md-4" })
                 <div class="col-md-8">
                     @Html.EditorFor(model => model.TwitterUrl, new { htmlAttributes = new { @class = "form-control" } })
@@ -152,7 +166,7 @@
                 </div>
             </div>
 
-            
+
 
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-4" })

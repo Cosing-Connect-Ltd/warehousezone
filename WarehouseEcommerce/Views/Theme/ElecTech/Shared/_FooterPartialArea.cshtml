@@ -1,0 +1,72 @@
+﻿<!-- footer start -->
+@model Ganedata.Core.Entities.Domain.TenantWebsites
+<footer>
+    <div class="footer-area grey-bg ptb-20">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-12">
+                    <div class="footer-widget md-30">
+                        <div class="footer-address">
+                            <p style="text-align: center;">
+                                <strong> @Model.Tenant.TenantName</strong><br>
+                                @Model.Tenant.TenantAddress1<br>
+                                @Model.Tenant.TenantCity, @Model.Tenant.TenantPostalCode, @Model.Tenant.Country.CountryName<br>
+                                Company Reg. @Model.Tenant.TenantRegNo
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="widget mb-30">
+                        <div class="widget-title">
+                            <div class="footer-nav">
+                                <a href="get-started">Get Started</a>
+                                <a href="promotions">Promotions</a>
+                                <a href="privacy-policy">Privacy Policy</a>
+                                <a href="blog">Blog</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-12">
+                    <div class="widget mb-30">
+                        <div class="widget-title">
+                            <div class="social-icons text-center">
+                                @if (!string.IsNullOrEmpty(Model.FacebookUrl))
+                                {
+                                    <a href="@Model.FacebookUrl"><i class="fa fa-facebook"></i></a>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.TwitterUrl))
+                                {
+                                    <a href="@Model.TwitterUrl"><i class="fa fa-twitter"></i></a>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.InstaGramUrl))
+                                {
+
+                                    <a href="@Model.InstaGramUrl"><i class="fa fa-instagram"></i></a>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.LinkedInUrl))
+                                {
+
+                                    <a href="@Model.LinkedInUrl"><i class="fa fa-linkedin"></i></a>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.YoutubeUrl))
+                                {
+                                    <a href="@Model.YoutubeUrl"><i class="fa fa-youtube"></i></a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom-area">
+        <div class="container">
+            <div class="copyright text-center">
+                <p>© All rights reserved - <a href="/"> @Model.Tenant.TenantName</a> - @DateTime.UtcNow.Year</p>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- footer end -->

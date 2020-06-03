@@ -1,0 +1,59 @@
+﻿@using Ganedata.Core.Entities.Domain
+@using Ganedata.Core.Entities.Enums;
+@model List<Ganedata.Core.Entities.Domain.WebsiteNavigation>
+
+<nav id="primary_nav_wrap" class="header-nav">
+    <ul>
+        @foreach (var item in Model.Where(x => x.ParentId == null))
+        {
+            var level1 = Model.Where(x => x.ParentId == item.Id).ToList();
+            if (item.Type == WebsiteNavigationType.Blank)
+            {
+                if (level1.Any())
+                {
+                    <li>
+                        <a href="javascript:;">@item.Name</a>
+                        <ul id="in_dropdown">
+                            @{
+                                int column = 1;
+                            }
+                            <div class="div1 in-dropdown-div">
+                                @foreach (var item1 in level1)
+                                {
+
+                                    if (item1.Type == WebsiteNavigationType.Blank)
+                                    {
+                                        <li><a href="javascript:;">@item1.Name</a></li>
+                                    }
+                                    else if (item1.Type == WebsiteNavigationType.Content)
+                                    {
+                                        <li><a href="@Url.Action("page", "Home", new { pageUrl = item1.WebsiteContentPages.pageUrl })">@item1.Name</a></li>
+                                    }
+
+                                }
+                            </div>
+
+                            }
+                        </ul>
+                    </li>
+                }
+                else
+                {
+
+                    <li><a href="javascript:;">@item.Name</a></li>
+                }
+            }
+            else if (item.Type == WebsiteNavigationType.Content)
+            {
+                <li><a href="@Url.Action("page", "Home", new { pageUrl = item.WebsiteContentPages.pageUrl })">@item.Name</a></li>
+            }
+
+
+
+
+        }
+        <li><a class="hardware-active" href="https://shop.ganedata.co.uk">Hardware</a></li>
+        <li class="book-demo-1"><a href="get-started">Book A Demo</a></li>
+        @*<li><a href="#"><i class="fa fa-search"></i></a></li>*@
+    </ul>
+</nav>

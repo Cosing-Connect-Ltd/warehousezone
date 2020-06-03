@@ -93,11 +93,11 @@
                 okText: "Accept",
                 learnMoreText: "Privacy and Cookie Policy"))
 
-    @Html.Partial("_HeaderPartial")
+    @Html.Action("_TopHeaderPartial")
 
     @RenderBody()
 
-    @Html.Partial("_FooterPartial")
+    @Html.Action("_FooterPartialArea", "Home", new { university = true })
     <!-- all js here -->
     <script src="~/Scripts/jquery-3.4.1.min.js"></script>
     <script src="~/Scripts/modernizr-2.8.3.js"></script>

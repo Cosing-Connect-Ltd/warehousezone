@@ -245,6 +245,7 @@ namespace WarehouseEcommerce.Controllers
         public PartialViewResult _FooterPartialArea(bool university = false)
         {
             ViewBag.FooterNavigation = _tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, CurrentTenantWebsite.SiteID).Where(u => u.ShowInFooter == true && u.Type == WebsiteNavigationType.Content).ToList();
+            
             if (university)
             {
                 var data = _tenantWebsiteService.GetAllValidTenantWebSite(CurrentTenantId).FirstOrDefault(u => u.SiteID == CurrentTenantWebsite.SiteID);
@@ -258,6 +259,11 @@ namespace WarehouseEcommerce.Controllers
         public PartialViewResult _SocialMediaAccountsPartial()
         {
             return PartialView();
+        }
+        public PartialViewResult _defaultPartial()
+        {
+            var contentPage = _tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, CurrentTenantWebsite.SiteID).FirstOrDefault(u => u.IsHomePage == true);
+            return PartialView(contentPage);
         }
 
         public ActionResult Services()

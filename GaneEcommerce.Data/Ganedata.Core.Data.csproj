@@ -887,6 +887,10 @@
     <Compile Include="Migrations\202006030318013_Status-types-tables-dropped.designer.cs">
       <DependentUpon>202006030318013_Status-types-tables-dropped.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202006031645372_ishomepage-field-added-in-websitecontent.cs" />
+    <Compile Include="Migrations\202006031645372_ishomepage-field-added-in-websitecontent.designer.cs">
+      <DependentUpon>202006031645372_ishomepage-field-added-in-websitecontent.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1872,6 +1876,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202006030318013_Status-types-tables-dropped.resx">
       <DependentUpon>202006030318013_Status-types-tables-dropped.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006031645372_ishomepage-field-added-in-websitecontent.resx">
+      <DependentUpon>202006031645372_ishomepage-field-added-in-websitecontent.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

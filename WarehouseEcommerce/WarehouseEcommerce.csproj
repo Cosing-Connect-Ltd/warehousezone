@@ -1123,8 +1123,8 @@
     <Content Include="uploads\traffic_intelligence_bro_04-2013_a4_trs.pdf" />
     <Content Include="uploads\vxl-illumineye-datasheet-25-04-14.pdf" />
     <Content Include="Views\Theme\ElecTech\Shared\_Layout.cshtml" />
-    <Content Include="Views\Theme\ElecTech\Shared\_HeaderPartial.cshtml" />
-    <Content Include="Views\Theme\ElecTech\Shared\_FooterPartial.cshtml" />
+    <Content Include="Views\Theme\ElecTech\Shared\_TopHeaderPartial.cshtml" />
+    <Content Include="Views\Theme\ElecTech\Shared\_FooterPartialArea.cshtml" />
     <Content Include="Views\Theme\ElecTech\Home\Index.cshtml" />
     <Content Include="Views\Theme\ElecTech\Home\Services.cshtml" />
     <Content Include="Views\Theme\ElecTech\Home\GetStarted.cshtml" />
@@ -1183,6 +1183,8 @@
     <Content Include="Views\Theme\University\Products\WishList.cshtml" />
     <Content Include="Views\Theme\University\Shared\_wishlistItems.cshtml" />
     <Content Include="Views\Shared\SettingsBar.cshtml" />
+    <Content Include="Views\Theme\ElecTech\Shared\_defaultPartial.cshtml" />
+    <Content Include="Views\Theme\ElecTech\Shared\_HorizontalNavbarPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

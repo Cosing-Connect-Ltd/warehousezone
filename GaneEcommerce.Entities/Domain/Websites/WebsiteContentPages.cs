@@ -37,6 +37,9 @@ namespace Ganedata.Core.Entities.Domain
         public bool IsActive { get; set; }
         [Display(Name = "Content Type")]
         public ContentType Type { get; set; }
+        [Display(Name = "Home Page")]
+        public bool IsHomePage { get; set; }
+       
         [ForeignKey("SiteID")]
         public virtual TenantWebsites TenantWebsites { get; set; }
     }

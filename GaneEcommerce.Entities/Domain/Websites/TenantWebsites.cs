@@ -43,7 +43,7 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Youtube Url")]
         [Url]
         public string YoutubeUrl { get; set; }
-        [Display(Name = "Account Code")]
+        [Display(Name = "Instagram Url")]
         [Url]
         public string InstaGramUrl { get; set; }
         public string FooterText { get; set; }
