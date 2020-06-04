@@ -877,7 +877,7 @@ namespace WMS.Controllers
                 //results.Add(res);
             }
 
-            return _EditableProductGrid(AssociatedItem, KitType);
+            return _EditableProductGrid(AssociatedItem, KitType, ProductID);
         }
 
         #endregion

@@ -1403,7 +1403,7 @@ namespace Ganedata.Core.Services
                     ProcessByPallet = prd.ProcessByPallet,
                     Qty = prd.ProductKitMap.Where(x => x.KitProductId == prd.ProductId && x.IsDeleted != true && x.TenantId == prd.TenantId && x.ProductKitType == KitType).Select(u => u.Quantity).DefaultIfEmpty(0).Sum(),
                     Id = prd.ProductKitMap.FirstOrDefault(x => x.KitProductId == prd.ProductId && x.IsDeleted != true && x.TenantId == prd.TenantId && x.ProductKitType == KitType).ProductKitTypeId,
-                    IsActive = prd.ProductKitMap.FirstOrDefault(x => x.KitProductId == prd.ProductId && x.IsDeleted != true && x.TenantId == prd.TenantId && x.ProductKitType == KitType).IsActive,
+                    IsActive = prd.ProductKitMap.FirstOrDefault(x => x.KitProductId == prd.ProductId && x.IsDeleted != true && x.TenantId == prd.TenantId && x.ProductKitType == KitType && (productId == null || x.ProductId == productId)).IsActive,
                     AttributeValueNames = prd.ProductAttributeValuesMap.Where(m => m.IsDeleted != true).Select(x => x.ProductAttributeValues.ProductAttributes.AttributeName + ": " + x.ProductAttributeValues.Value).ToList()
                 });
 

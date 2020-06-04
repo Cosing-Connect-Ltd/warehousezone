@@ -7,7 +7,8 @@
             Controller = "Products",
             Action = "_EditableProductGrid",
             AssociatedItem = ViewBag.AssociatedItem,
-            KitType = ViewBag.KitTypes
+            KitType = ViewBag.KitTypes,
+            productId = ViewBag.ProductId
         };
 
         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
@@ -18,17 +19,17 @@
         settings.EnableCallbackAnimation = false;
         settings.CustomBindingRouteValuesCollection.Add(
             GridViewOperationType.Paging,
-            new { Controller = "Products", Action = "_ProductEditListPaging", AssociatedItem = ViewBag.AssociatedItem, KitType = ViewBag.KitTypes }
+            new { Controller = "Products", Action = "_ProductEditListPaging", AssociatedItem = ViewBag.AssociatedItem, KitType = ViewBag.KitTypes, productId = ViewBag.ProductId }
         );
 
         settings.CustomBindingRouteValuesCollection.Add(
         GridViewOperationType.Filtering,
-        new { Controller = "Products", Action = "_ProductsEditFiltering", AssociatedItem = ViewBag.AssociatedItem, KitType = ViewBag.KitTypes }
+        new { Controller = "Products", Action = "_ProductsEditFiltering", AssociatedItem = ViewBag.AssociatedItem, KitType = ViewBag.KitTypes, productId = ViewBag.ProductId }
         );
 
         settings.CustomBindingRouteValuesCollection.Add(
         GridViewOperationType.Sorting,
-        new { Controller = "Products", Action = "_ProductsEditGetDataSorting", AssociatedItem = ViewBag.AssociatedItem, KitType = ViewBag.KitTypes }
+        new { Controller = "Products", Action = "_ProductsEditGetDataSorting", AssociatedItem = ViewBag.AssociatedItem, KitType = ViewBag.KitTypes, productId = ViewBag.ProductId }
         );
 
         settings.Settings.ShowHeaderFilterButton = true;
@@ -171,34 +172,34 @@
         column.EditFormSettings.Visible = DefaultBoolean.False;
         column.SetDataItemTemplateContent(container =>
 {
-                List<string> type = DataBinder.Eval(container.DataItem, "AttributeValueNames") as List<string>;
+    List<string> type = DataBinder.Eval(container.DataItem, "AttributeValueNames") as List<string>;
 
-                if (type != null && type.Count() > 0)
-                {
-                    var listSplit = type.Select(u => u.Split(':')).ToList();
-                    Dictionary<string, string>
-                        data = new Dictionary<string, string>
-                            ();
-                    foreach (var item in listSplit)
-                    {
-                        if (!data.ContainsKey(item[0].ToString()))
-                        {
-                            data.Add(item[0], item[1]);
-                        }
-                        else
-                        {
-                            var value = data[item[0].ToString()];
-                            data[item[0].ToString()] = value + ", " + item[1];
+    if (type != null && type.Count() > 0)
+    {
+        var listSplit = type.Select(u => u.Split(':')).ToList();
+        Dictionary<string, string>
+    data = new Dictionary<string, string>
+        ();
+        foreach (var item in listSplit)
+        {
+            if (!data.ContainsKey(item[0].ToString()))
+            {
+                data.Add(item[0], item[1]);
+            }
+            else
+            {
+                var value = data[item[0].ToString()];
+                data[item[0].ToString()] = value + ", " + item[1];
 
-                        }
+            }
 
-                    }
-                    var attributes = String.Join(", ", data.Select(d => String.Format("{0}:{1}", d.Key, d.Value)));
-                    ViewContext.Writer.Write(attributes);
+        }
+        var attributes = String.Join(", ", data.Select(d => String.Format("{0}:{1}", d.Key, d.Value)));
+        ViewContext.Writer.Write(attributes);
 
-                }
+    }
 
-            });
+});
     });
 
             if (ViewBag.KitTypes != Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Grouped && ViewBag.KitTypes != Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
