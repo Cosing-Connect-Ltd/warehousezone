@@ -10,31 +10,31 @@
         e.customArgs["ProductID"] = $("#ProductId").val();
     }
 
-        function OnEndGridCallback(s, e) {
-            var lastIndex = parseInt($("#LastEditingRowIndex").val()) || 0;
-            SetGridEditorToRowIndex(lastIndex);
+    function OnEndGridCallback(s, e) {
+        var lastIndex = parseInt($("#LastEditingRowIndex").val()) || 0;
+        SetGridEditorToRowIndex(lastIndex);
+    }
+
+    function SetGridEditorToRowIndex(index) {
+        ProductEditListGridView.batchEditApi.StartEdit(index, ProductEditListGridView.GetColumnByField($("#LastEditingColIndex").val()).index);
+    }
+
+    function OnDetailsChanged(s, e) {
+        ProductEditListGridView.UpdateEdit();
+    }
+
+    function OnSpecialPricesGridFocusChanged(s, e) {
+        if (e.cellInfo.rowVisibleIndex >= 0) {
+            $("#LastEditingRowIndex").val(e.cellInfo.rowVisibleIndex);
         }
 
-        function SetGridEditorToRowIndex(index) {
-            ProductEditListGridView.batchEditApi.StartEdit(index, ProductEditListGridView.GetColumnByField($("#LastEditingColIndex").val()).index);
-        }
-
-        function OnDetailsChanged(s, e) {
-            ProductEditListGridView.UpdateEdit();
-        }
-
-        function OnSpecialPricesGridFocusChanged(s, e) {
-            if (e.cellInfo.rowVisibleIndex >= 0) {
-                $("#LastEditingRowIndex").val(e.cellInfo.rowVisibleIndex);
-            }
-
-            $("#RowIndexForProductId").val(e.cellInfo.rowVisibleIndex);
-            $("#LastEditingColIndex").val(e.cellInfo.column.fieldName);
-        }
+        $("#RowIndexForProductId").val(e.cellInfo.rowVisibleIndex);
+        $("#LastEditingColIndex").val(e.cellInfo.column.fieldName);
+    }
 </script>
 
 @Html.Hidden("LastEditingRowIndex")
 @Html.Hidden("LastEditingColIndex")
 @Html.Hidden("RowIndexForProductId")
 @Html.Hidden("selkey")
-@Html.Action("_EditableProductGrid", new { AssociatedItem = ViewBag.AssociatedItem, KitType = ViewBag.KitTypes })
+@Html.Action("_EditableProductGrid", new { AssociatedItem = ViewBag.AssociatedItem, KitType = ViewBag.KitTypes, productId = ViewBag.ProductId })

@@ -164,6 +164,43 @@
                 c.EditFormSettings.Visible = DefaultBoolean.False;
             });
 
+            settings.Columns.Add(column =>
+    {
+        column.Caption = "Attributes";
+        column.Name = "AttributeValues";
+        column.EditFormSettings.Visible = DefaultBoolean.False;
+        column.SetDataItemTemplateContent(container =>
+{
+                List<string> type = DataBinder.Eval(container.DataItem, "AttributeValueNames") as List<string>;
+
+                if (type != null && type.Count() > 0)
+                {
+                    var listSplit = type.Select(u => u.Split(':')).ToList();
+                    Dictionary<string, string>
+                        data = new Dictionary<string, string>
+                            ();
+                    foreach (var item in listSplit)
+                    {
+                        if (!data.ContainsKey(item[0].ToString()))
+                        {
+                            data.Add(item[0], item[1]);
+                        }
+                        else
+                        {
+                            var value = data[item[0].ToString()];
+                            data[item[0].ToString()] = value + ", " + item[1];
+
+                        }
+
+                    }
+                    var attributes = String.Join(", ", data.Select(d => String.Format("{0}:{1}", d.Key, d.Value)));
+                    ViewContext.Writer.Write(attributes);
+
+                }
+
+            });
+    });
+
             if (ViewBag.KitTypes != Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Grouped && ViewBag.KitTypes != Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
             {
                 settings.Columns.Add(c =>
@@ -200,61 +237,20 @@
             }
 
 
-        //if (ViewBag.KitTypes == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
-        //{
-
-        settings.Columns.Add(column =>
-        {
-            column.Caption = "Attributes";
-            column.Name = "AttributeValues";
-            column.EditFormSettings.Visible = DefaultBoolean.False;
-            column.SetDataItemTemplateContent(container =>
+            settings.Columns.Add(c =>
             {
-                List<string> type = DataBinder.Eval(container.DataItem, "AttributeValueNames") as List<string>;
-
-                if (type != null && type.Count() > 0)
+                c.FieldName = "IsActive";
+                c.Caption = "Active";
+                c.ColumnType = MVCxGridViewColumnType.CheckBox;
+                c.EditorProperties().CheckBox(p =>
                 {
-                    var listSplit = type.Select(u => u.Split(':')).ToList();
-                    Dictionary<string, string>
-                        data = new Dictionary<string, string>
-                            ();
-                    foreach (var item in listSplit)
-                    {
-                        if (!data.ContainsKey(item[0].ToString()))
-                        {
-                            data.Add(item[0], item[1]);
-                        }
-                        else
-                        {
-                            var value = data[item[0].ToString()];
-                            data[item[0].ToString()] = value + "," + item[1];
-
-                        }
-
-                    }
-                    var attributes = String.Join(",", data.Select(d => String.Format("{0}:{1}", d.Key, d.Value)));
-                    ViewContext.Writer.Write(attributes);
-
-                }
+                    p.ClientSideEvents.ValueChanged = "function(s,e){ OnDetailsChanged(s,e);}";
+                    p.ValidationSettings.Display = Display.Dynamic;
+                    p.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.None;
+                });
 
             });
-        });
 
-        //}
-
-        settings.Columns.Add(c =>
-        {
-            c.FieldName = "IsActive";
-            c.Caption = "Active";
-            c.ColumnType = MVCxGridViewColumnType.CheckBox;
-            c.EditorProperties().CheckBox(p =>
-            {
-                p.ClientSideEvents.ValueChanged = "function(s,e){ OnDetailsChanged(s,e);}";
-                p.ValidationSettings.Display = Display.Dynamic;
-                p.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.None;
-            });
-
-        });
             settings.ClientSideEvents.BeginCallback = "function(s,e){ OnBeginGridCallback(s, e); }";
             settings.ClientSideEvents.FocusedCellChanging = "OnSpecialPricesGridFocusChanged";
             settings.ClientSideEvents.EndCallback = "OnEndGridCallback";

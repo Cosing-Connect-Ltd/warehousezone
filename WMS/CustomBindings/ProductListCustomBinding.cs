@@ -16,16 +16,16 @@ namespace WMS.CustomBindings
     public class ProductListCustomBinding
     {
 
-        private static IQueryable<object> GetProductDataset(int tenantId, int warehouseId, ProductKitTypeEnum? KitType=null)
+        private static IQueryable<object> GetProductDataset(int tenantId, int warehouseId, ProductKitTypeEnum? KitType = null, int? productId = null)
         {
             var productServices = DependencyResolver.Current.GetService<IProductServices>();
-            var transactions = productServices.GetAllProductMasterDetail(tenantId, warehouseId,KitType);
+            var transactions = productServices.GetAllProductMasterDetail(tenantId, warehouseId, KitType, productId);
             return transactions;
         }
 
-        public static void ProductGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId, ProductKitTypeEnum? KitType = null)
+        public static void ProductGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId, ProductKitTypeEnum? KitType = null, int? productId = null)
         {
-            var transactions = GetProductDataset(tenantId, warehouseId,KitType);
+            var transactions = GetProductDataset(tenantId, warehouseId, KitType, productId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
@@ -61,10 +61,10 @@ namespace WMS.CustomBindings
             e.Data = transactions.ToList();
         }
 
-        public static void ProductGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId, ProductKitTypeEnum? KitType=null)
+        public static void ProductGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId, ProductKitTypeEnum? KitType = null, int? productId = null)
         {
 
-            var transactions = GetProductDataset(tenantId, warehouseId, KitType);
+            var transactions = GetProductDataset(tenantId, warehouseId, KitType, productId);
 
             if (e.State.SortedColumns.Count() > 0)
             {

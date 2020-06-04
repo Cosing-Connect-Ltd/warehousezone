@@ -1,6 +1,6 @@
-﻿@using Ganedata.Core.Entities.Domain
+﻿@using Ganedata.Core.Services
 @{
-    var siteProperties = ViewBag.TenantWebsite as TenantWebsites;
+    var siteProperties = ViewBag.TenantWebsite as caTenantWebsites;
 }
 <li class="facebook"><a href="@siteProperties.FacebookUrl"><i class="fa fa-facebook"></i></a></li>
 <li class="twitter"><a href="@siteProperties.TwitterUrl"><i class="fa fa-twitter"></i></a></li>

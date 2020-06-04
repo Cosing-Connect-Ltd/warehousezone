@@ -623,7 +623,7 @@ namespace Ganedata.Core.Services
                     }
 
                 }
-                if (productAttributesIds == null && productMaster.ProductType == ProductKitTypeEnum.Simple)
+                if (productAttributesIds == null)
                 {
                     foreach (var entity in _currentDbContext.ProductAttributeValuesMap.Where(
                         x => x.ProductId == productMaster.ProductId))
@@ -1344,12 +1344,22 @@ namespace Ganedata.Core.Services
             return "ITM-100001";
         }
 
-        public IQueryable<ProductMasterViewModel> GetAllProductMasterDetail(int tenantId, int warehouseId, ProductKitTypeEnum? KitType = null)
+        public IQueryable<ProductMasterViewModel> GetAllProductMasterDetail(int tenantId, int warehouseId, ProductKitTypeEnum? KitType = null, int? productId = null)
         {
+
+            var productAttributeIds = new List<int>();
+
+            if (productId != null && KitType == ProductKitTypeEnum.ProductByAttribute)
+            {
+                productAttributeIds = _currentDbContext.ProductAttributeMaps.Where(x => x.ProductId == productId && x.IsDeleted != true).Select(y => y.ProductAttributes.AttributeId).ToList();
+            }
+
             var model = _currentDbContext.ProductMaster.AsNoTracking()
                 .Include(u => u.ProductKitMap)
                 .Include(x => x.ProductAttributeValuesMap)
-                .Where(x => x.TenantId == tenantId && x.IsDeleted != true)
+                .Where(x => x.TenantId == tenantId && x.IsDeleted != true
+                && ((!productAttributeIds.Any() && KitType != ProductKitTypeEnum.ProductByAttribute)
+                || x.ProductAttributeValuesMap.Where(a => a.IsDeleted != true).Select(m => m.ProductAttributeValues.ProductAttributes.AttributeId).Any(n => productAttributeIds.Contains(n))))
                 .Select(prd => new ProductMasterViewModel
                 {
                     ProductId = prd.ProductId,
@@ -1394,8 +1404,8 @@ namespace Ganedata.Core.Services
                     Qty = prd.ProductKitMap.Where(x => x.KitProductId == prd.ProductId && x.IsDeleted != true && x.TenantId == prd.TenantId && x.ProductKitType == KitType).Select(u => u.Quantity).DefaultIfEmpty(0).Sum(),
                     Id = prd.ProductKitMap.FirstOrDefault(x => x.KitProductId == prd.ProductId && x.IsDeleted != true && x.TenantId == prd.TenantId && x.ProductKitType == KitType).ProductKitTypeId,
                     IsActive = prd.ProductKitMap.FirstOrDefault(x => x.KitProductId == prd.ProductId && x.IsDeleted != true && x.TenantId == prd.TenantId && x.ProductKitType == KitType).IsActive,
-                    AttributeValueNames = prd.ProductAttributeValuesMap.Select(x => x.ProductAttributeValues.ProductAttributes.AttributeName + ":" + x.ProductAttributeValues.Value).ToList()
-                }).OrderBy(x => x.Name);
+                    AttributeValueNames = prd.ProductAttributeValuesMap.Where(m => m.IsDeleted != true).Select(x => x.ProductAttributeValues.ProductAttributes.AttributeName + ": " + x.ProductAttributeValues.Value).ToList()
+                });
 
             return model;
         }

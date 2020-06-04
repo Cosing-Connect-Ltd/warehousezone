@@ -1,6 +1,7 @@
 ﻿@model Ganedata.Core.Entities.Domain.ProductMaster
 @using Ganedata.Core.Entities.Helpers
 @using Ganedata.Core.Models;
+@using Ganedata.Core.Entities.Enums
 
 @section scripts {
 
@@ -87,12 +88,13 @@
                 var active = $('#tabs').tabs('option', 'active');
                 var TabId = $("#tabs ul>li a").eq(active).attr("href");
                 var kit = $('#ProductType :selected').val();
+                var productId = $('#ProductId').val();
 
                 if (TabId === "#product-associated-items") {
                     $.ajax({
                         type: "GET",
                         url: "/Products/_GetAssociatedItems/",
-                        data: { productKitType: kit },
+                        data: { productKitType: kit, productId: productId },
                         dataType: 'html',
                         success: function (data) {
                             $('.associatedItems').empty();
@@ -157,7 +159,7 @@
             <li><a href="#product-attributes">Product Attributes</a></li>
             <li><a href="#product-locations">Product Locations</a></li>
             <li><a href="#product-inventory">Inventory</a></li>
-            <li><a href="#product-associated-items" class="associated-items" style=@(Model.ProductType!=Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Simple?"":"display:none")>Associated Items</a></li>
+            <li><a href="#product-associated-items" class="associated-items" style=@(Model.ProductType != ProductKitTypeEnum.Simple?"":"display:none")>Associated Items</a></li>
 
 
         </ul>
@@ -248,7 +250,7 @@
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.LabelFor(model => model.ProductType, htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
-                        @Html.EnumDropDownListFor(model => model.ProductType, htmlAttributes: new { @class = "form-control" })
+                        @Html.EnumDropDownListFor(model => model.ProductType, htmlAttributes: new { @class = "form-control chosen-select" })
                         @Html.ValidationMessageFor(model => model.ProductType, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -256,7 +258,6 @@
                     @Html.Label("Product Attribute", htmlAttributes: new { @class = "col-md-4" })
                     <div class="col-md-8">
                         @Html.ListBox("AttributeIds", new MultiSelectList(ViewBag.AttributeGroups, "AttributeId", "AttributeName", ViewBag.productAttributeids), new { Multiple = "multiple", @class = "chosen-select", data_placeholder = "Choose Atttribute" })
-
                     </div>
                 </div>
 

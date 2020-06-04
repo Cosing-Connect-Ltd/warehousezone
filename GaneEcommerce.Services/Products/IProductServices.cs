@@ -23,7 +23,7 @@ namespace Ganedata.Core.Services
         IEnumerable<ProductMaster> GetAllProductInKitsByKitProductId(int productId);
         IEnumerable<int> GetAllProductsInALocationFromMaps(int locationId);
         IEnumerable<int> GetAllProductLocationsFromMaps(int productId);
-        IQueryable<ProductMasterViewModel> GetAllProductMasterDetail(int tenantId, int warehouseId, ProductKitTypeEnum? KitType = null);
+        IQueryable<ProductMasterViewModel> GetAllProductMasterDetail(int tenantId, int warehouseId, ProductKitTypeEnum? KitType = null, int? productId = null);
         IEnumerable<ProductAccountCodes> GetAllProductAccountCodesByProductId(int productId);
         InventoryStock GetInventoryStockByProductTenantLocation(int productId, int warehouseId);
         List<InventoryStock> GetAllInventoryStocksByProductId(int productId);

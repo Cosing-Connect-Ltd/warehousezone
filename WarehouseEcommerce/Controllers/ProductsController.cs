@@ -164,12 +164,12 @@ namespace WarehouseEcommerce.Controllers
 
             }
             product.SellPrice = Math.Round((product.SellPrice ?? 0) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value), 2);
-            if (product.ProductType==ProductKitTypeEnum.Grouped)
+            if (product.ProductType == ProductKitTypeEnum.Grouped)
             {
                 return RedirectToAction("GroupedProductDetail", "Products", new { sku = sku });
             }
             else if (product.ProductType == ProductKitTypeEnum.Kit)
-                {
+            {
                 return RedirectToAction("KitProductDetail", "Products", new { sku = sku });
             }
 
@@ -227,7 +227,7 @@ namespace WarehouseEcommerce.Controllers
                          }).OrderBy(u => u.Id).Take(10).ToList();
 
 
-            model.ForEach(x => x.Path = ConfigurationManager.AppSettings["BaseFilePath"] + (string.IsNullOrEmpty(x.Path) ? "/UploadedFiles/Products/no_image.gif" : x.Path));
+            model.ForEach(x => x.Path = CurrentTenantWebsite.BaseFilePath + (string.IsNullOrEmpty(x.Path) ? "/UploadedFiles/Products/no_image.gif" : x.Path));
 
 
             return Json(model, JsonRequestBehavior.AllowGet);
@@ -595,8 +595,8 @@ namespace WarehouseEcommerce.Controllers
             return Json(count, JsonRequestBehavior.AllowGet);
 
 
-           
-            
+
+
 
 
         }

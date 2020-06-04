@@ -1,7 +1,7 @@
 ﻿<!-- header start -->
-@using Ganedata.Core.Entities.Domain
+@using Ganedata.Core.Services
 @{
-    var siteProperties = ViewBag.TenantWebsite as TenantWebsites;
+    var siteProperties = ViewBag.TenantWebsite as caTenantWebsites;
 }
 <header>
     <div class="header-top-area hide-this">
@@ -46,7 +46,7 @@
                         {
                             <a href="@siteProperties.YoutubeUrl"><i class="fa fa-youtube"></i></a>
                         }
-                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -62,7 +62,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-xl-6 top-menu">
                     <div class="main-menu">
-                      @Html.Action("_HorizontalNavbarPartial","Home")
+                        @Html.Action("_HorizontalNavbarPartial", "Home")
                     </div>
                     <div class="mobile-menu-area"></div>
                 </div>

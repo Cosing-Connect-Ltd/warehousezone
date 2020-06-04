@@ -139,7 +139,7 @@ namespace WMS.Controllers
             ViewBag.WeightGroupId = new SelectList(weightGroups, "WeightGroupId", "Description", productMaster.WeightGroupId);
             ViewBag.LotOptionCodeId = new SelectList(lotOptionCodes, "LotOptionCodeId", "Description", productMaster.LotOptionCodeId);
             ViewBag.LotProcessTypeCodeId = new SelectList(lotProcessTypeCodes, "LotProcessTypeCodeId", "Description", productMaster.LotProcessTypeCodeId);
-            ViewBag.productAttributeids = _productLookupService.GetAllValidProductAttributeMaps(CurrentTenantId).Select(u => u.AttributeId).ToList();
+            ViewBag.productAttributeids = _productLookupService.GetAllValidProductAttributeMaps(CurrentTenantId).Where(x => x.ProductId == id.Value).Select(u => u.AttributeId).ToList();
             ViewBag.ProductLocations = _productLookupService.GetAllValidProductLocations(CurrentTenantId, CurrentWarehouseId);
             ViewBag.WebsiteIds = _lookupServices.GetAllValidWebsites(CurrentTenantId).ToList();
             ViewBag.ProductTag = _productLookupService.GetAllValidProductTag(CurrentTenantId).ToList();
@@ -170,7 +170,7 @@ namespace WMS.Controllers
                     Value = patr.Value
                 }).OrderBy(a => a.Attribute).ToList();
 
-            ViewBag.ProductAttributesIds = _productLookupService.GetAllValidProductAttributeValuesMap().Select(a => a.AttributeValueId).ToList();
+            ViewBag.ProductAttributesIds = _productLookupService.GetAllValidProductAttributeValuesMap().Where(x => (x.ProductId == id.Value)).Select(a => a.AttributeValueId).ToList();
 
 
             if (!productMaster.Discontinued)
@@ -178,8 +178,6 @@ namespace WMS.Controllers
 
             ViewBag.ProductKitItems = new MultiSelectList(productMaster.ProductKitMap.Where(u => u.ProductKitType == ProductKitTypeEnum.Kit && u.IsDeleted != true).Select(pm => new { ProductId = pm.KitProductId, ProductName = pm.KitProductMaster.Name + "" + "(" + (pm.Quantity) + ")" }).ToList(), "ProductId", "ProductName", productMaster.ProductKitMap.Where(u => u.ProductKitType == ProductKitTypeEnum.Kit && u.IsDeleted != true).Select(u => u.KitProductId).ToList());
             ViewBag.ProductgroupItems = new MultiSelectList(productMaster.ProductKitMap.Where(u => u.ProductKitType == ProductKitTypeEnum.Grouped && u.IsDeleted != true).Select(pm => new { ProductId = pm.KitProductId, ProductName = pm.KitProductMaster.Name }).ToList(), "ProductId", "ProductName", productMaster.ProductKitMap.Where(u => u.ProductKitType == ProductKitTypeEnum.Grouped && u.IsDeleted != true).Select(u => u.KitProductId).ToList());
-
-            //ViewBag.ProductKitIds =string.Join(",",_productServices.GetAllProductInKitsByProductId(id.Value).Where(u=>u.ProductKitType==ProductKitTypeEnum.Kit).Select(a => a.KitProductId).Distinct().ToList());
 
             var prefAccounts = _accountServices.GetAllValidAccounts(CurrentTenantId, EnumAccountType.Supplier).Select(acnts => new
             {
@@ -782,10 +780,11 @@ namespace WMS.Controllers
         {
             return View();
         }
-        public ActionResult _EditableProductGrid(bool? AssociatedItem, ProductKitTypeEnum? KitType = null)
+        public ActionResult _EditableProductGrid(bool? AssociatedItem, ProductKitTypeEnum? KitType = null, int? productId = null)
         {
             ViewBag.AssociatedItem = AssociatedItem;
             ViewBag.KitTypes = KitType;
+            ViewBag.ProductId = productId;
             if (KitType == ProductKitTypeEnum.Grouped)
             {
                 ViewBag.GetKitTypes = _productLookupService.GetProductKitTypes(CurrentTenantId).ToList();
@@ -795,9 +794,9 @@ namespace WMS.Controllers
             if (viewModel == null)
                 viewModel = ProductListCustomBinding.CreateProductGridViewModel();
 
-            return ProductEditGridActionCore(viewModel, KitType);
+            return ProductEditGridActionCore(viewModel, KitType, productId);
         }
-        public ActionResult _ProductEditListPaging(GridViewPagerState pager, bool? AssociatedItem, ProductKitTypeEnum? KitType = null)
+        public ActionResult _ProductEditListPaging(GridViewPagerState pager, bool? AssociatedItem, ProductKitTypeEnum? KitType = null, int? productId = null)
         {
             ViewBag.AssociatedItem = AssociatedItem;
             ViewBag.KitTypes = KitType;
@@ -807,9 +806,9 @@ namespace WMS.Controllers
             }
             var viewModel = GridViewExtension.GetViewModel("ProductEditListGridView");
             viewModel.Pager.Assign(pager);
-            return ProductEditGridActionCore(viewModel, KitType);
+            return ProductEditGridActionCore(viewModel, KitType, productId);
         }
-        public ActionResult _ProductsEditFiltering(GridViewFilteringState filteringState, bool? AssociatedItem, ProductKitTypeEnum? KitType = null)
+        public ActionResult _ProductsEditFiltering(GridViewFilteringState filteringState, bool? AssociatedItem, ProductKitTypeEnum? KitType = null, int? productId = null)
         {
             ViewBag.AssociatedItem = AssociatedItem;
             ViewBag.KitTypes = KitType;
@@ -819,9 +818,9 @@ namespace WMS.Controllers
             }
             var viewModel = GridViewExtension.GetViewModel("ProductEditListGridView");
             viewModel.ApplyFilteringState(filteringState);
-            return ProductEditGridActionCore(viewModel, KitType);
+            return ProductEditGridActionCore(viewModel, KitType, productId);
         }
-        public ActionResult _ProductsEditGetDataSorting(GridViewColumnState column, bool reset, bool? AssociatedItem, ProductKitTypeEnum? KitType = null)
+        public ActionResult _ProductsEditGetDataSorting(GridViewColumnState column, bool reset, bool? AssociatedItem, ProductKitTypeEnum? KitType = null, int? productId = null)
         {
             ViewBag.AssociatedItem = AssociatedItem;
             ViewBag.KitTypes = KitType;
@@ -831,19 +830,19 @@ namespace WMS.Controllers
             }
             var viewModel = GridViewExtension.GetViewModel("ProductEditListGridView");
             viewModel.ApplySortingState(column, reset);
-            return ProductEditGridActionCore(viewModel, KitType);
+            return ProductEditGridActionCore(viewModel, KitType, productId);
         }
-        public ActionResult ProductEditGridActionCore(GridViewModel gridViewModel, ProductKitTypeEnum? KitType)
+        public ActionResult ProductEditGridActionCore(GridViewModel gridViewModel, ProductKitTypeEnum? KitType, int? productId = null)
         {
             gridViewModel.ProcessCustomBinding(
                 new GridViewCustomBindingGetDataRowCountHandler(args =>
                 {
-                    ProductListCustomBinding.ProductGetDataRowCount(args, CurrentTenantId, CurrentWarehouseId, KitType);
+                    ProductListCustomBinding.ProductGetDataRowCount(args, CurrentTenantId, CurrentWarehouseId, KitType, productId);
                 }),
 
                     new GridViewCustomBindingGetDataHandler(args =>
                     {
-                        ProductListCustomBinding.ProductGetData(args, CurrentTenantId, CurrentWarehouseId, KitType);
+                        ProductListCustomBinding.ProductGetData(args, CurrentTenantId, CurrentWarehouseId, KitType, productId);
                     })
             );
             return PartialView("_EditableProductGrid", gridViewModel);
@@ -861,10 +860,11 @@ namespace WMS.Controllers
             _productServices.SaveEditProduct(productMaster, CurrentUserId, CurrentTenantId);
             return _EditableProductGrid(null);
         }
-        public PartialViewResult _GetAssociatedItems(ProductKitTypeEnum productKitType)
+        public PartialViewResult _GetAssociatedItems(ProductKitTypeEnum productKitType, int productId)
         {
             ViewBag.AssociatedItem = true;
             ViewBag.KitTypes = productKitType;
+            ViewBag.ProductId = productId;
             return PartialView();
         }
         public ActionResult SaveAssociated(bool? AssociatedItem, ProductKitTypeEnum KitType, int ProductID, MVCxGridViewBatchUpdateValues<ProductMasterViewModel, int> updateValues)

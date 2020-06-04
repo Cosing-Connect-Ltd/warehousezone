@@ -75,6 +75,8 @@ namespace Ganedata.Core.Services
                     tenantWebsite.YoutubeUrl = tenantWeb.YoutubeUrl;
                     tenantWebsite.TwitterUrl = tenantWeb.TwitterUrl;
                     tenantWebsite.FooterText = tenantWeb.FooterText;
+                    tenantWebsite.HostName = tenantWeb.HostName;
+                    tenantWebsite.BaseFilePath = tenantWeb.BaseFilePath;
                     HttpContext.Current.Session["CurrentTenantWebsites"] = tenantWebsite;
                     HttpContext.Current.Session["caErrors"] = null;
                 }

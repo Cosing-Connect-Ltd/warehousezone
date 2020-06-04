@@ -31,6 +31,8 @@ namespace WarehouseEcommerce.Controllers
             PropertyService = propertyService;
             AccountServices = accountServices;
             LookupServices = lookupServices;
+
+            var res = CurrentTenantWebsite;
         }
 
         private caTenantWebsites _CurrentTenantWebsite { get; set; }
@@ -175,7 +177,9 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.LoginDetail = CurrentUserId > 0 ? "Logout" : "Login";
             ViewBag.CurrentUserId = CurrentUserId;
             ViewBag.Currencies = LookupServices.GetAllGlobalCurrencies();
-            SetTenantWebsiteProperties();
+            ViewBag.TenantWebsite = CurrentTenantWebsite;
+            ViewBag.BaseFilePath = CurrentTenantWebsite.BaseFilePath;
+            ViewBag.BasePath = Request.Url.Scheme + "://" + CurrentTenantWebsite.HostName;
             if (Session["CurrencyDetail"] == null)
             {
                 CurrencyDetail(null);
@@ -323,14 +327,7 @@ namespace WarehouseEcommerce.Controllers
                 ViewBag.WishListItemCount = GaneWishListItemsSessionHelper.GetWishListItemsSession().Count();
             }
         }
-        public void SetTenantWebsiteProperties()
-        {
-            var _tenantWebsiteService = DependencyResolver.Current.GetService<ITenantWebsiteService>();
-            var website = _tenantWebsiteService.GetTenantWebSiteBySiteId(CurrentTenantWebsite.SiteID);
-            ViewBag.TenantWebsite = website;
-            ViewBag.BaseFilePath = website.BaseFilePath;
-            ViewBag.BasePath = Request.Url.Scheme + "://" + website.HostName;
-        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
