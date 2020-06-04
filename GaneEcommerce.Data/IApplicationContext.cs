@@ -179,5 +179,6 @@ namespace Ganedata.Core.Data
         DbSet<ProductAttributeMap> ProductAttributeMaps { get; set; }
         DbSet<UISetting> UISettings { get; set; }
         DbSet<UISettingItem> UISettingItems { get; set; }
+        DbSet<WebsiteWarehouses> WebsiteWarehouses { get; set; }
     }
 }

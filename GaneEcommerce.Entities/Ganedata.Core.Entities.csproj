@@ -231,6 +231,7 @@
     <Compile Include="Domain\ViewModels\TooltipViewModel.cs" />
     <Compile Include="Domain\ViewModels\WebsiteDiscountCodesProductsViewModel.cs" />
     <Compile Include="Domain\Websites\ProductsNavigationMap.cs" />
+    <Compile Include="Domain\Websites\WebsiteWarehouses.cs" />
     <Compile Include="Domain\Websites\WebsiteWisListItem.cs" />
     <Compile Include="Domain\Websites\WebsiteDiscountProductsMap.cs" />
     <Compile Include="Domain\Websites\WebsiteDiscountCodes.cs" />

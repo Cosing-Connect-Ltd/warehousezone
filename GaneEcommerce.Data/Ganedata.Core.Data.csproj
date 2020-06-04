@@ -891,6 +891,10 @@
     <Compile Include="Migrations\202006031645372_ishomepage-field-added-in-websitecontent.designer.cs">
       <DependentUpon>202006031645372_ishomepage-field-added-in-websitecontent.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202006040423547_Tenant-Warehouses-Added.cs" />
+    <Compile Include="Migrations\202006040423547_Tenant-Warehouses-Added.designer.cs">
+      <DependentUpon>202006040423547_Tenant-Warehouses-Added.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1879,6 +1883,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202006031645372_ishomepage-field-added-in-websitecontent.resx">
       <DependentUpon>202006031645372_ishomepage-field-added-in-websitecontent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006040423547_Tenant-Warehouses-Added.resx">
+      <DependentUpon>202006040423547_Tenant-Warehouses-Added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

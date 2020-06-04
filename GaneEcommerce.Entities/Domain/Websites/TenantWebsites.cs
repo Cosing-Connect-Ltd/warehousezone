@@ -59,5 +59,6 @@ namespace Ganedata.Core.Entities.Domain
         public virtual ICollection<WebsiteContentPages> WebsiteContentPages { get; set; }
         public virtual ICollection<WebsiteSlider> WebsiteSlider { get; set; }
         public virtual ICollection<WebsiteNavigation> WebsiteNavigation { get; set; }
+        public virtual ICollection<WebsiteWarehouses> WebsiteWarehouses { get; set; }
     }
 }

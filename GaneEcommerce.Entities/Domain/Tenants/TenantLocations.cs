@@ -18,6 +18,7 @@ namespace Ganedata.Core.Entities.Domain
             InventoryTransactions = new HashSet<InventoryTransaction>();
             StockTakes = new HashSet<StockTake>();
             ProductLocationStockLevels = new HashSet<ProductLocationStockLevel>();
+            WebsiteWarehouses = new HashSet<WebsiteWarehouses>();
         }
 
         [Key]
@@ -63,21 +64,6 @@ namespace Ganedata.Core.Entities.Domain
         public int MinimumDrivers { get; set; }
         public int MinimumKitchenStaff { get; set; }
         public int MinimumGeneralStaff { get; set; }
-        [ForeignKey("TenantId")]
-        public virtual Tenant Tenants { get; set; }
-        public virtual Address Address { get; set; }
-        public virtual ContactNumbers ContactNumbers { get; set; }
-        public virtual ICollection<EmployeeShifts_Stores> EmployeeShifts_Stores { get; set; }
-        public virtual ICollection<Terminals> Devices { get; set; }
-
-        public virtual GlobalCountry GlobalCountry { get; set; }
-        public virtual ICollection<Locations> Locations { get; set; }
-        public virtual ICollection<OrderDetail> PODetails { get; set; }
-        public virtual ICollection<InventoryStock> InventoryStocks { get; set; }
-        public virtual ICollection<InventoryTransaction> InventoryTransactions { get; set; }
-        public virtual ICollection<StockTake> StockTakes { get; set; }
-        public virtual ICollection<ProductLocationStockLevel> ProductLocationStockLevels { get; set; }
-
         public bool? IsMobile { get; set; }
         [Display(Name = "Autotransfer Order")]
         public bool? AutoTransferOrders { get; set; }
@@ -133,5 +119,20 @@ namespace Ganedata.Core.Entities.Domain
         public bool ShowPriceAlertInSalesOrder { get; set; }
         public bool PickByContainer { get; set; }
         public bool MandatoryPickByContainer { get; set; }
+
+        [ForeignKey("TenantId")]
+        public virtual Tenant Tenants { get; set; }
+        public virtual Address Address { get; set; }
+        public virtual ContactNumbers ContactNumbers { get; set; }
+        public virtual ICollection<EmployeeShifts_Stores> EmployeeShifts_Stores { get; set; }
+        public virtual ICollection<Terminals> Devices { get; set; }
+        public virtual GlobalCountry GlobalCountry { get; set; }
+        public virtual ICollection<Locations> Locations { get; set; }
+        public virtual ICollection<OrderDetail> PODetails { get; set; }
+        public virtual ICollection<InventoryStock> InventoryStocks { get; set; }
+        public virtual ICollection<InventoryTransaction> InventoryTransactions { get; set; }
+        public virtual ICollection<StockTake> StockTakes { get; set; }
+        public virtual ICollection<ProductLocationStockLevel> ProductLocationStockLevels { get; set; }
+        public virtual ICollection<WebsiteWarehouses> WebsiteWarehouses { get; set; }
     }
 }
