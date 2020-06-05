@@ -357,6 +357,57 @@ namespace Ganedata.Core.Services
             return true;
         }
 
+        public IQueryable<WebsiteWarehousesViewModel> GetAllValidWebsiteWarehouses(int TenantId, int SiteId)
+        {
+            var allWarehouses = _currentDbContext.TenantWarehouses.Where(m => m.TenantId == TenantId && m.IsDeleted != true && m.IsActive);
+            var websiteWarehouses = _currentDbContext.WebsiteWarehouses.Where(u => u.IsDeleted != true && u.SiteID == SiteId && u.TenantId == TenantId);
+            var res = (from p in allWarehouses
+                       join w in websiteWarehouses on p.WarehouseId equals w.WarehouseId into tempMap
+                       from d in tempMap.DefaultIfEmpty()
+                       select new WebsiteWarehousesViewModel()
+                       {
+                           Id = p.WarehouseId,
+                           SiteID = SiteId,
+                           WarehouseId = p.WarehouseId,
+                           WarehouseName = p.WarehouseName,
+                           WarehouseAddress = p.AddressLine1,
+                           WarehouseCity = p.City,
+                           Description = p.Description,
+                           IsActive = d.IsActive,
+                           SortOrder = d.SortOrder
+                       });
+
+            return res;
+        }
+
+        public bool CreateOrUpdateWebsiteWarehouse(WebsiteWarehousesViewModel websiteWarehouseData, int UserId, int TenantId)
+        {
+            var navItem = _currentDbContext.WebsiteWarehouses.FirstOrDefault(x => x.WarehouseId == websiteWarehouseData.WarehouseId && x.TenantId == TenantId);
+
+            if (navItem == null)
+            {
+                WebsiteWarehouses websiteWarehouse = new WebsiteWarehouses();
+                websiteWarehouse.WarehouseId = websiteWarehouseData.WarehouseId;
+                websiteWarehouse.SiteID = websiteWarehouseData.SiteID;
+                websiteWarehouse.SortOrder = websiteWarehouseData.SortOrder ?? 1;
+                websiteWarehouse.TenantId = TenantId;
+                websiteWarehouse.IsActive = websiteWarehouseData.IsActive ?? true;
+                websiteWarehouse.IsDeleted = false;
+                websiteWarehouse.UpdateCreatedInfo(UserId);
+                _currentDbContext.WebsiteWarehouses.Add(websiteWarehouse);
+            }
+            else
+            {
+                navItem.IsActive = websiteWarehouseData.IsActive ?? true;
+                navItem.SortOrder = websiteWarehouseData.SortOrder ?? 1;
+                navItem.IsDeleted = false;
+                navItem.UpdateUpdatedInfo(UserId);
+            }
+
+            _currentDbContext.SaveChanges();
+            return true;
+        }
+
         public IQueryable<ProductMaster> GetProductByNavigationId(int navigationId)
         {
             var productwebsiteMap = _currentDbContext.ProductsNavigationMaps.Where(u => u.NavigationId == navigationId).OrderBy(u => u.SortOrder).Select(u => u.ProductsWebsitesMap);

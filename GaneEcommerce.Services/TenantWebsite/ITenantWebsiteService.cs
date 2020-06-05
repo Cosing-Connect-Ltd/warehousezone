@@ -23,6 +23,10 @@ namespace Ganedata.Core.Services
         WebsiteContentPages GetWebsiteContentById(int Id);
         WebsiteContentPages GetWebsiteContentByUrl(int siteId, string url);
 
+        //WebsiteWarehouses
+        bool CreateOrUpdateWebsiteWarehouse(WebsiteWarehousesViewModel websiteWarehouseData, int UserId, int TenantId);
+        IQueryable<WebsiteWarehousesViewModel> GetAllValidWebsiteWarehouses(int TenantId, int SiteId);
+
 
         //ProductsWebsitesMaps
         IEnumerable<ProductsWebsitesMap> GetAllValidProductsWebsitesMap(int TenantId);

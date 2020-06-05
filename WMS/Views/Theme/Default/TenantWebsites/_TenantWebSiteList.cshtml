@@ -61,7 +61,9 @@ settings.Columns.Add(c =>
              "<a href='" + Url.Action("Index", "WebsiteDiscountCodes", new { SiteId = id }) + "' data-id='" + id + "'><i class='btn fa fa-tags' title='Website Discount List'></i></a>" +
              "<a href='" + Url.Action("Index", "ProductAllowances", new { SiteId = id }) + "' data-id='" + id + "'><i class='btn fa fa-stack-exchange' title='Product Allowance List'></i></a>" +
              "<a href='" + Url.Action("Index", "ProductAllowanceGroups", new { SiteId = id }) + "' data-id='" + id + "'><i class='btn fa fa-list' title='Product Allowance Group List'></i></a>" +
-            "<a href='" + Url.Action("Index", "ApiCredentials", new { SiteId = id }) + "' data-id='" + id + "'><i class='btn fa fa-plug' title='Api Credentials'></i></a>");
+             "<a href='" + Url.Action("Index", "ApiCredentials", new { SiteId = id }) + "' data-id='" + id + "'><i class='btn fa fa-plug' title='Api Credentials'></i></a>" +
+             "<a href='" + Url.Action("Index", "WebsiteWarehouses", new { SiteId = id }) + "' data-id='" + id + "'><i class='btn fa fa-building-o fa-2x' title='Website Warehouses'></i></a>"
+            );
 
             if (LayoutHelpers.IsSuperUser())
             {
