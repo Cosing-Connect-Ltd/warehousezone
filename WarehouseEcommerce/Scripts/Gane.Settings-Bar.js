@@ -5,7 +5,9 @@
 function onUISettingChanged(s) {
     var itemKey = s.getAttribute('data-settingsKey');
 
-    applyUISettings(itemKey, s.value);
+    var selector = s.getAttribute('data-selector');
+
+    applyUISettings(itemKey, s.value, selector);
 }
 
 function saveUISettings() {
@@ -33,11 +35,17 @@ function setUISettingIdsInModel(data) {
     }
 }
 
-function applyUISettings(settingsKey, itemValue) {
+function applyUISettings(settingsKey, itemValue, selector) {
     if (itemValue == undefined || itemValue == null || itemValue == '') { return; }
 
     $("body *").css({ "transition": "background-color 0.5s ease" });
-    $('body')[0].style.setProperty(settingsKey, itemValue);
+
+    var targetElements = !selector ? $('body') : $(selector);
+
+    for (var i = 0; i < targetElements.length; i++) {
+        targetElements[i].style.setProperty(settingsKey, itemValue);
+    }
+
     setTimeout(function () { $("body *").css({ "transition": "" }) }, 500);
 }
 
@@ -57,16 +65,20 @@ function setUISettings(isResetToDefault) {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (uiSettings) {
-            for (var key in uiSettings) {
-                var value = uiSettings[key][isResetToDefault ? 'DefaultValue' : 'Value'];
+            for (var i = 0; i < uiSettings.length; i++) {
+                var key = uiSettings[i].UISettingItem.Key;
+                var value = isResetToDefault ? uiSettings[i].UISettingItem['DefaultValue'] : uiSettings[i]['Value'];
+                var selector = uiSettings[i].UISettingItem.Selector;
 
-                applyUISettings(key, value);
+                applyUISettings(key, value, selector);
 
-                var elements = $('.settings-bar-content-items input[data-settingsKey="' + key + '"], .settings-bar-content-items select[data-settingsKey="' + key + '"]');
+                var elementDataAttributes = '[data-settingsKey="' + key + '"]' + (!selector ? '[data-selector]' : '[data-selector= "' + selector + '"]');
 
-                for (var i = 0; i < elements.length; i++) {
-                    !!elements[i].jscolor && elements[i].jscolor.fromString(value);
-                    elements[i].value = value;
+                var elements = $('.settings-bar-content-items input' + elementDataAttributes + ', .settings-bar-content-items select' + elementDataAttributes);
+
+                for (var j = 0; j < elements.length; j++) {
+                    !!elements[j].jscolor && elements[j].jscolor.fromString(value);
+                    elements[j].value = value;
                 }
             }
         },

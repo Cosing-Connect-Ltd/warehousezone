@@ -2,7 +2,6 @@
 using Ganedata.Core.Models;
 using Ganedata.Core.Services;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace WMS.Controllers
@@ -13,7 +12,13 @@ namespace WMS.Controllers
         private readonly IUISettingServices _uiSettingServices;
         private readonly IMapper _mapper;
 
-        public UISettingsController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IUISettingServices uiSettingServices, IMapper mapper, ITenantWebsiteService tenantWebsiteService)
+        public UISettingsController(ICoreOrderService orderService,
+                                    IPropertyService propertyService,
+                                    IAccountServices accountServices,
+                                    ILookupServices lookupServices,
+                                    IUISettingServices uiSettingServices,
+                                    IMapper mapper,
+                                    ITenantWebsiteService tenantWebsiteService)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
             _tenantWebsiteService = tenantWebsiteService;
@@ -76,17 +81,16 @@ namespace WMS.Controllers
         {
             var uiSettings = _uiSettingServices.GetWarehouseUISettings(CurrentTenantId, CurrentTenant.Theme);
 
-            return Json(uiSettings.ToDictionary(t => t.UISettingItem.Key,
-                                                     t => new
-                                                     {
-                                                         t.UISettingItem.DefaultValue,
-                                                         t.Value
-                                                     }), JsonRequestBehavior.AllowGet);
+            return Json(uiSettings, JsonRequestBehavior.AllowGet);
         }
 
         public ContentResult AppStyle(string filePath)
         {
-            var cssContent = _uiSettingServices.GetWarehouseCustomStylesContent(Server.MapPath(filePath), Request.Browser, CurrentTenantId, CurrentTenant.Theme);
+            var cssContent = _uiSettingServices.GetWarehouseCustomStylesContent(Server.MapPath(filePath),
+                                                                                Request.Browser.Type,
+                                                                                Request.Browser.MajorVersion,
+                                                                                CurrentTenantId,
+                                                                                CurrentTenant.Theme);
 
             return Content(cssContent, "text/css");
         }

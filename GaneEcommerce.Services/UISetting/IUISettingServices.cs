@@ -12,7 +12,7 @@ namespace Ganedata.Core.Services
         List<UISettingItemViewModel> GetWebsiteUISettingItems(int tenantId, WebsiteThemeEnum websiteTheme);
         List<UISettingItemViewModel> GetWarehouseUISettingItems(int tenantId, WarehouseThemeEnum warehouseTheme);
         void Save(List<UISettingViewModel> uiSettingData, int userId, int tenantId, int? siteId = null);
-        string GetWarehouseCustomStylesContent(string filePath, HttpBrowserCapabilitiesBase browser, int tenantId, WarehouseThemeEnum warehouseTheme);
-        string GetWebsiteCustomStylesContent(string filePath, HttpBrowserCapabilitiesBase browser, int tenantId, int siteId, WebsiteThemeEnum websiteTheme);
+        string GetWarehouseCustomStylesContent(string filePath, string browserType, int browserVersion, int tenantId, WarehouseThemeEnum warehouseTheme);
+        string GetWebsiteCustomStylesContent(string filePath, string browserType, int browserVersion, int tenantId, int siteId, WebsiteThemeEnum websiteTheme);
     }
 }

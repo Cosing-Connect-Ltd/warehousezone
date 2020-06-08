@@ -3,12 +3,11 @@ using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Models;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Web;
+using System.Text.RegularExpressions;
 
 namespace Ganedata.Core.Services
 {
@@ -153,67 +152,66 @@ namespace Ganedata.Core.Services
 
             _currentDbContext.SaveChanges();
         }
-        public string GetWarehouseCustomStylesContent(string filePath, HttpBrowserCapabilitiesBase browser, int tenantId, WarehouseThemeEnum warehouseTheme)
+        public string GetWarehouseCustomStylesContent(string filePath, string browserType, int browserVersion, int tenantId, WarehouseThemeEnum warehouseTheme)
         {
             var uiSettings = GetWarehouseUISettings(tenantId, warehouseTheme);
 
-            return GetCustomStylesContent(filePath, browser, uiSettings);
+            return GetCustomStylesContent(filePath, browserType, browserVersion, uiSettings);
         }
 
-        public string GetWebsiteCustomStylesContent(string filePath, HttpBrowserCapabilitiesBase browser, int tenantId, int siteId, WebsiteThemeEnum websiteTheme)
+        public string GetWebsiteCustomStylesContent(string filePath, string browserType, int browserVersion, int tenantId, int siteId, WebsiteThemeEnum websiteTheme)
         {
             var uiSettings = GetWebsiteUISettings(tenantId, siteId, websiteTheme);
 
-            return GetCustomStylesContent(filePath, browser, uiSettings);
+            return GetCustomStylesContent(filePath, browserType, browserVersion, uiSettings);
         }
 
-        private string GetCustomStylesContent(string filePath, HttpBrowserCapabilitiesBase browser, List<UISettingViewModel> uiSettings)
+        private string GetCustomStylesContent(string filePath, string browserType, int browserVersion, List<UISettingViewModel> uiSettings)
         {
+            var cssContent = File.ReadAllText(filePath);
 
-            var appCSS = System.IO.File.ReadAllText(filePath);
+            uiSettings = uiSettings.Where(item => !string.IsNullOrEmpty(item.Value) && !string.IsNullOrWhiteSpace(item.Value))
+                                    .Select(item => {
+                                        item.Value = string.IsNullOrEmpty(item.Value) || string.IsNullOrWhiteSpace(item.Value) ? item.UISettingItem.DefaultValue : item.Value;
+                                        return item;
+                                    }).ToList();
 
-            var isCSSVariablesSupported = !(browser.Type.ToUpper().Contains("IE") ||
-                                            browser.Type.ToUpper().Contains("INTERNETEXPLORER") ||
-                                            (browser.Type.ToUpper().Contains("FIREFOX") && browser.MajorVersion < 31) ||
-                                            (browser.Type.ToUpper().Contains("CHROME") && browser.MajorVersion < 49) ||
-                                            (browser.Type.ToUpper().Contains("SAFARI") && browser.MajorVersion < 9) ||
-                                            (browser.Type.ToUpper().Contains("OPERA") && browser.MajorVersion < 36));
+            ApplyCSSVariableCustomStyles(browserType, browserVersion, uiSettings.Where(t => string.IsNullOrEmpty(t.UISettingItem.Selector) ).ToList(), ref cssContent);
+
+            ApplySelectorBasedCustomStyles(uiSettings.Where(t => !string.IsNullOrEmpty(t.UISettingItem.Selector)).ToList(), ref cssContent);
+
+            return cssContent;
+        }
+
+        private static void ApplyCSSVariableCustomStyles(string browserType, int browserVersion, List<UISettingViewModel> uiSettings, ref string cssContent)
+        {
+            browserType = browserType.ToUpper();
+
+            var isCSSVariablesSupported = !(browserType.Contains("IE") ||
+                                            browserType.Contains("INTERNETEXPLORER") ||
+                                            (browserType.Contains("FIREFOX") && browserVersion < 31) ||
+                                            (browserType.Contains("CHROME") && browserVersion < 49) ||
+                                            (browserType.Contains("SAFARI") && browserVersion < 9) ||
+                                            (browserType.Contains("OPERA") && browserVersion < 36));
 
             foreach (var item in uiSettings)
             {
-                var itemValue = string.IsNullOrEmpty(item.Value) ? item.UISettingItem.DefaultValue : item.Value;
-                var itemKey = item.UISettingItem.Key;
-
                 if (!isCSSVariablesSupported)
                 {
-                    appCSS = ReplaceString(appCSS, $"var({itemKey})", itemValue, StringComparison.OrdinalIgnoreCase);
+                    cssContent = Regex.Replace(cssContent, @"\b" + $"var\\({item.UISettingItem.Key}\\)" + @"(?!\w)", item.Value, RegexOptions.IgnoreCase);
+                    continue;
                 }
 
-                appCSS = ReplaceString(appCSS, $"{itemKey}: {item.UISettingItem.DefaultValue};", $"{itemKey}: {itemValue};", StringComparison.OrdinalIgnoreCase);
-                appCSS = ReplaceString(appCSS, $"{itemKey}: ;", $"{itemKey}: {itemValue};", StringComparison.OrdinalIgnoreCase);
+                cssContent = Regex.Replace(cssContent, @"" + item.UISettingItem.Key + @":(.*);", $"{item.UISettingItem.Key}: {item.Value};", RegexOptions.IgnoreCase);
             }
-
-            return appCSS;
         }
 
-        private static string ReplaceString(string originalString, string oldValue, string newValue, StringComparison comparison)
+        private static void ApplySelectorBasedCustomStyles(List<UISettingViewModel> uiSettings, ref string cssContent)
         {
-            var sb = new StringBuilder();
-
-            int previousIndex = 0;
-            int index = originalString.IndexOf(oldValue, comparison);
-            while (index != -1)
+            foreach (var item in uiSettings)
             {
-                sb.Append(originalString.Substring(previousIndex, index - previousIndex));
-                sb.Append(newValue);
-                index += oldValue.Length;
-
-                previousIndex = index;
-                index = originalString.IndexOf(oldValue, index, comparison);
+                cssContent += $" {item.UISettingItem.Selector} {{ {item.UISettingItem.Key}: {item.Value}; }}";
             }
-            sb.Append(originalString.Substring(previousIndex));
-
-            return sb.ToString();
         }
     }
 }

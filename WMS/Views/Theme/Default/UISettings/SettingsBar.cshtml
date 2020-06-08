@@ -28,15 +28,17 @@
                             @Html.TextBoxFor(m => m[i].Value, new { @type = (Model[i].UISettingItem.InputType == UISettingItemInputType.Color ? "Text" : Enum.GetName(typeof(UISettingItemInputType), Model[i].UISettingItem.InputType)),
                                                                     @class = Model[i].UISettingItem.InputType == UISettingItemInputType.Color ? "jscolor {hash:true, padding:4, zIndex:9999} form-control" : "form-control",
                                                                     @onchange = "onUISettingChanged(this)",
-                                                                    data_settingsKey = Model[i].UISettingItem.Key})
+                                                                    data_settingsKey = Model[i].UISettingItem.Key,
+                                                                    data_selector = Model[i].UISettingItem.Selector})
                         }
                         else
                         {
                             @Html.DropDownListFor(m => m[i].Value, new SelectList(Enum.GetValues(typeof(UISettingFonts)).Cast<UISettingFonts>().Select(v => new { Value = v.ToString() }).ToList(), "Value", "Value", Model[i].Value),
                                                                     new { @class = "chosen-select form-control",
-                                                                            @onchange = "onUISettingChanged(this)",
-                                                                            data_settingsKey = Model[i].UISettingItem.Key
-                                                                        })
+                                                                        @onchange = "onUISettingChanged(this)",
+                                                                        data_settingsKey = Model[i].UISettingItem.Key,
+                                                                        data_selector = Model[i].UISettingItem.Selector
+                                                                    })
                         }
                     </div>
 
