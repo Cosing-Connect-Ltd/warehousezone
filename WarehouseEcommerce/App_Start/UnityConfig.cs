@@ -1,6 +1,7 @@
 using AutoMapper;
 using Ganedata.Core.Data;
 using Ganedata.Core.Services;
+using LazyCache;
 using System;
 
 using Unity;
@@ -98,6 +99,8 @@ namespace WarehouseEcommerce
             container.RegisterType<ITenantsCurrencyRateServices, TenantsCurrencyRateServices>();
             container.RegisterType<ITenantWebsiteService, TenantWebsiteService>();
             container.RegisterType<IUISettingServices, UISettingServices>();
+
+            container.RegisterType<IAppCache, CachingService>(new InjectionConstructor());
 
             //Register Auto Mapper
             var newMapper = new AutoMapperBootStrapper();

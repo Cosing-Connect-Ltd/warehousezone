@@ -3,10 +3,12 @@ using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Models;
+using LazyCache;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text.RegularExpressions;
 
 namespace Ganedata.Core.Services
@@ -15,11 +17,15 @@ namespace Ganedata.Core.Services
     {
         private readonly IApplicationContext _currentDbContext;
         private readonly IMapper _mapper;
+        private readonly IAppCache _cache;
+        private readonly ITenantWebsiteService _tenantWebsiteService;
 
-        public UISettingServices(IApplicationContext currentDbContext, IMapper mapper)
+        public UISettingServices(IApplicationContext currentDbContext, IMapper mapper, IAppCache cache, ITenantWebsiteService tenantWebsiteService)
         {
             _currentDbContext = currentDbContext;
             _mapper = mapper;
+            _cache = cache;
+            _tenantWebsiteService = tenantWebsiteService;
         }
 
         public List<UISettingViewModel> GetWebsiteUISettings(int tenantId, int siteId, WebsiteThemeEnum websiteTheme)
@@ -151,6 +157,25 @@ namespace Ganedata.Core.Services
             });
 
             _currentDbContext.SaveChanges();
+
+            if(siteId != null)
+            {
+                var client = new HttpClient();
+
+                try
+                {
+                    var tenantWebsite = _tenantWebsiteService.GetTenantWebSiteBySiteId(siteId.Value);
+
+                    client.BaseAddress = new System.Uri($"http://{tenantWebsite.HostName}");
+
+                    client.GetAsync("/UISettings/ClearStyleCache").GetAwaiter().GetResult();
+
+                }
+                finally
+                {
+                    client.Dispose();
+                }
+            }
         }
         public string GetWarehouseCustomStylesContent(string filePath, string browserType, int browserVersion, int tenantId, WarehouseThemeEnum warehouseTheme)
         {
@@ -168,19 +193,24 @@ namespace Ganedata.Core.Services
 
         private string GetCustomStylesContent(string filePath, string browserType, int browserVersion, List<UISettingViewModel> uiSettings)
         {
-            var cssContent = File.ReadAllText(filePath);
+            var cssContent = _cache.GetOrAdd(new FileInfo(filePath).Name.ToUpper(),
+                                                () => {
+                                                    var cssFileContent = File.ReadAllText(filePath);
 
-            uiSettings = uiSettings.Where(item => !string.IsNullOrEmpty(item.Value) && !string.IsNullOrWhiteSpace(item.Value))
-                                    .Select(item => {
-                                        item.Value = string.IsNullOrEmpty(item.Value) || string.IsNullOrWhiteSpace(item.Value) ? item.UISettingItem.DefaultValue : item.Value;
-                                        return item;
-                                    }).ToList();
+                                                    uiSettings = uiSettings.Where(item => !string.IsNullOrEmpty(item.Value) && !string.IsNullOrWhiteSpace(item.Value))
+                                                                            .Select(item => {
+                                                                                item.Value = string.IsNullOrEmpty(item.Value) || string.IsNullOrWhiteSpace(item.Value) ? item.UISettingItem.DefaultValue : item.Value;
+                                                                                return item;
+                                                                            }).ToList();
 
-            ApplyCSSVariableCustomStyles(browserType, browserVersion, uiSettings.Where(t => string.IsNullOrEmpty(t.UISettingItem.Selector) ).ToList(), ref cssContent);
+                                                    ApplyCSSVariableCustomStyles(browserType, browserVersion, uiSettings.Where(t => string.IsNullOrEmpty(t.UISettingItem.Selector)).ToList(), ref cssFileContent);
 
-            ApplySelectorBasedCustomStyles(uiSettings.Where(t => !string.IsNullOrEmpty(t.UISettingItem.Selector)).ToList(), ref cssContent);
+                                                    ApplySelectorBasedCustomStyles(uiSettings.Where(t => !string.IsNullOrEmpty(t.UISettingItem.Selector)).ToList(), ref cssFileContent);
 
+                                                    return cssFileContent;
+                                                });
             return cssContent;
+
         }
 
         private static void ApplyCSSVariableCustomStyles(string browserType, int browserVersion, List<UISettingViewModel> uiSettings, ref string cssContent)

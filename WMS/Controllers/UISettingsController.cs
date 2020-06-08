@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Ganedata.Core.Models;
 using Ganedata.Core.Services;
+using LazyCache;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
@@ -11,6 +12,7 @@ namespace WMS.Controllers
         private readonly ITenantWebsiteService _tenantWebsiteService;
         private readonly IUISettingServices _uiSettingServices;
         private readonly IMapper _mapper;
+        private readonly IAppCache _cache;
 
         public UISettingsController(ICoreOrderService orderService,
                                     IPropertyService propertyService,
@@ -18,12 +20,14 @@ namespace WMS.Controllers
                                     ILookupServices lookupServices,
                                     IUISettingServices uiSettingServices,
                                     IMapper mapper,
-                                    ITenantWebsiteService tenantWebsiteService)
+                                    ITenantWebsiteService tenantWebsiteService,
+                                    IAppCache cache)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
             _tenantWebsiteService = tenantWebsiteService;
             _uiSettingServices = uiSettingServices;
             _mapper = mapper;
+            _cache = cache;
         }
 
         public ActionResult SettingsBar()
@@ -73,6 +77,8 @@ namespace WMS.Controllers
             if (ModelState.IsValid)
             {
                 _uiSettingServices.Save(uiSettings, CurrentUserId, CurrentTenantId);
+
+                ClearStyleCache();
             }
         }
 
@@ -93,6 +99,11 @@ namespace WMS.Controllers
                                                                                 CurrentTenant.Theme);
 
             return Content(cssContent, "text/css");
+        }
+
+        public void ClearStyleCache()
+        {
+            _cache.Remove("SITE.CSS");
         }
     }
 }

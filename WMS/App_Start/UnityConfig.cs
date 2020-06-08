@@ -1,6 +1,7 @@
 using AutoMapper;
 using Ganedata.Core.Data;
 using Ganedata.Core.Services;
+using LazyCache;
 using System;
 
 using Unity;
@@ -100,6 +101,8 @@ namespace WMS
             container.RegisterType<ITooltipServices, TooltipServices>();
             container.RegisterType<IUISettingServices, UISettingServices>();
             container.RegisterType<IApiCredentialServices, ApiCredentialServices>();
+
+            container.RegisterType<IAppCache, CachingService>(new InjectionConstructor());
 
             //Register Auto Mapper
             var newMapper = new AutoMapperBootStrapper();

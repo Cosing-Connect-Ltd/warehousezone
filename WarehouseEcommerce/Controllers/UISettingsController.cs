@@ -1,5 +1,6 @@
 ﻿using Ganedata.Core.Models;
 using Ganedata.Core.Services;
+using LazyCache;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using WarehouseEcommerce.Controllers;
@@ -9,16 +10,19 @@ namespace WMS.Controllers
     public class UISettingsController : BaseController
     {
         private readonly IUISettingServices _uiSettingServices;
+        private readonly IAppCache _cache;
 
         public UISettingsController(ICoreOrderService orderService,
                                     IPropertyService propertyService,
                                     IAccountServices accountServices,
                                     ILookupServices lookupServices,
                                     IUISettingServices uiSettingServices,
-                                    ITenantsCurrencyRateServices tenantsCurrencyRateServices)
+                                    ITenantsCurrencyRateServices tenantsCurrencyRateServices,
+                                    IAppCache cache)
             : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices)
         {
             _uiSettingServices = uiSettingServices;
+            _cache = cache;
         }
 
         [HttpGet]
@@ -58,6 +62,12 @@ namespace WMS.Controllers
                                                                                 CurrentTenantWebsite.Theme);
 
             return Content(cssContent, "text/css");
+        }
+
+        public void ClearStyleCache()
+        {
+            _cache.Remove("APP.CSS");
+            _cache.Remove("SITE.CSS");
         }
     }
 }
