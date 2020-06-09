@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Text.RegularExpressions;
 
 namespace Ganedata.Core.Services
@@ -157,25 +156,6 @@ namespace Ganedata.Core.Services
             });
 
             _currentDbContext.SaveChanges();
-
-            if(siteId != null)
-            {
-                var client = new HttpClient();
-
-                try
-                {
-                    var tenantWebsite = _tenantWebsiteService.GetTenantWebSiteBySiteId(siteId.Value);
-
-                    client.BaseAddress = new System.Uri($"http://{tenantWebsite.HostName}");
-
-                    client.GetAsync("/UISettings/ClearStyleCache").GetAwaiter().GetResult();
-
-                }
-                finally
-                {
-                    client.Dispose();
-                }
-            }
         }
         public string GetWarehouseCustomStylesContent(string filePath, string browserType, int browserVersion, int tenantId, WarehouseThemeEnum warehouseTheme)
         {
@@ -193,8 +173,23 @@ namespace Ganedata.Core.Services
 
         private string GetCustomStylesContent(string filePath, string browserType, int browserVersion, List<UISettingViewModel> uiSettings)
         {
-            var cssContent = _cache.GetOrAdd(new FileInfo(filePath).Name.ToUpper(),
+            browserType = browserType.ToUpper();
+
+            var isCSSVariablesSupported = !(browserType.Contains("IE") ||
+                                browserType.Contains("INTERNETEXPLORER") ||
+                                (browserType.Contains("FIREFOX") && browserVersion < 31) ||
+                                (browserType.Contains("CHROME") && browserVersion < 49) ||
+                                (browserType.Contains("SAFARI") && browserVersion < 9) ||
+                                (browserType.Contains("OPERA") && browserVersion < 36));
+
+            var cssContent = _cache.GetOrAdd("ui-settings-" + (isCSSVariablesSupported ? "variable" : "fixed"),
                                                 () => {
+
+                                                    if (!new FileInfo(filePath).Exists)
+                                                    {
+                                                        return string.Empty;
+                                                    }
+
                                                     var cssFileContent = File.ReadAllText(filePath);
 
                                                     uiSettings = uiSettings.Where(item => !string.IsNullOrEmpty(item.Value) && !string.IsNullOrWhiteSpace(item.Value))
@@ -203,7 +198,7 @@ namespace Ganedata.Core.Services
                                                                                 return item;
                                                                             }).ToList();
 
-                                                    ApplyCSSVariableCustomStyles(browserType, browserVersion, uiSettings.Where(t => string.IsNullOrEmpty(t.UISettingItem.Selector)).ToList(), ref cssFileContent);
+                                                    ApplyCSSVariableCustomStyles(isCSSVariablesSupported, uiSettings.Where(t => string.IsNullOrEmpty(t.UISettingItem.Selector)).ToList(), ref cssFileContent);
 
                                                     ApplySelectorBasedCustomStyles(uiSettings.Where(t => !string.IsNullOrEmpty(t.UISettingItem.Selector)).ToList(), ref cssFileContent);
 
@@ -213,17 +208,8 @@ namespace Ganedata.Core.Services
 
         }
 
-        private static void ApplyCSSVariableCustomStyles(string browserType, int browserVersion, List<UISettingViewModel> uiSettings, ref string cssContent)
+        private static void ApplyCSSVariableCustomStyles(bool isCSSVariablesSupported, List<UISettingViewModel> uiSettings, ref string cssContent)
         {
-            browserType = browserType.ToUpper();
-
-            var isCSSVariablesSupported = !(browserType.Contains("IE") ||
-                                            browserType.Contains("INTERNETEXPLORER") ||
-                                            (browserType.Contains("FIREFOX") && browserVersion < 31) ||
-                                            (browserType.Contains("CHROME") && browserVersion < 49) ||
-                                            (browserType.Contains("SAFARI") && browserVersion < 9) ||
-                                            (browserType.Contains("OPERA") && browserVersion < 36));
-
             foreach (var item in uiSettings)
             {
                 if (!isCSSVariablesSupported)

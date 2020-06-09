@@ -1159,6 +1159,7 @@
     <Content Include="Content\Themes\UI-WZ\jquery-ui.structure.min.css" />
     <Content Include="Content\Themes\UI-WZ\jquery-ui.theme.css" />
     <Content Include="Content\Themes\UI-WZ\jquery-ui.theme.min.css" />
+    <Content Include="Content\Theme\Default\ui-settings.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />

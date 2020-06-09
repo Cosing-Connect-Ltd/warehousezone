@@ -40,6 +40,8 @@ namespace WarehouseEcommerce
             bundles.Add(new StyleBundle("~/Content/Theme/University/app/css/university").Include(
                      "~/Content/bootstrap.css",
                      "~/Content/Theme/University/app/css/fonts-and-icons.css",
+                      "~/Content/Theme/University/app/css/App.css",
+                      "~/Content/Theme/University/app/css/Site.css",
                      "~/Content/Theme/University/app/css/customfontIcons.css",
                      "~/Content/Theme/University/app/css/skew_carousle_style.css",
                      "~/Content/Theme/University/app/css/northumbria_responsive.css",

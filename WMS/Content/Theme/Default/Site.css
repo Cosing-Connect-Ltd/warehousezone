@@ -1,9 +1,4 @@
 ﻿/* Customised theme blue color search for '#0b2f54' and replace if required */
-
-:root {
-    --sidebar-background-color: #005ca0;
-}
-
 tbody {
     border: none !important;
 }
@@ -233,7 +228,7 @@ h4, .h4 {
     padding-bottom: 70px;
     width: 15%;
     border-top: none;
-    background-color: var(--sidebar-background-color);
+    background-color: #005ca0;
     border-right: 4px inset #316c8e;
     overflow: hidden;
     overflow-y: auto;

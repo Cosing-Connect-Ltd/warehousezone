@@ -2,7 +2,9 @@
 using Ganedata.Core.Models;
 using Ganedata.Core.Services;
 using LazyCache;
+using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Web.Mvc;
 
 namespace WMS.Controllers
@@ -49,6 +51,8 @@ namespace WMS.Controllers
 
             ViewBag.SiteName = tenantWebsite.SiteName;
 
+            ViewBag.WebsiteHostName = tenantWebsite.HostName;
+
             var uiSettings = _uiSettingServices.GetWebsiteUISettings(CurrentTenantId, siteId, tenantWebsite.Theme);
 
             return View("WebsiteUISettings", uiSettings);
@@ -56,13 +60,31 @@ namespace WMS.Controllers
 
         [HttpPost, ActionName("WebsiteUISettings")]
         [ValidateAntiForgeryToken]
-        public ActionResult SubmitWebsiteUISettings(List<UISettingViewModel> uiSettings)
+        public ActionResult SubmitWebsiteUISettings(List<UISettingViewModel> uiSettings, string WebsiteHostName)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
             if (ModelState.IsValid)
             {
                 _uiSettingServices.Save(uiSettings, CurrentUserId, CurrentTenantId);
+
+                if (Uri.TryCreate($"http://{WebsiteHostName}", UriKind.Absolute, out Uri websiteUri))
+                {
+                    var client = new HttpClient
+                    {
+                        BaseAddress = websiteUri
+                    };
+
+                    try
+                    {
+                        client.GetAsync("/UISettings/ClearStyleCache").GetAwaiter().GetResult();
+                    }
+                    finally
+                    {
+                        client.Dispose();
+                    }
+                }
+
                 return RedirectToAction("Index", "TenantWebsites");
             }
 
@@ -103,7 +125,8 @@ namespace WMS.Controllers
 
         public void ClearStyleCache()
         {
-            _cache.Remove("SITE.CSS");
+            _cache.Remove("ui-settings-variable");
+            _cache.Remove("ui-settings-fixed");
         }
     }
 }

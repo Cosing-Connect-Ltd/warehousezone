@@ -1,0 +1,266 @@
+﻿:root {
+    --body-background-color: #FFFFFF;
+    --primary-color: #111111;
+    --secondary-color: #F33655;
+    --tertiary-color: #FFFFFF;
+    --subscription-shade-color: #504D4D;
+    --dark-font-color: #000000;
+    --light-font-color: #FFFFFF;
+    --primary-font-family: SegoeUI;
+}
+
+body {
+    background-color: var(--body-background-color);
+}
+
+    body,
+    body *,
+    .uni-pages-main .nb_prd_filterwrap .list-group-item,
+    .btn .button,
+    .modal-title {
+        font-family: var(--primary-font-family);
+    }
+
+.uni-pages-main .nb_prd_filterwrap .list-group-item,
+.btn .button,
+.modal-title {
+    font-weight: 800;
+}
+
+.modal-dialog,
+.uni-pages-main .nb_prd_filterwrap,
+.uni-pages-main .nb_prdlisting_pgsec .breadCrumbtopsec {
+    font-weight: 600;
+}
+
+.uni {
+    font-weight: 400;
+}
+
+.search_wrap_main .search_btn:hover,
+.nb_header,
+.nb_footer,
+.accordion ul li div a h2,
+#signupPopup .modal-dialog .modal-content .modal-body .registrationSec .regBtn {
+    background-color: var(--primary-color);
+}
+
+.nb_prdlisting_pgsec .nb_prd_filterwrap .prod_count_sec .count {
+    border-bottom-color: var(--primary-color);
+}
+
+.nb_sub_sec {
+    background-color: var(--subscription-shade-color);
+}
+
+
+.nb_sub_sec {
+    background: radial-gradient(circle, var(--subscription-shade-color) 0%, var(--primary-color) 35%);
+}
+
+.nb_header .nb_headicolst li.cartIcoWrap a span,
+.nb_header .nb_mainnav > ul > li > a:after,
+.nb_header .nb_mainnav > ul > li.active a:after,
+.nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap button:after,
+.nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap a:after,
+.nb_bannersec .np_bannerContentOuter .nb_bnr_count:before,
+.nb_header_style1 h3:after,
+.nb_feat_prod_sec .nb_featuredPrdCarrousle .nb_fp_boxwrap .prd_det_sec .prd_amnt:before,
+.nb_prdpg_fg input:checked + label:after,
+.nb_prd_listing_wrap .head:after,
+.nb_prd_listing_wrap .tagList li a:hover,
+.nb_qcvboxwrap .footSec button.addTobasket:hover,
+.nb_qcvboxwrap .footSec .addtowishlistbtn:hover,
+.nb_prd_det_rightsec .footSec button.addTobasket:hover,
+.nb_prd_det_rightsec .footSec .addtowishlistbtn:hover,
+.contact_form_sec .contact_pg_wrap .nb_contact_form .form-group .submitBtn:hover,
+.nb_basket_wrap div.coupen_codewrap .coupenSubmitbtn:hover,
+.basketTotalwrap .shipping_radiosec .proceed_tocheckout:hover,
+#signupPopup .modal-dialog .modal-content .modal-body .loginForm .loginBtn:hover,
+#signupPopup .modal-dialog .modal-content .modal-body .registrationSec .regBtn:hover,
+#quickCartPopup .modal-dialog .modal-content .modal-body .loginForm .loginBtn:hover,
+#quickCartPopup .modal-dialog .modal-content .modal-body .registrationSec .regBtn:hover,
+#res_filterBox_trigger,
+.bloglistSec .bloglistSecInner .bloglistBox .nb_fb_con .rdmrBtn:after,
+.checkconfInner .checkconfirm_rgtsec .prctchkoutbtn,
+.progressNavBar button,
+.myAccLeftNavsec .tabcontentInner .subhead:after,
+.myAccLeftNavsec .tabcontentInner button,
+.returnDetls button,
+.orderProductStatus li:before,
+.accordion ul:hover li:hover h2,
+.basketTotalwrap .shipping_radiosec .shippingtyp_list li [type="radio"]:checked + label:after,
+.basketTotalwrap .shipping_radiosec .shippingtyp_list li [type="radio"]:not(:checked) + label:after,
+.checkconfInner .checkconfirm_lftsec ul.paymentMthdlist li [type="radio"]:checked + label:after,
+.checkconfInner .checkconfirm_lftsec ul.paymentMthdlist li [type="radio"]:not(:checked) + label:after {
+    background-color: var(--secondary-color);
+}
+
+.nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList li.hav_sub_nav2 ul.nb_s_snList li a:hover,
+.nb_sec_navwrap .nb_sec_navlist li a:hover i,
+.nb_bannersec .np_bannerContentOuter .nb_bnr_count:hover,
+.nb_feat_prod_sec .nb_featuredPrdCarrousle .owl-nav button span:hover,
+.nb_sub_sec .nb_sub_wrap .sub_form_wrap .nb_home_sub_form .sf_input_wrap button:hover i,
+.nb_sub_sec .nb_sub_wrap .sub_form_wrap .nb_home_sub_form .sf_input_wrap button:focus i,
+.res_navWrapper .nb_sec_nav_res li a:hover i,
+.prd_lst_boxouter .foot .icolist li a:hover i,
+.nb_qcvboxwrap .prd_amnt,
+.nb_qcvboxwrap .availibility span,
+.nb_qcvboxwrap .footSec .addtowishlist i:hover,
+.nb_prd_det_rightsec .prd_amnt,
+.nb_prd_det_rightsec .availibility span,
+.nb_prd_det_rightsec .footSec .addtowishlist i:hover,
+.ZoomViewWrapper #closeZoomViewer:hover,
+.contact_form_sec .contact_pg_wrap .nb_contact_form .callus_frmgrp p span,
+.nb_basket_wrap table.basketTable tbody tr td .total,
+.basketTotalwrap .subTotalwrap span:last-child,
+.basketTotalwrap .shipping_radiosec .totalAmntsec span:last-child,
+.registration_form_sec .ahav_acc span:hover,
+.bloglistSec .bloglistSecInner .bloglistBox .nb_fb_con .rdmrBtn:hover,
+.bloglistSec .bloglistSecInner .bloglistBox:hover .rdmrBtn,
+.youmayalLikesec .ymalList li:hover .contwrap .ymalListHead,
+.myAccLeftNavsec .tabcontentInner .myAccwishlistList > li .myAccwishlistList_inner .cont_left .prod_det .stkStatus.out,
+.nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList li a:hover,
+.uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a:hover > .uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a i {
+    color: var(--secondary-color);
+}
+
+.nb_prd_listing_wrap .tagList li a:hover,
+.bloglistSec .bloglistSecInner .bloglistBox:hover .nb_fb_img,
+.youmayalLikesec .ymalList li:hover .imgwrap,
+.ftb_sec .nb_ftb_box:hover .nb_fb_img {
+    border-color: var(--secondary-color);
+}
+
+.search_wrap_main,
+.search_wrap_main .search_input,
+.nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList,
+.nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList li.hav_sub_nav2 ul.nb_s_snList,
+.nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner {
+    background-color: var(--tertiary-color);
+}
+
+.nb_header .nb_mainnav > ul > li.hav_sub_nav > a:before {
+    border-top-color: var(--tertiary-color);
+}
+
+h6,
+.search_wrap_main .search_input,
+.search_wrap_main .search_btn,
+.nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner .meganav_firstcatList > li > a,
+.nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner .meganav_firstcatList > li > ul.subList li a,
+.nb_sec_navwrap .nb_sec_navlist li a,
+.nb_header_style1 h3,
+.nb_feat_prod_sec .nb_featuredPrdCarrousle .nb_fp_boxwrap .prd_det_sec .prd_name,
+.nb_sub_sec .nb_sub_wrap .sub_form_wrap .nb_home_sub_form .sf_input_wrap input[type="text"],
+.nb_sub_sec .nb_sub_wrap .sub_form_wrap .nb_home_sub_form .sf_input_wrap input[type="email"],
+.ftb_sec .nb_ftb_box .nb_fb_con .date,
+.ftb_sec .nb_ftb_box .nb_fb_con .heading,
+.ftb_sec .nb_ftb_box .nb_fb_con .content,
+.nb_footer .nb_footersec_inner .followUsWrap ul li a i.ico,
+.res_navWrapper .nb_firstNav_res_lst li a,
+.res_navWrapper .nb_sec_nav_res li a,
+.nb_prdlisting_pgsec .breadCrumbtopsec .nb_bread_crumbwrap nav ol li,
+.nb_prdlisting_pgsec .breadCrumbtopsec .nb_bread_crumbwrap nav ol li a,
+.nb_prdlisting_pgsec .breadCrumbtopsec .sortBy_outer .srtby_txt,
+.nb_prdlisting_pgsec .breadCrumbtopsec .sortBysec #nb_prdlst_sortDrpdwn,
+.nb_prdlisting_pgsec .breadCrumbtopsec .sortBysec:after,
+.nb_prdlisting_pgsec .nb_prd_filterwrap .prod_count_sec .count,
+.uni-pages-main .nb_prdlisting_pgsec .breadCrumbtopsec .sortBysec select,
+.nb_prdlisting_pgsec .nb_prd_filterwrap * > ul *,
+nb_prdpg_fg label,
+.nb_filter_accordion .nb_filter_head h5,
+.nb_filter_accordion .nb_filter_head h5 button,
+.nb_prd_listing_wrap .head,
+.nb_prd_listing_wrap .tagList li a,
+.prd_lst_boxouter .foot .icolist li a i,
+.nb_qcvboxwrap .head,
+.nb_qcvboxwrap .subContent,
+.nb_qcvboxwrap .col_Sec .col_lbl,
+.nb_qcvboxwrap .availibility,
+.nb_qcvboxwrap .sizeWrap p span,
+.nb_qcvboxwrap .sizeWrap .size_boxList li a,
+.nb_qcvboxwrap .footSec .qty .sortBysec #nb_prdpg_qtysel_box,
+.nb_qcvboxwrap .footSec .qty .sortBysec:after,
+.nb_qcvboxwrap .footSec .addtowishlist i,
+.nb_prd_det_rightsec .head,
+.nb_prd_det_rightsec .subContent,
+.nb_prd_det_rightsec .col_Sec .col_lbl,
+.nb_prd_det_rightsec .availibility,
+.nb_prd_det_rightsec .sizeWrap p span,
+.nb_prd_det_rightsec .sizeWrap .size_boxList li a,
+.nb_prd_det_rightsec .footSec .qty .sortBysec #nb_prdpg_qtysel_box,
+.nb_prd_det_rightsec .footSec .qty .sortBysec:after,
+.nb_prd_det_rightsec .footSec .addtowishlist i,
+.nb_prod_bottomdes .head,
+.nb_header_style2 h3,
+.ZoomViewWrapper #closeZoomViewer,
+.nb_cat_selectBx .prdname,
+.nb_prd_namewamnt_box .prd_name,
+.contact_form_sec .subHead_content,
+.contact_form_sec .contact_pg_wrap .nb_contact_form .reqfield_msg,
+.contact_form_sec .contact_pg_wrap .nb_contact_form .callus_frmgrp p,
+.contact_form_sec .contact_pg_wrap .nb_contact_form .form-group label,
+.contact_form_sec .contact_pg_wrap .nb_contact_form .form-group input[type="text"],
+.contact_form_sec .contact_pg_wrap .nb_contact_form .form-group input[type="email"],
+.contact_form_sec .contact_pg_wrap .nb_contact_form .form-group textarea,
+.nb_basket_wrap table.basketTable thead tr th,
+.nb_basket_wrap table.basketTable tbody tr td .prdimgsec .prdname,
+.nb_basket_wrap table.basketTable tbody tr td .price,
+.nb_basket_wrap table.basketTable tbody tr td .qtyboxwrap input[type="number"],
+.nb_basket_wrap table.basketTable tbody tr td .qtyboxwrap > span,
+.nb_basket_wrap div.coupen_codewrap input[type="text"],
+.basketTotalwrap .mainhd,
+.basketTotalwrap .subTotalwrap,
+.basketTotalwrap .shipping_radiosec .head,
+.basketTotalwrap .shipping_radiosec .shippingtyp_list li,
+.basketTotalwrap .shipping_radiosec .shippingtyp_list li [type="radio"]:checked + label,
+.basketTotalwrap .shipping_radiosec .shippingtyp_list li [type="radio"]:not(:checked) + label,
+.basketTotalwrap .shipping_radiosec .estimateWrap span,
+.basketTotalwrap .shipping_radiosec .estimateWrap a,
+.basketTotalwrap .shipping_radiosec .totalAmntsec,
+.cont_shop_btn,
+.registration_form_sec .ahav_acc,
+#signupPopup .modal-dialog .modal-content .modal-header .modal-title,
+#signupPopup .modal-dialog .modal-content .modal-body .registrationSec .head,
+#quickCartPopup .modal-dialog .modal-content .modal-header .modal-title,
+#quickCartPopup .modal-dialog .modal-content .modal-body .registrationSec .head,
+.bloglistSec .bloglistSecInner .bloglistBox .nb_fb_con .date,
+.bloglistSec .bloglistSecInner .bloglistBox .nb_fb_con .heading,
+.bloglistSec .bloglistSecInner .bloglistBox .nb_fb_con .content,
+.bloglistSec .bloglistSecInner .bloglistBox .nb_fb_con .rdmrBtn,
+.bloglistSec .blgpaginationwrap .paginationList li a,
+.blogdetWrap .headsec .blogTimesec span,
+.blogdetWrap .contentSec p,
+.youmayalLikesec .ymalList li .ymalBox .contwrap .ymalListHead,
+.youmayalLikesec .ymalList li .ymalBox .contwrap .content,
+.youmayalLikesec .ymalList li .ymalBox .contwrap .date,
+.checkconfInner .checkconfirm_lftsec .subhead,
+.checkconfInner .checkconfirm_lftsec ul.paymentMthdlist li [type="radio"]:checked + label,
+.checkconfInner .checkconfirm_lftsec ul.paymentMthdlist li [type="radio"]:not(:checked) + label,
+.checkconfInner .checkconfirm_rgtsec .subhead,
+.progressBarStep ul#progressList li span.count,
+.myAccLeftNavsec .leftsideNavWrap a,
+.myAccLeftNavsec .tabcontentInner input[type="text"],
+.myAccLeftNavsec .tabcontentInner input[type="email"],
+.myAccLeftNavsec .tabcontentInner .myAccwishlistList > li .myAccwishlistList_inner .cont_left .prod_det .prdhead,
+.orderDetls label,
+.orderItems h3,
+.orderItems .itemNum,
+.pagination > li > a,
+.pagination > li > span,
+.pagi .tot {
+    color: var(--dark-font-color);
+}
+
+.search_wrap_main .search_input,
+.uni-pages-main .nb_prdlisting_pgsec .breadCrumbtopsec .sortBysec select,
+.nb_prdlisting_pgsec .nb_prd_filterwrap * > ul *,
+.nb_filter_accordion .nb_filter_head h5 button {
+    border-color: var(--dark-font-color);
+}
+
+.search_wrap_main .search_btn:hover,
+.search_wrap_main .search_btn:hover i{
+    color: var(--light-font-color);
+}

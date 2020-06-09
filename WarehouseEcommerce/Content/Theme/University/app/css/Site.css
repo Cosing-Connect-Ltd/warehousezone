@@ -5,7 +5,7 @@
 .uni-pages-main .nb_prd_filterwrap .list-group-item {
     display: flex;
     align-items: center;
-    font-weight: 800;
+    font-family: primaryfont_Bold;
 }
 
     .uni-pages-main .nb_prd_filterwrap .list-group-item input {
@@ -68,7 +68,7 @@
 
 .pagination > li > a,
 .pagination > li > span {
-    color: var(--dark-font-color);
+    color: #000;
     padding: 7px 12px 5px 12px;
 }
 
@@ -83,11 +83,10 @@
 
 .pagi .tot {
     line-height: 34px;
-    color: var(--dark-font-color);
 }
 
 .btn .button {
-    font-weight: 800;
+    font-family: primaryfont_Bold;
 }
 
 /* --------------------------
@@ -98,7 +97,7 @@
 .my-account.login .button-submit button:focus,
 .my-account.login .button-submit input[type="submit"]:hover,
 .my-account.login .button-submit input[type="submit"]:focus {
-    background-color: #000;
+    background: #000;
     -webkit-transition: 0.5s;
     -moz-transition: 0.5s;
     transition: 0.5s;
@@ -107,7 +106,7 @@
 .my-account.login .button-submit button,
 .my-account.login .button-submit input[type="submit"] {
     height: 40px;
-    background-color: #1455a6;
+    background: #1455a6;
     color: #fff;
     -webkit-transition: 0.5s;
     -moz-transition: 0.5s;
@@ -118,7 +117,7 @@
 
 a.cashbtn {
     height: 40px;
-    background-color: #1455a6;
+    background: #1455a6;
     color: #fff;
     -webkit-transition: 0.5s;
     -moz-transition: 0.5s;
@@ -285,7 +284,7 @@ a.cashbtn {
     border-top: 2px solid #ccc;
     padding: 30px;
     margin-bottom: 45px;
-    font-weight: 800;
+    font-weight: bold;
     line-height: 36px;
     border-left: none;
 }
@@ -602,19 +601,23 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
     top: 0;
     z-index: 999;
 }
+
     .nb_header .head-container .show span {
         display: flex;
         flex-direction: column;
     }
+
     .nb_header form .btn-primary:focus {
-        box-shadow:none;
+        box-shadow: none;
     }
+
     .nb_header form .btn-primary:active {
         border: none;
         background-color: white !important;
         color: black !important;
         box-shadow: none;
     }
+
 .prd_lst_boxouter .imagewrap img {
     width: 235px;
     height: 235px;
@@ -630,7 +633,7 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
 }
 
 .uni-get-address-page .uni-add-new-address-h4 {
-    font-weight: 800;
+    font-weight: bold;
     margin-bottom: 12px;
 }
 
@@ -694,19 +697,20 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
     }
 
 .uni-pages-main .nb_prdlisting_pgsec .breadCrumbtopsec {
-    font-weight: 600;
+    font-family: "primaryfont_SemiBold";
 }
 
 .uni-pages-main .nb_prd_filterwrap {
-    font-weight: 600;
+    font-family: "primaryfont_SemiBold";
 }
 
 .modal-dialog {
-    font-weight: 600;
+    font-family: "primaryfont_SemiBold";
 }
 
 .modal-title {
-    font-weight: 800;
+    font-family: "primaryfont_SemiBold";
+    font-weight: bold;
     font-size: 20px;
 }
 
@@ -987,10 +991,11 @@ h2 {
 
 .search_wrap_main .search-close {
     width: 8%;
-    float:left;
+    float: left;
     border: none;
     background-color: transparent;
 }
+
 body.modal-open {
     overflow: auto !important;
     padding-right: unset !important;

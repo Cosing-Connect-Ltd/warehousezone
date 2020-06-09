@@ -11,7 +11,6 @@
     @Styles.Render("~/Content/fontawesome-bundle")
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/css/default")
-    <link href="@Url.Action("AppStyle", "UISettings", new { filePath = "/Content/Theme/Modern/site.css"})" rel="stylesheet" type="text/css" />
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryui")
@@ -24,6 +23,9 @@
     @Scripts.Render("~/bundles/ext-language")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/unobtrusive")
+
+    <link href="@Url.Action("AppStyle", "UISettings", new { filePath = "/Content/Theme/Modern/ui-settings.css"})" rel="stylesheet" type="text/css" />
+
     @RenderSection("scripts", required: false)
 
     @{ bool loginStatus = LayoutHelpers.UserLoginStatus(); }

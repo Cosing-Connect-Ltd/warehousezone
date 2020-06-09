@@ -41,6 +41,8 @@ namespace WMS.Controllers
             if (ModelState.IsValid)
             {
                 _uiSettingServices.Save(uiSettings, CurrentUserId, CurrentTenantId, CurrentTenantWebsite.SiteID);
+
+                ClearStyleCache();
             }
         }
 
@@ -66,8 +68,8 @@ namespace WMS.Controllers
 
         public void ClearStyleCache()
         {
-            _cache.Remove("APP.CSS");
-            _cache.Remove("SITE.CSS");
+            _cache.Remove("ui-settings-variable");
+            _cache.Remove("ui-settings-fixed");
         }
     }
 }

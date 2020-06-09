@@ -14,7 +14,6 @@
     <link href="~/Content/magnific-popup/dist/magnific-popup.css" type="text/css" rel="stylesheet" media="screen" />
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/Theme/Smart/app/css/smart")
-    <link href="@Url.Action("AppStyle", "UISettings", new { filePath = "/Content/Theme/Smart/app/css/App.css"})" rel="stylesheet" type="text/css" />
 
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
@@ -22,6 +21,7 @@
     @Scripts.Render("~/bundles/unobtrusive")
 
     @Scripts.Render("~/bundles/bootstrap")
+    <link href="@Url.Action("AppStyle", "UISettings", new { filePath = "/Content/Theme/Smart/app/css/ui-settings.css"})" rel="stylesheet" type="text/css" />
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
 
     <script type="text/javascript">

@@ -24,6 +24,8 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/unobtrusive")
+
+    <link href="@Url.Action("AppStyle", "UISettings", new { filePath = "/Content/Theme/ElecTech/app/css/ui-settings.css"})" rel="stylesheet" type="text/css" />
     <style>
         .video-banner {
             position: relative;
