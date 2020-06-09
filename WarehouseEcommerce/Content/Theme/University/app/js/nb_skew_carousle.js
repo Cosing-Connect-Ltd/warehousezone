@@ -30,7 +30,7 @@ $(document).ready(function() {
   $(".item-img-1, .item-img-2").each(function() {
     var src = $(this).attr("data-src");
     $(this).css({
-      background: `url(images/skew_slider_images/${src}) no-repeat`
+      background: 'url(images/skew_slider_images/${src}) no-repeat'
     });
   });
 
