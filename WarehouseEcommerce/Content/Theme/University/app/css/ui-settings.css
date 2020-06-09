@@ -331,7 +331,8 @@ h6,
 .search_wrap_main .search_input,
 .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList,
 .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList li.hav_sub_nav2 ul.nb_s_snList,
-.nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner {
+.nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner,
+.nb_footer .nb_footersec_inner .followUsWrap ul li a i.ico {
     background-color: var(--tertiary-color);
 }
 
@@ -450,7 +451,9 @@ nb_prdpg_fg label,
 .pagination > li > span,
 .pagi .tot,
 .nb_top_catSection,
-.nb_sec_navwrap {
+.nb_sec_navwrap,
+.search_wrap_main .search_btn i,
+.nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner .head {
     color: var(--dark-font-color);
 }
 
@@ -461,7 +464,7 @@ nb_prdpg_fg label,
 .search_wrap_main .search_input,
 .uni-pages-main .nb_prdlisting_pgsec .breadCrumbtopsec .sortBysec select,
 .nb_prdlisting_pgsec .nb_prd_filterwrap * > ul *,
-.nb_filter_accordion .nb_filter_head h5 button {
+.nb_filter_accordion .nb_filter_head h5 button{
     border-color: var(--dark-font-color);
 }
 
