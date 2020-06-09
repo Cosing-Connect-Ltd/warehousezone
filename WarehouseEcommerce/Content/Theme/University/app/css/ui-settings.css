@@ -332,7 +332,8 @@ h6,
 .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList,
 .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList li.hav_sub_nav2 ul.nb_s_snList,
 .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner,
-.nb_footer .nb_footersec_inner .followUsWrap ul li a i.ico {
+.nb_footer .nb_footersec_inner .followUsWrap ul li a i.ico,
+.cont_shop_btn {
     background-color: var(--tertiary-color);
 }
 
