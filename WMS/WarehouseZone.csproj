@@ -978,7 +978,6 @@
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\settings-bar.css" />
     <Content Include="Content\Site.css" />
-    <Content Include="Content\Theme\Default\fonts-and-icons.css" />
     <Content Include="Content\Theme\Modern\fonts-and-icons.css" />
     <Content Include="Content\Theme\Modern\Site.css" />
     <Content Include="Content\Theme\Default\Site.css" />

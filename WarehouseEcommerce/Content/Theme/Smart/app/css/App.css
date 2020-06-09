@@ -6,6 +6,53 @@
 
 
 /* --------------------------
+:: Fonts
+-------------------------- */
+
+@font-face {
+    font-family: Gotham;
+    src: url(../fonts/gotham/Gotham-ExtraLight.eot?#iefix) format("embedded-opentype"), url(../fonts/gotham/Gotham-ExtraLight.otf) format("opentype"), url(../fonts/gotham/Gotham-ExtraLight.woff) format("woff"), url(../fonts/gotham/Gotham-ExtraLight.ttf) format("truetype"), url(../fonts/gotham/Gotham-ExtraLight.svg#Gotham-ExtraLight) format("svg");
+    font-weight: 100;
+    font-style: normal
+}
+
+@font-face {
+    font-family: Gotham;
+    src: url(../fonts/gotham/Gotham-Light.eot?#iefix) format("embedded-opentype"), url(../fonts/gotham/Gotham-Light.otf) format("opentype"), url(../fonts/gotham/Gotham-Light.woff) format("woff"), url(../fonts/gotham/Gotham-Light.ttf) format("truetype"), url(../fonts/gotham/Gotham-Light.svg#Gotham-Light) format("svg");
+    font-weight: 200;
+    font-style: normal
+}
+
+@font-face {
+    font-family: Gotham;
+    src: url(../fonts/gotham/Gotham-Book.eot?#iefix) format("embedded-opentype"), url(../fonts/gotham/Gotham-Book.otf) format("opentype"), url(../fonts/gotham/Gotham-Book.woff) format("woff"), url(../fonts/gotham/Gotham-Book.ttf) format("truetype"), url(../fonts/gotham/Gotham-Book.svg#Gotham-Book) format("svg");
+    font-weight: 300;
+    font-style: normal
+}
+
+@font-face {
+    font-family: Gotham;
+    src: url(../fonts/gotham/Gotham-Medium.eot?#iefix) format("embedded-opentype"), url(../fonts/gotham/Gotham-Medium.otf) format("opentype"), url(../fonts/gotham/Gotham-Medium.woff) format("woff"), url(../fonts/gotham/Gotham-Medium.ttf) format("truetype"), url(../fonts/gotham/Gotham-Medium.svg#Gotham-Medium) format("svg");
+    font-weight: 400;
+    font-style: normal
+}
+
+@font-face {
+    font-family: Gotham;
+    src: url(../fonts/gotham/GothamBold.eot?#iefix) format("embedded-opentype"), url(../fonts/gotham/GothamBold.woff) format("woff"), url(../fonts/gotham/GothamBold.ttf) format("truetype"), url(../fonts/gotham/GothamBold.svg#GothamBold) format("svg");
+    font-weight: 700;
+    font-style: normal
+}
+
+@font-face {
+    font-family: Gotham;
+    src: url(../fonts/gotham/GothamBlack.eot?#iefix) format("embedded-opentype"), url(../fonts/gotham/GothamBlack.woff) format("woff"), url(../fonts/gotham/GothamBlack.ttf) format("truetype"), url(../fonts/gotham/GothamBlack.svg#GothamBlack) format("svg");
+    font-weight: 900;
+    font-style: normal
+}
+
+
+/* --------------------------
 :: Base CSS Start
 -------------------------- */
 
@@ -769,19 +816,23 @@ footer h5 {
         /*display: inline;*/
     }
 }
+
 .pagination > .active > a {
     color: white;
 }
+
 .pagination li {
     padding-top: 17px;
 }
+
 .showing-pagination-count {
     padding-top: 17px;
 }
+
 .pagination {
     flex-wrap: wrap;
 }
-  
+
 
 /* --------------------------
 :: Buttons
@@ -1349,7 +1400,7 @@ h2.price {
     height: 10px;
     display: inline-block;
     margin: 0 20px;
-    border-top:unset;
+    border-top: unset;
 }
 
 .hcontact svg {
@@ -1699,7 +1750,7 @@ header {
 
 /* --------------------------
 :: Sliders
--------------------------- 
+--------------------------
     #slideshow0 img {
   border-radius: 4px;
   width: 100vw;
@@ -1807,12 +1858,14 @@ header {
         font-size: 8px;
     }
 }
+
 .deliveryinfo-row {
     margin-left: unset;
     margin-right: unset;
     flex-wrap: nowrap;
 }
-@media(min-width:654px){
+
+@media(min-width:654px) {
     .deliveryinfo-row .text-center {
         justify-content: center;
         text-align: center;
@@ -1823,12 +1876,13 @@ header {
         text-align: right;
     }
 }
+
 @media(max-width:653px) {
     .deliveryinfo-row .list-inline {
         width: 100%;
         text-align: left !important;
-        max-width:unset;
-        flex:unset;
+        max-width: unset;
+        flex: unset;
     }
 
     .deliveryinfo-row {
@@ -2053,11 +2107,13 @@ header {
     top: 7px;
     right: 25px;
 }
+
 .single-product-cat .topbutton {
     position: absolute;
     top: 7px;
     right: 5px;
 }
+
 .product-list .topbutton {
     right: 12px;
 }
@@ -2615,7 +2671,7 @@ footer #contact li {
 
 .f-left li {
     margin-bottom: 10px;
-    white-space:pre-wrap;
+    white-space: pre-wrap;
 }
 
 @media(min-width: 992px) {
@@ -2717,7 +2773,7 @@ footer #contact li {
 .qtlabel {
     position: relative;
     margin-right: 10px;
-    margin-top:4px;
+    margin-top: 4px;
 }
 
 .product-bg {
@@ -4701,8 +4757,9 @@ body.active {
     margin-top: 10px;
     margin-bottom: 10px;
 }
+
 .button-submit {
-    white-space:nowrap;
+    white-space: nowrap;
 }
 
 
@@ -5329,18 +5386,23 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
 #follow-us {
     padding-top: 70px;
 }
+
 .no-f-wrap {
-    flex-wrap:nowrap;
+    flex-wrap: nowrap;
 }
+
 .f-unset {
-    flex:unset
+    flex: unset
 }
+
 .m-w-unset {
-    max-width:unset;
+    max-width: unset;
 }
+
 .mt-3px {
-    margin-top:3px;
+    margin-top: 3px;
 }
+
 .flex-max-width-unset {
     flex: unset;
     max-width: unset;

@@ -2949,7 +2949,8 @@ body.ZoomerActive {
                 }
 
                     .nb_basket_wrap table.basketTable tbody tr td .qtyboxwrap input[type="number"] {
-                        width: 30px;
+                        width: 100%;
+                        margin: 1px;
                         border: none;
                         outline: none;
                         text-align: center;

@@ -116,11 +116,9 @@ namespace WMS
                 "~/Content/themes/base/theme.css"));
 
             bundles.Add(new StyleBundle("~/Content/css/default").Include(
-             "~/Content/Theme/Default/fonts-and-icons.css",
              "~/Content/Theme/Default/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/css/modern").Include(
-             "~/Content/Theme/Modern/fonts-and-icons.css",
              "~/Content/Theme/Default/site.css"));
         }
     }

@@ -1,4 +1,5 @@
 ﻿/* Customised theme blue color search for '#0b2f54' and replace if required */
+
 tbody {
     border: none !important;
 }
@@ -136,6 +137,7 @@ label {
 }
 
 .btnadd {
+    background-image: url('images/Add.png' );
     width: 24px;
     height: 24px;
 }
@@ -151,6 +153,7 @@ label {
     }
 
 th.header {
+    background-image: url(images/bg.gif);
     cursor: pointer;
     font-weight: bold;
     background-repeat: no-repeat;
@@ -162,10 +165,12 @@ th.header {
 }
 
 th.headerSortUp {
+    background-image: url(images/asc.gif);
     background-color: #3399FF;
 }
 
 th.headerSortDown {
+    background-image: url(images/desc.gif);
     background-color: #3399FF;
 }
 
@@ -205,6 +210,7 @@ h4, .h4 {
 }
 
 .fixed-bottom {
+    background-image: url(images/footer-bg.png);
     border-color: black;
     min-height: 51px;
 }
@@ -573,6 +579,7 @@ footer p {
     width: 100%;
     height: 100%;
     z-index: 9999;
+    background: url(../../images/loading.gif) center no-repeat;
     background-color: rgba(255, 255, 255, 0.5);
 }
 
@@ -659,6 +666,7 @@ footer p {
     display: none;
     padding-top: 5px;
 }
+
 #dvfilesHover {
     font-size: small;
     color: green;
@@ -1962,7 +1970,7 @@ input[type=text].serial {
     font-weight: bolder;
 }
 
-.tooltip-description{
+.tooltip-description {
     min-height: 200px;
 }
 
