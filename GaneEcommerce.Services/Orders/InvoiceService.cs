@@ -451,6 +451,7 @@ namespace Ganedata.Core.Services
                 {
                     var index = model.AllInvoiceProducts.IndexOf(pd);
                     model.AllInvoiceProducts[index].QtyProcessed += x.QtyProcessed;
+                    model.AllInvoiceProducts[index].TaxAmountsInvoice += Math.Round((((x?.OrderDetail?.Price ?? 0) * x.QtyProcessed) / 100) * (x.OrderDetail.TaxName?.PercentageOfAmount ?? 0), 2);
                 }
 
 
