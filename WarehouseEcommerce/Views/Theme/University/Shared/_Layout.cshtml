@@ -9,6 +9,7 @@
     <meta name="description" content="" />
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/Theme/University/app/css/university")
+    @Styles.Render("~/fonts/custom-fonts")
     <link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css">
     <link rel="icon" href="~/Content/Theme/University/app/images/favico.ico" />
     <link href="~/Content/Theme/University/app/css/owl.carousel.min.css" rel="stylesheet" />
@@ -21,6 +22,7 @@
             integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
             crossorigin="anonymous"></script>
 
+    @Styles.Render("~/Content/bootstrap")
     @Scripts.Render("~/bundles/bootstrap")
 
     <link href="@Url.Action("AppStyle", "UISettings", new { filePath = "/Content/Theme/University/app/css/ui-settings.css"})" rel="stylesheet" type="text/css" />

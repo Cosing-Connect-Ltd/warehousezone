@@ -32,13 +32,10 @@ namespace WarehouseEcommerce
                       ));
 
             bundles.Add(new StyleBundle("~/Content/Theme/Smart/app/css/smart").Include(
-                      "~/Content/bootstrap.css",
                       "~/Content/Theme/Smart/app/css/App.css",
                       "~/Content/Theme/Smart/app/css/Site.css"
                       ));
             bundles.Add(new StyleBundle("~/Content/Theme/University/app/css/university").Include(
-                     "~/Content/bootstrap.css",
-                     "~/fonts/fonts.css",
                      "~/Content/Theme/University/app/css/App.css",
                      "~/Content/Theme/University/app/css/Site.css",
                      "~/Content/Theme/University/app/css/customfontIcons.css",
@@ -46,8 +43,14 @@ namespace WarehouseEcommerce
                      "~/Content/Theme/University/app/css/northumbria_responsive.css",
                      "~/Content/Theme/University/app/css/skew_carousle_style.css",
                      "~/Content/Theme/University/app/css/skew_carousle_style.css",
-                     "~/Contents/owl.carousel/owl.carousel.css"
+                     "~/Content/owl.carousel/owl.carousel.css"
                      ));
+
+            bundles.Add(new StyleBundle("~/Content/bootstrap").Include(
+                    "~/Content/bootstrap.css"));
+
+            bundles.Add(new StyleBundle("~/fonts/custom-fonts").Include(
+                    "~/fonts/custom-fonts.css"));
         }
     }
 }

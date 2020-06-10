@@ -345,27 +345,45 @@
     <Content Include="Content\Theme\Smart\app\js\custom.js" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\Theme\University\app\css\customfontIcons.css" />
-    <Content Include="fonts\fonts.css" />
+    <Content Include="fonts\custom-fonts.css" />
     <Content Include="Content\Theme\University\app\css\jquery-confirm.min.css" />
     <Content Include="Content\Theme\University\app\css\ui-settings.css" />
     <Content Include="Content\Theme\University\app\fonts\SegoeUI-Bold.svg" />
     <Content Include="Content\Theme\University\app\fonts\SegoeUI-Semibold.svg" />
     <Content Include="Content\Theme\University\app\fonts\SegoeUI.svg" />
-    <Content Include="fonts\gotham\Gotham-Book.svg" />
-    <Content Include="fonts\gotham\Gotham-ExtraLight.svg" />
-    <Content Include="fonts\gotham\Gotham-Light.svg" />
-    <Content Include="fonts\gotham\Gotham-Medium.svg" />
-    <Content Include="fonts\gotham\GothamBlack.svg" />
-    <Content Include="fonts\gotham\GothamBold.svg" />
+    <Content Include="fonts\gotham\Gotham-Book.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\Gotham-ExtraLight.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\Gotham-Light.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\Gotham-Medium.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\GothamBlack.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\GothamBold.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Theme\University\app\js\jquery-confirm.min.js" />
     <Content Include="Content\Theme\University\app\css\App.css" />
     <Content Include="Content\Theme\University\app\css\northumbria_responsive.css" />
     <Content Include="Content\Theme\University\app\css\owl.carousel.min.css" />
     <Content Include="Content\Theme\University\app\css\skew_carousle_style.css" />
     <Content Include="Content\Theme\University\app\fonts\icomoon.svg" />
-    <Content Include="fonts\segoeui\SegoeUI-Bold.svg" />
-    <Content Include="fonts\segoeui\SegoeUI-Semibold.svg" />
-    <Content Include="fonts\segoeui\SegoeUI.svg" />
+    <Content Include="fonts\segoeui\SegoeUI-Bold.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\segoeui\SegoeUI-Semibold.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\segoeui\SegoeUI.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Theme\University\app\images\ajax-loader-overlay.gif" />
     <Content Include="Content\Theme\University\app\images\banner\image1.jpg" />
     <Content Include="Content\Theme\University\app\images\banner\image2.jpg" />
@@ -622,15 +640,33 @@
     <Content Include="Content\Theme\University\app\fonts\icomoon.eot" />
     <Content Include="Content\Theme\University\app\fonts\icomoon.ttf" />
     <Content Include="Content\Theme\University\app\fonts\icomoon.woff" />
-    <Content Include="fonts\segoeui\SegoeUI-Bold.eot" />
-    <Content Include="fonts\segoeui\SegoeUI-Bold.ttf" />
-    <Content Include="fonts\segoeui\SegoeUI-Bold.woff" />
-    <Content Include="fonts\segoeui\SegoeUI-Semibold.eot" />
-    <Content Include="fonts\segoeui\SegoeUI-Semibold.ttf" />
-    <Content Include="fonts\segoeui\SegoeUI-Semibold.woff" />
-    <Content Include="fonts\segoeui\SegoeUI.eot" />
-    <Content Include="fonts\segoeui\SegoeUI.ttf" />
-    <Content Include="fonts\segoeui\SegoeUI.woff" />
+    <Content Include="fonts\segoeui\SegoeUI-Bold.eot">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\segoeui\SegoeUI-Bold.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\segoeui\SegoeUI-Bold.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\segoeui\SegoeUI-Semibold.eot">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\segoeui\SegoeUI-Semibold.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\segoeui\SegoeUI-Semibold.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\segoeui\SegoeUI.eot">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\segoeui\SegoeUI.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\segoeui\SegoeUI.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Theme\University\app\fonts\selection.json" />
     <Content Include="Views\Theme\University\Shared\_LoginRegisterPartial.cshtml" />
     <Content Include="Views\Theme\University\Shared\_SliderPartial.cshtml" />
@@ -652,69 +688,195 @@
     <Content Include="Views\Theme\University\Products\AddToCart.cshtml" />
     <Content Include="Views\Theme\University\Products\Category.cshtml" />
     <Content Include="Views\Theme\University\Products\CategoryDetail.cshtml" />
-    <Content Include="fonts\gotham\Gotham-Book.eot" />
-    <Content Include="fonts\gotham\Gotham-Book.otf" />
-    <Content Include="fonts\gotham\Gotham-Book.ttf" />
-    <Content Include="fonts\gotham\Gotham-Book.woff" />
-    <Content Include="fonts\gotham\Gotham-ExtraLight.eot" />
-    <Content Include="fonts\gotham\Gotham-ExtraLight.otf" />
-    <Content Include="fonts\gotham\Gotham-ExtraLight.ttf" />
-    <Content Include="fonts\gotham\Gotham-ExtraLight.woff" />
-    <Content Include="fonts\gotham\Gotham-Light.eot" />
-    <Content Include="fonts\gotham\Gotham-Light.otf" />
-    <Content Include="fonts\gotham\Gotham-Light.ttf" />
-    <Content Include="fonts\gotham\Gotham-Light.woff" />
-    <Content Include="fonts\gotham\Gotham-Medium %281%29.woff" />
-    <Content Include="fonts\gotham\Gotham-Medium.eot" />
-    <Content Include="fonts\gotham\Gotham-Medium.otf" />
-    <Content Include="fonts\gotham\Gotham-Medium.ttf" />
-    <Content Include="fonts\gotham\Gotham-Medium.woff" />
-    <Content Include="fonts\gotham\GothamBlack.eot" />
-    <Content Include="fonts\gotham\GothamBlack.ttf" />
-    <Content Include="fonts\gotham\GothamBlack.woff" />
-    <Content Include="fonts\gotham\GothamBold.eot" />
-    <Content Include="fonts\gotham\GothamBold.ttf" />
-    <Content Include="fonts\gotham\GothamBold.woff" />
-    <Content Include="fonts\roboto\Roboto-Black.ttf" />
-    <Content Include="fonts\roboto\Roboto-BlackItalic.ttf" />
-    <Content Include="fonts\roboto\Roboto-Bold.ttf" />
-    <Content Include="fonts\roboto\Roboto-BoldItalic.ttf" />
-    <Content Include="fonts\roboto\Roboto-Italic.ttf" />
-    <Content Include="fonts\roboto\Roboto-Light.ttf" />
-    <Content Include="fonts\roboto\Roboto-LightItalic.ttf" />
-    <Content Include="fonts\roboto\Roboto-Medium.ttf" />
-    <Content Include="fonts\roboto\Roboto-MediumItalic.ttf" />
-    <Content Include="fonts\roboto\Roboto-Regular.ttf" />
-    <Content Include="fonts\roboto\Roboto-Thin.ttf" />
-    <Content Include="fonts\roboto\Roboto-ThinItalic.ttf" />
-    <Content Include="fonts\opensans\OpenSans-Bold.ttf" />
-    <Content Include="fonts\opensans\OpenSans-BoldItalic.ttf" />
-    <Content Include="fonts\opensans\OpenSans-ExtraBold.ttf" />
-    <Content Include="fonts\opensans\OpenSans-ExtraBoldItalic.ttf" />
-    <Content Include="fonts\opensans\OpenSans-Italic.ttf" />
-    <Content Include="fonts\opensans\OpenSans-Light.ttf" />
-    <Content Include="fonts\opensans\OpenSans-LightItalic.ttf" />
-    <Content Include="fonts\opensans\OpenSans-Regular.ttf" />
-    <Content Include="fonts\opensans\OpenSans-SemiBold.ttf" />
-    <Content Include="fonts\opensans\OpenSans-SemiBoldItalic.ttf" />
-    <Content Include="fonts\montserrat\Montserrat-Black.ttf" />
-    <Content Include="fonts\montserrat\Montserrat-BlackItalic.ttf" />
-    <Content Include="fonts\montserrat\Montserrat-Bold.ttf" />
-    <Content Include="fonts\montserrat\Montserrat-BoldItalic.ttf" />
-    <Content Include="fonts\montserrat\Montserrat-ExtraBold.ttf" />
-    <Content Include="fonts\montserrat\Montserrat-ExtraBoldItalic.ttf" />
-    <Content Include="fonts\montserrat\Montserrat-ExtraLight.ttf" />
-    <Content Include="fonts\montserrat\Montserrat-ExtraLightItalic.ttf" />
-    <Content Include="fonts\montserrat\Montserrat-Italic.ttf" />
-    <Content Include="fonts\montserrat\Montserrat-Light.ttf" />
-    <Content Include="fonts\montserrat\Montserrat-LightItalic.ttf" />
-    <Content Include="fonts\montserrat\Montserrat-Medium.ttf" />
-    <Content Include="fonts\montserrat\Montserrat-MediumItalic.ttf" />
-    <Content Include="fonts\montserrat\Montserrat-Regular.ttf" />
-    <Content Include="fonts\montserrat\Montserrat-SemiBold.ttf" />
-    <Content Include="fonts\montserrat\Montserrat-SemiBoldItalic.ttf" />
-    <Content Include="fonts\montserrat\Montserrat-Thin.ttf" />
-    <Content Include="fonts\montserrat\Montserrat-ThinItalic.ttf" />
+    <Content Include="fonts\gotham\Gotham-Book.eot">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\Gotham-Book.otf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\Gotham-Book.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\Gotham-Book.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\Gotham-ExtraLight.eot">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\Gotham-ExtraLight.otf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\Gotham-ExtraLight.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\Gotham-ExtraLight.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\Gotham-Light.eot">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\Gotham-Light.otf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\Gotham-Light.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\Gotham-Light.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\Gotham-Medium %281%29.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\Gotham-Medium.eot">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\Gotham-Medium.otf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\Gotham-Medium.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\Gotham-Medium.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\GothamBlack.eot">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\GothamBlack.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\GothamBlack.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\GothamBold.eot">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\GothamBold.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\gotham\GothamBold.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\roboto\Roboto-Black.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\roboto\Roboto-BlackItalic.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\roboto\Roboto-Bold.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\roboto\Roboto-BoldItalic.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\roboto\Roboto-Italic.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\roboto\Roboto-Light.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\roboto\Roboto-LightItalic.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\roboto\Roboto-Medium.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\roboto\Roboto-MediumItalic.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\roboto\Roboto-Regular.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\roboto\Roboto-Thin.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\roboto\Roboto-ThinItalic.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\opensans\OpenSans-Bold.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\opensans\OpenSans-BoldItalic.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\opensans\OpenSans-ExtraBold.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\opensans\OpenSans-ExtraBoldItalic.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\opensans\OpenSans-Italic.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\opensans\OpenSans-Light.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\opensans\OpenSans-LightItalic.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\opensans\OpenSans-Regular.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\opensans\OpenSans-SemiBold.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\opensans\OpenSans-SemiBoldItalic.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\montserrat\Montserrat-Black.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\montserrat\Montserrat-BlackItalic.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\montserrat\Montserrat-Bold.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\montserrat\Montserrat-BoldItalic.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\montserrat\Montserrat-ExtraBold.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\montserrat\Montserrat-ExtraBoldItalic.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\montserrat\Montserrat-ExtraLight.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\montserrat\Montserrat-ExtraLightItalic.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\montserrat\Montserrat-Italic.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\montserrat\Montserrat-Light.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\montserrat\Montserrat-LightItalic.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\montserrat\Montserrat-Medium.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\montserrat\Montserrat-MediumItalic.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\montserrat\Montserrat-Regular.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\montserrat\Montserrat-SemiBold.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\montserrat\Montserrat-SemiBoldItalic.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\montserrat\Montserrat-Thin.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\montserrat\Montserrat-ThinItalic.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Theme\University\app\fonts\SegoeUI-Bold.eot" />
     <Content Include="Content\Theme\University\app\fonts\SegoeUI-Bold.ttf" />
     <Content Include="Content\Theme\University\app\fonts\SegoeUI-Bold.woff" />
