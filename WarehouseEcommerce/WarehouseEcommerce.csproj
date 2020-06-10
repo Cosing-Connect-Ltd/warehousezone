@@ -1377,6 +1377,9 @@
     <Content Include="Views\Shared\SettingsBar.cshtml" />
     <Content Include="Views\Theme\ElecTech\Shared\_defaultPartial.cshtml" />
     <Content Include="Views\Theme\ElecTech\Shared\_HorizontalNavbarPartial.cshtml" />
+    <Content Include="Views\Theme\ElecTech\Home\page.cshtml" />
+    <Content Include="Views\Theme\University\Shared\_UserMenuPartial.cshtml" />
+    <Content Include="Views\Theme\University\Shared\_AccountSideBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -639,6 +639,11 @@ namespace Ganedata.Core.Services
 
         }
 
+        public IQueryable<Order> GetOrdersHistory(int UserId, int SiteId)
+        {
+            return OrderService.GetOrdersHistory(UserId, SiteId);
+        }
+
         public bool UpdatePickerId(int OrderId, int? pickerId, int userId)
         {
             return OrderService.UpdatePickerId(OrderId, pickerId, userId);

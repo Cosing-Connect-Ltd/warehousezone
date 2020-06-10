@@ -166,6 +166,11 @@ namespace Ganedata.Core.Services
             return _currentDbContext.Order.AsNoTracking().FirstOrDefault(x => x.OrderID == orderId && x.IsDeleted != true);
         }
 
+        public IQueryable<Order> GetOrdersHistory(int UserId,int SiteId)
+        {
+            return _currentDbContext.Order.Where(u => u.CreatedBy == UserId && u.SiteID==SiteId && u.IsDeleted != true);
+        }
+
         public bool IsOrderNumberAvailable(string orderNumber)
         {
             var order = _currentDbContext.Order.FirstOrDefault(m => m.OrderNumber == orderNumber && m.IsDeleted != true);

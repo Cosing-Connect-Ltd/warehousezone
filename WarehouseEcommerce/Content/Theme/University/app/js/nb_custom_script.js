@@ -136,14 +136,7 @@ $(function () {
 
     // showLoginForm
     // showRegForm
-    $("#showRegForm").click(function () {
-        $(".registration_form_sec").addClass("show");
-        $(".login_form_sec").removeClass("show");
-    });
-    $("#showLoginForm").click(function () {
-        $(".registration_form_sec").removeClass("show");
-        $(".login_form_sec").addClass("show");
-    });
+  
     $("#triggerSearch").click(function (e) {
         e.preventDefault();
         $(".search_wrap_main").addClass("show");

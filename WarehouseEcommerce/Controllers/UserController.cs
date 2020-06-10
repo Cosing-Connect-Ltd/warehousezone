@@ -4,6 +4,8 @@ using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Entities.Helpers;
 using Ganedata.Core.Services;
+using System.Data.Entity;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using WarehouseEcommerce.Helpers;
@@ -226,7 +228,16 @@ namespace WarehouseEcommerce.Controllers
         }
         public ActionResult Account()
         {
-            return View();
+            var AccountDetailViewModel = new AccountDetailViewModel()
+            {
+                AuthUser = _userService.GetAuthUserById(CurrentUserId),
+                OrderHistory = OrderService.GetOrdersHistory(CurrentUserId,CurrentTenantWebsite.SiteID).Take(10).ToList(),
+                WebsiteWishList= _tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).ToList()
+
+
+        };
+
+            return View(AccountDetailViewModel);
         }
         public ActionResult _AccountSideBar()
         {
@@ -310,6 +321,30 @@ namespace WarehouseEcommerce.Controllers
             }
 
             return Json(false, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult UpdateUser(int UserId, string FirstName, string LastName)
+        {
+            var User = _userService.GetAuthUserById(UserId);
+            User.UserFirstName = FirstName;
+            User.UserLastName = LastName;
+            _userService.UpdateAuthUser(User, CurrentUserId, CurrentTenantId);
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult IsUserAvailable(string UserName)
+        {
+            if (!string.IsNullOrEmpty(UserName)) UserName = UserName.Trim();
+
+            // get properties of tenant
+            caTenant tenant = caCurrent.CurrentTenant();
+
+            int result = _userService.IsUserNameExists(UserName, tenant.TenantId);
+
+            if (result > 0)
+                return Json(false, JsonRequestBehavior.AllowGet);
+            else
+                return Json(true, JsonRequestBehavior.AllowGet);
         }
 
     }

@@ -46,4 +46,13 @@ namespace WarehouseEcommerce.ViewModels
 
         public bool? PlaceOrder { get; set; }
     }
+
+    public class AccountDetailViewModel
+    {
+        public AuthUser AuthUser { get; set; }
+
+        public List<Order> OrderHistory { get; set; }
+
+        public List<WebsiteWishListItem> WebsiteWishList { get; set; }
+    }
 }

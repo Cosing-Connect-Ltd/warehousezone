@@ -1,133 +1,317 @@
-﻿@{
-    ViewBag.Title = "Account";
+﻿@model WarehouseEcommerce.ViewModels.AccountDetailViewModel
+@{
+    ViewBag.Title = "OrderHistory";
 }
+<section class="nb_sec nb_prdlisting_pgsec">
+    <div class="container">
+        <div class="breadCrumbtopsec">
+            <div class="nb_bread_crumbwrap">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#"><i class="icon-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">My Account</a></li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="nb_sec checkconfirmSec">
+            <div class="nb_header_style1">
+                <h3>My Account</h3>
+            </div>
 
-<div class="row about bg-white m-auto pb-0">
-            @Html.Partial("_AccountSideBar")
-            <div class="col-lg-9 col-md-12 bg-white login my-account">
-                <div class="about-cnt">
-                    <div class="content-wrapper select">
-                        <h2 class="text-uppercase">My Account</h2>
-                        <hr />
-                        <h4>Contact Information</h4>
-                        <hr />
-                        <form method="post" action="#">
-                            <div class="">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control input-md inputNew" size="18" placeholder="Enter your First Name">
+            <div class="myAccLeftNavsec">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="nav flex-column nav-pills leftsideNavWrap" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                            <a class="leftsideNav active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">
+                                <i class="ico icon-user"></i>My Account
+                            </a>
+                            <a class="leftsideNav" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">
+                                <i class="ico icon-file-text"></i>Order History
+                            </a>
+                            <a class="leftsideNav" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">
+                                <i class="ico icon-love"></i>Wishlist
+                            </a>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-9">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                                <div class="tabcontentInner tab_myaccount">
+                                    <h2 class="headMain">My Account</h2>
+                                    <div class="subcontBox">
+                                        <h3 class="subhead">Contact Information</h3>
+                                        <h5 class="alert-message" style="display:none; color:green"></h5><br />
+                                        <div class="row">
+                                            @Html.HiddenFor(model=>model.AuthUser.UserId)
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    @Html.EditorFor(model => model.AuthUser.UserFirstName, new { htmlattributes = new { @class = "form-control firstname", @placeholder = "Enter your first name" } })
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    @Html.EditorFor(model => model.AuthUser.UserLastName, new { htmlattributes = new { @class = "form-control lastname", @placeholder = "Enter your last name" } })
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    @Html.EditorFor(model => model.AuthUser.UserEmail, new { htmlattributes = new { @class = "form-control", @placeholder = "Enter your email", @disabled = "disabled" } })
+                                                </div>
+                                            </div>
+                                            @*<div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" placeholder="Enter your mobile number">
+                                                    </div>
+                                                </div>*@
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <button onclick="UpdateUser()">Save Details</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control input-md inputNew" size="18" placeholder="Enter your Last Name">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <input type="email" class="form-control input-md inputNew" size="18" placeholder="Enter your E-mail ID">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control input-md inputNew" size="18" placeholder="Enter your Mobile Number">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="button-submit">
-                                            <button type="Submit" name="submitNewsletter" class="btn btn-block account-save-btn">Save Details</button>
-                                        </div>
+
+
+                                    @*<div class="subcontBox">
+                                            <h3 class="subhead">Address Information</h3>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" placeholder="Address Line 1">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" placeholder="Address Line 2">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" placeholder="Land Mark">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" placeholder="Zip code">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <select>
+                                                            <option value="0" selected="selected" disabled>City</option>
+                                                            <option value="1">value1</option>
+                                                            <option value="2">value2</option>
+                                                            <option value="3">value3</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <select>
+                                                            <option value="0" selected="selected" disabled>State</option>
+                                                            <option value="1">value1</option>
+                                                            <option value="2">value2</option>
+                                                            <option value="3">value3</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <select>
+                                                            <option value="0" selected="selected" disabled>Country</option>
+                                                            <option value="1">value1</option>
+                                                            <option value="2">value2</option>
+                                                            <option value="3">value3</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <button>Save Details</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>*@
+
+
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                                <ul class="order">
+                                    @foreach (var order in Model.OrderHistory)
+                                    {
+
+
+                                        <li class="itemList">
+                                            <div class="row orderScdRw">
+                                                <div class="col-12 col-sm-12 col-md-2 col-lg-2">
+                                                    <div class="orderDetls">
+                                                        <label>ORDER DATE</label>
+                                                        <h6>@order.DateCreated.ToString("MMM dd,yyyy")</h6>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-sm-12 col-md-2 col-lg-2">
+                                                    <div class="orderDetls">
+                                                        <label>ORDER NUMBER</label>
+                                                        <h6>@order.OrderNumber</h6>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-sm-12 col-md-3 col-lg-4">
+                                                    <div class="orderDetls">
+                                                        <label>SOLD BY</label>
+                                                        <div class="orderLnk">
+                                                            <a href="#">brandsexpress </a> <span> (1 item)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-sm-12 col-md-2 col-lg-2">
+                                                    <div class="orderDetls">
+                                                        <label>ORDER TOTAL</label>
+                                                        <h6>@order.OrderTotal</h6>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-sm-12 col-md-3 col-lg-2">
+                                                    <div class="returnDetls">
+                                                        <button>Return</button>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            @foreach (var orderdet in order.OrderDetails)
+                                            {
+
+
+                                                <div class="row items">
+                                                    <div class="col-12 col-sm-4 col-md-3 col-lg-2">
+                                                        <div class="itemImg">
+                                                            <figure class="prdimg">
+                                                                <img src="@(!string.IsNullOrEmpty(orderdet.ProductMaster.DefaultImage) ? ViewBag.BaseFilePath + orderdet.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="">
+                                                            </figure>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-sm-8 col-md-7 col-lg-6">
+                                                        <div class="orderItems">
+                                                            <h3>
+                                                                @orderdet.ProductMaster.Name
+                                                            </h3>
+                                                            <span class="qty">Quantity : @orderdet.Qty</span>
+                                                            <ul class="orderProductStatus">
+                                                                <li>@((Ganedata.Core.Entities.Enums.OrderStatusEnum?)orderdet.OrderDetailStatusId)</li>
+                                                                @*<li>This item has been dispatched</li>*@
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-sm-12 col-md-2 col-lg-4">
+                                                        <div class="orderDetls itemPrc">
+                                                            <label>ITEM PRICE</label>
+                                                            <h6>@orderdet.Price</h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </li>
+
+
+                                    }
+
+
+                                </ul>
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                                <div class="tabcontentInner tab_myaccount">
+                                    <h2 class="headMain">My Wishlist</h2>
+                                    <div class="subcontBox">
+                                        <ul class="myAccwishlistList">
+                                            @foreach (var wishlistitem in Model.WebsiteWishList)
+                                            {
+
+
+
+                                                <li>
+                                                    <div class="myAccwishlistList_inner">
+                                                        <div class="cont_left">
+                                                            <span class="prod_img">
+                                                                <img src="@(!string.IsNullOrEmpty(wishlistitem.ProductMaster.DefaultImage)? ViewBag.BaseFilePath + wishlistitem.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="">
+                                                            </span>
+                                                            <div class="prod_det">
+                                                                <h4 class="prdhead">@wishlistitem.ProductMaster.Name</h4>
+                                                                @if (wishlistitem.ProductMaster.InventoryStocks.Count > 0)
+                                                                {
+                                                                    <span class="stkStatus in">In Stock</span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span class="stkStatus out">Out of stock</span>
+                                                                }
+
+                                                                <ul class="prodDetlist">
+                                                                    @foreach (var attribute in wishlistitem.ProductMaster.ProductAttributeMaps)
+                                                                    {
+                                                                        <li>
+                                                                            <span>@attribute.ProductAttributes.AttributeName</span>
+                                                                            @foreach (var item in attribute.ProductAttributes.ProductAttributeValues)
+                                                                            {
+                                                                                <span>@item.Value</span>
+                                                                            }
+
+                                                                        </li>
+
+                                                                    }
+                                                                    @*<li>
+                                                                            <span>Qty</span>
+                                                                            <span>
+                                                                                <input type="text" class="qtyinputbox" value="@wishlistitem.">
+                                                                            </span>
+                                                                        </li>*@
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="cont_right">
+                                                            <ul class="prd_totLst">
+                                                                <li>
+                                                                    <span>Price</span>
+                                                                    <span>@wishlistitem.ProductMaster.SellPrice</span>
+                                                                </li>
+                                                                <li>
+                                                                    <span>Total</span>
+                                                                    <span>@wishlistitem.ProductMaster.SellPrice</span>
+                                                                </li>
+                                                                <li>
+                                                                    <button class="mtcBtn"><i class="icon-shopping-cart"></i>Move to cart</button>
+                                                                </li>
+                                                            </ul>
+
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            }
+
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                        <h4>Address Information</h4>
-                        <hr />
-                        <form method="post" action="#">
-                            <div class="">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control input-md inputNew" size="18" placeholder="Address Line 1">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control input-md inputNew" size="18" placeholder="Address Line 2">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control input-md inputNew" size="18" placeholder="Land Mark">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control input-md inputNew" size="18" placeholder="Zip Code">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <select name="city">
-                                                <option>City 1</option>
-                                                <option>City 2</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <select name="State">
-                                                <option>State 1</option>
-                                                <option>State 2</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <select name="Country">
-                                                <option>Country 1</option>
-                                                <option>Country 2</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="button-submit">
-                                            <button type="Submit" name="submitNewsletter" class="btn btn-block account-save-btn">Save Details</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                        <h4>Change Password</h4>
-                        <hr />
-                        <form method="post" action="#">
-                            <div class="">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <input type="password" class="form-control input-md inputNew" size="18" placeholder="Enter your old password">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <input type="password" class="form-control input-md inputNew" size="18" placeholder="Enter your new password">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <input type="password" class="form-control input-md inputNew" size="18" placeholder="Re-Enter your new password">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="button-submit">
-                                            <button type="Submit" name="submitNewsletter" class="btn btn-block account-save-btn">Reset Password</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
+
+
             </div>
-</div>
+
+
+
+
+        </div>
+    </div>
+</section>

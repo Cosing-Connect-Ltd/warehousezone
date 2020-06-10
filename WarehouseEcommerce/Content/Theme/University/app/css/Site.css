@@ -1000,6 +1000,9 @@ body.modal-open {
     overflow: auto !important;
     padding-right: unset !important;
 }
+.error {
+    color: red;
+}
 /*Scrollbar css start*/
 /* width */
 ::-webkit-scrollbar {

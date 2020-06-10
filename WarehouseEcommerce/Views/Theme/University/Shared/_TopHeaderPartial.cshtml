@@ -42,26 +42,61 @@
                     </a>
                 </li>
             }
-            <li>
+            <li id="user_menue" class="dropdown user_menu">
                 @if (ViewBag.UserName == null || string.IsNullOrWhiteSpace((string)ViewBag.UserName))
                 {
-                    <a href="" data-toggle="modal" data-target="#signupPopup" id="AccountNameHref">
+                    <a href="javascript:;" onclick="GetLoggedIn(false,true)">
                         <i class="ico icon-user temproryShow"></i>
                     </a>
                 }
                 else
                 {
-                    <a href="javascript:;" onclick="Logout();">
+                    @*<a href="javascript:;" onclick="Logout();">
+                            <i class="ico icon-user" title="@ViewBag.UserName"></i>
+                        </a>*@
+                    <a href="#" title="@(ViewBag.UserName  == " " ? "My Account" : ViewBag.UserName)" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="ico icon-user" title="@ViewBag.UserName"></i>
                     </a>
+                    <ul class="dropdown-menu dropdown-menu-right user_account user-fa-icons" style="background:black;">
+                        @*<li>
+                                <a href="javascript:;">@ViewBag.UserName</a>
+                            </li>*@
+                        <li style="border-right:0px;">
+                            <a href="@Url.Action("Account","User")" style="color:white;">@ViewBag.UserName</a>
+                        </li>
+                        <li style="border-right:0px;"><a href="@Url.Action("Account","User")" style="color:white; border-right:0px;">Order History</a></li>
+                        <li style="border-right:0px;"><a href="@Url.Action("Account","User")" style="color:white; border-right:0px;">Wish List</a></li>
+
+
+                        @if (ViewBag.UserName == null)
+                        {
+                            <li> <a href="javascript:;" onclick="GetLoggedIn(false,true)"><i class="fa fa-sign-in"></i>Login</a></li>
+                        }
+                        else
+                        {
+                            <li style="border-right:0px;"><a href="@Url.Action("logout", "User")" style="color:white;border-right:0px;">Logout</a></li>
+                        }
+                    </ul>
+
+
                 }
             </li>
             <li class="cartIcoWrap sir">
-                <a href="@Url.Action("WishList","Products")">
-                    <i class="ico icon-love"></i>
+                @if (ViewBag.UserName == null || string.IsNullOrWhiteSpace((string)ViewBag.UserName))
+                {
+                    <a href="javascript:;" onclick="GetLoggedIn(false,true)">
+                        <i class="ico icon-love"></i>
+                    </a>
 
-                    <span id="WishList-total">@(ViewBag.WishListItemCount ?? "")</span>
-                </a>
+                }
+                else
+                {
+                    <a href="@Url.Action("WishList", "Products")">
+                        <i class="ico icon-love"></i>
+
+                        <span id="WishList-total">@(ViewBag.WishListItemCount ?? "")</span>
+                    </a>
+                }
             </li>
             <li class="cartIcoWrap sir">
                 <a href="@Url.Action("AddToCart","Products")">

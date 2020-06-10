@@ -12,9 +12,10 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Login</h5>
                 </div>
-                <div class="modal-body login-model-body">
-
-                    @Html.Action("Login", "User")
+                <div class="modal-body">
+                    <div class="login-model-body">
+                        @Html.Action("Login", "User")
+                    </div>
 
                     @*<form class="loginForm">
                     <div class="form-group">
@@ -58,8 +59,9 @@
                     <h5 class="modal-title" id="exampleModalLabel">Register</h5>
                 </div>
                 <div class="modal-body">
-
-                    @Html.Action("Create", "User")
+                    <div class="register-model-body">
+                        @Html.Action("Create", "User")
+                    </div>
 
                     @*<form class="loginForm">
                     <div class="form-group">

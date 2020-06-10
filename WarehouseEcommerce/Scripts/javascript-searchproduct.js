@@ -1,7 +1,12 @@
 ﻿function SetProductGroupId(event) {
     $("#ProductGroupId").val(event.currentTarget.value);
 }
+function ValidEmail(email) {
 
+    var regExp = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/i;
+    return regExp.test(email);
+
+}
 function searchPoducts() {
     var sortvalue = $("#SortedValues").val();
     var category = $("#prod-category").val();
@@ -15,14 +20,14 @@ function searchPoducts() {
 
 function SearchPostCode() {
     var searchString = $(".text-search-postcode").val();
-    var selOption = '';
+
     $.ajax({
         url: basePath + '/Orders/GetApiAddressAsync',
         method: 'post',
         data: { postCode: searchString },
         dataType: 'json',
         success: function (data) {
-            debugger;
+
             if (data.length > 1) {
                 $('#selectAddresss').show();
                 $('#selectApiAddress').empty();
@@ -368,7 +373,7 @@ function removeURLParameter(url, parameter) {
         return url;
     }
 }
-function GetLoggedIn(placeholder) {
+function GetLoggedIn(placeholder, topheader) {
 
     $.ajax({
         type: "GET",
@@ -376,18 +381,23 @@ function GetLoggedIn(placeholder) {
         data: { PlaceOrder: placeholder },
         dataType: 'Html',
         success: function (data) {
-            $("#login-model-body").html("");
-            $("#login-model-body").html(data);
+            $(".login-model-body").html("");
+            $(".login-model-body").html(data);
             if (placeholder !== "") {
                 $("#Placecheck").val(placeholder);
             }
             $('#signupPopup').modal('show');
+            $(".registration_form_sec").removeClass("show");
+            $(".login_form_sec").addClass("show");
+            $(".error").remove();
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert('Error' + textStatus + "/" + errorThrown);
         }
     });
-    $('#top-header').load(basePath + "/Home/_TopHeaderPartial");
+    if (!topheader) {
+        $('#top-header').load(basePath + "/Home/_TopHeaderPartial");
+    }
 
 
 }
@@ -395,6 +405,26 @@ function LoggedIn() {
     var UserName = $("#UserName").val();
     var UserPassword = $("#UserPassword").val();
     var placecheck = $("#Placecheck").val();
+    $(".error").remove();
+    if (UserName.length < 1) {
+        $('#UserName').after('<span class="error">This field is required</span>');
+        return;
+    }
+    else {
+
+        if (!ValidEmail(UserName)) {
+
+            $('#UserName').after('<span class="error">Enter a valid email</span>');
+
+            return;
+        }
+    }
+    if (UserPassword.length < 1) {
+
+        $('#UserPassword').after('<span class="error">This field is required</span>');
+
+        return;
+    }
     var PlaceOrders;
     if (placecheck !== "" && placecheck !== undefined && placecheck != null) {
         PlaceOrders = true;
@@ -404,21 +434,26 @@ function LoggedIn() {
         url: basePath + "/User/LoginUsers/",
         data: { UserName: UserName, UserPassword: UserPassword, PlaceOrder: PlaceOrders, Popup: placecheck },
         dataType: 'json',
-        success: function (data) {
-            if (PlaceOrders) {
+        success: function (data)
+        {
+            if (!data.status) {
+
+                $(".alert-message-login").html("User name or password is not correct").show().delay(2000).fadeOut();
+
+            }
+            else if (PlaceOrders) {
                 $('#signupPopup').modal('hide');
                 location.href = "/Orders/GetAddress?AccountId=" + data.AccountId;
             }
             else {
                 if (data.status) {
+                    $(".alert-message-login").html("Successfully logged in.").show().delay(5000).fadeOut();
                     $('#signupPopup').modal('hide');
                     $('#AccountNameHref').removeAttr("data-target");
                     $(".temproryShow").prop('title', data.Name);
                     location.reload();
                 }
-                else {
-                    alert("User name or password is not correct");
-                }
+                
 
 
             }
@@ -426,7 +461,8 @@ function LoggedIn() {
 
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            alert('Error' + textStatus + "/" + errorThrown);
+            $(".alert-message-login").html('Error' + textStatus + "/" + errorThrown).show().delay(5000).fadeOut();
+
         }
     });
 }
@@ -435,22 +471,33 @@ function CreateUsers() {
     var LastName = $("#LastName").val();
     var Email = $("#Email").val();
     var Password = $("#Password").val();
+    $(".error").remove();
+    if (FirstName.length < 1) {
+        $('#FirstName').after('<span class="error">This field is required</span>');
+        return;
+    }
+    if (LastName.length < 1) {
+        $('#LastName').after('<span class="error">This field is required</span>');
+        return;
+    }
+    if (Email.length < 1) {
+        $('#Email').after('<span class="error">This field is required</span>');
+        return;
+    }
+    else {
+
+        if (!ValidEmail(Email)) {
+            $('#Email').after('<span class="error">Enter a valid email</span>');
+            return;
+        }
+    }
+    if (Password.length < 1) {
+        $('#Password').after('<span class="error">This field is required</span>');
+        return;
+    }
     var placecheck = $("#Placecheck").val();
     var PlaceOrders;
     if (placecheck !== "" && placecheck !== undefined && placecheck != null) {
-        PlaceOrders = true;
-    }
-    if (FirstName == "" || FirstName == undefined || FirstName == null) {
-        alert("First name is required");
-    }
-    if (Email == "" || Email == undefined || Email == null) {
-        alert("Email is required");
-    }
-    if (Password == "" || Password == undefined || Password == null) {
-        alert("Password is required");
-    }
-
-    if (PlaceOrders !== "" && PlaceOrders !== undefined && PlaceOrders != null) {
         PlaceOrders = true;
     }
     $.ajax({
@@ -461,13 +508,16 @@ function CreateUsers() {
         success: function (data) {
 
             if (data) {
+
+                $(".alert-message-reg").html("Please activate your account.").show().delay(5000).fadeOut();
                 $('#signupPopup').modal('hide');
-                alert("Please activate your account.");
             }
+
 
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            alert('Error' + textStatus + "/" + errorThrown);
+            $(".alert-message-reg").html('Error' + textStatus + " /" + errorThrown).show().delay(5000).fadeOut();
+
         }
     });
 
@@ -586,3 +636,76 @@ function RemoveWishItem(id) {
 
 
 }
+
+function UpdateUser() {
+    var UserId = $("#AuthUser_UserId").val();
+    var FirstName = $(".firstname").val();
+    var LastName = $(".lastname").val();
+    $(".error").remove();
+    if (FirstName.length < 1) {
+        $('.firstname').after('<span class="error">This field is required</span>');
+        return;
+    }
+    if (LastName.length < 1) {
+        $('.lastname').after('<span class="error">This field is required</span>');
+        return;
+    }
+    $.ajax({
+        type: "GET",
+        url: basePath + "/User/UpdateUser/",
+        data: { UserId: UserId, FirstName: FirstName, LastName: LastName },
+        dataType: 'json',
+        success: function (data) {
+
+            if (data) {
+                $(".alert-message").html("Contact information updated").show().delay(5000).fadeOut();
+            }
+
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert('Error' + textStatus + "/" + errorThrown);
+        }
+    });
+
+}
+
+$("#showRegForm").click(function () {
+    var placeholder = false;
+    $.ajax({
+        type: "GET",
+        url: basePath + "/User/Create/",
+        data: { PlaceOrder: placeholder },
+        dataType: 'Html',
+        success: function (data) {
+            $(".register-model-body").html("");
+            $(".register-model-body").html(data);
+            $(".registration_form_sec").addClass("show");
+            $(".login_form_sec").removeClass("show");
+            $(".error").remove();
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert('Error' + textStatus + "/" + errorThrown);
+        }
+    });
+
+});
+$("#showLoginForm").click(function () {
+    placeholder = false;
+    $.ajax({
+        type: "GET",
+        url: basePath + "/User/Login/",
+        data: { PlaceOrder: placeholder },
+        dataType: 'Html',
+        success: function (data) {
+            $(".login-model-body").html("");
+            $(".login-model-body").html(data);
+            $(".registration_form_sec").removeClass("show");
+            $(".login_form_sec").addClass("show");
+            $(".error").remove();
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert('Error' + textStatus + "/" + errorThrown);
+        }
+    });
+
+});

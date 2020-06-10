@@ -45,6 +45,8 @@ namespace Ganedata.Core.Services
         List<OrderProcessDetail> GetOrderProcessesDetailsForOrderProduct(int orderId, int productId);
         List<InventoryTransaction> GetAllReturnsForOrderProduct(int orderId, int productId);
 
+        IQueryable<Order> GetOrdersHistory(int UserId, int SiteId);
+
         OrderProcess GetOrderProcessByDeliveryNumber(int orderId, InventoryTransactionTypeEnum InventoryTransactionTypeId, string deliveryNumber, int userId, DateTime? createdDate = null, int warehouseId = 0, AccountShipmentInfo shipmentInfo = null);
         IQueryable<Order> GetAllOrders(int tenantId, int warehouseId = 0, bool excludeProforma = false, DateTime? reqDate = null, bool includeDeleted = false);
         IEnumerable<OrderIdsWithStatus> GetAllOrderIdsWithStatus(int tenantId, int warehouseId = 0);
