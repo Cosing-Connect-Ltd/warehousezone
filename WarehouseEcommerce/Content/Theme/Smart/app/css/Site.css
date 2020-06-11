@@ -390,12 +390,6 @@
     }
 }
 
-.product-bg {
-    display: flex;
-    flex-wrap: nowrap;
-}
-
-
 .hover-cate {
     height: 100%;
 }
@@ -2002,7 +1996,10 @@ ul.mhp-menu {
         margin-right: unset;
     }
 }
-
+.product-bg {
+    display: flex;
+    flex-wrap: nowrap;
+}
 .kit-tab-content {
     border: solid 1px #D7D7D7;
     padding: 0px 10px;
