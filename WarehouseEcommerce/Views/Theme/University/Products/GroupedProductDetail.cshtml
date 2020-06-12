@@ -14,26 +14,37 @@
 <div id="product-product" class="container m-auto kit-product">
     <div class="row">
         <div id="content" class="col-md-12 col-sm-12">
-            <ul class="breadcrumb">
-                <li><a href="/shop">Home</a></li>
-                @if (!string.IsNullOrEmpty(Model?.TenantDepartment?.DepartmentName))
-                {
-                    <li><a href="@Url.Action("list", "Products", new { department = @Model.TenantDepartment.DepartmentName })">@(!string.IsNullOrEmpty(Model?.TenantDepartment?.DepartmentName) ? Model.TenantDepartment.DepartmentName : "")</a></li>
-                }
-                @if (Url.Action() != Url.Action("list", "Products", new { department = Model.TenantDepartment?.DepartmentName }))
-                {
-                    if (!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup))
-                    {
-                        <li><a href="@Url.Action("list", "Products", new { group = Model.ProductGroup?.ProductGroup, department = Model.TenantDepartment?.DepartmentName })">@(!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup) ? Model.ProductGroup?.ProductGroup : "")</a></li>
-                    }
-                }
-                @if (!string.IsNullOrEmpty(Model?.ProductCategory?.ProductCategoryName))
-                {
-                    <li><a href="@Url.Action("list", "Products", new { group = Model.ProductGroup?.ProductGroup, department = Model.TenantDepartment?.DepartmentName,values ="TypeS-"+Model.ProductCategory.ProductCategoryName })">@(!string.IsNullOrEmpty(Model?.ProductCategory?.ProductCategoryName) ? Model.ProductCategory.ProductCategoryName : "")</a></li>
-                }
+            <div class="breadCrumbtopsec">
+                <div class="nb_bread_crumbwrap">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/shop">Home</a></li>
+                            <li>></li>
+                            @if (!string.IsNullOrEmpty(Model?.TenantDepartment?.DepartmentName))
+                            {
+                                <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { department = @Model.TenantDepartment.DepartmentName})">@(!string.IsNullOrEmpty(Model?.TenantDepartment?.DepartmentName) ? Model.TenantDepartment.DepartmentName : "")</a></li>
+                                <li>></li>
+                            }
+                            @if (Url.Action() != Url.Action("list", "Products", new { department = Model.TenantDepartment?.DepartmentName }))
+                            {
+                                if (!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup))
+                                {
+                                    <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { group = Model.ProductGroup?.ProductGroup, department = Model.TenantDepartment?.DepartmentName})">@(!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup) ? Model.ProductGroup?.ProductGroup : "")</a></li>
+                                    <li>></li>
+                                }
+                            }
+                            @if (!string.IsNullOrEmpty(Model?.ProductCategory?.ProductCategoryName))
+                            {
+                                <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { group = Model.ProductGroup?.ProductGroup, department = Model.TenantDepartment?.DepartmentName,values ="TypeS-"+Model.ProductCategory.ProductCategoryName })">@(!string.IsNullOrEmpty(Model?.ProductCategory?.ProductCategoryName) ? Model.ProductCategory.ProductCategoryName : "")</a></li>
+                                <li>></li>
+                            }
 
-                <li>@Model.Name</li>
-            </ul>
+                            <li class="breadcrumb-item"> <a>@Model.Name</a> </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+
 
             <div>
                 <h2 style="padding: 0px 15px;">@Model.Name</h2>
@@ -131,9 +142,9 @@
                                         {
                                             var extension = Path.GetExtension(item.FilePath);
                                             @*if (Images.Contains(extension))
-                                                {
-                                                    <li> <a target='_new' href="@(ViewBag.BaseFilePath+item.FilePath.ToString())"><img style='width:100%' src="@(ViewBag.BaseFilePath+item.FilePath.ToString())" /></a></li> <br />
-                                                }*@
+                                        {
+                                            <li> <a target='_new' href="@(ViewBag.BaseFilePath+item.FilePath.ToString())"><img style='width:100%' src="@(ViewBag.BaseFilePath+item.FilePath.ToString())" /></a></li> <br />
+                                        }*@
                                             if (Videos.Contains(extension))
                                             {
                                                 <li>
@@ -175,11 +186,11 @@
                                         i++;
                                         if (i == 1)
                                         {
-                                            <li role="presentation" class="active"><a href="#@item.Name.Replace(" ", "-")" aria-controls="@item.Name.Replace(" ", "-")" role="tab" data-toggle="tab">@item.Name</a></li>
+                                            <li role="presentation" class="active nav-item"><a href="#@item.Name.Replace(" ", "-")" aria-controls="@item.Name.Replace(" ", "-")" role="tab" data-toggle="tab" class="nav-link active">@item.Name</a></li>
                                         }
                                         else
                                         {
-                                            <li role="presentation"><a href="#@item.Name.Replace(" ", "-")" aria-controls="@item.Name.Replace(" ", "-")" role="tab" data-toggle="tab">@item.Name</a></li>
+                                            <li role="presentation" class="nav-item"><a class="nav-link" href="#@item.Name.Replace(" ", "-")" aria-controls="@item.Name.Replace(" ", "-")" role="tab" data-toggle="tab">@item.Name</a></li>
                                         }
                                     }
 
@@ -216,7 +227,7 @@
                                                                 <p><b>Brands:</b> <span>@(productitems.KitProductMaster.ProductManufacturer == null ? "" : productitems.KitProductMaster.ProductManufacturer.Name)</span></p>
                                                                 <p><b>SKU Code:</b> <span>@productitems.KitProductMaster.SKUCode</span></p>
                                                                 <p><b>Product Code::</b> <span>@productitems.KitProductMaster.BarCode</span></p>
-                                                                <p><b>Size:</b> <span>@productitems.KitProductMaster.Description?.Take(200)</span></p>
+                                                                <p><b>Size:</b> <span>M</span></p>
 
 
 

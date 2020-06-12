@@ -509,8 +509,12 @@ function CreateUsers() {
 
             if (data) {
 
-                $(".alert-message-reg").html("Please activate your account.").show().delay(5000).fadeOut();
-                $('#signupPopup').modal('hide');
+                $(".alert-message-reg").html("Please activate your account.").show().delay(2000).fadeOut();
+                setTimeout(function () {
+                    $('#signupPopup').modal('hide');
+                }, 2000);
+               
+               
             }
 
 

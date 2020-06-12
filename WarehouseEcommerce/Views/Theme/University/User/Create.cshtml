@@ -6,7 +6,7 @@
 @using (Html.BeginForm("Create", "User", FormMethod.Post, new { @class = "loginForm", id = "" }))
 {
     @Html.AntiForgeryToken()
-    <h2 class="bg-success alert-message-reg"></h2>
+    <h5 class="alert-message-reg" style="color:green"></h5>
     <br />
     <div class="form-group">
         @Html.EditorFor(model => model.FirstName, new { htmlattributes = new { @class = "form-control", @placeholder = "Enter First Name" } })

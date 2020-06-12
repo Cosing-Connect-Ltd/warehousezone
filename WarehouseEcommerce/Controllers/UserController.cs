@@ -203,6 +203,7 @@ namespace WarehouseEcommerce.Controllers
                     bool status = GaneStaticAppExtensions.ValidatePassword(data[data.Length - 1], data[0]);
                     var UserId = int.Parse(data[data.Length - 1]);
                     var authUsers = _userService.GetAuthUserById(UserId);
+                    authUsers.UserPassword = null;
                     if (authUsers != null)
                     {
                         authUsers.IsActive = status;
