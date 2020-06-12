@@ -1178,6 +1178,10 @@ body.modal-open {
     width: 100%;
 }
 
+.kit-product a {
+    color:#555;
+}
+
 .kit-product .kit-tabs-content {
     padding: 10px;
     border: 1px solid #dee2e6;
@@ -1187,7 +1191,7 @@ body.modal-open {
 .kit-product .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
     font-weight: 600;
     color: #000;
-    font-size: 15px;
+    font-size: 16px;
 }
 
 @media(min-width:900px) {
@@ -1220,6 +1224,9 @@ body.modal-open {
 
     .kit-product .thumbnail a img {
         position: unset;
+    }
+    .kit-product .product-bg .card-header h4 {
+        font-size:unset;
     }
 }
 
@@ -1263,7 +1270,15 @@ body.modal-open {
     padding: 7px 35px;
     width: 100%;
 }
-
+.disabled-btn {
+    color: white !important;
+    background-color: grey !important;
+}
+    .disabled-btn:hover {
+        cursor: no-drop !important;
+        background-color: grey !important;
+        border-color: grey !important;
+    }
 .no-wrap {
     white-space: nowrap;
 }
@@ -1318,4 +1333,41 @@ body.modal-open {
         width: 250px;
     }
 }
+
+/*breadcrumbs start*/
+.breadCrumbtopsec {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    margin-top: 16px;
+    font-family: "primaryfont_SemiBold"
+}
+    .breadCrumbtopsec .nb_bread_crumbwrap nav ol {
+        background-color: transparent;
+        margin: 0px;
+        padding: 0px;
+    }
+
+        .breadCrumbtopsec .nb_bread_crumbwrap nav ol li:before {
+            content: "";
+            font-family: "icomoon" !important;
+            font-size: 9px;
+      
+        }
+        .breadCrumbtopsec .nb_bread_crumbwrap nav ol li a {
+            font-family: "primaryfont_SemiBold";
+            font-size: 13px;
+            color: #111111;
+            font-weight: 600;
+        }
+        .breadCrumbtopsec .nb_bread_crumbwrap nav ol li {
+            font-family: "primaryfont_SemiBold";
+            font-size: 13px;
+            color: #111111;
+            padding: 0px 6px;
+        }
+/*breadcrumbs end*/
+
 /*kit product page cart-item-detail end*/

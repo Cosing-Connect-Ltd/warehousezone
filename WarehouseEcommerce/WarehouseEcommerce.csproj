@@ -342,9 +342,10 @@
     <Content Include="Content\Theme\Smart\app\img\product\Microware-CHARGING-DOCK-LED-Light.jpg" />
     <Content Include="Content\Theme\Smart\app\img\slider\SliderImage.png" />
     <Content Include="Content\Theme\Smart\app\js\app.js" />
-    <Content Include="Content\Theme\Smart\app\js\custom.js" />
+    <Content Include="Content\Theme\Smart\app\js\Smart_KitProductDetail_Custom.js" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\Theme\University\app\css\customfontIcons.css" />
+    <Content Include="Content\Theme\University\app\js\Uni_KitProductDetail_Custom.js" />
     <Content Include="fonts\custom-fonts.css" />
     <Content Include="Content\Theme\University\app\css\jquery-confirm.min.css" />
     <Content Include="Content\Theme\University\app\css\ui-settings.css" />
