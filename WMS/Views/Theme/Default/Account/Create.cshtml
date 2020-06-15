@@ -119,6 +119,13 @@
                 @Html.ValidationMessageFor(model => model.AcceptedShelfLife)
             </div>
         </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <label class="col-md-4">Select Market</label>
+            <div class="col-md-8">
+                @Html.DropDownList("MarketId", ViewBag.MarketDetailId as SelectList, "Select Market", new { @class = "chosen-select" })
+
+            </div>
+        </div>
     </div>
     <div class="col-md-6 pull-left">
 
@@ -173,6 +180,8 @@
             @Html.Label("Account Status", htmlAttributes: new { @class = "col-md-4" })
             <div class="col-md-8">
                 @Html.EnumDropDownListFor(x => x.AccountStatusID, "Select Type", new { @class = "chosen-select" })
+                @Html.ValidationMessageFor(model => model.AccountStatusID)
+
                 @Html.TextArea("StopComment", "", 5, 50, new { placeholder = "Reason for stopping", style = "display:none", @class = "form-control" })
             </div>
         </div>

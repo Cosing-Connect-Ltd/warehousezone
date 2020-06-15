@@ -217,7 +217,7 @@ namespace Ganedata.Core.Services
             return _currentDbContext.AccountContacts.Find(id);
         }
 
-        public Account SaveAccount(Account model, List<int> accountAddressIds, List<int> accountContactIds, int globalCountryIds, int globalCurrencyIds, AccountStatusEnum accountStatusIds, int priceGroupId, int ownerUserId, List<AccountAddresses> addresses, List<AccountContacts> contacts, int userId, int tenantId, string stopReason = null)
+        public Account SaveAccount(Account model, List<int> accountAddressIds, List<int> accountContactIds, int globalCountryIds, int globalCurrencyIds, int priceGroupId, int ownerUserId, List<AccountAddresses> addresses, List<AccountContacts> contacts, int userId, int tenantId, string stopReason = null,int? MarketId = null)
         {
             var account = _currentDbContext.Account.FirstOrDefault(m => m.AccountID == model.AccountID);
 
@@ -226,7 +226,6 @@ namespace Ganedata.Core.Services
                 model.CreatedBy = userId;
                 model.TenantId = tenantId;
                 model.DateCreated = DateTime.UtcNow;
-                model.AccountStatusID = accountStatusIds;
                 model.CountryID = globalCountryIds;
                 model.CurrencyID = globalCurrencyIds;
                 model.OwnerUserId = ownerUserId;
@@ -274,6 +273,25 @@ namespace Ganedata.Core.Services
                     Reason = stopReason ?? "Created"
                 };
                 _currentDbContext.AccountStatusAudits.Add(audit);
+                if (MarketId.HasValue)
+                {
+                    var existingAccounts = _currentDbContext.MarketCustomers.Where(m => m.MarketId == MarketId && m.AccountId==model.AccountID).ToList();
+                    if (existingAccounts.Count <= 0)
+                    {
+                        MarketCustomer cust = new MarketCustomer();
+
+                        cust.MarketId = MarketId.Value;
+                        cust.AccountId = model.AccountID;
+                        cust.IsSkippable = false;
+                        cust.SortOrder = 1;
+                        cust.VisitFrequency = MarketCustomerVisitFrequency.Daily;
+                        cust.TenantId = tenantId;
+                        cust.UpdateCreatedInfo(userId);
+                        _currentDbContext.Entry(cust).State = EntityState.Added;
+                    }
+                }
+
+
                 _currentDbContext.SaveChanges();
 
             }
@@ -399,6 +417,25 @@ namespace Ganedata.Core.Services
 
                 }
                 _currentDbContext.Entry(account).State = EntityState.Modified;
+                if (MarketId.HasValue)
+                {
+                    var existingAccounts = _currentDbContext.MarketCustomers.Where(m => m.MarketId == MarketId && m.AccountId == model.AccountID).ToList();
+                    if (existingAccounts.Count <= 0)
+                    {
+                        MarketCustomer cust = new MarketCustomer();
+
+                        cust.MarketId = MarketId.Value;
+                        cust.AccountId = model.AccountID;
+                        cust.IsSkippable = false;
+                        cust.SortOrder = 1;
+                        cust.VisitFrequency = MarketCustomerVisitFrequency.Daily;
+                        cust.TenantId = tenantId;
+                        cust.UpdateCreatedInfo(userId);
+                        _currentDbContext.Entry(cust).State = EntityState.Added;
+                    }
+
+                }
+
                 _currentDbContext.SaveChanges();
             }
             return model;

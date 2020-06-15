@@ -43,6 +43,7 @@ namespace Ganedata.Core.Entities.Domain
         public int CurrencyID { get; set; }
         [Display(Name = "Account Tax Status")]
         public int TaxID { get; set; }
+        [Required]
         [Display(Name = "Account Status")]
         public AccountStatusEnum AccountStatusID { get; set; }
         [Display(Name = "Price Group")]

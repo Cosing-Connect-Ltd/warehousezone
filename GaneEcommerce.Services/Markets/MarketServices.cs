@@ -156,7 +156,6 @@ namespace Ganedata.Core.Services
             if (model.MarketId > 0)
             {
                 var existingAccountIds = model.MarketCustomerAccounts.Select(a => a.AccountId);
-
                 var existingAccounts = _currentDbContext.MarketCustomers.Where(m => m.MarketId == marketId && existingAccountIds.Contains(m.AccountId)).ToList();
                 foreach (var account in existingAccounts)
                 {

@@ -76,8 +76,10 @@ namespace WMS.Controllers
 
             var taxes = _lookupServices.GetAllValidGlobalTaxes().ToList();
             ViewBag.TaxID = new SelectList(taxes, "TaxID", "TaxName", taxes.Select(x => x.TaxID).FirstOrDefault());
-
-            return View();
+            ViewBag.MarketDetailId = new SelectList(_marketServices.GetAllValidMarkets(CurrentTenantId, CurrentWarehouseId), "MarketId", "MarketName");
+            Account account = new Account();
+            account.AccountStatusID = AccountStatusEnum.Active;
+            return View(account);
         }
 
         // POST: /Customer/Create
@@ -85,7 +87,7 @@ namespace WMS.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Account model, List<int> AccountAddressIds, List<int> AccountContactIds, int GlobalCountryIds, int GlobalCurrencyIds, AccountStatusEnum AccountStatusIds, int PriceGroupId, int OwnerUserId, string StopComment)
+        public ActionResult Create(Account model, List<int> AccountAddressIds, List<int> AccountContactIds, int GlobalCountryIds, int GlobalCurrencyIds, int PriceGroupId, int OwnerUserId, string StopComment,int? MarketId)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
@@ -93,14 +95,14 @@ namespace WMS.Controllers
             {
                 var newContacts = Session["contacts"] as List<AccountContacts>;
                 var newAddresses = Session["addresses"] as List<AccountAddresses>;
-                AccountServices.SaveAccount(model, AccountAddressIds, AccountContactIds, GlobalCountryIds, GlobalCurrencyIds, AccountStatusIds, PriceGroupId, OwnerUserId, newAddresses, newContacts, CurrentUserId, CurrentTenantId, StopComment);
+                AccountServices.SaveAccount(model, AccountAddressIds, AccountContactIds, GlobalCountryIds, GlobalCurrencyIds, PriceGroupId, OwnerUserId, newAddresses, newContacts, CurrentUserId, CurrentTenantId, StopComment, MarketId);
                 return RedirectToAction("Index");
             }
 
             AccountAddressSessionInit();
             ViewBag.AccountAddresses = new List<AccountAddresses>();
             ViewBag.AccountContacts = new List<AccountContacts>();
-
+            ViewBag.MarketDetailId = new SelectList(_marketServices.GetAllValidMarkets(CurrentTenantId, CurrentWarehouseId), "MarketId", "MarketName",MarketId);
             var taxes = _lookupServices.GetAllValidGlobalTaxes().ToList();
             ViewBag.TaxID = new SelectList(taxes, "TaxID", "TaxName", taxes.Select(x => x.TaxID).FirstOrDefault());
             return View(model);
@@ -132,6 +134,7 @@ namespace WMS.Controllers
 
             var taxes = _lookupServices.GetAllValidGlobalTaxes().ToList();
             ViewBag.TaxID = new SelectList(taxes, "TaxID", "TaxName", customer.TaxID);
+            ViewBag.MarketDetailId = new SelectList(_marketServices.GetAllValidMarkets(CurrentTenantId, CurrentWarehouseId), "MarketId", "MarketName");
 
             return View(customer);
         }
@@ -142,7 +145,7 @@ namespace WMS.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public ActionResult Edit(Account model, List<int> AccountAddressIds, List<int> AccountContactIds, string StopComment, int? MarketIds)
+        public ActionResult Edit(Account model, List<int> AccountAddressIds, List<int> AccountContactIds, string StopComment, int? MarketIds, int? MarketId)
 
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
@@ -153,7 +156,7 @@ namespace WMS.Controllers
 
                 var newAddresses = Session["addresses"] as List<AccountAddresses>;
 
-                AccountServices.SaveAccount(model, AccountAddressIds, AccountContactIds, 0, 0, 0, 0, model.OwnerUserId, newAddresses, newContacts, CurrentUserId, CurrentTenantId, StopComment);
+                AccountServices.SaveAccount(model, AccountAddressIds, AccountContactIds, 0, 0, 0, model.OwnerUserId, newAddresses, newContacts, CurrentUserId, CurrentTenantId, StopComment,MarketId);
                 Session["MarketId"] = MarketIds ?? 0;
                 return RedirectToAction("Index");
             }
@@ -169,6 +172,7 @@ namespace WMS.Controllers
             ViewBag.SelectedContacts = AccountServices.GetAllValidAccountContactsByAccountId(model.AccountID, CurrentTenantId).Select(a => a.AccountContactId).ToList();
             var taxes = _lookupServices.GetAllValidGlobalTaxes().ToList();
             ViewBag.TaxID = new SelectList(taxes, "TaxID", "TaxName", customer.TaxID);
+            ViewBag.MarketDetailId = new SelectList(_marketServices.GetAllValidMarkets(CurrentTenantId, CurrentWarehouseId), "MarketId", "MarketName", MarketId);
             ViewBag.MarketId = MarketIds ?? 0;
             return View(model);
 
