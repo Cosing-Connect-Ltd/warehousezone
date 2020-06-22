@@ -121,15 +121,18 @@
 
                                             var isAttributeWithSelection = true;
 
-                                            foreach (var currentProductAttribute in Model.ProductAttributeValuesMap.Where(m => m.ProductAttributeValues.AttributeId != attribute.AttributeId))
-                                            {
-                                                isAttributeWithSelection = Model.ProductKitMap.Any(m => m.ProductMaster.SKUCode != Model.SKUCode &&
+                                            var attribiteStatusCheckQuery = Model.ProductKitMap.Where(m => m.ProductMaster.SKUCode != Model.SKUCode &&
                                                                                                         m.ProductMaster.IsDeleted != true &&
                                                                                                         m.ProductMaster.IsActive == true &&
                                                                                                         m.ProductMaster.ProductAttributeValuesMap.Any(p => p.IsDeleted != true && p.ProductAttributeValues.AttributeId == attribute.AttributeId &&
-                                                                                                                    p.ProductAttributeValues.AttributeValueId == attribute.AttributeValueId) &&
-                                                                                                        m.ProductMaster.ProductAttributeValuesMap.Any(p => p.IsDeleted != true && p.ProductAttributeValues.AttributeId == currentProductAttribute.ProductAttributeValues.AttributeId &&
-                                                                                                                    p.ProductAttributeValues.AttributeValueId == currentProductAttribute.AttributeValueId));
+                                                                                                                    p.ProductAttributeValues.AttributeValueId == attribute.AttributeValueId));
+
+                                            foreach (var currentProductAttribute in Model.ProductAttributeValuesMap.Where(m => m.ProductAttributeValues.AttributeId != attribute.AttributeId))
+                                            {
+                                                attribiteStatusCheckQuery = attribiteStatusCheckQuery.Where(m => m.ProductMaster.ProductAttributeValuesMap.Any(p => p.IsDeleted != true && p.ProductAttributeValues.AttributeId == currentProductAttribute.ProductAttributeValues.AttributeId &&
+                                                                                                                                                        p.ProductAttributeValues.AttributeValueId == currentProductAttribute.AttributeValueId));
+
+                                                isAttributeWithSelection = attribiteStatusCheckQuery.Any();
                                             }
 
                                             var isAttributeActive = attribute.AttributeValueId == item.AttributeValueId;
