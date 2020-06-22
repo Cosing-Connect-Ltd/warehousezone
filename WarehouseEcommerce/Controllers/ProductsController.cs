@@ -160,15 +160,19 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.BaseProduct = product;
 
             if (product.ProductType == ProductKitTypeEnum.ProductByAttribute){
-                selectedProduct = product.ProductKitMap.FirstOrDefault(p => p.IsDeleted != true && p.IsActive == true && p.ProductId == productId || productId == null)?.ProductMaster ?? product;
+                var relatedProducts = _productServices.GetAllProductInKitsByKitProductId(product.ProductId).Where(k => k.IsActive == true);
 
-                ViewBag.AvailableAttributes = product.ProductKitMap.Where(k => k.IsDeleted != true && (k.IsActive == true || k.ProductMaster.SKUCode == sku))
-                                                          .SelectMany(a => a.ProductMaster.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).Select(k => k.ProductAttributeValues))
-                                                          .GroupBy(a => a.AttributeId)
-                                                          .ToDictionary(g => g.Key, g => g.OrderBy(av => av.AttributeValueId)
-                                                                                          .GroupBy(av => av.AttributeValueId)
-                                                                                          .Select(av => av.First())
-                                                                                          .ToList());
+                selectedProduct = relatedProducts.FirstOrDefault(p => p.IsDeleted != true && p.IsActive == true && (p.ProductId == productId || productId == null)) ?? product;
+
+                ViewBag.AvailableAttributes = relatedProducts
+                                                .SelectMany(a => a.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).Select(k => k.ProductAttributeValues))
+                                                .GroupBy(a => a.ProductAttributes)
+                                                .ToDictionary(g => g.Key, g => g.OrderBy(av => av.AttributeValueId)
+                                                                                                .GroupBy(av => av.AttributeValueId)
+                                                                                                .Select(av => av.First())
+                                                                                                .ToList());
+
+                ViewBag.RelatedProducts = relatedProducts;
             }
 
             ViewBag.Category = _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID, product.ProductId);

@@ -101,59 +101,70 @@
 
                     @if (ViewBag.BaseProduct.ProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
                     {
-                        foreach (var item in Model.ProductAttributeValuesMap.Where(a => a.IsDeleted != true).OrderBy(m => m.ProductAttributeValues.AttributeId))
+                        foreach (var item in ViewBag.AvailableAttributes)
                         {
+                            var attribute = item.Key;
                             <div>
                                 <div class="sizeWrap">
-                                    <p>@Html.Raw(item.ProductAttributeValues.ProductAttributes.AttributeName) : <span>@Html.Raw(item.ProductAttributeValues.Value)</span></p>
+                                    @{
+                                        var selectedAttributeValue = Model.ProductAttributeValuesMap.FirstOrDefault(a => a.IsDeleted != true && a.ProductAttributeValues.AttributeId == attribute.AttributeId)?.ProductAttributeValues;
+                                    }
+
+                                    <p>@Html.Raw(attribute.AttributeName) : <span>@Html.Raw(selectedAttributeValue?.Value)</span></p>
                                     <ul class="size_boxList">
                                         @{
-                                            foreach (var attribute in ViewBag.AvailableAttributes[item.ProductAttributeValues.AttributeId])
+                                            foreach (var attributeValue in item.Value)
                                             {
 
-                                                var relatedProducts = Model.ProductKitMap.Where(p => p.ProductMaster.SKUCode != Model.SKUCode && p.IsActive &&
-                                                                                                            p.ProductMaster.ProductAttributeValuesMap.Any(m => m.ProductAttributeValues.AttributeId == attribute.AttributeId &&
-                                                                                                                                                           m.ProductAttributeValues.AttributeValueId == attribute.AttributeValueId));
-
+                                                var relatedProducts = (ViewBag.RelatedProducts as IEnumerable<ProductMaster>).Where(p => p.SKUCode != Model.SKUCode && p.IsActive &&
+                                                                                                            p.ProductAttributeValuesMap.Any(m => m.IsDeleted != true && m.ProductAttributeValues.AttributeId == attribute.AttributeId &&
+                                                                                                                                                 m.ProductAttributeValues.AttributeValueId == attributeValue.AttributeValueId));
 
                                                 if (relatedProducts.Count() > 1)
                                                 {
-                                                    foreach (var currentProductAttribute in Model.ProductAttributeValuesMap.Where(am => am.ProductAttributeValues.AttributeId != attribute.AttributeId))
+                                                    foreach (var currentProductAttribute in Model.ProductAttributeValuesMap.Where(am => am.IsDeleted != true && am.ProductAttributeValues.AttributeId != attribute.AttributeId))
                                                     {
-                                                        relatedProducts = relatedProducts.Where(p => p.ProductMaster.ProductAttributeValuesMap.Any(m => m.ProductAttributeValues.AttributeId == currentProductAttribute.ProductAttributeValues.AttributeId &&
-                                                                                                                                                           m.ProductAttributeValues.AttributeValueId == currentProductAttribute.AttributeValueId));
+                                                        var resultQuery = relatedProducts.Where(p => p.ProductAttributeValuesMap.Any(m => m.IsDeleted != true && m.ProductAttributeValues.AttributeId == currentProductAttribute.ProductAttributeValues.AttributeId &&
+                                                                                                                                          m.ProductAttributeValues.AttributeValueId == currentProductAttribute.AttributeValueId));
 
-                                                        if (relatedProducts.Count() == 1)
+                                                        if (resultQuery.Count() == 1)
                                                         {
+                                                            relatedProducts = resultQuery;
                                                             break;
+                                                        }
+
+                                                        if (resultQuery.Count() != 0)
+                                                        {
+                                                            relatedProducts = resultQuery;
                                                         }
                                                     }
                                                 }
 
                                                 var isAttributeWithSelection = true;
 
-                                                var attribiteStatusCheckQuery = Model.ProductKitMap.Where(m => m.ProductMaster.SKUCode != Model.SKUCode &&
-                                                                                                            m.ProductMaster.IsDeleted != true &&
-                                                                                                            m.ProductMaster.IsActive == true &&
-                                                                                                            m.ProductMaster.ProductAttributeValuesMap.Any(p => p.IsDeleted != true && p.ProductAttributeValues.AttributeId == attribute.AttributeId &&
-                                                                                                                        p.ProductAttributeValues.AttributeValueId == attribute.AttributeValueId));
+                                                var attribiteStatusCheckQuery = (ViewBag.RelatedProducts as IEnumerable<ProductMaster>).Where(m => m.SKUCode != Model.SKUCode &&
+                                                                                                            m.IsDeleted != true &&
+                                                                                                            m.IsActive == true &&
+                                                                                                            m.ProductAttributeValuesMap.Any(p => p.IsDeleted != true &&
+                                                                                                                                                 p.ProductAttributeValues.AttributeId == attribute.AttributeId &&
+                                                                                                                                                 p.ProductAttributeValues.AttributeValueId == attributeValue.AttributeValueId));
 
                                                 foreach (var currentProductAttribute in Model.ProductAttributeValuesMap.Where(m => m.ProductAttributeValues.AttributeId != attribute.AttributeId))
                                                 {
-                                                    attribiteStatusCheckQuery = attribiteStatusCheckQuery.Where(m => m.ProductMaster.ProductAttributeValuesMap.Any(p => p.IsDeleted != true && p.ProductAttributeValues.AttributeId == currentProductAttribute.ProductAttributeValues.AttributeId &&
-                                                                                                                                                            p.ProductAttributeValues.AttributeValueId == currentProductAttribute.AttributeValueId));
+                                                    attribiteStatusCheckQuery = attribiteStatusCheckQuery.Where(m => m.ProductAttributeValuesMap.Any(p => p.IsDeleted != true &&
+                                                                                                                                                          p.ProductAttributeValues.AttributeId == currentProductAttribute.ProductAttributeValues.AttributeId &&
+                                                                                                                                                          p.ProductAttributeValues.AttributeValueId == currentProductAttribute.AttributeValueId));
 
                                                     isAttributeWithSelection = attribiteStatusCheckQuery.Any();
                                                 }
 
-                                                var isAttributeActive = attribute.AttributeValueId == item.AttributeValueId;
+                                                var isSelectedAttributeValue = attributeValue.AttributeValueId == selectedAttributeValue?.AttributeValueId;
 
-                                                @Html.Raw("<li class=\"col3 " + (isAttributeActive ? "active" : "") + (!isAttributeActive && !isAttributeWithSelection ? "unavailable-attribute\">" : "\">") +
-                                                                $"<a href=\"ProductDetails?sku={ViewBag.BaseProduct.SKUCode}&productId={relatedProducts.FirstOrDefault()?.ProductId}\">" +
-                                                                (item.ProductAttributeValues.ProductAttributes.AttributeName.ToLower().IndexOf("color") == -1 && item.ProductAttributeValues.ProductAttributes.AttributeName.ToLower().IndexOf("colour") == -1 ?
-                                                                "<span>" + attribute.Value + "</span>" :
-                                                                "<span style=\"background-color:" + attribute.Value + ";color:" + attribute.Value + "\">-</span>") +
-
+                                                @Html.Raw("<li class=\"col3 " + (isSelectedAttributeValue ? "active" : "") + (!isSelectedAttributeValue && !isAttributeWithSelection ? "unavailable-attribute\">" : "\">") +
+                                                                (isSelectedAttributeValue ? "<a>" : $"<a href=\"ProductDetails?sku={ViewBag.BaseProduct.SKUCode}&productId={relatedProducts.FirstOrDefault()?.ProductId ?? Model.ProductId}\">" )+
+                                                                (attributeValue.ProductAttributes.AttributeName.ToLower().IndexOf("color") == -1 && attributeValue.ProductAttributes.AttributeName.ToLower().IndexOf("colour") == -1 ?
+                                                                "<span>" + attributeValue.Value + "</span>" :
+                                                                "<span style=\"background-color:" + attributeValue.Value + ";color:" + attributeValue.Value + "\">-</span>") +
                                                             "</a></li>");
                                             }
                                         }
