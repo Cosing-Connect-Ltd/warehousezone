@@ -92,6 +92,8 @@
                         <div>
                             <div class="sizeWrap">
                                 <p>@Html.Raw(item.ProductAttributeValues.ProductAttributes.AttributeName) : <span>@Html.Raw(item.ProductAttributeValues.Value)</span></p>
+                                @if (Model.ProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
+                                {
                                 <ul class="size_boxList">
                                     @{
                                         foreach (var attribute in ViewBag.AvailableAttributes[item.ProductAttributeValues.AttributeId])
@@ -105,7 +107,8 @@
 
                                             if (relatedProducts.Count() > 1)
                                             {
-                                                foreach (var currentProductAttribute in Model.ProductAttributeValuesMap.Where(am => am.ProductAttributeValues.AttributeId != attribute.AttributeId)) {
+                                                foreach (var currentProductAttribute in Model.ProductAttributeValuesMap.Where(am => am.ProductAttributeValues.AttributeId != attribute.AttributeId))
+                                                {
                                                     relatedProducts = relatedProducts.Where(p => p.ProductMaster.ProductAttributeValuesMap.Any(m => m.ProductAttributeValues.AttributeId == currentProductAttribute.ProductAttributeValues.AttributeId &&
                                                                                                                                                        m.ProductAttributeValues.AttributeValueId == currentProductAttribute.AttributeValueId));
 
@@ -132,15 +135,16 @@
                                             var isAttributeActive = attribute.AttributeValueId == item.AttributeValueId;
 
                                             @Html.Raw("<li class=\"col3 " + (isAttributeActive ? "active" : "") + (!isAttributeActive && !isAttributeWithSelection ? "unavailable-attribute\">" : "\">") +
-                                                            $"<a href=\"ProductDetails?sku={relatedProducts.FirstOrDefault()?.ProductMaster.SKUCode ?? Model.SKUCode}\">" +
-                                                            (item.ProductAttributeValues.ProductAttributes.AttributeName.ToLower().IndexOf("color") == -1 && item.ProductAttributeValues.ProductAttributes.AttributeName.ToLower().IndexOf("colour") == -1 ?
-                                                            "<span>" + attribute.Value + "</span>" :
-                                                            "<span style=\"background-color:" + attribute.Value + ";color:" + attribute.Value + "\">-</span>") +
+                                                                     $"<a href=\"ProductDetails?sku={relatedProducts.FirstOrDefault()?.ProductMaster.SKUCode ?? Model.SKUCode}\">" +
+                                                                     (item.ProductAttributeValues.ProductAttributes.AttributeName.ToLower().IndexOf("color") == -1 && item.ProductAttributeValues.ProductAttributes.AttributeName.ToLower().IndexOf("colour") == -1 ?
+                                                                     "<span>" + attribute.Value + "</span>" :
+                                                                     "<span style=\"background-color:" + attribute.Value + ";color:" + attribute.Value + "\">-</span>") +
 
-                                                        "</a></li>");
+                                                                 "</a></li>");
                                         }
                                     }
                                 </ul>
+                                }
                             </div>
                         </div>
 

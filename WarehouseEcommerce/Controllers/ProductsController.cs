@@ -155,14 +155,15 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
             var product = _productServices.GetProductMasterByProductCode(sku, CurrentTenantId);
 
-
-            ViewBag.AvailableAttributes = product.ProductKitMap.Where(k => k.IsDeleted != true && (k.IsActive == true || k.ProductMaster.SKUCode == sku))
-                                                      .SelectMany(a => a.ProductMaster.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).Select(k => k.ProductAttributeValues))
-                                                      .GroupBy(a => a.AttributeId)
-                                                      .ToDictionary(g => g.Key, g => g.OrderBy(av => av.AttributeValueId)
-                                                                                      .GroupBy(av => av.AttributeValueId)
-                                                                                      .Select(av => av.First())
-                                                                                      .ToList());
+            if(product.ProductType == ProductKitTypeEnum.ProductByAttribute){
+                ViewBag.AvailableAttributes = product.ProductKitMap.Where(k => k.IsDeleted != true && (k.IsActive == true || k.ProductMaster.SKUCode == sku))
+                                                          .SelectMany(a => a.ProductMaster.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).Select(k => k.ProductAttributeValues))
+                                                          .GroupBy(a => a.AttributeId)
+                                                          .ToDictionary(g => g.Key, g => g.OrderBy(av => av.AttributeValueId)
+                                                                                          .GroupBy(av => av.AttributeValueId)
+                                                                                          .Select(av => av.First())
+                                                                                          .ToList());
+            }
 
             ViewBag.Category = _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID, product.ProductId);
             ViewBag.SubCategory = _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID, SubCategory: ViewBag.Category);
