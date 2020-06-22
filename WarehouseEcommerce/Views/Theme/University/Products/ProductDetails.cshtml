@@ -49,7 +49,6 @@
                         <img id="zoom_01"
                              src="@(!string.IsNullOrEmpty(Model.DefaultImage)?ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"
                              data-zoom-image="@(!string.IsNullOrEmpty(Model.DefaultImage)?ViewBag.BaseFilePath + Model.DefaultImage:ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
-                        <!-- <img src="/Content/Theme/University/app/images/productslist/7.jpg" alt="" /> -->
                     </span>
                     <div class="img_thumb_sliderwrap">
                         <div id="gal01" class="owl-carousel owl-theme nb_imageZoomCarrousle">
@@ -75,26 +74,77 @@
                         @Model.SKUCode
                     </p>
                     <span class="prd_amnt">@ViewBag.CurrencySymbol @Model.SellPrice</span>
-                    @*<div class="col_Sec">
-                            <span class="col_lbl">COLOR : BLACK</span>
-                            <span class="col_box col_black"></span>
-                        </div>
-                        <div class="availibility">
+                    <div class="availibility">
+                        @if (Model.InventoryStocks.FirstOrDefault()?.Available > 0)
+                        {
                             <span>Availability:</span> <br />
-                            hurry! only 10 items left
+                            @((Model.InventoryStocks.FirstOrDefault().Available <= 10 ? "only " : "") + Model.InventoryStocks.FirstOrDefault().Available.ToString("#") + " items left");
+                        }
+                        else
+                        {
+                            <span></span> <br />
+                            <span>Currently unavailable.</span>
+                        }
+                    </div>
+
+                    @foreach (var item in Model.ProductAttributeValuesMap.Where(a => a.IsDeleted != true).OrderBy(m => m.ProductAttributeValues.AttributeId))
+                    {
+                        <div>
+                            <div class="sizeWrap">
+                                <p>@Html.Raw(item.ProductAttributeValues.ProductAttributes.AttributeName) : <span>@Html.Raw(item.ProductAttributeValues.Value)</span></p>
+                                <ul class="size_boxList">
+                                    @{
+                                        foreach (var attribute in ViewBag.AvailableAttributes[item.ProductAttributeValues.AttributeId])
+                                        {
+
+                                            var relatedProducts = Model.ProductKitMap.Where(p => p.ProductMaster.SKUCode != Model.SKUCode &&
+                                                                                                        p.IsActive &&
+                                                                                                        p.ProductMaster.ProductAttributeValuesMap.Any(m => m.ProductAttributeValues.AttributeId == attribute.AttributeId &&
+                                                                                                                                                       m.ProductAttributeValues.AttributeValueId == attribute.AttributeValueId));
+
+
+                                            if (relatedProducts.Count() > 1)
+                                            {
+                                                foreach (var currentProductAttribute in Model.ProductAttributeValuesMap.Where(am => am.ProductAttributeValues.AttributeId != attribute.AttributeId)) {
+                                                    relatedProducts = relatedProducts.Where(p => p.ProductMaster.ProductAttributeValuesMap.Any(m => m.ProductAttributeValues.AttributeId == currentProductAttribute.ProductAttributeValues.AttributeId &&
+                                                                                                                                                       m.ProductAttributeValues.AttributeValueId == currentProductAttribute.AttributeValueId));
+
+                                                    if (relatedProducts.Count() == 1)
+                                                    {
+                                                        break;
+                                                    }
+                                                }
+                                            }
+
+                                            var isAttributeWithSelection = true;
+
+                                            foreach (var currentProductAttribute in Model.ProductAttributeValuesMap.Where(m => m.ProductAttributeValues.AttributeId != attribute.AttributeId))
+                                            {
+                                                isAttributeWithSelection = Model.ProductKitMap.Any(m => m.ProductMaster.SKUCode != Model.SKUCode &&
+                                                                                                        m.ProductMaster.IsDeleted != true &&
+                                                                                                        m.ProductMaster.IsActive == true &&
+                                                                                                        m.ProductMaster.ProductAttributeValuesMap.Any(p => p.IsDeleted != true && p.ProductAttributeValues.AttributeId == attribute.AttributeId &&
+                                                                                                                    p.ProductAttributeValues.AttributeValueId == attribute.AttributeValueId) &&
+                                                                                                        m.ProductMaster.ProductAttributeValuesMap.Any(p => p.IsDeleted != true && p.ProductAttributeValues.AttributeId == currentProductAttribute.ProductAttributeValues.AttributeId &&
+                                                                                                                    p.ProductAttributeValues.AttributeValueId == currentProductAttribute.AttributeValueId));
+                                            }
+
+                                            var isAttributeActive = attribute.AttributeValueId == item.AttributeValueId;
+
+                                            @Html.Raw("<li class=\"col3 " + (isAttributeActive ? "active" : "") + (!isAttributeActive && !isAttributeWithSelection ? "unavailable-attribute\">" : "\">") +
+                                                            $"<a href=\"ProductDetails?sku={relatedProducts.FirstOrDefault()?.ProductMaster.SKUCode ?? Model.SKUCode}\">" +
+                                                            (item.ProductAttributeValues.ProductAttributes.AttributeName.ToLower().IndexOf("color") == -1 && item.ProductAttributeValues.ProductAttributes.AttributeName.ToLower().IndexOf("colour") == -1 ?
+                                                            "<span>" + attribute.Value + "</span>" :
+                                                            "<span style=\"background-color:" + attribute.Value + ";color:" + attribute.Value + "\">-</span>") +
+
+                                                        "</a></li>");
+                                        }
+                                    }
+                                </ul>
+                            </div>
                         </div>
-                        <div class="sizeWrap">
-                            <p>SIZE : <span>XL</span></p>
-                            <ul class="size_boxList">
-                                <li class="col1"><a href="">s</a></li>
-                                <li class="col2"><a href="">l</a></li>
-                                <li class="col3 active"><a href="">m</a></li>
-                                <li class="col4"><a href="">xl</a></li>
-                                <li class="col4"><a href="">xxl</a></li>
-                            </ul>
-                        </div>*@
 
-
+                    }
 
                     <div class="footSec">
                         <div class="qty">
@@ -103,11 +153,9 @@
                                 <input id="input-quantity" type="text" name="quantity" value="1" size="2" data-detail="true" class="input-number" />
                             </div>
                         </div>
-                        @if (@Model.SellPrice > 0 && @Model.SellPrice.HasValue && @Model.PercentMargin > 0)
+                        @if (@Model.SellPrice > 0 && @Model.SellPrice.HasValue && @Model.PercentMargin > 0 && Model.InventoryStocks.FirstOrDefault()?.Available > 0)
                         {
-                            <button class="addTobasket" onclick="AddToCart(@Model.ProductId)">
-                                Add to basket
-                            </button>
+                            <button class="addTobasket" onclick="AddToCart(@Model.ProductId)">Add to basket</button>
                         }
                         else
                         {
@@ -118,21 +166,12 @@
                         <button class="addtowishlistbtn">Add to Wishlist</button>
                         @if (Model.WebsiteWishListItems.Where(u => u.IsDeleted != true).ToList().Count <= 0)
                         {
-
-
-
                             <a href="javascript:;" class="addtowishlist" id="wish_@Model.ProductId" onclick="AddWishListItem(@Model.ProductId)"><i class="icon-love list-icon" style="color:black"></i></a>
-
                         }
                         else
                         {
-
                             <a href="javascript:;" class="addtowishlist" id="wish_@Model.ProductId" onclick="RemoveWishListPopUp(@Model.ProductId)"><i class="icon-love list-icon" style="color:red"></i></a>
-
                         }
-                        @*<a href="javascript:;" class="addtowishlist" onclick="AddWishListItem(@Model.ProductId)">
-                                <i class="icon-love"></i>
-                            </a>*@
                     </div>
                 </div>
             </div>

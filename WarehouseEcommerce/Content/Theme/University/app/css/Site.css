@@ -1028,6 +1028,7 @@ body.modal-open {
 .custom-container-fluid {
     width: 97vw;
 }
+
 .custom-max-width {
     max-width: 1920px;
     width: 100%;
@@ -1129,13 +1130,16 @@ body.modal-open {
         padding: 9px 0;
     }
 }
+
 .product-bg {
     display: flex;
     flex-wrap: nowrap;
 }
+
 .kit-product .product-bg {
-    margin-bottom:60px;
+    margin-bottom: 60px;
 }
+
 .kit-tab-content {
     border: solid 1px #D7D7D7;
     padding: 0px 10px;
@@ -1179,7 +1183,7 @@ body.modal-open {
 }
 
 .kit-product a {
-    color:#555;
+    color: #555;
 }
 
 .kit-product .kit-tabs-content {
@@ -1225,8 +1229,9 @@ body.modal-open {
     .kit-product .thumbnail a img {
         position: unset;
     }
+
     .kit-product .product-bg .card-header h4 {
-        font-size:unset;
+        font-size: unset;
     }
 }
 
@@ -1270,18 +1275,22 @@ body.modal-open {
     padding: 7px 35px;
     width: 100%;
 }
+
 .disabled-btn {
     color: white !important;
     background-color: grey !important;
 }
+
     .disabled-btn:hover {
         cursor: no-drop !important;
         background-color: grey !important;
         border-color: grey !important;
     }
+
 .no-wrap {
     white-space: nowrap;
 }
+
 @media(min-width: 992px) {
     .sticky {
         position: static;
@@ -1293,6 +1302,7 @@ body.modal-open {
         top: 15px;
     }
 }
+
 @media(max-width:1024px) {
     .product-bg img {
         width: 380px !important;
@@ -1344,6 +1354,7 @@ body.modal-open {
     margin-top: 16px;
     font-family: "primaryfont_SemiBold"
 }
+
     .breadCrumbtopsec .nb_bread_crumbwrap nav ol {
         background-color: transparent;
         margin: 0px;
@@ -1354,14 +1365,15 @@ body.modal-open {
             content: "";
             font-family: "icomoon" !important;
             font-size: 9px;
-      
         }
+
         .breadCrumbtopsec .nb_bread_crumbwrap nav ol li a {
             font-family: "primaryfont_SemiBold";
             font-size: 13px;
             color: #111111;
             font-weight: 600;
         }
+
         .breadCrumbtopsec .nb_bread_crumbwrap nav ol li {
             font-family: "primaryfont_SemiBold";
             font-size: 13px;
@@ -1371,3 +1383,24 @@ body.modal-open {
 /*breadcrumbs end*/
 
 /*kit product page cart-item-detail end*/
+
+.nb_prd_det_rightsec .sizeWrap .size_boxList li {
+    overflow: hidden;
+    width: auto;
+    min-width: 50px;
+}
+
+    .nb_prd_det_rightsec .sizeWrap .size_boxList li a span {
+        line-height: 38px;
+        min-width: 80%;
+        text-align: center;
+        overflow: hidden;
+        margin: 5px;
+        border-radius: 3px;
+    }
+
+.unavailable-attribute {
+    border: dashed !important;
+    color: lightgray;
+    opacity: 0.5;
+}
