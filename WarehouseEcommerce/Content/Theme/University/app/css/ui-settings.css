@@ -523,6 +523,7 @@ nb_prdpg_fg label,
 .nb_header .nb_headicolst li i,
 .nb_header .nb_headicolst li.cartIcoWrap a span,
 .nb_header .nb_mainnav > ul > li > a,
-.nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner {
+.nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner,
+.nb_header .nb_headicolst li a {
     color: var(--light-font-color);
 }

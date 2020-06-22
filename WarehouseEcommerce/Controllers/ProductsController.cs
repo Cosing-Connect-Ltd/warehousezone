@@ -155,7 +155,13 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
             var product = _productServices.GetProductMasterByProductCode(sku, CurrentTenantId);
 
-            if(product.ProductType == ProductKitTypeEnum.ProductByAttribute){
+            var selectedProduct = product;
+
+            ViewBag.BaseProduct = product;
+
+            if (product.ProductType == ProductKitTypeEnum.ProductByAttribute){
+                selectedProduct = product.ProductKitMap.FirstOrDefault(p => p.IsDeleted != true && p.IsActive == true && p.ProductId == productId || productId == null)?.ProductMaster ?? product;
+
                 ViewBag.AvailableAttributes = product.ProductKitMap.Where(k => k.IsDeleted != true && (k.IsActive == true || k.ProductMaster.SKUCode == sku))
                                                           .SelectMany(a => a.ProductMaster.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).Select(k => k.ProductAttributeValues))
                                                           .GroupBy(a => a.AttributeId)
@@ -174,7 +180,7 @@ namespace WarehouseEcommerce.Controllers
                 ViewBag.Category = category;
 
             }
-            product.SellPrice = Math.Round((product.SellPrice ?? 0) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value), 2);
+            selectedProduct.SellPrice = Math.Round((selectedProduct.SellPrice ?? 0) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value), 2);
             if (product.ProductType == ProductKitTypeEnum.Grouped)
             {
                 return RedirectToAction("GroupedProductDetail", "Products", new { sku = sku });
@@ -184,7 +190,7 @@ namespace WarehouseEcommerce.Controllers
                 return RedirectToAction("KitProductDetail", "Products", new { sku = sku });
             }
 
-            return View(product);
+            return View(selectedProduct);
         }
 
         public ActionResult GroupedProductDetail(string sku)

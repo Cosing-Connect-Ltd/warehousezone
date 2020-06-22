@@ -20,7 +20,7 @@
                         <li>></li>
                         @if (ViewBag.Category != null && !string.IsNullOrEmpty(ViewBag.Category))
                         {
-                            <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { category = ViewBag.Category})">@ViewBag.Category</a></li>
+                            <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { category = ViewBag.Category })">@ViewBag.Category</a></li>
                             <li>></li>
                         }
                         @*@if (Url.Action() != Url.Action("list", "Products", new { department = Model.TenantDepartment.DepartmentName }))
@@ -32,7 +32,7 @@
                             }*@
                         @if (ViewBag.SubCategory != null && !string.IsNullOrEmpty(ViewBag.SubCategory))
                         {
-                            <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { category = ViewBag.SubCategory})">@ViewBag.SubCategory</a></li>
+                            <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { category = ViewBag.SubCategory })">@ViewBag.SubCategory</a></li>
                             <li>></li>
                         }
 
@@ -47,12 +47,12 @@
                     <span id="zoomViewTrigger"><i class="icon-search"></i></span>
                     <span class="img_view_area">
                         <img id="zoom_01"
-                             src="@(!string.IsNullOrEmpty(Model.DefaultImage)?ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"
-                             data-zoom-image="@(!string.IsNullOrEmpty(Model.DefaultImage)?ViewBag.BaseFilePath + Model.DefaultImage:ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
+                             src="@(!string.IsNullOrEmpty((Model.DefaultImage ?? ViewBag.BaseProduct.DefaultImage)) ? ViewBag.BaseFilePath + (Model.DefaultImage ?? ViewBag.BaseProduct.DefaultImage) : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"
+                             data-zoom-image="@(!string.IsNullOrEmpty(Model.DefaultImage ?? ViewBag.BaseProduct.DefaultImage) ? ViewBag.BaseFilePath + (Model.DefaultImage ?? ViewBag.BaseProduct.DefaultImage) : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
                     </span>
                     <div class="img_thumb_sliderwrap">
                         <div id="gal01" class="owl-carousel owl-theme nb_imageZoomCarrousle">
-                            @foreach (var item in Model.ProductFiles)
+                            @foreach (var item in ((Model.ProductFiles ?? ViewBag.BaseProduct.ProductFiles)))
                             {
                                 var extension = Path.GetExtension(item.FilePath);
                                 <div class="item">
@@ -87,106 +87,121 @@
                         }
                     </div>
 
-                    @foreach (var item in Model.ProductAttributeValuesMap.Where(a => a.IsDeleted != true).OrderBy(m => m.ProductAttributeValues.AttributeId))
+                    @if (ViewBag.BaseProduct.ProductType != Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
                     {
-                        <div>
-                            <div class="sizeWrap">
-                                <p>@Html.Raw(item.ProductAttributeValues.ProductAttributes.AttributeName) : <span>@Html.Raw(item.ProductAttributeValues.Value)</span></p>
-                                @if (Model.ProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
-                                {
-                                <ul class="size_boxList">
-                                    @{
-                                        foreach (var attribute in ViewBag.AvailableAttributes[item.ProductAttributeValues.AttributeId])
-                                        {
+                        foreach (var item in Model.ProductAttributeValuesMap.Where(a => a.IsDeleted != true).OrderBy(m => m.ProductAttributeValues.AttributeId))
+                        {
+                            <div>
+                                <div class="sizeWrap">
+                                    <p>@Html.Raw(item.ProductAttributeValues.ProductAttributes.AttributeName) : <span>@Html.Raw(item.ProductAttributeValues.Value)</span></p>
+                                </div>
+                            </div>
+                        }
+                    }
 
-                                            var relatedProducts = Model.ProductKitMap.Where(p => p.ProductMaster.SKUCode != Model.SKUCode &&
-                                                                                                        p.IsActive &&
-                                                                                                        p.ProductMaster.ProductAttributeValuesMap.Any(m => m.ProductAttributeValues.AttributeId == attribute.AttributeId &&
-                                                                                                                                                       m.ProductAttributeValues.AttributeValueId == attribute.AttributeValueId));
-
-
-                                            if (relatedProducts.Count() > 1)
+                    @if (ViewBag.BaseProduct.ProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
+                    {
+                        foreach (var item in Model.ProductAttributeValuesMap.Where(a => a.IsDeleted != true).OrderBy(m => m.ProductAttributeValues.AttributeId))
+                        {
+                            <div>
+                                <div class="sizeWrap">
+                                    <p>@Html.Raw(item.ProductAttributeValues.ProductAttributes.AttributeName) : <span>@Html.Raw(item.ProductAttributeValues.Value)</span></p>
+                                    <ul class="size_boxList">
+                                        @{
+                                            foreach (var attribute in ViewBag.AvailableAttributes[item.ProductAttributeValues.AttributeId])
                                             {
-                                                foreach (var currentProductAttribute in Model.ProductAttributeValuesMap.Where(am => am.ProductAttributeValues.AttributeId != attribute.AttributeId))
-                                                {
-                                                    relatedProducts = relatedProducts.Where(p => p.ProductMaster.ProductAttributeValuesMap.Any(m => m.ProductAttributeValues.AttributeId == currentProductAttribute.ProductAttributeValues.AttributeId &&
-                                                                                                                                                       m.ProductAttributeValues.AttributeValueId == currentProductAttribute.AttributeValueId));
 
-                                                    if (relatedProducts.Count() == 1)
+                                                var relatedProducts = Model.ProductKitMap.Where(p => p.ProductMaster.SKUCode != Model.SKUCode && p.IsActive &&
+                                                                                                            p.ProductMaster.ProductAttributeValuesMap.Any(m => m.ProductAttributeValues.AttributeId == attribute.AttributeId &&
+                                                                                                                                                           m.ProductAttributeValues.AttributeValueId == attribute.AttributeValueId));
+
+
+                                                if (relatedProducts.Count() > 1)
+                                                {
+                                                    foreach (var currentProductAttribute in Model.ProductAttributeValuesMap.Where(am => am.ProductAttributeValues.AttributeId != attribute.AttributeId))
                                                     {
-                                                        break;
+                                                        relatedProducts = relatedProducts.Where(p => p.ProductMaster.ProductAttributeValuesMap.Any(m => m.ProductAttributeValues.AttributeId == currentProductAttribute.ProductAttributeValues.AttributeId &&
+                                                                                                                                                           m.ProductAttributeValues.AttributeValueId == currentProductAttribute.AttributeValueId));
+
+                                                        if (relatedProducts.Count() == 1)
+                                                        {
+                                                            break;
+                                                        }
                                                     }
+                                                }
+
+                                                var isAttributeWithSelection = true;
+
+                                                var attribiteStatusCheckQuery = Model.ProductKitMap.Where(m => m.ProductMaster.SKUCode != Model.SKUCode &&
+                                                                                                            m.ProductMaster.IsDeleted != true &&
+                                                                                                            m.ProductMaster.IsActive == true &&
+                                                                                                            m.ProductMaster.ProductAttributeValuesMap.Any(p => p.IsDeleted != true && p.ProductAttributeValues.AttributeId == attribute.AttributeId &&
+                                                                                                                        p.ProductAttributeValues.AttributeValueId == attribute.AttributeValueId));
+
+                                                foreach (var currentProductAttribute in Model.ProductAttributeValuesMap.Where(m => m.ProductAttributeValues.AttributeId != attribute.AttributeId))
+                                                {
+                                                    attribiteStatusCheckQuery = attribiteStatusCheckQuery.Where(m => m.ProductMaster.ProductAttributeValuesMap.Any(p => p.IsDeleted != true && p.ProductAttributeValues.AttributeId == currentProductAttribute.ProductAttributeValues.AttributeId &&
+                                                                                                                                                            p.ProductAttributeValues.AttributeValueId == currentProductAttribute.AttributeValueId));
+
+                                                    isAttributeWithSelection = attribiteStatusCheckQuery.Any();
+                                                }
+
+                                                var isAttributeActive = attribute.AttributeValueId == item.AttributeValueId;
+
+                                                @Html.Raw("<li class=\"col3 " + (isAttributeActive ? "active" : "") + (!isAttributeActive && !isAttributeWithSelection ? "unavailable-attribute\">" : "\">") +
+                                                                $"<a href=\"ProductDetails?sku={ViewBag.BaseProduct.SKUCode}&productId={relatedProducts.FirstOrDefault()?.ProductId}\">" +
+                                                                (item.ProductAttributeValues.ProductAttributes.AttributeName.ToLower().IndexOf("color") == -1 && item.ProductAttributeValues.ProductAttributes.AttributeName.ToLower().IndexOf("colour") == -1 ?
+                                                                "<span>" + attribute.Value + "</span>" :
+                                                                "<span style=\"background-color:" + attribute.Value + ";color:" + attribute.Value + "\">-</span>") +
+
+                                                            "</a></li>");
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
                                                 }
                                             }
 
-                                            var isAttributeWithSelection = true;
-
-                                            var attribiteStatusCheckQuery = Model.ProductKitMap.Where(m => m.ProductMaster.SKUCode != Model.SKUCode &&
-                                                                                                        m.ProductMaster.IsDeleted != true &&
-                                                                                                        m.ProductMaster.IsActive == true &&
-                                                                                                        m.ProductMaster.ProductAttributeValuesMap.Any(p => p.IsDeleted != true && p.ProductAttributeValues.AttributeId == attribute.AttributeId &&
-                                                                                                                    p.ProductAttributeValues.AttributeValueId == attribute.AttributeValueId));
-
-                                            foreach (var currentProductAttribute in Model.ProductAttributeValuesMap.Where(m => m.ProductAttributeValues.AttributeId != attribute.AttributeId))
-                                            {
-                                                attribiteStatusCheckQuery = attribiteStatusCheckQuery.Where(m => m.ProductMaster.ProductAttributeValuesMap.Any(p => p.IsDeleted != true && p.ProductAttributeValues.AttributeId == currentProductAttribute.ProductAttributeValues.AttributeId &&
-                                                                                                                                                        p.ProductAttributeValues.AttributeValueId == currentProductAttribute.AttributeValueId));
-
-                                                isAttributeWithSelection = attribiteStatusCheckQuery.Any();
-                                            }
-
-                                            var isAttributeActive = attribute.AttributeValueId == item.AttributeValueId;
-
-                                            @Html.Raw("<li class=\"col3 " + (isAttributeActive ? "active" : "") + (!isAttributeActive && !isAttributeWithSelection ? "unavailable-attribute\">" : "\">") +
-                                                                     $"<a href=\"ProductDetails?sku={relatedProducts.FirstOrDefault()?.ProductMaster.SKUCode ?? Model.SKUCode}\">" +
-                                                                     (item.ProductAttributeValues.ProductAttributes.AttributeName.ToLower().IndexOf("color") == -1 && item.ProductAttributeValues.ProductAttributes.AttributeName.ToLower().IndexOf("colour") == -1 ?
-                                                                     "<span>" + attribute.Value + "</span>" :
-                                                                     "<span style=\"background-color:" + attribute.Value + ";color:" + attribute.Value + "\">-</span>") +
-
-                                                                 "</a></li>");
-                                        }
-                                    }
-                                </ul>
-                                }
+                        <div class="footSec">
+                            <div class="qty">
+                                <span>quantity</span>
+                                <div class="sortBysec">
+                                    <input id="input-quantity" type="text" name="quantity" value="1" size="2" data-detail="true" class="input-number" />
+                                </div>
                             </div>
+                            @if (@Model.SellPrice > 0 && @Model.SellPrice.HasValue && @Model.PercentMargin > 0 && Model.InventoryStocks.FirstOrDefault()?.Available > 0)
+                            {
+                                <button class="addTobasket" onclick="AddToCart(@Model.ProductId)">Add to basket</button>
+                            }
+                            else
+                            {
+                                <button class="addTobasket" disabled>
+                                    Add to basket
+                                </button>
+                            }
+                            <button class="addtowishlistbtn">Add to Wishlist</button>
+                            @if (Model.WebsiteWishListItems.Where(u => u.IsDeleted != true).ToList().Count <= 0)
+                            {
+                                <a href="javascript:;" class="addtowishlist" id="wish_@ViewBag.BaseProduct.ProductId" onclick="AddWishListItem(@ViewBag.BaseProduct.ProductId)"><i class="icon-love list-icon" style="color:black"></i></a>
+                            }
+                            else
+                            {
+                                <a href="javascript:;" class="addtowishlist" id="wish_@ViewBag.BaseProduct.ProductId" onclick="RemoveWishListPopUp(@ViewBag.BaseProduct.ProductId)"><i class="icon-love list-icon" style="color:red"></i></a>
+                            }
                         </div>
-
-                    }
-
-                    <div class="footSec">
-                        <div class="qty">
-                            <span>quantity</span>
-                            <div class="sortBysec">
-                                <input id="input-quantity" type="text" name="quantity" value="1" size="2" data-detail="true" class="input-number" />
-                            </div>
-                        </div>
-                        @if (@Model.SellPrice > 0 && @Model.SellPrice.HasValue && @Model.PercentMargin > 0 && Model.InventoryStocks.FirstOrDefault()?.Available > 0)
-                        {
-                            <button class="addTobasket" onclick="AddToCart(@Model.ProductId)">Add to basket</button>
-                        }
-                        else
-                        {
-                            <button class="addTobasket" disabled>
-                                Add to basket
-                            </button>
-                        }
-                        <button class="addtowishlistbtn">Add to Wishlist</button>
-                        @if (Model.WebsiteWishListItems.Where(u => u.IsDeleted != true).ToList().Count <= 0)
-                        {
-                            <a href="javascript:;" class="addtowishlist" id="wish_@Model.ProductId" onclick="AddWishListItem(@Model.ProductId)"><i class="icon-love list-icon" style="color:black"></i></a>
-                        }
-                        else
-                        {
-                            <a href="javascript:;" class="addtowishlist" id="wish_@Model.ProductId" onclick="RemoveWishListPopUp(@Model.ProductId)"><i class="icon-love list-icon" style="color:red"></i></a>
-                        }
                     </div>
-                </div>
             </div>
             <div class="col-md-12">
                 <div class="nb_prod_bottomdes">
                     <h3 class="head">Description</h3>
                     <p class="content">
-                        @Model.Description.
+                        @if (string.IsNullOrEmpty(Model.Description)) {
+                            @ViewBag.BaseProduct.Description;
+                        }
+                        else {
+                            @Model.Description;
+                        }
                     </p>
                 </div>
             </div>
