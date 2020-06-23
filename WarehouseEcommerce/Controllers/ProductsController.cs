@@ -162,7 +162,7 @@ namespace WarehouseEcommerce.Controllers
             if (product.ProductType == ProductKitTypeEnum.ProductByAttribute){
                 var relatedProducts = _productServices.GetAllProductInKitsByKitProductId(product.ProductId).Where(k => k.IsActive == true);
 
-                selectedProduct = relatedProducts.FirstOrDefault(p => p.IsDeleted != true && p.IsActive == true && (p.ProductId == productId || productId == null)) ?? product;
+                selectedProduct = relatedProducts.FirstOrDefault(p => p.IsDeleted != true && p.IsActive == true && (p.ProductId == productId || (productId == null && p.ProductId != product.ProductId))) ?? product;
 
                 ViewBag.AvailableAttributes = relatedProducts
                                                 .SelectMany(a => a.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).Select(k => k.ProductAttributeValues))
