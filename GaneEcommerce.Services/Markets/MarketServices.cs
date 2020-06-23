@@ -285,6 +285,10 @@ namespace Ganedata.Core.Services
             }
         }
 
+        public List<int> GetMarketCustomerByAccountId(int accountId,int TenantId)
+        {
+            return _currentDbContext.MarketCustomers.Where(u => u.AccountId == accountId && u.TenantId == TenantId && u.IsDeleted != true).Select(u=>u.MarketId).ToList();
+        }
 
 
         public RouteMarketsViewModel GetRouteMarketsById(int routeId, int tenantId, string searchText = null)

@@ -172,7 +172,7 @@
                 <div class="input-group h-100 justify-content-center align-items-center">
                     <label class="col-md-4">Select Market</label>
                     <div class="col-md-8">
-                        @Html.DropDownList("MarketId", ViewBag.MarketDetailId as SelectList, "Select Market", new { @class = "chosen-select" })
+                        @Html.ListBox("CustomersMarketIds", ViewBag.MarketDetailId as MultiSelectList, new { Multiple = "multiple", @class = "chosen-select", data_placeholder = "Choose Markets" })
 
                     </div>
                 </div>

@@ -73,10 +73,9 @@ namespace WMS.Controllers
             AccountAddressSessionInit();
             ViewBag.AccountAddresses = new List<AccountAddresses>();
             ViewBag.AccountContacts = new List<AccountContacts>();
-
             var taxes = _lookupServices.GetAllValidGlobalTaxes().ToList();
             ViewBag.TaxID = new SelectList(taxes, "TaxID", "TaxName", taxes.Select(x => x.TaxID).FirstOrDefault());
-            ViewBag.MarketDetailId = new SelectList(_marketServices.GetAllValidMarkets(CurrentTenantId, CurrentWarehouseId), "MarketId", "MarketName");
+            ViewBag.MarketDetailId = new MultiSelectList(_marketServices.GetAllValidMarkets(CurrentTenantId, CurrentWarehouseId), "MarketId", "MarketName");
             Account account = new Account();
             account.AccountStatusID = AccountStatusEnum.Active;
             return View(account);
@@ -87,7 +86,7 @@ namespace WMS.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Account model, List<int> AccountAddressIds, List<int> AccountContactIds, int GlobalCountryIds, int GlobalCurrencyIds, int PriceGroupId, int OwnerUserId, string StopComment,int? MarketId)
+        public ActionResult Create(Account model, List<int> AccountAddressIds, List<int> AccountContactIds, int GlobalCountryIds, int GlobalCurrencyIds, int PriceGroupId, int OwnerUserId, string StopComment,int[] CustomersMarketIds = null)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
@@ -95,14 +94,14 @@ namespace WMS.Controllers
             {
                 var newContacts = Session["contacts"] as List<AccountContacts>;
                 var newAddresses = Session["addresses"] as List<AccountAddresses>;
-                AccountServices.SaveAccount(model, AccountAddressIds, AccountContactIds, GlobalCountryIds, GlobalCurrencyIds, PriceGroupId, OwnerUserId, newAddresses, newContacts, CurrentUserId, CurrentTenantId, StopComment, MarketId);
+                AccountServices.SaveAccount(model, AccountAddressIds, AccountContactIds, GlobalCountryIds, GlobalCurrencyIds, PriceGroupId, OwnerUserId, newAddresses, newContacts, CurrentUserId, CurrentTenantId, StopComment, CustomersMarketIds);
                 return RedirectToAction("Index");
             }
 
             AccountAddressSessionInit();
             ViewBag.AccountAddresses = new List<AccountAddresses>();
             ViewBag.AccountContacts = new List<AccountContacts>();
-            ViewBag.MarketDetailId = new SelectList(_marketServices.GetAllValidMarkets(CurrentTenantId, CurrentWarehouseId), "MarketId", "MarketName",MarketId);
+            ViewBag.MarketDetailId = new MultiSelectList(_marketServices.GetAllValidMarkets(CurrentTenantId, CurrentWarehouseId), "MarketId", "MarketName", CustomersMarketIds);
             var taxes = _lookupServices.GetAllValidGlobalTaxes().ToList();
             ViewBag.TaxID = new SelectList(taxes, "TaxID", "TaxName", taxes.Select(x => x.TaxID).FirstOrDefault());
             return View(model);
@@ -134,7 +133,8 @@ namespace WMS.Controllers
 
             var taxes = _lookupServices.GetAllValidGlobalTaxes().ToList();
             ViewBag.TaxID = new SelectList(taxes, "TaxID", "TaxName", customer.TaxID);
-            ViewBag.MarketDetailId = new SelectList(_marketServices.GetAllValidMarkets(CurrentTenantId, CurrentWarehouseId), "MarketId", "MarketName");
+            ViewBag.MarketDetailId = new MultiSelectList(_marketServices.GetAllValidMarkets(CurrentTenantId, CurrentWarehouseId), "MarketId", "MarketName", _marketServices.GetMarketCustomerByAccountId(customer.AccountID, CurrentTenantId));
+
 
             return View(customer);
         }
@@ -145,7 +145,7 @@ namespace WMS.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public ActionResult Edit(Account model, List<int> AccountAddressIds, List<int> AccountContactIds, string StopComment, int? MarketIds, int? MarketId)
+        public ActionResult Edit(Account model, List<int> AccountAddressIds, List<int> AccountContactIds, string StopComment, int? MarketIds, int[] CustomersMarketIds=null)
 
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
@@ -156,12 +156,13 @@ namespace WMS.Controllers
 
                 var newAddresses = Session["addresses"] as List<AccountAddresses>;
 
-                AccountServices.SaveAccount(model, AccountAddressIds, AccountContactIds, 0, 0, 0, model.OwnerUserId, newAddresses, newContacts, CurrentUserId, CurrentTenantId, StopComment,MarketId);
+                AccountServices.SaveAccount(model, AccountAddressIds, AccountContactIds, 0, 0, 0, model.OwnerUserId, newAddresses, newContacts, CurrentUserId, CurrentTenantId, StopComment, CustomersMarketIds);
                 Session["MarketId"] = MarketIds ?? 0;
                 return RedirectToAction("Index");
             }
 
             Account customer = AccountServices.GetAccountsById(model.AccountID);
+            ViewBag.CustomerMarketId = _marketServices.GetMarketCustomerByAccountId(customer.AccountID, CurrentTenantId);
             model.GlobalCurrency = customer.GlobalCurrency;
             AccountAddressSessionInit(customer.OwnerUserId);
             Session["account"] = model.AccountID;
@@ -172,8 +173,9 @@ namespace WMS.Controllers
             ViewBag.SelectedContacts = AccountServices.GetAllValidAccountContactsByAccountId(model.AccountID, CurrentTenantId).Select(a => a.AccountContactId).ToList();
             var taxes = _lookupServices.GetAllValidGlobalTaxes().ToList();
             ViewBag.TaxID = new SelectList(taxes, "TaxID", "TaxName", customer.TaxID);
-            ViewBag.MarketDetailId = new SelectList(_marketServices.GetAllValidMarkets(CurrentTenantId, CurrentWarehouseId), "MarketId", "MarketName", MarketId);
+            ViewBag.MarketDetailId = new MultiSelectList(_marketServices.GetAllValidMarkets(CurrentTenantId, CurrentWarehouseId), "MarketId", "MarketName", CustomersMarketIds);
             ViewBag.MarketId = MarketIds ?? 0;
+            ViewBag.MarketDetailId = _marketServices.GetAllValidMarkets(CurrentTenantId, CurrentWarehouseId).ToList();
             return View(model);
 
 

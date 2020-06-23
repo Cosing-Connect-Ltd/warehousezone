@@ -27,6 +27,7 @@ namespace Ganedata.Core.Services
         MarketRouteListViewModel GetAllValidMarketRoutes(int tenantId);
         MarketRouteViewModel GetMarketRouteById(int routeId);
         void DeleteMarketRoute(int marketRouteId, int userId);
+        List<int> GetMarketCustomerByAccountId(int accountId, int TenantId);
         MarketRoute SaveMarketRoute(MarketRoute marketRoute, int userId);
         RouteMarketsViewModel GetRouteMarketsById(int marketId, int tenantId, string searchText = null);
         RouteMarketsViewModel SaveRouteMarkets(RouteMarketsViewModel model, int userId);

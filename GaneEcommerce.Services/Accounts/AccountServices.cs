@@ -217,7 +217,7 @@ namespace Ganedata.Core.Services
             return _currentDbContext.AccountContacts.Find(id);
         }
 
-        public Account SaveAccount(Account model, List<int> accountAddressIds, List<int> accountContactIds, int globalCountryIds, int globalCurrencyIds, int priceGroupId, int ownerUserId, List<AccountAddresses> addresses, List<AccountContacts> contacts, int userId, int tenantId, string stopReason = null,int? MarketId = null)
+        public Account SaveAccount(Account model, List<int> accountAddressIds, List<int> accountContactIds, int globalCountryIds, int globalCurrencyIds, int priceGroupId, int ownerUserId, List<AccountAddresses> addresses, List<AccountContacts> contacts, int userId, int tenantId, string stopReason = null,int [] MarketId = null)
         {
             var account = _currentDbContext.Account.FirstOrDefault(m => m.AccountID == model.AccountID);
 
@@ -257,6 +257,25 @@ namespace Ganedata.Core.Services
                         _currentDbContext.AccountContacts.Add(item);
                     }
                 }
+                if (MarketId != null && MarketId.Any())
+                {
+                    var toadd=MarketId.Except(_currentDbContext.MarketCustomers
+                            .Where(x => x.AccountId == model.AccountID && x.IsDeleted != true)
+                            .Select(x => x.MarketId).ToList()).ToList();
+                    foreach (var item in toadd)
+                    {
+                        MarketCustomer cust = new MarketCustomer();
+                        cust.MarketId = item;
+                        cust.AccountId = model.AccountID;
+                        cust.IsSkippable = false;
+                        cust.SortOrder = 1;
+                        cust.VisitFrequency = MarketCustomerVisitFrequency.Daily;
+                        cust.TenantId = tenantId;
+                        cust.UpdateCreatedInfo(userId);
+                        _currentDbContext.Entry(cust).State = EntityState.Added;
+                    }
+                }
+
 
                 _currentDbContext.SaveChanges();
 
@@ -273,25 +292,6 @@ namespace Ganedata.Core.Services
                     Reason = stopReason ?? "Created"
                 };
                 _currentDbContext.AccountStatusAudits.Add(audit);
-                if (MarketId.HasValue)
-                {
-                    var existingAccounts = _currentDbContext.MarketCustomers.Where(m => m.MarketId == MarketId && m.AccountId==model.AccountID).ToList();
-                    if (existingAccounts.Count <= 0)
-                    {
-                        MarketCustomer cust = new MarketCustomer();
-
-                        cust.MarketId = MarketId.Value;
-                        cust.AccountId = model.AccountID;
-                        cust.IsSkippable = false;
-                        cust.SortOrder = 1;
-                        cust.VisitFrequency = MarketCustomerVisitFrequency.Daily;
-                        cust.TenantId = tenantId;
-                        cust.UpdateCreatedInfo(userId);
-                        _currentDbContext.Entry(cust).State = EntityState.Added;
-                    }
-                }
-
-
                 _currentDbContext.SaveChanges();
 
             }
@@ -417,14 +417,31 @@ namespace Ganedata.Core.Services
 
                 }
                 _currentDbContext.Entry(account).State = EntityState.Modified;
-                if (MarketId.HasValue)
+
+                if (MarketId != null && MarketId.Any())
                 {
-                    var existingAccounts = _currentDbContext.MarketCustomers.Where(m => m.MarketId == MarketId && m.AccountId == model.AccountID).ToList();
-                    if (existingAccounts.Count <= 0)
+                    var ToDelete = _currentDbContext.MarketCustomers
+                       .Where(x => x.AccountId == model.AccountID && x.IsDeleted != true)
+                       .Select(x => x.MarketId)
+                       .ToList()
+                       .Except(MarketId)
+                       .ToList();
+                    var toadd = MarketId.Except(_currentDbContext.MarketCustomers
+                            .Where(x => x.AccountId == model.AccountID && x.IsDeleted != true)
+                            .Select(x => x.MarketId).ToList()).ToList();
+                    foreach (var item in ToDelete)
+                    {
+                        var Current = _currentDbContext.MarketCustomers
+                            .FirstOrDefault(x => x.AccountId == model.AccountID && x.MarketId == item &&
+                                                 x.IsDeleted != true);
+                        Current.IsDeleted = true;
+                        _currentDbContext.Entry(Current).State = EntityState.Modified;
+                    }
+                    foreach (var item in toadd)
                     {
                         MarketCustomer cust = new MarketCustomer();
 
-                        cust.MarketId = MarketId.Value;
+                        cust.MarketId = item;
                         cust.AccountId = model.AccountID;
                         cust.IsSkippable = false;
                         cust.SortOrder = 1;
@@ -433,11 +450,24 @@ namespace Ganedata.Core.Services
                         cust.UpdateCreatedInfo(userId);
                         _currentDbContext.Entry(cust).State = EntityState.Added;
                     }
+                }
+                else
+                {
+                    var Currentmarkets = _currentDbContext.MarketCustomers.Where(x => x.AccountId == model.AccountID && x.IsDeleted != true).ToList();
+                    foreach (var item in Currentmarkets)
+                    {
+                        item.IsDeleted = true;
+                        item.UpdateUpdatedInfo(userId);
+                        _currentDbContext.Entry(item).State = EntityState.Modified;
+                    }
 
                 }
 
                 _currentDbContext.SaveChanges();
             }
+
+
+
             return model;
         }
 
