@@ -2,10 +2,10 @@
 using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Domain.ViewModels;
+using Ganedata.Core.Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace Ganedata.Core.Services
 {
@@ -13,11 +13,13 @@ namespace Ganedata.Core.Services
     {
         private readonly IApplicationContext _currentDbContext;
         private readonly IMapper _mapper;
+        private readonly IEmailServices _emailServices;
 
-        public TenantWebsiteService(IApplicationContext currentDbContext, IMapper mapper)
+        public TenantWebsiteService(IApplicationContext currentDbContext, IMapper mapper, IEmailServices emailServices)
         {
             _currentDbContext = currentDbContext;
             _mapper = mapper;
+            _emailServices = emailServices;
         }
         public IEnumerable<TenantWebsites> GetAllValidTenantWebSite(int TenantId)
         {
@@ -1040,6 +1042,79 @@ namespace Ganedata.Core.Services
 
             }
             return GetAllValidWishListItemsList(SiteId, UserId).Count();
+        }
+
+        public void SendNotificationForAbandonedCarts()
+        {
+            var abandonedCartSettings = _currentDbContext.AbandonedCartSettings
+                                                        .AsNoTracking()
+                                                        .Where(s => s.IsNotificationEnabled &&
+                                                                    s.IsDeleted != true &&
+                                                                    s.TenantWebsite.IsDeleted != true &&
+                                                                    s.TenantWebsite.IsActive == true);
+
+            foreach (var settings in abandonedCartSettings)
+            {
+                var targetTime = DateTime.Now.AddMinutes(-1 * settings.NotificationDelay);
+
+                var websiteCartItems = _currentDbContext.WebsiteCartItems.Where(i => i.IsDeleted != true &&
+                                                                                    i.SiteID == settings.SiteID &&
+                                                                                    (i.DateUpdated ?? i.DateCreated) < targetTime &&
+                                                                                    i.AuthUser.IsActive == true &&
+                                                                                    i.AuthUser.IsDeleted != true)
+                                                                          .OrderByDescending(o => o.DateUpdated)
+                                                                          .ThenByDescending(o => o.DateCreated)
+                                                                          .ToList();
+
+                var emailconfig = _emailServices.GetAllActiveTenantEmailConfigurations(settings.TenantId).FirstOrDefault();
+
+                foreach (var item in websiteCartItems.GroupBy(i => i.UserId)
+                                                    .Select(g => {
+                                                        var item = g.First();
+                                                        return new
+                                                        {
+                                                            Date = item.DateUpdated ?? item.DateCreated,
+                                                            item.AuthUser
+                                                        };
+                                                    }))
+                {
+                    if (!_currentDbContext.AbandonedCartNotifications.Any(a => a.SiteId == settings.SiteID && a.UserId == item.AuthUser.UserId && a.SendDate >= (item.Date)))
+                    {
+                        var (body, subject) = GetEmailContent(settings, item.AuthUser);
+
+                        SendAbandonedCartNotification(item.AuthUser.UserEmail, subject, body, emailconfig);
+
+                        _currentDbContext.AbandonedCartNotifications.Add(new AbandonedCartNotification
+                        {
+                            SendDate = DateTime.Now,
+                            SiteId = settings.SiteID,
+                            UserId = item.AuthUser.UserId
+                        });
+                    }
+                }
+            }
+
+            _currentDbContext.SaveChanges();
+        }
+
+        public bool SendAbandonedCartNotification(string to, string subject, string body, TenantEmailConfig emailconfig)
+        {
+            var emailSender = new EmailSender(to, emailconfig.UserEmail, body,subject, string.Empty, emailconfig.SmtpHost, emailconfig.SmtpPort, emailconfig.UserEmail, emailconfig.Password);
+
+            return emailSender.SendMail(true);
+        }
+
+        private Tuple<string, string> GetEmailContent(AbandonedCartSetting settings, AuthUser user)
+        {
+            var body = settings.NotificationEmailTemplate
+                .Replace("[USERFULLNAME]", $"{user.UserFirstName} {user.UserLastName}")
+                .Replace("[WEBSITENAME]", settings.TenantWebsite.SiteName)
+                .Replace("[SITELINK]", $"http://{settings.TenantWebsite.HostName}")
+                .Replace("[CARTLINK]", $"http://{settings.TenantWebsite.HostName}/Products/AddToCart");
+
+            var subject = settings.NotificationEmailSubjectTemplate.Replace("[USERFIRSTNAME]", user.UserFirstName);
+
+            return new Tuple<string, string>(body, subject);
         }
 
     }

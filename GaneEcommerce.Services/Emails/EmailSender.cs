@@ -10,83 +10,85 @@ namespace Ganedata.Core.Services
 {
     public class EmailSender
     {
-        public  Attachment fileattachment  { get; set; }
-        private string logourl { get; set; }
-        private string mailto { get; set; }
-        private string from { get; set; }
-        private string htmlBody { get; set; }
-        private string subject { get; set; }
-        private string attachment { get; set; }
-        private string smtphost {get;set;}
-        private int port{get;set;} 
-        private string username {get;set;}
-        private string password {get;set;}
-        private bool   EnableSsl {get;set;}     
-        
-             
+        public  Attachment _fileAttachment  { get; set; }
+        private string _logourl { get; set; }
+        private string _mailto { get; set; }
+        private string _from { get; set; }
+        private string _htmlBody { get; set; }
+        private string _subject { get; set; }
+        private string _attachment { get; set; }
+        private string _smtphost {get;set;}
+        private int _port{get;set;}
+        private string _username {get;set;}
+        private string _password {get;set;}
+        private bool   _enableSsl {get;set;}
+
+
         public List<string> MailErrors=new List<string>();
 
 
 
         public EmailSender(string mailto,string from ,string htmlBody, string subject, string attachment, string smtphost, int port, string username, string password)
         {
-           
+
             ///////////////////////////////////////////////////////////
-            this.logourl =  @"~\Content\images\Emaillogo.jpg";
-            this.mailto = mailto.Trim();
-            this.from = from.Trim();
-            this.htmlBody = htmlBody;
-            this.subject = subject.Trim();
-            this.attachment = attachment.Trim();
-            this.smtphost = smtphost.Trim();
-            this.port = port;
-            this.username = username.Trim();
-            this.password = password.Trim();
-            this.EnableSsl = true;
+            _logourl =  @"~\Content\images\Emaillogo.jpg";
+            _mailto = mailto.Trim();
+            _from = from.Trim();
+            _htmlBody = htmlBody;
+            _subject = subject.Trim();
+            _attachment = attachment.Trim();
+            _smtphost = smtphost.Trim();
+            _port = port;
+            _username = username.Trim();
+            _password = password.Trim();
+            _enableSsl = true;
           /////////////////////////////////////////////
         }
-        public  bool SendMail(){
-
+        public  bool SendMail(bool isBodyHtml = false)
+        {
             try
             {
 
                //creating MailMessage Object
-                MailMessage mailmsg = new System.Net.Mail.MailMessage();
-                mailmsg.AlternateViews.Add(this.embedlogo(htmlBody));
-                mailmsg.From = new MailAddress(this.from);
+                MailMessage mailmsg = new MailMessage();
+                mailmsg.AlternateViews.Add(embedlogo(_htmlBody));
+                mailmsg.From = new MailAddress(_from);
 
                 ///if there is comma
-                if (this.mailto.Count(x => x == ',') > 0)
+                if (_mailto.Count(x => x == ',') > 0)
                 {
 
-                    string[] fields = mailto.Split(',');
+                    string[] fields = _mailto.Split(',');
 
                       foreach (string recp in fields)
                         mailmsg.To.Add(new MailAddress(recp));
                 }else
-                    mailmsg.To.Add(new MailAddress(mailto));
+                    mailmsg.To.Add(new MailAddress(_mailto));
 
 
-                mailmsg.Subject = this.subject;
+                mailmsg.Subject = _subject;
 
-                if (attachment != "")
+                mailmsg.IsBodyHtml = isBodyHtml;
+
+                if (_attachment != "")
                 {
 
-                    mailmsg.Attachments.Add(new Attachment(HttpContext.Current.Server.MapPath(attachment)));
+                    mailmsg.Attachments.Add(new Attachment(HttpContext.Current.Server.MapPath(_attachment)));
                 }
 
-                if (fileattachment != null)
+                if (_fileAttachment != null)
                 {
-                    mailmsg.Attachments.Add(fileattachment);
+                    mailmsg.Attachments.Add(_fileAttachment);
 
                 }
 
 
                 SmtpClient smtp = new SmtpClient();
-                smtp.Host = this.smtphost;
-                smtp.Port = this.port;
-                smtp.Credentials = new System.Net.NetworkCredential(this.username,this.password);
-                smtp.EnableSsl =this.EnableSsl;
+                smtp.Host = _smtphost;
+                smtp.Port = _port;
+                smtp.Credentials = new System.Net.NetworkCredential(_username,_password);
+                smtp.EnableSsl =_enableSsl;
 
                 smtp.Send(mailmsg);
                 return true;
@@ -94,9 +96,9 @@ namespace Ganedata.Core.Services
             catch (Exception ex)
             {
                 MailErrors.Add(ex.Message);
-                return false; 
+                return false;
             }
-            
+
         }
         private AlternateView embedlogo(string htmlBody)
         {
@@ -104,24 +106,24 @@ namespace Ganedata.Core.Services
             AlternateView avHtml = AlternateView.CreateAlternateViewFromString(htmlBody, null, MediaTypeNames.Text.Html);
 
 
-            if (File.Exists(HttpContext.Current.Server.MapPath(this.logourl)))
+            if (File.Exists(HttpContext.Current.Server.MapPath(_logourl)))
             {
 
                 // Create a LinkedResource object for each embedded image
-                LinkedResource pic1 = new LinkedResource(HttpContext.Current.Server.MapPath(this.logourl));
+                LinkedResource pic1 = new LinkedResource(HttpContext.Current.Server.MapPath(_logourl));
 
                 pic1.ContentId = "logo";
                 avHtml.LinkedResources.Add(pic1);
             }
-            
-            
+
+
             return avHtml;
         }
 
 
 
 
-        
+
 
 
     }

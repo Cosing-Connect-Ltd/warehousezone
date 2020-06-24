@@ -17,7 +17,7 @@
     <AssemblyName>WMS</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -517,6 +517,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AuthUserGroupsController.cs" />
     <Compile Include="Controllers\ApiCredentialsController.cs" />
+    <Compile Include="Controllers\WebAPI\ApiWebsitesController.cs" />
     <Compile Include="Controllers\WebsiteWarehousesController.cs" />
     <Compile Include="Controllers\UISettingsController.cs" />
     <Compile Include="Controllers\TooltipsController.cs" />

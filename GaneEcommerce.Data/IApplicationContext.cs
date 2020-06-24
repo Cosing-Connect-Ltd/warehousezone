@@ -180,5 +180,7 @@ namespace Ganedata.Core.Data
         DbSet<UISetting> UISettings { get; set; }
         DbSet<UISettingItem> UISettingItems { get; set; }
         DbSet<WebsiteWarehouses> WebsiteWarehouses { get; set; }
+        DbSet<AbandonedCartNotification> AbandonedCartNotifications { get; set; }
+        DbSet<AbandonedCartSetting> AbandonedCartSettings { get; set; }
     }
 }

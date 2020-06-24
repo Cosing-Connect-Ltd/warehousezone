@@ -108,8 +108,6 @@ namespace Ganedata.Core.Services
         int RemoveCartItem(int ProductId, int SiteId, int UserId);
         int RemoveWishListItem(int ProductId, int SiteId, int UserId);
 
-
-
-
+        void SendNotificationForAbandonedCarts();
     }
 }
