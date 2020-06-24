@@ -10,7 +10,7 @@
 }
 
 <div class="container-fluid custom-container-fluid pl-0 pr-0">
-    <div id="product-product" class="container custom-max-width m-auto kit-product">
+    <div id="product-product" class="container m-auto kit-product">
         <div class="row">
             <div id="content" class="col-lg-12 col-md-12">
                 <div class="breadCrumbtopsec">
@@ -190,28 +190,17 @@
                                         <div class="cartitem-imgtext ">
                                             <div class="cartitem-text">
                                                 <p><a href=""><strong>@Model.Name</strong></a></p>
-                                                <p><b style="color: #007600 !important;">@(Model.InventoryStocks.Count == 0 ? "Not Avaialable" : "In Stock")</b></p>
-                                                <p><b>Brands:</b> <span>@(Model.ProductManufacturer == null ? "" : Model.ProductManufacturer.Name)</span></p>
                                                 <p><b>SKU Code:</b> <span>@Model.SKUCode</span></p>
-                                                <p><b>Product Code::</b> <span>@Model.BarCode</span></p>
-                                                <p><b>Size:</b> <span>M</span></p>
-
-                                                @*<p>
-                                                    <div class=" required ">
-                                                        <label class="control-label" for="input-option226">Select Available Option</label>
-                                                        <select name="option[226]" id="input-option226" class="form-control">
-                                                            <option value=""> --- Please Select --- </option>
-                                                            <option value="black">
-                                                                Black
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                </p>*@
                                                 <p class="cart-quantity">
                                                     <b>Quantity:</b> <input type="number" min="0" placeholder="Qty" onchange="" value="1" />
-                                                    <a href="javascript:;" class="remove-btn cart-del" onclick=""><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
+                                                    @*<a href="javascript:;" class="remove-btn cart-del" onclick=""><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>*@
                                                 </p>
-
+                                                <p>
+                                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                                                    when an unknown printer took a galley of type and scrambled it to make a type 
+                                                    specimen book. 
+                                                </p>
                                             </div>
                                         </div>
                                         <div class="cartitem-price">
@@ -224,63 +213,12 @@
                                                 }
                                                 else
                                                 {
-                                                    <button type="button" class=" btn btn-block disabled-btn" disabled><span>Add to Basket</span></button>
+                                                    <button type="button" class=" btn btn-block disabled-btn" disabled>Add to Basket</button>
                                                 }
 
                                             </div>
                                         </div>
                                     </div>
-                                    @{
-                                        var products = Model.ProductKitItems.Where(u => u.ProductKitType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Kit && u.IsDeleted != true && u.IsActive != false).ToList();
-                                    }
-                                    @foreach (var productitems in products)
-                                    {
-                                        <div class="cartitem-details">
-                                            <div class="cartitem-imgtext ">
-                                                <div class="cartitem-text">
-                                                    <p><a href=""><strong>@productitems.KitProductMaster.Name</strong></a></p>
-                                                    <p><b style="color: #007600 !important;">@(productitems.KitProductMaster.InventoryStocks.Count == 0 ? "Not Avaialable" : "In Stock")</b></p>
-                                                    <p><b>Brands:</b> <span>@(productitems.KitProductMaster.ProductManufacturer == null ? "" : productitems.KitProductMaster.ProductManufacturer.Name)</span></p>
-                                                    <p><b>SKU Code:</b> <span>@productitems.KitProductMaster.SKUCode</span></p>
-                                                    <p><b>Product Code:</b> <span>@productitems.KitProductMaster.BarCode</span></p>
-                                                    <p><b>Size:</b> <span>M</span></p>
-
-                                                    @*<p>
-                                                        <div class=" required ">
-                                                            <label class="control-label" for="input-option226">Select Available Option</label>
-                                                            <select name="option[226]" id="input-option226" class="form-control">
-                                                                <option value=""> --- Please Select --- </option>
-                                                                <option value="black">
-                                                                    Black
-                                                                </option>
-                                                            </select>
-                                                        </div>
-                                                    </p>*@
-                                                    <p class="cart-quantity">
-                                                        <b>Quantity:</b> <input type="number" min="0" placeholder="Qty" onchange="" value="@productitems.Quantity" />
-                                                        <a href="javascript:;" class="remove-btn cart-del" onclick="" style="color:red"><i class="fa fa-trash-o" aria-hidden="true" ></i> Delete</a>
-                                                    </p>
-
-                                                </div>
-                                            </div>
-                                            <div class="cartitem-price">
-                                                <p><span>Price:</span><b>@ViewBag.CurrencySymbol @productitems.KitProductMaster.SellPrice</b></p>
-                                                <p><span>Total:</span><b>@ViewBag.CurrencySymbol @productitems.KitProductMaster.SellPrice</b></p>
-                                                <div class="button-submit">
-                                                    @*@if (productitems.KitProductMaster.SellPrice > 0 && productitems.KitProductMaster.SellPrice.HasValue && productitems.KitProductMaster.PercentMargin > 0)
-                                                    {
-                                                        <button type="Submit" name="submitNewsletter" class="btn btn-block move-to-cart-btn" id="button-cart" onclick="AddToCart(@productitems.KitProductMaster.ProductId)">Add to Basket</button>
-                                                    }
-                                                    else
-                                                    {
-                                                        <button type="button" class=" btn btn-block disabled-btn" disabled><span>Add to Basket</span></button>
-                                                    }*@
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    }
                                 </div>
                               
                             </div>

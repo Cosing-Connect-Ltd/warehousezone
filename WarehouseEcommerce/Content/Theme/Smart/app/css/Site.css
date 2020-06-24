@@ -1390,6 +1390,8 @@ ul.mhp-menu {
     justify-content: space-between;
     padding: 15px 0px;
     margin-top: -1px;
+    border-bottom: solid 0.02px #D7D7D7;
+    margin-bottom: -1px;
 }
 
 .cartitem-imgtext {
@@ -2000,8 +2002,9 @@ ul.mhp-menu {
     display: flex;
     flex-wrap: nowrap;
 }
-.kit-tab-content {
+.kit-tabs-content {
     border: solid 1px #D7D7D7;
+    border-top: unset;
     padding: 0px 10px;
 }
 
@@ -2040,12 +2043,6 @@ ul.mhp-menu {
 
 .kit-product .tab-pane {
     width: 100%;
-}
-
-.kit-product .kit-tabs-content {
-    padding: 10px;
-    border: 1px solid #dee2e6;
-    border-top: unset;
 }
 
 .kit-product .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {

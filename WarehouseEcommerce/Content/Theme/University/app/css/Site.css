@@ -1042,6 +1042,35 @@ body.modal-open {
     justify-content: space-between;
     padding: 15px 0px;
     margin-top: -1px;
+    border-bottom: solid 0.02px #D7D7D7;
+    margin-bottom: -1px;
+    align-items:center;
+}
+.cartitem-text {
+    padding-right: 20px;
+    text-align: justify;
+}
+@media(max-width:575px) {
+    .cartitem-details {
+        flex-wrap:wrap;
+    }
+    .cartitem-imgtext {
+        width: 100%;
+    }
+    .cartitem-price {
+        width: 100%;
+    }
+    .cartitem-price span {
+        padding-top:unset!important;
+        padding-left:unset!important;
+    }
+    .kit-product .card-body {
+        padding-bottom: unset !important;
+        padding-top: unset !important;
+    }
+    .cartitem-text {
+        padding-right: unset;
+    }
 }
 
 .cartitem-imgtext {
@@ -1081,7 +1110,7 @@ body.modal-open {
 
 .cartitem-price span {
     padding: 5px;
-    font-size: 14px !important;
+    font-size: 16px !important;
     line-height: 1.5 !important;
     color: #555 !important;
     font-weight: bold;
@@ -1099,18 +1128,18 @@ body.modal-open {
 }
 
 .cartitem-text strong {
-    font-size: 17px;
+    font-size: 20px;
 }
 
 .cartitem-text p, .cartitem-text span {
     margin-bottom: 5px;
-    font-size: 12px;
+    font-size: 16px;
     line-height: 1.5;
     color: #555;
 }
 
 .cartitem-text b {
-    font-size: 12px;
+    font-size: 16px;
     line-height: 1.5;
     font-weight: 700;
 }
@@ -1140,8 +1169,9 @@ body.modal-open {
     margin-bottom: 60px;
 }
 
-.kit-tab-content {
+.kit-tabs-content {
     border: solid 1px #D7D7D7;
+    border-top:unset;
     padding: 0px 10px;
 }
 
@@ -1186,14 +1216,8 @@ body.modal-open {
     color: #555;
 }
 
-.kit-product .kit-tabs-content {
-    padding: 10px;
-    border: 1px solid #dee2e6;
-    border-top: unset;
-}
-
 .kit-product .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
-    font-weight: 600;
+    font-weight: bold;
     color: #000;
     font-size: 16px;
 }
@@ -1250,7 +1274,7 @@ body.modal-open {
     margin-bottom: 8px;
 }
 
-.kit-product .cartitem-price span {
+.kit-product .cartitem-price .button-submit span {
     color: white !important;
 }
 
@@ -1262,6 +1286,8 @@ body.modal-open {
     width: auto;
     padding: 7px 35px;
     width: 100%;
+    font-weight: bold;
+    white-space: nowrap;
 }
 
     .kit-product .button-submit button:hover, .my-account.login .button-submit button:focus, .my-account.login .button-submit input[type="submit"]:hover, .my-account.login .button-submit input[type="submit"]:focus {
