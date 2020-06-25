@@ -1044,7 +1044,7 @@ body.modal-open {
     margin-top: -1px;
     border-bottom: solid 0.02px #D7D7D7;
     margin-bottom: -1px;
-    align-items:center;
+    /*align-items:center;*/
 }
 .cartitem-text {
     padding-right: 20px;

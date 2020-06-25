@@ -35,17 +35,18 @@
                         @if (ViewBag.Categories != null && !string.IsNullOrEmpty(ViewBag.Categories))
                         {
                             <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { category = ViewBag.Categories })">@ViewBag.Categories</a></li>
-                            <li>></li>
+
                         }
                         @*@if (Url.Action() != Url.Action("list", "Products", new { department = Model.TenantDepartment.DepartmentName }))
-                            {
-                                if (!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup))
-                                {
-                                    <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { group = Model.ProductGroup.ProductGroup, department = Model.TenantDepartment.DepartmentName})">@(!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup) ? Model.ProductGroup.ProductGroup : "")</a></li>
-                                }
-                            }*@
+        {
+            if (!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup))
+            {
+                <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { group = Model.ProductGroup.ProductGroup, department = Model.TenantDepartment.DepartmentName})">@(!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup) ? Model.ProductGroup.ProductGroup : "")</a></li>
+            }
+        }*@
                         @if (ViewBag.SubCategory != null && !string.IsNullOrEmpty(ViewBag.SubCategory))
                         {
+                            <li>></li>
                             <li class="breadcrumb-item">@ViewBag.SubCategory</li>
                         }
                     </ol>
