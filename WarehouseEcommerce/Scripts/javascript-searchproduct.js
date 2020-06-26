@@ -273,29 +273,31 @@ function ConfirmOrder() {
     window.location.href = basePath + "/Orders/ConfirmOrder/?AccountAddressId=" + AccountAddressIds + "&PaymentTypeId=" + paymentMethodId + "&ShippmentTypeId=" + ShippingTypeId;
 }
 
-function ChooseShippingAddress(accountid, billingaddressId, shippingaddressid, status) {
+function ChooseShippingAddress(accountid, billingaddressId) {
     var ShippmentId = $("input[name='optradio']:checked").val();
     if (ShippmentId === undefined) {
         alert("Please select shipping method.");
         return;
     }
 
-    location.href = basePath + "/Orders/GetAddress?AccountId=" + accountid + "&AccountBillingId=" + billingaddressId + "&AccountShippingId=" + shippingaddressid + "&ShipingAddress=" + status + "&ShippmentTypeId=" + ShippmentId;
+    var step = (ShippmentId == '1' ? 3 : 2);
+
+    location.href = basePath + "/Orders/GetAddress?AccountId=" + accountid + "&AccountBillingId=" + billingaddressId + "&Step=" + step + "&ShippmentTypeId=" + ShippmentId;
 }
 
-function ChooseCollectionPoint(accountid, billingaddressId, shippingaddressid, shippmentTypeId, status) {
+function ChooseCollectionPoint(accountid, billingaddressId, shippmentTypeId, step) {
     var collectionPointId = $("#collectionPointId")[0].value;
 
-    location.href = basePath + "/Orders/GetAddress?AccountId=" + accountid + "&AccountBillingId=" + billingaddressId + "&AccountShippingId=" + shippingaddressid + "&ShipingAddress=" + status + "&ShippmentTypeId=" + shippmentTypeId + "&collectionPointId=" + collectionPointId;
+    location.href = basePath + "/Orders/GetAddress?AccountId=" + accountid + "&AccountBillingId=" + billingaddressId + "&Step=" + step + "&ShippmentTypeId=" + shippmentTypeId + "&collectionPointId=" + collectionPointId;
 }
-function ChoosePaymentMethod(accountid, shippingaddressid, shipmentMethodType, collectionPointId) {
+function ChoosePaymentMethod(accountid, shippingaddressid, shipmentMethodType, collectionPointId, step) {
     var paymenttypeId = $("input[name='paymentMethod']:checked").val();
     if (paymenttypeId === undefined) {
         alert("Please select payment method.");
         return;
     }
     window.location.href = basePath + "/Orders/ConfirmOrder?AccountId=" + accountid + "&ShipmentAddressId=" + shippingaddressid + "&PaymentTypeId=" + paymenttypeId + "&ShippmentTypeId=" + shipmentMethodType + "&collectionPointId=" + collectionPointId;
-    location.href = basePath + "/Orders/GetAddress?AccountId=" + accountid + "&AccountBillingId=" + billingaddressId + "&AccountShippingId=" + shippingaddressid + "&ShipingAddress=" + status + "&ShippmentTypeId=" + ShippmentId + "&collectionPointId=" + collectionPointId;
+    location.href = basePath + "/Orders/GetAddress?AccountId=" + accountid + "&AccountBillingId=" + billingaddressId + "&AccountShippingId=" + shippingaddressid + "&Step=" + step + "&ShippmentTypeId=" + ShippmentId + "&collectionPointId=" + collectionPointId;
 }
 
 $("input[name='paymentMethod']").on("click", function (e) {

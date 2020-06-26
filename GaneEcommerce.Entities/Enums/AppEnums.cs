@@ -496,4 +496,19 @@ namespace Ganedata.Core.Entities.Enums
         Times,
         Verdana,
     }
+
+    public enum CheckoutStep
+    {
+        BillingAddress = 0,
+        ShippmentMethod = 1,
+        ShippingAddress = 2,
+        CollectionPiont = 3,
+        PaymentMethod = 4
+    }
+
+    public enum ShippingMethodType
+    {
+        PickupPoint = 0,
+        Delivery = 1
+    }
 }

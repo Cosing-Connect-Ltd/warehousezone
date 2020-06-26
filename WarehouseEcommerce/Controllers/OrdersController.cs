@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Ganedata.Core.Data.Helpers;
 using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -51,7 +52,7 @@ namespace WarehouseEcommerce.Controllers
             return View();
         }
 
-        public ActionResult GetAddress(int? AccountId, int? AccountAddressId, int? AccountBillingId, int? AccountShippingId, int? ShippmentTypeId, int? collectionPointId = null, bool ShipingAddress = false)
+        public ActionResult GetAddress(int? AccountId, int? AccountAddressId, int? AccountBillingId, int? AccountShippingId, int? ShippmentTypeId, int? collectionPointId = null, int? step = null)
         {
             AccountShippingId = AccountShippingId <= 0? null: AccountShippingId;
             AccountBillingId = AccountBillingId <= 0 ? null : AccountBillingId;
@@ -61,16 +62,18 @@ namespace WarehouseEcommerce.Controllers
                 {
                     return RedirectToAction("Login", "User", new { PlaceOrder = true });
                 }
+
+                var currentStep = step != null ? (CheckoutStep)step : CheckoutStep.BillingAddress;
                 ViewBag.cart = true;
                 ViewBag.AccountIds = AccountId = CurrentUser?.AccountId;
                 ViewBag.Country = new SelectList(_lookupServices.GetAllGlobalCountries(), "CountryID", "CountryName");
-                ViewBag.ShipingAddressId = AccountShippingId;
+                ViewBag.ShippingAddressId = AccountShippingId;
                 ViewBag.BillingAddressId = AccountBillingId;
-                ViewBag.Shiping = ShipingAddress;
+                ViewBag.Step = currentStep;
                 ViewBag.ShippmentMethodType = ShippmentTypeId;
                 ViewBag.CollectionPointId = collectionPointId;
                 //Billing Address Section
-                if (!ShipingAddress)
+                if (currentStep == CheckoutStep.BillingAddress)
                 {
 
                     if (AccountAddressId.HasValue)
@@ -91,7 +94,7 @@ namespace WarehouseEcommerce.Controllers
 
                 }
                 // Shipping Address Section
-                else if (AccountBillingId.HasValue && ShipingAddress)
+                else if (currentStep == CheckoutStep.ShippingAddress)
                 {
 
                     if (AccountAddressId.HasValue)
@@ -198,14 +201,17 @@ namespace WarehouseEcommerce.Controllers
             return RedirectToAction("GetAddress", new { AccountId = accountAddresses.AccountID, AccountBillingId = AccountServices.GetAllValidAccountAddressesByAccountId(accountAddresses.AccountID).FirstOrDefault()?.AddressID, ShipingAddress = true });
         }
 
-        public ActionResult ConfirmOrder(int accountId, int ShipmentAddressId, int ShippmentTypeId,int PaymentTypeId, int collectionPointId)
+        public ActionResult ConfirmOrder(int accountId, int? ShipmentAddressId, int ShippmentTypeId,int PaymentTypeId, int? collectionPointId)
         {
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.cart = true;
             ViewBag.CartModal = true;
             ViewBag.paymentMethod = PaymentTypeId;
             List<AccountAddresses> accountAddresses = new List<AccountAddresses>();
-            accountAddresses.Add(AccountServices.GetAccountAddressById(ShipmentAddressId));
+            if (ShipmentAddressId != null)
+            {
+                accountAddresses.Add(AccountServices.GetAccountAddressById(ShipmentAddressId.Value));
+            }
             accountAddresses.Add(AccountServices.GetAllValidAccountAddressesByAccountId(accountId).FirstOrDefault(u => u.AddTypeBilling == true));
             ViewBag.Addresses = accountAddresses;
             var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
@@ -215,7 +221,7 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.ShipmentMethod = ShippmentTypeId;
             if (ShippmentTypeId == 1) // Pick up
             {
-                ViewBag.CollectionPoint = _tenantLocationServices.GetActiveTenantLocationById(collectionPointId);
+                ViewBag.CollectionPoint = _tenantLocationServices.GetActiveTenantLocationById(collectionPointId.Value);
             }
             ViewBag.RetUrl = PAYPAL_RET_URL;
             ViewBag.PAYPALURL = PAYPAL_URL;

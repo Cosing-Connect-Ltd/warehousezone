@@ -1,4 +1,5 @@
 ﻿@model Ganedata.Core.Entities.Domain.AccountAddresses
+@using Ganedata.Core.Entities.Enums;
 @{
     ViewBag.Title = "SaveAddress";
     var address = ViewBag.Addresses as List<Ganedata.Core.Entities.Domain.AccountAddresses>;
@@ -9,14 +10,14 @@
         <div class="row">
             <div class="col-md-3 col-sm-12 ">
                 <ul class="menu-about">
-                    <li><a href="@Url.Action("GetAddress", "Orders", new { AccountId = ViewBag.AccountIds, ShipingAddress = false })" class="">Billing Address</a></li>
-                    <li><a href="@Url.Action("GetAddress", "Orders", new { AccountId = ViewBag.AccountIds,AccountBillingId=ViewBag.BillingAddressId, ShipingAddress = true })" style=@(ViewBag.BillingAddressId==null?"pointer-events:none;cursor: default":"")>Shipping Address</a></li>
-                    <li><a href="@Url.Action("GetAddress", "Orders", new { AccountId = ViewBag.AccountIds,AccountBillingId=ViewBag.BillingAddressId,AccountShippingId=ViewBag.ShipingAddressId, ShipingAddress = true })" style="@(ViewBag.ShipingAddressId==null?"pointer-events:none;cursor: default":"")">Shipping Method</a></li>
-                    <li><a href="@Url.Action("GetAddress", "Orders", new { AccountId = ViewBag.AccountIds,AccountBillingId=ViewBag.BillingAddressId,AccountShippingId=ViewBag.ShipingAddressId,ShippmentTypeId=ViewBag.ShippmentMethodType, ShipingAddress = true })" style="@(ViewBag.ShippmentMethodType==null?"pointer-events:none;cursor: default":"")">Payment Method</a></li>
+                    <li><a href="@Url.Action("GetAddress", "Orders", new { AccountId = ViewBag.AccountIds, ShipingAddress = false, Step = CheckoutStep.BillingAddress })" class="">Billing Address</a></li>
+                    <li><a href="@Url.Action("GetAddress", "Orders", new { AccountId = ViewBag.AccountIds,AccountBillingId=ViewBag.BillingAddressId, Step = CheckoutStep.ShippmentMethod })" style="@((CheckoutStep)ViewBag.Step>=CheckoutStep.ShippmentMethod?"pointer-events:none;cursor: default":"")">Shipping Method</a></li>
+                    <li><a href="@Url.Action("GetAddress", "Orders", new { AccountId = ViewBag.AccountIds,AccountBillingId=ViewBag.BillingAddressId,ShippmentTypeId=ViewBag.ShippmentMethodType, Step = CheckoutStep.ShippingAddress })" style=@((CheckoutStep)ViewBag.Step>=CheckoutStep.ShippingAddress?"pointer-events:none;cursor: default":"")>Shipping Address</a></li>
+                    <li><a href="@Url.Action("GetAddress", "Orders", new { AccountId = ViewBag.AccountIds,AccountBillingId=ViewBag.BillingAddressId,AccountShippingId=ViewBag.ShipingAddressId,ShippmentTypeId=ViewBag.ShippmentMethodType, Step = CheckoutStep.PaymentMethod })" style="@((CheckoutStep)ViewBag.Step>=CheckoutStep.PaymentMethod?"pointer-events:none;cursor: default":"")">Payment Method</a></li>
                 </ul>
             </div>
             <div class="col-md-8 col-sm-12 bg-white login my-account">
-                <div class="about-cnt" style="display:@(ViewBag.ShipingAddressId!=null?"none":"")">
+                <div class="about-cnt" style="display:@((CheckoutStep)ViewBag.Step == CheckoutStep.BillingAddress || (CheckoutStep)ViewBag.Step == CheckoutStep.ShippingAddress?"block":"none")">
                     <div class="content-wrapper select">
                         <h2 class="text-uppercase">@ViewBag.AddressMessage</h2>
                         <hr class="custom-hr">
@@ -56,15 +57,15 @@
                                             @if (address[i].AddTypeBilling == true)
                                             {
                                                 <div class="">
-                                                    <a href="@Url.Action("GetAddress", "Orders", new { AccountId = ViewBag.AccountIds,AccountBillingId=address[i].AddressID, ShipingAddress = true })" role="button" class="btn btn-default" style="font-size:11px">Select billing address</a>
+                                                    <a href="@Url.Action("GetAddress", "Orders", new { AccountId = ViewBag.AccountIds,AccountBillingId=address[i].AddressID, Step=(int)CheckoutStep.ShippmentMethod })" role="button" class="btn btn-default" style="font-size:11px">Select billing address</a>
                                                     <a href="@Url.Action("GetAddress", "Orders", new { AccountId = address[i].AccountID, AccountAddressId = address[i].AddressID })" role="button" class="btn btn-default" style="font-size:11px">Edit address</a>
                                                 </div>
                                             }
                                             else
                                             {
                                                 <div class="">
-                                                    <a href="@Url.Action("GetAddress", "Orders", new { AccountId = ViewBag.AccountIds,AccountBillingId=ViewBag.BillingAddressId,AccountShippingId=address[i].AddressID, ShipingAddress = true })" role="button" class="btn btn-primary" style="font-size:11px">Select shipping address</a>
-                                                    <a href="@Url.Action("GetAddress", "Orders", new { AccountId = address[i].AccountID,AccountBillingId=ViewBag.BillingAddressId, AccountAddressId = address[i].AddressID,ShipingAddress = true })" role="button" class="btn btn-success" style="font-size:11px">Edit Address</a>
+                                                    <a href="@Url.Action("GetAddress", "Orders", new { AccountId = ViewBag.AccountIds,AccountBillingId=ViewBag.BillingAddressId,AccountShippingId=address[i].AddressID, ShipingAddress = true, ShippmentTypeId=ViewBag.ShippmentMethodType,Step=(int)CheckoutStep.PaymentMethod })" role="button" class="btn btn-primary" style="font-size:11px">Select shipping address</a>
+                                                    <a href="@Url.Action("GetAddress", "Orders", new { AccountId = address[i].AccountID,AccountBillingId=ViewBag.BillingAddressId, AccountAddressId = address[i].AddressID, ShipingAddress = true, ShippmentTypeId=ViewBag.ShippmentMethodType,Step=(int)CheckoutStep.PaymentMethod })" role="button" class="btn btn-success" style="font-size:11px">Edit Address</a>
                                                     <a href="@Url.Action("RemoveAddress", "Orders", new {AccountAddressId = address[i].AddressID })" role="button" class="btn btn-danger custom-danger" style="font-size:11px">Remove address</a>
                                                 </div>
                                             }
@@ -100,8 +101,8 @@
 
                                             </p>
                                             <div class="">
-                                                <a href="@Url.Action("GetAddress", "Orders", new { AccountId = ViewBag.AccountIds,AccountBillingId=ViewBag.BillingAddressId,AccountShippingId=address[i+1].AddressID, ShipingAddress = true })" role="button" class="btn btn-primary" style="font-size:11px">Select shipping address</a>
-                                                <a href="@Url.Action("GetAddress","Orders",new {AccountId=address[i+1].AccountID,AccountBillingId=ViewBag.BillingAddressId, AccountAddressId=address[i+1].AddressID })" role="button" class="btn btn-success" style="font-size:11px">Edit address</a>
+                                                <a href="@Url.Action("GetAddress", "Orders", new { AccountId = ViewBag.AccountIds,AccountBillingId=ViewBag.BillingAddressId,AccountShippingId=address[i+1].AddressID,Step=(int)CheckoutStep.PaymentMethod })" role="button" class="btn btn-primary" style="font-size:11px">Select shipping address</a>
+                                                <a href="@Url.Action("GetAddress","Orders",new {AccountId=address[i+1].AccountID,AccountBillingId=ViewBag.BillingAddressId, AccountAddressId=address[i+1].AddressID,Step=(int)CheckoutStep.PaymentMethod })" role="button" class="btn btn-success" style="font-size:11px">Edit address</a>
                                                 <a href="@Url.Action("RemoveAddress", "Orders", new {AccountAddressId = address[i+1].AddressID }))" role="button" class="btn btn-danger custom-danger" style="font-size:11px">Remove address</a>
                                             </div>
                                         </div>
@@ -112,7 +113,7 @@
 
                         }
 
-                        @if (ViewBag.Shiping == true || Model != null || (address == null || address.FirstOrDefault(u => u.AddTypeBilling == true) == null))
+                        @if ((CheckoutStep)ViewBag.Step == CheckoutStep.ShippingAddress)
                         {
                             <div>
                                 <h4 class="text-uppercase mt-20 uni-add-new-address-h4">@(Model == null ? "Add a new address" : "Edit Address")</h4>
@@ -191,7 +192,7 @@
                         }
                     </div>
                 </div>
-                @if (ViewBag.ShipingAddressId != null && ViewBag.ShippmentMethodType == null)
+                @if ((CheckoutStep)ViewBag.Step == CheckoutStep.ShippmentMethod)
                 {
                     <div class="content-wrapper select">
                         <h2 class="text-uppercase">Select Shipping Method</h2>
@@ -199,23 +200,23 @@
                         <div class="shippingMethod">
                             <div class="form-check-inline">
                                 <label class="control-label" for="radio1">
-                                    <input type="radio" class="form-check-input" id="radio1" name="optradio" value="1" @((ViewBag.ShippmentMethodType != null && ViewBag.ShippmentMethodType == 1) ? "checked" : "")>Pick up (From Store) Free
+                                    <input type="radio" class="form-check-input" id="radio1" name="optradio" value="0" @((ViewBag.ShippmentMethodType != null && (ShippingMethodType)ViewBag.ShippmentMethodType == ShippingMethodType.PickupPoint) ? "checked" : "")>Pick up (From Store) Free
                                 </label>
                             </div>
                         </div>
                         <div class="shippingMethod">
                             <div class="form-check-inline">
                                 <label class="control-label" for="radio2">
-                                    <input type="radio" class="form-check-input" id="radio2" name="optradio" value="2" @((ViewBag.ShippmentMethodType != null && ViewBag.ShippmentMethodType == 2) ? "checked" : "")>Delivery (Courier) $10
+                                    <input type="radio" class="form-check-input" id="radio2" name="optradio" value="1" @((ViewBag.ShippmentMethodType != null && (ShippingMethodType)ViewBag.ShippmentMethodType == ShippingMethodType.Delivery) ? "checked" : "")>Delivery (Courier) $10
                                 </label>
                             </div>
                         </div>
                         <div class="">
-                            <a href="javascript:;" role="button" class="btn btn-primary select-shipping-method-btn" style="font-size:11px" onclick="ChooseShippingAddress(@ViewBag.AccountIds,@ViewBag.BillingAddressId,@ViewBag.ShipingAddressId,@(ViewBag.Shiping==true?"true":"false"))">Select shipping method</a>
+                            <a href="javascript:;" role="button" class="btn btn-primary select-shipping-method-btn" style="font-size:11px" onclick="ChooseShippingAddress(@ViewBag.AccountIds,@ViewBag.BillingAddressId)">Select shipping method</a>
                         </div>
                     </div>
                 }
-                @if (ViewBag.ShippmentMethodType == 1 && ViewBag.CollectionPointId == null)
+                @if ((CheckoutStep)ViewBag.Step == CheckoutStep.CollectionPiont)
                 {
                     <div class="content-wrapper select">
                         @Html.Hidden("collectionPointId", (int?)ViewBag.CollectionPointId)
@@ -233,11 +234,11 @@
                         <div class="collection-points"></div>
                         <br />
                         <div>
-                            <a href="javascript:;" role="button" class="btn btn-primary select-shipping-method-btn" style="font-size:11px" onclick="ChooseCollectionPoint(@ViewBag.AccountIds,@ViewBag.BillingAddressId,@ViewBag.ShipingAddressId,@ViewBag.ShippmentMethodType,@(ViewBag.Shiping==true?"true":"false"))">Select shipping method</a>
+                            <a href="javascript:;" role="button" class="btn btn-primary select-shipping-method-btn" style="font-size:11px" onclick="ChooseCollectionPoint(@ViewBag.AccountIds,@ViewBag.BillingAddressId,@ViewBag.ShippmentMethodType,@((int)CheckoutStep.PaymentMethod))">Select shipping method</a>
                         </div>
                     </div>
                 }
-                @if (ViewBag.ShippmentMethodType == 2 || (ViewBag.ShippmentMethodType == 1 && ViewBag.CollectionPointId != null))
+                @if ((CheckoutStep)ViewBag.Step == CheckoutStep.PaymentMethod)
                 {
                     <div class="content-wrapper select">
                         <h2 class="text-uppercase">Select Payment Method</h2>
@@ -257,7 +258,7 @@
                             </div>
                         </div>
                         <div class="">
-                            <a href="javascript:;" role="button" class="btn btn-primary select-payment-method-btn" style="font-size:11px" onclick="ChoosePaymentMethod(@ViewBag.AccountIds,@ViewBag.ShipingAddressId,@ViewBag.ShippmentMethodType,@ViewBag.CollectionPointId)">Select payment method</a>
+                            <a href="javascript:;" role="button" class="btn btn-primary select-payment-method-btn" style="font-size:11px" onclick="ChoosePaymentMethod(@ViewBag.AccountIds,@(ViewBag.ShippingAddressId ?? "null"),@ViewBag.ShippmentMethodType,@ViewBag.CollectionPointId)">Select payment method</a>
                         </div>
                     </div>
                 }
