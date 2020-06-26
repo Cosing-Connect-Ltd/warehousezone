@@ -16,7 +16,7 @@ namespace WarehouseEcommerce.Controllers
 {
     public class OrdersController : BaseController
     {
-
+        private readonly IProductServices _productServices;
         private readonly IUserService _userService;
         private readonly IActivityServices _activityServices;
         private readonly ITenantsServices _tenantServices;
@@ -25,14 +25,16 @@ namespace WarehouseEcommerce.Controllers
         private readonly ICoreOrderService _orderService;
         private readonly IMapper _mapper;
         private readonly IGaneConfigurationsHelper _configurationsHelper;
+        private readonly ITenantLocationServices _tenantLocationServices;
         string PAYPAL_RET_URL = System.Configuration.ConfigurationManager.AppSettings["PAYPAL_RET_URL"] != null
                                            ? System.Configuration.ConfigurationManager.AppSettings["PAYPAL_RET_URL"] : "";
         string PAYPAL_URL = System.Configuration.ConfigurationManager.AppSettings["PAYPAL_URL"] != null
                                         ? System.Configuration.ConfigurationManager.AppSettings["PAYPAL_URL"] : "";
 
-        public OrdersController(IProductServices productServices, IProductLookupService productlookupServices, IProductPriceService productPriceService, ICommonDbServices commonDbServices, ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IUserService userService, IActivityServices activityServices, ITenantsServices tenantServices, IMapper mapper, IGaneConfigurationsHelper configurationsHelper)
+        public OrdersController(IProductServices productServices, IProductLookupService productlookupServices, IProductPriceService productPriceService, ICommonDbServices commonDbServices, ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IUserService userService, IActivityServices activityServices, ITenantsServices tenantServices, IMapper mapper, IGaneConfigurationsHelper configurationsHelper, ITenantLocationServices tenantLocationServices)
             : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices)
         {
+            _productServices = productServices;
             _userService = userService;
             _activityServices = activityServices;
             _tenantServices = tenantServices;
@@ -41,8 +43,7 @@ namespace WarehouseEcommerce.Controllers
             _orderService = orderService;
             _mapper = mapper;
             _configurationsHelper = configurationsHelper;
-
-
+            _tenantLocationServices = tenantLocationServices;
         }
         // GET: Orders
         public ActionResult Index()
@@ -50,7 +51,7 @@ namespace WarehouseEcommerce.Controllers
             return View();
         }
 
-        public ActionResult GetAddress(int? AccountId, int? AccountAddressId, int? AccountBillingId, int? AccountShippingId, int? ShippmentTypeId, bool ShipingAddress = false)
+        public ActionResult GetAddress(int? AccountId, int? AccountAddressId, int? AccountBillingId, int? AccountShippingId, int? ShippmentTypeId, int? collectionPointId = null, bool ShipingAddress = false)
         {
             AccountShippingId = AccountShippingId <= 0? null: AccountShippingId;
             AccountBillingId = AccountBillingId <= 0 ? null : AccountBillingId;
@@ -67,6 +68,7 @@ namespace WarehouseEcommerce.Controllers
                 ViewBag.BillingAddressId = AccountBillingId;
                 ViewBag.Shiping = ShipingAddress;
                 ViewBag.ShippmentMethodType = ShippmentTypeId;
+                ViewBag.CollectionPointId = collectionPointId;
                 //Billing Address Section
                 if (!ShipingAddress)
                 {
@@ -112,9 +114,61 @@ namespace WarehouseEcommerce.Controllers
 
         }
 
+        public async Task<JsonResult> GetNearWarehouses(string postCode)
+        {
+            var warehouses = _lookupServices.GetAllWarehousesForTenant(CurrentTenantId);
+
+            var dataImportFactory = new DataImportFactory();
+
+            var distances = await dataImportFactory.GetDistancesFromPostcode(postCode, warehouses.Select(w => w.PostalCode).ToList());
+
+            if (distances.Status != "OK")
+            {
+                return null;
+            }
+
+            var cartItems = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
+
+            var WarehouseProductAvailabilities = cartItems.Select(a =>
+                                                            {
+                                                                var inventoryStocks = _productServices.GetAllInventoryStocksByProductId(a.ProductId);
+                                                                return new {
+                                                                    WarehouseProductAvailability = inventoryStocks.Select(i => new {
+                                                                        IsAvailable = i.Available >= a.Qty,
+                                                                        i.WarehouseId,
+                                                                        a.ProductMaster
+                                                                    })
+                                                                };
+                                                            })
+                                                    .SelectMany(a => a.WarehouseProductAvailability);
+
+            var warehousesByDistance = distances.Destinations.Select((x, i) =>
+                                                                    {
+                                                                        var warehouse = warehouses[i];
+                                                                        return new {
+                                                                            warehouse?.WarehouseName,
+                                                                            warehouse?.WarehouseId,
+                                                                            warehouse?.PostalCode,
+                                                                            warehouse?.AddressLine1,
+                                                                            warehouse?.AddressLine2,
+                                                                            warehouse?.AddressLine3,
+                                                                            warehouse?.AddressLine4,
+                                                                            warehouse?.City,
+                                                                            warehouse?.GlobalCountry?.CountryName,
+                                                                            warehouse?.ContactNumbers,
+                                                                            Distance = distances.Rows[0].Elements[i],
+                                                                            IsCartProductsAvailable = WarehouseProductAvailabilities.All(w => w.WarehouseId == warehouse?.WarehouseId && w.IsAvailable)
+                                                                        };
+                                                                    })
+                                                                .OrderByDescending(w => w.IsCartProductsAvailable)
+                                                                .ThenBy(w => w.Distance.Distance.Value)
+                                                                .ToList();
+
+            return Json(warehousesByDistance, JsonRequestBehavior.AllowGet);
+        }
+
         public PartialViewResult _PaymentAndShipmentMethods()
         {
-
             return PartialView();
         }
 
@@ -144,7 +198,7 @@ namespace WarehouseEcommerce.Controllers
             return RedirectToAction("GetAddress", new { AccountId = accountAddresses.AccountID, AccountBillingId = AccountServices.GetAllValidAccountAddressesByAccountId(accountAddresses.AccountID).FirstOrDefault()?.AddressID, ShipingAddress = true });
         }
 
-        public ActionResult ConfirmOrder(int accountId, int ShipmentAddressId, int ShippmentTypeId,int PaymentTypeId)
+        public ActionResult ConfirmOrder(int accountId, int ShipmentAddressId, int ShippmentTypeId,int PaymentTypeId, int collectionPointId)
         {
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.cart = true;
@@ -159,6 +213,10 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.TotalQty = Math.Round(((models.Sum(u => u.TotalAmount)) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
             ViewBag.Symbol = currencyyDetail.Symbol;
             ViewBag.ShipmentMethod = ShippmentTypeId;
+            if (ShippmentTypeId == 1) // Pick up
+            {
+                ViewBag.CollectionPoint = _tenantLocationServices.GetActiveTenantLocationById(collectionPointId);
+            }
             ViewBag.RetUrl = PAYPAL_RET_URL;
             ViewBag.PAYPALURL = PAYPAL_URL;
             ViewBag.OrdersId = orders.OrderID;
@@ -169,7 +227,7 @@ namespace WarehouseEcommerce.Controllers
         {
             DataImportFactory dataImportFactory = new DataImportFactory();
             var addresses = await dataImportFactory.GetAddressByPostCodeAsync(postCode);
-            
+
             return Json(addresses, JsonRequestBehavior.AllowGet);
         }
 

@@ -75,10 +75,10 @@
                     </p>
                     <span class="prd_amnt">@ViewBag.CurrencySymbol @Model.SellPrice</span>
                     <div class="availibility">
-                        @if (Model.InventoryStocks.FirstOrDefault()?.Available > 0)
+                        @if (Model.InventoryStocks.Any(i => i.Available > 0))
                         {
                             <span>Availability:</span> <br />
-                            @((Model.InventoryStocks.FirstOrDefault().Available <= 10 ? "only " : "") + Model.InventoryStocks.FirstOrDefault().Available.ToString("#") + " items left");
+                            @((Model.InventoryStocks.Sum(i => i.Available) <= 10 ? "only " : "") + Model.InventoryStocks.Sum(i => i.Available).ToString("#") + " items left");
                         }
                         else
                         {
@@ -181,7 +181,7 @@
                                     <input id="input-quantity" type="text" name="quantity" value="1" size="2" data-detail="true" class="input-number" />
                                 </div>
                             </div>
-                            @if (@Model.SellPrice > 0 && @Model.SellPrice.HasValue && @Model.PercentMargin > 0 && Model.InventoryStocks.FirstOrDefault()?.Available > 0)
+                            @if (@Model.SellPrice > 0 && @Model.SellPrice.HasValue && @Model.PercentMargin > 0 && Model.InventoryStocks.Sum(i => i.Available) > 0)
                             {
                                 <button class="addTobasket" onclick="AddToCart(@Model.ProductId)">Add to basket</button>
                             }

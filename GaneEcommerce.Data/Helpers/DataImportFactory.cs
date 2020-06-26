@@ -3521,10 +3521,63 @@ namespace Ganedata.Core.Data.Helpers
                 return errorString;
             }
         }
+
+
+        public async Task<GoogleDistanceMatrixResult> GetDistancesFromPostcode(string origin, List<string> destinationsList)
+        {
+            var apiUrl = ConfigurationManager.AppSettings["GoogleApisUrl"];
+            var apiKey = ConfigurationManager.AppSettings["GoogleApiKey"];
+
+            if (string.IsNullOrEmpty(origin.Trim()) || !destinationsList.Any(w => !string.IsNullOrEmpty(w.Trim())))
+            {
+                return null;
+            }
+
+            var destinations = string.Join("|", destinationsList.Where(w => !string.IsNullOrEmpty(w.Trim())).Select(a => a.Replace(" ", "+")));
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(apiUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await client.GetAsync($"distancematrix/json?origins={origin.Replace(" ", "+")}&destinations={destinations}&key={apiKey}&mode=driving&language=en-GB&sensor=false&units=imperial");
+
+                return JsonConvert.DeserializeObject<GoogleDistanceMatrixResult>(response.Content.ReadAsStringAsync().Result);
+            }
+        }
     }
 
 
+    public class GoogleDistanceMatrixResult
+    {
+        public string Status { get; set; }
 
+        [JsonProperty(PropertyName = "destination_addresses")]
+        public string[] Destinations { get; set; }
+
+        [JsonProperty(PropertyName = "origin_addresses")]
+        public string[] Origins { get; set; }
+
+        public Row[] Rows { get; set; }
+
+        public class Data
+        {
+            public int Value { get; set; }
+            public string Text { get; set; }
+        }
+
+        public class Element
+        {
+            public string Status { get; set; }
+            public Data Duration { get; set; }
+            public Data Distance { get; set; }
+        }
+
+        public class Row
+        {
+            public Element[] Elements { get; set; }
+        }
+    }
 
     public class ProductPriceSpecial
     {

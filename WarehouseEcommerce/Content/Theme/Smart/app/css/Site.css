@@ -1128,6 +1128,62 @@ ul.mhp-menu {
     .shippingMethod input[type="checkbox"], input[type="radio"] {
         margin: 3px 10px 0 !important;
     }
+
+.collection-points {
+    display: flex;
+}
+
+.collection-point {
+    display: block;
+    color: #434343;
+    position: relative;
+    margin-bottom: 15px;
+    background: none !important;
+    cursor: pointer;
+    float: left;
+}
+
+    .collection-point .form-inline {
+        background: rgb(231,234,237);
+        border: 2px solid rgb(231,234,237);
+        border-bottom: 2px solid rgb(231,234,237);
+        box-shadow: 1px 4px 4px 0px rgba(0,0,0,.1);
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .collection-point .control-label {
+        font-weight: 300 !important;
+    }
+
+    .collection-point .collection-point-title {
+        font-weight: bold !important;
+    }
+
+    .collection-point .collection-point-distance {
+        text-align: right;
+    }
+
+    .collection-point .collection-point-not-available {
+        color: orangered;
+        text-align: right;
+    }
+
+    .collection-point input[type="checkbox"], input[type="radio"] {
+        margin: 3px 10px 0 !important;
+    }
+
+.collection-point-selected {
+    border: 2px solid gray !important;
+}
+
+.collection-point-unavailable {
+    color: #9a9898 !important;
+    cursor: default !important;
+    border: 2px dashed lightgray !important;
+}
+
 @media(max-width:991px) {
     .select-shipping-method-btn, .select-payment-method-btn {
         width: 100%;

@@ -9,7 +9,7 @@
 }
 
 <div class="about bg-white confirm-order-page">
-    <div class="container custom-max-width "> 
+    <div class="container custom-max-width ">
         <div class="row">
             <div class="col-md-8 col-sm-8 bg-white my-account login confirm-order-addresses">
                 <div class="about-cnt">
@@ -134,17 +134,31 @@
                                 {
                                     <div class="form-check-inline">
                                         <label class="control-label" for="radio2">
-                                            <input type="radio" class="form-check-input" id="radio2" name="optradio" value="2" checked> Delivery (Courier) $10
+                                            Delivery (Courier) $10
                                         </label>
                                     </div>
                                 }
                                 else
                                 {
-                                    <div class="form-check-inline">
-                                        <label class="control-label" for="radio1">
-                                            <input type="radio" class="form-check-input" id="radio1" name="optradio" value="1" checked> Pick up (From Store) Free
-                                        </label>
+                            <div class="form-check-inline w-100" style="display: inline-grid">
+                                <div>Pick up - Free </div>
+                                <div class="collection-point col-md-6">
+                                    <div class="control-label w-100">
+                                        <div style="float:left;">
+                                            <div class="collection-point-title">@(ViewBag.CollectionPoint?.WarehouseName)</div>
+                                            <div>@(ViewBag.CollectionPoint?.PostalCode)</div>
+                                            <div>
+                                                @(ViewBag.CollectionPoint?.AddressLine1)
+                                                @(!string.IsNullOrEmpty(ViewBag.CollectionPoint?.AddressLine2?.Trim()) ? ", " + ViewBag.CollectionPoint?.AddressLine2 : string.Empty)
+                                                @(!string.IsNullOrEmpty(ViewBag.CollectionPoint?.AddressLine3?.Trim()) ? ", " + ViewBag.CollectionPoint?.AddressLine3 : string.Empty)
+                                                @(!string.IsNullOrEmpty(ViewBag.CollectionPoint?.AddressLine4?.Trim()) ? ", " + ViewBag.CollectionPoint?.AddressLine4 : string.Empty)
+                                            </div>
+                                            <div>@(ViewBag.CollectionPoint?.City)</div>
+                                            <div>@(ViewBag.CollectionPoint?.GlobalCountry?.CountryName)</div>
+                                        </div>
                                     </div>
+                                </div>
+                            </div>
                                 }
                             </div>
                             <h4 class="text-uppercase mt-35">Payment Method</h4>
@@ -154,7 +168,7 @@
                                 {
                                     <div class="form-check-inline">
                                         <label class="control-label" for="radio2">
-                                            <input type="radio" class="form-check-input" id="Cash" name="paymentMethod" value="2" checked>  Cash
+                                            Cash
                                         </label>
                                     </div>
                                 }
@@ -162,7 +176,7 @@
                                 {
                                     <div class="form-check-inline">
                                         <label class="control-label" for="radio1">
-                                            <input type="radio" class="form-check-input" id="PayPal" name="paymentMethod" value="1" checked>  Paypal
+                                            Paypal
                                         </label>
                                     </div>
                                 }
