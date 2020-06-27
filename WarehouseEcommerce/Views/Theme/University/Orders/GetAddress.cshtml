@@ -10,14 +10,15 @@
         <div class="row">
             <div class="col-md-3 col-sm-12 ">
                 <ul class="menu-about">
-                    <li><a href="@Url.Action("GetAddress", "Orders", new { AccountId = ViewBag.AccountIds, ShipingAddress = false, Step = CheckoutStep.BillingAddress })" class="">Billing Address</a></li>
-                    <li><a href="@Url.Action("GetAddress", "Orders", new { AccountId = ViewBag.AccountIds,AccountBillingId=ViewBag.BillingAddressId, Step = CheckoutStep.ShippmentMethod })" style="@((CheckoutStep)ViewBag.Step>=CheckoutStep.ShippmentMethod?"pointer-events:none;cursor: default":"")">Shipping Method</a></li>
-                    <li><a href="@Url.Action("GetAddress", "Orders", new { AccountId = ViewBag.AccountIds,AccountBillingId=ViewBag.BillingAddressId,ShippmentTypeId=ViewBag.ShippmentMethodType, Step = CheckoutStep.ShippingAddress })" style=@((CheckoutStep)ViewBag.Step>=CheckoutStep.ShippingAddress?"pointer-events:none;cursor: default":"")>Shipping Address</a></li>
-                    <li><a href="@Url.Action("GetAddress", "Orders", new { AccountId = ViewBag.AccountIds,AccountBillingId=ViewBag.BillingAddressId,AccountShippingId=ViewBag.ShipingAddressId,ShippmentTypeId=ViewBag.ShippmentMethodType, Step = CheckoutStep.PaymentMethod })" style="@((CheckoutStep)ViewBag.Step>=CheckoutStep.PaymentMethod?"pointer-events:none;cursor: default":"")">Payment Method</a></li>
+                    <li><a href="@Url.Action("GetAddress", "Orders", new { accountId= ViewBag.AccountIds, step = (int)CheckoutStep.BillingAddress })" class="">Billing Address</a></li>
+                    <li><a href="@Url.Action("GetAddress", "Orders", new { accountId= ViewBag.AccountIds,accountBillingId=ViewBag.BillingAddressId, step = (int)CheckoutStep.ShippmentMethod })" style="@((int)ViewBag.Step < (int)CheckoutStep.ShippmentMethod?"pointer-events:none; cursor: default; color: lightgray":"")">Shipping Method</a></li>
+                    <li><a href="@Url.Action("GetAddress", "Orders", new { accountId= ViewBag.AccountIds,accountBillingId=ViewBag.BillingAddressId,shippmentTypeId=ViewBag.ShippmentMethodType, step = ((ShippingMethodType)(ViewBag.ShippmentMethodType ?? (int)ShippingMethodType.Delivery) == ShippingMethodType.Delivery ? (int)CheckoutStep.ShippingAddress : (int)CheckoutStep.CollectionPiont) })" style="@((int)ViewBag.Step < (int)CheckoutStep.ShippingAddress?"pointer-events:none; cursor: default; color: lightgray":"")">
+                        @((ShippingMethodType)(ViewBag.ShippmentMethodType ?? (int)ShippingMethodType.Delivery) == ShippingMethodType.Delivery ? "Shipping Address" : "Collection Point")</a></li>
+                    <li><a href="@Url.Action("GetAddress", "Orders", new { accountId= ViewBag.AccountIds,accountBillingId=ViewBag.BillingAddressId,shippmentTypeId=ViewBag.ShippmentMethodType, step = ((int)CheckoutStep.PaymentMethod), accountShippingId=ViewBag.ShippingAddressId })" style="@((int)ViewBag.Step < (int)CheckoutStep.PaymentMethod?"pointer-events:none; cursor: default; color: lightgray":"")">Payment Method</a></li>
                 </ul>
             </div>
             <div class="col-md-8 col-sm-12 bg-white login my-account">
-                <div class="about-cnt" style="display:@((CheckoutStep)ViewBag.Step == CheckoutStep.BillingAddress || (CheckoutStep)ViewBag.Step == CheckoutStep.ShippingAddress?"block":"none")">
+                <div class="about-cnt" style="display:@((CheckoutStep)ViewBag.Step == CheckoutStep.BillingAddress || (CheckoutStep)ViewBag.Step == CheckoutStep.ShippingAddress || (CheckoutStep)ViewBag.Step == CheckoutStep.EditAddress?"block":"none")">
                     <div class="content-wrapper select">
                         <h2 class="text-uppercase">@ViewBag.AddressMessage</h2>
                         <hr class="custom-hr">
@@ -40,7 +41,7 @@
                                                 }
                                                 @if (!string.IsNullOrEmpty(address[i].AddressLine3) || !string.IsNullOrEmpty(address[i].PostCode))
                                                 {
-                                                    @address[i].AddressLine3 @address[i].PostCode<br />
+                                                    @address[i].AddressLine3 <span>&nbsp;</span> @address[i].PostCode<br />
                                                 }
                                                 @if (address[i].GlobalCountry != null)
                                                 {
@@ -57,16 +58,16 @@
                                             @if (address[i].AddTypeBilling == true)
                                             {
                                                 <div class="">
-                                                    <a href="@Url.Action("GetAddress", "Orders", new { AccountId = ViewBag.AccountIds,AccountBillingId=address[i].AddressID, Step=(int)CheckoutStep.ShippmentMethod })" role="button" class="btn btn-default" style="font-size:11px">Select billing address</a>
-                                                    <a href="@Url.Action("GetAddress", "Orders", new { AccountId = address[i].AccountID, AccountAddressId = address[i].AddressID })" role="button" class="btn btn-default" style="font-size:11px">Edit address</a>
+                                                    <a href="@Url.Action("GetAddress", "Orders", new { accountId= ViewBag.AccountIds,accountBillingId=address[i].AddressID, step=(int)CheckoutStep.ShippmentMethod })" role="button" class="btn btn-default" style="font-size:11px">Select billing address</a>
+                                                    <a href="@Url.Action("GetAddress", "Orders", new { accountId= address[i].AccountID, accountAddressId= address[i].AddressID, step=(int)CheckoutStep.EditAddress, parentStep=(int)CheckoutStep.BillingAddress })" role="button" class="btn btn-default" style="font-size:11px">Edit address</a>
                                                 </div>
                                             }
                                             else
                                             {
                                                 <div class="">
-                                                    <a href="@Url.Action("GetAddress", "Orders", new { AccountId = ViewBag.AccountIds,AccountBillingId=ViewBag.BillingAddressId,AccountShippingId=address[i].AddressID, ShipingAddress = true, ShippmentTypeId=ViewBag.ShippmentMethodType,Step=(int)CheckoutStep.PaymentMethod })" role="button" class="btn btn-primary" style="font-size:11px">Select shipping address</a>
-                                                    <a href="@Url.Action("GetAddress", "Orders", new { AccountId = address[i].AccountID,AccountBillingId=ViewBag.BillingAddressId, AccountAddressId = address[i].AddressID, ShipingAddress = true, ShippmentTypeId=ViewBag.ShippmentMethodType,Step=(int)CheckoutStep.PaymentMethod })" role="button" class="btn btn-success" style="font-size:11px">Edit Address</a>
-                                                    <a href="@Url.Action("RemoveAddress", "Orders", new {AccountAddressId = address[i].AddressID })" role="button" class="btn btn-danger custom-danger" style="font-size:11px">Remove address</a>
+                                                    <a href="@Url.Action("GetAddress", "Orders", new { accountId= ViewBag.AccountIds,accountBillingId=ViewBag.BillingAddressId, shippmentTypeId=ViewBag.ShippmentMethodType,step=(int)CheckoutStep.PaymentMethod,accountShippingId=address[i].AddressID })" role="button" class="btn btn-primary" style="font-size:11px">Select shipping address</a>
+                                                    <a href="@Url.Action("GetAddress", "Orders", new { accountId= address[i].AccountID,accountBillingId=ViewBag.BillingAddressId, shippmentTypeId=ViewBag.ShippmentMethodType,step=(int)CheckoutStep.EditAddress, accountAddressId= address[i].AddressID, parentStep=(int)CheckoutStep.ShippingAddress })" role="button" class="btn btn-success" style="font-size:11px">Edit Address</a>
+                                                    <a href="@Url.Action("RemoveShippingAddress", "Orders", new {accountId=address[i].AccountID,accountBillingId=ViewBag.BillingAddressId, shippmentTypeId=ViewBag.ShippmentMethodType, accountAddressId=address[i].AddressID })" role="button" class="btn btn-danger custom-danger" style="font-size:11px">Remove address</a>
                                                 </div>
                                             }
 
@@ -101,9 +102,9 @@
 
                                             </p>
                                             <div class="">
-                                                <a href="@Url.Action("GetAddress", "Orders", new { AccountId = ViewBag.AccountIds,AccountBillingId=ViewBag.BillingAddressId,AccountShippingId=address[i+1].AddressID,Step=(int)CheckoutStep.PaymentMethod })" role="button" class="btn btn-primary" style="font-size:11px">Select shipping address</a>
-                                                <a href="@Url.Action("GetAddress","Orders",new {AccountId=address[i+1].AccountID,AccountBillingId=ViewBag.BillingAddressId, AccountAddressId=address[i+1].AddressID,Step=(int)CheckoutStep.PaymentMethod })" role="button" class="btn btn-success" style="font-size:11px">Edit address</a>
-                                                <a href="@Url.Action("RemoveAddress", "Orders", new {AccountAddressId = address[i+1].AddressID }))" role="button" class="btn btn-danger custom-danger" style="font-size:11px">Remove address</a>
+                                                <a href="@Url.Action("GetAddress", "Orders", new { accountId= ViewBag.AccountIds,accountBillingId=ViewBag.BillingAddressId, shippmentTypeId=ViewBag.ShippmentMethodType,step=(int)CheckoutStep.PaymentMethod,accountShippingId=address[i+1].AddressID })" role="button" class="btn btn-primary" style="font-size:11px">Select shipping address</a>
+                                                <a href="@Url.Action("GetAddress","Orders",new {accountId=address[i+1].AccountID,accountBillingId=ViewBag.BillingAddressId, shippmentTypeId=ViewBag.ShippmentMethodType,step=(int)CheckoutStep.EditAddress, accountAddressId=address[i+1].AddressID, parentStep=(int)CheckoutStep.ShippingAddress })" role="button" class="btn btn-success" style="font-size:11px">Edit address</a>
+                                                <a href="@Url.Action("RemoveShippingAddress", "Orders", new {accountId=address[i+1].AccountID,accountBillingId=ViewBag.BillingAddressId, shippmentTypeId=ViewBag.ShippmentMethodType, accountAddressId=address[i+1].AddressID })" role="button" class="btn btn-danger custom-danger" style="font-size:11px">Remove address</a>
                                             </div>
                                         </div>
                                     }
@@ -113,7 +114,7 @@
 
                         }
 
-                        @if ((CheckoutStep)ViewBag.Step == CheckoutStep.ShippingAddress)
+                        @if ((CheckoutStep)ViewBag.Step == CheckoutStep.ShippingAddress || (CheckoutStep)ViewBag.Step == CheckoutStep.EditAddress)
                         {
                             <div>
                                 <h4 class="text-uppercase mt-20 uni-add-new-address-h4">@(Model == null ? "Add a new address" : "Edit Address")</h4>
@@ -131,7 +132,7 @@
                                 </div>
 
                                 <hr class="custom-hr">
-                                @using (Html.BeginForm("SaveAddress", "Orders"))
+                                @using (Html.BeginForm("SaveAddress", "Orders", new { shippmentTypeId = ViewBag.ShippmentMethodType, accountBillingId= ViewBag.BillingAddressId }))
                                 {
                                     @Html.HiddenFor(model => model.AddressID)
                                     <div class="">
@@ -168,16 +169,17 @@
 
                                                 </div>
                                             </div>
-                                            @if (ViewBag.Shiping == false)
+
+                                            @if ((CheckoutStep)ViewBag.Step == CheckoutStep.ShippingAddress || (CheckoutStep)ViewBag.ParentStep == CheckoutStep.ShippingAddress)
+                                            {
+                                                <input type="hidden" name="AddTypeShipping" id="AddTypeShipping" value="true" />
+                                            }
+                                            else
                                             {
                                                 <input type="hidden" name="AddTypeBilling" id="AddTypeBilling" value="true" />
 
                                             }
-                                            else
-                                            {
-                                                <input type="hidden" name="AddTypeShipping" id="AddTypeShipping" value="true" />
 
-                                            }
                                             @Html.HiddenFor(model => model.AccountID, (int)(ViewBag.AccountIds))
 
                                             <div class="col-md-12">
@@ -200,7 +202,7 @@
                         <div class="shippingMethod">
                             <div class="form-check-inline">
                                 <label class="control-label" for="radio1">
-                                    <input type="radio" class="form-check-input" id="radio1" name="optradio" value="0" @((ViewBag.ShippmentMethodType != null && (ShippingMethodType)ViewBag.ShippmentMethodType == ShippingMethodType.PickupPoint) ? "checked" : "")>Pick up (From Store) Free
+                                    <input type="radio" class="form-check-input" id="radio1" name="optradio" value="0" @((ViewBag.ShippmentMethodType != null && (ShippingMethodType)ViewBag.ShippmentMethodType == ShippingMethodType.Pickup) ? "checked" : "")>Pick up (From Store) Free
                                 </label>
                             </div>
                         </div>

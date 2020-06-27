@@ -1,4 +1,5 @@
 ﻿@model List<Ganedata.Core.Entities.Domain.OrderDetailSessionViewModel>
+@using Ganedata.Core.Entities.Enums;
 @{
     ViewBag.Title = "Confirm Order";
     int j = 1;
@@ -18,53 +19,53 @@
                         {
                             var billingaddresses = address.Where(u => u.AddTypeBilling == true).ToList();
                             var shipppingAddress = address.Where(u => u.AddTypeShipping == true).ToList();
-                        <div class="row">
-                            @foreach (var billingaddress in billingaddresses)
-                            {
-
-
-                                <div class="col-md-6 col-sm-6">
-                                    <h2 class="text-uppercase"> Billing Address</h2>
-                                    <hr class="custom-hr">
-                                    <p>
-                                        <b>@billingaddress.AddressLine1 </b> <br />
-                                        @billingaddress.AddressLine2 <br />
-                                        @billingaddress.AddressLine3 @billingaddress.PostCode <br />
-                                        @billingaddress.GlobalCountry.CountryName <br />
-                                        <b> Phone:</b> @billingaddress.Telephone <br />
-
-                                    </p>
-
-                                </div>
-
-                            }
-                            @if ((int)ViewBag.ShipmentMethod != 1)
-                            {
-                                foreach (var shiping in shipppingAddress)
+                            <div class="row">
+                                @foreach (var billingaddress in billingaddresses)
                                 {
-                                    <div class="col-md-6 col-sm-6 shipping-address-col">
-                                        <h2 class="text-uppercase"> Shipping Address</h2>
+
+
+                                    <div class="col-md-6 col-sm-6">
+                                        <h2 class="text-uppercase"> Billing Address</h2>
                                         <hr class="custom-hr">
                                         <p>
-                                        <p>
-                                            <b>@shiping.AddressLine1 </b> <br />
-                                            @shiping.AddressLine2 <br />
-                                            @shiping.AddressLine3 @shiping.PostCode <br />
-                                            @shiping.GlobalCountry.CountryName <br />
-                                            <b> Phone:</b> @shiping.Telephone <br />
+                                            <b>@billingaddress.AddressLine1 </b> <br />
+                                            @billingaddress.AddressLine2 <br />
+                                            @billingaddress.AddressLine3 @billingaddress.PostCode <br />
+                                            @billingaddress.GlobalCountry.CountryName <br />
+                                            <b> Phone:</b> @billingaddress.Telephone <br />
 
-                                        </p>
                                         </p>
 
                                     </div>
+
                                 }
-                            }
-                            else
-                            {
-                                <div class="col-md-6 col-sm-6 shipping-address-col">
-                                    <h2 class="text-uppercase"> Collection Point</h2>
-                                    <hr class="custom-hr">
-                                    <p>
+                                @if ((ShippingMethodType)ViewBag.ShipmentMethod == ShippingMethodType.Delivery)
+                                {
+                                    foreach (var shiping in shipppingAddress)
+                                    {
+                                        <div class="col-md-6 col-sm-6 shipping-address-col">
+                                            <h2 class="text-uppercase"> Shipping Address</h2>
+                                            <hr class="custom-hr">
+                                            <p>
+                                            <p>
+                                                <b>@shiping.AddressLine1 </b> <br />
+                                                @shiping.AddressLine2 <br />
+                                                @shiping.AddressLine3 @shiping.PostCode <br />
+                                                @shiping.GlobalCountry.CountryName <br />
+                                                <b> Phone:</b> @shiping.Telephone <br />
+
+                                            </p>
+                                            </p>
+
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="col-md-6 col-sm-6 shipping-address-col">
+                                        <h2 class="text-uppercase"> Collection Point</h2>
+                                        <hr class="custom-hr">
+                                        <p>
                                         <p>
                                             <b>@(ViewBag.CollectionPoint?.WarehouseName) </b> <br />
                                             @(ViewBag.CollectionPoint?.AddressLine1)
@@ -75,12 +76,12 @@
                                             @(ViewBag.CollectionPoint?.City)<br />
                                             @(ViewBag.CollectionPoint?.GlobalCountry?.CountryName) <br />
                                         </p>
-                                    </p>
+                                        </p>
 
-                                </div>
-                            }
+                                    </div>
+                                }
 
-                        </div>
+                            </div>
                             <br />
                         }
                         <br />
@@ -149,7 +150,7 @@
                         <div class="content-wrapper select">
                             <div class="shippingMethod ">
 
-                                @if ((int)ViewBag.ShipmentMethod == 2)
+                                @if ((ShippingMethodType)ViewBag.ShipmentMethod == ShippingMethodType.Delivery)
                                 {
                                     <div class="form-inline">
                                         <label class="control-label" for="radio2">
@@ -169,7 +170,7 @@
                             <h4 class="text-uppercase mt-35">Payment Method</h4>
                             <hr class="custom-hr">
                             <div class="shippingMethod">
-                                @if ((int)ViewBag.paymentMethod == 2)
+                                @if ((ShippingMethodType)ViewBag.ShipmentMethod == ShippingMethodType.Delivery)
                                 {
                                     <div class="form-inline">
                                         <label class="control-label" for="radio2">

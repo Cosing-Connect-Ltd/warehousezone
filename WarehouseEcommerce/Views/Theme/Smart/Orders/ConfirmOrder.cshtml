@@ -1,4 +1,5 @@
 ﻿@model List<Ganedata.Core.Entities.Domain.OrderDetailSessionViewModel>
+@using Ganedata.Core.Entities.Enums;
 @{
     ViewBag.Title = "Confirm Order";
     int j = 1;
@@ -9,9 +10,9 @@
 }
 
 <div class="about bg-white confirm-order-page">
-    <div class="container custom-max-width">
+    <div class="container custom-max-width ">
         <div class="row">
-            <div class="col-lg-8 col-sm-12 bg-white my-account login confirm-order-addresses">
+            <div class="col-md-8 col-sm-8 bg-white my-account login confirm-order-addresses">
                 <div class="about-cnt">
                     <div class="content-wrapper select">
                         @if (ViewBag.Addresses != null)
@@ -38,13 +39,14 @@
                                     </div>
 
                                 }
-                                @foreach (var shiping in shipppingAddress)
+                                @if ((ShippingMethodType)ViewBag.ShipmentMethod == ShippingMethodType.Delivery)
                                 {
-
-
-                                    <div class="col-md-6 col-sm-6 shipping-address-col"> 
-                                        <h2 class="text-uppercase"> Shipping Address</h2>
-                                        <hr class="custom-hr">
+                                    foreach (var shiping in shipppingAddress)
+                                    {
+                                        <div class="col-md-6 col-sm-6 shipping-address-col">
+                                            <h2 class="text-uppercase"> Shipping Address</h2>
+                                            <hr class="custom-hr">
+                                            <p>
                                             <p>
                                                 <b>@shiping.AddressLine1 </b> <br />
                                                 @shiping.AddressLine2 <br />
@@ -53,10 +55,30 @@
                                                 <b> Phone:</b> @shiping.Telephone <br />
 
                                             </p>
+                                            </p>
+
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="col-md-6 col-sm-6 shipping-address-col">
+                                        <h2 class="text-uppercase"> Collection Point</h2>
+                                        <hr class="custom-hr">
+                                        <p>
+                                        <p>
+                                            <b>@(ViewBag.CollectionPoint?.WarehouseName) </b> <br />
+                                            @(ViewBag.CollectionPoint?.AddressLine1)
+                                            @(!string.IsNullOrEmpty(ViewBag.CollectionPoint?.AddressLine2?.Trim()) ? ", " + ViewBag.CollectionPoint?.AddressLine2 : string.Empty)
+                                            @(!string.IsNullOrEmpty(ViewBag.CollectionPoint?.AddressLine3?.Trim()) ? ", " + ViewBag.CollectionPoint?.AddressLine3 : string.Empty)
+                                            @(!string.IsNullOrEmpty(ViewBag.CollectionPoint?.AddressLine4?.Trim()) ? ", " + ViewBag.CollectionPoint?.AddressLine4 : string.Empty) <br />
+                                            @(ViewBag.CollectionPoint?.PostalCode) <br />
+                                            @(ViewBag.CollectionPoint?.City)<br />
+                                            @(ViewBag.CollectionPoint?.GlobalCountry?.CountryName) <br />
+                                        </p>
+                                        </p>
 
                                     </div>
-
-
                                 }
 
                             </div>
@@ -66,7 +88,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-sm-12 bg-white my-account login">
+            <div class="col-md-4 col-sm-12 bg-white my-account login">
                 <div class="about-cnt">
                     <div class="content-wrapper select">
                         <h2 class="text-uppercase"> Items Detail</h2>
@@ -104,7 +126,7 @@
                         <div class="pull-left orders-total">
                             @if (Model.ToList().Count > 0)
                             {
-                                <label><b> Total Quantity:</b> @(Model == null ? 0 : Model.ToList().Count) </label>
+                                <label><b> Total Quantity: </b>@(Model == null ? 0 : Model.ToList().Count) </label>
                             }
                             <br />
                             @if (ViewBag.TotalQty != null && (int)ViewBag.TotalQty > 0)
@@ -128,19 +150,19 @@
                         <div class="content-wrapper select">
                             <div class="shippingMethod ">
 
-                                @if ((int)ViewBag.ShipmentMethod == 2)
+                                @if ((ShippingMethodType)ViewBag.ShipmentMethod == ShippingMethodType.Delivery)
                                 {
-                                    <div class="form-check-inline">
+                                    <div class="form-inline">
                                         <label class="control-label" for="radio2">
-                                            <input type="radio" class="form-check-input" id="radio2" name="optradio" value="2" checked> Delivery (Courier) $10
+                                            Delivery (Courier) $10
                                         </label>
                                     </div>
                                 }
                                 else
                                 {
                                     <div class="form-check-inline">
-                                        <label class="control-label" for="radio1">
-                                            <input type="radio" class="form-check-input" id="radio1" name="optradio" value="1" checked> Pick up (From Store) Free
+                                        <label class="control-label" for="radio2">
+                                            Pick up (from collection point) - Free
                                         </label>
                                     </div>
                                 }
@@ -148,19 +170,19 @@
                             <h4 class="text-uppercase mt-35">Payment Method</h4>
                             <hr class="custom-hr">
                             <div class="shippingMethod">
-                                @if ((int)ViewBag.paymentMethod == 2)
+                                @if ((ShippingMethodType)ViewBag.ShipmentMethod == ShippingMethodType.Delivery)
                                 {
-                                    <div class="form-check-inline">
+                                    <div class="form-inline">
                                         <label class="control-label" for="radio2">
-                                            <input type="radio" class="form-check-input" id="Cash" name="paymentMethod" value="2" checked>  Cash
+                                            Cash
                                         </label>
                                     </div>
                                 }
                                 else
                                 {
-                                    <div class="form-check-inline">
+                                    <div class="form-inline">
                                         <label class="control-label" for="radio1">
-                                            <input type="radio" class="form-check-input" id="PayPal" name="paymentMethod" value="1" checked>  Paypal
+                                            Paypal
                                         </label>
                                     </div>
                                 }

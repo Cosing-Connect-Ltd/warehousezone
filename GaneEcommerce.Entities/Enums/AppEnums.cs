@@ -503,12 +503,13 @@ namespace Ganedata.Core.Entities.Enums
         ShippmentMethod = 1,
         ShippingAddress = 2,
         CollectionPiont = 3,
-        PaymentMethod = 4
+        PaymentMethod = 4,
+        EditAddress = 5,
     }
 
     public enum ShippingMethodType
     {
-        PickupPoint = 0,
+        Pickup = 0,
         Delivery = 1
     }
 }

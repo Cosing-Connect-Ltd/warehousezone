@@ -52,10 +52,10 @@ namespace WarehouseEcommerce.Controllers
             return View();
         }
 
-        public ActionResult GetAddress(int? AccountId, int? AccountAddressId, int? AccountBillingId, int? AccountShippingId, int? ShippmentTypeId, int? collectionPointId = null, int? step = null)
+        public ActionResult GetAddress(int? accountId, int? accountAddressId, int? accountBillingId, int? accountShippingId, int? shippmentTypeId, int? collectionPointId = null, int? step = null, int? parentStep = null)
         {
-            AccountShippingId = AccountShippingId <= 0? null: AccountShippingId;
-            AccountBillingId = AccountBillingId <= 0 ? null : AccountBillingId;
+            accountShippingId = accountShippingId <= 0? null: accountShippingId;
+            accountBillingId = accountBillingId <= 0 ? null : accountBillingId;
             if (GaneCartItemsSessionHelper.GetCartItemsSession().Count > 0)
             {
                 if (CurrentUser?.UserId <= 0)
@@ -64,25 +64,25 @@ namespace WarehouseEcommerce.Controllers
                 }
 
                 var currentStep = step != null ? (CheckoutStep)step : CheckoutStep.BillingAddress;
+
                 ViewBag.cart = true;
-                ViewBag.AccountIds = AccountId = CurrentUser?.AccountId;
+                ViewBag.AccountIds = accountId = CurrentUser?.AccountId;
                 ViewBag.Country = new SelectList(_lookupServices.GetAllGlobalCountries(), "CountryID", "CountryName");
-                ViewBag.ShippingAddressId = AccountShippingId;
-                ViewBag.BillingAddressId = AccountBillingId;
+                ViewBag.ShippingAddressId = accountShippingId;
+                ViewBag.BillingAddressId = accountBillingId;
                 ViewBag.Step = currentStep;
-                ViewBag.ShippmentMethodType = ShippmentTypeId;
+                ViewBag.ShippmentMethodType = shippmentTypeId;
                 ViewBag.CollectionPointId = collectionPointId;
-                //Billing Address Section
-                if (currentStep == CheckoutStep.BillingAddress)
+                if (currentStep == CheckoutStep.EditAddress)
                 {
-
-                    if (AccountAddressId.HasValue)
-                    {
-                        var model = AccountServices.GetAccountAddressById(AccountAddressId ?? 0);
-
-                        return View(model);
-                    }
-                    var billingAddress = AccountServices.GetAllValidAccountAddressesByAccountId(AccountId ?? 0).Where(u => u.AddTypeBilling == true).ToList();
+                    ViewBag.ParentStep = parentStep != null ? (CheckoutStep)parentStep : CheckoutStep.BillingAddress;
+                    var model = AccountServices.GetAccountAddressById(accountAddressId ?? 0);
+                    return View(model);
+                }
+                //Billing Address Section
+                else if (currentStep == CheckoutStep.BillingAddress)
+                {
+                    var billingAddress = AccountServices.GetAllValidAccountAddressesByAccountId(accountId ?? 0).Where(u => u.AddTypeBilling == true).ToList();
                     if (billingAddress.Count > 0)
                     {
                         ViewBag.BillingAddress = true;
@@ -96,16 +96,8 @@ namespace WarehouseEcommerce.Controllers
                 // Shipping Address Section
                 else if (currentStep == CheckoutStep.ShippingAddress)
                 {
-
-                    if (AccountAddressId.HasValue)
-                    {
-                        var model = AccountServices.GetAccountAddressById(AccountAddressId ?? 0);
-                        return View(model);
-                    }
-                    ViewBag.Addresses = AccountServices.GetAllValidAccountAddressesByAccountId(AccountId ?? 0).Where(u => u.AddTypeShipping == true).ToList();
+                    ViewBag.Addresses = AccountServices.GetAllValidAccountAddressesByAccountId(accountId ?? 0).Where(u => u.AddTypeShipping == true).ToList();
                     ViewBag.AddressMessage = "Shipping Address";
-
-
                 }
             }
             else
@@ -178,7 +170,7 @@ namespace WarehouseEcommerce.Controllers
 
 
 
-        public ActionResult SaveAddress(AccountAddresses accountAddresses)
+        public ActionResult SaveAddress(AccountAddresses accountAddresses, int? shippmentTypeId, int? accountBillingId)
         {
             accountAddresses.Name = "Ecommerce";
             if (accountAddresses.AccountID <= 0)
@@ -188,29 +180,29 @@ namespace WarehouseEcommerce.Controllers
             AccountServices.SaveAccountAddress(accountAddresses, CurrentUserId == 0 ? 1 : CurrentUserId);
             if (accountAddresses.AddTypeShipping == true)
             {
-                return RedirectToAction("GetAddress", new { AccountId = accountAddresses.AccountID, AccountBillingId=AccountServices.GetAllValidAccountAddressesByAccountId(accountAddresses.AccountID).FirstOrDefault()?.AddressID, ShipingAddress=true });
+                return RedirectToAction("GetAddress", new { accountId = accountAddresses.AccountID, accountBillingId, shippmentTypeId, step=(int)CheckoutStep.ShippingAddress });
             }
 
             return RedirectToAction("GetAddress", new { AccountId = accountAddresses.AccountID});
 
         }
 
-        public ActionResult RemoveAddress(int AccountAddressId)
+        public ActionResult RemoveShippingAddress(int accountAddressId, int accountBillingId, int accountId, int shippmentTypeId)
         {
-            var accountAddresses = AccountServices.DeleteAccountAddress(AccountAddressId, (CurrentUserId == 0 ? 1 : CurrentUserId));
-            return RedirectToAction("GetAddress", new { AccountId = accountAddresses.AccountID, AccountBillingId = AccountServices.GetAllValidAccountAddressesByAccountId(accountAddresses.AccountID).FirstOrDefault()?.AddressID, ShipingAddress = true });
+            var accountAddresses = AccountServices.DeleteAccountAddress(accountAddressId, (CurrentUserId == 0 ? 1 : CurrentUserId));
+            return RedirectToAction("GetAddress", new { accountId, accountBillingId, shippmentTypeId, step = (int)CheckoutStep.ShippingAddress });
         }
 
-        public ActionResult ConfirmOrder(int accountId, int? ShipmentAddressId, int ShippmentTypeId,int PaymentTypeId, int? collectionPointId)
+        public ActionResult ConfirmOrder(int accountId, int? shipmentAddressId, int shippmentTypeId,int paymentTypeId, int? collectionPointId)
         {
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.cart = true;
             ViewBag.CartModal = true;
-            ViewBag.paymentMethod = PaymentTypeId;
+            ViewBag.paymentMethod = paymentTypeId;
             List<AccountAddresses> accountAddresses = new List<AccountAddresses>();
-            if (ShipmentAddressId != null)
+            if (shipmentAddressId != null)
             {
-                accountAddresses.Add(AccountServices.GetAccountAddressById(ShipmentAddressId.Value));
+                accountAddresses.Add(AccountServices.GetAccountAddressById(shipmentAddressId.Value));
             }
             accountAddresses.Add(AccountServices.GetAllValidAccountAddressesByAccountId(accountId).FirstOrDefault(u => u.AddTypeBilling == true));
             ViewBag.Addresses = accountAddresses;
@@ -218,8 +210,8 @@ namespace WarehouseEcommerce.Controllers
             var orders = OrderService.CreateShopOrder(accountAddresses.FirstOrDefault().AccountID, _mapper.Map(models, new List<OrderDetail>()), CurrentTenantId, CurrentUserId, CurrentWarehouseId,CurrentTenantWebsite.SiteID);
             ViewBag.TotalQty = Math.Round(((models.Sum(u => u.TotalAmount)) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
             ViewBag.Symbol = currencyyDetail.Symbol;
-            ViewBag.ShipmentMethod = ShippmentTypeId;
-            if (ShippmentTypeId == 1) // Pick up
+            ViewBag.ShipmentMethod = shippmentTypeId;
+            if ((ShippingMethodType)shippmentTypeId == ShippingMethodType.Pickup)
             {
                 ViewBag.CollectionPoint = _tenantLocationServices.GetActiveTenantLocationById(collectionPointId.Value);
             }
