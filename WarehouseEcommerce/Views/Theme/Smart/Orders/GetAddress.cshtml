@@ -11,13 +11,13 @@
             <div class="col-md-3 col-sm-12 ">
                 <ul class="menu-about">
                     <li><a href="@Url.Action("GetAddress", "Orders", new { accountId= ViewBag.AccountIds, step = (int)CheckoutStep.BillingAddress })" class="">Billing Address</a></li>
-                    <li><a href="@Url.Action("GetAddress", "Orders", new { accountId= ViewBag.AccountIds,accountBillingId=ViewBag.BillingAddressId, step = (int)CheckoutStep.ShippmentMethod })" style="@((int)ViewBag.Step < (int)CheckoutStep.ShippmentMethod?"pointer-events:none; cursor: default; color: lightgray":"")">Shipping Method</a></li>
+                    <li><a href="@Url.Action("GetAddress", "Orders", new { accountId= ViewBag.AccountIds,accountBillingId=ViewBag.BillingAddressId, step = (int)CheckoutStep.ShippmentMethod })" style="@((int)ViewBag.Step < (int)CheckoutStep.ShippmentMethod?"pointer-events:none; cursor: default; color: gray; background: #f6f7f8":"")">Shipping Method</a></li>
                     <li>
-                        <a href="@Url.Action("GetAddress", "Orders", new { accountId= ViewBag.AccountIds,accountBillingId=ViewBag.BillingAddressId,shippmentTypeId=ViewBag.ShippmentMethodType, step = ((ShippingMethodType)(ViewBag.ShippmentMethodType ?? (int)ShippingMethodType.Delivery) == ShippingMethodType.Delivery ? (int)CheckoutStep.ShippingAddress : (int)CheckoutStep.CollectionPiont) })" style="@((int)ViewBag.Step < (int)CheckoutStep.ShippingAddress?"pointer-events:none; cursor: default; color: lightgray":"")">
+                        <a href="@Url.Action("GetAddress", "Orders", new { accountId= ViewBag.AccountIds,accountBillingId=ViewBag.BillingAddressId,shippmentTypeId=ViewBag.ShippmentMethodType, step = ((ShippingMethodType)(ViewBag.ShippmentMethodType ?? (int)ShippingMethodType.Delivery) == ShippingMethodType.Delivery ? (int)CheckoutStep.ShippingAddress : (int)CheckoutStep.CollectionPiont) })" style="@((int)ViewBag.Step < (int)CheckoutStep.ShippingAddress?"pointer-events:none; cursor: default; color: gray; background: #f6f7f8":"")">
                             @((ShippingMethodType)(ViewBag.ShippmentMethodType ?? (int)ShippingMethodType.Delivery) == ShippingMethodType.Delivery ? "Shipping Address" : "Collection Point")
                         </a>
                     </li>
-                    <li><a href="@Url.Action("GetAddress", "Orders", new { accountId= ViewBag.AccountIds,accountBillingId=ViewBag.BillingAddressId,shippmentTypeId=ViewBag.ShippmentMethodType, step = ((int)CheckoutStep.PaymentMethod), accountShippingId=ViewBag.ShippingAddressId })" style="@((int)ViewBag.Step < (int)CheckoutStep.PaymentMethod?"pointer-events:none; cursor: default; color: lightgray":"")">Payment Method</a></li>
+                    <li><a href="@Url.Action("GetAddress", "Orders", new { accountId= ViewBag.AccountIds,accountBillingId=ViewBag.BillingAddressId,shippmentTypeId=ViewBag.ShippmentMethodType, step = ((int)CheckoutStep.PaymentMethod), accountShippingId=ViewBag.ShippingAddressId })" style="@((int)ViewBag.Step < (int)CheckoutStep.PaymentMethod?"pointer-events:none; cursor: default; color: gray; background: #f6f7f8":"")">Payment Method</a></li>
                 </ul>
             </div>
             <div class="col-md-8 col-sm-12 bg-white login my-account">
