@@ -613,6 +613,7 @@
     <Content Include="fonts\Pe-icon-7-stroke.woff" />
     <Content Include="Scripts\Gane.Settings-Bar.js" />
     <Content Include="Scripts\javascript-kitproducts.js" />
+    <Content Include="Scripts\javascript-product-by-attribute.js" />
     <Content Include="Scripts\jquery.modal-wizard.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
@@ -1386,6 +1387,8 @@
     <Content Include="Views\Theme\University\Shared\_AccountSideBar.cshtml" />
     <Content Include="Views\Theme\University\Products\_KitProductAttributeDetail.cshtml" />
     <Content Include="Views\Theme\University\Shared\_BootStrapWizardModal.cshtml" />
+    <Content Include="Views\Theme\University\Products\_ProductByAttributeSelector.cshtml" />
+    <Content Include="Views\Theme\University\Shared\_ProductByAttributeSelectorModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

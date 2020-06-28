@@ -19,7 +19,6 @@
                 data: { skuCode: skucode, quantity: qty },
                 dataType: 'html',
                 success: function (data) {
-                    debugger;
                     if (data !== "False") {
                         if (parseInt(qty) > 1) {
                             var totqty = qty;

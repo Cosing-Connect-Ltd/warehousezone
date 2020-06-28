@@ -9,7 +9,6 @@
                 // some code for later
             })
             .on("navigate", function (e, navDir, stepNumber) {
-                debugger;
                 var $this = $(this);
                 if (stepNumber) {
                     $this.attr("data-current-step", stepNumber);
@@ -70,7 +69,7 @@
                     var productid = $(this).find("#selected-productids").data("productid");
                     var qty = $(this).find("#customCheck").val();
                     if (productid !== undefined && productid !== null && productid !== "" && productid > 0) {
-                       
+
                         kitProductCartItems.push({ "SimpleProductId": productid, "Quantity": qty, "KitProductId": pid });
                     }
 
@@ -86,7 +85,6 @@
     }
 
     function updateModalStep($modal) {
-        debugger;
         var step = +$modal.attr("data-current-step"),
             stepsLength = $modal.find('[data-step]').length;
         if (step === 1 && step !== stepsLength) {

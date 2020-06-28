@@ -163,19 +163,7 @@ namespace WarehouseEcommerce.Controllers
 
             if (product.ProductType == ProductKitTypeEnum.ProductByAttribute)
             {
-                var relatedProducts = _productServices.GetAllProductInKitsByKitProductId(product.ProductId).Where(k => k.IsActive == true);
-
-                selectedProduct = relatedProducts.FirstOrDefault(p => p.IsDeleted != true && p.IsActive == true && (p.ProductId == productId || (productId == null && p.ProductId != product.ProductId))) ?? product;
-
-                ViewBag.AvailableAttributes = relatedProducts
-                                                .SelectMany(a => a.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).Select(k => k.ProductAttributeValues))
-                                                .GroupBy(a => a.ProductAttributes)
-                                                .ToDictionary(g => g.Key, g => g.OrderBy(av => av.AttributeValueId)
-                                                                                                .GroupBy(av => av.AttributeValueId)
-                                                                                                .Select(av => av.First())
-                                                                                                .ToList());
-
-                ViewBag.RelatedProducts = relatedProducts;
+                selectedProduct = GetSelectedProductByAttribute(productId, product);
             }
 
             ViewBag.Category = _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID, product.ProductId);
@@ -301,7 +289,7 @@ namespace WarehouseEcommerce.Controllers
                             Price = u.UnitPrice,
                             Qty = u.Quantity,
                             ProductId = u.ProductId,
-                            
+
 
                         }).ToList();
                     models.ForEach(u => u.KitProductCartItems= new List<KitProductCartSession>(_tenantWebsiteService.GetAllValidKitCartItemsList(u.ProductId)));
@@ -666,16 +654,37 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.qty = quantity;
             if (product.ProductType == ProductKitTypeEnum.ProductByAttribute)
             {
-                var relatedProducts = _productServices.GetAllProductInKitsByKitProductId(product.ProductId).Where(k => k.IsActive == true);
-                selectedProduct = relatedProducts.FirstOrDefault(p => p.IsDeleted != true && p.IsActive == true && (p.ProductId == productId || (productId == null && p.ProductId != product.ProductId))) ?? product;
-                ViewBag.AvailableAttributes = relatedProducts
-                                                .SelectMany(a => a.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).Select(k => k.ProductAttributeValues))
-                                                .GroupBy(a => a.ProductAttributes)
-                                                .ToDictionary(g => g.Key, g => g.OrderBy(av => av.AttributeValueId)
-                                                                                                .GroupBy(av => av.AttributeValueId)
-                                                                                                .Select(av => av.First())
-                                                                                                .ToList());
-                ViewBag.RelatedProducts = relatedProducts;
+                selectedProduct = GetSelectedProductByAttribute(productId, product);
+            }
+
+            return PartialView(selectedProduct);
+        }
+
+        private ProductMaster GetSelectedProductByAttribute(int? productId, ProductMaster product)
+        {
+            ProductMaster selectedProduct;
+            var relatedProducts = _productServices.GetAllProductInKitsByKitProductId(product.ProductId).Where(k => k.IsActive == true);
+            selectedProduct = relatedProducts.FirstOrDefault(p => p.IsDeleted != true && p.IsActive == true && (p.ProductId == productId || (productId == null && p.ProductId != product.ProductId))) ?? product;
+            ViewBag.AvailableAttributes = relatedProducts
+                                            .SelectMany(a => a.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).Select(k => k.ProductAttributeValues))
+                                            .GroupBy(a => a.ProductAttributes)
+                                            .ToDictionary(g => g.Key, g => g.OrderBy(av => av.AttributeValueId)
+                                                                                            .GroupBy(av => av.AttributeValueId)
+                                                                                            .Select(av => av.First())
+                                                                                            .ToList());
+            ViewBag.RelatedProducts = relatedProducts;
+            return selectedProduct;
+        }
+
+        public ActionResult _ProductByAttributeSelector(string skuCode, int? quantity = null, int? productId = null)
+        {
+            var product = _productServices.GetProductMasterByProductCode(skuCode, CurrentTenantId);
+            var selectedProduct = product;
+            ViewBag.BaseProduct = product;
+            ViewBag.Quantity = quantity;
+            if (product.ProductType == ProductKitTypeEnum.ProductByAttribute)
+            {
+                selectedProduct = GetSelectedProductByAttribute(productId, product);
             }
 
             return PartialView(selectedProduct);

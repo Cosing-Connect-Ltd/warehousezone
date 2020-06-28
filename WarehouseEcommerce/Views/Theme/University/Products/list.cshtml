@@ -17,8 +17,10 @@
         Manufacturer = breadcumbstring.FirstOrDefault(u => u.Contains("BrandS-"));
 
     }
-
 }
+
+<script src="~/Scripts/javascript-product-by-attribute.js"></script>
+@Html.Partial("_ProductByAttributeSelectorModal")
 
 <section class="nb_sec nb_prdlisting_pgsec">
     <span id="res_filterBox_trigger"><i class="icon-filter"></i></span>
@@ -38,12 +40,12 @@
 
                         }
                         @*@if (Url.Action() != Url.Action("list", "Products", new { department = Model.TenantDepartment.DepartmentName }))
-        {
-            if (!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup))
-            {
-                <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { group = Model.ProductGroup.ProductGroup, department = Model.TenantDepartment.DepartmentName})">@(!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup) ? Model.ProductGroup.ProductGroup : "")</a></li>
-            }
-        }*@
+                            {
+                                if (!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup))
+                                {
+                                    <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { group = Model.ProductGroup.ProductGroup, department = Model.TenantDepartment.DepartmentName})">@(!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup) ? Model.ProductGroup.ProductGroup : "")</a></li>
+                                }
+                            }*@
                         @if (ViewBag.SubCategory != null && !string.IsNullOrEmpty(ViewBag.SubCategory))
                         {
                             <li>></li>
@@ -131,10 +133,16 @@
                                         @if (item.ProductType != ProductKitTypeEnum.Grouped && item.ProductType != ProductKitTypeEnum.Kit)
                                         {
                                             <ul class="icolist">
-                                                @if (@item.SellPrice > 0 && @item.SellPrice.HasValue && @item.PercentMargin > 0)
+                                                @if (@item.SellPrice > 0 && @item.SellPrice.HasValue && @item.PercentMargin > 0 && item.ProductType != ProductKitTypeEnum.ProductByAttribute)
                                                 {
                                                     <li>
                                                         <a href="javascript:;" onclick="AddToCart(@item.ProductId)"><i class="icon-shopping-cart"></i></a>
+                                                    </li>
+                                                }
+                                                else if (@item.SellPrice > 0 && @item.SellPrice.HasValue && @item.PercentMargin > 0 && item.ProductType == ProductKitTypeEnum.ProductByAttribute)
+                                                {
+                                                    <li>
+                                                        <a href="javascript:;" onclick="showProductByAttributeSelector('@item.SKUCode')"><i class="icon-shopping-cart"></i></a>
                                                     </li>
                                                 }
                                                 else
