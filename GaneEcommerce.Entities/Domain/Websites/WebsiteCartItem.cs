@@ -8,9 +8,13 @@ namespace Ganedata.Core.Entities.Domain
 {
     public class WebsiteCartItem : PersistableEntity<int>
     {
+        public WebsiteCartItem()
+        {
+            KitProductCartItems = new HashSet<KitProductCartItem>();
+        }
         public int Id { get; set; }
         public int SiteID { get; set; }
-        public int ProductId{ get; set; }
+        public int ProductId { get; set; }
 
         public int UserId { get; set; }
 
@@ -22,5 +26,7 @@ namespace Ganedata.Core.Entities.Domain
         public virtual ProductMaster ProductMaster { get; set; }
         [ForeignKey("UserId")]
         public virtual AuthUser AuthUser { get; set; }
+
+        public ICollection<KitProductCartItem> KitProductCartItems { get; set; }
     }
 }

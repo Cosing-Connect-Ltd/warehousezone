@@ -1,4 +1,5 @@
 using Ganedata.Core.Entities.Enums;
+using Ganedata.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -29,6 +30,7 @@ namespace Ganedata.Core.Entities.Domain
         {
             AllSelectedSubItems = new List<ProductRecipeItemViewModel>();
             AllAvailableSubItems = new List<ProductRecipeItemViewModel>();
+           
         }
         public int ProductId { get; set; }
         public string Name { get; set; }

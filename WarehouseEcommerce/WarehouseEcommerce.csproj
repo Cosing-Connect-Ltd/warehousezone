@@ -612,9 +612,12 @@
     <Content Include="fonts\Pe-icon-7-stroke.ttf" />
     <Content Include="fonts\Pe-icon-7-stroke.woff" />
     <Content Include="Scripts\Gane.Settings-Bar.js" />
+    <Content Include="Scripts\javascript-kitproducts.js" />
+    <Content Include="Scripts\jquery.modal-wizard.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jscolor.js" />
+    <Content Include="Scripts\modal-steps.min.js" />
     <Content Include="Views\Theme\Smart\Shared\_TopCategoryProductsPartial.cshtml" />
     <Content Include="Views\Theme\Smart\User\Account.cshtml" />
     <Content Include="Views\Theme\Smart\User\OrderHistory.cshtml" />
@@ -1381,6 +1384,8 @@
     <Content Include="Views\Theme\ElecTech\Home\page.cshtml" />
     <Content Include="Views\Theme\University\Shared\_UserMenuPartial.cshtml" />
     <Content Include="Views\Theme\University\Shared\_AccountSideBar.cshtml" />
+    <Content Include="Views\Theme\University\Products\_KitProductAttributeDetail.cshtml" />
+    <Content Include="Views\Theme\University\Shared\_BootStrapWizardModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -24,8 +24,9 @@
             crossorigin="anonymous"></script>
 
     @Scripts.Render("~/bundles/bootstrap")
-
+    <script src="~/Scripts/jquery.modal-wizard.js"></script>
     <link href="@Url.Action("AppStyle", "UISettings", new { filePath = "/Content/Theme/University/app/css/ui-settings.css"})" rel="stylesheet" type="text/css" />
+
 
     <script type="text/javascript">
         var basePath = '@ViewBag.BasePath';
@@ -51,6 +52,9 @@
             </div>
         </div>
     }
+
+
+    <!-- Modals for add to cart and kit product attribute selection -->
     <div class="modal fade" id="myModal" role="dialog">
         <div class="modal-dialog">
 
@@ -72,6 +76,10 @@
         </div>
     </div>
 
+  
+
+    <!------------------------------------------------------------------------>
+
     <div class="login-register-prtial">
         @Html.Partial("_LoginRegisterPartial")
     </div>
@@ -86,6 +94,7 @@
 
     @RenderSection("scripts", required: false)
     <script src="~/Scripts/javascript-searchproduct.js"></script>
+    <script src="~/Scripts/javascript-kitproducts.js"></script>
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
     <script src="~/Content/Theme/University/app/js/owl.carousel.min.js"></script>
     <script src="~/Content/Theme/University/app/js/nb_skew_carousle.js"></script>
@@ -93,6 +102,8 @@
     <script src="~/Content/Theme/University/app/js/jquery.elevatezoom.js"></script>
     <script src="~/Content/Theme/University/app/js/jquery-confirm.min.js"></script>
     <script src="~/Content/Theme/University/app/js/Uni_KitProductDetail_Custom.js"></script>
+
+    @Html.Partial("_BootStrapWizardModal")
 </body>
 </html>
 <script>
@@ -176,10 +187,12 @@
 
     });
     $(document).ready(function() {
-  $('#show-hidden-menu').click(function() {
+            $('#show-hidden-menu').click(function() {
     $('.hidden-menu').slideToggle("slow");
     // Alternative animation for example
     // slideToggle("fast");
-  });
+            });
+        $('#kit-product').modalWizard();
+
 });
 </script>

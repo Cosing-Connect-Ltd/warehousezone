@@ -10,6 +10,8 @@ using System.Data.Entity.Core.Metadata.Edm;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.UI.WebControls.WebParts;
+using System.Xml;
 using Unity;
 using WarehouseEcommerce.Helpers;
 using WebGrease.Css.Extensions;
@@ -159,7 +161,8 @@ namespace WarehouseEcommerce.Controllers
 
             ViewBag.BaseProduct = product;
 
-            if (product.ProductType == ProductKitTypeEnum.ProductByAttribute){
+            if (product.ProductType == ProductKitTypeEnum.ProductByAttribute)
+            {
                 var relatedProducts = _productServices.GetAllProductInKitsByKitProductId(product.ProductId).Where(k => k.IsActive == true);
 
                 selectedProduct = relatedProducts.FirstOrDefault(p => p.IsDeleted != true && p.IsActive == true && (p.ProductId == productId || (productId == null && p.ProductId != product.ProductId))) ?? product;
@@ -204,7 +207,7 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
             var product = _productServices.GetProductMasterByProductCode(sku, CurrentTenantId);
             product.SellPrice = Math.Round((product.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0), 2);
-            var productTabs = product.ProductKitItems.Where(u => u.ProductKitType == ProductKitTypeEnum.Grouped && u.IsDeleted != true).Select(u => u.ProductKitTypeId).ToList();
+            var productTabs = product.ProductKitItems.Where(u => u.ProductKitType == ProductKitTypeEnum.Grouped && u.IsActive == true).Select(u => u.ProductKitTypeId).ToList();
             ViewBag.GroupedTabs = _productlookupServices.GetProductKitTypes(productTabs);
             return View(product);
         }
@@ -214,7 +217,7 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.CurrencySymbol = currencyyDetail.Symbol;
             ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
             var product = _productServices.GetProductMasterByProductCode(sku, CurrentTenantId);
-            product.SellPrice = Math.Round((product.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0), 2);
+            product.SellPrice = Math.Round((product.SellPrice ?? 0) * ((currencyyDetail.Rate <= 0 || !currencyyDetail.Rate.HasValue || currencyyDetail == null) ? 1 : currencyyDetail.Rate.Value), 2);
             return View(product);
         }
 
@@ -278,8 +281,9 @@ namespace WarehouseEcommerce.Controllers
 
         }
 
-        public PartialViewResult _CartItemsPartial(int? ProductId, decimal? qty, bool? Remove, bool? details)
+        public PartialViewResult _CartItemsPartial(int? ProductId, decimal? qty, bool? Remove, bool? details, List<KitProductCartSession> kitProductCartItems)
         {
+            //
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             if (CurrentUser?.UserId <= 0)
             {
@@ -296,10 +300,11 @@ namespace WarehouseEcommerce.Controllers
                             ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
                             Price = u.UnitPrice,
                             Qty = u.Quantity,
-                            ProductId = u.ProductId
+                            ProductId = u.ProductId,
+                            
+
                         }).ToList();
-
-
+                    models.ForEach(u => u.KitProductCartItems= new List<KitProductCartSession>(_tenantWebsiteService.GetAllValidKitCartItemsList(u.ProductId)));
                     models.ForEach(u => u.TotalAmount = Math.Round((u.Qty * u.Price), 2));
                     ViewBag.CurrencySymbol = currencyyDetail.Symbol;
                     ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
@@ -312,22 +317,6 @@ namespace WarehouseEcommerce.Controllers
                     ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
                     return PartialView(models);
                 }
-
-
-                //var data = models.FirstOrDefault(u => u.CurrencyId == currencyyDetail.Id);
-                //if (data == null)
-                //{
-                //    foreach (var item in models)
-                //    {
-                //        var product = _productServices.GetProductMasterById(item.ProductId);
-                //        item.Price = Math.Round(((product.SellPrice ?? 0) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
-                //        item.CurrencySign = currencyyDetail.Symbol;
-                //        item.CurrencyId = currencyyDetail.Id;
-                //        GaneCartItemsSessionHelper.UpdateCartItemsSession("", item, false, false);
-                //    }
-                //    models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
-
-                //}
 
 
             }
@@ -348,7 +337,7 @@ namespace WarehouseEcommerce.Controllers
                              ProductId = u.ProductId
                          }).ToList();
 
-
+                        models.ForEach(u => u.KitProductCartItems = new List<KitProductCartSession>(_tenantWebsiteService.GetAllValidKitCartItemsList(u.ProductId).ToList()));
                         models.ForEach(u => u.TotalAmount = Math.Round((u.Qty * u.Price), 2));
                         ViewBag.CurrencySymbol = currencyyDetail.Symbol;
                         ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
@@ -391,7 +380,7 @@ namespace WarehouseEcommerce.Controllers
                             ProductId = u.ProductId
                         }).ToList();
 
-
+                        models.ForEach(u => u.KitProductCartItems = new List<KitProductCartSession>(_tenantWebsiteService.GetAllValidKitCartItemsList(u.ProductId).ToList()));
                         models.ForEach(u => u.TotalAmount = Math.Round((u.Qty * u.Price), 2));
                         ViewBag.CurrencySymbol = currencyyDetail.Symbol;
                         ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
@@ -408,6 +397,53 @@ namespace WarehouseEcommerce.Controllers
                         models.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
                         return PartialView(models);
                     }
+                }
+                else if (kitProductCartItems != null && kitProductCartItems.Count > 0 && ProductId.HasValue)
+                {
+                    var model = new OrderDetail();
+                    var Product = _productServices.GetProductMasterById(ProductId ?? 0);
+                    model.ProductMaster = Product;
+                    model.Qty = qty.HasValue ? qty.Value : 1;
+                    model.ProductId = ProductId ?? 0;
+                    model.Price = Math.Round(((_productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, null).SellPrice) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
+                    model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
+                    var Details = _mapper.Map(model, new OrderDetailSessionViewModel());
+                    Details.KitProductCartItems = new List<KitProductCartSession>();
+                    Details.KitProductCartItems = kitProductCartItems;
+                    Details.Price = Math.Round(((Details.Price) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
+                    Details.CurrencyId = currencyyDetail.Id;
+                    GaneCartItemsSessionHelper.UpdateCartItemsSession("", Details, false);
+                    if (CurrentUserId > 0)
+                    {
+                        var count = _tenantWebsiteService.AddOrUpdateCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, (GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>()));
+                        var models = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId)
+                        .ToList().Select(u => new OrderDetailSessionViewModel
+                        {
+                            ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
+                            Price = u.UnitPrice,
+                            Qty = u.Quantity,
+                            ProductId = u.ProductId,
+
+                        }).ToList();
+
+                        models.ForEach(u => u.KitProductCartItems = new List<KitProductCartSession>(_tenantWebsiteService.GetAllValidKitCartItemsList(u.ProductId).ToList()));
+                        models.ForEach(u => u.TotalAmount = Math.Round((u.Qty * u.Price), 2));
+                        ViewBag.CurrencySymbol = currencyyDetail.Symbol;
+                        ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
+                        return PartialView(models);
+
+
+                    }
+                    else
+                    {
+
+                        var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
+                        ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
+                        //models.ForEach(u => u.Price = (u.Price * (currencyyDetail.Rate ?? 0)));
+                        models.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
+                        return PartialView(models);
+                    }
+
                 }
                 else
                 {
@@ -441,7 +477,7 @@ namespace WarehouseEcommerce.Controllers
                              ProductId = u.ProductId
                          }).ToList();
 
-
+                        models.ForEach(u => u.KitProductCartItems = new List<KitProductCartSession>(_tenantWebsiteService.GetAllValidKitCartItemsList(u.ProductId).ToList()));
                         models.ForEach(u => u.TotalAmount = Math.Round((u.Qty * u.Price), 2));
                         ViewBag.CurrencySymbol = currencyyDetail.Symbol;
                         ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
@@ -622,6 +658,28 @@ namespace WarehouseEcommerce.Controllers
 
         }
 
+        public ActionResult _KitProductAttributeDetail(string skuCode, decimal? quantity = null, int? productId = null)
+        {
+            var product = _productServices.GetProductMasterByProductCode(skuCode, CurrentTenantId);
+            var selectedProduct = product;
+            ViewBag.BaseProduct = product;
+            ViewBag.qty = quantity;
+            if (product.ProductType == ProductKitTypeEnum.ProductByAttribute)
+            {
+                var relatedProducts = _productServices.GetAllProductInKitsByKitProductId(product.ProductId).Where(k => k.IsActive == true);
+                selectedProduct = relatedProducts.FirstOrDefault(p => p.IsDeleted != true && p.IsActive == true && (p.ProductId == productId || (productId == null && p.ProductId != product.ProductId))) ?? product;
+                ViewBag.AvailableAttributes = relatedProducts
+                                                .SelectMany(a => a.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).Select(k => k.ProductAttributeValues))
+                                                .GroupBy(a => a.ProductAttributes)
+                                                .ToDictionary(g => g.Key, g => g.OrderBy(av => av.AttributeValueId)
+                                                                                                .GroupBy(av => av.AttributeValueId)
+                                                                                                .Select(av => av.First())
+                                                                                                .ToList());
+                ViewBag.RelatedProducts = relatedProducts;
+            }
+
+            return PartialView(selectedProduct);
+        }
 
 
 

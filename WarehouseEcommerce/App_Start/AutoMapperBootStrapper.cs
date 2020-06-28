@@ -88,6 +88,7 @@ namespace WarehouseEcommerce
                 cfg.CreateMap<OrderProofOfDelivery, OrderProofOfDeliverySync>().ReverseMap();
                 cfg.CreateMap<AssetLog, AssetLogViewModel>().ReverseMap();
                 cfg.CreateMap<GlobalTax, GlobalTaxViewModel>().ReverseMap();
+                cfg.CreateMap<ProductKitMap, ProductKitMapViewModel>().ReverseMap();
             });
 
             return config;

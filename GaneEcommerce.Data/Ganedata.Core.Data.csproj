@@ -903,6 +903,14 @@
     <Compile Include="Migrations\202006241332071_Added-abandoned-cart-notification-related-tables.designer.cs">
       <DependentUpon>202006241332071_Added-abandoned-cart-notification-related-tables.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202006251859278_kitproductcart-childtable-added.cs" />
+    <Compile Include="Migrations\202006251859278_kitproductcart-childtable-added.designer.cs">
+      <DependentUpon>202006251859278_kitproductcart-childtable-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006260905517_adding-mainproduct-in-kitproductcartitems-table.cs" />
+    <Compile Include="Migrations\202006260905517_adding-mainproduct-in-kitproductcartitems-table.designer.cs">
+      <DependentUpon>202006260905517_adding-mainproduct-in-kitproductcartitems-table.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1900,6 +1908,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202006241332071_Added-abandoned-cart-notification-related-tables.resx">
       <DependentUpon>202006241332071_Added-abandoned-cart-notification-related-tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006251859278_kitproductcart-childtable-added.resx">
+      <DependentUpon>202006251859278_kitproductcart-childtable-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006260905517_adding-mainproduct-in-kitproductcartitems-table.resx">
+      <DependentUpon>202006260905517_adding-mainproduct-in-kitproductcartitems-table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

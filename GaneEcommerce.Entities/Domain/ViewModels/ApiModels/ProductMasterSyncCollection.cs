@@ -1,6 +1,8 @@
-﻿using Ganedata.Core.Entities.Enums;
+﻿using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Enums;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ganedata.Core.Models
 {
@@ -59,7 +61,7 @@ namespace Ganedata.Core.Models
         public List<ProductKitMapViewModel> ProductKitMapViewModelList { get; set; }
     }
 
-
+    [Serializable]
     public class ProductKitMapViewModel
 
     {

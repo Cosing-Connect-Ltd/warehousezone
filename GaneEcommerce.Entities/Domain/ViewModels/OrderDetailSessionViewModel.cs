@@ -3,6 +3,7 @@ using Ganedata.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -80,5 +81,25 @@ namespace Ganedata.Core.Entities.Domain
         public int? CurrencyId { get; set; }
 
         public bool? isNotfication { get; set; }
+
+        public List<KitProductCartSession> KitProductCartItems { get; set; }
     }
+
+    [Serializable]
+    public class KitProductCartSession
+    {
+        public int SimpleProductId { get; set; }
+
+        public int KitProductId { get; set; }
+
+        public decimal Quantity { get; set; }
+
+        public ProductMasterViewModel SimpleProductMaster { get; set; }
+
+
+
+
+    }
+
+
 }

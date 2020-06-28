@@ -12,300 +12,353 @@
 
 }
 <div class="container-fluid custom-container-fluid pl-0 pr-0">
-     <div id="product-product" class="container m-auto kit-product">
-            <div class="row">
-                <div id="content" class="col-md-12 col-sm-12">
-                    <div class="breadCrumbtopsec">
-                        <div class="nb_bread_crumbwrap">
-                            <nav aria-label="breadcrumb">
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="/shop">Home</a></li>
+    <div id="product-product" class="container m-auto kit-product">
+        <div class="row">
+            <div id="content" class="col-md-12 col-sm-12">
+                <div class="breadCrumbtopsec">
+                    <div class="nb_bread_crumbwrap">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/shop">Home</a></li>
+                                <li>></li>
+                                @if (!string.IsNullOrEmpty(Model?.TenantDepartment?.DepartmentName))
+                                {
+                                    <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { department = @Model.TenantDepartment.DepartmentName})">@(!string.IsNullOrEmpty(Model?.TenantDepartment?.DepartmentName) ? Model.TenantDepartment.DepartmentName : "")</a></li>
                                     <li>></li>
-                                    @if (!string.IsNullOrEmpty(Model?.TenantDepartment?.DepartmentName))
+                                }
+                                @if (Url.Action() != Url.Action("list", "Products", new { department = Model.TenantDepartment?.DepartmentName }))
+                                {
+                                    if (!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup))
                                     {
-                                        <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { department = @Model.TenantDepartment.DepartmentName})">@(!string.IsNullOrEmpty(Model?.TenantDepartment?.DepartmentName) ? Model.TenantDepartment.DepartmentName : "")</a></li>
+                                        <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { group = Model.ProductGroup?.ProductGroup, department = Model.TenantDepartment?.DepartmentName})">@(!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup) ? Model.ProductGroup?.ProductGroup : "")</a></li>
                                         <li>></li>
                                     }
-                                    @if (Url.Action() != Url.Action("list", "Products", new { department = Model.TenantDepartment?.DepartmentName }))
-                                    {
-                                        if (!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup))
-                                        {
-                                            <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { group = Model.ProductGroup?.ProductGroup, department = Model.TenantDepartment?.DepartmentName})">@(!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup) ? Model.ProductGroup?.ProductGroup : "")</a></li>
-                                            <li>></li>
-                                        }
-                                    }
-                                    @if (!string.IsNullOrEmpty(Model?.ProductCategory?.ProductCategoryName))
-                                    {
-                                        <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { group = Model.ProductGroup?.ProductGroup, department = Model.TenantDepartment?.DepartmentName,values ="TypeS-"+Model.ProductCategory.ProductCategoryName })">@(!string.IsNullOrEmpty(Model?.ProductCategory?.ProductCategoryName) ? Model.ProductCategory.ProductCategoryName : "")</a></li>
-                                        <li>></li>
-                                    }
+                                }
+                                @if (!string.IsNullOrEmpty(Model?.ProductCategory?.ProductCategoryName))
+                                {
+                                    <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { group = Model.ProductGroup?.ProductGroup, department = Model.TenantDepartment?.DepartmentName,values ="TypeS-"+Model.ProductCategory.ProductCategoryName })">@(!string.IsNullOrEmpty(Model?.ProductCategory?.ProductCategoryName) ? Model.ProductCategory.ProductCategoryName : "")</a></li>
+                                    <li>></li>
+                                }
 
-                                    <li class="breadcrumb-item"> <a>@Model.Name</a> </li>
-                                </ol>
-                            </nav>
-                        </div>
+                                <li class="breadcrumb-item"> <a>@Model.Name</a> </li>
+                            </ol>
+                        </nav>
                     </div>
+                </div>
 
 
-                    <div>
-                        <h2 style="padding: 0px 15px;">@Model.Name</h2>
-                        <div class="row product-bg">
-                            <div class="sticky description-row col-lg-6 col-md-6">
-                                <ul class="thumbnails">
-                                    <li>
-                                        <a class="thumbnail" href="@(!string.IsNullOrEmpty(Model.DefaultImage) ? ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" title="#">
-                                            <img data-zoom-image="@(!string.IsNullOrEmpty(Model.DefaultImage) ? ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" src="@(!string.IsNullOrEmpty(Model.DefaultImage) ? ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" id="zoom_03" class="img-responsive center-block" alt="image">
-                                            @*<img src="~/Content/Theme/Smart/app/img/product/Canon-EOS-1300D-DSLR-Camera-Body-with-Single-Lens-1.jpg" id="zoom_03" class="img-responsive center-block" alt="image">*@
-                                        </a>
-                                    </li>
+                <div>
+                    <h2 style="padding: 0px 15px;">@Model.Name</h2>
+                    <div class="row product-bg">
+                        <div class="sticky description-row col-lg-6 col-md-6">
+                            <ul class="thumbnails">
+                                <li>
+                                    <a class="thumbnail" href="@(!string.IsNullOrEmpty(Model.DefaultImage) ? ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" title="#">
+                                        <img data-zoom-image="@(!string.IsNullOrEmpty(Model.DefaultImage) ? ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" src="@(!string.IsNullOrEmpty(Model.DefaultImage) ? ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" id="zoom_03" class="img-responsive center-block" alt="image">
+                                        @*<img src="~/Content/Theme/Smart/app/img/product/Canon-EOS-1300D-DSLR-Camera-Body-with-Single-Lens-1.jpg" id="zoom_03" class="img-responsive center-block" alt="image">*@
+                                    </a>
+                                </li>
 
-                                    <li>
-                                        <div class="row">
-                                            <div id="gallery_01" class="owl-carousel">
-                                                @foreach (var item in Model.ProductFiles)
-                                                {
-                                                    var extension = Path.GetExtension(item.FilePath);
+                                <li>
+                                    <div class="row">
+                                        <div id="gallery_01" class="owl-carousel">
+                                            @foreach (var item in Model.ProductFiles)
+                                            {
+                                                var extension = Path.GetExtension(item.FilePath);
 
-                                                    <div class="col-xs-12">
-                                                        @if (Images.Contains(extension))
-                                                        {
-                                                            <a data-zoom-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" data-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" href="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")">
-                                                                <img src="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive center-block" alt="additional image">
-                                                                @*<img src="~/Content/Theme/Smart/app/img/product/Canon-EOS-1300D-DSLR-Camera-Body-with-Single-Lens-1.jpg" id="zoom_03" class="img-responsive center-block" alt="image">*@
-                                                            </a>
-                                                        }
-                                                    </div>
-                                                }
+                                                <div class="col-xs-12">
+                                                    @if (Images.Contains(extension))
+                                                    {
+                                                        <a data-zoom-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" data-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" href="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")">
+                                                            <img src="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive center-block" alt="additional image">
+                                                            @*<img src="~/Content/Theme/Smart/app/img/product/Canon-EOS-1300D-DSLR-Camera-Body-with-Single-Lens-1.jpg" id="zoom_03" class="img-responsive center-block" alt="image">*@
+                                                        </a>
+                                                    }
+                                                </div>
+                                            }
 
-                                            </div>
                                         </div>
-                                    </li>
+                                    </div>
+                                </li>
+                            </ul>
+                            <!-- product Reviews Start-->
+                            <div class="product-tab">
+                                <ul class="nav nav-tabs responsive" role="tablist">
+                                    <li class="nav-item"><a class="nav-link active" href="#tab-description" data-toggle="tab" role="tab">Description</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="#tab-review" data-toggle="tab" role="tab">Reviews (0)</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="#tab-files" data-toggle="tab" role="tab">Files</a></li>
                                 </ul>
-                                <!-- product Reviews Start-->
-                                <div class="product-tab">
-                                    <ul class="nav nav-tabs responsive" role="tablist">
-                                        <li class="nav-item"><a class="nav-link active" href="#tab-description" data-toggle="tab" role="tab">Description</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#tab-review" data-toggle="tab" role="tab">Reviews (0)</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#tab-files" data-toggle="tab" role="tab">Files</a></li>
-                                    </ul>
-                                    <div class="tab-content">
-                                        <div class="tab-pane active" role="tabpanel" id="tab-description">
-                                            <p>
-                                                @Model.Description
+                                <div class="tab-content">
+                                    <div class="tab-pane active" role="tabpanel" id="tab-description">
+                                        <p>
+                                            @Model.Description
 
-                                            </p>
-                                        </div>
-                                        <div class="tab-pane" id="tab-review" role="tabpanel">
-                                            <form class="form-horizontal" id="form-review">
-                                                <div id="review"></div>
-                                                <div class="form-group mt-3">
-                                                    <div class="col-sm-12">
-                                                        <h2 class="heading co-heading">Write a review</h2>
-                                                    </div>
+                                        </p>
+                                    </div>
+                                    <div class="tab-pane" id="tab-review" role="tabpanel">
+                                        <form class="form-horizontal" id="form-review">
+                                            <div id="review"></div>
+                                            <div class="form-group mt-3">
+                                                <div class="col-sm-12">
+                                                    <h2 class="heading co-heading">Write a review</h2>
                                                 </div>
-                                                <div class="form-group required">
-                                                    <div class="col-sm-12">
-                                                        <label class="control-label" for="input-name">Your Name</label>
-                                                        <input type="text" name="name" value="" id="input-name" class="form-control" />
-                                                    </div>
+                                            </div>
+                                            <div class="form-group required">
+                                                <div class="col-sm-12">
+                                                    <label class="control-label" for="input-name">Your Name</label>
+                                                    <input type="text" name="name" value="" id="input-name" class="form-control" />
                                                 </div>
-                                                <div class="form-group required">
-                                                    <div class="col-sm-12">
-                                                        <label class="control-label" for="input-review">Your Review</label>
-                                                        <textarea name="text" rows="5" id="input-review" class="form-control"></textarea>
-                                                        <div class="help-block"><span class="text-danger">Note:</span> Add Basic html tag if required!</div>
-                                                    </div>
+                                            </div>
+                                            <div class="form-group required">
+                                                <div class="col-sm-12">
+                                                    <label class="control-label" for="input-review">Your Review</label>
+                                                    <textarea name="text" rows="5" id="input-review" class="form-control"></textarea>
+                                                    <div class="help-block"><span class="text-danger">Note:</span> Add Basic html tag if required!</div>
                                                 </div>
-                                                <div class="form-group required">
-                                                    <div class="col-sm-12">
-                                                        <label class="control-label rat">Rating</label>
-                                                        &nbsp;&nbsp;&nbsp; Bad&nbsp;
-                                                        <input type="radio" name="rating" value="1" />
-                                                        &nbsp;
-                                                        <input type="radio" name="rating" value="2" />
-                                                        &nbsp;
-                                                        <input type="radio" name="rating" value="3" />
-                                                        &nbsp;
-                                                        <input type="radio" name="rating" value="4" />
-                                                        &nbsp;
-                                                        <input type="radio" name="rating" value="5" />
-                                                        &nbsp;Good
-                                                    </div>
+                                            </div>
+                                            <div class="form-group required">
+                                                <div class="col-sm-12">
+                                                    <label class="control-label rat">Rating</label>
+                                                    &nbsp;&nbsp;&nbsp; Bad&nbsp;
+                                                    <input type="radio" name="rating" value="1" />
+                                                    &nbsp;
+                                                    <input type="radio" name="rating" value="2" />
+                                                    &nbsp;
+                                                    <input type="radio" name="rating" value="3" />
+                                                    &nbsp;
+                                                    <input type="radio" name="rating" value="4" />
+                                                    &nbsp;
+                                                    <input type="radio" name="rating" value="5" />
+                                                    &nbsp;Good
                                                 </div>
-                                                <div class="buttons clearfix mt-25">
-                                                    <div class="pull-right w-100">
-                                                        <button type="button" id="button-review" data-loading-text="Loading..." class="btn btn-primary">Continue</button>
-                                                    </div>
+                                            </div>
+                                            <div class="buttons clearfix mt-25">
+                                                <div class="pull-right w-100">
+                                                    <button type="button" id="button-review" data-loading-text="Loading..." class="btn btn-primary">Continue</button>
                                                 </div>
-                                            </form>
-                                        </div>
-                                        <div class="tab-pane" id="tab-files" role="tabpanel">
-                                            <ul>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="tab-pane" id="tab-files" role="tabpanel">
+                                        <ul>
 
-                                                @foreach (var item in Model.ProductFiles)
+                                            @foreach (var item in Model.ProductFiles)
+                                            {
+                                                var extension = Path.GetExtension(item.FilePath);
+                                                @*if (Images.Contains(extension))
+                                                    {
+                                                        <li> <a target='_new' href="@(ViewBag.BaseFilePath+item.FilePath.ToString())"><img style='width:100%' src="@(ViewBag.BaseFilePath+item.FilePath.ToString())" /></a></li> <br />
+                                                    }*@
+                                                if (Videos.Contains(extension))
                                                 {
-                                                    var extension = Path.GetExtension(item.FilePath);
-                                                    @*if (Images.Contains(extension))
-                            {
-                                <li> <a target='_new' href="@(ViewBag.BaseFilePath+item.FilePath.ToString())"><img style='width:100%' src="@(ViewBag.BaseFilePath+item.FilePath.ToString())" /></a></li> <br />
-                            }*@
-                                                    if (Videos.Contains(extension))
-                                                    {
-                                                        <li>
-                                                            <table>
-                                                                <tr>
-                                                                    <td>
-                                                                        <video width='320' height='240' controls id='video'><source src="@(ViewBag.BaseFilePath + item.FilePath.ToString())"></video>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </li>
-                                                        <br />
-                                                    }
-                                                    else if (Files.Contains(extension))
-                                                    {
-                                                        <li>
-                                                            <a href="@(ViewBag.BaseFilePath + item.FilePath)" download><b>@Path.GetFileName(item.FilePath).ToUpper()</b></a>
-                                                        </li>
-                                                        <br>
-                                                    }
-
+                                                    <li>
+                                                        <table>
+                                                            <tr>
+                                                                <td>
+                                                                    <video width='320' height='240' controls id='video'><source src="@(ViewBag.BaseFilePath + item.FilePath.ToString())"></video>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </li>
+                                                    <br />
                                                 }
-                                            </ul>
-                                        </div>
+                                                else if (Files.Contains(extension))
+                                                {
+                                                    <li>
+                                                        <a href="@(ViewBag.BaseFilePath + item.FilePath)" download><b>@Path.GetFileName(item.FilePath).ToUpper()</b></a>
+                                                    </li>
+                                                    <br>
+                                                }
+
+                                            }
+                                        </ul>
                                     </div>
                                 </div>
-                                <!-- product Reviews End-->
                             </div>
+                            <!-- product Reviews End-->
+                        </div>
 
-                            <div class="col-lg-6 col-md-6 pro-content">
-                                @*<div class="tab-group rates-page-tabs">*@
-                                    <!-- Nav tabs -->
-                                    <ul class="nav nav-tabs responsive" role="tablist">
-                                        @if (productKits.Count > 0)
+                        <div class="col-lg-6 col-md-6 pro-content">
+                            @*<div class="tab-group rates-page-tabs">*@
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs responsive" role="tablist">
+                                @if (productKits.Count > 0)
+                                {
+                                    int i = 0;
+                                    foreach (var item in productKits)
+                                    {
+                                        i++;
+                                        if (i == 1)
                                         {
-                                            int i = 0;
-                                            foreach (var item in productKits)
-                                            {
-                                                i++;
-                                                if (i == 1)
-                                                {
-                                                    <li role="presentation" class="active nav-item"><a href="#@item.Name.Replace(" ", "-")" aria-controls="@item.Name.Replace(" ", "-")" role="tab" data-toggle="tab" class="nav-link active">@item.Name</a></li>
-                                                }
-                                                else
-                                                {
-                                                    <li role="presentation" class="nav-item"><a class="nav-link" href="#@item.Name.Replace(" ", "-")" aria-controls="@item.Name.Replace(" ", "-")" role="tab" data-toggle="tab">@item.Name</a></li>
-                                                }
-                                            }
-
+                                            <li role="presentation" class="active nav-item"><a href="#@item.Name.Replace(" ", "-")" aria-controls="@item.Name.Replace(" ", "-")" role="tab" data-toggle="tab" class="nav-link active">@item.Name</a></li>
                                         }
-                                    </ul>
+                                        else
+                                        {
+                                            <li role="presentation" class="nav-item"><a class="nav-link" href="#@item.Name.Replace(" ", "-")" aria-controls="@item.Name.Replace(" ", "-")" role="tab" data-toggle="tab">@item.Name</a></li>
+                                        }
+                                    }
 
-                                    <!-- Tab panes -->
-                                    <div class="tab-content kit-tabs-content responsive">
-                                        @{
+                                }
+                                else
+                                {
+                                    <li role="presentation" class="nav-item"><a class="nav-link active" href="#optionsTab" aria-controls="options-tab" role="tab" data-toggle="tab">Options</a></li>
+                                }
+                            </ul>
 
-                                            int j = 0;
-                                            foreach (var item in productKits)
+                            <!-- Tab panes -->
+                            <div class="tab-content kit-tabs-content responsive">
+                                @{
+
+                                    if (productKits.Count > 0)
+                                    {
+
+
+                                        int j = 0;
+                                        foreach (var item in productKits)
+                                        {
+                                            j++;
+                                            if (j == 1)
                                             {
-                                                j++;
-                                                if (j == 1)
-                                                {
 
 
-                                                    <div role="tabpanel" class="tab-pane active" id="@item.Name.Replace(" ", "-")">
+                                                <div role="tabpanel" class="tab-pane active" id="@item.Name.Replace(" ", "-")">
 
-                                                        @{
-                                                            var products = Model.ProductKitItems.Where(u => u.ProductKitTypeId == item.Id && u.ProductKitType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Grouped && u.IsDeleted != true).ToList();
-                                                        }
-                                                        @foreach (var productitems in products)
-                                                        {
+                                                    @{
+                                                        var products = Model.ProductKitItems.Where(u => u.ProductKitTypeId == item.Id && u.ProductKitType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Grouped && u.IsDeleted != true).ToList();
+                                                    }
+                                                    @foreach (var productitems in products)
+                                                    {
 
-                                                            <div class="cartitem-details">
-                                                                <div class="cartitem-imgtext ">
-                                                                    <div class="cartitem-text">
-                                                                        <p><a href="@Url.Action("ProductDetails","Products", new {sku=productitems.KitProductMaster.SKUCode})" target="_blank"><strong>@productitems.KitProductMaster.Name</strong></a></p>
-                                                                        <p><b style="color: #007600 !important;">@(productitems.KitProductMaster.InventoryStocks.Count == 0 ? "Not Avaialable" : "In Stock")</b></p>
-                                                                        <p><b>Brands:</b> <span>@(productitems.KitProductMaster.ProductManufacturer == null ? "" : productitems.KitProductMaster.ProductManufacturer.Name)</span></p>
-                                                                        <p><b>SKU Code:</b> <span>@productitems.KitProductMaster.SKUCode</span></p>
-                                                                        <p><b>Product Code::</b> <span>@productitems.KitProductMaster.BarCode</span></p>
-                                                                        <p><b>Size:</b> <span>M</span></p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="cartitem-price">
-                                                                    <p><span>Price:</span><b>@ViewBag.CurrencySymbol @productitems.KitProductMaster.SellPrice</b></p>
-                                                                    @*<p><span>Total:</span><b>@ViewBag.CurrencySymbol @productitems.KitProductMaster.SellPrice</b></p>*@
-                                                                    <div class="button-submit">
-                                                                        @if (productitems.KitProductMaster.SellPrice > 0 && productitems.KitProductMaster.SellPrice.HasValue && productitems.KitProductMaster.PercentMargin > 0)
-                                                                        {
-                                                                            <button type="Submit" name="submitNewsletter" class="btn btn-block move-to-cart-btn" id="button-cart" onclick="AddToCart(@productitems.KitProductMaster.ProductId)">Add to Basket</button>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <button type="button" class=" btn btn-block disabled-btn" disabled><span>Add to Basket</span></button>
-                                                                        }
-
-                                                                    </div>
+                                                        <div class="cartitem-details">
+                                                            <div class="cartitem-imgtext ">
+                                                                <div class="cartitem-text">
+                                                                    <p><a href="@Url.Action("ProductDetails", "Products", new { sku = productitems.KitProductMaster.SKUCode })" target="_blank"><strong>@productitems.KitProductMaster.Name</strong></a></p>
+                                                                    <p><b style="color: #007600 !important;">@(productitems.KitProductMaster.InventoryStocks.Count == 0 ? "Not Avaialable" : "In Stock")</b></p>
+                                                                    <p><b>Brands:</b> <span>@(productitems.KitProductMaster.ProductManufacturer == null ? "" : productitems.KitProductMaster.ProductManufacturer.Name)</span></p>
+                                                                    <p><b>SKU Code:</b> <span>@productitems.KitProductMaster.SKUCode</span></p>
+                                                                    <p><b>Product Code::</b> <span>@productitems.KitProductMaster.BarCode</span></p>
+                                                                    <p><b>Size:</b> <span>M</span></p>
                                                                 </div>
                                                             </div>
-                                                        }
+                                                            <div class="cartitem-price">
+                                                                <p><span>Price:</span><b>@ViewBag.CurrencySymbol @productitems.KitProductMaster.SellPrice</b></p>
+                                                                @*<p><span>Total:</span><b>@ViewBag.CurrencySymbol @productitems.KitProductMaster.SellPrice</b></p>*@
+                                                                <div class="button-submit">
+                                                                    @if (productitems.KitProductMaster.SellPrice > 0 && productitems.KitProductMaster.SellPrice.HasValue && productitems.KitProductMaster.PercentMargin > 0)
+                                                                    {
+                                                                        <button type="Submit" name="submitNewsletter" class="btn btn-block move-to-cart-btn" id="button-cart" onclick="AddToCart(@productitems.KitProductMaster.ProductId)">Add to Basket</button>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <button type="button" class=" btn btn-block disabled-btn" disabled><span>Add to Basket</span></button>
+                                                                    }
 
-                                                    </div>
-
-
-                                                }
-                                                else
-                                                {
-                                                    <div role="tabpanel" class="tab-pane" id="@item.Name.Replace(" ", "-")">
-
-                                                        @{
-                                                            var products = Model.ProductKitItems.Where(u => u.ProductKitTypeId == item.Id && u.ProductKitType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Grouped && u.IsDeleted != true).ToList();
-                                                        }
-                                                        @foreach (var productitems in products)
-                                                        {
-
-                                                            <div class="cartitem-details">
-                                                                <div class="cartitem-imgtext ">
-                                                                    <div class="cartitem-text">
-                                                                        <p><a href=""><strong>@productitems.KitProductMaster.Name</strong></a></p>
-                                                                        <p><b style="color: #007600 !important;">@(productitems.KitProductMaster.InventoryStocks.Count == 0 ? "Not Avaialable" : "In Stock")</b></p>
-                                                                        <p><b>Brands:</b> <span>@(productitems.KitProductMaster.ProductManufacturer == null ? "" : productitems.KitProductMaster.ProductManufacturer.Name)</span></p>
-                                                                        <p><b>SKU Code:</b> <span>@productitems.KitProductMaster.SKUCode</span></p>
-                                                                        <p><b>Product Code::</b> <span>@productitems.KitProductMaster.BarCode</span></p>
-                                                                        <p><b>Size:</b> <span>@productitems.KitProductMaster.Description?.Take(200)</span></p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="cartitem-price">
-                                                                    <p><span>Price:</span><b>@ViewBag.CurrencySymbol @productitems.KitProductMaster.SellPrice</b></p>
-                                                                    @*<p><span>Total:</span><b>@ViewBag.CurrencySymbol @productitems.KitProductMaster.SellPrice</b></p>*@
-                                                                    <div class="button-submit">
-                                                                        @if (productitems.KitProductMaster.SellPrice > 0 && productitems.KitProductMaster.SellPrice.HasValue && productitems.KitProductMaster.PercentMargin > 0)
-                                                                        {
-                                                                            <button type="Submit" name="submitNewsletter" class="btn btn-block move-to-cart-btn" id="button-cart" onclick="AddToCart(@productitems.KitProductMaster.ProductId)">Add to Basket</button>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <button type="button" class=" btn btn-block disabled-btn" disabled>Add to Basket</button>
-                                                                        }
-
-                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        }
+                                                        </div>
+                                                    }
 
-                                                    </div>
-                                                }
+                                                </div>
+
+
+                                            }
+                                            else
+                                            {
+                                                <div role="tabpanel" class="tab-pane" id="@item.Name.Replace(" ", "-")">
+
+                                                    @{
+                                                        var products = Model.ProductKitItems.Where(u => u.ProductKitTypeId == item.Id && u.ProductKitType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Grouped && u.IsDeleted != true).ToList();
+                                                    }
+                                                    @foreach (var productitems in products)
+                                                    {
+
+                                                        <div class="cartitem-details">
+                                                            <div class="cartitem-imgtext ">
+                                                                <div class="cartitem-text">
+                                                                    <p><a href=""><strong>@productitems.KitProductMaster.Name</strong></a></p>
+                                                                    <p><b style="color: #007600 !important;">@(productitems.KitProductMaster.InventoryStocks.Count == 0 ? "Not Avaialable" : "In Stock")</b></p>
+                                                                    <p><b>Brands:</b> <span>@(productitems.KitProductMaster.ProductManufacturer == null ? "" : productitems.KitProductMaster.ProductManufacturer.Name)</span></p>
+                                                                    <p><b>SKU Code:</b> <span>@productitems.KitProductMaster.SKUCode</span></p>
+                                                                    <p><b>Product Code::</b> <span>@productitems.KitProductMaster.BarCode</span></p>
+                                                                    <p><b>Size:</b> <span>@productitems.KitProductMaster.Description?.Take(200)</span></p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="cartitem-price">
+                                                                <p><span>Price:</span><b>@ViewBag.CurrencySymbol @productitems.KitProductMaster.SellPrice</b></p>
+                                                                @*<p><span>Total:</span><b>@ViewBag.CurrencySymbol @productitems.KitProductMaster.SellPrice</b></p>*@
+                                                                <div class="button-submit">
+                                                                    @if (productitems.KitProductMaster.SellPrice > 0 && productitems.KitProductMaster.SellPrice.HasValue && productitems.KitProductMaster.PercentMargin > 0)
+                                                                    {
+                                                                        <button type="Submit" name="submitNewsletter" class="btn btn-block move-to-cart-btn" id="button-cart" onclick="AddToCart(@productitems.KitProductMaster.ProductId)">Add to Basket</button>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <button type="button" class=" btn btn-block disabled-btn" disabled>Add to Basket</button>
+                                                                    }
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+
+                                                </div>
                                             }
                                         }
 
+                                    }
+                                    else
+                                    {
+
+                                        <div role="tabpanel" class="tab-pane active" id="optionsTab">
+                                            @{
+                                                var products = Model.ProductKitItems.Where(u => u.ProductKitType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Grouped && u.IsDeleted != true).ToList();
+                                            }
+
+                                            @foreach (var productitems in products)
+                                            {
+
+                                                <div class="cartitem-details">
+                                                    <div class="cartitem-imgtext ">
+                                                        <div class="cartitem-text">
+                                                            <p><a href="@Url.Action("ProductDetails", "Products", new { sku = productitems.KitProductMaster.SKUCode })" target="_blank"><strong>@productitems.KitProductMaster.Name</strong></a></p>
+                                                            <p><b style="color: #007600 !important;">@(productitems.KitProductMaster.InventoryStocks.Count == 0 ? "Not Avaialable" : "In Stock")</b></p>
+                                                            <p><b>Brands:</b> <span>@(productitems.KitProductMaster.ProductManufacturer == null ? "" : productitems.KitProductMaster.ProductManufacturer.Name)</span></p>
+                                                            <p><b>SKU Code:</b> <span>@productitems.KitProductMaster.SKUCode</span></p>
+                                                            <p><b>Product Code::</b> <span>@productitems.KitProductMaster.BarCode</span></p>
+                                                            <p><b>Size:</b> <span>M</span></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="cartitem-price">
+                                                        <p><span>Price:</span><b>@ViewBag.CurrencySymbol @productitems.KitProductMaster.SellPrice</b></p>
+                                                        @*<p><span>Total:</span><b>@ViewBag.CurrencySymbol @productitems.KitProductMaster.SellPrice</b></p>*@
+                                                        <div class="button-submit">
+                                                            @if (productitems.KitProductMaster.SellPrice > 0 && productitems.KitProductMaster.SellPrice.HasValue && productitems.KitProductMaster.PercentMargin > 0)
+                                                            {
+                                                                <button type="Submit" name="submitNewsletter" class="btn btn-block move-to-cart-btn" id="button-cart" onclick="AddToCart(@productitems.KitProductMaster.ProductId)">Add to Basket</button>
+                                                            }
+                                                            else
+                                                            {
+                                                                <button type="button" class=" btn btn-block disabled-btn" disabled><span>Add to Basket</span></button>
+                                                            }
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+
+                                        </div>
 
 
-                                    </div>
-                                @*</div>*@
+                                    }
+                                }
+
+
                             </div>
+                            @*</div>*@
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 </div>

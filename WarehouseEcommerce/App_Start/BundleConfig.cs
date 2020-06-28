@@ -23,7 +23,8 @@ namespace WarehouseEcommerce
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.bundle.js"
+                      "~/Scripts/bootstrap.bundle.js",
+                      "~/Scripts/modal-steps.min.js"
                       ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
@@ -44,6 +45,7 @@ namespace WarehouseEcommerce
                      "~/Content/Theme/University/app/css/skew_carousle_style.css",
                      "~/Content/Theme/University/app/css/skew_carousle_style.css",
                      "~/Content/owl.carousel/owl.carousel.css"
+                     
                      ));
 
             bundles.Add(new StyleBundle("~/Content/bootstrap").Include(

@@ -1,4 +1,5 @@
 ﻿@model List<Ganedata.Core.Entities.Domain.OrderDetailSessionViewModel>
+
 <div class="nb_basket_wrap">
     <table class="basketTable">
         <thead>
@@ -16,35 +17,99 @@
 
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        <div class="prdimgsec">
-                            <span class="prdimg">
-                                <img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage)? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
-                                @*<img src="~/Content/Theme/University/app/images/Runner_Prep.jpg" class="img-fluid" alt="static-image" title="static-image" />*@
-                            </span>
-                            <span class="prdname">@(item.ProductMaster?.Name)</span>
-                        </div>
-                    </td>
-                    <td>
-                        <div id="price" class="price">
-                            @item.CurrencySign@item.Price
-                        </div>
-                    </td>
-                    @if (ViewBag.CartModal == null)
-                    {
+                if (item.ProductMaster.ProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Kit)
+                {
+
+
+                    <tr>
                         <td>
-                            <div class="qtyboxwrap">
-                                @* <span id="decre_count" class="min">-</span>*@
-                                <input id="counter" type="number" onchange="UpdateCartItem(@item.ProductId,this)" value="@item.Qty" />
-                                @* <span id="incre_count" class="max">+</span>*@
+                            <div class="prdimgsec">
+                                <span class="prdimg">
+                                    <img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage) ? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
+                                    @*<img src="~/Content/Theme/University/app/images/Runner_Prep.jpg" class="img-fluid" alt="static-image" title="static-image" />*@
+                                </span>
+                                <span class="prdname">@(item.ProductMaster?.Name)</span>
+
+                            </div>
+
+                            <div class="row">
+                                @if (item.KitProductCartItems != null && item.KitProductCartItems.Count > 0)
+                                {
+                                    foreach (var cartitem in item.KitProductCartItems)
+                                    {
+                                        <div class="col-md-2">
+                                            <p>
+                                                <b> @Convert.ToInt32(cartitem.Quantity)</b> x @cartitem.SimpleProductMaster.Name  <br />
+
+
+                                            </p>
+                                        </div>
+                                    }
+                                }
                             </div>
                         </td>
-                    }
-                    <td>
-                        <div id="total_amnt" class="total">@item.CurrencySign@item.TotalAmount</div>
-                    </td>
-                </tr>
+                        <td>
+                            <div id="price" class="price">
+                                @item.CurrencySign@item.Price
+                            </div>
+                        </td>
+                        @if (ViewBag.CartModal == null)
+                        {
+                            <td>
+                                <div class="qtyboxwrap">
+                                    @* <span id="decre_count" class="min">-</span>*@
+                                    <input id="counter" type="number" onchange="UpdateCartItem(@item.ProductId,this)" value="@item.Qty" />
+                                    @* <span id="incre_count" class="max">+</span>*@
+                                </div>
+                            </td>
+                        }
+                        <td>
+                            <div id="total_amnt" class="total">@item.CurrencySign@item.TotalAmount</div>
+                        </td>
+
+
+
+                    </tr>
+
+
+
+
+                }
+                else
+                {
+                    <tr>
+                        <td>
+                            <div class="prdimgsec">
+                                <span class="prdimg">
+                                    <img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage) ? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
+                                    @*<img src="~/Content/Theme/University/app/images/Runner_Prep.jpg" class="img-fluid" alt="static-image" title="static-image" />*@
+                                </span>
+                                <span class="prdname">@(item.ProductMaster?.Name)</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div id="price" class="price">
+                                @item.CurrencySign@item.Price
+                            </div>
+                        </td>
+                        @if (ViewBag.CartModal == null)
+                        {
+                            <td>
+                                <div class="qtyboxwrap">
+                                    @* <span id="decre_count" class="min">-</span>*@
+                                    <input id="counter" type="number" onchange="UpdateCartItem(@item.ProductId,this)" value="@item.Qty" />
+                                    @* <span id="incre_count" class="max">+</span>*@
+                                </div>
+                            </td>
+                        }
+                        <td>
+                            <div id="total_amnt" class="total">@item.CurrencySign@item.TotalAmount</div>
+                        </td>
+
+
+                    </tr>
+
+                }
             }
 
 
@@ -65,6 +130,7 @@
             }
         }
     </div>
+    </br>
 
 
 </div>

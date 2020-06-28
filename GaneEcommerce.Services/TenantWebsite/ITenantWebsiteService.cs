@@ -99,6 +99,7 @@ namespace Ganedata.Core.Services
         // WebsiteCartAndWishlist
 
         IEnumerable<WebsiteCartItem> GetAllValidCartItemsList(int siteId, int UserId);
+        IEnumerable<KitProductCartSession> GetAllValidKitCartItemsList(int KitProductId);
         IEnumerable<WebsiteWishListItem> GetAllValidWishListItemsList(int siteId, int UserId);
 
         int AddOrUpdateCartItems(int SiteId, int UserId, int TenantId, List<OrderDetailSessionViewModel> orderDetail);

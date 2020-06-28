@@ -233,6 +233,7 @@
     <Compile Include="Domain\ViewModels\WebsiteDiscountCodesProductsViewModel.cs" />
     <Compile Include="Domain\Websites\AbandonedCartSetting .cs" />
     <Compile Include="Domain\Websites\AbandonedCartNotification.cs" />
+    <Compile Include="Domain\Websites\KitProductCartItem.cs" />
     <Compile Include="Domain\Websites\ProductsNavigationMap.cs" />
     <Compile Include="Domain\Websites\WebsiteWarehouses.cs" />
     <Compile Include="Domain\Websites\WebsiteWisListItem.cs" />

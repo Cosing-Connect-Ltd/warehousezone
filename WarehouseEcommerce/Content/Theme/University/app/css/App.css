@@ -2886,6 +2886,11 @@ body.ZoomerActive {
         margin-bottom: 36px;
     }
 
+        .nb_basket_wrap table.basketTable.childbasketTable {
+            margin-left: 7%;
+            width: 93%;
+        }
+
         .nb_basket_wrap table.basketTable thead {
             border-bottom: solid 1px #707070;
         }

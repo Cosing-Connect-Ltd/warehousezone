@@ -157,6 +157,16 @@ namespace Ganedata.Core.Services
 
             return new List<ProductMaster>();
         }
+        public IEnumerable<ProductMaster> GetAllProductByKitProductId(int productId)
+        {
+            var disProdIds = _currentDbContext.ProductKitMaps.Where(a => a.KitProductId == productId && a.IsDeleted != true)
+                .Select(a => a.KitProductMaster.ProductId).Distinct().ToList();
+
+            if (disProdIds.Count > 0)
+                return _currentDbContext.ProductMaster.Where(a => disProdIds.Contains(a.ProductId)).ToList();
+
+            return new List<ProductMaster>();
+        }
 
 
         public ProductKitMap GetProductInKitsByKitId(int KitId)

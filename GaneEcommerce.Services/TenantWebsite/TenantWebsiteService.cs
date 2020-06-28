@@ -5,6 +5,7 @@ using Ganedata.Core.Entities.Domain.ViewModels;
 using Ganedata.Core.Entities.Enums;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace Ganedata.Core.Services
@@ -943,6 +944,20 @@ namespace Ganedata.Core.Services
         {
             return _currentDbContext.WebsiteCartItems.Where(u => u.SiteID == siteId && u.UserId == UserId && u.IsDeleted != true);
         }
+        public IEnumerable<KitProductCartSession> GetAllValidKitCartItemsList(int KitProductId)
+        {
+            
+                var data= _currentDbContext.KitProductCartItems.Where(u => u.KitProductId == KitProductId && u.IsDeleted != true).ToList()
+                    .Select(u => new KitProductCartSession
+                    {
+                        SimpleProductId = u.SimpleProductId,
+                        KitProductId = u.KitProductId,
+                        Quantity=u.Quantity,
+                        SimpleProductMaster = _mapper.Map(u.SimpleProductMaster, new ProductMasterViewModel())
+                    }).ToList();
+
+            return data; 
+        }
         public IEnumerable<WebsiteWishListItem> GetAllValidWishListItemsList(int siteId, int UserId)
         {
             return _currentDbContext.WebsiteWishListItems.Where(u => u.SiteID == siteId && u.UserId == UserId && u.IsDeleted != true);
@@ -966,10 +981,55 @@ namespace Ganedata.Core.Services
                     cartItem.SiteID = SiteId;
                     cartItem.UpdateCreatedInfo(UserId);
                     _currentDbContext.WebsiteCartItems.Add(cartItem);
+                    if (orderDetail.KitProductCartItems != null && orderDetail.KitProductCartItems.Count > 0)
+                    {
+                        foreach (var item in orderDetail.KitProductCartItems)
+                        {
+                            KitProductCartItem kitProductCart = new KitProductCartItem();
+                            kitProductCart.KitProductId = item.KitProductId;
+                            kitProductCart.SimpleProductId = item.SimpleProductId;
+                            kitProductCart.Quantity = item.Quantity;
+                            kitProductCart.UpdateCreatedInfo(UserId);
+                            _currentDbContext.KitProductCartItems.Add(kitProductCart);
+
+                        }
+                    }
 
                 }
                 else
                 {
+                    if (orderDetail.KitProductCartItems != null && orderDetail.KitProductCartItems.Count > 0)
+                    {
+                       
+                        var simpleproducts = orderDetail.KitProductCartItems.Select(u => u.SimpleProductId).ToList();
+                        var ToDelete = _currentDbContext.KitProductCartItems.Where(x => x.KitProductId == orderDetail.ProductId && !simpleproducts.Contains(x.SimpleProductId) && x.IsDeleted != true);
+                        foreach(var item in ToDelete)
+                        {
+                            var Current = _currentDbContext.KitProductCartItems.FirstOrDefault(x => x.SimpleProductId == item.SimpleProductId &&
+                                                     x.IsDeleted != true);
+                            Current.IsDeleted = true;
+                            _currentDbContext.Entry(Current).State = EntityState.Modified;
+                        }
+                       
+                        foreach (var item in orderDetail.KitProductCartItems)
+                        {
+                            var Current = _currentDbContext.KitProductCartItems.FirstOrDefault(x => x.SimpleProductId == item.SimpleProductId &&
+                                                     x.IsDeleted != true);
+                            if (Current == null)
+                            {
+                                KitProductCartItem kitProductCart = new KitProductCartItem();
+                                kitProductCart.KitProductId = orderDetail.ProductId;
+                                kitProductCart.SimpleProductId = item.SimpleProductId;
+                                kitProductCart.Quantity = item.Quantity;
+                                _currentDbContext.KitProductCartItems.Add(kitProductCart);
+                            }
+                            else 
+                            {
+                                Current.Quantity = item.Quantity;
+                                _currentDbContext.Entry(Current).State=EntityState.Modified;
+                            }
+                        }
+                    }
                     cartProduct.IsDeleted = false;
                     cartProduct.Quantity = orderDetail.Qty;
                     cartProduct.UpdateUpdatedInfo(UserId);
@@ -1069,7 +1129,8 @@ namespace Ganedata.Core.Services
                 var emailconfig = _emailServices.GetAllActiveTenantEmailConfigurations(settings.TenantId).FirstOrDefault();
 
                 foreach (var item in websiteCartItems.GroupBy(i => i.UserId)
-                                                    .Select(g => {
+                                                    .Select(g =>
+                                                    {
                                                         var item = g.First();
                                                         return new
                                                         {
@@ -1099,7 +1160,7 @@ namespace Ganedata.Core.Services
 
         public bool SendAbandonedCartNotification(string to, string subject, string body, TenantEmailConfig emailconfig)
         {
-            var emailSender = new EmailSender(to, emailconfig.UserEmail, body,subject, string.Empty, emailconfig.SmtpHost, emailconfig.SmtpPort, emailconfig.UserEmail, emailconfig.Password);
+            var emailSender = new EmailSender(to, emailconfig.UserEmail, body, subject, string.Empty, emailconfig.SmtpHost, emailconfig.SmtpPort, emailconfig.UserEmail, emailconfig.Password);
 
             return emailSender.SendMail(true);
         }
