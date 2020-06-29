@@ -651,7 +651,7 @@ namespace WarehouseEcommerce.Controllers
             var product = _productServices.GetProductMasterByProductCode(skuCode, CurrentTenantId);
             var selectedProduct = product;
             ViewBag.BaseProduct = product;
-            ViewBag.qty = quantity;
+            ViewBag.Quantity = quantity;
             if (product.ProductType == ProductKitTypeEnum.ProductByAttribute)
             {
                 selectedProduct = GetSelectedProductByAttribute(productId, product);

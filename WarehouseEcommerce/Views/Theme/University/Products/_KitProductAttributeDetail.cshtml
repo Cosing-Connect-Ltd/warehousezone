@@ -99,7 +99,7 @@
                                                     var isSelectedAttributeValue = attributeValue.AttributeValueId == selectedAttributeValue?.AttributeValueId;
 
                                                     @Html.Raw("<li class=\"col3 " + (isSelectedAttributeValue ? "active" : "") + (!isSelectedAttributeValue && !isAttributeWithSelection ? "unavailable-attribute\">" : "\">") +
-                                                                    (isSelectedAttributeValue ? "<a href='javascript:;'id='selected-productids' data-productid=" + Model.ProductId + " data-skuCode=" + Model.SKUCode + ">" : $"<a href='javascript:;' onclick = 'GetSelectedAttributes(event,\"" + ViewBag.BaseProduct.SKUCode + "\"," + (relatedProducts.FirstOrDefault()?.ProductId ?? Model.ProductId) + "," + ViewBag.qty + ")'>") +
+                                                                    (isSelectedAttributeValue ? "<a href='javascript:;'id='selected-productids' data-productid=" + Model.ProductId + " data-skuCode=" + Model.SKUCode + ">" : $"<a href='javascript:;' onclick = 'getSelectedAttributes(event,\"" + ViewBag.BaseProduct.SKUCode + "\"," + (relatedProducts.FirstOrDefault()?.ProductId ?? Model.ProductId) + "," + ViewBag.Quantity + ")'>") +
                                                                     (attributeValue.ProductAttributes.AttributeName.ToLower().IndexOf("color") == -1 && attributeValue.ProductAttributes.AttributeName.ToLower().IndexOf("colour") == -1 ?
                                                                     "<span>" + attributeValue.Value + "</span>" :
                                                                     "<span style=\"background-color:" + attributeValue.Value + ";color:" + attributeValue.Value + "\">-</span>") +
@@ -113,7 +113,7 @@
                             }
                         }
                     </div>
-                    <label><input type="checkbox" id="customCheck" value="@ViewBag.qty">&nbsp;  Select same attribute for this product</label>
+                    <label><input type="checkbox" id="customCheck" value="@ViewBag.Quantity">&nbsp;  Select same attribute for this product</label>
 
                 </div>
 

@@ -10,6 +10,8 @@
 
 }
 
+<script src="~/Scripts/javascript-kit-product.js"></script>
+@Html.Partial("_KitProductChildsSelectorWizardModal")
 
 <div class="container-fluid custom-container-fluid pl-0 pr-0">
     <div id="product-product" class="container m-auto kit-product">
@@ -238,8 +240,8 @@
                                                         <div class="kit-cartitem-details" style="display:none;">
 
                                                             <span class="sku-code">@productitems.KitProductMaster.SKUCode</span>
-                                                            <span class="prod-qty">@productitems.Quantity</span>
-                                                            <span class="prod-id">@productitems.KitProductId</span>
+                                                            <span class="product-quantity">@productitems.Quantity</span>
+                                                            <span class="product-id">@productitems.KitProductId</span>
 
                                                         </div>
 

@@ -19,7 +19,7 @@
     });
 }
 
-function GetSelectedAttributesProduct(e, skuCode, productId, quantity) {
+function getSelectedAttributesProduct(e, skuCode, productId, quantity) {
     var body = $(".product-by-attribute-selector-model-body");
 
     $.ajax({
