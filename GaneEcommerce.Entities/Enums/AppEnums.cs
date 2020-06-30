@@ -500,16 +500,23 @@ namespace Ganedata.Core.Entities.Enums
     public enum CheckoutStep
     {
         BillingAddress = 0,
-        ShippmentMethod = 1,
+        DeliveryMethod = 1,
         ShippingAddress = 2,
         CollectionPiont = 3,
-        PaymentMethod = 4,
-        EditAddress = 5,
+        ShipmentRule = 4,
+        PaymentMethod = 5,
+        EditAddress = 6,
     }
 
-    public enum ShippingMethodType
+    public enum DeliveryMethod
     {
-        Pickup = 0,
-        Delivery = 1
+        ToPickupPoint = 1,
+        ToShipmentAddress = 2
+    }
+
+    public enum PaymentMethod
+    {
+        Paypal = 1,
+        Cash = 2
     }
 }

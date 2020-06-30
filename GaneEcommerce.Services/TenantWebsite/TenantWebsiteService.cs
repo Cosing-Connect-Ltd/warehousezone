@@ -5,8 +5,10 @@ using Ganedata.Core.Entities.Domain.ViewModels;
 using Ganedata.Core.Entities.Enums;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 
 namespace Ganedata.Core.Services
 {
@@ -424,6 +426,33 @@ namespace Ganedata.Core.Services
             return _currentDbContext.WebsiteShippingRules.Where(u => u.TenantId == TenantId && u.SiteID == SiteId && u.IsDeleted != true);
 
         }
+
+        public List<WebsiteShippingRules> GetShippingRulesByShippingAddress(int tenantId, int siteId, int shippingAddressId, double parcelWeightInGrams)
+        {
+            var address = _currentDbContext.AccountAddresses.Find(shippingAddressId);
+
+            var allRules = GetAllValidWebsiteShippingRules(tenantId, siteId)
+                .Where(r => r.IsActive == true && r.CountryId == address.CountryID && r.WeightinGrams >= parcelWeightInGrams);
+
+            var rules = allRules.Where(r => (address.PostCode.StartsWith(r.PostalArea) ||
+                                    (!address.PostCode.StartsWith(r.PostalArea) && (address.Town.Contains(r.Region) ||
+                                    address.AddressLine1.Contains(r.Region) ||
+                                    address.AddressLine2.Contains(r.Region) ||
+                                    address.AddressLine3.Contains(r.Region) ||
+                                    address.AddressLine3.Contains(r.Region) ||
+                                    address.AddressLine4.Contains(r.Region)))));
+
+            if (!rules.Any())
+            {
+                rules = allRules.Where(r => (string.IsNullOrEmpty(r.Region.Trim()) && string.IsNullOrEmpty(r.PostalArea.Trim())));
+            }
+
+            return rules.ToList()
+                                .GroupBy(r => (r.Courier, r.Description))
+                                .Select(r => r.OrderBy(rp => rp.WeightinGrams).First())
+                                .OrderByDescending(r => r.SortOrder)
+                                .ToList();
+        }
         public WebsiteShippingRules CreateOrUpdateWebsiteShippingRules(WebsiteShippingRules websiteShippingRules, int UserId, int TenantId)
         {
             var websiteShippingRulesItems = _currentDbContext.WebsiteShippingRules.Where(x => x.TenantId == TenantId
@@ -434,6 +463,7 @@ namespace Ganedata.Core.Services
                 websiteShipping.SiteID = websiteShippingRules.SiteID;
                 websiteShipping.CountryId = websiteShippingRules.CountryId;
                 websiteShipping.Courier = websiteShippingRules.Courier;
+                websiteShipping.Description = websiteShippingRules.Description;
                 websiteShipping.PostalArea = websiteShippingRules.PostalArea;
                 websiteShipping.Region = websiteShippingRules.Region;
                 websiteShipping.Price = websiteShippingRules.Price;
@@ -448,6 +478,7 @@ namespace Ganedata.Core.Services
             {
                 websiteShippingRulesItems.CountryId = websiteShippingRules.CountryId;
                 websiteShippingRulesItems.Courier = websiteShippingRules.Courier;
+                websiteShippingRulesItems.Description = websiteShippingRules.Description;
                 websiteShippingRulesItems.PostalArea = websiteShippingRules.PostalArea;
                 websiteShippingRulesItems.Region = websiteShippingRules.Region;
                 websiteShippingRulesItems.Price = websiteShippingRules.Price;
@@ -946,8 +977,8 @@ namespace Ganedata.Core.Services
         }
         public IEnumerable<KitProductCartSession> GetAllValidKitCartItemsList(int KitProductId)
         {
-            
-                var data= _currentDbContext.KitProductCartItems.Where(u => u.CartId == KitProductId && u.IsDeleted != true).ToList()
+
+                var data= _currentDbContext.KitProductCartItems.Where(u => u.KitProductId == KitProductId && u.IsDeleted != true).ToList()
                     .Select(u => new KitProductCartSession
                     {
                         SimpleProductId = u.SimpleProductId,
@@ -956,7 +987,7 @@ namespace Ganedata.Core.Services
                         SimpleProductMaster = _mapper.Map(u.SimpleProductMaster, new ProductMasterViewModel())
                     }).ToList();
 
-            return data; 
+            return data;
         }
         public IEnumerable<WebsiteWishListItem> GetAllValidWishListItemsList(int siteId, int UserId)
         {

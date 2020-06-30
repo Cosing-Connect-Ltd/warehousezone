@@ -26,10 +26,5 @@ namespace Ganedata.Core.Entities.Domain
 
         [ForeignKey("CartId")]
         public virtual WebsiteCartItem WebsiteCartItem { get; set; }
-
-
-
-
-
     }
 }

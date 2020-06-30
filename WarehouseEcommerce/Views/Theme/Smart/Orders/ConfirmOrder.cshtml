@@ -19,70 +19,70 @@
                         {
                             var billingaddresses = address.Where(u => u.AddTypeBilling == true).ToList();
                             var shipppingAddress = address.Where(u => u.AddTypeShipping == true).ToList();
-                            <div class="row">
-                                @foreach (var billingaddress in billingaddresses)
+                        <div class="row">
+                            @foreach (var billingaddress in billingaddresses)
                                 {
 
 
-                                    <div class="col-md-6 col-sm-6">
-                                        <h2 class="text-uppercase"> Billing Address</h2>
-                                        <hr class="custom-hr">
-                                        <p>
-                                            <b>@billingaddress.AddressLine1 </b> <br />
-                                            @billingaddress.AddressLine2 <br />
-                                            @billingaddress.AddressLine3 @billingaddress.PostCode <br />
-                                            @billingaddress.GlobalCountry.CountryName <br />
-                                            <b> Phone:</b> @billingaddress.Telephone <br />
+                            <div class="col-md-6 col-sm-6">
+                                <h2 class="text-uppercase"> Billing Address</h2>
+                                <hr class="custom-hr">
+                                <p>
+                                    <b>@billingaddress.AddressLine1 </b> <br />
+                                    @billingaddress.AddressLine2 <br />
+                                    @billingaddress.AddressLine3 @billingaddress.PostCode <br />
+                                    @billingaddress.GlobalCountry.CountryName <br />
+                                    <b> Phone:</b> @billingaddress.Telephone <br />
 
-                                        </p>
+                                </p>
 
-                                    </div>
+                            </div>
 
                                 }
-                                @if ((ShippingMethodType)ViewBag.ShipmentMethod == ShippingMethodType.Delivery)
+                            @if ((DeliveryMethod)ViewBag.DeliveryMethodId == DeliveryMethod.ToShipmentAddress)
                                 {
-                                    foreach (var shiping in shipppingAddress)
+                                    foreach (var shipping in shipppingAddress)
                                     {
-                                        <div class="col-md-6 col-sm-6 shipping-address-col">
-                                            <h2 class="text-uppercase"> Shipping Address</h2>
-                                            <hr class="custom-hr">
-                                            <p>
-                                            <p>
-                                                <b>@shiping.AddressLine1 </b> <br />
-                                                @shiping.AddressLine2 <br />
-                                                @shiping.AddressLine3 @shiping.PostCode <br />
-                                                @shiping.GlobalCountry.CountryName <br />
-                                                <b> Phone:</b> @shiping.Telephone <br />
+                            <div class="col-md-6 col-sm-6 shipping-address-col">
+                                <h2 class="text-uppercase"> Shipping Address</h2>
+                                <hr class="custom-hr">
+                                <p>
+                                <p>
+                                    <b>@shipping.AddressLine1 </b> <br />
+                                    @shipping.AddressLine2 <br />
+                                    @shipping.AddressLine3 @shipping.PostCode <br />
+                                    @shipping.GlobalCountry.CountryName <br />
+                                    <b> Phone:</b> @shipping.Telephone <br />
 
-                                            </p>
-                                            </p>
+                                </p>
+                                </p>
 
-                                        </div>
+                            </div>
                                     }
                                 }
                                 else
                                 {
-                                    <div class="col-md-6 col-sm-6 shipping-address-col">
-                                        <h2 class="text-uppercase"> Collection Point</h2>
-                                        <hr class="custom-hr">
-                                        <p>
-                                        <p>
-                                            <b>@(ViewBag.CollectionPoint?.WarehouseName) </b> <br />
-                                            @(ViewBag.CollectionPoint?.AddressLine1)
-                                            @(!string.IsNullOrEmpty(ViewBag.CollectionPoint?.AddressLine2?.Trim()) ? ", " + ViewBag.CollectionPoint?.AddressLine2 : string.Empty)
-                                            @(!string.IsNullOrEmpty(ViewBag.CollectionPoint?.AddressLine3?.Trim()) ? ", " + ViewBag.CollectionPoint?.AddressLine3 : string.Empty)
-                                            @(!string.IsNullOrEmpty(ViewBag.CollectionPoint?.AddressLine4?.Trim()) ? ", " + ViewBag.CollectionPoint?.AddressLine4 : string.Empty) <br />
-                                            @(ViewBag.CollectionPoint?.PostalCode) <br />
-                                            @(ViewBag.CollectionPoint?.City)<br />
-                                            @(ViewBag.CollectionPoint?.GlobalCountry?.CountryName) <br />
-                                        </p>
-                                        </p>
-
-                                    </div>
-                                }
+                            <div class="col-md-6 col-sm-6 shipping-address-col">
+                                <h2 class="text-uppercase"> Collection Point</h2>
+                                <hr class="custom-hr">
+                                <p>
+                                <p>
+                                    <b>@(ViewBag.CollectionPoint?.WarehouseName) </b> <br />
+                                    @(ViewBag.CollectionPoint?.AddressLine1)
+                                    @(!string.IsNullOrEmpty(ViewBag.CollectionPoint?.AddressLine2?.Trim()) ? ", " + ViewBag.CollectionPoint?.AddressLine2 : string.Empty)
+                                    @(!string.IsNullOrEmpty(ViewBag.CollectionPoint?.AddressLine3?.Trim()) ? ", " + ViewBag.CollectionPoint?.AddressLine3 : string.Empty)
+                                    @(!string.IsNullOrEmpty(ViewBag.CollectionPoint?.AddressLine4?.Trim()) ? ", " + ViewBag.CollectionPoint?.AddressLine4 : string.Empty) <br />
+                                    @(ViewBag.CollectionPoint?.PostalCode) <br />
+                                    @(ViewBag.CollectionPoint?.City)<br />
+                                    @(ViewBag.CollectionPoint?.GlobalCountry?.CountryName) <br />
+                                </p>
+                                </p>
 
                             </div>
-                            <br />
+                                }
+
+                        </div>
+                        <br />
                         }
                         <br />
                     </div>
@@ -96,42 +96,42 @@
                         <table class="order-details" style="border-collapse: unset">
                             @foreach (var item in Model)
                             {
-                                <tbody>
+                            <tbody>
 
 
-                                    <tr>
+                                <tr>
 
-                                        <td> <a href=""> <img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage) ? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath +"/UploadedFiles/Products/no_image.gif")" title="@item.ProductMaster.Name" alt="@(item?.ProductMaster?.Name)"> </a> </td>
-                                        <td>
-                                            <div class="ordered-items">
-                                                <p>
-                                                    <a href=""> <strong>@(item.ProductMaster?.Name) </strong> </a>
+                                    <td> <a href=""> <img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage) ? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath +"/UploadedFiles/Products/no_image.gif")" title="@item.ProductMaster.Name" alt="@(item?.ProductMaster?.Name)"> </a> </td>
+                                    <td>
+                                        <div class="ordered-items">
+                                            <p>
+                                                <a href=""> <strong>@(item.ProductMaster?.Name) </strong> </a>
 
-                                                </p>
-                                                <ul>
-                                                    <li>
-                                                        Sku: <span>@(item.ProductMaster?.SKUCode) </span>
-                                                    </li>
-                                                    <li> Size: <span> M</span> </li>
-                                                    <li>
-                                                        Quantity: <span>@item.Qty </span>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
+                                            </p>
+                                            <ul>
+                                                <li>
+                                                    Sku: <span>@(item.ProductMaster?.SKUCode) </span>
+                                                </li>
+                                                <li> Size: <span> M</span> </li>
+                                                <li>
+                                                    Quantity: <span>@item.Qty </span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
                             }
                         </table>
                         <div class="pull-left orders-total">
                             @if (Model.ToList().Count > 0)
                             {
-                                <label><b> Total Quantity: </b>@(Model == null ? 0 : Model.ToList().Count) </label>
+                            <label><b> Total Quantity: </b>@(Model == null ? 0 : Model.ToList().Count) </label>
                             }
                             <br />
                             @if (ViewBag.TotalQty != null && (int)ViewBag.TotalQty > 0)
                             {
-                                <label><b> Total: </b>@ViewBag.Symbol @(ViewBag.TotalQty == null ? 0 : ViewBag.TotalQty) </label>
+                            <label><b> Total: </b>@ViewBag.CurrencySymbol@(ViewBag.TotalQty == null ? 0 : ViewBag.TotalQty) </label>
                             }
                         </div>
 
@@ -142,92 +142,92 @@
         </div>
         @if (Model.ToList().Count > 0)
         {
-            <div class="row">
-                <div class="col-md-12 col-sm-12 bg-white my-account login mt-20">
-                    <div class="about-cnt">
-                        <h4 class="text-uppercase mt-35">Shipment Method</h4>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 bg-white my-account login mt-20">
+                <div class="about-cnt">
+                    <h4 class="text-uppercase mt-35">Delivery Method</h4>
+                    <hr class="custom-hr">
+                    <div class="content-wrapper select">
+                        <div class="deliveryMethod ">
+
+                            @if ((DeliveryMethod)ViewBag.DeliveryMethodId == DeliveryMethod.ToShipmentAddress)
+                                {
+                            <div class="form-inline">
+                                <label class="control-label" for="radio2">
+                                    Delivery by @ViewBag.ShippingRule.Courier @(!string.IsNullOrEmpty(ViewBag.ShippingRule.Description?.Trim()) ? $"({ViewBag.ShippingRule.Description})" : "" ) - @ViewBag.CurrencySymbol@ViewBag.ShippingRule.Price
+                                </label>
+                            </div>
+                                }
+                                else
+                                {
+                            <div class="form-check-inline">
+                                <label class="control-label" for="radio2">
+                                    Pick up (from collection point) - Free
+                                </label>
+                            </div>
+                                }
+                        </div>
+                        <h4 class="text-uppercase mt-35">Payment Method</h4>
                         <hr class="custom-hr">
-                        <div class="content-wrapper select">
-                            <div class="shippingMethod ">
-
-                                @if ((ShippingMethodType)ViewBag.ShipmentMethod == ShippingMethodType.Delivery)
+                        <div class="deliveryMethod">
+                            @if ((PaymentMethod)ViewBag.paymentMethod == PaymentMethod.Cash)
                                 {
-                                    <div class="form-inline">
-                                        <label class="control-label" for="radio2">
-                                            Delivery (Courier) $10
-                                        </label>
-                                    </div>
+                            <div class="form-inline">
+                                <label class="control-label" for="radio2">
+                                    Cash
+                                </label>
+                            </div>
                                 }
                                 else
                                 {
-                                    <div class="form-check-inline">
-                                        <label class="control-label" for="radio2">
-                                            Pick up (from collection point) - Free
-                                        </label>
-                                    </div>
-                                }
+                            <div class="form-inline">
+                                <label class="control-label" for="radio1">
+                                    Paypal
+                                </label>
                             </div>
-                            <h4 class="text-uppercase mt-35">Payment Method</h4>
-                            <hr class="custom-hr">
-                            <div class="shippingMethod">
-                                @if ((ShippingMethodType)ViewBag.ShipmentMethod == ShippingMethodType.Delivery)
-                                {
-                                    <div class="form-inline">
-                                        <label class="control-label" for="radio2">
-                                            Cash
-                                        </label>
-                                    </div>
                                 }
-                                else
-                                {
-                                    <div class="form-inline">
-                                        <label class="control-label" for="radio1">
-                                            Paypal
-                                        </label>
-                                    </div>
-                                }
-                            </div>
-                            <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
-                                <div class="row">
+                        </div>
+                        <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+                            <div class="row">
 
-                                    <fieldset>
-                                        <input class="full-width" type="hidden" name="business" value="shoaib@ganedata.co.uk">
-                                        <input type="hidden" name="cmd" value="_cart">
-                                        <input type="hidden" name="upload" value="1" />
-                                        <input type="hidden" name="return" value="192.168.18.7:8006">
-                                        @*<input type="hidden" name="notify_url" value="@((string)ViewBag.RetUrl)">*@
-                                        <input type="hidden" name="notify_url" value="192.168.18.7:8006/Test/IPN">
-                                        <input type="hidden" NAME="currency_code" value="GBP">
-                                        <input type="hidden" name="OrderId" value="@ViewBag.OrdersId" />
+                                <fieldset>
+                                    <input class="full-width" type="hidden" name="business" value="shoaib@ganedata.co.uk">
+                                    <input type="hidden" name="cmd" value="_cart">
+                                    <input type="hidden" name="upload" value="1" />
+                                    <input type="hidden" name="return" value="192.168.18.7:8006">
+                                    @*<input type="hidden" name="notify_url" value="@((string)ViewBag.RetUrl)">*@
+                                    <input type="hidden" name="notify_url" value="192.168.18.7:8006/Test/IPN">
+                                    <input type="hidden" NAME="currency_code" value="GBP">
+                                    <input type="hidden" name="OrderId" value="@ViewBag.OrdersId" />
 
-                                    </fieldset>
+                                </fieldset>
 
-                                    @foreach (var item in Model)
+                                @foreach (var item in Model)
                                     {
 
-                                        <input type="hidden" name="item_name_1" value="@item.ProductMaster.Name">
-                                        <input type="hidden" name="item_number_1" value="@item.ProductMaster.SKUCode">
-                                        <input type="hidden" name="amount_1" value="@item.TotalAmount">
-                                        <input type="hidden" name="quantity_1" value="@item.Qty">
+                                <input type="hidden" name="item_name_1" value="@item.ProductMaster.Name">
+                                <input type="hidden" name="item_number_1" value="@item.ProductMaster.SKUCode">
+                                <input type="hidden" name="amount_1" value="@item.TotalAmount">
+                                <input type="hidden" name="quantity_1" value="@item.Qty">
                                         break;
 
                                     }
 
-                                </div>
-                                <div class="button-submit">
-                                    <button type="Submit" name="submitNewsletter" class="btn btn-block paypal-btn">Proceed To Payment</button>
-                                    @*<a href="@Url.Action("Index","Test")" class="btn btn-block cash-btn cashbtn" name="submitNewsletter"> Proceed To Payment</a>*@
+                            </div>
+                            <div class="button-submit">
+                                <button type="Submit" name="submitNewsletter" class="btn btn-block paypal-btn">Proceed To Payment</button>
+                                @*<a href="@Url.Action("Index","Test")" class="btn btn-block cash-btn cashbtn" name="submitNewsletter"> Proceed To Payment</a>*@
 
-                                </div>
+                            </div>
 
-                            </form>
+                        </form>
 
-
-                        </div>
 
                     </div>
+
                 </div>
             </div>
+        </div>
         }
     </div>
 </div>

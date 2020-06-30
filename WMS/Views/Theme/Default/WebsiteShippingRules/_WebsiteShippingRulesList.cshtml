@@ -66,6 +66,12 @@
         });
         settings.Columns.Add(c =>
         {
+            c.FieldName = "Description";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+        settings.Columns.Add(c =>
+        {
             c.FieldName = "Region";
             c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
             c.EditFormSettings.Visible = DefaultBoolean.False;

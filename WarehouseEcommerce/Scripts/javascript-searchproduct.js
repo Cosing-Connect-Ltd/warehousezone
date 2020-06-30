@@ -61,7 +61,7 @@ function findNearCollectionPoints() {
 
             $.each(data, function (i, item) {
                 var element = $('<div class="collection-point col-md-6">' +
-                    '<div class="form-inline w-100' + (item.IsCartProductsAvailable ? '" onclick="selectCollectionPoint(' + item.WarehouseId + ', this)"' : ' collection-point-unavailable"') + '>' +
+                    '<div class="form-inline w-100' + (item.IsCartProductsAvailable ? '" onclick="selectCollectionPointId(' + item.WarehouseId + ', this)"' : ' collection-point-unavailable"') + '>' +
                         '<div class="control-label w-100">' +
                             ' <div style="float:left">' +
                                 ' <div class="collection-point-title">' + item.WarehouseName + '</div>' +
@@ -84,16 +84,24 @@ function findNearCollectionPoints() {
     });
 }
 
-function selectCollectionPoint(collectionPointId, element) {
-    var t = element;
-
+function selectCollectionPointId(collectionPointId, element) {
     $(".collection-point-selected").each(function (i, selectedElement) {
-        selectedElement.removeClass("collection-point-selected");
+        $(selectedElement).removeClass("collection-point-selected");
     });
 
     $(element).addClass("collection-point-selected");
 
     $("#collectionPointId")[0].value = collectionPointId;
+}
+
+function selectShippingRuleId(shipmentRuleId, element) {
+    $(".shipping-rule-selected").each(function (i, selectedElement) {
+        $(selectedElement).removeClass("shipping-rule-selected");
+    });
+
+    $(element).addClass("shipping-rule-selected");
+
+    $("#shipmentRuleId")[0].value = shipmentRuleId;
 }
 
 function OnchangeDropdownAddress() {
@@ -278,48 +286,107 @@ function ConfirmOrder() {
     var paymentMethodId = $("#PaymentType").val();
     var ShippingTypeId = $("#ShippingType").val();
     var AccountAddressIds = $("#AccountAddressId").val();
-    if (paymentMethodId === undefined || paymentMethodId === 0 || paymentMethodId === null) {
-
+    if (!paymentMethodId) {
         alert("Select payment type before placing order");
         return;
     }
-    if (ShippingTypeId === undefined || ShippingTypeId === 0 || ShippingTypeId === null) {
+    if (!ShippingTypeId) {
         alert("Select shipping type before placing order");
         return;
     }
 
-    window.location.href = basePath + "/Orders/ConfirmOrder/?accountAddressId=" + AccountAddressIds + "&paymentTypeId=" + paymentMethodId + "&shippmentTypeId=" + ShippingTypeId;
+    window.location.href = basePath + "/Orders/ConfirmOrder/?accountAddressId=" + AccountAddressIds + "&paymentTypeId=" + paymentMethodId + "&deliveryMethodId=" + ShippingTypeId;
 }
 
-function ChooseShippingAddress(accountid, billingaddressId) {
-    var shippmentId = $("input[name='optradio']:checked").val();
-    if (shippmentId === undefined) {
+function updateQueryStringParameter(uri, key, value) {
+    var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+    var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+    if (uri.match(re)) {
+        return uri.replace(re, '$1' + key + "=" + value + '$2');
+    }
+    else {
+        return uri + separator + key + "=" + value;
+    }
+}
+
+function updateQueryAndGoToStep(step, key, value) {
+    var uri = location.href;
+
+    uri = updateQueryStringParameter(uri, "step", step);
+
+    if (!!key && !!value) {
+        uri = updateQueryStringParameter(uri, key, value);
+    }
+
+    location.href = uri;
+}
+
+function getUrlVariables() {
+    var variables = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for (var i = 0; i < hashes.length; i++) {
+        hash = hashes[i].split('=');
+        variables.push(hash[0]);
+        variables[hash[0]] = hash[1];
+    }
+    return variables;
+}
+
+function chooseDeliveryMethod() {
+    var deliveryMethodId = $("input[name='optradio']:checked").val();
+    if (!deliveryMethodId) {
         alert("Please select shipping method.");
         return;
     }
 
-    var step = (shippmentId == '1' ? 2 : 3);
+    var nextStep = (deliveryMethodId == '2' ? 2 : 3); //deliveryMethodId 2 = ToShipmentAddress, step 2 = ShippingAddress, step 3 = CollectionPiont
 
-    location.href = basePath + "/Orders/GetAddress?accountId=" + accountid + "&accountBillingId=" + billingaddressId + "&shippmentTypeId=" + shippmentId + "&step=" + step;
+    updateQueryAndGoToStep(nextStep, "deliveryMethodId", deliveryMethodId);
 }
 
-function ChooseCollectionPoint(accountid, billingaddressId, shippmentTypeId, step) {
+function chooseCollectionPoint(nextStep) {
     var collectionPointId = $("#collectionPointId")[0].value;
+    if (!collectionPointId) {
+        alert("Please select collection point.");
+        return;
+    }
 
-    location.href = basePath + "/Orders/GetAddress?accountId=" + accountid + "&accountBillingId=" + billingaddressId + "&shippmentTypeId=" + shippmentTypeId + "&step=" + step + "&collectionPointId=" + collectionPointId;
+    updateQueryAndGoToStep(nextStep, "collectionPointId", collectionPointId);
 }
-function ChoosePaymentMethod(accountid, shippingaddressid, shipmentMethodType, collectionPointId, step) {
+
+function goToStep(step) {
+    updateQueryAndGoToStep(step, null, null);
+}
+
+function chooseShippingRule(nextStep) {
+    var shipmentRuleId = $("#shipmentRuleId")[0].value;
+    if (!shipmentRuleId) {
+        alert("Please select shipping rule.");
+        return;
+    }
+
+    updateQueryAndGoToStep(nextStep, "shipmentRuleId", shipmentRuleId);
+}
+
+function choosePaymentMethod() {
     var paymenttypeId = $("input[name='paymentMethod']:checked").val();
-    if (paymenttypeId === undefined) {
+    if (!paymenttypeId) {
         alert("Please select payment method.");
         return;
     }
-    window.location.href = basePath + "/Orders/ConfirmOrder?accountId=" + accountid + "&paymentTypeId=" + paymenttypeId + "&shippmentTypeId=" + shipmentMethodType + "&shipmentAddressId=" + shippingaddressid + "&collectionPointId=" + collectionPointId;
-    location.href = basePath + "/Orders/GetAddress?accountId=" + accountid + "&accountBillingId=" + billingaddressId + "&shippmentTypeId=" + shippmentId + "&step=" + step + "&accountShippingId=" + shippingaddressid + "&collectionPointId=" + collectionPointId;
+
+    var variables = getUrlVariables();
+
+    window.location.href = basePath + "/Orders/ConfirmOrder?accountId=" + variables["accountId"] +
+                                                "&paymentTypeId=" + paymenttypeId +
+                                                "&deliveryMethodId=" + variables["deliveryMethodId"] +
+                                                (!!variables["shipmentRuleId"] ? "&shipmentRuleId=" + variables["shipmentRuleId"] : "") +
+                                                (!!variables["shippingAddressId"] ? "&shippingAddressId=" + variables["shippingAddressId"] : "") +
+                                                (!!variables["collectionPointId"] ? "&collectionPointId=" + variables["collectionPointId"] : "");
+
 }
 
 $("input[name='paymentMethod']").on("click", function (e) {
-
     if (e.target.value === "2") {
         $(".paypal-btn").hide();
         $(".cash-btn").show();
@@ -328,9 +395,8 @@ $("input[name='paymentMethod']").on("click", function (e) {
         $(".paypal-btn").show();
         $(".cash-btn").hide();
     }
-
-
 });
+
 $(document).ready(function () {
 
     $(".cash-btn").hide();

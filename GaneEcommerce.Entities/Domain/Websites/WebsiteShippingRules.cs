@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
 namespace Ganedata.Core.Entities.Domain
 {
@@ -16,6 +12,7 @@ namespace Ganedata.Core.Entities.Domain
         public int CountryId { get; set; }
         [Display(Name = "Courier")]
         public string Courier { get; set; }
+        public string Description { get; set; }
         public string Region { get; set; }
         [Display(Name = "Postal Area")]
         public string PostalArea { get; set; }

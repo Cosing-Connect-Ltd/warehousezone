@@ -3,6 +3,7 @@ using Ganedata.Core.Entities.Domain.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Web;
 
 namespace Ganedata.Core.Services
@@ -52,6 +53,7 @@ namespace Ganedata.Core.Services
         //WebsiteShippingRules
 
         IQueryable<WebsiteShippingRules> GetAllValidWebsiteShippingRules(int TenantId, int SiteId);
+        List<WebsiteShippingRules> GetShippingRulesByShippingAddress(int tenantId, int siteId, int shippingAddressId, double parcelWeightInGrams);
         WebsiteShippingRules CreateOrUpdateWebsiteShippingRules(WebsiteShippingRules websiteShippingRules, int UserId, int TenantId);
         WebsiteShippingRules RemoveWebsiteShippingRules(int Id, int UserId);
         WebsiteShippingRules GetWebsiteShippingRulesById(int Id);

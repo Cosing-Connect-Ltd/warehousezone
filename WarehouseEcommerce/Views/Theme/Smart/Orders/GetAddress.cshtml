@@ -7,266 +7,228 @@
 
 <div class="about bg-white get-address-page uni-get-address-page">
     <div class="container-fluid custom-max-width">
-        <div class="row">
-            <div class="col-md-3 col-sm-12 ">
+        <div class="row checkout-side-menu">
+            <div class="col-md-3 col-sm-12">
                 <ul class="menu-about">
-                    <li><a href="@Url.Action("GetAddress", "Orders", new { accountId= ViewBag.AccountIds, step = (int)CheckoutStep.BillingAddress })" class="">Billing Address</a></li>
-                    <li><a href="@Url.Action("GetAddress", "Orders", new { accountId= ViewBag.AccountIds,accountBillingId=ViewBag.BillingAddressId, step = (int)CheckoutStep.ShippmentMethod })" style="@((int)ViewBag.Step < (int)CheckoutStep.ShippmentMethod?"pointer-events:none; cursor: default; color: gray; background: #f6f7f8":"")">Shipping Method</a></li>
+                    <li><a href="javascript:goToStep(@((int)CheckoutStep.BillingAddress))" class="">Billing Address</a></li>
+                    <li><a href="javascript:goToStep(@((int)CheckoutStep.DeliveryMethod))" style="@((int)ViewBag.CurrentStep < (int)CheckoutStep.DeliveryMethod?"pointer-events:none; cursor: default; color: gray; background: #f6f7f8":"")">Delivery Method</a></li>
                     <li>
-                        <a href="@Url.Action("GetAddress", "Orders", new { accountId= ViewBag.AccountIds,accountBillingId=ViewBag.BillingAddressId,shippmentTypeId=ViewBag.ShippmentMethodType, step = ((ShippingMethodType)(ViewBag.ShippmentMethodType ?? (int)ShippingMethodType.Delivery) == ShippingMethodType.Delivery ? (int)CheckoutStep.ShippingAddress : (int)CheckoutStep.CollectionPiont) })" style="@((int)ViewBag.Step < (int)CheckoutStep.ShippingAddress?"pointer-events:none; cursor: default; color: gray; background: #f6f7f8":"")">
-                            @((ShippingMethodType)(ViewBag.ShippmentMethodType ?? (int)ShippingMethodType.Delivery) == ShippingMethodType.Delivery ? "Shipping Address" : "Collection Point")
+                        <a href="javascript:goToStep(@((DeliveryMethod)(ViewBag.DeliveryMethodId ?? (int)DeliveryMethod.ToShipmentAddress) == DeliveryMethod.ToShipmentAddress ? (int)CheckoutStep.ShippingAddress : (int)CheckoutStep.CollectionPiont))" style="@((int)ViewBag.CurrentStep < (int)CheckoutStep.ShippingAddress?"pointer-events:none; cursor: default; color: gray; background: #f6f7f8":"")">
+                            @((DeliveryMethod)(ViewBag.DeliveryMethodId ?? (int)DeliveryMethod.ToShipmentAddress) == DeliveryMethod.ToShipmentAddress ? "Shipping Address" : "Collection Point")
                         </a>
                     </li>
-                    <li><a href="@Url.Action("GetAddress", "Orders", new { accountId= ViewBag.AccountIds,accountBillingId=ViewBag.BillingAddressId,shippmentTypeId=ViewBag.ShippmentMethodType, step = ((int)CheckoutStep.PaymentMethod), accountShippingId=ViewBag.ShippingAddressId })" style="@((int)ViewBag.Step < (int)CheckoutStep.PaymentMethod?"pointer-events:none; cursor: default; color: gray; background: #f6f7f8":"")">Payment Method</a></li>
+                    @if ((DeliveryMethod)(ViewBag.DeliveryMethodId ?? (int)DeliveryMethod.ToShipmentAddress) == DeliveryMethod.ToShipmentAddress)
+                    {
+                        <li><a href="javascript:goToStep(@((int)CheckoutStep.ShipmentRule))" style="@((int)ViewBag.CurrentStep < (int)CheckoutStep.ShipmentRule ? "pointer-events:none; cursor: default; color: gray; background: #f6f7f8" : "")">Shipment Type</a></li>
+                    }
+                    <li><a href="javascript:goToStep(@((int)CheckoutStep.PaymentMethod))" style="@((int)ViewBag.CurrentStep < (int)CheckoutStep.PaymentMethod?"pointer-events:none; cursor: default; color: gray; background: #f6f7f8":"")">Payment Method</a></li>
                 </ul>
             </div>
             <div class="col-md-8 col-sm-12 bg-white login my-account">
-                <div class="about-cnt" style="display:@((CheckoutStep)ViewBag.Step == CheckoutStep.BillingAddress || (CheckoutStep)ViewBag.Step == CheckoutStep.ShippingAddress || (CheckoutStep)ViewBag.Step == CheckoutStep.EditAddress?"block":"none")">
-                    <div class="content-wrapper select">
-                        <h2 class="text-uppercase">@ViewBag.AddressMessage</h2>
-                        <hr class="custom-hr">
-                        @if (address != null)
-                        {
-                            for (int i = 0; i < address.Count; i += 2)
+                <div class="about-cnt">
+                    @if ((CheckoutStep)ViewBag.CurrentStep == CheckoutStep.BillingAddress || (CheckoutStep)ViewBag.CurrentStep == CheckoutStep.ShippingAddress || (CheckoutStep)ViewBag.CurrentStep == CheckoutStep.EditAddress)
+                    {
+                        <div class="content-wrapper select">
+                            <h2 class="text-uppercase">@((CheckoutStep)ViewBag.CurrentStep == CheckoutStep.BillingAddress ? "Billing Address" : "Shipping Address")</h2>
+                            <hr class="custom-hr">
+                            @if (address != null)
                             {
-                                <div class="row">
-                                    @if (address.ElementAtOrDefault(i) != null)
-                                    {
-                                        <div class="col-md-6 both-btn">
-                                            <p>
-                                                @if (!string.IsNullOrEmpty(address[i].AddressLine1))
-                                                {
-                                                    <b>@address[i].AddressLine1</b><br />
-                                                }
-                                                @if (!string.IsNullOrEmpty(address[i].AddressLine2))
-                                                {
-                                                    @address[i].AddressLine2<br />
-                                                }
-                                                @if (!string.IsNullOrEmpty(address[i].AddressLine3) || !string.IsNullOrEmpty(address[i].PostCode))
-                                                {
-                                                    @address[i].AddressLine3 <span>&nbsp;</span> @address[i].PostCode<br />
-                                                }
-                                                @if (address[i].GlobalCountry != null)
-                                                {
-                                                    @address[i].GlobalCountry.CountryName<br />
-                                                }
-                                                @if (!string.IsNullOrEmpty(address[i].Telephone))
-                                                {
-                                                    <b>Phone:</b> @address[i].Telephone<br />
-                                                }
+                                for (int i = 0; i < address.Count; i += 2)
+                                {
+                                    <div class="row">
+                                        @if (address.ElementAtOrDefault(i) != null)
+                                        {
+                                            <div class="col-md-6 both-btn">
+                                                <p>
+                                                    @if (!string.IsNullOrEmpty(address[i].AddressLine1))
+                                                    {
+                                                        <b>@address[i].AddressLine1</b><br />
+                                                    }
+                                                    @if (!string.IsNullOrEmpty(address[i].AddressLine2))
+                                                    {
+                                                        @address[i].AddressLine2<br />
+                                                    }
+                                                    @if (!string.IsNullOrEmpty(address[i].AddressLine3) || !string.IsNullOrEmpty(address[i].PostCode))
+                                                    {
+                                                        @address[i].AddressLine3 <span>&nbsp;</span> @address[i].PostCode<br />
+                                                    }
+                                                    @if (address[i].GlobalCountry != null)
+                                                    {
+                                                        @address[i].GlobalCountry.CountryName<br />
+                                                    }
+                                                    @if (!string.IsNullOrEmpty(address[i].Telephone))
+                                                    {
+                                                        <b>Phone:</b> @address[i].Telephone<br />
+                                                    }
 
 
 
-                                            </p>
-                                            @if (address[i].AddTypeBilling == true)
-                                            {
-                                                <div class="">
-                                                    <a href="@Url.Action("GetAddress", "Orders", new { accountId= ViewBag.AccountIds,accountBillingId=address[i].AddressID, step=(int)CheckoutStep.ShippmentMethod })" role="button" class="btn btn-default" style="font-size:11px">Select billing address</a>
-                                                    <a href="@Url.Action("GetAddress", "Orders", new { accountId= address[i].AccountID, accountAddressId= address[i].AddressID, step=(int)CheckoutStep.EditAddress, parentStep=(int)CheckoutStep.BillingAddress })" role="button" class="btn btn-default" style="font-size:11px">Edit address</a>
-                                                </div>
-                                            }
-                                            else
-                                            {
-                                                <div class="">
-                                                    <a href="@Url.Action("GetAddress", "Orders", new { accountId= ViewBag.AccountIds,accountBillingId=ViewBag.BillingAddressId, shippmentTypeId=ViewBag.ShippmentMethodType,step=(int)CheckoutStep.PaymentMethod,accountShippingId=address[i].AddressID })" role="button" class="btn btn-primary" style="font-size:11px">Select shipping address</a>
-                                                    <a href="@Url.Action("GetAddress", "Orders", new { accountId= address[i].AccountID,accountBillingId=ViewBag.BillingAddressId, shippmentTypeId=ViewBag.ShippmentMethodType,step=(int)CheckoutStep.EditAddress, accountAddressId= address[i].AddressID, parentStep=(int)CheckoutStep.ShippingAddress })" role="button" class="btn btn-success" style="font-size:11px">Edit Address</a>
-                                                    <a href="@Url.Action("RemoveShippingAddress", "Orders", new {accountId=address[i].AccountID,accountBillingId=ViewBag.BillingAddressId, shippmentTypeId=ViewBag.ShippmentMethodType, accountAddressId=address[i].AddressID })" role="button" class="btn btn-danger custom-danger" style="font-size:11px">Remove address</a>
-                                                </div>
-                                            }
-
-                                        </div>
-                                    }
-                                    @if (address.ElementAtOrDefault(i + 1) != null)
-                                    {
-                                        <div class="col-md-6 both-btn">
-                                            <p class="p-mt-20">
-                                                @if (!string.IsNullOrEmpty(address[i + 1].AddressLine1))
+                                                </p>
+                                                @if (address[i].AddTypeBilling == true)
                                                 {
-                                                    <b>@address[i + 1].AddressLine1</b><br />
+                                                    <div class="">
+                                                        <a href="@Url.Action("GetAddress", "Orders", new { accountId = ViewBag.AccountIds, billingAddressId = address[i].AddressID, step = (int)CheckoutStep.DeliveryMethod })" role="button" class="btn btn-default" style="font-size:11px">Select billing address</a>
+                                                        <a href="@Url.Action("GetAddress", "Orders", new { accountId = address[i].AccountID, accountAddressId = address[i].AddressID, step = (int)CheckoutStep.EditAddress, parentStep = (int)CheckoutStep.BillingAddress })" role="button" class="btn btn-default" style="font-size:11px">Edit address</a>
+                                                    </div>
                                                 }
-                                                @if (!string.IsNullOrEmpty(address[i + 1].AddressLine2))
+                                                else
                                                 {
-                                                    @address[i + 1].AddressLine2<br />
-                                                }
-                                                @if (!string.IsNullOrEmpty(address[i + 1].AddressLine3) || !string.IsNullOrEmpty(address[i + 1].PostCode))
-                                                {
-                                                    @address[i + 1].AddressLine3 @address[i + 1].PostCode<br />
-                                                }
-                                                @if (address[i + 1].GlobalCountry != null)
-                                                {
-                                                    @address[i + 1].GlobalCountry.CountryName<br />
-                                                }
-                                                @if (!string.IsNullOrEmpty(address[i + 1].Telephone))
-                                                {
-                                                    <b>Phone:</b> @address[i + 1].Telephone<br />
-
+                                                    <div class="">
+                                                        <a href="@Url.Action("GetAddress", "Orders", new { accountId = ViewBag.AccountIds, billingAddressId = ViewBag.BillingAddressId, deliveryMethodId = ViewBag.DeliveryMethodId, step = (int)CheckoutStep.ShipmentRule, shippingAddressId = address[i].AddressID })" role="button" class="btn btn-primary" style="font-size:11px">Select shipping address</a>
+                                                        <a href="@Url.Action("GetAddress", "Orders", new { accountId = address[i].AccountID, billingAddressId = ViewBag.BillingAddressId, deliveryMethodId = ViewBag.DeliveryMethodId, step = (int)CheckoutStep.EditAddress, accountAddressId = address[i].AddressID, parentStep = (int)CheckoutStep.ShippingAddress })" role="button" class="btn btn-success" style="font-size:11px">Edit Address</a>
+                                                        <a href="@Url.Action("RemoveShippingAddress", "Orders", new { accountId = address[i].AccountID, billingAddressId = ViewBag.BillingAddressId, deliveryMethodId = ViewBag.DeliveryMethodId, accountAddressId = address[i].AddressID })" role="button" class="btn btn-danger custom-danger" style="font-size:11px">Remove address</a>
+                                                    </div>
                                                 }
 
-
-                                            </p>
-                                            <div class="">
-                                                <a href="@Url.Action("GetAddress", "Orders", new { accountId= ViewBag.AccountIds,accountBillingId=ViewBag.BillingAddressId, shippmentTypeId=ViewBag.ShippmentMethodType,step=(int)CheckoutStep.PaymentMethod,accountShippingId=address[i+1].AddressID })" role="button" class="btn btn-primary" style="font-size:11px">Select shipping address</a>
-                                                <a href="@Url.Action("GetAddress","Orders",new {accountId=address[i+1].AccountID,accountBillingId=ViewBag.BillingAddressId, shippmentTypeId=ViewBag.ShippmentMethodType,step=(int)CheckoutStep.EditAddress, accountAddressId=address[i+1].AddressID, parentStep=(int)CheckoutStep.ShippingAddress })" role="button" class="btn btn-success" style="font-size:11px">Edit address</a>
-                                                <a href="@Url.Action("RemoveShippingAddress", "Orders", new {accountId=address[i+1].AccountID,accountBillingId=ViewBag.BillingAddressId, shippmentTypeId=ViewBag.ShippmentMethodType, accountAddressId=address[i+1].AddressID })" role="button" class="btn btn-danger custom-danger" style="font-size:11px">Remove address</a>
                                             </div>
-                                        </div>
-                                    }
-                                </div>
-                                <br />
+                                        }
+                                        @if (address.ElementAtOrDefault(i + 1) != null)
+                                        {
+                                            <div class="col-md-6 both-btn">
+                                                <p class="p-mt-20">
+                                                    @if (!string.IsNullOrEmpty(address[i + 1].AddressLine1))
+                                                    {
+                                                        <b>@address[i + 1].AddressLine1</b><br />
+                                                    }
+                                                    @if (!string.IsNullOrEmpty(address[i + 1].AddressLine2))
+                                                    {
+                                                        @address[i + 1].AddressLine2<br />
+                                                    }
+                                                    @if (!string.IsNullOrEmpty(address[i + 1].AddressLine3) || !string.IsNullOrEmpty(address[i + 1].PostCode))
+                                                    {
+                                                        @address[i + 1].AddressLine3 @address[i + 1].PostCode<br />
+                                                    }
+                                                    @if (address[i + 1].GlobalCountry != null)
+                                                    {
+                                                        @address[i + 1].GlobalCountry.CountryName<br />
+                                                    }
+                                                    @if (!string.IsNullOrEmpty(address[i + 1].Telephone))
+                                                    {
+                                                        <b>Phone:</b> @address[i + 1].Telephone<br />
+
+                                                    }
+
+
+                                                </p>
+                                                <div class="">
+                                                    <a href="@Url.Action("GetAddress", "Orders", new { accountId = ViewBag.AccountIds, billingAddressId = ViewBag.BillingAddressId, deliveryMethodId = ViewBag.DeliveryMethodId, step = (int)CheckoutStep.ShipmentRule, shippingAddressId = address[i + 1].AddressID })" role="button" class="btn btn-primary" style="font-size:11px">Select shipping address</a>
+                                                    <a href="@Url.Action("GetAddress", "Orders", new { accountId = address[i + 1].AccountID, billingAddressId = ViewBag.BillingAddressId, deliveryMethodId = ViewBag.DeliveryMethodId, step = (int)CheckoutStep.EditAddress, accountAddressId = address[i + 1].AddressID, parentStep = (int)CheckoutStep.ShippingAddress })" role="button" class="btn btn-success" style="font-size:11px">Edit address</a>
+                                                    <a href="@Url.Action("RemoveShippingAddress", "Orders", new { accountId = address[i + 1].AccountID, billingAddressId = ViewBag.BillingAddressId, deliveryMethodId = ViewBag.DeliveryMethodId, accountAddressId = address[i + 1].AddressID })" role="button" class="btn btn-danger custom-danger" style="font-size:11px">Remove address</a>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                    <br />
+                                }
+
                             }
 
-                        }
-
-                        @if ((CheckoutStep)ViewBag.Step == CheckoutStep.ShippingAddress || (CheckoutStep)ViewBag.Step == CheckoutStep.EditAddress)
-                        {
+                            @if ((CheckoutStep)ViewBag.CurrentStep == CheckoutStep.ShippingAddress || (CheckoutStep)ViewBag.CurrentStep == CheckoutStep.EditAddress)
+                            {
+                                @Html.Partial("_AddOrEditAddress");
+                            }
+                        </div>
+                    }
+                    @if ((CheckoutStep)ViewBag.CurrentStep == CheckoutStep.DeliveryMethod)
+                    {
+                        <div class="content-wrapper select">
+                            <h2 class="text-uppercase">Select Delivery Method</h2>
+                            <hr class="custom-hr">
+                            <div class="deliveryMethod">
+                                <div class="form-check-inline">
+                                    <label class="control-label" for="radio1">
+                                        <input type="radio" class="form-check-input" id="radio1" name="optradio" value="@((int)DeliveryMethod.ToPickupPoint)" @((ViewBag.DeliveryMethodId != null && (DeliveryMethod)ViewBag.DeliveryMethodId == DeliveryMethod.ToPickupPoint) ? "checked" : "")>Pick up (From Collection Point) - Free
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="deliveryMethod">
+                                <div class="form-check-inline">
+                                    <label class="control-label" for="radio2">
+                                        <input type="radio" class="form-check-input" id="radio2" name="optradio" value="@((int)DeliveryMethod.ToShipmentAddress)" @((ViewBag.DeliveryMethodId != null && (DeliveryMethod)ViewBag.DeliveryMethodId == DeliveryMethod.ToShipmentAddress) ? "checked" : "")>Delivery To Address (Courier)
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="">
+                                <a href="javascript:;" role="button" class="btn btn-primary select-shipping-method-btn" style="font-size:11px" onclick="chooseDeliveryMethod()">Select delivery method</a>
+                            </div>
+                        </div>
+                    }
+                    @if ((CheckoutStep)ViewBag.CurrentStep == CheckoutStep.CollectionPiont)
+                    {
+                        <div class="content-wrapper select">
+                            @Html.Hidden("collectionPointId", (int?)ViewBag.CollectionPointId)
+                            <h2 class="text-uppercase">Select Collection Point</h2>
+                            <hr class="custom-hr">
+                            <div class="search-container row">
+                                <div class="search-box input-group col-md-6 col-12 ">
+                                    <input id="collection-postCode" type="text" name="search" value="" placeholder="Enter PostCode" class="text-target-postcode form-control text-uppercase" />
+                                    <div id="sp-btn-search" class="input-group-btn">
+                                        <button type="button" id="btn-search-category" class="btn btn-search-category" onclick="findNearCollectionPoints();">Show Collection Points</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="collection-points"></div>
+                            <br />
                             <div>
-                                <h4 class="text-uppercase mt-20 uni-add-new-address-h4">@(Model == null ? "Add a new address" : "Edit Address")</h4>
-                                <div class="search-container row">
-                                    <div class="search-box input-group col-md-6 col-12 ">
-                                        <input id="postCode" type="text" name="search" value="" placeholder="Enter PostCode" class="text-search-postcode form-control text-uppercase" />
-                                        <div id="sp-btn-search" class="input-group-btn">
-                                            <button type="button" id="btn-search-category" class="btn btn-search-category" onclick="SearchPostCode();">Find Address</button>
+                                <a href="javascript:;" role="button" class="btn btn-primary select-shipping-method-btn" style="font-size:11px" onclick="chooseCollectionPoint(@((int)CheckoutStep.PaymentMethod))">Select collection point</a>
+                            </div>
+                        </div>
+                    }
+                    @if ((CheckoutStep)ViewBag.CurrentStep == CheckoutStep.ShipmentRule)
+                    {
+                        <div class="content-wrapper select">
+                            @Html.Hidden("shipmentRuleId", (int?)ViewBag.ShipmentRuleId)
+                            <h2 class="text-uppercase">Select Shipment Type</h2>
+                            <hr class="custom-hr">
+                            <br />
+                            @foreach (var rule in ViewBag.ShippingRules)
+                            {
+                                <div class="shipping-rules">
+                                    <div class="shipping-rule col-md-6">
+                                        <div class="form-inline w-100" onclick="selectShippingRuleId(@rule.Id, this)">
+                                            <div class="control-label w-100">
+                                                <div style="float:left">
+                                                    <div class="shipping-rule-title">@rule.Courier</div>
+                                                    <div>@ViewBag.CurrencySymbol@rule.Price</div>
+                                                    <div>@rule.Description</div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div id="selectAddresss" class="col-md-6 clearfix">
-                                        <select id="selectApiAddress" name="address" class="find-address-select" onchange="OnchangeDropdownAddress()">
-                                        </select>
                                     </div>
                                 </div>
-
-                                <hr class="custom-hr">
-                                @using (Html.BeginForm("SaveAddress", "Orders", new { shippmentTypeId = ViewBag.ShippmentMethodType, accountBillingId = ViewBag.BillingAddressId }))
-                                {
-                                    @Html.HiddenFor(model => model.AddressID)
-                                    <div class="">
-                                        <div class="row">
-                                            <div class="col-md-6 col-sm-6">
-                                                <div class="form-group">
-                                                    @Html.EditorFor(model => model.AddressLine1, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Address Line 1", @required = "Required" } })
-                                                    @*<input type="text" class="form-control input-md inputNew" size="18" placeholder="Address Line 1">*@
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-sm-6">
-                                                <div class="form-group">
-                                                    @Html.EditorFor(model => model.AddressLine2, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Address Line 2", @required = "Required" } })
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-sm-6">
-                                                <div class="form-group">
-                                                    @Html.EditorFor(model => model.AddressLine3, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Address Line 3", @required = "Required" } })
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-sm-6">
-                                                <div class="form-group">
-                                                    @Html.EditorFor(model => model.PostCode, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Postal Code", @required = "Required" } })
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-sm-6">
-                                                <div class="form-group">
-                                                    @Html.EditorFor(model => model.Telephone, new { htmlattributes = new { @class = "form-control input-md inputNew h-40px", @placeholder = "Telephone Number", @required = "Required" } })
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-sm-6">
-                                                <div class="form-group">
-                                                    @Html.DropDownListFor(model => model.CountryID, ViewBag.Country as SelectList, new { @class = "find-address-select", @required = "Required" })
-
-                                                </div>
-                                            </div>
-
-                                            @if ((CheckoutStep)ViewBag.Step == CheckoutStep.ShippingAddress || (CheckoutStep)ViewBag.ParentStep == CheckoutStep.ShippingAddress)
-                                            {
-                                                <input type="hidden" name="AddTypeShipping" id="AddTypeShipping" value="true" />
-                                            }
-                                            else
-                                            {
-                                                <input type="hidden" name="AddTypeBilling" id="AddTypeBilling" value="true" />
-
-                                            }
-
-                                            @Html.HiddenFor(model => model.AccountID, (int)(ViewBag.AccountIds))
-
-                                            <div class="col-md-12">
-                                                <div class="button-submit">
-                                                    <button type="Submit" name="submitNewsletter" class="btn btn-block">Save Address</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
+                            }
+                            <br />
+                            <div>
+                                <a href="javascript:;" role="button" class="btn btn-primary select-shipping-method-btn" style="font-size:11px" onclick="chooseShippingRule(@((int)CheckoutStep.PaymentMethod))">Select shipping type</a>
                             </div>
-                        }
-                    </div>
+                        </div>
+                    }
+                    @if ((CheckoutStep)ViewBag.CurrentStep == CheckoutStep.PaymentMethod)
+                    {
+                        <div class="content-wrapper select">
+                            <h2 class="text-uppercase">Select Payment Method</h2>
+                            <hr class="custom-hr">
+                            <div class="deliveryMethod ">
+                                <div class="form-check-inline">
+                                    <label class="control-label" for="radio2">
+                                        <input type="radio" class="form-check-input" id="Cash" name="paymentMethod" value="@((int)PaymentMethod.Cash)">  Cash
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="deliveryMethod ">
+                                <div class="form-check-inline">
+                                    <label class="control-label" for="radio1">
+                                        <input type="radio" class="form-check-input" id="PayPal" name="paymentMethod" value="@((int)PaymentMethod.Paypal)">  Paypal
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="">
+                                <a href="javascript:;" role="button" class="btn btn-primary select-payment-method-btn" style="font-size:11px" onclick="choosePaymentMethod()">Select payment method</a>
+                            </div>
+                        </div>
+                    }
                 </div>
-                @if ((CheckoutStep)ViewBag.Step == CheckoutStep.ShippmentMethod)
-                {
-                    <div class="content-wrapper select">
-                        <h2 class="text-uppercase">Select Shipping Method</h2>
-                        <hr class="custom-hr">
-                        <div class="shippingMethod">
-                            <div class="form-check-inline">
-                                <label class="control-label" for="radio1">
-                                    <input type="radio" class="form-check-input" id="radio1" name="optradio" value="0" @((ViewBag.ShippmentMethodType != null && (ShippingMethodType)ViewBag.ShippmentMethodType == ShippingMethodType.Pickup) ? "checked" : "")>Pick up (From Store) Free
-                                </label>
-                            </div>
-                        </div>
-                        <div class="shippingMethod">
-                            <div class="form-check-inline">
-                                <label class="control-label" for="radio2">
-                                    <input type="radio" class="form-check-input" id="radio2" name="optradio" value="1" @((ViewBag.ShippmentMethodType != null && (ShippingMethodType)ViewBag.ShippmentMethodType == ShippingMethodType.Delivery) ? "checked" : "")>Delivery (Courier) $10
-                                </label>
-                            </div>
-                        </div>
-                        <div class="">
-                            <a href="javascript:;" role="button" class="btn btn-primary select-shipping-method-btn" style="font-size:11px" onclick="ChooseShippingAddress(@ViewBag.AccountIds,@ViewBag.BillingAddressId)">Select shipping method</a>
-                        </div>
-                    </div>
-                }
-                @if ((CheckoutStep)ViewBag.Step == CheckoutStep.CollectionPiont)
-                {
-                    <div class="content-wrapper select">
-                        @Html.Hidden("collectionPointId", (int?)ViewBag.CollectionPointId)
-                        <h2 class="text-uppercase">Select Collection Point</h2>
-                        <hr class="custom-hr">
-                        <div class="search-container row">
-                            <div class="search-box input-group col-md-6 col-12 ">
-                                <input id="collection-postCode" type="text" name="search" value="" placeholder="Enter PostCode" class="text-target-postcode form-control text-uppercase" />
-                                <div id="sp-btn-search" class="input-group-btn">
-                                    <button type="button" id="btn-search-category" class="btn btn-search-category" onclick="findNearCollectionPoints();">Show Collection Points</button>
-                                </div>
-                            </div>
-                        </div>
-                        <br />
-                        <div class="collection-points"></div>
-                        <br />
-                        <div>
-                            <a href="javascript:;" role="button" class="btn btn-primary select-shipping-method-btn" style="font-size:11px" onclick="ChooseCollectionPoint(@ViewBag.AccountIds,@ViewBag.BillingAddressId,@ViewBag.ShippmentMethodType,@((int)CheckoutStep.PaymentMethod))">Select shipping method</a>
-                        </div>
-                    </div>
-                }
-                @if ((CheckoutStep)ViewBag.Step == CheckoutStep.PaymentMethod)
-                {
-                    <div class="content-wrapper select">
-                        <h2 class="text-uppercase">Select Payment Method</h2>
-                        <hr class="custom-hr">
-                        <div class="shippingMethod ">
-                            <div class="form-check-inline">
-                                <label class="control-label" for="radio2">
-                                    <input type="radio" class="form-check-input" id="Cash" name="paymentMethod" value="2">  Cash
-                                </label>
-                            </div>
-                        </div>
-                        <div class="shippingMethod ">
-                            <div class="form-check-inline">
-                                <label class="control-label" for="radio1">
-                                    <input type="radio" class="form-check-input" id="PayPal" name="paymentMethod" value="1">  Paypal
-                                </label>
-                            </div>
-                        </div>
-                        <div class="">
-                            <a href="javascript:;" role="button" class="btn btn-primary select-payment-method-btn" style="font-size:11px" onclick="ChoosePaymentMethod(@ViewBag.AccountIds,@(ViewBag.ShippingAddressId ?? "null"),@ViewBag.ShippmentMethodType,@ViewBag.CollectionPointId)">Select payment method</a>
-                        </div>
-                    </div>
-                }
             </div>
         </div>
     </div>

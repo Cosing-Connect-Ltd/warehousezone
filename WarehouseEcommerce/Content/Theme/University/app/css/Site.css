@@ -767,23 +767,28 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
     }
 }
 
-.shippingMethod {
+.deliveryMethod {
     text-transform: none !important;
 }
 
-    .shippingMethod label {
+    .deliveryMethod label {
         display: flex;
         font-weight: 300 !important;
         margin-top: 8px;
     }
 
-    .shippingMethod input[type="checkbox"], input[type="radio"] {
+    .deliveryMethod input[type="checkbox"], input[type="radio"] {
         margin: 3px 10px 0 !important;
+        height: 25px;
+        cursor: pointer;
     }
 
-.collection-points{
+.shipping-rules,
+.collection-points {
     display: flex;
 }
+
+.shipping-rule,
 .collection-point {
     display: block;
     color: #434343;
@@ -794,6 +799,7 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
     float: left;
 }
 
+    .shipping-rule .form-inline,
     .collection-point .form-inline {
         background: rgb(231,234,237);
         border: 2px solid rgb(231,234,237);
@@ -803,10 +809,13 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
         border-radius: 5px;
         cursor: pointer;
     }
+
+    .shipping-rule .control-label,
     .collection-point .control-label {
         font-weight: 300 !important;
     }
 
+    .shipping-rule .collection-point-title,
     .collection-point .collection-point-title {
         font-weight: bold !important;
     }
@@ -819,10 +828,7 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
         text-align: right;
     }
 
-    .collection-point input[type="checkbox"], input[type="radio"] {
-        margin: 3px 10px 0 !important;
-    }
-
+.shipping-rule-selected,
 .collection-point-selected {
     border: 2px solid gray !important;
 }
@@ -831,6 +837,10 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
     color: #9a9898 !important;
     cursor: default !important;
     border: 2px dashed lightgray !important;
+}
+
+.checkout-side-menu{
+    margin-top: 10px;
 }
 
 @media(max-width:991px) {
@@ -948,7 +958,7 @@ h2 {
     box-shadow: 1px 4px 4px 0px rgba(0,0,0,.1);
 }
 
-.confirm-order-page .shippingMethod {
+.confirm-order-page .deliveryMethod {
     background: rgb(231,234,237);
     display: block;
     border-bottom: 1px solid rgb(231,234,237);
@@ -960,7 +970,7 @@ h2 {
     margin-bottom: 20px;
 }
 
-.get-address-page .shippingMethod {
+.get-address-page .deliveryMethod {
     background: rgb(231,234,237);
     display: block;
     border-bottom: 1px solid rgb(231,234,237);

@@ -5,11 +5,11 @@ using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using WarehouseEcommerce.Helpers;
 
@@ -27,14 +27,28 @@ namespace WarehouseEcommerce.Controllers
         private readonly IMapper _mapper;
         private readonly IGaneConfigurationsHelper _configurationsHelper;
         private readonly ITenantLocationServices _tenantLocationServices;
-        string PAYPAL_RET_URL = System.Configuration.ConfigurationManager.AppSettings["PAYPAL_RET_URL"] != null
-                                           ? System.Configuration.ConfigurationManager.AppSettings["PAYPAL_RET_URL"] : "";
-        string PAYPAL_URL = System.Configuration.ConfigurationManager.AppSettings["PAYPAL_URL"] != null
-                                        ? System.Configuration.ConfigurationManager.AppSettings["PAYPAL_URL"] : "";
+        private readonly ITenantWebsiteService _tenantWebsiteService;
+        private readonly string _paypalReturnUrl;
+        private readonly string _paypalUrl;
 
-        public OrdersController(IProductServices productServices, IProductLookupService productlookupServices, IProductPriceService productPriceService, ICommonDbServices commonDbServices, ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IUserService userService, IActivityServices activityServices, ITenantsServices tenantServices, IMapper mapper, IGaneConfigurationsHelper configurationsHelper, ITenantLocationServices tenantLocationServices)
+        public OrdersController(IProductServices productServices,
+                                IProductLookupService productlookupServices,
+                                ICoreOrderService orderService,
+                                IPropertyService propertyService,
+                                IAccountServices accountServices,
+                                ILookupServices lookupServices,
+                                ITenantsCurrencyRateServices tenantsCurrencyRateServices,
+                                IUserService userService,
+                                IActivityServices activityServices,
+                                ITenantsServices tenantServices,
+                                IMapper mapper,
+                                IGaneConfigurationsHelper configurationsHelper,
+                                ITenantLocationServices tenantLocationServices,
+                                ITenantWebsiteService tenantWebsiteService)
             : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices)
         {
+            _paypalReturnUrl = ConfigurationManager.AppSettings["PAYPAL_RET_URL"] ?? "";
+            _paypalUrl = ConfigurationManager.AppSettings["PAYPAL_URL"] ?? "";
             _productServices = productServices;
             _userService = userService;
             _activityServices = activityServices;
@@ -45,6 +59,7 @@ namespace WarehouseEcommerce.Controllers
             _mapper = mapper;
             _configurationsHelper = configurationsHelper;
             _tenantLocationServices = tenantLocationServices;
+            _tenantWebsiteService = tenantWebsiteService;
         }
         // GET: Orders
         public ActionResult Index()
@@ -52,61 +67,58 @@ namespace WarehouseEcommerce.Controllers
             return View();
         }
 
-        public ActionResult GetAddress(int? accountId, int? accountAddressId, int? accountBillingId, int? accountShippingId, int? shippmentTypeId, int? collectionPointId = null, int? step = null, int? parentStep = null)
+        public ActionResult GetAddress(int? accountId, int? accountAddressId, int? billingAddressId, int? shippingAddressId, int? deliveryMethodId, int? collectionPointId, int? step, int? parentStep, int? shipmentRuleId)
         {
-            accountShippingId = accountShippingId <= 0? null: accountShippingId;
-            accountBillingId = accountBillingId <= 0 ? null : accountBillingId;
-            if (GaneCartItemsSessionHelper.GetCartItemsSession().Count > 0)
-            {
-                if (CurrentUser?.UserId <= 0)
-                {
-                    return RedirectToAction("Login", "User", new { PlaceOrder = true });
-                }
-
-                var currentStep = step != null ? (CheckoutStep)step : CheckoutStep.BillingAddress;
-
-                ViewBag.cart = true;
-                ViewBag.AccountIds = accountId = CurrentUser?.AccountId;
-                ViewBag.Country = new SelectList(_lookupServices.GetAllGlobalCountries(), "CountryID", "CountryName");
-                ViewBag.ShippingAddressId = accountShippingId;
-                ViewBag.BillingAddressId = accountBillingId;
-                ViewBag.Step = currentStep;
-                ViewBag.ShippmentMethodType = shippmentTypeId;
-                ViewBag.CollectionPointId = collectionPointId;
-                if (currentStep == CheckoutStep.EditAddress)
-                {
-                    ViewBag.ParentStep = parentStep != null ? (CheckoutStep)parentStep : CheckoutStep.BillingAddress;
-                    var model = AccountServices.GetAccountAddressById(accountAddressId ?? 0);
-                    return View(model);
-                }
-                //Billing Address Section
-                else if (currentStep == CheckoutStep.BillingAddress)
-                {
-                    var billingAddress = AccountServices.GetAllValidAccountAddressesByAccountId(accountId ?? 0).Where(u => u.AddTypeBilling == true).ToList();
-                    if (billingAddress.Count > 0)
-                    {
-                        ViewBag.BillingAddress = true;
-
-                        ViewBag.Addresses = billingAddress;
-
-                    }
-                    ViewBag.AddressMessage = "Billing Address";
-
-                }
-                // Shipping Address Section
-                else if (currentStep == CheckoutStep.ShippingAddress)
-                {
-                    ViewBag.Addresses = AccountServices.GetAllValidAccountAddressesByAccountId(accountId ?? 0).Where(u => u.AddTypeShipping == true).ToList();
-                    ViewBag.AddressMessage = "Shipping Address";
-                }
-            }
-            else
+            if (GaneCartItemsSessionHelper.GetCartItemsSession().Count <= 0)
             {
                 return RedirectToAction("Index", "Home");
             }
 
-            return View();
+            if (CurrentUser?.UserId <= 0)
+            {
+                return RedirectToAction("Login", "User", new { PlaceOrder = true });
+            }
 
+            var currentStep = step != null ? (CheckoutStep)step : CheckoutStep.BillingAddress;
+
+            ViewBag.cart = true;
+            ViewBag.AccountIds = accountId = CurrentUser?.AccountId;
+            ViewBag.Countries = new SelectList(_lookupServices.GetAllGlobalCountries(), "CountryID", "CountryName");
+            ViewBag.ShippingAddressId = shippingAddressId <= 0 ? null : shippingAddressId;
+            ViewBag.BillingAddressId = billingAddressId <= 0 ? null : billingAddressId;
+            ViewBag.ShipmentRuleId = shipmentRuleId;
+            ViewBag.CurrentStep = currentStep;
+            ViewBag.DeliveryMethodId = deliveryMethodId;
+            ViewBag.CollectionPointId = collectionPointId;
+
+            switch (currentStep)
+            {
+                case CheckoutStep.BillingAddress:
+                    ViewBag.Addresses = AccountServices.GetAllValidAccountAddressesByAccountId(accountId ?? 0).Where(u => u.AddTypeBilling == true).ToList();
+                    break;
+                case CheckoutStep.ShippingAddress:
+                    ViewBag.Addresses = AccountServices.GetAllValidAccountAddressesByAccountId(accountId ?? 0).Where(u => u.AddTypeShipping == true).ToList();
+                    break;
+                case CheckoutStep.EditAddress:
+                    ViewBag.ParentStep = parentStep != null ? (CheckoutStep)parentStep : CheckoutStep.BillingAddress;
+                    var model = AccountServices.GetAccountAddressById(accountAddressId ?? 0);
+                    return View(model);
+                case CheckoutStep.ShipmentRule:
+                    var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
+                    ViewBag.CurrencySymbol = currencyyDetail.Symbol;
+                    var cartItems = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
+                    var parcelWeightInGrams = cartItems.Sum(i => (i.KitProductCartItems?.Sum(ki => (ki.SimpleProductMaster?.Weight ?? 0)) ?? (i.ProductMaster?.Weight ?? 0)));
+                    var shippingRules = _tenantWebsiteService.GetShippingRulesByShippingAddress(CurrentTenantId, CurrentTenantWebsite.SiteID, shippingAddressId.Value, parcelWeightInGrams);
+                    shippingRules.ForEach(r => {
+                        r.Price = Math.Round(((r.Price) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
+                    });
+
+                    ViewBag.ShippingRules = shippingRules;
+
+                    break;
+            }
+
+            return View();
         }
 
         public async Task<JsonResult> GetNearWarehouses(string postCode)
@@ -170,7 +182,7 @@ namespace WarehouseEcommerce.Controllers
 
 
 
-        public ActionResult SaveAddress(AccountAddresses accountAddresses, int? shippmentTypeId, int? accountBillingId)
+        public ActionResult SaveAddress(AccountAddresses accountAddresses, int? deliveryMethodId, int? billingAddressId)
         {
             accountAddresses.Name = "Ecommerce";
             if (accountAddresses.AccountID <= 0)
@@ -180,43 +192,46 @@ namespace WarehouseEcommerce.Controllers
             AccountServices.SaveAccountAddress(accountAddresses, CurrentUserId == 0 ? 1 : CurrentUserId);
             if (accountAddresses.AddTypeShipping == true)
             {
-                return RedirectToAction("GetAddress", new { accountId = accountAddresses.AccountID, accountBillingId, shippmentTypeId, step=(int)CheckoutStep.ShippingAddress });
+                return RedirectToAction("GetAddress", new { accountId = accountAddresses.AccountID, billingAddressId, deliveryMethodId, step=(int)CheckoutStep.ShippingAddress });
             }
 
             return RedirectToAction("GetAddress", new { AccountId = accountAddresses.AccountID});
 
         }
 
-        public ActionResult RemoveShippingAddress(int accountAddressId, int accountBillingId, int accountId, int shippmentTypeId)
+        public ActionResult RemoveShippingAddress(int accountAddressId, int billingAddressId, int accountId, int deliveryMethodId)
         {
             var accountAddresses = AccountServices.DeleteAccountAddress(accountAddressId, (CurrentUserId == 0 ? 1 : CurrentUserId));
-            return RedirectToAction("GetAddress", new { accountId, accountBillingId, shippmentTypeId, step = (int)CheckoutStep.ShippingAddress });
+            return RedirectToAction("GetAddress", new { accountId, billingAddressId, deliveryMethodId, step = (int)CheckoutStep.ShippingAddress });
         }
 
-        public ActionResult ConfirmOrder(int accountId, int? shipmentAddressId, int shippmentTypeId,int paymentTypeId, int? collectionPointId)
+        public ActionResult ConfirmOrder(int accountId, int? shippingAddressId, int? shipmentRuleId, int deliveryMethodId,int paymentTypeId, int? collectionPointId)
         {
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.cart = true;
             ViewBag.CartModal = true;
             ViewBag.paymentMethod = paymentTypeId;
             List<AccountAddresses> accountAddresses = new List<AccountAddresses>();
-            if (shipmentAddressId != null)
+            if ((DeliveryMethod)deliveryMethodId == DeliveryMethod.ToShipmentAddress)
             {
-                accountAddresses.Add(AccountServices.GetAccountAddressById(shipmentAddressId.Value));
+                accountAddresses.Add(AccountServices.GetAccountAddressById(shippingAddressId.Value));
+                var shippingRule = _tenantWebsiteService.GetWebsiteShippingRulesById(shipmentRuleId.Value);
+                shippingRule.Price = Math.Round(((shippingRule.Price) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
+                ViewBag.ShippingRule = shippingRule;
             }
             accountAddresses.Add(AccountServices.GetAllValidAccountAddressesByAccountId(accountId).FirstOrDefault(u => u.AddTypeBilling == true));
             ViewBag.Addresses = accountAddresses;
             var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
             var orders = OrderService.CreateShopOrder(accountAddresses.FirstOrDefault().AccountID, _mapper.Map(models, new List<OrderDetail>()), CurrentTenantId, CurrentUserId, CurrentWarehouseId,CurrentTenantWebsite.SiteID);
             ViewBag.TotalQty = Math.Round(((models.Sum(u => u.TotalAmount)) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
-            ViewBag.Symbol = currencyyDetail.Symbol;
-            ViewBag.ShipmentMethod = shippmentTypeId;
-            if ((ShippingMethodType)shippmentTypeId == ShippingMethodType.Pickup)
+            ViewBag.CurrencySymbol = currencyyDetail.Symbol;
+            ViewBag.DeliveryMethodId = deliveryMethodId;
+            if ((DeliveryMethod)deliveryMethodId == DeliveryMethod.ToPickupPoint)
             {
                 ViewBag.CollectionPoint = _tenantLocationServices.GetActiveTenantLocationById(collectionPointId.Value);
             }
-            ViewBag.RetUrl = PAYPAL_RET_URL;
-            ViewBag.PAYPALURL = PAYPAL_URL;
+            ViewBag.RetUrl = _paypalReturnUrl;
+            ViewBag.PAYPALURL = _paypalUrl;
             ViewBag.OrdersId = orders.OrderID;
             return View(models);
         }
@@ -298,8 +313,8 @@ namespace WarehouseEcommerce.Controllers
             using (var client = new HttpClient())
             {
                 // This is necessary in order for PayPal to not resend the IPN.
-                await client.PostAsync(PAYPAL_URL, new StringContent(string.Empty));
-                var response = await client.PostAsync(PAYPAL_URL, new FormUrlEncodedContent(ipn));
+                await client.PostAsync(_paypalUrl, new StringContent(string.Empty));
+                var response = await client.PostAsync(_paypalUrl, new FormUrlEncodedContent(ipn));
                 var responseString = await response.Content.ReadAsStringAsync();
                 return (responseString == "VERIFIED");
             }

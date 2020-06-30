@@ -1116,23 +1116,27 @@ ul.mhp-menu {
     }
 }
 
-.shippingMethod {
+.deliveryMethod {
     text-transform: none !important;
 }
 
-    .shippingMethod label {
+    .deliveryMethod label {
         display: flex;
         font-weight: 300 !important;
         margin-top: 8px;
     }
-    .shippingMethod input[type="checkbox"], input[type="radio"] {
+    .deliveryMethod input[type="checkbox"], input[type="radio"] {
         margin: 3px 10px 0 !important;
+        height: 25px;
+        cursor: pointer;
     }
 
+.shipping-rules,
 .collection-points {
     display: flex;
 }
 
+.shipping-rule,
 .collection-point {
     display: block;
     color: #434343;
@@ -1143,6 +1147,7 @@ ul.mhp-menu {
     float: left;
 }
 
+    .shipping-rule .form-inline,
     .collection-point .form-inline {
         background: rgb(231,234,237);
         border: 2px solid rgb(231,234,237);
@@ -1153,10 +1158,12 @@ ul.mhp-menu {
         cursor: pointer;
     }
 
+    .shipping-rule .control-label,
     .collection-point .control-label {
         font-weight: 300 !important;
     }
 
+    .shipping-rule .collection-point-title,
     .collection-point .collection-point-title {
         font-weight: bold !important;
     }
@@ -1170,10 +1177,7 @@ ul.mhp-menu {
         text-align: right;
     }
 
-    .collection-point input[type="checkbox"], input[type="radio"] {
-        margin: 3px 10px 0 !important;
-    }
-
+.shipping-rule-selected,
 .collection-point-selected {
     border: 2px solid gray !important;
 }
@@ -1183,6 +1187,11 @@ ul.mhp-menu {
     cursor: default !important;
     border: 2px dashed lightgray !important;
 }
+
+.checkout-side-menu {
+    margin-top: 10px;
+}
+
 
 @media(max-width:991px) {
     .select-shipping-method-btn, .select-payment-method-btn {
@@ -1265,7 +1274,7 @@ ul.mhp-menu {
     box-shadow: 1px 4px 4px 0px rgba(0,0,0,.1);
 }
 
-.confirm-order-page .shippingMethod {
+.confirm-order-page .deliveryMethod {
     background: rgb(231,234,237);
     display: block;
     border-bottom: 1px solid rgb(231,234,237);
@@ -1277,7 +1286,7 @@ ul.mhp-menu {
     margin-bottom: 20px;
 }
 
-.get-address-page .shippingMethod {
+.get-address-page .deliveryMethod {
     background: rgb(231,234,237);
     display: block;
     border-bottom: 1px solid rgb(231,234,237);

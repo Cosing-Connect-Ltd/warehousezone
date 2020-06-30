@@ -2,17 +2,18 @@
 {
     using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class cartIdaddedinkitProductItem : DbMigration
     {
         public override void Up()
         {
+            Sql("DELETE FROM dbo.KitProductCartItems");
             DropIndex("dbo.KitProductCartItems", new[] { "WebsiteCartItem_Id" });
             RenameColumn(table: "dbo.KitProductCartItems", name: "WebsiteCartItem_Id", newName: "CartId");
             AlterColumn("dbo.KitProductCartItems", "CartId", c => c.Int(nullable: false));
             CreateIndex("dbo.KitProductCartItems", "CartId");
         }
-        
+
         public override void Down()
         {
             DropIndex("dbo.KitProductCartItems", new[] { "CartId" });

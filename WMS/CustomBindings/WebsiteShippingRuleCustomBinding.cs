@@ -19,16 +19,17 @@ namespace WMS.CustomBindings
             var tenantWebsiteService = DependencyResolver.Current.GetService<ITenantWebsiteService>();
             var transactions = tenantWebsiteService.GetAllValidWebsiteShippingRules(tenantId, SiteId).Select(u => new
             {
-                Id = u.Id,
+                u.Id,
                 SiteName = u.TenantWebsites == null ? "" : u.TenantWebsites.SiteName,
                 CountryName = u.GlobalCountry == null ? "" : u.GlobalCountry.CountryName,
-                Courier=u.Courier,
-                Region=u.Region,
-                PostalArea=u.PostalArea,
-                WeightinGrams=u.WeightinGrams,
-                Price=u.Price,
-                IsActive=u.IsActive,
-                SortOrder=u.SortOrder
+                u.Courier,
+                u.Region,
+                u.PostalArea,
+                u.WeightinGrams,
+                u.Price,
+                u.IsActive,
+                u.SortOrder,
+                u.Description
 
             });
             return transactions;
@@ -113,6 +114,7 @@ namespace WMS.CustomBindings
             viewModel.Columns.Add("PostalArea");
             viewModel.Columns.Add("WeightinGrams");
             viewModel.Columns.Add("Price");
+            viewModel.Columns.Add("Description");
             viewModel.Columns.Add("SortOrder");
             viewModel.Columns.Add("IsActive");
             viewModel.Pager.PageSize = 10;

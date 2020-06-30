@@ -1389,6 +1389,7 @@
     <Content Include="Views\Theme\University\Shared\_KitProductChildsSelectorWizardModal.cshtml" />
     <Content Include="Views\Theme\University\Products\_ProductByAttributeSelector.cshtml" />
     <Content Include="Views\Theme\University\Shared\_ProductByAttributeSelectorModal.cshtml" />
+    <Content Include="Views\Theme\University\Orders\_AddOrEditAddress.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
