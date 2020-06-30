@@ -978,7 +978,7 @@ namespace Ganedata.Core.Services
         public IEnumerable<KitProductCartSession> GetAllValidKitCartItemsList(int KitProductId)
         {
 
-                var data= _currentDbContext.KitProductCartItems.Where(u => u.KitProductId == KitProductId && u.IsDeleted != true).ToList()
+                var data= _currentDbContext.KitProductCartItems.Where(u => u.CartId == KitProductId && u.IsDeleted != true).ToList()
                     .Select(u => new KitProductCartSession
                     {
                         SimpleProductId = u.SimpleProductId,
