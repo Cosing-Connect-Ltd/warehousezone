@@ -16,6 +16,8 @@ namespace Ganedata.Core.Entities.Domain
         public int SiteID { get; set; }
         public int ProductId { get; set; }
 
+      
+
         public int UserId { get; set; }
 
         public decimal Quantity { get; set; }

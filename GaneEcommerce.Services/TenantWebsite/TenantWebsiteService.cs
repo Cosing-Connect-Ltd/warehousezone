@@ -947,7 +947,7 @@ namespace Ganedata.Core.Services
         public IEnumerable<KitProductCartSession> GetAllValidKitCartItemsList(int KitProductId)
         {
             
-                var data= _currentDbContext.KitProductCartItems.Where(u => u.KitProductId == KitProductId && u.IsDeleted != true).ToList()
+                var data= _currentDbContext.KitProductCartItems.Where(u => u.CartId == KitProductId && u.IsDeleted != true).ToList()
                     .Select(u => new KitProductCartSession
                     {
                         SimpleProductId = u.SimpleProductId,
@@ -969,7 +969,7 @@ namespace Ganedata.Core.Services
             {
 
 
-                var cartProduct = _currentDbContext.WebsiteCartItems.FirstOrDefault(u => u.ProductId == orderDetail.ProductId && u.SiteID == SiteId && u.UserId == UserId);
+                var cartProduct = _currentDbContext.WebsiteCartItems.FirstOrDefault(u => u.ProductId == orderDetail.ProductId && u.SiteID == SiteId && u.UserId == UserId && orderDetail.ProductMaster.ProductType != ProductKitTypeEnum.Kit);
                 if (cartProduct == null)
                 {
                     WebsiteCartItem cartItem = new WebsiteCartItem();
@@ -981,6 +981,7 @@ namespace Ganedata.Core.Services
                     cartItem.SiteID = SiteId;
                     cartItem.UpdateCreatedInfo(UserId);
                     _currentDbContext.WebsiteCartItems.Add(cartItem);
+                    _currentDbContext.SaveChanges();
                     if (orderDetail.KitProductCartItems != null && orderDetail.KitProductCartItems.Count > 0)
                     {
                         foreach (var item in orderDetail.KitProductCartItems)
@@ -989,47 +990,17 @@ namespace Ganedata.Core.Services
                             kitProductCart.KitProductId = item.KitProductId;
                             kitProductCart.SimpleProductId = item.SimpleProductId;
                             kitProductCart.Quantity = item.Quantity;
+                            kitProductCart.CartId = cartItem.Id;
                             kitProductCart.UpdateCreatedInfo(UserId);
                             _currentDbContext.KitProductCartItems.Add(kitProductCart);
 
                         }
+                        _currentDbContext.SaveChanges();
                     }
 
                 }
                 else
                 {
-                    if (orderDetail.KitProductCartItems != null && orderDetail.KitProductCartItems.Count > 0)
-                    {
-                       
-                        var simpleproducts = orderDetail.KitProductCartItems.Select(u => u.SimpleProductId).ToList();
-                        var ToDelete = _currentDbContext.KitProductCartItems.Where(x => x.KitProductId == orderDetail.ProductId && !simpleproducts.Contains(x.SimpleProductId) && x.IsDeleted != true);
-                        foreach(var item in ToDelete)
-                        {
-                            var Current = _currentDbContext.KitProductCartItems.FirstOrDefault(x => x.SimpleProductId == item.SimpleProductId &&
-                                                     x.IsDeleted != true);
-                            Current.IsDeleted = true;
-                            _currentDbContext.Entry(Current).State = EntityState.Modified;
-                        }
-                       
-                        foreach (var item in orderDetail.KitProductCartItems)
-                        {
-                            var Current = _currentDbContext.KitProductCartItems.FirstOrDefault(x => x.SimpleProductId == item.SimpleProductId &&
-                                                     x.IsDeleted != true);
-                            if (Current == null)
-                            {
-                                KitProductCartItem kitProductCart = new KitProductCartItem();
-                                kitProductCart.KitProductId = orderDetail.ProductId;
-                                kitProductCart.SimpleProductId = item.SimpleProductId;
-                                kitProductCart.Quantity = item.Quantity;
-                                _currentDbContext.KitProductCartItems.Add(kitProductCart);
-                            }
-                            else 
-                            {
-                                Current.Quantity = item.Quantity;
-                                _currentDbContext.Entry(Current).State=EntityState.Modified;
-                            }
-                        }
-                    }
                     cartProduct.IsDeleted = false;
                     cartProduct.Quantity = orderDetail.Qty;
                     cartProduct.UpdateUpdatedInfo(UserId);

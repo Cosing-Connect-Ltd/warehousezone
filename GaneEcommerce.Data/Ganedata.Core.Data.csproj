@@ -911,6 +911,10 @@
     <Compile Include="Migrations\202006260905517_adding-mainproduct-in-kitproductcartitems-table.designer.cs">
       <DependentUpon>202006260905517_adding-mainproduct-in-kitproductcartitems-table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202006301522512_cartId-added-in-kitProductItem.cs" />
+    <Compile Include="Migrations\202006301522512_cartId-added-in-kitProductItem.designer.cs">
+      <DependentUpon>202006301522512_cartId-added-in-kitProductItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1914,6 +1918,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202006260905517_adding-mainproduct-in-kitproductcartitems-table.resx">
       <DependentUpon>202006260905517_adding-mainproduct-in-kitproductcartitems-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006301522512_cartId-added-in-kitProductItem.resx">
+      <DependentUpon>202006301522512_cartId-added-in-kitProductItem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

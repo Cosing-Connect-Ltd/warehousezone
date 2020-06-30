@@ -281,6 +281,7 @@ namespace WarehouseEcommerce.Controllers
             if (!ProductId.HasValue)
             {
                 if (CurrentUserId > 0)
+
                 {
                     var models = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId)
                         .ToList().Select(u => new OrderDetailSessionViewModel
@@ -289,10 +290,10 @@ namespace WarehouseEcommerce.Controllers
                             Price = u.UnitPrice,
                             Qty = u.Quantity,
                             ProductId = u.ProductId,
+                            KitProductCartItems= new List<KitProductCartSession>(_tenantWebsiteService.GetAllValidKitCartItemsList(u.Id))
 
 
                         }).ToList();
-                    models.ForEach(u => u.KitProductCartItems= new List<KitProductCartSession>(_tenantWebsiteService.GetAllValidKitCartItemsList(u.ProductId)));
                     models.ForEach(u => u.TotalAmount = Math.Round((u.Qty * u.Price), 2));
                     ViewBag.CurrencySymbol = currencyyDetail.Symbol;
                     ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
@@ -317,15 +318,18 @@ namespace WarehouseEcommerce.Controllers
                         _tenantWebsiteService.RemoveCartItem((ProductId ?? 0), CurrentTenantWebsite.SiteID, CurrentUserId);
                         GaneCartItemsSessionHelper.RemoveCartItemSession(ProductId ?? 0);
                         var models = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId)
-                         .ToList().Select(u => new OrderDetailSessionViewModel
-                         {
-                             ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
-                             Price = u.UnitPrice,
-                             Qty = u.Quantity,
-                             ProductId = u.ProductId
-                         }).ToList();
+                        .ToList().Select(u => new OrderDetailSessionViewModel
+                        {
+                            ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
+                            Price = u.UnitPrice,
+                            Qty = u.Quantity,
+                            ProductId = u.ProductId,
+                            KitProductCartItems = new List<KitProductCartSession>(_tenantWebsiteService.GetAllValidKitCartItemsList(u.Id))
 
-                        models.ForEach(u => u.KitProductCartItems = new List<KitProductCartSession>(_tenantWebsiteService.GetAllValidKitCartItemsList(u.ProductId).ToList()));
+
+                        }).ToList();
+
+
                         models.ForEach(u => u.TotalAmount = Math.Round((u.Qty * u.Price), 2));
                         ViewBag.CurrencySymbol = currencyyDetail.Symbol;
                         ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
@@ -360,15 +364,16 @@ namespace WarehouseEcommerce.Controllers
                     {
                         var count = _tenantWebsiteService.AddOrUpdateCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, (GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>()));
                         var models = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId)
-                        .ToList().Select(u => new OrderDetailSessionViewModel
-                        {
-                            ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
-                            Price = u.UnitPrice,
-                            Qty = u.Quantity,
-                            ProductId = u.ProductId
-                        }).ToList();
+                         .ToList().Select(u => new OrderDetailSessionViewModel
+                         {
+                             ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
+                             Price = u.UnitPrice,
+                             Qty = u.Quantity,
+                             ProductId = u.ProductId,
+                             KitProductCartItems = new List<KitProductCartSession>(_tenantWebsiteService.GetAllValidKitCartItemsList(u.Id))
 
-                        models.ForEach(u => u.KitProductCartItems = new List<KitProductCartSession>(_tenantWebsiteService.GetAllValidKitCartItemsList(u.ProductId).ToList()));
+
+                         }).ToList();
                         models.ForEach(u => u.TotalAmount = Math.Round((u.Qty * u.Price), 2));
                         ViewBag.CurrencySymbol = currencyyDetail.Symbol;
                         ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
@@ -405,16 +410,16 @@ namespace WarehouseEcommerce.Controllers
                     {
                         var count = _tenantWebsiteService.AddOrUpdateCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, (GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>()));
                         var models = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId)
-                        .ToList().Select(u => new OrderDetailSessionViewModel
-                        {
-                            ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
-                            Price = u.UnitPrice,
-                            Qty = u.Quantity,
-                            ProductId = u.ProductId,
+                         .ToList().Select(u => new OrderDetailSessionViewModel
+                         {
+                             ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
+                             Price = u.UnitPrice,
+                             Qty = u.Quantity,
+                             ProductId = u.ProductId,
+                             KitProductCartItems = new List<KitProductCartSession>(_tenantWebsiteService.GetAllValidKitCartItemsList(u.Id))
 
-                        }).ToList();
 
-                        models.ForEach(u => u.KitProductCartItems = new List<KitProductCartSession>(_tenantWebsiteService.GetAllValidKitCartItemsList(u.ProductId).ToList()));
+                         }).ToList();
                         models.ForEach(u => u.TotalAmount = Math.Round((u.Qty * u.Price), 2));
                         ViewBag.CurrencySymbol = currencyyDetail.Symbol;
                         ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
@@ -457,15 +462,16 @@ namespace WarehouseEcommerce.Controllers
                     {
                         var count = _tenantWebsiteService.AddOrUpdateCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, (GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>()));
                         var models = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId)
-                         .ToList().Select(u => new OrderDetailSessionViewModel
-                         {
-                             ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
-                             Price = u.UnitPrice,
-                             Qty = u.Quantity,
-                             ProductId = u.ProductId
-                         }).ToList();
+                           .ToList().Select(u => new OrderDetailSessionViewModel
+                           {
+                               ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
+                               Price = u.UnitPrice,
+                               Qty = u.Quantity,
+                               ProductId = u.ProductId,
+                               KitProductCartItems = new List<KitProductCartSession>(_tenantWebsiteService.GetAllValidKitCartItemsList(u.Id))
 
-                        models.ForEach(u => u.KitProductCartItems = new List<KitProductCartSession>(_tenantWebsiteService.GetAllValidKitCartItemsList(u.ProductId).ToList()));
+
+                           }).ToList();
                         models.ForEach(u => u.TotalAmount = Math.Round((u.Qty * u.Price), 2));
                         ViewBag.CurrencySymbol = currencyyDetail.Symbol;
                         ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);

@@ -16,7 +16,7 @@ namespace WarehouseEcommerce.Helpers
             var orderDetailsDictionary = HttpContext.Current.Session["CartItemsSession"] as List<OrderDetailSessionViewModel> ?? new List<OrderDetailSessionViewModel>();
             var hasKey = orderDetailsDictionary.Where(u => u.ProductId == orderDetail.ProductId).ToList();
             var existingDetailsList = new List<OrderDetailSessionViewModel>();
-            if (hasKey.Count > 0)
+            if (hasKey.Count > 0 && orderDetail.ProductMaster.ProductType != Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Kit)
             {
                 existingDetailsList = hasKey;
                 isGroupProducts = true;

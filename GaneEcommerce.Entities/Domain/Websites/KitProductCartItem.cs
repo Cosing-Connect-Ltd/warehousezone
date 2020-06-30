@@ -16,11 +16,18 @@ namespace Ganedata.Core.Entities.Domain
 
         public decimal Quantity { get; set; }
 
+        public int CartId { get; set; }
+
         [ForeignKey("SimpleProductId")]
         public virtual ProductMaster SimpleProductMaster { get; set; }
 
         [ForeignKey("KitProductId")]
         public virtual ProductMaster KitProduct { get; set; }
+
+        [ForeignKey("CartId")]
+        public virtual WebsiteCartItem WebsiteCartItem { get; set; }
+
+
 
 
 
