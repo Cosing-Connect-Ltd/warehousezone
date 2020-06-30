@@ -9,7 +9,6 @@ using System.Configuration;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml;
@@ -647,7 +646,7 @@ namespace WarehouseEcommerce.Controllers
 
         }
 
-        public async Task<ActionResult> _KitProductAttributeDetail(string skuCode, decimal? quantity = null, int? productId = null)
+        public ActionResult _KitProductAttributeDetail(string skuCode, decimal? quantity = null, int? productId = null)
         {
             var product = _productServices.GetProductMasterByProductCode(skuCode, CurrentTenantId);
             var selectedProduct = product;
