@@ -3,7 +3,6 @@
     $.ajax({
         url: basePath + '/Products/_ProductByAttributeSelector',
         method: 'Get',
-        async: false,
         data: { skuCode: skuCode },
         dataType: 'html',
         success: function (data) {
@@ -25,7 +24,6 @@ function getSelectedAttributesProduct(e, skuCode, productId, quantity) {
     $.ajax({
         url: basePath + '/Products/_ProductByAttributeSelector',
         method: 'Get',
-        async: false,
         data: { skuCode: skuCode, quantity: quantity, productId: productId },
         dataType: 'html',
         success: function (data) {

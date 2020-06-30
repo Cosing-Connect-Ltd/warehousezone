@@ -3,14 +3,14 @@
         var wizardStep = 0;
         var same = 1;
         var bodyContent = "";
+        var ajaxCalls = [];
 
         $(".kit-cart-item-details").each(function () {
             var skuCode = $(this).find(".sku-code").text();
             var quantity = $(this).find(".product-quantity").text();
-            $.ajax({
+            ajaxCalls.push($.ajax({
                 url: basePath + '/Products/_KitProductAttributeDetail',
                 method: 'Get',
-                async: false,
                 data: { skuCode: skuCode, quantity: quantity },
                 dataType: 'html',
                 success: function (data) {
@@ -26,13 +26,17 @@
                 error: function (err) {
                     alert(err);
                 }
-            });
+            }));
         });
 
-        if (wizardStep > 0 && bodyContent !== undefined) {
-            $(".kit-model-body").html(bodyContent);
-            $("#kit-product").modal("show");
-        }
+        Promise.all(ajaxCalls).then(() => {
+            if (wizardStep > 0 && bodyContent !== undefined) {
+                $(".kit-model-body").html(bodyContent);
+                $("#kit-product").modal("show");
+            }
+        }).catch(() => {
+            alert("Something went wrong with getting the products!");
+        });
     });
 });
 
@@ -40,7 +44,6 @@ function getSelectedAttributes(e, skuCode, productId, quantity, stepNumber) {
     $.ajax({
         url: basePath + '/Products/_KitProductAttributeDetail',
         method: 'Get',
-        async: false,
         data: { skuCode: skuCode, quantity: quantity, productId: productId },
         dataType: 'html',
         success: function (data) {
