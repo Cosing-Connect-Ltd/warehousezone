@@ -14,31 +14,35 @@
                     $this.attr("data-current-step", stepNumber);
                 }
                 else if (navDir === 'next') {
-                    var Numbers = $("#kit-product").attr("data-current-step");
-                    var totallength = $("#kit-product").find('[data-step]').length;
-                    var qty;
-                    var status = $("#fieldset_" + Numbers).find("#customCheck").is(":checked");
-                    var same = $("#fieldset_" + Numbers).data("same");
-                    if (status) {
-                        status = false;
-                        qty = $("#fieldset_" + Numbers).find("#customCheck").val();
-                        if (qty > 1) {
-                            for (i = 1; i < parseInt(qty); i++) {
-                                var steps = parseInt(Numbers) + 1;
-                                var nextsameData = $("#fieldset_" + steps).data("same");
-                                if (nextsameData === same) {
-                                    status = true;
-                                    var htmls = $("#fieldset_" + Numbers).html();
-                                    $("#fieldset_" + steps).html("");
-                                    $("#fieldset_" + steps).html(htmls);
-                                    Numbers = parseInt(Numbers) + 1;
-                                }
+                    var status = false;
+                    var currentStep = $("#kit-product").attr("data-current-step");
+                    var quantity = $("#fieldset_" + currentStep).find("#QunatityCheckBox").val();
+                    var mainStep = currentStep > quantity ? Math.ceil((currentStep / 2)) : currentStep;
+                    var nextStepProduct = "";
+                    var totalSteplength = $("#kit-product").find('[data-step]').length;
+                    var currentStepDDValue = $("#fieldset_" + currentStep).find("#DDQuantity").val();
+                    var status = $("#fieldset_" + currentStep).find("#customCheck").is(":checked");
+                    var currentStepProduct = $("#fieldset_" + currentStep).data("same");
+                    if (currentStep !== currentStepDDValue) {
+                        var steps = currentStep;
+                        for (i = mainStep; i < parseInt(currentStepDDValue); i++) {
+                            steps = (parseInt(steps) + 1);
+                            var nextsameData = $("#fieldset_" + steps).data("same");
+                            if (nextsameData === currentStepProduct) {
+                                status = true;
+                                var content = $("#fieldset_" + currentStep).html();
+                                var dropdownFieldsBeforeRefresh = $("#fieldset_" + steps).find(".attribute-dropdown").html();
+                                $("#fieldset_" + steps).html("");
+                                $("#fieldset_" + steps).html(content);
+                                $("#fieldset_" + steps).find(".attribute-dropdown").html("").html(dropdownFieldsBeforeRefresh);
+                                currentStep = parseInt(currentStep) + 1;
                             }
 
-                        }
 
+                        }
                     }
-                    $this.attr("data-current-step", status ? parseInt(parseInt(Numbers) >= parseInt(totallength) ? parseInt(totallength) : parseInt(Numbers + 1)) : +$this.attr("data-current-step") + 1);
+
+                    $this.attr("data-current-step", status ? parseInt(parseInt(currentStep) >= parseInt(totalSteplength) ? parseInt(totalSteplength) : parseInt(currentStep + 1)) : +$this.attr("data-current-step") + 1);
                 }
                 else {
                     $this.attr("data-current-step", +$this.attr("data-current-step") - 1);
@@ -66,6 +70,7 @@
                 var kitProductCartItems = [];
                 var pid = $("#main-kit-product").val();
                 $("[id^=fieldset_]").each(function (e) {
+                    debugger;
                     var productid = $(this).find("#selected-productids").data("productid");
                     var qty = $(this).find("#customCheck").val();
                     if (productid !== undefined && productid !== null && productid !== "" && productid > 0) {
@@ -127,5 +132,22 @@
         });
 
     }
+    function CheckNextStepDropdownValue(currentStepProduct, steps, CurrentStep, autoStep) {
+        debugger;
+        var id = (parseInt(CurrentStep) + 1);
+        var nextStep = $("#fieldset_" + id).data("same");
+
+        if (currentStepProduct === nextStep) {
+            var elementId = "#fieldset_" + id;
+            var nextddvalue = $("#fieldset_" + id).find("#DDQuantity").val();
+            if (parseInt(nextddvalue) !== (steps)) {
+                $(elementId).find("#DDQuantity").find("option").slice(0, (autoStep ? (nextddvalue) : (steps - 1))).remove();
+            }
+        }
+
+    }
+
+
+
 
 })(jQuery);

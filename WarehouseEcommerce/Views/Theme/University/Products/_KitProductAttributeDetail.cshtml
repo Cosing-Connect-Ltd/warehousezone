@@ -113,13 +113,22 @@
                             }
                         }
                     </div>
-                    <label><input type="checkbox" id="customCheck" value="@ViewBag.Quantity">&nbsp;  Select same attribute for this product</label>
+
+
+                    <label style="display:none"><input type="checkbox" id="QunatityCheckBox" value="@ViewBag.Quantity">&nbsp;  Select same attribute for this product</label>
 
                 </div>
 
             </div>
         </div>
-
+        <div class="row">
+            <div style="margin-left:30px">
+                <label>Select same attribute for this product</label>
+                <div class="attribute-dropdown">
+                    @Html.DropDownList("DDQuantity", ViewBag.QuantityList as SelectList, null, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
     </div>
 
 </section>

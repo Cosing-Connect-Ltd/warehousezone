@@ -290,7 +290,7 @@ namespace WarehouseEcommerce.Controllers
                             Price = u.UnitPrice,
                             Qty = u.Quantity,
                             ProductId = u.ProductId,
-                            KitProductCartItems= new List<KitProductCartSession>(_tenantWebsiteService.GetAllValidKitCartItemsList(u.Id))
+                            KitProductCartItems = new List<KitProductCartSession>(_tenantWebsiteService.GetAllValidKitCartItemsList(u.Id))
 
 
                         }).ToList();
@@ -658,6 +658,13 @@ namespace WarehouseEcommerce.Controllers
             var selectedProduct = product;
             ViewBag.BaseProduct = product;
             ViewBag.Quantity = quantity;
+            IEnumerable<SelectListItem> squares = Enumerable.Range(1, (quantity.HasValue ? Convert.ToInt32(quantity) : 1)).Select(u => new SelectListItem
+            {
+                Text = u.ToString(),
+                Value = u.ToString()
+            }
+                ).ToList();
+            ViewBag.QuantityList = new SelectList(squares, "Text", "Value");
             if (product.ProductType == ProductKitTypeEnum.ProductByAttribute)
             {
                 selectedProduct = GetSelectedProductByAttribute(productId, product);
