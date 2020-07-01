@@ -517,6 +517,8 @@ namespace Ganedata.Core.Entities.Enums
     public enum PaymentMethod
     {
         Paypal = 1,
-        Cash = 2
+        Cash = 2,
+        SagePay = 3,
+        PurchaseOrder = 4
     }
 }

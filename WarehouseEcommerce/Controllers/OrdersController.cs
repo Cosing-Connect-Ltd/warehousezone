@@ -3,12 +3,14 @@ using Ganedata.Core.Data.Helpers;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Services;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using WarehouseEcommerce.Helpers;
@@ -30,6 +32,7 @@ namespace WarehouseEcommerce.Controllers
         private readonly ITenantWebsiteService _tenantWebsiteService;
         private readonly string _paypalReturnUrl;
         private readonly string _paypalUrl;
+        private readonly string _paypalIpnUrl;
 
         public OrdersController(IProductServices productServices,
                                 IProductLookupService productlookupServices,
@@ -49,6 +52,7 @@ namespace WarehouseEcommerce.Controllers
         {
             _paypalReturnUrl = ConfigurationManager.AppSettings["PAYPAL_RET_URL"] ?? "";
             _paypalUrl = ConfigurationManager.AppSettings["PAYPAL_URL"] ?? "";
+            _paypalIpnUrl = ConfigurationManager.AppSettings["PAYPAL_IPN_URL"] ?? "";
             _productServices = productServices;
             _userService = userService;
             _activityServices = activityServices;
@@ -109,7 +113,8 @@ namespace WarehouseEcommerce.Controllers
                     var cartItems = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
                     var parcelWeightInGrams = cartItems.Sum(i => (i.KitProductCartItems?.Sum(ki => (ki.SimpleProductMaster?.Weight ?? 0)) ?? (i.ProductMaster?.Weight ?? 0)));
                     var shippingRules = _tenantWebsiteService.GetShippingRulesByShippingAddress(CurrentTenantId, CurrentTenantWebsite.SiteID, shippingAddressId.Value, parcelWeightInGrams);
-                    shippingRules.ForEach(r => {
+                    shippingRules.ForEach(r =>
+                    {
                         r.Price = Math.Round(((r.Price) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
                     });
 
@@ -139,8 +144,10 @@ namespace WarehouseEcommerce.Controllers
             var WarehouseProductAvailabilities = cartItems.Select(a =>
                                                             {
                                                                 var inventoryStocks = _productServices.GetAllInventoryStocksByProductId(a.ProductId);
-                                                                return new {
-                                                                    WarehouseProductAvailability = inventoryStocks.Select(i => new {
+                                                                return new
+                                                                {
+                                                                    WarehouseProductAvailability = inventoryStocks.Select(i => new
+                                                                    {
                                                                         IsAvailable = i.Available >= a.Qty,
                                                                         i.WarehouseId,
                                                                         a.ProductMaster
@@ -152,7 +159,8 @@ namespace WarehouseEcommerce.Controllers
             var warehousesByDistance = distances.Destinations.Select((x, i) =>
                                                                     {
                                                                         var warehouse = warehouses[i];
-                                                                        return new {
+                                                                        return new
+                                                                        {
                                                                             warehouse?.WarehouseName,
                                                                             warehouse?.WarehouseId,
                                                                             warehouse?.PostalCode,
@@ -192,10 +200,10 @@ namespace WarehouseEcommerce.Controllers
             AccountServices.SaveAccountAddress(accountAddresses, CurrentUserId == 0 ? 1 : CurrentUserId);
             if (accountAddresses.AddTypeShipping == true)
             {
-                return RedirectToAction("GetAddress", new { accountId = accountAddresses.AccountID, billingAddressId, deliveryMethodId, step=(int)CheckoutStep.ShippingAddress });
+                return RedirectToAction("GetAddress", new { accountId = accountAddresses.AccountID, billingAddressId, deliveryMethodId, step = (int)CheckoutStep.ShippingAddress });
             }
 
-            return RedirectToAction("GetAddress", new { AccountId = accountAddresses.AccountID});
+            return RedirectToAction("GetAddress", new { AccountId = accountAddresses.AccountID });
 
         }
 
@@ -205,7 +213,7 @@ namespace WarehouseEcommerce.Controllers
             return RedirectToAction("GetAddress", new { accountId, billingAddressId, deliveryMethodId, step = (int)CheckoutStep.ShippingAddress });
         }
 
-        public ActionResult ConfirmOrder(int accountId, int? shippingAddressId, int? shipmentRuleId, int deliveryMethodId,int paymentTypeId, int? collectionPointId)
+        public ActionResult ConfirmOrder(int accountId, int? shippingAddressId, int? shipmentRuleId, int deliveryMethodId, int paymentTypeId, int? collectionPointId)
         {
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.cart = true;
@@ -222,7 +230,7 @@ namespace WarehouseEcommerce.Controllers
             accountAddresses.Add(AccountServices.GetAllValidAccountAddressesByAccountId(accountId).FirstOrDefault(u => u.AddTypeBilling == true));
             ViewBag.Addresses = accountAddresses;
             var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
-            var orders = OrderService.CreateShopOrder(accountAddresses.FirstOrDefault().AccountID, _mapper.Map(models, new List<OrderDetail>()), CurrentTenantId, CurrentUserId, CurrentWarehouseId,CurrentTenantWebsite.SiteID);
+            var orders = OrderService.CreateShopOrder(accountAddresses.FirstOrDefault().AccountID, _mapper.Map(models, new List<OrderDetail>()), CurrentTenantId, CurrentUserId, CurrentWarehouseId, CurrentTenantWebsite.SiteID);
             ViewBag.TotalQty = Math.Round(((models.Sum(u => u.TotalAmount)) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
             ViewBag.CurrencySymbol = currencyyDetail.Symbol;
             ViewBag.DeliveryMethodId = deliveryMethodId;
@@ -232,6 +240,7 @@ namespace WarehouseEcommerce.Controllers
             }
             ViewBag.RetUrl = _paypalReturnUrl;
             ViewBag.PAYPALURL = _paypalUrl;
+            ViewBag.PayPalIpnUrl = _paypalIpnUrl;
             ViewBag.OrdersId = orders.OrderID;
             return View(models);
         }
@@ -321,7 +330,41 @@ namespace WarehouseEcommerce.Controllers
 
         }
 
+        public async Task<ActionResult> SagePay()
+        {
+            SagepayResponse resp = await GetSagePayToken();
+            ViewBag.AuthCode = resp.merchantSessionKey;
+            return View();
+        }
 
+        private async Task<SagepayResponse> GetSagePayToken()
+        {
+            var root = new SagepayVendor();
+            root.vendorName = "sandbox";
+
+            var json = JsonConvert.SerializeObject(root);
+            var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("Authorization", "Basic aEpZeHN3N0hMYmo0MGNCOHVkRVM4Q0RSRkxodUo4RzU0TzZyRHBVWHZFNmhZRHJyaWE6bzJpSFNyRnliWU1acG1XT1FNdWhzWFA1MlY0ZkJ0cHVTRHNocktEU1dzQlkxT2lONmh3ZDlLYjEyejRqNVVzNXU=");
+                var response = await client.PostAsync("https://pi-test.sagepay.com/api/v1/merchant-session-keys", stringContent);
+                var responseString = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<SagepayResponse>(responseString);
+            }
+        }
+    }
+
+    public class SagepayVendor
+    {
+        public string vendorName { get; set; }
+
+    }
+
+    public class SagepayResponse
+    {
+        public string merchantSessionKey { get; set; }
+        public DateTime expiry { get; set; }
 
     }
 }

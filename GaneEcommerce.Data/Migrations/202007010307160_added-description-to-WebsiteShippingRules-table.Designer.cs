@@ -13,7 +13,7 @@ namespace Ganedata.Core.Data.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202006301732048_added-description-to-WebsiteShippingRules-table"; }
+            get { return "202007010307160_added-description-to-WebsiteShippingRules-table"; }
         }
         
         string IMigrationMetadata.Source

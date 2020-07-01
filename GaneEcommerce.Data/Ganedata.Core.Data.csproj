@@ -915,9 +915,9 @@
     <Compile Include="Migrations\202006301522512_cartId-added-in-kitProductItem.designer.cs">
       <DependentUpon>202006301522512_cartId-added-in-kitProductItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202006301732048_added-description-to-WebsiteShippingRules-table.cs" />
-    <Compile Include="Migrations\202006301732048_added-description-to-WebsiteShippingRules-table.designer.cs">
-      <DependentUpon>202006301732048_added-description-to-WebsiteShippingRules-table.cs</DependentUpon>
+    <Compile Include="Migrations\202007010307160_added-description-to-WebsiteShippingRules-table.cs" />
+    <Compile Include="Migrations\202007010307160_added-description-to-WebsiteShippingRules-table.designer.cs">
+      <DependentUpon>202007010307160_added-description-to-WebsiteShippingRules-table.cs</DependentUpon>
     </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
@@ -1926,8 +1926,8 @@
     <EmbeddedResource Include="Migrations\202006301522512_cartId-added-in-kitProductItem.resx">
       <DependentUpon>202006301522512_cartId-added-in-kitProductItem.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202006301732048_added-description-to-WebsiteShippingRules-table.resx">
-      <DependentUpon>202006301732048_added-description-to-WebsiteShippingRules-table.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202007010307160_added-description-to-WebsiteShippingRules-table.resx">
+      <DependentUpon>202007010307160_added-description-to-WebsiteShippingRules-table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

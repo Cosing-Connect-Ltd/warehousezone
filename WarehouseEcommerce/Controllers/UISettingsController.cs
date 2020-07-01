@@ -25,7 +25,6 @@ namespace WMS.Controllers
             _cache = cache;
         }
 
-        [HttpGet]
         public ActionResult SettingsBar()
         {
             var uiSettings = _uiSettingServices.GetWebsiteUISettings(CurrentTenantId, CurrentTenantWebsite.SiteID, CurrentTenantWebsite.Theme);

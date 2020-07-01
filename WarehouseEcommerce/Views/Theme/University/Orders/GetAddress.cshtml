@@ -19,7 +19,7 @@
                     </li>
                     @if ((DeliveryMethod)(ViewBag.DeliveryMethodId ?? (int)DeliveryMethod.ToShipmentAddress) == DeliveryMethod.ToShipmentAddress)
                     {
-                    <li><a href="javascript:goToStep(@((int)CheckoutStep.ShipmentRule))" style="@((int)ViewBag.CurrentStep < (int)CheckoutStep.ShipmentRule ? "pointer-events:none; cursor: default; color: gray; background: #f6f7f8" : "")">Shipment Type</a></li>
+                        <li><a href="javascript:goToStep(@((int)CheckoutStep.ShipmentRule))" style="@((int)ViewBag.CurrentStep < (int)CheckoutStep.ShipmentRule ? "pointer-events:none; cursor: default; color: gray; background: #f6f7f8" : "")">Shipment Type</a></li>
                     }
                     <li><a href="javascript:goToStep(@((int)CheckoutStep.PaymentMethod))" style="@((int)ViewBag.CurrentStep < (int)CheckoutStep.PaymentMethod?"pointer-events:none; cursor: default; color: gray; background: #f6f7f8":"")">Payment Method</a></li>
                 </ul>
@@ -220,6 +220,13 @@
                                 <div class="form-check-inline">
                                     <label class="control-label" for="radio1">
                                         <input type="radio" class="form-check-input" id="PayPal" name="paymentMethod" value="@((int)PaymentMethod.Paypal)">  Paypal
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="deliveryMethod ">
+                                <div class="form-check-inline">
+                                    <label class="control-label" for="radio3">
+                                        <input type="radio" class="form-check-input" id="SagePay" name="paymentMethod" value="@((int)PaymentMethod.SagePay)">  Sage Pay
                                     </label>
                                 </div>
                             </div>

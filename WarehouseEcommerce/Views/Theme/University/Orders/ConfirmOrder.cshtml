@@ -152,11 +152,11 @@
 
                                 @if ((DeliveryMethod)ViewBag.DeliveryMethodId == DeliveryMethod.ToShipmentAddress)
                                 {
-                                <div class="form-inline">
-                                    <label class="control-label" for="radio2">
-                                        Delivery by @ViewBag.ShippingRule.Courier @(!string.IsNullOrEmpty(ViewBag.ShippingRule.Description?.Trim()) ? $"({ViewBag.ShippingRule.Description})" : "" ) - @ViewBag.CurrencySymbol@ViewBag.ShippingRule.Price
-                                    </label>
-                                </div>
+                                    <div class="form-inline">
+                                        <label class="control-label" for="radio2">
+                                            Delivery by @ViewBag.ShippingRule.Courier @(!string.IsNullOrEmpty(ViewBag.ShippingRule.Description?.Trim()) ? $"({ViewBag.ShippingRule.Description})" : "") - @ViewBag.CurrencySymbol@ViewBag.ShippingRule.Price
+                                        </label>
+                                    </div>
                                 }
                                 else
                                 {
@@ -178,49 +178,66 @@
                                         </label>
                                     </div>
                                 }
-                                else
+                                else if ((PaymentMethod)ViewBag.paymentMethod == PaymentMethod.Paypal)
                                 {
                                     <div class="form-inline">
                                         <label class="control-label" for="radio1">
                                             Paypal
                                         </label>
                                     </div>
+
+                                    <form action="@((string)ViewBag.PAYPALURL)" method="post">
+                                        <div class="row">
+
+                                            <fieldset>
+                                                <input class="full-width" type="hidden" name="business" value="shoaib@ganedata.co.uk">
+                                                <input type="hidden" name="cmd" value="_xclick">
+                                                <input type="hidden" name="item_name" value="Cart Items" />
+                                                <input type="hidden" name="return" value="@((string)ViewBag.RetUrl)">
+                                                <input type="hidden" name="notify_url" value="@((string)ViewBag.PayPalIpnUrl)">
+                                                <input type="hidden" NAME="currency_code" value="GBP">
+                                                <input type="hidden" name="OrderId" value="@ViewBag.OrdersId" />
+                                                <input type="hidden" name="amount" value="@ViewBag.TotalQty" />
+                                            </fieldset>
+
+                                        </div>
+                                        <div class="button-submit">
+                                            <button type="Submit" name="submitNewsletter" class="btn btn-block paypal-btn">Proceed To Payment</button>
+                                            @*<a href="@Url.Action("Index","Test")" class="btn btn-block cash-btn cashbtn" name="submitNewsletter"> Proceed To Payment</a>*@
+
+                                        </div>
+
+                                    </form>
                                 }
-                            </div>
-                            <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
-                                <div class="row">
+                                else if ((PaymentMethod)ViewBag.paymentMethod == PaymentMethod.SagePay)
+                                {
+                                    <div class="form-inline">
+                                        <label class="control-label" for="radio3">
+                                            Sage Pay
+                                        </label>
+                                    </div>
 
-                                    <fieldset>
-                                        <input class="full-width" type="hidden" name="business" value="shoaib@ganedata.co.uk">
-                                        <input type="hidden" name="cmd" value="_cart">
-                                        <input type="hidden" name="upload" value="1" />
-                                        <input type="hidden" name="return" value="192.168.18.7:8006">
-                                        @*<input type="hidden" name="notify_url" value="@((string)ViewBag.RetUrl)">*@
-                                        <input type="hidden" name="notify_url" value="192.168.18.7:8006/Test/IPN">
-                                        <input type="hidden" NAME="currency_code" value="GBP">
-                                        <input type="hidden" name="OrderId" value="@ViewBag.OrdersId" />
-
-                                    </fieldset>
-
-                                    @foreach (var item in Model)
+                                    using (Html.BeginForm("SagePay", "Orders", FormMethod.Post))
                                     {
+                                        <div class="row">
+                                            <fieldset>
 
-                                        <input type="hidden" name="item_name_1" value="@item.ProductMaster.Name">
-                                        <input type="hidden" name="item_number_1" value="@item.ProductMaster.SKUCode">
-                                        <input type="hidden" name="amount_1" value="@item.TotalAmount">
-                                        <input type="hidden" name="quantity_1" value="@item.Qty">
-                                        break;
+                                                <input type="hidden" NAME="currency_code" value="GBP">
+                                                <input type="hidden" name="OrderId" value="@ViewBag.OrdersId" />
+                                                <input type="hidden" name="TotalAmount" value="@ViewBag.TotalQty" />
+
+                                            </fieldset>
+                                        </div>
+                                        <div class="button-submit">
+                                            <button type="Submit" name="submitNewsletter" class="btn btn-block paypal-btn">Proceed To Payment</button>
+                                        </div>
 
                                     }
 
-                                </div>
-                                <div class="button-submit">
-                                    <button type="Submit" name="submitNewsletter" class="btn btn-block paypal-btn">Proceed To Payment</button>
-                                    @*<a href="@Url.Action("Index","Test")" class="btn btn-block cash-btn cashbtn" name="submitNewsletter"> Proceed To Payment</a>*@
 
-                                </div>
+                                }
+                            </div>
 
-                            </form>
 
 
                         </div>
