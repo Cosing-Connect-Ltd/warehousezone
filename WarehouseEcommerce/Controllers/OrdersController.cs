@@ -187,9 +187,6 @@ namespace WarehouseEcommerce.Controllers
             return PartialView();
         }
 
-
-
-
         public ActionResult SaveAddress(AccountAddresses accountAddresses, int? deliveryMethodId, int? billingAddressId)
         {
             accountAddresses.Name = "Ecommerce";
@@ -206,7 +203,6 @@ namespace WarehouseEcommerce.Controllers
             }
 
             return RedirectToAction("GetAddress", new { AccountId = accountAddresses.AccountID });
-
         }
 
         public ActionResult RemoveShippingAddress(int accountAddressId, int billingAddressId, int accountId, int deliveryMethodId)

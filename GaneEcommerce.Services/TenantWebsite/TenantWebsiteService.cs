@@ -21,8 +21,15 @@ namespace Ganedata.Core.Services
         private readonly IProductServices _productServices;
         private readonly ICommonDbServices _commonDbServices;
         private readonly IProductPriceService _productPriceService;
+        private readonly ITenantsCurrencyRateServices _tenantsCurrencyRateServices;
 
-        public TenantWebsiteService(IApplicationContext currentDbContext, IMapper mapper, IEmailServices emailServices, IProductServices productServices, ICommonDbServices commonDbServices, IProductPriceService productPriceService)
+        public TenantWebsiteService(IApplicationContext currentDbContext,
+                                    IMapper mapper,
+                                    IEmailServices emailServices,
+                                    IProductServices productServices,
+                                    ICommonDbServices commonDbServices,
+                                    IProductPriceService productPriceService,
+                                    ITenantsCurrencyRateServices tenantsCurrencyRateServices)
         {
             _currentDbContext = currentDbContext;
             _mapper = mapper;
@@ -30,6 +37,7 @@ namespace Ganedata.Core.Services
             _productPriceService = productPriceService;
             _commonDbServices = commonDbServices;
             _productServices = productServices;
+            _tenantsCurrencyRateServices = tenantsCurrencyRateServices;
         }
         public IEnumerable<TenantWebsites> GetAllValidTenantWebSite(int TenantId)
         {
@@ -1026,18 +1034,24 @@ namespace Ganedata.Core.Services
             return _currentDbContext.WebsiteWishListItems.Where(u => u.SiteID == siteId && u.UserId == UserId && u.IsDeleted != true);
         }
 
-        public WebsiteCartItem AddOrUpdateCartItems(int siteId, int? userId, int tenantId, string sessionKey, int productId, decimal quantity, decimal? currencyRate = null, int? currencyId = null, List<KitProductCartSession> kitProductCartItems = null)
+        public int AddOrUpdateCartItem(int siteId, int? userId, int tenantId, string sessionKey, int productId, decimal quantity, List<KitProductCartSession> kitProductCartItems = null)
         {
+            var getTenantCurrency = _tenantsCurrencyRateServices.GetTenantCurrencies(tenantId).FirstOrDefault();
+            var currencyRate = _tenantsCurrencyRateServices.GetCurrencyRateByTenantid(getTenantCurrency?.TenantCurrencyID ?? 0);
 
-
-            var cartProduct = _currentDbContext.WebsiteCartItems.FirstOrDefault(u => u.ProductId == productId && u.IsDeleted != true && u.SiteID == siteId && ((((!userId.HasValue || userId == 0) || u.UserId == userId) || (string.IsNullOrEmpty(sessionKey) || u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase)))));
+            var cartProduct = _currentDbContext.WebsiteCartItems.FirstOrDefault(u => u.ProductId == productId &&
+                                                                         u.IsDeleted != true &&
+                                                                         u.SiteID == siteId &&
+                                                                         u.TenantId == tenantId &&
+                                                                         ((((!userId.HasValue || userId == 0) || u.UserId == userId) ||
+                                                                           (string.IsNullOrEmpty(sessionKey) ||
+                                                                           u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase)))));
             if (cartProduct == null)
             {
-
                 cartProduct = new WebsiteCartItem();
                 cartProduct.ProductId = productId;
                 cartProduct.Quantity = quantity;
-                cartProduct.UnitPrice = Math.Round(((_productPriceService.GetProductPriceThresholdByAccountId(productId, null).SellPrice) * ((!currencyRate.HasValue || currencyRate <= 0) ? 1 : currencyRate.Value)), 2);
+                cartProduct.UnitPrice = Math.Round(((_productPriceService.GetProductPriceThresholdByAccountId(productId, null).SellPrice) * ((currencyRate <= 0) ? 1 : currencyRate)), 2);
                 cartProduct.UserId = userId == 0 ? null : userId;
                 cartProduct.TenantId = tenantId;
                 cartProduct.SiteID = siteId;
@@ -1066,17 +1080,37 @@ namespace Ganedata.Core.Services
             else
             {
                 cartProduct.IsDeleted = false;
-                cartProduct.Quantity = quantity;
+                cartProduct.Quantity += quantity;
                 cartProduct.UpdatedBy = userId == 0 ? null : userId;
                 cartProduct.DateUpdated = DateTime.UtcNow;
-                _currentDbContext.Entry(cartProduct).State = System.Data.Entity.EntityState.Modified;
+                _currentDbContext.Entry(cartProduct).State = EntityState.Modified;
 
             }
 
             _currentDbContext.SaveChanges();
-            return cartProduct;
+            return cartProduct.Id;
+        }
 
+        public bool UpdateCartItemQuantity(int siteId, int? userId, int tenantId, string sessionKey, int productId, decimal quantity)
+        {
+            var cartProduct = _currentDbContext.WebsiteCartItems.FirstOrDefault(u => u.ProductId == productId &&
+                                                                                     u.IsDeleted != true &&
+                                                                                     u.SiteID == siteId &&
+                                                                                     u.TenantId == tenantId &&
+                                                                                     ((((!userId.HasValue || userId == 0) || u.UserId == userId) ||
+                                                                                       (string.IsNullOrEmpty(sessionKey) ||
+                                                                                       u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase)))));
+            if (cartProduct != null)
+            {
+                cartProduct.IsDeleted = false;
+                cartProduct.Quantity = quantity;
+                cartProduct.UpdatedBy = userId == 0 ? null : userId;
+                cartProduct.DateUpdated = DateTime.UtcNow;
+                _currentDbContext.Entry(cartProduct).State = EntityState.Modified;
+            }
 
+            _currentDbContext.SaveChanges();
+            return true;
         }
 
         public void UpdateUserIdInCartItem(string sessionKey, int userId, int siteId)
@@ -1091,12 +1125,12 @@ namespace Ganedata.Core.Services
                     _currentDbContext.Entry(item).State = System.Data.Entity.EntityState.Modified;
 
                 }
-                
+
 
             }
 
             _currentDbContext.SaveChanges();
-            
+
 
 
         }
@@ -1133,7 +1167,7 @@ namespace Ganedata.Core.Services
         }
 
 
-        public int RemoveCartItem(int ProductId, int SiteId, int? UserId, string SessionKey)
+        public bool RemoveCartItem(int ProductId, int SiteId, int? UserId, string SessionKey)
         {
             var cartProduct = _currentDbContext.WebsiteCartItems.FirstOrDefault(u => u.ProductId == ProductId && u.SiteID == SiteId && ((!UserId.HasValue || UserId == 0) || u.UserId == UserId) && (string.IsNullOrEmpty(SessionKey) || u.SessionKey.Equals(SessionKey, StringComparison.InvariantCultureIgnoreCase)));
             if (cartProduct != null)
@@ -1144,7 +1178,7 @@ namespace Ganedata.Core.Services
                 _currentDbContext.SaveChanges();
 
             }
-            return GetAllValidCartItemsList(SiteId, UserId, SessionKey).Count();
+            return true;
 
         }
 

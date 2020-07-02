@@ -34,7 +34,19 @@ namespace WarehouseEcommerce.Controllers
 
         private string[] Images = ConfigurationManager.AppSettings["ImageFormats"].Split(new char[] { ',' });
 
-        public ProductsController(IProductServices productServices, IUserService userService, IProductLookupService productlookupServices, ITenantWebsiteService tenantWebsiteService, IProductPriceService productPriceService, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IMapper mapper, ICommonDbServices commonDbServices, ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IActivityServices activityServices, ITenantsServices tenantServices)
+        public ProductsController(IProductServices productServices,
+                                    IUserService userService,
+                                    IProductLookupService productlookupServices,
+                                    ITenantWebsiteService tenantWebsiteService,
+                                    IProductPriceService productPriceService,
+                                    ITenantsCurrencyRateServices tenantsCurrencyRateServices,
+                                    IMapper mapper,
+                                    ICommonDbServices commonDbServices,
+                                    ICoreOrderService orderService,
+                                    IPropertyService propertyService,
+                                    IAccountServices accountServices,
+                                    ILookupServices lookupServices,
+                                    IActivityServices activityServices)
             : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices)
         {
             _userService = userService;
@@ -251,7 +263,6 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.cart = true;
 
             return View();
-
         }
 
         public ActionResult Category()
@@ -259,13 +270,11 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.cart = true;
 
             return View();
-
         }
         public ActionResult CategoryDetail()
         {
             ViewBag.cart = true;
             return View();
-
         }
 
         public PartialViewResult _CartItemsPartial(int? productId = null)
@@ -306,13 +315,6 @@ namespace WarehouseEcommerce.Controllers
                 _tenantWebsiteService.AddOrUpdateWishListItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, (GaneWishListItemsSessionHelper.GetWishListItemsSession()));
             }
             return Json(_tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).Count(), JsonRequestBehavior.AllowGet);
-
-
-
-
-
-
-
         }
 
         public ActionResult WishList()
@@ -367,7 +369,6 @@ namespace WarehouseEcommerce.Controllers
 
         public void CurrencyChanged(int? CurrencyId)
         {
-
             if (CurrencyId.HasValue)
             {
                 var detail = LookupServices.GetAllGlobalCurrencies().Where(c => (!CurrencyId.HasValue || c.CurrencyID == CurrencyId)).Select(u => new caCurrencyDetail
@@ -389,12 +390,10 @@ namespace WarehouseEcommerce.Controllers
         public int CartItemsCount()
         {
             return GaneCartItemsSessionHelper.GetCartItemsSession().Count;
-
         }
 
         public ActionResult PaymentInfo()
         {
-
             return View();
         }
 
@@ -421,12 +420,6 @@ namespace WarehouseEcommerce.Controllers
             GaneWishListItemsSessionHelper.RemoveWishListSession(ProductId);
             count = Math.Max(count, GaneWishListItemsSessionHelper.GetWishListItemsSession().Count);
             return Json(count, JsonRequestBehavior.AllowGet);
-
-
-
-
-
-
         }
 
         public ActionResult _KitProductAttributeDetail(string skuCode, decimal? quantity = null, int? productId = null)
@@ -482,44 +475,26 @@ namespace WarehouseEcommerce.Controllers
 
         public  JsonResult EditCartItem(int productId, decimal quantity)
         {
-            var cartItem = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, Session.SessionID).FirstOrDefault(u => u.ProductId == productId);
-            if (cartItem != null)
-            {
-                cartItem.Qty = quantity;
-            }
-            var cartedItem = _tenantWebsiteService.AddOrUpdateCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, Session.SessionID,productId,quantity);
-            return Json(true, JsonRequestBehavior.AllowGet);
-
+            var result = _tenantWebsiteService.UpdateCartItemQuantity(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, Session.SessionID,productId,quantity);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult AddCartItem(int productId, decimal quantity)
         {
-            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
-            var cartItem = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, Session.SessionID).FirstOrDefault(u => u.ProductId == productId);
-            if (cartItem != null)
-            {
-                quantity=cartItem.Qty += quantity;
-            }
-           
-            var cartedItem = _tenantWebsiteService.AddOrUpdateCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, Session.SessionID, productId, quantity, currencyyDetail.Rate, currencyyDetail.Id);
-            return Json(cartedItem.ProductId,JsonRequestBehavior.AllowGet);
-
+            var cartItemProductId = _tenantWebsiteService.AddOrUpdateCartItem(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, Session.SessionID, productId, quantity);
+            return Json(cartItemProductId, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult RemoveCartItem(int productId)
         {
-            _tenantWebsiteService.RemoveCartItem(productId, CurrentTenantWebsite.SiteID, CurrentUserId, Session.SessionID);
-            return Json(true, JsonRequestBehavior.AllowGet);
-
+            var result = _tenantWebsiteService.RemoveCartItem(productId, CurrentTenantWebsite.SiteID, CurrentUserId, Session.SessionID);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult AddKitProductCartItem(List<KitProductCartSession> kitProductCartItems)
         {
-
             return _CartItemsPartial();
         }
-
-
     }
 
     public class ProductSearchResult

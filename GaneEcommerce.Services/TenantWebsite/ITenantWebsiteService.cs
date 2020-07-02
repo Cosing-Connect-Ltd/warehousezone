@@ -108,7 +108,8 @@ namespace Ganedata.Core.Services
 
         OrderDetailSessionViewModel SetCartItem(int productId, decimal quantity, decimal? currencyRate, int? currencyId);
 
-        WebsiteCartItem AddOrUpdateCartItems(int siteId, int? userId, int tenantId, string sessionKey, int productId, decimal quantity, decimal? currencyRate = null, int? currencyId = null, List<KitProductCartSession> kitProductCartItems = null);
+        int AddOrUpdateCartItem(int siteId, int? userId, int tenantId, string sessionKey, int productId, decimal quantity, List<KitProductCartSession> kitProductCartItems = null);
+        bool UpdateCartItemQuantity(int siteId, int? userId, int tenantId, string sessionKey, int productId, decimal quantity);
 
         IEnumerable<OrderDetailSessionViewModel> GetAllValidCartItems(int siteId, int? UserId, string SessionKey);
 
@@ -116,7 +117,7 @@ namespace Ganedata.Core.Services
 
         int AddOrUpdateWishListItems(int SiteId, int UserId, int TenantId, List<OrderDetailSessionViewModel> orderDetails);
 
-        int RemoveCartItem(int ProductId, int SiteId, int? UserId, string SessionKey);
+        bool RemoveCartItem(int ProductId, int SiteId, int? UserId, string SessionKey);
         int RemoveWishListItem(int ProductId, int SiteId, int UserId);
 
         void SendNotificationForAbandonedCarts();
