@@ -15,11 +15,8 @@ namespace Ganedata.Core.Entities.Domain
         public int Id { get; set; }
         public int SiteID { get; set; }
         public int ProductId { get; set; }
-
-      
-
-        public int UserId { get; set; }
-
+        public int? UserId { get; set; }
+        public string SessionKey { get; set; }
         public decimal Quantity { get; set; }
         public decimal UnitPrice { get; set; }
         [ForeignKey("SiteID")]
