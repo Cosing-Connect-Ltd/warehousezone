@@ -1079,7 +1079,6 @@ namespace Ganedata.Core.Services
             }
             else
             {
-                cartProduct.IsDeleted = false;
                 cartProduct.Quantity += quantity;
                 cartProduct.UpdatedBy = userId == 0 ? null : userId;
                 cartProduct.DateUpdated = DateTime.UtcNow;
@@ -1179,7 +1178,6 @@ namespace Ganedata.Core.Services
 
             }
             return true;
-
         }
 
 
