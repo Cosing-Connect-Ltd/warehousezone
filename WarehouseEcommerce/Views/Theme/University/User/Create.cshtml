@@ -3,59 +3,26 @@
     ViewBag.Title = "Create Account";
     Layout = null;
 }
-@using (Html.BeginForm("Create", "User", FormMethod.Post, new { @class = "loginForm", id = "" }))
+@using (Html.BeginForm("Create", "User", FormMethod.Post, new { @class = "loginForm", id = "userRegister" }))
 {
     @Html.AntiForgeryToken()
-    <h5 class="alert-message-reg" style="color:green"></h5>
+    <h5 class="success-message-reg text-success"></h5>
+    <h5 class="alert-message-reg text-danger"></h5>
     <br />
     <div class="form-group">
         @Html.EditorFor(model => model.FirstName, new { htmlattributes = new { @class = "form-control", @placeholder = "Enter First Name" } })
-
+        <span class="text-danger">@Html.ValidationMessageFor(model => model.FirstName)</span>
     </div>
     <div class="form-group">
         @Html.EditorFor(model => model.LastName, new { htmlattributes = new { @class = "form-control", @placeholder = "Enter Last Name" } })
-
+        <span class="text-danger">@Html.ValidationMessageFor(model => model.LastName)</span>
     </div>
     <div class="form-group">
         @Html.EditorFor(model => model.Email, new { htmlattributes = new { @class = "form-control", @placeholder = "Enter Email" } })
-
+        <span class="text-danger">@Html.ValidationMessageFor(model => model.Email)</span>
     </div>
     <div class="form-group">
         @Html.PasswordFor(model => model.Password, new { @class = "form-control", @placeholder = "Enter Password" })
-
+        <span class="text-danger">@Html.ValidationMessageFor(model => model.Password)</span>
     </div>
-
-
-    @*<div class="col-md-6 signup-single-side float-left">
-            <div class="webi-newsletter  webi-newsletter leftprobg text-center" id="newsletter_5b2631bae1cb9" data-mode="default">
-                <div class="remove-inner">
-                    <h3>COMPANY DETAIL</h3>
-                    <hr>
-                    <div class="form-group">
-
-                        @Html.EditorFor(model => model.CompanyName, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Enter Company" } })
-                        @Html.ValidationMessageFor(model => model.ContactNumber)
-                        @Html.EditorFor(model => model.VATNumber, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Enter Vat Number" } })
-                        @Html.ValidationMessageFor(model => model.ContactNumber)
-                        @Html.EditorFor(model => model.RegNumber, new { htmlattributes = new { @class = "form-control input-md inputNew", @placeholder = "Enter Company Reg No." } })
-                        @Html.ValidationMessageFor(model => model.ContactNumber)
-
-                    </div>
-
-                    <div data-v-5f85c551="" class="privacy-policy">
-                        <div class="checkbox-div-signup">
-                            <input type="checkbox" class="rectangle ">
-                            <p class="">I agree to <a href="/privacy-policy">terms & conditions,</a> and <a href="/privacy-policy">privacy policy.</a></p>
-                        </div>
-                    </div>
-                    <div class="button-submit">
-                        <button type="submit" name="submitNewsletter" class="btn btn-block btn-primary signup-button">Create an account</button>
-                    </div>
-                    <div class="signup-text-div mt-30">
-                        <p class="signup-text">Have an account ?</p>
-                        <a href="/User/Login">Login</a>
-                    </div>
-                </div>
-            </div>
-        </div>*@
 }

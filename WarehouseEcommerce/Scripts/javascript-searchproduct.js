@@ -62,16 +62,16 @@ function findNearCollectionPoints() {
             $.each(data, function (i, item) {
                 var element = $('<div class="collection-point col-md-6">' +
                     '<div class="form-inline w-100' + (item.IsCartProductsAvailable ? '" onclick="selectCollectionPointId(' + item.WarehouseId + ', this)"' : ' collection-point-unavailable"') + '>' +
-                        '<div class="control-label w-100">' +
-                            ' <div style="float:left">' +
-                                ' <div class="collection-point-title">' + item.WarehouseName + '</div>' +
-                                ' <div>' + item.PostalCode + '</div>' +
-                                ' <div>' + item.AddressLine1 +
-                                (!!item.AddressLine2 ? ' - ' + item.AddressLine2 : '') +
-                                (!!item.AddressLine2 ? ' - ' + item.AddressLine3 : '') +
-                                (!!item.AddressLine2 ? ' - ' + item.AddressLine4 : '') + '</div>' +
-                                ' <div>' + item.City + '</div>' +
-                                ' <div>' + item.CountryName + '</div>' +
+                    '<div class="control-label w-100">' +
+                    ' <div style="float:left">' +
+                    ' <div class="collection-point-title">' + item.WarehouseName + '</div>' +
+                    ' <div>' + item.PostalCode + '</div>' +
+                    ' <div>' + item.AddressLine1 +
+                    (!!item.AddressLine2 ? ' - ' + item.AddressLine2 : '') +
+                    (!!item.AddressLine2 ? ' - ' + item.AddressLine3 : '') +
+                    (!!item.AddressLine2 ? ' - ' + item.AddressLine4 : '') + '</div>' +
+                    ' <div>' + item.City + '</div>' +
+                    ' <div>' + item.CountryName + '</div>' +
                     '</div>' +
                     (!item.IsCartProductsAvailable ? ' <div class="collection-point-not-available">Not Available</div>' : '<div class="collection-point-distance">' + item.Distance.Distance.Text + '</div>') +
                     '</div></div></div>');
@@ -378,11 +378,11 @@ function choosePaymentMethod() {
     var variables = getUrlVariables();
 
     window.location.href = basePath + "/Orders/ConfirmOrder?accountId=" + variables["accountId"] +
-                                                "&paymentTypeId=" + paymenttypeId +
-                                                "&deliveryMethodId=" + variables["deliveryMethodId"] +
-                                                (!!variables["shipmentRuleId"] ? "&shipmentRuleId=" + variables["shipmentRuleId"] : "") +
-                                                (!!variables["shippingAddressId"] ? "&shippingAddressId=" + variables["shippingAddressId"] : "") +
-                                                (!!variables["collectionPointId"] ? "&collectionPointId=" + variables["collectionPointId"] : "");
+        "&paymentTypeId=" + paymenttypeId +
+        "&deliveryMethodId=" + variables["deliveryMethodId"] +
+        (!!variables["shipmentRuleId"] ? "&shipmentRuleId=" + variables["shipmentRuleId"] : "") +
+        (!!variables["shippingAddressId"] ? "&shippingAddressId=" + variables["shippingAddressId"] : "") +
+        (!!variables["collectionPointId"] ? "&collectionPointId=" + variables["collectionPointId"] : "");
 
 }
 
@@ -574,8 +574,7 @@ function LoggedIn() {
         url: basePath + "/User/LoginUsers/",
         data: { UserName: UserName, UserPassword: UserPassword, PlaceOrder: PlaceOrders, Popup: placecheck },
         dataType: 'json',
-        success: function (data)
-        {
+        success: function (data) {
             if (!data.status) {
 
                 $(".alert-message-login").html("User name or password is not correct").show().delay(2000).fadeOut();
@@ -607,66 +606,32 @@ function LoggedIn() {
     });
 }
 function CreateUsers() {
-    var FirstName = $("#FirstName").val();
-    var LastName = $("#LastName").val();
-    var Email = $("#Email").val();
-    var Password = $("#Password").val();
-    $(".error").remove();
-    if (FirstName.length < 1) {
-        $('#FirstName').after('<span class="error">This field is required</span>');
-        return;
-    }
-    if (LastName.length < 1) {
-        $('#LastName').after('<span class="error">This field is required</span>');
-        return;
-    }
-    if (Email.length < 1) {
-        $('#Email').after('<span class="error">This field is required</span>');
-        return;
-    }
-    else {
+    if (!$('#userRegister').valid()) { return; }
 
-        if (!ValidEmail(Email)) {
-            $('#Email').after('<span class="error">Enter a valid email</span>');
-            return;
-        }
-    }
-    if (Password.length < 1) {
-        $('#Password').after('<span class="error">This field is required</span>');
-        return;
-    }
     var placecheck = $("#Placecheck").val();
     var PlaceOrders;
     if (placecheck !== "" && placecheck !== undefined && placecheck != null) {
         PlaceOrders = true;
     }
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: basePath + "/User/CreateUser/",
-        data: { FirstName: FirstName, LastName: LastName, Email: Email, Password: Password, PlaceOrder: PlaceOrders },
-        dataType: 'json',
+        data: $("#userRegister").serialize(),
         success: function (data) {
-
             if (data) {
-
-                $(".alert-message-reg").html("Please activate your account.").show().delay(2000).fadeOut();
+                $(".success-message-reg").html("Registration successful, please check email and activate your account").show().delay(2000).fadeOut();
                 setTimeout(function () {
                     $('#signupPopup').modal('hide');
-                }, 2000);
-
-
+                }, 15000);
             }
-
-
+            else {
+                $(".alert-message-reg").html("Unable to complete operation, please contact support").show().delay(2000).fadeOut();
+            }
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             $(".alert-message-reg").html('Error' + textStatus + " /" + errorThrown).show().delay(5000).fadeOut();
-
         }
     });
-
-
-
 }
 
 function AddWishListItem(ProductId) {
@@ -826,6 +791,8 @@ $("#showRegForm").click(function () {
             $(".registration_form_sec").addClass("show");
             $(".login_form_sec").removeClass("show");
             $(".error").remove();
+            $.validator.unobtrusive.parse("#userRegister");
+
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert('Error' + textStatus + "/" + errorThrown);

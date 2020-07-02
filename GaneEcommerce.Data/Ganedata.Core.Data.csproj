@@ -927,6 +927,10 @@
     <Compile Include="Migrations\202007021028069_setuserid-nullable-inCartitems.designer.cs">
       <DependentUpon>202007021028069_setuserid-nullable-inCartitems.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007021231597_SiteId-in-AuthUser.cs" />
+    <Compile Include="Migrations\202007021231597_SiteId-in-AuthUser.designer.cs">
+      <DependentUpon>202007021231597_SiteId-in-AuthUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1942,6 +1946,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007021028069_setuserid-nullable-inCartitems.resx">
       <DependentUpon>202007021028069_setuserid-nullable-inCartitems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007021231597_SiteId-in-AuthUser.resx">
+      <DependentUpon>202007021231597_SiteId-in-AuthUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

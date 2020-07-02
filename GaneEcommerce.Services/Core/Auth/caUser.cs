@@ -98,6 +98,8 @@ namespace Ganedata.Core.Services
             context.Configuration.ProxyCreationEnabled = false;
             context.Configuration.LazyLoadingEnabled = false;
 
+            caTenantWebsites website = new caTenantWebsites();
+
             upass = GaneStaticAppExtensions.GetMd5(upass);
 
             if (HttpContext.Current.Session["CurrentTenantWebsites"] == null)
@@ -114,11 +116,11 @@ namespace Ganedata.Core.Services
 
             else
             {
-                caTenantWebsites tenant = (caTenantWebsites)HttpContext.Current.Session["CurrentTenantWebsites"];
-                TenantId = tenant.TenantId;
+                website = (caTenantWebsites)HttpContext.Current.Session["CurrentTenantWebsites"];
+                TenantId = website.TenantId;
             }
-            
-            var Users = context.AuthUsers.AsNoTracking().Where(e => e.UserName.Equals(uname, StringComparison.CurrentCultureIgnoreCase) && e.UserPassword == upass.Trim() && e.TenantId == TenantId && e.IsActive && e.IsDeleted != true)
+
+            var Users = context.AuthUsers.AsNoTracking().Where(e => e.UserName.Equals(uname, StringComparison.CurrentCultureIgnoreCase) && e.UserPassword == upass.Trim() && e.TenantId == TenantId && e.SiteId == website.SiteID && e.IsActive && e.IsDeleted != true)
                 .Include(x => x.AuthPermissions.Select(y => y.AuthActivity))
                 .ToList();
 

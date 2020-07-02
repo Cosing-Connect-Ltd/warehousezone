@@ -63,7 +63,8 @@ namespace Ganedata.Core.Entities.Domain
         [ForeignKey("UserGroupId")]
         public virtual AuthUserGroups AuthUserGroups { get; set; }
 
-        [NotMapped]
-        public string Placecheck { get; set; }
+        public int? SiteId { get; set; }
+        [ForeignKey("SiteId")]
+        public virtual TenantWebsites TenantWebsites { get; set; }
     }
 }

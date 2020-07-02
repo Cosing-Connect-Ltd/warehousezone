@@ -16,15 +16,14 @@ namespace Ganedata.Core.Services
         void DeleteAuthUser(AuthUser user, int userId);
         int SaveAuthUserLogin(AuthUserLogin userLogin, int userId, int tenantId);
         int IsUserNameExists(string userName, int tenantId);
+        int IsUserNameExistsForSite(string userName, int siteId);
         void UpdateAuthUserForPermissions(AuthUser user, int userId, int tenantId);
         int GetResourceIdByUserId(int userId);
         string GetResourceNameByUserId(int? userId);
         IEnumerable<ApiCredentials> GetApiCredentials(int TenantId, int WarehouseId, ApiTypes SiteType);
-
         Tenant GetTenantBySiteId(int SiteId);
         TenantLocations GetWarehouseBySiteId(int SiteId);
         UserLoginStatusResponseViewModel GetUserLoginStatus(UserLoginStatusViewModel loginStatus);
-
         bool CreateOrUpdateAuthUserGroup(AuthUserGroups authUserGroups, int UserId, int TenantId);
         AuthUserGroups GetUserGroupsById(int groupId);
         AuthUserGroups RemoveUserGroupsById(int groupId, int UserId);

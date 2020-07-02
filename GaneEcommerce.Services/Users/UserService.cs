@@ -134,6 +134,13 @@ namespace Ganedata.Core.Services
                     select p).Count();
         }
 
+        public int IsUserNameExistsForSite(string userName, int siteId)
+        {
+            return (from p in _currentDbContext.AuthUsers
+                    where (p.UserName == userName && p.SiteId == siteId && p.IsDeleted != true)
+                    select p).Count();
+        }
+
         public int GetResourceIdByUserId(int userId)
         {
             var resource = _currentDbContext.Resources.FirstOrDefault(m => m.AuthUserId == userId && m.IsDeleted != true);

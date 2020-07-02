@@ -120,51 +120,47 @@ namespace WarehouseEcommerce.Controllers
 
         public ActionResult Create(bool? PlaceOrder)
         {
-            //if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ViewBag.Placeorder = PlaceOrder;
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(UsersViewModel usersViewModel)
+        public JsonResult CreateUser(UsersViewModel user, bool? PlaceOrder)
         {
-            //if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
-            AuthUser authuser = new AuthUser();
 
             if (ModelState.IsValid)
             {
+                AuthUser authuser = new AuthUser();
                 Account account = new Account();
-                account.AccountCode = string.IsNullOrEmpty(usersViewModel.CompanyName) ? usersViewModel.FirstName + GaneStaticAppExtensions.GenerateRandomNo() : usersViewModel.CompanyName;
+                account.AccountCode = user.FirstName + GaneStaticAppExtensions.GenerateRandomNo();
                 account.CompanyName = account.AccountCode;
-                account.RegNo = usersViewModel.RegNumber;
-                account.VATNo = usersViewModel.VATNumber;
+                account.RegNo = "";
+                account.VATNo = "";
                 account.AccountStatusID = AccountStatusEnum.Active;
                 var accountModel = _accountServices.SaveAccount(account, null, null, 1, 1, 1, 1, null, null, CurrentUserId, CurrentTenantId, null);
+                authuser.UserPassword = GaneStaticAppExtensions.GetMd5(user.Password);
 
-                // change user password into MD5 hash value
-                string password = usersViewModel.Password;
-                usersViewModel.Password = GaneStaticAppExtensions.GetMd5(usersViewModel.Password);
-                authuser.UserEmail = usersViewModel.Email;
-                authuser.UserFirstName = usersViewModel.FirstName;
-                authuser.UserLastName = usersViewModel.LastName;
-                authuser.UserPassword = usersViewModel.Password;
-                authuser.UserName = usersViewModel.Email;
+                authuser.UserEmail = user.Email;
+                authuser.UserFirstName = user.FirstName;
+                authuser.UserLastName = user.LastName;
+                authuser.UserPassword = GaneStaticAppExtensions.GetMd5(user.Password);
+                authuser.UserName = user.Email;
+                authuser.SiteId = CurrentTenantWebsite.SiteID;
+
                 authuser.IsActive = false;
                 authuser.AccountId = accountModel.AccountID;
                 _userService.SaveAuthUser(authuser, CurrentUserId, CurrentTenantId);
-                string confirmationLink = Url.Action("ConfirmUser", "User", new { confirmationValue = GaneStaticAppExtensions.HashPassword(authuser.UserId.ToString()) + "_" + authuser.UserId.ToString(), placeOrder = GaneStaticAppExtensions.HashPassword(usersViewModel.PlaceOrder.HasValue ? usersViewModel.PlaceOrder.HasValue.ToString() : "") });
+                string confirmationLink = Url.Action("ConfirmUsers", "User", new { confirmationValue = GaneStaticAppExtensions.HashPassword(authuser.UserId.ToString()) + "_" + authuser.UserId.ToString(), placeOrder = GaneStaticAppExtensions.HashPassword(PlaceOrder.HasValue ? PlaceOrder.HasValue.ToString() : "") });
                 confirmationLink = baseUrl + confirmationLink;
                 confirmationLink = "<a href='" + confirmationLink + "' class=btn btn-primary>Activate Account</a>";
                 _configurationsHelper.CreateTenantEmailNotificationQueue("Activate your account", null, sendImmediately: true, worksOrderNotificationType: WorksOrderNotificationTypeEnum.EmailConfirmation, TenantId: CurrentTenantId, accountId: accountModel.AccountID, UserEmail: authuser.UserEmail, confirmationLink: confirmationLink, userId: authuser.UserId);
-                if (usersViewModel.PlaceOrder == true)
-                {
-                    return RedirectToAction("LoginUser", new { UserName = usersViewModel.Email, UserPassword = password, PlaceOrder = usersViewModel.PlaceOrder });
-                }
-                return RedirectToAction("Login");
+                return Json(true, JsonRequestBehavior.AllowGet);
+
             }
 
-            return View(usersViewModel);
+            return Json(false, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult ConfirmUser(string confirmationValue, string placeOrder)
@@ -233,11 +229,11 @@ namespace WarehouseEcommerce.Controllers
             var AccountDetailViewModel = new AccountDetailViewModel()
             {
                 AuthUser = _userService.GetAuthUserById(CurrentUserId),
-                OrderHistory = OrderService.GetOrdersHistory(CurrentUserId,CurrentTenantWebsite.SiteID).Take(10).ToList(),
-                WebsiteWishList= _tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).ToList()
+                OrderHistory = OrderService.GetOrdersHistory(CurrentUserId, CurrentTenantWebsite.SiteID).Take(10).ToList(),
+                WebsiteWishList = _tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).ToList()
 
 
-        };
+            };
 
             return View(AccountDetailViewModel);
         }
@@ -289,43 +285,6 @@ namespace WarehouseEcommerce.Controllers
             }
         }
 
-        public JsonResult CreateUser(string FirstName, string LastName, string Email, string Password, bool? PlaceOrder)
-        {
-            baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
-            AuthUser authuser = new AuthUser();
-
-            if (ModelState.IsValid)
-            {
-                Account account = new Account();
-                account.AccountCode = FirstName + GaneStaticAppExtensions.GenerateRandomNo();
-                account.CompanyName = account.AccountCode;
-                account.RegNo = "";
-                account.VATNo = "";
-                account.AccountStatusID = AccountStatusEnum.Active;
-                var accountModel = _accountServices.SaveAccount(account, null, null, 1, 1, 1, 1, null, null, CurrentUserId, CurrentTenantId, null);
-
-                // change user password into MD5 hash value
-                string password = Password;
-                Password = GaneStaticAppExtensions.GetMd5(Password);
-                authuser.UserEmail = Email;
-                authuser.UserFirstName = FirstName;
-                authuser.UserLastName = LastName;
-                authuser.UserPassword = Password;
-                authuser.UserName = Email;
-                authuser.IsActive = false;
-                authuser.AccountId = accountModel.AccountID;
-                _userService.SaveAuthUser(authuser, CurrentUserId, CurrentTenantId);
-                string confirmationLink = Url.Action("ConfirmUsers", "User", new { confirmationValue = GaneStaticAppExtensions.HashPassword(authuser.UserId.ToString()) + "_" + authuser.UserId.ToString(), placeOrder = GaneStaticAppExtensions.HashPassword(PlaceOrder.HasValue ? PlaceOrder.HasValue.ToString() : "") });
-                confirmationLink = baseUrl + confirmationLink;
-                confirmationLink = "<a href='" + confirmationLink + "' class=btn btn-primary>Activate Account</a>";
-                _configurationsHelper.CreateTenantEmailNotificationQueue("Activate your account", null, sendImmediately: true, worksOrderNotificationType: WorksOrderNotificationTypeEnum.EmailConfirmation, TenantId: CurrentTenantId, accountId: accountModel.AccountID, UserEmail: authuser.UserEmail, confirmationLink: confirmationLink, userId: authuser.UserId);
-                return Json(true, JsonRequestBehavior.AllowGet);
-
-            }
-
-            return Json(false, JsonRequestBehavior.AllowGet);
-        }
-
         public JsonResult UpdateUser(int UserId, string FirstName, string LastName)
         {
             var User = _userService.GetAuthUserById(UserId);
@@ -335,14 +294,11 @@ namespace WarehouseEcommerce.Controllers
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult IsUserAvailable(string UserName)
+        public JsonResult IsUserAvailableForSite(string Email)
         {
-            if (!string.IsNullOrEmpty(UserName)) UserName = UserName.Trim();
+            if (!string.IsNullOrEmpty(Email)) Email = Email.Trim();
 
-            // get properties of tenant
-            caTenant tenant = caCurrent.CurrentTenant();
-
-            int result = _userService.IsUserNameExists(UserName, tenant.TenantId);
+            int result = _userService.IsUserNameExistsForSite(Email, CurrentTenantWebsite.SiteID);
 
             if (result > 0)
                 return Json(false, JsonRequestBehavior.AllowGet);
