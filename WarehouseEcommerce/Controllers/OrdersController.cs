@@ -94,6 +94,7 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.CurrentStep = currentStep;
             ViewBag.DeliveryMethodId = deliveryMethodId;
             ViewBag.CollectionPointId = collectionPointId;
+            ViewBag.ParentStep = parentStep != null ? (CheckoutStep)parentStep : CheckoutStep.BillingAddress;
 
             switch (currentStep)
             {
@@ -104,7 +105,6 @@ namespace WarehouseEcommerce.Controllers
                     ViewBag.Addresses = AccountServices.GetAllValidAccountAddressesByAccountId(accountId ?? 0).Where(u => u.AddTypeShipping == true).ToList();
                     break;
                 case CheckoutStep.EditAddress:
-                    ViewBag.ParentStep = parentStep != null ? (CheckoutStep)parentStep : CheckoutStep.BillingAddress;
                     var model = AccountServices.GetAccountAddressById(accountAddressId ?? 0);
                     return View(model);
                 case CheckoutStep.ShipmentRule:
@@ -197,7 +197,9 @@ namespace WarehouseEcommerce.Controllers
             {
                 accountAddresses.AccountID = caCurrent.CurrentWebsiteUser().AccountId ?? 0;
             }
+
             AccountServices.SaveAccountAddress(accountAddresses, CurrentUserId == 0 ? 1 : CurrentUserId);
+
             if (accountAddresses.AddTypeShipping == true)
             {
                 return RedirectToAction("GetAddress", new { accountId = accountAddresses.AccountID, billingAddressId, deliveryMethodId, step = (int)CheckoutStep.ShippingAddress });

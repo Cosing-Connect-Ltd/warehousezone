@@ -11,17 +11,17 @@
             <div class="col-md-3 col-sm-12">
                 <ul class="menu-about">
                     <li><a href="javascript:goToStep(@((int)CheckoutStep.BillingAddress))" class="">Billing Address</a></li>
-                    <li><a href="javascript:goToStep(@((int)CheckoutStep.DeliveryMethod))" style="@((int)ViewBag.CurrentStep < (int)CheckoutStep.DeliveryMethod?"pointer-events:none; cursor: default; color: gray; background: #f6f7f8":"")">Delivery Method</a></li>
+                    <li><a href="javascript:goToStep(@((int)CheckoutStep.DeliveryMethod))" style="@((int)ViewBag.CurrentStep < (int)CheckoutStep.DeliveryMethod || (int)ViewBag.CurrentStep == (int)CheckoutStep.EditAddress ?"pointer-events:none; cursor: default; color: gray; background: #f6f7f8":"")">Delivery Method</a></li>
                     <li>
-                        <a href="javascript:goToStep(@((DeliveryMethod)(ViewBag.DeliveryMethodId ?? (int)DeliveryMethod.ToShipmentAddress) == DeliveryMethod.ToShipmentAddress ? (int)CheckoutStep.ShippingAddress : (int)CheckoutStep.CollectionPiont))" style="@((int)ViewBag.CurrentStep < (int)CheckoutStep.ShippingAddress?"pointer-events:none; cursor: default; color: gray; background: #f6f7f8":"")">
+                        <a href="javascript:goToStep(@((DeliveryMethod)(ViewBag.DeliveryMethodId ?? (int)DeliveryMethod.ToShipmentAddress) == DeliveryMethod.ToShipmentAddress ? (int)CheckoutStep.ShippingAddress : (int)CheckoutStep.CollectionPiont))" style="@((int)ViewBag.CurrentStep < (int)CheckoutStep.ShippingAddress || (int)ViewBag.CurrentStep == (int)CheckoutStep.EditAddress?"pointer-events:none; cursor: default; color: gray; background: #f6f7f8":"")">
                             @((DeliveryMethod)(ViewBag.DeliveryMethodId ?? (int)DeliveryMethod.ToShipmentAddress) == DeliveryMethod.ToShipmentAddress ? "Shipping Address" : "Collection Point")
                         </a>
                     </li>
                     @if ((DeliveryMethod)(ViewBag.DeliveryMethodId ?? (int)DeliveryMethod.ToShipmentAddress) == DeliveryMethod.ToShipmentAddress)
                     {
-                        <li><a href="javascript:goToStep(@((int)CheckoutStep.ShipmentRule))" style="@((int)ViewBag.CurrentStep < (int)CheckoutStep.ShipmentRule ? "pointer-events:none; cursor: default; color: gray; background: #f6f7f8" : "")">Shipment Type</a></li>
+                        <li><a href="javascript:goToStep(@((int)CheckoutStep.ShipmentRule))" style="@((int)ViewBag.CurrentStep < (int)CheckoutStep.ShipmentRule || (int)ViewBag.CurrentStep == (int)CheckoutStep.EditAddress? "pointer-events:none; cursor: default; color: gray; background: #f6f7f8" : "")">Shipment Type</a></li>
                     }
-                    <li><a href="javascript:goToStep(@((int)CheckoutStep.PaymentMethod))" style="@((int)ViewBag.CurrentStep < (int)CheckoutStep.PaymentMethod?"pointer-events:none; cursor: default; color: gray; background: #f6f7f8":"")">Payment Method</a></li>
+                    <li><a href="javascript:goToStep(@((int)CheckoutStep.PaymentMethod))" style="@((int)ViewBag.CurrentStep < (int)CheckoutStep.PaymentMethod || (int)ViewBag.CurrentStep == (int)CheckoutStep.EditAddress?"pointer-events:none; cursor: default; color: gray; background: #f6f7f8":"")">Payment Method</a></li>
                 </ul>
             </div>
             <div class="col-md-8 col-sm-12 bg-white login my-account">
@@ -29,7 +29,7 @@
                     @if ((CheckoutStep)ViewBag.CurrentStep == CheckoutStep.BillingAddress || (CheckoutStep)ViewBag.CurrentStep == CheckoutStep.ShippingAddress || (CheckoutStep)ViewBag.CurrentStep == CheckoutStep.EditAddress)
                     {
                         <div class="content-wrapper select">
-                            <h2 class="text-uppercase">@((CheckoutStep)ViewBag.CurrentStep == CheckoutStep.BillingAddress ? "Billing Address" : "Shipping Address")</h2>
+                            <h2 class="text-uppercase">@((CheckoutStep)ViewBag.CurrentStep != CheckoutStep.ShippingAddress ? "Billing Address" : "Shipping Address")</h2>
                             <hr class="custom-hr">
                             @if (address != null)
                             {
@@ -82,7 +82,7 @@
 
                                             </div>
                                         }
-                                        @if (address.ElementAtOrDefault(i + 1) != null)
+                                        @if (address.ElementAtOrDefault(i + 1) != null && (CheckoutStep)ViewBag.CurrentStep != CheckoutStep.BillingAddress)
                                         {
                                             <div class="col-md-6 both-btn">
                                                 <p class="p-mt-20">
@@ -123,7 +123,7 @@
 
                             }
 
-                            @if ((CheckoutStep)ViewBag.CurrentStep == CheckoutStep.ShippingAddress || (CheckoutStep)ViewBag.CurrentStep == CheckoutStep.EditAddress)
+                            @if ((CheckoutStep)ViewBag.CurrentStep == CheckoutStep.ShippingAddress || (CheckoutStep)ViewBag.CurrentStep == CheckoutStep.EditAddress || ((CheckoutStep)ViewBag.CurrentStep == CheckoutStep.BillingAddress && address == null))
                             {
                                 @Html.Partial("_AddOrEditAddress");
                             }

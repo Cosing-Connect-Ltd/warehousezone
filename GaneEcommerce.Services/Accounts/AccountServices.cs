@@ -515,51 +515,31 @@ namespace Ganedata.Core.Services
 
         public AccountAddresses SaveAccountAddress(AccountAddresses customeraddresses, int currentUserId)
         {
-            if (customeraddresses.AddressID < 1)
+            if (customeraddresses.AddressID >= 1)
             {
-                customeraddresses.Name = customeraddresses.Name.Trim();
-
-                customeraddresses.DateCreated = DateTime.UtcNow;
-                customeraddresses.DateUpdated = DateTime.UtcNow;
-                customeraddresses.CreatedBy = currentUserId;
-                customeraddresses.UpdatedBy = currentUserId;
-                customeraddresses.IsDeleted = false;
-
-                _currentDbContext.AccountAddresses.Add(customeraddresses);
-                var customer = _currentDbContext.Account.FirstOrDefault(m => m.AccountID == customeraddresses.AccountID);
-                customer.DateUpdated = DateTime.UtcNow;
-                customer.UpdatedBy = currentUserId;
-                _currentDbContext.Account.Attach(customer);
-                var entry1 = _currentDbContext.Entry(customer);
-                entry1.Property(e => e.DateUpdated).IsModified = true;
-                entry1.Property(e => e.UpdatedBy).IsModified = true;
+                var previousAddress = _currentDbContext.AccountAddresses.Find(customeraddresses.AddressID);
+                previousAddress.IsDeleted = true;
+                previousAddress.DateUpdated = DateTime.UtcNow;
+                previousAddress.UpdatedBy = currentUserId;
             }
-            else
-            {
-                if (!String.IsNullOrEmpty(customeraddresses.Name))
-                    customeraddresses.Name = customeraddresses.Name.Trim();
 
-                customeraddresses.DateUpdated = DateTime.UtcNow;
-                customeraddresses.UpdatedBy = currentUserId;
+            customeraddresses.Name = customeraddresses.Name.Trim();
 
-                _currentDbContext.AccountAddresses.Attach(customeraddresses);
-                var entry = _currentDbContext.Entry(customeraddresses);
-                entry.Property(e => e.Name).IsModified = true;
-                entry.Property(e => e.AddressLine1).IsModified = true;
-                entry.Property(e => e.AddressLine2).IsModified = true;
-                entry.Property(e => e.AddressLine3).IsModified = true;
-                entry.Property(e => e.Telephone).IsModified = true;
-                entry.Property(e => e.Town).IsModified = true;
-                entry.Property(e => e.County).IsModified = true;
-                entry.Property(e => e.PostCode).IsModified = true;
-                entry.Property(e => e.CountryID).IsModified = true;
-                entry.Property(e => e.AccountID).IsModified = true;
-                entry.Property(e => e.DateUpdated).IsModified = true;
-                entry.Property(e => e.UpdatedBy).IsModified = true;
-                entry.Property(e => e.AddTypeDefault).IsModified = true;
-                entry.Property(e => e.AddTypeMarketing).IsModified = true;
-                entry.Property(e => e.AddTypeShipping).IsModified = true;
-            }
+            customeraddresses.DateCreated = DateTime.UtcNow;
+            customeraddresses.DateUpdated = DateTime.UtcNow;
+            customeraddresses.CreatedBy = currentUserId;
+            customeraddresses.UpdatedBy = currentUserId;
+            customeraddresses.IsDeleted = false;
+
+            _currentDbContext.AccountAddresses.Add(customeraddresses);
+            var customer = _currentDbContext.Account.FirstOrDefault(m => m.AccountID == customeraddresses.AccountID);
+            customer.DateUpdated = DateTime.UtcNow;
+            customer.UpdatedBy = currentUserId;
+            _currentDbContext.Account.Attach(customer);
+            var entry1 = _currentDbContext.Entry(customer);
+            entry1.Property(e => e.DateUpdated).IsModified = true;
+            entry1.Property(e => e.UpdatedBy).IsModified = true;
+
             _currentDbContext.SaveChanges();
 
             return customeraddresses;

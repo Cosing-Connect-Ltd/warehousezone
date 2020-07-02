@@ -2,7 +2,7 @@
 @using Ganedata.Core.Entities.Enums;
 
 <div>
-    <h4 class="text-uppercase mt-20 uni-add-new-address-h4">@(Model == null ? "Add a new address" : "Edit Address")</h4>
+    <h4 class="text-uppercase mt-20 uni-add-new-address-h4">@(Model == null ? ((CheckoutStep)ViewBag.CurrentStep == CheckoutStep.ShippingAddress ? "Add a new address" : string.Empty) : "Edit Address")</h4>
     <div class="search-container row">
         <div class="search-box input-group col-md-6 col-12 ">
             <input id="postCode" type="text" name="search" value="" placeholder="Enter PostCode" class="text-search-postcode form-control text-uppercase" />
@@ -62,7 +62,6 @@
                 else
                 {
                     <input type="hidden" name="AddTypeBilling" id="AddTypeBilling" value="true" />
-
                 }
 
                 @Html.HiddenFor(model => model.AccountID, (int)(ViewBag.AccountIds))
