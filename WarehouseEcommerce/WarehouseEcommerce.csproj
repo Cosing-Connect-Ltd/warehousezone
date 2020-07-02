@@ -345,13 +345,14 @@
     <Content Include="Content\Theme\Smart\app\js\Smart_KitProductDetail_Custom.js" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\Theme\University\app\css\customfontIcons.css" />
+    <Content Include="Content\Theme\University\app\fonts\icomoon.svg" />
+    <Content Include="Content\Theme\University\app\fonts\SegoeUI-Bold.svg" />
+    <Content Include="Content\Theme\University\app\fonts\SegoeUI-Semibold.svg" />
+    <Content Include="Content\Theme\University\app\fonts\SegoeUI.svg" />
     <Content Include="Content\Theme\University\app\js\Uni_KitProductDetail_Custom.js" />
     <Content Include="fonts\custom-fonts.css" />
     <Content Include="Content\Theme\University\app\css\jquery-confirm.min.css" />
     <Content Include="Content\Theme\University\app\css\ui-settings.css" />
-    <Content Include="Content\Theme\University\app\fonts\SegoeUI-Bold.svg" />
-    <Content Include="Content\Theme\University\app\fonts\SegoeUI-Semibold.svg" />
-    <Content Include="Content\Theme\University\app\fonts\SegoeUI.svg" />
     <Content Include="fonts\gotham\Gotham-Book.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -375,7 +376,6 @@
     <Content Include="Content\Theme\University\app\css\northumbria_responsive.css" />
     <Content Include="Content\Theme\University\app\css\owl.carousel.min.css" />
     <Content Include="Content\Theme\University\app\css\skew_carousle_style.css" />
-    <Content Include="Content\Theme\University\app\fonts\icomoon.svg" />
     <Content Include="fonts\segoeui\SegoeUI-Bold.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -642,9 +642,6 @@
     <Content Include="Content\Theme\University\app\css\northumbria_custom.less" />
     <Content Include="Content\Theme\University\app\css\northumbria_responsive.less" />
     <Content Include="Views\Theme\University\Home\Index.cshtml" />
-    <Content Include="Content\Theme\University\app\fonts\icomoon.eot" />
-    <Content Include="Content\Theme\University\app\fonts\icomoon.ttf" />
-    <Content Include="Content\Theme\University\app\fonts\icomoon.woff" />
     <Content Include="fonts\segoeui\SegoeUI-Bold.eot">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -672,7 +669,6 @@
     <Content Include="fonts\segoeui\SegoeUI.woff">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Theme\University\app\fonts\selection.json" />
     <Content Include="Views\Theme\University\Shared\_LoginRegisterPartial.cshtml" />
     <Content Include="Views\Theme\University\Shared\_SliderPartial.cshtml" />
     <Content Include="Views\Theme\University\Shared\_TopCategoryPartial.cshtml" />
@@ -882,6 +878,9 @@
     <Content Include="fonts\montserrat\Montserrat-ThinItalic.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Theme\University\app\fonts\icomoon.eot" />
+    <Content Include="Content\Theme\University\app\fonts\icomoon.ttf" />
+    <Content Include="Content\Theme\University\app\fonts\icomoon.woff" />
     <Content Include="Content\Theme\University\app\fonts\SegoeUI-Bold.eot" />
     <Content Include="Content\Theme\University\app\fonts\SegoeUI-Bold.ttf" />
     <Content Include="Content\Theme\University\app\fonts\SegoeUI-Bold.woff" />
@@ -891,6 +890,7 @@
     <Content Include="Content\Theme\University\app\fonts\SegoeUI.eot" />
     <Content Include="Content\Theme\University\app\fonts\SegoeUI.ttf" />
     <Content Include="Content\Theme\University\app\fonts\SegoeUI.woff" />
+    <Content Include="Content\Theme\University\app\fonts\selection.json" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\esm\popper-utils.js" />

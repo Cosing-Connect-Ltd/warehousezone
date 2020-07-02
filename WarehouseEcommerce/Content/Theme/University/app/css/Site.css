@@ -1492,3 +1492,549 @@ body.modal-open {
     color: lightgray;
     opacity: 0.5;
 }
+
+
+/*.styled-checkbox start*/
+.styled-checkbox {
+    position: absolute;
+    opacity: 0;
+}
+
+    .styled-checkbox + label {
+        position: relative;
+        cursor: pointer;
+        padding: 0;
+    }
+
+        .styled-checkbox + label:before {
+            content: "";
+            margin-right: 20px;
+            display: inline-block;
+            vertical-align: text-top;
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            background: #ddd;
+        }
+
+    .styled-checkbox:hover + label:before {
+        background: #f33655;
+    }
+
+    .styled-checkbox:focus + label:before {
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
+    }
+
+    .styled-checkbox:checked + label:before {
+        background: #f33655;
+    }
+
+    .styled-checkbox:disabled + label {
+        color: #b8b8b8;
+        cursor: auto;
+    }
+
+        .styled-checkbox:disabled + label:before {
+            box-shadow: none;
+            background: #ddd;
+        }
+
+    .styled-checkbox:checked + label:after {
+        content: "";
+        position: absolute;
+        left: 10px;
+        top: 15px;
+        background: white;
+        width: 2px;
+        height: 2px;
+        box-shadow: 2px 0 0 white, 4px 0 0 white, 4px -2px 0 white, 4px -4px 0 white, 4px -6px 0 white, 4px -8px 0 white;
+        transform: rotate(45deg);
+    }
+/*.styled-checkbox end*/
+
+
+
+
+/*payment pages from GetAddress to FinalPayment- css start*/
+.nb_sec_pb {
+    padding-bottom: 55px;
+}
+.ordConfirmationPgStepsec {
+    margin-bottom: 90px;
+}
+
+.checkoutInnersec .ordConfirmHead {
+    font-size: 20px;
+    font-family: "primaryfont_Bold";
+    letter-spacing: 2px;
+    padding-bottom: 20px;
+    position: relative;
+    margin-bottom: 57px;
+}
+
+    .checkoutInnersec .ordConfirmHead:after {
+        content: "";
+        width: 50px;
+        height: 3px;
+        background-color: #f33655;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+
+.billandshipsec .subheadCmn {
+    font-family: "primaryfont_Bold";
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.billandshipsec .billigAddrWrap {
+    margin-bottom: 15px;
+}
+
+    .billandshipsec .billigAddrWrap p.address {
+        font-family: "primaryfont_SemiBold";
+        font-size: 18px;
+        color: #000;
+    }
+
+    .billandshipsec .billigAddrWrap .btnWrap {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: flex-start;
+        margin-top: 20px;
+    }
+
+        .billandshipsec .billigAddrWrap .btnWrap .btmBtn {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            width: 185px;
+            height: 50px;
+            margin-right: 20px;
+            font-size: 16px;
+            font-family: "primaryfont_Bold";
+            color: #fff;
+            outline: none;
+            border: none;
+            text-transform: uppercase;
+            background-color: #000;
+            transition: all 0.3s ease;
+        }
+
+            .billandshipsec .billigAddrWrap .btnWrap .btmBtn:hover {
+                background-color: #f33655;
+            }
+
+            .billandshipsec .billigAddrWrap .btnWrap .btmBtn:last-child {
+                margin-right: 0px;
+            }
+            @media(max-width:560px){
+                .billandshipsec .billigAddrWrap .btnWrap .btmBtn {
+                    width: 100%;
+                    margin-top: 10px;
+                }
+                .billandshipsec .billigAddrWrap .btnWrap {
+                    display: unset;
+                }
+                .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group .findAddrWrap .fadBtn {
+                    width:85px !important;
+                }
+                .billandshipsec .saveAddrWrap .saveAddrBtn {
+                    width: 100% !important;
+                }
+                .billandshipsec .shippingAddrWrap .addnwShopAdrrbtn {
+                    width: 100% !important;
+                }
+            }
+
+.billandshipsec .addNewAddrWrap {
+    width: 100%;
+    margin-bottom: 48px;
+}
+
+    .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap {
+        width: 100%;
+    }
+
+        .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group .findAddrWrap {
+            position: relative;
+            width: 100%;
+            height: 50px;
+            border: solid 1px #707070;
+            padding-right: 200px;
+        }
+
+            .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group .findAddrWrap .findAddrInput {
+                width: 100%;
+                height: 48px;
+                font-family: "primaryfont_Normal";
+                font-size: 14px;
+                border: none;
+                outline: none;
+                text-indent: 10px;
+            }
+
+            .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group .findAddrWrap .fadBtn {
+                width: 140px;
+                height: 100%;
+                position: absolute;
+                right: 0;
+                top: 0;
+                background-color: #f33655;
+                color: #fff;
+                font-style: italic;
+                font-family: "primaryfont_Bold";
+                font-size: 20px;
+                border: none;
+                outline: none;
+                transition: all 0.3s ease;
+            }
+
+                .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group .findAddrWrap .fadBtn:hover {
+                    background-color: #000;
+                }
+
+        .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group input[type="text"],
+        .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group input[type="number"] {
+            width: 100%;
+            height: 50px;
+            border: solid 1px #707070;
+            outline: none;
+            text-indent: 10px;
+            font-family: "primaryfont_Normal";
+            font-size: 14px;
+        }
+
+.billandshipsec .shippingAddrWrap {
+    margin-bottom: 50px;
+}
+
+    .billandshipsec .shippingAddrWrap .checkboxwrap {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+        .billandshipsec .shippingAddrWrap .checkboxwrap label {
+            font-family: "primaryfont_Normal";
+            font-size: 18px;
+        }
+@media(max-width:425px) {
+    .billandshipsec .shippingAddrWrap .checkboxwrap label {
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+    }
+    .styled-checkbox + label:before {
+        margin-right: 12px;
+        margin-top: 3px;
+    }
+}
+    .billandshipsec .shippingAddrWrap .addnwShopAdrrbtn {
+        width: 250px;
+        height: 50px;
+        background-color: #000;
+        color: #fff;
+        font-family: "primaryfont_Bold";
+        font-size: 16px;
+        border: none;
+        outline: none;
+        transition: all 0.3s ease;
+    }
+
+        .billandshipsec .shippingAddrWrap .addnwShopAdrrbtn:hover {
+            background-color: #f33655;
+        }
+        
+.billandshipsec .saveAddrWrap {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+    .billandshipsec .saveAddrWrap .saveAddrBtn {
+        width: 260px;
+        height: 50px;
+        background-color: #000;
+        color: #fff;
+        font-family: "primaryfont_Bold";
+        font-size: 16px;
+        border: none;
+        text-transform: uppercase;
+        outline: none;
+        transition: all 0.3s ease;
+    }
+
+        .billandshipsec .saveAddrWrap .saveAddrBtn:hover {
+            background-color: #f33655;
+        }
+
+.Paymentsec .orderTotalsec {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 27px;
+}
+
+    .Paymentsec .orderTotalsec > div {
+        font-family: "primaryfont_Bold";
+        font-size: 20px;
+    }
+
+        .Paymentsec .orderTotalsec > div > span {
+            color: #f33655;
+            padding-left: 24px;
+        }
+
+.Paymentsec .paymentTabsec {
+    width: 100%;
+}
+
+    .Paymentsec .paymentTabsec .submitBtnwra {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .Paymentsec .paymentTabsec .submitBtnwra .btnCmn {
+            width: 260px;
+            border: none;
+        }
+
+    .Paymentsec .paymentTabsec .btnCmn {
+        height: 46px;
+        background-color: #000;
+        color: #fff;
+        text-transform: uppercase;
+        font-family: "primaryfont_SemiBold";
+        font-size: 20px;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .Paymentsec .paymentTabsec .btnCmn:hover {
+            background-color: #f33655;
+        }
+
+    .Paymentsec .paymentTabsec .myAccLeftNavsec .leftsideNavWrap a {
+        position: relative;
+        background-color: #f3f3f3;
+    }
+
+        .Paymentsec .paymentTabsec .myAccLeftNavsec .leftsideNavWrap a i {
+            position: absolute;
+            right: 0;
+        }
+
+        .Paymentsec .paymentTabsec .myAccLeftNavsec .leftsideNavWrap a.active {
+            background-color: #f33655;
+        }
+
+            .Paymentsec .paymentTabsec .myAccLeftNavsec .leftsideNavWrap a.active i {
+                color: #fff;
+            }
+
+    .Paymentsec .paymentTabsec .myAccLeftNavsec .tab_myaccount {
+        background-color: #f3f3f3;
+    }
+
+    .Paymentsec .paymentTabsec .myAccLeftNavsec .tabcontentInner {
+        padding: 0px 35px;
+    }
+
+        .Paymentsec .paymentTabsec .myAccLeftNavsec .tabcontentInner .subhead:after {
+            display: none;
+        }
+
+    .Paymentsec .paymentTabsec .myAccLeftNavsec .leftsideNavWrap a i {
+        color: #8c8c8c;
+    }
+
+    .Paymentsec .paymentTabsec .myAccLeftNavsec .tabcontentInner .subcontBox > div {
+        padding: 35px 0px;
+        border-bottom: solid 1px #707070;
+    }
+
+        .Paymentsec .paymentTabsec .myAccLeftNavsec .tabcontentInner .subcontBox > div:last-child {
+            border: none;
+        }
+
+    .Paymentsec .paymentTabsec .cardDetailsWrap .btnCmn {
+        width: 147px;
+    }
+
+    .Paymentsec .paymentTabsec .cardDetailsWrap .form-group {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+        .Paymentsec .paymentTabsec .cardDetailsWrap .form-group label {
+            font-family: "primaryfont_Normal";
+            font-size: 16px;
+            width: 145px;
+        }
+
+        .Paymentsec .paymentTabsec .cardDetailsWrap .form-group input[type="text"].secCodeTxtbox {
+            width: 168px;
+            margin-right: 30px;
+        }
+
+        .Paymentsec .paymentTabsec .cardDetailsWrap .form-group input[type="text"] {
+            width: 352px;
+            height: 50px;
+            text-indent: 10px;
+            border: solid 1px #707070;
+        }
+
+        .Paymentsec .paymentTabsec .cardDetailsWrap .form-group .witTxt {
+            font-family: "primaryfont_Normal";
+            font-size: 16px;
+            font-style: italic;
+            text-decoration: underline !important;
+        }
+
+            .Paymentsec .paymentTabsec .cardDetailsWrap .form-group .witTxt:hover {
+                cursor: pointer;
+            }
+
+        .Paymentsec .paymentTabsec .cardDetailsWrap .form-group .expDatectrlwrap {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+            .Paymentsec .paymentTabsec .cardDetailsWrap .form-group .expDatectrlwrap select {
+                height: 50px;
+                border: solid 1px #707070;
+                text-align: center;
+                text-indent: 25px;
+                margin-right: 30px;
+            }
+
+                .Paymentsec .paymentTabsec .cardDetailsWrap .form-group .expDatectrlwrap select.mnth {
+                    width: 92px;
+                }
+
+                .Paymentsec .paymentTabsec .cardDetailsWrap .form-group .expDatectrlwrap select.year {
+                    width: 138px;
+                }
+
+    .Paymentsec .paymentTabsec .cardDetailsWrap .secCodesec {
+        margin-bottom: 35px;
+    }
+
+    .Paymentsec .paymentTabsec .billingAddrWrap {
+        position: relative;
+    }
+
+        .Paymentsec .paymentTabsec .billingAddrWrap p.address {
+            font-family: "primaryfont_Normal";
+            font-size: 16px;
+            color: #000;
+        }
+
+        .Paymentsec .paymentTabsec .billingAddrWrap .btnCmn {
+            position: absolute;
+            right: 0;
+            top: 35px;
+            width: 117px;
+            text-transform: capitalize;
+        }
+
+    .Paymentsec .paymentTabsec .termandcondition p.terms {
+        font-family: "primaryfont_Normal";
+        font-size: 14px;
+        line-height: 23px;
+    }
+
+.orderConfirmationSection {
+    width: 100%;
+}
+
+    .orderConfirmationSection .ordConfirmHead {
+        font-size: 20px;
+        font-family: "primaryfont_Bold";
+        letter-spacing: 2px;
+        padding-bottom: 20px;
+        position: relative;
+        margin-bottom: 57px;
+    }
+
+        .orderConfirmationSection .ordConfirmHead:after {
+            content: "";
+            width: 50px;
+            height: 3px;
+            background-color: #f33655;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+    .orderConfirmationSection .subHead {
+        font-family: "primaryfont_Bold";
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .orderConfirmationSection p.content {
+        font-family: "primaryfont_SemiBold";
+        font-size: 16px;
+        line-height: 24px;
+        margin-bottom: 25px;
+    }
+
+        .orderConfirmationSection p.content.store {
+            font-size: 14px;
+        }
+
+    .orderConfirmationSection .itemList {
+        list-style: none;
+        margin-bottom: 32px;
+    }
+
+        .orderConfirmationSection .itemList li {
+            width: 100%;
+            font-family: "primaryfont_Bold";
+            font-size: 16px;
+            line-height: 25px;
+            position: relative;
+            padding-left: 15px;
+            margin-bottom: 20px;
+        }
+
+            .orderConfirmationSection .itemList li:before {
+                content: "";
+                width: 8px;
+                height: 8px;
+                background-color: #000;
+                border-radius: 50%;
+                position: absolute;
+                left: 0px;
+                top: 10px;
+            }
+.collection-address-div {
+    box-shadow: 0 0px 0px 1px rgba(0,0,0,0.12), 0 0px 1px rgba(0,0,0,0.24);
+    padding: 10px;
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+    .collection-address-div:hover {
+        box-shadow: 0 -10px 30px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    }
+   
+/*payment pages from GetAddress to FinalPayment- css start*/

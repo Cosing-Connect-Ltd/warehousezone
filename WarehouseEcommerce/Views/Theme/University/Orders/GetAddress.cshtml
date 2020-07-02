@@ -5,7 +5,245 @@
     var address = ViewBag.Addresses as List<Ganedata.Core.Entities.Domain.AccountAddresses>;
 }
 
-<div class="about bg-white get-address-page uni-get-address-page">
+
+
+<section class="nb_sec nb_prdlisting_pgsec nb_sec_pb">
+    <div class="container">
+        <div class="breadCrumbtopsec">
+            <div class="nb_bread_crumbwrap">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li>></li>
+                        <li class="breadcrumb-item">
+                            <a href="#">Billing and shipping</a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="nb_sec checkconfirmSec">
+            <div class="progressBarStep ordConfirmationPgStepsec">
+                <ul id="progressList">
+                    <li class="active">
+                        <div class="HalfCircle"></div>
+                        <span class="txt">Product</span><span class="count"><i class="icon-product"></i></span>
+                    </li>
+                    <li class="active">
+                        <div class="HalfCircle"></div>
+
+                        <span class="txt">Basket</span><span class="count"><i class="icon-basket-cart"></i></span>
+                    </li>
+                    <li class="active">
+                        <div class="HalfCircle"></div>
+                        <span class="txt">Review Items</span><span class="count"><i class="icon-review-items"></i></span>
+                    </li>
+                    <li>
+                        <div class="HalfCircle"></div>
+                        <span class="txt">Billing & Shipping</span><span class="count">
+                            <i class="icon-billing-shipping"></i>
+                        </span>
+                    </li>
+                    <li>
+                        <div class="HalfCircle"></div>
+                        <span class="txt">Payment</span><span class="count"><i class="icon-credit-card"></i></span>
+                    </li>
+                    <li>
+                        <div class="HalfCircle"></div>
+                        <span class="txt">Order Confirmation</span><span class="count"><i class="icon-tick1"></i></span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="checkoutInnersec billandshipsec">
+                <h4 class="ordConfirmHead">Billing & Shipping</h4>
+
+                @*================ Shipping Address- start =================*@
+                <div class="billigAddrWrap">
+                    <h5 class="subheadCmn">Shipping Address</h5>
+                    <p class="address">
+                        Mr. John Doe<br />
+                        London EC1V, 9JH, United Kingdom<br />
+                        Mob: 0761654184 <br />
+                        Flat 7,Wenlake house, Old Street, <br />
+                    </p>
+                    <div class="btnWrap">
+                        <button class="btmBtn">Select Address</button>
+                        <button class="btmBtn">Edit Address</button>
+                        <button class="btmBtn">Remove Address</button>
+                    </div>
+                </div>
+                @*================ Shippind Address- end =================*@
+
+                @*================ Add New Address- start =================*@
+                <div class="addNewAddrWrap">
+                    <h5 class="subheadCmn">Add a New Address</h5>
+                    <div class="addNwAdrrFormWrap">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="findAddrWrap">
+                                        <input type="text" class="findAddrInput" placeholder="Enter Postcode" />
+                                        <button class="fadBtn">Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <input type="text" placeholder="Address line 1" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <input type="text" placeholder="Address line 1" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <input type="text" placeholder="Address line 2" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <input type="text" placeholder="Address line 2" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <input type="text" placeholder="Address line 3" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <input type="text" placeholder="Postal Code" />
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <input type="number" placeholder="Telephone No" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <input type="text" placeholder="Country" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="shippingAddrWrap">
+                    <h5 class="subheadCmn">Billing Address</h5>
+                    <div class="checkboxwrap">
+                        <input class="styled-checkbox"
+                               id="billing_address_checkbox"
+                               type="checkbox"
+                               value="" />
+                        <label for="billing_address_checkbox">Same as Shipping Address</label>
+                    </div>
+                    <button class="addnwShopAdrrbtn">ADD NEW BILLING ADDRESS</button>
+                </div>
+                <div class="saveAddrWrap">
+                    <button class="saveAddrBtn">Save Address</button>
+                </div>
+
+                @*================ Add New Address- end =================*@
+
+                @*================ Select Delivery Method- start =================*@
+                <div class="shippingAddrWrap">
+                    <h5 class="subheadCmn">Select Delivery Method</h5>
+                    <div class="checkboxwrap">
+                        <input class="styled-checkbox"
+                               id="pick_up_checkbox"
+                               type="checkbox"
+                               value="" />
+                        <label for="pick_up_checkbox">Pick up (From Collection Point) - Free</label>
+                    </div>
+                    <div class="checkboxwrap">
+                        <input class="styled-checkbox"
+                               id="courier_checkbox"
+                               type="checkbox"
+                               value="" />
+                        <label for="courier_checkbox">Delivery to Address (Courier) </label>
+                    </div>
+                        <button class="addnwShopAdrrbtn">SELECT DELIVERY METHOD</button>
+                </div>
+                @*================ Select Delivery Method- end =================*@
+
+                @*================ Select Shipment Type- start =================*@
+                <div class="shippingAddrWrap">
+                    <h5 class="subheadCmn">Select Shipment Type</h5>
+                    <div class="checkboxwrap">
+                        <input class="styled-checkbox"
+                               id="royal_mail_checkbox"
+                               type="checkbox"
+                               value="" />
+                        <label for="royal_mail_checkbox"><b>£2.20</b> (Royal Mail by 5 Working Days)</label>
+                    </div>
+                    <div class="checkboxwrap">
+                        <input class="styled-checkbox"
+                               id="dpd_checkbox"
+                               type="checkbox"
+                               value="" />
+                        <label for="dpd_checkbox"><b>£5.20</b> (DPD by 48 Hours)</label>
+                    </div>
+                    <button class="addnwShopAdrrbtn">SELECT SHIPMENT TYPE</button>
+                </div>
+                @*================ Select Shipment Type- end =================*@
+
+                @*================ Select Collection Point- start =================*@
+            <div class="shippingAddrWrap">
+                <div class="addNewAddrWrap">
+                    <h5 class="subheadCmn">Select Collection Point</h5>
+                    <div class="addNwAdrrFormWrap">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <div class="findAddrWrap">
+                                        <input type="text" class="findAddrInput" placeholder="Enter Postcode" />
+                                        <button class="fadBtn">Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-lg-6">
+                                <div class="billigAddrWrap collection-address-div">
+                                    <p class="address">
+                                        BD7 1PX<br />
+                                        4 Summerville Road<br />
+                                        Bradford <br />
+                                        United Kingdom
+                                    </p>
+                                    <p class="miles">213 mi</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="billigAddrWrap collection-address-div">
+                                    <p class="address">
+                                        BD7 1PX<br />
+                                        4 Summerville Road<br />
+                                        Bradford <br />
+                                        United Kingdom
+                                    </p>
+                                    <p class="miles">213 mi</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="addnwShopAdrrbtn">Select Collection Point</button>
+                </div>
+            </div>
+                @*================ Select Collection Point- end =================*@
+
+            </div>
+        </div>
+    </div>
+</section>
+
+@*<div class="about bg-white get-address-page uni-get-address-page">
     <div class="container-fluid custom-max-width">
         <div class="row checkout-side-menu">
             <div class="col-md-3 col-sm-12">
@@ -212,4 +450,4 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
