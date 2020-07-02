@@ -1,8 +1,9 @@
-﻿@{
+﻿@using Ganedata.Core.Entities.Enums;
+@{
     ViewBag.Title = "Sagepay";
 }
 <style>
-  
+
     input {
         font-size: 12pt;
     }
@@ -11,8 +12,6 @@
         margin: 0 auto;
         margin-top: 20px;
     }
-
-
 </style>
 
 <div id="main">
@@ -32,37 +31,7 @@
                 </div>
             </div>
             <div class="nb_sec checkconfirmSec">
-                <div class="progressBarStep ordConfirmationPgStepsec">
-                    <ul id="progressList">
-                        <li class="active">
-                            <div class="HalfCircle"></div>
-                            <span class="txt">Product</span><span class="count"><i class="icon-product"></i></span>
-                        </li>
-                        <li class="active">
-                            <div class="HalfCircle"></div>
-
-                            <span class="txt">Basket</span><span class="count"><i class="icon-basket-cart"></i></span>
-                        </li>
-                        <li class="active">
-                            <div class="HalfCircle"></div>
-                            <span class="txt">Review Items</span><span class="count"><i class="icon-review-items"></i></span>
-                        </li>
-                        <li class="active">
-                            <div class="HalfCircle"></div>
-                            <span class="txt">Billing & Shipping</span><span class="count">
-                                <i class="icon-billing-shipping"></i>
-                            </span>
-                        </li>
-                        <li>
-                            <div class="HalfCircle"></div>
-                            <span class="txt">Payment</span><span class="count"><i class="icon-credit-card"></i></span>
-                        </li>
-                        <li>
-                            <div class="HalfCircle"></div>
-                            <span class="txt">Order Confirmation</span><span class="count"><i class="icon-tick1"></i></span>
-                        </li>
-                    </ul>
-                </div>
+                @Html.Partial("_OrderProgressBar", OrderProgressStep.Payment)
 
                 <div class="checkoutInnersec Paymentsec">
                     <h4 class="ordConfirmHead">Payments</h4>

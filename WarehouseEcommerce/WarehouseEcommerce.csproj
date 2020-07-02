@@ -1398,7 +1398,7 @@
     <Content Include="Views\Theme\University\Orders\_CollectionPoint.cshtml" />
     <Content Include="Views\Theme\University\Orders\_ShipmentRule.cshtml" />
     <Content Include="Views\Theme\University\Orders\_PaymentMethod.cshtml" />
-    <Content Include="Views\Theme\University\Orders\_CheckoutProgressBar.cshtml" />
+    <Content Include="Views\Theme\University\Orders\_OrderProgressBar.cshtml" />
     <Content Include="Views\Theme\Smart\Orders\Checkout.cshtml" />
     <Content Include="Views\Theme\Smart\Orders\SagePay.cshtml" />
     <Content Include="Views\Theme\Smart\Orders\_AddOrEditAddress.cshtml" />

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Ganedata.Core.Entities.Enums
 {
@@ -520,5 +519,15 @@ namespace Ganedata.Core.Entities.Enums
         Cash = 2,
         SagePay = 3,
         PurchaseOrder = 4
+    }
+
+    public enum OrderProgressStep
+    {
+        Product = 1,
+        Basket = 2,
+        BillingAndShipping = 3,
+        ReviewItems = 4,
+        Payment = 5,
+        OrderConfirmation = 6
     }
 }

@@ -1,5 +1,8 @@
 ﻿@model Ganedata.Core.Entities.Domain.AccountAddresses
 @using Ganedata.Core.Entities.Enums
+@{
+    ViewBag.Title = "Checkout";
+}
 
 
 <section class="nb_sec nb_prdlisting_pgsec nb_sec_pb">
@@ -18,7 +21,7 @@
             </div>
         </div>
         <div class="nb_sec checkconfirmSec">
-            @Html.Partial("_CheckoutProgressBar")
+            @Html.Partial("_OrderProgressBar", OrderProgressStep.BillingAndShipping)
 
             <div class="checkoutInnersec billandshipsec">
                 <h4 class="ordConfirmHead">Billing & Shipping</h4>

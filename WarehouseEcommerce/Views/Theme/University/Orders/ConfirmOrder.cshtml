@@ -2,10 +2,9 @@
 @using Ganedata.Core.Entities.Enums;
 @{
     ViewBag.Title = "Confirm Order";
-    int j = 1;
 }
 @{
-    var address = ViewBag.Addresses as List<Ganedata.Core.Entities.Domain.AccountAddresses>;
+    var addresses = ViewBag.Addresses as List<Ganedata.Core.Entities.Domain.AccountAddresses>;
 
 }
 
@@ -28,67 +27,71 @@
             </div>
         </div>
         <div class="nb_sec checkconfirmSec">
-            <div class="progressBarStep ordConfirmationPgStepsec">
-                <ul id="progressList">
-                    <li class="active">
-                        <div class="HalfCircle"></div>
-                        <span class="txt">Product</span><span class="count"><i class="icon-product"></i></span>
-                    </li>
-                    <li class="active">
-                        <div class="HalfCircle"></div>
-
-                        <span class="txt">Basket</span><span class="count"><i class="icon-basket-cart"></i></span>
-                    </li>
-                    <li>
-                        <div class="HalfCircle"></div>
-                        <span class="txt">Review Items</span><span class="count"><i class="icon-review-items"></i></span>
-                    </li>
-                    <li>
-                        <div class="HalfCircle"></div>
-                        <span class="txt">Billing & Shipping</span><span class="count">
-                            <i class="icon-billing-shipping"></i>
-                        </span>
-                    </li>
-                    <li>
-                        <div class="HalfCircle"></div>
-                        <span class="txt">Payment</span><span class="count"><i class="icon-credit-card"></i></span>
-                    </li>
-                    <li>
-                        <div class="HalfCircle"></div>
-                        <span class="txt">Order Confirmation</span><span class="count"><i class="icon-tick1"></i></span>
-                    </li>
-                </ul>
-            </div>
+            @Html.Partial("_OrderProgressBar", OrderProgressStep.ReviewItems)
 
             <div class="orderConfirmationSection">
                 <h4 class="ordConfirmHead">Order Confirmation</h4>
                 <div class="row">
                     <div class="col-lg-6">
-                        <h4 class="subHead">
-                            Billing Address
-                        </h4>
-                        <p class="content">
-                            Delivery to : Mr. John Doe, Flat 7,Wenlake house, Old Street,
-                            London EC1V, 9JH, United Kingdom, Mob: 0761654184
-                        </p>
-                        <h4 class="subHead">
-                            Shipment Address
-                        </h4>
-                        <p class="content">
-                            Delivery to : Mr. John Doe, Flat 7,Wenlake house, Old Street,
-                            London EC1V, 9JH, United Kingdom, Mob: 0761654184
-                        </p>
+                        @if (addresses != null)
+                        {
+                            <h4 class="subHead">
+                                Billing Address
+                            </h4>
+                            var billingaddress = addresses.FirstOrDefault(u => u.AddTypeBilling == true);
+                            if (billingaddress != null)
+                            {
+                                <p class="content">
+                                    @billingaddress.AddressLine1@(!string.IsNullOrEmpty(billingaddress.AddressLine2) ? $", {billingaddress.AddressLine2}" : "")@(!string.IsNullOrEmpty(billingaddress.AddressLine3) ? $", {billingaddress.AddressLine3}" : "") <br />
+                                    @billingaddress.PostCode@(!string.IsNullOrEmpty(billingaddress.GlobalCountry?.CountryName) ? $", {billingaddress.GlobalCountry.CountryName}" : ""), Phone: @billingaddress.Telephone
+                                </p>
+                            }
+
+                            if ((DeliveryMethod)ViewBag.DeliveryMethodId == DeliveryMethod.ToShipmentAddress)
+                            {
+                                <h4 class="subHead">
+                                    Shipment Address
+                                </h4>
+                                var shipppingAddress = addresses.FirstOrDefault(u => u.AddTypeShipping == true);
+                                if (shipppingAddress != null)
+                                {
+                                    <p class="content">
+                                        @shipppingAddress.AddressLine1@(!string.IsNullOrEmpty(shipppingAddress.AddressLine2) ? $", {shipppingAddress.AddressLine2}" : "")@(!string.IsNullOrEmpty(shipppingAddress.AddressLine3) ? $", {shipppingAddress.AddressLine3}" : "") <br />
+                                        @shipppingAddress.PostCode@(!string.IsNullOrEmpty(shipppingAddress.GlobalCountry?.CountryName) ? $", {shipppingAddress.GlobalCountry.CountryName}" : ""), Phone: @shipppingAddress.Telephone
+                                    </p>
+                                }
+                            }
+                        }
+
+                        @if ((DeliveryMethod)ViewBag.DeliveryMethodId == DeliveryMethod.ToPickupPoint && ViewBag.CollectionPoint != null)
+                        {
+                            <h4 class="subHead">
+                                Collection Point
+                            </h4>
+                            <p class="content">
+
+                                <b>@(ViewBag.CollectionPoint?.WarehouseName) </b> <br />
+                                @ViewBag.CollectionPoint.AddressLine1@(!string.IsNullOrEmpty(ViewBag.CollectionPoint.AddressLine2) ? $", {ViewBag.CollectionPoint.AddressLine2}" : "")@(!string.IsNullOrEmpty(ViewBag.CollectionPoint.AddressLine3) ? $", {ViewBag.CollectionPoint.AddressLine3}" : "") <br />
+                                @ViewBag.CollectionPoint.PostalCode@(!string.IsNullOrEmpty(ViewBag.CollectionPoint.City) ? $", {ViewBag.CollectionPoint.City}" : "")@(!string.IsNullOrEmpty(ViewBag.CollectionPoint.GlobalCountry?.CountryName) ? $", {ViewBag.CollectionPoint.GlobalCountry.CountryName}" : "")
+                            </p>
+                        }
+
                         <h4 class="subHead">
                             Delivery Method
                         </h4>
-                        <p class="content">
-                            Pick up (from collection point) - Free
-                        </p>
+                        @if ((DeliveryMethod)ViewBag.DeliveryMethodId == DeliveryMethod.ToPickupPoint)
+                        {
+                            <p class="content">Pick up (from collection point) - Free</p>
+                        }
+                        else
+                        {
+                            <p class="content">Delivery by @ViewBag.ShippingRule.Courier @(!string.IsNullOrEmpty(ViewBag.ShippingRule.Description?.Trim()) ? $"({ViewBag.ShippingRule.Description})" : "") - @ViewBag.CurrencySymbol@ViewBag.ShippingRule.Price</p>
+                        }
                         <h4 class="subHead">
                             Payment Method
                         </h4>
                         <p class="content">
-                            Sage Pay
+                            @((PaymentMethod)ViewBag.paymentMethod == PaymentMethod.SagePay ? "Sage Pay" : ((PaymentMethod)ViewBag.paymentMethod).ToString())
                         </p>
                     </div>
                     <div class="offset-lg-1 col-lg-3">
@@ -96,277 +99,66 @@
                             Item Details
                         </h4>
                         <ul class="itemList">
-                            <li>
-                                Unisex Zipped Hoodie - Grey<br />
-                                £34.99, Qty: 1
-                            </li>
-                            <li>
-                                Knitted Scarf <br />
-                                £17.99, Qty: 1
-                            </li>
-                            <li>
-                                Unisex Zipped Hoodie - Grey<br />
-                                £34.99, Qty: 1
-                            </li>
-                            <li>
-                                Knitted Scarf <br />
-                                £17.99, Qty: 1
-                            </li>
+                            @foreach (var item in Model)
+                            {
+                                <li>
+                                    @(item.ProductMaster?.Name)<br />
+                                    @ViewBag.CurrencySymbol@item.Price, Qty: @item.Qty
+                                </li>
+                            }
                         </ul>
                         <h4 class="subHead">Total Amount</h4>
-                        <h4 class="subHead">£52.98</h4>
+                        <h4 class="subHead">@ViewBag.CurrencySymbol@(ViewBag.TotalPrice == null ? 0 : ViewBag.TotalPrice)</h4>
 
                     </div>
-                    <div class="saveAddrWrap mt-5 mb-5 ml-3 mr-3"">
-                        <button class="saveAddrBtn">Proceed to Payment</button>
+                    <div class="saveAddrWrap mt-5 mb-5 ml-3 mr-3">
+                        @if ((PaymentMethod)ViewBag.paymentMethod == PaymentMethod.Paypal)
+                        {
+                            <form action="@((string)ViewBag.PAYPALURL)" method="post">
+                                <div class="row">
+
+                                    <fieldset>
+                                        <input class="full-width" type="hidden" name="business" value="shoaib@ganedata.co.uk">
+                                        <input type="hidden" name="cmd" value="_xclick">
+                                        <input type="hidden" name="item_name" value="Cart Items" />
+                                        <input type="hidden" name="return" value="@((string)ViewBag.RetUrl)">
+                                        <input type="hidden" name="notify_url" value="@((string)ViewBag.PayPalIpnUrl)">
+                                        <input type="hidden" NAME="currency_code" value="GBP">
+                                        <input type="hidden" name="OrderId" value="@ViewBag.OrdersId" />
+                                        <input type="hidden" name="amount" value="@ViewBag.TotalQty" />
+                                    </fieldset>
+
+                                </div>
+                                <div class="button-submit">
+                                    <button type="Submit" name="submitNewsletter" class="saveAddrBtn">Proceed To Payment</button>
+                                    @*<a href="@Url.Action("Index","Test")" class="btn btn-block cash-btn cashbtn" name="submitNewsletter"> Proceed To Payment</a>*@
+                                </div>
+
+                            </form>
+                        }
+                        else if ((PaymentMethod)ViewBag.paymentMethod == PaymentMethod.SagePay)
+                        {
+                            using (Html.BeginForm("SagePay", "Orders", FormMethod.Post))
+                            {
+                                <div class="row">
+                                    <fieldset>
+
+                                        <input type="hidden" NAME="currency_code" value="GBP">
+                                        <input type="hidden" name="OrderId" value="@ViewBag.OrdersId" />
+                                        <input type="hidden" name="TotalAmount" value="@ViewBag.TotalQty" />
+
+                                    </fieldset>
+                                </div>
+                                <div class="button-submit">
+                                    <button type="Submit" name="submitNewsletter" class="saveAddrBtn">Proceed To Payment</button>
+                                </div>
+                            }
+                        }
                     </div>
                 </div>
-                
+
             </div>
         </div>
     </div>
 </section>
-
-
-
-
-<div class="about bg-white confirm-order-page">
-    <div class="container custom-max-width ">
-        <div class="row">
-            <div class="col-md-8 col-sm-8 bg-white my-account login confirm-order-addresses">
-                <div class="about-cnt">
-                    <div class="content-wrapper select">
-                        @if (ViewBag.Addresses != null)
-                        {
-                            var billingaddresses = address.Where(u => u.AddTypeBilling == true).ToList();
-                            var shipppingAddress = address.Where(u => u.AddTypeShipping == true).ToList();
-                            <div class="row">
-                                @foreach (var billingaddress in billingaddresses)
-                                {
-
-
-                                    <div class="col-md-6 col-sm-6">
-                                        <h2 class="text-uppercase"> Billing Address</h2>
-                                        <hr class="custom-hr">
-                                        <p>
-                                            <b>@billingaddress.AddressLine1 </b> <br />
-                                            @billingaddress.AddressLine2 <br />
-                                            @billingaddress.AddressLine3 @billingaddress.PostCode <br />
-                                            @billingaddress.GlobalCountry.CountryName <br />
-                                            <b> Phone:</b> @billingaddress.Telephone <br />
-
-                                        </p>
-
-                                    </div>
-
-                                }
-                                @if ((DeliveryMethod)ViewBag.DeliveryMethodId == DeliveryMethod.ToShipmentAddress)
-                                {
-                                    foreach (var shipping in shipppingAddress)
-                                    {
-                                        <div class="col-md-6 col-sm-6 shipping-address-col">
-                                            <h2 class="text-uppercase"> Shipping Address</h2>
-                                            <hr class="custom-hr">
-                                            <p>
-                                            <p>
-                                                <b>@shipping.AddressLine1 </b> <br />
-                                                @shipping.AddressLine2 <br />
-                                                @shipping.AddressLine3 @shipping.PostCode <br />
-                                                @shipping.GlobalCountry.CountryName <br />
-                                                <b> Phone:</b> @shipping.Telephone <br />
-
-                                            </p>
-                                            </p>
-
-                                        </div>
-                                    }
-                                }
-                                else
-                                {
-                                    <div class="col-md-6 col-sm-6 shipping-address-col">
-                                        <h2 class="text-uppercase"> Collection Point</h2>
-                                        <hr class="custom-hr">
-                                        <p>
-                                        <p>
-                                            <b>@(ViewBag.CollectionPoint?.WarehouseName) </b> <br />
-                                            @(ViewBag.CollectionPoint?.AddressLine1)
-                                            @(!string.IsNullOrEmpty(ViewBag.CollectionPoint?.AddressLine2?.Trim()) ? ", " + ViewBag.CollectionPoint?.AddressLine2 : string.Empty)
-                                            @(!string.IsNullOrEmpty(ViewBag.CollectionPoint?.AddressLine3?.Trim()) ? ", " + ViewBag.CollectionPoint?.AddressLine3 : string.Empty)
-                                            @(!string.IsNullOrEmpty(ViewBag.CollectionPoint?.AddressLine4?.Trim()) ? ", " + ViewBag.CollectionPoint?.AddressLine4 : string.Empty) <br />
-                                            @(ViewBag.CollectionPoint?.PostalCode) <br />
-                                            @(ViewBag.CollectionPoint?.City)<br />
-                                            @(ViewBag.CollectionPoint?.GlobalCountry?.CountryName) <br />
-                                        </p>
-                                        </p>
-
-                                    </div>
-                                }
-
-                            </div>
-                            <br />
-                        }
-                        <br />
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-12 bg-white my-account login">
-                <div class="about-cnt">
-                    <div class="content-wrapper select">
-                        <h2 class="text-uppercase"> Items Detail</h2>
-                        <hr class="custom-hr">
-                        <table class="order-details" style="border-collapse: unset">
-                            @foreach (var item in Model)
-                            {
-                                <tbody>
-
-
-                                    <tr>
-
-                                        <td> <a href=""> <img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage) ? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath +"/UploadedFiles/Products/no_image.gif")" title="@item.ProductMaster.Name" alt="@(item?.ProductMaster?.Name)"> </a> </td>
-                                        <td>
-                                            <div class="ordered-items">
-                                                <p>
-                                                    <a href=""> <strong>@(item.ProductMaster?.Name) </strong> </a>
-
-                                                </p>
-                                                <ul>
-                                                    <li>
-                                                        Sku: <span>@(item.ProductMaster?.SKUCode) </span>
-                                                    </li>
-                                                    <li> Size: <span> M</span> </li>
-                                                    <li>
-                                                        Quantity: <span>@item.Qty </span>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            }
-                        </table>
-                        <div class="pull-left orders-total">
-                            @if (Model.ToList().Count > 0)
-                            {
-                                <label><b> Total Quantity: </b>@(Model == null ? 0 : Model.ToList().Count) </label>
-                            }
-                            <br />
-                            @if (ViewBag.TotalQty != null && (int)ViewBag.TotalQty > 0)
-                            {
-                                <label><b> Total: </b>@ViewBag.CurrencySymbol@(ViewBag.TotalQty == null ? 0 : ViewBag.TotalQty) </label>
-                            }
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        @if (Model.ToList().Count > 0)
-        {
-            <div class="row">
-                <div class="col-md-12 col-sm-12 bg-white my-account login mt-20">
-                    <div class="about-cnt">
-                        <h4 class="text-uppercase mt-35">Delivery Method</h4>
-                        <hr class="custom-hr">
-                        <div class="content-wrapper select">
-                            <div class="deliveryMethod ">
-
-                                @if ((DeliveryMethod)ViewBag.DeliveryMethodId == DeliveryMethod.ToShipmentAddress)
-                                {
-                                    <div class="form-inline">
-                                        <label class="control-label" for="radio2">
-                                            Delivery by @ViewBag.ShippingRule.Courier @(!string.IsNullOrEmpty(ViewBag.ShippingRule.Description?.Trim()) ? $"({ViewBag.ShippingRule.Description})" : "") - @ViewBag.CurrencySymbol@ViewBag.ShippingRule.Price
-                                        </label>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="form-check-inline">
-                                        <label class="control-label" for="radio2">
-                                            Pick up (from collection point) - Free
-                                        </label>
-                                    </div>
-                                }
-                            </div>
-                            <h4 class="text-uppercase mt-35">Payment Method</h4>
-                            <hr class="custom-hr">
-                            <div class="deliveryMethod">
-                                @if ((PaymentMethod)ViewBag.paymentMethod == PaymentMethod.Cash)
-                                {
-                                    <div class="form-inline">
-                                        <label class="control-label" for="radio2">
-                                            Cash
-                                        </label>
-                                    </div>
-                                }
-                                else if ((PaymentMethod)ViewBag.paymentMethod == PaymentMethod.Paypal)
-                                {
-                                    <div class="form-inline">
-                                        <label class="control-label" for="radio1">
-                                            Paypal
-                                        </label>
-                                    </div>
-
-                                    <form action="@((string)ViewBag.PAYPALURL)" method="post">
-                                        <div class="row">
-
-                                            <fieldset>
-                                                <input class="full-width" type="hidden" name="business" value="shoaib@ganedata.co.uk">
-                                                <input type="hidden" name="cmd" value="_xclick">
-                                                <input type="hidden" name="item_name" value="Cart Items" />
-                                                <input type="hidden" name="return" value="@((string)ViewBag.RetUrl)">
-                                                <input type="hidden" name="notify_url" value="@((string)ViewBag.PayPalIpnUrl)">
-                                                <input type="hidden" NAME="currency_code" value="GBP">
-                                                <input type="hidden" name="OrderId" value="@ViewBag.OrdersId" />
-                                                <input type="hidden" name="amount" value="@ViewBag.TotalQty" />
-                                            </fieldset>
-
-                                        </div>
-                                        <div class="button-submit">
-                                            <button type="Submit" name="submitNewsletter" class="btn btn-block paypal-btn">Proceed To Payment</button>
-                                            @*<a href="@Url.Action("Index","Test")" class="btn btn-block cash-btn cashbtn" name="submitNewsletter"> Proceed To Payment</a>*@
-
-                                        </div>
-
-                                    </form>
-                                }
-                                else if ((PaymentMethod)ViewBag.paymentMethod == PaymentMethod.SagePay)
-                                {
-                                    <div class="form-inline">
-                                        <label class="control-label" for="radio3">
-                                            Sage Pay
-                                        </label>
-                                    </div>
-
-                                    using (Html.BeginForm("SagePay", "Orders", FormMethod.Post))
-                                    {
-                                        <div class="row">
-                                            <fieldset>
-
-                                                <input type="hidden" NAME="currency_code" value="GBP">
-                                                <input type="hidden" name="OrderId" value="@ViewBag.OrdersId" />
-                                                <input type="hidden" name="TotalAmount" value="@ViewBag.TotalQty" />
-
-                                            </fieldset>
-                                        </div>
-                                        <div class="button-submit">
-                                            <button type="Submit" name="submitNewsletter" class="btn btn-block paypal-btn">Proceed To Payment</button>
-                                        </div>
-
-                                    }
-
-
-                                }
-                            </div>
-
-
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-</div>
 
