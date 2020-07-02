@@ -9,6 +9,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
+using System.Xml;
 
 namespace Ganedata.Core.Services
 {
@@ -17,12 +18,18 @@ namespace Ganedata.Core.Services
         private readonly IApplicationContext _currentDbContext;
         private readonly IMapper _mapper;
         private readonly IEmailServices _emailServices;
+        private readonly IProductServices _productServices;
+        private readonly ICommonDbServices _commonDbServices;
+        private readonly IProductPriceService _productPriceService;
 
-        public TenantWebsiteService(IApplicationContext currentDbContext, IMapper mapper, IEmailServices emailServices)
+        public TenantWebsiteService(IApplicationContext currentDbContext, IMapper mapper, IEmailServices emailServices, IProductServices productServices, ICommonDbServices commonDbServices, IProductPriceService productPriceService)
         {
             _currentDbContext = currentDbContext;
             _mapper = mapper;
             _emailServices = emailServices;
+            _productPriceService = productPriceService;
+            _commonDbServices = commonDbServices;
+            _productServices = productServices;
         }
         public IEnumerable<TenantWebsites> GetAllValidTenantWebSite(int TenantId)
         {
@@ -971,76 +978,125 @@ namespace Ganedata.Core.Services
 
         // WebsiteCartAndWishlist
 
-        public IEnumerable<WebsiteCartItem> GetAllValidCartItemsList(int siteId, int UserId)
+        public IEnumerable<WebsiteCartItem> GetAllValidCartItemsList(int siteId, int? UserId, string SessionKey)
         {
-            return _currentDbContext.WebsiteCartItems.Where(u => u.SiteID == siteId && u.UserId == UserId && u.IsDeleted != true);
+            return _currentDbContext.WebsiteCartItems.Where(u => u.SiteID == siteId && ((((!UserId.HasValue || UserId == 0) || u.UserId == UserId) || (string.IsNullOrEmpty(SessionKey) || u.SessionKey.Equals(SessionKey, StringComparison.InvariantCultureIgnoreCase)))) && u.IsDeleted != true );
+        }
+
+        public IEnumerable<OrderDetailSessionViewModel> GetAllValidCartItems(int siteId, int? UserId, string SessionKey)
+        {
+            return _currentDbContext.WebsiteCartItems.Where(u => u.SiteID == siteId &&  u.IsDeleted != true &&
+           ((((!UserId.HasValue || UserId == 0) || u.UserId == UserId) || (string.IsNullOrEmpty(SessionKey) || u.SessionKey.Equals(SessionKey, StringComparison.InvariantCultureIgnoreCase))))).ToList().Select(u => new OrderDetailSessionViewModel
+            {
+                ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
+                Price = u.UnitPrice,
+                Qty = u.Quantity,
+                ProductId = u.ProductId,
+                CartId = u.Id,
+                KitProductCartItems = u.KitProductCartItems.Select(c => new KitProductCartSession
+                {
+                    SimpleProductId = c.SimpleProductId,
+                    KitProductId = c.KitProductId,
+                    Quantity = c.Quantity,
+                    SimpleProductMaster = _mapper.Map(c.SimpleProductMaster, new ProductMasterViewModel())
+                }).ToList()
+
+            });
         }
         public IEnumerable<KitProductCartSession> GetAllValidKitCartItemsList(int KitProductId)
         {
 
-                var data= _currentDbContext.KitProductCartItems.Where(u => u.CartId == KitProductId && u.IsDeleted != true).ToList()
-                    .Select(u => new KitProductCartSession
-                    {
-                        SimpleProductId = u.SimpleProductId,
-                        KitProductId = u.KitProductId,
-                        Quantity=u.Quantity,
-                        SimpleProductMaster = _mapper.Map(u.SimpleProductMaster, new ProductMasterViewModel())
-                    }).ToList();
+            var data = _currentDbContext.KitProductCartItems.Where(u => u.CartId == KitProductId && u.IsDeleted != true).ToList()
+                .Select(u => new KitProductCartSession
+                {
+                    SimpleProductId = u.SimpleProductId,
+                    KitProductId = u.KitProductId,
+                    Quantity = u.Quantity,
+                    SimpleProductMaster = _mapper.Map(u.SimpleProductMaster, new ProductMasterViewModel())
+                }).ToList();
 
             return data;
+        }
+        public WebsiteCartItem GetCartItemByUserIdBySessionKey(int siteId, int ProductId, int? UserId, string SessionKey)
+        {
+            return _currentDbContext.WebsiteCartItems.FirstOrDefault(u => (!UserId.HasValue || u.UserId == UserId) && string.IsNullOrEmpty(SessionKey) || u.SessionKey.Equals(SessionKey, StringComparison.InvariantCultureIgnoreCase) && u.ProductId == ProductId);
         }
         public IEnumerable<WebsiteWishListItem> GetAllValidWishListItemsList(int siteId, int UserId)
         {
             return _currentDbContext.WebsiteWishListItems.Where(u => u.SiteID == siteId && u.UserId == UserId && u.IsDeleted != true);
         }
 
-        public int AddOrUpdateCartItems(int SiteId, int UserId, int TenantId, List<OrderDetailSessionViewModel> orderDetails)
+        public WebsiteCartItem AddOrUpdateCartItems(int siteId, int? userId, int tenantId, string sessionKey, int productId, decimal quantity, decimal? currencyRate = null, int? currencyId = null, List<KitProductCartSession> kitProductCartItems = null)
         {
-            foreach (var orderDetail in orderDetails)
+
+
+            var cartProduct = _currentDbContext.WebsiteCartItems.FirstOrDefault(u => u.ProductId == productId && u.IsDeleted != true && u.SiteID == siteId && ((((!userId.HasValue || userId == 0) || u.UserId == userId) || (string.IsNullOrEmpty(sessionKey) || u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase)))));
+            if (cartProduct == null)
             {
 
-
-                var cartProduct = _currentDbContext.WebsiteCartItems.FirstOrDefault(u => u.ProductId == orderDetail.ProductId && u.SiteID == SiteId && u.UserId == UserId && orderDetail.ProductMaster.ProductType != ProductKitTypeEnum.Kit);
-                if (cartProduct == null)
+                cartProduct = new WebsiteCartItem();
+                cartProduct.ProductId = productId;
+                cartProduct.Quantity = quantity;
+                cartProduct.UnitPrice = Math.Round(((_productPriceService.GetProductPriceThresholdByAccountId(productId, null).SellPrice) * ((!currencyRate.HasValue || currencyRate <= 0) ? 1 : currencyRate.Value)), 2);
+                cartProduct.UserId = userId == 0 ? null : userId;
+                cartProduct.TenantId = tenantId;
+                cartProduct.SiteID = siteId;
+                cartProduct.SessionKey = sessionKey;
+                cartProduct.CreatedBy = userId;
+                cartProduct.DateCreated = DateTime.UtcNow;
+                _currentDbContext.WebsiteCartItems.Add(cartProduct);
+                _currentDbContext.SaveChanges();
+                if (kitProductCartItems != null && kitProductCartItems.Count > 0)
                 {
-                    WebsiteCartItem cartItem = new WebsiteCartItem();
-                    cartItem.ProductId = orderDetail.ProductId;
-                    cartItem.Quantity = orderDetail.Qty;
-                    cartItem.UnitPrice = orderDetail.Price;
-                    cartItem.UserId = UserId;
-                    cartItem.TenantId = TenantId;
-                    cartItem.SiteID = SiteId;
-                    cartItem.UpdateCreatedInfo(UserId);
-                    _currentDbContext.WebsiteCartItems.Add(cartItem);
-                    _currentDbContext.SaveChanges();
-                    if (orderDetail.KitProductCartItems != null && orderDetail.KitProductCartItems.Count > 0)
+                    foreach (var item in kitProductCartItems)
                     {
-                        foreach (var item in orderDetail.KitProductCartItems)
-                        {
-                            KitProductCartItem kitProductCart = new KitProductCartItem();
-                            kitProductCart.KitProductId = item.KitProductId;
-                            kitProductCart.SimpleProductId = item.SimpleProductId;
-                            kitProductCart.Quantity = item.Quantity;
-                            kitProductCart.CartId = cartItem.Id;
-                            kitProductCart.UpdateCreatedInfo(UserId);
-                            _currentDbContext.KitProductCartItems.Add(kitProductCart);
+                        KitProductCartItem kitProductCart = new KitProductCartItem();
+                        kitProductCart.KitProductId = item.KitProductId;
+                        kitProductCart.SimpleProductId = item.SimpleProductId;
+                        kitProductCart.Quantity = item.Quantity;
+                        kitProductCart.CartId = cartProduct.Id;
+                        kitProductCart.UpdateCreatedInfo(userId ?? 0);
+                        _currentDbContext.KitProductCartItems.Add(kitProductCart);
 
-                        }
-                        _currentDbContext.SaveChanges();
                     }
-
+                    _currentDbContext.SaveChanges();
                 }
-                else
-                {
-                    cartProduct.IsDeleted = false;
-                    cartProduct.Quantity = orderDetail.Qty;
-                    cartProduct.UpdateUpdatedInfo(UserId);
-                    _currentDbContext.Entry(cartProduct).State = System.Data.Entity.EntityState.Modified;
 
-                }
             }
+            else
+            {
+                cartProduct.IsDeleted = false;
+                cartProduct.Quantity = quantity;
+                cartProduct.UpdatedBy = userId == 0 ? null : userId;
+                cartProduct.DateUpdated = DateTime.UtcNow;
+                _currentDbContext.Entry(cartProduct).State = System.Data.Entity.EntityState.Modified;
+
+            }
+
             _currentDbContext.SaveChanges();
-            return GetAllValidCartItemsList(SiteId, UserId).Count();
+            return cartProduct;
+
+
+        }
+
+        public void UpdateUserIdInCartItem(string sessionKey, int userId, int siteId)
+        {
+            var cartitems = _currentDbContext.WebsiteCartItems.Where(u => u.IsDeleted != true && u.SiteID == siteId && (!u.UserId.HasValue) && u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase)).ToList();
+            if (cartitems.Count > 0)
+            {
+                foreach (var item in cartitems)
+                {
+                    item.UserId = userId;
+                    item.UpdateUpdatedInfo(userId);
+                    _currentDbContext.Entry(item).State = System.Data.Entity.EntityState.Modified;
+
+                }
+                
+
+            }
+
+            _currentDbContext.SaveChanges();
+            
 
 
         }
@@ -1077,19 +1133,35 @@ namespace Ganedata.Core.Services
         }
 
 
-        public int RemoveCartItem(int ProductId, int SiteId, int UserId)
+        public int RemoveCartItem(int ProductId, int SiteId, int? UserId, string SessionKey)
         {
-            var cartProduct = _currentDbContext.WebsiteCartItems.FirstOrDefault(u => u.ProductId == ProductId && u.SiteID == SiteId && u.UserId == UserId);
-            if (cartProduct == null)
+            var cartProduct = _currentDbContext.WebsiteCartItems.FirstOrDefault(u => u.ProductId == ProductId && u.SiteID == SiteId && ((!UserId.HasValue || UserId == 0) || u.UserId == UserId) && (string.IsNullOrEmpty(SessionKey) || u.SessionKey.Equals(SessionKey, StringComparison.InvariantCultureIgnoreCase)));
+            if (cartProduct != null)
             {
                 cartProduct.IsDeleted = true;
-                cartProduct.UpdateUpdatedInfo(UserId);
+                cartProduct.UpdateUpdatedInfo(UserId ?? 0);
                 _currentDbContext.Entry(cartProduct).State = System.Data.Entity.EntityState.Modified;
                 _currentDbContext.SaveChanges();
 
             }
-            return GetAllValidCartItemsList(SiteId, UserId).Count();
+            return GetAllValidCartItemsList(SiteId, UserId, SessionKey).Count();
 
+        }
+
+
+        public OrderDetailSessionViewModel SetCartItem(int productId, decimal quantity, decimal? currencyRate, int? currencyId)
+        {
+            var model = new OrderDetail();
+            var product = _productServices.GetProductMasterById(productId);
+            model.ProductMaster = product;
+            model.Qty = quantity;
+            model.ProductId = productId;
+            model.Price = Math.Round(((_productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, null).SellPrice) * ((!currencyRate.HasValue || currencyRate <= 0) ? 1 : currencyRate.Value)), 2);
+            model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
+            var cartItem = _mapper.Map(model, new OrderDetailSessionViewModel());
+            cartItem.Price = Math.Round(((cartItem.Price) * ((!currencyRate.HasValue || currencyRate <= 0) ? 1 : currencyRate.Value)), 2);
+            cartItem.CurrencyId = currencyId;
+            return cartItem;
         }
 
         public int RemoveWishListItem(int ProductId, int SiteId, int UserId)

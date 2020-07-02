@@ -87,7 +87,7 @@ namespace WarehouseEcommerce.Controllers
                     // store login id into session
                     AuthUserLogin Logins = new AuthUserLogin();
                     Session["CurrentUserLogin"] = _userService.SaveAuthUserLogin(Logins, user.UserId, user.TenantId);
-
+                    _tenantWebsiteService.UpdateUserIdInCartItem(Session.SessionID, user.UserId, CurrentTenantWebsite.SiteID);
 
                 }
                 else
@@ -260,11 +260,9 @@ namespace WarehouseEcommerce.Controllers
                 if (status)
                 {
                     Session["cawebsiteUser"] = user;
-                    // store login id into session
                     AuthUserLogin Logins = new AuthUserLogin();
                     Session["CurrentUserLogin"] = _userService.SaveAuthUserLogin(Logins, user.UserId, user.TenantId);
-                    _tenantWebsiteService.AddOrUpdateCartItems(CurrentTenantWebsite.SiteID, user.UserId, CurrentTenantId, GaneCartItemsSessionHelper.GetCartItemsSession());
-                    _tenantWebsiteService.AddOrUpdateWishListItems(CurrentTenantWebsite.SiteID, user.UserId, CurrentTenantId, GaneWishListItemsSessionHelper.GetWishListItemsSession());
+                    _tenantWebsiteService.UpdateUserIdInCartItem(Session.SessionID, user.UserId, CurrentTenantWebsite.SiteID);
                     if (PlaceOrder.HasValue)
                     {
                         return Json(new { status, AccountId = user.AccountId }, JsonRequestBehavior.AllowGet);

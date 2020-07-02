@@ -6,10 +6,7 @@
             <tr>
                 <th>Product</th>
                 <th>Price</th>
-                @if (ViewBag.CartModal == null)
-                {
-                    <th>Quantity</th>
-                }
+                <th>Quantity</th>
                 <th>Total</th>
             </tr>
         </thead>
@@ -17,7 +14,7 @@
 
             @foreach (var item in Model)
             {
-                if (item.ProductMaster.ProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Kit)
+                if (item?.ProductMaster?.ProductType != null && item.ProductMaster.ProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Kit)
                 {
 
 
@@ -26,7 +23,7 @@
                             <div class="prdimgsec">
                                 <span class="prdimg">
                                     <img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage) ? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
-                                    @*<img src="~/Content/Theme/University/app/images/Runner_Prep.jpg" class="img-fluid" alt="static-image" title="static-image" />*@
+
                                 </span>
                                 <span class="prdname">@(item.ProductMaster?.Name)</span>
 
@@ -54,18 +51,19 @@
                                 @item.CurrencySign@item.Price
                             </div>
                         </td>
-                        @if (ViewBag.CartModal == null)
-                        {
-                            <td>
-                                <div class="qtyboxwrap">
-                                    @* <span id="decre_count" class="min">-</span>*@
-                                    <input id="counter" type="number" onchange="UpdateCartItem(@item.ProductId,this)" value="@item.Qty" />
-                                    @* <span id="incre_count" class="max">+</span>*@
-                                </div>
-                            </td>
-                        }
+
                         <td>
-                            <div id="total_amnt" class="total">@item.CurrencySign@item.TotalAmount</div>
+                            <div class="qtyboxwrap">
+                                @* <span id="decre_count" class="min">-</span>*@
+                                <input id="counter" type="number" onchange="UpdateCartItem(@item.ProductId,this)" value="@item.Qty" />
+
+                                @* <span id="incre_count" class="max">+</span>*@
+                            </div>
+                            <a href="javascript:;" class="remove-btn cart-del" onclick="RemoveCartItem(@item.ProductId)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
+                        </td>
+
+                        <td>
+                            <div id="total_amnt" class="total">@item.CurrencySign@item.ProductTotalAmount</div>
                         </td>
 
 
@@ -93,18 +91,18 @@
                                 @item.CurrencySign@item.Price
                             </div>
                         </td>
-                        @if (ViewBag.CartModal == null)
-                        {
-                            <td>
-                                <div class="qtyboxwrap">
-                                    @* <span id="decre_count" class="min">-</span>*@
-                                    <input id="counter" type="number" onchange="UpdateCartItem(@item.ProductId,this)" value="@item.Qty" />
-                                    @* <span id="incre_count" class="max">+</span>*@
-                                </div>
-                            </td>
-                        }
+
                         <td>
-                            <div id="total_amnt" class="total">@item.CurrencySign@item.TotalAmount</div>
+                            <div class="qtyboxwrap">
+                                @* <span id="decre_count" class="min">-</span>*@
+                                <input id="counter" type="number" onchange="UpdateCartItem(@item.ProductId,this)" value="@item.Qty" />
+                                @* <span id="incre_count" class="max">+</span>*@
+                            </div>
+                            <a href="javascript:;" class="remove-btn cart-del" onclick="RemoveCartItem(@item.ProductId)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
+                        </td>
+
+                        <td>
+                            <div id="total_amnt" class="total">@item.CurrencySign@item.ProductTotalAmount</div>
                         </td>
 
 

@@ -210,20 +210,19 @@ function getTopCategoryProducts(ProductnavigationId) {
         }
     });
 }
+
+//--------add update remove cartitem----------------
 function AddToCart(ProductId) {
-    var quantity = $(".input-number").val();
-    var detail = $(".input-number").data("detail");
+    var quantity = $(".input-number").val() ?? 1;
     $.ajax({
         type: "GET",
-        url: basePath + "/Products/_CartItemsPartial/",
-        data: { ProductId: ProductId, qty: quantity, details: detail },
-        dataType: 'html',
+        url: basePath + "/Products/AddCartItem/",
+        data: { ProductId: ProductId, quantity: quantity },
+        dataType: 'json',
         success: function (data) {
             var cardItemsValue = parseInt($("#cart-total").text());
             $("#cart-total").text(cardItemsValue + 1);
-            $('.modal-body').empty();
-            $('.modal-body').html(data);
-            $('#myModal').modal('show');
+            GetCartitems(data)
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert('Error' + textStatus + "/" + errorThrown);
@@ -233,37 +232,67 @@ function AddToCart(ProductId) {
 function RemoveCartItem(id) {
     $.ajax({
         type: "GET",
-        url: basePath + "/Products/_CartItemsPartial/",
-        data: { ProductId: id, Remove: true },
-        dataType: 'html',
+        url: basePath + "/Products/RemoveCartItem/",
+        data: { ProductId: id },
+        dataType: 'json',
         success: function (data) {
             var cardItemsValue = parseInt($("#cart-total").val());
             $("#cart-total").val(cardItemsValue - 1);
-            $('#updateCart').empty();
-            $('#updateCart').html(data);
+            GetCartitems(null);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert('Error' + textStatus + "/" + errorThrown);
         }
     });
 }
-
 function UpdateCartItem(ID, event) {
     var quantity = event.value;
     $.ajax({
         type: "GET",
-        url: basePath + "/Products/_CartItemsPartial/",
-        data: { ProductId: ID, qty: quantity },
-        dataType: 'html',
+        url: basePath + "/Products/EditCartItem/",
+        data: { ProductId: ID, quantity: quantity },
+        dataType: 'json',
         success: function (data) {
-            $('#updateCart').empty();
-            $('#updateCart').html(data);
+
+            GetCartitems(null)
+
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert('Error' + textStatus + "/" + errorThrown);
         }
     });
 }
+function GetCartitems(productId) {
+    $.ajax({
+        type: "GET",
+        url: basePath + "/Products/_CartItemsPartial/",
+        data: { productId: productId },
+        dataType: 'html',
+        success: function (data) {
+
+            if (productId != null) {
+                $('.modal-body').empty();
+                $('.modal-body').html(data);
+                $('#myModal').modal('show');
+            }
+            else {
+                $('#updateCart').empty();
+                $('#updateCart').html(data)
+
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert('Error' + textStatus + "/" + errorThrown);
+        }
+    });
+
+
+
+}
+
+//-----------------------------------------------------------
+
+
 
 function CartItemCount() {
     $.ajax({
@@ -281,7 +310,6 @@ function CartItemCount() {
     });
     $('#top-header').load(basePath + "/Home/_TopHeaderPartial");
 }
-
 function ConfirmOrder() {
     var paymentMethodId = $("#PaymentType").val();
     var ShippingTypeId = $("#ShippingType").val();
@@ -297,7 +325,6 @@ function ConfirmOrder() {
 
     window.location.href = basePath + "/Orders/ConfirmOrder/?accountAddressId=" + AccountAddressIds + "&paymentTypeId=" + paymentMethodId + "&deliveryMethodId=" + ShippingTypeId;
 }
-
 function updateQueryStringParameter(uri, key, value) {
     var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
     var separator = uri.indexOf('?') !== -1 ? "&" : "?";
@@ -308,7 +335,6 @@ function updateQueryStringParameter(uri, key, value) {
         return uri + separator + key + "=" + value;
     }
 }
-
 function updateQueryAndGoToStep(step, key, value) {
     var uri = location.href;
 

@@ -83,6 +83,19 @@ namespace Ganedata.Core.Entities.Domain
         public bool? isNotfication { get; set; }
 
         public List<KitProductCartSession> KitProductCartItems { get; set; }
+
+        public decimal ProductTotalAmount
+        {
+            get { return Math.Round((Qty * Price), 2); }
+        }
+        public decimal ProductTotalQuantity
+        {
+            get { return Math.Round((TotalAmount += TotalAmount), 2); }
+        }
+
+        public int? CartId { get; set; }
+
+
     }
 
     [Serializable]

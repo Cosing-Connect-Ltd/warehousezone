@@ -264,241 +264,18 @@ namespace WarehouseEcommerce.Controllers
         public ActionResult CategoryDetail()
         {
             ViewBag.cart = true;
-
             return View();
 
         }
 
-        public PartialViewResult _CartItemsPartial(int? ProductId, decimal? qty, bool? Remove, bool? details, List<KitProductCartSession> kitProductCartItems)
+        public PartialViewResult _CartItemsPartial(int? productId = null)
         {
-            //
+            var SessionKey = HttpContext.Session.SessionID;
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
-            if (CurrentUser?.UserId <= 0)
-            {
-                ViewBag.PlaceOrder = true;
-            }
-            ViewBag.cart = true;
-            if (!ProductId.HasValue)
-            {
-                if (CurrentUserId > 0)
+            var models = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, SessionKey).Where(u => (!productId.HasValue || u.ProductId == productId));
+            ViewBag.CurrencySymbol = currencyyDetail.Symbol;
 
-                {
-                    var models = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId)
-                        .ToList().Select(u => new OrderDetailSessionViewModel
-                        {
-                            ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
-                            Price = u.UnitPrice,
-                            Qty = u.Quantity,
-                            ProductId = u.ProductId,
-                            KitProductCartItems = new List<KitProductCartSession>(_tenantWebsiteService.GetAllValidKitCartItemsList(u.Id))
-
-
-                        }).ToList();
-                    models.ForEach(u => u.TotalAmount = Math.Round((u.Qty * u.Price), 2));
-                    ViewBag.CurrencySymbol = currencyyDetail.Symbol;
-                    ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
-                    return PartialView(models);
-                }
-                else
-                {
-                    var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
-                    ViewBag.CurrencySymbol = currencyyDetail.Symbol;
-                    ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
-                    return PartialView(models);
-                }
-
-
-            }
-            else
-            {
-                if (Remove == true)
-                {
-                    if (CurrentUserId > 0)
-                    {
-                        _tenantWebsiteService.RemoveCartItem((ProductId ?? 0), CurrentTenantWebsite.SiteID, CurrentUserId);
-                        GaneCartItemsSessionHelper.RemoveCartItemSession(ProductId ?? 0);
-                        var models = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId)
-                        .ToList().Select(u => new OrderDetailSessionViewModel
-                        {
-                            ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
-                            Price = u.UnitPrice,
-                            Qty = u.Quantity,
-                            ProductId = u.ProductId,
-                            KitProductCartItems = new List<KitProductCartSession>(_tenantWebsiteService.GetAllValidKitCartItemsList(u.Id))
-
-
-                        }).ToList();
-
-
-                        models.ForEach(u => u.TotalAmount = Math.Round((u.Qty * u.Price), 2));
-                        ViewBag.CurrencySymbol = currencyyDetail.Symbol;
-                        ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
-                        return PartialView(models);
-                    }
-                    else
-                    {
-                        GaneCartItemsSessionHelper.RemoveCartItemSession(ProductId ?? 0);
-                        var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
-                        ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
-                        models.ForEach(u => u.Price = Math.Round((u.Price) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value), 2));
-                        models.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
-                        return PartialView(models);
-                    }
-
-
-                }
-                else if (qty.HasValue && !details.HasValue)
-                {
-                    var model = new OrderDetail();
-                    var Product = _productServices.GetProductMasterById(ProductId ?? 0);
-                    model.ProductMaster = Product;
-                    model.Qty = qty.HasValue ? qty.Value : 1;
-                    model.ProductId = ProductId ?? 0;
-                    model.Price = Math.Round(((_productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, null).SellPrice) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
-                    model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
-                    var Details = _mapper.Map(model, new OrderDetailSessionViewModel());
-                    Details.Price = Math.Round(((Details.Price) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
-                    Details.CurrencyId = currencyyDetail.Id;
-                    GaneCartItemsSessionHelper.UpdateCartItemsSession("", Details, false);
-                    if (CurrentUserId > 0)
-                    {
-                        var count = _tenantWebsiteService.AddOrUpdateCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, (GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>()));
-                        var models = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId)
-                         .ToList().Select(u => new OrderDetailSessionViewModel
-                         {
-                             ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
-                             Price = u.UnitPrice,
-                             Qty = u.Quantity,
-                             ProductId = u.ProductId,
-                             KitProductCartItems = new List<KitProductCartSession>(_tenantWebsiteService.GetAllValidKitCartItemsList(u.Id))
-
-
-                         }).ToList();
-                        models.ForEach(u => u.TotalAmount = Math.Round((u.Qty * u.Price), 2));
-                        ViewBag.CurrencySymbol = currencyyDetail.Symbol;
-                        ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
-                        return PartialView(models);
-
-
-                    }
-                    else
-                    {
-
-                        var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
-                        ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
-                        //models.ForEach(u => u.Price = (u.Price * (currencyyDetail.Rate ?? 0)));
-                        models.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
-                        return PartialView(models);
-                    }
-                }
-                else if (kitProductCartItems != null && kitProductCartItems.Count > 0 && ProductId.HasValue)
-                {
-                    var model = new OrderDetail();
-                    var Product = _productServices.GetProductMasterById(ProductId ?? 0);
-                    model.ProductMaster = Product;
-                    model.Qty = qty.HasValue ? qty.Value : 1;
-                    model.ProductId = ProductId ?? 0;
-                    model.Price = Math.Round(((_productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, null).SellPrice) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
-                    model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
-                    var Details = _mapper.Map(model, new OrderDetailSessionViewModel());
-                    Details.KitProductCartItems = new List<KitProductCartSession>();
-                    Details.KitProductCartItems = kitProductCartItems;
-                    Details.Price = Math.Round(((Details.Price) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
-                    Details.CurrencyId = currencyyDetail.Id;
-                    GaneCartItemsSessionHelper.UpdateCartItemsSession("", Details, false);
-                    if (CurrentUserId > 0)
-                    {
-                        var count = _tenantWebsiteService.AddOrUpdateCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, (GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>()));
-                        var models = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId)
-                         .ToList().Select(u => new OrderDetailSessionViewModel
-                         {
-                             ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
-                             Price = u.UnitPrice,
-                             Qty = u.Quantity,
-                             ProductId = u.ProductId,
-                             KitProductCartItems = new List<KitProductCartSession>(_tenantWebsiteService.GetAllValidKitCartItemsList(u.Id))
-
-
-                         }).ToList();
-                        models.ForEach(u => u.TotalAmount = Math.Round((u.Qty * u.Price), 2));
-                        ViewBag.CurrencySymbol = currencyyDetail.Symbol;
-                        ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
-                        return PartialView(models);
-
-
-                    }
-                    else
-                    {
-
-                        var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
-                        ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
-                        //models.ForEach(u => u.Price = (u.Price * (currencyyDetail.Rate ?? 0)));
-                        models.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
-                        return PartialView(models);
-                    }
-
-                }
-                else
-                {
-
-                    var Product = _productServices.GetProductMasterById(ProductId ?? 0);
-                    var model = new OrderDetail();
-                    model.ProductMaster = Product;
-                    model.Qty = qty.HasValue ? qty.Value : 1;
-                    model.ProductId = ProductId ?? 0;
-                    model.Price = Math.Round(((_productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, null).SellPrice) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
-                    model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
-                    ViewBag.CartModal = false;
-                    var Details = _mapper.Map(model, new OrderDetailSessionViewModel());
-                    var ProductCheck = GaneCartItemsSessionHelper.GetCartItemsSession().FirstOrDefault(u => u.ProductId == ProductId);
-                    Details.Price = Math.Round(((Details.Price) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
-                    Details.CurrencyId = currencyyDetail.Id;
-                    if (ProductCheck != null)
-                    {
-                        Details.Qty = ProductCheck.Qty + (qty.HasValue ? qty.Value : 1);
-                    }
-                    GaneCartItemsSessionHelper.UpdateCartItemsSession("", Details, false);
-                    if (CurrentUserId > 0)
-                    {
-                        var count = _tenantWebsiteService.AddOrUpdateCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, (GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>()));
-                        var models = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId)
-                           .ToList().Select(u => new OrderDetailSessionViewModel
-                           {
-                               ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
-                               Price = u.UnitPrice,
-                               Qty = u.Quantity,
-                               ProductId = u.ProductId,
-                               KitProductCartItems = new List<KitProductCartSession>(_tenantWebsiteService.GetAllValidKitCartItemsList(u.Id))
-
-
-                           }).ToList();
-                        models.ForEach(u => u.TotalAmount = Math.Round((u.Qty * u.Price), 2));
-                        ViewBag.CurrencySymbol = currencyyDetail.Symbol;
-                        ViewBag.TotalQty = Math.Round(models.Sum(u => u.TotalAmount), 2);
-                        var cartedProduct = models.Where(u => u.ProductId == ProductId).ToList();
-                        cartedProduct.ForEach(u => u.Price = Math.Round((u.Price) * (((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2));
-                        cartedProduct.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
-                        return PartialView(cartedProduct);
-
-
-
-
-                    }
-                    else
-                    {
-
-
-                        var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
-                        var cartedProduct = models.Where(u => u.ProductId == ProductId).ToList();
-                        cartedProduct.ForEach(u => u.Price = Math.Round((u.Price) * (((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2));
-                        cartedProduct.ForEach(u => u.CurrencySign = currencyyDetail.Symbol);
-                        return PartialView(cartedProduct);
-                    }
-
-
-                }
-            }
-
+            return PartialView(models.ToList());
         }
 
         public JsonResult AddWishListItem(int ProductId, bool isNotfication)
@@ -703,6 +480,44 @@ namespace WarehouseEcommerce.Controllers
             return PartialView(selectedProduct);
         }
 
+        public  JsonResult EditCartItem(int productId, decimal quantity)
+        {
+            var cartItem = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, Session.SessionID).FirstOrDefault(u => u.ProductId == productId);
+            if (cartItem != null)
+            {
+                cartItem.Qty = quantity;
+            }
+            var cartedItem = _tenantWebsiteService.AddOrUpdateCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, Session.SessionID,productId,quantity);
+            return Json(true, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public JsonResult AddCartItem(int productId, decimal quantity)
+        {
+            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
+            var cartItem = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, Session.SessionID).FirstOrDefault(u => u.ProductId == productId);
+            if (cartItem != null)
+            {
+                quantity=cartItem.Qty += quantity;
+            }
+           
+            var cartedItem = _tenantWebsiteService.AddOrUpdateCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, Session.SessionID, productId, quantity, currencyyDetail.Rate, currencyyDetail.Id);
+            return Json(cartedItem.ProductId,JsonRequestBehavior.AllowGet);
+
+        }
+
+        public JsonResult RemoveCartItem(int productId)
+        {
+            _tenantWebsiteService.RemoveCartItem(productId, CurrentTenantWebsite.SiteID, CurrentUserId, Session.SessionID);
+            return Json(true, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public ActionResult AddKitProductCartItem(List<KitProductCartSession> kitProductCartItems)
+        {
+
+            return _CartItemsPartial();
+        }
 
 
     }

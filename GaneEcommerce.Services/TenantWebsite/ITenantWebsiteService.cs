@@ -100,15 +100,23 @@ namespace Ganedata.Core.Services
 
         // WebsiteCartAndWishlist
 
-        IEnumerable<WebsiteCartItem> GetAllValidCartItemsList(int siteId, int UserId);
+        IEnumerable<WebsiteCartItem> GetAllValidCartItemsList(int siteId, int? UserId, string SessionKey);
         IEnumerable<KitProductCartSession> GetAllValidKitCartItemsList(int KitProductId);
         IEnumerable<WebsiteWishListItem> GetAllValidWishListItemsList(int siteId, int UserId);
 
-        int AddOrUpdateCartItems(int SiteId, int UserId, int TenantId, List<OrderDetailSessionViewModel> orderDetail);
+        WebsiteCartItem GetCartItemByUserIdBySessionKey(int siteId, int ProductId, int? UserId, string SessionKey);
+
+        OrderDetailSessionViewModel SetCartItem(int productId, decimal quantity, decimal? currencyRate, int? currencyId);
+
+        WebsiteCartItem AddOrUpdateCartItems(int siteId, int? userId, int tenantId, string sessionKey, int productId, decimal quantity, decimal? currencyRate = null, int? currencyId = null, List<KitProductCartSession> kitProductCartItems = null);
+
+        IEnumerable<OrderDetailSessionViewModel> GetAllValidCartItems(int siteId, int? UserId, string SessionKey);
+
+        void UpdateUserIdInCartItem(string sessionKey, int userId, int siteId);
 
         int AddOrUpdateWishListItems(int SiteId, int UserId, int TenantId, List<OrderDetailSessionViewModel> orderDetails);
 
-        int RemoveCartItem(int ProductId, int SiteId, int UserId);
+        int RemoveCartItem(int ProductId, int SiteId, int? UserId, string SessionKey);
         int RemoveWishListItem(int ProductId, int SiteId, int UserId);
 
         void SendNotificationForAbandonedCarts();

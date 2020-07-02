@@ -48,6 +48,7 @@ namespace WarehouseEcommerce.Controllers
             }
             ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
             ViewBag.ProductGroups = new SelectList(_lookupServices.GetAllValidProductGroups((CurrentTenantId), 12), "ProductGroupId", "ProductGroup", ViewBag.groupId);
+            
             return View();
         }
 
