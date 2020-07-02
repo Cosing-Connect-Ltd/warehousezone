@@ -41,7 +41,7 @@
         {
             <div class="button-submit proceed-card-btn">
 
-                <button type="Submit" name="submitNewsletter" class="btn btn-block" onclick="window.location.href='@Url.Action("GetAddress", "Orders")'">Proceed to Checkout</button>
+                <button type="Submit" name="submitNewsletter" class="btn btn-block" onclick="window.location.href='@Url.Action("Checkout", "Orders")'">Proceed to Checkout</button>
                 <div class=""><label>Grand Total: <b>@ViewBag.CurrencySymbol@(ViewBag.TotalQty == null ? 0 : ViewBag.TotalQty)</b> </label></div>
             </div>
         }

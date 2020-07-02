@@ -60,21 +60,18 @@ function findNearCollectionPoints() {
             $('.collection-points').empty();
 
             $.each(data, function (i, item) {
-                var element = $('<div class="collection-point col-md-6">' +
-                    '<div class="form-inline w-100' + (item.IsCartProductsAvailable ? '" onclick="selectCollectionPointId(' + item.WarehouseId + ', this)"' : ' collection-point-unavailable"') + '>' +
-                    '<div class="control-label w-100">' +
-                    ' <div style="float:left">' +
-                    ' <div class="collection-point-title">' + item.WarehouseName + '</div>' +
-                    ' <div>' + item.PostalCode + '</div>' +
-                    ' <div>' + item.AddressLine1 +
-                    (!!item.AddressLine2 ? ' - ' + item.AddressLine2 : '') +
-                    (!!item.AddressLine2 ? ' - ' + item.AddressLine3 : '') +
-                    (!!item.AddressLine2 ? ' - ' + item.AddressLine4 : '') + '</div>' +
-                    ' <div>' + item.City + '</div>' +
-                    ' <div>' + item.CountryName + '</div>' +
-                    '</div>' +
-                    (!item.IsCartProductsAvailable ? ' <div class="collection-point-not-available">Not Available</div>' : '<div class="collection-point-distance">' + item.Distance.Distance.Text + '</div>') +
-                    '</div></div></div>');
+                var element = $('<div class="col-lg-6">' +
+                    '<div class="billigAddrWrap collection-address-div' + (item.IsCartProductsAvailable ? '" onclick="selectCollectionPointId(' + item.WarehouseId + ', this)"' : ' collection-point-unavailable"') + '>' +
+                    '<p class="address">' +
+                    item.WarehouseName + '<br />' +
+                    item.PostalCode + '<br />' +
+                    item.AddressLine1 + '<br />' +
+                    item.AddressLine2 + (!!item.AddressLine3 ? ' - ' + item.AddressLine3 : '') + (!!item.AddressLine4 ? ' - ' + item.AddressLine4 : '') + '<br />' +
+                    item.City + '<br />' +
+                    item.CountryName + '<br />' +
+                    '</p>' +
+                    '<p class="miles">' + (!item.IsCartProductsAvailable ? ' <p class="collection-point-not-available">Not Available</p>' : '<p class="collection-point-distance">' + item.Distance.Distance.Text + '</p>') + '</p>' +
+                    '</div></div>');
                 $('.collection-points').append(element);
             });
         },
@@ -92,16 +89,6 @@ function selectCollectionPointId(collectionPointId, element) {
     $(element).addClass("collection-point-selected");
 
     $("#collectionPointId")[0].value = collectionPointId;
-}
-
-function selectShippingRuleId(shipmentRuleId, element) {
-    $(".shipping-rule-selected").each(function (i, selectedElement) {
-        $(selectedElement).removeClass("shipping-rule-selected");
-    });
-
-    $(element).addClass("shipping-rule-selected");
-
-    $("#shipmentRuleId")[0].value = shipmentRuleId;
 }
 
 function OnchangeDropdownAddress() {
@@ -359,7 +346,7 @@ function getUrlVariables() {
 }
 
 function chooseDeliveryMethod() {
-    var deliveryMethodId = $("input[name='optradio']:checked").val();
+    var deliveryMethodId = $("input[name='delivery-method-radio']:checked").val();
     if (!deliveryMethodId) {
         alert("Please select shipping method.");
         return;
@@ -385,7 +372,7 @@ function goToStep(step) {
 }
 
 function chooseShippingRule(nextStep) {
-    var shipmentRuleId = $("#shipmentRuleId")[0].value;
+    var shipmentRuleId = $("input[name='shipment-rule-radio']:checked").val();
     if (!shipmentRuleId) {
         alert("Please select shipping rule.");
         return;
@@ -395,7 +382,7 @@ function chooseShippingRule(nextStep) {
 }
 
 function choosePaymentMethod() {
-    var paymenttypeId = $("input[name='paymentMethod']:checked").val();
+    var paymenttypeId = $("input[name='payment-method-radio']:checked").val();
     if (!paymenttypeId) {
         alert("Please select payment method.");
         return;
@@ -608,7 +595,7 @@ function LoggedIn() {
             }
             else if (PlaceOrders) {
                 $('#signupPopup').modal('hide');
-                location.href = "/Orders/GetAddress?accountId=" + data.AccountId;
+                location.href = "/Orders/Checkout?accountId=" + data.AccountId;
             }
             else {
                 if (data.status) {

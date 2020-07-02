@@ -1,0 +1,21 @@
+﻿@using Ganedata.Core.Entities.Enums;
+<div class="checkout-options-wrapper">
+    <h5 class="subheadCmn">Select Delivery Method</h5>
+    <div class="checkboxwrap">
+        <input class="styled-checkbox"
+               id="pickup__checkbox"
+               type="radio"
+               name="delivery-method-radio"
+               value="@((int)DeliveryMethod.ToPickupPoint)" />
+        <label for="pickup__checkbox">Pick up (From Collection Point) - Free</label>
+    </div>
+    <div class="checkboxwrap">
+        <input class="styled-checkbox"
+               id="courier__checkbox"
+               type="radio"
+               name="delivery-method-radio"
+               value="@((int)DeliveryMethod.ToShipmentAddress)" />
+        <label for="courier__checkbox">Delivery to Address (Courier) </label>
+    </div>
+    <button class="addnwShopAdrrbtn" onclick="chooseDeliveryMethod()">SELECT DELIVERY METHOD</button>
+</div>

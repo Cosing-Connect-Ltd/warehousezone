@@ -783,60 +783,24 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
         cursor: pointer;
     }
 
-.shipping-rules,
-.collection-points {
-    display: flex;
-}
-
-.shipping-rule,
-.collection-point {
-    display: block;
-    color: #434343;
-    position: relative;
-    margin-bottom: 15px;
-    background: none !important;
-    cursor: pointer;
-    float: left;
-}
-
-    .shipping-rule .form-inline,
-    .collection-point .form-inline {
-        background: rgb(231,234,237);
-        border: 2px solid rgb(231,234,237);
-        border-bottom: 2px solid rgb(231,234,237);
-        box-shadow: 1px 4px 4px 0px rgba(0,0,0,.1);
-        padding: 10px;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .shipping-rule .control-label,
-    .collection-point .control-label {
-        font-weight: 300 !important;
-    }
-
-    .shipping-rule .collection-point-title,
-    .collection-point .collection-point-title {
-        font-weight: bold !important;
-    }
-    .collection-point .collection-point-distance {
+    .collection-points .collection-point-distance {
         text-align: right;
     }
 
-    .collection-point .collection-point-not-available {
+    .collection-points .collection-point-not-available {
         color: orangered;
         text-align: right;
     }
 
 .shipping-rule-selected,
 .collection-point-selected {
-    border: 2px solid gray !important;
+    border: 1px solid gray !important;
 }
 
 .collection-point-unavailable {
     color: #9a9898 !important;
     cursor: default !important;
-    border: 2px dashed lightgray !important;
+    border: 1px dashed lightgray !important;
 }
 
 .checkout-side-menu{
@@ -1034,13 +998,6 @@ h2 {
 .flex-max-width-unset {
     flex: unset;
     max-width: unset;
-}
-
-.find-address-select {
-    width: 100%;
-    height: 40px;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
 }
 
 .blogdetWrapsec {
@@ -1588,25 +1545,27 @@ body.modal-open {
     margin-bottom: 20px;
 }
 
-.billandshipsec .billigAddrWrap {
+.billandshipsec .address-wrapper {
     margin-bottom: 15px;
 }
 
-    .billandshipsec .billigAddrWrap p.address {
+    .billandshipsec .address-wrapper p.address {
         font-family: "primaryfont_SemiBold";
         font-size: 18px;
         color: #000;
     }
 
-    .billandshipsec .billigAddrWrap .btnWrap {
+    .billandshipsec .checkout-options-wrapper .btnWrap,
+    .billandshipsec .address-wrapper .btnWrap {
         display: flex;
         flex-direction: row;
         align-items: flex-start;
         justify-content: flex-start;
-        margin-top: 20px;
+        margin-top: 10px;
+        margin-bottom: 20px;
     }
 
-        .billandshipsec .billigAddrWrap .btnWrap .btmBtn {
+        .billandshipsec .address-wrapper .btnWrap .btmBtn {
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -1624,19 +1583,19 @@ body.modal-open {
             transition: all 0.3s ease;
         }
 
-            .billandshipsec .billigAddrWrap .btnWrap .btmBtn:hover {
+            .billandshipsec .address-wrapper .btnWrap .btmBtn:hover {
                 background-color: #f33655;
             }
 
-            .billandshipsec .billigAddrWrap .btnWrap .btmBtn:last-child {
+            .billandshipsec .address-wrapper .btnWrap .btmBtn:last-child {
                 margin-right: 0px;
             }
             @media(max-width:560px){
-                .billandshipsec .billigAddrWrap .btnWrap .btmBtn {
+                .billandshipsec .address-wrapper .btnWrap .btmBtn {
                     width: 100%;
                     margin-top: 10px;
                 }
-                .billandshipsec .billigAddrWrap .btnWrap {
+                .billandshipsec .address-wrapper .btnWrap {
                     display: unset;
                 }
                 .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group .findAddrWrap .fadBtn {
@@ -1645,7 +1604,8 @@ body.modal-open {
                 .saveAddrWrap .saveAddrBtn {
                     width: 100% !important;
                 }
-                .billandshipsec .shippingAddrWrap .addnwShopAdrrbtn {
+                .billandshipsec .checkout-options-wrapper .addnwShopAdrrbtn,
+                .billandshipsec .address-wrapper .addnwShopAdrrbtn {
                     width: 100% !important;
                 }
             }
@@ -1653,6 +1613,7 @@ body.modal-open {
 .billandshipsec .addNewAddrWrap {
     width: 100%;
     margin-bottom: 48px;
+    margin-top: 15px;
 }
 
     .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap {
@@ -1664,12 +1625,13 @@ body.modal-open {
             width: 100%;
             height: 50px;
             border: solid 1px #707070;
-            padding-right: 200px;
+            padding-right: 140px;
         }
 
             .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group .findAddrWrap .findAddrInput {
                 width: 100%;
-                height: 48px;
+                height: 47px;
+                margin-top: 1px;
                 font-family: "primaryfont_Normal";
                 font-size: 14px;
                 border: none;
@@ -1697,6 +1659,8 @@ body.modal-open {
                     background-color: #000;
                 }
 
+        .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group select,
+        .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group input[type="tel"],
         .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group input[type="text"],
         .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group input[type="number"] {
             width: 100%;
@@ -1708,21 +1672,21 @@ body.modal-open {
             font-size: 14px;
         }
 
-.billandshipsec .shippingAddrWrap {
+.billandshipsec .checkout-options-wrapper {
     margin-bottom: 50px;
 }
 
-    .billandshipsec .shippingAddrWrap .checkboxwrap {
+    .billandshipsec .checkout-options-wrapper .checkboxwrap {
         width: 100%;
         margin-bottom: 15px;
     }
 
-        .billandshipsec .shippingAddrWrap .checkboxwrap label {
+        .billandshipsec .checkout-options-wrapper .checkboxwrap label {
             font-family: "primaryfont_Normal";
             font-size: 18px;
         }
 @media(max-width:425px) {
-    .billandshipsec .shippingAddrWrap .checkboxwrap label {
+    .billandshipsec .checkout-options-wrapper .checkboxwrap label {
         font-size: 14px;
         display: flex;
         align-items: center;
@@ -1732,23 +1696,28 @@ body.modal-open {
         margin-top: 3px;
     }
 }
-    .billandshipsec .shippingAddrWrap .addnwShopAdrrbtn {
-        width: 250px;
-        height: 50px;
-        background-color: #000;
-        color: #fff;
-        font-family: "primaryfont_Bold";
-        font-size: 16px;
-        border: none;
-        outline: none;
-        transition: all 0.3s ease;
+
+.billandshipsec .checkout-options-wrapper .addnwShopAdrrbtn,
+.billandshipsec .address-wrapper .addnwShopAdrrbtn {
+    width: 250px;
+    line-height: 50px;
+    margin-top: 25px;
+    background-color: #000;
+    color: #fff;
+    font-family: "primaryfont_Bold";
+    font-size: 16px;
+    border: none;
+    text-align: center;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+    .billandshipsec .checkout-options-wrapper .addnwShopAdrrbtn:hover,
+    .billandshipsec .address-wrapper .addnwShopAdrrbtn:hover {
+        background-color: #f33655;
     }
 
-        .billandshipsec .shippingAddrWrap .addnwShopAdrrbtn:hover {
-            background-color: #f33655;
-        }
-        
- .saveAddrWrap {
+.billandshipsec .saveAddrWrap {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -2037,5 +2006,5 @@ body.modal-open {
     .collection-address-div:hover {
         box-shadow: 0 -10px 30px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
     }
-   
+
 /*payment pages from GetAddress to FinalPayment- css start*/

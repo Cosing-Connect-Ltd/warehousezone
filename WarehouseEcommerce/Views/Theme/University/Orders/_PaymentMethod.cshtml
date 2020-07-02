@@ -1,0 +1,29 @@
+﻿@using Ganedata.Core.Entities.Enums
+<div class="checkout-options-wrapper">
+    <h5 class="subheadCmn">Select Payment Method</h5>
+    <div class="checkboxwrap">
+        <input class="styled-checkbox"
+               id="cash__checkbox"
+               type="radio"
+               name="payment-method-radio"
+               value="@((int)PaymentMethod.Cash)" />
+        <label for="cash__checkbox">Cash</label>
+    </div>
+    <div class="checkboxwrap">
+        <input class="styled-checkbox"
+               id="paypal__checkbox"
+               type="radio"
+               name="payment-method-radio"
+               value="@((int)PaymentMethod.Paypal)" />
+        <label for="paypal__checkbox">Paypal</label>
+    </div>
+    <div class="checkboxwrap">
+        <input class="styled-checkbox"
+               id="sage-pay__checkbox"
+               type="radio"
+               name="payment-method-radio"
+               value="@((int)PaymentMethod.SagePay)" />
+        <label for="sage-pay__checkbox">Sage Pay</label>
+    </div>
+    <button class="addnwShopAdrrbtn" onclick="choosePaymentMethod()">SELECT PAYMENT METHOD</button>
+</div>

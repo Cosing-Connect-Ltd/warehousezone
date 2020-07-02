@@ -71,7 +71,7 @@ namespace WarehouseEcommerce.Controllers
             return View();
         }
 
-        public ActionResult GetAddress(int? accountId, int? accountAddressId, int? billingAddressId, int? shippingAddressId, int? deliveryMethodId, int? collectionPointId, int? step, int? parentStep, int? shipmentRuleId)
+        public ActionResult Checkout(int? accountId, int? accountAddressId, int? billingAddressId, int? shippingAddressId, int? deliveryMethodId, int? collectionPointId, int? step, int? parentStep, int? shipmentRuleId)
         {
             if (GaneCartItemsSessionHelper.GetCartItemsSession().Count <= 0)
             {
@@ -85,8 +85,7 @@ namespace WarehouseEcommerce.Controllers
 
             var currentStep = step != null ? (CheckoutStep)step : CheckoutStep.BillingAddress;
 
-            ViewBag.cart = true;
-            ViewBag.AccountIds = accountId = CurrentUser?.AccountId;
+            ViewBag.AccountId = accountId = CurrentUser?.AccountId;
             ViewBag.Countries = new SelectList(_lookupServices.GetAllGlobalCountries(), "CountryID", "CountryName");
             ViewBag.ShippingAddressId = shippingAddressId <= 0 ? null : shippingAddressId;
             ViewBag.BillingAddressId = billingAddressId <= 0 ? null : billingAddressId;
@@ -104,7 +103,7 @@ namespace WarehouseEcommerce.Controllers
                 case CheckoutStep.ShippingAddress:
                     ViewBag.Addresses = AccountServices.GetAllValidAccountAddressesByAccountId(accountId ?? 0).Where(u => u.AddTypeShipping == true).ToList();
                     break;
-                case CheckoutStep.EditAddress:
+                case CheckoutStep.AddOrEditAddress:
                     var model = AccountServices.GetAccountAddressById(accountAddressId ?? 0);
                     return View(model);
                 case CheckoutStep.ShipmentRule:
@@ -199,16 +198,16 @@ namespace WarehouseEcommerce.Controllers
 
             if (accountAddresses.AddTypeShipping == true)
             {
-                return RedirectToAction("GetAddress", new { accountId = accountAddresses.AccountID, billingAddressId, deliveryMethodId, step = (int)CheckoutStep.ShippingAddress });
+                return RedirectToAction("Checkout", new { accountId = accountAddresses.AccountID, billingAddressId, deliveryMethodId, step = (int)CheckoutStep.ShippingAddress });
             }
 
-            return RedirectToAction("GetAddress", new { AccountId = accountAddresses.AccountID });
+            return RedirectToAction("Checkout", new { AccountId = accountAddresses.AccountID });
         }
 
         public ActionResult RemoveShippingAddress(int accountAddressId, int billingAddressId, int accountId, int deliveryMethodId)
         {
             var accountAddresses = AccountServices.DeleteAccountAddress(accountAddressId, (CurrentUserId == 0 ? 1 : CurrentUserId));
-            return RedirectToAction("GetAddress", new { accountId, billingAddressId, deliveryMethodId, step = (int)CheckoutStep.ShippingAddress });
+            return RedirectToAction("Checkout", new { accountId, billingAddressId, deliveryMethodId, step = (int)CheckoutStep.ShippingAddress });
         }
 
         public ActionResult ConfirmOrder(int accountId, int? shippingAddressId, int? shipmentRuleId, int deliveryMethodId, int paymentTypeId, int? collectionPointId)
@@ -251,14 +250,6 @@ namespace WarehouseEcommerce.Controllers
             return Json(addresses, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult AddShippingMethod(int AccountAddressId)
-        {
-            ViewBag.cart = true;
-            ViewBag.AccountAddressId = AccountAddressId;
-
-            return View();
-        }
-
         public async Task<ActionResult> IPN(FormCollection form)
 
         {
@@ -292,15 +283,6 @@ namespace WarehouseEcommerce.Controllers
             //{
             //    TempData["Error"] = result;
             //}
-
-
-
-
-
-
-
-
-
             return View();
         }
         public ActionResult Success(int Id)
@@ -325,7 +307,6 @@ namespace WarehouseEcommerce.Controllers
                 var responseString = await response.Content.ReadAsStringAsync();
                 return (responseString == "VERIFIED");
             }
-
         }
 
         public async Task<ActionResult> SagePay()
@@ -356,13 +337,11 @@ namespace WarehouseEcommerce.Controllers
     public class SagepayVendor
     {
         public string vendorName { get; set; }
-
     }
 
     public class SagepayResponse
     {
         public string merchantSessionKey { get; set; }
         public DateTime expiry { get; set; }
-
     }
 }

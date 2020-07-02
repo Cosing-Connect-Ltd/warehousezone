@@ -1,0 +1,20 @@
+﻿@using Ganedata.Core.Entities.Enums;
+<div class="checkout-options-wrapper">
+    <h5 class="subheadCmn">Select Shipment Type</h5>
+    @Html.Hidden("shipmentRuleId", (int?)ViewBag.ShipmentRuleId)
+
+    @foreach (var rule in ViewBag.ShippingRules)
+    {
+        <div class="checkboxwrap">
+            <input class="styled-checkbox"
+                    id="shipment-rule__checkbox-@rule.Id"
+                    type="radio"
+                    name="shipment-rule-radio"
+                    value="@rule.Id" />
+            <label for="shipment-rule__checkbox-@rule.Id"><b>@ViewBag.CurrencySymbol@rule.Price</b> ( @rule.Courier @(string.IsNullOrEmpty(rule.Description) ? string.Empty : $" - {rule.Description}") )</label>
+        </div>
+    }
+    <div class="btnWrap">
+        <a href="javascript:;" class="addnwShopAdrrbtn" onclick="chooseShippingRule(@((int)CheckoutStep.PaymentMethod))">SELECT SHIPMENT TYPE</a>
+    </div>
+</div>

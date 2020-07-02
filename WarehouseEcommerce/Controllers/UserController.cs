@@ -100,7 +100,7 @@ namespace WarehouseEcommerce.Controllers
             if (PlaceOrder == true)
             {
                 RedirectController = "Orders";
-                ReditectAction = "GetAddress";
+                ReditectAction = "Checkout";
                 return RedirectToAction(ReditectAction, RedirectController, new { AccountId = CurrentUser.AccountId });
             }
             if (Session["LastUrlFrom"] != null)

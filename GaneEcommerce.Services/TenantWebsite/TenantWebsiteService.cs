@@ -1101,7 +1101,7 @@ namespace Ganedata.Core.Services
                                                                                        u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase)))));
             if (cartProduct != null)
             {
-                cartProduct.IsDeleted = false;
+                cartProduct.IsDeleted = quantity <= 0;
                 cartProduct.Quantity = quantity;
                 cartProduct.UpdatedBy = userId == 0 ? null : userId;
                 cartProduct.DateUpdated = DateTime.UtcNow;

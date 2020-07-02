@@ -502,10 +502,10 @@ namespace Ganedata.Core.Entities.Enums
         BillingAddress = 0,
         DeliveryMethod = 1,
         ShippingAddress = 2,
-        CollectionPiont = 3,
+        CollectionPoint = 3,
         ShipmentRule = 4,
         PaymentMethod = 5,
-        EditAddress = 6,
+        AddOrEditAddress = 6,
     }
 
     public enum DeliveryMethod
