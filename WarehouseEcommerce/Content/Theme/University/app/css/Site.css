@@ -1642,7 +1642,7 @@ body.modal-open {
                 .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group .findAddrWrap .fadBtn {
                     width:85px !important;
                 }
-                .billandshipsec .saveAddrWrap .saveAddrBtn {
+                .saveAddrWrap .saveAddrBtn {
                     width: 100% !important;
                 }
                 .billandshipsec .shippingAddrWrap .addnwShopAdrrbtn {
@@ -1748,7 +1748,7 @@ body.modal-open {
             background-color: #f33655;
         }
         
-.billandshipsec .saveAddrWrap {
+ .saveAddrWrap {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -1756,7 +1756,7 @@ body.modal-open {
     justify-content: center;
 }
 
-    .billandshipsec .saveAddrWrap .saveAddrBtn {
+    .saveAddrWrap .saveAddrBtn {
         width: 260px;
         height: 50px;
         background-color: #000;
@@ -1769,7 +1769,7 @@ body.modal-open {
         transition: all 0.3s ease;
     }
 
-        .billandshipsec .saveAddrWrap .saveAddrBtn:hover {
+        .saveAddrWrap .saveAddrBtn:hover {
             background-color: #f33655;
         }
 
