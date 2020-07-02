@@ -1804,8 +1804,8 @@ body.modal-open {
         justify-content: center;
     }
 
-        .Paymentsec .paymentTabsec .submitBtnwra .btnCmn {
-            width: 260px;
+         .submitBtnwra .btnCmn {
+            width: 260px !important;
             border: none;
         }
 
@@ -1886,6 +1886,7 @@ body.modal-open {
             font-size: 16px;
             width: 145px;
         }
+
 
         .Paymentsec .paymentTabsec .cardDetailsWrap .form-group input[type="text"].secCodeTxtbox {
             width: 168px;
