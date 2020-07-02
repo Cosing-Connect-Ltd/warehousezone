@@ -919,6 +919,14 @@
     <Compile Include="Migrations\202007010307160_added-description-to-WebsiteShippingRules-table.designer.cs">
       <DependentUpon>202007010307160_added-description-to-WebsiteShippingRules-table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007020929298_sessionkey-added-in-websitecartitem.cs" />
+    <Compile Include="Migrations\202007020929298_sessionkey-added-in-websitecartitem.designer.cs">
+      <DependentUpon>202007020929298_sessionkey-added-in-websitecartitem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007021028069_setuserid-nullable-inCartitems.cs" />
+    <Compile Include="Migrations\202007021028069_setuserid-nullable-inCartitems.designer.cs">
+      <DependentUpon>202007021028069_setuserid-nullable-inCartitems.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1928,6 +1936,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007010307160_added-description-to-WebsiteShippingRules-table.resx">
       <DependentUpon>202007010307160_added-description-to-WebsiteShippingRules-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007020929298_sessionkey-added-in-websitecartitem.resx">
+      <DependentUpon>202007020929298_sessionkey-added-in-websitecartitem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007021028069_setuserid-nullable-inCartitems.resx">
+      <DependentUpon>202007021028069_setuserid-nullable-inCartitems.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
