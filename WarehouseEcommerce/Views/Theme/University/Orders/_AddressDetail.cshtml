@@ -1,0 +1,22 @@
+﻿<p>
+    @if (!string.IsNullOrEmpty(Model.AddressLine1))
+    {
+        <b>@Model.AddressLine1</b><br />
+    }
+    @if (!string.IsNullOrEmpty(Model.AddressLine2))
+    {
+        @Model.AddressLine2<br />
+    }
+    @if (!string.IsNullOrEmpty(Model.AddressLine3) || !string.IsNullOrEmpty(Model.PostCode))
+    {
+        @Model.AddressLine3 <span>&nbsp;</span> @Model.PostCode<br />
+    }
+    @if (Model.GlobalCountry != null)
+    {
+        @Model.GlobalCountry.CountryName<br />
+    }
+    @if (!string.IsNullOrEmpty(Model.Telephone))
+    {
+        <b>Phone:</b> @Model.Telephone<br />
+    }
+</p>
