@@ -18,50 +18,29 @@
         margin: 0 auto;
         margin-top: 20px;
     }
-
-    #submit-container {
-        padding-top: 10px;
-        float: right;
-    }
-
-    input[type=submit] {
-        border: none;
-        background: indigo;
-        padding: 6px;
-        margin: 6px;
-        color: white;
-        border-radius: 5px;
-    }
 </style>
-
-<script src="https://pi-test.sagepay.com/api/v1/js/sagepay.js"></script>
-
-<div id="main" class="about bg-white confirm-order-page">
-    <form>
-        <h1>Payment Details</h1>
-        <div id="my-container"></div>
-        <div id="submit-container">
-            <input type="submit" />
-        </div>
-    </form>
-</div>
-
-<script>
-
-    @*sagepayCheckout({
+<div id="main">
+    <h1>Payment Details</h1>
+    <div id="sp-container"></div>
+    <p><a id="my-tokenisation-trigger" href="#" class="btn btn-default">tokenise</a></p>
+    <script type="text/javascript" src="https://pi-test.sagepay.com/api/v1/js/sagepay.js"></script>
+    <script type="text/javascript">
+    const checkout = sagepayCheckout({
         merchantSessionKey: '@ViewBag.AuthCode',
-        containerSelector: '#my-container',
-  onTokenise: function(tokenisationResult) {
-      if (tokenisationResult.success) {
-          debugger;
-      console.log('Tokenisation successful', tokenisationResult.cardIdentifier);
-      } else {
-          debugger;
-      console.error('Tokenisation failed', tokenisationResult.error.errorMessage);
-    }
-  }
-    });*@
+        onTokenise: function (tokenisationResult) {
+            if (tokenisationResult.success) {
+                debugger;
+                alert(tokenisationResult.cardIdentifier);
+            } else {
+                debugger;
+                alert(tokenisationResult.error.errorMessage);
+            }
+        }
+    });
+    $('#my-tokenisation-trigger').click(function (e) {
+        e.preventDefault();
+        checkout.tokenise();
+    });
+    </script>
 
-
-    sagepayCheckout({ merchantSessionKey: '@ViewBag.AuthCode' }).form();
-</script>
+</div>

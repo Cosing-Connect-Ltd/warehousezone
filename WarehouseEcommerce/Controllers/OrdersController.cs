@@ -338,14 +338,14 @@ namespace WarehouseEcommerce.Controllers
         private async Task<SagepayResponse> GetSagePayToken()
         {
             var root = new SagepayVendor();
-            root.vendorName = "sandbox";
+            root.vendorName = "sandboxEC";
 
             var json = JsonConvert.SerializeObject(root);
             var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
 
             using (var client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Add("Authorization", "Basic aEpZeHN3N0hMYmo0MGNCOHVkRVM4Q0RSRkxodUo4RzU0TzZyRHBVWHZFNmhZRHJyaWE6bzJpSFNyRnliWU1acG1XT1FNdWhzWFA1MlY0ZkJ0cHVTRHNocktEU1dzQlkxT2lONmh3ZDlLYjEyejRqNVVzNXU=");
+                client.DefaultRequestHeaders.Add("Authorization", "Basic ZHE5dzZXa2tkRDJ5OGszdDRvbHF1OEg2YTB2dHQzSVk3VkVzR2hBdGFjYkNaMmI1VWQ6aG5vM0pURXdESHk3aEpja1U0V3V4ZmVUcmpEME45MnBJYWl0dVFCdzVNdGo3UkczVjh6T2RIQ1NQS3dKMDJ3QVY=");
                 var response = await client.PostAsync("https://pi-test.sagepay.com/api/v1/merchant-session-keys", stringContent);
                 var responseString = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<SagepayResponse>(responseString);
