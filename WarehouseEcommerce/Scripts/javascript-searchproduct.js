@@ -220,7 +220,7 @@ function RemoveCartItem(id) {
     $.ajax({
         type: "GET",
         url: basePath + "/Products/RemoveCartItem/",
-        data: { ProductId: id },
+        data: { cartId: id },
         dataType: 'json',
         success: function (data) {
             var cardItemsValue = parseInt($("#cart-total").val());
@@ -234,30 +234,34 @@ function RemoveCartItem(id) {
 }
 function UpdateCartItem(ID, event) {
     var quantity = event.value;
-    $.ajax({
-        type: "GET",
-        url: basePath + "/Products/EditCartItem/",
-        data: { ProductId: ID, quantity: quantity },
-        dataType: 'json',
-        success: function (data) {
+    if (quantity > 0) {
 
-            GetCartitems(null)
+        $.ajax({
+            type: "GET",
+            url: basePath + "/Products/EditCartItem/",
+            data: { ProductId: ID, quantity: quantity },
+            dataType: 'json',
+            success: function (data) {
 
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            alert('Error' + textStatus + "/" + errorThrown);
-        }
-    });
+                GetCartitems(null)
+
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert('Error' + textStatus + "/" + errorThrown);
+            }
+        });
+
+    }
 }
-function GetCartitems(productId) {
+function GetCartitems(cartId) {
     $.ajax({
         type: "GET",
         url: basePath + "/Products/_CartItemsPartial/",
-        data: { productId: productId },
+        data: { cartId: cartId },
         dataType: 'html',
         success: function (data) {
 
-            if (productId != null) {
+            if (cartId != null) {
                 $('.modal-body').empty();
                 $('.modal-body').html(data);
                 $('#myModal').modal('show');

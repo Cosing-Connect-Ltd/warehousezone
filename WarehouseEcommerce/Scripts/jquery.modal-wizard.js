@@ -14,38 +14,40 @@
                     $this.attr("data-current-step", stepNumber);
                 }
                 else if (navDir === 'next') {
+                    debugger;
                     var status = false;
                     var currentStep = $("#kit-product").attr("data-current-step");
-                    var quantity = $("#fieldset_" + currentStep).find("#QunatityCheckBox").val();
-                    var mainStep = currentStep > quantity ? Math.ceil((currentStep / 2)) : currentStep;
-                    var nextStepProduct = "";
+                    var mainStep = currentStep;
+                    var quantity = $("#fieldset-" + currentStep).find("#quantity-checkbox").val();
                     var totalSteplength = $("#kit-product").find('[data-step]').length;
-                    var currentStepDDValue = $("#fieldset_" + currentStep).find("#DDQuantity").val();
-                    var status = $("#fieldset_" + currentStep).find("#customCheck").is(":checked");
-                    var currentStepProduct = $("#fieldset_" + currentStep).data("same");
-                    if (currentStep !== currentStepDDValue) {
-                        var steps = currentStep;
-                        for (i = mainStep; i < parseInt(currentStepDDValue); i++) {
-                            steps = (parseInt(steps) + 1);
-                            var nextsameData = $("#fieldset_" + steps).data("same");
-                            if (nextsameData === currentStepProduct) {
-                                status = true;
-                                var content = $("#fieldset_" + currentStep).html();
-                                var dropdownFieldsBeforeRefresh = $("#fieldset_" + steps).find(".attribute-dropdown").html();
-                                $("#fieldset_" + steps).html("");
-                                $("#fieldset_" + steps).html(content);
-                                $("#fieldset_" + steps).find(".attribute-dropdown").html("").html(dropdownFieldsBeforeRefresh);
-                                currentStep = parseInt(currentStep) + 1;
-                            }
+                    var currentStepDDValue = $("#fieldset-" + currentStep).find("#quantity-dropdown").val();
+                    var status = $("#fieldset-" + currentStep).find("#customCheck").is(":checked");
+                    var currentStepProduct = $("#fieldset-" + currentStep).data("sameproduct");
 
-
+                    var steps = currentStep;
+                    for (i = 1; i < parseInt(currentStepDDValue); i++) {
+                        steps = (parseInt(steps) + 1);
+                        var nextsameData = $("#fieldset-" + steps).data("sameproduct");
+                        if (nextsameData === currentStepProduct) {
+                            status = true;
+                            var content = $("#fieldset-" + currentStep).html();
+                            var dropdownFieldsBeforeRefresh = $("#fieldset-" + steps).find(".attribute-dropdown").html();
+                            $("#fieldset-" + steps).html("");
+                            $("#fieldset-" + steps).html(content);
+                            $("#fieldset-" + steps).find(".attribute-dropdown").html("").html(dropdownFieldsBeforeRefresh);
+                            currentStep = parseInt(currentStep) + 1;
                         }
+
+
                     }
 
-                    $this.attr("data-current-step", status ? parseInt(parseInt(currentStep) >= parseInt(totalSteplength) ? parseInt(totalSteplength) : parseInt(currentStep + 1)) : +$this.attr("data-current-step") + 1);
+                    var nextStepToTake = status ? parseInt(parseInt(currentStep) >= parseInt(totalSteplength) ? parseInt(totalSteplength) : parseInt(currentStep + 1)) : (+$this.attr("data-current-step") + 1)
+                    $this.attr("data-current-step", nextStepToTake);
+                    $("#fieldset-" + nextStepToTake).find("#step-number-tracking").val(mainStep);
                 }
                 else {
-                    $this.attr("data-current-step", +$this.attr("data-current-step") - 1);
+                    var previouStepToTake = $("#fieldset-" + parseInt($("#kit-product").attr("data-current-step"))).find("#step-number-tracking").val();
+                    $this.attr("data-current-step", previouStepToTake ?? (+$this.attr("data-current-step") - 1));
                 }
                 updateModalStep($this);
             })
@@ -69,7 +71,7 @@
             .on('click', '[data-submit], [type=submit]', function (e) {
                 var kitProductCartItems = [];
                 var pid = $("#main-kit-product").val();
-                $("[id^=fieldset_]").each(function (e) {
+                $("[id^=fieldset-]").each(function (e) {
                     debugger;
                     var productid = $(this).find("#selected-productids").data("productid");
                     var qty = $(this).find("#customCheck").val();
@@ -117,35 +119,24 @@
     function PostAttributeValues(pid, kititems) {
 
         $.ajax({
-            url: basePath + '/Products/_CartItemsPartial',
+            url: basePath + '/Products/AddKitProductCartItem',
             method: 'post',
-            data: { ProductId: pid, kitProductCartItems: kititems },
+            data: { productId: pid, kitProductCartItems: kititems },
             dataType: 'json',
             success: function (data) {
-                window.location.href = basePath + '/Products/AddToCart';
                 $("#kit-product").hide();
+                window.location.href = basePath + '/Products/AddToCart';
+
             },
             error: function (err) {
-                window.location.href = basePath + '/Products/AddToCart';
                 $("#kit-product").hide();
+                window.location.href = basePath + '/Products/AddToCart';
+
             }
         });
 
     }
-    function CheckNextStepDropdownValue(currentStepProduct, steps, CurrentStep, autoStep) {
-        debugger;
-        var id = (parseInt(CurrentStep) + 1);
-        var nextStep = $("#fieldset_" + id).data("same");
 
-        if (currentStepProduct === nextStep) {
-            var elementId = "#fieldset_" + id;
-            var nextddvalue = $("#fieldset_" + id).find("#DDQuantity").val();
-            if (parseInt(nextddvalue) !== (steps)) {
-                $(elementId).find("#DDQuantity").find("option").slice(0, (autoStep ? (nextddvalue) : (steps - 1))).remove();
-            }
-        }
-
-    }
 
 
 

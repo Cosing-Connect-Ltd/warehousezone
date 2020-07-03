@@ -10,6 +10,7 @@
                     <p class="subContent">
                         @Model.SKUCode
                     </p>
+                    @Html.Hidden("step-number-tracking")
                     <span class="prd_amnt">@ViewBag.CurrencySymbol @Model.SellPrice</span>
                     <div class="attribute-refresh">
                         <div class="availibility">
@@ -115,17 +116,17 @@
                     </div>
 
 
-                    <label style="display:none"><input type="checkbox" id="QunatityCheckBox" value="@ViewBag.Quantity">&nbsp;  Select same attribute for this product</label>
+                    <label style="display:none"><input type="checkbox" id="quantity-checkbox" value="@ViewBag.Quantity">&nbsp;  Select same attribute for this product</label>
 
                 </div>
 
             </div>
         </div>
         <div class="row">
-            <div style="margin-left:30px">
-                <label>Select same attribute for this product</label>
+            <div style="margin-left:50px"> 
+                <label>Item Quantity</label><br />
                 <div class="attribute-dropdown">
-                    @Html.DropDownList("DDQuantity", ViewBag.QuantityList as SelectList, null, new { @class = "form-control" })
+                    @Html.DropDownList("quantity-dropdown", ViewBag.QuantityList as SelectList, null, new { @class = "form-control" })
                 </div>
             </div>
         </div>

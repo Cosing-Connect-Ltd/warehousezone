@@ -277,11 +277,12 @@ namespace WarehouseEcommerce.Controllers
             return View();
         }
 
-        public PartialViewResult _CartItemsPartial(int? productId = null)
+        public PartialViewResult _CartItemsPartial(int? cartId = null)
         {
-            var SessionKey = HttpContext.Session.SessionID;
+            ViewBag.PlaceOrder=CurrentUserId > 0 ? true : false;
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
-            var models = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, SessionKey).Where(u => (!productId.HasValue || u.ProductId == productId));
+            ViewBag.cartPopUp = cartId.HasValue ? true : false;
+            var models = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, HttpContext.Session.SessionID).Where(u => (!cartId.HasValue || u.CartId == cartId));
             ViewBag.CurrencySymbol = currencyyDetail.Symbol;
 
             return PartialView(models.ToList());
@@ -485,15 +486,16 @@ namespace WarehouseEcommerce.Controllers
             return Json(cartItemProductId, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult RemoveCartItem(int productId)
+        public JsonResult RemoveCartItem(int cartId)
         {
-            var result = _tenantWebsiteService.RemoveCartItem(productId, CurrentTenantWebsite.SiteID, CurrentUserId, Session.SessionID);
+            var result = _tenantWebsiteService.RemoveCartItem(cartId, CurrentTenantWebsite.SiteID, CurrentUserId, Session.SessionID);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult AddKitProductCartItem(List<KitProductCartSession> kitProductCartItems)
+        public JsonResult AddKitProductCartItem(int productId, List<KitProductCartSession> kitProductCartItems)
         {
-            return _CartItemsPartial();
+            var cartItemProductId = _tenantWebsiteService.AddOrUpdateCartItem(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, Session.SessionID, productId, 1, kitProductCartItems);
+            return Json(cartItemProductId, JsonRequestBehavior.AllowGet);
         }
     }
 

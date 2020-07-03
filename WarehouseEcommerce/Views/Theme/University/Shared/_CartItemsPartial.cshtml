@@ -6,7 +6,10 @@
             <tr>
                 <th>Product</th>
                 <th>Price</th>
-                <th>Quantity</th>
+                @if ((bool)ViewBag.cartPopUp == false)
+                {
+                    <th>Quantity</th>
+                }
                 <th>Total</th>
             </tr>
         </thead>
@@ -91,15 +94,18 @@
                                 @item.CurrencySign@item.Price
                             </div>
                         </td>
+                        @if ((bool)ViewBag.cartPopUp == false)
+                        {
+                            <td>
 
-                        <td>
-                            <div class="qtyboxwrap">
-                                @* <span id="decre_count" class="min">-</span>*@
-                                <input id="counter" type="number" onchange="UpdateCartItem(@item.ProductId,this)" value="@item.Qty" />
-                                @* <span id="incre_count" class="max">+</span>*@
-                            </div>
-                            <a href="javascript:;" class="remove-btn cart-del" onclick="RemoveCartItem(@item.ProductId)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
-                        </td>
+                                <div class="qtyboxwrap">
+                                    @* <span id="decre_count" class="min">-</span>*@
+                                    <input id="counter" type="number" onchange="UpdateCartItem(@item.ProductId,this)" value="@item.Qty" />
+                                    @* <span id="incre_count" class="max">+</span>*@
+                                </div>
+                                <a href="javascript:;" class="remove-btn cart-del" onclick="RemoveCartItem(@item.CartId)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
+                            </td>
+                        }
 
                         <td>
                             <div id="total_amnt" class="total">@item.CurrencySign@item.ProductTotalAmount</div>
@@ -117,10 +123,10 @@
 
     <div class="coupen_codewrap">
         @*<input type="text" placeholder="Coupen Code" />*@
-        @if (ViewBag.CartModal == null && Model.Count > 0)
+        @if ((bool)ViewBag.cartPopUp == false && Model.Count > 0)
         {
-            if (ViewBag.PlaceOrder != null)
-            {
+                if (ViewBag.PlaceOrder != null)
+                {
                 <button class="cont_shop_btn" onclick="GetLoggedIn(true)">Proceed to checkout</button>
             }
             else

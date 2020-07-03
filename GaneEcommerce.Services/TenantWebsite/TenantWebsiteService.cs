@@ -988,33 +988,27 @@ namespace Ganedata.Core.Services
 
         public IEnumerable<WebsiteCartItem> GetAllValidCartItemsList(int siteId, int? UserId, string SessionKey)
         {
-            return _currentDbContext.WebsiteCartItems.Where(u => u.SiteID == siteId && ((((!UserId.HasValue || UserId == 0) || u.UserId == UserId) || (string.IsNullOrEmpty(SessionKey) || u.SessionKey.Equals(SessionKey, StringComparison.InvariantCultureIgnoreCase)))) && u.IsDeleted != true );
+            return _currentDbContext.WebsiteCartItems.Where(u => u.SiteID == siteId && ((((!UserId.HasValue || UserId == 0) || u.UserId == UserId) || (string.IsNullOrEmpty(SessionKey) || u.SessionKey.Equals(SessionKey, StringComparison.InvariantCultureIgnoreCase)))) && u.IsDeleted != true);
         }
 
         public IEnumerable<OrderDetailSessionViewModel> GetAllValidCartItems(int siteId, int? UserId, string SessionKey)
         {
-            return _currentDbContext.WebsiteCartItems.Where(u => u.SiteID == siteId &&  u.IsDeleted != true &&
+            return _currentDbContext.WebsiteCartItems.Where(u => u.SiteID == siteId && u.IsDeleted != true &&
            ((((!UserId.HasValue || UserId == 0) || u.UserId == UserId) || (string.IsNullOrEmpty(SessionKey) || u.SessionKey.Equals(SessionKey, StringComparison.InvariantCultureIgnoreCase))))).ToList().Select(u => new OrderDetailSessionViewModel
-            {
-                ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
-                Price = u.UnitPrice,
-                Qty = u.Quantity,
-                ProductId = u.ProductId,
-                CartId = u.Id,
-                KitProductCartItems = u.KitProductCartItems.Select(c => new KitProductCartSession
-                {
-                    SimpleProductId = c.SimpleProductId,
-                    KitProductId = c.KitProductId,
-                    Quantity = c.Quantity,
-                    SimpleProductMaster = _mapper.Map(c.SimpleProductMaster, new ProductMasterViewModel())
-                }).ToList()
+           {
+               ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
+               Price = u.UnitPrice,
+               Qty = u.Quantity,
+               ProductId = u.ProductId,
+               CartId = u.Id,
+               KitProductCartItems = GetAllValidKitCartItemsList(u.Id).ToList()
 
-            });
+           });
         }
-        public IEnumerable<KitProductCartSession> GetAllValidKitCartItemsList(int KitProductId)
+        public IEnumerable<KitProductCartSession> GetAllValidKitCartItemsList(int cartId)
         {
 
-            var data = _currentDbContext.KitProductCartItems.Where(u => u.CartId == KitProductId && u.IsDeleted != true).ToList()
+            var data = _currentDbContext.KitProductCartItems.Where(u => u.CartId == cartId && u.IsDeleted != true).ToList()
                 .Select(u => new KitProductCartSession
                 {
                     SimpleProductId = u.SimpleProductId,
@@ -1038,14 +1032,16 @@ namespace Ganedata.Core.Services
         {
             var getTenantCurrency = _tenantsCurrencyRateServices.GetTenantCurrencies(tenantId).FirstOrDefault();
             var currencyRate = _tenantsCurrencyRateServices.GetCurrencyRateByTenantid(getTenantCurrency?.TenantCurrencyID ?? 0);
+            var productKitType = _productServices.GetProductMasterById(productId).ProductType == ProductKitTypeEnum.Kit ? true : false;
 
             var cartProduct = _currentDbContext.WebsiteCartItems.FirstOrDefault(u => u.ProductId == productId &&
                                                                          u.IsDeleted != true &&
+                                                                         productKitType == false &&
                                                                          u.SiteID == siteId &&
                                                                          u.TenantId == tenantId &&
                                                                          ((((!userId.HasValue || userId == 0) || u.UserId == userId) ||
                                                                            (string.IsNullOrEmpty(sessionKey) ||
-                                                                           u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase)))));
+                                                                           u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase))))); ;
             if (cartProduct == null)
             {
                 cartProduct = new WebsiteCartItem();
@@ -1062,16 +1058,22 @@ namespace Ganedata.Core.Services
                 _currentDbContext.SaveChanges();
                 if (kitProductCartItems != null && kitProductCartItems.Count > 0)
                 {
-                    foreach (var item in kitProductCartItems)
+                    var distinctAttributes = kitProductCartItems.GroupBy(u => u.SimpleProductId).Select(grp => grp.ToList()).ToList();
+                    if (distinctAttributes != null && distinctAttributes.Count > 0)
                     {
-                        KitProductCartItem kitProductCart = new KitProductCartItem();
-                        kitProductCart.KitProductId = item.KitProductId;
-                        kitProductCart.SimpleProductId = item.SimpleProductId;
-                        kitProductCart.Quantity = item.Quantity;
-                        kitProductCart.CartId = cartProduct.Id;
-                        kitProductCart.UpdateCreatedInfo(userId ?? 0);
-                        _currentDbContext.KitProductCartItems.Add(kitProductCart);
 
+                        foreach (var attribute in distinctAttributes)
+                        {
+                            KitProductCartItem kitProductCart = new KitProductCartItem();
+                            kitProductCart.KitProductId = attribute.FirstOrDefault().KitProductId;
+                            kitProductCart.SimpleProductId = attribute.FirstOrDefault().SimpleProductId;
+                            kitProductCart.Quantity = attribute.Count;
+                            kitProductCart.CartId = cartProduct.Id;
+                            kitProductCart.UpdateCreatedInfo(userId ?? 0);
+                            _currentDbContext.KitProductCartItems.Add(kitProductCart);
+
+                        }
+                        _currentDbContext.SaveChanges();
                     }
                     _currentDbContext.SaveChanges();
                 }
@@ -1166,13 +1168,13 @@ namespace Ganedata.Core.Services
         }
 
 
-        public bool RemoveCartItem(int ProductId, int SiteId, int? UserId, string SessionKey)
+        public bool RemoveCartItem(int cartId, int siteId, int? userId, string sessionKey)
         {
-            var cartProduct = _currentDbContext.WebsiteCartItems.FirstOrDefault(u => u.ProductId == ProductId && u.SiteID == SiteId && ((!UserId.HasValue || UserId == 0) || u.UserId == UserId) && (string.IsNullOrEmpty(SessionKey) || u.SessionKey.Equals(SessionKey, StringComparison.InvariantCultureIgnoreCase)));
+            var cartProduct = _currentDbContext.WebsiteCartItems.FirstOrDefault(u => u.Id == cartId && u.SiteID == siteId && ((!userId.HasValue || userId == 0) || u.UserId == userId) && (string.IsNullOrEmpty(sessionKey) || u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase)));
             if (cartProduct != null)
             {
                 cartProduct.IsDeleted = true;
-                cartProduct.UpdateUpdatedInfo(UserId ?? 0);
+                cartProduct.UpdateUpdatedInfo(userId ?? 0);
                 _currentDbContext.Entry(cartProduct).State = System.Data.Entity.EntityState.Modified;
                 _currentDbContext.SaveChanges();
 

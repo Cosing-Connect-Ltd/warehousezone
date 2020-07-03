@@ -3,7 +3,7 @@ $(function () {
 
     $(".add-kit-product").on("click", function () {
         var wizardStep = 0;
-        var same = 1;
+        var sameproduct = 1;
         var ajaxCalls = [];
         var bodyContent = "";
         $(".kit-model-body").html("");
@@ -26,10 +26,10 @@ $(function () {
                     for (var i = 1; i <= parseInt(quantity); i++) {
 
                         wizardStep++;
-                        bodyContent += "<fieldset data-step=" + wizardStep + " id=fieldset_" + wizardStep + (parseInt(quantity) == 1 ? "" : " data-same=" + (same)) + " > " + data + " </fieldset>";
+                        bodyContent += "<fieldset data-step=" + wizardStep + " id=fieldset-" + wizardStep + (parseInt(quantity) == 1 ? "" : " data-sameproduct=" + (sameproduct)) + " > " + data + " </fieldset>";
 
                     }
-                    same++;
+                    sameproduct++;
                 },
                 error: function (err) {
                     alert(err);
@@ -57,10 +57,12 @@ function getSelectedAttributes(e, skuCode, productId, quantity, stepNumber) {
         data: { skuCode: skuCode, quantity: quantity, productId: productId },
         dataType: 'html',
         success: function (data) {
-            var fieldsetElementId = "#fieldset_" + (!!stepNumber ? stepNumber : $("#kit-product").attr("data-current-step"));
+            var fieldsetElementId = "#fieldset-" + (!!stepNumber ? stepNumber : $("#kit-product").attr("data-current-step"));
             var dropdownFieldsBeforeRefresh = $(fieldsetElementId).find(".attribute-dropdown").html();
+            var previousStepValue = $(fieldsetElementId).find("#step-number-tracking").val();
             $(fieldsetElementId).html(data);
             $(fieldsetElementId).find(".attribute-dropdown").html("").html(dropdownFieldsBeforeRefresh);
+            $(fieldsetElementId).find("#step-number-tracking").val(previousStepValue);
         },
         error: function (err) {
             alert(err);
@@ -71,22 +73,27 @@ function getSelectedAttributes(e, skuCode, productId, quantity, stepNumber) {
 function GenrateDropDownForEachStep(updatedstep = null) {
 
     var previousProduct = null;
-    var qunatity = 0;
     var step = 1;
-    $("[id^=fieldset_]").each(function (e) {
+    var quantity = 0;
+    $("[id^=fieldset-]").each(function (e) {
         if (previousProduct == null) {
-            qunatity = $(this).find("#QunatityCheckBox").val();
-            previousProduct = $(this).data("same");
+            quantity = $(this).find("#quantity-checkbox").val();
+            previousProduct = $(this).data("sameproduct");
         }
-        else if (previousProduct == $(this).data("same") && previousProduct !== null) {
+        else if (previousProduct == $(this).data("sameproduct") && previousProduct !== null) {
 
-            $(this).find("#DDQuantity").find("option").slice(0, (step > qunatity) ? (step - 1) : step).remove();
+            $(this).find("#quantity-dropdown").find("option").remove();
+            for (var i = 1; i <= (quantity - step); i++) {
+                $(this).find("#quantity-dropdown").append('<option value=' + i + '>' + i + '</option>');;
+            }
+
+
             step++;
-            previousProduct = $(this).data("same");
+            previousProduct = $(this).data("sameproduct");
         }
         else {
-            previousProduct = $(this).data("same");
-            qunatity = $(this).find("#customCheck").val();
+            previousProduct = $(this).data("sameproduct");
+            quantity = $(this).find("#quantity-checkbox").val();
             step = 1;
 
         }
