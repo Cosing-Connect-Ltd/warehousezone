@@ -2044,6 +2044,7 @@ body.modal-open {
     margin-top: 8px;
     display: flex;
     justify-content: space-between;
+    font-weight: 600;
 }
     .collection-address-div:hover {
         box-shadow: 0 -10px 30px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
@@ -2247,7 +2248,8 @@ body.modal-open {
         }
 
     .basketTable tr.cmnRow .qty {
-        width: 10%;
+        width: 15%;
+        min-width: 160px;
         align-items: center;
     }
 
@@ -2311,7 +2313,7 @@ body.modal-open {
 
     .basketTable tr.cmnRow .tot {
         width: 8%;
-        min-width:105px;
+        min-width:120px;
     }
 
         .basketTable tr.cmnRow .tot .priceTotal {

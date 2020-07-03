@@ -1,6 +1,24 @@
 ﻿@model List<Ganedata.Core.Entities.Domain.OrderDetailSessionViewModel>
 
 
+<!-- Modal -->
+<div class="modal fade" id="ChooseStoreModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Select Collection Point</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body billandshipsec">
+                @Html.Partial("~/Views/Theme/University/Orders/_CollectionPoint.cshtml")
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 <section class="nb_sec nb_prdlisting_pgsec mb-5">
     <div class="container">
@@ -64,7 +82,7 @@
                                 <td class="qty">Quantity</td>
                                 <td class="tot">Total</td>
                                 <td class="store">
-                                    <a href="" class="chsStoreLnk">Choose Store</a>
+                                    <a href="" data-toggle="modal" data-target="#ChooseStoreModal" class="chsStoreLnk">Choose Store</a>
                                 </td>
                                 <td class="homeDel">
                                     <div class="postCodeCheckFormwrap">
@@ -75,9 +93,9 @@
                             </tr>
 
                             @foreach (var item in Model)
+                        {
+                            if (item?.ProductMaster?.ProductType != null && item.ProductMaster.ProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Kit)
                             {
-                                if (item?.ProductMaster?.ProductType != null && item.ProductMaster.ProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Kit)
-                                {
                                     <tr class="cmnRow">
                                         <td class="prd">
                                             <div class="prdCellwrap">
@@ -89,13 +107,15 @@
                                                         @(item.ProductMaster?.Name)
 
                                                         @if (item.KitProductCartItems != null && item.KitProductCartItems.Count > 0)
-                                                        {
-                                                            foreach (var cartitem in item.KitProductCartItems)
-                                                            {<p>
-                                                                    <b> @Convert.ToInt32(cartitem.Quantity)</b> x @cartitem.SimpleProductMaster.Name  <br />
-                                                                </p>
+                        {
+                            foreach (var cartitem in item.KitProductCartItems)
+                            {<p>
+
+                                    <b> @Convert.ToInt32(cartitem.Quantity)</b> x @cartitem.SimpleProductMaster.Name  <br />
+
+                                </p>
                                                             }
-                                                        }
+                        }
                                                     </span>
                                                 </div>
                                                 <div class="inrow btm">
@@ -265,16 +285,16 @@
                 </div>
 
                 @*<div class="gotApromoSec">
-                    <h2 class="head">Got a Promotional code?</h2>
-                    <div class="gotApromoSecInner">
-                        <div class="promoCode">
-                            <input type="text"
-                                   placeholder="Enter your promotional code" />
-                            <button class="applBtn">Apply</button>
+                        <h2 class="head">Got a Promotional code?</h2>
+                        <div class="gotApromoSecInner">
+                            <div class="promoCode">
+                                <input type="text"
+                                       placeholder="Enter your promotional code" />
+                                <button class="applBtn">Apply</button>
+                            </div>
+                            <div class="total">Total <span>@(Model==null?"":Model.FirstOrDefault().CurrencySign) @(Model.FirstOrDefault().TotalAmount)</span></div>
                         </div>
-                        <div class="total">Total <span>@(Model==null?"":Model.FirstOrDefault().CurrencySign) @(Model.FirstOrDefault().TotalAmount)</span></div>
-                    </div>
-                </div>*@
+                    </div>*@
 
                 <div class="botomBtnsec">
 
@@ -286,7 +306,7 @@
                         }
                         else
                         {
-                            <button class="btmbtn pro" onclick="window.location.href='@Url.Action("GetAddress", "Orders")'">PROCEED TO CHECKOUT</button>
+                            <button class="btmbtn pro" onclick="window.location.href='@Url.Action("Checkout", "Orders")'">PROCEED TO CHECKOUT</button>
                         }
                     }
                     <button class="btmbtn sho">CONTINUE SHOPPING</button>
