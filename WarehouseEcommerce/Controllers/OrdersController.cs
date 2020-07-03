@@ -150,10 +150,10 @@ namespace WarehouseEcommerce.Controllers
                                                                             warehouse?.City,
                                                                             warehouse?.GlobalCountry?.CountryName,
                                                                             warehouse?.ContactNumbers,
-                                                                            Distance = distances.Rows[0].Elements[i],
+                                                                            Distance = distances.Rows[0]?.Elements[i],
                                                                         };
                                                                     })
-                                                                .OrderBy(w => w.Distance.Distance.Value)
+                                                                .OrderBy(w => w.Distance?.Distance?.Value)
                                                                 .ToList();
 
             return Json(warehousesByDistance, JsonRequestBehavior.AllowGet);
