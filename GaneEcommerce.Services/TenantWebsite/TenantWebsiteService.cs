@@ -3,6 +3,7 @@ using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Domain.ViewModels;
 using Ganedata.Core.Entities.Enums;
+using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -991,19 +992,24 @@ namespace Ganedata.Core.Services
             return _currentDbContext.WebsiteCartItems.Where(u => u.SiteID == siteId && ((((!UserId.HasValue || UserId == 0) || u.UserId == UserId) || (string.IsNullOrEmpty(SessionKey) || u.SessionKey.Equals(SessionKey, StringComparison.InvariantCultureIgnoreCase)))) && u.IsDeleted != true);
         }
 
-        public IEnumerable<OrderDetailSessionViewModel> GetAllValidCartItems(int siteId, int? UserId, string SessionKey)
+        public IEnumerable<OrderDetailSessionViewModel> GetAllValidCartItems(int siteId, int? userId, int tenantId, string sessionKey, int? cartId)
         {
-            return _currentDbContext.WebsiteCartItems.Where(u => u.SiteID == siteId && u.IsDeleted != true &&
-           ((((!UserId.HasValue || UserId == 0) || u.UserId == UserId) || (string.IsNullOrEmpty(SessionKey) || u.SessionKey.Equals(SessionKey, StringComparison.InvariantCultureIgnoreCase))))).ToList().Select(u => new OrderDetailSessionViewModel
-           {
-               ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
-               Price = u.UnitPrice,
-               Qty = u.Quantity,
-               ProductId = u.ProductId,
-               CartId = u.Id,
-               KitProductCartItems = GetAllValidKitCartItemsList(u.Id).ToList()
+            var currenySymbol = _tenantsCurrencyRateServices.GetTenantCurrencies(tenantId).FirstOrDefault()?.GlobalCurrency?.Symbol;
+            var model = _currentDbContext.WebsiteCartItems.Where(u => u.SiteID == siteId && u.IsDeleted != true && (!cartId.HasValue || u.Id == cartId) &&
+            ((((!userId.HasValue || userId == 0) || u.UserId == userId) || (string.IsNullOrEmpty(sessionKey) || u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase))))).ToList().Select(u => new OrderDetailSessionViewModel
+            {
+                ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
+                Price = u.UnitPrice,
+                Qty = u.Quantity,
+                ProductId = u.ProductId,
+                CartId = u.Id,
+                KitProductCartItems = GetAllValidKitCartItemsList(u.Id).ToList(),
+                CurrencySign = currenySymbol,
+                ShowCartPopUp = cartId.HasValue ? true : false,
+                ShowLoginPopUp = (!userId.HasValue || userId == 0) ? true : false
 
-           });
+            });
+            return model;
         }
         public IEnumerable<KitProductCartSession> GetAllValidKitCartItemsList(int cartId)
         {
@@ -1092,9 +1098,9 @@ namespace Ganedata.Core.Services
             return cartProduct.Id;
         }
 
-        public bool UpdateCartItemQuantity(int siteId, int? userId, int tenantId, string sessionKey, int productId, decimal quantity)
+        public bool UpdateCartItemQuantity(int siteId, int? userId, int tenantId, string sessionKey, int cartId, decimal quantity)
         {
-            var cartProduct = _currentDbContext.WebsiteCartItems.FirstOrDefault(u => u.ProductId == productId &&
+            var cartProduct = _currentDbContext.WebsiteCartItems.FirstOrDefault(u => u.Id == cartId &&
                                                                                      u.IsDeleted != true &&
                                                                                      u.SiteID == siteId &&
                                                                                      u.TenantId == tenantId &&
@@ -1173,7 +1179,7 @@ namespace Ganedata.Core.Services
 
             var cartProduct = _currentDbContext.WebsiteCartItems.FirstOrDefault(u => u.Id == cartId &&
                                                                                      u.IsDeleted != true &&
-                                                                                     u.SiteID == siteId && 
+                                                                                     u.SiteID == siteId &&
                                                                                      ((((!userId.HasValue || userId == 0) || u.UserId == userId) ||
                                                                                        (string.IsNullOrEmpty(sessionKey) ||
                                                                                        u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase)))));

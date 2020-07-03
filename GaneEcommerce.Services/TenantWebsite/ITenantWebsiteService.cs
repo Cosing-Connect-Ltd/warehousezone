@@ -109,9 +109,9 @@ namespace Ganedata.Core.Services
         OrderDetailSessionViewModel SetCartItem(int productId, decimal quantity, decimal? currencyRate, int? currencyId);
 
         int AddOrUpdateCartItem(int siteId, int? userId, int tenantId, string sessionKey, int productId, decimal quantity, List<KitProductCartSession> kitProductCartItems = null);
-        bool UpdateCartItemQuantity(int siteId, int? userId, int tenantId, string sessionKey, int productId, decimal quantity);
+        bool UpdateCartItemQuantity(int siteId, int? userId, int tenantId, string sessionKey, int cartId, decimal quantity);
 
-        IEnumerable<OrderDetailSessionViewModel> GetAllValidCartItems(int siteId, int? UserId, string SessionKey);
+        IEnumerable<OrderDetailSessionViewModel> GetAllValidCartItems(int siteId, int? userId,int tenantId, string sessionKey, int? cartId);
 
         void UpdateUserIdInCartItem(string sessionKey, int userId, int siteId);
 

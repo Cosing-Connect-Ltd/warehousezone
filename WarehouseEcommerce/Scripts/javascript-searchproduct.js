@@ -232,14 +232,14 @@ function RemoveCartItem(id) {
         }
     });
 }
-function UpdateCartItem(ID, event) {
+function UpdateCartItem(id, event) {
     var quantity = event.value;
     if (quantity > 0) {
 
         $.ajax({
             type: "GET",
             url: basePath + "/Products/EditCartItem/",
-            data: { ProductId: ID, quantity: quantity },
+            data: { cartId: id, quantity: quantity },
             dataType: 'json',
             success: function (data) {
 

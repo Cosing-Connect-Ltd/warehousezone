@@ -279,12 +279,9 @@ namespace WarehouseEcommerce.Controllers
 
         public PartialViewResult _CartItemsPartial(int? cartId = null)
         {
-            ViewBag.PlaceOrder=CurrentUserId > 0 ? true : false;
-            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
-            ViewBag.cartPopUp = cartId.HasValue ? true : false;
-            var models = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, HttpContext.Session.SessionID).Where(u => (!cartId.HasValue || u.CartId == cartId));
-            ViewBag.CurrencySymbol = currencyyDetail.Symbol;
-
+            var models = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, HttpContext.Session.SessionID, cartId).ToList();
+            models.ForEach(u => u.TotalAmount = Math.Round(models.Sum(c => c.ProductTotalAmount)));
+           
             return PartialView(models.ToList());
         }
 
@@ -474,9 +471,10 @@ namespace WarehouseEcommerce.Controllers
             return PartialView(selectedProduct);
         }
 
-        public  JsonResult EditCartItem(int productId, decimal quantity)
+        public JsonResult EditCartItem(int cartId, decimal quantity)
         {
-            var result = _tenantWebsiteService.UpdateCartItemQuantity(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, Session.SessionID,productId,quantity);
+            var result = _tenantWebsiteService.UpdateCartItemQuantity(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, Session.SessionID, cartId, quantity);
+
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 

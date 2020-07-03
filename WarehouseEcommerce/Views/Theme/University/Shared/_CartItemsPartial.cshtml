@@ -106,9 +106,9 @@
                                                         @if (item.KitProductCartItems != null && item.KitProductCartItems.Count > 0)
                                                         {
                                                             foreach (var cartitem in item.KitProductCartItems)
-                                                            { <p>
-                                                                <b> @Convert.ToInt32(cartitem.Quantity)</b> x @cartitem.SimpleProductMaster.Name  <br />  
-                                                              </p>
+                                                            {<p>
+                                                                    <b> @Convert.ToInt32(cartitem.Quantity)</b> x @cartitem.SimpleProductMaster.Name  <br />
+                                                                </p>
                                                             }
                                                         }
                                                     </span>
@@ -140,7 +140,7 @@
                                             <div id="total_amnt" class="priceTotal">
                                                 @item.CurrencySign@item.ProductTotalAmount
                                             </div>
-                                            <a href="javascript:;" class="removeBtn" onclick="RemoveCartItem(@item.ProductId)"> Remove</a>
+                                            <a href="javascript:;" class="removeBtn" onclick="RemoveCartItem(@item.CartId)"> Remove</a>
 
                                         </td>
                                         <td class="store greyBox">
@@ -213,7 +213,7 @@
                                             <div class="QtyWrap">
                                                 <div class="QtyWrapinner">
                                                     <span class="min">-</span>
-                                                    <input class="coutnerInput" id="counter" type="number" onchange="UpdateCartItem(@item.ProductId,this)" value="@item.Qty" />
+                                                    <input class="coutnerInput" id="counter" type="number" min="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" onchange="UpdateCartItem(@item.CartId,this)" value="@Convert.ToInt32(item.Qty)" />
                                                     <span class="add">+</span>
                                                 </div>
                                             </div>
@@ -222,7 +222,7 @@
                                             <div id="total_amnt" class="priceTotal">
                                                 @item.CurrencySign@item.ProductTotalAmount
                                             </div>
-                                            <a href="javascript:;" class="removeBtn" onclick="RemoveCartItem(@item.ProductId)"> Remove</a>
+                                            <a href="javascript:;" class="removeBtn" onclick="RemoveCartItem(@item.CartId)"> Remove</a>
                                         </td>
                                         <td class="store greyBox">
                                             <div class="greyBoxInner">
@@ -267,7 +267,7 @@
                                 <td class="price"></td>
                                 <td class="qty subtotalCell" colspan="2">
                                     <div class="subtotalCellInner">
-                                        <span>Sub Total</span> <span>£87.97</span>
+                                        <span>Sub Total</span> <span>@(Model==null?"":Model.FirstOrDefault().CurrencySign) @(Model.FirstOrDefault().TotalAmount)</span>
                                     </div>
                                 </td>
 
@@ -287,17 +287,17 @@
                                    placeholder="Enter your promotional code" />
                             <button class="applBtn">Apply</button>
                         </div>
-                        <div class="total">Tottal <span>£87.97</span></div>
+                        <div class="total">Total <span>@(Model==null?"":Model.FirstOrDefault().CurrencySign) @(Model.FirstOrDefault().TotalAmount)</span></div>
                     </div>
                 </div>
 
                 <div class="botomBtnsec">
 
-                    @if (ViewBag.CartModal == null && Model.Count > 0)
+                    @if (Model != null && !Model.FirstOrDefault().ShowCartPopUp && Model.Count > 0)
                     {
-                        if (ViewBag.PlaceOrder != null)
+                        if (Model != null && Model.FirstOrDefault().ShowLoginPopUp)
                         {
-                            <button class="btmbtn pro" onclick="GetLoggedIn(true)">PROCEED TO CHECKOUT</button>
+                            <button class="btmbtn pro" onclick="GetLoggedIn(@Model.FirstOrDefault().ShowLoginPopUp)">PROCEED TO CHECKOUT</button>
                         }
                         else
                         {
