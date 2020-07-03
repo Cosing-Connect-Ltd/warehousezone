@@ -61,16 +61,15 @@ function findNearCollectionPoints() {
 
             $.each(data, function (i, item) {
                 var element = $('<div class="col-lg-6">' +
-                    '<div class="billigAddrWrap collection-address-div' + (item.IsCartProductsAvailable ? '" onclick="selectCollectionPointId(' + item.WarehouseId + ', this)"' : ' collection-point-unavailable"') + '>' +
+                    '<div class="billigAddrWrap collection-address-div" onclick="selectCollectionPointId(' + item.WarehouseId + ', this)">' +
                     '<p class="address">' +
                     item.WarehouseName + '<br />' +
                     item.PostalCode + '<br />' +
-                    item.AddressLine1 + '<br />' +
-                    item.AddressLine2 + (!!item.AddressLine3 ? ' - ' + item.AddressLine3 : '') + (!!item.AddressLine4 ? ' - ' + item.AddressLine4 : '') + '<br />' +
+                    item.Address + '<br />' +
                     item.City + '<br />' +
                     item.CountryName + '<br />' +
                     '</p>' +
-                    '<p class="miles">' + (!item.IsCartProductsAvailable ? ' <p class="collection-point-not-available">Not Available</p>' : '<p class="collection-point-distance">' + item.Distance.Distance.Text + '</p>') + '</p>' +
+                    '<p class="miles">' + item.Distance.Distance.Text + '</p>' +
                     '</div></div>');
                 $('.collection-points').append(element);
             });

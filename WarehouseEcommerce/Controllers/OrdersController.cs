@@ -135,23 +135,6 @@ namespace WarehouseEcommerce.Controllers
                 return null;
             }
 
-            var cartItems = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
-
-            var WarehouseProductAvailabilities = cartItems.Select(a =>
-                                                            {
-                                                                var inventoryStocks = _productServices.GetAllInventoryStocksByProductId(a.ProductId);
-                                                                return new
-                                                                {
-                                                                    WarehouseProductAvailability = inventoryStocks.Select(i => new
-                                                                    {
-                                                                        IsAvailable = i.Available >= a.Qty,
-                                                                        i.WarehouseId,
-                                                                        a.ProductMaster
-                                                                    })
-                                                                };
-                                                            })
-                                                    .SelectMany(a => a.WarehouseProductAvailability);
-
             var warehousesByDistance = distances.Destinations.Select((x, i) =>
                                                                     {
                                                                         var warehouse = warehouses[i];
@@ -160,19 +143,17 @@ namespace WarehouseEcommerce.Controllers
                                                                             warehouse?.WarehouseName,
                                                                             warehouse?.WarehouseId,
                                                                             warehouse?.PostalCode,
-                                                                            warehouse?.AddressLine1,
-                                                                            warehouse?.AddressLine2,
-                                                                            warehouse?.AddressLine3,
-                                                                            warehouse?.AddressLine4,
+                                                                            Address = warehouse?.AddressLine1 +
+                                                                                      (!string.IsNullOrEmpty(warehouse?.AddressLine2?.Trim()) ? $", {warehouse?.AddressLine2}" : string.Empty) +
+                                                                                      (!string.IsNullOrEmpty(warehouse?.AddressLine3?.Trim()) ? $", {warehouse?.AddressLine3}" : string.Empty) +
+                                                                                      (!string.IsNullOrEmpty(warehouse?.AddressLine4?.Trim()) ? $", {warehouse?.AddressLine4}" : string.Empty),
                                                                             warehouse?.City,
                                                                             warehouse?.GlobalCountry?.CountryName,
                                                                             warehouse?.ContactNumbers,
                                                                             Distance = distances.Rows[0].Elements[i],
-                                                                            IsCartProductsAvailable = WarehouseProductAvailabilities.All(w => w.WarehouseId == warehouse?.WarehouseId && w.IsAvailable)
                                                                         };
                                                                     })
-                                                                .OrderByDescending(w => w.IsCartProductsAvailable)
-                                                                .ThenBy(w => w.Distance.Distance.Value)
+                                                                .OrderBy(w => w.Distance.Distance.Value)
                                                                 .ToList();
 
             return Json(warehousesByDistance, JsonRequestBehavior.AllowGet);
