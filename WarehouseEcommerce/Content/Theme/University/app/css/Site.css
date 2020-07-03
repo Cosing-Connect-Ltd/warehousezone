@@ -2173,6 +2173,7 @@ body.modal-open {
 
     .basketTable tr.cmnRow .prd {
         width: 20%;
+        min-width: 275px;
         text-align: left;
     }
 
@@ -2310,6 +2311,7 @@ body.modal-open {
 
     .basketTable tr.cmnRow .tot {
         width: 8%;
+        min-width:105px;
     }
 
         .basketTable tr.cmnRow .tot .priceTotal {
@@ -2343,6 +2345,7 @@ body.modal-open {
 
     .basketTable tr.cmnRow .store {
         width: 13%;
+        min-width:159px;
         border-bottom: solid 1px transparent;
     }
 
@@ -2356,6 +2359,7 @@ body.modal-open {
 
     .basketTable tr.cmnRow .homeDel {
         width: 20%;
+        min-width:196px;
         border-bottom: solid 1px transparent;
     }
 
@@ -2475,7 +2479,15 @@ body.modal-open {
     align-items: center;
     justify-content: center;
 }
-
+@media(max-width:575px) {
+    .botomBtnsec {
+        flex-wrap: wrap;
+    }
+    .botomBtnsec .btmbtn {
+            width: 100% !important;
+            margin-top:15px!important;
+        }
+}
     .botomBtnsec .btmbtn {
         width: 260px;
         height: 50px;
@@ -2518,14 +2530,14 @@ body.modal-open {
 
 
 /*radio box form cart page -start*/
-[type="radio"]:checked,
-[type="radio"]:not(:checked) {
+.basketTable [type="radio"]:checked,
+.basketTable [type="radio"]:not(:checked) {
     position: absolute;
     left: -9999px;
 }
 
-    [type="radio"]:checked + label,
-    [type="radio"]:not(:checked) + label {
+    .basketTable [type="radio"]:checked + label,
+    .basketTable [type="radio"]:not(:checked) + label {
         position: relative;
         padding-left: 28px;
         cursor: pointer;
@@ -2534,8 +2546,8 @@ body.modal-open {
         color: #666;
     }
 
-        [type="radio"]:checked + label:before,
-        [type="radio"]:not(:checked) + label:before {
+        .basketTable [type="radio"]:checked + label:before,
+        .basketTable [type="radio"]:not(:checked) + label:before {
             content: "";
             position: absolute;
             left: 0;
@@ -2548,18 +2560,8 @@ body.modal-open {
             box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.23);
         }
 
-        [type="radio"]:checked + label:after,
-        [type="radio"]:not(:checked) + label:after {
-            /* content: "";
-  width: 12px;
-  height: 12px;
-  background: #f87da9;
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  border-radius: 100%;
-  -webkit-transition: all 0.2s ease;
-  transition: all 0.2s ease; */
+        .basketTable [type="radio"]:checked + label:after,
+        .basketTable [type="radio"]:not(:checked) + label:after {
             content: "";
             width: 14px;
             height: 14px;
@@ -2573,13 +2575,13 @@ body.modal-open {
             transition: all 0.2s ease;
         }
 
-        [type="radio"]:not(:checked) + label:after {
+       .basketTable [type="radio"]:not(:checked) + label:after {
             opacity: 0;
             -webkit-transform: scale(0);
             transform: scale(0);
         }
 
-        [type="radio"]:checked + label:after {
+       .basketTable [type="radio"]:checked + label:after {
             opacity: 1;
             -webkit-transform: scale(1);
             transform: scale(1);

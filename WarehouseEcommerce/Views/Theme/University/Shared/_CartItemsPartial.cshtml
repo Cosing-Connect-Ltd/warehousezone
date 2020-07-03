@@ -4,21 +4,6 @@
 
 <section class="nb_sec nb_prdlisting_pgsec mb-5">
     <div class="container">
-        <div class="breadCrumbtopsec">
-            <div class="nb_bread_crumbwrap">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="#"><i class="icon-home"></i></a>
-                        </li>
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item">
-                            <a href="#">Basket</a>
-                        </li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
         <div class="nb_sec checkconfirmSec">
             <div class="progressBarStep ordConfirmationPgStepsec">
                 <ul id="progressList">
@@ -56,7 +41,7 @@
                 <h4 class="ordConfirmHead">Basket</h4>
 
                 <div class="tableWrap">
-                    <table class="basketTable">
+                    <table class="basketTable table-responsive">
                         <tbody>
                             <tr>
                                 <td class="topTd" colspan="4"></td>
@@ -279,7 +264,7 @@
                     </table>
                 </div>
 
-                <div class="gotApromoSec">
+                @*<div class="gotApromoSec">
                     <h2 class="head">Got a Promotional code?</h2>
                     <div class="gotApromoSecInner">
                         <div class="promoCode">
@@ -289,7 +274,7 @@
                         </div>
                         <div class="total">Total <span>@(Model==null?"":Model.FirstOrDefault().CurrencySign) @(Model.FirstOrDefault().TotalAmount)</span></div>
                     </div>
-                </div>
+                </div>*@
 
                 <div class="botomBtnsec">
 
