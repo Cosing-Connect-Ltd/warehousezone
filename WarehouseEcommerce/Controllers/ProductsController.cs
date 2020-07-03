@@ -280,7 +280,7 @@ namespace WarehouseEcommerce.Controllers
         public PartialViewResult _CartItemsPartial(int? cartId = null)
         {
             var models = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, HttpContext.Session.SessionID, cartId).ToList();
-            models.ForEach(u => u.TotalAmount = Math.Round(models.Sum(c => c.ProductTotalAmount)));
+            models.ForEach(u => u.TotalAmount = Math.Round(models.Sum(c => c.ProductTotalAmount),2));
            
             return PartialView(models.ToList());
         }

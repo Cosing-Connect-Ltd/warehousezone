@@ -116,7 +116,7 @@
                                             <div class="QtyWrap">
                                                 <div class="QtyWrapinner">
                                                     <span class="min">-</span>
-                                                    <input class="coutnerInput" id="counter" type="number" onchange="UpdateCartItem(@item.ProductId,this)" value="@item.Qty" />
+                                                    <input class="coutnerInput" id="counter" type="number" onchange="UpdateCartItem(@item.CartId,this)" value="@item.Qty" />
                                                     <span class="add">+</span>
                                                 </div>
                                             </div>
@@ -278,7 +278,7 @@
 
                 <div class="botomBtnsec">
 
-                    @if (Model != null && !Model.FirstOrDefault().ShowCartPopUp && Model.Count > 0)
+                    @if (Model != null && (!Model.FirstOrDefault().ShowCartPopUp) && Model.Count > 0)
                     {
                         if (Model != null && Model.FirstOrDefault().ShowLoginPopUp)
                         {

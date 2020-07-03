@@ -989,26 +989,29 @@ namespace Ganedata.Core.Services
 
         public IEnumerable<WebsiteCartItem> GetAllValidCartItemsList(int siteId, int? UserId, string SessionKey)
         {
-            return _currentDbContext.WebsiteCartItems.Where(u => u.SiteID == siteId && ((((!UserId.HasValue || UserId == 0) || u.UserId == UserId) || (string.IsNullOrEmpty(SessionKey) || u.SessionKey.Equals(SessionKey, StringComparison.InvariantCultureIgnoreCase)))) && u.IsDeleted != true);
+            return _currentDbContext.WebsiteCartItems.Where(u => u.SiteID == siteId && ((u.UserId == UserId) || u.SessionKey.Equals(SessionKey, StringComparison.InvariantCultureIgnoreCase)) && u.IsDeleted != true);
         }
 
         public IEnumerable<OrderDetailSessionViewModel> GetAllValidCartItems(int siteId, int? userId, int tenantId, string sessionKey, int? cartId)
         {
             var currenySymbol = _tenantsCurrencyRateServices.GetTenantCurrencies(tenantId).FirstOrDefault()?.GlobalCurrency?.Symbol;
-            var model = _currentDbContext.WebsiteCartItems.Where(u => u.SiteID == siteId && u.IsDeleted != true && (!cartId.HasValue || u.Id == cartId) &&
-            ((((!userId.HasValue || userId == 0) || u.UserId == userId) || (string.IsNullOrEmpty(sessionKey) || u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase))))).ToList().Select(u => new OrderDetailSessionViewModel
-            {
-                ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
-                Price = u.UnitPrice,
-                Qty = u.Quantity,
-                ProductId = u.ProductId,
-                CartId = u.Id,
-                KitProductCartItems = GetAllValidKitCartItemsList(u.Id).ToList(),
-                CurrencySign = currenySymbol,
-                ShowCartPopUp = cartId.HasValue ? true : false,
-                ShowLoginPopUp = (!userId.HasValue || userId == 0) ? true : false
+            var model = _currentDbContext.WebsiteCartItems.Where(u => u.IsDeleted != true &&
+                                                                                     u.SiteID == siteId &&
+                                                                                     u.TenantId == tenantId &&
+                                                                                     (u.UserId == userId) ||u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase)
+                                                                                      && (!cartId.HasValue || u.Id == cartId)).ToList().Select(u => new OrderDetailSessionViewModel
+                                                                                       {
+                                                                                           ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
+                                                                                           Price = u.UnitPrice,
+                                                                                           Qty = u.Quantity,
+                                                                                           ProductId = u.ProductId,
+                                                                                           CartId = u.Id,
+                                                                                           KitProductCartItems = GetAllValidKitCartItemsList(u.Id).ToList(),
+                                                                                           CurrencySign = currenySymbol,
+                                                                                           ShowCartPopUp = cartId.HasValue ? true : false,
+                                                                                           ShowLoginPopUp = (!userId.HasValue || userId == 0) ? true : false
 
-            });
+                                                                                       });
             return model;
         }
         public IEnumerable<KitProductCartSession> GetAllValidKitCartItemsList(int cartId)
@@ -1025,10 +1028,7 @@ namespace Ganedata.Core.Services
 
             return data;
         }
-        public WebsiteCartItem GetCartItemByUserIdBySessionKey(int siteId, int ProductId, int? UserId, string SessionKey)
-        {
-            return _currentDbContext.WebsiteCartItems.FirstOrDefault(u => (!UserId.HasValue || u.UserId == UserId) && string.IsNullOrEmpty(SessionKey) || u.SessionKey.Equals(SessionKey, StringComparison.InvariantCultureIgnoreCase) && u.ProductId == ProductId);
-        }
+       
         public IEnumerable<WebsiteWishListItem> GetAllValidWishListItemsList(int siteId, int UserId)
         {
             return _currentDbContext.WebsiteWishListItems.Where(u => u.SiteID == siteId && u.UserId == UserId && u.IsDeleted != true);
@@ -1045,9 +1045,7 @@ namespace Ganedata.Core.Services
                                                                          productKitType == false &&
                                                                          u.SiteID == siteId &&
                                                                          u.TenantId == tenantId &&
-                                                                         ((((!userId.HasValue || userId == 0) || u.UserId == userId) ||
-                                                                           (string.IsNullOrEmpty(sessionKey) ||
-                                                                           u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase))))); ;
+                                                                         (u.UserId == userId || u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase)));
             if (cartProduct == null)
             {
                 cartProduct = new WebsiteCartItem();
@@ -1104,9 +1102,8 @@ namespace Ganedata.Core.Services
                                                                                      u.IsDeleted != true &&
                                                                                      u.SiteID == siteId &&
                                                                                      u.TenantId == tenantId &&
-                                                                                     ((((!userId.HasValue || userId == 0) || u.UserId == userId) ||
-                                                                                       (string.IsNullOrEmpty(sessionKey) ||
-                                                                                       u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase)))));
+                                                                                     (u.UserId == userId || u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase)));
+
             if (cartProduct != null)
             {
                 cartProduct.IsDeleted = quantity <= 0;

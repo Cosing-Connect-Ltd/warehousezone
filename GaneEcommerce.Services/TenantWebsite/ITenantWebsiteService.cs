@@ -104,7 +104,6 @@ namespace Ganedata.Core.Services
         IEnumerable<KitProductCartSession> GetAllValidKitCartItemsList(int KitProductId);
         IEnumerable<WebsiteWishListItem> GetAllValidWishListItemsList(int siteId, int UserId);
 
-        WebsiteCartItem GetCartItemByUserIdBySessionKey(int siteId, int ProductId, int? UserId, string SessionKey);
 
         OrderDetailSessionViewModel SetCartItem(int productId, decimal quantity, decimal? currencyRate, int? currencyId);
 
