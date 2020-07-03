@@ -1,0 +1,46 @@
+﻿@model List<Ganedata.Core.Entities.Domain.WebsiteCartItem>
+@using Ganedata.Core.Entities.Enums;
+@{
+    ViewBag.Title = "Confirm Order";
+}
+@{
+    var addresses = ViewBag.Addresses as List<Ganedata.Core.Entities.Domain.AccountAddresses>;
+
+}
+
+
+
+
+<section class="nb_sec nb_prdlisting_pgsec">
+    <div class="container">
+        <div class="breadCrumbtopsec">
+            <div class="nb_bread_crumbwrap">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li>></li>
+                        <li class="breadcrumb-item">
+                            <a href="#">Order Confirmation</a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="nb_sec checkconfirmSec">
+            @Html.Partial("_OrderProgressBar", OrderProgressStep.OrderConfirmation)
+
+            <div class="orderConfirmationSection">
+                <h4 class="ordConfirmHead">Order Confirmation</h4>
+                <div class="row">
+                    <div class="mb-10 pb-10">
+                        <p>Your Order is confirmed, please take note of below reference numbers</p>
+                        <p>Order Ref: 3568555258</p>
+                        <p>Payment Ref: 6598555236552</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+

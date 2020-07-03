@@ -3,30 +3,30 @@
 
 <div class="progressBarStep ordConfirmationPgStepsec">
     <ul id="progressList">
-        <li class="@((int)Model > (int)OrderProgressStep.Product ? "active" : "")">
+        <li class="@((int)Model >= (int)OrderProgressStep.Product ? "active" : "")">
             <div class="HalfCircle"></div>
             <span class="txt">Product</span><span class="count"><i class="icon-product"></i></span>
         </li>
-        <li class="@((int)Model > (int)OrderProgressStep.Basket ? "active" : "")">
+        <li class="@((int)Model >= (int)OrderProgressStep.Basket ? "active" : "")">
             <div class="HalfCircle"></div>
 
             <span class="txt">Basket</span><span class="count"><i class="icon-basket-cart"></i></span>
         </li>
-        <li class="@((int)Model > (int)OrderProgressStep.BillingAndShipping ? "active" : "")">
+        <li class="@((int)Model >= (int)OrderProgressStep.BillingAndShipping ? "active" : "")">
             <div class="HalfCircle"></div>
             <span class="txt">Billing & Shipping</span><span class="count">
                 <i class="icon-billing-shipping"></i>
             </span>
         </li>
-        <li class="@((int)Model > (int)OrderProgressStep.ReviewItems ? "active" : "")">
+        <li class="@((int)Model >= (int)OrderProgressStep.ReviewItems ? "active" : "")">
             <div class="HalfCircle"></div>
             <span class="txt">Review Items</span><span class="count"><i class="icon-review-items"></i></span>
         </li>
-        <li class="@((int)Model > (int)OrderProgressStep.Payment ? "active" : "")">
+        <li class="@((int)Model >= (int)OrderProgressStep.Payment ? "active" : "")">
             <div class="HalfCircle"></div>
             <span class="txt">Payment</span><span class="count"><i class="icon-credit-card"></i></span>
         </li>
-        <li class="@((int)Model > (int)OrderProgressStep.OrderConfirmation ? "active" : "")">
+        <li class="@((int)Model >= (int)OrderProgressStep.OrderConfirmation ? "active" : "")">
             <div class="HalfCircle"></div>
             <span class="txt">Order Confirmation</span><span class="count"><i class="icon-tick1"></i></span>
         </li>

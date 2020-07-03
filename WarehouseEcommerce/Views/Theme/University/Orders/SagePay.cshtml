@@ -4,8 +4,12 @@
 }
 <style>
 
-    input {
+    .input-column {
         font-size: 12pt;
+        width: 352px !important;
+        height: 50px !important;
+        text-indent: 10px;
+        border: solid 1px #707070;
     }
 
     #main {
@@ -37,7 +41,7 @@
                     <h4 class="ordConfirmHead">Payments</h4>
                     <div class="orderTotalsec">
                         <div>Order Total</div>
-                        <div>Total <span>£87.97</span></div>
+                        <div>Total <span>£@ViewBag.TotalPrice</span></div>
                     </div>
 
                     <div class="paymentTabsec">
@@ -58,9 +62,24 @@
 
                                                         <div id="sp-container"></div>
 
-                                                        <div class="submitBtnwra mt-4 mb-1">
-                                                            <a id="my-tokenisation-trigger" href="#" class="btnCmn">Submit</a>
-                                                        </div>
+
+
+
+                                                        @using (Html.BeginForm("ConfirmPayment", "Orders", FormMethod.Post, new { id = "sagePaymentForm" }))
+                                                        {
+
+                                                            <input type="hidden" NAME="currency_code" value="GBP">
+                                                            <input type="hidden" name="OrderId" value="@ViewBag.OrderId" />
+                                                            <input type="hidden" name="TotalPrice" value="@ViewBag.TotalPrice" />
+                                                            <input type="hidden" name="sessionKey" value="@ViewBag.AuthCode" />
+
+                                                            <div class="submitBtnwra mt-4 mb-1">
+                                                                <a id="my-tokenisation-trigger" href="#" class="btnCmn">Submit</a>
+                                                            </div>
+                                                        }
+
+
+
                                                     </div>
 
                                                     <div class="termandcondition">
@@ -111,8 +130,10 @@
         merchantSessionKey: '@ViewBag.AuthCode',
         onTokenise: function (tokenisationResult) {
             if (tokenisationResult.success) {
+                $('<input>').attr({ type: 'hidden', name: 'cardIdentifier', value: tokenisationResult.cardIdentifier }).appendTo('#sagePaymentForm');
+                $("#sagePaymentForm").submit()
                 debugger;
-                alert(tokenisationResult.cardIdentifier);
+                //alert(tokenisationResult.cardIdentifier);
             } else {
                 debugger;
                 alert(tokenisationResult.error.errorMessage);

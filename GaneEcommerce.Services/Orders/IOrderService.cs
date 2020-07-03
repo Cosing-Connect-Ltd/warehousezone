@@ -117,7 +117,7 @@ namespace Ganedata.Core.Services
         bool CheckOrdersAuthroization(decimal OrderTotal, InventoryTransactionTypeEnum InventoryTransactionType, int TenantId, int UserId, double? CreditLimit = null);
         decimal GetDiscountOnTotalCost(int accountId, decimal OrdersTotal);
 
-        Order CreateShopOrder(int accountId, List<OrderDetail> orderDetail, int tenantId, int UserId, int warehouseId, int SiteId);
+        Order CreateShopOrder(int accountId, List<WebsiteCartItem> orderDetail, int tenantId, int UserId, int warehouseId, int SiteId);
         bool UpdatePickerId(int OrderId, int? pickerId, int userId);
 
     }

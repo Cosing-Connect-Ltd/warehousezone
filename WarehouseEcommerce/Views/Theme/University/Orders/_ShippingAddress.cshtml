@@ -22,13 +22,13 @@
             }
         }
 
-        <div class="checkboxwrap">
+        @*<div class="checkboxwrap">
             <input class="styled-checkbox"
                    id="shipping_address_checkbox"
                    type="checkbox"
                    value="" />
             <label for="shipping_address_checkbox">Same as Billing Address</label>
-        </div>
+        </div>*@
         <div class="btnWrap">
             <a href="@Url.Action("Checkout", "Orders", new { billingAddressId = ViewBag.BillingAddressId, deliveryMethodId = ViewBag.DeliveryMethodId, step = (int)CheckoutStep.AddOrEditAddress, parentStep = (int)CheckoutStep.ShippingAddress })" class="addnwShopAdrrbtn">ADD NEW SHIPPING ADDRESS</a>
         </div>

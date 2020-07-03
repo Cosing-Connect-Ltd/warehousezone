@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Ganedata.Core.Data.Helpers;
 using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Domain.ViewModels;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Services;
 using Newtonsoft.Json;
@@ -14,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using WarehouseEcommerce.Helpers;
+using PaymentMethod = Ganedata.Core.Entities.Domain.ViewModels.PaymentMethod;
 
 namespace WarehouseEcommerce.Controllers
 {
@@ -73,11 +75,6 @@ namespace WarehouseEcommerce.Controllers
 
         public ActionResult Checkout(int? accountId, int? accountAddressId, int? billingAddressId, int? shippingAddressId, int? deliveryMethodId, int? collectionPointId, int? step, int? parentStep, int? shipmentRuleId)
         {
-            if (GaneCartItemsSessionHelper.GetCartItemsSession().Count <= 0)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
             if (CurrentUser?.UserId <= 0)
             {
                 return RedirectToAction("Login", "User", new { PlaceOrder = true });
@@ -226,9 +223,9 @@ namespace WarehouseEcommerce.Controllers
             }
             accountAddresses.Add(AccountServices.GetAllValidAccountAddressesByAccountId(accountId).FirstOrDefault(u => u.AddTypeBilling == true));
             ViewBag.Addresses = accountAddresses;
-            var models = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
-            var orders = OrderService.CreateShopOrder(accountAddresses.FirstOrDefault().AccountID, _mapper.Map(models, new List<OrderDetail>()), CurrentTenantId, CurrentUserId, CurrentWarehouseId, CurrentTenantWebsite.SiteID);
-            ViewBag.TotalPrice = Math.Round(((models.Sum(u => u.TotalAmount)) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
+            var models = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId, HttpContext.Session.SessionID).ToList();
+            var orders = OrderService.CreateShopOrder(accountAddresses.FirstOrDefault().AccountID, models, CurrentTenantId, CurrentUserId, CurrentWarehouseId, CurrentTenantWebsite.SiteID);
+            ViewBag.TotalPrice = Math.Round(((models.Sum(u => u.UnitPrice * u.Quantity)) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
             ViewBag.CurrencySymbol = currencyyDetail.Symbol;
             ViewBag.DeliveryMethodId = deliveryMethodId;
             if ((DeliveryMethod)deliveryMethodId == DeliveryMethod.ToPickupPoint)
@@ -239,6 +236,7 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.PAYPALURL = _paypalUrl;
             ViewBag.PayPalIpnUrl = _paypalIpnUrl;
             ViewBag.OrdersId = orders.OrderID;
+
             return View(models);
         }
 
@@ -309,39 +307,84 @@ namespace WarehouseEcommerce.Controllers
             }
         }
 
+
         public async Task<ActionResult> SagePay()
         {
-            SagepayResponse resp = await GetSagePayToken();
+            ViewBag.OrderId = Request.Form["OrderId"];
+            ViewBag.TotalPrice = Request.Form["TotalPrice"];
+            SagepayTokenResponse resp = await GetSagePayToken();
             ViewBag.AuthCode = resp.merchantSessionKey;
             return View();
         }
 
-        private async Task<SagepayResponse> GetSagePayToken()
+        public async Task<ActionResult> ConfirmPayment()
         {
-            var root = new SagepayVendor();
-            root.vendorName = "sandboxEC";
+            var orderId = Convert.ToInt32(Request.Form["OrderId"]);
+            var totalPrice = Request.Form["TotalPrice"];
+            var cardIdentifier = Request.Form["cardIdentifier"];
+            var sessionKey = Request.Form["sessionKey"];
+
+            var order = OrderService.GetOrderById(orderId);
+
+            var root = new SagePayPaymentViewModel();
+            var address = new BillingAddress { address1 = "88", city = "Leeds", country = "GB", postalCode = "412" };
+            Card card = new Card { cardIdentifier = cardIdentifier, save = "false", merchantSessionKey = sessionKey };
+            PaymentMethod paymentMethod = new PaymentMethod { card = card };
+
+            root.billingAddress = address;
+            root.amount = Convert.ToInt32(order.OrderTotal * 100);
+            root.currency = "GBP";
+            root.transactionType = "Payment";
+            root.paymentMethod = paymentMethod;
+            root.customerFirstName = "Test";
+            root.customerLastName = "Account";
+            root.description = "Test Transaction";
+            root.entryMethod = "Ecommerce";
+            root.vendorTxCode = Guid.NewGuid().ToString();
+
+
 
             var json = JsonConvert.SerializeObject(root);
             var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
 
             using (var client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Add("Authorization", "Basic ZHE5dzZXa2tkRDJ5OGszdDRvbHF1OEg2YTB2dHQzSVk3VkVzR2hBdGFjYkNaMmI1VWQ6aG5vM0pURXdESHk3aEpja1U0V3V4ZmVUcmpEME45MnBJYWl0dVFCdzVNdGo3UkczVjh6T2RIQ1NQS3dKMDJ3QVY=");
-                var response = await client.PostAsync("https://pi-test.sagepay.com/api/v1/merchant-session-keys", stringContent);
-                var responseString = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<SagepayResponse>(responseString);
+                client.DefaultRequestHeaders.Add("Authorization", "Basic aEpZeHN3N0hMYmo0MGNCOHVkRVM4Q0RSRkxodUo4RzU0TzZyRHBVWHZFNmhZRHJyaWE6bzJpSFNyRnliWU1acG1XT1FNdWhzWFA1MlY0ZkJ0cHVTRHNocktEU1dzQlkxT2lONmh3ZDlLYjEyejRqNVVzNXU=");
+                var response = await client.PostAsync("https://pi-test.sagepay.com/api/v1/transactions", stringContent);
+                if (response.StatusCode != HttpStatusCode.Created)
+                {
+                    var responseString = await response.Content.ReadAsStringAsync();
+                    TempData["Error"] = responseString;
+                    return RedirectToAction("Checkout");
+                }
+                else
+                {
+                    return RedirectToAction("ConfirmPaymentMessage");
+                }
+
             }
         }
-    }
 
-    public class SagepayVendor
-    {
-        public string vendorName { get; set; }
-    }
+        public ActionResult ConfirmPaymentMessage()
+        {
+            return View();
+        }
 
-    public class SagepayResponse
-    {
-        public string merchantSessionKey { get; set; }
-        public DateTime expiry { get; set; }
+        private async Task<SagepayTokenResponse> GetSagePayToken()
+        {
+            var root = new SagepayVendor();
+            root.vendorName = "sandbox";
+
+            var json = JsonConvert.SerializeObject(root);
+            var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("Authorization", "Basic aEpZeHN3N0hMYmo0MGNCOHVkRVM4Q0RSRkxodUo4RzU0TzZyRHBVWHZFNmhZRHJyaWE6bzJpSFNyRnliWU1acG1XT1FNdWhzWFA1MlY0ZkJ0cHVTRHNocktEU1dzQlkxT2lONmh3ZDlLYjEyejRqNVVzNXU=");
+                var response = await client.PostAsync("https://pi-test.sagepay.com/api/v1/merchant-session-keys", stringContent);
+                var responseString = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<SagepayTokenResponse>(responseString);
+            }
+        }
     }
 }

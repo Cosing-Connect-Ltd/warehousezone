@@ -40,6 +40,7 @@ namespace WarehouseEcommerce
                 cfg.CreateMap<VehicleInspection, VehicleInspectionViewModel>().ReverseMap();
                 cfg.CreateMap<MarketRoute, MarketRouteViewModel>().ReverseMap();
                 cfg.CreateMap<OrderDetail, OrderDetailSessionViewModel>().ReverseMap();
+                cfg.CreateMap<OrderDetail, WebsiteCartItem>().ReverseMap();
                 cfg.CreateMap<ProductMaster, ProductMasterViewModel>().ReverseMap();
                 cfg.CreateMap<ProductAccountCodes, ProductAccountCodesViewModel>().ReverseMap();
                 cfg.CreateMap<UISetting, UISettingViewModel>().ReverseMap();

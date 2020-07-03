@@ -166,9 +166,9 @@ namespace Ganedata.Core.Services
             return _currentDbContext.Order.AsNoTracking().FirstOrDefault(x => x.OrderID == orderId && x.IsDeleted != true);
         }
 
-        public IQueryable<Order> GetOrdersHistory(int UserId,int SiteId)
+        public IQueryable<Order> GetOrdersHistory(int UserId, int SiteId)
         {
-            return _currentDbContext.Order.Where(u => u.CreatedBy == UserId && u.SiteID==SiteId && u.IsDeleted != true);
+            return _currentDbContext.Order.Where(u => u.CreatedBy == UserId && u.SiteID == SiteId && u.IsDeleted != true);
         }
 
         public bool IsOrderNumberAvailable(string orderNumber)
@@ -2488,7 +2488,7 @@ namespace Ganedata.Core.Services
             model.NetAmount = order.OrderTotal;
 
             var paymentModes = from AccountPaymentModeEnum d in Enum.GetValues(typeof(AccountPaymentModeEnum))
-                             select new { ID = (int)d, Name = d.ToString() };
+                               select new { ID = (int)d, Name = d.ToString() };
             model.AllPaymentModes = new SelectList(paymentModes, "Value", "Text", paymentModes.FirstOrDefault()).ToList();
 
             model.AllInvoiceProducts = order.OrderDetails.Select(m => new DirectSaleProductsViewModel()
@@ -3303,7 +3303,7 @@ namespace Ganedata.Core.Services
             return discount;
         }
 
-        public Order CreateShopOrder(int accountId, List<OrderDetail> orderDetails, int tenantId, int UserId, int warehouseId, int SiteId)
+        public Order CreateShopOrder(int accountId, List<WebsiteCartItem> orderDetails, int tenantId, int UserId, int warehouseId, int SiteId)
         {
             Order order = new Order();
             var context = DependencyResolver.Current.GetService<IApplicationContext>();
@@ -3341,18 +3341,19 @@ namespace Ganedata.Core.Services
                 var items = orderDetails.ToList();
                 foreach (var item in items)
                 {
-                    item.ProductId = item.ProductId;
-                    item.Qty = item.Qty;
-                    item.Warranty = null;
-                    item.Price = item.Price;
-                    item.ProductMaster = null;
-                    item.WarehouseId = warehouseId;
-                    item.DateCreated = DateTime.UtcNow;
-                    item.CreatedBy = UserId;
-                    item.TenentId = tenantId;
-                    item.OrderID = order.OrderID;
-                    total = total + item.TotalAmount;
-                    _currentDbContext.OrderDetail.Add(item);
+                    OrderDetail detail = new OrderDetail();
+                    detail.ProductId = item.ProductId;
+                    detail.Qty = item.Quantity;
+                    detail.Warranty = null;
+                    detail.Price = item.UnitPrice;
+                    detail.ProductMaster = null;
+                    detail.WarehouseId = warehouseId;
+                    detail.DateCreated = DateTime.UtcNow;
+                    detail.CreatedBy = UserId;
+                    detail.TenentId = tenantId;
+                    detail.OrderID = order.OrderID;
+                    total = total + (item.UnitPrice * item.Quantity);
+                    _currentDbContext.OrderDetail.Add(detail);
                 }
 
                 order.OrderTotal = total;

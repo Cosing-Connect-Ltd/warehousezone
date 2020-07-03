@@ -4153,8 +4153,8 @@ body.ZoomerActive {
     justify-content: center;
     margin-bottom: 25px;
     width: 100%;
-    padding-bottom: 100px;
-    padding-top: 45px;
+    padding-bottom: 30px;
+    padding-top: 30px;
 }
 
     .progressBarStep ul#progressList {

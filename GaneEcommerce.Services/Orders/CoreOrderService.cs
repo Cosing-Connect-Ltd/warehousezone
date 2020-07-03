@@ -632,7 +632,7 @@ namespace Ganedata.Core.Services
             return OrderService.GetDiscountOnTotalCost(accountId, OrdersTotal);
         }
 
-        public Order CreateShopOrder(int accountId, List<OrderDetail> orderDetail, int tenantId, int UserId, int warehouseId, int SiteId)
+        public Order CreateShopOrder(int accountId, List<WebsiteCartItem> orderDetail, int tenantId, int UserId, int warehouseId, int SiteId)
         {
             return OrderService.CreateShopOrder(accountId, orderDetail, tenantId, UserId, warehouseId, SiteId);
 

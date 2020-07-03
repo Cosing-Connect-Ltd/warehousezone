@@ -1410,6 +1410,7 @@
     <Content Include="Views\Theme\Smart\Orders\_PaymentMethod.cshtml" />
     <Content Include="Views\Theme\Smart\Orders\_ShipmentRule.cshtml" />
     <Content Include="Views\Theme\Smart\Orders\_ShippingAddress.cshtml" />
+    <Content Include="Views\Theme\University\Orders\ConfirmPaymentMessage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

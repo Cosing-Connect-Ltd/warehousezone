@@ -1,4 +1,4 @@
-﻿@model List<Ganedata.Core.Entities.Domain.OrderDetailSessionViewModel>
+﻿@model List<Ganedata.Core.Entities.Domain.WebsiteCartItem>
 @using Ganedata.Core.Entities.Enums;
 @{
     ViewBag.Title = "Confirm Order";
@@ -20,7 +20,7 @@
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li>></li>
                         <li class="breadcrumb-item">
-                            <a href="#">Checkout Confirmation</a>
+                            <a href="#">Checkout review</a>
                         </li>
                     </ol>
                 </nav>
@@ -30,7 +30,7 @@
             @Html.Partial("_OrderProgressBar", OrderProgressStep.ReviewItems)
 
             <div class="orderConfirmationSection">
-                <h4 class="ordConfirmHead">Order Confirmation</h4>
+                <h4 class="ordConfirmHead">Order Review</h4>
                 <div class="row">
                     <div class="col-lg-6">
                         @if (addresses != null)
@@ -103,7 +103,7 @@
                             {
                                 <li>
                                     @(item.ProductMaster?.Name)<br />
-                                    @ViewBag.CurrencySymbol@item.Price, Qty: @item.Qty
+                                    @ViewBag.CurrencySymbol@item.UnitPrice, Qty: @item.Quantity
                                 </li>
                             }
                         </ul>
@@ -125,7 +125,7 @@
                                         <input type="hidden" name="notify_url" value="@((string)ViewBag.PayPalIpnUrl)">
                                         <input type="hidden" NAME="currency_code" value="GBP">
                                         <input type="hidden" name="OrderId" value="@ViewBag.OrdersId" />
-                                        <input type="hidden" name="amount" value="@ViewBag.TotalQty" />
+                                        <input type="hidden" name="amount" value="@ViewBag.TotalPrice" />
                                     </fieldset>
 
                                 </div>
@@ -145,7 +145,7 @@
 
                                         <input type="hidden" NAME="currency_code" value="GBP">
                                         <input type="hidden" name="OrderId" value="@ViewBag.OrdersId" />
-                                        <input type="hidden" name="TotalAmount" value="@ViewBag.TotalQty" />
+                                        <input type="hidden" name="TotalPrice" value="@ViewBag.TotalPrice" />
 
                                     </fieldset>
                                 </div>
