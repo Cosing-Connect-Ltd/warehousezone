@@ -1,4 +1,4 @@
-﻿@model Ganedata.Core.Entities.Domain.AccountAddresses
+﻿@model Ganedata.Core.Entities.Domain.CheckoutViewModel
 @using Ganedata.Core.Entities.Enums
 @{
     ViewBag.Title = "Checkout";
@@ -26,7 +26,7 @@
             <div class="checkoutInnersec billandshipsec">
                 <h4 class="ordConfirmHead">Billing & Shipping</h4>
 
-                @Html.Partial("_" + ((CheckoutStep)ViewBag.CurrentStep).ToString())
+                @Html.Partial("_" + (Model.CurrentStep).ToString(),Model)
 
             </div>
         </div>

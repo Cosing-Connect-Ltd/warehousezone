@@ -225,6 +225,7 @@
     <Compile Include="Domain\Models\UISettingItem.cs" />
     <Compile Include="Domain\Models\UISetting.cs" />
     <Compile Include="Domain\ViewModels\ApiCredentialsViewModel.cs" />
+    <Compile Include="Domain\ViewModels\CheckoutViewModel.cs" />
     <Compile Include="Domain\ViewModels\SagePayViewModels.cs" />
     <Compile Include="Domain\ViewModels\WebsiteWarehousesViewModel.cs" />
     <Compile Include="Domain\ViewModels\TenantWebsiteViewModel.cs" />

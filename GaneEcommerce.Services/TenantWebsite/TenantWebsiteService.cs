@@ -446,6 +446,8 @@ namespace Ganedata.Core.Services
         public List<WebsiteShippingRules> GetShippingRulesByShippingAddress(int tenantId, int siteId, int shippingAddressId, double parcelWeightInGrams)
         {
             var address = _currentDbContext.AccountAddresses.Find(shippingAddressId);
+            var getTenantCurrency = _tenantsCurrencyRateServices.GetTenantCurrencies(tenantId).FirstOrDefault();
+            var currencyRate = _tenantsCurrencyRateServices.GetCurrencyRateByTenantid(getTenantCurrency?.TenantCurrencyID ?? 0);
 
             var allRules = GetAllValidWebsiteShippingRules(tenantId, siteId)
                 .Where(r => r.IsActive == true && r.CountryId == address.CountryID && r.WeightinGrams >= parcelWeightInGrams);
@@ -463,11 +465,16 @@ namespace Ganedata.Core.Services
                 rules = allRules.Where(r => (string.IsNullOrEmpty(r.Region.Trim()) && string.IsNullOrEmpty(r.PostalArea.Trim())));
             }
 
-            return rules.ToList()
+            var shippingRules = rules.ToList()
                                 .GroupBy(r => (r.Courier, r.Description))
                                 .Select(r => r.OrderBy(rp => rp.WeightinGrams).First())
                                 .OrderByDescending(r => r.SortOrder)
                                 .ToList();
+            shippingRules.ForEach(r =>
+            {
+                r.Price = Math.Round(((r.Price) * ((currencyRate <= 0) ? 1 : currencyRate)), 2);
+            });
+            return shippingRules;
         }
         public WebsiteShippingRules CreateOrUpdateWebsiteShippingRules(WebsiteShippingRules websiteShippingRules, int UserId, int TenantId)
         {
@@ -992,26 +999,26 @@ namespace Ganedata.Core.Services
             return _currentDbContext.WebsiteCartItems.Where(u => u.SiteID == siteId && ((u.UserId == UserId) || u.SessionKey.Equals(SessionKey, StringComparison.InvariantCultureIgnoreCase)) && u.IsDeleted != true);
         }
 
-        public IEnumerable<OrderDetailSessionViewModel> GetAllValidCartItems(int siteId, int? userId, int tenantId, string sessionKey, int? cartId)
+        public IEnumerable<OrderDetailSessionViewModel> GetAllValidCartItems(int siteId, int? userId, int tenantId, string sessionKey, int? cartId = null)
         {
             var currenySymbol = _tenantsCurrencyRateServices.GetTenantCurrencies(tenantId).FirstOrDefault()?.GlobalCurrency?.Symbol;
             var model = _currentDbContext.WebsiteCartItems.Where(u => u.IsDeleted != true &&
                                                                                      u.SiteID == siteId &&
                                                                                      u.TenantId == tenantId &&
-                                                                                     (u.UserId == userId) ||u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase)
+                                                                                     (u.UserId == userId) || u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase)
                                                                                       && (!cartId.HasValue || u.Id == cartId)).ToList().Select(u => new OrderDetailSessionViewModel
-                                                                                       {
-                                                                                           ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
-                                                                                           Price = u.UnitPrice,
-                                                                                           Qty = u.Quantity,
-                                                                                           ProductId = u.ProductId,
-                                                                                           CartId = u.Id,
-                                                                                           KitProductCartItems = GetAllValidKitCartItemsList(u.Id).ToList(),
-                                                                                           CurrencySign = currenySymbol,
-                                                                                           ShowCartPopUp = cartId.HasValue ? true : false,
-                                                                                           ShowLoginPopUp = (!userId.HasValue || userId == 0) ? true : false
+                                                                                      {
+                                                                                          ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
+                                                                                          Price = u.UnitPrice,
+                                                                                          Qty = u.Quantity,
+                                                                                          ProductId = u.ProductId,
+                                                                                          CartId = u.Id,
+                                                                                          KitProductCartItems = GetAllValidKitCartItemsList(u.Id).ToList(),
+                                                                                          CurrencySign = currenySymbol,
+                                                                                          ShowCartPopUp = cartId.HasValue ? true : false,
+                                                                                          ShowLoginPopUp = (!userId.HasValue || userId == 0) ? true : false
 
-                                                                                       });
+                                                                                      });
             return model;
         }
         public IEnumerable<KitProductCartSession> GetAllValidKitCartItemsList(int cartId)
@@ -1028,7 +1035,7 @@ namespace Ganedata.Core.Services
 
             return data;
         }
-       
+
         public IEnumerable<WebsiteWishListItem> GetAllValidWishListItemsList(int siteId, int UserId)
         {
             return _currentDbContext.WebsiteWishListItems.Where(u => u.SiteID == siteId && u.UserId == UserId && u.IsDeleted != true);
@@ -1219,6 +1226,43 @@ namespace Ganedata.Core.Services
 
             }
             return GetAllValidWishListItemsList(SiteId, UserId).Count();
+        }
+
+        public CheckoutViewModel SetCheckOutProcessModel(int? accountId, int? accountAddressId, int? billingAddressId, int? shippingAddressId, int? deliveryMethodId, int? collectionPointId, int? step, int? parentStep, int? shipmentRuleId, int? siteId, int? tenantId, int? userId, string sessionKey)
+        {
+            CheckoutViewModel checkoutViewModel = new CheckoutViewModel();
+
+            checkoutViewModel.CurrentStep = step.HasValue ? (CheckoutStep)step : CheckoutStep.BillingAddress;
+            checkoutViewModel.AccountId = accountId;
+            checkoutViewModel.ShippingAddressId = shippingAddressId <= 0 ? null : shippingAddressId;
+            checkoutViewModel.BillingAddressId = billingAddressId <= 0 ? null : billingAddressId;
+            checkoutViewModel.ShipmentRuleId = shipmentRuleId;
+            checkoutViewModel.DeliveryMethodId = deliveryMethodId;
+            checkoutViewModel.CollectionPointId = collectionPointId;
+            checkoutViewModel.Countries = _currentDbContext.GlobalCountries.ToList();
+            checkoutViewModel.ParentStep = parentStep.HasValue ? (CheckoutStep)parentStep : CheckoutStep.BillingAddress;
+            switch (checkoutViewModel.CurrentStep)
+            {
+                case CheckoutStep.BillingAddress:
+                    checkoutViewModel.Addresses = _currentDbContext.AccountAddresses.Where(u => (u.AddressID == billingAddressId || u.AccountID == accountId) && u.AddTypeBilling == true && u.IsDeleted != true).ToList();
+                    break;
+                case CheckoutStep.ShippingAddress:
+                    checkoutViewModel.Addresses = _currentDbContext.AccountAddresses.Where(u => u.AddressID == shippingAddressId || u.AccountID == accountId && u.AddTypeShipping == true && u.IsDeleted != true).ToList();
+                    break;
+                case CheckoutStep.AddOrEditAddress:
+
+                    checkoutViewModel.AccountAddress = _currentDbContext.AccountAddresses.FirstOrDefault(u => u.AddressID == accountAddressId && u.IsDeleted != true);
+                    break;
+                case CheckoutStep.ShipmentRule:
+                    var cartItems = GetAllValidCartItems((siteId ?? 0), userId, (tenantId ?? 0), sessionKey);
+                    var parcelWeightInGrams = cartItems.Sum(i => (i.KitProductCartItems?.Sum(ki => (ki.SimpleProductMaster?.Weight ?? 0)) ?? (i.ProductMaster?.Weight ?? 0)));
+                    checkoutViewModel.ShippingRules = GetShippingRulesByShippingAddress((tenantId ?? 0), (siteId ?? 0), shippingAddressId.Value, parcelWeightInGrams);
+                    break;
+            }
+            return checkoutViewModel;
+
+
+
         }
 
         public void SendNotificationForAbandonedCarts()

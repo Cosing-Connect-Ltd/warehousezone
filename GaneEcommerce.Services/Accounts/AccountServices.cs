@@ -521,6 +521,12 @@ namespace Ganedata.Core.Services
                 previousAddress.IsDeleted = true;
                 previousAddress.DateUpdated = DateTime.UtcNow;
                 previousAddress.UpdatedBy = currentUserId;
+                var entry2 = _currentDbContext.Entry(previousAddress);
+                entry2.Property(e => e.DateUpdated).IsModified = true;
+                entry2.Property(e => e.UpdatedBy).IsModified = true;
+                entry2.Property(e => e.IsDeleted).IsModified = true;
+
+
             }
 
             customeraddresses.Name = customeraddresses.Name.Trim();

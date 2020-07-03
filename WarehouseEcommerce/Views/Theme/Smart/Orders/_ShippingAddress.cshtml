@@ -1,35 +1,36 @@
-﻿@using Ganedata.Core.Entities.Enums;
+﻿@model Ganedata.Core.Entities.Domain.CheckoutViewModel
+@using Ganedata.Core.Entities.Enums;
 @{
-    var address = ViewBag.Addresses as List<Ganedata.Core.Entities.Domain.AccountAddresses>;
+    var address = Model.Addresses;
 }
 
-    <div class="address-wrapper">
-        <h5 class="subheadCmn">Shipping Address</h5>
-        @if (address != null)
+<div class="address-wrapper">
+    <h5 class="subheadCmn">Shipping Address</h5>
+    @if (address != null)
+    {
+        var count = Model.CurrentStep != CheckoutStep.ShippingAddress ? 1 : address.Count;
+        for (int i = 0; i < count; i++)
         {
-            var count = (CheckoutStep)ViewBag.CurrentStep != CheckoutStep.ShippingAddress ? 1 : address.Count;
-            for (int i = 0; i < count; i++)
+            if (address.ElementAtOrDefault(i) != null)
             {
-                if (address.ElementAtOrDefault(i) != null)
-                {
-                    @Html.Partial("_AddressDetail", address[i])
-                    <div class="btnWrap">
-                        <a href="@Url.Action("Checkout", "Orders", new { accountId = ViewBag.AccountId, billingAddressId = ViewBag.BillingAddressId, deliveryMethodId = ViewBag.DeliveryMethodId, step = (int)CheckoutStep.ShipmentRule, shippingAddressId = address[i].AddressID })" class="btmBtn">Select Address</a>
-                        <a href="@Url.Action("Checkout", "Orders", new { accountId = address[i].AccountID, billingAddressId = ViewBag.BillingAddressId, deliveryMethodId = ViewBag.DeliveryMethodId, step = (int)CheckoutStep.AddOrEditAddress, accountAddressId = address[i].AddressID, parentStep = (int)CheckoutStep.ShippingAddress })" class="btmBtn">Edit Address</a>
-                        <a href="@Url.Action("RemoveShippingAddress", "Orders", new { accountId = address[i].AccountID, billingAddressId = ViewBag.BillingAddressId, deliveryMethodId = ViewBag.DeliveryMethodId, accountAddressId = address[i].AddressID })" class="btmBtn">Remove Address</a>
-                    </div>
-                }
+                @Html.Partial("_AddressDetail", address[i])
+                <div class="btnWrap">
+                    <a href="@Url.Action("Checkout", "Orders", new { accountId = Model.AccountId, billingAddressId = Model.BillingAddressId, deliveryMethodId = Model.DeliveryMethodId, step = (int)CheckoutStep.ShipmentRule, shippingAddressId = address[i].AddressID })" class="btmBtn">Select Address</a>
+                    <a href="@Url.Action("Checkout", "Orders", new { accountId = address[i].AccountID, billingAddressId = Model.BillingAddressId, deliveryMethodId = Model.DeliveryMethodId, step = (int)CheckoutStep.AddOrEditAddress, accountAddressId = address[i].AddressID, parentStep = (int)CheckoutStep.ShippingAddress })" class="btmBtn">Edit Address</a>
+                    <a href="@Url.Action("RemoveShippingAddress", "Orders", new { accountId = address[i].AccountID, billingAddressId = Model.BillingAddressId, deliveryMethodId = Model.DeliveryMethodId, accountAddressId = address[i].AddressID })" class="btmBtn">Remove Address</a>
+                </div>
             }
         }
+    }
 
-        <div class="checkboxwrap">
-            <input class="styled-checkbox"
-                   id="shipping_address_checkbox"
-                   type="checkbox"
-                   value="" />
-            <label for="shipping_address_checkbox">Same as Billing Address</label>
-        </div>
-        <div class="btnWrap">
-            <a href="@Url.Action("Checkout", "Orders", new { billingAddressId = ViewBag.BillingAddressId, deliveryMethodId = ViewBag.DeliveryMethodId, step = (int)CheckoutStep.AddOrEditAddress, parentStep = (int)CheckoutStep.ShippingAddress })" class="addnwShopAdrrbtn">ADD NEW SHIPPING ADDRESS</a>
-        </div>
+    <div class="checkboxwrap">
+        <input class="styled-checkbox"
+               id="shipping_address_checkbox"
+               type="checkbox"
+               value="" />
+        <label for="shipping_address_checkbox">Same as Billing Address</label>
     </div>
+    <div class="btnWrap">
+        <a href="@Url.Action("Checkout", "Orders", new { billingAddressId = Model.BillingAddressId, deliveryMethodId = Model.DeliveryMethodId, step = (int)CheckoutStep.AddOrEditAddress, parentStep = (int)CheckoutStep.ShippingAddress })" class="addnwShopAdrrbtn">ADD NEW SHIPPING ADDRESS</a>
+    </div>
+</div>

@@ -110,15 +110,17 @@ namespace Ganedata.Core.Services
         int AddOrUpdateCartItem(int siteId, int? userId, int tenantId, string sessionKey, int productId, decimal quantity, List<KitProductCartSession> kitProductCartItems = null);
         bool UpdateCartItemQuantity(int siteId, int? userId, int tenantId, string sessionKey, int cartId, decimal quantity);
 
-        IEnumerable<OrderDetailSessionViewModel> GetAllValidCartItems(int siteId, int? userId,int tenantId, string sessionKey, int? cartId);
+        IEnumerable<OrderDetailSessionViewModel> GetAllValidCartItems(int siteId, int? userId,int tenantId, string sessionKey, int? cartId=null);
 
         void UpdateUserIdInCartItem(string sessionKey, int userId, int siteId);
 
         int AddOrUpdateWishListItems(int SiteId, int UserId, int TenantId, List<OrderDetailSessionViewModel> orderDetails);
-
         bool RemoveCartItem(int cartId, int siteId, int? userId, string sessionKey);
         int RemoveWishListItem(int ProductId, int SiteId, int UserId);
-
         void SendNotificationForAbandonedCarts();
+        CheckoutViewModel SetCheckOutProcessModel(int? accountId, int? accountAddressId, int? billingAddressId, int? shippingAddressId, int? deliveryMethodId, int? collectionPointId, int? step, int? parentStep, int? shipmentRuleId, int? siteId, int? tenantId, int? userId, string sessionKey);
+
+
+
     }
 }

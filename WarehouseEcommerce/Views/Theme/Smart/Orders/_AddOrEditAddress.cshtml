@@ -1,8 +1,8 @@
-﻿@model Ganedata.Core.Entities.Domain.AccountAddresses
+﻿@model Ganedata.Core.Entities.Domain.CheckoutViewModel
 @using Ganedata.Core.Entities.Enums;
 
 <div class="addNewAddrWrap">
-    <h5 class="subheadCmn">@(Model == null ? ((CheckoutStep)ViewBag.CurrentStep == CheckoutStep.ShippingAddress ? "Add a new address" : string.Empty) : "Edit Address")</h5>
+    <h5 class="subheadCmn">@(Model == null ? (Model.CurrentStep == CheckoutStep.ShippingAddress ? "Add a new address" : string.Empty) : "Edit Address")</h5>
     <div class="addNwAdrrFormWrap">
         <div class="row">
             <div class="col-lg-6">
@@ -21,43 +21,43 @@
             </div>
         </div>
 
-        @using (Html.BeginForm("SaveAddress", "Orders", new { deliveryMethodId = ViewBag.DeliveryMethodId, billingAddressId = ViewBag.BillingAddressId }))
+        @using (Html.BeginForm("SaveAddress", "Orders", new { deliveryMethodId = Model.DeliveryMethodId, billingAddressId = Model.BillingAddressId }))
         {
-            @Html.HiddenFor(model => model.AddressID)
+            @Html.HiddenFor(model => model.AccountAddress.AddressID)
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-group">
-                        @Html.EditorFor(model => model.AddressLine1, new { htmlattributes = new { @placeholder = "Address Line 1", @required = "Required" } })
+                        @Html.EditorFor(model => model.AccountAddress.AddressLine1, new { htmlattributes = new { @placeholder = "Address Line 1", @required = "Required" } })
                         @*<input type="text" class="form-control input-md inputNew" size="18" placeholder="Address Line 1">*@
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
-                        @Html.EditorFor(model => model.AddressLine2, new { htmlattributes = new { @placeholder = "Address Line 2", @required = "Required" } })
+                        @Html.EditorFor(model => model.AccountAddress.AddressLine2, new { htmlattributes = new { @placeholder = "Address Line 2", @required = "Required" } })
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
-                        @Html.EditorFor(model => model.AddressLine3, new { htmlattributes = new { @placeholder = "Address Line 3", @required = "Required" } })
+                        @Html.EditorFor(model => model.AccountAddress.AddressLine3, new { htmlattributes = new { @placeholder = "Address Line 3", @required = "Required" } })
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
-                        @Html.EditorFor(model => model.PostCode, new { htmlattributes = new { @placeholder = "Postal Code", @required = "Required" } })
+                        @Html.EditorFor(model => model.AccountAddress.PostCode, new { htmlattributes = new { @placeholder = "Postal Code", @required = "Required" } })
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
-                        @Html.EditorFor(model => model.Telephone, new { htmlattributes = new { @placeholder = "Telephone Number", @required = "Required" } })
+                        @Html.EditorFor(model => model.AccountAddress.Telephone, new { htmlattributes = new { @placeholder = "Telephone Number", @required = "Required" } })
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
-                        @Html.DropDownListFor(model => model.CountryID, ViewBag.Countries as SelectList, new { @required = "Required" })
+                        @Html.DropDownListFor(model => model.AccountAddress.CountryID, new SelectList(Model.Countries, "CountryID", "CountryName"), new { @required = "Required" })
                     </div>
                 </div>
 
-                @if ((CheckoutStep)ViewBag.CurrentStep == CheckoutStep.ShippingAddress || (CheckoutStep)ViewBag.ParentStep == CheckoutStep.ShippingAddress)
+                @if (Model.CurrentStep == CheckoutStep.ShippingAddress || Model.ParentStep == CheckoutStep.ShippingAddress)
                 {
                     <input type="hidden" name="AddTypeShipping" id="AddTypeShipping" value="true" />
                 }
@@ -66,7 +66,7 @@
                     <input type="hidden" name="AddTypeBilling" id="AddTypeBilling" value="true" />
                 }
 
-                @Html.HiddenFor(model => model.AccountID, (int)(ViewBag.AccountId))
+                @Html.HiddenFor(model => model.AccountAddress.AccountID, (int)(Model.AccountId))
             </div>
 
             <div class="saveAddrWrap">

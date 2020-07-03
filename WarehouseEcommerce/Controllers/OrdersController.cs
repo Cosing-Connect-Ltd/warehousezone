@@ -79,47 +79,8 @@ namespace WarehouseEcommerce.Controllers
             {
                 return RedirectToAction("Login", "User", new { PlaceOrder = true });
             }
-
-            var currentStep = step != null ? (CheckoutStep)step : CheckoutStep.BillingAddress;
-
-            ViewBag.AccountId = accountId = CurrentUser?.AccountId;
-            ViewBag.Countries = new SelectList(_lookupServices.GetAllGlobalCountries(), "CountryID", "CountryName");
-            ViewBag.ShippingAddressId = shippingAddressId <= 0 ? null : shippingAddressId;
-            ViewBag.BillingAddressId = billingAddressId <= 0 ? null : billingAddressId;
-            ViewBag.ShipmentRuleId = shipmentRuleId;
-            ViewBag.CurrentStep = currentStep;
-            ViewBag.DeliveryMethodId = deliveryMethodId;
-            ViewBag.CollectionPointId = collectionPointId;
-            ViewBag.ParentStep = parentStep != null ? (CheckoutStep)parentStep : CheckoutStep.BillingAddress;
-
-            switch (currentStep)
-            {
-                case CheckoutStep.BillingAddress:
-                    ViewBag.Addresses = AccountServices.GetAllValidAccountAddressesByAccountId(accountId ?? 0).Where(u => u.AddTypeBilling == true).ToList();
-                    break;
-                case CheckoutStep.ShippingAddress:
-                    ViewBag.Addresses = AccountServices.GetAllValidAccountAddressesByAccountId(accountId ?? 0).Where(u => u.AddTypeShipping == true).ToList();
-                    break;
-                case CheckoutStep.AddOrEditAddress:
-                    var model = AccountServices.GetAccountAddressById(accountAddressId ?? 0);
-                    return View(model);
-                case CheckoutStep.ShipmentRule:
-                    var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
-                    ViewBag.CurrencySymbol = currencyyDetail.Symbol;
-                    var cartItems = GaneCartItemsSessionHelper.GetCartItemsSession() ?? new List<OrderDetailSessionViewModel>();
-                    var parcelWeightInGrams = cartItems.Sum(i => (i.KitProductCartItems?.Sum(ki => (ki.SimpleProductMaster?.Weight ?? 0)) ?? (i.ProductMaster?.Weight ?? 0)));
-                    var shippingRules = _tenantWebsiteService.GetShippingRulesByShippingAddress(CurrentTenantId, CurrentTenantWebsite.SiteID, shippingAddressId.Value, parcelWeightInGrams);
-                    shippingRules.ForEach(r =>
-                    {
-                        r.Price = Math.Round(((r.Price) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
-                    });
-
-                    ViewBag.ShippingRules = shippingRules;
-
-                    break;
-            }
-
-            return View();
+            var checkoutModel = _tenantWebsiteService.SetCheckOutProcessModel((CurrentUserId > 0 ? CurrentUser.AccountId: accountId), accountAddressId, billingAddressId, shippingAddressId, deliveryMethodId, collectionPointId, step, parentStep, shipmentRuleId,CurrentTenantWebsite.SiteID,CurrentTenantId,CurrentUserId,Session.SessionID);
+            return View(checkoutModel);
         }
 
         public async Task<JsonResult> GetNearWarehouses(string postCode)
@@ -164,8 +125,9 @@ namespace WarehouseEcommerce.Controllers
             return PartialView();
         }
 
-        public ActionResult SaveAddress(AccountAddresses accountAddresses, int? deliveryMethodId, int? billingAddressId)
+        public ActionResult SaveAddress(CheckoutViewModel checkoutViewModel, int? deliveryMethodId, int? billingAddressId)
         {
+            var accountAddresses = checkoutViewModel.AccountAddress;
             accountAddresses.Name = "Ecommerce";
             if (accountAddresses.AccountID <= 0)
             {

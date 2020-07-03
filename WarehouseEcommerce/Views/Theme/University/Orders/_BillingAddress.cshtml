@@ -1,6 +1,7 @@
 ﻿@using Ganedata.Core.Entities.Enums;
+@model Ganedata.Core.Entities.Domain.CheckoutViewModel
 @{
-    var address = ViewBag.Addresses as List<Ganedata.Core.Entities.Domain.AccountAddresses>;
+    var address = Model.Addresses;
     var billingAddress = address.FirstOrDefault();
     if (billingAddress != null)
     {
@@ -8,13 +9,13 @@
             <h5 class="subheadCmn">Billing Address</h5>
             @Html.Partial("_AddressDetail", billingAddress)
             <div class="btnWrap">
-                <a href="@Url.Action("Checkout", "Orders", new { accountId = ViewBag.AccountId, billingAddressId = billingAddress.AddressID, step = (int)CheckoutStep.DeliveryMethod })" class="btmBtn">Select Address</a>
+                <a href="@Url.Action("Checkout", "Orders", new { accountId = Model.AccountId, billingAddressId = billingAddress.AddressID, step = (int)CheckoutStep.DeliveryMethod })" class="btmBtn">Select Address</a>
                 <a href="@Url.Action("Checkout", "Orders", new { accountId = billingAddress.AccountID, accountAddressId = billingAddress.AddressID, step = (int)CheckoutStep.AddOrEditAddress, parentStep = (int)CheckoutStep.BillingAddress })" class="btmBtn">Edit Address</a>
             </div>
         </div>
     }
     else
     {
-        @Html.Partial("_AddOrEditAddress");
+        @Html.Partial("_AddOrEditAddress",Model);
     }
 }

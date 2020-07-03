@@ -1,5 +1,7 @@
-﻿@using Ganedata.Core.Entities.Enums;
-@Html.Hidden("collectionPointId", (int?)ViewBag.CollectionPointId)
+﻿@model Ganedata.Core.Entities.Domain.CheckoutViewModel
+@using Ganedata.Core.Entities.Enums;
+
+@Html.Hidden("collectionPointId", (int?)Model.CollectionPointId)
 <div class="checkout-options-wrapper">
     <div class="addNewAddrWrap">
         <h5 class="subheadCmn">Select Collection Point</h5>

@@ -1,17 +1,19 @@
-﻿@using Ganedata.Core.Entities.Enums;
+﻿@model Ganedata.Core.Entities.Domain.CheckoutViewModel
+@using Ganedata.Core.Entities.Enums;
+@using Ganedata.Core.Entities.Enums;
 <div class="checkout-options-wrapper">
     <h5 class="subheadCmn">Select Shipment Type</h5>
-    @Html.Hidden("shipmentRuleId", (int?)ViewBag.ShipmentRuleId)
+    @Html.Hidden("shipmentRuleId", (int?)Model.ShipmentRuleId)
 
-    @foreach (var rule in ViewBag.ShippingRules)
+    @foreach (var rule in Model.ShippingRules)
     {
         <div class="checkboxwrap">
             <input class="styled-checkbox"
-                    id="shipment-rule__checkbox-@rule.Id"
-                    type="radio"
-                    name="shipment-rule-radio"
-                    value="@rule.Id" />
-            <label for="shipment-rule__checkbox-@rule.Id"><b>@ViewBag.CurrencySymbol@rule.Price</b> ( @rule.Courier @(string.IsNullOrEmpty(rule.Description) ? string.Empty : $" - {rule.Description}") )</label>
+                   id="shipment-rule__checkbox-@rule.Id"
+                   type="radio"
+                   name="shipment-rule-radio"
+                   value="@rule.Id" />
+            <label for="shipment-rule__checkbox-@rule.Id"><b>@Model.CurrencySymbol@rule.Price</b> ( @rule.Courier @(string.IsNullOrEmpty(rule.Description) ? string.Empty : $" - {rule.Description}") )</label>
         </div>
     }
     <div class="btnWrap">
