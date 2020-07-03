@@ -1170,7 +1170,13 @@ namespace Ganedata.Core.Services
 
         public bool RemoveCartItem(int cartId, int siteId, int? userId, string sessionKey)
         {
-            var cartProduct = _currentDbContext.WebsiteCartItems.FirstOrDefault(u => u.Id == cartId && u.SiteID == siteId && ((!userId.HasValue || userId == 0) || u.UserId == userId) && (string.IsNullOrEmpty(sessionKey) || u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase)));
+
+            var cartProduct = _currentDbContext.WebsiteCartItems.FirstOrDefault(u => u.Id == cartId &&
+                                                                                     u.IsDeleted != true &&
+                                                                                     u.SiteID == siteId && 
+                                                                                     ((((!userId.HasValue || userId == 0) || u.UserId == userId) ||
+                                                                                       (string.IsNullOrEmpty(sessionKey) ||
+                                                                                       u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase)))));
             if (cartProduct != null)
             {
                 cartProduct.IsDeleted = true;

@@ -125,8 +125,8 @@
         @*<input type="text" placeholder="Coupen Code" />*@
         @if ((bool)ViewBag.cartPopUp == false && Model.Count > 0)
         {
-                if (ViewBag.PlaceOrder != null)
-                {
+            if ((bool)ViewBag.PlaceOrder == false)
+            {
                 <button class="cont_shop_btn" onclick="GetLoggedIn(true)">Proceed to checkout</button>
             }
             else
