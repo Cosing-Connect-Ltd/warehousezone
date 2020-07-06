@@ -27,7 +27,7 @@
                                     }
                                     else if (item1.Type == WebsiteNavigationType.Content)
                                     {
-                                        <li><a href="@Url.Action("page", "Home", new { pageUrl = item1.WebsiteContentPages.pageUrl })">@item1.Name</a></li>
+                                        <li><a href="@Url.Action("page", "Home", new { pageUrl = item1.WebsiteContentPages?.pageUrl })">@item1.Name</a></li>
                                     }
 
                                 }
@@ -45,7 +45,7 @@
             }
             else if (item.Type == WebsiteNavigationType.Content)
             {
-                <li><a href="@Url.Action("page", "Home", new { pageUrl = item.WebsiteContentPages.pageUrl })">@item.Name</a></li>
+                <li><a href="@Url.Action("page", "Home", new { pageUrl = item.WebsiteContentPages?.pageUrl })">@item.Name</a></li>
             }
 
 

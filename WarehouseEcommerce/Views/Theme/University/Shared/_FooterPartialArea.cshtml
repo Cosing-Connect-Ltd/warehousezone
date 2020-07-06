@@ -48,7 +48,7 @@
                     @foreach (var item in naviagtion)
                     {
                     <li>
-                        <a href="@Url.Action("page", "Home", new { pageUrl = item.WebsiteContentPages.pageUrl })">
+                        <a href="@Url.Action("page", "Home", new { pageUrl = item.WebsiteContentPages?.pageUrl })">
                             @item.Name
                         </a>
                     </li>

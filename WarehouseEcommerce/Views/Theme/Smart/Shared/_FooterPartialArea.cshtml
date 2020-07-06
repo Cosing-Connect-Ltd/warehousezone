@@ -11,7 +11,7 @@
                 var naviagtion = ViewBag.FooterNavigation as List<Ganedata.Core.Entities.Domain.WebsiteNavigation>;
                 foreach (var item in Model)
                 {
-                    <a href="@Url.Action("page", "Home", new { pageUrl = item.WebsiteContentPages.pageUrl })">
+                    <a href="@Url.Action("page", "Home", new { pageUrl = item.WebsiteContentPages?.pageUrl })">
                         @item.Name
                     </a>
                 }

@@ -29,7 +29,8 @@
                                                                     @class = Model[i].UISettingItem.InputType == UISettingItemInputType.Color ? "jscolor {hash:true, padding:4, zIndex:9999} form-control" : "form-control",
                                                                     @onchange = "onUISettingChanged(this)",
                                                                     data_settingsKey = Model[i].UISettingItem.Key,
-                                                                    data_selector = Model[i].UISettingItem.Selector})
+                                                                    data_selector = Model[i].UISettingItem.Selector,
+                                                                    @id = "attribute_" + Model[i].UISettingItem.DisplayName.ToLower().Replace(" ", "_")})
                         }
                         else
                         {
@@ -37,7 +38,8 @@
                                                                     new { @class = "chosen-select form-control",
                                                                         @onchange = "onUISettingChanged(this)",
                                                                         data_settingsKey = Model[i].UISettingItem.Key,
-                                                                        data_selector = Model[i].UISettingItem.Selector
+                                                                        data_selector = Model[i].UISettingItem.Selector,
+                                                                        @id = "attribute_" + Model[i].UISettingItem.DisplayName.ToLower().Replace(" ", "_")
                                                                     })
                         }
                     </div>

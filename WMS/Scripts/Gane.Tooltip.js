@@ -20,7 +20,7 @@
         for (var i = 0; i < inputElements.length; i++) {
 
             var element = $(inputElements[i]);
-            if (!element.attr('tooltipKey')) {
+            if (!element.attr('tooltipKey') && !!element.attr('id')) {
                 var tooltipKey = tooltipKeyPrefix + element.attr('id');
                 element.attr('tooltipKey', tooltipKey)
                 tooltipKeys.push(tooltipKey);
