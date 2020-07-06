@@ -146,7 +146,6 @@ namespace WMS.Controllers
         }
 
         [HttpPost]
-        [OutputCache(Duration = 86400, VaryByParam = "*")]
         public async Task<JsonResult> GetTooltipsByKey(string[] keys)
         {
             var tooltips = await _tooltipServices.GetTooltipsByKey(keys, CurrentTenantId);
