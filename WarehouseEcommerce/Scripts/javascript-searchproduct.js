@@ -362,7 +362,7 @@ function chooseDeliveryMethod() {
         "CurrentStep": nextStep,
         "ParentStep":1
     }
-    
+
     GetDataForNextStep(checkoutViewModels, nextStep);
 }
 
@@ -651,10 +651,14 @@ function CreateUsers() {
         data: $("#userRegister").serialize(),
         success: function (data) {
             if (data) {
-                $(".success-message-reg").html("Registration successful, please check email and activate your account").show().delay(2000).fadeOut();
+                $(".registration_form_sec").removeClass("show");
+                $(".success-message-reg").html("Registration successful, please check email and activate your account").show();
+
                 setTimeout(function () {
+                    $(".success-message-reg").html("");
+                    $('#signupPopup').fadeOut();
                     $('#signupPopup').modal('hide');
-                }, 15000);
+                }, 5000);
             }
             else {
                 $(".alert-message-reg").html("Unable to complete operation, please contact support").show().delay(2000).fadeOut();
