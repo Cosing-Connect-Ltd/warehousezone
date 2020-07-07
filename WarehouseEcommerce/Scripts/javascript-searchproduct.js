@@ -376,7 +376,7 @@ function chooseCollectionPoint(nextStep) {
     {
         "CollectionPointId": collectionPointId,
         "CurrentStep": nextStep,
-        "ParentStep": 1
+        "ParentStep": 3
     }
     GetDataForNextStep(checkoutViewModels, nextStep);
 }
@@ -395,7 +395,7 @@ function chooseShippingRule(nextStep) {
     {
         "ShipmentRuleId": shipmentRuleId,
         "CurrentStep": nextStep,
-        "ParentStep": (nextStep - 1)
+        "ParentStep": 4
     }
     GetDataForNextStep(checkoutViewModels,nextStep);
 }

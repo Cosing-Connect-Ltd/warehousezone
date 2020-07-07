@@ -1,4 +1,5 @@
 ﻿@model Ganedata.Core.Entities.Domain.CheckoutViewModel
+@using Ganedata.Core.Entities.Domain
 @using Ganedata.Core.Entities.Enums;
 
 @Html.Hidden("collectionPointId", (int?)Model.CollectionPointId)
@@ -19,7 +20,7 @@
             <div class="collection-points row mt-3"></div>
         </div>
         <button class="addnwShopAdrrbtn" onclick="chooseCollectionPoint(@((int)CheckoutStep.PaymentMethod))">Select Collection Point</button>
-        <a href="@Url.Action("checkout","orders",new{ checkoutStep=Model.ParentStep})" class=" btn addnwShopAdrrbtn">Back</a>
+        <a href="@Url.Action("checkout","orders",new{ checkoutStep=CheckoutStep.DeliveryMethod})" class=" btn addnwShopAdrrbtn">Back</a>
 
     </div>
 </div>

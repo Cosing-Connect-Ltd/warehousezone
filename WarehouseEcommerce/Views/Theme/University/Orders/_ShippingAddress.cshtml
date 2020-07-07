@@ -24,6 +24,7 @@
                     </a>
 
                     <a href="@Url.Action("RemoveShippingAddress", "Orders", new {accountId = address[i].AccountID, billingAddressId = Model.BillingAddressId, deliveryMethodId = Model.DeliveryMethodId, accountAddressId = address[i].AddressID})" class="btmBtn">Remove Address</a>
+                    <a href="@Url.Action("checkout","orders",new{ checkoutStep=CheckoutStep.DeliveryMethod})" class="btmBtn">Back</a>
                 </div>
 
 

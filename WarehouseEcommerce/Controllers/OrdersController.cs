@@ -82,7 +82,7 @@ namespace WarehouseEcommerce.Controllers
                 return RedirectToAction("Login", "User", new { PlaceOrder = true });
             }
 
-            return View(Session["CheckoutViewModel"] == null ? new CheckoutViewModel() : Session["CheckoutViewModel"] as CheckoutViewModel);
+            return View((Session["CheckoutViewModel"] == null ? new CheckoutViewModel() : Session["CheckoutViewModel"] as CheckoutViewModel));
         }
 
         public PartialViewResult _CheckoutProcessPartial(CheckoutViewModel checkoutViewModel,CheckoutStep? checkoutStep)

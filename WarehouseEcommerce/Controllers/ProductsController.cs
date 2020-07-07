@@ -261,7 +261,7 @@ namespace WarehouseEcommerce.Controllers
         public ActionResult AddToCart()
         {
             ViewBag.cart = true;
-
+            Session["CheckoutViewModel"] = null;
             return View();
         }
 

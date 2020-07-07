@@ -17,8 +17,8 @@
         </div>
     }
     <div class="btnWrap">
-        <a href="javascript:;" class="addnwShopAdrrbtn" onclick="chooseShippingRule(@((int)CheckoutStep.PaymentMethod))">SELECT SHIPMENT TYPE</a>
-        <a href="@Url.Action("checkout","orders",new{ checkoutStep=CheckoutStep.ShippingAddress})" class="btn btmBtn">Back</a>
+        <a href="javascript:;" class="addnwShopAdrrbtn" onclick="chooseShippingRule(@((int)CheckoutStep.PaymentMethod))">SELECT SHIPMENT TYPE</a>&nbsp;
+        <a href="@Url.Action("checkout","orders",new{ checkoutStep=CheckoutStep.ShippingAddress})" class="btmBtn addnwShopAdrrbtn">Back</a>
 
     </div>
 </div>
