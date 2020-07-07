@@ -27,28 +27,28 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-group">
-                        @Html.EditorFor(model => model.AccountAddress.AddressLine1, new { htmlattributes = new { @placeholder = "Address Line 1", @required = "Required" } })
+                        @Html.EditorFor(model => model.AccountAddress.AddressLine1, new { htmlattributes = new { @placeholder = "Address Line 1",@class= "AddressLine1", @required = "Required" } })
                         @*<input type="text" class="form-control input-md inputNew" size="18" placeholder="Address Line 1">*@
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
-                        @Html.EditorFor(model => model.AccountAddress.AddressLine2, new { htmlattributes = new { @placeholder = "Address Line 2", @required = "Required" } })
+                        @Html.EditorFor(model => model.AccountAddress.AddressLine2, new { htmlattributes = new { @placeholder = "Address Line 2", @class = "AddressLine2", @required = "Required" } })
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
-                        @Html.EditorFor(model => model.AccountAddress.AddressLine3, new { htmlattributes = new { @placeholder = "Address Line 3", @required = "Required" } })
+                        @Html.EditorFor(model => model.AccountAddress.AddressLine3, new { htmlattributes = new { @placeholder = "Address Line 3", @class = "AddressLine3", @required = "Required" } })
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
-                        @Html.EditorFor(model => model.AccountAddress.PostCode, new { htmlattributes = new { @placeholder = "Postal Code", @required = "Required" } })
+                        @Html.EditorFor(model => model.AccountAddress.PostCode, new { htmlattributes = new { @placeholder = "Postal Code", @class = "PostCode", @required = "Required" } })
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
-                        @Html.EditorFor(model => model.AccountAddress.Telephone, new { htmlattributes = new { @placeholder = "Telephone Number", @required = "Required" } })
+                        @Html.EditorFor(model => model.AccountAddress.Telephone, new { htmlattributes = new { @placeholder = "Telephone Number", @class = "Telephone", @required = "Required" } })
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -72,8 +72,7 @@
 
             <div class="saveAddrWrap">
                 <button type="Submit" name="submitNewsletter" class="saveAddrBtn">Save Address</button>&nbsp;&nbsp;
-
-                <a href="javascript:;" onclick="history.go(-1)" class="btn btn-default saveAddrBtn">Back</a>
+                <a href="@Url.Action("checkout","orders",new{ checkoutStep=Model.ParentStep})" class="btn btn-default saveAddrBtn">Back</a>
 
             </div>
         }

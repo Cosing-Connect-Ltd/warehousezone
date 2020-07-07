@@ -45,6 +45,9 @@
             <label for="shipping_address_checkbox">Same as Billing Address</label>
         </div>*@
     <div class="btnWrap">
-        <a href="@Url.Action("Checkout", "Orders", new { billingAddressId = Model.BillingAddressId, deliveryMethodId = Model.DeliveryMethodId, step = (int)CheckoutStep.AddOrEditAddress, parentStep = (int)CheckoutStep.ShippingAddress })" class="addnwShopAdrrbtn">ADD NEW SHIPPING ADDRESS</a>
+        <a href="javascript:;" data-AccountId="@(Model.AccountId??null)" data-billingAddressId="@(Model.BillingAddressId)" data-currentstep="@((int)CheckoutStep.AddOrEditAddress)" data-deliveryMethodId="@(Model.DeliveryMethodId??null)" data-parentStep="@((int) CheckoutStep.ShippingAddress)" onclick="moveToNextStep(this)" class="btmBtn">
+            ADD NEW SHIPPING ADDRESS
+        </a>
+        @*<a href="@Url.Action("Checkout", "Orders", new {billingAddressId = Model.BillingAddressId, deliveryMethodId = Model.DeliveryMethodId, step = (int) CheckoutStep.AddOrEditAddress, parentStep = (int) CheckoutStep.ShippingAddress})" class="addnwShopAdrrbtn">ADD NEW SHIPPING ADDRESS</a>*@
     </div>
 </div>

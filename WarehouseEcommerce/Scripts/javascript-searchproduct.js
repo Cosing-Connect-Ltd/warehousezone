@@ -114,10 +114,10 @@ function OnchangeDropdownAddress() {
             addressLine3 += (selOption[i] != " " ? (addressLine3 != "" ? ', ' : '') + selOption[i] : '')
         }
 
-        $("#AddressLine1").val(addressLine1);
-        $("#AddressLine2").val(addressLine2);
-        $("#AddressLine3").val(addressLine3);
-        $("#PostCode").val(PostCode);
+        $(".AddressLine1").val(addressLine1);
+        $(".AddressLine2").val(addressLine2);
+        $(".AddressLine3").val(addressLine3);
+        $(".PostCode").val(PostCode);
     }
 }
 
