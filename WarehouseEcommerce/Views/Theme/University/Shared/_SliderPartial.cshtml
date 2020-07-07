@@ -56,6 +56,19 @@
                 </a>
             </div>
         </div>
+        <script>
+            jQuery(function ($) {
+                $(".nb_hm_bnr_carrousle").bind("slid.bs.carousel", function () {
+                    setSliderArrowsColor();
+                });
+            })
+
+            function setSliderArrowsColor() {
+                $(".nb_bnr_count").css("color", $("div.active h5").css("color"));
+            }
+
+            setSliderArrowsColor();
+        </script>
     </div>
 </section>
 <!-- banner section  -->
