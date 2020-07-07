@@ -1758,7 +1758,7 @@ body.modal-open {
     .billandshipsec .address-wrapper .addnwShopAdrrbtn:hover {
         background-color: #f33655;
     }
-        
+
  .saveAddrWrap {
     width: 100%;
     display: flex;
@@ -2049,7 +2049,7 @@ body.modal-open {
     .collection-address-div:hover {
         box-shadow: 0 -10px 30px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
     }
-   
+
 /*payment pages from GetAddress to FinalPayment- css start*/
 
 
@@ -2589,3 +2589,14 @@ body.modal-open {
             transform: scale(1);
         }
 /*radio box form cart page -end*/
+
+
+.nb_bannersec .np_bannerContentOuter .nb_bnr_count:after {
+    content: "";
+    width: 0px;
+}
+
+.nb_bannersec .np_bannerContentOuter .nb_bnr_count:before {
+    content: "";
+    width: 0px;
+}

@@ -26,14 +26,14 @@ $(function () {
 
     var totalItems = $(".item").length;
     var currentIndex = $("div.active").index() + 1;
-    $(".nb_bnr_count.rgt").html("0" + totalItems);
-    $(".nb_bnr_count.lft").html("0" + currentIndex);
-    $(".nb_hm_bnr_carrousle").bind("slid.bs.carousel", function () {
-        currentIndex = $("div.active").index() + 1;
-        // $(".num").html("" + currentIndex + "/" + totalItems + "");
-        $(".nb_bnr_count.lft").html("0" + currentIndex);
-        // $(".nb_bnr_count.rgt").html("0" + totalItems);
-    });
+    //$(".nb_bnr_count.rgt").html("0" + totalItems);
+    //$(".nb_bnr_count.lft").html("0" + currentIndex);
+    //$(".nb_hm_bnr_carrousle").bind("slid.bs.carousel", function () {
+    //    currentIndex = $("div.active").index() + 1;
+    //    // $(".num").html("" + currentIndex + "/" + totalItems + "");
+    //    $(".nb_bnr_count.lft").html("0" + currentIndex);
+    //    // $(".nb_bnr_count.rgt").html("0" + totalItems);
+    //});
 
     // feautered product slider
     $(".nb_featuredPrdCarrousle").owlCarousel({
@@ -136,7 +136,7 @@ $(function () {
 
     // showLoginForm
     // showRegForm
-  
+
     $("#triggerSearch").click(function (e) {
         e.preventDefault();
         $(".search_wrap_main").addClass("show");
