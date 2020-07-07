@@ -116,6 +116,7 @@ namespace WMS.Controllers
             return View(tenantWebsites);
         }
 
+
         // POST: TenantWebsites/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -146,6 +147,59 @@ namespace WMS.Controllers
             }
 
             return View(tenantWebsites);
+        }
+
+        // GET: TenantWebsites/EditSubscriptionPanel/5
+        public ActionResult EditLayoutSettings(int siteId)
+        {
+            ViewBag.ControllerName = "TenantWebsites";
+            var layoutSettings = _tenantWebsiteService.GetWebsiteLayoutSettingsInfoBySiteId(siteId);
+
+            var tenantWebsite = _tenantWebsiteService.GetTenantWebSiteBySiteId(siteId);
+
+            ViewBag.SiteName = tenantWebsite.SiteName;
+
+            ViewBag.Files = new List<string>();
+            if (!string.IsNullOrEmpty(layoutSettings?.SubscriptionPanelImageUrl))
+            {
+                List<string> files = new List<string>();
+                ViewBag.FileLength = true;
+                DirectoryInfo dInfo = new DirectoryInfo(layoutSettings.SubscriptionPanelImageUrl);
+                files.Add(dInfo.Name);
+                Session["UploadTenantWebsiteLogo"] = files;
+                ViewBag.Files = files;
+            }
+
+            return View(layoutSettings ?? new WebsiteLayoutSettings { SiteId = siteId, Id = 0});
+        }
+
+        // POST: TenantWebsites/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditLayoutSettings(WebsiteLayoutSettings layoutSettings, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
+        {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+            ViewBag.ControllerName = "TenantWebsites";
+            if (ModelState.IsValid)
+            {
+                var file = UploadControl.FirstOrDefault();
+                var filesName = Session["UploadTenantWebsiteLogo"] as List<string>;
+
+                layoutSettings = _tenantWebsiteService.SaveWebsiteLayoutSettings(layoutSettings, CurrentUserId, CurrentTenantId);
+
+                if (filesName != null && file != null)
+                {
+                    var filePath = MoveFile(file, filesName.FirstOrDefault(), layoutSettings.SiteId);
+                    layoutSettings.SubscriptionPanelImageUrl = filePath;
+                    _tenantWebsiteService.SaveWebsiteLayoutSettings(layoutSettings, CurrentUserId, CurrentTenantId);
+                }
+
+                return RedirectToAction("Index");
+            }
+
+            return View(layoutSettings);
         }
 
         // GET: TenantWebsites/Delete/5

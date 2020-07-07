@@ -53,7 +53,7 @@ namespace WMS.Controllers
         }
 
         // POST: WebsiteSliders/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -111,7 +111,7 @@ namespace WMS.Controllers
         }
 
         // POST: WebsiteSliders/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -123,7 +123,7 @@ namespace WMS.Controllers
                 string filePath = "";
 
                 var filesName = Session["UploadProductTag"] as List<string>;
-                if (filesName == null) 
+                if (filesName == null)
                 { productTag.IconImage = ""; }
                 else
                 {
@@ -148,7 +148,7 @@ namespace WMS.Controllers
             return RedirectToAction("Index");
         }
 
-     
+
 
         public ActionResult UploadFile(IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
         {

@@ -931,6 +931,10 @@
     <Compile Include="Migrations\202007021231597_SiteId-in-AuthUser.designer.cs">
       <DependentUpon>202007021231597_SiteId-in-AuthUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007071455247_added-WebsiteLayoutSettings-table.cs" />
+    <Compile Include="Migrations\202007071455247_added-WebsiteLayoutSettings-table.designer.cs">
+      <DependentUpon>202007071455247_added-WebsiteLayoutSettings-table.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1949,6 +1953,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007021231597_SiteId-in-AuthUser.resx">
       <DependentUpon>202007021231597_SiteId-in-AuthUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007071455247_added-WebsiteLayoutSettings-table.resx">
+      <DependentUpon>202007071455247_added-WebsiteLayoutSettings-table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -45,6 +45,12 @@ namespace Ganedata.Core.Services
         {
             return _currentDbContext.TenantWebsites.Where(u => u.IsDeleted != true && u.TenantId == TenantId);
         }
+
+        public WebsiteLayoutSettings GetWebsiteLayoutSettingsInfoBySiteId(int SiteId)
+        {
+            return _currentDbContext.WebsiteLayoutSettings.FirstOrDefault(u => u.SiteId == SiteId);
+        }
+
         public TenantWebsites GetTenantWebSiteBySiteId(int SiteId)
         {
             return _currentDbContext.TenantWebsites.FirstOrDefault(u => u.IsDeleted != true && u.SiteID == SiteId && u.IsActive == true);
@@ -67,6 +73,26 @@ namespace Ganedata.Core.Services
             }
             _currentDbContext.SaveChanges();
             return tenantWebsites;
+        }
+
+        public WebsiteLayoutSettings SaveWebsiteLayoutSettings(WebsiteLayoutSettings websiteLayoutSettings, int UserId, int TenantId)
+        {
+            websiteLayoutSettings.TenantId = TenantId;
+            if (websiteLayoutSettings.Id <= 0)
+            {
+                websiteLayoutSettings.UpdateCreatedInfo(UserId);
+                _currentDbContext.WebsiteLayoutSettings.Add(websiteLayoutSettings);
+            }
+            else
+            {
+                var website = _currentDbContext.TenantWebsites.AsNoTracking().FirstOrDefault(u => u.SiteID == websiteLayoutSettings.SiteId);
+                websiteLayoutSettings.CreatedBy = website.CreatedBy;
+                websiteLayoutSettings.DateCreated = website.DateCreated;
+                websiteLayoutSettings.UpdateUpdatedInfo(UserId);
+                _currentDbContext.Entry(websiteLayoutSettings).State = EntityState.Modified;
+            }
+            _currentDbContext.SaveChanges();
+            return websiteLayoutSettings;
         }
         public bool RemoveTenantWebsite(int siteID, int UserId)
         {

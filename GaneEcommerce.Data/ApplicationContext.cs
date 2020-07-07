@@ -210,7 +210,7 @@ namespace Ganedata.Core.Data
         public DbSet<WebsiteWarehouses> WebsiteWarehouses { get; set; }
         public DbSet<AbandonedCartNotification> AbandonedCartNotifications { get; set; }
         public DbSet<AbandonedCartSetting> AbandonedCartSettings { get; set; }
-
+        public DbSet<WebsiteLayoutSettings> WebsiteLayoutSettings { get; set; }
         public DbSet<KitProductCartItem> KitProductCartItems { get; set; }
 
         //#end region

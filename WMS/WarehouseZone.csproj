@@ -2704,6 +2704,7 @@
     <Content Include="Views\Theme\Default\ApiCredentials\Index.cshtml" />
     <Content Include="Views\Theme\Default\WebsiteWarehouses\_WebsiteWarehousesList.cshtml" />
     <Content Include="Views\Theme\Default\WebsiteWarehouses\Index.cshtml" />
+    <Content Include="Views\Theme\Default\TenantWebsites\EditLayoutSettings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

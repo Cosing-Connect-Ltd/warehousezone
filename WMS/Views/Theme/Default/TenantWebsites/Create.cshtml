@@ -55,7 +55,7 @@
                 @Html.LabelFor(model => model.SiteName, htmlAttributes: new { @class = "control-label col-md-4" })
                 <div class="col-md-8">
                     @Html.EditorFor(model => model.SiteName, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.SiteDescription, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(model => model.SiteName, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">

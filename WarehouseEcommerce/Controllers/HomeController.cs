@@ -10,6 +10,7 @@ using WarehouseEcommerce.Helpers;
 using WarehouseEcommerce.Models;
 using WarehouseEcommerce.ViewModels;
 using Ganedata.Core.Entities.Enums;
+using Ganedata.Core.Entities.Domain;
 
 namespace WarehouseEcommerce.Controllers
 {
@@ -196,6 +197,12 @@ namespace WarehouseEcommerce.Controllers
             return PartialView(slides);
         }
 
+        public PartialViewResult _SubscribePartial()
+        {
+            var websiteLayoutSettings = _tenantWebsiteService.GetWebsiteLayoutSettingsInfoBySiteId(CurrentTenantWebsite.SiteID);
+            return PartialView(websiteLayoutSettings ?? new WebsiteLayoutSettings { ShowSubscriptionPanel = false });
+        }
+
 
 
         public PartialViewResult _NewsLetterPartial()
@@ -246,7 +253,7 @@ namespace WarehouseEcommerce.Controllers
         public PartialViewResult _FooterPartialArea(bool university = false)
         {
             ViewBag.FooterNavigation = _tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, CurrentTenantWebsite.SiteID).Where(u => u.ShowInFooter == true && u.Type == WebsiteNavigationType.Content).ToList();
-            
+
             if (university)
             {
                 var data = _tenantWebsiteService.GetAllValidTenantWebSite(CurrentTenantId).FirstOrDefault(u => u.SiteID == CurrentTenantWebsite.SiteID);

@@ -12,8 +12,10 @@ namespace Ganedata.Core.Services
     {
         // TenantWebsite//
         IEnumerable<TenantWebsites> GetAllValidTenantWebSite(int TenantId);
+        WebsiteLayoutSettings GetWebsiteLayoutSettingsInfoBySiteId(int SiteId);
         TenantWebsites GetTenantWebSiteBySiteId(int SiteId);
         TenantWebsites CreateOrUpdateTenantWebsite(TenantWebsites tenantWebsites, int UserId, int TenantId);
+        WebsiteLayoutSettings SaveWebsiteLayoutSettings(WebsiteLayoutSettings websiteLayoutSettings, int UserId, int TenantId);
         bool RemoveTenantWebsite(int siteID, int UserId);
 
         // WebsiteContentPages//

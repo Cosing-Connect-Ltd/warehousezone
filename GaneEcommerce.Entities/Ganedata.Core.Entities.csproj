@@ -237,6 +237,7 @@
     <Compile Include="Domain\Websites\AbandonedCartNotification.cs" />
     <Compile Include="Domain\Websites\KitProductCartItem.cs" />
     <Compile Include="Domain\Websites\ProductsNavigationMap.cs" />
+    <Compile Include="Domain\Websites\WebsiteLayoutSettings.cs" />
     <Compile Include="Domain\Websites\WebsiteWarehouses.cs" />
     <Compile Include="Domain\Websites\WebsiteWisListItem.cs" />
     <Compile Include="Domain\Websites\WebsiteDiscountProductsMap.cs" />
