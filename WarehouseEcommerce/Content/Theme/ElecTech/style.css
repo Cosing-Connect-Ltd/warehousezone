@@ -2857,6 +2857,7 @@ img {
 
 .row-img-div {
     display: flex;
+    flex-wrap: nowrap;
     padding-left: 15px;
     /*padding-right: 15px;*/
 }

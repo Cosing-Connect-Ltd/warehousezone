@@ -1,5 +1,6 @@
 ﻿<!-- footer start -->
 @model Ganedata.Core.Entities.Domain.TenantWebsites
+@using Ganedata.Core.Entities.Domain
 <footer>
     <div class="footer-area grey-bg ptb-20">
         <div class="container">
@@ -19,12 +20,16 @@
                 <div class="col-lg-6 col-md-12">
                     <div class="widget mb-30">
                         <div class="widget-title">
+                            @if (ViewBag.FooterNavigation != null)
+                            {
                             <div class="footer-nav">
-                                <a href="get-started">Get Started</a>
-                                <a href="promotions">Promotions</a>
-                                <a href="privacy-policy">Privacy Policy</a>
-                                <a href="blog">Blog</a>
+                               
+                                @foreach (var item in (ViewBag.FooterNavigation as List<WebsiteNavigation> ))
+                                {
+                                    <a href="@Url.Action("page", "Home", new { pageUrl = item.WebsiteContentPages?.pageUrl })">@item.Name</a>
+                                }
                             </div>
+                            }
                         </div>
                     </div>
                 </div>

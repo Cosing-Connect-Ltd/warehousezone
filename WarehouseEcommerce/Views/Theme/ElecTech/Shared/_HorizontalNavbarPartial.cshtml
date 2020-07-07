@@ -17,22 +17,81 @@
                             @{
                                 int column = 1;
                             }
-                            <div class="div1 in-dropdown-div">
-                                @foreach (var item1 in level1)
-                                {
-
-                                    if (item1.Type == WebsiteNavigationType.Blank)
+                            @if (column <= 4)
+                            {
+                                <div class="div1 in-dropdown-div">
+                                    @for (int i = 0; i < level1.Take(4).ToList().Count; i++)
                                     {
-                                        <li><a href="javascript:;">@item1.Name</a></li>
+
+                                        if (level1[i].Type == WebsiteNavigationType.Blank)
+                                        {
+                                            <li><a href="javascript:;">@level1[i].Name</a></li>
+                                        }
+                                        else if (level1[i].Type == WebsiteNavigationType.Content)
+                                        {
+                                            <li><a href="@Url.Action("page", "Home", new { pageUrl = level1[i].WebsiteContentPages?.pageUrl })">@level1[i].Name</a></li>
+                                        }
+
                                     }
-                                    else if (item1.Type == WebsiteNavigationType.Content)
+                                </div>
+                                column++;
+                            }
+                            @if (column <= 8)
+                            {
+                                <div class="div2 in-dropdown-div">
+                                    @for (int i = 4; i < level1.Take(8).ToList().Count; i++)
                                     {
-                                        <li><a href="@Url.Action("page", "Home", new { pageUrl = item1.WebsiteContentPages?.pageUrl })">@item1.Name</a></li>
+
+                                        if (level1[i].Type == WebsiteNavigationType.Blank)
+                                        {
+                                            <li><a href="javascript:;">@level1[i].Name</a></li>
+                                        }
+                                        else if (level1[i].Type == WebsiteNavigationType.Content)
+                                        {
+                                            <li><a href="@Url.Action("page", "Home", new { pageUrl = level1[i].WebsiteContentPages?.pageUrl })">@level1[i].Name</a></li>
+                                        }
+
                                     }
+                                </div>
+                                column++;
+                            }
+                            @if (column <= 12)
+                            {
+                                <div class="div3 in-dropdown-div">
+                                    @for (int i = 8; i < level1.Take(12).ToList().Count; i++)
+                                    {
 
-                                }
-                            </div>
+                                        if (level1[i].Type == WebsiteNavigationType.Blank)
+                                        {
+                                            <li><a href="javascript:;">@level1[i].Name</a></li>
+                                        }
+                                        else if (level1[i].Type == WebsiteNavigationType.Content)
+                                        {
+                                            <li><a href="@Url.Action("page", "Home", new { pageUrl = level1[i].WebsiteContentPages?.pageUrl })">@level1[i].Name</a></li>
+                                        }
 
+                                    }
+                                </div>
+                                column++;
+                            }
+                            @if (column <= 16)
+                            {
+                                <div class="div4 in-dropdown-div">
+                                    @for (int i = 12; i < level1.Take(16).ToList().Count; i++)
+                                    {
+
+                                        if (level1[i].Type == WebsiteNavigationType.Blank)
+                                        {
+                                            <li><a href="javascript:;">@level1[i].Name</a></li>
+                                        }
+                                        else if (level1[i].Type == WebsiteNavigationType.Content)
+                                        {
+                                            <li><a href="@Url.Action("page", "Home", new { pageUrl = level1[i].WebsiteContentPages?.pageUrl })">@level1[i].Name</a></li>
+                                        }
+
+                                    }
+                                </div>
+                                column++;
                             }
                         </ul>
                     </li>
@@ -53,7 +112,8 @@
 
         }
         <li><a class="hardware-active" href="https://shop.ganedata.co.uk">Hardware</a></li>
-        <li class="book-demo-1"><a href="get-started">Book A Demo</a></li>
+        @*book-demo-1 is for mobile view in dropdown navigation*@
+        <li class="book-demo-1"><a href="@Url.Action("page", "Home", new { pageUrl = "get-started" })">Book A Demo</a></li>
         @*<li><a href="#"><i class="fa fa-search"></i></a></li>*@
     </ul>
 </nav>
