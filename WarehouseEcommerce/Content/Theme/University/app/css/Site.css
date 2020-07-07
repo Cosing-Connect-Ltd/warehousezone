@@ -2600,3 +2600,19 @@ body.modal-open {
     content: "";
     width: 0px;
 }
+
+
+.accordion ul li div a h2{
+    text-transform: none;
+}
+
+@media (max-width: 768px) {
+    .accordion {
+        overflow-x: hidden;
+    }
+
+    .nb_header {
+        max-height: 163px;
+        padding: 35px 0px 18px 35px;
+    }
+}

@@ -527,3 +527,12 @@ nb_prdpg_fg label,
 .nb_header .nb_headicolst li a {
     color: var(--light-font-color);
 }
+
+
+@media (max-width: 768px) {
+    .accordion ul li div a h2 {
+        color: var(--dark-font-color);
+        background: #ffffff;
+        background: linear-gradient(0deg, #ffffff 24%, rgba(255, 255, 255, 0.73993347) 59%, rgba(255, 255, 255, 0) 100%);
+    }
+}
