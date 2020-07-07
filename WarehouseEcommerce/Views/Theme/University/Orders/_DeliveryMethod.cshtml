@@ -1,4 +1,5 @@
 ﻿@using Ganedata.Core.Entities.Enums;
+@model Ganedata.Core.Entities.Domain.CheckoutViewModel
 <div class="checkout-options-wrapper">
     <h5 class="subheadCmn">Select Delivery Method</h5>
     <div class="checkboxwrap">
@@ -18,4 +19,7 @@
         <label for="courier__checkbox">Delivery to Address (Courier) </label>
     </div>
     <button class="addnwShopAdrrbtn" onclick="chooseDeliveryMethod()">SELECT DELIVERY METHOD</button>
+
+        <a href="@Url.Action("checkout","orders",new{ checkoutStep=Model.ParentStep})" class=" btn addnwShopAdrrbtn">Back</a>
+    
 </div>

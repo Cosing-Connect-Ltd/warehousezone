@@ -19,5 +19,7 @@
             <div class="collection-points row mt-3"></div>
         </div>
         <button class="addnwShopAdrrbtn" onclick="chooseCollectionPoint(@((int)CheckoutStep.PaymentMethod))">Select Collection Point</button>
+        <a href="@Url.Action("checkout","orders",new{ checkoutStep=Model.ParentStep})" class=" btn addnwShopAdrrbtn">Back</a>
+
     </div>
 </div>

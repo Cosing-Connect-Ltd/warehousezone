@@ -11,6 +11,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Xml;
+using Ganedata.Core.Models;
 
 namespace Ganedata.Core.Services
 {
@@ -443,7 +444,7 @@ namespace Ganedata.Core.Services
 
         }
 
-        public List<WebsiteShippingRules> GetShippingRulesByShippingAddress(int tenantId, int siteId, int shippingAddressId, double parcelWeightInGrams)
+        public List<WebsiteShippingRulesViewModel> GetShippingRulesByShippingAddress(int tenantId, int siteId, int shippingAddressId, double parcelWeightInGrams)
         {
             var address = _currentDbContext.AccountAddresses.Find(shippingAddressId);
             var getTenantCurrency = _tenantsCurrencyRateServices.GetTenantCurrencies(tenantId).FirstOrDefault();
@@ -474,7 +475,7 @@ namespace Ganedata.Core.Services
             {
                 r.Price = Math.Round(((r.Price) * ((currencyRate <= 0) ? 1 : currencyRate)), 2);
             });
-            return shippingRules;
+            return _mapper.Map(shippingRules,new List<WebsiteShippingRulesViewModel>());
         }
         public WebsiteShippingRules CreateOrUpdateWebsiteShippingRules(WebsiteShippingRules websiteShippingRules, int UserId, int TenantId)
         {
@@ -1230,28 +1231,28 @@ namespace Ganedata.Core.Services
 
         public CheckoutViewModel SetCheckOutProcessModel(int? accountId, int? accountAddressId, int? billingAddressId, int? shippingAddressId, int? deliveryMethodId, int? collectionPointId, int? step, int? parentStep, int? shipmentRuleId, int? siteId, int? tenantId, int? userId, string sessionKey)
         {
-            CheckoutViewModel checkoutViewModel = new CheckoutViewModel();
-
-            checkoutViewModel.CurrentStep = step.HasValue ? (CheckoutStep)step : CheckoutStep.BillingAddress;
-            checkoutViewModel.AccountId = accountId;
-            checkoutViewModel.ShippingAddressId = shippingAddressId <= 0 ? null : shippingAddressId;
-            checkoutViewModel.BillingAddressId = billingAddressId <= 0 ? null : billingAddressId;
-            checkoutViewModel.ShipmentRuleId = shipmentRuleId;
-            checkoutViewModel.DeliveryMethodId = deliveryMethodId;
-            checkoutViewModel.CollectionPointId = collectionPointId;
-            checkoutViewModel.Countries = _currentDbContext.GlobalCountries.ToList();
-            checkoutViewModel.ParentStep = parentStep.HasValue ? (CheckoutStep)parentStep : CheckoutStep.BillingAddress;
+            CheckoutViewModel checkoutViewModel = new CheckoutViewModel
+            {
+                CurrentStep = step.HasValue ? (CheckoutStep)step : CheckoutStep.BillingAddress,
+                AccountId = accountId,
+                ShippingAddressId = shippingAddressId <= 0 ? null : shippingAddressId,
+                BillingAddressId = billingAddressId <= 0 ? null : billingAddressId,
+                ShipmentRuleId = shipmentRuleId,
+                DeliveryMethodId = deliveryMethodId,
+                CollectionPointId = collectionPointId,
+                //Countries = _currentDbContext.GlobalCountries.ToList(),
+                ParentStep = parentStep.HasValue ? (CheckoutStep)parentStep : CheckoutStep.BillingAddress
+            };
             switch (checkoutViewModel.CurrentStep)
             {
                 case CheckoutStep.BillingAddress:
-                    checkoutViewModel.Addresses = _currentDbContext.AccountAddresses.Where(u => (u.AddressID == billingAddressId || u.AccountID == accountId) && u.AddTypeBilling == true && u.IsDeleted != true).ToList();
+                    checkoutViewModel.Addresses = _mapper.Map(_currentDbContext.AccountAddresses.Where(u => (u.AddressID == billingAddressId || u.AccountID == accountId) && u.AddTypeBilling == true && u.IsDeleted != true).ToList(),new List<AddressViewModel>());
                     break;
                 case CheckoutStep.ShippingAddress:
-                    checkoutViewModel.Addresses = _currentDbContext.AccountAddresses.Where(u => u.AddressID == shippingAddressId || u.AccountID == accountId && u.AddTypeShipping == true && u.IsDeleted != true).ToList();
+                    checkoutViewModel.Addresses = _mapper.Map(_currentDbContext.AccountAddresses.Where(u => u.AddressID == shippingAddressId || u.AccountID == accountId && u.AddTypeShipping == true && u.IsDeleted != true).ToList(), new List<AddressViewModel>());
                     break;
                 case CheckoutStep.AddOrEditAddress:
-
-                    checkoutViewModel.AccountAddress = _currentDbContext.AccountAddresses.FirstOrDefault(u => u.AddressID == accountAddressId && u.IsDeleted != true);
+                    checkoutViewModel.AccountAddress = _mapper.Map(_currentDbContext.AccountAddresses.FirstOrDefault(u => u.AddressID == accountAddressId && u.IsDeleted != true),new AddressViewModel());
                     break;
                 case CheckoutStep.ShipmentRule:
                     var cartItems = GetAllValidCartItems((siteId ?? 0), userId, (tenantId ?? 0), sessionKey);

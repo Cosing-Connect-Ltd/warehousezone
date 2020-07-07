@@ -14,6 +14,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using Ganedata.Core.Models;
 using WarehouseEcommerce.Helpers;
 using PaymentMethod = Ganedata.Core.Entities.Domain.ViewModels.PaymentMethod;
 
@@ -49,7 +50,8 @@ namespace WarehouseEcommerce.Controllers
                                 IMapper mapper,
                                 IGaneConfigurationsHelper configurationsHelper,
                                 ITenantLocationServices tenantLocationServices,
-                                ITenantWebsiteService tenantWebsiteService)
+                                ITenantWebsiteService tenantWebsiteService
+                                )
             : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices)
         {
             _paypalReturnUrl = ConfigurationManager.AppSettings["PAYPAL_RET_URL"] ?? "";
@@ -73,14 +75,22 @@ namespace WarehouseEcommerce.Controllers
             return View();
         }
 
-        public ActionResult Checkout(int? accountId, int? accountAddressId, int? billingAddressId, int? shippingAddressId, int? deliveryMethodId, int? collectionPointId, int? step, int? parentStep, int? shipmentRuleId)
+        public ActionResult Checkout()
         {
             if (CurrentUser?.UserId <= 0)
             {
                 return RedirectToAction("Login", "User", new { PlaceOrder = true });
             }
-            var checkoutModel = _tenantWebsiteService.SetCheckOutProcessModel((CurrentUserId > 0 ? CurrentUser.AccountId: accountId), accountAddressId, billingAddressId, shippingAddressId, deliveryMethodId, collectionPointId, step, parentStep, shipmentRuleId,CurrentTenantWebsite.SiteID,CurrentTenantId,CurrentUserId,Session.SessionID);
-            return View(checkoutModel);
+
+            return View(Session["CheckoutViewModel"] == null ? new CheckoutViewModel() : Session["CheckoutViewModel"] as CheckoutViewModel);
+        }
+
+        public PartialViewResult _CheckoutProcessPartial(CheckoutViewModel checkoutViewModel,CheckoutStep? checkoutStep)
+        {
+            checkoutViewModel.CurrentStep = checkoutStep ?? checkoutViewModel.CurrentStep;
+            var model = SetCheckoutProcessViewModel(checkoutViewModel);
+            Session["CheckoutViewModel"] = model;
+            return PartialView(model);
         }
 
         public async Task<JsonResult> GetNearWarehouses(string postCode)
@@ -127,7 +137,7 @@ namespace WarehouseEcommerce.Controllers
 
         public ActionResult SaveAddress(CheckoutViewModel checkoutViewModel, int? deliveryMethodId, int? billingAddressId)
         {
-            var accountAddresses = checkoutViewModel.AccountAddress;
+            var accountAddresses = _mapper.Map(checkoutViewModel.AccountAddress,new AccountAddresses());
             accountAddresses.Name = "Ecommerce";
             if (accountAddresses.AccountID <= 0)
             {
@@ -138,16 +148,16 @@ namespace WarehouseEcommerce.Controllers
 
             if (accountAddresses.AddTypeShipping == true)
             {
-                return RedirectToAction("Checkout", new { accountId = accountAddresses.AccountID, billingAddressId, deliveryMethodId, step = (int)CheckoutStep.ShippingAddress });
+                return RedirectToAction("Checkout", new{ checkoutStep = CheckoutStep.ShippingAddress });
             }
 
-            return RedirectToAction("Checkout", new { AccountId = accountAddresses.AccountID });
+            return RedirectToAction("Checkout", new  { checkoutStep = CheckoutStep.BillingAddress });
         }
 
         public ActionResult RemoveShippingAddress(int accountAddressId, int billingAddressId, int accountId, int deliveryMethodId)
         {
             var accountAddresses = AccountServices.DeleteAccountAddress(accountAddressId, (CurrentUserId == 0 ? 1 : CurrentUserId));
-            return RedirectToAction("Checkout", new { accountId, billingAddressId, deliveryMethodId, step = (int)CheckoutStep.ShippingAddress });
+            return RedirectToAction("Checkout", new CheckoutViewModel(){AccountId = accountId, BillingAddressId = billingAddressId, DeliveryMethodId = deliveryMethodId, CurrentStep = CheckoutStep.ShippingAddress });
         }
 
         public ActionResult ConfirmOrder(int accountId, int? shippingAddressId, int? shipmentRuleId, int deliveryMethodId, int paymentTypeId, int? collectionPointId)
@@ -328,6 +338,47 @@ namespace WarehouseEcommerce.Controllers
                 var responseString = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<SagepayTokenResponse>(responseString);
             }
+        }
+
+        private CheckoutViewModel SetCheckoutProcessViewModel(CheckoutViewModel checkoutViewModel)
+        {
+            var model = new CheckoutViewModel();
+            if (Session["CheckoutViewModel"] != null)
+            {
+                model = Session["CheckoutViewModel"] as CheckoutViewModel;
+
+
+            }
+            model.CurrentStep = checkoutViewModel.CurrentStep ?? model.CurrentStep;
+            model.AccountId = checkoutViewModel.AccountId ?? (model.AccountId ?? CurrentUser.AccountId);
+            model.ShippingAddressId =checkoutViewModel.ShippingAddressId <= 0  ? null : (model.ShippingAddressId??checkoutViewModel.ShippingAddressId);
+            model.BillingAddressId =
+                checkoutViewModel.BillingAddressId <= 0 ? null : (model.BillingAddressId??checkoutViewModel.BillingAddressId);
+            model.ShipmentRuleId = checkoutViewModel.ShipmentRuleId ?? (model.ShipmentRuleId??checkoutViewModel.ShipmentRuleId);
+            model.DeliveryMethodId = checkoutViewModel.DeliveryMethodId ?? (model.DeliveryMethodId??checkoutViewModel.DeliveryMethodId);
+            model.CollectionPointId = checkoutViewModel.CollectionPointId ?? (model.CollectionPointId??checkoutViewModel.CollectionPointId);
+            model.Countries = _lookupServices.GetAllGlobalCountries().Select(u => new CountryViewModel { CountryId = u.CountryID, CountryName = u.CountryName }).ToList();
+            model.ParentStep = checkoutViewModel.ParentStep ?? model.ParentStep;
+            model.AccountAddressId = checkoutViewModel.AccountAddressId;
+            switch (model.CurrentStep)
+            {
+                case CheckoutStep.BillingAddress:
+                    model.Addresses =  _mapper.Map(AccountServices.GetAllValidAccountAddressesByAccountId(model.AccountId ?? 0).Where(u => (!model.BillingAddressId.HasValue || u.AddressID == model.BillingAddressId) && u.AddTypeBilling == true).ToList(), new List<AddressViewModel>());
+                    break;
+                case CheckoutStep.ShippingAddress:
+                    model.Addresses = _mapper.Map(AccountServices.GetAllValidAccountAddressesByAccountId(model.AccountId ?? 0).Where(u => (!model.ShippingAddressId.HasValue || u.AddressID == model.ShippingAddressId) && u.AddTypeShipping == true && u.IsDeleted != true).ToList(),new List<AddressViewModel>());
+                    break;
+                case CheckoutStep.AddOrEditAddress:
+                    model.AccountAddress = _mapper.Map(AccountServices.GetAccountAddressById(model.AccountAddressId ?? 0),new AddressViewModel());
+                    break;
+                case CheckoutStep.ShipmentRule:
+                    var cartItems = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, Session.SessionID);
+                    var parcelWeightInGrams = cartItems.Sum(i => (i.KitProductCartItems?.Sum(ki => (ki.SimpleProductMaster?.Weight ?? 0)) ?? (i.ProductMaster?.Weight ?? 0)));
+                    model.ShippingRules = _tenantWebsiteService.GetShippingRulesByShippingAddress(CurrentTenantId, CurrentTenantWebsite.SiteID, model.ShippingAddressId.Value, parcelWeightInGrams);
+                    break;
+            }
+
+            return model;
         }
     }
 }

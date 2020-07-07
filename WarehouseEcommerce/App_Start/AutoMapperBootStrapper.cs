@@ -90,6 +90,9 @@ namespace WarehouseEcommerce
                 cfg.CreateMap<AssetLog, AssetLogViewModel>().ReverseMap();
                 cfg.CreateMap<GlobalTax, GlobalTaxViewModel>().ReverseMap();
                 cfg.CreateMap<ProductKitMap, ProductKitMapViewModel>().ReverseMap();
+                cfg.CreateMap<WebsiteShippingRules, WebsiteShippingRulesViewModel>().ReverseMap();
+                cfg.CreateMap<AccountAddresses, AddressViewModel>().ReverseMap();
+                cfg.CreateMap<GlobalCountry, CountryViewModel>().ReverseMap();
             });
 
             return config;

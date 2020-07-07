@@ -53,7 +53,7 @@ namespace Ganedata.Core.Services
         //WebsiteShippingRules
 
         IQueryable<WebsiteShippingRules> GetAllValidWebsiteShippingRules(int TenantId, int SiteId);
-        List<WebsiteShippingRules> GetShippingRulesByShippingAddress(int tenantId, int siteId, int shippingAddressId, double parcelWeightInGrams);
+        List<WebsiteShippingRulesViewModel> GetShippingRulesByShippingAddress(int tenantId, int siteId, int shippingAddressId, double parcelWeightInGrams);
         WebsiteShippingRules CreateOrUpdateWebsiteShippingRules(WebsiteShippingRules websiteShippingRules, int UserId, int TenantId);
         WebsiteShippingRules RemoveWebsiteShippingRules(int Id, int UserId);
         WebsiteShippingRules GetWebsiteShippingRulesById(int Id);

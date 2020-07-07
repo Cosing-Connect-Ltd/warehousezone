@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ganedata.Core.Entities.Domain
 {
+    [Serializable]
     public class WebsiteShippingRules : PersistableEntity<int>
     {
         public int Id { get; set; }

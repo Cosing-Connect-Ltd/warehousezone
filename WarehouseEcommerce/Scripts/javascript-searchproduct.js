@@ -1,4 +1,5 @@
-﻿function SetProductGroupId(event) {
+﻿
+function SetProductGroupId(event) {
     $("#ProductGroupId").val(event.currentTarget.value);
 }
 function ValidEmail(email) {
@@ -354,10 +355,15 @@ function chooseDeliveryMethod() {
         alert("Please select shipping method.");
         return;
     }
-
-    var nextStep = (deliveryMethodId == '2' ? 2 : 3); //deliveryMethodId 2 = ToShipmentAddress, step 2 = ShippingAddress, step 3 = CollectionPiont
-
-    updateQueryAndGoToStep(nextStep, "deliveryMethodId", deliveryMethodId);
+    var nextStep = (deliveryMethodId === '2' ? 2 : 3);
+    var checkoutViewModels =
+    {
+        "DeliveryMethodId": deliveryMethodId,
+        "CurrentStep": nextStep,
+        "ParentStep":1
+    }
+    
+    GetDataForNextStep(checkoutViewModels, nextStep);
 }
 
 function chooseCollectionPoint(nextStep) {
@@ -366,8 +372,13 @@ function chooseCollectionPoint(nextStep) {
         alert("Please select collection point.");
         return;
     }
-
-    updateQueryAndGoToStep(nextStep, "collectionPointId", collectionPointId);
+    var checkoutViewModels =
+    {
+        "CollectionPointId": collectionPointId,
+        "CurrentStep": nextStep,
+        "ParentStep": 1
+    }
+    GetDataForNextStep(checkoutViewModels, nextStep);
 }
 
 function goToStep(step) {
@@ -380,8 +391,13 @@ function chooseShippingRule(nextStep) {
         alert("Please select shipping rule.");
         return;
     }
-
-    updateQueryAndGoToStep(nextStep, "shipmentRuleId", shipmentRuleId);
+    var checkoutViewModels =
+    {
+        "ShipmentRuleId": shipmentRuleId,
+        "CurrentStep": nextStep,
+        "ParentStep": (nextStep - 1)
+    }
+    GetDataForNextStep(checkoutViewModels,nextStep);
 }
 
 function choosePaymentMethod() {
@@ -391,14 +407,15 @@ function choosePaymentMethod() {
         return;
     }
 
-    var variables = getUrlVariables();
+    //var variables = getUrlVariables();
 
-    window.location.href = basePath + "/Orders/ConfirmOrder?accountId=" + variables["accountId"] +
-        "&paymentTypeId=" + paymenttypeId +
-        "&deliveryMethodId=" + variables["deliveryMethodId"] +
-        (!!variables["shipmentRuleId"] ? "&shipmentRuleId=" + variables["shipmentRuleId"] : "") +
-        (!!variables["shippingAddressId"] ? "&shippingAddressId=" + variables["shippingAddressId"] : "") +
-        (!!variables["collectionPointId"] ? "&collectionPointId=" + variables["collectionPointId"] : "");
+
+    window.location.href = basePath + "/Orders/ConfirmOrder?paymentTypeId=" + paymenttypeId;
+    //    "&paymentTypeId=" + paymenttypeId +
+    //    "&deliveryMethodId=" + variables["deliveryMethodId"] +
+    //    (!!variables["shipmentRuleId"] ? "&shipmentRuleId=" + variables["shipmentRuleId"] : "") +
+    //    (!!variables["shippingAddressId"] ? "&shippingAddressId=" + variables["shippingAddressId"] : "") +
+    //    (!!variables["collectionPointId"] ? "&collectionPointId=" + variables["collectionPointId"] : "");
 
 }
 
@@ -555,8 +572,7 @@ function GetLoggedIn(placeholder, topheader) {
         $('#top-header').load(basePath + "/Home/_TopHeaderPartial");
     }
 
-
-}
+};
 function LoggedIn() {
     var UserName = $("#UserName").val();
     var UserPassword = $("#UserPassword").val();

@@ -614,6 +614,7 @@
     <Content Include="fonts\Pe-icon-7-stroke.ttf" />
     <Content Include="fonts\Pe-icon-7-stroke.woff" />
     <Content Include="Scripts\Gane.Settings-Bar.js" />
+    <Content Include="Scripts\javascript-checkout-process.js" />
     <Content Include="Scripts\javascript-kit-product.js" />
     <Content Include="Scripts\javascript-product-by-attribute.js" />
     <Content Include="Scripts\jquery.modal-wizard.js" />
@@ -1411,6 +1412,7 @@
     <Content Include="Views\Theme\Smart\Orders\_ShipmentRule.cshtml" />
     <Content Include="Views\Theme\Smart\Orders\_ShippingAddress.cshtml" />
     <Content Include="Views\Theme\University\Orders\ConfirmPaymentMessage.cshtml" />
+    <Content Include="Views\Theme\University\Orders\_CheckoutProcessPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

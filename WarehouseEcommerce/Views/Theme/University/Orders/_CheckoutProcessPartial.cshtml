@@ -1,0 +1,29 @@
+﻿@using Ganedata.Core.Entities.Enums
+@model Ganedata.Core.Entities.Domain.CheckoutViewModel
+<section class="nb_sec nb_prdlisting_pgsec nb_sec_pb">
+    <div class="container">
+        <div class="breadCrumbtopsec">
+            <div class="nb_bread_crumbwrap">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li>></li>
+                        <li class="breadcrumb-item">
+                            <a href="#">Billing and shipping</a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="nb_sec checkconfirmSec">
+            @Html.Partial("_OrderProgressBar", OrderProgressStep.BillingAndShipping)
+
+            <div class="checkoutInnersec billandshipsec">
+                <h4 class="ordConfirmHead">Billing & Shipping</h4>
+
+                @Html.Partial("_" + (Model.CurrentStep).ToString(), Model)
+
+            </div>
+        </div>
+    </div>
+</section>

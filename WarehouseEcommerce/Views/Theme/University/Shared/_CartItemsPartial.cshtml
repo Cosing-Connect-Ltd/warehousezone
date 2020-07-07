@@ -93,9 +93,9 @@
                             </tr>
 
                             @foreach (var item in Model)
-                        {
-                            if (item?.ProductMaster?.ProductType != null && item.ProductMaster.ProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Kit)
                             {
+                                if (item?.ProductMaster?.ProductType != null && item.ProductMaster.ProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Kit)
+                                {
                                     <tr class="cmnRow">
                                         <td class="prd">
                                             <div class="prdCellwrap">
@@ -107,15 +107,15 @@
                                                         @(item.ProductMaster?.Name)
 
                                                         @if (item.KitProductCartItems != null && item.KitProductCartItems.Count > 0)
-                        {
-                            foreach (var cartitem in item.KitProductCartItems)
-                            {<p>
+                                                        {
+                                                            foreach (var cartitem in item.KitProductCartItems)
+                                                            {<p>
 
-                                    <b> @Convert.ToInt32(cartitem.Quantity)</b> x @cartitem.SimpleProductMaster.Name  <br />
+                                                                    <b> @Convert.ToInt32(cartitem.Quantity)</b> x @cartitem.SimpleProductMaster.Name  <br />
 
-                                </p>
+                                                                </p>
                                                             }
-                        }
+                                                        }
                                                     </span>
                                                 </div>
                                                 <div class="inrow btm">
@@ -272,7 +272,7 @@
                                 <td class="price"></td>
                                 <td class="qty subtotalCell" colspan="2">
                                     <div class="subtotalCellInner">
-                                        <span>Sub Total</span> <span>@(Model==null?"":Model.FirstOrDefault().CurrencySign) @(Model.FirstOrDefault().TotalAmount)</span>
+                                        <span>Sub Total</span> <span>@(Model==null?"":Model.FirstOrDefault()?.CurrencySign) @(Model.FirstOrDefault()?.TotalAmount)</span>
                                     </div>
                                 </td>
 
@@ -298,11 +298,12 @@
 
                 <div class="botomBtnsec">
 
-                    @if (Model != null && (!Model.FirstOrDefault().ShowCartPopUp) && Model.Count > 0)
+                    @if (Model.Count > 0 && Model != null && (!Model.FirstOrDefault().ShowCartPopUp) )
                     {
                         if (Model != null && Model.FirstOrDefault().ShowLoginPopUp)
                         {
-                            <button class="btmbtn pro" onclick="GetLoggedIn(@Model.FirstOrDefault().ShowLoginPopUp)">PROCEED TO CHECKOUT</button>
+                            var popup =(bool?)Model.FirstOrDefault().ShowLoginPopUp;
+                            <button class="btmbtn pro" onclick="GetLoggedIn('@popup')">PROCEED TO CHECKOUT</button>
                         }
                         else
                         {
@@ -310,7 +311,7 @@
                         }
                     }
                     <button class="btmbtn sho">CONTINUE SHOPPING</button>
-                    
+
                 </div>
             </div>
         </div>
