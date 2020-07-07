@@ -2606,13 +2606,25 @@ body.modal-open {
     text-transform: none;
 }
 
+.main-logo {
+    max-height: 224px;
+}
+
 @media (max-width: 768px) {
     .accordion {
         overflow-x: hidden;
     }
 
     .nb_header {
-        max-height: 163px;
+        height: 200px;
         padding: 35px 0px 18px 35px;
+    }
+
+    .main-logo {
+        max-height: 88px;
+    }
+
+    .uni-pages-pt{
+        padding-top: 200px !important;
     }
 }
