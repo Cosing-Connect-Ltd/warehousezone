@@ -2607,7 +2607,11 @@ body.modal-open {
 }
 
 .main-logo {
-    max-height: 224px;
+    max-height: 88px;
+}
+
+.nb_logowrap{
+    padding-top: 0px !important;
 }
 
 @media (max-width: 768px) {
@@ -2625,6 +2629,6 @@ body.modal-open {
     }
 
     .uni-pages-pt{
-        padding-top: 200px !important;
+        padding-top: 200px;
     }
 }
