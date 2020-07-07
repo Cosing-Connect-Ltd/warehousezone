@@ -93,6 +93,7 @@ namespace WarehouseEcommerce
                 cfg.CreateMap<WebsiteShippingRules, WebsiteShippingRulesViewModel>().ReverseMap();
                 cfg.CreateMap<AccountAddresses, AddressViewModel>().ReverseMap();
                 cfg.CreateMap<GlobalCountry, CountryViewModel>().ReverseMap();
+                cfg.CreateMap<TenantLocations, CollectionPointViewModel>().ReverseMap();
             });
 
             return config;

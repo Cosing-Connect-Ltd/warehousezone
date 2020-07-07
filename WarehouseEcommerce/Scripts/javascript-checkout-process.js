@@ -18,7 +18,9 @@ function moveToNextStep(e) {
         "ShipmentRuleId": e.dataset.shipmentruleid
         
     }
-    var checkoutStep = e.dataset.currentstep;
+
+
+    ChangeUrlParameterValue(e.dataset.currentstep);
     GetDataForNextStep(checkoutViewModels);
 }
 function GetDataForNextStep(checkoutViewModels, checkoutStep) {
@@ -35,5 +37,14 @@ function GetDataForNextStep(checkoutViewModels, checkoutStep) {
 
         }
     });
+
+}
+
+function ChangeUrlParameterValue(currentStep) {
+
+    var uri = location.href;
+    var uriData = updateQueryStringParameter(uri, "checkoutStep", currentStep);
+    window.history.pushState("object or string", "", uriData);
+
 
 }

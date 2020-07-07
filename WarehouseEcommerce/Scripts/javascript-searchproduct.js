@@ -362,7 +362,7 @@ function chooseDeliveryMethod() {
         "CurrentStep": nextStep,
         "ParentStep":1
     }
-
+    ChangeUrlParameterValue(nextStep);
     GetDataForNextStep(checkoutViewModels, nextStep);
 }
 
@@ -378,6 +378,7 @@ function chooseCollectionPoint(nextStep) {
         "CurrentStep": nextStep,
         "ParentStep": 3
     }
+    ChangeUrlParameterValue(nextStep);
     GetDataForNextStep(checkoutViewModels, nextStep);
 }
 
@@ -397,6 +398,7 @@ function chooseShippingRule(nextStep) {
         "CurrentStep": nextStep,
         "ParentStep": 4
     }
+    ChangeUrlParameterValue(nextStep);
     GetDataForNextStep(checkoutViewModels,nextStep);
 }
 

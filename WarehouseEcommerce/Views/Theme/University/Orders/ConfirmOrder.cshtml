@@ -1,10 +1,10 @@
-﻿@model List<Ganedata.Core.Entities.Domain.WebsiteCartItem>
+﻿@model Ganedata.Core.Entities.Domain.CheckoutViewModel
 @using Ganedata.Core.Entities.Enums;
 @{
     ViewBag.Title = "Confirm Order";
 }
 @{
-    var addresses = ViewBag.Addresses as List<Ganedata.Core.Entities.Domain.AccountAddresses>;
+    var addresses = Model.Addresses;
 
 }
 
@@ -47,7 +47,7 @@
                                 </p>
                             }
 
-                            if ((DeliveryMethod)ViewBag.DeliveryMethodId == DeliveryMethod.ToShipmentAddress)
+                            if ((DeliveryMethod?)Model.DeliveryMethodId == DeliveryMethod.ToShipmentAddress)
                             {
                                 <h4 class="subHead">
                                     Shipment Address
@@ -63,35 +63,38 @@
                             }
                         }
 
-                        @if ((DeliveryMethod)ViewBag.DeliveryMethodId == DeliveryMethod.ToPickupPoint && ViewBag.CollectionPoint != null)
+                        @if ((DeliveryMethod?)Model.DeliveryMethodId == DeliveryMethod.ToPickupPoint && Model.CollectionPoint != null)
                         {
                             <h4 class="subHead">
                                 Collection Point
                             </h4>
                             <p class="content">
-
-                                <b>@(ViewBag.CollectionPoint?.WarehouseName) </b> <br />
-                                @ViewBag.CollectionPoint.AddressLine1@(!string.IsNullOrEmpty(ViewBag.CollectionPoint.AddressLine2) ? $", {ViewBag.CollectionPoint.AddressLine2}" : "")@(!string.IsNullOrEmpty(ViewBag.CollectionPoint.AddressLine3) ? $", {ViewBag.CollectionPoint.AddressLine3}" : "") <br />
-                                @ViewBag.CollectionPoint.PostalCode@(!string.IsNullOrEmpty(ViewBag.CollectionPoint.City) ? $", {ViewBag.CollectionPoint.City}" : "")@(!string.IsNullOrEmpty(ViewBag.CollectionPoint.GlobalCountry?.CountryName) ? $", {ViewBag.CollectionPoint.GlobalCountry.CountryName}" : "")
+                                @if (Model.CollectionPoint != null)
+                                {
+                                    <b>@(Model.CollectionPoint.WarehouseName) </b> <br />
+                                    @Model.CollectionPoint.AddressLine1@(!string.IsNullOrEmpty(Model.CollectionPoint.AddressLine2) ? $", {Model.CollectionPoint.AddressLine2}" : "")
+                                    @(!string.IsNullOrEmpty(Model.CollectionPoint.AddressLine3) ? $", {Model.CollectionPoint.AddressLine3}" : "") <br />
+                                    @Model.CollectionPoint.PostalCode@(!string.IsNullOrEmpty(Model.CollectionPoint.City) ? $", {Model.CollectionPoint.City}" : "")@(!string.IsNullOrEmpty(Model.CollectionPoint.GlobalCountry?.CountryName) ? $", {Model.CollectionPoint.GlobalCountry.CountryName}" : "")
+                                }
                             </p>
                         }
 
                         <h4 class="subHead">
                             Delivery Method
                         </h4>
-                        @if ((DeliveryMethod)ViewBag.DeliveryMethodId == DeliveryMethod.ToPickupPoint)
+                        @if ((DeliveryMethod?)Model.DeliveryMethodId == DeliveryMethod.ToPickupPoint)
                         {
                             <p class="content">Pick up (from collection point) - Free</p>
                         }
                         else
                         {
-                            <p class="content">Delivery by @ViewBag.ShippingRule.Courier @(!string.IsNullOrEmpty(ViewBag.ShippingRule.Description?.Trim()) ? $"({ViewBag.ShippingRule.Description})" : "") - @ViewBag.CurrencySymbol@ViewBag.ShippingRule.Price</p>
+                            <p class="content">Delivery by @Model.ShippingRule.Courier @(!string.IsNullOrEmpty(Model.ShippingRule.Description?.Trim()) ? $"({Model.ShippingRule.Description})" : "") - @Model.CurrencySymbol@Model.ShippingRule.Price</p>
                         }
                         <h4 class="subHead">
                             Payment Method
                         </h4>
                         <p class="content">
-                            @((PaymentMethod)ViewBag.paymentMethod == PaymentMethod.SagePay ? "Sage Pay" : ((PaymentMethod)ViewBag.paymentMethod).ToString())
+                            @((PaymentMethod?)Model.PaymentMethodId == PaymentMethod.SagePay ? "Sage Pay" : ((PaymentMethod?)Model.PaymentMethodId).ToString())
                         </p>
                     </div>
                     <div class="offset-lg-1 col-lg-3">
@@ -99,20 +102,20 @@
                             Item Details
                         </h4>
                         <ul class="itemList">
-                            @foreach (var item in Model)
+                            @foreach (var item in Model.CartItems)
                             {
                                 <li>
                                     @(item.ProductMaster?.Name)<br />
-                                    @ViewBag.CurrencySymbol@item.UnitPrice, Qty: @item.Quantity
+                                    @ViewBag.CurrencySymbol@item.Price, Qty: @item.Qty
                                 </li>
                             }
                         </ul>
                         <h4 class="subHead">Total Amount</h4>
-                        <h4 class="subHead">@ViewBag.CurrencySymbol@(ViewBag.TotalPrice == null ? 0 : ViewBag.TotalPrice)</h4>
+                        <h4 class="subHead">@Model.CurrencySymbol@(Model?.TotalOrderAmount?? 0)</h4>
 
                     </div>
-                    <div class="saveAddrWrap mt-5 mb-5 ml-3 mr-3">
-                        @if ((PaymentMethod)ViewBag.paymentMethod == PaymentMethod.Paypal)
+                        <div class="saveAddrWrap mt-5 mb-5 ml-3 mr-3">
+                        @if ((PaymentMethod?)Model.PaymentMethodId == PaymentMethod.Paypal)
                         {
                             <form action="@((string)ViewBag.PAYPALURL)" method="post">
                                 <div class="row">
@@ -124,19 +127,19 @@
                                         <input type="hidden" name="return" value="@((string)ViewBag.RetUrl)">
                                         <input type="hidden" name="notify_url" value="@((string)ViewBag.PayPalIpnUrl)">
                                         <input type="hidden" NAME="currency_code" value="GBP">
-                                        <input type="hidden" name="OrderId" value="@ViewBag.OrdersId" />
-                                        <input type="hidden" name="amount" value="@ViewBag.TotalPrice" />
+                                        <input type="hidden" name="amount" value="@(Model?.TotalOrderAmount??0)" />
                                     </fieldset>
 
                                 </div>
                                 <div class="button-submit">
                                     <button type="Submit" name="submitNewsletter" class="saveAddrBtn">Proceed To Payment</button>
+                                    <a href="@Url.Action("checkout","orders",new{ checkoutStep=CheckoutStep.PaymentMethod})" class="btn saveAddrBtn">Back</a>
                                     @*<a href="@Url.Action("Index","Test")" class="btn btn-block cash-btn cashbtn" name="submitNewsletter"> Proceed To Payment</a>*@
                                 </div>
 
                             </form>
                         }
-                        else if ((PaymentMethod)ViewBag.paymentMethod == PaymentMethod.SagePay)
+                        else if ((PaymentMethod?)Model.PaymentMethodId == PaymentMethod.SagePay)
                         {
                             using (Html.BeginForm("SagePay", "Orders", FormMethod.Post))
                             {
@@ -144,14 +147,17 @@
                                     <fieldset>
 
                                         <input type="hidden" NAME="currency_code" value="GBP">
-                                        <input type="hidden" name="OrderId" value="@ViewBag.OrdersId" />
-                                        <input type="hidden" name="TotalPrice" value="@ViewBag.TotalPrice" />
+                                        @*<input type="hidden" name="OrderId" value="@ViewBag.OrdersId" />*@
+                                        <input type="hidden" name="TotalPrice" value="@(Model?.TotalOrderAmount??0)" />
 
                                     </fieldset>
                                 </div>
                                 <div class="button-submit">
                                     <button type="Submit" name="submitNewsletter" class="saveAddrBtn">Proceed To Payment</button>
+                                    <a href="@Url.Action("checkout","orders",new{ checkoutStep=CheckoutStep.PaymentMethod})" class="btn saveAddrBtn">Back</a>
                                 </div>
+
+
                             }
                         }
                     </div>

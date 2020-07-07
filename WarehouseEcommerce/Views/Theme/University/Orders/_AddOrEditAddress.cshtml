@@ -23,7 +23,7 @@
 
         @using (Html.BeginForm("SaveAddress", "Orders", new { deliveryMethodId = Model.DeliveryMethodId, billingAddressId = Model.BillingAddressId }))
         {
-            @Html.HiddenFor(model => model.AccountAddress.Id)
+            @Html.HiddenFor(model => model.AccountAddress.AddressID)
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-group">

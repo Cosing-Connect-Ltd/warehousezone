@@ -517,7 +517,7 @@ namespace Ganedata.Core.Services
         {
             if (customeraddresses.AddressID >= 1)
             {
-                var previousAddress = _currentDbContext.AccountAddresses.Find(customeraddresses.AddressID);
+                var previousAddress = _currentDbContext.AccountAddresses.FirstOrDefault(u=>u.AddressID==customeraddresses.AddressID);
                 previousAddress.IsDeleted = true;
                 previousAddress.DateUpdated = DateTime.UtcNow;
                 previousAddress.UpdatedBy = currentUserId;
