@@ -85,7 +85,7 @@
     </div>
     @Html.Action("_TopHeaderPartial", "Home")
     <div class="pl-0 pr-0 uni-pages-pt uni-pages-main">
-        @Html.Partial("_DeliveryInfoPartial")
+        @Html.Action("_DeliveryInfoPartial","Home")
         @RenderBody()
     </div>
 

@@ -2,6 +2,7 @@
 using Ganedata.Core.Services;
 using System;
 using System.Configuration;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -235,6 +236,12 @@ namespace WarehouseEcommerce.Controllers
         public PartialViewResult _BlogPartial()
         {
             var data = _tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, CurrentTenantWebsite.SiteID).OrderByDescending(u => u.DateCreated).Where(u => u.Type == ContentType.post).Take(3).ToList();
+            return PartialView(data);
+        }
+
+        public PartialViewResult _DeliveryInfoPartial()
+        {
+            var data = _tenantWebsiteService.GetAllValidWebsiteDeliveryNavigations(CurrentTenantId, CurrentTenantWebsite.SiteID).OrderByDescending(u => u.SortOrder).ToList();
             return PartialView(data);
         }
 

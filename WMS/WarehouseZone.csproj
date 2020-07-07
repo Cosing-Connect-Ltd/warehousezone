@@ -518,6 +518,7 @@
     <Compile Include="Controllers\AuthUserGroupsController.cs" />
     <Compile Include="Controllers\ApiCredentialsController.cs" />
     <Compile Include="Controllers\WebAPI\ApiWebsitesController.cs" />
+    <Compile Include="Controllers\WebsiteDeliveryNavigationsController.cs" />
     <Compile Include="Controllers\WebsiteWarehousesController.cs" />
     <Compile Include="Controllers\UISettingsController.cs" />
     <Compile Include="Controllers\TooltipsController.cs" />
@@ -2705,6 +2706,10 @@
     <Content Include="Views\Theme\Default\WebsiteWarehouses\_WebsiteWarehousesList.cshtml" />
     <Content Include="Views\Theme\Default\WebsiteWarehouses\Index.cshtml" />
     <Content Include="Views\Theme\Default\TenantWebsites\EditLayoutSettings.cshtml" />
+    <Content Include="Views\Theme\Default\WebsiteDeliveryNavigations\Index.cshtml" />
+    <Content Include="Views\Theme\Default\WebsiteDeliveryNavigations\Create.cshtml" />
+    <Content Include="Views\Theme\Default\WebsiteDeliveryNavigations\_WebSiteDeliveryNavigationList.cshtml" />
+    <Content Include="Views\Theme\Default\WebsiteDeliveryNavigations\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

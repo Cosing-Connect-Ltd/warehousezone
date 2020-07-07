@@ -212,6 +212,7 @@ namespace Ganedata.Core.Data
         public DbSet<AbandonedCartSetting> AbandonedCartSettings { get; set; }
         public DbSet<WebsiteLayoutSettings> WebsiteLayoutSettings { get; set; }
         public DbSet<KitProductCartItem> KitProductCartItems { get; set; }
+        public DbSet<WebsiteDeliveryNavigation> WebsiteDeliveryNavigations { get; set; }
 
         //#end region
     }

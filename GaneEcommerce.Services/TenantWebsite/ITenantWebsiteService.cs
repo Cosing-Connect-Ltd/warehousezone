@@ -122,6 +122,12 @@ namespace Ganedata.Core.Services
         void SendNotificationForAbandonedCarts();
         CheckoutViewModel SetCheckOutProcessModel(CheckoutViewModel checkoutViewModel, int siteId, int tenantId, int userId, string sessionKey);
 
+        // deliveryInfoNavigation//
+        IEnumerable<WebsiteDeliveryNavigation> GetAllValidWebsiteDeliveryNavigations(int  tenantId, int siteId);
+        WebsiteDeliveryNavigation GetWebsiteDeliveryNavigationById(int id);
+        WebsiteDeliveryNavigation CreateOrUpdateWebsiteDeliveryNavigation(WebsiteDeliveryNavigation websiteDeliveryNavigation, int userId, int tenantId);
+        int RemoveWebsiteDeliveryNavigation(int id, int userId);
+
 
 
     }

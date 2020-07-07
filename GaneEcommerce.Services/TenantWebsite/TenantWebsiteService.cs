@@ -1362,5 +1362,58 @@ namespace Ganedata.Core.Services
             return new Tuple<string, string>(body, subject);
         }
 
+
+        // deliveryInfoNavigation//
+        public IEnumerable<WebsiteDeliveryNavigation> GetAllValidWebsiteDeliveryNavigations(int tenantId, int siteId)
+        {
+            return _currentDbContext.WebsiteDeliveryNavigations.Where(u => u.TenantId == tenantId && u.IsDeleted != true && u.SiteId == siteId);
+        }
+
+        public WebsiteDeliveryNavigation GetWebsiteDeliveryNavigationById(int id)
+        {
+            return _currentDbContext.WebsiteDeliveryNavigations.Find(id);
+        }
+
+        public WebsiteDeliveryNavigation CreateOrUpdateWebsiteDeliveryNavigation(
+            WebsiteDeliveryNavigation websiteDeliveryNavigation, int userId, int tenantId)
+        {
+            if (websiteDeliveryNavigation.Id <= 0)
+            {
+                websiteDeliveryNavigation.TenantId = tenantId;
+                websiteDeliveryNavigation.UpdateCreatedInfo(userId);
+                _currentDbContext.WebsiteDeliveryNavigations.Add(websiteDeliveryNavigation);
+                _currentDbContext.SaveChanges();
+            }
+            else
+            {
+                var updatedRecored = _currentDbContext.WebsiteDeliveryNavigations.AsNoTracking().FirstOrDefault(u => u.Id == websiteDeliveryNavigation.Id);
+                if (updatedRecored != null)
+                {
+                    websiteDeliveryNavigation.CreatedBy = updatedRecored.CreatedBy;
+                    websiteDeliveryNavigation.DateCreated = updatedRecored.DateCreated;
+                    websiteDeliveryNavigation.TenantId = tenantId;
+                    websiteDeliveryNavigation.UpdateUpdatedInfo(userId);
+                    _currentDbContext.Entry(websiteDeliveryNavigation).State = System.Data.Entity.EntityState.Modified;
+                    _currentDbContext.SaveChanges();
+                }
+            }
+
+            return websiteDeliveryNavigation;
+        }
+
+        public int RemoveWebsiteDeliveryNavigation(int id, int userId)
+        {
+            var updatedRecored = _currentDbContext.WebsiteDeliveryNavigations.AsNoTracking().FirstOrDefault(u => u.Id == id);
+            if (updatedRecored != null)
+            {
+                updatedRecored.IsDeleted = true;
+                updatedRecored.UpdateUpdatedInfo(userId);
+                _currentDbContext.Entry(updatedRecored).State = System.Data.Entity.EntityState.Modified;
+                _currentDbContext.SaveChanges();
+            }
+
+            return updatedRecored.SiteId;
+        }
+
     }
 }
