@@ -120,7 +120,7 @@ namespace Ganedata.Core.Services
         bool RemoveCartItem(int cartId, int siteId, int? userId, string sessionKey);
         int RemoveWishListItem(int ProductId, int SiteId, int UserId);
         void SendNotificationForAbandonedCarts();
-        CheckoutViewModel SetCheckOutProcessModel(int? accountId, int? accountAddressId, int? billingAddressId, int? shippingAddressId, int? deliveryMethodId, int? collectionPointId, int? step, int? parentStep, int? shipmentRuleId, int? siteId, int? tenantId, int? userId, string sessionKey);
+        CheckoutViewModel SetCheckOutProcessModel(CheckoutViewModel checkoutViewModel, int siteId, int tenantId, int userId, string sessionKey);
 
 
 

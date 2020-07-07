@@ -18,8 +18,8 @@ namespace Ganedata.Core.Entities.Domain
             Addresses = new List<AddressViewModel>();
             CartItems = new List<OrderDetailSessionViewModel>();
             ShippingRules = new List<WebsiteShippingRulesViewModel>();
-            CurrentStep = (int) CheckoutStep.BillingAddress;
-            ParentStep= (int)CheckoutStep.BillingAddress;
+            CurrentStep = (int)CheckoutStep.BillingAddress;
+            ParentStep = (int)CheckoutStep.BillingAddress;
         }
 
         public int? AccountId { get; set; }
@@ -28,11 +28,15 @@ namespace Ganedata.Core.Entities.Domain
         public int? ShippingAddressId { get; set; }
         public int? BillingAddressId { get; set; }
         public int? ShipmentRuleId { get; set; }
+
+        public int? PaymentMethodId { get; set; }
         public CheckoutStep? CurrentStep { get; set; }
         public int? DeliveryMethodId { get; set; }
         public int? CollectionPointId { get; set; }
 
         public string CurrencySymbol { get; set; }
+
+        public decimal TotalOrderAmount => Math.Round((CartItems?.Sum(u => u.ProductTotalAmount) ?? 0) + (ShippingRule?.Price ?? 0), 2);
 
         public CheckoutStep? ParentStep { get; set; }
         public List<AddressViewModel> Addresses { get; set; }
@@ -41,7 +45,8 @@ namespace Ganedata.Core.Entities.Domain
         public List<OrderDetailSessionViewModel> CartItems { get; set; }
 
         public List<WebsiteShippingRulesViewModel> ShippingRules { get; set; }
-
+        public WebsiteShippingRulesViewModel ShippingRule { get; set; }
+        public CollectionPointViewModel CollectionPoint { get; set; }
 
 
 
@@ -69,5 +74,19 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Weight in Grams")]
         public int WeightinGrams { get; set; }
         public decimal Price { get; set; }
+    }
+    [Serializable]
+    public class CollectionPointViewModel
+    {
+        public int WarehouseId { get; set; }
+        public string WarehouseName { get; set; }
+        public string AddressLine1 { get; set; }
+        public string AddressLine2 { get; set; }
+        public string AddressLine3 { get; set; }
+        public string PostalCode { get; set; }
+        public string City { get; set; }
+        public int CountryID { get; set; }
+        public virtual CountryViewModel GlobalCountry { get; set; }
+
     }
 }

@@ -160,37 +160,20 @@ namespace WarehouseEcommerce.Controllers
             return RedirectToAction("Checkout", new CheckoutViewModel(){AccountId = accountId, BillingAddressId = billingAddressId, DeliveryMethodId = deliveryMethodId, CurrentStep = CheckoutStep.ShippingAddress });
         }
 
-        public ActionResult ConfirmOrder(int accountId, int? shippingAddressId, int? shipmentRuleId, int deliveryMethodId, int paymentTypeId, int? collectionPointId)
+        public ActionResult ConfirmOrder(int paymentTypeId)
         {
-            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
+
+            var model = Session["CheckoutViewModel"] as CheckoutViewModel;
+            model= _tenantWebsiteService.SetCheckOutProcessModel(model, CurrentTenantWebsite.SiteID, CurrentTenantId, CurrentUserId, Session.SessionID);
+            model.PaymentMethodId = paymentTypeId;
             ViewBag.cart = true;
             ViewBag.CartModal = true;
             ViewBag.paymentMethod = paymentTypeId;
-            List<AccountAddresses> accountAddresses = new List<AccountAddresses>();
-            if ((DeliveryMethod)deliveryMethodId == DeliveryMethod.ToShipmentAddress)
-            {
-                accountAddresses.Add(AccountServices.GetAccountAddressById(shippingAddressId.Value));
-                var shippingRule = _tenantWebsiteService.GetWebsiteShippingRulesById(shipmentRuleId.Value);
-                shippingRule.Price = Math.Round(((shippingRule.Price) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
-                ViewBag.ShippingRule = shippingRule;
-            }
-            accountAddresses.Add(AccountServices.GetAllValidAccountAddressesByAccountId(accountId).FirstOrDefault(u => u.AddTypeBilling == true));
-            ViewBag.Addresses = accountAddresses;
-            var models = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId, HttpContext.Session.SessionID).ToList();
-            var orders = OrderService.CreateShopOrder(accountAddresses.FirstOrDefault().AccountID, models, CurrentTenantId, CurrentUserId, CurrentWarehouseId, CurrentTenantWebsite.SiteID);
-            ViewBag.TotalPrice = Math.Round(((models.Sum(u => u.UnitPrice * u.Quantity)) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value)), 2);
-            ViewBag.CurrencySymbol = currencyyDetail.Symbol;
-            ViewBag.DeliveryMethodId = deliveryMethodId;
-            if ((DeliveryMethod)deliveryMethodId == DeliveryMethod.ToPickupPoint)
-            {
-                ViewBag.CollectionPoint = _tenantLocationServices.GetActiveTenantLocationById(collectionPointId.Value);
-            }
             ViewBag.RetUrl = _paypalReturnUrl;
             ViewBag.PAYPALURL = _paypalUrl;
             ViewBag.PayPalIpnUrl = _paypalIpnUrl;
-            ViewBag.OrdersId = orders.OrderID;
-
-            return View(models);
+            Session["AllCheckoutData"] = model;
+            return View(model);
         }
 
         public async Task<JsonResult> GetApiAddressAsync(string postCode)
@@ -363,9 +346,11 @@ namespace WarehouseEcommerce.Controllers
             switch (model.CurrentStep)
             {
                 case CheckoutStep.BillingAddress:
+                    model.BillingAddressId = null;
                     model.Addresses =  _mapper.Map(AccountServices.GetAllValidAccountAddressesByAccountId(model.AccountId ?? 0).Where(u => (!model.BillingAddressId.HasValue || u.AddressID == model.BillingAddressId) && u.AddTypeBilling == true).ToList(), new List<AddressViewModel>());
                     break;
                 case CheckoutStep.ShippingAddress:
+                    model.ShippingAddressId = null;
                     model.Addresses = _mapper.Map(AccountServices.GetAllValidAccountAddressesByAccountId(model.AccountId ?? 0).Where(u => (!model.ShippingAddressId.HasValue || u.AddressID == model.ShippingAddressId) && u.AddTypeShipping == true && u.IsDeleted != true).ToList(),new List<AddressViewModel>());
                     break;
                 case CheckoutStep.AddOrEditAddress:
