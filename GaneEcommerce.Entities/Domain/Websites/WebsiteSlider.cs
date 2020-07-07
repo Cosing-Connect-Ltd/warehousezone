@@ -15,6 +15,8 @@ namespace Ganedata.Core.Entities.Domain
         public string Text { get; set; }
         public string ButtonText { get; set; }
         public string ButtonLinkUrl { get; set; }
+        public string TextColor { get; set; }
+        public string ForeColor { get; set; }
         public int SortOrder { get; set; }
         public bool IsActive { get; set; }
         [ForeignKey("SiteID")]

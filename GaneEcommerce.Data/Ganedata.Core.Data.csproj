@@ -939,6 +939,10 @@
     <Compile Include="Migrations\202007072009467_added-websitedeliveryNavigation.designer.cs">
       <DependentUpon>202007072009467_added-websitedeliveryNavigation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007072229451_added-TextColor-and-ForeColor-to-WebsiteSliders-table.cs" />
+    <Compile Include="Migrations\202007072229451_added-TextColor-and-ForeColor-to-WebsiteSliders-table.designer.cs">
+      <DependentUpon>202007072229451_added-TextColor-and-ForeColor-to-WebsiteSliders-table.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1963,6 +1967,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007072009467_added-websitedeliveryNavigation.resx">
       <DependentUpon>202007072009467_added-websitedeliveryNavigation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007072229451_added-TextColor-and-ForeColor-to-WebsiteSliders-table.resx">
+      <DependentUpon>202007072229451_added-TextColor-and-ForeColor-to-WebsiteSliders-table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

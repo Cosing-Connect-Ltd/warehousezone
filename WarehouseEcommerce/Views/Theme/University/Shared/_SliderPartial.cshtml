@@ -16,8 +16,8 @@
                              alt=" @item.ImageAltTag" />
                         <div class="np_bannerContentOuter">
                             <div class="nb_bannerCaptionWrap">
-                                <h5>@item.Text</h5>
-                                <a href="@item.ButtonLinkUrl">@item.ButtonText</a>
+                                <h5 style="color:@(!string.IsNullOrEmpty(item.TextColor) ? @item.TextColor : string.Empty); background-color:@(!string.IsNullOrEmpty(item.ForeColor) ? @item.ForeColor : string.Empty)">@item.Text</h5>
+                                <a style="color:@(!string.IsNullOrEmpty(item.TextColor) ? @item.TextColor : string.Empty); background-color:@(!string.IsNullOrEmpty(item.ForeColor) ? @item.ForeColor : string.Empty)" href="@item.ButtonLinkUrl">@item.ButtonText</a>
                             </div>
                         </div>
                     </div>
@@ -30,10 +30,10 @@
                              alt=" @item.ImageAltTag" />
                         <div class="np_bannerContentOuter">
                             <div class="nb_bannerCaptionWrap">
-                                <h5>
+                                <h5 style="color:@(!string.IsNullOrEmpty(item.TextColor) ? @item.TextColor : string.Empty); background-color:@(!string.IsNullOrEmpty(item.ForeColor) ? @item.ForeColor : string.Empty)">
                                     @item.Text
                                 </h5>
-                                <a href="@item.ButtonLinkUrl">@item.ButtonText</a>
+                                <a style="color:@(!string.IsNullOrEmpty(item.TextColor) ? @item.TextColor : string.Empty); background-color:@(!string.IsNullOrEmpty(item.ForeColor) ? @item.ForeColor : string.Empty)" href="@item.ButtonLinkUrl">@item.ButtonText</a>
                             </div>
                         </div>
                     </div>

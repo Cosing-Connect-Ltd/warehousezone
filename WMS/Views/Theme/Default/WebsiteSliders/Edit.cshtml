@@ -51,92 +51,108 @@
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.Id)
     @Html.HiddenFor(model => model.SiteID)
-    <div class="col-md-12">
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.Text, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.Text, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
-            </div>
+<div class="col-md-12">
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.Text, htmlAttributes: new { @class = "control-label col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.Text, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
         </div>
+    </div>
 
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.ButtonText, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.ButtonText, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ButtonText, "", new { @class = "text-danger" })
-            </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.ButtonText, htmlAttributes: new { @class = "control-label col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.ButtonText, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ButtonText, "", new { @class = "text-danger" })
         </div>
+    </div>
 
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.ButtonLinkUrl, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.ButtonLinkUrl, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ButtonLinkUrl, "", new { @class = "text-danger" })
-            </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.ButtonLinkUrl, htmlAttributes: new { @class = "control-label col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.ButtonLinkUrl, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ButtonLinkUrl, "", new { @class = "text-danger" })
         </div>
+    </div>
 
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.SortOrder, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.SortOrder, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SortOrder, "", new { @class = "text-danger" })
-            </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.TextColor, htmlAttributes: new { @class = "control-label col-md-4" })
+        <div class="col-md-8">
+            @Html.TextBoxFor(model => model.TextColor, new { @class = "jscolor {required:false,hash:true, padding:4} form-control" })
+            @Html.ValidationMessageFor(model => model.TextColor, "", new { @class = "text-danger" })
         </div>
+    </div>
 
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.IsActive)
-                    @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
-                </div>
-            </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.ForeColor, htmlAttributes: new { @class = "control-label col-md-4" })
+        <div class="col-md-8">
+            @Html.TextBoxFor(model => model.ForeColor, new { @class = "jscolor {required:false,hash:true, padding:4} form-control" })
+            @Html.ValidationMessageFor(model => model.ForeColor, "", new { @class = "text-danger" })
         </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.Label("Image", new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.Partial("_Uploader")
-                @Html.Hidden("FileLength", (bool?)ViewBag.FileLength)
-                <br />
-                <div id="dvfiles">
+    </div>
 
-                    <strong>Uploaded Files</strong>
-                    @foreach (var file in ViewBag.Files)
-                    {
-
-                        <table>
-                            <tr>
-                                <td id="tdProductfileName">@file</td>
-                                <td>
-                                    <p>&nbsp;</p>
-                                </td>
-                                <td><a class="LRemove" onclick="_RemoveLogoFile('@file')">Remove</a></td>
-                                <td>
-                                    <p>&nbsp;</p>
-                                </td>
-
-                            </tr>
-                        </table>
-                    }
-                </div>
-            </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.SortOrder, htmlAttributes: new { @class = "control-label col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.SortOrder, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.SortOrder, "", new { @class = "text-danger" })
         </div>
+    </div>
 
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.ImageAltTag, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.ImageAltTag, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ImageAltTag, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            <div class="col-md-offset-2 col-md-10 bottom-right">
-                <input type="submit" value="Save" class="btn btn-primary" />
-                <div class="back-list">@Html.ActionLink("Back to List", "Index", new { SiteId=Model.SiteID }, new { @class = "btn btn-default" })</div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-4" })
+        <div class="col-md-8">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.IsActive)
+                @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
             </div>
         </div>
     </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.Label("Image", new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.Partial("_Uploader")
+            @Html.Hidden("FileLength", (bool?)ViewBag.FileLength)
+            <br />
+            <div id="dvfiles">
+
+                <strong>Uploaded Files</strong>
+                @foreach (var file in ViewBag.Files)
+                {
+
+                    <table>
+                        <tr>
+                            <td id="tdProductfileName">@file</td>
+                            <td>
+                                <p>&nbsp;</p>
+                            </td>
+                            <td><a class="LRemove" onclick="_RemoveLogoFile('@file')">Remove</a></td>
+                            <td>
+                                <p>&nbsp;</p>
+                            </td>
+
+                        </tr>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.ImageAltTag, htmlAttributes: new { @class = "control-label col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.ImageAltTag, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ImageAltTag, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        <div class="col-md-offset-2 col-md-10 bottom-right">
+            <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="back-list">@Html.ActionLink("Back to List", "Index", new { SiteId = Model.SiteID }, new { @class = "btn btn-default" })</div>
+        </div>
+    </div>
+</div>
 }
 <script id="uploaderTenantDept" type="text/x-jquery-tmpl">
     <tr>
