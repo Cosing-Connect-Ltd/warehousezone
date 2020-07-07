@@ -132,10 +132,8 @@
             if (tokenisationResult.success) {
                 $('<input>').attr({ type: 'hidden', name: 'cardIdentifier', value: tokenisationResult.cardIdentifier }).appendTo('#sagePaymentForm');
                 $("#sagePaymentForm").submit()
-                debugger;
                 //alert(tokenisationResult.cardIdentifier);
             } else {
-                debugger;
                 alert(tokenisationResult.error.errorMessage);
             }
         }

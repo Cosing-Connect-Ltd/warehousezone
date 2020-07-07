@@ -14,7 +14,6 @@
                     $this.attr("data-current-step", stepNumber);
                 }
                 else if (navDir === 'next') {
-                    debugger;
                     var status = false;
                     var currentStep = $("#kit-product").attr("data-current-step");
                     var mainStep = currentStep;
@@ -72,7 +71,6 @@
                 var kitProductCartItems = [];
                 var pid = $("#main-kit-product").val();
                 $("[id^=fieldset-]").each(function (e) {
-                    debugger;
                     var productid = $(this).find("#selected-productids").data("productid");
                     var qty = $(this).find("#customCheck").val();
                     if (productid !== undefined && productid !== null && productid !== "" && productid > 0) {

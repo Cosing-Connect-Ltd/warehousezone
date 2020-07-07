@@ -31,7 +31,6 @@ function GetDataForNextStep(checkoutViewModels, checkoutStep) {
         data: { checkoutViewModel: checkoutViewModels, checkoutStep: checkoutStep},
         dataType: 'html',
         success: function (data) {
-            debugger;
 
             $(".checkout-main-div").html("").html(data);
 
