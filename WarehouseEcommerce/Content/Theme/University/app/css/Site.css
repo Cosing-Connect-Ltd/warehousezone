@@ -2635,3 +2635,6 @@ body.modal-open {
 .nb_sec_navwrap .nb_sec_navlist li {
     cursor: pointer;
 }
+.ui-widget.ui-widget-content {
+    z-index: 1000 !important;
+}
