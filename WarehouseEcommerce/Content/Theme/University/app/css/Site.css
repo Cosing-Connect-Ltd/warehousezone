@@ -670,7 +670,7 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
 
 .uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a {
     pointer-events: none;
-    cursor: default;
+    cursor: pointer;
 }
 
 .uni-pages-main .nb_prdlisting_pgsec .breadCrumbtopsec .nb_bread_crumbwrap nav ol li:before {
@@ -2629,6 +2629,6 @@ body.modal-open {
     }
 
     .uni-pages-pt{
-        padding-top: 200px;
+        padding-top: 200px !important;
     }
 }
