@@ -241,7 +241,7 @@ namespace WarehouseEcommerce.Controllers
 
         public PartialViewResult _DeliveryInfoPartial()
         {
-            var data = _tenantWebsiteService.GetAllValidWebsiteDeliveryNavigations(CurrentTenantId, CurrentTenantWebsite.SiteID).OrderByDescending(u => u.SortOrder).ToList();
+            var data = _tenantWebsiteService.GetAllValidWebsiteDeliveryNavigations(CurrentTenantId, CurrentTenantWebsite.SiteID).OrderBy(u => u.SortOrder).ToList();
             return PartialView(data);
         }
 
