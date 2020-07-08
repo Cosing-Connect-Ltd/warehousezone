@@ -24,8 +24,8 @@ $(function () {
         slide: true
     });
 
-    var totalItems = $(".item").length;
-    var currentIndex = $("div.active").index() + 1;
+    //var totalItems = $(".item").length;
+    //var currentIndex = $("div.active").index() + 1;
     //$(".nb_bnr_count.rgt").html("0" + totalItems);
     //$(".nb_bnr_count.lft").html("0" + currentIndex);
     //$(".nb_hm_bnr_carrousle").bind("slid.bs.carousel", function () {

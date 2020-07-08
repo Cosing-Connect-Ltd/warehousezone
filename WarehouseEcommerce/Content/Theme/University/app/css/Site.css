@@ -2635,7 +2635,13 @@ body.modal-open {
     margin: 15px;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 768px) {
+
+    .accordion {
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
     .nb_top_catSection .accordion ul {
         width: 100%;
         display: flex;
@@ -2645,19 +2651,17 @@ body.modal-open {
         flex-wrap: wrap;
     }
 
+
+        .accordion ul:hover li:hover,
         .nb_top_catSection .accordion ul li {
-            width: 170px;
-            display: inline-block;
-            margin: 15px;
-            transform: skew(0deg);
+            width: 100% !important;
         }
-}
 
-@media (max-width: 768px) {
-
-    .accordion {
-        overflow-x: hidden;
-        overflow-y: visible;
+        .nb_top_catSection .accordion ul li {
+        width: 100% !important;
+        display: inline-block;
+        margin: 1px;
+        transform: skew(0deg);
     }
 
     .nb_header {
@@ -2672,21 +2676,6 @@ body.modal-open {
     .uni-pages-pt {
         padding-top: 200px !important;
     }
-
-    .nb_top_catSection .accordion ul {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-        .nb_top_catSection .accordion ul li {
-            width: 100%;
-            display: inline-block;
-            margin: 1px;
-        }
 }
 
 .nb_sec_navwrap .nb_sec_navlist li {
