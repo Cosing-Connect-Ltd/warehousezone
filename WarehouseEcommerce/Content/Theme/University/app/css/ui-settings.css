@@ -220,7 +220,8 @@ h6,
 .nb_header,
 .nb_footer,
 .accordion ul li div a h2,
-#signupPopup .modal-dialog .modal-content .modal-body .registrationSec .regBtn {
+#signupPopup .modal-dialog .modal-content .modal-body .registrationSec .regBtn,
+.res_navWrapper .nb_logowrap_res {
     background-color: var(--primary-color);
 }
 
@@ -300,7 +301,7 @@ h6,
 .youmayalLikesec .ymalList li:hover .contwrap .ymalListHead,
 .myAccLeftNavsec .tabcontentInner .myAccwishlistList > li .myAccwishlistList_inner .cont_left .prod_det .stkStatus.out,
 .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList li a:hover,
-.uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a:hover > .uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a i {
+.uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a:hover {
     color: var(--secondary-color);
 }
 
@@ -524,7 +525,8 @@ nb_prdpg_fg label,
 .nb_header .nb_headicolst li.cartIcoWrap a span,
 .nb_header .nb_mainnav > ul > li > a,
 .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner,
-.nb_header .nb_headicolst li a {
+.nb_header .nb_headicolst li a,
+.nb_res_nav_closeTrigger {
     color: var(--light-font-color);
 }
 

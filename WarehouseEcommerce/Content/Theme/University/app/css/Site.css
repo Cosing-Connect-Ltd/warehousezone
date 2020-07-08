@@ -24,7 +24,7 @@
 }
 
 .uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a {
-    
+
     cursor: default;
 }
 
@@ -664,7 +664,7 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
     margin-right: unset;
 }
 
-.uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a:hover > .uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a i {
+.uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a:hover {
     color: var(--secondary-color);
 }
 
@@ -2613,9 +2613,51 @@ body.modal-open {
     padding-top: 0px !important;
 }
 
+
+.nb_sec_navwrap .nb_sec_navlist li {
+    cursor: pointer;
+}
+
+.res_navWrapper .nb_logowrap_res {
+    width: calc(100% + 72px);
+    background-color: #111111;
+    margin: -36px -36px 20px -36px;
+    padding: 30px;
+}
+
+.nb_res_nav_closeTrigger {
+    color: #ffffff;
+}
+
+
+.nb_top_catSection .accordion ul li {
+    width: 25%;
+    margin: 15px;
+}
+
+@media (max-width: 991px) {
+    .nb_top_catSection .accordion ul {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+        .nb_top_catSection .accordion ul li {
+            width: 170px;
+            display: inline-block;
+            margin: 15px;
+            transform: skew(0deg);
+        }
+}
+
 @media (max-width: 768px) {
+
     .accordion {
         overflow-x: hidden;
+        overflow-y: visible;
     }
 
     .nb_header {
@@ -2627,14 +2669,30 @@ body.modal-open {
         max-height: 88px;
     }
 
-    .uni-pages-pt{
+    .uni-pages-pt {
         padding-top: 200px !important;
     }
+
+    .nb_top_catSection .accordion ul {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+        .nb_top_catSection .accordion ul li {
+            width: 100%;
+            display: inline-block;
+            margin: 1px;
+        }
 }
 
 .nb_sec_navwrap .nb_sec_navlist li {
     cursor: pointer;
 }
+
 .ui-widget.ui-widget-content {
     z-index: 1000 !important;
 }

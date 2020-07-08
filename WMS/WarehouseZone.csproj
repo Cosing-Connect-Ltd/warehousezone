@@ -2674,7 +2674,6 @@
     <Content Include="Views\Theme\Modern\WebsiteNavigations\Index.cshtml" />
     <Content Include="Views\Theme\Modern\WebsiteNavigations\_NavigationList.cshtml" />
     <Content Include="Views\Theme\Modern\WebsiteNavigations\_NavProductList.cshtml" />
-    <Content Include="Views\Theme\Modern\WebsiteNavigations\_Uploader.cshtml" />
     <Content Include="Views\Theme\Modern\WebsiteShippingRules\Create.cshtml" />
     <Content Include="Views\Theme\Modern\WebsiteShippingRules\Delete.cshtml" />
     <Content Include="Views\Theme\Modern\WebsiteShippingRules\Details.cshtml" />
@@ -2710,7 +2709,6 @@
     <Content Include="Views\Theme\Default\WebsiteDeliveryNavigations\Create.cshtml" />
     <Content Include="Views\Theme\Default\WebsiteDeliveryNavigations\_WebSiteDeliveryNavigationList.cshtml" />
     <Content Include="Views\Theme\Default\WebsiteDeliveryNavigations\Edit.cshtml" />
-    <Content Include="Views\Theme\Default\WebsiteNavigations\_Uploader.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
