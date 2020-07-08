@@ -35,7 +35,7 @@
             $("#dvfiles").show();
             var fileData = e.callbackData.split('|');
             var Fileobj = { FileName: fileData };
-            var result = $("#uploaderdefaultImage").tmpl(Fileobj);
+            var result = $("#uploaderDefaultImage").tmpl(Fileobj);
             $("#dvfiles").append(result);
             $('.se-pre-con').hide();
             $("#FileLength").val('True');
@@ -194,7 +194,7 @@
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.Label("Default Image", new { @class = "col-md-4" })
                 <div class="col-md-8">
-                    @Html.Action("_Uploader", new { Name = "ImageDefault" })
+                    @Html.Action("_Uploader", new { Name = "DefaultImage" })
                     @Html.Hidden("FileLength", (bool?)ViewBag.FileLength)
                     <br />
                     <div id="dvfiles">
@@ -247,7 +247,7 @@
     </div>
 
 }
-<script id="uploaderdefaultImage" type="text/x-jquery-tmpl">
+<script id="uploaderDefaultImage" type="text/x-jquery-tmpl">
     <tr>
         <td id="tdfileName">${FileName}</td>
         <td><p>&nbsp;</p></td>

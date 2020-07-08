@@ -58,14 +58,14 @@ namespace WMS.Controllers
         public ActionResult _Uploader(string Name)
         {
             ViewBag.ControllerName = "WebsiteNavigations";
-            ViewBag.Name = Name;
+            ViewBag.ImageUploadControlName = Name;
 
             return PartialView("_Uploader");
         }
         public ActionResult _HoverUploader(string Name)
         {
             ViewBag.ControllerName = "WebsiteNavigations";
-            ViewBag.Name = Name;
+            ViewBag.HoverImageUploadControlName = Name;
 
             return PartialView("_HoverUploader");
         }
@@ -154,18 +154,18 @@ namespace WMS.Controllers
         }
 
         // POST: WebsiteNavigations/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(WebsiteNavigation websiteNavigation, string ProductsWithIds, IEnumerable<DevExpress.Web.UploadedFile> ImageDefault, IEnumerable<DevExpress.Web.UploadedFile> HoverImage)
+        public ActionResult Create(WebsiteNavigation websiteNavigation, string ProductsWithIds, IEnumerable<DevExpress.Web.UploadedFile> DefaultImage, IEnumerable<DevExpress.Web.UploadedFile> HoverImage)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (websiteNavigation != null)
             {
                 websiteNavigation.SelectedProductIds = ProductsWithIds;
                 var websiteNav = _tenantWebsiteService.CreateOrUpdateWebsiteNavigation(websiteNavigation, CurrentUserId, CurrentTenantId);
-                var Defaultfiles = ImageDefault;
+                var Defaultfiles = DefaultImage;
                 var hoverFile = HoverImage;
                 var filesName = Session["UploadTenantWebsiteNav"] as Dictionary<string, string>;
                 string filePath = "";
@@ -261,11 +261,11 @@ namespace WMS.Controllers
         }
 
         //// POST: WebsiteNavigations/Edit/5
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for
         //// more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(WebsiteNavigation websiteNavigation, string ProductsWithIds, IEnumerable<DevExpress.Web.UploadedFile> ImageDefault, IEnumerable<DevExpress.Web.UploadedFile> HoverImage, int SiteID)
+        public ActionResult Edit(WebsiteNavigation websiteNavigation, string ProductsWithIds, IEnumerable<DevExpress.Web.UploadedFile> DefaultImage, IEnumerable<DevExpress.Web.UploadedFile> HoverImage, int SiteID)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (websiteNavigation != null)
@@ -284,12 +284,12 @@ namespace WMS.Controllers
 
                 else
                 {
-                    if (ImageDefault != null)
+                    if (DefaultImage != null)
                     {
                         var defaultImage = filesName?.FirstOrDefault(u => u.Key == "Default").Value;
                         if (defaultImage != null)
                         {
-                            filePath = MoveFile(ImageDefault.FirstOrDefault(), defaultImage, websiteNavigation.Id);
+                            filePath = MoveFile(DefaultImage.FirstOrDefault(), defaultImage, websiteNavigation.Id);
                             websiteNavigation.Image = filePath;
                         }
                         else {
@@ -336,7 +336,7 @@ namespace WMS.Controllers
         }
 
 
-        public ActionResult UploadFile(IEnumerable<DevExpress.Web.UploadedFile> ImageDefault, IEnumerable<DevExpress.Web.UploadedFile> HoverImage)
+        public ActionResult UploadFile(IEnumerable<DevExpress.Web.UploadedFile> DefaultImage, IEnumerable<DevExpress.Web.UploadedFile> HoverImage)
         {
             if (Session["UploadTenantWebsiteNav"] == null)
             {
@@ -344,7 +344,7 @@ namespace WMS.Controllers
             }
             var files = Session["UploadTenantWebsiteNav"] as Dictionary<string, string>;
 
-            foreach (var file in ImageDefault)
+            foreach (var file in DefaultImage)
             {
                 if (!string.IsNullOrEmpty(file.FileName))
                 {
@@ -386,7 +386,7 @@ namespace WMS.Controllers
 
         private string MoveFile(DevExpress.Web.UploadedFile file, string FileName, int ProductmanuId)
         {
-            
+
             if (!Directory.Exists(Server.MapPath(UploadDirectory + ProductmanuId.ToString())))
                 Directory.CreateDirectory(Server.MapPath(UploadDirectory + ProductmanuId.ToString()));
 
@@ -395,7 +395,7 @@ namespace WMS.Controllers
             if (!System.IO.File.Exists(destFile))
             {
                 System.IO.File.Move(sourceFile, destFile);
-                
+
             }
             return (UploadDirectory.Replace("~", "") + ProductmanuId.ToString() + @"/" + FileName);
 

@@ -4,7 +4,14 @@
 
 @Html.DevExpress().UploadControl(settings =>
 {
-    settings.Name = "UploadControl";
+    if (!string.IsNullOrEmpty(ViewBag.ImageUploadControlName))
+    {
+        settings.Name = ViewBag.ImageUploadControlName;
+    }
+    else
+    {
+        settings.Name = "UploadControl";
+    }
     settings.ShowAddRemoveButtons = true;
     settings.ShowProgressPanel = true;
     settings.ShowClearFileSelectionButton = true;
@@ -21,18 +28,14 @@
         settings.UploadMode = UploadControlUploadMode.Standard;
         settings.AutoStartUpload = true;
         settings.NullText = "Select file...";
-        
     }
     else
     {
         settings.AdvancedModeSettings.EnableMultiSelect = true;
         settings.NullText = "Select multiple files...";
-
     }
     settings.AdvancedModeSettings.EnableFileList = true;
     settings.AdvancedModeSettings.EnableDragAndDrop = true;
-
-
     settings.CallbackRouteValues = new { Controller = controllerName, Action = "UploadFile" };
     settings.Size = 30;
     settings.ValidationSettings.Assign(new UploadControlValidationSettings { AllowedFileExtensions = new string[] { ".jpg", ".jpeg", ".gif", ".png", ".avi", ".mp4", ".pdf", ".docx", ".xlxs" }, MaxFileSize = 100000000 });

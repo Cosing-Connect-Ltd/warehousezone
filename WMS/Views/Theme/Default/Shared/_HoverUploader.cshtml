@@ -4,9 +4,9 @@
 
 @Html.DevExpress().UploadControl(settings =>
 {
-    if (ViewBag.ControllerName == "WebsiteNavigations")
+    if (!string.IsNullOrEmpty(ViewBag.HoverImageUploadControlName))
     {
-        settings.Name = ViewBag.Name;
+        settings.Name = ViewBag.HoverImageUploadControlName;
     }
     else
     {
@@ -33,20 +33,16 @@
     {
         settings.AdvancedModeSettings.EnableMultiSelect = true;
         settings.NullText = "Select multiple files...";
-
     }
     settings.AdvancedModeSettings.EnableFileList = true;
     settings.AdvancedModeSettings.EnableDragAndDrop = true;
-
-
     settings.CallbackRouteValues = new { Controller = controllerName, Action = "UploadFile" };
     settings.Size = 30;
     settings.ValidationSettings.Assign(new UploadControlValidationSettings { AllowedFileExtensions = new string[] { ".jpg", ".jpeg", ".gif", ".png", ".avi", ".mp4", ".pdf", ".docx", ".xlxs" }, MaxFileSize = 100000000 });
-
     settings.ClientSideEvents.FileUploadComplete = "function(s,e) { onFileUploadHoverComplete(s,e); }";
-     settings.ClientSideEvents.FilesUploadStart = "function(s,e) { onFileUploadHoverStart(s,e); }";
-    
-    
+    settings.ClientSideEvents.FilesUploadStart = "function(s,e) { onFileUploadHoverStart(s,e); }";
+
+
 }).GetHtml()
 <script id="uploaderTemplate" type="text/x-jquery-tmpl">
     <tr>
