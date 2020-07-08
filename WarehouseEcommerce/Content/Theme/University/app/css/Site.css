@@ -24,7 +24,6 @@
 }
 
 .uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a {
-    pointer-events: none;
     cursor: default;
 }
 
@@ -669,7 +668,6 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
 }
 
 .uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a {
-    pointer-events: none;
     cursor: pointer;
 }
 
