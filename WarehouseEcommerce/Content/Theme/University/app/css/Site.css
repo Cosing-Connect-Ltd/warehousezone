@@ -2632,3 +2632,7 @@ body.modal-open {
         padding-top: 200px !important;
     }
 }
+
+.nb_sec_navwrap .nb_sec_navlist li {
+    cursor: pointer;
+}
