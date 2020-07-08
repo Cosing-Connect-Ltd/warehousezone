@@ -223,7 +223,7 @@ namespace WarehouseEcommerce.Controllers
 
         public PartialViewResult _HorizontalNavbarPartial()
         {
-            var navigation = _tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, CurrentTenantWebsite.SiteID).Where(u => u.ShowInNavigation == true).ToList();
+            var navigation = _tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, CurrentTenantWebsite.SiteID).Where(u => u.ShowInNavigation == true).OrderBy(u=>u.SortOrder).ToList();
             ViewBag.UserName = CurrentUser.UserFirstName + " " + CurrentUser.UserLastName;
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
 

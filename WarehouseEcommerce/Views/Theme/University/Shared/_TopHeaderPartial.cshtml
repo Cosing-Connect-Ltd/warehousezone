@@ -15,10 +15,10 @@
         <div class="search_wrap_main">
             <form class="form-inline">
                 <label class="sr-only" for="searchinput">Name</label>
-                <input type="search" class="form-control search_input text-search" id="searchinput" placeholder="Search Here" />
+                <input type="search" class="form-control search_input text-search" id="searchinput" placeholder="Search Here" onclick="SearchProductCategory();" onkeydown="SearchProduct(event)" />
                 <div class="search-box-buttons float-left">
                     <button type="button" id="serchBtnClose" class="btn btn-primary search_btn">X</button>
-                    <button type="button" id="serchBtnico" class="btn btn-primary search_btn" onclick="SearchProductCategory();"><i class="icon-search"></i></button>
+                    <button type="button" id="serchBtnico" class="btn btn-primary search_btn" onclick="SearchProductCategory();" ><i class="icon-search"></i></button>
                 </div>
             </form>
         </div>

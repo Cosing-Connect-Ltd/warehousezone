@@ -9,6 +9,7 @@ function ValidEmail(email) {
 
 }
 function searchPoducts() {
+
     var sortvalue = $("#SortedValues").val();
     var category = $("#prod-category").val();
     var pagenumber = $("#pagenumber").val();
@@ -122,9 +123,17 @@ function OnchangeDropdownAddress() {
 }
 
 function SearchProductCategory() {
+
     var searchstring = $(".text-search").val();
     var valuesparam = $("#valuesParameter").val();
     window.location.href = basePath + "/Products/list?search=" + searchstring + "&values=" + valuesparam;
+}
+
+function SearchProduct(e) {
+
+    if (e.keyCode === 13) {
+        SearchProductCategory();
+    }
 }
 
 var searchvalues;
@@ -162,7 +171,7 @@ $('.text-search').on('input', function () {
             if (seeall) {
                 var $li = $("<li>");
                 var $link = $("<a>", {
-                    href: basePath + "/Products/list?search=" + $('.text-search').val(),
+                    href: basePath + "/Products/list?search=" + searchvalues,
                     class: "see-all"
                 }).html("See All Results").appendTo($li);
                 $li.appendTo($('.ui-autocomplete'));
@@ -360,7 +369,7 @@ function chooseDeliveryMethod() {
     {
         "DeliveryMethodId": deliveryMethodId,
         "CurrentStep": nextStep,
-        "ParentStep":1
+        "ParentStep": 1
     }
     ChangeUrlParameterValue(nextStep);
     GetDataForNextStep(checkoutViewModels, nextStep);
@@ -399,7 +408,7 @@ function chooseShippingRule(nextStep) {
         "ParentStep": 4
     }
     ChangeUrlParameterValue(nextStep);
-    GetDataForNextStep(checkoutViewModels,nextStep);
+    GetDataForNextStep(checkoutViewModels, nextStep);
 }
 
 function choosePaymentMethod() {
