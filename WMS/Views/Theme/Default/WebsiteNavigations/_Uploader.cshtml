@@ -4,9 +4,9 @@
 
 @Html.DevExpress().UploadControl(settings =>
 {
-    if (ViewBag.ControllerName == "WebsiteNavigations")
+    if (!string.IsNullOrEmpty(ViewBag.ImageUploadControlName))
     {
-        settings.Name = ViewBag.Name;
+        settings.Name = ViewBag.ImageUploadControlName;
     }
     else
     {

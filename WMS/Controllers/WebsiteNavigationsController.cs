@@ -344,32 +344,38 @@ namespace WMS.Controllers
             }
             var files = Session["UploadTenantWebsiteNav"] as Dictionary<string, string>;
 
-            foreach (var file in DefaultImage)
+            if (DefaultImage != null)
             {
-                if (!string.IsNullOrEmpty(file.FileName))
+                foreach (var file in DefaultImage)
                 {
-
-                    SaveFile(file);
-                    if (!files.ContainsKey("Default"))
+                    if (!string.IsNullOrEmpty(file.FileName))
                     {
-                        files.Add("Default", file.FileName);
-                    }
-                }
 
+                        SaveFile(file);
+                        if (!files.ContainsKey("Default"))
+                        {
+                            files.Add("Default", file.FileName);
+                        }
+                    }
+
+                }
             }
 
-            foreach (var file in HoverImage)
+            if (HoverImage != null)
             {
-                if (!string.IsNullOrEmpty(file.FileName))
+                foreach (var file in HoverImage)
                 {
-
-                    SaveFile(file);
-                    if (!files.ContainsKey("Hover"))
+                    if (!string.IsNullOrEmpty(file.FileName))
                     {
-                        files.Add("Hover", file.FileName);
-                    }
-                }
 
+                        SaveFile(file);
+                        if (!files.ContainsKey("Hover"))
+                        {
+                            files.Add("Hover", file.FileName);
+                        }
+                    }
+
+                }
             }
             Session["UploadTenantWebsiteNav"] = files;
 

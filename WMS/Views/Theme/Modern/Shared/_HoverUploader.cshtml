@@ -4,9 +4,9 @@
 
 @Html.DevExpress().UploadControl(settings =>
 {
-    if (ViewBag.ControllerName == "WebsiteNavigations")
+    if (!string.IsNullOrEmpty(ViewBag.HoverImageUploadControlName))
     {
-        settings.Name = ViewBag.Name;
+        settings.Name = ViewBag.HoverImageUploadControlName;
     }
     else
     {
@@ -45,8 +45,8 @@
 
     settings.ClientSideEvents.FileUploadComplete = "function(s,e) { onFileUploadHoverComplete(s,e); }";
      settings.ClientSideEvents.FilesUploadStart = "function(s,e) { onFileUploadHoverStart(s,e); }";
-    
-    
+
+
 }).GetHtml()
 <script id="uploaderTemplate" type="text/x-jquery-tmpl">
     <tr>

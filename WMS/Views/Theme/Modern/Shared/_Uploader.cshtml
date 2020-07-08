@@ -4,7 +4,14 @@
 
 @Html.DevExpress().UploadControl(settings =>
 {
-    settings.Name = "UploadControl";
+    if (!string.IsNullOrEmpty(ViewBag.HoverImageUploadControlName))
+    {
+        settings.Name = ViewBag.HoverImageUploadControlName;
+    }
+    else
+    {
+        settings.Name = "UploadControl";
+    }
     settings.ShowAddRemoveButtons = true;
     settings.ShowProgressPanel = true;
     settings.ShowClearFileSelectionButton = true;
@@ -21,7 +28,7 @@
         settings.UploadMode = UploadControlUploadMode.Standard;
         settings.AutoStartUpload = true;
         settings.NullText = "Select file...";
-        
+
     }
     else
     {

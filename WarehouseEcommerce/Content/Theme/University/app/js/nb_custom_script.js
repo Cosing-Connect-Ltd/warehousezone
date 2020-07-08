@@ -13,7 +13,7 @@ $(function () {
         $(".res_navWrapper").removeClass("show");
     });
     $("#nb_res_navTrigger").click(function () {
-        $(".res_navWrapper").addClass("show");
+        $(".res_navWrapper").toggleClass("show");
     });
 
     // banner slider
