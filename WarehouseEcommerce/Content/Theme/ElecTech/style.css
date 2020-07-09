@@ -2588,10 +2588,12 @@ form#search {
     transition: .6s;
 }
 
-.plr {
+/*.plr {
     padding: 0px 6%;
+}*/
+.plr {
+    padding: 0px 1%;
 }
-
 .page-title {
     font-size: 23px;
 }
@@ -2854,7 +2856,9 @@ img {
     margin: 10px;
     margin-bottom: unset;
 }
-
+.MDM-iframe {
+    height: 550px!important;
+}
 .row-img-div {
     display: flex;
     flex-wrap: nowrap;
@@ -2879,6 +2883,9 @@ img {
 
     .side-img iframe {
         height: 350px;
+    }
+    .MDM-iframe {
+        height: 350px!important;
     }
 }
 
@@ -3382,5 +3389,23 @@ font-size:14px
 .mobile-menu-area .mean-nav ul li a {
     font-size: 14px;
 }
+.font-style-italic {
+    font-style: italic;
+}
+
+/*side-images end*/
+.top-side-imgs {
+    display: flex;
+}
+@media(max-width:1200px){
+    .top-side-imgs {
+        flex-wrap: wrap;
+    }
+}
+.height-n-align {
+    height: 100%;
+    align-items: center;
+}
+/*side-images end*/
 
 /* css end */
