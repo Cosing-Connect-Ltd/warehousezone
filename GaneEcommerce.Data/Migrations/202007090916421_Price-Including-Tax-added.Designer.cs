@@ -7,13 +7,13 @@ namespace Ganedata.Core.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.0")]
-    public sealed partial class showpricesincludingtaxaddedtenantwebsites : IMigrationMetadata
+    public sealed partial class PriceIncludingTaxadded : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(showpricesincludingtaxaddedtenantwebsites));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(PriceIncludingTaxadded));
         
         string IMigrationMetadata.Id
         {
-            get { return "202007090129510_showpricesincluding-tax-added-tenantwebsites"; }
+            get { return "202007090916421_Price-Including-Tax-added"; }
         }
         
         string IMigrationMetadata.Source

@@ -3,7 +3,7 @@
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class showpricesincludingtaxaddedtenantwebsites : DbMigration
+    public partial class PriceIncludingTaxadded : DbMigration
     {
         public override void Up()
         {

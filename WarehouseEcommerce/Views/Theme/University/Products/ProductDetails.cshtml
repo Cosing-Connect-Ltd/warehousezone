@@ -161,7 +161,7 @@
                                                 var isSelectedAttributeValue = attributeValue.AttributeValueId == selectedAttributeValue?.AttributeValueId;
 
                                                 @Html.Raw("<li class=\"col3 " + (isSelectedAttributeValue ? "active" : "") + (!isSelectedAttributeValue && !isAttributeWithSelection ? "unavailable-attribute\">" : "\">") +
-                                                                (isSelectedAttributeValue ? "<a>" : $"<a href=\"ProductDetails?sku={ViewBag.BaseProduct.SKUCode}&productId={relatedProducts.FirstOrDefault()?.ProductId ?? Model.ProductId}\">" )+
+                                                                (isSelectedAttributeValue ? "<a>" : $"<a href=\"ProductDetails?sku={ViewBag.BaseProduct.SKUCode}&productId={relatedProducts.FirstOrDefault()?.ProductId ?? Model.ProductId}\">") +
                                                                 (attributeValue.ProductAttributes.AttributeName.ToLower().IndexOf("color") == -1 && attributeValue.ProductAttributes.AttributeName.ToLower().IndexOf("colour") == -1 ?
                                                                 "<span>" + attributeValue.Value + "</span>" :
                                                                 "<span style=\"background-color:" + attributeValue.Value + ";color:" + attributeValue.Value + "\">-</span>") +
@@ -171,46 +171,48 @@
                                     </ul>
                                 </div>
                             </div>
-                                                }
-                                            }
+                        }
+                    }
 
-                        <div class="footSec">
-                            <div class="qty">
-                                <span>quantity</span>
-                                <div class="sortBysec">
-                                    <input id="input-quantity" type="text" name="quantity" value="1" size="2" data-detail="true" class="input-number" />
-                                </div>
+                    <div class="footSec">
+                        <div class="qty">
+                            <span>quantity</span>
+                            <div class="sortBysec">
+                                <input id="input-quantity" type="text" name="quantity" value="1" size="2" data-detail="true" class="input-number" />
                             </div>
-                            @if (@Model.SellPrice > 0 && @Model.SellPrice.HasValue && @Model.PercentMargin > 0 && Model.InventoryStocks.Sum(i => i.Available) > 0)
-                            {
-                                <button class="addTobasket" onclick="AddToCart(@Model.ProductId)">Add to basket</button>
-                            }
-                            else
-                            {
-                                <button class="addTobasket" disabled>
-                                    Add to basket
-                                </button>
-                            }
-                            <button class="addtowishlistbtn">Add to Wishlist</button>
-                            @if (Model.WebsiteWishListItems.Where(u => u.IsDeleted != true).ToList().Count <= 0)
-                            {
-                                <a href="javascript:;" class="addtowishlist" id="wish_@ViewBag.BaseProduct.ProductId" onclick="AddWishListItem(@ViewBag.BaseProduct.ProductId)"><i class="icon-love list-icon" style="color:black"></i></a>
-                            }
-                            else
-                            {
-                                <a href="javascript:;" class="addtowishlist" id="wish_@ViewBag.BaseProduct.ProductId" onclick="RemoveWishListPopUp(@ViewBag.BaseProduct.ProductId)"><i class="icon-love list-icon" style="color:red"></i></a>
-                            }
                         </div>
+                        @if (@Model.SellPrice > 0 && @Model.SellPrice.HasValue && @Model.PercentMargin > 0 && Model.InventoryStocks.Sum(i => i.Available) > 0)
+                        {
+                            <button class="addTobasket" onclick="AddToCart(@Model.ProductId)">Add to basket</button>
+                        }
+                        else
+                        {
+                            <button class="addTobasket" disabled>
+                                Add to basket
+                            </button>
+                        }
+                        <button class="addtowishlistbtn">Add to Wishlist</button>
+                        @if (Model.WebsiteWishListItems.Where(u => u.IsDeleted != true).ToList().Count <= 0)
+                        {
+                            <a href="javascript:;" class="addtowishlist" id="wish_@ViewBag.BaseProduct.ProductId" onclick="AddWishListItem(@ViewBag.BaseProduct.ProductId)"><i class="icon-love list-icon" style="color:black"></i></a>
+                        }
+                        else
+                        {
+                            <a href="javascript:;" class="addtowishlist" id="wish_@ViewBag.BaseProduct.ProductId" onclick="RemoveWishListPopUp(@ViewBag.BaseProduct.ProductId)"><i class="icon-love list-icon" style="color:red"></i></a>
+                        }
                     </div>
+                </div>
             </div>
             <div class="col-md-12">
                 <div class="nb_prod_bottomdes">
                     <h3 class="head">Description</h3>
                     <p class="content">
-                        @if (string.IsNullOrEmpty(Model.Description)) {
+                        @if (string.IsNullOrEmpty(Model.Description))
+                        {
                             @ViewBag.BaseProduct.Description;
                         }
-                        else {
+                        else
+                        {
                             @Model.Description;
                         }
                     </p>
@@ -254,7 +256,7 @@
                 zoomWindowFadeIn: 500,
                 zoomWindowFadeOut: 500,
                 easing: true,
-                zoomWindowWidth: 500,
+                zoomWindowWidth: 600,
                 zoomWindowHeight: 500,
                 responsive: true,
                 borderSize: 1,
@@ -270,6 +272,5 @@
             $.fancybox(ez.getGalleryList());
             return false;
         });
-
     });
 </script>

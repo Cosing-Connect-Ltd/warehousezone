@@ -85,7 +85,7 @@
     </div>
     @Html.Action("_TopHeaderPartial", "Home")
     <div class="pl-0 pr-0 uni-pages-pt uni-pages-main">
-        @Html.Action("_DeliveryInfoPartial","Home")
+        @Html.Action("_DeliveryInfoPartial", "Home")
         @RenderBody()
     </div>
 
@@ -126,74 +126,11 @@
             //do something on bootstrap model show
         });
 
-    });
-
-//Chat Script
-    @*var $zoho = $zoho || {}; $zoho.salesiq = $zoho.salesiq ||
-        { widgetcode: "082929f0048de095abde931cb153e076df2700d430dbecb2d6ce1ea29d3bd2f88cb9ddbeff8957905285212e1a49dd9e", values: {}, ready: function () { } };
-    var d = document; s = d.createElement("script"); s.type = "text/javascript"; s.id = "zsiqscript"; s.defer = true;
-    s.src = "https://salesiq.zoho.eu/widget"; t = d.getElementsByTagName("script")[0]; t.parentNode.insertBefore(s, t); d.write("<div id='zsiqwidget'></div>");
-</script>*@
-
-    $(document).ready(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-
-      if ($(window).width() < 768) {
-        $("#zoom_01").elevateZoom({
-          gallery: "gal01",
-          cursor: "pointer",
-          galleryActiveClass: "active",
-          imageCrossfade: true,
-          loadingIcon: "",
-          cursor: "crosshair",
-          zoomWindowFadeIn: 500,
-          zoomWindowFadeOut: 500,
-          easing: true,
-          zoomWindowWidth: 500,
-          zoomWindowHeight: 500,
-          responsive: true,
-          borderSize: 1,
-          destroyContainerOnResize: true,
-          zoomWindowOffetx: 50,
-          zoomWindowOffety: -25,
-          zoomType: "inner",
+        $('#show-hidden-menu').click(function () {
+            $('.hidden-menu').slideToggle("slow");
         });
-      } else {
-        $("#zoom_01").elevateZoom({
-          gallery: "gal01",
-          cursor: "pointer",
-          galleryActiveClass: "active",
-          imageCrossfade: true,
-          loadingIcon: "",
-          cursor: "crosshair",
-          zoomWindowFadeIn: 500,
-          zoomWindowFadeOut: 500,
-          easing: true,
-          zoomWindowWidth: 500,
-          zoomWindowHeight: 500,
-          responsive: true,
-          borderSize: 1,
-          destroyContainerOnResize: true,
-          zoomWindowOffetx: 50,
-          zoomWindowOffety: -25,
-          zoomType: "window",
-        });
-      }
-      //pass the images to Fancybox
-      $("#zoom_01").bind("click", function (e) {
-        var ez = $("#zoom_01").data("elevateZoom");
-        $.fancybox(ez.getGalleryList());
-        return false;
-      });
 
-    });
-    $(document).ready(function() {
-            $('#show-hidden-menu').click(function() {
-    $('.hidden-menu').slideToggle("slow");
-    // Alternative animation for example
-    // slideToggle("fast");
-            });
         $('#kit-product').modalWizard();
-
-});
+        $('[data-toggle="tooltip"]').tooltip();
+    });
 </script>

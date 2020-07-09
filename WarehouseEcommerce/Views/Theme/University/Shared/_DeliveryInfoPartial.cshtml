@@ -5,17 +5,19 @@
     <section class="nb_sec nb_header_btm_beedsec">
         <div class="nb_sec_navwrap">
             <div class="container">
-                <ul class="nb_sec_navlist">
-                    @foreach (var item in Model)
-                    {
-                        <li>
-                            <a href="@item.Url">
-                                <i class="ico @item.IconName"></i>
-                                <span class="txt">@item.TextDescription</span>
-                            </a>
-                        </li>
-                    }
-                </ul>
+                <div class="navListWrap">
+                    <ul class="nb_sec_navlist">
+                        @foreach (var item in Model)
+                        {
+                            <li>
+                                <a href="@item.Url">
+                                    <i class="ico @item.IconName"></i>
+                                    <span class="txt">@item.TextDescription</span>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
             </div>
         </div>
     </section>

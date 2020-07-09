@@ -354,7 +354,9 @@
     <Content Include="Content\Theme\University\app\js\Uni_KitProductDetail_Custom.js" />
     <Content Include="fonts\custom-fonts.css" />
     <Content Include="Content\Theme\University\app\css\jquery-confirm.min.css" />
-    <Content Include="Content\Theme\University\app\css\ui-settings.css" />
+    <Content Include="Content\Theme\University\app\css\ui-settings.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="fonts\gotham\Gotham-Book.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1379,7 +1381,9 @@
     <Content Include="Views\Theme\University\Error\Index.cshtml" />
     <Content Include="Views\Theme\University\Products\WishList.cshtml" />
     <Content Include="Views\Theme\University\Shared\_wishlistItems.cshtml" />
-    <Content Include="Views\Shared\SettingsBar.cshtml" />
+    <Content Include="Views\Shared\SettingsBar.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\Theme\ElecTech\Shared\_defaultPartial.cshtml" />
     <Content Include="Views\Theme\ElecTech\Shared\_HorizontalNavbarPartial.cshtml" />
     <Content Include="Views\Theme\ElecTech\Home\page.cshtml" />

@@ -1160,7 +1160,9 @@
     <Content Include="Content\Themes\UI-WZ\jquery-ui.structure.min.css" />
     <Content Include="Content\Themes\UI-WZ\jquery-ui.theme.css" />
     <Content Include="Content\Themes\UI-WZ\jquery-ui.theme.min.css" />
-    <Content Include="Content\Theme\Default\ui-settings.css" />
+    <Content Include="Content\Theme\Default\ui-settings.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
@@ -2692,7 +2694,9 @@
     <Content Include="Views\Theme\Modern\WebsiteVouchers\Edit.cshtml" />
     <Content Include="Views\Theme\Modern\WebsiteVouchers\Index.cshtml" />
     <Content Include="Views\Theme\Modern\WebsiteVouchers\_WebsiteVouchersList.cshtml" />
-    <Content Include="Views\Theme\Default\UISettings\SettingsBar.cshtml" />
+    <Content Include="Views\Theme\Default\UISettings\SettingsBar.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\Theme\Default\UISettings\WebsiteUISettings.cshtml" />
     <Content Include="Scripts\qTip\jquery.qtip.min.js.map" />
     <Content Include="Views\Theme\Default\Shared\_EmailRecipientsPartial.cshtml" />
