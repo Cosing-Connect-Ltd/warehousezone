@@ -23,7 +23,7 @@ function moveToNextStep(e) {
     GetDataForNextStep(checkoutViewModels);
 }
 function GetDataForNextStep(checkoutViewModels, step) {
-
+    startLoading();
     $.ajax({
         url: basePath + '/Orders/_CheckoutProcessPartial',
         method: 'post',
@@ -32,6 +32,7 @@ function GetDataForNextStep(checkoutViewModels, step) {
         success: function (data) {
 
             $(".checkout-main-div").html("").html(data);
+            stopLoading();
 
         }
     });

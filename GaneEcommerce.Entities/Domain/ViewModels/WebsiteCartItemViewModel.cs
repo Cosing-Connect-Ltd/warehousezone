@@ -15,6 +15,8 @@ namespace Ganedata.Core.Entities.Domain
         public virtual ProductMasterViewModel ProductMaster { get; set; }
         public List<KitProductCartSession> KitProductCartItems { get; set; }
         public int? CartId { get; set; }
+        public bool IsAvailableForCollection { get; set; }
+        public bool IsAvailableForDelivery { get; set; }
         public decimal ProductTotalAmount => Math.Round((Quantity * Price), 2);
     }
 

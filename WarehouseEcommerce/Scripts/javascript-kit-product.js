@@ -7,9 +7,8 @@ $(function () {
         var ajaxCalls = [];
         var bodyContent = "";
         $(".kit-model-body").html("");
+        startLoading();
         $(".kit-cart-item-details").each(function () {
-
-
             var skuCode = $(this).find(".sku-code").text();
             var quantity = $(this).find(".product-quantity").text();
             ajaxCalls.push($.ajax({
@@ -18,7 +17,6 @@ $(function () {
                 data: { skuCode: skuCode, quantity: quantity },
                 dataType: 'html',
                 success: function (data) {
-
                     if (data === "False") {
                         return;
                     }
@@ -43,20 +41,24 @@ $(function () {
                 $(".kit-model-body").html(bodyContent);
                 $("#kit-product").modal("show");
                 GenrateDropDownForEachStep();
+                stopLoading();
             }
         }).catch(() => {
+            stopLoading();
             alert("Something went wrong with getting the products!");
         });
     });
 });
 
 function getSelectedAttributes(e, skuCode, productId, quantity, stepNumber) {
+    startLoading();
     $.ajax({
         url: basePath + '/Products/_KitProductAttributeDetail',
         method: 'Get',
         data: { skuCode: skuCode, quantity: quantity, productId: productId },
         dataType: 'html',
         success: function (data) {
+            stopLoading();
             var fieldsetElementId = "#fieldset-" + (!!stepNumber ? stepNumber : $("#kit-product").attr("data-current-step"));
             var dropdownFieldsBeforeRefresh = $(fieldsetElementId).find(".attribute-dropdown").html();
             var previousStepValue = $(fieldsetElementId).find("#step-number-tracking").val();

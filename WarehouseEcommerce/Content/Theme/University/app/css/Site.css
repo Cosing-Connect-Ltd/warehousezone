@@ -2067,7 +2067,7 @@ body.modal-open {
     display: flex;
     justify-content: space-between;
     font-weight: 600;
-    cursor: pointer;
+    cursor: pointer !important;
 }
 
     .collection-address-div:hover {
@@ -2139,6 +2139,9 @@ body.modal-open {
                 justify-content: center;
             }
 
+                .basketTable tr.cmnRow td.greyBox .greyBoxInner .unavailable {
+                    color: #f33655;
+                }
                 .basketTable tr.cmnRow td.greyBox .greyBoxInner .orderNowTxt {
                     font-size: 13px;
                     color: #000;
@@ -2363,7 +2366,7 @@ body.modal-open {
             position: relative;
         }
 
-/*            .basketTable tr.cmnRow .tot .in-basket-price-total:after {
+            .basketTable tr.cmnRow .tot .in-basket-price-total:after {
                 position: absolute;
                 right: -5px;
                 top: 50%;
@@ -2373,7 +2376,7 @@ body.modal-open {
                 border-top: 8px solid transparent;
                 border-bottom: 8px solid transparent;
                 border-left: 8px solid #000;
-            }*/
+            }
 
         .basketTable tr.cmnRow .tot .removeBtn {
             color: #f33655;
@@ -2383,7 +2386,7 @@ body.modal-open {
 
     .basketTable tr.cmnRow .store {
         width: 13%;
-        width:200px;
+        width:175px;
         border-bottom: solid 1px transparent;
     }
 
@@ -2397,7 +2400,7 @@ body.modal-open {
 
     .basketTable tr.cmnRow .homeDel {
         width: 20%;
-        width:200px;
+        width:176px;
         border-bottom: solid 1px transparent;
     }
 
@@ -2543,7 +2546,6 @@ body.modal-open {
             color: #fff;
             border: solid 1px #f33655;
             display: flex;
-            margin-right: 20px;
             flex-direction: row;
             align-items: center;
             justify-content: center;
@@ -2557,7 +2559,8 @@ body.modal-open {
                 color: #707070;
                 border: solid 1px #707070;
                 display: flex;
-                margin-right: 20px;
+                margin-right: 10px;
+                margin-left: 10px;
                 flex-direction: row;
                 align-items: center;
                 justify-content: center;
@@ -2723,6 +2726,14 @@ body.modal-open {
             height: 40px;
         }
 
+    .mobile-checkout {
+        display: block !important;
+        margin: 0 10px
+    }
+    .headBoxTop,
+    .basketTable tr.cmnRow .tot .in-basket-price-total:after,
+    .basketTable tr.cmnRow .homeDel,
+    .basketTable tr.cmnRow .store,
     .basketTable tr.headRow {
         display: none;
     }
@@ -2739,4 +2750,97 @@ body.modal-open {
 
 .ui-widget.ui-widget-content {
     z-index: 1000 !important;
+}
+
+
+#shipping-address-postcode{
+    text-transform: uppercase;
+}
+
+.snipper {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 50%;
+    left: 0;
+    z-index: 9999;
+}
+
+    .snipper :before {
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 0 5px;
+        content: attr(data-title);
+        font-size: .75rem;
+        font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        color: white;
+        background-color: rgb(255, 25, 100);
+        border-radius: .25rem 0 .25rem 0;
+    }
+
+    .snipper .stage {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        padding: 2rem 0;
+        margin: 0 -5%;
+        overflow: hidden;
+    }
+        .snipper .stage .dot-spin {
+            position: relative;
+            width: 10px;
+            height: 10px;
+            border-radius: 5px;
+            background-color: transparent;
+            color: transparent;
+            box-shadow: 0 -18px 0 0 #b0aeb4, 12.72984px -12.72984px 0 0 #b0aeb4, 18px 0 0 0 #b0aeb4, 12.72984px 12.72984px 0 0 rgba(152, 128, 255, 0), 0 18px 0 0 rgba(152, 128, 255, 0), -12.72984px 12.72984px 0 0 rgba(152, 128, 255, 0), -18px 0 0 0 rgba(152, 128, 255, 0), -12.72984px -12.72984px 0 0 rgba(152, 128, 255, 0);
+            animation: dot-spin 1.5s infinite linear;
+        }
+
+.dot-spin {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: transparent;
+    color: transparent;
+    box-shadow: 0 -18px 0 0 #b0aeb4, 12.72984px -12.72984px 0 0 #b0aeb4, 18px 0 0 0 #b0aeb4, 12.72984px 12.72984px 0 0 rgba(152, 128, 255, 0), 0 18px 0 0 rgba(152, 128, 255, 0), -12.72984px 12.72984px 0 0 rgba(152, 128, 255, 0), -18px 0 0 0 rgba(152, 128, 255, 0), -12.72984px -12.72984px 0 0 rgba(152, 128, 255, 0);
+    animation: dot-spin 1.5s infinite linear;
+}
+
+@keyframes dot-spin {
+    0%, 100% {
+        box-shadow: 0 -18px 0 0 #b0aeb4, 12.72984px -12.72984px 0 0 #b0aeb4, 18px 0 0 0 #b0aeb4, 12.72984px 12.72984px 0 -5px rgba(152, 128, 255, 0), 0 18px 0 -5px rgba(152, 128, 255, 0), -12.72984px 12.72984px 0 -5px rgba(152, 128, 255, 0), -18px 0 0 -5px rgba(152, 128, 255, 0), -12.72984px -12.72984px 0 -5px rgba(152, 128, 255, 0);
+    }
+
+    12.5% {
+        box-shadow: 0 -18px 0 -5px rgba(152, 128, 255, 0), 12.72984px -12.72984px 0 0 #b0aeb4, 18px 0 0 0 #b0aeb4, 12.72984px 12.72984px 0 0 #b0aeb4, 0 18px 0 -5px rgba(152, 128, 255, 0), -12.72984px 12.72984px 0 -5px rgba(152, 128, 255, 0), -18px 0 0 -5px rgba(152, 128, 255, 0), -12.72984px -12.72984px 0 -5px rgba(152, 128, 255, 0);
+    }
+
+    25% {
+        box-shadow: 0 -18px 0 -5px rgba(152, 128, 255, 0), 12.72984px -12.72984px 0 -5px rgba(152, 128, 255, 0), 18px 0 0 0 #b0aeb4, 12.72984px 12.72984px 0 0 #b0aeb4, 0 18px 0 0 #b0aeb4, -12.72984px 12.72984px 0 -5px rgba(152, 128, 255, 0), -18px 0 0 -5px rgba(152, 128, 255, 0), -12.72984px -12.72984px 0 -5px rgba(152, 128, 255, 0);
+    }
+
+    37.5% {
+        box-shadow: 0 -18px 0 -5px rgba(152, 128, 255, 0), 12.72984px -12.72984px 0 -5px rgba(152, 128, 255, 0), 18px 0 0 -5px rgba(152, 128, 255, 0), 12.72984px 12.72984px 0 0 #b0aeb4, 0 18px 0 0 #b0aeb4, -12.72984px 12.72984px 0 0 #b0aeb4, -18px 0 0 -5px rgba(152, 128, 255, 0), -12.72984px -12.72984px 0 -5px rgba(152, 128, 255, 0);
+    }
+
+    50% {
+        box-shadow: 0 -18px 0 -5px rgba(152, 128, 255, 0), 12.72984px -12.72984px 0 -5px rgba(152, 128, 255, 0), 18px 0 0 -5px rgba(152, 128, 255, 0), 12.72984px 12.72984px 0 -5px rgba(152, 128, 255, 0), 0 18px 0 0 #b0aeb4, -12.72984px 12.72984px 0 0 #b0aeb4, -18px 0 0 0 #b0aeb4, -12.72984px -12.72984px 0 -5px rgba(152, 128, 255, 0);
+    }
+
+    62.5% {
+        box-shadow: 0 -18px 0 -5px rgba(152, 128, 255, 0), 12.72984px -12.72984px 0 -5px rgba(152, 128, 255, 0), 18px 0 0 -5px rgba(152, 128, 255, 0), 12.72984px 12.72984px 0 -5px rgba(152, 128, 255, 0), 0 18px 0 -5px rgba(152, 128, 255, 0), -12.72984px 12.72984px 0 0 #b0aeb4, -18px 0 0 0 #b0aeb4, -12.72984px -12.72984px 0 0 #b0aeb4;
+    }
+
+    75% {
+        box-shadow: 0 -18px 0 0 #b0aeb4, 12.72984px -12.72984px 0 -5px rgba(152, 128, 255, 0), 18px 0 0 -5px rgba(152, 128, 255, 0), 12.72984px 12.72984px 0 -5px rgba(152, 128, 255, 0), 0 18px 0 -5px rgba(152, 128, 255, 0), -12.72984px 12.72984px 0 -5px rgba(152, 128, 255, 0), -18px 0 0 0 #b0aeb4, -12.72984px -12.72984px 0 0 #b0aeb4;
+    }
+
+    87.5% {
+        box-shadow: 0 -18px 0 0 #b0aeb4, 12.72984px -12.72984px 0 0 #b0aeb4, 18px 0 0 -5px rgba(152, 128, 255, 0), 12.72984px 12.72984px 0 -5px rgba(152, 128, 255, 0), 0 18px 0 -5px rgba(152, 128, 255, 0), -12.72984px 12.72984px 0 -5px rgba(152, 128, 255, 0), -18px 0 0 -5px rgba(152, 128, 255, 0), -12.72984px -12.72984px 0 0 #b0aeb4;
+    }
 }

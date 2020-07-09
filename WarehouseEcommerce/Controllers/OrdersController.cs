@@ -74,7 +74,7 @@ namespace WarehouseEcommerce.Controllers
             return View();
         }
 
-        public ActionResult OldCheckout()
+        public ActionResult MobileCheckout()
         {
             var checkoutViewModel = new CheckoutViewModel();
 
@@ -156,7 +156,7 @@ namespace WarehouseEcommerce.Controllers
             }
             else if (deliveryMethod == DeliveryMethod.ToShipmentAddress)
             {
-                step = CheckoutStep.ShipmentRule;
+                step = destinationId > 0 ? CheckoutStep.ShipmentRule : CheckoutStep.ShippingAddress;
                 checkoutViewModel.ShippingAddressId = destinationId;
             }
 

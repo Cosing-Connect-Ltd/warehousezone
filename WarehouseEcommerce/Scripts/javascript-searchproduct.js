@@ -235,17 +235,20 @@ function getTopCategoryProducts(ProductnavigationId) {
 //--------add update remove cartitem----------------
 function addToCart(ProductId) {
     var quantity = $(".input-number").val() ?? 1;
+    startLoading();
     $.ajax({
         type: "GET",
         url: basePath + "/Products/AddCartItem/",
         data: { ProductId: ProductId, quantity: quantity },
         dataType: 'json',
         success: function (data) {
+            stopLoading();
             var cardItemsValue = parseInt($("#cart-total").text());
             $("#cart-total").text(cardItemsValue + 1);
             getCartitems(data)
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
+            stopLoading();
             alert('Error' + textStatus + "/" + errorThrown);
         }
     });
@@ -280,6 +283,7 @@ function removeCartItem(id) {
 }
 
 function updateCartItem(id, quantity) {
+    startLoading();
     if (!!quantity && quantity > 0) {
         $.ajax({
             type: "GET",
@@ -287,11 +291,12 @@ function updateCartItem(id, quantity) {
             data: { cartId: id, quantity: quantity },
             dataType: 'json',
             success: function (data) {
-
+                stopLoading();
                 getCartitems(null)
 
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
+                stopLoading();
                 alert('Error' + textStatus + "/" + errorThrown);
             }
         });
@@ -299,13 +304,14 @@ function updateCartItem(id, quantity) {
 }
 
 function getCartitems(cartId) {
+    startLoading();
     $.ajax({
         type: "GET",
         url: basePath + "/Products/_CartItemsPartial/",
         data: { cartId: cartId },
         dataType: 'html',
         success: function (data) {
-
+            stopLoading();
             if (cartId != null) {
                 $('.modal-body').empty();
                 $('.modal-body').html(data);
@@ -318,6 +324,7 @@ function getCartitems(cartId) {
             }
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
+            stopLoading();
             alert('Error' + textStatus + "/" + errorThrown);
         }
     });
@@ -451,15 +458,7 @@ function choosePaymentMethod() {
         return;
     }
 
-    //var variables = getUrlVariables();
-
-
     window.location.href = basePath + "/Orders/ConfirmOrder?paymentTypeId=" + paymenttypeId;
-    //    "&paymentTypeId=" + paymenttypeId +
-    //    "&deliveryMethodId=" + variables["deliveryMethodId"] +
-    //    (!!variables["shipmentRuleId"] ? "&shipmentRuleId=" + variables["shipmentRuleId"] : "") +
-    //    (!!variables["shippingAddressId"] ? "&shippingAddressId=" + variables["shippingAddressId"] : "") +
-    //    (!!variables["collectionPointId"] ? "&collectionPointId=" + variables["collectionPointId"] : "");
 
 }
 
@@ -635,12 +634,14 @@ function LoggedIn() {
 
         return;
     }
+    startLoading();
     $.ajax({
         type: "GET",
         url: basePath + "/User/LoginUsers/",
         data: { UserName: UserName, UserPassword: UserPassword, PlaceOrder: placecheck},
         dataType: 'json',
         success: function (data) {
+            stopLoading();
             if (!data.status) {
 
                 $(".alert-message-login").html("User name or password is not correct").show().delay(2000).fadeOut();
@@ -666,6 +667,7 @@ function LoggedIn() {
 
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
+            stopLoading();
             $(".alert-message-login").html('Error' + textStatus + "/" + errorThrown).show().delay(5000).fadeOut();
 
         }
@@ -679,11 +681,13 @@ function CreateUsers() {
     if (placecheck !== "" && placecheck !== undefined && placecheck != null) {
         PlaceOrders = true;
     }
+    startLoading();
     $.ajax({
         type: "POST",
         url: basePath + "/User/CreateUser/",
         data: $("#userRegister").serialize(),
         success: function (data) {
+            stopLoading();
             if (data) {
                 $(".registration_form_sec").removeClass("show");
                 $(".success-message-reg").html("Registration successful, please check email and activate your account").show();
@@ -699,6 +703,7 @@ function CreateUsers() {
             }
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
+            stopLoading();
             $(".alert-message-reg").html('Error' + textStatus + " /" + errorThrown).show().delay(5000).fadeOut();
         }
     });

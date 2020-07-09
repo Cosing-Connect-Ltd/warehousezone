@@ -40,6 +40,25 @@
 </head>
 
 <body>
+
+    <div id="divLoading" style="display: none">
+        <div class="snipper" data-title=".dot-spin">
+            <div class="stage">
+                <div class="dot-spin"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function startLoading() {
+            $("#divLoading").show();
+        }
+
+        function stopLoading() {
+            $("#divLoading").hide();
+        };
+    </script>
+
     @if (loginStatus && isSuperUser)
     {
         <div class="settings-bar">

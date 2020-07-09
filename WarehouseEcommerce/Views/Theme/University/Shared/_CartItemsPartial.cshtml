@@ -32,31 +32,6 @@
             </div>
         </div>
     </div>
-    <script>
-        function onCollectionPointSelected(id, name, postcode, address) {
-            if ($("#select-collection-point__button").length > 0) {
-                $("#select-collection-point__button").removeAttr("disabled");
-            }
-        }
-
-        function setSelectedCollectionPoint() {
-            $("#collection-point-name")[0].innerText = $("#collectionPointName")[0].value;
-            $("#collection-point-address")[0].innerText = ' - ' + $("#collectionPointAddress")[0].value;
-
-            $.ajax({
-                type: "GET",
-                url: basePath + "/Products/GetCartItemsCollectionAvailability/",
-                data: { id: $("#collectionPointId")[0].value, name: $("#collectionPointName")[0].value, address: $("#collectionPointAddress")[0].value },
-                dataType: 'json',
-                success: function (data) {
-
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert('Error' + textStatus + "/" + errorThrown);
-                }
-            });
-        }
-    </script>
 </div>
 
 <div class="modal fade" id="ChooseShippingAddressModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -71,8 +46,8 @@
             <div class="modal-body billandshipsec">
                 <div class="checkout-options-wrapper">
                     <div class="addNewAddrWrap">
-                        @Html.Hidden("shippingAddressId", (int?)ViewBag.CollectionPointId)
-                        @Html.Hidden("shippingAddressPostCode", (string)ViewBag.CollectionPointName)
+                        @Html.Hidden("shippingAddressId", (int?)ViewBag.ShippingAddressId)
+                        @Html.Hidden("shippingAddressPostCode", (string)ViewBag.ShippingAddressPostCode)
                         @Html.Partial("_ShippingAddressSelector", Model.ShippmentAddresses)
                         <div>
                             <button class="addnwShopAdrrbtn" id="select-shipping-address__button" onclick="setSelectedShippingAddress()" data-toggle="modal" disabled data-target="#ChooseShippingAddressModal">Select Address</button>
@@ -82,31 +57,77 @@
             </div>
         </div>
     </div>
-    <script>
-        function onShippingAddressSelected(id, name, postcode, address) {
-            if ($("#select-shipping-address__button").length > 0) {
-                $("#select-shipping-address__button").removeAttr("disabled");
-            }
-        }
-
-        function setSelectedShippingAddress() {
-            $("#shipping-address-postcode")[0].innerText = $("#shippingAddressPostCode")[0].value;
-
-            $.ajax({
-                type: "GET",
-                url: basePath + "/Products/GetCartItemsDeliveryAvailability/",
-                data: { id: $("#shippingAddressId")[0].value, postCode: $("#shippingAddressPostCode")[0].value },
-                dataType: 'json',
-                success: function (data) {
-
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert('Error' + textStatus + "/" + errorThrown);
-                }
-            });
-        }
-    </script>
 </div>
+
+<script>
+    function onCollectionPointSelected(id, name, postcode, address) {
+        if ($("#select-collection-point__button").length > 0) {
+            $("#select-collection-point__button").removeAttr("disabled");
+        }
+    }
+
+    function setSelectedCollectionPoint() {
+        $("#collection-point-name")[0].innerText = $("#collectionPointName")[0].value;
+        $("#collection-point-address")[0].innerText = ' - ' + $("#collectionPointAddress")[0].value;
+
+        $.ajax({
+            type: "GET",
+            url: basePath + "/Products/GetCartItemsCollectionAvailability/",
+            data: { id: $("#collectionPointId")[0].value, name: $("#collectionPointName")[0].value, address: $("#collectionPointAddress")[0].value },
+            dataType: 'json',
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    var elementId = "#collection_status_" + data[i].Id;
+
+                    sethAvailabilityStatus(data[i].IsAvailable, elementId);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert('Error' + textStatus + "/" + errorThrown);
+            }
+        });
+    }
+
+    function onShippingAddressSelected(id, postcode) {
+        if ($("#select-shipping-address__button").length > 0) {
+            $("#select-shipping-address__button").removeAttr("disabled");
+        }
+    }
+
+    function setSelectedShippingAddress() {
+        $("#shipping-address-postcode")[0].innerText = $("#shippingAddressPostCode")[0].value;
+
+        $.ajax({
+            type: "GET",
+            url: basePath + "/Products/GetCartItemsDeliveryAvailability/",
+            data: { id: $("#shippingAddressId")[0].value, postCode: $("#shippingAddressPostCode")[0].value },
+            dataType: 'json',
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    var elementId = "#delivery_status_" + data[i].Id;
+
+                    sethAvailabilityStatus(data[i].IsAvailable, elementId);
+                }
+
+                $("#ChooseShippingAddressModal").modal('hide');
+            },
+
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert('Error' + textStatus + "/" + errorThrown);
+            }
+        });
+    }
+
+    function sethAvailabilityStatus(isAvailable, elementId) {
+        if (isAvailable == "True") {
+            $(elementId + " .unavailable").attr("hidden", "");
+            $(elementId + " .available").removeAttr("hidden");
+        } else {
+            $(elementId + " .unavailable").removeAttr("hidden");
+            $(elementId + " .available").attr("hidden", "");
+        }
+    }
+</script>
 
 <section class="nb_sec nb_prdlisting_pgsec mb-5">
     <div class="container">
@@ -118,20 +139,20 @@
                 <div class="tableWrap">
                     <table class="basketTable table-responsive">
                         <tbody>
-                            @if (Model.WebsiteCartItems.Count > 0 && Model != null && (Model.ShowCartPopUp != true) && false)
+                            @if (Model.ShowCartPopUp != true)
                             {
                                 <tr>
                                     <td class="topTd" colspan="4"></td>
                                     <td>
                                         <div class="headBoxTop">
                                             <h3 class="head">Store Collection</h3>
-                                            <p><span id="collection-point-name">@ViewBag.CollectionPointName</span><span id="collection-point-address">@(ViewBag.CollectionPointAddress != null ? " - " + ViewBag.CollectionPointAddress : "")</span></p>
+                                            <p><span id="collection-point-name">@ViewBag.CollectionPointName</span><span id="collection-point-address">@(ViewBag.CollectionPointAddress != null ? ", " + ViewBag.CollectionPointAddress : "")</span></p>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="headBoxTop">
                                             <h3 class="head">Home Delivery</h3>
-                                            <p>Check your delivery Option</p>
+                                            <p>Selected PostCode: <span id="shipping-address-postcode">@ViewBag.ShippingAddressPostCode</span></p>
                                         </div>
                                     </td>
                                 </tr>
@@ -142,7 +163,7 @@
                                 <td class="price">Price</td>
                                 <td class="qty">Quantity</td>
                                 <td class="tot">Total</td>
-                                @if (Model.WebsiteCartItems.Count > 0 && Model != null && (Model.ShowCartPopUp != true) && false)
+                                @if (Model.ShowCartPopUp != true)
                                 {
                                     <td class="store">
                                         <a href="" data-toggle="modal" data-target="#ChooseStoreModal" class="chsStoreLnk">Choose Store</a>
@@ -178,7 +199,7 @@
 
                                                 </span>
                                             </div>
-                                            @if (Model.WebsiteCartItems.Count > 0 && Model != null && (Model.ShowCartPopUp != true) && false)
+                                            @if (Model.ShowCartPopUp != true)
                                             {
                                                 <div class="inrow btm">
                                                     <span class="imgWrap"> </span>
@@ -208,29 +229,28 @@
                                         <div id="total_amnt" class="priceTotal @(Model.ShowCartPopUp != true ? "in-basket-price-total" : string.Empty)">
                                             @Model.CurrenySymbol@item.ProductTotalAmount
                                         </div>
-                                        @if (Model.WebsiteCartItems.Count > 0 && Model != null && (Model.ShowCartPopUp != true))
+                                        @if (Model.ShowCartPopUp != true)
                                         {
                                             <a href="javascript:;" class="removeBtn" onclick="removeCartItem(@item.CartId)"> Remove</a>
                                         }
                                     </td>
-                                    @if (Model.WebsiteCartItems.Count > 0 && Model != null && (Model.ShowCartPopUp != true) && false)
+                                    @if (Model.ShowCartPopUp != true)
                                     {
                                         <td class="store greyBox">
                                             <div class="greyBoxInner">
-                                                <p class="orderNowTxt" id="collection_@item.ProductMaster.ProductId">
-                                                    <span class="available"><b>Order Now!</b> Collect today from 4pm</span>
-                                                    <span class="unavailable" hidden><b>Unavailable!</b></span>
+                                                <p class="orderNowTxt" id="collection_status_@item.Id">
+                                                    <span class="available" @(!item.IsAvailableForCollection ? "hidden" : "")>Available for Collection</span>
+                                                    <span class="unavailable" @(item.IsAvailableForCollection ? "hidden" : "")><b>Unavailable In Store!</b></span>
                                                 </p>
                                             </div>
                                         </td>
 
                                         <td class="homeDel greyBox">
                                             <div class="greyBoxInner">
-                                                <ul class="radioBtnGrp">
-                                                    <li>
-                                                        <label>Next Day <b>£4.99</b></label>
-                                                    </li>
-                                                </ul>
+                                                <p class="orderNowTxt" id="delivery_status_@item.Id">
+                                                    <span class="available" @(!item.IsAvailableForDelivery ? "hidden" : "")>Available for Delivery</span>
+                                                    <span class="unavailable" @(item.IsAvailableForDelivery ? "hidden" : "")><b>Unavailable For Delivery!</b></span>
+                                                </p>
                                             </div>
                                         </td>
                                     }
@@ -241,21 +261,21 @@
                                 <td class="price"></td>
                                 <td class="qty subtotalCell" colspan="2">
                                     <div class="subtotalCellInner">
-                                        <span>Sub Total</span> <span>@(Model == null ? "" : Model.CurrenySymbol) @(Model.TotalAmount)</span>
+                                        <span>Sub Total</span> <span>@Model.CurrenySymbol@(Model.TotalAmount)</span>
                                     </div>
                                 </td>
 
-                                @if (Model.WebsiteCartItems.Count > 0 && Model != null && (Model.ShowCartPopUp != true) && false)
+                                @if (Model.ShowCartPopUp != true)
                                 {
                                     <td class="store greyBox">
                                         <div class="botomBtnsec">
-                                            <button class="btmbtn pro" onclick="@(Model != null && Model.ShowLoginPopUp == true ? "GetLoggedIn();" : "proceedToPickup();")">PROCEED TO PICKUP</button>
+                                            <button class="btmbtn pro" onclick="@(Model.ShowLoginPopUp == true ? "GetLoggedIn('" + (bool?)Model.ShowLoginPopUp + "');" : "proceedToPickup();")">PROCEED TO PICKUP</button>
                                         </div>
                                     </td>
 
                                     <td class="homeDel greyBox">
                                         <div class="botomBtnsec">
-                                            <button class="btmbtn pro" onclick="@(Model != null && Model.ShowLoginPopUp == true ? "GetLoggedIn();" : "proceedToDelivery();")">PROCEED TO DELIVERY</button>
+                                            <button class="btmbtn pro" onclick="@(Model.ShowLoginPopUp == true ? "GetLoggedIn('" + (bool?)Model.ShowLoginPopUp + "');" : "proceedToDelivery();")">PROCEED TO DELIVERY</button>
                                         </div>
                                     </td>
                                 }
@@ -264,18 +284,9 @@
                     </table>
                 </div>
                 <div class="botomBtnsec">
-                    @if (Model.WebsiteCartItems.Count > 0 && Model != null && (Model.ShowCartPopUp != true))
+                    @if (Model.ShowCartPopUp != true)
                     {
-                        if (Model != null && Model.ShowLoginPopUp == true)
-                        {
-                            var popup = (bool?)Model.ShowLoginPopUp;
-                            <button class="btmbtn pro" onclick="GetLoggedIn()">PROCEED TO CHECKOUT</button>
-                        }
-                        else
-                        {
-                            <button class="btmbtn pro" onclick="window.location.href='@Url.Action("OldCheckout", "Orders")'">PROCEED TO CHECKOUT</button>
-                        }
-
+                        <button class="btmbtn pro mobile-checkout" style="display: none;" onclick="@(Model.ShowLoginPopUp == true ? "GetLoggedIn('" + (bool?)Model.ShowLoginPopUp + "');" : "proceedToMobileCheckout();")">PROCEED TO CHECKOUT</button>
                         <button class="btmbtn sho">CONTINUE SHOPPING</button>
                     }
                 </div>
@@ -305,7 +316,7 @@
         }
 
         function proceedToDelivery() {
-            proceedToCheckout(@((int)DeliveryMethod.ToShipmentAddress), 0);
+            proceedToCheckout(@((int)DeliveryMethod.ToShipmentAddress), $("#shippingAddressId")[0].value);
         }
 
         function proceedToPickup() {
@@ -314,6 +325,10 @@
 
         function proceedToCheckout(deliveryMethod, destinationId) {
             window.location.href = basePath + "/Orders/ProceedToCheckout?deliveryMethod=" + deliveryMethod + "&destinationId=" + destinationId
+        }
+
+        function proceedToMobileCheckout() {
+            window.location.href = basePath + "/Orders/MobileCheckout"
         }
     </script>
 </section>
