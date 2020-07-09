@@ -1616,23 +1616,24 @@ body.modal-open {
         margin-bottom: 20px;
     }
 
-        .billandshipsec .address-wrapper .btnWrap .btmBtn {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-            width: 185px;
-            height: 50px;
-            margin-right: 20px;
-            font-size: 16px;
-            font-family: "primaryfont_Bold";
-            color: #fff;
-            outline: none;
-            border: none;
-            text-transform: uppercase;
-            background-color: #000;
-            transition: all 0.3s ease;
-        }
+.billandshipsec .address-wrapper .btnWrap .btmBtn {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    min-width: 185px;
+    padding: 0 20px;
+    height: 50px;
+    margin-right: 20px;
+    font-size: 16px;
+    font-family: "primaryfont_Bold";
+    color: #fff;
+    outline: none;
+    border: none;
+    text-transform: uppercase;
+    background-color: #000;
+    transition: all 0.3s ease;
+}
 
             .billandshipsec .address-wrapper .btnWrap .btmBtn:hover {
                 background-color: #f33655;
@@ -1668,7 +1669,7 @@ body.modal-open {
 
 .billandshipsec .addNewAddrWrap {
     width: 100%;
-    margin-bottom: 48px;
+    margin-bottom: 15px;
     margin-top: 15px;
 }
 
@@ -1729,7 +1730,7 @@ body.modal-open {
         }
 
 .billandshipsec .checkout-options-wrapper {
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 }
 
     .billandshipsec .checkout-options-wrapper .checkboxwrap {
@@ -1759,7 +1760,7 @@ body.modal-open {
 .billandshipsec .address-wrapper .addnwShopAdrrbtn {
     width: 250px;
     line-height: 50px;
-    margin-top: 25px;
+    margin: 25px 20px 0 0;
     background-color: #000;
     color: #fff;
     font-family: "primaryfont_Bold";
@@ -1768,6 +1769,7 @@ body.modal-open {
     text-align: center;
     outline: none;
     transition: all 0.3s ease;
+    padding: 0px;
 }
 
     .billandshipsec .checkout-options-wrapper .addnwShopAdrrbtn:hover,
@@ -1786,6 +1788,8 @@ body.modal-open {
     .saveAddrWrap .saveAddrBtn {
         width: 260px;
         height: 50px;
+        line-height: 50px;
+        text-align:center;
         background-color: #000;
         color: #fff;
         font-family: "primaryfont_Bold";
@@ -1794,6 +1798,7 @@ body.modal-open {
         text-transform: uppercase;
         outline: none;
         transition: all 0.3s ease;
+        display: inline-block;
     }
 
         .saveAddrWrap .saveAddrBtn:hover {
@@ -2062,6 +2067,7 @@ body.modal-open {
     display: flex;
     justify-content: space-between;
     font-weight: 600;
+    cursor: pointer;
 }
 
     .collection-address-div:hover {
@@ -2091,6 +2097,7 @@ body.modal-open {
         .basketTable tr td .headBoxTop p {
             font-family: "primaryfont_Normal";
             font-size: 14px;
+            height:30px;
         }
 
     .basketTable tr .topTd {
@@ -2110,8 +2117,11 @@ body.modal-open {
             border-bottom: none !important;
         }
 
-    .basketTable tr.cmnRow td {
+    .basketTable tr.cmnRow {
         border-bottom: solid 1px #707070;
+    }
+
+    .basketTable tr.cmnRow td {
         text-align: center;
         font-weight: bold !important;
     }
@@ -2292,7 +2302,7 @@ body.modal-open {
 
             .basketTable tr.cmnRow .qty .QtyWrapinner .coutnerInput {
                 border: none;
-                height: 38px;
+                height: 37px;
                 width: 100%;
                 text-align: center;
                 font-family: "primaryfont_Normal";
@@ -2315,18 +2325,26 @@ body.modal-open {
                 align-items: center;
                 justify-content: center;
                 font-size: 15px;
+                position: absolute;
+                right: 0;
+                top: 0;
+                cursor: pointer;
             }
 
+            .basketTable tr.cmnRow .qty .QtyWrapinner span:hover {
+                background-color: rgba(200, 200, 200, .5)
+            }
+
+                .basketTable tr.cmnRow .qty .QtyWrapinner span:active {
+                    background-color: rgba(200, 200, 200, .2)
+                }
+
                 .basketTable tr.cmnRow .qty .QtyWrapinner span.min {
-                    position: absolute;
                     left: 0;
-                    top: 0;
                 }
 
                 .basketTable tr.cmnRow .qty .QtyWrapinner span.add {
-                    position: absolute;
                     right: 0;
-                    top: 0;
                 }
 
     .basketTable tr.cmnRow .tot {
@@ -2345,7 +2363,7 @@ body.modal-open {
             position: relative;
         }
 
-            .basketTable tr.cmnRow .tot .priceTotal:after {
+/*            .basketTable tr.cmnRow .tot .in-basket-price-total:after {
                 position: absolute;
                 right: -5px;
                 top: 50%;
@@ -2355,7 +2373,7 @@ body.modal-open {
                 border-top: 8px solid transparent;
                 border-bottom: 8px solid transparent;
                 border-left: 8px solid #000;
-            }
+            }*/
 
         .basketTable tr.cmnRow .tot .removeBtn {
             color: #f33655;
@@ -2365,7 +2383,7 @@ body.modal-open {
 
     .basketTable tr.cmnRow .store {
         width: 13%;
-        min-width: 159px;
+        width:200px;
         border-bottom: solid 1px transparent;
     }
 
@@ -2379,7 +2397,7 @@ body.modal-open {
 
     .basketTable tr.cmnRow .homeDel {
         width: 20%;
-        min-width: 196px;
+        width:200px;
         border-bottom: solid 1px transparent;
     }
 
@@ -2511,47 +2529,44 @@ body.modal-open {
             margin-top: 15px !important;
         }
 }
-
-.botomBtnsec .btmbtn {
-    width: 260px;
-    height: 50px;
-    transition: all 0.3s ease;
-    margin: 0px 7px;
-    font-family: "primaryfont_Bold";
-    font-size: 16px;
-    text-transform: uppercase;
-}
-
-    .botomBtnsec .btmbtn.pro {
-        background-color: #f33655;
-        color: #fff;
-        border: solid 1px #f33655;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
+    .botomBtnsec .btmbtn {
+        width: 200px;
+        height: 50px;
+        transition: all 0.3s ease;
+        font-family: "primaryfont_Bold";
+        font-size: 16px;
+        text-transform: uppercase;
     }
 
-        .botomBtnsec .btmbtn.pro:hover {
-            background-color: #000;
-            border: solid 1px #000;
-        }
-
-    .botomBtnsec .btmbtn.sho {
-        background-color: transparent;
-        color: #707070;
-        border: solid 1px #707070;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-    }
-
-        .botomBtnsec .btmbtn.sho:hover {
-            background-color: #000;
-            border: solid 1px #000;
+        .botomBtnsec .btmbtn.pro {
+            background-color: #f33655;
             color: #fff;
+            border: solid 1px #f33655;
+            display: flex;
+            margin-right: 20px;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
         }
+            .botomBtnsec .btmbtn.pro:hover {
+                background-color: #000;
+                border: solid 1px #000;
+            }
+            .botomBtnsec .btmbtn.sho {
+                background-color: transparent;
+                color: #707070;
+                border: solid 1px #707070;
+                display: flex;
+                margin-right: 20px;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+            }
+                .botomBtnsec .btmbtn.sho:hover {
+                    background-color: #000;
+                    border: solid 1px #000;
+                    color: #fff;
+                }
 /*new cart page- css end*/
 
 
@@ -2701,6 +2716,27 @@ body.modal-open {
 
     .uni-pages-pt {
         padding-top: 200px !important;
+    }
+
+    .basketTable tr td {
+        display: table-row;
+    }
+
+    .basketTable tr.cmnRow .prd,
+    .basketTable tr.cmnRow .qty,
+    .basketTable tr.cmnRow .tot,
+    .basketTable tr.cmnRow .price {
+        width: 100%;
+    }
+
+        .basketTable tr.cmnRow .qty .QtyWrap,
+        .basketTable tr.cmnRow .tot .priceTotal,
+        .basketTable tr.cmnRow .price .priceWrapinner {
+            height: 40px;
+        }
+
+    .basketTable tr.headRow {
+        display: none;
     }
 
     .prd_lst_boxouter .imagewrap img {
