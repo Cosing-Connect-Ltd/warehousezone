@@ -249,13 +249,13 @@
                                 {
                                     <td class="store greyBox">
                                         <div class="botomBtnsec">
-                                            <button class="btmbtn pro" onclick="@(Model != null && Model.ShowLoginPopUp == true ? "GetLoggedIn('" + (bool?)Model.ShowLoginPopUp + "');" : "proceedToPickup();")">PROCEED TO PICKUP</button>
+                                            <button class="btmbtn pro" onclick="@(Model != null && Model.ShowLoginPopUp == true ? "GetLoggedIn();" : "proceedToPickup();")">PROCEED TO PICKUP</button>
                                         </div>
                                     </td>
 
                                     <td class="homeDel greyBox">
                                         <div class="botomBtnsec">
-                                            <button class="btmbtn pro" onclick="@(Model != null && Model.ShowLoginPopUp == true ? "GetLoggedIn('" + (bool?)Model.ShowLoginPopUp + "');" : "proceedToDelivery();")">PROCEED TO DELIVERY</button>
+                                            <button class="btmbtn pro" onclick="@(Model != null && Model.ShowLoginPopUp == true ? "GetLoggedIn();" : "proceedToDelivery();")">PROCEED TO DELIVERY</button>
                                         </div>
                                     </td>
                                 }
@@ -269,7 +269,7 @@
                         if (Model != null && Model.ShowLoginPopUp == true)
                         {
                             var popup = (bool?)Model.ShowLoginPopUp;
-                            <button class="btmbtn pro" onclick="GetLoggedIn('@popup')">PROCEED TO CHECKOUT</button>
+                            <button class="btmbtn pro" onclick="GetLoggedIn()">PROCEED TO CHECKOUT</button>
                         }
                         else
                         {

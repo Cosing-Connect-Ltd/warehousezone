@@ -523,7 +523,8 @@ function onCurrencyChange(event) {
 }
 
 $("input[type=checkbox]").on("change", function (e) {
-    if (e.currentTarget.id !== "notification-switch") {
+    debugger;
+    if (!$(this).hasClass("notification-switch")) {
         var arr = [];
         var data = "";
         var str = $(location).attr('href');
@@ -908,7 +909,7 @@ $("#showLoginForm").click(function () {
     });
 
 });
-$("#notification-switch").change(function (e) {
+$(".notification-switch").change(function (e) {
     var productId = $(this).val();
     var notification = $(this).is(":checked");
     ChangeWishListStatus(productId, notification);

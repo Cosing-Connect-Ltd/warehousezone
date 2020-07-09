@@ -30,7 +30,7 @@
            
 
             <div class="orderConfirmationSection">
-                <h4 class="ordConfirmHead">Order Review</h4>
+                <h4 class="ordConfirmHead">Order Confirmation</h4>
 
                 <div class="row">
                     <div class="col-lg-6">
@@ -115,7 +115,7 @@
                             {
                                 <li>
                                     @(item.ProductMaster?.Name)<br />
-                                    @ViewBag.CurrencySymbol@item.Price, Qty: @item.Qty
+                                    @ViewBag.CurrencySymbol@item.Price, Qty: @item.Quantity
                                 </li>
                             }
                         </ul>

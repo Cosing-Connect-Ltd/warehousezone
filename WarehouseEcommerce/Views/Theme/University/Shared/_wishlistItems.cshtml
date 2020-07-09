@@ -29,8 +29,8 @@
                                 <a href="javascript:;" class="btn btn-danger" onclick="RemoveWishItem(@item.ProductMaster.ProductId)">Remove</a>
                                 <br /><br />
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="notification-switch" value="@item.ProductMaster.ProductId" @(item.IsNotification ? "checked" : "")>
-                                    <label class="custom-control-label" for="notification-switch">Notification</label>
+                                    <input type="checkbox" class="custom-control-input notification-switch" id="notification-switch-@item.ProductMaster.ProductId" value="@item.ProductMaster.ProductId" @(item.IsNotification ? "checked" : "")>
+                                    <label class="custom-control-label" for="notification-switch-@item.ProductMaster.ProductId">Notification</label>
                                 </div>
                             </div>
 
