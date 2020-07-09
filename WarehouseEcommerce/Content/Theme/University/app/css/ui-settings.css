@@ -13,9 +13,9 @@ body {
     background-color: var(--body-background-color);
 }
 
-body * {
-    font-family: var(--primary-font-family);
-}
+    body * {
+        font-family: var(--primary-font-family);
+    }
 
 .uni-pages-main .nb_prd_filterwrap .list-group-item,
 .btn .button,
@@ -231,11 +231,6 @@ h6,
 
 .nb_sub_sec {
     background-color: var(--quaternary-color);
-}
-
-
-.nb_sub_sec {
-    background: radial-gradient(circle, var(--quaternary-color) 0%, var(--primary-color) 35%);
 }
 
 .nb_header .nb_headicolst li.cartIcoWrap a span,
@@ -466,7 +461,7 @@ nb_prdpg_fg label,
 .search_wrap_main .search_input,
 .uni-pages-main .nb_prdlisting_pgsec .breadCrumbtopsec .sortBysec select,
 .nb_prdlisting_pgsec .nb_prd_filterwrap * > ul *,
-.nb_filter_accordion .nb_filter_head h5 button{
+.nb_filter_accordion .nb_filter_head h5 button {
     border-color: var(--dark-font-color);
 }
 

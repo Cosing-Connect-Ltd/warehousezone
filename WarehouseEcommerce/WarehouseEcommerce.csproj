@@ -1416,7 +1416,7 @@
     <Content Include="Views\Theme\Smart\Orders\_ShippingAddress.cshtml" />
     <Content Include="Views\Theme\University\Orders\ConfirmPaymentMessage.cshtml" />
     <Content Include="Views\Theme\University\Orders\_CheckoutProcessPartial.cshtml" />
-    <Content Include="Views\Theme\University\Orders\SagePay - Copy.cshtml" />
+    <Content Include="Views\Theme\University\Orders\SagePay.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

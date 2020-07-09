@@ -74,6 +74,33 @@
         .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner .meganav_firstcatList > li {
             padding: 0px;
         }
+
+
+    .accordion ul li:nth-child(1) {
+        right: auto;
+        width: 170px;
+    }
+
+        .accordion ul li:nth-child(1):after {
+            display: none;
+        }
+
+        .accordion ul li:nth-child(1) h2 {
+            padding-right: initial;
+        }
+
+    .accordion ul li:nth-child(5) {
+        left: auto;
+        width: 170px;
+    }
+
+        .accordion ul li:nth-child(5):after {
+            display: none;
+        }
+
+            .accordion ul li:nth-child(5):after h2 {
+                padding-right: initial;
+            }
 }
 
 @media (max-width: 1024px) {

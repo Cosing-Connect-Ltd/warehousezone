@@ -286,11 +286,16 @@ namespace WarehouseEcommerce.Controllers
                 if (response.StatusCode != HttpStatusCode.Created)
                 {
                     var responseString = await response.Content.ReadAsStringAsync();
-                    TempData["Error"] = responseString;
-                    return RedirectToAction("Checkout");
+                    //TempData["Error"] = responseString;
+                    TempData["Error"] = "Authorization failed, please check details and retry";
+
+                    return RedirectToAction("ConfirmOrder");
+                    // redirect to action and show this message
                 }
                 else
                 {
+                    // create order
+                    var responseString = await response.Content.ReadAsStringAsync();
                     return RedirectToAction("ConfirmPaymentMessage");
                 }
 
