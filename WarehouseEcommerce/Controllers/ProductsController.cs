@@ -263,14 +263,14 @@ namespace WarehouseEcommerce.Controllers
             model.ShowCartPopUp = cartId.HasValue;
             model.ShowLoginPopUp = CurrentUserId == 0;
 
-            InitiateShippmentAddress(model);
+            InitiateShippmentAddress(ref model);
 
-            InitiateCollectionPoint(model);
+            InitiateCollectionPoint(ref model);
 
             return PartialView(model);
         }
 
-        private void InitiateShippmentAddress(WebsiteCartItemsViewModel model)
+        private void InitiateShippmentAddress(ref WebsiteCartItemsViewModel model)
         {
             if (Session["shippingAddressId"] == null && Session["shippingAddressPostCode"] == null)
             {
@@ -279,17 +279,17 @@ namespace WarehouseEcommerce.Controllers
                 Session["shippingAddressPostCode"] = firstAddress?.PostCode;
             }
 
-            ViewBag.ShippingAddressId = Session["shippingAddressId"];
-            ViewBag.ShippingAddressPostCode = Session["shippingAddressPostCode"];
+            model.ShippingAddressId = (int)Session["shippingAddressId"];
+            model.ShippingAddressPostCode = (string)Session["shippingAddressPostCode"];
         }
 
-        private void InitiateCollectionPoint(WebsiteCartItemsViewModel model)
+        private void InitiateCollectionPoint(ref WebsiteCartItemsViewModel model)
         {
             if (Session["collectionPointId"] != null)
             {
-                ViewBag.CollectionPointId = Session["collectionPointId"];
-                ViewBag.CollectionPointName = Session["collectionPointName"];
-                ViewBag.CollectionPointAddress = Session["collectionPointAddress"];
+                model.CollectionPointId = (int)Session["collectionPointId"];
+                model.CollectionPointName = (string)Session["collectionPointName"];
+                model.CollectionPointAddress = (string)Session["collectionPointAddress"];
                 model.WebsiteCartItems.ForEach(a =>
                 {
                     a.IsAvailableForCollection = _productServices.GetAllInventoryStocksByProductId(a.ProductId)

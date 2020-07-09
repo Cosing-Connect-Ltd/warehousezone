@@ -15,8 +15,8 @@ namespace Ganedata.Core.Entities.Domain
         public virtual ProductMasterViewModel ProductMaster { get; set; }
         public List<KitProductCartSession> KitProductCartItems { get; set; }
         public int? CartId { get; set; }
-        public bool IsAvailableForCollection { get; set; }
-        public bool IsAvailableForDelivery { get; set; }
+        public bool? IsAvailableForCollection { get; set; }
+        public bool? IsAvailableForDelivery { get; set; }
         public decimal ProductTotalAmount => Math.Round((Quantity * Price), 2);
     }
 
@@ -28,6 +28,11 @@ namespace Ganedata.Core.Entities.Domain
         public bool ShowLoginPopUp { get; set; }
         public bool ShowCartPopUp { get; set; }
         public string CurrenySymbol { get; set; }
+        public int? ShippingAddressId { get; set; }
+        public string ShippingAddressPostCode { get; set; }
+        public int? CollectionPointId { get; set; }
+        public string CollectionPointName { get; set; }
+        public string CollectionPointAddress { get; set; }
         public IEnumerable<AddressViewModel> ShippmentAddresses { get; set; }
 
     }

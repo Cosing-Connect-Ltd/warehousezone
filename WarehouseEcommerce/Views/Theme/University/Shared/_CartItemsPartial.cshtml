@@ -20,9 +20,9 @@
             <div class="modal-body billandshipsec">
                 <div class="checkout-options-wrapper">
                     <div class="addNewAddrWrap">
-                        @Html.Hidden("collectionPointId", (int?)ViewBag.CollectionPointId)
-                        @Html.Hidden("collectionPointName", (string)ViewBag.CollectionPointName)
-                        @Html.Hidden("collectionPointAddress", (string)ViewBag.CollectionPointAddress)
+                        @Html.Hidden("collectionPointId", Model.CollectionPointId)
+                        @Html.Hidden("collectionPointName", Model.CollectionPointName)
+                        @Html.Hidden("collectionPointAddress", Model.CollectionPointAddress)
                         @Html.Partial("_CollectionPointSelector")
                         <div>
                             <button class="addnwShopAdrrbtn" id="select-collection-point__button" onclick="setSelectedCollectionPoint()" data-toggle="modal" disabled data-target="#ChooseStoreModal">Select Collection Point</button>
@@ -46,8 +46,8 @@
             <div class="modal-body billandshipsec">
                 <div class="checkout-options-wrapper">
                     <div class="addNewAddrWrap">
-                        @Html.Hidden("shippingAddressId", (int?)ViewBag.ShippingAddressId)
-                        @Html.Hidden("shippingAddressPostCode", (string)ViewBag.ShippingAddressPostCode)
+                        @Html.Hidden("shippingAddressId", Model.ShippingAddressId)
+                        @Html.Hidden("shippingAddressPostCode", Model.ShippingAddressPostCode)
                         @Html.Partial("_ShippingAddressSelector", Model.ShippmentAddresses)
                         <div>
                             <button class="addnwShopAdrrbtn" id="select-shipping-address__button" onclick="setSelectedShippingAddress()" data-toggle="modal" disabled data-target="#ChooseShippingAddressModal">Select Address</button>
@@ -146,13 +146,13 @@
                                     <td>
                                         <div class="headBoxTop">
                                             <h3 class="head">Store Collection</h3>
-                                            <p><span id="collection-point-name">@ViewBag.CollectionPointName</span><span id="collection-point-address">@(ViewBag.CollectionPointAddress != null ? ", " + ViewBag.CollectionPointAddress : "")</span></p>
+                                            <p><span id="collection-point-name">@Model.CollectionPointName</span><span id="collection-point-address">@(Model.CollectionPointAddress != null ? ", " + Model.CollectionPointAddress : "")</span></p>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="headBoxTop">
                                             <h3 class="head">Home Delivery</h3>
-                                            <p>Selected PostCode: <span id="shipping-address-postcode">@ViewBag.ShippingAddressPostCode</span></p>
+                                            <p>Selected PostCode: <span id="shipping-address-postcode">@Model.ShippingAddressPostCode</span></p>
                                         </div>
                                     </td>
                                 </tr>
@@ -239,8 +239,9 @@
                                         <td class="store greyBox">
                                             <div class="greyBoxInner">
                                                 <p class="orderNowTxt" id="collection_status_@item.Id">
-                                                    <span class="available" @(!item.IsAvailableForCollection ? "hidden" : "")>Available for Collection</span>
-                                                    <span class="unavailable" @(item.IsAvailableForCollection ? "hidden" : "")><b>Unavailable In Store!</b></span>
+                                                    <span class="available" @(item.IsAvailableForCollection == true ? "" : "hidden")>Available for Collection</span>
+                                                    <span class="unavailable" @(item.IsAvailableForCollection == false ? "" : "hidden")><b>Unavailable In Store!</b></span>
+                                                    <span @(Model.CollectionPointId == null ? "" : "hidden")><b>Select A Collection Point!</b></span>
                                                 </p>
                                             </div>
                                         </td>
@@ -248,8 +249,9 @@
                                         <td class="homeDel greyBox">
                                             <div class="greyBoxInner">
                                                 <p class="orderNowTxt" id="delivery_status_@item.Id">
-                                                    <span class="available" @(!item.IsAvailableForDelivery ? "hidden" : "")>Available for Delivery</span>
-                                                    <span class="unavailable" @(item.IsAvailableForDelivery ? "hidden" : "")><b>Unavailable For Delivery!</b></span>
+                                                    <span class="available" @(item.IsAvailableForDelivery == true ? "" : "hidden")>Available for Delivery</span>
+                                                    <span class="unavailable" @(item.IsAvailableForDelivery == false ? "" : "hidden")><b>Unavailable For Delivery!</b></span>
+                                                    <span @(Model.ShippingAddressPostCode == null ? "" : "hidden")><b>Choose A Shipping Address!</b></span>
                                                 </p>
                                             </div>
                                         </td>
