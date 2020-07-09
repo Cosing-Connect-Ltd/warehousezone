@@ -227,6 +227,10 @@
     <Compile Include="Domain\Models\UISettingItem.cs" />
     <Compile Include="Domain\Models\UISetting.cs" />
     <Compile Include="Domain\ViewModels\ApiCredentialsViewModel.cs" />
+    <Compile Include="Domain\ViewModels\WebsiteCartItemViewModel.cs" />
+    <Compile Include="Domain\ViewModels\WebsiteShippingRulesViewModel.cs" />
+    <Compile Include="Domain\ViewModels\CollectionPointViewModel.cs" />
+    <Compile Include="Domain\ViewModels\CountryViewModel.cs" />
     <Compile Include="Domain\ViewModels\CheckoutViewModel.cs" />
     <Compile Include="Domain\ViewModels\SagePayViewModels.cs" />
     <Compile Include="Domain\ViewModels\WebsiteWarehousesViewModel.cs" />

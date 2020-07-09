@@ -12,8 +12,8 @@
 
 
 <section class="nb_sec nb_prdlisting_pgsec">
-    
-    
+
+
     <div class="container">
         <div class="breadCrumbtopsec">
             <div class="nb_bread_crumbwrap">
@@ -111,7 +111,7 @@
                             {
                                 <li>
                                     @(item.ProductMaster?.Name)<br />
-                                    @ViewBag.CurrencySymbol@item.Price, Qty: @item.Qty
+                                    @ViewBag.CurrencySymbol@item.Price, Qty: @item.Quantity
                                 </li>
                             }
                         </ul>
@@ -138,7 +138,7 @@
                                 </div>
                                 <div class="button-submit">
                                     <button type="Submit" name="submitNewsletter" class="saveAddrBtn">Proceed To Payment</button>
-                                    <a href="@Url.Action("checkout", "orders", new {checkoutStep = CheckoutStep.PaymentMethod})" class="btn saveAddrBtn">Back</a>
+                                    <a href="@Url.Action("checkout", "orders", new {checkoutStep = CheckoutStep.PaymentMethod})" class="saveAddrBtn">Back</a>
                                     @*<a href="@Url.Action("Index","Test")" class="btn btn-block cash-btn cashbtn" name="submitNewsletter"> Proceed To Payment</a>*@
                                 </div>
 
@@ -159,7 +159,7 @@
                                 </div>
                                 <div class="button-submit">
                                     <button type="Submit" name="submitNewsletter" class="saveAddrBtn">Proceed To Payment</button>
-                                    <a href="@Url.Action("checkout", "orders", new {checkoutStep = CheckoutStep.PaymentMethod})" class="btn saveAddrBtn">Back</a>
+                                    <a href="@Url.Action("checkout","orders",new{ step = (int)CheckoutStep.PaymentMethod})" class="saveAddrBtn">Back</a>
                                 </div>
 
 

@@ -683,7 +683,6 @@
     <Content Include="Views\Theme\University\Shared\_SubscribePartial.cshtml" />
     <Content Include="Views\Theme\University\Shared\_BlogPartial.cshtml" />
     <Content Include="Views\Theme\University\Products\_DynamicFilters.cshtml" />
-    <Content Include="Views\Theme\University\Products\AddToCart14.cshtml" />
     <Content Include="Views\Theme\University\Products\GroupedProductDetail.cshtml" />
     <Content Include="Views\Theme\University\Products\KitProductDetail.cshtml" />
     <Content Include="Views\Theme\University\Products\list.cshtml" />
@@ -1396,6 +1395,9 @@
     <Content Include="Views\Theme\University\Orders\_AddOrEditAddress.cshtml" />
     <Content Include="Views\Theme\University\Orders\SagePay3DAuth.cshtml" />
     <Content Include="Views\Theme\University\Orders\_AddressDetail.cshtml" />
+    <Content Include="Views\Theme\University\Orders\SagePay.cshtml" />
+    <Content Include="Views\Theme\University\UISettings\SettingsBar.cshtml" />
+    <Content Include="Views\Theme\University\Shared\_AddressDetail.cshtml" />
     <Content Include="Views\Theme\University\Orders\_BillingAddress.cshtml" />
     <Content Include="Views\Theme\University\Orders\_ShippingAddress.cshtml" />
     <Content Include="Views\Theme\University\Orders\_DeliveryMethod.cshtml" />
@@ -1416,7 +1418,8 @@
     <Content Include="Views\Theme\Smart\Orders\_ShippingAddress.cshtml" />
     <Content Include="Views\Theme\University\Orders\ConfirmPaymentMessage.cshtml" />
     <Content Include="Views\Theme\University\Orders\_CheckoutProcessPartial.cshtml" />
-    <Content Include="Views\Theme\University\Orders\SagePay.cshtml" />
+    <Content Include="Views\Theme\University\Shared\_CollectionPointSelector.cshtml" />
+    <Content Include="Views\Theme\University\Shared\_ShippingAddressSelector.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -61,7 +61,7 @@
                                             <div class="button-group">
                                                 @if (@product[i].SellPrice > 0 && @product[i].SellPrice.HasValue && @product[i].PercentMargin > 0)
                                                 {
-                                                    <button type="button" class="acart" onclick="AddToCart(@product[i].ProductId)">
+                                                    <button type="button" class="acart" onclick="addToCart(@product[i].ProductId)">
                                                         <span>Add to Basket</span>
                                                     </button>
                                                 }
@@ -123,7 +123,7 @@
                                             <div class="button-group">
                                                 @if (@product[i + 1].SellPrice > 0 && @product[i + 1].SellPrice.HasValue && @product[i + 1].PercentMargin > 0)
                                                 {
-                                                    <button type="button" class="acart" onclick="AddToCart(@product[i + 1].ProductId)">
+                                                    <button type="button" class="acart" onclick="addToCart(@product[i + 1].ProductId)">
                                                         <span>Add to Basket</span>
                                                     </button>
                                                 }

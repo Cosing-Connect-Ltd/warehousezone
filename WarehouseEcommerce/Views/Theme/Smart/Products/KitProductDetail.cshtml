@@ -165,7 +165,7 @@
                                                     <div class="button-submit">
                                                         @if (@Model.SellPrice > 0 && @Model.SellPrice.HasValue && @Model.PercentMargin > 0)
                                                         {
-                                                            <button type="Submit" name="submitNewsletter" class="btn btn-block move-to-cart-btn" id="button-cart" onclick="AddToCart(@Model.ProductId)">Add to Basket</button>
+                                                            <button type="Submit" name="submitNewsletter" class="btn btn-block move-to-cart-btn" id="button-cart" onclick="addToCart(@Model.ProductId)">Add to Basket</button>
                                                         }
                                                         else
                                                         {

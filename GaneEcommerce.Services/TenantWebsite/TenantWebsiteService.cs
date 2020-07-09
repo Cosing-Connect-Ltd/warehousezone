@@ -3,15 +3,12 @@ using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Domain.ViewModels;
 using Ganedata.Core.Entities.Enums;
-using Microsoft.Ajax.Utilities;
+using Ganedata.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Xml;
-using Ganedata.Core.Models;
 
 namespace Ganedata.Core.Services
 {
@@ -1029,25 +1026,21 @@ namespace Ganedata.Core.Services
             return _currentDbContext.WebsiteCartItems.Where(u => u.SiteID == siteId && ((u.UserId == UserId) || u.SessionKey.Equals(SessionKey, StringComparison.InvariantCultureIgnoreCase)) && u.IsDeleted != true);
         }
 
-        public IEnumerable<OrderDetailSessionViewModel> GetAllValidCartItems(int siteId, int? userId, int tenantId, string sessionKey, int? cartId = null)
+        public IEnumerable<WebsiteCartItemViewModel> GetAllValidCartItems(int siteId, int? userId, int tenantId, string sessionKey, int? cartId = null)
         {
-            var currenySymbol = _tenantsCurrencyRateServices.GetTenantCurrencies(tenantId).FirstOrDefault()?.GlobalCurrency?.Symbol;
             var model = _currentDbContext.WebsiteCartItems.Where(u => u.IsDeleted != true &&
                                                                                      u.SiteID == siteId &&
                                                                                      u.TenantId == tenantId &&
                                                                                      (u.UserId == userId || u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase))
-                                                                                      && (!cartId.HasValue || u.Id == cartId)).ToList().Select(u => new OrderDetailSessionViewModel
+                                                                                      && (!cartId.HasValue || u.Id == cartId)).ToList().Select(u => new WebsiteCartItemViewModel
                                                                                       {
+                                                                                          Id = u.Id,
                                                                                           ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
                                                                                           Price = u.UnitPrice,
-                                                                                          Qty = u.Quantity,
+                                                                                          Quantity = u.Quantity,
                                                                                           ProductId = u.ProductId,
                                                                                           CartId = u.Id,
-                                                                                          KitProductCartItems = GetAllValidKitCartItemsList(u.Id).ToList(),
-                                                                                          CurrencySign = currenySymbol,
-                                                                                          ShowCartPopUp = cartId.HasValue ? true : false,
-                                                                                          ShowLoginPopUp = (!userId.HasValue || userId == 0) ? true : false
-
+                                                                                          KitProductCartItems = GetAllValidKitCartItemsList(u.Id).ToList()
                                                                                       });
             return model;
         }
@@ -1294,13 +1287,11 @@ namespace Ganedata.Core.Services
             accountAddresses.Add(_accountServices.GetAccountAddressById(checkoutViewModel.BillingAddressId ?? 0));
             checkoutViewModel.Addresses = _mapper.Map(accountAddresses, new List<AddressViewModel>());
             checkoutViewModel.CartItems = GetAllValidCartItems(siteId, userId, tenantId, sessionKey).ToList();
-            checkoutViewModel.CartItems.ForEach(u => u.TotalAmount = u.TotalAmount + (checkoutViewModel?.ShippingRule?.Price ?? 0));
             if ((DeliveryMethod?)checkoutViewModel.DeliveryMethodId == DeliveryMethod.ToPickupPoint)
             {
                 checkoutViewModel.CollectionPoint =
                     _mapper.Map((_currentDbContext.TenantWarehouses.FirstOrDefault(e => e.WarehouseId == (checkoutViewModel.CollectionPointId ?? 0) && e.IsDeleted != true && e.IsActive == true)), new CollectionPointViewModel());
             }
-            checkoutViewModel.CartItems.ForEach(u => u.TotalAmount = u.TotalAmount + (checkoutViewModel?.ShippingRule?.Price ?? 0));
 
 
 

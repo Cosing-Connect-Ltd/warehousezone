@@ -70,7 +70,7 @@ function findNearCollectionPoints() {
 
             $.each(data, function (i, item) {
                 var element = $('<div class="col-lg-6">' +
-                    '<div class="billigAddrWrap collection-address-div" onclick="selectCollectionPointId(' + item.WarehouseId + ', this)">' +
+                    '<div class="billigAddrWrap collection-address-div" onclick="selectCollectionPointId(' + item.WarehouseId + ", '" + item.WarehouseName + "', '" + item.PostalCode + "', '" + item.Address + "', " + 'this)">' +
                     '<p class="address">' +
                     item.WarehouseName + '<br />' +
                     item.PostalCode + '<br />' +
@@ -89,14 +89,28 @@ function findNearCollectionPoints() {
     });
 }
 
-function selectCollectionPointId(collectionPointId, element) {
-    $(".collection-point-selected").each(function (i, selectedElement) {
-        $(selectedElement).removeClass("collection-point-selected");
-    });
-
+function selectCollectionPointId(id, name, postcode, address, element) {
     $(element).addClass("collection-point-selected");
 
-    $("#collectionPointId")[0].value = collectionPointId;
+    if ($("#collectionPointId").length > 0) {
+        $("#collectionPointId")[0].value = id;
+    }
+
+    if ($("#collectionPointName").length > 0) {
+        $("#collectionPointName")[0].value = name;
+    }
+
+    if ($("#collectionPointAddress").length > 0) {
+        $("#collectionPointAddress")[0].value = address;
+    }
+
+    if ($("#collectionPointPostCode").length > 0) {
+        $("#collectionPointPostCode")[0].value = postcode;
+    }
+
+    if (!!onCollectionPointSelected && typeof onCollectionPointSelected === "function") {
+        onCollectionPointSelected(id, name, postcode, address)
+    }
 }
 
 function OnchangeDropdownAddress() {
@@ -219,7 +233,7 @@ function getTopCategoryProducts(ProductnavigationId) {
 }
 
 //--------add update remove cartitem----------------
-function AddToCart(ProductId) {
+function addToCart(ProductId) {
     var quantity = $(".input-number").val() ?? 1;
     $.ajax({
         type: "GET",
@@ -229,14 +243,15 @@ function AddToCart(ProductId) {
         success: function (data) {
             var cardItemsValue = parseInt($("#cart-total").text());
             $("#cart-total").text(cardItemsValue + 1);
-            GetCartitems(data);
+            getCartitems(data)
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert('Error' + textStatus + "/" + errorThrown);
         }
     });
 }
-function RemoveCartItem(id) {
+
+function removeCartItem(id) {
     $.confirm({
         title: 'Confirm!',
         content: 'Are you sure to delete this item from cart?',
@@ -250,7 +265,7 @@ function RemoveCartItem(id) {
                     success: function (data) {
                         var cardItemsValue = parseInt($("#cart-total").text());
                         $("#cart-total").text(cardItemsValue - 1);
-                        GetCartitems(null);
+                        getCartitems(null);
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert('Error' + textStatus + "/" + errorThrown);
@@ -262,12 +277,10 @@ function RemoveCartItem(id) {
             }
         }
     });
-
 }
-function UpdateCartItem(id, event) {
-    var quantity = event.value;
-    if (quantity > 0) {
 
+function updateCartItem(id, quantity) {
+    if (!!quantity && quantity > 0) {
         $.ajax({
             type: "GET",
             url: basePath + "/Products/EditCartItem/",
@@ -275,17 +288,17 @@ function UpdateCartItem(id, event) {
             dataType: 'json',
             success: function (data) {
 
-                GetCartitems(null)
+                getCartitems(null)
 
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 alert('Error' + textStatus + "/" + errorThrown);
             }
         });
-
     }
 }
-function GetCartitems(cartId) {
+
+function getCartitems(cartId) {
     $.ajax({
         type: "GET",
         url: basePath + "/Products/_CartItemsPartial/",
@@ -308,9 +321,6 @@ function GetCartitems(cartId) {
             alert('Error' + textStatus + "/" + errorThrown);
         }
     });
-
-
-
 }
 
 //-----------------------------------------------------------
@@ -387,7 +397,7 @@ function chooseDeliveryMethod() {
         alert("Please select shipping method.");
         return;
     }
-    var nextStep = (deliveryMethodId === '2' ? 2 : 3);
+    var nextStep = (deliveryMethodId === '2' ? 1 : 2);
     var checkoutViewModels =
     {
         "DeliveryMethodId": deliveryMethodId,

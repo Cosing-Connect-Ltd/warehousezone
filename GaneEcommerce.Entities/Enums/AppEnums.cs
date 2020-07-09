@@ -498,11 +498,11 @@ namespace Ganedata.Core.Entities.Enums
 
     public enum CheckoutStep
     {
-        BillingAddress = 0,
-        DeliveryMethod = 1,
-        ShippingAddress = 2,
-        CollectionPoint = 3,
-        ShipmentRule = 4,
+        DeliveryMethod = 0,
+        ShippingAddress = 1,
+        CollectionPoint = 2,
+        ShipmentRule = 3,
+        BillingAddress = 4,
         PaymentMethod = 5,
         AddOrEditAddress = 6,
     }

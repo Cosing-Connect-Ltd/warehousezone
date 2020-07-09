@@ -43,7 +43,7 @@ function addProductByAttributeToCart() {
         return;
     }
 
-    AddToCart(productId);
+    addToCart(productId);
 
     $("#product-by-attribute-selector").modal("hide");
 }

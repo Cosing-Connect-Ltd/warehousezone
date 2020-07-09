@@ -19,8 +19,8 @@
                     @if (ViewBag.CartModal == null)
                     {
                         <p class="cart-quantity">
-                            <b>Quantity:</b> <input type="number" min="0" placeholder="Qty" onchange="UpdateCartItem(@item.ProductId,this)" value="@item.Qty" />
-                            <a href="javascript:;" class="remove-btn cart-del" onclick="RemoveCartItem(@item.ProductId)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
+                            <b>Quantity:</b> <input type="number" min="0" placeholder="Qty" onchange="updateCartItem(@item.ProductId,this)" value="@item.Qty" />
+                            <a href="javascript:;" class="remove-btn cart-del" onclick="removeCartItem(@item.ProductId)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
                         </p>
 
                     }

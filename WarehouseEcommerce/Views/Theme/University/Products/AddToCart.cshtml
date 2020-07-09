@@ -25,65 +25,7 @@
             <div class="row">
                 <div class=@(ViewBag.cart == null?"col-lg-8":"col-lg-12")  id="updateCart">
                     @Html.Action("_CartItemsPartial", "Products")
-                   
                 </div>
-                @*<div class="col-lg-4" style="display:@(ViewBag.cart == null?"":"none")">
-                    <div class="basketTotalwrap">
-                        <h3 class="mainhd">Basket Total</h3>
-                        <div class="subTotalwrap">
-                            <span>Sub total</span>
-                            <span>£52.98</span>
-                        </div>
-                        <div class="shipping_radiosec">
-                            <h4 class="head">
-                                Shipping:
-                            </h4>
-                            <ul class="shippingtyp_list">
-                                <li>
-                                    <div class="inputRadio">
-                                        <input type="radio" id="shippingMtd1" name="radio-group" checked>
-                                        <label for="shippingMtd1">Free Shipping</label>
-                                    </div>
-                                    <div class="cost">
-                                        £10
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="inputRadio">
-                                        <input type="radio" id="shippingMtd2" name="radio-group" checked>
-                                        <label for="shippingMtd2">Standard</label>
-                                    </div>
-                                    <div class="cost">
-                                        £2
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <div class="inputRadio">
-                                        <input type="radio" id="shippingMtd3" name="radio-group" checked>
-                                        <label for="shippingMtd3">Express</label>
-                                    </div>
-                                    <div class="cost">
-                                        £10
-                                    </div>
-                                </li>
-                            </ul>
-                            <div class="estimateWrap">
-                                <span>Estimate for your Country</span>
-                                <a href="">Change Address</a>
-                            </div>
-                            <div class="totalAmntsec">
-                                <span>TOTAL</span>
-                                <span>£52.98</span>
-                            </div>
-                            <div class="proceed_tocheckout">
-                                Proceed to checkout
-                            </div>
-                        </div>
-                    </div>
-                    <button class="cont_shop_btn">Continue Shopping</button>
-                </div>*@
-
             </div>
         </div>
     </div>

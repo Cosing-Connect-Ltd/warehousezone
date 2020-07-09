@@ -246,7 +246,7 @@
                                                                 <div class="button-submit">
                                                                     @if (productitems.KitProductMaster.SellPrice > 0 && productitems.KitProductMaster.SellPrice.HasValue && productitems.KitProductMaster.PercentMargin > 0)
                                                                     {
-                                                                        <button type="Submit" name="submitNewsletter" class="btn btn-block move-to-cart-btn" id="button-cart" onclick="AddToCart(@productitems.KitProductMaster.ProductId)">Add to Basket</button>
+                                                                        <button type="Submit" name="submitNewsletter" class="btn btn-block move-to-cart-btn" id="button-cart" onclick="addToCart(@productitems.KitProductMaster.ProductId)">Add to Basket</button>
                                                                     }
                                                                     else
                                                                     {
@@ -289,7 +289,7 @@
                                                                 <div class="button-submit">
                                                                     @if (productitems.KitProductMaster.SellPrice > 0 && productitems.KitProductMaster.SellPrice.HasValue && productitems.KitProductMaster.PercentMargin > 0)
                                                                     {
-                                                                        <button type="Submit" name="submitNewsletter" class="btn btn-block move-to-cart-btn" id="button-cart" onclick="AddToCart(@productitems.KitProductMaster.ProductId)">Add to Basket</button>
+                                                                        <button type="Submit" name="submitNewsletter" class="btn btn-block move-to-cart-btn" id="button-cart" onclick="addToCart(@productitems.KitProductMaster.ProductId)">Add to Basket</button>
                                                                     }
                                                                     else
                                                                     {
@@ -334,7 +334,7 @@
                                                         <div class="button-submit">
                                                             @if (productitems.KitProductMaster.SellPrice > 0 && productitems.KitProductMaster.SellPrice.HasValue && productitems.KitProductMaster.PercentMargin > 0)
                                                             {
-                                                                <button type="Submit" name="submitNewsletter" class="btn btn-block move-to-cart-btn" id="button-cart" onclick="AddToCart(@productitems.KitProductMaster.ProductId)">Add to Basket</button>
+                                                                <button type="Submit" name="submitNewsletter" class="btn btn-block move-to-cart-btn" id="button-cart" onclick="addToCart(@productitems.KitProductMaster.ProductId)">Add to Basket</button>
                                                             }
                                                             else
                                                             {

@@ -3329,7 +3329,7 @@ namespace Ganedata.Core.Services
             order.WarehouseId = warehouseId;
             order.SiteID = SiteId;
             order.OrderStatusID = OrderStatusEnum.Hold;
-            
+
             _currentDbContext.Order.Add(order);
             _currentDbContext.SaveChanges();
             orderDetails.OrderNumber = order.OrderNumber;
@@ -3340,7 +3340,7 @@ namespace Ganedata.Core.Services
                 {
                     OrderDetail detail = new OrderDetail();
                     detail.ProductId = item.ProductId;
-                    detail.Qty = item.Qty;
+                    detail.Qty = item.Quantity;
                     detail.Warranty = null;
                     detail.Price = item.Price;
                     detail.ProductMaster = null;
@@ -3349,7 +3349,7 @@ namespace Ganedata.Core.Services
                     detail.CreatedBy = UserId;
                     detail.TenentId = tenantId;
                     detail.OrderID = order.OrderID;
-                    total = total + (item.Price * item.Qty);
+                    total = total + (item.Price * item.Quantity);
                     _currentDbContext.OrderDetail.Add(detail);
                 }
                 order.OrderTotal = total;

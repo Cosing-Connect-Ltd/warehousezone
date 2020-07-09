@@ -183,7 +183,7 @@
                         </div>
                         @if (@Model.SellPrice > 0 && @Model.SellPrice.HasValue && @Model.PercentMargin > 0 && Model.InventoryStocks.Sum(i => i.Available) > 0)
                         {
-                            <button class="addTobasket" onclick="AddToCart(@Model.ProductId)">Add to basket</button>
+                            <button class="addTobasket" onclick="addToCart(@Model.ProductId)">Add to basket</button>
                         }
                         else
                         {

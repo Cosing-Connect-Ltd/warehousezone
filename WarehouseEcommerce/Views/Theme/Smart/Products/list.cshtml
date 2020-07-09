@@ -114,7 +114,7 @@
                                     <div class="button-group">
                                         @if (@item.SellPrice > 0 && @item.SellPrice.HasValue && @item.PercentMargin > 0)
                                         {
-                                            <a href="javascript:;" type="button" class="acart" onclick="AddToCart(@item.ProductId)">
+                                            <a href="javascript:;" type="button" class="acart" onclick="addToCart(@item.ProductId)">
                                                 <span>Add to Basket</span>
                                             </a>
                                         }

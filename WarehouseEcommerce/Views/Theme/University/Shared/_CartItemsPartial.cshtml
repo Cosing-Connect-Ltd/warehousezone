@@ -1,8 +1,9 @@
 ﻿@using System.Web.Mvc.Html
+@using Ganedata.Core.Entities.Domain
 @using Ganedata.Core.Entities.Enums
-@model List<Ganedata.Core.Entities.Domain.OrderDetailSessionViewModel>
+@model WebsiteCartItemsViewModel
 @{
-    var firstItem = Model.FirstOrDefault();
+    var firstItem = Model.WebsiteCartItems.FirstOrDefault();
 }
 
 
@@ -17,13 +18,95 @@
                 </button>
             </div>
             <div class="modal-body billandshipsec">
-                @*@Html.Partial("~/Views/Theme/University/Orders/_CollectionPoint.cshtml")*@
+                <div class="checkout-options-wrapper">
+                    <div class="addNewAddrWrap">
+                        @Html.Hidden("collectionPointId", (int?)ViewBag.CollectionPointId)
+                        @Html.Hidden("collectionPointName", (string)ViewBag.CollectionPointName)
+                        @Html.Hidden("collectionPointAddress", (string)ViewBag.CollectionPointAddress)
+                        @Html.Partial("_CollectionPointSelector")
+                        <div>
+                            <button class="addnwShopAdrrbtn" id="select-collection-point__button" onclick="setSelectedCollectionPoint()" data-toggle="modal" disabled data-target="#ChooseStoreModal">Select Collection Point</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    <script>
+        function onCollectionPointSelected(id, name, postcode, address) {
+            if ($("#select-collection-point__button").length > 0) {
+                $("#select-collection-point__button").removeAttr("disabled");
+            }
+        }
+
+        function setSelectedCollectionPoint() {
+            $("#collection-point-name")[0].innerText = $("#collectionPointName")[0].value;
+            $("#collection-point-address")[0].innerText = ' - ' + $("#collectionPointAddress")[0].value;
+
+            $.ajax({
+                type: "GET",
+                url: basePath + "/Products/GetCartItemsCollectionAvailability/",
+                data: { id: $("#collectionPointId")[0].value, name: $("#collectionPointName")[0].value, address: $("#collectionPointAddress")[0].value },
+                dataType: 'json',
+                success: function (data) {
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert('Error' + textStatus + "/" + errorThrown);
+                }
+            });
+        }
+    </script>
 </div>
 
+<div class="modal fade" id="ChooseShippingAddressModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Select Shipping Address</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body billandshipsec">
+                <div class="checkout-options-wrapper">
+                    <div class="addNewAddrWrap">
+                        @Html.Hidden("shippingAddressId", (int?)ViewBag.CollectionPointId)
+                        @Html.Hidden("shippingAddressPostCode", (string)ViewBag.CollectionPointName)
+                        @Html.Partial("_ShippingAddressSelector", Model.ShippmentAddresses)
+                        <div>
+                            <button class="addnwShopAdrrbtn" id="select-shipping-address__button" onclick="setSelectedShippingAddress()" data-toggle="modal" disabled data-target="#ChooseShippingAddressModal">Select Address</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function onShippingAddressSelected(id, name, postcode, address) {
+            if ($("#select-shipping-address__button").length > 0) {
+                $("#select-shipping-address__button").removeAttr("disabled");
+            }
+        }
 
+        function setSelectedShippingAddress() {
+            $("#shipping-address-postcode")[0].innerText = $("#shippingAddressPostCode")[0].value;
+
+            $.ajax({
+                type: "GET",
+                url: basePath + "/Products/GetCartItemsDeliveryAvailability/",
+                data: { id: $("#shippingAddressId")[0].value, postCode: $("#shippingAddressPostCode")[0].value },
+                dataType: 'json',
+                success: function (data) {
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert('Error' + textStatus + "/" + errorThrown);
+                }
+            });
+        }
+    </script>
+</div>
 
 <section class="nb_sec nb_prdlisting_pgsec mb-5">
     <div class="container">
@@ -31,19 +114,18 @@
 
             <div class="checkoutInnersec Paymentsec mb-5">
                 <h4 class="ordConfirmHead">Basket</h4>
-                <br/><br/>
+                <br /><br />
                 <div class="tableWrap">
                     <table class="basketTable table-responsive">
                         <tbody>
-
-                            @if (Model.Count > 0 && Model != null && (firstItem?.ShowCartPopUp != true))
+                            @if (Model.WebsiteCartItems.Count > 0 && Model != null && (Model.ShowCartPopUp != true) && false)
                             {
                                 <tr>
                                     <td class="topTd" colspan="4"></td>
                                     <td>
                                         <div class="headBoxTop">
                                             <h3 class="head">Store Collection</h3>
-                                            <p>Leads Royal Park Road Sainsburys Collect</p>
+                                            <p><span id="collection-point-name">@ViewBag.CollectionPointName</span><span id="collection-point-address">@(ViewBag.CollectionPointAddress != null ? " - " + ViewBag.CollectionPointAddress : "")</span></p>
                                         </div>
                                     </td>
                                     <td>
@@ -60,244 +142,178 @@
                                 <td class="price">Price</td>
                                 <td class="qty">Quantity</td>
                                 <td class="tot">Total</td>
-                                @if (Model.Count > 0 && Model != null && (firstItem?.ShowCartPopUp != true))
+                                @if (Model.WebsiteCartItems.Count > 0 && Model != null && (Model.ShowCartPopUp != true) && false)
                                 {
-
                                     <td class="store">
                                         <a href="" data-toggle="modal" data-target="#ChooseStoreModal" class="chsStoreLnk">Choose Store</a>
                                     </td>
-                                    <td class="homeDel">
-                                        <div class="postCodeCheckFormwrap">
-                                            <input type="text" />
-                                            <button class="chckBtn">Check</button>
-                                        </div>
+                                    <td class="store">
+                                        <a href="" data-toggle="modal" data-target="#ChooseShippingAddressModal" class="chsStoreLnk">Choose Shipping Address</a>
                                     </td>
                                 }
                             </tr>
 
-                            @foreach (var item in Model)
+                            @foreach (var item in Model.WebsiteCartItems)
                             {
-                                if (item?.ProductMaster?.ProductType != null && item.ProductMaster.ProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Kit)
-                                {
-                                    <tr class="cmnRow">
-                                        <td class="prd">
-                                            <div class="prdCellwrap">
-                                                <div class="inrow">
-                                                    <span class="imgWrap">
-                                                        <img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage) ? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
-                                                    </span>
-                                                    <span class="prdName">
-                                                        @(item.ProductMaster?.Name)
+                                <tr class="cmnRow">
+                                    <td class="prd">
+                                        <div class="prdCellwrap">
+                                            <div class="inrow">
+                                                <span class="imgWrap">
+                                                    <img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage) ? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
+                                                </span>
+                                                <span class="prdName">
+                                                    @(item.ProductMaster?.Name)
 
-                                                        @if (item.KitProductCartItems != null && item.KitProductCartItems.Count > 0)
+
+                                                    @if (item?.ProductMaster?.ProductType != null && item.ProductMaster.ProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Kit && item.KitProductCartItems != null && item.KitProductCartItems.Count > 0)
+                                                    {
+                                                        foreach (var cartitem in item.KitProductCartItems)
                                                         {
-                                                            foreach (var cartitem in item.KitProductCartItems)
-                                                            {<p>
-
-                                                                 <b> @Convert.ToInt32(cartitem.Quantity)</b> x @cartitem.SimpleProductMaster.Name <br />
-
-                                                             </p>
-                                                            }
+                                                            <p>
+                                                                <b> @Convert.ToInt32(cartitem.Quantity)</b> x @cartitem.SimpleProductMaster.Name <br />
+                                                            </p>
                                                         }
-                                                    </span>
-                                                </div>
-                                           
-                                            </div>
-                                        </td>
-                                        <td class="price">
-                                            <div class="priceWrapinner">
-                                                @item.CurrencySign@item.Price
-                                            </div>
-                                        </td>
-                                        <td class="qty">
-                                            <div class="QtyWrap">
-                                                <div class="QtyWrapinner">
-                                                    <span class="min">-</span>
-                                                    <input class="coutnerInput" id="counter" type="number" onchange="UpdateCartItem(@item.CartId, this)" value="@item.Qty" />
-                                                    <span class="add">+</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="tot">
-                                            <div id="total_amnt" class="priceTotal">
-                                                @item.CurrencySign@item.ProductTotalAmount
-                                            </div>
-                                        @if (Model.Count > 0 && Model != null && (firstItem?.ShowCartPopUp != true))
-                                        {
-                                            <a href="javascript:;" class="removeBtn" onclick="RemoveCartItem(@item.CartId)"> Remove</a>
-                                        }
+                                                    }
 
-                                        </td>
-                                        @if (Model.Count > 0 && Model != null && (firstItem?.ShowCartPopUp != true))
-                                        {
-                                            <td class="store greyBox">
-                                                <div class="greyBoxInner">
-                                                    <p class="orderNowTxt">
-                                                        <b>Order Now!</b> Collect today from4pm
-                                                    </p>
-                                                </div>
-                                            </td>
-
-                                            <td class="homeDel greyBox">
-                                                <div class="greyBoxInner">
-                                                    <ul class="radioBtnGrp">
-                                                        <li>
-                                                            <input type="radio"
-                                                                   id="radio1"
-                                                                   name="radio-group"
-                                                                   checked />
-                                                            <label for="radio1">Next Day <b>£4.99</b></label>
-                                                        </li>
-                                                        <li>
-                                                            <input type="radio"
-                                                                   id="radio2"
-                                                                   name="radio-group"
-                                                                   checked />
-                                                            <label for="radio2">3 working days <b>£2.99</b></label>
-                                                        </li>
-                                                        <li>
-                                                            <input type="radio"
-                                                                   id="radio3"
-                                                                   name="radio-group"
-                                                                   checked />
-                                                            <label for="radio3">7 working days <b>FREE</b></label>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                        }
-                                    </tr>
-
-                                }
-                                else
-                                {
-
-                                    <tr class="cmnRow">
-                                        <td class="prd">
-                                            <div class="prdCellwrap">
-                                                <div class="inrow">
-                                                    <span class="imgWrap">
-                                                        <img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage) ? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
-                                                    </span>
+                                                </span>
+                                            </div>
+                                            @if (Model.WebsiteCartItems.Count > 0 && Model != null && (Model.ShowCartPopUp != true) && false)
+                                            {
+                                                <div class="inrow btm">
+                                                    <span class="imgWrap"> </span>
                                                     <span class="prdName">
-                                                        @(item.ProductMaster?.Name)
+                                                        <i class="icon-love"></i>
+                                                        Add to wishlist
                                                     </span>
                                                 </div>
-                                           
+                                            }
+                                        </div>
+                                    </td>
+                                    <td class="price">
+                                        <div class="priceWrapinner">
+                                            @Model.CurrenySymbol@item.Price
+                                        </div>
+                                    </td>
+                                    <td class="qty">
+                                        <div class="QtyWrap">
+                                            <div class="QtyWrapinner">
+                                                <span class="min" onclick="reduceQuantity(@item.Id);">-</span>
+                                                <input class="coutnerInput" id="counter_@item.Id" type="number" min="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" onchange="updateCartItem(@item.CartId, this.value)" value="@Convert.ToInt32(item.Quantity)" />
+                                                <span class="add" onclick="increseQuantity(@item.Id);">+</span>
                                             </div>
-                                        </td>
-                                        <td class="price">
-                                            <div class="priceWrapinner">
-                                                @item.CurrencySign@item.Price
-                                            </div>
-                                        </td>
-                                        <td class="qty">
-                                            <div class="QtyWrap">
-                                                <div class="QtyWrapinner">
-                                                    <span class="min">-</span>
-                                                    <input class="coutnerInput" id="counter" type="number" min="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" onchange="UpdateCartItem(@item.CartId, this)" value="@Convert.ToInt32(item.Qty)" />
-                                                    <span class="add">+</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="tot">
-                                            <div id="total_amnt" class="priceTotal">
-                                                @item.CurrencySign@item.ProductTotalAmount
-                                            </div>
-                                        @if (Model.Count > 0 && Model != null && (firstItem?.ShowCartPopUp != true))
+                                        </div>
+                                    </td>
+                                    <td class="tot">
+                                        <div id="total_amnt" class="priceTotal @(Model.ShowCartPopUp != true ? "in-basket-price-total" : string.Empty)">
+                                            @Model.CurrenySymbol@item.ProductTotalAmount
+                                        </div>
+                                        @if (Model.WebsiteCartItems.Count > 0 && Model != null && (Model.ShowCartPopUp != true))
                                         {
-                                            <a href="javascript:;" class="removeBtn" onclick="RemoveCartItem(@item.CartId)"> Remove</a>
+                                            <a href="javascript:;" class="removeBtn" onclick="removeCartItem(@item.CartId)"> Remove</a>
                                         }
+                                    </td>
+                                    @if (Model.WebsiteCartItems.Count > 0 && Model != null && (Model.ShowCartPopUp != true) && false)
+                                    {
+                                        <td class="store greyBox">
+                                            <div class="greyBoxInner">
+                                                <p class="orderNowTxt" id="collection_@item.ProductMaster.ProductId">
+                                                    <span class="available"><b>Order Now!</b> Collect today from 4pm</span>
+                                                    <span class="unavailable" hidden><b>Unavailable!</b></span>
+                                                </p>
+                                            </div>
                                         </td>
-                                        @if (Model.Count > 0 && Model != null && (firstItem?.ShowCartPopUp != true))
-                                        {
-                                            <td class="store greyBox">
-                                                <div class="greyBoxInner">
-                                                    <p class="orderNowTxt">
-                                                        <b>Order Now!</b> Collect today from4pm
-                                                    </p>
-                                                </div>
-                                            </td>
 
-                                            <td class="homeDel greyBox">
-                                                <div class="greyBoxInner">
-                                                    <ul class="radioBtnGrp">
-                                                        <li>
-                                                            <input type="radio"
-                                                                   id="radio1"
-                                                                   name="radio-group"
-                                                                   checked />
-                                                            <label for="radio1">Next Day <b>£4.99</b></label>
-                                                        </li>
-                                                        <li>
-                                                            <input type="radio"
-                                                                   id="radio2"
-                                                                   name="radio-group"
-                                                                   checked />
-                                                            <label for="radio2">3 working days <b>£2.99</b></label>
-                                                        </li>
-                                                        <li>
-                                                            <input type="radio"
-                                                                   id="radio3"
-                                                                   name="radio-group"
-                                                                   checked />
-                                                            <label for="radio3">7 working days <b>FREE</b></label>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                        }
-                                    </tr>
-                                }
+                                        <td class="homeDel greyBox">
+                                            <div class="greyBoxInner">
+                                                <ul class="radioBtnGrp">
+                                                    <li>
+                                                        <label>Next Day <b>£4.99</b></label>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    }
+                                </tr>
                             }
                             <tr class="cmnRow subTotRow">
                                 <td class="prd"></td>
                                 <td class="price"></td>
                                 <td class="qty subtotalCell" colspan="2">
                                     <div class="subtotalCellInner">
-                                        <span>Sub Total</span> <span>@(Model == null ? "" : firstItem?.CurrencySign) @(firstItem?.TotalAmount)</span>
+                                        <span>Sub Total</span> <span>@(Model == null ? "" : Model.CurrenySymbol) @(Model.TotalAmount)</span>
                                     </div>
                                 </td>
 
-                                <td class="store greyBox"></td>
+                                @if (Model.WebsiteCartItems.Count > 0 && Model != null && (Model.ShowCartPopUp != true) && false)
+                                {
+                                    <td class="store greyBox">
+                                        <div class="botomBtnsec">
+                                            <button class="btmbtn pro" onclick="@(Model != null && Model.ShowLoginPopUp == true ? "GetLoggedIn('" + (bool?)Model.ShowLoginPopUp + "');" : "proceedToPickup();")">PROCEED TO PICKUP</button>
+                                        </div>
+                                    </td>
 
-                                <td class="homeDel greyBox"></td>
+                                    <td class="homeDel greyBox">
+                                        <div class="botomBtnsec">
+                                            <button class="btmbtn pro" onclick="@(Model != null && Model.ShowLoginPopUp == true ? "GetLoggedIn('" + (bool?)Model.ShowLoginPopUp + "');" : "proceedToDelivery();")">PROCEED TO DELIVERY</button>
+                                        </div>
+                                    </td>
+                                }
                             </tr>
                         </tbody>
                     </table>
                 </div>
-
-                @*<div class="gotApromoSec">
-                        <h2 class="head">Got a Promotional code?</h2>
-                        <div class="gotApromoSecInner">
-                            <div class="promoCode">
-                                <input type="text"
-                                       placeholder="Enter your promotional code" />
-                                <button class="applBtn">Apply</button>
-                            </div>
-                            <div class="total">Total <span>@(Model==null?"":firstItem?.CurrencySign) @(firstItem?.TotalAmount)</span></div>
-                        </div>
-                    </div>*@
-
                 <div class="botomBtnsec">
-
-                    @if (Model.Count > 0 && Model != null && (firstItem?.ShowCartPopUp != true))
+                    @if (Model.WebsiteCartItems.Count > 0 && Model != null && (Model.ShowCartPopUp != true))
                     {
-                        if (Model != null && firstItem?.ShowLoginPopUp == true)
+                        if (Model != null && Model.ShowLoginPopUp == true)
                         {
-                            var popup = (bool?)firstItem?.ShowLoginPopUp;
+                            var popup = (bool?)Model.ShowLoginPopUp;
                             <button class="btmbtn pro" onclick="GetLoggedIn('@popup')">PROCEED TO CHECKOUT</button>
                         }
                         else
                         {
-                            <button class="btmbtn pro" onclick="window.location.href='@Url.Action("Checkout", "Orders")'">PROCEED TO CHECKOUT</button>
+                            <button class="btmbtn pro" onclick="window.location.href='@Url.Action("OldCheckout", "Orders")'">PROCEED TO CHECKOUT</button>
                         }
+
                         <button class="btmbtn sho">CONTINUE SHOPPING</button>
                     }
-
-
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        function increseQuantity(cartItemId) {
+            var element = document.getElementById("counter_" + cartItemId);
+            var quantity = parseInt(element.value);
+
+            quantity++;
+
+            element.value = quantity;
+
+            updateCartItem(cartItemId, quantity)
+        }
+
+        function reduceQuantity(cartItemId) {
+            var element = document.getElementById("counter_" + cartItemId);
+            var quantity = parseInt(element.value);
+            if (quantity > 1) {
+                quantity--;
+                element.value = quantity;
+                updateCartItem(cartItemId, quantity)
+            }
+        }
+
+        function proceedToDelivery() {
+            proceedToCheckout(@((int)DeliveryMethod.ToShipmentAddress), 0);
+        }
+
+        function proceedToPickup() {
+            proceedToCheckout(@((int)DeliveryMethod.ToPickupPoint), $("#collectionPointId")[0].value);
+        }
+
+        function proceedToCheckout(deliveryMethod, destinationId) {
+            window.location.href = basePath + "/Orders/ProceedToCheckout?deliveryMethod=" + deliveryMethod + "&destinationId=" + destinationId
+        }
+    </script>
 </section>

@@ -7,10 +7,11 @@
         <div class="address-wrapper">
             <h5 class="subheadCmn">Billing Address</h5>
             @Html.Partial("_AddressDetail", billingAddress)
-            <div class="btnWrap">
-                <a href="@Url.Action("Checkout", "Orders", new { accountId = Model.AccountId, billingAddressId = billingAddress.AddressID, step = (int)CheckoutStep.DeliveryMethod })" class="btmBtn">Select Address</a>
-                <a href="@Url.Action("Checkout", "Orders", new { accountId = billingAddress.AccountID, accountAddressId = billingAddress.AddressID, step = (int)CheckoutStep.AddOrEditAddress, parentStep = (int)CheckoutStep.BillingAddress })" class="btmBtn">Edit Address</a>
-            </div>
+        <div class="btnWrap">
+            <a href="@Url.Action("Checkout", "Orders")" class="btmBtn">Select Address</a>
+            <a href="@Url.Action("Checkout", "Orders")" class="btmBtn">Edit Address</a>
+            <a href="@Url.Action("GoToPreviousStep","orders")" class="btmBtn">Back</a>
+        </div>
         </div>
     }
     else

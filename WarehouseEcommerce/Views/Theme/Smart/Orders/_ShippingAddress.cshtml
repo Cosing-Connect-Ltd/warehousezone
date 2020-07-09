@@ -15,15 +15,15 @@
             {
                 @Html.Partial("_AddressDetail", address[i])
                 <div class="btnWrap">
-                    
-                    <a href="javascript:;" data-AccountId="@(Model.AccountId??null)" data-billingAddressId="@(Model.BillingAddressId)" data-ShippingAddressId="@(address[i].AddressID)" data-currentstep="@((int) CheckoutStep.ShipmentRule)" data-deliveryMethodId="@(Model.DeliveryMethodId??null)" onclick="moveToNextStep(this)" class="btmBtn">
+
+                    <a href="javascript:;" data-AccountId="@(Model.AccountId??null)" data-billingAddressId="@(Model.BillingAddressId)" data-ShippingAddressId="@(address[i].AddressID)" data-currentstep="@((int)CheckoutStep.ShipmentRule)" data-deliveryMethodId="@(Model.DeliveryMethodId??null)" onclick="moveToNextStep(this)" class="btmBtn">
                         Select Address
                     </a>
-                    <a href="javascript:;" data-AccountId="@(Model.AccountId??null)" data-billingAddressId="@(Model.BillingAddressId)" data-accountAddressId="@(address[i].AddressID)" data-currentstep="@((int)CheckoutStep.AddOrEditAddress)" data-deliveryMethodId="@(Model.DeliveryMethodId??null)" data-parentStep="@((int) CheckoutStep.ShippingAddress)" onclick="moveToNextStep(this)" class="btmBtn">
+                    <a href="javascript:;" data-AccountId="@(Model.AccountId??null)" data-billingAddressId="@(Model.BillingAddressId)" data-accountAddressId="@(address[i].AddressID)" data-currentstep="@((int)CheckoutStep.AddOrEditAddress)" data-deliveryMethodId="@(Model.DeliveryMethodId??null)" data-parentStep="@((int)CheckoutStep.ShippingAddress)" onclick="moveToNextStep(this)" class="btmBtn">
                         Edit Address
                     </a>
 
-                    <a href="@Url.Action("RemoveShippingAddress", "Orders", new {accountId = address[i].AccountID, billingAddressId = Model.BillingAddressId, deliveryMethodId = Model.DeliveryMethodId, accountAddressId = address[i].AddressID})" class="btmBtn">Remove Address</a>
+                    <a href="@Url.Action("RemoveShippingAddress", "Orders", new { accountAddressId = address[i].AddressID })" class="btmBtn">Remove Address</a>
                 </div>
             }
         }
@@ -37,6 +37,6 @@
         <label for="shipping_address_checkbox">Same as Billing Address</label>
     </div>
     <div class="btnWrap">
-        <a href="@Url.Action("Checkout", "Orders", new { billingAddressId = Model.BillingAddressId, deliveryMethodId = Model.DeliveryMethodId, step = (int)CheckoutStep.AddOrEditAddress, parentStep = (int)CheckoutStep.ShippingAddress })" class="addnwShopAdrrbtn">ADD NEW SHIPPING ADDRESS</a>
+        <a href="@Url.Action("Checkout", "Orders")" class="addnwShopAdrrbtn">ADD NEW SHIPPING ADDRESS</a>
     </div>
 </div>

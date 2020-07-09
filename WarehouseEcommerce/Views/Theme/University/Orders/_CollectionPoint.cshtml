@@ -1,26 +1,22 @@
 ﻿@model Ganedata.Core.Entities.Domain.CheckoutViewModel
-@using Ganedata.Core.Entities.Domain
 @using Ganedata.Core.Entities.Enums;
 
 @Html.Hidden("collectionPointId", (int?)Model.CollectionPointId)
 <div class="checkout-options-wrapper">
     <div class="addNewAddrWrap">
         <h5 class="subheadCmn">Select Collection Point</h5>
-        <div class="addNwAdrrFormWrap">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="form-group">
-                        <div class="findAddrWrap">
-                            <input type="text" class="findAddrInput text-target-postcode" placeholder="Enter Postcode" />
-                            <button class="fadBtn" onclick="findNearCollectionPoints();">Search</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="collection-points row mt-3"></div>
+        @Html.Partial("_CollectionPointSelector")
+        <div class="btnWrap">
+            <button class="addnwShopAdrrbtn" id="select-collection-point__button" disabled onclick="chooseCollectionPoint(@((int)CheckoutStep.BillingAddress))">Select Collection Point</button>
+            <a href="@Url.Action("GoToPreviousStep","orders")" class="addnwShopAdrrbtn">Back</a>
         </div>
-        <button class="addnwShopAdrrbtn" onclick="chooseCollectionPoint(@((int)CheckoutStep.PaymentMethod))">Select Collection Point</button>
-        <a href="@Url.Action("checkout","orders",new{ checkoutStep=CheckoutStep.DeliveryMethod})" class=" btn addnwShopAdrrbtn">Back</a>
-
     </div>
 </div>
+
+<script>
+    function onCollectionPointSelected(id, name, postcode, address) {
+        if ($("#select-collection-point__button").length > 0) {
+            $("#select-collection-point__button").removeAttr("disabled");
+        }
+    }
+</script>

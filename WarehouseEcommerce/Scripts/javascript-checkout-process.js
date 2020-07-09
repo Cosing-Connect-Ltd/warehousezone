@@ -14,21 +14,20 @@ function moveToNextStep(e) {
         "DeliveryMethodId": e.dataset.deliverymethodid,
         "CollectionPointId": e.dataset.collectionpointid,
         "CurrentStep": e.dataset.currentstep,
-        "ParentStep": e.dataset.parentstep,
         "ShipmentRuleId": e.dataset.shipmentruleid
-        
+
     }
 
 
     ChangeUrlParameterValue(e.dataset.currentstep);
     GetDataForNextStep(checkoutViewModels);
 }
-function GetDataForNextStep(checkoutViewModels, checkoutStep) {
-   
+function GetDataForNextStep(checkoutViewModels, step) {
+
     $.ajax({
         url: basePath + '/Orders/_CheckoutProcessPartial',
         method: 'post',
-        data: { checkoutViewModel: checkoutViewModels, checkoutStep: checkoutStep},
+        data: { checkoutViewModel: checkoutViewModels, step: step},
         dataType: 'html',
         success: function (data) {
 
@@ -42,7 +41,7 @@ function GetDataForNextStep(checkoutViewModels, checkoutStep) {
 function ChangeUrlParameterValue(currentStep) {
 
     var uri = location.href;
-    var uriData = updateQueryStringParameter(uri, "checkoutStep", currentStep);
+    var uriData = updateQueryStringParameter(uri, "step", currentStep);
     window.history.pushState("object or string", "", uriData);
 
 

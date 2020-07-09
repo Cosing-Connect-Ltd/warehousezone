@@ -112,7 +112,7 @@ namespace Ganedata.Core.Services
         int AddOrUpdateCartItem(int siteId, int? userId, int tenantId, string sessionKey, int productId, decimal quantity, List<KitProductCartSession> kitProductCartItems = null);
         bool UpdateCartItemQuantity(int siteId, int? userId, int tenantId, string sessionKey, int cartId, decimal quantity);
 
-        IEnumerable<OrderDetailSessionViewModel> GetAllValidCartItems(int siteId, int? userId,int tenantId, string sessionKey, int? cartId=null);
+        IEnumerable<WebsiteCartItemViewModel> GetAllValidCartItems(int siteId, int? userId,int tenantId, string sessionKey, int? cartId=null);
 
         void UpdateUserIdInCartItem(string sessionKey, int userId, int siteId);
 

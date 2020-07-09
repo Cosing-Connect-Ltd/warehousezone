@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
+using Ganedata.Core.Models;
 using Ganedata.Core.Services;
 using PagedList;
 using System;
@@ -259,10 +260,23 @@ namespace WarehouseEcommerce.Controllers
 
         public PartialViewResult _CartItemsPartial(int? cartId = null)
         {
-            var models = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, HttpContext.Session.SessionID, cartId).ToList();
-            models.ForEach(u => u.TotalAmount = Math.Round(models.Sum(c => c.ProductTotalAmount), 2));
+            var model = new WebsiteCartItemsViewModel { WebsiteCartItems = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, HttpContext.Session.SessionID, cartId).ToList() };
 
-            return PartialView(models.ToList());
+            model.ShippmentAddresses = _mapper.Map(AccountServices.GetAllValidAccountAddressesByAccountId(CurrentUser.AccountId ?? 0).Where(u => u.AddTypeShipping == true && u.IsDeleted != true).ToList(), new List<AddressViewModel>());
+
+            model.CurrenySymbol = _tenantServices.GetTenantCurrencies(CurrentTenantId).FirstOrDefault()?.GlobalCurrency?.Symbol;
+
+            model.ShowCartPopUp = cartId.HasValue;
+            model.ShowLoginPopUp = CurrentUserId == 0;
+
+            ViewBag.CollectionPointId = Session["collectionPointId"];
+            ViewBag.CollectionPointName = Session["collectionPointName"];
+            ViewBag.CollectionPointAddress = Session["collectionPointAddress"];
+
+            ViewBag.ShippmentAddressId = Session["shippmentAddressId"];
+            ViewBag.ShippmentAddressPostCode = Session["shippmentAddressPostCode"];
+
+            return PartialView(model);
         }
 
         public JsonResult AddWishListItem(int ProductId, bool isNotfication)
@@ -455,6 +469,23 @@ namespace WarehouseEcommerce.Controllers
         {
             var result = _tenantWebsiteService.RemoveCartItem(cartId, CurrentTenantWebsite.SiteID, CurrentUserId, Session.SessionID);
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetCartItemsCollectionAvailability(int id, string name, string address)
+        {
+            Session["collectionPointId"] = id;
+            Session["collectionPointName"] = name;
+            Session["collectionPointAddress"] = address;
+
+            return Json(new Dictionary<string, string> { { "1", "1" } }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetCartItemsDeliveryAvailability(int id, string postCode)
+        {
+            Session["shippmentAddressId"] = id;
+            Session["shippmentAddressPostCode"] = postCode;
+
+            return Json(new Dictionary<string, string> { { "1", "1" } }, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult AddKitProductCartItem(int productId, List<KitProductCartSession> kitProductCartItems)
