@@ -2693,18 +2693,6 @@ body.modal-open {
     }
 
 
-        .accordion ul:hover li:hover,
-        .nb_top_catSection .accordion ul li {
-            width: 100% !important;
-        }
-
-        .nb_top_catSection .accordion ul li {
-            width: 100% !important;
-            display: inline-block;
-            margin: 1px;
-            transform: skew(0deg);
-        }
-
     .nb_header {
         height: 200px;
         padding: 35px 0px 18px 35px;

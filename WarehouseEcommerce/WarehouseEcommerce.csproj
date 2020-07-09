@@ -1394,9 +1394,7 @@
     <Content Include="Views\Theme\University\Shared\_ProductByAttributeSelectorModal.cshtml" />
     <Content Include="Views\Theme\University\Orders\_AddOrEditAddress.cshtml" />
     <Content Include="Views\Theme\University\Orders\SagePay3DAuth.cshtml" />
-    <Content Include="Views\Theme\University\Orders\_AddressDetail.cshtml" />
     <Content Include="Views\Theme\University\Orders\SagePay.cshtml" />
-    <Content Include="Views\Theme\University\UISettings\SettingsBar.cshtml" />
     <Content Include="Views\Theme\University\Shared\_AddressDetail.cshtml" />
     <Content Include="Views\Theme\University\Orders\_BillingAddress.cshtml" />
     <Content Include="Views\Theme\University\Orders\_ShippingAddress.cshtml" />

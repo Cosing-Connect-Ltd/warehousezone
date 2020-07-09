@@ -11,7 +11,7 @@
                     @foreach (var item in Model)
                     {
                         var imagePath=!string.IsNullOrEmpty(item.Image) ? ViewBag.BaseFilePath + item.Image : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif";
-                        <li style="background-image:url(@imagePath)">
+                        <li style="background-image:url('@imagePath')">
                             <div>
                                 <a href="@Url.Action("list","Products",new {category=item.Name })">
                                     <h2>@item.Name</h2>

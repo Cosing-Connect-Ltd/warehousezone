@@ -635,7 +635,6 @@ input[type="number"]::-webkit-outer-spin-button {
                             position: absolute;
                             left: 0;
                             top: 0;
-                            background-image: url("../images/meganavimg_mens.jpg");
                             background-repeat: no-repeat;
                             background-position: left top;
                             background-size: cover;
@@ -920,7 +919,6 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .nb_feat_prod_sec {
     padding: 90px 0px 140px 0px;
-    background: transparent url("../images/featured_prod_bg.jpg") no-repeat;
     background-size: cover;
 }
 
@@ -1148,7 +1146,6 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .ftb_sec {
     padding: 108px 0px 100px 0px;
-    background: transparent url("../images/featured_prod_bg.jpg") no-repeat;
     background-size: cover;
 }
 
@@ -1412,42 +1409,29 @@ input[type="number"]::-webkit-outer-spin-button {
 .accordion
 ul
 li:nth-child(1) {
-    background-image: url("../images/skew_slider_images/image1.jpg");
     transform: skew(0deg);
     right: -45px;
     width: 22%;
 }
 
-    .accordion ul li:first-child h2 {
-        padding-right: 70px;
-    }
-
-    .accordion ul li:first-child:after {
-        content: "";
-        width: 10px;
-        height: 100%;
-        background-color: #fff;
-        position: absolute;
-        right: 35px;
-        top: 0;
-        z-index: 10;
-        transform: skew(-12deg);
-    }
-
-.accordion ul li:nth-child(2) {
-    background-image: url("../images/skew_slider_images/image2.jpg");
+.accordion ul li:first-child h2 {
+    padding-right: 70px;
 }
 
-.accordion ul li:nth-child(3) {
-    background-image: url("../images/skew_slider_images/image3.jpg");
+.accordion ul li:first-child:after {
+    content: "";
+    width: 10px;
+    height: 100%;
+    background-color: #fff;
+    position: absolute;
+    right: 35px;
+    top: 0;
+    z-index: 10;
+    transform: skew(-12deg);
 }
 
-.accordion ul li:nth-child(4) {
-    background-image: url("../images/skew_slider_images/image4.jpg");
-}
 
 .accordion ul li:last-child {
-    background-image: url("../images/skew_slider_images/image5.jpg");
     transform: skew(0deg);
     left: -45px;
     z-index: 1;
@@ -4869,3 +4853,65 @@ input:checked + .slider:before {
     .slider.round:before {
         border-radius: 50%;
     }
+
+#marqueeWrap {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    transition: ease 0.5s;
+}
+
+    #marqueeWrap ul {
+        position: relative;
+        animation: none;
+    }
+
+@keyframes marquee {
+    0% {
+        left: 0;
+    }
+
+    100% {
+        left: -100%;
+    }
+}
+
+@-webkit-keyframes marquee {
+    0% {
+        left: 0;
+    }
+
+    100% {
+        left: -100%;
+    }
+}
+
+@-moz-keyframes marquee {
+    0% {
+        left: 0;
+    }
+
+    100% {
+        left: -100%;
+    }
+}
+
+@-o-keyframes marquee {
+    0% {
+        left: 0;
+    }
+
+    100% {
+        left: -100%;
+    }
+}
+
+@keyframes marquee {
+    0% {
+        left: 0;
+    }
+
+    100% {
+        left: -100%;
+    }
+}

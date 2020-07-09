@@ -17,7 +17,7 @@
                         </a>
                         @{ var imagePath = !string.IsNullOrEmpty(item.Image) ? ViewBag.BaseFilePath + item.Image : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif";}
                         <div class="mega_nav_wrap">
-                            <div class="mega_nav_wrap_inner" style="background-image:url(@imagePath)">
+                            <div class="mega_nav_wrap_inner" style="background-image:url('@imagePath')">
                                 <h3 class="head">@item.Name</h3>
                                 <ul class="meganav_firstcatList">
                                     @{int i = 1;}
@@ -176,7 +176,7 @@
                             @{ var imagePath = !string.IsNullOrEmpty(item.Image) ? ViewBag.BaseFilePath + item.Image : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif";}
                             <style>
                                 #category-@item.Name:before {
-                                    background-image:url(@imagePath)
+                                    background-image:url('@imagePath')
                                 }
                             </style>
                             <div class="mega_nav_wrap_inner" id="category-@item.Name">
