@@ -49,9 +49,12 @@
                         @Html.Hidden("shippingAddressId", Model.ShippingAddressId)
                         @Html.Hidden("shippingAddressPostCode", Model.ShippingAddressPostCode)
                         @Html.Partial("_ShippingAddressSelector", Model.ShippmentAddresses)
-                        <div>
-                            <button class="addnwShopAdrrbtn" id="select-shipping-address__button" onclick="setSelectedShippingAddress()" data-toggle="modal" disabled data-target="#ChooseShippingAddressModal">Select Address</button>
-                        </div>
+                        @if (Model.ShippmentAddresses.Count() > 0)
+                        {
+                            <div>
+                                <button class="addnwShopAdrrbtn" id="select-shipping-address__button" onclick="setSelectedShippingAddress()" data-toggle="modal" disabled data-target="#ChooseShippingAddressModal">Select Address</button>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
