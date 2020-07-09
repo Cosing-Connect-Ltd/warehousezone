@@ -1089,8 +1089,8 @@ namespace Ganedata.Core.Services
 
         public IEnumerable<ProductMaster> GetProductByCategory(int SiteId, int tenantId, int NumberofProducts, string TagName)
         {
-            var products = _currentDbContext.ProductsWebsitesMap.Where(u => u.TenantId == tenantId && u.SiteID == SiteId && u.IsDeleted != true).Select(u => u.ProductMaster);
-            var ProductTagIds = _currentDbContext.ProductTags.Where(u => u.TagName == TagName).Select(u => u.Id);
+            var products = _currentDbContext.ProductsWebsitesMap.Where(u => u.TenantId == tenantId && u.SiteID == SiteId && u.IsDeleted != true && u.IsActive).Select(u => u.ProductMaster);
+            var ProductTagIds = _currentDbContext.ProductTags.Where(u => u.TagName == TagName && u.IsDeleted != true).Select(u => u.Id).ToList();
             var productids = _currentDbContext.ProductTagMaps.Where(u => ProductTagIds.Contains(u.ProductId)).Select(u => u.ProductId).ToList();
             return products.Where(u => productids.Contains(u.ProductId) && u.IsDeleted != true).Take(NumberofProducts);
 

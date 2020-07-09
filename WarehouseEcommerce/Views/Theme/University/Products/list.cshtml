@@ -106,7 +106,7 @@
                         {
 
 
-                            item.ProductTagMaps = item.ProductTagMaps.OrderBy(x => x.ProductTag.SortOrder).ToList();
+                            item.ProductTagMaps = item.ProductTagMaps.Where(u=>u.ProductTag.IsDeleted != true).OrderBy(x => x.ProductTag.SortOrder).ToList();
                             <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-4">
                                 <div class="prd_lst_boxouter">
                                     @for (int i = 0; i < item.ProductTagMaps.Count; i++)
@@ -190,7 +190,11 @@
 
                         </div>
                         <div class="col-sm-6 col-xs-6 text-right tot">
-                            Showing @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) to @Model.PageSize 
+                            @if (Model.TotalItemCount > Model.PageSize)
+                            {
+                                @*Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber*@
+                                <p>Showing @( Model.FirstItemOnPage) to @Model.PageSize of @(Model.TotalItemCount)</p>
+                            }
 
                         </div>
                     </div>

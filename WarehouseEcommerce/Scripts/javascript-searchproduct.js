@@ -1,4 +1,11 @@
 ﻿
+
+
+
+
+
+
+
 function SetProductGroupId(event) {
     $("#ProductGroupId").val(event.currentTarget.value);
 }
@@ -125,21 +132,19 @@ function OnchangeDropdownAddress() {
 function SearchProductCategory() {
 
     var searchstring = $(".text-search").val();
-    var valuesparam = $("#valuesParameter").val();
-    window.location.href = basePath + "/Products/list?search=" + searchstring + "&values=" + valuesparam;
+    var valuesparam = $("#valuesParameter").val() == undefined ? "" : $("#valuesParameter").val();
+    var path = basePath + "/Products/list?search=" + searchstring + "&values=" + valuesparam;
+    window.location.href = path;
 }
 
-function SearchProduct(e) {
 
-    if (e.keyCode === 13) {
-        SearchProductCategory();
-    }
-}
 
+
+//$('.text-search').on('input', function() {}
 var searchvalues;
 var seeall = true;
-$('.text-search').on('input', function () {
-    $(this).autocomplete({
+$(function () {
+    $(".text-search").autocomplete({
         minLength: 2,
         source: function (request, response) {
             searchvalues = request.term;
@@ -171,7 +176,7 @@ $('.text-search').on('input', function () {
             if (seeall) {
                 var $li = $("<li>");
                 var $link = $("<a>", {
-                    href: basePath + "/Products/list?search=" + searchvalues,
+                    href: basePath + "/Products/list?search=" + searchvalues.replace(" ", "_"),
                     class: "see-all"
                 }).html("See All Results").appendTo($li);
                 $li.appendTo($('.ui-autocomplete'));
@@ -183,6 +188,12 @@ $('.text-search').on('input', function () {
         return $('<li class="search-item">').append("")
             .append("<a href=" + basePath + "/Products/list?search=" + item.Name + "><img style='width: 46px; height:46px;' src=" + item.Path + " alt=" + item.Name + "/>" + item.Name + "</a>").appendTo(ul);
     };
+    $(".text-search").bind('keypress', function (e) {
+        if (e.keyCode === 13) {
+
+            $('#serchBtnico').trigger('click');
+        }
+    });
 });
 
 function updateTextBox(event, ui) {
@@ -218,7 +229,7 @@ function AddToCart(ProductId) {
         success: function (data) {
             var cardItemsValue = parseInt($("#cart-total").text());
             $("#cart-total").text(cardItemsValue + 1);
-            GetCartitems(data)
+            GetCartitems(data);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert('Error' + textStatus + "/" + errorThrown);
@@ -226,20 +237,32 @@ function AddToCart(ProductId) {
     });
 }
 function RemoveCartItem(id) {
-    $.ajax({
-        type: "GET",
-        url: basePath + "/Products/RemoveCartItem/",
-        data: { cartId: id },
-        dataType: 'json',
-        success: function (data) {
-            var cardItemsValue = parseInt($("#cart-total").val());
-            $("#cart-total").val(cardItemsValue - 1);
-            GetCartitems(null);
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            alert('Error' + textStatus + "/" + errorThrown);
+    $.confirm({
+        title: 'Confirm!',
+        content: 'Are you sure to delete this item from cart?',
+        buttons: {
+            Yes: function () {
+                $.ajax({
+                    type: "GET",
+                    url: basePath + "/Products/RemoveCartItem/",
+                    data: { cartId: id },
+                    dataType: 'json',
+                    success: function (data) {
+                        var cardItemsValue = parseInt($("#cart-total").text());
+                        $("#cart-total").text(cardItemsValue - 1);
+                        GetCartitems(null);
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert('Error' + textStatus + "/" + errorThrown);
+                    }
+                });
+            },
+            No: function () {
+                AddToWishList(productId, false);
+            }
         }
     });
+
 }
 function UpdateCartItem(id, event) {
     var quantity = event.value;
@@ -489,51 +512,44 @@ function onCurrencyChange(event) {
     });
 }
 
-$("input[type=checkbox]").on("change", function () {
-    var arr = [];
-    var data = "";
-    var str = $(location).attr('href');
-    var pagerep = new RegExp("&page=\\d+");
-    str = str.replace(pagerep, '');
-    str = removeURLParameter(str, "page");
-    str = removeURLParameter(str, "values");
-    var parameter = "&values=";
-    str = str + parameter;
-    $(":checkbox").each(function () {
+$("input[type=checkbox]").on("change", function (e) {
+    if (e.currentTarget.id !== "notification-switch") {
+        var arr = [];
+        var data = "";
+        var str = $(location).attr('href');
+        var pagerep = new RegExp("&page=\\d+");
+        str = str.replace(pagerep, '');
+        str = removeURLParameter(str, "page");
+        str = removeURLParameter(str, "values");
+        var parameter = "&values=";
+        str = str + parameter;
+        $(":checkbox").each(function () {
 
-        if (this.checked) {
-            if (str.indexOf($(this).val()) < 0) {
-                arr.push($(this).val());
-                data = this.id;
-                if (str.indexOf(data) < 0) {
-                    var indexof = str.lastIndexOf("=");
-                    var checkpreviousString = str.substr(indexof - 6, 6);
-                    var found = str.charAt(indexof + 1);
-                    if (checkpreviousString === "values" && found === "") {
-                        str = str + data + "-" + $(this).val();
-                    }
-                    else {
-                        str = str + "/" + data + "-" + $(this).val();
+            if (this.checked) {
+                if (str.indexOf($(this).val()) < 0) {
+                    arr.push($(this).val());
+                    data = this.id;
+                    if (str.indexOf(data) < 0) {
+                        var indexof = str.lastIndexOf("=");
+                        var checkpreviousString = str.substr(indexof - 6, 6);
+                        var found = str.charAt(indexof + 1);
+                        if (checkpreviousString === "values" && found === "") {
+                            str = str + data + "-" + $(this).val();
+                        } else {
+                            str = str + "/" + data + "-" + $(this).val();
+                        }
+                    } else {
+                        if (str.indexOf($(this).val()) < 0) {
+                            str = str + "," + $(this).val();
+                        }
                     }
                 }
-                else {
-                    if (str.indexOf($(this).val()) < 0) {
-                        str = str + "," + $(this).val();
-                    }
-                }
+
             }
 
-        }
-
-    });
-    //if (arr.length <= 0) {
-    //    if (str.indexOf("&") > 0) {
-    //        var result = str.substring(str.indexOf("&"), (str.length));
-    //        str = str.replace(result, "");
-    //    }
-    //}
-    location.href = str;
-
+        });
+        location.href = str;
+    }
 
 
 });
@@ -608,14 +624,10 @@ function LoggedIn() {
 
         return;
     }
-    var PlaceOrders;
-    if (placecheck !== "" && placecheck !== undefined && placecheck != null) {
-        PlaceOrders = true;
-    }
     $.ajax({
         type: "GET",
         url: basePath + "/User/LoginUsers/",
-        data: { UserName: UserName, UserPassword: UserPassword, PlaceOrder: PlaceOrders, Popup: placecheck },
+        data: { UserName: UserName, UserPassword: UserPassword, PlaceOrder: placecheck},
         dataType: 'json',
         success: function (data) {
             if (!data.status) {
@@ -623,7 +635,7 @@ function LoggedIn() {
                 $(".alert-message-login").html("User name or password is not correct").show().delay(2000).fadeOut();
 
             }
-            else if (PlaceOrders) {
+            else if (placecheck=="true") {
                 $('#signupPopup').modal('hide');
                 location.href = "/Orders/Checkout?accountId=" + data.AccountId;
             }
@@ -681,7 +693,7 @@ function CreateUsers() {
     });
 }
 
-function AddWishListItem(ProductId) {
+function AddWishListItem(productId) {
     if (userStatus === "Login") {
         GetLoggedIn(false);
     }
@@ -689,13 +701,13 @@ function AddWishListItem(ProductId) {
     else {
         $.confirm({
             title: 'Confirm!',
-            content: 'Would you like to be notified about this product!',
+            content: 'Would you also like to be notified when this item is back in stock?',
             buttons: {
                 Yes: function () {
-                    AddToWishList(ProductId, true);
+                    AddToWishList(productId, true);
                 },
                 No: function () {
-                    AddToWishList(ProductId, false);
+                    AddToWishList(productId, false);
                 }
             }
         });
@@ -703,17 +715,17 @@ function AddWishListItem(ProductId) {
 }
 
 function AddToWishList(productId, notification) {
-    var CurrentWisId = $("#wish_" + productId);
+    var currentWishId = $("#wish_" + productId);
     $.ajax({
         type: "GET",
         url: basePath + "/Products/AddWishListItem/",
         data: { ProductId: productId, isNotfication: notification },
         dataType: 'json',
         success: function (data) {
-            var ids = "#" + CurrentWisId[0].id;
+            var ids = "#" + currentWishId[0].id;
             $(ids).find(".list-icon").css({ "color": "red" });
-            $("#" + CurrentWisId[0].id).removeAttr("onclick", null);
-            $("#" + CurrentWisId[0].id).attr("onclick", "RemoveWishListPopUp(" + productId + ")");
+            $("#" + currentWishId[0].id).removeAttr("onclick", null);
+            $("#" + currentWishId[0].id).attr("onclick", "RemoveWishListPopUp(" + productId + ")");
             var cardItemsValue = parseInt($("#WishList-total").text());
 
             $("#WishList-total").text(cardItemsValue + 1);
@@ -730,7 +742,7 @@ function RemoveWishListPopUp(RemoveProductId) {
     var CurrentId = $("#wish_" + RemoveProductId);
     $.confirm({
         title: 'Confirm!',
-        content: 'Are you sure to delete this product from wishlist!',
+        content: 'This item is already on your wishlist, would you like to remove it?',
         buttons: {
             Yes: function () {
 
@@ -825,6 +837,25 @@ function UpdateUser() {
 
 }
 
+function ChangeWishListStatus(productId, notification) {
+
+    $.ajax({
+        type: "GET",
+        url: basePath + "/Products/ChangeWishListStatus/",
+        data: { productId: productId, notification: notification },
+        dataType: 'json',
+        success: function (data) {
+
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert('Error' + textStatus + "/" + errorThrown);
+        }
+    });
+
+
+}
+
+
 $("#showRegForm").click(function () {
     var placeholder = false;
     $.ajax({
@@ -867,3 +898,11 @@ $("#showLoginForm").click(function () {
     });
 
 });
+$("#notification-switch").change(function (e) {
+    var productId = $(this).val();
+    var notification = $(this).is(":checked");
+    ChangeWishListStatus(productId, notification);
+
+
+});
+

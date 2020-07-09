@@ -1,4 +1,6 @@
-﻿<div class="row">
+﻿@model List<Ganedata.Core.Entities.Domain.WebsiteWishListItem>
+
+<div class="row">
 
     <div class="nb_basket_wrap">
         <table class="basketTable">
@@ -25,7 +27,13 @@
                             <div>
                                 <a href="javascript:;" class="btn btn-success" onclick="AddToCart(@item.ProductMaster.ProductId)">Add to Basket</a> <br /><br />
                                 <a href="javascript:;" class="btn btn-danger" onclick="RemoveWishItem(@item.ProductMaster.ProductId)">Remove</a>
+                                <br /><br />
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="notification-switch" value="@item.ProductMaster.ProductId" @(item.IsNotification ? "checked" : "")>
+                                    <label class="custom-control-label" for="notification-switch">Notification</label>
+                                </div>
                             </div>
+
                         </td>
 
                     </tr>

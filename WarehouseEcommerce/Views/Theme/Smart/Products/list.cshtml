@@ -141,7 +141,11 @@
 
                 </div>
                 <div class="col-sm-6 col-xs-6 text-right tot">
-                    Showing @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) to @Model.PageSize of @(Model.TotalItemCount)
+                    @if (Model.TotalItemCount > Model.PageSize)
+                    {
+                        <p>Showing @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) to @Model.PageSize of @(Model.TotalItemCount)</p>
+                    }
+
 
                 </div>
             </div>
@@ -154,8 +158,7 @@
 
 
 <script>
-    function GetSortedList(e)
-    {
+    function GetSortedList(e) {
         var sortvalue = parseInt(e.currentTarget.value);
         var groupId = $("#ProductGroups").val();
         if (groupId === "" || groupId === undefined || groupId === null) { groupId = $("#ProductGroupsId").val(); }

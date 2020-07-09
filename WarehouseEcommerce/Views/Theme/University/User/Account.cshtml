@@ -170,9 +170,9 @@
                                                 <div class="col-12 col-sm-12 col-md-3 col-lg-4">
                                                     <div class="orderDetls">
                                                         <label>SOLD BY</label>
-                                                        <div class="orderLnk">
+                                                        @*<div class="orderLnk">
                                                             <a href="#">brandsexpress </a> <span> (1 item)</span>
-                                                        </div>
+                                                        </div>*@
                                                     </div>
                                                 </div>
                                                 <div class="col-12 col-sm-12 col-md-2 col-lg-2">
@@ -208,7 +208,7 @@
                                                             </h3>
                                                             <span class="qty">Quantity : @orderdet.Qty</span>
                                                             <ul class="orderProductStatus">
-                                                                <li>@((Ganedata.Core.Entities.Enums.OrderStatusEnum?)orderdet.OrderDetailStatusId)</li>
+                                                               @* <li>@((Ganedata.Core.Entities.Enums.OrderStatusEnum?)orderdet.OrderDetailStatusId)</li>*@
                                                                 @*<li>This item has been dispatched</li>*@
                                                             </ul>
                                                         </div>
@@ -257,18 +257,18 @@
                                                                 }
 
                                                                 <ul class="prodDetlist">
-                                                                    @foreach (var attribute in wishlistitem.ProductMaster.ProductAttributeMaps)
+                                                                    @*foreach (var attribute in wishlistitem.ProductMaster.ProductAttributeMaps)
                                                                     {
                                                                         <li>
-                                                                            <span>@attribute.ProductAttributes.AttributeName</span>
-                                                                            @foreach (var item in attribute.ProductAttributes.ProductAttributeValues)
+                                                                            <span>attribute.ProductAttributes.AttributeName</span>
+                                                                            foreach (var item in attribute.ProductAttributes.ProductAttributeValues)
                                                                             {
-                                                                                <span>@item.Value</span>
+                                                                                <span>item.Value</span>
                                                                             }
 
                                                                         </li>
 
-                                                                    }
+                                                                    }*@
                                                                     @*<li>
                                                                             <span>Qty</span>
                                                                             <span>
@@ -289,7 +289,7 @@
                                                                     <span>@wishlistitem.ProductMaster.SellPrice</span>
                                                                 </li>
                                                                 <li>
-                                                                    <button class="mtcBtn"><i class="icon-shopping-cart"></i>Move to cart</button>
+                                                                    <button class="mtcBtn" onclick="AddToCart(@wishlistitem.ProductMaster.ProductId)"><i class="icon-shopping-cart" ></i>Move to cart</button>
                                                                 </li>
                                                             </ul>
 

@@ -45,7 +45,7 @@ namespace Ganedata.Core.Services
         }
         public IEnumerable<TenantWebsites> GetAllValidTenantWebSite(int TenantId)
         {
-            return _currentDbContext.TenantWebsites.Where(u => u.IsDeleted != true && u.TenantId == TenantId);
+            return _currentDbContext.TenantWebsites.Where(u => u.IsDeleted != true && u.TenantId == TenantId && u.IsActive == true);
         }
 
         public WebsiteLayoutSettings GetWebsiteLayoutSettingsInfoBySiteId(int SiteId)
@@ -110,7 +110,7 @@ namespace Ganedata.Core.Services
         //WebsiteContentPages
         public IEnumerable<WebsiteContentPages> GetAllValidWebsiteContentPages(int TenantId, int SiteId)
         {
-            return _currentDbContext.WebsiteContentPages.Where(u => u.IsDeleted != true && u.TenantId == TenantId && u.SiteID == SiteId);
+            return _currentDbContext.WebsiteContentPages.Where(u => u.IsDeleted != true && u.TenantId == TenantId && u.SiteID == SiteId && u.IsActive==true);
         }
 
 
@@ -169,13 +169,13 @@ namespace Ganedata.Core.Services
         //ProductsWebsitesMaps
         public IEnumerable<ProductsWebsitesMap> GetAllValidProductsWebsitesMap(int TenantId)
         {
-            return _currentDbContext.ProductsWebsitesMap.Where(u => u.IsDeleted != true);
+            return _currentDbContext.ProductsWebsitesMap.Where(u => u.IsDeleted != true && u.IsActive);
         }
 
         //WebsiteSliders
         public IEnumerable<WebsiteSlider> GetAllValidWebsiteSlider(int TenantId, int SiteId)
         {
-            return _currentDbContext.WebsiteSliders.Where(u => u.IsDeleted != true && u.TenantId == TenantId && u.SiteID == SiteId);
+            return _currentDbContext.WebsiteSliders.Where(u => u.IsDeleted != true && u.TenantId == TenantId && u.SiteID == SiteId && u.IsActive);
         }
         public WebsiteSlider CreateOrUpdateProductswebsiteSlider(WebsiteSlider websiteSlider, int UserId, int TenantId)
         {
@@ -226,19 +226,19 @@ namespace Ganedata.Core.Services
 
         public IEnumerable<WebsiteNavigation> GetAllValidWebsiteNavigation(int TenantId, int? SiteId)
         {
-            return _currentDbContext.WebsiteNavigations.Where(u => u.IsDeleted != true && (!SiteId.HasValue || u.SiteID == SiteId) && u.TenantId == TenantId);
+            return _currentDbContext.WebsiteNavigations.Where(u => u.IsDeleted != true && (!SiteId.HasValue || u.SiteID == SiteId) && u.TenantId == TenantId && u.IsActive);
         }
         public IQueryable<WebsiteNavigation> GetAllValidWebsiteNavigationCategory(int TenantId, int? SiteId)
         {
-            return _currentDbContext.WebsiteNavigations.Where(u => u.IsDeleted != true && (!SiteId.HasValue || u.SiteID == SiteId) && u.TenantId == TenantId && u.Type == Entities.Enums.WebsiteNavigationType.Category);
+            return _currentDbContext.WebsiteNavigations.Where(u => u.IsDeleted != true && (!SiteId.HasValue || u.SiteID == SiteId) && u.TenantId == TenantId && u.Type == Entities.Enums.WebsiteNavigationType.Category && u.IsActive);
         }
 
         public IQueryable<NavigationProductsViewModel> GetAllValidWebsiteNavigations(int TenantId, int SiteId, int navigationId)
         {
 
-            var websiteMap = _currentDbContext.ProductsWebsitesMap.Where(u => u.IsDeleted != true && u.SiteID == SiteId && u.TenantId == TenantId);
+            var websiteMap = _currentDbContext.ProductsWebsitesMap.Where(u => u.IsDeleted != true && u.SiteID == SiteId && u.TenantId == TenantId && u.IsActive);
             var allProducts = _currentDbContext.ProductMaster.Where(m => m.TenantId == TenantId && m.IsDeleted != true);
-            var navigationMap = _currentDbContext.ProductsNavigationMaps.Where(x => x.NavigationId == navigationId && x.IsDeleted != true);
+            var navigationMap = _currentDbContext.ProductsNavigationMaps.Where(x => x.NavigationId == navigationId && x.IsDeleted != true && x.IsActive);
 
 
             var res = (from w in websiteMap
@@ -267,8 +267,8 @@ namespace Ganedata.Core.Services
 
         public IQueryable<NavigationProductsViewModel> GetAllValidWebsiteProducts(int TenantId, int SiteId)
         {
-            var allProducts = _currentDbContext.ProductMaster.Where(m => m.TenantId == TenantId && m.IsDeleted != true && (m.SiteId == SiteId || m.SiteId == null));
-            var websiteMap = _currentDbContext.ProductsWebsitesMap.Where(u => u.IsDeleted != true && u.SiteID == SiteId && u.TenantId == TenantId);
+            var allProducts = _currentDbContext.ProductMaster.Where(m => m.TenantId == TenantId && m.IsDeleted != true && (m.SiteId == SiteId || m.SiteId == null) && m.IsActive);
+            var websiteMap = _currentDbContext.ProductsWebsitesMap.Where(u => u.IsDeleted != true && u.SiteID == SiteId && u.TenantId == TenantId && u.IsActive);
             var res = (from p in allProducts
                        join w in websiteMap on p.ProductId equals w.ProductId into tempMap
                        from d in tempMap.DefaultIfEmpty()
@@ -292,7 +292,7 @@ namespace Ganedata.Core.Services
         }
         public IQueryable<NavigationProductsViewModel> GetAllValidWebsiteProductsMap(int TenantId, int SiteId)
         {
-            var websiteMap = _currentDbContext.ProductsWebsitesMap.Where(u => u.IsDeleted != true && u.SiteID == SiteId && u.TenantId == TenantId)
+            var websiteMap = _currentDbContext.ProductsWebsitesMap.Where(u => u.IsDeleted != true && u.SiteID == SiteId && u.TenantId == TenantId && u.IsActive)
                 .Select(u => new NavigationProductsViewModel()
                 {
                     Id = u.Id,
@@ -410,8 +410,8 @@ namespace Ganedata.Core.Services
         public IQueryable<WebsiteWarehousesViewModel> GetAllValidWebsiteWarehouses(int TenantId, int SiteId)
         {
             var allWarehouses = _currentDbContext.TenantWarehouses.Where(m => m.TenantId == TenantId && m.IsDeleted != true && m.IsActive);
-            var websiteWarehouses = _currentDbContext.WebsiteWarehouses.Where(u => u.IsDeleted != true && u.SiteID == SiteId && u.TenantId == TenantId);
-            var res = (from p in allWarehouses
+            var websiteWarehouses = _currentDbContext.WebsiteWarehouses.Where(u => u.IsDeleted != true && u.SiteID == SiteId && u.TenantId == TenantId && u.IsActive);
+            var result = (from p in allWarehouses
                        join w in websiteWarehouses on p.WarehouseId equals w.WarehouseId into tempMap
                        from d in tempMap.DefaultIfEmpty()
                        select new WebsiteWarehousesViewModel()
@@ -427,7 +427,7 @@ namespace Ganedata.Core.Services
                            SortOrder = d.SortOrder
                        });
 
-            return res;
+            return result;
         }
 
         public bool CreateOrUpdateWebsiteWarehouse(WebsiteWarehousesViewModel websiteWarehouseData, int UserId, int TenantId)
@@ -468,7 +468,7 @@ namespace Ganedata.Core.Services
 
         public IQueryable<WebsiteShippingRules> GetAllValidWebsiteShippingRules(int TenantId, int SiteId)
         {
-            return _currentDbContext.WebsiteShippingRules.Where(u => u.TenantId == TenantId && u.SiteID == SiteId && u.IsDeleted != true);
+            return _currentDbContext.WebsiteShippingRules.Where(u => u.TenantId == TenantId && u.SiteID == SiteId && u.IsDeleted != true && u.IsActive);
 
         }
 
@@ -508,7 +508,7 @@ namespace Ganedata.Core.Services
         public WebsiteShippingRules CreateOrUpdateWebsiteShippingRules(WebsiteShippingRules websiteShippingRules, int UserId, int TenantId)
         {
             var websiteShippingRulesItems = _currentDbContext.WebsiteShippingRules.Where(x => x.TenantId == TenantId
-           && x.SiteID == websiteShippingRules.SiteID && x.IsDeleted != true && x.Id == websiteShippingRules.Id).FirstOrDefault();
+           && x.SiteID == websiteShippingRules.SiteID && x.IsDeleted != true && x.Id == websiteShippingRules.Id && x.IsActive).FirstOrDefault();
             if (websiteShippingRulesItems == null)
             {
                 WebsiteShippingRules websiteShipping = new WebsiteShippingRules();
@@ -562,7 +562,7 @@ namespace Ganedata.Core.Services
         }
         public WebsiteShippingRules GetWebsiteShippingRulesById(int Id)
         {
-            return _currentDbContext.WebsiteShippingRules.FirstOrDefault(u => u.Id == Id && u.IsDeleted != true);
+            return _currentDbContext.WebsiteShippingRules.FirstOrDefault(u => u.Id == Id && u.IsDeleted != true && u.IsActive);
 
         }
 
@@ -570,7 +570,7 @@ namespace Ganedata.Core.Services
 
         public IQueryable<WebsiteVouchers> GetAllValidWebsiteVoucher(int TenantId, int SiteId)
         {
-            return _currentDbContext.WebsiteVouchers.Where(u => u.TenantId == TenantId && u.SiteID == SiteId && u.IsDeleted != true);
+            return _currentDbContext.WebsiteVouchers.Where(u => u.TenantId == TenantId && u.SiteID == SiteId && u.IsDeleted != true && u.IsActive);
 
         }
         public WebsiteVouchers CreateOrUpdateWebsiteVouchers(WebsiteVouchers websiteVouchers, int UserId, int TenantId)
@@ -623,7 +623,7 @@ namespace Ganedata.Core.Services
         }
         public WebsiteVouchers GetWebsiteVoucherById(Guid Id)
         {
-            return _currentDbContext.WebsiteVouchers.FirstOrDefault(u => u.Id == Id && u.IsDeleted != true);
+            return _currentDbContext.WebsiteVouchers.FirstOrDefault(u => u.Id == Id && u.IsDeleted != true && u.IsActive);
 
         }
         public string GenerateVoucherCode()
@@ -657,12 +657,12 @@ namespace Ganedata.Core.Services
         public IEnumerable<WebsiteDiscountCodes> GetAllValidWebsiteDiscountCodes(int TenantId, int SiteId)
         {
 
-            return _currentDbContext.WebsiteDiscountCodes.Where(u => u.TenantId == TenantId && u.SiteID == SiteId && u.IsDeleted != true);
+            return _currentDbContext.WebsiteDiscountCodes.Where(u => u.TenantId == TenantId && u.SiteID == SiteId && u.IsDeleted != true && u.IsActive);
         }
         public IEnumerable<WebsiteDiscountProductsMap> GetAllValidWebsiteDiscountProductsMap(int TenantId, int DiscountId)
         {
 
-            return _currentDbContext.websiteDiscountProductsMaps.Where(u => u.TenantId == TenantId && u.IsDeleted != true && u.DiscountId == DiscountId);
+            return _currentDbContext.websiteDiscountProductsMaps.Where(u => u.TenantId == TenantId && u.IsDeleted != true && u.DiscountId == DiscountId && u.IsActive);
         }
 
         public WebsiteDiscountCodes CreateOrUpdateWebsiteDiscountCodes(WebsiteDiscountCodes websiteDiscount, int UserId, int TenantId)
@@ -951,8 +951,7 @@ namespace Ganedata.Core.Services
         public IQueryable<ProductMaster> GetAllValidProductWebsiteSearch(int siteId, string category = "", string ProductName = "")
         {
             ProductName = ProductName?.Trim();
-            int? categoryId = _currentDbContext.WebsiteNavigations.FirstOrDefault(u => u.Name == category && u.IsDeleted != true && u.SiteID==siteId)?.Id;
-            //List<int> websiteProductIds = _currentDbContext.ProductsWebsitesMap.Where(x => x.SiteID == siteId && x.IsActive == true && x.IsDeleted != true).Select(a => a.ProductId).ToList();
+            int? categoryId = _currentDbContext.WebsiteNavigations.FirstOrDefault(u => u.Name == category && u.IsDeleted != true && u.SiteID==siteId && u.IsActive)?.Id;
             List<int> productIds = _currentDbContext.ProductsNavigationMaps.Where(u => (u.NavigationId == categoryId || string.IsNullOrEmpty(category)) && u.IsDeleted != true && u.IsActive == true).Select(x => x.ProductsWebsitesMap.ProductId).ToList();
             var products = _currentDbContext.ProductsWebsitesMap.Where(a => a.IsActive == true && a.IsDeleted != true && a.SiteID == siteId).Select(u => u.ProductMaster);
             return products.Where(a => productIds.Contains(a.ProductId) &&
@@ -1034,7 +1033,7 @@ namespace Ganedata.Core.Services
             var model = _currentDbContext.WebsiteCartItems.Where(u => u.IsDeleted != true &&
                                                                                      u.SiteID == siteId &&
                                                                                      u.TenantId == tenantId &&
-                                                                                     (u.UserId == userId) || u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase)
+                                                                                     (u.UserId == userId || u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase))
                                                                                       && (!cartId.HasValue || u.Id == cartId)).ToList().Select(u => new OrderDetailSessionViewModel
                                                                                       {
                                                                                           ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
@@ -1175,9 +1174,9 @@ namespace Ganedata.Core.Services
 
         }
 
-        public int AddOrUpdateWishListItems(int SiteId, int UserId, int TenantId, List<OrderDetailSessionViewModel> orderDetails)
+        public int AddOrUpdateWishListItems(int SiteId, int UserId, int TenantId, List<OrderDetailSessionViewModel> wishListdeDetail)
         {
-            foreach (var orderDetail in orderDetails)
+            foreach (var orderDetail in wishListdeDetail)
             {
                 var wishListProduct = _currentDbContext.WebsiteWishListItems.FirstOrDefault(u => u.ProductId == orderDetail.ProductId && u.SiteID == SiteId && u.UserId == UserId);
                 if (wishListProduct == null)
@@ -1227,6 +1226,27 @@ namespace Ganedata.Core.Services
             return true;
         }
 
+        public bool GetWishlistNotificationStatus(int productId, int siteId, int userId)
+        {
+            return _currentDbContext.WebsiteWishListItems
+                .FirstOrDefault(u => u.ProductId == productId && u.SiteID == siteId && u.UserId == userId)
+                .IsNotification;
+        }
+        public bool ChangeWishListStatus(int productId,bool notification, int siteId, int userId)
+        {
+            var wishListItem= _currentDbContext.WebsiteWishListItems
+                .FirstOrDefault(u => u.ProductId == productId && u.SiteID == siteId && u.UserId == userId);
+            if (wishListItem != null)
+            {
+                wishListItem.IsNotification = notification;
+                wishListItem.UpdateUpdatedInfo(userId);
+                _currentDbContext.Entry(wishListItem).State = EntityState.Modified;
+                _currentDbContext.SaveChanges();
+            }
+
+            return true;
+
+        }
 
         public OrderDetailSessionViewModel SetCartItem(int productId, decimal quantity, decimal? currencyRate, int? currencyId)
         {
@@ -1366,7 +1386,7 @@ namespace Ganedata.Core.Services
         // deliveryInfoNavigation//
         public IEnumerable<WebsiteDeliveryNavigation> GetAllValidWebsiteDeliveryNavigations(int tenantId, int siteId)
         {
-            return _currentDbContext.WebsiteDeliveryNavigations.Where(u => u.TenantId == tenantId && u.IsDeleted != true && u.SiteId == siteId);
+            return _currentDbContext.WebsiteDeliveryNavigations.Where(u => u.TenantId == tenantId && u.IsDeleted != true && u.SiteId == siteId && u.IsActive);
         }
 
         public WebsiteDeliveryNavigation GetWebsiteDeliveryNavigationById(int id)

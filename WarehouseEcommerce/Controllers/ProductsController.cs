@@ -123,7 +123,7 @@ namespace WarehouseEcommerce.Controllers
                 var data = product.ToPagedList((pageNumber == 0 ? 1 : pageNumber), pageSize);
                 if (data.Count > 0)
                 {
-                    data.ToList().ForEach(u => u.SellPrice = (Math.Round((_productPriceService.GetProductPriceThresholdByAccountId(u.ProductId, null).SellPrice) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value), 2)));
+                    data.ToList().ForEach(u => u.SellPrice = (Math.Round((_productPriceService.GetProductPriceThresholdByAccountId(u.ProductId, null).SellPrice), 2)));
                     if (CurrentUserId <= 0)
                     {
                         if (GaneWishListItemsSessionHelper.GetWishListItemsSession().Count > 0)
@@ -280,39 +280,26 @@ namespace WarehouseEcommerce.Controllers
         public PartialViewResult _CartItemsPartial(int? cartId = null)
         {
             var models = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, HttpContext.Session.SessionID, cartId).ToList();
-            models.ForEach(u => u.TotalAmount = Math.Round(models.Sum(c => c.ProductTotalAmount),2));
-           
+            models.ForEach(u => u.TotalAmount = Math.Round(models.Sum(c => c.ProductTotalAmount), 2));
+
             return PartialView(models.ToList());
         }
 
         public JsonResult AddWishListItem(int ProductId, bool isNotfication)
         {
-
-            var ProductCheck = GaneWishListItemsSessionHelper.GetWishListItemsSession().FirstOrDefault(u => u.ProductId == ProductId);
-            if (ProductCheck == null)
-            {
-                var Product = _productServices.GetProductMasterById(ProductId);
-                var model = new OrderDetail();
-                model.ProductMaster = Product;
-                model.Qty = 0;
-                model.ProductId = ProductId;
-                model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
-                ViewBag.CartModal = false;
-                var Details = _mapper.Map(model, new OrderDetailSessionViewModel());
-                Details.isNotfication = isNotfication;
-                GaneWishListItemsSessionHelper.UpdateWishListItemsSession("", Details, false);
-                if (CurrentUserId > 0)
-                {
-                    _tenantWebsiteService.AddOrUpdateWishListItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, (GaneWishListItemsSessionHelper.GetWishListItemsSession()));
-                }
-                return Json(_tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).Count(), JsonRequestBehavior.AllowGet);
-
-            }
-            if (CurrentUserId > 0)
-            {
-                _tenantWebsiteService.AddOrUpdateWishListItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, (GaneWishListItemsSessionHelper.GetWishListItemsSession()));
-            }
+            var Product = _productServices.GetProductMasterById(ProductId);
+            var model = new OrderDetail();
+            model.ProductMaster = Product;
+            model.Qty = 0;
+            model.ProductId = ProductId;
+            model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
+            ViewBag.CartModal = false;
+            var details = _mapper.Map(model, new OrderDetailSessionViewModel());
+            details.isNotfication = isNotfication;
+            _tenantWebsiteService.AddOrUpdateWishListItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, new List<OrderDetailSessionViewModel>() { details });
             return Json(_tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).Count(), JsonRequestBehavior.AllowGet);
+
+
         }
 
         public ActionResult WishList()
@@ -330,38 +317,38 @@ namespace WarehouseEcommerce.Controllers
             return View(data.ToList());
         }
 
-        public PartialViewResult _wishlistItems(int? ProductId)
+        public PartialViewResult _wishlistItems(int? productId)
         {
-            if (ProductId.HasValue)
+            if (productId.HasValue)
             {
-                if (CurrentUserId > 0)
-                {
-                    var count = _tenantWebsiteService.RemoveWishListItem((ProductId ?? 0), CurrentTenantWebsite.SiteID, CurrentUserId);
-                    return PartialView(_tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).ToList());
-                }
+                var count = _tenantWebsiteService.RemoveWishListItem((productId ?? 0), CurrentTenantWebsite.SiteID, CurrentUserId);
+                return PartialView(_tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).ToList());
 
-                var data = GaneWishListItemsSessionHelper.GetWishListItemsSession().ToList().Select(u => new WebsiteWishListItem()
-                {
-                    ProductMaster = _productServices.GetProductMasterById(u.ProductId),
-
-                });
-                return PartialView(data.ToList());
             }
             else
             {
-                if (CurrentUserId > 0)
-                {
-                    var model = _tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).ToList();
-                    return PartialView(model);
-                }
-                var data = GaneWishListItemsSessionHelper.GetWishListItemsSession().ToList().Select(u => new WebsiteWishListItem()
-                {
-                    ProductMaster = _productServices.GetProductMasterById(u.ProductId),
+                var model = _tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).ToList();
+                return PartialView(model);
 
-                });
-                return PartialView(data.ToList());
 
             }
+
+        }
+
+        public JsonResult GetWishlistNotificationStatus(int productId)
+        {
+
+            return Json(
+                _tenantWebsiteService.GetWishlistNotificationStatus(productId, CurrentTenantWebsite.SiteID,
+                    CurrentUserId), JsonRequestBehavior.AllowGet);
+
+        }
+        public JsonResult ChangeWishListStatus(int productId,bool notification)
+        {
+
+            return Json(
+                _tenantWebsiteService.ChangeWishListStatus(productId, notification, CurrentTenantWebsite.SiteID,
+                    CurrentUserId), JsonRequestBehavior.AllowGet);
 
         }
 

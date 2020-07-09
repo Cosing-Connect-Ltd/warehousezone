@@ -11,18 +11,29 @@
             <div class="owl-carousel owl-theme nb_featuredPrdCarrousle">
                 @foreach (var item in Model.productMasterList)
                 {
+                    item.ProductTagMaps = item.ProductTagMaps.OrderBy(x => x.ProductTag.SortOrder).ToList();
 
                 <div class="item">
-                    <a href="@Url.Action("ProductDetails", "Products", new { sku = item.SKUCode })" class="nb_fp_boxwrap">
-                       <span class="prd_img">
-                                <img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@item.Name" title="@item.Name" class="img-fluid center-block" />
-                                @*<img src="~/Content/Theme/University/app/images/featured_product/1.jpg" alt="" />*@
-                            </span>
-                            <div class="prd_det_sec">
-                                <h4 title="@item.Name" class="prd_name">@item.Name</h4>
-                                <span class="prd_amnt"> @Model.CurrencySign @item.SellPrice</span>
-                            </div>
-                        </a>
+                    <a href="@Url.Action("ProductDetails", "Products", new {sku = item.SKUCode})" class="nb_fp_boxwrap">
+                        @*@for (int i = 0; i < item.ProductTagMaps.Count; i++)
+                        {
+                            if (i < 3)
+                            {
+                                <span class="badge badge-@i">
+                                    <img src="@(ViewBag.BaseFilePath + item.ProductTagMaps.ToList()[i].ProductTag.IconImage)" alt="" />
+                                </span>
+                            }
+
+                        }*@
+                        <span class="prd_img">
+                            <img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@item.Name" title="@item.Name" class="img-fluid center-block" />
+                            @*<img src="~/Content/Theme/University/app/images/featured_product/1.jpg" alt="" />*@
+                        </span>
+                        <div class="prd_det_sec">
+                            <h4 title="@item.Name" class="prd_name">@item.Name</h4>
+                            <span class="prd_amnt"> @Model.CurrencySign @item.SellPrice</span>
+                        </div>
+                    </a>
                 </div>
 
                 }

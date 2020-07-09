@@ -116,9 +116,13 @@ namespace Ganedata.Core.Services
 
         void UpdateUserIdInCartItem(string sessionKey, int userId, int siteId);
 
-        int AddOrUpdateWishListItems(int SiteId, int UserId, int TenantId, List<OrderDetailSessionViewModel> orderDetails);
+        int AddOrUpdateWishListItems(int SiteId, int UserId, int TenantId, List<OrderDetailSessionViewModel> wishListDetail);
         bool RemoveCartItem(int cartId, int siteId, int? userId, string sessionKey);
         int RemoveWishListItem(int ProductId, int SiteId, int UserId);
+        bool GetWishlistNotificationStatus(int productId, int siteId, int userId);
+        bool ChangeWishListStatus(int productId, bool notification, int siteId, int userId);
+
+
         void SendNotificationForAbandonedCarts();
         CheckoutViewModel SetCheckOutProcessModel(CheckoutViewModel checkoutViewModel, int siteId, int tenantId, int userId, string sessionKey);
 

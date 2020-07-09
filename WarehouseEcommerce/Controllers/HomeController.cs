@@ -117,16 +117,13 @@ namespace WarehouseEcommerce.Controllers
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             var specialProduct = new ProductDetailViewModel
             {
-                productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID, CurrentTenantId, 6, "SpecialProduct").ToList(),
+                productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID, CurrentTenantId, 6, "Featured").ToList(),
 
             };
 
-            specialProduct.productMasterList.ForEach(u => u.SellPrice = (Math.Round((_productPriceService.GetProductPriceThresholdByAccountId(u.ProductId, null).SellPrice) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value), 2)));
+            specialProduct.productMasterList.ForEach(u => u.SellPrice = (Math.Round((_productPriceService.GetProductPriceThresholdByAccountId(u.ProductId, null).SellPrice), 2)));
             specialProduct.CurrencySign = currencyyDetail.Symbol;
-            if (specialProduct.productMasterList != null)
-            {
-                var prdouctIds = specialProduct.productMasterList.Select(u => u.ProductId).ToList();
-            }
+            
 
             return PartialView(specialProduct);
 
