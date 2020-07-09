@@ -106,7 +106,7 @@
                         {
 
 
-                            item.ProductTagMaps = item.ProductTagMaps.Where(u=>u.ProductTag.IsDeleted != true).OrderBy(x => x.ProductTag.SortOrder).ToList();
+                            item.ProductTagMaps = item.ProductTagMaps.Where(u=>u.IsDeleted != true).Where(u=>u.ProductTag.IsDeleted != true).OrderBy(x => x.ProductTag.SortOrder).ToList();
                             <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-4">
                                 <div class="prd_lst_boxouter">
                                     @for (int i = 0; i < item.ProductTagMaps.Count; i++)
