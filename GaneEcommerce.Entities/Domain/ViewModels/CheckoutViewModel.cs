@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using Ganedata.Core.Entities.Domain.ViewModels;
 using Ganedata.Core.Models;
 
 namespace Ganedata.Core.Entities.Domain
@@ -20,6 +21,7 @@ namespace Ganedata.Core.Entities.Domain
             ShippingRules = new List<WebsiteShippingRulesViewModel>();
             CurrentStep = (int)CheckoutStep.BillingAddress;
             ParentStep = (int)CheckoutStep.BillingAddress;
+            SagePayPaymentResponse=new SagePayPaymentResponseViewModel();
         }
 
         public int? AccountId { get; set; }
@@ -36,6 +38,8 @@ namespace Ganedata.Core.Entities.Domain
 
         public string CurrencySymbol { get; set; }
 
+        public string OrderNumber { get; set; }
+
         public decimal TotalOrderAmount => Math.Round((CartItems?.Sum(u => u.ProductTotalAmount) ?? 0) + (ShippingRule?.Price ?? 0), 2);
 
         public CheckoutStep? ParentStep { get; set; }
@@ -47,6 +51,8 @@ namespace Ganedata.Core.Entities.Domain
         public List<WebsiteShippingRulesViewModel> ShippingRules { get; set; }
         public WebsiteShippingRulesViewModel ShippingRule { get; set; }
         public CollectionPointViewModel CollectionPoint { get; set; }
+
+        public SagePayPaymentResponseViewModel SagePayPaymentResponse { get; set; }
 
 
 

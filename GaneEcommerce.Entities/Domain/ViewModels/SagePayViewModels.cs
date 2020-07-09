@@ -15,7 +15,7 @@ namespace Ganedata.Core.Entities.Domain.ViewModels
         public string merchantSessionKey { get; set; }
         public DateTime expiry { get; set; }
     }
-
+    [Serializable]
     public class Card
     {
         public string merchantSessionKey { get; set; }
@@ -23,7 +23,7 @@ namespace Ganedata.Core.Entities.Domain.ViewModels
         public string save { get; set; }
 
     }
-
+    [Serializable]
     public class PaymentMethod
     {
         public Card card { get; set; }
@@ -55,7 +55,7 @@ namespace Ganedata.Core.Entities.Domain.ViewModels
 
     }
 
-
+    [Serializable]
     public class AvsCvcCheck
     {
         public string status { get; set; }
@@ -64,7 +64,7 @@ namespace Ganedata.Core.Entities.Domain.ViewModels
         public string securityCode { get; set; }
 
     }
-
+    [Serializable]
     public class Amount
     {
         public int totalAmount { get; set; }
@@ -72,7 +72,7 @@ namespace Ganedata.Core.Entities.Domain.ViewModels
         public int surchargeAmount { get; set; }
 
     }
-
+    [Serializable]
     public class SagePayPaymentResponseViewModel
     {
         public string transactionId { get; set; }

@@ -3303,25 +3303,20 @@ namespace Ganedata.Core.Services
             return discount;
         }
 
-        public Order CreateShopOrder(int accountId, List<WebsiteCartItem> orderDetails, int tenantId, int UserId, int warehouseId, int SiteId)
+        public CheckoutViewModel CreateShopOrder(CheckoutViewModel orderDetails, int tenantId, int UserId, int warehouseId, int SiteId)
         {
             Order order = new Order();
-            var context = DependencyResolver.Current.GetService<IApplicationContext>();
-            var sessionTenantId = tenantId;
-            var sessionWarehouseId = warehouseId;
             decimal total = 0;
-            if (string.IsNullOrEmpty(order.OrderNumber))
-            {
+            if (string.IsNullOrEmpty(order.OrderNumber)){
                 order.OrderNumber = GenerateNextOrderNumber(InventoryTransactionTypeEnum.SalesOrder, tenantId);
-
             }
 
-            var duplicateOrder = context.Order.FirstOrDefault(m => m.OrderNumber.Equals(order.OrderNumber, StringComparison.CurrentCultureIgnoreCase));
+            var duplicateOrder = _currentDbContext.Order.FirstOrDefault(m => m.OrderNumber.Equals(order.OrderNumber, StringComparison.CurrentCultureIgnoreCase));
             if (duplicateOrder != null)
             {
                 throw new Exception($"Order Number {order.OrderNumber} already associated with another Order. Please regenerate order number.", new Exception("Duplicate Order Number"));
             }
-            order.AccountID = accountId;
+            order.AccountID = orderDetails.AccountId;
             order.InventoryTransactionTypeId = InventoryTransactionTypeEnum.SalesOrder;
             order.IssueDate = DateTime.UtcNow;
             order.ExpectedDate = DateTime.UtcNow;
@@ -3334,34 +3329,46 @@ namespace Ganedata.Core.Services
             order.WarehouseId = warehouseId;
             order.SiteID = SiteId;
             order.OrderStatusID = OrderStatusEnum.Hold;
+            
             _currentDbContext.Order.Add(order);
             _currentDbContext.SaveChanges();
-            if (orderDetails != null)
+            orderDetails.OrderNumber = order.OrderNumber;
+            if (orderDetails.CartItems != null)
             {
-                var items = orderDetails.ToList();
+                var items = orderDetails.CartItems.ToList();
                 foreach (var item in items)
                 {
                     OrderDetail detail = new OrderDetail();
                     detail.ProductId = item.ProductId;
-                    detail.Qty = item.Quantity;
+                    detail.Qty = item.Qty;
                     detail.Warranty = null;
-                    detail.Price = item.UnitPrice;
+                    detail.Price = item.Price;
                     detail.ProductMaster = null;
                     detail.WarehouseId = warehouseId;
                     detail.DateCreated = DateTime.UtcNow;
                     detail.CreatedBy = UserId;
                     detail.TenentId = tenantId;
                     detail.OrderID = order.OrderID;
-                    total = total + (item.UnitPrice * item.Quantity);
+                    total = total + (item.Price * item.Qty);
                     _currentDbContext.OrderDetail.Add(detail);
                 }
-
                 order.OrderTotal = total;
+
+                var cartIds = orderDetails.CartItems.Select(u => u.CartId).ToList();
+                var cartItemsList =
+                    _currentDbContext.WebsiteCartItems.Where(a => cartIds.Contains(a.Id) && a.IsDeleted != true).ToList();
+                if (cartItemsList.Count > 0)
+                {
+                    cartItemsList.ForEach(u=>u.IsDeleted=true);
+                }
+
+
+
                 _currentDbContext.SaveChanges();
 
             }
 
-            return order;
+            return orderDetails;
         }
 
         public bool UpdatePickerId(int OrderId, int? pickerId, int userId)

@@ -27,14 +27,23 @@
             </div>
         </div>
         <div class="nb_sec checkconfirmSec">
-            @Html.Partial("_OrderProgressBar", OrderProgressStep.ReviewItems)
+           
 
             <div class="orderConfirmationSection">
                 <h4 class="ordConfirmHead">Order Review</h4>
+
                 <div class="row">
                     <div class="col-lg-6">
                         @if (addresses != null)
                         {
+                            
+                                <h4 class="subHead">Order Number</h4><p>@Model.OrderNumber</p>
+                            <h4 class="subHead">Transaction Id</h4><p> @Model.SagePayPaymentResponse.transactionId</p>
+
+                            
+
+                            
+
                             <h4 class="subHead">
                                 Billing Address
                             </h4>
@@ -88,13 +97,13 @@
                         }
                         else
                         {
-                            <p class="content">Delivery by @Model.ShippingRule.Courier @(!string.IsNullOrEmpty(Model.ShippingRule.Description?.Trim()) ? $"({Model.ShippingRule.Description})" : "") - @Model.CurrencySymbol@Model.ShippingRule.Price</p>
+                            <p class="content">Delivery by @Model?.ShippingRule?.Courier @(!string.IsNullOrEmpty(Model.ShippingRule.Description?.Trim()) ? $"({Model.ShippingRule.Description})" : "") - @Model.CurrencySymbol@Model.ShippingRule.Price</p>
                         }
                         <h4 class="subHead">
                             Payment Method
                         </h4>
                         <p class="content">
-                            @((PaymentMethod?)Model.PaymentMethodId == PaymentMethod.SagePay ? "Sage Pay" : ((PaymentMethod?)Model.PaymentMethodId).ToString())
+                            @((PaymentMethodEnum?)Model.PaymentMethodId == PaymentMethodEnum.SagePay ? "Sage Pay" : ((PaymentMethodEnum?)Model.PaymentMethodId).ToString())
                         </p>
                     </div>
                     <div class="offset-lg-1 col-lg-3">
@@ -115,7 +124,7 @@
 
                     </div>
                     <div class="saveAddrWrap mt-5 mb-5 ml-3 mr-3">
-                        @if ((PaymentMethod?)Model.PaymentMethodId == PaymentMethod.Paypal)
+                        @if ((PaymentMethodEnum?)Model.PaymentMethodId == PaymentMethodEnum.Paypal)
                         {
                             <form action="@((string)ViewBag.PAYPALURL)" method="post">
                                 <div class="row">
@@ -139,7 +148,7 @@
 
                             </form>
                         }
-                        else if ((PaymentMethod?)Model.PaymentMethodId == PaymentMethod.SagePay)
+                        else if ((PaymentMethodEnum?)Model.PaymentMethodId == PaymentMethodEnum.SagePay)
                         {
                             using (Html.BeginForm("SagePay", "Orders", FormMethod.Post))
                             {
@@ -153,8 +162,7 @@
                                     </fieldset>
                                 </div>
                                 <div class="button-submit">
-                                    <button type="Submit" name="submitNewsletter" class="saveAddrBtn">Proceed To Payment</button>
-                                    <a href="@Url.Action("checkout","orders",new{ checkoutStep=CheckoutStep.PaymentMethod})" class="btn saveAddrBtn">Back</a>
+                                    <a href="@Url.Action("Index","Home")" class="btn saveAddrBtn">Back</a>
                                 </div>
 
 

@@ -513,7 +513,7 @@ namespace Ganedata.Core.Entities.Enums
         ToShipmentAddress = 2
     }
 
-    public enum PaymentMethod
+    public enum PaymentMethodEnum
     {
         Paypal = 1,
         Cash = 2,

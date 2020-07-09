@@ -12,6 +12,8 @@
 
 
 <section class="nb_sec nb_prdlisting_pgsec">
+    
+    
     <div class="container">
         <div class="breadCrumbtopsec">
             <div class="nb_bread_crumbwrap">
@@ -30,6 +32,7 @@
             @Html.Partial("_OrderProgressBar", OrderProgressStep.ReviewItems)
 
             <div class="orderConfirmationSection">
+                <h3 style="background: red">@TempData["Error"]</h3>
                 <h4 class="ordConfirmHead">Order Review</h4>
                 <div class="row">
                     <div class="col-lg-6">
@@ -71,9 +74,11 @@
                             <p class="content">
                                 @if (Model.CollectionPoint != null)
                                 {
-                                    <b>@(Model.CollectionPoint.WarehouseName) </b> <br />
+                                    <b>@(Model.CollectionPoint.WarehouseName) </b>
+                                    <br />
                                     @Model.CollectionPoint.AddressLine1@(!string.IsNullOrEmpty(Model.CollectionPoint.AddressLine2) ? $", {Model.CollectionPoint.AddressLine2}" : "")
-                                    @(!string.IsNullOrEmpty(Model.CollectionPoint.AddressLine3) ? $", {Model.CollectionPoint.AddressLine3}" : "") <br />
+                                    @(!string.IsNullOrEmpty(Model.CollectionPoint.AddressLine3) ? $", {Model.CollectionPoint.AddressLine3}" : "")
+                                    <br />
                                     @Model.CollectionPoint.PostalCode@(!string.IsNullOrEmpty(Model.CollectionPoint.City) ? $", {Model.CollectionPoint.City}" : "")@(!string.IsNullOrEmpty(Model.CollectionPoint.GlobalCountry?.CountryName) ? $", {Model.CollectionPoint.GlobalCountry.CountryName}" : "")
                                 }
                             </p>
@@ -94,7 +99,7 @@
                             Payment Method
                         </h4>
                         <p class="content">
-                            @((PaymentMethod?)Model.PaymentMethodId == PaymentMethod.SagePay ? "Sage Pay" : ((PaymentMethod?)Model.PaymentMethodId).ToString())
+                            @((PaymentMethodEnum?) Model.PaymentMethodId == PaymentMethodEnum.SagePay ? "Sage Pay" : ((PaymentMethodEnum?) Model.PaymentMethodId).ToString())
                         </p>
                     </div>
                     <div class="offset-lg-1 col-lg-3">
@@ -111,35 +116,35 @@
                             }
                         </ul>
                         <h4 class="subHead">Total Amount</h4>
-                        <h4 class="subHead">@Model.CurrencySymbol@(Model?.TotalOrderAmount?? 0)</h4>
+                        <h4 class="subHead">@Model.CurrencySymbol@(Model?.TotalOrderAmount ?? 0)</h4>
 
                     </div>
-                        <div class="saveAddrWrap mt-5 mb-5 ml-3 mr-3">
-                        @if ((PaymentMethod?)Model.PaymentMethodId == PaymentMethod.Paypal)
+                    <div class="saveAddrWrap mt-5 mb-5 ml-3 mr-3">
+                        @if ((PaymentMethodEnum?)Model.PaymentMethodId == PaymentMethodEnum.Paypal)
                         {
-                            <form action="@((string)ViewBag.PAYPALURL)" method="post">
+                            <form action="@((string) ViewBag.PAYPALURL)" method="post">
                                 <div class="row">
 
                                     <fieldset>
                                         <input class="full-width" type="hidden" name="business" value="shoaib@ganedata.co.uk">
                                         <input type="hidden" name="cmd" value="_xclick">
                                         <input type="hidden" name="item_name" value="Cart Items" />
-                                        <input type="hidden" name="return" value="@((string)ViewBag.RetUrl)">
-                                        <input type="hidden" name="notify_url" value="@((string)ViewBag.PayPalIpnUrl)">
+                                        <input type="hidden" name="return" value="@((string) ViewBag.RetUrl)">
+                                        <input type="hidden" name="notify_url" value="@((string) ViewBag.PayPalIpnUrl)">
                                         <input type="hidden" NAME="currency_code" value="GBP">
-                                        <input type="hidden" name="amount" value="@(Model?.TotalOrderAmount??0)" />
+                                        <input type="hidden" name="amount" value="@(Model?.TotalOrderAmount ?? 0)" />
                                     </fieldset>
 
                                 </div>
                                 <div class="button-submit">
                                     <button type="Submit" name="submitNewsletter" class="saveAddrBtn">Proceed To Payment</button>
-                                    <a href="@Url.Action("checkout","orders",new{ checkoutStep=CheckoutStep.PaymentMethod})" class="btn saveAddrBtn">Back</a>
+                                    <a href="@Url.Action("checkout", "orders", new {checkoutStep = CheckoutStep.PaymentMethod})" class="btn saveAddrBtn">Back</a>
                                     @*<a href="@Url.Action("Index","Test")" class="btn btn-block cash-btn cashbtn" name="submitNewsletter"> Proceed To Payment</a>*@
                                 </div>
 
                             </form>
                         }
-                        else if ((PaymentMethod?)Model.PaymentMethodId == PaymentMethod.SagePay)
+                        else if ((PaymentMethodEnum?)Model.PaymentMethodId == PaymentMethodEnum.SagePay)
                         {
                             using (Html.BeginForm("SagePay", "Orders", FormMethod.Post))
                             {
@@ -148,13 +153,13 @@
 
                                         <input type="hidden" NAME="currency_code" value="GBP">
                                         @*<input type="hidden" name="OrderId" value="@ViewBag.OrdersId" />*@
-                                        <input type="hidden" name="TotalPrice" value="@(Model?.TotalOrderAmount??0)" />
+                                        <input type="hidden" name="TotalPrice" value="@(Model?.TotalOrderAmount ?? 0)" />
 
                                     </fieldset>
                                 </div>
                                 <div class="button-submit">
                                     <button type="Submit" name="submitNewsletter" class="saveAddrBtn">Proceed To Payment</button>
-                                    <a href="@Url.Action("checkout","orders",new{ checkoutStep=CheckoutStep.PaymentMethod})" class="btn saveAddrBtn">Back</a>
+                                    <a href="@Url.Action("checkout", "orders", new {checkoutStep = CheckoutStep.PaymentMethod})" class="btn saveAddrBtn">Back</a>
                                 </div>
 
 

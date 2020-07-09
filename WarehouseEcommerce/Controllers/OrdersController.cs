@@ -289,13 +289,19 @@ namespace WarehouseEcommerce.Controllers
                     //TempData["Error"] = responseString;
                     TempData["Error"] = "Authorization failed, please check details and retry";
 
-                    return RedirectToAction("ConfirmOrder");
+                    return RedirectToAction("ConfirmOrder", new { paymentTypeId = (int)PaymentMethodEnum.SagePay });
                     // redirect to action and show this message
                 }
                 else
                 {
                     // create order
                     var responseString = await response.Content.ReadAsStringAsync();
+
+                    var checkOutModel = Session["CheckoutViewModel"] == null
+                        ? new CheckoutViewModel()
+                        : Session["CheckoutViewModel"] as CheckoutViewModel;
+                    checkOutModel.SagePayPaymentResponse = JsonConvert.DeserializeObject<SagePayPaymentResponseViewModel>(responseString);
+                    Session["CheckoutViewModel"] = OrderService.CreateShopOrder(checkOutModel, CurrentTenantId, CurrentUserId, CurrentWarehouseId, CurrentTenantWebsite.SiteID);
                     return RedirectToAction("ConfirmPaymentMessage");
                 }
 
@@ -305,7 +311,18 @@ namespace WarehouseEcommerce.Controllers
         public ActionResult ConfirmPaymentMessage()
         {
             Console.WriteLine("3D confirmation");
-            return View();
+            if (Session["CheckoutViewModel"] == null)
+            {
+                RedirectToAction("Index", "Home");
+            }
+
+            var checkOutModel = Session["CheckoutViewModel"] == null
+                ? new CheckoutViewModel()
+                : Session["CheckoutViewModel"] as CheckoutViewModel;
+
+            Session["CheckoutViewModel"] = null;
+
+            return View(checkOutModel);
         }
 
         private async Task<SagepayTokenResponse> GetSagePayToken()

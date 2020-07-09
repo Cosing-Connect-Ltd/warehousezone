@@ -6,7 +6,7 @@ $(function () {
 
     var secNavList = $(".nb_sec_navlist").html();
     $(".res_navWrapper").append(
-        "<ul class='nb_sec_nav_res'>" + secNavList + "</ul>"
+        //"<ul class='nb_sec_nav_res'>" + secNavList + "</ul>"
     );
 
     $(".nb_res_nav_closeTrigger").click(function () {
@@ -138,8 +138,10 @@ $(function () {
     // showRegForm
 
     $("#triggerSearch").click(function (e) {
+       
         e.preventDefault();
         $(".search_wrap_main").addClass("show");
+        $(".search_wrap_main").show();
         $("#searchinput").focus();
     });
     $("#serchBtnico").click(function (e) {

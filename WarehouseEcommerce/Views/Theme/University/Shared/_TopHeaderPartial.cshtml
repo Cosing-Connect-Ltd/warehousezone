@@ -9,7 +9,16 @@
             <img src="@ViewBag.BaseFilePath@siteProperties.Logo" title="@siteProperties.SiteName" alt="@siteProperties.SiteName" />
         </span>
         <div class="nb_firstNav_res_lst_wrap"></div>
-        <button class="nb_lgn_btn_res" onclick="GetLoggedIn(false,true)">Login</button>
+        @if (!WarehouseEcommerce.Helpers.LayoutHelpers.UserLoginStatus())
+        {
+            <button class="nb_lgn_btn_res" onclick="GetLoggedIn(false, true)">Login</button>
+        }
+        @if (WarehouseEcommerce.Helpers.LayoutHelpers.UserLoginStatus())
+        {
+            <button class="nb_lgn_btn_res" onclick="Logout();">Logout</button>
+            <button onClick="location.href='@Url.Action("Account","User")'" class="nb_lgn_btn_res">Account</button>
+        }
+
     </div>
     <div class="container head-container">
         <div class="search_wrap_main">
@@ -18,13 +27,13 @@
                 <input type="search" class="form-control search_input text-search" id="searchinput" placeholder="Search Here" />
                 <div class="search-box-buttons float-left">
                     <button type="button" id="serchBtnClose" class="btn btn-primary search_btn">X</button>
-                    <a href="javascript:;"  id="serchBtnico" class="btn btn-primary search_btn" onclick="SearchProductCategory();" ><i class="icon-search"></i></a>
+                    <a href="javascript:;" id="serchBtnico" class="btn btn-primary search_btn" onclick="SearchProductCategory();"><i class="icon-search"></i></a>
                 </div>
             </div>
         </div>
         <div class="nb_logowrap">
             <a href="@Url.Action("Index","Home")">
-                <img src="@ViewBag.BaseFilePath@siteProperties.Logo" title="@siteProperties.SiteName" alt="@siteProperties.SiteName" class="main-logo"/>
+                <img src="@ViewBag.BaseFilePath@siteProperties.Logo" title="@siteProperties.SiteName" alt="@siteProperties.SiteName" class="main-logo" />
                 @*<img src="~/Content/Theme/University/app/images/logo.png" title="static logo" alt="static logo" />*@
             </a>
         </div>
