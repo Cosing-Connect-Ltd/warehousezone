@@ -123,28 +123,8 @@ namespace WarehouseEcommerce.Controllers
                 var data = product.ToPagedList((pageNumber == 0 ? 1 : pageNumber), pageSize);
                 if (data.Count > 0)
                 {
-                    data.ToList().ForEach(u => u.SellPrice = (Math.Round((_productPriceService.GetProductPriceThresholdByAccountId(u.ProductId, null).SellPrice), 2)));
-                    if (CurrentUserId <= 0)
-                    {
-                        if (GaneWishListItemsSessionHelper.GetWishListItemsSession().Count > 0)
-                        {
-                            foreach (var item in GaneWishListItemsSessionHelper.GetWishListItemsSession())
-                            {
-                                var wistlist = GaneWishListItemsSessionHelper.GetWishListItemsSession().ToList().Select(u => new WebsiteWishListItem()
-                                {
-                                    ProductMaster = _productServices.GetProductMasterById(item.ProductId),
-
-                                }).FirstOrDefault();
-                                var list = data.FirstOrDefault(u => u.ProductId == item.ProductId);
-                                if (list.WebsiteCartItems.Count <= 0)
-                                {
-                                    list.WebsiteWishListItems.Add(wistlist);
-                                }
-
-
-                            }
-                        }
-                    }
+                    data.ToList().ForEach(u => u.SellPrice = (Math.Round((_tenantWebsiteService.GetPriceForProduct(u.ProductId,CurrentTenantWebsite.SiteID)), 2)));
+                 
 
 
 
@@ -187,7 +167,7 @@ namespace WarehouseEcommerce.Controllers
                 ViewBag.Category = category;
 
             }
-            selectedProduct.SellPrice = Math.Round((selectedProduct.SellPrice ?? 0) * ((!currencyyDetail.Rate.HasValue || currencyyDetail.Rate <= 0) ? 1 : currencyyDetail.Rate.Value), 2);
+            selectedProduct.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(selectedProduct.ProductId, CurrentTenantWebsite.SiteID),2);
             if (product.ProductType == ProductKitTypeEnum.Grouped)
             {
                 return RedirectToAction("GroupedProductDetail", "Products", new { sku = sku });
@@ -206,7 +186,7 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.CurrencySymbol = currencyyDetail.Symbol;
             ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
             var product = _productServices.GetProductMasterByProductCode(sku, CurrentTenantId);
-            product.SellPrice = Math.Round((product.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0), 2);
+            product.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(product.ProductId, CurrentTenantWebsite.SiteID), 2);
             var productTabs = product.ProductKitItems.Where(u => u.ProductKitType == ProductKitTypeEnum.Grouped && u.IsActive == true).Select(u => u.ProductKitTypeId).ToList();
             ViewBag.GroupedTabs = _productlookupServices.GetProductKitTypes(productTabs);
             return View(product);
@@ -217,7 +197,7 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.CurrencySymbol = currencyyDetail.Symbol;
             ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
             var product = _productServices.GetProductMasterByProductCode(sku, CurrentTenantId);
-            product.SellPrice = Math.Round((product.SellPrice ?? 0) * ((currencyyDetail.Rate <= 0 || !currencyyDetail.Rate.HasValue || currencyyDetail == null) ? 1 : currencyyDetail.Rate.Value), 2);
+            product.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(product.ProductId, CurrentTenantWebsite.SiteID), 2);
             return View(product);
         }
 

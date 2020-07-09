@@ -110,7 +110,7 @@ namespace Ganedata.Core.Services
         //WebsiteContentPages
         public IEnumerable<WebsiteContentPages> GetAllValidWebsiteContentPages(int TenantId, int SiteId)
         {
-            return _currentDbContext.WebsiteContentPages.Where(u => u.IsDeleted != true && u.TenantId == TenantId && u.SiteID == SiteId && u.IsActive==true);
+            return _currentDbContext.WebsiteContentPages.Where(u => u.IsDeleted != true && u.TenantId == TenantId && u.SiteID == SiteId && u.IsActive == true);
         }
 
 
@@ -412,20 +412,20 @@ namespace Ganedata.Core.Services
             var allWarehouses = _currentDbContext.TenantWarehouses.Where(m => m.TenantId == TenantId && m.IsDeleted != true && m.IsActive);
             var websiteWarehouses = _currentDbContext.WebsiteWarehouses.Where(u => u.IsDeleted != true && u.SiteID == SiteId && u.TenantId == TenantId && u.IsActive);
             var result = (from p in allWarehouses
-                       join w in websiteWarehouses on p.WarehouseId equals w.WarehouseId into tempMap
-                       from d in tempMap.DefaultIfEmpty()
-                       select new WebsiteWarehousesViewModel()
-                       {
-                           Id = p.WarehouseId,
-                           SiteID = SiteId,
-                           WarehouseId = p.WarehouseId,
-                           WarehouseName = p.WarehouseName,
-                           WarehouseAddress = p.AddressLine1,
-                           WarehouseCity = p.City,
-                           Description = p.Description,
-                           IsActive = d.IsActive,
-                           SortOrder = d.SortOrder
-                       });
+                          join w in websiteWarehouses on p.WarehouseId equals w.WarehouseId into tempMap
+                          from d in tempMap.DefaultIfEmpty()
+                          select new WebsiteWarehousesViewModel()
+                          {
+                              Id = p.WarehouseId,
+                              SiteID = SiteId,
+                              WarehouseId = p.WarehouseId,
+                              WarehouseName = p.WarehouseName,
+                              WarehouseAddress = p.AddressLine1,
+                              WarehouseCity = p.City,
+                              Description = p.Description,
+                              IsActive = d.IsActive,
+                              SortOrder = d.SortOrder
+                          });
 
             return result;
         }
@@ -951,7 +951,7 @@ namespace Ganedata.Core.Services
         public IQueryable<ProductMaster> GetAllValidProductWebsiteSearch(int siteId, string category = "", string ProductName = "")
         {
             ProductName = ProductName?.Trim();
-            int? categoryId = _currentDbContext.WebsiteNavigations.FirstOrDefault(u => u.Name == category && u.IsDeleted != true && u.SiteID==siteId && u.IsActive)?.Id;
+            int? categoryId = _currentDbContext.WebsiteNavigations.FirstOrDefault(u => u.Name == category && u.IsDeleted != true && u.SiteID == siteId && u.IsActive)?.Id;
             List<int> productIds = _currentDbContext.ProductsNavigationMaps.Where(u => (u.NavigationId == categoryId || string.IsNullOrEmpty(category)) && u.IsDeleted != true && u.IsActive == true).Select(x => x.ProductsWebsitesMap.ProductId).ToList();
             var products = _currentDbContext.ProductsWebsitesMap.Where(a => a.IsActive == true && a.IsDeleted != true && a.SiteID == siteId).Select(u => u.ProductMaster);
             return products.Where(a => productIds.Contains(a.ProductId) &&
@@ -1086,7 +1086,7 @@ namespace Ganedata.Core.Services
                 cartProduct = new WebsiteCartItem();
                 cartProduct.ProductId = productId;
                 cartProduct.Quantity = quantity;
-                cartProduct.UnitPrice = Math.Round(((_productPriceService.GetProductPriceThresholdByAccountId(productId, null).SellPrice) * ((currencyRate <= 0) ? 1 : currencyRate)), 2);
+                cartProduct.UnitPrice = Math.Round(GetPriceForProduct(productId, siteId), 2);
                 cartProduct.UserId = userId == 0 ? null : userId;
                 cartProduct.TenantId = tenantId;
                 cartProduct.SiteID = siteId;
@@ -1232,9 +1232,9 @@ namespace Ganedata.Core.Services
                 .FirstOrDefault(u => u.ProductId == productId && u.SiteID == siteId && u.UserId == userId)
                 .IsNotification;
         }
-        public bool ChangeWishListStatus(int productId,bool notification, int siteId, int userId)
+        public bool ChangeWishListStatus(int productId, bool notification, int siteId, int userId)
         {
-            var wishListItem= _currentDbContext.WebsiteWishListItems
+            var wishListItem = _currentDbContext.WebsiteWishListItems
                 .FirstOrDefault(u => u.ProductId == productId && u.SiteID == siteId && u.UserId == userId);
             if (wishListItem != null)
             {
@@ -1301,7 +1301,7 @@ namespace Ganedata.Core.Services
             checkoutViewModel.CartItems.ForEach(u => u.TotalAmount = u.TotalAmount + (checkoutViewModel?.ShippingRule?.Price ?? 0));
 
 
-          
+
             return checkoutViewModel;
 
 
@@ -1433,6 +1433,33 @@ namespace Ganedata.Core.Services
             }
 
             return updatedRecored.SiteId;
+        }
+
+
+        public decimal GetPriceForProduct(int productId, int siteId)
+        {
+            var calculateTax = GetTenantWebSiteBySiteId(siteId).ShowPricesIncludingTax;
+            var sellPrice = _productPriceService.GetProductPriceThresholdByAccountId(productId, null).SellPrice;
+            if (calculateTax)
+            {
+                var product = _currentDbContext.ProductMaster.AsNoTracking().FirstOrDefault(u => u.ProductId == productId);
+
+                if (product != null && product.TaxID > 0 && product.EnableTax == true)
+                {
+                    var taxPercentage = _currentDbContext.GlobalTax.AsNoTracking().FirstOrDefault(a => a.TaxID == product.TaxID)?.PercentageOfAmount;
+                    if (taxPercentage.HasValue && taxPercentage > 0)
+                    {
+                        var taxAmount = product.SellPrice.HasValue
+                            ? Math.Round(d: ((product.SellPrice.Value) / 100) * (taxPercentage.Value), 2)
+                            : 0;
+                        sellPrice = sellPrice + taxAmount;
+                    }
+                }
+
+
+            }
+
+            return sellPrice;
         }
 
     }

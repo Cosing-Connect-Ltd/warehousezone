@@ -132,6 +132,8 @@ namespace Ganedata.Core.Services
         WebsiteDeliveryNavigation CreateOrUpdateWebsiteDeliveryNavigation(WebsiteDeliveryNavigation websiteDeliveryNavigation, int userId, int tenantId);
         int RemoveWebsiteDeliveryNavigation(int id, int userId);
 
+        decimal GetPriceForProduct(int productId, int siteId);
+
 
 
     }

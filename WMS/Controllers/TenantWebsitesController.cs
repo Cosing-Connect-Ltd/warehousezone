@@ -30,6 +30,8 @@ namespace WMS.Controllers
         public ActionResult Index()
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+
+            Session["UploadTenantWebsiteLogo"] = null;
             return View();
         }
 

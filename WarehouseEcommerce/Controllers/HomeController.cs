@@ -121,7 +121,7 @@ namespace WarehouseEcommerce.Controllers
 
             };
 
-            specialProduct.productMasterList.ForEach(u => u.SellPrice = (Math.Round((_productPriceService.GetProductPriceThresholdByAccountId(u.ProductId, null).SellPrice), 2)));
+            specialProduct.productMasterList.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID), 2));
             specialProduct.CurrencySign = currencyyDetail.Symbol;
             
 
@@ -135,7 +135,7 @@ namespace WarehouseEcommerce.Controllers
             {
                 productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID, (CurrentTenantId), 12, "TopProduct").ToList(),
             };
-            TopProduct.productMasterList.ForEach(u => u.SellPrice = (Math.Round(((u.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0)), 2)));
+            TopProduct.productMasterList.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID), 2));
             TopProduct.CurrencySign = currencyyDetail.Symbol;
             if (TopProduct.productMasterList != null)
             {
@@ -152,7 +152,7 @@ namespace WarehouseEcommerce.Controllers
             {
                 productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID, CurrentTenantId, 6, "OnSaleProduct").ToList(),
             };
-            onsale.productMasterList.ForEach(u => u.SellPrice = (Math.Round((u.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0), 2)));
+            onsale.productMasterList.ForEach(u => u.SellPrice = (Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID), 2)));
             onsale.CurrencySign = currencyyDetail.Symbol;
             if (onsale.productMasterList != null)
             {
@@ -178,7 +178,7 @@ namespace WarehouseEcommerce.Controllers
             {
                 productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID, (CurrentTenantId), 2, "BestSellerProduct").ToList()
             };
-            BestSellerProduct.productMasterList.ForEach(u => u.SellPrice = (Math.Round((u.SellPrice ?? 0) * (currencyyDetail.Rate ?? 0), 2)));
+            BestSellerProduct.productMasterList.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID), 2));
             BestSellerProduct.CurrencySign = currencyyDetail.Symbol;
             if (BestSellerProduct.productMasterList != null)
             {

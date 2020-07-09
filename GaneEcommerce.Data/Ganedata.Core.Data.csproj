@@ -943,6 +943,10 @@
     <Compile Include="Migrations\202007072229451_added-TextColor-and-ForeColor-to-WebsiteSliders-table.designer.cs">
       <DependentUpon>202007072229451_added-TextColor-and-ForeColor-to-WebsiteSliders-table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007090129510_showpricesincluding-tax-added-tenantwebsites.cs" />
+    <Compile Include="Migrations\202007090129510_showpricesincluding-tax-added-tenantwebsites.designer.cs">
+      <DependentUpon>202007090129510_showpricesincluding-tax-added-tenantwebsites.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1970,6 +1974,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007072229451_added-TextColor-and-ForeColor-to-WebsiteSliders-table.resx">
       <DependentUpon>202007072229451_added-TextColor-and-ForeColor-to-WebsiteSliders-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007090129510_showpricesincluding-tax-added-tenantwebsites.resx">
+      <DependentUpon>202007090129510_showpricesincluding-tax-added-tenantwebsites.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
