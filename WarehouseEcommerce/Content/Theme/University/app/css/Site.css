@@ -24,7 +24,6 @@
 }
 
 .uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a {
-
     cursor: default;
 }
 
@@ -818,14 +817,15 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
     .collection-point .collection-point-title {
         font-weight: bold !important;
     }
-    .collection-points .collection-point-distance {
-        text-align: right;
-    }
 
-    .collection-points .collection-point-not-available {
-        color: orangered;
-        text-align: right;
-    }
+.collection-points .collection-point-distance {
+    text-align: right;
+}
+
+.collection-points .collection-point-not-available {
+    color: orangered;
+    text-align: right;
+}
 
 .shipping-rule-selected,
 .collection-point-selected {
@@ -838,7 +838,7 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
     border: 1px dashed lightgray !important;
 }
 
-.checkout-side-menu{
+.checkout-side-menu {
     margin-top: 10px;
 }
 
@@ -1061,6 +1061,7 @@ body.modal-open {
     overflow: auto !important;
     padding-right: unset !important;
 }
+
 .error {
     color: red;
 }
@@ -1107,28 +1108,35 @@ body.modal-open {
     margin-bottom: -1px;
     /*align-items:center;*/
 }
+
 .cartitem-text {
     padding-right: 20px;
     text-align: justify;
 }
+
 @media(max-width:575px) {
     .cartitem-details {
-        flex-wrap:wrap;
+        flex-wrap: wrap;
     }
+
     .cartitem-imgtext {
         width: 100%;
     }
+
     .cartitem-price {
         width: 100%;
     }
-    .cartitem-price span {
-        padding-top:unset!important;
-        padding-left:unset!important;
-    }
+
+        .cartitem-price span {
+            padding-top: unset !important;
+            padding-left: unset !important;
+        }
+
     .kit-product .card-body {
         padding-bottom: unset !important;
         padding-top: unset !important;
     }
+
     .cartitem-text {
         padding-right: unset;
     }
@@ -1232,7 +1240,7 @@ body.modal-open {
 
 .kit-tabs-content {
     border: solid 1px #D7D7D7;
-    border-top:unset;
+    border-top: unset;
     padding: 0px 10px;
 }
 
@@ -1558,6 +1566,7 @@ body.modal-open {
 .nb_sec_pb {
     padding-bottom: 55px;
 }
+
 .ordConfirmationPgStepsec {
     margin-bottom: 90px;
 }
@@ -1591,11 +1600,11 @@ body.modal-open {
     margin-bottom: 15px;
 }
 
-.billandshipsec .address-wrapper p.address {
-    font-family: "primaryfont_SemiBold";
-    font-size: 18px;
-    color: #000;
-}
+    .billandshipsec .address-wrapper p.address {
+        font-family: "primaryfont_SemiBold";
+        font-size: 18px;
+        color: #000;
+    }
 
     .billandshipsec .checkout-options-wrapper .btnWrap,
     .billandshipsec .address-wrapper .btnWrap {
@@ -1607,50 +1616,55 @@ body.modal-open {
         margin-bottom: 20px;
     }
 
-.billandshipsec .address-wrapper .btnWrap .btmBtn {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    width: 185px;
-    height: 50px;
-    margin-right: 20px;
-    font-size: 16px;
-    font-family: "primaryfont_Bold";
-    color: #fff;
-    outline: none;
-    border: none;
-    text-transform: uppercase;
-    background-color: #000;
-    transition: all 0.3s ease;
-}
+        .billandshipsec .address-wrapper .btnWrap .btmBtn {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            width: 185px;
+            height: 50px;
+            margin-right: 20px;
+            font-size: 16px;
+            font-family: "primaryfont_Bold";
+            color: #fff;
+            outline: none;
+            border: none;
+            text-transform: uppercase;
+            background-color: #000;
+            transition: all 0.3s ease;
+        }
 
-    .billandshipsec .address-wrapper .btnWrap .btmBtn:hover {
-        background-color: #f33655;
-    }
-
-    .billandshipsec .address-wrapper .btnWrap .btmBtn:last-child {
-        margin-right: 0px;
-    }
-            @media(max-width:560px){
-                .billandshipsec .address-wrapper .btnWrap .btmBtn {
-                    width: 100%;
-                    margin-top: 10px;
-                }
-                .billandshipsec .address-wrapper .btnWrap {
-                    display: unset;
-                }
-                .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group .findAddrWrap .fadBtn {
-                    width:85px !important;
-                }
-                .saveAddrWrap .saveAddrBtn {
-                    width: 100% !important;
-                }
-                .billandshipsec .checkout-options-wrapper .addnwShopAdrrbtn,
-                .billandshipsec .address-wrapper .addnwShopAdrrbtn {
-                    width: 100% !important;
-                }
+            .billandshipsec .address-wrapper .btnWrap .btmBtn:hover {
+                background-color: #f33655;
             }
+
+            .billandshipsec .address-wrapper .btnWrap .btmBtn:last-child {
+                margin-right: 0px;
+            }
+
+@media(max-width:560px) {
+    .billandshipsec .address-wrapper .btnWrap .btmBtn {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .billandshipsec .address-wrapper .btnWrap {
+        display: unset;
+    }
+
+    .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group .findAddrWrap .fadBtn {
+        width: 85px !important;
+    }
+
+    .saveAddrWrap .saveAddrBtn {
+        width: 100% !important;
+    }
+
+    .billandshipsec .checkout-options-wrapper .addnwShopAdrrbtn,
+    .billandshipsec .address-wrapper .addnwShopAdrrbtn {
+        width: 100% !important;
+    }
+}
 
 .billandshipsec .addNewAddrWrap {
     width: 100%;
@@ -1727,17 +1741,20 @@ body.modal-open {
             font-family: "primaryfont_Normal";
             font-size: 18px;
         }
+
 @media(max-width:425px) {
     .billandshipsec .checkout-options-wrapper .checkboxwrap label {
         font-size: 14px;
         display: flex;
         align-items: center;
     }
+
     .styled-checkbox + label:before {
         margin-right: 12px;
         margin-top: 3px;
     }
 }
+
 .billandshipsec .checkout-options-wrapper .addnwShopAdrrbtn,
 .billandshipsec .address-wrapper .addnwShopAdrrbtn {
     width: 250px;
@@ -1758,7 +1775,7 @@ body.modal-open {
         background-color: #f33655;
     }
 
- .saveAddrWrap {
+.saveAddrWrap {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -1814,163 +1831,163 @@ body.modal-open {
         justify-content: center;
     }
 
-         .submitBtnwra .btnCmn {
-            width: 260px !important;
-            border: none;
-        }
+.submitBtnwra .btnCmn {
+    width: 260px !important;
+    border: none;
+}
 
-    .Paymentsec .paymentTabsec .btnCmn {
-        height: 46px;
-        background-color: #000;
-        color: #fff;
-        text-transform: uppercase;
-        font-family: "primaryfont_SemiBold";
-        font-size: 20px;
-        transition: all 0.3s ease;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
+.Paymentsec .paymentTabsec .btnCmn {
+    height: 46px;
+    background-color: #000;
+    color: #fff;
+    text-transform: uppercase;
+    font-family: "primaryfont_SemiBold";
+    font-size: 20px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+    .Paymentsec .paymentTabsec .btnCmn:hover {
+        background-color: #f33655;
     }
 
-        .Paymentsec .paymentTabsec .btnCmn:hover {
-            background-color: #f33655;
-        }
-
-    .Paymentsec .paymentTabsec .myAccLeftNavsec .leftsideNavWrap a {
-        position: relative;
-        background-color: #f3f3f3;
-    }
-
-        .Paymentsec .paymentTabsec .myAccLeftNavsec .leftsideNavWrap a i {
-            position: absolute;
-            right: 0;
-        }
-
-        .Paymentsec .paymentTabsec .myAccLeftNavsec .leftsideNavWrap a.active {
-            background-color: #f33655;
-        }
-
-            .Paymentsec .paymentTabsec .myAccLeftNavsec .leftsideNavWrap a.active i {
-                color: #fff;
-            }
-
-    .Paymentsec .paymentTabsec .myAccLeftNavsec .tab_myaccount {
-        background-color: #f3f3f3;
-    }
-
-    .Paymentsec .paymentTabsec .myAccLeftNavsec .tabcontentInner {
-        padding: 0px 35px;
-    }
-
-        .Paymentsec .paymentTabsec .myAccLeftNavsec .tabcontentInner .subhead:after {
-            display: none;
-        }
+.Paymentsec .paymentTabsec .myAccLeftNavsec .leftsideNavWrap a {
+    position: relative;
+    background-color: #f3f3f3;
+}
 
     .Paymentsec .paymentTabsec .myAccLeftNavsec .leftsideNavWrap a i {
-        color: #8c8c8c;
+        position: absolute;
+        right: 0;
     }
 
-    .Paymentsec .paymentTabsec .myAccLeftNavsec .tabcontentInner .subcontBox > div {
-        padding: 35px 0px;
-        border-bottom: solid 1px #707070;
+    .Paymentsec .paymentTabsec .myAccLeftNavsec .leftsideNavWrap a.active {
+        background-color: #f33655;
     }
 
-        .Paymentsec .paymentTabsec .myAccLeftNavsec .tabcontentInner .subcontBox > div:last-child {
-            border: none;
+        .Paymentsec .paymentTabsec .myAccLeftNavsec .leftsideNavWrap a.active i {
+            color: #fff;
         }
 
-    .Paymentsec .paymentTabsec .cardDetailsWrap .btnCmn {
-        width: 147px;
+.Paymentsec .paymentTabsec .myAccLeftNavsec .tab_myaccount {
+    background-color: #f3f3f3;
+}
+
+.Paymentsec .paymentTabsec .myAccLeftNavsec .tabcontentInner {
+    padding: 0px 35px;
+}
+
+    .Paymentsec .paymentTabsec .myAccLeftNavsec .tabcontentInner .subhead:after {
+        display: none;
     }
 
-    .Paymentsec .paymentTabsec .cardDetailsWrap .form-group {
+.Paymentsec .paymentTabsec .myAccLeftNavsec .leftsideNavWrap a i {
+    color: #8c8c8c;
+}
+
+.Paymentsec .paymentTabsec .myAccLeftNavsec .tabcontentInner .subcontBox > div {
+    padding: 35px 0px;
+    border-bottom: solid 1px #707070;
+}
+
+    .Paymentsec .paymentTabsec .myAccLeftNavsec .tabcontentInner .subcontBox > div:last-child {
+        border: none;
+    }
+
+.Paymentsec .paymentTabsec .cardDetailsWrap .btnCmn {
+    width: 147px;
+}
+
+.Paymentsec .paymentTabsec .cardDetailsWrap .form-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+    .Paymentsec .paymentTabsec .cardDetailsWrap .form-group label {
+        font-family: "primaryfont_Normal";
+        font-size: 16px;
+        width: 145px;
+    }
+
+
+    .Paymentsec .paymentTabsec .cardDetailsWrap .form-group input[type="text"].secCodeTxtbox {
+        width: 168px;
+        margin-right: 30px;
+    }
+
+    .Paymentsec .paymentTabsec .cardDetailsWrap .form-group input[type="text"] {
+        width: 352px;
+        height: 50px;
+        text-indent: 10px;
+        border: solid 1px #707070;
+    }
+
+    .Paymentsec .paymentTabsec .cardDetailsWrap .form-group .witTxt {
+        font-family: "primaryfont_Normal";
+        font-size: 16px;
+        font-style: italic;
+        text-decoration: underline !important;
+    }
+
+        .Paymentsec .paymentTabsec .cardDetailsWrap .form-group .witTxt:hover {
+            cursor: pointer;
+        }
+
+    .Paymentsec .paymentTabsec .cardDetailsWrap .form-group .expDatectrlwrap {
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: flex-start;
     }
 
-        .Paymentsec .paymentTabsec .cardDetailsWrap .form-group label {
-            font-family: "primaryfont_Normal";
-            font-size: 16px;
-            width: 145px;
-        }
-
-
-        .Paymentsec .paymentTabsec .cardDetailsWrap .form-group input[type="text"].secCodeTxtbox {
-            width: 168px;
+        .Paymentsec .paymentTabsec .cardDetailsWrap .form-group .expDatectrlwrap select {
+            height: 50px;
+            border: solid 1px #707070;
+            text-align: center;
+            text-indent: 25px;
             margin-right: 30px;
         }
 
-        .Paymentsec .paymentTabsec .cardDetailsWrap .form-group input[type="text"] {
-            width: 352px;
-            height: 50px;
-            text-indent: 10px;
-            border: solid 1px #707070;
-        }
-
-        .Paymentsec .paymentTabsec .cardDetailsWrap .form-group .witTxt {
-            font-family: "primaryfont_Normal";
-            font-size: 16px;
-            font-style: italic;
-            text-decoration: underline !important;
-        }
-
-            .Paymentsec .paymentTabsec .cardDetailsWrap .form-group .witTxt:hover {
-                cursor: pointer;
+            .Paymentsec .paymentTabsec .cardDetailsWrap .form-group .expDatectrlwrap select.mnth {
+                width: 92px;
             }
 
-        .Paymentsec .paymentTabsec .cardDetailsWrap .form-group .expDatectrlwrap {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: flex-start;
-        }
-
-            .Paymentsec .paymentTabsec .cardDetailsWrap .form-group .expDatectrlwrap select {
-                height: 50px;
-                border: solid 1px #707070;
-                text-align: center;
-                text-indent: 25px;
-                margin-right: 30px;
+            .Paymentsec .paymentTabsec .cardDetailsWrap .form-group .expDatectrlwrap select.year {
+                width: 138px;
             }
 
-                .Paymentsec .paymentTabsec .cardDetailsWrap .form-group .expDatectrlwrap select.mnth {
-                    width: 92px;
-                }
+.Paymentsec .paymentTabsec .cardDetailsWrap .secCodesec {
+    margin-bottom: 35px;
+}
 
-                .Paymentsec .paymentTabsec .cardDetailsWrap .form-group .expDatectrlwrap select.year {
-                    width: 138px;
-                }
+.Paymentsec .paymentTabsec .billingAddrWrap {
+    position: relative;
+}
 
-    .Paymentsec .paymentTabsec .cardDetailsWrap .secCodesec {
-        margin-bottom: 35px;
-    }
-
-    .Paymentsec .paymentTabsec .billingAddrWrap {
-        position: relative;
-    }
-
-        .Paymentsec .paymentTabsec .billingAddrWrap p.address {
-            font-family: "primaryfont_Normal";
-            font-size: 16px;
-            color: #000;
-        }
-
-        .Paymentsec .paymentTabsec .billingAddrWrap .btnCmn {
-            position: absolute;
-            right: 0;
-            top: 35px;
-            width: 117px;
-            text-transform: capitalize;
-        }
-
-    .Paymentsec .paymentTabsec .termandcondition p.terms {
+    .Paymentsec .paymentTabsec .billingAddrWrap p.address {
         font-family: "primaryfont_Normal";
-        font-size: 14px;
-        line-height: 23px;
+        font-size: 16px;
+        color: #000;
     }
+
+    .Paymentsec .paymentTabsec .billingAddrWrap .btnCmn {
+        position: absolute;
+        right: 0;
+        top: 35px;
+        width: 117px;
+        text-transform: capitalize;
+    }
+
+.Paymentsec .paymentTabsec .termandcondition p.terms {
+    font-family: "primaryfont_Normal";
+    font-size: 14px;
+    line-height: 23px;
+}
 
 .orderConfirmationSection {
     width: 100%;
@@ -2037,6 +2054,7 @@ body.modal-open {
                 left: 0px;
                 top: 10px;
             }
+
 .collection-address-div {
     box-shadow: 0 0px 0px 1px rgba(0,0,0,0.12), 0 0px 1px rgba(0,0,0,0.24);
     padding: 10px;
@@ -2045,6 +2063,7 @@ body.modal-open {
     justify-content: space-between;
     font-weight: 600;
 }
+
     .collection-address-div:hover {
         box-shadow: 0 -10px 30px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
     }
@@ -2094,7 +2113,7 @@ body.modal-open {
     .basketTable tr.cmnRow td {
         border-bottom: solid 1px #707070;
         text-align: center;
-        font-weight: bold!important;
+        font-weight: bold !important;
     }
 
         .basketTable tr.cmnRow td.greyBox {
@@ -2312,7 +2331,7 @@ body.modal-open {
 
     .basketTable tr.cmnRow .tot {
         width: 8%;
-        min-width:120px;
+        min-width: 120px;
     }
 
         .basketTable tr.cmnRow .tot .priceTotal {
@@ -2346,7 +2365,7 @@ body.modal-open {
 
     .basketTable tr.cmnRow .store {
         width: 13%;
-        min-width:159px;
+        min-width: 159px;
         border-bottom: solid 1px transparent;
     }
 
@@ -2360,7 +2379,7 @@ body.modal-open {
 
     .basketTable tr.cmnRow .homeDel {
         width: 20%;
-        min-width:196px;
+        min-width: 196px;
         border-bottom: solid 1px transparent;
     }
 
@@ -2473,6 +2492,7 @@ body.modal-open {
             color: #f33655;
             padding-left: 35px;
         }
+
 .botomBtnsec {
     width: 100%;
     display: flex;
@@ -2480,52 +2500,58 @@ body.modal-open {
     align-items: center;
     justify-content: center;
 }
+
 @media(max-width:575px) {
     .botomBtnsec {
         flex-wrap: wrap;
     }
-    .botomBtnsec .btmbtn {
+
+        .botomBtnsec .btmbtn {
             width: 100% !important;
-            margin-top:15px!important;
+            margin-top: 15px !important;
         }
 }
-    .botomBtnsec .btmbtn {
-        width: 260px;
-        height: 50px;
-        transition: all 0.3s ease;
-        margin: 0px 7px;
-        font-family: "primaryfont_Bold";
-        font-size: 16px;
-        text-transform: uppercase;
+
+.botomBtnsec .btmbtn {
+    width: 260px;
+    height: 50px;
+    transition: all 0.3s ease;
+    margin: 0px 7px;
+    font-family: "primaryfont_Bold";
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+    .botomBtnsec .btmbtn.pro {
+        background-color: #f33655;
+        color: #fff;
+        border: solid 1px #f33655;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
     }
 
-        .botomBtnsec .btmbtn.pro {
-            background-color: #f33655;
-            color: #fff;
-            border: solid 1px #f33655;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
+        .botomBtnsec .btmbtn.pro:hover {
+            background-color: #000;
+            border: solid 1px #000;
         }
-            .botomBtnsec .btmbtn.pro:hover {
-                background-color: #000;
-                border: solid 1px #000;
-            }
-            .botomBtnsec .btmbtn.sho {
-                background-color: transparent;
-                color: #707070;
-                border: solid 1px #707070;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: center;
-            }
-                .botomBtnsec .btmbtn.sho:hover {
-                    background-color: #000;
-                    border: solid 1px #000;
-                    color: #fff;
-                }
+
+    .botomBtnsec .btmbtn.sho {
+        background-color: transparent;
+        color: #707070;
+        border: solid 1px #707070;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .botomBtnsec .btmbtn.sho:hover {
+            background-color: #000;
+            border: solid 1px #000;
+            color: #fff;
+        }
 /*new cart page- css end*/
 
 
@@ -2576,13 +2602,13 @@ body.modal-open {
             transition: all 0.2s ease;
         }
 
-       .basketTable [type="radio"]:not(:checked) + label:after {
+        .basketTable [type="radio"]:not(:checked) + label:after {
             opacity: 0;
             -webkit-transform: scale(0);
             transform: scale(0);
         }
 
-       .basketTable [type="radio"]:checked + label:after {
+        .basketTable [type="radio"]:checked + label:after {
             opacity: 1;
             -webkit-transform: scale(1);
             transform: scale(1);
@@ -2601,7 +2627,7 @@ body.modal-open {
 }
 
 
-.accordion ul li div a h2{
+.accordion ul li div a h2 {
     text-transform: none;
 }
 
@@ -2609,7 +2635,7 @@ body.modal-open {
     max-height: 88px;
 }
 
-.nb_logowrap{
+.nb_logowrap {
     padding-top: 0px !important;
 }
 
@@ -2658,11 +2684,11 @@ body.modal-open {
         }
 
         .nb_top_catSection .accordion ul li {
-        width: 100% !important;
-        display: inline-block;
-        margin: 1px;
-        transform: skew(0deg);
-    }
+            width: 100% !important;
+            display: inline-block;
+            margin: 1px;
+            transform: skew(0deg);
+        }
 
     .nb_header {
         height: 200px;
@@ -2675,6 +2701,11 @@ body.modal-open {
 
     .uni-pages-pt {
         padding-top: 200px !important;
+    }
+
+    .prd_lst_boxouter .imagewrap img {
+        width: auto;
+        height: auto;
     }
 }
 

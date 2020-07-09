@@ -1,0 +1,145 @@
+﻿@using Ganedata.Core.Entities.Enums;
+@{
+    ViewBag.Title = "Sagepay";
+}
+<style>
+
+    .input-column {
+        font-size: 12pt;
+        width: 352px !important;
+        height: 50px !important;
+        text-indent: 10px;
+        border: solid 1px #707070;
+    }
+
+    #main {
+        margin: 0 auto;
+        margin-top: 20px;
+    }
+</style>
+
+<div id="main">
+    <section class="nb_sec nb_prdlisting_pgsec">
+        <div class="container">
+            <div class="breadCrumbtopsec">
+                <div class="nb_bread_crumbwrap">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li>></li>
+                            <li class="breadcrumb-item">
+                                <a href="#">Payments</a>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div class="nb_sec checkconfirmSec">
+                @Html.Partial("_OrderProgressBar", OrderProgressStep.Payment)
+
+                <div class="checkoutInnersec Paymentsec">
+                    <h4 class="ordConfirmHead">Payments</h4>
+                    <div class="orderTotalsec">
+                        <div>Order Total</div>
+                        <div>Total <span>£@ViewBag.TotalPrice</span></div>
+                    </div>
+
+                    <div class="paymentTabsec">
+                        <div class="myAccLeftNavsec">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="tab-content" id="v-pills-tabContent">
+                                        <div class="tab-pane fade show active"
+                                             id="v-pills-home"
+                                             role="tabpanel"
+                                             aria-labelledby="v-pills-home-tab">
+                                            <div class="tabcontentInner tab_myaccount">
+                                                <div class="subcontBox">
+                                                    <div class="cardDetailsWrap">
+                                                        <h3 class="subhead">
+                                                            Add Your Credit/Debit card Details
+                                                        </h3>
+
+                                                        <div id="sp-container"></div>
+
+
+
+
+                                                        @using (Html.BeginForm("ConfirmPayment", "Orders", FormMethod.Post, new { id = "sagePaymentForm" }))
+                                                        {
+
+                                                            <input type="hidden" NAME="currency_code" value="GBP">
+                                                            <input type="hidden" name="sessionKey" value="@ViewBag.AuthCode" />
+
+                                                            <div class="submitBtnwra mt-4 mb-1">
+                                                                <a id="my-tokenisation-trigger" href="#" class="btnCmn">Submit</a>
+                                                            </div>
+                                                        }
+
+
+
+                                                    </div>
+
+                                                    <div class="termandcondition">
+                                                        <h3 class="subhead">
+                                                            Terms & Conditions
+                                                        </h3>
+                                                        <p class="terms">
+                                                            Quisque magna lorem, auctor et felis in,
+                                                            consectetur consequat justo. Phasellus commodo,
+                                                            erat et bibendum condimentum, orci leo tempus
+                                                            lorem, id consequat enim diam eu nibh. Maecenas
+                                                            hendrerit arcu at mi iaculis sodales. Maecenas
+                                                            interdum lectus sit amet nisl tincidunt
+                                                            sollicitudin.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade"
+                                             id="v-pills-profile"
+                                             role="tabpanel"
+                                             aria-labelledby="v-pills-profile-tab">
+                                            internet banking
+                                        </div>
+                                        <div class="tab-pane fade"
+                                             id="v-pills-messages"
+                                             role="tabpanel"
+                                             aria-labelledby="v-pills-messages-tab">
+                                            pay with paypal
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+
+    <script type="text/javascript" src="https://pi-test.sagepay.com/api/v1/js/sagepay.js"></script>
+    <script type="text/javascript">
+    const checkout = sagepayCheckout({
+        merchantSessionKey: '@ViewBag.AuthCode',
+        onTokenise: function (tokenisationResult) {
+            if (tokenisationResult.success) {
+                $('<input>').attr({ type: 'hidden', name: 'cardIdentifier', value: tokenisationResult.cardIdentifier }).appendTo('#sagePaymentForm');
+                $("#sagePaymentForm").submit()
+                //alert(tokenisationResult.cardIdentifier);
+            } else {
+                alert(tokenisationResult.error.errorMessage);
+            }
+        }
+    });
+    $('#my-tokenisation-trigger').click(function (e) {
+        e.preventDefault();
+        checkout.tokenise();
+    });
+    </script>
+
+</div>

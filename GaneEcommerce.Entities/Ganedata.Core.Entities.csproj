@@ -82,7 +82,9 @@
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net" />
+    <Reference Include="System.Net">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Numerics">
       <Private>True</Private>
     </Reference>
