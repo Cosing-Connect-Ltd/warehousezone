@@ -4,7 +4,7 @@
 }
 
 <div class="slider-area">
-    <div class="pt-50 pb-50 bg-opacity" style="background-image:url(img/bg/pricing.jpg)">
+    <div class="pt-50 pb-50 bg-opacity" style="background-image:url(https://ganedata.co.uk/img/bg/pricing.jpg)">
         <div class="container">
             <div class="slider-text text-center">
                 <div class="breadcrumb-title text-center">
@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-8 col-md-12">
+            <div class="col-lg-8 col-md-12 book-demo-form">
                 @using (Html.BeginForm("GetStarted", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
                     @Html.AntiForgeryToken()

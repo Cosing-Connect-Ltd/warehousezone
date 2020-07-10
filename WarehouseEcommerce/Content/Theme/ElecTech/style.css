@@ -2679,9 +2679,9 @@ img {
 }
 
 #contact-form label {
-    color: #000000;
+    color: #444;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
     line-height: 1.33333;
     letter-spacing: .025em;
@@ -3407,5 +3407,7 @@ font-size:14px
     align-items: center;
 }
 /*side-images end*/
-
+.book-demo-form input{
+    margin-bottom:15px!important;
+}
 /* css end */
