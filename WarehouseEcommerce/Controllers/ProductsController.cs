@@ -146,15 +146,23 @@ namespace WarehouseEcommerce.Controllers
 
             var selectedProduct = product;
 
-            ViewBag.BaseProduct = product;
-
-            if (product.ProductType == ProductKitTypeEnum.ProductByAttribute)
+            if (product?.ProductType == ProductKitTypeEnum.ProductByAttribute)
             {
                 selectedProduct = GetSelectedProductByAttribute(productId, product);
             }
 
+            if (selectedProduct == null)
+            {
+                return RedirectToAction("List", "Products", new { sku = sku });
+            }
+
+            product.ProductFiles = product.ProductFiles.Where(p => p.IsDeleted != true).ToList();
+            selectedProduct.ProductFiles = selectedProduct.ProductFiles.Where(p => p.IsDeleted != true).ToList();
+
+            ViewBag.BaseProduct = product;
             ViewBag.Category = _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID, product.ProductId);
             ViewBag.SubCategory = _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID, SubCategory: ViewBag.Category);
+
             if (ViewBag.SubCategory != null && !string.IsNullOrEmpty(ViewBag.SubCategory))
             {
                 var category = ViewBag.SubCategory;
@@ -452,7 +460,7 @@ namespace WarehouseEcommerce.Controllers
         {
             ProductMaster selectedProduct;
             var relatedProducts = _productServices.GetAllProductInKitsByKitProductId(product.ProductId).Where(k => k.IsActive == true && k.ProductType != ProductKitTypeEnum.ProductByAttribute && k.IsDeleted != true);
-            selectedProduct = relatedProducts.FirstOrDefault(p => p.IsDeleted != true && p.IsActive == true && (p.ProductId == productId || (productId == null && p.ProductId != product.ProductId))) ?? product;
+            selectedProduct = productId != null ? relatedProducts.FirstOrDefault(p => p.IsDeleted != true && p.IsActive == true && (p.ProductId == productId && (p.ProductId != product.ProductId || p.ProductType != ProductKitTypeEnum.ProductByAttribute))) : product;
             ViewBag.AvailableAttributes = relatedProducts
                                             .SelectMany(a => a.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).Select(k => k.ProductAttributeValues))
                                             .GroupBy(a => a.ProductAttributes)
