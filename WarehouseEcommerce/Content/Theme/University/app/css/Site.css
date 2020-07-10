@@ -1665,8 +1665,10 @@ body.modal-open {
     .billandshipsec .address-wrapper .addnwShopAdrrbtn {
         width: 100% !important;
     }
+    .billandshipsec .checkout-options-wrapper .btnWrap, .billandshipsec .address-wrapper .btnWrap, .saveAddrWrap {
+        flex-wrap: wrap;
+    }
 }
-
 .billandshipsec .addNewAddrWrap {
     width: 100%;
     margin-bottom: 15px;
