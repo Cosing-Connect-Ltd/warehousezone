@@ -522,7 +522,6 @@ function onCurrencyChange(event) {
 }
 
 $("input[type=checkbox]").on("change", function (e) {
-    debugger;
     if (!$(this).hasClass("notification-switch")) {
         var arr = [];
         var data = "";

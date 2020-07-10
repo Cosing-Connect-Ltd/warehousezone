@@ -305,6 +305,17 @@ namespace WarehouseEcommerce.Controllers
             return View();
         }
 
+        public ActionResult PayPal()
+        {
+            var checkOutModel = Session["CheckoutViewModel"] == null
+                ? new CheckoutViewModel()
+                : Session["CheckoutViewModel"] as CheckoutViewModel;
+            return View(checkOutModel);
+        }
+
+
+
+
         private async Task<bool> ValidateIpnAsync(IEnumerable<KeyValuePair<string, string>> ipn)
         {
             using (var client = new HttpClient())
@@ -324,6 +335,7 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.AuthCode = resp.merchantSessionKey;
             return View();
         }
+
 
         public async Task<ActionResult> ConfirmPayment()
         {
@@ -370,12 +382,7 @@ namespace WarehouseEcommerce.Controllers
                 {
                     // create order
                     var responseString = await response.Content.ReadAsStringAsync();
-
-                    var checkOutModel = Session["CheckoutViewModel"] == null
-                        ? new CheckoutViewModel()
-                        : Session["CheckoutViewModel"] as CheckoutViewModel;
-                    checkOutModel.SagePayPaymentResponse = JsonConvert.DeserializeObject<SagePayPaymentResponseViewModel>(responseString);
-                    Session["CheckoutViewModel"] = OrderService.CreateShopOrder(checkOutModel, CurrentTenantId, CurrentUserId, CurrentWarehouseId, CurrentTenantWebsite.SiteID);
+                    CreateOrder(responseString);
                     return RedirectToAction("ConfirmPaymentMessage");
                 }
 
@@ -462,6 +469,35 @@ namespace WarehouseEcommerce.Controllers
             }
 
             return model;
+        }
+
+        public ActionResult CreateOrder(string sagePayReponse=null, string paypalTransactionId=null)
+        {
+            var checkoutModel = new CheckoutViewModel();
+            if (Session["CheckoutViewModel"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            checkoutModel= Session["CheckoutViewModel"] as CheckoutViewModel;
+            if (!string.IsNullOrEmpty(sagePayReponse))
+            {
+                checkoutModel.SagePayPaymentResponse = JsonConvert.DeserializeObject<SagePayPaymentResponseViewModel>(sagePayReponse);
+                Session["CheckoutViewModel"] = OrderService.CreateShopOrder(checkoutModel, CurrentTenantId, CurrentUserId, CurrentWarehouseId, CurrentTenantWebsite.SiteID);
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+
+            if (!string.IsNullOrEmpty(paypalTransactionId))
+            {
+                checkoutModel.SagePayPaymentResponse.transactionId = paypalTransactionId;
+                Session["CheckoutViewModel"] = OrderService.CreateShopOrder(checkoutModel, CurrentTenantId, CurrentUserId, CurrentWarehouseId, CurrentTenantWebsite.SiteID);
+                return Json(true,JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(false, JsonRequestBehavior.AllowGet);
+
+
+
+
         }
     }
 }

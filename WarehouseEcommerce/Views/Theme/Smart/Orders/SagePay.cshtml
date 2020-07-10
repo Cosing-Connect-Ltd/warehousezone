@@ -48,20 +48,6 @@
 
 <script>
 
-    @*sagepayCheckout({
-        merchantSessionKey: '@ViewBag.AuthCode',
-        containerSelector: '#my-container',
-  onTokenise: function(tokenisationResult) {
-      if (tokenisationResult.success) {
-          debugger;
-      console.log('Tokenisation successful', tokenisationResult.cardIdentifier);
-      } else {
-          debugger;
-      console.error('Tokenisation failed', tokenisationResult.error.errorMessage);
-    }
-  }
-    });*@
-
 
     sagepayCheckout({ merchantSessionKey: '@ViewBag.AuthCode' }).form();
 </script>

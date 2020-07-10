@@ -97,7 +97,7 @@
                         }
                         else
                         {
-                            <p class="content">Delivery by @Model?.ShippingRule?.Courier @(!string.IsNullOrEmpty(Model.ShippingRule.Description?.Trim()) ? $"({Model.ShippingRule.Description})" : "") - @Model.CurrencySymbol@Model.ShippingRule.Price</p>
+                            <p class="content">Delivery by @Model.ShippingRule.Courier @(!string.IsNullOrEmpty(Model.ShippingRule.Description?.Trim()) ? $"({Model.ShippingRule.Description})" : "") - @Model.CurrencySymbol@Model.ShippingRule.Price</p>
                         }
                         <h4 class="subHead">
                             Payment Method

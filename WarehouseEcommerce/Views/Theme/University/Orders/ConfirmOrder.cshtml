@@ -122,27 +122,15 @@
                     <div class="saveAddrWrap mt-5 mb-5 ml-3 mr-3">
                         @if ((PaymentMethodEnum?)Model.PaymentMethodId == PaymentMethodEnum.Paypal)
                         {
-                            <form action="@((string) ViewBag.PAYPALURL)" method="post">
-                                <div class="row">
 
-                                    <fieldset>
-                                        <input class="full-width" type="hidden" name="business" value="shoaib@ganedata.co.uk">
-                                        <input type="hidden" name="cmd" value="_xclick">
-                                        <input type="hidden" name="item_name" value="Cart Items" />
-                                        <input type="hidden" name="return" value="@((string) ViewBag.RetUrl)">
-                                        <input type="hidden" name="notify_url" value="@((string) ViewBag.PayPalIpnUrl)">
-                                        <input type="hidden" NAME="currency_code" value="GBP">
-                                        <input type="hidden" name="amount" value="@(Model?.TotalOrderAmount ?? 0)" />
-                                    </fieldset>
 
-                                </div>
-                                <div class="button-submit">
-                                    <button type="Submit" name="submitNewsletter" class="saveAddrBtn">Proceed To Payment</button>
-                                    <a href="@Url.Action("checkout", "orders", new {checkoutStep = CheckoutStep.PaymentMethod})" class="saveAddrBtn">Back</a>
-                                    @*<a href="@Url.Action("Index","Test")" class="btn btn-block cash-btn cashbtn" name="submitNewsletter"> Proceed To Payment</a>*@
-                                </div>
+                            <div class="button-submit">
+                                <button type="button" name="submitNewsletter" class="saveAddrBtn" onclick="window.location.href='@Url.Action("PayPal","orders")'">Proceed To Payment</button>
+                                <a href="@Url.Action("checkout", "orders", new {checkoutStep = CheckoutStep.PaymentMethod})" class="saveAddrBtn">Back</a>
+                                @*<a href="@Url.Action("Index","Test")" class="btn btn-block cash-btn cashbtn" name="submitNewsletter"> Proceed To Payment</a>*@
+                            </div>
 
-                            </form>
+                            
                         }
                         else if ((PaymentMethodEnum?)Model.PaymentMethodId == PaymentMethodEnum.SagePay)
                         {

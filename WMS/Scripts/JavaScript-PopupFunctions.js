@@ -419,7 +419,7 @@ function attributeSave() {
 
 }
 function pcModalAttributesValues_EndCallback(s, e) {
-    debugger;
+  
     GetAttributeValuesById($("#drpattribute option:selected").val());
 }
 function GetAttributeValuesById(attributeId) {
@@ -445,7 +445,6 @@ function GetAttributeValuesById(attributeId) {
 }
 
 function attributesvalueSave() {
-    debugger;
     $("#vldAttributesValue").removeClass("validation-summary-errors");
     $("#vldAttributesValue").addClass("validation-summary-valid");
     if (IsValidForm('#frmValuename')) {

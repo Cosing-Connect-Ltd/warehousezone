@@ -14,7 +14,7 @@ $(function () {
     $(document).ready(function () {
 
         $("#ProductType").change(function () {
-            debugger;
+            
             if ($("#ProductType").val() === "5") {
                 $("#dvgrp").show();
                 $(".simpleDiv").hide();

@@ -84,7 +84,7 @@
     $(document).ready(function () {
         $("#tabs").tabs({
             activate: function (event, ui) {
-                debugger;
+                
                 var active = $('#tabs').tabs('option', 'active');
                 var TabId = $("#tabs ul>li a").eq(active).attr("href");
                 var kit = $('#ProductType :selected').val();

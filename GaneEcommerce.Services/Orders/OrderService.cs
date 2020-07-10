@@ -3360,10 +3360,24 @@ namespace Ganedata.Core.Services
                 if (cartItemsList.Count > 0)
                 {
                     cartItemsList.ForEach(u=>u.IsDeleted=true);
-                }
+                };
+                _currentDbContext.SaveChanges();
+                var accountTransaction = new AccountTransaction()
+                {
+                    AccountId = orderDetails.AccountId,
+                    AccountTransactionTypeId = AccountTransactionTypeEnum.PaidByAccount,
+                    AccountPaymentModeId = AccountPaymentModeEnum.OnlineTransfer,
+                    CreatedBy = UserId,
+                    Notes = "Paid : " + orderDetails.OrderNumber.Trim(),
+                    DateCreated = DateTime.UtcNow,
+                    Amount = total,
+                    TenantId = tenantId,
+                    FinalBalance = total,
+                    OrderId = order.OrderID
 
 
-
+                };
+                _currentDbContext.AccountTransactions.Add(accountTransaction);
                 _currentDbContext.SaveChanges();
 
             }
