@@ -180,7 +180,11 @@
                                 }
                             </style>
                             <div class="mega_nav_wrap_inner" id="category-@item.Name">
-                                <h3 class="head">@item.Name</h3>
+                                <h3 class="head">
+                                    <a class="head" href="@Url.Action("list", "Products", new { category = item.Name})">
+                                        @item.Name
+                                    </a>
+                                </h3>
                                 <ul class="meganav_firstcatList">
                                     @{int i = 1;}
                                     @foreach (var item1 in level1)
