@@ -451,7 +451,8 @@ nb_prdpg_fg label,
 .nb_top_catSection,
 .nb_sec_navwrap,
 .search_wrap_main .search_btn i,
-.nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner .head {
+.nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner .head,
+.prd_lst_boxouter .prdName {
     color: var(--dark-font-color);
 }
 

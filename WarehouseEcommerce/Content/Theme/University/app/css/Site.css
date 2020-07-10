@@ -2928,3 +2928,7 @@ body.modal-open {
     white-space: pre-wrap;
     padding-bottom:15px;
 }
+
+.prd_lst_boxouter .prdName {
+    color: #111111;
+}

@@ -122,35 +122,35 @@
 
                                     <span class="imagewrap">
                                         <a href="@Url.Action("ProductDetails","Products", new {sku=item.SKUCode})">
-
                                             <img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
                                         </a>
-                                        @*<a href="@Url.Action("ProductDetails","Products", new {sku=item.SKUCode})"> <img src="~/Content/Theme/University/app/images/Runner_Prep.jpg" class="img-fluid" alt="static-image" title="static-image" /></a>*@
                                     </span>
-                                    <h3 class="prdName">@item.Name</h3>
+                                    <h3 class="prdName">
+                                        <a class="prdName" href="@Url.Action("ProductDetails","Products", new {sku=item.SKUCode})">
+                                            @item.Name
+                                        </a>
+                                    </h3>
                                     <div class="foot">
-                                        <span class="prd_amnt">@ViewBag.CurrencySymbol @item.SellPrice</span>
+                                        <a class="prd_amnt" href="@Url.Action("ProductDetails","Products", new {sku=item.SKUCode})">
+                                            @ViewBag.CurrencySymbol@item.SellPrice
+                                        </a>
                                         @if (item.ProductType != ProductKitTypeEnum.Grouped && item.ProductType != ProductKitTypeEnum.Kit)
                                         {
                                             <ul class="icolist">
                                                 @if (@item.SellPrice > 0 && @item.SellPrice.HasValue && @item.PercentMargin > 0 && item.ProductType != ProductKitTypeEnum.ProductByAttribute)
                                                 {
-                                                    <li>
-                                                        <a href="javascript:;" onclick="addToCart(@item.ProductId)"><i class="icon-shopping-cart"></i></a>
-                                                    </li>
+                                                    if (item.InventoryStocks.Sum(i => i.Available) > 0)
+                                                    {
+                                                        <li>
+                                                            <a href="javascript:;" onclick="addToCart(@item.ProductId)"><i class="icon-shopping-cart"></i></a>
+                                                        </li>
+                                                    }
                                                 }
                                                 else if (@item.SellPrice > 0 && @item.SellPrice.HasValue && @item.PercentMargin > 0 && item.ProductType == ProductKitTypeEnum.ProductByAttribute)
                                                 {
                                                     <li>
                                                         <a href="javascript:;" onclick="showProductByAttributeSelector('@item.SKUCode')"><i class="icon-shopping-cart"></i></a>
                                                     </li>
-                                                }
-                                                else
-                                                {
-                                                    <li>
-                                                        <a href="javascript:;"><i class="icon-shopping-cart"></i></a>
-                                                    </li>
-
                                                 }
                                                 @{
                                                     var totaltems = item.WebsiteWishListItems.Where(u => u.IsDeleted != true && u.UserId == ViewBag.CurrentUserId).ToList();

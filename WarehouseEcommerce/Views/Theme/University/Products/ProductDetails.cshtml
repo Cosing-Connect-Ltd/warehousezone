@@ -185,12 +185,7 @@
                         {
                             <button class="addTobasket" onclick="addToCart(@Model.ProductId)">Add to basket</button>
                         }
-                        else
-                        {
-                            <button class="addTobasket" disabled>
-                                Add to basket
-                            </button>
-                        }
+
                         <button class="addtowishlistbtn">Add to Wishlist</button>
                         @if (Model.WebsiteWishListItems.Where(u => u.IsDeleted != true).ToList().Count <= 0)
                         {
