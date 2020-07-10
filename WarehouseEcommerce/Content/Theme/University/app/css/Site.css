@@ -2923,3 +2923,8 @@ body.modal-open {
     }
 }
 /*uni theme search end*/
+
+.nb_prod_bottomdes .content {
+    white-space: pre-wrap;
+    padding-bottom:15px;
+}
