@@ -101,6 +101,7 @@ namespace WMS.CustomBindings
             viewModel.Columns.Add("SKUCode");
             viewModel.Columns.Add("BarCode");
             viewModel.Columns.Add("BarCode2");
+            viewModel.Columns.Add("ProductType");
             viewModel.Columns.Add("Location");
             viewModel.Columns.Add("UOM");
             viewModel.Columns.Add("DepartmentName");
