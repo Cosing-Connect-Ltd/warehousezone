@@ -188,7 +188,7 @@ $(function () {
         },
         open: function (data) {
             if (seeall) {
-                var $li = $("<li>");
+                var $li = $('<li class="see-all-li">');
                 var $link = $("<a>", {
                     href: basePath + "/Products/list?search=" + searchvalues.replace(" ", "_"),
                     class: "see-all"

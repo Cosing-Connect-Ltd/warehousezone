@@ -221,7 +221,8 @@ h6,
 .nb_footer,
 .accordion ul li div a h2,
 #signupPopup .modal-dialog .modal-content .modal-body .registrationSec .regBtn,
-.res_navWrapper .nb_logowrap_res {
+.res_navWrapper .nb_logowrap_res,
+.search-item:hover {
     background-color: var(--primary-color);
 }
 
@@ -521,7 +522,8 @@ nb_prdpg_fg label,
 .nb_header .nb_mainnav > ul > li > a,
 .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner,
 .nb_header .nb_headicolst li a,
-.nb_res_nav_closeTrigger {
+.nb_res_nav_closeTrigger,
+.search-item a.ui-state-active {
     color: var(--light-font-color);
 }
 
