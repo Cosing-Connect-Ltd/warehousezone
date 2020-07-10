@@ -451,7 +451,7 @@ namespace WarehouseEcommerce.Controllers
         private ProductMaster GetSelectedProductByAttribute(int? productId, ProductMaster product)
         {
             ProductMaster selectedProduct;
-            var relatedProducts = _productServices.GetAllProductInKitsByKitProductId(product.ProductId).Where(k => k.IsActive == true);
+            var relatedProducts = _productServices.GetAllProductInKitsByKitProductId(product.ProductId).Where(k => k.IsActive == true && k.ProductType != ProductKitTypeEnum.ProductByAttribute && k.IsDeleted != true);
             selectedProduct = relatedProducts.FirstOrDefault(p => p.IsDeleted != true && p.IsActive == true && (p.ProductId == productId || (productId == null && p.ProductId != product.ProductId))) ?? product;
             ViewBag.AvailableAttributes = relatedProducts
                                             .SelectMany(a => a.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).Select(k => k.ProductAttributeValues))
