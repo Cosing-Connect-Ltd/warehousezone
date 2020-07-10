@@ -439,8 +439,6 @@ namespace WarehouseEcommerce.Controllers
         {
             var product = _productServices.GetProductMasterByProductCode(skuCode, CurrentTenantId);
             var selectedProduct = product;
-            ViewBag.BaseProduct = product;
-            ViewBag.Quantity = quantity;
             IEnumerable<SelectListItem> squares = Enumerable.Range(1, (quantity.HasValue ? Convert.ToInt32(quantity) : 1)).Select(u => new SelectListItem
             {
                 Text = u.ToString(),
@@ -452,6 +450,12 @@ namespace WarehouseEcommerce.Controllers
             {
                 selectedProduct = GetSelectedProductByAttribute(productId, product);
             }
+
+            product.ProductFiles = product.ProductFiles.Where(p => p.IsDeleted != true).ToList();
+            selectedProduct.ProductFiles = selectedProduct.ProductFiles.Where(p => p.IsDeleted != true).ToList();
+
+            ViewBag.BaseProduct = product;
+            ViewBag.Quantity = quantity;
 
             return PartialView(selectedProduct);
         }
