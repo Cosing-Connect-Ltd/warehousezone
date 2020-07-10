@@ -1607,6 +1607,7 @@ input[type="number"]::-webkit-outer-spin-button {
         z-index: 10;
         transform: skew(-12deg);
     }
+
 .accordion ul li:last-child {
     transform: skew(0deg);
     left: -45px;
@@ -1640,6 +1641,19 @@ input[type="number"]::-webkit-outer-spin-button {
 
     .accordion.have2child ul li:last-child:hover {
         clip-path: polygon(13% 0, 100% 0%, 100% 100%, 0 100%);
+    }
+
+.accordion.have1child ul li {
+    left: auto;
+    right: auto;
+}
+
+    .accordion.have1child ul li a h2 {
+        padding: 10px;
+    }
+
+    .accordion.have1child ul li:after {
+        display: none;
     }
 
 .res_navWrapper.show {

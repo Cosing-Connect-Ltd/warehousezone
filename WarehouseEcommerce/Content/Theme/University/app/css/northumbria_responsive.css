@@ -273,6 +273,10 @@
             clip-path: none;
         }
 
+        .accordion.have1child ul li {
+            width: 100%;
+        }
+
     .nb_bnr_count {
         display: none;
     }
@@ -622,6 +626,10 @@
     .accordion.have2child ul li:last-child {
         width: 45%;
         clip-path: none;
+    }
+
+    .accordion.have1child ul li {
+        width: 100%;
     }
 }
 
