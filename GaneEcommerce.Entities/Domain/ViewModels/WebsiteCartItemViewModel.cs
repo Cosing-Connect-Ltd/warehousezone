@@ -26,6 +26,8 @@ namespace Ganedata.Core.Entities.Domain
         public List<WebsiteCartItemViewModel> WebsiteCartItems { get; set; }
         public decimal TotalAmount => Math.Round(WebsiteCartItems.Sum(c => c.ProductTotalAmount), 2);
         public bool ShowLoginPopUp { get; set; }
+        public bool IsDeliveryAvailable { get; set; }
+        public bool IsCollectionAvailable { get; set; }
         public bool ShowCartPopUp { get; set; }
         public string CurrenySymbol { get; set; }
         public int? ShippingAddressId { get; set; }

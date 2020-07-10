@@ -115,11 +115,20 @@
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.ShowPricesIncludingTax, htmlAttributes: new { @class = "control-label col-md-4" })
+                @Html.LabelFor(model => model.IsCollectionAvailable, htmlAttributes: new { @class = "control-label col-md-4" })
                 <div class="col-md-8">
                     <div class="checkbox">
-                        @Html.EditorFor(model => model.ShowPricesIncludingTax)
-                        @Html.ValidationMessageFor(model => model.ShowPricesIncludingTax, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.IsCollectionAvailable)
+                        @Html.ValidationMessageFor(model => model.IsCollectionAvailable, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.IsDeliveryAvailable, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.IsDeliveryAvailable)
+                        @Html.ValidationMessageFor(model => model.IsDeliveryAvailable, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
@@ -194,6 +203,15 @@
                     <div id="dvfiles">
 
                         <strong>Uploaded Files</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.ShowPricesIncludingTax, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.ShowPricesIncludingTax)
+                        @Html.ValidationMessageFor(model => model.ShowPricesIncludingTax, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>

@@ -947,6 +947,10 @@
     <Compile Include="Migrations\202007090916421_Price-Including-Tax-added.designer.cs">
       <DependentUpon>202007090916421_Price-Including-Tax-added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007100945322_added-IsCollectionAvailable-and-IsDeliveryAvailable-fields-to-tenant-website.cs" />
+    <Compile Include="Migrations\202007100945322_added-IsCollectionAvailable-and-IsDeliveryAvailable-fields-to-tenant-website.designer.cs">
+      <DependentUpon>202007100945322_added-IsCollectionAvailable-and-IsDeliveryAvailable-fields-to-tenant-website.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1977,6 +1981,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007090916421_Price-Including-Tax-added.resx">
       <DependentUpon>202007090916421_Price-Including-Tax-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007100945322_added-IsCollectionAvailable-and-IsDeliveryAvailable-fields-to-tenant-website.resx">
+      <DependentUpon>202007100945322_added-IsCollectionAvailable-and-IsDeliveryAvailable-fields-to-tenant-website.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

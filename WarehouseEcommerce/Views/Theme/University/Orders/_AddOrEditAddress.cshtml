@@ -57,7 +57,7 @@
                     </div>
                 </div>
 
-                @if (Model.CurrentStep == CheckoutStep.ShippingAddress || (CheckoutStep)Model.StepsHistory.Last(s => s != Model.CurrentStep) == CheckoutStep.ShippingAddress)
+                @if (Model.CurrentStep == CheckoutStep.ShippingAddress || (CheckoutStep)Model.StepsHistory.LastOrDefault(s => s != Model.CurrentStep) == CheckoutStep.ShippingAddress)
                 {
 
                     <input type="hidden" name="AccountAddress.AddTypeShipping" id="AccountAddress.AddTypeShipping" value="true" />

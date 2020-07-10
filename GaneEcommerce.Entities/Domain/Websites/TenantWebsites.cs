@@ -50,6 +50,10 @@ namespace Ganedata.Core.Entities.Domain
         public bool IsActive { get; set; }
         [Display(Name = "Price Including Tax")]
         public bool ShowPricesIncludingTax { get; set; }
+        [Display(Name = "Collection Is Available")]
+        public bool IsCollectionAvailable { get; set; }
+        [Display(Name = "Delivery Is Available")]
+        public bool IsDeliveryAvailable { get; set; }
 
         public string WebsiteContactAddress { get; set; }
         public string WebsiteContactPhone { get; set; }
