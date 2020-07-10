@@ -133,179 +133,188 @@
         <div class="nb_sec checkconfirmSec">
 
             <div class="checkoutInnersec Paymentsec mb-5">
-                <h4 class="ordConfirmHead">Basket</h4>
-                <br /><br />
+                @if (Model.WebsiteCartItems == null || Model.WebsiteCartItems.Count > 0)
+                {
+                    <h4 class="ordConfirmHead">Basket</h4>
+                }
                 <div class="tableWrap">
-                    <table class="basketTable table-responsive">
-                        <tbody>
-                            @if (Model.ShowCartPopUp != true)
-                            {
-                                <tr>
-                                    <td class="topTd" colspan="4"></td>
-                                    @if (Model.IsCollectionAvailable)
-                                    {
-                                        <td>
-                                            <div class="headBoxTop">
-                                                <h3 class="head">Store Collection</h3>
-                                                <p><span id="collection-point-name">@Model.CollectionPointName</span><span id="collection-point-address">@(Model.CollectionPointAddress != null ? ", " + Model.CollectionPointAddress : "")</span></p>
-                                            </div>
-
-                                        </td>
-                                    }
-                                    @if (Model.IsDeliveryAvailable)
-                                    {
-                                        <td>
-                                            <div class="headBoxTop">
-                                                <h3 class="head">Home Delivery</h3>
-                                                <p>Selected PostCode: <span id="shipping-address-postcode">@Model.ShippingAddressPostCode</span></p>
-                                            </div>
-                                        </td>
-                                    }
-                                </tr>
-                            }
-
-                            <tr class="headRow cmnRow">
-                                <td class="prd">Product</td>
-                                <td class="price">Price</td>
-                                <td class="qty">Quantity</td>
-                                <td class="tot">Total</td>
+                    @if (Model.WebsiteCartItems == null || Model.WebsiteCartItems.Count > 0)
+                    {
+                        <table class="basketTable table-responsive">
+                            <tbody>
                                 @if (Model.ShowCartPopUp != true)
                                 {
-                                    if (Model.IsCollectionAvailable)
-                                    {
-                                        <td class="store">
-                                            <a href="" data-toggle="modal" data-target="#ChooseStoreModal" class="chsStoreLnk">Choose Store</a>
-                                        </td>
-                                    }
-                                    if (Model.IsDeliveryAvailable)
-                                    {
-                                        <td class="store">
-                                            <a href="" data-toggle="modal" data-target="#ChooseShippingAddressModal" class="chsStoreLnk">Choose Shipping Address</a>
-                                        </td>
-                                    }
+                                    <tr>
+                                        <td class="topTd" colspan="4"></td>
+                                        @if (Model.IsCollectionAvailable)
+                                        {
+                                            <td>
+                                                <div class="headBoxTop">
+                                                    <h3 class="head">Store Collection</h3>
+                                                    <p><span id="collection-point-name">@Model.CollectionPointName</span><span id="collection-point-address">@(Model.CollectionPointAddress != null ? ", " + Model.CollectionPointAddress : "")</span></p>
+                                                </div>
+
+                                            </td>
+                                        }
+                                        @if (Model.IsDeliveryAvailable)
+                                        {
+                                            <td>
+                                                <div class="headBoxTop">
+                                                    <h3 class="head">Home Delivery</h3>
+                                                    <p>Selected PostCode: <span id="shipping-address-postcode">@Model.ShippingAddressPostCode</span></p>
+                                                </div>
+                                            </td>
+                                        }
+                                    </tr>
                                 }
-                            </tr>
 
-                            @foreach (var item in Model.WebsiteCartItems)
-                            {
-                                <tr class="cmnRow">
-                                    <td class="prd">
-                                        <div class="prdCellwrap">
-                                            <div class="inrow">
-                                                <span class="imgWrap">
-                                                    <img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage) ? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
-                                                </span>
-                                                <span class="prdName">
-                                                    @(item.ProductMaster?.Name)
+                                <tr class="headRow cmnRow">
+                                    <td class="prd">Product</td>
+                                    <td class="price">Price</td>
+                                    <td class="qty">Quantity</td>
+                                    <td class="tot">Total</td>
+                                    @if (Model.ShowCartPopUp != true)
+                                    {
+                                        if (Model.IsCollectionAvailable)
+                                        {
+                                            <td class="store">
+                                                <a href="" data-toggle="modal" data-target="#ChooseStoreModal" class="chsStoreLnk">Choose Store</a>
+                                            </td>
+                                        }
+                                        if (Model.IsDeliveryAvailable)
+                                        {
+                                            <td class="store">
+                                                <a href="" data-toggle="modal" data-target="#ChooseShippingAddressModal" class="chsStoreLnk">Choose Shipping Address</a>
+                                            </td>
+                                        }
+                                    }
+                                </tr>
+
+                                @foreach (var item in Model.WebsiteCartItems)
+                                {
+                                    <tr class="cmnRow">
+                                        <td class="prd">
+                                            <div class="prdCellwrap">
+                                                <div class="inrow">
+                                                    <span class="imgWrap">
+                                                        <img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage) ? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
+                                                    </span>
+                                                    <span class="prdName">
+                                                        @(item.ProductMaster?.Name)
 
 
-                                                    @if (item?.ProductMaster?.ProductType != null && item.ProductMaster.ProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Kit && item.KitProductCartItems != null && item.KitProductCartItems.Count > 0)
-                                                    {
-                                                        foreach (var cartitem in item.KitProductCartItems)
+                                                        @if (item?.ProductMaster?.ProductType != null && item.ProductMaster.ProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Kit && item.KitProductCartItems != null && item.KitProductCartItems.Count > 0)
                                                         {
-                                                            <p>
-                                                                <b> @Convert.ToInt32(cartitem.Quantity)</b> x @cartitem.SimpleProductMaster.Name <br />
-                                                            </p>
+                                                            foreach (var cartitem in item.KitProductCartItems)
+                                                            {
+                                                                <p>
+                                                                    <b> @Convert.ToInt32(cartitem.Quantity)</b> x @cartitem.SimpleProductMaster.Name <br />
+                                                                </p>
+                                                            }
                                                         }
-                                                    }
 
-                                                </span>
+                                                    </span>
+                                                </div>
+                                                @if (Model.ShowCartPopUp != true)
+                                                {
+                                                    <div class="inrow btm">
+                                                        <span class="imgWrap"> </span>
+                                                        <span class="prdName">
+                                                            <i class="icon-love"></i>
+                                                            Add to wishlist
+                                                        </span>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </td>
+                                        <td class="price">
+                                            <div class="priceWrapinner">
+                                                @Model.CurrenySymbol@item.Price
+                                            </div>
+                                        </td>
+                                        <td class="qty">
+                                            <div class="QtyWrap">
+                                                <div class="QtyWrapinner">
+                                                    <span class="min" onclick="reduceQuantity(@item.Id);">-</span>
+                                                    <input class="coutnerInput" id="counter_@item.Id" type="number" min="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" onchange="updateCartItem(@item.CartId, this.value)" value="@Convert.ToInt32(item.Quantity)" />
+                                                    <span class="add" onclick="increseQuantity(@item.Id);">+</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="tot">
+                                            <div id="total_amnt" class="priceTotal @(Model.ShowCartPopUp != true ? "in-basket-price-total" : string.Empty)">
+                                                @Model.CurrenySymbol@item.ProductTotalAmount
                                             </div>
                                             @if (Model.ShowCartPopUp != true)
                                             {
-                                                <div class="inrow btm">
-                                                    <span class="imgWrap"> </span>
-                                                    <span class="prdName">
-                                                        <i class="icon-love"></i>
-                                                        Add to wishlist
-                                                    </span>
-                                                </div>
+                                                <a href="javascript:;" class="removeBtn" onclick="removeCartItem(@item.CartId)"> Remove</a>
                                             }
-                                        </div>
-                                    </td>
-                                    <td class="price">
-                                        <div class="priceWrapinner">
-                                            @Model.CurrenySymbol@item.Price
-                                        </div>
-                                    </td>
-                                    <td class="qty">
-                                        <div class="QtyWrap">
-                                            <div class="QtyWrapinner">
-                                                <span class="min" onclick="reduceQuantity(@item.Id);">-</span>
-                                                <input class="coutnerInput" id="counter_@item.Id" type="number" min="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" onchange="updateCartItem(@item.CartId, this.value)" value="@Convert.ToInt32(item.Quantity)" />
-                                                <span class="add" onclick="increseQuantity(@item.Id);">+</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="tot">
-                                        <div id="total_amnt" class="priceTotal @(Model.ShowCartPopUp != true ? "in-basket-price-total" : string.Empty)">
-                                            @Model.CurrenySymbol@item.ProductTotalAmount
-                                        </div>
+                                        </td>
                                         @if (Model.ShowCartPopUp != true)
                                         {
-                                            <a href="javascript:;" class="removeBtn" onclick="removeCartItem(@item.CartId)"> Remove</a>
+                                            if (Model.IsCollectionAvailable)
+                                            {
+                                                <td class="store greyBox">
+                                                    <div class="greyBoxInner">
+                                                        <p class="orderNowTxt" id="collection_status_@item.Id">
+                                                            <span class="available" @(item.IsAvailableForCollection == true ? "" : "hidden")>Available for Collection</span>
+                                                            <span class="unavailable" @(item.IsAvailableForCollection == false ? "" : "hidden")><b>Unavailable In Store!</b></span>
+                                                            <span class="unselected" @(Model.CollectionPointId == null ? "" : "hidden")><b>Select A Collection Point!</b></span>
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                            }
+                                            if (Model.IsDeliveryAvailable)
+                                            {
+                                                <td class="homeDel greyBox">
+                                                    <div class="greyBoxInner">
+                                                        <p class="orderNowTxt" id="delivery_status_@item.Id">
+                                                            <span class="available" @( @*item.IsAvailableForDelivery ==*@  true ? "" : "hidden")>Available for Delivery</span>
+                                                            <span class="unavailable" @(item.IsAvailableForDelivery == false ? "" : "hidden")><b>Unavailable For Delivery!</b></span>
+                                                            @*<span class="unselected" @(Model.ShippingAddressPostCode == null ? "" : "hidden")><b>Choose A Shipping Address!</b></span>*@
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                            }
                                         }
+                                    </tr>
+                                }
+                                <tr class="cmnRow subTotRow">
+                                    <td class="prd"></td>
+                                    <td class="price"></td>
+                                    <td class="qty subtotalCell" colspan="2">
+                                        <div class="subtotalCellInner">
+                                            <span>Sub Total</span> <span>@Model.CurrenySymbol@(Model.TotalAmount)</span>
+                                        </div>
                                     </td>
+
                                     @if (Model.ShowCartPopUp != true)
                                     {
                                         if (Model.IsCollectionAvailable)
                                         {
                                             <td class="store greyBox">
-                                                <div class="greyBoxInner">
-                                                    <p class="orderNowTxt" id="collection_status_@item.Id">
-                                                        <span class="available" @(item.IsAvailableForCollection == true ? "" : "hidden")>Available for Collection</span>
-                                                        <span class="unavailable" @(item.IsAvailableForCollection == false ? "" : "hidden")><b>Unavailable In Store!</b></span>
-                                                        <span class="unselected" @(Model.CollectionPointId == null ? "" : "hidden")><b>Select A Collection Point!</b></span>
-                                                    </p>
+                                                <div class="botomBtnsec">
+                                                    <button class="btmbtn pro" onclick="@(Model.ShowLoginPopUp == true ? "GetLoggedIn('" + (bool?)Model.ShowLoginPopUp + "');" : "proceedToPickup();")">PROCEED TO PICKUP</button>
                                                 </div>
                                             </td>
                                         }
                                         if (Model.IsDeliveryAvailable)
                                         {
                                             <td class="homeDel greyBox">
-                                                <div class="greyBoxInner">
-                                                    <p class="orderNowTxt" id="delivery_status_@item.Id">
-                                                        <span class="available" @(@*item.IsAvailableForDelivery ==*@ true ? "" : "hidden")>Available for Delivery</span>
-                                                        <span class="unavailable" @(item.IsAvailableForDelivery == false ? "" : "hidden")><b>Unavailable For Delivery!</b></span>
-                                                        @*<span class="unselected" @(Model.ShippingAddressPostCode == null ? "" : "hidden")><b>Choose A Shipping Address!</b></span>*@
-                                                    </p>
+                                                <div class="botomBtnsec">
+                                                    <button class="btmbtn pro" onclick="@(Model.ShowLoginPopUp == true ? "GetLoggedIn('" + (bool?)Model.ShowLoginPopUp + "');" : "proceedToDelivery();")">PROCEED TO DELIVERY</button>
                                                 </div>
                                             </td>
                                         }
                                     }
                                 </tr>
-                            }
-                            <tr class="cmnRow subTotRow">
-                                <td class="prd"></td>
-                                <td class="price"></td>
-                                <td class="qty subtotalCell" colspan="2">
-                                    <div class="subtotalCellInner">
-                                        <span>Sub Total</span> <span>@Model.CurrenySymbol@(Model.TotalAmount)</span>
-                                    </div>
-                                </td>
-
-                                @if (Model.ShowCartPopUp != true)
-                                {
-                                    if (Model.IsCollectionAvailable)
-                                    {
-                                        <td class="store greyBox">
-                                            <div class="botomBtnsec">
-                                                <button class="btmbtn pro" onclick="@(Model.ShowLoginPopUp == true ? "GetLoggedIn('" + (bool?)Model.ShowLoginPopUp + "');" : "proceedToPickup();")">PROCEED TO PICKUP</button>
-                                            </div>
-                                        </td>
-                                    }
-                                    if (Model.IsDeliveryAvailable)
-                                    {
-                                        <td class="homeDel greyBox">
-                                            <div class="botomBtnsec">
-                                                <button class="btmbtn pro" onclick="@(Model.ShowLoginPopUp == true ? "GetLoggedIn('" + (bool?)Model.ShowLoginPopUp + "');" : "proceedToDelivery();")">PROCEED TO DELIVERY</button>
-                                            </div>
-                                        </td>
-                                    }
-                                }
-                            </tr>
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="text-center m-4">Oops, Your Basket Is Empty!</div>
+                    }
                 </div>
                 <div class="botomBtnsec">
                     @if (Model.ShowCartPopUp != true)
