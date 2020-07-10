@@ -96,7 +96,7 @@ namespace WarehouseEcommerce.Controllers
 
             var checkoutViewModel = (CheckoutViewModel)Session["CheckoutViewModel"];
 
-            if(checkoutViewModel == null)
+            if(checkoutViewModel == null || (!CurrentTenantWebsite.IsCollectionAvailable && !CurrentTenantWebsite.IsDeliveryAvailable))
             {
                 return RedirectToAction("AddToCart", "Products", new { PlaceOrder = true });
             }
@@ -147,22 +147,29 @@ namespace WarehouseEcommerce.Controllers
 
             checkoutViewModel.SetInitialStep(deliveryMethod);
 
-            var step = CheckoutStep.BillingAddress;
-
             checkoutViewModel.DeliveryMethodId = (int)deliveryMethod;
 
             if (deliveryMethod == DeliveryMethod.ToPickupPoint) {
+                if (!CurrentTenantWebsite.IsCollectionAvailable)
+                {
+                    return RedirectToAction("AddToCart", "Products", new { PlaceOrder = true });
+                }
+                checkoutViewModel.CurrentStep = destinationId > 0 ? CheckoutStep.BillingAddress : CheckoutStep.CollectionPoint;
                 checkoutViewModel.CollectionPointId = destinationId;
             }
             else if (deliveryMethod == DeliveryMethod.ToShipmentAddress)
             {
-                step = destinationId > 0 ? CheckoutStep.ShipmentRule : CheckoutStep.ShippingAddress;
+                if (!CurrentTenantWebsite.IsDeliveryAvailable)
+                {
+                    return RedirectToAction("AddToCart", "Products", new { PlaceOrder = true });
+                }
+                checkoutViewModel.CurrentStep = destinationId > 0 ? CheckoutStep.ShipmentRule : CheckoutStep.ShippingAddress;
                 checkoutViewModel.ShippingAddressId = destinationId;
             }
 
             Session["CheckoutViewModel"] = checkoutViewModel;
 
-            return RedirectToAction("Checkout", new { step = (int)step });
+            return RedirectToAction("Checkout", new { step = (int)checkoutViewModel.CurrentStep });
         }
 
         public async Task<JsonResult> GetNearWarehouses(string postCode)

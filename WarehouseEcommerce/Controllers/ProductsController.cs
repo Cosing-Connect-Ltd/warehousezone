@@ -263,6 +263,9 @@ namespace WarehouseEcommerce.Controllers
             model.ShowCartPopUp = cartId.HasValue;
             model.ShowLoginPopUp = CurrentUserId == 0;
 
+            model.IsCollectionAvailable = CurrentTenantWebsite.IsCollectionAvailable;
+            model.IsDeliveryAvailable = CurrentTenantWebsite.IsDeliveryAvailable;
+
             InitiateShippmentAddress(ref model);
 
             InitiateCollectionPoint(ref model);
