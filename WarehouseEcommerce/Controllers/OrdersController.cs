@@ -333,7 +333,10 @@ namespace WarehouseEcommerce.Controllers
         {
             SagepayTokenResponse resp = await GetSagePayToken();
             ViewBag.AuthCode = resp.merchantSessionKey;
-            return View();
+            var checkOutModel = Session["CheckoutViewModel"] == null
+                ? new CheckoutViewModel()
+                : Session["CheckoutViewModel"] as CheckoutViewModel;
+            return View(checkOutModel);
         }
 
 
