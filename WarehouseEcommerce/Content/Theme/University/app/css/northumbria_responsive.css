@@ -22,6 +22,7 @@
 
     .accordion ul li {
         transform: skew(0deg);
+        width: 20%;
     }
 
     .nb_feat_prod_sec .nb_fp_boxwrap .prd_det_sec {
@@ -61,20 +62,32 @@
         padding: 0px;
     }
 
-    .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner {
+    .nb_header
+    .nb_mainnav > ul
+    li.hav_mega_nav
+    .mega_nav_wrap
+    .mega_nav_wrap_inner {
         padding-left: 20px;
         min-width: 400px;
         min-height: 280px;
     }
 
-        .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner:before {
+        .nb_header
+        .nb_mainnav > ul
+        li.hav_mega_nav
+        .mega_nav_wrap
+        .mega_nav_wrap_inner:before {
             display: none;
         }
 
-        .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner .meganav_firstcatList > li {
+        .nb_header
+        .nb_mainnav > ul
+        li.hav_mega_nav
+        .mega_nav_wrap
+        .mega_nav_wrap_inner
+        .meganav_firstcatList > li {
             padding: 0px;
         }
-
 
     .accordion ul li:nth-child(1) {
         right: auto;
@@ -101,6 +114,20 @@
             .accordion ul li:nth-child(5):after h2 {
                 padding-right: initial;
             }
+
+    .accordion.have2child ul li:first-child {
+        width: 48%;
+        clip-path: none;
+    }
+
+    .accordion.have2child ul li:last-child {
+        width: 48%;
+        clip-path: none;
+    }
+
+        .accordion.have2child ul li:last-child:after {
+            display: none;
+        }
 
     #marqueeWrap ul {
         animation: marquee 15s linear infinite;
@@ -168,7 +195,6 @@
     }
 
     .nb_sec_navlist li a {
-        display: flex !important;
         flex-direction: column;
         align-items: center;
         justify-content: center;
@@ -198,36 +224,46 @@
     }
 
     .accordion {
+        height: auto;
         overflow-y: auto;
     }
 
-        .accordion ul li {
-            width: 48%;
-            display: inline-block;
-            margin-bottom: 20px;
+        .accordion ul {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
         }
 
-            .accordion ul li:last-child {
+            .accordion ul li {
                 width: 48%;
-                left: auto;
+                display: inline-block;
+                margin-bottom: 20px;
             }
 
-            .accordion ul li div a h2 {
-                color: #000;
-                background: rgb(255, 255, 255);
-            }
+                .accordion ul li:last-child {
+                    width: 48%;
+                    left: auto;
+                }
 
-            .accordion ul li:nth-child(1) {
+                .accordion ul li div a h2 {
+                    color: #000;
+                    background: rgb(255, 255, 255);
+                }
+
+                .accordion ul li:nth-child(1) {
+                    width: 48%;
+                }
+
+            .accordion ul:hover li {
                 width: 48%;
             }
 
-        .accordion ul:hover li {
-            width: 48%;
-        }
-
-            .accordion ul:hover li:hover {
-                width: 48%;
-            }
+                .accordion ul:hover li:hover {
+                    width: 48%;
+                }
 
         .accordion.have2child ul li:first-child {
             clip-path: none;
@@ -432,68 +468,6 @@
     .navListWrap {
         overflow: scroll;
     }
-
-    .progressBarStep ul#progressList li.active span.txt {
-        display: none;
-    }
-
-    .progressBarStep ul#progressList li span.txt {
-        display: none;
-    }
-
-    .nb_top_catSection .accordion ul {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-    }
-
-    .accordion {
-        height: auto;
-        overflow-y: auto;
-    }
-
-    .nb_top_catSection .accordion ul li {
-        width: 48%;
-        display: inline-block;
-        margin-bottom: 20px;
-    }
-
-    .accordion ul li:last-child:after {
-        display: none;
-    }
-
-    .accordion ul li:last-child {
-        width: 48%;
-        left: auto;
-    }
-
-    .accordion ul li div a h2 {
-        color: #000;
-        background: rgb(255, 255, 255);
-    }
-
-    .accordion ul li:nth-child(1) {
-        width: 48%;
-    }
-
-    .accordion ul:hover li {
-        width: 48%;
-    }
-
-        .accordion ul:hover li:hover {
-            width: 48%;
-        }
-
-    .accordion.have2child ul li:first-child {
-        clip-path: none;
-    }
-
-    .accordion.have2child ul li:last-child {
-        clip-path: none;
-    }
 }
 
 @media (max-width: 480px) {
@@ -597,33 +571,44 @@
                     display: block;
                 }
 
-    #signupPopup .modal-dialog .modal-content .modal-body .loginForm .rememberWrap {
+    #signupPopup
+    .modal-dialog
+    .modal-content
+    .modal-body
+    .loginForm
+    .rememberWrap {
         flex-direction: column;
     }
 
-        #signupPopup .modal-dialog .modal-content .modal-body .loginForm .rememberWrap .form-check {
+        #signupPopup
+        .modal-dialog
+        .modal-content
+        .modal-body
+        .loginForm
+        .rememberWrap
+        .form-check {
             margin-bottom: 10px;
         }
 
-    .nb_top_catSection .accordion ul li {
+    .accordion ul li {
         width: 43%;
         margin: 10px;
         display: inline-block;
     }
 
-    .accordion ul li:last-child {
-        width: 43%;
-        left: auto;
-    }
+        .accordion ul li:last-child {
+            width: 43%;
+            left: auto;
+        }
 
-    .accordion ul li div a h2 {
-        color: #000;
-        background: rgb(255, 255, 255);
-    }
+        .accordion ul li div a h2 {
+            color: #000;
+            background: rgb(255, 255, 255);
+        }
 
-    .accordion ul li:nth-child(1) {
-        width: 43%;
-    }
+        .accordion ul li:nth-child(1) {
+            width: 43%;
+        }
 
     .accordion ul:hover li {
         width: 43%;
@@ -637,14 +622,6 @@
     .accordion.have2child ul li:last-child {
         width: 45%;
         clip-path: none;
-    }
-
-    .nb_top_catSection .accordion ul li {
-        height: 260px;
-    }
-
-    .accordion ul li div a {
-        height: 260px;
     }
 }
 
