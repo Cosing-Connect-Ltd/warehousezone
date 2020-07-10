@@ -19,7 +19,16 @@
     margin-right: unset;
 }
 
-.uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a:hover > .uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a i {
+.uni-pages-main
+.nb_sec_navwrap
+.nb_sec_navlist
+li
+a:hover > .uni-pages-main
+.nb_sec_navwrap
+.nb_sec_navlist
+li
+a
+i {
     color: var(--secondary-color);
 }
 
@@ -35,7 +44,7 @@
     margin: 0;
 }
 
-@media(min-width: 600px) {
+@media (min-width: 600px) {
     .pagination {
         /*display: inline;*/
     }
@@ -47,7 +56,7 @@
 
 .pagination {
     flex-wrap: wrap;
-    line-height: 1.0;
+    line-height: 1;
 }
 
 .pagi {
@@ -125,7 +134,6 @@ a.cashbtn {
     padding: 7px 35px;
 }
 
-
 .my-account.login form {
     padding-bottom: 40px;
 }
@@ -152,7 +160,7 @@ a.cashbtn {
 }
 
 .ordered-items p a {
-    color: #6E6E6E;
+    color: #6e6e6e;
 }
 
 .my-account.login .ordered-items select {
@@ -177,9 +185,9 @@ a.cashbtn {
 }
 
 .about-cnt td a.remove-btn {
-    color: #0066C0;
+    color: #0066c0;
     font-weight: 200;
-    font-family: "Amazon Ember",Arial,sans-serif;
+    font-family: "Amazon Ember", Arial, sans-serif;
     font-size: 12px;
 }
 
@@ -194,7 +202,7 @@ a.cashbtn {
 }
 
 .about-cnt td {
-    color: #6E6E6E;
+    color: #6e6e6e;
     font-weight: 200;
     font-size: 13px;
     white-space: nowrap;
@@ -204,11 +212,11 @@ a.cashbtn {
     /*margin-bottom: 20px;*/
     font-size: 14px;
     line-height: 25px;
-    color: #6E6E6E;
+    color: #6e6e6e;
     font-weight: 200;
 }
 
-@media screen and (max-width:567px) {
+@media screen and (max-width: 567px) {
     .order-details td:first-child {
         width: 100px;
     }
@@ -223,7 +231,7 @@ a.cashbtn {
         }
 }
 
-@media screen and (min-width:568px) and (max-width:767px) {
+@media screen and (min-width: 568px) and (max-width: 767px) {
     .order-details td:first-child {
         width: 120px;
     }
@@ -245,7 +253,7 @@ a.cashbtn {
     border-top: 1px solid #eee;
 }
 
-@media screen and (max-width:767px) {
+@media screen and (max-width: 767px) {
     .order-details thead {
         display: none;
     }
@@ -320,7 +328,7 @@ a.cashbtn {
     padding-right: 20px;
 }
 
-@media screen and (max-width:767px) {
+@media screen and (max-width: 767px) {
     .single-blog_page_header h1 {
         font-size: 23px;
     }
@@ -358,23 +366,20 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
     width: 100vw;
 }
 
-
-
-
 .get-address-page .menu-about li {
-    box-shadow: 1px 4px 4px 0px rgba(0,0,0,.1);
+    box-shadow: 1px 4px 4px 0px rgba(0, 0, 0, 0.1);
     margin-bottom: 15px;
 }
 
 .menu-about li a {
-    background: rgb(231,234,237);
+    background: rgb(231, 234, 237);
     display: block;
-    border-bottom: 1px solid rgb(231,234,237);
+    border-bottom: 1px solid rgb(231, 234, 237);
     padding: 20px 20px;
     color: #434343;
     position: relative;
     text-transform: uppercase;
-    box-shadow: 1px 4px 4px 0px rgba(0,0,0,.1);
+    box-shadow: 1px 4px 4px 0px rgba(0, 0, 0, 0.1);
 }
 
 /* --------------------------
@@ -560,7 +565,7 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
 .btn-link {
     border-color: rgba(0, 0, 0, 0);
     cursor: pointer;
-    color: #23A1D1;
+    color: #23a1d1;
     border-radius: 0;
 }
 
@@ -671,11 +676,21 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
     cursor: pointer;
 }
 
-.uni-pages-main .nb_prdlisting_pgsec .breadCrumbtopsec .nb_bread_crumbwrap nav ol li:before {
+.uni-pages-main
+.nb_prdlisting_pgsec
+.breadCrumbtopsec
+.nb_bread_crumbwrap
+nav
+ol
+li:before {
     content: "";
 }
 
-.uni-pages-main .nb_prdlisting_pgsec .breadCrumbtopsec .nb_bread_crumbwrap .breadcrumb > li:after {
+.uni-pages-main
+.nb_prdlisting_pgsec
+.breadCrumbtopsec
+.nb_bread_crumbwrap
+.breadcrumb > li:after {
     top: 7px;
     right: -4px;
     width: 7px;
@@ -686,7 +701,7 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
     -webkit-appearance: none;
     -moz-appearance: none;
     text-indent: 1px;
-    text-overflow: '';
+    text-overflow: "";
 }
 
     .uni-pages-main .nb_prdlisting_pgsec .breadCrumbtopsec .sortBysec select:focus {
@@ -755,11 +770,11 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
     }
 
 .get-address-page .menu-about li {
-    box-shadow: 1px 4px 4px 0px rgba(0,0,0,.1);
+    box-shadow: 1px 4px 4px 0px rgba(0, 0, 0, 0.1);
     margin-bottom: 15px;
 }
 
-@media(max-width:768px) {
+@media (max-width: 768px) {
     .get-address-page .button-submit button {
         width: 100% !important;
     }
@@ -775,7 +790,8 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
         margin-top: 8px;
     }
 
-    .deliveryMethod input[type="checkbox"], input[type="radio"] {
+    .deliveryMethod input[type="checkbox"],
+    input[type="radio"] {
         margin: 3px 10px 0 !important;
         height: 25px;
         cursor: pointer;
@@ -799,10 +815,10 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
 
     .shipping-rule .form-inline,
     .collection-point .form-inline {
-        background: rgb(231,234,237);
-        border: 2px solid rgb(231,234,237);
-        border-bottom: 2px solid rgb(231,234,237);
-        box-shadow: 1px 4px 4px 0px rgba(0,0,0,.1);
+        background: rgb(231, 234, 237);
+        border: 2px solid rgb(231, 234, 237);
+        border-bottom: 2px solid rgb(231, 234, 237);
+        box-shadow: 1px 4px 4px 0px rgba(0, 0, 0, 0.1);
         padding: 10px;
         border-radius: 5px;
         cursor: pointer;
@@ -842,8 +858,9 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
     margin-top: 10px;
 }
 
-@media(max-width:991px) {
-    .select-shipping-method-btn, .select-payment-method-btn {
+@media (max-width: 991px) {
+    .select-shipping-method-btn,
+    .select-payment-method-btn {
         width: 100%;
         height: 33px;
     }
@@ -885,7 +902,7 @@ h2 {
     /* margin-bottom: 20px; */
     font-size: 14px;
     line-height: 25px;
-    color: #6E6E6E;
+    color: #6e6e6e;
     font-weight: 200;
 }
 
@@ -894,7 +911,7 @@ h2 {
     margin-top: 8px;
 }
 
-@media(max-width:500px) {
+@media (max-width: 500px) {
     .get-address-page .both-btn a {
         width: 100%;
         margin-top: 8px;
@@ -908,7 +925,7 @@ h2 {
     margin-top: 8px;
 }
 
-@media(max-width:500px) {
+@media (max-width: 500px) {
     .get-address-page .both-btn a {
         width: 100%;
         margin-top: 8px;
@@ -925,7 +942,7 @@ h2 {
         border-color: #000 !important;
     }
 
-@media(max-width:991px) {
+@media (max-width: 991px) {
     .p-mt-20 {
         margin-top: 20px;
     }
@@ -936,47 +953,47 @@ h2 {
 }
 
 .menu-about li a {
-    background: rgb(231,234,237);
+    background: rgb(231, 234, 237);
     display: block;
-    border-bottom: 1px solid rgb(231,234,237);
+    border-bottom: 1px solid rgb(231, 234, 237);
     padding: 20px 20px;
     color: #434343;
     position: relative;
     text-transform: uppercase;
-    box-shadow: 1px 4px 4px 0px rgba(0,0,0,.1);
+    box-shadow: 1px 4px 4px 0px rgba(0, 0, 0, 0.1);
 }
 
 .orders-total {
     width: 100%;
-    background: rgb(231,234,237);
-    border-bottom: 1px solid rgb(231,234,237);
+    background: rgb(231, 234, 237);
+    border-bottom: 1px solid rgb(231, 234, 237);
     padding: 20px 20px;
     color: #434343;
     position: relative;
     margin-top: 15px;
-    box-shadow: 1px 4px 4px 0px rgba(0,0,0,.1);
+    box-shadow: 1px 4px 4px 0px rgba(0, 0, 0, 0.1);
 }
 
 .confirm-order-page .deliveryMethod {
-    background: rgb(231,234,237);
+    background: rgb(231, 234, 237);
     display: block;
-    border-bottom: 1px solid rgb(231,234,237);
+    border-bottom: 1px solid rgb(231, 234, 237);
     padding: 20px 20px;
     color: #434343;
     position: relative;
     text-transform: uppercase;
-    box-shadow: 1px 4px 4px 0px rgba(0,0,0,.1);
+    box-shadow: 1px 4px 4px 0px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
 
 .get-address-page .deliveryMethod {
-    background: rgb(231,234,237);
+    background: rgb(231, 234, 237);
     display: block;
-    border-bottom: 1px solid rgb(231,234,237);
+    border-bottom: 1px solid rgb(231, 234, 237);
     color: #434343;
     position: relative;
     text-transform: uppercase;
-    box-shadow: 1px 4px 4px 0px rgba(0,0,0,.1);
+    box-shadow: 1px 4px 4px 0px rgba(0, 0, 0, 0.1);
     padding: 1px;
     margin-bottom: 15px;
 }
@@ -1008,7 +1025,7 @@ h2 {
         border: 1px solid #212529;
     }
 
-@media(max-width:575px) {
+@media (max-width: 575px) {
     .confirm-order-addresses .shipping-address-col {
         margin-top: 35px;
     }
@@ -1019,7 +1036,7 @@ h2 {
 }
 
 .f-unset {
-    flex: unset
+    flex: unset;
 }
 
 .m-w-unset {
@@ -1096,7 +1113,6 @@ body.modal-open {
     width: 100%;
 }
 
-
 /*kit product page cart-item-detail start*/
 .cartitem-details {
     display: flex;
@@ -1104,7 +1120,7 @@ body.modal-open {
     justify-content: space-between;
     padding: 15px 0px;
     margin-top: -1px;
-    border-bottom: solid 0.02px #D7D7D7;
+    border-bottom: solid 0.02px #d7d7d7;
     margin-bottom: -1px;
     /*align-items:center;*/
 }
@@ -1114,7 +1130,7 @@ body.modal-open {
     text-align: justify;
 }
 
-@media(max-width:575px) {
+@media (max-width: 575px) {
     .cartitem-details {
         flex-wrap: wrap;
     }
@@ -1151,10 +1167,10 @@ body.modal-open {
     height: 180px;
     width: 180px;
     max-width: unset;
-    border: solid 1px #D7D7D7;
+    border: solid 1px #d7d7d7;
 }
 
-@media(max-width:425px) {
+@media (max-width: 425px) {
     .cartitem-img {
         width: 100%;
         text-align: center;
@@ -1171,7 +1187,7 @@ body.modal-open {
 
 .cartitem-price p {
     white-space: nowrap;
-    color: #B12704 !important;
+    color: #b12704 !important;
     display: flex;
     align-items: baseline;
     margin-bottom: unset;
@@ -1200,7 +1216,8 @@ body.modal-open {
     font-size: 20px;
 }
 
-.cartitem-text p, .cartitem-text span {
+.cartitem-text p,
+.cartitem-text span {
     margin-bottom: 5px;
     font-size: 16px;
     line-height: 1.5;
@@ -1214,12 +1231,12 @@ body.modal-open {
 }
 
 .cartitem-text .badge {
-    background-color: #E47911 !important;
+    background-color: #e47911 !important;
     font-weight: 300;
     padding: 4px 7px;
 }
 
-@media(max-width:991px) {
+@media (max-width: 991px) {
     .cat-list {
         margin-bottom: 16px;
     }
@@ -1239,13 +1256,13 @@ body.modal-open {
 }
 
 .kit-tabs-content {
-    border: solid 1px #D7D7D7;
+    border: solid 1px #d7d7d7;
     border-top: unset;
     padding: 0px 10px;
 }
 
 .kit-product .product-bg .thumbnails img {
-    border: solid 1px #D7D7D7;
+    border: solid 1px #d7d7d7;
     position: relative !important;
 }
 
@@ -1258,7 +1275,7 @@ body.modal-open {
 }
 
 .kit-product .rates-page-tabs .nav-tabs {
-    border: solid 1px #D7D7D7;
+    border: solid 1px #d7d7d7;
     border-bottom: unset;
 }
 
@@ -1285,19 +1302,20 @@ body.modal-open {
     color: #555;
 }
 
-.kit-product .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+.kit-product .nav-tabs .nav-link.active,
+.nav-tabs .nav-item.show .nav-link {
     font-weight: bold;
     color: #000;
     font-size: 16px;
 }
 
-@media(min-width:900px) {
+@media (min-width: 900px) {
     .kit-product .sticky {
         margin-right: 15px;
     }
 }
 
-@media(max-width:575px) {
+@media (max-width: 575px) {
     .kit-product .product-bg .thumbnails .owl-wrapper-outer .owl-item {
         width: 88px !important;
     }
@@ -1347,7 +1365,8 @@ body.modal-open {
     color: white !important;
 }
 
-.kit-product .button-submit button, .my-account.login .button-submit input[type="submit"] {
+.kit-product .button-submit button,
+.my-account.login .button-submit input[type="submit"] {
     height: 40px;
     background: #1455a6;
     color: #fff;
@@ -1359,7 +1378,10 @@ body.modal-open {
     white-space: nowrap;
 }
 
-    .kit-product .button-submit button:hover, .my-account.login .button-submit button:focus, .my-account.login .button-submit input[type="submit"]:hover, .my-account.login .button-submit input[type="submit"]:focus {
+    .kit-product .button-submit button:hover,
+    .my-account.login .button-submit button:focus,
+    .my-account.login .button-submit input[type="submit"]:hover,
+    .my-account.login .button-submit input[type="submit"]:focus {
         background: #000;
         transition: 0.5s;
     }
@@ -1386,7 +1408,7 @@ body.modal-open {
     white-space: nowrap;
 }
 
-@media(min-width: 992px) {
+@media (min-width: 992px) {
     .sticky {
         position: static;
         /*max-width: 500px;
@@ -1398,7 +1420,7 @@ body.modal-open {
     }
 }
 
-@media(max-width:1024px) {
+@media (max-width: 1024px) {
     .product-bg img {
         width: 380px !important;
     }
@@ -1408,7 +1430,7 @@ body.modal-open {
     }
 }
 
-@media(max-width:900px) {
+@media (max-width: 900px) {
     .product-bg {
         flex-wrap: wrap;
     }
@@ -1419,7 +1441,7 @@ body.modal-open {
     }
 }
 
-@media(max-width:425px) {
+@media (max-width: 425px) {
     .product-bg img {
         width: 300px !important;
     }
@@ -1429,7 +1451,7 @@ body.modal-open {
     }
 }
 
-@media(max-width:360px) {
+@media (max-width: 360px) {
     .product-bg img {
         width: 250px !important;
     }
@@ -1447,7 +1469,7 @@ body.modal-open {
     justify-content: space-between;
     margin-bottom: 16px;
     margin-top: 16px;
-    font-family: "primaryfont_SemiBold"
+    font-family: "primaryfont_SemiBold";
 }
 
     .breadCrumbtopsec .nb_bread_crumbwrap nav ol {
@@ -1499,7 +1521,6 @@ body.modal-open {
     color: lightgray;
     opacity: 0.5;
 }
-
 
 /*.styled-checkbox start*/
 .styled-checkbox {
@@ -1559,9 +1580,6 @@ body.modal-open {
     }
 /*.styled-checkbox end*/
 
-
-
-
 /*payment pages from GetAddress to FinalPayment- css start*/
 .nb_sec_pb {
     padding-bottom: 55px;
@@ -1616,24 +1634,24 @@ body.modal-open {
         margin-bottom: 20px;
     }
 
-.billandshipsec .address-wrapper .btnWrap .btmBtn {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    min-width: 185px;
-    padding: 0 20px;
-    height: 50px;
-    margin-right: 20px;
-    font-size: 16px;
-    font-family: "primaryfont_Bold";
-    color: #fff;
-    outline: none;
-    border: none;
-    text-transform: uppercase;
-    background-color: #000;
-    transition: all 0.3s ease;
-}
+        .billandshipsec .address-wrapper .btnWrap .btmBtn {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            min-width: 185px;
+            padding: 0 20px;
+            height: 50px;
+            margin-right: 20px;
+            font-size: 16px;
+            font-family: "primaryfont_Bold";
+            color: #fff;
+            outline: none;
+            border: none;
+            text-transform: uppercase;
+            background-color: #000;
+            transition: all 0.3s ease;
+        }
 
             .billandshipsec .address-wrapper .btnWrap .btmBtn:hover {
                 background-color: #f33655;
@@ -1643,7 +1661,7 @@ body.modal-open {
                 margin-right: 0px;
             }
 
-@media(max-width:560px) {
+@media (max-width: 560px) {
     .billandshipsec .address-wrapper .btnWrap .btmBtn {
         width: 100%;
         margin-top: 10px;
@@ -1653,7 +1671,12 @@ body.modal-open {
         display: unset;
     }
 
-    .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group .findAddrWrap .fadBtn {
+    .billandshipsec
+    .addNewAddrWrap
+    .addNwAdrrFormWrap
+    .form-group
+    .findAddrWrap
+    .fadBtn {
         width: 85px !important;
     }
 
@@ -1685,7 +1708,12 @@ body.modal-open {
             padding-right: 140px;
         }
 
-            .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group .findAddrWrap .findAddrInput {
+            .billandshipsec
+            .addNewAddrWrap
+            .addNwAdrrFormWrap
+            .form-group
+            .findAddrWrap
+            .findAddrInput {
                 width: 100%;
                 height: 47px;
                 margin-top: 1px;
@@ -1696,7 +1724,12 @@ body.modal-open {
                 text-indent: 10px;
             }
 
-            .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group .findAddrWrap .fadBtn {
+            .billandshipsec
+            .addNewAddrWrap
+            .addNwAdrrFormWrap
+            .form-group
+            .findAddrWrap
+            .fadBtn {
                 width: 140px;
                 height: 100%;
                 position: absolute;
@@ -1712,14 +1745,31 @@ body.modal-open {
                 transition: all 0.3s ease;
             }
 
-                .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group .findAddrWrap .fadBtn:hover {
+                .billandshipsec
+                .addNewAddrWrap
+                .addNwAdrrFormWrap
+                .form-group
+                .findAddrWrap
+                .fadBtn:hover {
                     background-color: #000;
                 }
 
         .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group select,
-        .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group input[type="tel"],
-        .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group input[type="text"],
-        .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group input[type="number"] {
+        .billandshipsec
+        .addNewAddrWrap
+        .addNwAdrrFormWrap
+        .form-group
+        input[type="tel"],
+        .billandshipsec
+        .addNewAddrWrap
+        .addNwAdrrFormWrap
+        .form-group
+        input[type="text"],
+        .billandshipsec
+        .addNewAddrWrap
+        .addNwAdrrFormWrap
+        .form-group
+        input[type="number"] {
             width: 100%;
             height: 50px;
             border: solid 1px #707070;
@@ -1743,7 +1793,7 @@ body.modal-open {
             font-size: 18px;
         }
 
-@media(max-width:425px) {
+@media (max-width: 425px) {
     .billandshipsec .checkout-options-wrapper .checkboxwrap label {
         font-size: 14px;
         display: flex;
@@ -1789,7 +1839,7 @@ body.modal-open {
         width: 260px;
         height: 50px;
         line-height: 50px;
-        text-align:center;
+        text-align: center;
         background-color: #000;
         color: #fff;
         font-family: "primaryfont_Bold";
@@ -1898,7 +1948,11 @@ body.modal-open {
     border-bottom: solid 1px #707070;
 }
 
-    .Paymentsec .paymentTabsec .myAccLeftNavsec .tabcontentInner .subcontBox > div:last-child {
+    .Paymentsec
+    .paymentTabsec
+    .myAccLeftNavsec
+    .tabcontentInner
+    .subcontBox > div:last-child {
         border: none;
     }
 
@@ -1919,8 +1973,11 @@ body.modal-open {
         width: 145px;
     }
 
-
-    .Paymentsec .paymentTabsec .cardDetailsWrap .form-group input[type="text"].secCodeTxtbox {
+    .Paymentsec
+    .paymentTabsec
+    .cardDetailsWrap
+    .form-group
+    input[type="text"].secCodeTxtbox {
         width: 168px;
         margin-right: 30px;
     }
@@ -1950,7 +2007,12 @@ body.modal-open {
         justify-content: flex-start;
     }
 
-        .Paymentsec .paymentTabsec .cardDetailsWrap .form-group .expDatectrlwrap select {
+        .Paymentsec
+        .paymentTabsec
+        .cardDetailsWrap
+        .form-group
+        .expDatectrlwrap
+        select {
             height: 50px;
             border: solid 1px #707070;
             text-align: center;
@@ -1958,11 +2020,21 @@ body.modal-open {
             margin-right: 30px;
         }
 
-            .Paymentsec .paymentTabsec .cardDetailsWrap .form-group .expDatectrlwrap select.mnth {
+            .Paymentsec
+            .paymentTabsec
+            .cardDetailsWrap
+            .form-group
+            .expDatectrlwrap
+            select.mnth {
                 width: 92px;
             }
 
-            .Paymentsec .paymentTabsec .cardDetailsWrap .form-group .expDatectrlwrap select.year {
+            .Paymentsec
+            .paymentTabsec
+            .cardDetailsWrap
+            .form-group
+            .expDatectrlwrap
+            select.year {
                 width: 138px;
             }
 
@@ -2061,7 +2133,7 @@ body.modal-open {
             }
 
 .collection-address-div {
-    box-shadow: 0 0px 0px 1px rgba(0,0,0,0.12), 0 0px 1px rgba(0,0,0,0.24);
+    box-shadow: 0 0px 0px 1px rgba(0, 0, 0, 0.12), 0 0px 1px rgba(0, 0, 0, 0.24);
     padding: 10px;
     margin-top: 8px;
     display: flex;
@@ -2071,11 +2143,10 @@ body.modal-open {
 }
 
     .collection-address-div:hover {
-        box-shadow: 0 -10px 30px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
     }
 
 /*payment pages from GetAddress to FinalPayment- css start*/
-
 
 /*new cart page- css start*/
 .basketTable {
@@ -2097,7 +2168,7 @@ body.modal-open {
         .basketTable tr td .headBoxTop p {
             font-family: "primaryfont_Normal";
             font-size: 14px;
-            height:30px;
+            height: 30px;
         }
 
     .basketTable tr .topTd {
@@ -2121,250 +2192,251 @@ body.modal-open {
         border-bottom: solid 1px #707070;
     }
 
-    .basketTable tr.cmnRow td {
-        text-align: center;
-        font-weight: bold !important;
-    }
-
-        .basketTable tr.cmnRow td.greyBox {
-            padding: 0px 8px;
+        .basketTable tr.cmnRow td {
+            text-align: center;
+            font-weight: bold !important;
         }
 
-            .basketTable tr.cmnRow td.greyBox .greyBoxInner {
-                background-color: #f3f3f3;
-                height: 145px;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: center;
+            .basketTable tr.cmnRow td.greyBox {
+                padding: 0px 8px;
             }
 
-                .basketTable tr.cmnRow td.greyBox .greyBoxInner .unavailable {
-                    color: #f33655;
-                }
-                .basketTable tr.cmnRow td.greyBox .greyBoxInner .orderNowTxt {
-                    font-size: 13px;
-                    color: #000;
-                    font-style: italic;
-                    text-align: left;
-                    padding: 0px 25px;
-                    line-height: 18px;
-                }
-
-                .basketTable tr.cmnRow td.greyBox .greyBoxInner .radioBtnGrp {
-                    list-style: none;
+                .basketTable tr.cmnRow td.greyBox .greyBoxInner {
+                    background-color: #f3f3f3;
+                    height: 145px;
                     display: flex;
-                    flex-direction: column;
-                    align-items: flex-start;
-                    justify-content: flex-start;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: center;
                 }
 
-                    .basketTable tr.cmnRow td.greyBox .greyBoxInner .radioBtnGrp li {
-                        width: 100%;
+                    .basketTable tr.cmnRow td.greyBox .greyBoxInner .unavailable {
+                        color: #f33655;
+                    }
+
+                    .basketTable tr.cmnRow td.greyBox .greyBoxInner .orderNowTxt {
+                        font-size: 13px;
+                        color: #000;
+                        font-style: italic;
+                        text-align: left;
+                        padding: 0px 25px;
+                        line-height: 18px;
+                    }
+
+                    .basketTable tr.cmnRow td.greyBox .greyBoxInner .radioBtnGrp {
+                        list-style: none;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-start;
+                        justify-content: flex-start;
+                    }
+
+                        .basketTable tr.cmnRow td.greyBox .greyBoxInner .radioBtnGrp li {
+                            width: 100%;
+                            text-align: left;
+                        }
+
+                            .basketTable tr.cmnRow td.greyBox .greyBoxInner .radioBtnGrp li label {
+                                font-family: "primaryfont_Normal";
+                                font-size: 14px;
+                                color: #000;
+                            }
+
+                    .basketTable tr.cmnRow td.greyBox .greyBoxInner .EnterYourPostTxt {
+                        font-family: "primaryfont_Normal";
+                        font-style: italic;
+                        color: #f33655;
+                        font-size: 12px;
+                        text-decoration: underline !important;
+                        padding: 0px 50px;
                         text-align: left;
                     }
 
-                        .basketTable tr.cmnRow td.greyBox .greyBoxInner .radioBtnGrp li label {
-                            font-family: "primaryfont_Normal";
-                            font-size: 14px;
-                            color: #000;
+                        .basketTable tr.cmnRow td.greyBox .greyBoxInner .EnterYourPostTxt:hover {
+                            cursor: pointer;
                         }
 
-                .basketTable tr.cmnRow td.greyBox .greyBoxInner .EnterYourPostTxt {
-                    font-family: "primaryfont_Normal";
-                    font-style: italic;
-                    color: #f33655;
-                    font-size: 12px;
-                    text-decoration: underline !important;
-                    padding: 0px 50px;
-                    text-align: left;
-                }
-
-                    .basketTable tr.cmnRow td.greyBox .greyBoxInner .EnterYourPostTxt:hover {
-                        cursor: pointer;
-                    }
-
-    .basketTable tr.cmnRow .subtotalCell .subtotalCellInner {
-        padding: 20px 0px;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-end;
-        align-items: flex-end;
-    }
-
-        .basketTable tr.cmnRow .subtotalCell .subtotalCellInner span {
-            font-family: "primaryfont_Bold";
-            font-size: 14px;
-            margin-right: 20px;
+        .basketTable tr.cmnRow .subtotalCell .subtotalCellInner {
+            padding: 20px 0px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+            align-items: flex-end;
         }
 
-            .basketTable tr.cmnRow .subtotalCell .subtotalCellInner span:last-child {
-                margin-right: 0px;
+            .basketTable tr.cmnRow .subtotalCell .subtotalCellInner span {
+                font-family: "primaryfont_Bold";
+                font-size: 14px;
+                margin-right: 20px;
             }
 
-    .basketTable tr.cmnRow .prd {
-        width: 20%;
-        min-width: 275px;
-        text-align: left;
-    }
+                .basketTable tr.cmnRow .subtotalCell .subtotalCellInner span:last-child {
+                    margin-right: 0px;
+                }
 
-        .basketTable tr.cmnRow .prd .prdCellwrap {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .basketTable tr.cmnRow .prd {
+            width: 20%;
+            min-width: 275px;
+            text-align: left;
         }
 
-            .basketTable tr.cmnRow .prd .prdCellwrap .inrow {
+            .basketTable tr.cmnRow .prd .prdCellwrap {
                 width: 100%;
                 display: flex;
-                flex-direction: row;
+                flex-direction: column;
                 align-items: center;
-                justify-content: flex-start;
             }
 
-                .basketTable tr.cmnRow .prd .prdCellwrap .inrow .imgWrap {
-                    width: 90px;
-                    height: 90px;
-                }
-
-                    .basketTable tr.cmnRow .prd .prdCellwrap .inrow .imgWrap img {
-                        width: 100%;
-                    }
-
-                .basketTable tr.cmnRow .prd .prdCellwrap .inrow .prdName {
-                    font-family: "primaryfont_SemiBold";
-                    font-size: 16px;
-                    padding: 12px 30px;
-                }
-
-                .basketTable tr.cmnRow .prd .prdCellwrap .inrow.btm {
+                .basketTable tr.cmnRow .prd .prdCellwrap .inrow {
+                    width: 100%;
                     display: flex;
                     flex-direction: row;
-                    align-items: flex-start;
+                    align-items: center;
                     justify-content: flex-start;
                 }
 
-                    .basketTable tr.cmnRow .prd .prdCellwrap .inrow.btm .imgWrap {
-                        height: auto;
+                    .basketTable tr.cmnRow .prd .prdCellwrap .inrow .imgWrap {
+                        width: 90px;
+                        height: 90px;
                     }
 
-                    .basketTable tr.cmnRow .prd .prdCellwrap .inrow.btm .prdName {
-                        display: flex;
-                        flex-direction: row;
-                        align-items: center;
-                        justify-content: center;
-                        color: #f33655;
-                        font-size: 13px;
-                    }
-
-                        .basketTable tr.cmnRow .prd .prdCellwrap .inrow.btm .prdName i {
-                            margin-right: 8px;
-                            color: #f33655;
+                        .basketTable tr.cmnRow .prd .prdCellwrap .inrow .imgWrap img {
+                            width: 100%;
                         }
 
-    .basketTable tr.cmnRow .price {
-        width: 8%;
-    }
+                    .basketTable tr.cmnRow .prd .prdCellwrap .inrow .prdName {
+                        font-family: "primaryfont_SemiBold";
+                        font-size: 16px;
+                        padding: 12px 30px;
+                    }
 
-        .basketTable tr.cmnRow .price .priceWrapinner {
-            font-family: "primaryfont_SemiBold";
-            font-size: 16px;
-            height: 100px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+                    .basketTable tr.cmnRow .prd .prdCellwrap .inrow.btm {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: flex-start;
+                        justify-content: flex-start;
+                    }
+
+                        .basketTable tr.cmnRow .prd .prdCellwrap .inrow.btm .imgWrap {
+                            height: auto;
+                        }
+
+                        .basketTable tr.cmnRow .prd .prdCellwrap .inrow.btm .prdName {
+                            display: flex;
+                            flex-direction: row;
+                            align-items: center;
+                            justify-content: center;
+                            color: #f33655;
+                            font-size: 13px;
+                        }
+
+                            .basketTable tr.cmnRow .prd .prdCellwrap .inrow.btm .prdName i {
+                                margin-right: 8px;
+                                color: #f33655;
+                            }
+
+        .basketTable tr.cmnRow .price {
+            width: 8%;
         }
 
-    .basketTable tr.cmnRow .qty {
-        width: 15%;
-        min-width: 160px;
-        align-items: center;
-    }
-
-        .basketTable tr.cmnRow .qty .QtyWrap {
-            width: 100%;
-            height: 100px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 0px 10px;
-        }
-
-        .basketTable tr.cmnRow .qty .QtyWrapinner {
-            width: 100%;
-            height: 40px;
-            border: solid 1px #707070;
-            position: relative;
-            padding-right: 30px;
-            padding-left: 30px;
-        }
-
-            .basketTable tr.cmnRow .qty .QtyWrapinner .coutnerInput {
-                border: none;
-                height: 37px;
-                width: 100%;
-                text-align: center;
-                font-family: "primaryfont_Normal";
+            .basketTable tr.cmnRow .price .priceWrapinner {
+                font-family: "primaryfont_SemiBold";
                 font-size: 16px;
-            }
-
-                .basketTable tr.cmnRow .qty .QtyWrapinner .coutnerInput:focus {
-                    outline: none;
-                }
-
-                .basketTable tr.cmnRow .qty .QtyWrapinner .coutnerInput:active {
-                    outline: none;
-                }
-
-            .basketTable tr.cmnRow .qty .QtyWrapinner span {
-                width: 30px;
-                height: 100%;
+                height: 100px;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                font-size: 15px;
-                position: absolute;
-                right: 0;
-                top: 0;
-                cursor: pointer;
             }
 
-            .basketTable tr.cmnRow .qty .QtyWrapinner span:hover {
-                background-color: rgba(200, 200, 200, .5)
-            }
-
-                .basketTable tr.cmnRow .qty .QtyWrapinner span:active {
-                    background-color: rgba(200, 200, 200, .2)
-                }
-
-                .basketTable tr.cmnRow .qty .QtyWrapinner span.min {
-                    left: 0;
-                }
-
-                .basketTable tr.cmnRow .qty .QtyWrapinner span.add {
-                    right: 0;
-                }
-
-    .basketTable tr.cmnRow .tot {
-        width: 8%;
-        min-width: 120px;
-    }
-
-        .basketTable tr.cmnRow .tot .priceTotal {
-            font-family: "primaryfont_Bold";
-            font-size: 16px;
-            height: 100px;
-            display: flex;
-            flex-direction: column;
+        .basketTable tr.cmnRow .qty {
+            width: 15%;
+            min-width: 160px;
             align-items: center;
-            justify-content: center;
-            position: relative;
         }
+
+            .basketTable tr.cmnRow .qty .QtyWrap {
+                width: 100%;
+                height: 100px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 0px 10px;
+            }
+
+            .basketTable tr.cmnRow .qty .QtyWrapinner {
+                width: 100%;
+                height: 40px;
+                border: solid 1px #707070;
+                position: relative;
+                padding-right: 30px;
+                padding-left: 30px;
+            }
+
+                .basketTable tr.cmnRow .qty .QtyWrapinner .coutnerInput {
+                    border: none;
+                    height: 37px;
+                    width: 100%;
+                    text-align: center;
+                    font-family: "primaryfont_Normal";
+                    font-size: 16px;
+                }
+
+                    .basketTable tr.cmnRow .qty .QtyWrapinner .coutnerInput:focus {
+                        outline: none;
+                    }
+
+                    .basketTable tr.cmnRow .qty .QtyWrapinner .coutnerInput:active {
+                        outline: none;
+                    }
+
+                .basketTable tr.cmnRow .qty .QtyWrapinner span {
+                    width: 30px;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 15px;
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    cursor: pointer;
+                }
+
+                    .basketTable tr.cmnRow .qty .QtyWrapinner span:hover {
+                        background-color: rgba(200, 200, 200, 0.5);
+                    }
+
+                    .basketTable tr.cmnRow .qty .QtyWrapinner span:active {
+                        background-color: rgba(200, 200, 200, 0.2);
+                    }
+
+                    .basketTable tr.cmnRow .qty .QtyWrapinner span.min {
+                        left: 0;
+                    }
+
+                    .basketTable tr.cmnRow .qty .QtyWrapinner span.add {
+                        right: 0;
+                    }
+
+        .basketTable tr.cmnRow .tot {
+            width: 8%;
+            min-width: 120px;
+        }
+
+            .basketTable tr.cmnRow .tot .priceTotal {
+                font-family: "primaryfont_Bold";
+                font-size: 16px;
+                height: 100px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+            }
 
             .basketTable tr.cmnRow .tot .in-basket-price-total:after {
                 position: absolute;
@@ -2378,70 +2450,78 @@ body.modal-open {
                 border-left: 8px solid #000;
             }
 
-        .basketTable tr.cmnRow .tot .removeBtn {
-            color: #f33655;
-            font-size: 13px;
-            font-family: "primaryfont_SemiBold";
-        }
-
-    .basketTable tr.cmnRow .store {
-        width: 13%;
-        width:175px;
-        border-bottom: solid 1px transparent;
-    }
-
-        .basketTable tr.cmnRow .store .chsStoreLnk {
-            font-family: "primaryfont_Bold";
-            text-decoration: underline !important;
-            color: #f33655;
-            font-size: 13px;
-            font-style: italic;
-        }
-
-    .basketTable tr.cmnRow .homeDel {
-        width: 20%;
-        width:176px;
-        border-bottom: solid 1px transparent;
-    }
-
-        .basketTable tr.cmnRow .homeDel .postCodeCheckFormwrap {
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-        }
-
-            .basketTable tr.cmnRow .homeDel .postCodeCheckFormwrap input[type="text"] {
-                width: 70%;
-                height: 30px;
-                border: solid 1px #ddd;
-                text-indent: 10px;
+            .basketTable tr.cmnRow .tot .removeBtn {
+                color: #f33655;
+                font-size: 13px;
+                font-family: "primaryfont_SemiBold";
             }
 
-                .basketTable tr.cmnRow .homeDel .postCodeCheckFormwrap input[type="text"]:focus {
-                    outline: none;
-                }
+        .basketTable tr.cmnRow .store {
+            width: 13%;
+            width: 175px;
+            border-bottom: solid 1px transparent;
+        }
 
-                .basketTable tr.cmnRow .homeDel .postCodeCheckFormwrap input[type="text"]:active {
-                    outline: none;
-                }
+            .basketTable tr.cmnRow .store .chsStoreLnk {
+                font-family: "primaryfont_Bold";
+                text-decoration: underline !important;
+                color: #f33655;
+                font-size: 13px;
+                font-style: italic;
+            }
 
-            .basketTable tr.cmnRow .homeDel .postCodeCheckFormwrap .chckBtn {
-                width: 30%;
-                height: 30px;
+        .basketTable tr.cmnRow .homeDel {
+            width: 20%;
+            width: 176px;
+            border-bottom: solid 1px transparent;
+        }
+
+            .basketTable tr.cmnRow .homeDel .postCodeCheckFormwrap {
+                width: 100%;
                 display: flex;
                 flex-direction: row;
                 align-items: center;
                 justify-content: center;
-                font-family: "primaryfont_Bold";
-                font-size: 12px;
-                font-style: italic;
-                background-color: #f33655;
-                color: #fff;
-                outline: none;
-                border: none;
             }
+
+                .basketTable tr.cmnRow .homeDel .postCodeCheckFormwrap input[type="text"] {
+                    width: 70%;
+                    height: 30px;
+                    border: solid 1px #ddd;
+                    text-indent: 10px;
+                }
+
+                    .basketTable
+                    tr.cmnRow
+                    .homeDel
+                    .postCodeCheckFormwrap
+                    input[type="text"]:focus {
+                        outline: none;
+                    }
+
+                    .basketTable
+                    tr.cmnRow
+                    .homeDel
+                    .postCodeCheckFormwrap
+                    input[type="text"]:active {
+                        outline: none;
+                    }
+
+                .basketTable tr.cmnRow .homeDel .postCodeCheckFormwrap .chckBtn {
+                    width: 30%;
+                    height: 30px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: center;
+                    font-family: "primaryfont_Bold";
+                    font-size: 12px;
+                    font-style: italic;
+                    background-color: #f33655;
+                    color: #fff;
+                    outline: none;
+                    border: none;
+                }
 
 .gotApromoSec {
     width: 100%;
@@ -2522,7 +2602,7 @@ body.modal-open {
     justify-content: center;
 }
 
-@media(max-width:575px) {
+@media (max-width: 575px) {
     .botomBtnsec {
         flex-wrap: wrap;
     }
@@ -2532,47 +2612,49 @@ body.modal-open {
             margin-top: 15px !important;
         }
 }
-    .botomBtnsec .btmbtn {
-        width: 200px;
-        height: 50px;
-        transition: all 0.3s ease;
-        font-family: "primaryfont_Bold";
-        font-size: 16px;
-        text-transform: uppercase;
+
+.botomBtnsec .btmbtn {
+    width: 200px;
+    height: 50px;
+    transition: all 0.3s ease;
+    font-family: "primaryfont_Bold";
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+    .botomBtnsec .btmbtn.pro {
+        background-color: #f33655;
+        color: #fff;
+        border: solid 1px #f33655;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
     }
 
-        .botomBtnsec .btmbtn.pro {
-            background-color: #f33655;
-            color: #fff;
-            border: solid 1px #f33655;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
+        .botomBtnsec .btmbtn.pro:hover {
+            background-color: #000;
+            border: solid 1px #000;
         }
-            .botomBtnsec .btmbtn.pro:hover {
-                background-color: #000;
-                border: solid 1px #000;
-            }
-            .botomBtnsec .btmbtn.sho {
-                background-color: transparent;
-                color: #707070;
-                border: solid 1px #707070;
-                display: flex;
-                margin-right: 10px;
-                margin-left: 10px;
-                flex-direction: row;
-                align-items: center;
-                justify-content: center;
-            }
-                .botomBtnsec .btmbtn.sho:hover {
-                    background-color: #000;
-                    border: solid 1px #000;
-                    color: #fff;
-                }
+
+    .botomBtnsec .btmbtn.sho {
+        background-color: transparent;
+        color: #707070;
+        border: solid 1px #707070;
+        display: flex;
+        margin-right: 10px;
+        margin-left: 10px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .botomBtnsec .btmbtn.sho:hover {
+            background-color: #000;
+            border: solid 1px #000;
+            color: #fff;
+        }
 /*new cart page- css end*/
-
-
 
 /*radio box form cart page -start*/
 .basketTable [type="radio"]:checked,
@@ -2633,7 +2715,6 @@ body.modal-open {
         }
 /*radio box form cart page -end*/
 
-
 .nb_bannersec .np_bannerContentOuter .nb_bnr_count:after {
     content: "";
     width: 0px;
@@ -2643,7 +2724,6 @@ body.modal-open {
     content: "";
     width: 0px;
 }
-
 
 .accordion ul li div a h2 {
     text-transform: none;
@@ -2656,7 +2736,6 @@ body.modal-open {
 .nb_logowrap {
     padding-top: 0px !important;
 }
-
 
 .nb_sec_navwrap .nb_sec_navlist li {
     cursor: pointer;
@@ -2673,14 +2752,12 @@ body.modal-open {
     color: #ffffff;
 }
 
-
 .nb_top_catSection .accordion ul li {
     width: 25%;
     margin: 15px;
 }
 
 @media (max-width: 768px) {
-
     .accordion {
         overflow-x: hidden;
         overflow-y: auto;
@@ -2694,7 +2771,6 @@ body.modal-open {
         justify-content: center;
         flex-wrap: wrap;
     }
-
 
     .nb_header {
         height: 200px;
@@ -2728,8 +2804,9 @@ body.modal-open {
 
     .mobile-checkout {
         display: block !important;
-        margin: 0 10px
+        margin: 0 10px;
     }
+
     .headBoxTop,
     .basketTable tr.cmnRow .tot .in-basket-price-total:after,
     .basketTable tr.cmnRow .homeDel,
@@ -2752,8 +2829,7 @@ body.modal-open {
     z-index: 1000 !important;
 }
 
-
-#shipping-address-postcode{
+#shipping-address-postcode {
     text-transform: uppercase;
 }
 
@@ -2773,11 +2849,11 @@ body.modal-open {
         left: 0;
         padding: 0 5px;
         content: attr(data-title);
-        font-size: .75rem;
+        font-size: 0.75rem;
         font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
         color: white;
         background-color: rgb(255, 25, 100);
-        border-radius: .25rem 0 .25rem 0;
+        border-radius: 0.25rem 0 0.25rem 0;
     }
 
     .snipper .stage {
@@ -2789,6 +2865,7 @@ body.modal-open {
         margin: 0 -5%;
         overflow: hidden;
     }
+
         .snipper .stage .dot-spin {
             position: relative;
             width: 10px;
@@ -2842,31 +2919,5 @@ body.modal-open {
 
     87.5% {
         box-shadow: 0 -18px 0 0 #b0aeb4, 12.72984px -12.72984px 0 0 #b0aeb4, 18px 0 0 -5px rgba(152, 128, 255, 0), 12.72984px 12.72984px 0 -5px rgba(152, 128, 255, 0), 0 18px 0 -5px rgba(152, 128, 255, 0), -12.72984px 12.72984px 0 -5px rgba(152, 128, 255, 0), -18px 0 0 -5px rgba(152, 128, 255, 0), -12.72984px -12.72984px 0 0 #b0aeb4;
-    }
-}
-
-/*.ui-autocomplete {
-    display: block !important;
-}*/
-.search-item a.ui-state-active {
-        border: unset !important;
-        background: unset !important;
-        color: #ffffff !important;
-    }
-.search-item:hover {
-    background-color: #111111;
-}
-.search-item .ui-menu-item-wrapper {
-    padding-left: 2px!important;
-}
-.search-item .ui-menu-item-wrapper img {
-        margin-right: 6px;
-}
-.uni-search-div {
-    width: 60%;
-}
-@media(max-width:1024px) {
-    .uni-search-div {
-        width: 98%;
     }
 }
