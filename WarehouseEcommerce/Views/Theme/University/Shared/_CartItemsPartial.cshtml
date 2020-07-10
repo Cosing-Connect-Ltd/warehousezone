@@ -265,9 +265,9 @@
                                             <td class="homeDel greyBox">
                                                 <div class="greyBoxInner">
                                                     <p class="orderNowTxt" id="delivery_status_@item.Id">
-                                                        <span class="available" @(item.IsAvailableForDelivery == true ? "" : "hidden")>Available for Delivery</span>
+                                                        <span class="available" @(@*item.IsAvailableForDelivery ==*@ true ? "" : "hidden")>Available for Delivery</span>
                                                         <span class="unavailable" @(item.IsAvailableForDelivery == false ? "" : "hidden")><b>Unavailable For Delivery!</b></span>
-                                                        <span class="unselected" @(Model.ShippingAddressPostCode == null ? "" : "hidden")><b>Choose A Shipping Address!</b></span>
+                                                        @*<span class="unselected" @(Model.ShippingAddressPostCode == null ? "" : "hidden")><b>Choose A Shipping Address!</b></span>*@
                                                     </p>
                                                 </div>
                                             </td>
