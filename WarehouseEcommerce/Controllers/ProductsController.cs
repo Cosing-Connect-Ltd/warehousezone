@@ -279,8 +279,8 @@ namespace WarehouseEcommerce.Controllers
                 Session["shippingAddressPostCode"] = firstAddress?.PostCode;
             }
 
-            model.ShippingAddressId = (int)Session["shippingAddressId"];
-            model.ShippingAddressPostCode = (string)Session["shippingAddressPostCode"];
+            model.ShippingAddressId = Session["shippingAddressId"] != null ?(int)Session["shippingAddressId"] : (int?)null;
+            model.ShippingAddressPostCode = Session["shippingAddressPostCode"] != null ? (string)Session["shippingAddressPostCode"] : null;
         }
 
         private void InitiateCollectionPoint(ref WebsiteCartItemsViewModel model)
