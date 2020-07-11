@@ -231,74 +231,8 @@
                             </div>
                             <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
                                 <div class="tabcontentInner tab_myaccount">
-                                    <h2 class="headMain">My Wishlist</h2>
-                                    <div class="subcontBox">
-                                        <ul class="myAccwishlistList">
-                                            @foreach (var wishlistitem in Model.WebsiteWishList)
-                                            {
-
-
-
-                                                <li>
-                                                    <div class="myAccwishlistList_inner">
-                                                        <div class="cont_left">
-                                                            <span class="prod_img">
-                                                                <img src="@(!string.IsNullOrEmpty(wishlistitem.ProductMaster.DefaultImage)? ViewBag.BaseFilePath + wishlistitem.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="">
-                                                            </span>
-                                                            <div class="prod_det">
-                                                                <h4 class="prdhead">@wishlistitem.ProductMaster.Name</h4>
-                                                                @if (wishlistitem.ProductMaster.InventoryStocks.Count > 0)
-                                                                {
-                                                                    <span class="stkStatus in">In Stock</span>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <span class="stkStatus out">Out of stock</span>
-                                                                }
-
-                                                                <ul class="prodDetlist">
-                                                                    @*foreach (var attribute in wishlistitem.ProductMaster.ProductAttributeMaps)
-                                                                    {
-                                                                        <li>
-                                                                            <span>attribute.ProductAttributes.AttributeName</span>
-                                                                            foreach (var item in attribute.ProductAttributes.ProductAttributeValues)
-                                                                            {
-                                                                                <span>item.Value</span>
-                                                                            }
-
-                                                                        </li>
-
-                                                                    }*@
-                                                                    @*<li>
-                                                                            <span>Qty</span>
-                                                                            <span>
-                                                                                <input type="text" class="qtyinputbox" value="@wishlistitem.">
-                                                                            </span>
-                                                                        </li>*@
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                        <div class="cont_right">
-                                                            <ul class="prd_totLst">
-                                                                <li>
-                                                                    <span>Price</span>
-                                                                    <span>@wishlistitem.ProductMaster.SellPrice</span>
-                                                                </li>
-                                                                <li>
-                                                                    <span>Total</span>
-                                                                    <span>@wishlistitem.ProductMaster.SellPrice</span>
-                                                                </li>
-                                                                <li>
-                                                                    <button class="mtcBtn" onclick="AddToCart(@wishlistitem.ProductMaster.ProductId)"><i class="icon-shopping-cart" ></i>Move to cart</button>
-                                                                </li>
-                                                            </ul>
-
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            }
-
-                                        </ul>
+                                    <div id="UpdateWishList">
+                                        @Html.Action("_wishlistItems","Products")
                                     </div>
                                 </div>
                             </div>
