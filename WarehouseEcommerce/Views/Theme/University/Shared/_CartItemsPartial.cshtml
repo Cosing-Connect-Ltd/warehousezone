@@ -128,11 +128,11 @@
     </script>
 }
 
-<section class="nb_sec nb_prdlisting_pgsec mb-5">
+<section class="nb_sec nb_prdlisting_pgsec">
     <div class="container">
         <div class="nb_sec checkconfirmSec">
 
-            <div class="checkoutInnersec Paymentsec mb-5">
+            <div class="checkoutInnersec Paymentsec">
                 @if (Model.WebsiteCartItems == null || Model.WebsiteCartItems.Count > 0)
                 {
                     <h4 class="ordConfirmHead">Basket</h4>
@@ -140,7 +140,7 @@
                 <div class="tableWrap">
                     @if (Model.WebsiteCartItems == null || Model.WebsiteCartItems.Count > 0)
                     {
-                        <table class="basketTable table-responsive">
+                        <table class="basketTable">
                             <tbody>
                                 @if (Model.ShowCartPopUp != true)
                                 {

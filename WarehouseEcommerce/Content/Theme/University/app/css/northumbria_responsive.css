@@ -145,7 +145,6 @@
     }
 }
 
-
 @media (max-width: 1024px) {
     .nb_prd_det_rightsec .head {
         font-size: 26px;
@@ -165,56 +164,6 @@
 
     .nb_prd_det_rightsec .footSec button.addTobasket {
         margin-right: 20px;
-    }
-    .basketTable tr.cmnRow .prd .prdCellwrap .inrow .prdName {
-        padding: 12px 10px;
-    }
-
-    .gotApromoSec .head {
-        text-align: center;
-    }
-
-    .gotApromoSec .gotApromoSecInner {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .gotApromoSec {
-        margin-bottom: 55px;
-    }
-
-    .basketTable tr.cmnRow .prd .prdCellwrap .inrow.btm .imgWrap {
-        display: none;
-    }
-
-    .basketTable tr.cmnRow td.greyBox .greyBoxInner .orderNowTxt {
-        padding: 0 15px;
-    }
-
-    .basketTable tr.cmnRow td.greyBox .greyBoxInner .EnterYourPostTxt {
-        padding: 0px 20px;
-    }
-
-    .container {
-        max-width: 991px;
-    }
-
-    .basketTable tr.cmnRow td.greyBox .greyBoxInner .orderNowTxt {
-        font-size: 12px;
-    }
-
-    .basketTable tr.cmnRow td.greyBox .greyBoxInner .radioBtnGrp li label {
-        font-size: 12px;
-    }
-
-    .basketTable tr.cmnRow .prd .prdCellwrap .inrow .prdName {
-        font-size: 14px;
-    }
-
-    .basketTable tr td .headBoxTop .head {
-        font-size: 16px;
     }
 }
 
@@ -265,31 +214,6 @@
         .nb_sec_navlist li a i {
             margin: 5px 0px;
         }
-    .progressBarStep ul#progressList li span.txt {
-        font-size: 12px;
-    }
-
-    #quickCartAddedtobasket .modal-dialog {
-        max-width: 90%;
-    }
-
-        #quickCartAddedtobasket .modal-dialog .modal-content .modal-body .addedTobasketModelWrap table {
-            width: 600px;
-        }
-
-        #quickCartAddedtobasket .modal-dialog .modal-content .modal-body .addedTobasketModelWrap {
-            overflow: scroll;
-        }
-
-    .basketTable {
-        width: 991px;
-        overflow: scroll;
-    }
-
-    .tableWrap {
-        width: 100%;
-        overflow: scroll;
-    }
 }
 
 @media (max-width: 768px) {
