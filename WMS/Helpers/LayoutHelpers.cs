@@ -262,7 +262,7 @@ namespace WMS.Helpers
 
         public static string GetUserName(int? userId)
         {
-            if (!userId.HasValue) return "";
+            if (!userId.HasValue || userId == 0) return "";
             var helperService = DependencyResolver.Current.GetService<IUserService>();
             return helperService.GetAuthUserById(userId.Value)?.UserName;
         }

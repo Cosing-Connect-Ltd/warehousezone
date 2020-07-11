@@ -3071,6 +3071,23 @@ body.modal-open {
     color: #19ee08;
 }
 
+.dropdown-menu.show {
+    min-width: 300px;
+}
+
+.dropdown-menu li {
+    width: 100%;
+}
+
+    .dropdown-menu li:hover {
+        background-color: #414343;
+    }
+
+.res_navWrapper .nb_lgn_btn_res {
+    margin-bottom: 8px;
+    text-transform: none;
+}
+
 .nb_header .nb_headicolst li i {
     font-size: 20px;
 }

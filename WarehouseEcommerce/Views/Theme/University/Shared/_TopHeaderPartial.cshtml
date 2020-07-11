@@ -16,7 +16,7 @@
         @if (WarehouseEcommerce.Helpers.LayoutHelpers.UserLoginStatus())
         {
             <button class="nb_lgn_btn_res" onclick="Logout();">Logout</button>
-            <button onClick="location.href='@Url.Action("Account","User")'" class="nb_lgn_btn_res">Account</button>
+            <button onClick="location.href='@Url.Action("Account","User")'" class="nb_lgn_btn_res">My Account</button>
         }
 
     </div>
@@ -60,21 +60,12 @@
                 }
                 else
                 {
-                    @*<a href="javascript:;" onclick="Logout();">
-                            <i class="ico icon-user" title="@ViewBag.UserName"></i>
-                        </a>*@
                     <a href="#" title="@(ViewBag.UserName  == " " ? "My Account" : ViewBag.UserName)" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="ico icon-user" title="@ViewBag.UserName"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right user_account user-fa-icons" style="background:black;">
-                        @*<li>
-                                <a href="javascript:;">@ViewBag.UserName</a>
-                            </li>*@
-                        <li style="border-right:0px;">
-                            <a href="@Url.Action("Account","User")" style="color:white;">@ViewBag.UserName</a>
-                        </li>
-                        <li style="border-right:0px;"><a href="@Url.Action("Account","User")" style="color:white; border-right:0px;">Order History</a></li>
-                        <li style="border-right:0px;"><a href="@Url.Action("Account","User")" style="color:white; border-right:0px;">Wish List</a></li>
+                        <li style="border-right:0px;"><a href="#")" style="color:white;" class="font-italic h6">Welcome @ViewBag.UserName</a></li>
+                        <li style="border-right:0px;"><a href="@Url.Action("Account","User")" style="color:white; border-right:0px;">My Account</a></li>
 
 
                         @if (ViewBag.UserName == null)
