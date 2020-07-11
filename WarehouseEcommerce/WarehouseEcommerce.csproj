@@ -624,6 +624,7 @@
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jscolor.js" />
     <Content Include="Scripts\modal-steps.min.js" />
+    <Content Include="Scripts\rangeSlider.js" />
     <Content Include="Views\Theme\Smart\Shared\_TopCategoryProductsPartial.cshtml" />
     <Content Include="Views\Theme\Smart\User\Account.cshtml" />
     <Content Include="Views\Theme\Smart\User\OrderHistory.cshtml" />
