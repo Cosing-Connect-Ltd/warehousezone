@@ -264,7 +264,7 @@ namespace WMS.Helpers
         {
             if (!userId.HasValue) return "";
             var helperService = DependencyResolver.Current.GetService<IUserService>();
-            return helperService.GetAuthUserById(userId.Value).UserName;
+            return helperService.GetAuthUserById(userId.Value)?.UserName;
         }
 
         public static string GetStStatusString(int statusCode)

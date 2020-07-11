@@ -69,7 +69,7 @@
             @Html.DisplayNameFor(model => model.CreatedBy)
         </dt>
         <dd>
-            @LayoutHelpers.GetUserName(Model.CreatedBy)
+            @LayoutHelpers.GetUserName(Model.CreatedBy ?? Model.UserId)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.UpdatedBy)
