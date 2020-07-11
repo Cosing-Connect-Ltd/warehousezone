@@ -505,7 +505,7 @@ namespace WMS.Controllers
                 {
                     return Json(new { error = true, errormessage = "Attribute must be selected first" });
                 }
-                var chkAttribute = _productLookupService.SaveProductAttributeValue(model.AttributeId, model.Value,model.SortOrder, CurrentUserId);
+                var chkAttribute = _productLookupService.SaveProductAttributeValue(model.AttributeId, model.Value, model.SortOrder, model.Color, CurrentUserId);
                 if (chkAttribute == null)
                     throw new Exception("Attribute Already exists");
 
@@ -522,7 +522,7 @@ namespace WMS.Controllers
         {
             try
             {
-                var chkAttribute = _productLookupService.SaveProductAttribute(model.AttributeName,model.SortOrder);
+                var chkAttribute = _productLookupService.SaveProductAttribute(model.AttributeName, model.SortOrder, model.IsColorTyped);
                 if (chkAttribute == null)
                     throw new Exception("Attribute Already exists");
 

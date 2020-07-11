@@ -312,7 +312,7 @@ namespace Ganedata.Core.Services
 
 
 
-        public ProductAttributes SaveProductAttribute(string attributeName,int sortOrder)
+        public ProductAttributes SaveProductAttribute(string attributeName,int sortOrder, bool isColorTyped)
         {
             var chkAttribute = _currentDbContext.ProductAttributes.FirstOrDefault(a => a.AttributeName.Equals(attributeName, StringComparison.CurrentCultureIgnoreCase));
             if (chkAttribute != null) return null;
@@ -320,14 +320,15 @@ namespace Ganedata.Core.Services
             var att = new ProductAttributes()
             {
                 AttributeName = attributeName,
-                SortOrder = sortOrder
+                SortOrder = sortOrder,
+                IsColorTyped = isColorTyped
             };
             _currentDbContext.Entry(att).State = EntityState.Added;
             _currentDbContext.SaveChanges();
             return att;
         }
 
-        public ProductAttributeValues SaveProductAttributeValue(int attributeId, string attributeValue, int sortOrder, int userId = 0)
+        public ProductAttributeValues SaveProductAttributeValue(int attributeId, string attributeValue, int sortOrder, string color, int userId = 0)
         {
             var value = _currentDbContext.ProductAttributeValues.FirstOrDefault(m => m.AttributeId == attributeId && m.Value == attributeValue);
             if (value == null && userId > 0)
@@ -336,7 +337,8 @@ namespace Ganedata.Core.Services
                 {
                     AttributeId = attributeId,
                     Value = attributeValue,
-                    SortOrder = sortOrder
+                    SortOrder = sortOrder,
+                    Color = color
                 };
 
                 value.UpdateCreatedInfo(userId);
@@ -360,7 +362,7 @@ namespace Ganedata.Core.Services
         {
             if (model.AttributeValueId == 0)
             {
-                var valuetoAdd = SaveProductAttributeValue(model.AttributeId, model.Value, userId);
+                var valuetoAdd = SaveProductAttributeValue(model.AttributeId, model.Value, userId, model.Color);
                 var valueMap = new ProductAttributeValuesMap
                 {
                     AttributeValueId = valuetoAdd.AttributeValueId,
@@ -809,11 +811,11 @@ namespace Ganedata.Core.Services
                     Quantity = productMaster.Qty ?? 1,
                     ProductKitTypeId = productMaster.Id,
                     IsActive = productMaster.IsActive ?? false
-                    
+
                 };
                 _currentDbContext.ProductKitMaps.Add(newItem);
             }
-            else 
+            else
             {
                 productKitMaps.UpdateUpdatedInfo(UserId);
                 productKitMaps.KitProductId = productMaster.ProductId;

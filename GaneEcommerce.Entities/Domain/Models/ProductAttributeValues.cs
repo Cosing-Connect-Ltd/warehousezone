@@ -25,6 +25,8 @@ namespace Ganedata.Core.Entities.Domain
         [Required]
         [Display(Name = "Sort Value")]
         public int SortOrder { get; set; }
+        [Display(Name = "Color")]
+        public string Color { get; set; }
         public virtual ProductAttributes ProductAttributes { get; set; }
         public virtual ICollection<ProductAttributeValuesMap> ProductAttributeValuesMap { get; set; }
     }

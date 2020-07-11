@@ -959,6 +959,10 @@
     <Compile Include="Migrations\202007111214279_sortorderolumn-added-in-productarrtibutes.designer.cs">
       <DependentUpon>202007111214279_sortorderolumn-added-in-productarrtibutes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007111736215_add-color-field-to-attributes-table.cs" />
+    <Compile Include="Migrations\202007111736215_add-color-field-to-attributes-table.designer.cs">
+      <DependentUpon>202007111736215_add-color-field-to-attributes-table.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1998,6 +2002,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007111214279_sortorderolumn-added-in-productarrtibutes.resx">
       <DependentUpon>202007111214279_sortorderolumn-added-in-productarrtibutes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007111736215_add-color-field-to-attributes-table.resx">
+      <DependentUpon>202007111736215_add-color-field-to-attributes-table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -419,7 +419,7 @@ function attributeSave() {
 
 }
 function pcModalAttributesValues_EndCallback(s, e) {
-  
+
     GetAttributeValuesById($("#drpattribute option:selected").val());
 }
 function GetAttributeValuesById(attributeId) {
@@ -432,7 +432,7 @@ function GetAttributeValuesById(attributeId) {
                     $.each(result.data, function (i, item) {
                         $('#AttributeValueId').append($('<option></option>').val(item.AttributeValueId).html(item.Value));
                     });
-                   
+
                 }
 
                 $("#AttributeValueId").trigger("chosen:updated");

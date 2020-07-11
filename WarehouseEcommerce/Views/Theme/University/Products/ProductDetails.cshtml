@@ -150,9 +150,9 @@
 
                                                 @Html.Raw("<li class=\"col3 " + (isSelectedAttributeValue ? "active" : "") + (!isSelectedAttributeValue && !isAttributeAvailableWithCurrentSelection ? "unavailable-attribute\">" : "\">") +
                                                                 (isSelectedAttributeValue ? "<a>" : $"<a href=\"ProductDetails?sku={ViewBag.BaseProduct.SKUCode}&productId={relatedProducts.FirstOrDefault()?.ProductId ?? Model.ProductId}\">") +
-                                                                (attributeValue.ProductAttributes.AttributeName.ToLower().IndexOf("color") == -1 && attributeValue.ProductAttributes.AttributeName.ToLower().IndexOf("colour") == -1 ?
-                                                                "<span>" + attributeValue.Value + "</span>" :
-                                                                "<span style=\"background-color:" + attributeValue.Value + ";color:" + attributeValue.Value + "\">-</span>") +
+                                                                (!attributeValue.ProductAttributes.IsColorTyped ?
+                                                                                "<span style=\"color:" + (!string.IsNullOrEmpty(attributeValue.Color?.Trim()) ? attributeValue.Color : attributeValue.Value) + "\">" + attributeValue.Value + "</span>" :
+                                                                                "<span style=\"background-color:" + (!string.IsNullOrEmpty(attributeValue.Color?.Trim()) ? attributeValue.Color : attributeValue.Value) + ";color:" + (!string.IsNullOrEmpty(attributeValue.Color?.Trim()) ? attributeValue.Color : attributeValue.Value) + "\">-</span>") +
                                                             "</a></li>");
                                             }
                                         }
