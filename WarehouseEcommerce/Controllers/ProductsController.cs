@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Ganedata.Core.Data.Migrations;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Models;
@@ -291,7 +292,17 @@ namespace WarehouseEcommerce.Controllers
             }
 
             model.ShippingAddressId = Session["shippingAddressId"] != null ?(int)Session["shippingAddressId"] : (int?)null;
-            model.ShippingAddressPostCode = Session["shippingAddressPostCode"] != null ? (string)Session["shippingAddressPostCode"] : null;
+
+            var postCode = Session["shippingAddressPostCode"] != null ? (string)Session["shippingAddressPostCode"] : null;
+            model.ShippingAddressPostCode = postCode;
+
+            if (!string.IsNullOrEmpty(model.ShippingAddressPostCode?.Trim()))
+            {
+                model.WebsiteCartItems.ForEach(c =>
+                {
+                    c.IsAvailableForDelivery = GetDeliveryAvailabilityStatus(c.ProductId, c.Quantity, postCode);
+                });
+            }
         }
 
         private void InitiateCollectionPoint(ref WebsiteCartItemsViewModel model)
@@ -301,16 +312,28 @@ namespace WarehouseEcommerce.Controllers
                 model.CollectionPointId = (int)Session["collectionPointId"];
                 model.CollectionPointName = (string)Session["collectionPointName"];
                 model.CollectionPointAddress = (string)Session["collectionPointAddress"];
-                model.WebsiteCartItems.ForEach(a =>
+                model.WebsiteCartItems.ForEach(c =>
                 {
-                    a.IsAvailableForCollection = _productServices.GetAllInventoryStocksByProductId(a.ProductId)
-                                                                 .Any(i => i.IsActive == true &&
-                                                                           i.IsDeleted != false &&
-                                                                           i.WarehouseId == (int)Session["collectionPointId"] &&
-                                                                           i.Available >= a.Quantity);
-                    a.IsAvailableForDelivery = true;
+                    c.IsAvailableForCollection = GetCollectionAvailabilityStatus(c.ProductId, c.Quantity, (int)Session["collectionPointId"]);
                 });
             }
+        }
+
+        private bool? GetCollectionAvailabilityStatus(int productId, decimal quantity, int? collectionPointId)
+        {
+            return collectionPointId == null ?
+                                    (bool?)null :
+                                    _productServices.GetAllInventoryStocksByProductId(productId)
+                                                         .Any(i => i.IsActive == true &&
+                                                                   i.IsDeleted != false &&
+                                                                   i.WarehouseId == collectionPointId &&
+                                                                   i.Available >= quantity);
+        }
+
+        private bool? GetDeliveryAvailabilityStatus(int productId, decimal quantity, string postCode)
+        {
+            // TODO: Complete the Delivery availability status
+            return string.IsNullOrEmpty(postCode?.Trim()) ? (bool?)null : true;
         }
 
         public JsonResult AddWishListItem(int ProductId, bool isNotfication)
@@ -517,16 +540,12 @@ namespace WarehouseEcommerce.Controllers
 
             var websiteCartItems = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, HttpContext.Session.SessionID).ToList();
 
-            var itemAvailabilities = websiteCartItems.Select(a =>
+            var itemAvailabilities = websiteCartItems.Select(c =>
                 {
                     return new
                     {
-                        Id = a.Id.ToString(),
-                        IsAvailable = _productServices.GetAllInventoryStocksByProductId(a.ProductId)
-                                                                    .Any(i => i.IsActive == true &&
-                                                                            i.IsDeleted != false &&
-                                                                            i.WarehouseId == (int)Session["collectionPointId"] &&
-                                                                            i.Available >= a.Quantity).ToString()
+                        Id = c.Id.ToString(),
+                        IsAvailable = GetCollectionAvailabilityStatus(c.ProductId, c.Quantity, id)
                     };
                 });
 
@@ -538,7 +557,18 @@ namespace WarehouseEcommerce.Controllers
             Session["shippingAddressId"] = id;
             Session["shippingAddressPostCode"] = postCode;
 
-            return Json(new Dictionary<string, bool>(), JsonRequestBehavior.AllowGet);
+            var websiteCartItems = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, HttpContext.Session.SessionID).ToList();
+
+            var itemAvailabilities = websiteCartItems.Select(c =>
+            {
+                return new
+                {
+                    Id = c.Id.ToString(),
+                    IsAvailable = GetDeliveryAvailabilityStatus(c.ProductId, c.Quantity, postCode)
+                };
+            });
+
+            return Json(itemAvailabilities, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult AddKitProductCartItem(int productId, List<KitProductCartSession> kitProductCartItems)

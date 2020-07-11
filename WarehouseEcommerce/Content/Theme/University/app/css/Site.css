@@ -2090,6 +2090,10 @@ body.modal-open {
         padding: 7px;
     }
 
+        .basketTable tr td .headBoxTop{
+            padding-left: 10px;
+        }
+
         .basketTable tr td .headBoxTop .head {
             font-family: "primaryfont_Bold";
             font-size: 20px;
@@ -2124,7 +2128,6 @@ body.modal-open {
     }
 
     .basketTable tr.cmnRow td {
-        text-align: center;
         font-weight: bold !important;
     }
 
@@ -2138,28 +2141,36 @@ body.modal-open {
                 display: flex;
                 flex-direction: row;
                 align-items: center;
-                justify-content: center;
             }
 
-                .basketTable tr.cmnRow td.greyBox .greyBoxInner .unavailable {
-                    color: #f33655;
-                }
                 .basketTable tr.cmnRow td.greyBox .greyBoxInner .orderNowTxt {
                     font-size: 13px;
                     color: #000;
                     font-style: italic;
                     text-align: left;
-                    padding: 0px 25px;
+                    padding: 0px 10px;
                     line-height: 18px;
                 }
 
-                .basketTable tr.cmnRow td.greyBox .greyBoxInner .radioBtnGrp {
-                    list-style: none;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: flex-start;
-                    justify-content: flex-start;
+                .basketTable tr.cmnRow td.greyBox .greyBoxInner .available{
+                    color: green;
                 }
+
+                .basketTable tr.cmnRow td.greyBox .greyBoxInner .unavailable {
+                    color: #f33655;
+                }
+
+                .basketTable tr.cmnRow td.greyBox .greyBoxInner .unselected {
+                    color: orange;
+                }
+
+                    .basketTable tr.cmnRow td.greyBox .greyBoxInner .radioBtnGrp {
+                        list-style: none;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-start;
+                        justify-content: flex-start;
+                    }
 
                     .basketTable tr.cmnRow td.greyBox .greyBoxInner .radioBtnGrp li {
                         width: 100%;
@@ -2394,6 +2405,7 @@ body.modal-open {
 
         .basketTable tr.cmnRow .store .chsStoreLnk {
             font-family: "primaryfont_Bold";
+            padding-left: 10px;
             text-decoration: underline !important;
             color: #f33655;
             font-size: 13px;
@@ -2522,6 +2534,10 @@ body.modal-open {
     flex-direction: row;
     align-items: center;
     justify-content: center;
+}
+
+.in-table-button-section {
+    justify-content: left !important;
 }
 
 @media(max-width:575px) {

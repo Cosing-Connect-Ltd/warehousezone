@@ -66,7 +66,7 @@
     </script>
 }
 
-@if (Model.IsCollectionAvailable)
+@if (Model.IsDeliveryAvailable)
 {
     <div class="modal fade" id="ChooseShippingAddressModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -161,7 +161,7 @@
                                             <td>
                                                 <div class="headBoxTop">
                                                     <h3 class="head">Home Delivery</h3>
-                                                    <p>Selected PostCode: <span id="shipping-address-postcode">@Model.ShippingAddressPostCode</span></p>
+                                                    <p>@(!string.IsNullOrEmpty(Model.ShippingAddressPostCode?.Trim()) ? "Selected PostCode: " : string.Empty)<span id="shipping-address-postcode">@Model.ShippingAddressPostCode</span></p>
                                                 </div>
                                             </td>
                                         }
@@ -257,9 +257,9 @@
                                                 <td class="store greyBox">
                                                     <div class="greyBoxInner">
                                                         <p class="orderNowTxt" id="collection_status_@item.Id">
-                                                            <span class="available" @(item.IsAvailableForCollection == true ? "" : "hidden")>Available for Collection</span>
-                                                            <span class="unavailable" @(item.IsAvailableForCollection == false ? "" : "hidden")><b>Unavailable In Store!</b></span>
-                                                            <span class="unselected" @(Model.CollectionPointId == null ? "" : "hidden")><b>Select A Collection Point!</b></span>
+                                                            <span class="available" @(item.IsAvailableForCollection == true ? "" : "hidden")><i class="fa fa-check-circle-o" aria-hidden="true"></i> Available for Collection</span>
+                                                            <span class="unavailable" @(item.IsAvailableForCollection == false ? "" : "hidden")><i class="fa fa-ban" aria-hidden="true"></i> Unavailable In Store!</span>
+                                                            <span class="unselected" @(item.IsAvailableForCollection == null && Model.CollectionPointId == null ? "" : "hidden")><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Select A Collection Point!</span>
                                                         </p>
                                                     </div>
                                                 </td>
@@ -269,9 +269,9 @@
                                                 <td class="homeDel greyBox">
                                                     <div class="greyBoxInner">
                                                         <p class="orderNowTxt" id="delivery_status_@item.Id">
-                                                            <span class="available" @( @*item.IsAvailableForDelivery ==*@  true ? "" : "hidden")>Available for Delivery</span>
-                                                            <span class="unavailable" @(item.IsAvailableForDelivery == false ? "" : "hidden")><b>Unavailable For Delivery!</b></span>
-                                                            @*<span class="unselected" @(Model.ShippingAddressPostCode == null ? "" : "hidden")><b>Choose A Shipping Address!</b></span>*@
+                                                            <span class="available" @( item.IsAvailableForDelivery ==  true ? "" : "hidden")><i class="fa fa-check-circle-o" aria-hidden="true"></i> Available for Delivery</span>
+                                                            <span class="unavailable" @(item.IsAvailableForDelivery == false ? "" : "hidden")><i class="fa fa-ban" aria-hidden="true"></i> Unavailable For Delivery!</span>
+                                                            <span class="unselected" @(item.IsAvailableForDelivery == null && string.IsNullOrEmpty(Model.ShippingAddressPostCode?.Trim()) ? "" : "hidden")><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Choose A Shipping Address!</span>
                                                         </p>
                                                     </div>
                                                 </td>
@@ -293,7 +293,7 @@
                                         if (Model.IsCollectionAvailable)
                                         {
                                             <td class="store greyBox">
-                                                <div class="botomBtnsec">
+                                                <div class="botomBtnsec in-table-button-section">
                                                     <button class="btmbtn pro" onclick="@(Model.ShowLoginPopUp == true ? "GetLoggedIn('" + (bool?)Model.ShowLoginPopUp + "');" : "proceedToPickup();")">PROCEED TO PICKUP</button>
                                                 </div>
                                             </td>
@@ -301,7 +301,7 @@
                                         if (Model.IsDeliveryAvailable)
                                         {
                                             <td class="homeDel greyBox">
-                                                <div class="botomBtnsec">
+                                                <div class="botomBtnsec in-table-button-section">
                                                     <button class="btmbtn pro" onclick="@(Model.ShowLoginPopUp == true ? "GetLoggedIn('" + (bool?)Model.ShowLoginPopUp + "');" : "proceedToDelivery();")">PROCEED TO DELIVERY</button>
                                                 </div>
                                             </td>
@@ -323,7 +323,7 @@
                         {
                             <button class="btmbtn pro mobile-checkout" style="display: none;" onclick="@(Model.ShowLoginPopUp == true ? "GetLoggedIn('" + (bool?)Model.ShowLoginPopUp + "');" : "proceedToMobileCheckout();")">PROCEED TO CHECKOUT</button>
                         }
-                        <button class="btmbtn sho">CONTINUE SHOPPING</button>
+                        <a class="btmbtn sho" href="@Url.Action("list", "Products")">CONTINUE SHOPPING</a>
                     }
                 </div>
             </div>
@@ -356,15 +356,20 @@
     {
         <script>
             function sethAvailabilityStatus(isAvailable, elementId) {
-                if (isAvailable == "True") {
+                if (isAvailable === true) {
                     $(elementId + " .unavailable").attr("hidden", "");
                     $(elementId + " .available").removeAttr("hidden");
-                } else {
+                    $(elementId + " .unselected").attr("hidden", "");
+                } else if (isAvailable === false) {
                     $(elementId + " .unavailable").removeAttr("hidden");
                     $(elementId + " .available").attr("hidden", "");
+                    $(elementId + " .unselected").attr("hidden", "");
                 }
-
-                $(elementId + " .unselected").attr("hidden", "");
+                else {
+                    $(elementId + " .available").attr("hidden", "");
+                    $(elementId + " .unavailable").attr("hidden", "");
+                    $(elementId + " .unselected").removeAttr("hidden");
+                }
             }
 
             function proceedToDelivery() {
