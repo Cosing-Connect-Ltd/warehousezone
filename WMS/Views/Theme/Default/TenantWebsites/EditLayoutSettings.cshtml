@@ -15,7 +15,7 @@
 }
 
 @{
-    ViewBag.Title = "Add New Tenant Website";
+    ViewBag.Title = "Newsletter Subscription Settings";
 }
 <script type="text/javascript">
     function onFileUploadComplete(s, e) {
@@ -40,7 +40,7 @@
         }
     }
 </script>
-<h2><span> (@ViewBag.SiteName) Website Layout Settings</span></h2>
+<h2><span>@ViewBag.Title (@ViewBag.SiteName)</span></h2>
 @Html.Hidden("tenantWebsite", true)
 @using (Html.BeginForm())
 {
