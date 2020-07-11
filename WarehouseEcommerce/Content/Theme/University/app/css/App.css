@@ -291,23 +291,16 @@ input[type="number"]::-webkit-outer-spin-button {
         float: right;
         margin-bottom: 35px;
     }
-@media(max-width:768px) and (min-width:564px) {
+@media(max-width:768px) {
     .nb_header .nb_headicolst {
-        margin-top: 57px;
+        margin-top: 60px;
         margin-bottom: unset
     }
-}
-@media(max-width:563px) and (min-width:481px) {
-    .nb_header .nb_headicolst {
-        margin-top: -60px;
+    .nb_header .nb_logowrap {
+        width:unset !important;
     }
 }
-@media(max-width:480px) {
-    .nb_header .nb_headicolst {
-        margin-top: 62px;
-    }
-}
-@media(max-width:407px) {
+@media(max-width:339px) {
     .nb_header .nb_headicolst {
         margin-top: -36px;
     }

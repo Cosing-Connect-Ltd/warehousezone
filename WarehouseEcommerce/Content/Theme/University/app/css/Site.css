@@ -1577,7 +1577,6 @@ body.modal-open {
     letter-spacing: 2px;
     padding-bottom: 20px;
     position: relative;
-    margin-bottom: 57px;
 }
 
     .checkoutInnersec .ordConfirmHead:after {
@@ -1616,24 +1615,24 @@ body.modal-open {
         margin-bottom: 20px;
     }
 
-        .billandshipsec .address-wrapper .btnWrap .btmBtn {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-            min-width: 185px;
-            padding: 0 20px;
-            height: 50px;
-            margin-right: 20px;
-            font-size: 16px;
-            font-family: "primaryfont_Bold";
-            color: #fff;
-            outline: none;
-            border: none;
-            text-transform: uppercase;
-            background-color: #000;
-            transition: all 0.3s ease;
-        }
+.billandshipsec .address-wrapper .btnWrap .btmBtn {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    min-width: 185px;
+    padding: 0 20px;
+    height: 50px;
+    margin-right: 20px;
+    font-size: 16px;
+    font-family: "primaryfont_Bold";
+    color: #fff;
+    outline: none;
+    border: none;
+    text-transform: uppercase;
+    background-color: #000;
+    transition: all 0.3s ease;
+}
 
             .billandshipsec .address-wrapper .btnWrap .btmBtn:hover {
                 background-color: #f33655;
@@ -1665,12 +1664,10 @@ body.modal-open {
     .billandshipsec .address-wrapper .addnwShopAdrrbtn {
         width: 100% !important;
     }
-
     .billandshipsec .checkout-options-wrapper .btnWrap, .billandshipsec .address-wrapper .btnWrap, .saveAddrWrap {
         flex-wrap: wrap;
     }
 }
-
 .billandshipsec .addNewAddrWrap {
     width: 100%;
     margin-bottom: 15px;
@@ -1793,7 +1790,7 @@ body.modal-open {
         width: 260px;
         height: 50px;
         line-height: 50px;
-        text-align: center;
+        text-align:center;
         background-color: #000;
         color: #fff;
         font-family: "primaryfont_Bold";
@@ -2082,31 +2079,26 @@ body.modal-open {
 
 
 /*new cart page- css start*/
-.basketTable {
-    position: relative;
-    top: -100px;
-}
-
     .basketTable tr td {
         vertical-align: top;
         padding: 7px;
     }
 
-        .basketTable tr td .headBoxTop {
+        .basketTable tr td .headBoxTop{
             padding-left: 10px;
         }
 
-            .basketTable tr td .headBoxTop .head {
-                font-family: "primaryfont_Bold";
-                font-size: 20px;
-                margin-bottom: 10px;
-            }
+        .basketTable tr td .headBoxTop .head {
+            font-family: "primaryfont_Bold";
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
 
-            .basketTable tr td .headBoxTop p {
-                font-family: "primaryfont_Normal";
-                font-size: 14px;
-                height: 30px;
-            }
+        .basketTable tr td .headBoxTop p {
+            font-family: "primaryfont_Normal";
+            font-size: 14px;
+            height: 30px;
+        }
 
     .basketTable tr .topTd {
         width: 60%;
@@ -2129,42 +2121,42 @@ body.modal-open {
         border-bottom: solid 1px #707070;
     }
 
-        .basketTable tr.cmnRow td {
-            font-weight: bold !important;
+    .basketTable tr.cmnRow td {
+        font-weight: bold !important;
+    }
+
+        .basketTable tr.cmnRow td.greyBox {
+            padding: 0px 8px;
         }
 
-            .basketTable tr.cmnRow td.greyBox {
-                padding: 0px 8px;
+            .basketTable tr.cmnRow td.greyBox .greyBoxInner {
+                background-color: #f3f3f3;
+                height: 145px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
             }
 
-                .basketTable tr.cmnRow td.greyBox .greyBoxInner {
-                    background-color: #f3f3f3;
-                    height: 145px;
-                    display: flex;
-                    flex-direction: row;
-                    align-items: center;
+                .basketTable tr.cmnRow td.greyBox .greyBoxInner .orderNowTxt {
+                    font-size: 13px;
+                    color: #000;
+                    font-style: italic;
+                    text-align: left;
+                    padding: 0px 10px;
+                    line-height: 18px;
                 }
 
-                    .basketTable tr.cmnRow td.greyBox .greyBoxInner .orderNowTxt {
-                        font-size: 13px;
-                        color: #000;
-                        font-style: italic;
-                        text-align: left;
-                        padding: 0px 10px;
-                        line-height: 18px;
-                    }
+                .basketTable tr.cmnRow td.greyBox .greyBoxInner .available {
+                    color: green;
+                }
 
-                    .basketTable tr.cmnRow td.greyBox .greyBoxInner .available {
-                        color: green;
-                    }
+                .basketTable tr.cmnRow td.greyBox .greyBoxInner .unavailable {
+                    color: #f33655;
+                }
 
-                    .basketTable tr.cmnRow td.greyBox .greyBoxInner .unavailable {
-                        color: #f33655;
-                    }
-
-                    .basketTable tr.cmnRow td.greyBox .greyBoxInner .unselected {
-                        color: orange;
-                    }
+                .basketTable tr.cmnRow td.greyBox .greyBoxInner .unselected {
+                    color: orange;
+                }
 
                     .basketTable tr.cmnRow td.greyBox .greyBoxInner .radioBtnGrp {
                         list-style: none;
@@ -2174,212 +2166,215 @@ body.modal-open {
                         justify-content: flex-start;
                     }
 
-                        .basketTable tr.cmnRow td.greyBox .greyBoxInner .radioBtnGrp li {
-                            width: 100%;
-                            text-align: left;
-                        }
-
-                            .basketTable tr.cmnRow td.greyBox .greyBoxInner .radioBtnGrp li label {
-                                font-family: "primaryfont_Normal";
-                                font-size: 14px;
-                                color: #000;
-                            }
-
-                    .basketTable tr.cmnRow td.greyBox .greyBoxInner .EnterYourPostTxt {
-                        font-family: "primaryfont_Normal";
-                        font-style: italic;
-                        color: #f33655;
-                        font-size: 12px;
-                        text-decoration: underline !important;
-                        padding: 0px 50px;
+                    .basketTable tr.cmnRow td.greyBox .greyBoxInner .radioBtnGrp li {
+                        width: 100%;
                         text-align: left;
                     }
 
-                        .basketTable tr.cmnRow td.greyBox .greyBoxInner .EnterYourPostTxt:hover {
-                            cursor: pointer;
+                        .basketTable tr.cmnRow td.greyBox .greyBoxInner .radioBtnGrp li label {
+                            font-family: "primaryfont_Normal";
+                            font-size: 14px;
+                            color: #000;
                         }
 
-        .basketTable tr.cmnRow .subtotalCell .subtotalCellInner {
-            padding: 20px 0px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: flex-end;
-            align-items: flex-end;
-        }
-
-            .basketTable tr.cmnRow .subtotalCell .subtotalCellInner span {
-                font-family: "primaryfont_Bold";
-                font-size: 14px;
-                margin-right: 20px;
-            }
-
-                .basketTable tr.cmnRow .subtotalCell .subtotalCellInner span:last-child {
-                    margin-right: 0px;
+                .basketTable tr.cmnRow td.greyBox .greyBoxInner .EnterYourPostTxt {
+                    font-family: "primaryfont_Normal";
+                    font-style: italic;
+                    color: #f33655;
+                    font-size: 12px;
+                    text-decoration: underline !important;
+                    padding: 0px 50px;
+                    text-align: left;
                 }
 
-        .basketTable tr.cmnRow .prd {
-            width: 20%;
-            min-width: 275px;
-            text-align: left;
+                    .basketTable tr.cmnRow td.greyBox .greyBoxInner .EnterYourPostTxt:hover {
+                        cursor: pointer;
+                    }
+
+    .basketTable tr.cmnRow .subtotalCell .subtotalCellInner {
+        padding: 20px 0px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        align-items: flex-end;
+    }
+        .basketTable tr.cmnRow .subtotalCell .subtotalCellInner b{
+            margin-right:10px;
         }
 
-            .basketTable tr.cmnRow .prd .prdCellwrap {
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
+        .basketTable tr.cmnRow .subtotalCell .subtotalCellInner span {
+            font-family: "primaryfont_Bold";
+            font-size: 14px;
+            margin-right: 20px;
+        }
+
+            .basketTable tr.cmnRow .subtotalCell .subtotalCellInner span:last-child {
+                margin-right: 0px;
             }
 
-                .basketTable tr.cmnRow .prd .prdCellwrap .inrow {
-                    width: 100%;
+    .basketTable tr.cmnRow .prd {
+        width: 20%;
+        min-width: 275px;
+        text-align: left;
+    }
+
+        .basketTable tr.cmnRow .prd .prdCellwrap {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+            .basketTable tr.cmnRow .prd .prdCellwrap .inrow {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-start;
+            }
+
+                .basketTable tr.cmnRow .prd .prdCellwrap .inrow .imgWrap {
+                    width: 90px;
+                    height: 90px;
+                }
+
+                    .basketTable tr.cmnRow .prd .prdCellwrap .inrow .imgWrap img {
+                        width: 100%;
+                    }
+
+                .basketTable tr.cmnRow .prd .prdCellwrap .inrow .prdName {
+                    font-family: "primaryfont_SemiBold";
+                    font-size: 16px;
+                    padding: 12px 30px;
+                }
+
+                .basketTable tr.cmnRow .prd .prdCellwrap .inrow.btm {
                     display: flex;
                     flex-direction: row;
-                    align-items: center;
+                    align-items: flex-start;
                     justify-content: flex-start;
                 }
 
-                    .basketTable tr.cmnRow .prd .prdCellwrap .inrow .imgWrap {
-                        width: 90px;
-                        height: 90px;
+                    .basketTable tr.cmnRow .prd .prdCellwrap .inrow.btm .imgWrap {
+                        height: auto;
                     }
 
-                        .basketTable tr.cmnRow .prd .prdCellwrap .inrow .imgWrap img {
-                            width: 100%;
-                        }
-
-                    .basketTable tr.cmnRow .prd .prdCellwrap .inrow .prdName {
-                        font-family: "primaryfont_SemiBold";
-                        font-size: 16px;
-                        padding: 12px 30px;
-                    }
-
-                    .basketTable tr.cmnRow .prd .prdCellwrap .inrow.btm {
+                    .basketTable tr.cmnRow .prd .prdCellwrap .inrow.btm .prdName {
                         display: flex;
                         flex-direction: row;
-                        align-items: flex-start;
-                        justify-content: flex-start;
+                        align-items: center;
+                        justify-content: center;
+                        color: #f33655;
+                        font-size: 13px;
                     }
 
-                        .basketTable tr.cmnRow .prd .prdCellwrap .inrow.btm .imgWrap {
-                            height: auto;
-                        }
-
-                        .basketTable tr.cmnRow .prd .prdCellwrap .inrow.btm .prdName {
-                            display: flex;
-                            flex-direction: row;
-                            align-items: center;
-                            justify-content: center;
+                        .basketTable tr.cmnRow .prd .prdCellwrap .inrow.btm .prdName i {
+                            margin-right: 8px;
                             color: #f33655;
-                            font-size: 13px;
                         }
 
-                            .basketTable tr.cmnRow .prd .prdCellwrap .inrow.btm .prdName i {
-                                margin-right: 8px;
-                                color: #f33655;
-                            }
+    .basketTable tr.cmnRow .price {
+        width: 8%;
+    }
 
-        .basketTable tr.cmnRow .price {
-            width: 8%;
-        }
-
-            .basketTable tr.cmnRow .price .priceWrapinner {
-                font-family: "primaryfont_SemiBold";
-                font-size: 16px;
-                height: 100px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-            }
-
-        .basketTable tr.cmnRow .qty {
-            width: 15%;
-            min-width: 160px;
+        .basketTable tr.cmnRow .price .priceWrapinner {
+            font-family: "primaryfont_SemiBold";
+            font-size: 16px;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
         }
 
-            .basketTable tr.cmnRow .qty .QtyWrap {
-                width: 100%;
-                height: 100px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                padding: 0px 10px;
-            }
+    .basketTable tr.cmnRow .qty {
+        width: 15%;
+        min-width: 160px;
+        align-items: center;
+    }
 
-            .basketTable tr.cmnRow .qty .QtyWrapinner {
-                width: 100%;
-                height: 40px;
-                border: solid 1px #707070;
-                position: relative;
-                padding-right: 30px;
-                padding-left: 30px;
-            }
-
-                .basketTable tr.cmnRow .qty .QtyWrapinner .coutnerInput {
-                    border: none;
-                    height: 37px;
-                    width: 100%;
-                    text-align: center;
-                    font-family: "primaryfont_Normal";
-                    font-size: 16px;
-                }
-
-                    .basketTable tr.cmnRow .qty .QtyWrapinner .coutnerInput:focus {
-                        outline: none;
-                    }
-
-                    .basketTable tr.cmnRow .qty .QtyWrapinner .coutnerInput:active {
-                        outline: none;
-                    }
-
-                .basketTable tr.cmnRow .qty .QtyWrapinner span {
-                    width: 30px;
-                    height: 100%;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 15px;
-                    position: absolute;
-                    right: 0;
-                    top: 0;
-                    cursor: pointer;
-                }
-
-                    .basketTable tr.cmnRow .qty .QtyWrapinner span:hover {
-                        background-color: rgba(200, 200, 200, .5)
-                    }
-
-                    .basketTable tr.cmnRow .qty .QtyWrapinner span:active {
-                        background-color: rgba(200, 200, 200, .2)
-                    }
-
-                    .basketTable tr.cmnRow .qty .QtyWrapinner span.min {
-                        left: 0;
-                    }
-
-                    .basketTable tr.cmnRow .qty .QtyWrapinner span.add {
-                        right: 0;
-                    }
-
-        .basketTable tr.cmnRow .tot {
-            width: 8%;
-            min-width: 120px;
+        .basketTable tr.cmnRow .qty .QtyWrap {
+            width: 100%;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0px 10px;
         }
 
-            .basketTable tr.cmnRow .tot .priceTotal {
-                font-family: "primaryfont_Bold";
+        .basketTable tr.cmnRow .qty .QtyWrapinner {
+            width: 100%;
+            height: 40px;
+            border: solid 1px #707070;
+            position: relative;
+            padding-right: 30px;
+            padding-left: 30px;
+        }
+
+            .basketTable tr.cmnRow .qty .QtyWrapinner .coutnerInput {
+                border: none;
+                height: 37px;
+                width: 100%;
+                text-align: center;
+                font-family: "primaryfont_Normal";
                 font-size: 16px;
-                height: 100px;
+            }
+
+                .basketTable tr.cmnRow .qty .QtyWrapinner .coutnerInput:focus {
+                    outline: none;
+                }
+
+                .basketTable tr.cmnRow .qty .QtyWrapinner .coutnerInput:active {
+                    outline: none;
+                }
+
+            .basketTable tr.cmnRow .qty .QtyWrapinner span {
+                width: 30px;
+                height: 100%;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                position: relative;
+                font-size: 15px;
+                position: absolute;
+                right: 0;
+                top: 0;
+                cursor: pointer;
             }
+
+            .basketTable tr.cmnRow .qty .QtyWrapinner span:hover {
+                background-color: rgba(200, 200, 200, .5)
+            }
+
+                .basketTable tr.cmnRow .qty .QtyWrapinner span:active {
+                    background-color: rgba(200, 200, 200, .2)
+                }
+
+                .basketTable tr.cmnRow .qty .QtyWrapinner span.min {
+                    left: 0;
+                }
+
+                .basketTable tr.cmnRow .qty .QtyWrapinner span.add {
+                    right: 0;
+                }
+
+    .basketTable tr.cmnRow .tot {
+        width: 8%;
+        min-width: 120px;
+    }
+
+        .basketTable tr.cmnRow .tot .priceTotal {
+            font-family: "primaryfont_Bold";
+            font-size: 16px;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
 
             .basketTable tr.cmnRow .tot .in-basket-price-total:after {
                 position: absolute;
@@ -2393,71 +2388,71 @@ body.modal-open {
                 border-left: 8px solid #000;
             }
 
-            .basketTable tr.cmnRow .tot .removeBtn {
-                color: #f33655;
-                font-size: 13px;
-                font-family: "primaryfont_SemiBold";
-            }
-
-        .basketTable tr.cmnRow .store {
-            width: 13%;
-            width: 175px;
-            border-bottom: solid 1px transparent;
+        .basketTable tr.cmnRow .tot .removeBtn {
+            color: #f33655;
+            font-size: 13px;
+            font-family: "primaryfont_SemiBold";
         }
 
-            .basketTable tr.cmnRow .store .chsStoreLnk {
-                font-family: "primaryfont_Bold";
-                padding-left: 10px;
-                text-decoration: underline !important;
-                color: #f33655;
-                font-size: 13px;
-                font-style: italic;
-            }
+    .basketTable tr.cmnRow .store {
+        width: 13%;
+        width: 175px;
+        border-bottom: solid 1px transparent;
+    }
 
-        .basketTable tr.cmnRow .homeDel {
-            width: 20%;
-            width: 176px;
-            border-bottom: solid 1px transparent;
+        .basketTable tr.cmnRow .store .chsStoreLnk {
+            font-family: "primaryfont_Bold";
+            padding-left: 10px;
+            text-decoration: underline !important;
+            color: #f33655;
+            font-size: 13px;
+            font-style: italic;
         }
 
-            .basketTable tr.cmnRow .homeDel .postCodeCheckFormwrap {
-                width: 100%;
+    .basketTable tr.cmnRow .homeDel {
+        width: 20%;
+        width: 176px;
+        border-bottom: solid 1px transparent;
+    }
+
+        .basketTable tr.cmnRow .homeDel .postCodeCheckFormwrap {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .basketTable tr.cmnRow .homeDel .postCodeCheckFormwrap input[type="text"] {
+                width: 70%;
+                height: 30px;
+                border: solid 1px #ddd;
+                text-indent: 10px;
+            }
+
+                .basketTable tr.cmnRow .homeDel .postCodeCheckFormwrap input[type="text"]:focus {
+                    outline: none;
+                }
+
+                .basketTable tr.cmnRow .homeDel .postCodeCheckFormwrap input[type="text"]:active {
+                    outline: none;
+                }
+
+            .basketTable tr.cmnRow .homeDel .postCodeCheckFormwrap .chckBtn {
+                width: 30%;
+                height: 30px;
                 display: flex;
                 flex-direction: row;
                 align-items: center;
                 justify-content: center;
+                font-family: "primaryfont_Bold";
+                font-size: 12px;
+                font-style: italic;
+                background-color: #f33655;
+                color: #fff;
+                outline: none;
+                border: none;
             }
-
-                .basketTable tr.cmnRow .homeDel .postCodeCheckFormwrap input[type="text"] {
-                    width: 70%;
-                    height: 30px;
-                    border: solid 1px #ddd;
-                    text-indent: 10px;
-                }
-
-                    .basketTable tr.cmnRow .homeDel .postCodeCheckFormwrap input[type="text"]:focus {
-                        outline: none;
-                    }
-
-                    .basketTable tr.cmnRow .homeDel .postCodeCheckFormwrap input[type="text"]:active {
-                        outline: none;
-                    }
-
-                .basketTable tr.cmnRow .homeDel .postCodeCheckFormwrap .chckBtn {
-                    width: 30%;
-                    height: 30px;
-                    display: flex;
-                    flex-direction: row;
-                    align-items: center;
-                    justify-content: center;
-                    font-family: "primaryfont_Bold";
-                    font-size: 12px;
-                    font-style: italic;
-                    background-color: #f33655;
-                    color: #fff;
-                    outline: none;
-                    border: none;
-                }
 
 .gotApromoSec {
     width: 100%;
@@ -2552,48 +2547,44 @@ body.modal-open {
             margin-top: 15px !important;
         }
 }
-
-.botomBtnsec .btmbtn {
-    width: 200px;
-    height: 50px;
-    transition: all 0.3s ease;
-    font-family: "primaryfont_Bold";
-    font-size: 16px;
-    text-transform: uppercase;
-}
-
-    .botomBtnsec .btmbtn.pro {
-        background-color: #f33655;
-        color: #fff;
-        border: solid 1px #f33655;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
+    .botomBtnsec .btmbtn {
+        width: 200px;
+        height: 50px;
+        transition: all 0.3s ease;
+        font-family: "primaryfont_Bold";
+        font-size: 16px;
+        text-transform: uppercase;
     }
 
-        .botomBtnsec .btmbtn.pro:hover {
-            background-color: #000;
-            border: solid 1px #000;
-        }
-
-    .botomBtnsec .btmbtn.sho {
-        background-color: transparent;
-        color: #707070;
-        border: solid 1px #707070;
-        display: flex;
-        margin-right: 10px;
-        margin-left: 10px;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-    }
-
-        .botomBtnsec .btmbtn.sho:hover {
-            background-color: #000;
-            border: solid 1px #000;
+        .botomBtnsec .btmbtn.pro {
+            background-color: #f33655;
             color: #fff;
+            border: solid 1px #f33655;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
         }
+            .botomBtnsec .btmbtn.pro:hover {
+                background-color: #000;
+                border: solid 1px #000;
+            }
+            .botomBtnsec .btmbtn.sho {
+                background-color: transparent;
+                color: #707070;
+                border: solid 1px #707070;
+                display: flex;
+                margin-right: 10px;
+                margin-left: 10px;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+            }
+                .botomBtnsec .btmbtn.sho:hover {
+                    background-color: #000;
+                    border: solid 1px #000;
+                    color: #fff;
+                }
 /*new cart page- css end*/
 
 
@@ -2754,7 +2745,6 @@ body.modal-open {
         display: block !important;
         margin: 0 10px
     }
-
     .headBoxTop,
     .basketTable tr.cmnRow .tot .in-basket-price-total:after,
     .basketTable tr.cmnRow .homeDel,
@@ -2768,77 +2758,65 @@ body.modal-open {
         height: 354px;
     }
 }
-
 @media(max-width:700px) {
     .prd_lst_boxouter .imagewrap img {
         width: 320px;
         height: 320px;
     }
 }
-
 @media(max-width:650px) {
     .prd_lst_boxouter .imagewrap img {
         width: 295px;
         height: 295px;
     }
 }
-
 @media(max-width:600px) {
     .prd_lst_boxouter .imagewrap img {
         width: 270px;
         height: 270px;
     }
 }
-
 @media(max-width:550px) {
     .prd_lst_boxouter .imagewrap img {
         width: 245px;
         height: 245px;
     }
 }
-
 @media(max-width:500px) {
     .prd_lst_boxouter .imagewrap img {
         width: 220px;
         height: 220px;
     }
 }
-
 @media(max-width:450px) {
     .prd_lst_boxouter .imagewrap img {
         width: 195px;
         height: 195px;
     }
 }
-
 @media(max-width:425px) {
     .prd_lst_boxouter .imagewrap img {
         width: 182px;
         height: 182px;
     }
 }
-
 @media(max-width:375px) {
     .prd_lst_boxouter .imagewrap img {
         width: 157px;
         height: 157px;
     }
-}
 
-@media(max-width:375px) {
     .prd_lst_boxouter .imagewrap img {
         width: 157px;
         height: 157px;
     }
 }
-
 @media(max-width:350px) {
     .prd_lst_boxouter .imagewrap img {
         width: 130px;
         height: 130px;
     }
 }
-
 .nb_sec_navwrap .nb_sec_navlist li {
     cursor: pointer;
 }
@@ -2884,7 +2862,6 @@ body.modal-open {
         margin: 0 -5%;
         overflow: hidden;
     }
-
         .snipper .stage .dot-spin {
             position: relative;
             width: 10px;
@@ -2941,95 +2918,75 @@ body.modal-open {
     }
 }
 /*uni theme search start*/
-/*.ui-autocomplete {
-    display: block !important;
-}*/
 .search-item a.ui-state-active {
-    border: unset !important;
-    background: unset !important;
-    color: #ffffff !important;
-    margin: unset !important;
-}
-
+        border: unset !important;
+        background: unset !important;
+        color: #ffffff !important;
+        margin: unset !important;
+    }
 .search-item:hover {
     background-color: #111111;
 }
-
 .search-item .ui-menu-item-wrapper {
     padding-left: 2px !important;
 }
-
 .search-item .ui-state-active {
     padding-left: 2px !important;
 }
-
 .search-item .ui-menu-item-wrapper img {
-    margin-right: 6px;
+        margin-right: 6px;
 }
-
 .search-item .ui-state-active img {
     margin-right: 6px;
 }
-
 .see-all-li {
     display: flex;
     justify-content: center;
 }
-
-    .see-all-li a.see-all {
-        margin: 5px 0;
+.see-all-li a.see-all {
+    margin: 5px 0;
+}
+.see-all-li a.see-all:hover {
+        color: #f33655;
     }
-
-        .see-all-li a.see-all:hover {
-            color: #f33655;
-        }
-
 .uni-search-div {
     width: 60%;
 }
-
 .search-item a {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     display: block;
 }
-
-    .search-item a:hover {
-        transition: unset !important;
-        -moz-transition: unset !important;
-        -webkit-transition: unset !important;
-        -o-transition: unset !important;
-        -ms-transition: unset !important;
-        outline: none !important;
-    }
-
+.search-item a:hover {
+    transition: unset !important;
+    -moz-transition: unset !important;
+    -webkit-transition: unset !important;
+    -o-transition: unset !important;
+    -ms-transition: unset !important;
+    outline: none !important;
+}
 @media(max-width:1024px) {
     .uni-search-div {
         width: 80%;
     }
-
-        .uni-search-div input {
-            font-size: 24px;
-        }
+    .uni-search-div input {
+        font-size: 24px;
+    }
 }
-
 @media(max-width:1024px) {
     .uni-search-div {
         width: 80%;
     }
-
-        .uni-search-div input {
-            font-size: 24px !important;
-        }
+    .uni-search-div input {
+        font-size: 24px !important;
+    }
 }
-
 @media(max-width:768px) {
     .ui-autocomplete {
         font-size: 12px !important;
     }
 }
-
 @media(max-width:360px) {
     .ui-autocomplete {
         left: 15px !important;
@@ -3044,18 +3001,154 @@ body.modal-open {
 .prd_lst_boxouter .prdName {
     color: #111111;
 }
-
 .srtby_txt {
-    white-space: nowrap;
+    white-space:nowrap;
 }
-
-@media(max-width:768px) {
-    .list-on-tablets {
-        width: 100%;
-        flex: unset;
-        max-width: unset;
+@media(max-width:768px){
+    .list-on-tablets{
+        width:100%;
+        flex:unset;
+        max-width:unset;
     }
 }
+/*basket page css part 2*/
+.tableWrap {
+    width: 100%;
+    overflow: scroll;
+}
+.basketTable{
+    width: 100%;
+}
+.basketTable .priceWrapinner span{
+      font-weight: 100;
+      font-family: "primaryfont_SemiBold";
+    }
+    .basketTable .priceTotal span {
+        font-weight: 100;
+        font-family: "primaryfont_SemiBold";
+    }
+.price-b {
+    display:none;
+}
+@media(max-width:768px) {
+    .price-b {
+        display: block;
+    }
+    .tableWrap {
+        margin-top: 20px;
+        overflow: hidden;
+    }
+    .basketTable .prdCellwrap .inrow {
+        flex-wrap: wrap;
+        flex-direction:column !important;
+    }
+    .basketTable .prdCellwrap .imgWrap,
+    .basketTable .prdCellwrap .prdName {
+        width: 100% !important;
+        height: auto !important;
+    }
+        .basketTable .prdCellwrap .imgWrap img {
+            width: 320px !important;
+            height: 320px;
+        }
+    .basketTable .priceWrapinner,
+    .basketTable .priceTotal {
+        flex-direction: row !important;
+    }
+        .basketTable .priceWrapinner b,
+        .basketTable .priceTotal b,
+        .basketTable .subtotalCellInner b {
+            text-align: right;
+            white-space: nowrap;
+            margin-right: 10px;
+        }
+    .basketTable {
+        display: flex;
+        justify-content: center;
+    }
+        .basketTable .cmnRow {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+            .basketTable .cmnRow .prd,
+            .basketTable .cmnRow .tot {
+                text-align: center !important;
+            }
+        .basketTable .cmnRow .subtotalCellInner {
+            justify-content: center !important;
+        }
+}
+@media(max-width:700px) {
+    .basketTable .prdCellwrap .imgWrap img {
+        width: 320px !important;
+        height: 320px;
+    }
+}
+
+@media(max-width:650px) {
+    .basketTable .prdCellwrap .imgWrap img {
+        width: 295px !important;
+        height: 295px;
+    }
+}
+
+@media(max-width:600px) {
+    .basketTable .prdCellwrap .imgWrap img {
+        width: 270px !important;
+        height: 270px;
+    }
+}
+
+@media(max-width:550px) {
+    .basketTable .prdCellwrap .imgWrap img {
+        width: 245px !important;
+        height: 245px;
+    }
+}
+
+@media(max-width:500px) {
+    .basketTable .prdCellwrap .imgWrap img {
+        width: 220px !important;
+        height: 220px;
+    }
+}
+
+@media(max-width:450px) {
+    .basketTable .prdCellwrap .imgWrap img {
+        width: 195px !important;
+        height: 195px;
+    }
+}
+
+@media(max-width:425px) {
+    .basketTable .prdCellwrap .imgWrap img {
+        width: 182px !important;
+        height: 182px;
+    }
+}
+
+@media(max-width:375px) {
+    .basketTable .prdCellwrap .imgWrap img {
+        width: 157px !important;
+        height: 157px;
+    }
+}
+
+@media(max-width:375px) {
+    .basketTable .prdCellwrap .imgWrap img {
+        width: 157px !important;
+        height: 157px;
+    }
+}
+
+@media(max-width:350px) {
+    .basketTable .prdCellwrap .imgWrap img {
+        width: 130px !important;
+        height: 130px;
+    }
+}
+/*basket page css part 2*/
 
 /* --------------------------
 :: Newsletter Subscription

@@ -128,7 +128,7 @@
     </script>
 }
 
-<section class="nb_sec nb_prdlisting_pgsec">
+<section class="nb_sec nb_prdlisting_pgsec basket-section">
     <div class="container">
         <div class="nb_sec checkconfirmSec">
 
@@ -137,10 +137,10 @@
                 {
                     <h4 class="ordConfirmHead">Basket</h4>
                 }
-                <div class="tableWrap">
+                <div class="tableWrap mb-4">
                     @if (Model.WebsiteCartItems == null || Model.WebsiteCartItems.Count > 0)
                     {
-                        <table class="basketTable">
+                        <table class="basketTable mb-4">
                             <tbody>
                                 @if (Model.ShowCartPopUp != true)
                                 {
@@ -229,7 +229,7 @@
                                         </td>
                                         <td class="price">
                                             <div class="priceWrapinner">
-                                                @Model.CurrenySymbol@item.Price
+                                              <b class="price-b">Price:</b> <span>@Model.CurrenySymbol@item.Price</span>
                                             </div>
                                         </td>
                                         <td class="qty">
@@ -243,7 +243,7 @@
                                         </td>
                                         <td class="tot">
                                             <div id="total_amnt" class="priceTotal @(Model.ShowCartPopUp != true ? "in-basket-price-total" : string.Empty)">
-                                                @Model.CurrenySymbol@item.ProductTotalAmount
+                                              <b class="price-b">Total:</b> <span>@Model.CurrenySymbol@item.ProductTotalAmount</span>
                                             </div>
                                             @if (Model.ShowCartPopUp != true)
                                             {
@@ -284,7 +284,7 @@
                                     <td class="price"></td>
                                     <td class="qty subtotalCell" colspan="2">
                                         <div class="subtotalCellInner">
-                                            <span>Sub Total</span> <span>@Model.CurrenySymbol@(Model.TotalAmount)</span>
+                                            <b>Sub Total:</b> <span>@Model.CurrenySymbol@(Model.TotalAmount)</span>
                                         </div>
                                     </td>
 
