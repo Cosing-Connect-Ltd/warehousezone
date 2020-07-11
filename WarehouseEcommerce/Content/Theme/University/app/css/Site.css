@@ -3057,7 +3057,11 @@ body.modal-open {
 .basketTable {
     width: 100%;
 }
-
+    .basketTable .cmnRow .price,
+    .basketTable .cmnRow .qty,
+    .basketTable .cmnRow .tot {
+        text-align: center;
+    }
     .basketTable .priceWrapinner span {
         font-weight: 100;
         font-family: "primaryfont_SemiBold";
@@ -3071,7 +3075,17 @@ body.modal-open {
 .price-b {
     display: none;
 }
-
+@media(max-width:1200px) and (min-width:769px) {
+    .store-delivery,
+    .basketTable .cmnRow .store,
+    .basketTable .cmnRow .greyBox,
+    .basketTable tr.cmnRow .tot .in-basket-price-total:after {
+        display: none
+    }
+    .basketTable {
+        margin-top: 10px;
+    }
+}
 @media(max-width:768px) {
     .price-b {
         display: block;
