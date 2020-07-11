@@ -305,120 +305,135 @@ input[type="number"]::-webkit-outer-spin-button {
         margin-top: -36px;
     }
 }
-        .nb_header .nb_headicolst li {
-            float: left;
-            padding: 0px 25px;
-            border-right: solid 1px rgba(255, 255, 255, 0.5);
-            position: relative;
-        }
 
-            .nb_header .nb_headicolst li i {
-                font-size: 26px;
-                color: #fff;
-            }
+.nb_header .nb_headicolst li {
+    float: left;
+    padding: 0px 25px;
+    border-right: solid 1px rgba(255, 255, 255, 0.5);
+    position: relative;
+}
 
-            .nb_header .nb_headicolst li a {
-                display: block;
-            }
-
-            .nb_header .nb_headicolst li:last-child {
-                padding-right: 0px;
-                border-right: none;
-            }
-
-            .nb_header .nb_headicolst li.cartIcoWrap a {
-                position: relative;
-            }
-
-                .nb_header .nb_headicolst li.cartIcoWrap a span {
-                    display: block;
-                    width: 20px;
-                    height: 20px;
-                    border-radius: 50%;
-                    background-color: #f33655;
-                    position: absolute;
-                    right: -10px;
-                    top: -10px;
-                    font-family: "primaryfont_SemiBold";
-                    font-size: 13px;
-                    text-align: center;
-                    color: #fff;
-                }
-
-    .nb_header .nb_mainnav {
-        float: left;
-        clear: right;
+    .nb_header .nb_headicolst li i {
+        font-size: 26px;
+        color: #fff;
     }
 
-        .nb_header .nb_mainnav > ul {
-            list-style: none;
+    .nb_header .nb_headicolst li a {
+        display: block;
+    }
+
+    .nb_header .nb_headicolst li:last-child {
+        padding-right: 0px;
+        border-right: none;
+    }
+
+    .nb_header .nb_headicolst li.cartIcoWrap a {
+        position: relative;
+    }
+
+        .nb_header .nb_headicolst li.cartIcoWrap a span {
+            display: block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #f33655;
+            position: absolute;
+            right: -10px;
+            top: -10px;
+            font-family: "primaryfont_SemiBold";
+            font-size: 13px;
+            text-align: center;
+            color: #fff;
         }
 
-            .nb_header .nb_mainnav > ul > li {
-                float: left;
+.nb_header .nb_mainnav {
+    float: left;
+    clear: right;
+}
+
+    .nb_header .nb_mainnav > ul {
+        list-style: none;
+    }
+
+        .nb_header .nb_mainnav > ul > li {
+            float: left;
+            position: relative;
+            padding: 0px 35px;
+        }
+
+            .nb_header .nb_mainnav > ul > li > a {
+                display: block;
+                font-family: "primaryfont_Normal";
+                font-size: 16px;
+                color: #fff;
                 position: relative;
-                padding: 0px 35px;
+                text-transform: capitalize;
             }
 
-                .nb_header .nb_mainnav > ul > li > a {
+                .nb_header .nb_mainnav > ul > li > a:after {
+                    content: "";
+                    position: absolute;
+                    bottom: -10px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 0%;
+                    height: 2px;
+                    background-color: #f33655;
+                    transition: all 0.3s ease;
+                }
+
+            .nb_header .nb_mainnav > ul > li:hover a:after {
+                width: 100%;
+            }
+
+            .nb_header .nb_mainnav > ul > li.hav_sub_nav {
+                position: relative;
+            }
+
+                .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap {
+                    position: absolute;
+                    left: 0;
+                    top: 100%;
                     display: block;
-                    font-family: "primaryfont_Normal";
-                    font-size: 16px;
-                    color: #fff;
-                    position: relative;
-                    text-transform: capitalize;
+                    width: 250px;
+                    padding-top: 37px;
+                    z-index: 100;
+                    box-shadow: 0px 0px 10px -5px #111;
+                    opacity: 0;
+                    visibility: hidden;
+                    transition: all 0.3s ease;
+                    transform: translateY(20px);
                 }
 
-                    .nb_header .nb_mainnav > ul > li > a:after {
-                        content: "";
-                        position: absolute;
-                        bottom: -10px;
-                        left: 50%;
-                        transform: translateX(-50%);
-                        width: 0%;
-                        height: 2px;
-                        background-color: #f33655;
-                        transition: all 0.3s ease;
+                    .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList {
+                        background-color: #fff;
+                        width: 100%;
+                        float: left;
+                        margin: 0px;
+                        padding: 0px;
                     }
 
-                .nb_header .nb_mainnav > ul > li:hover a:after {
-                    width: 100%;
-                }
-
-                .nb_header .nb_mainnav > ul > li.hav_sub_nav {
-                    position: relative;
-                }
-
-                    .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap {
-                        position: absolute;
-                        left: 0;
-                        top: 100%;
-                        display: block;
-                        width: 250px;
-                        padding-top: 37px;
-                        z-index: 100;
-                        box-shadow: 0px 0px 10px -5px #111;
-                        opacity: 0;
-                        visibility: hidden;
-                        transition: all 0.3s ease;
-                        transform: translateY(20px);
-                    }
-
-                        .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList {
-                            background-color: #fff;
+                        .nb_header
+                        .nb_mainnav > ul > li.hav_sub_nav
+                        .nb_subnavWrap > ul.nb_f_snList
+                        li {
+                            list-style: none;
                             width: 100%;
-                            float: left;
-                            margin: 0px;
-                            padding: 0px;
+                            border-bottom: solid 1px #ddd;
+                            transition: all 0.3s ease;
                         }
 
                             .nb_header
                             .nb_mainnav > ul > li.hav_sub_nav
                             .nb_subnavWrap > ul.nb_f_snList
-                            li {
-                                list-style: none;
+                            li
+                            a {
+                                display: block;
                                 width: 100%;
-                                border-bottom: solid 1px #ddd;
+                                font-size: 13px;
+                                padding: 10px 10px;
+                                color: #111;
+                                font-family: "primaryfont_Normal";
                                 transition: all 0.3s ease;
                             }
 
@@ -426,58 +441,56 @@ input[type="number"]::-webkit-outer-spin-button {
                                 .nb_mainnav > ul > li.hav_sub_nav
                                 .nb_subnavWrap > ul.nb_f_snList
                                 li
-                                a {
-                                    display: block;
-                                    width: 100%;
-                                    font-size: 13px;
-                                    padding: 10px 10px;
-                                    color: #111;
-                                    font-family: "primaryfont_Normal";
+                                a:hover {
+                                    cursor: pointer;
+                                    color: #f33655;
+                                    padding-left: 8px;
+                                }
+
+                            .nb_header
+                            .nb_mainnav > ul > li.hav_sub_nav
+                            .nb_subnavWrap > ul.nb_f_snList
+                            li:hover {
+                                background-color: #f1f1f1;
+                            }
+
+                            .nb_header
+                            .nb_mainnav > ul > li.hav_sub_nav
+                            .nb_subnavWrap > ul.nb_f_snList
+                            li.hav_sub_nav2 {
+                                position: relative;
+                            }
+
+                                .nb_header
+                                .nb_mainnav > ul > li.hav_sub_nav
+                                .nb_subnavWrap > ul.nb_f_snList
+                                li.hav_sub_nav2
+                                ul.nb_s_snList {
+                                    list-style: none;
+                                    border-left: solid 1px #ddd;
+                                    width: 250px;
+                                    position: absolute;
+                                    left: 100%;
+                                    top: 0px;
+                                    background-color: #fff;
+                                    box-shadow: 0px 0px 10px -5px #111;
+                                    z-index: 100;
+                                    opacity: 0;
+                                    visibility: hidden;
                                     transition: all 0.3s ease;
-                                }
-
-                                    .nb_header
-                                    .nb_mainnav > ul > li.hav_sub_nav
-                                    .nb_subnavWrap > ul.nb_f_snList
-                                    li
-                                    a:hover {
-                                        cursor: pointer;
-                                        color: #f33655;
-                                        padding-left: 8px;
-                                    }
-
-                                .nb_header
-                                .nb_mainnav > ul > li.hav_sub_nav
-                                .nb_subnavWrap > ul.nb_f_snList
-                                li:hover {
-                                    background-color: #f1f1f1;
-                                }
-
-                                .nb_header
-                                .nb_mainnav > ul > li.hav_sub_nav
-                                .nb_subnavWrap > ul.nb_f_snList
-                                li.hav_sub_nav2 {
-                                    position: relative;
+                                    transform: translateX(20px);
                                 }
 
                                     .nb_header
                                     .nb_mainnav > ul > li.hav_sub_nav
                                     .nb_subnavWrap > ul.nb_f_snList
                                     li.hav_sub_nav2
-                                    ul.nb_s_snList {
+                                    ul.nb_s_snList
+                                    li {
                                         list-style: none;
-                                        border-left: solid 1px #ddd;
-                                        width: 250px;
-                                        position: absolute;
-                                        left: 100%;
-                                        top: 0px;
-                                        background-color: #fff;
-                                        box-shadow: 0px 0px 10px -5px #111;
-                                        z-index: 100;
-                                        opacity: 0;
-                                        visibility: hidden;
+                                        width: 100%;
+                                        border-bottom: solid 1px #ddd;
                                         transition: all 0.3s ease;
-                                        transform: translateX(20px);
                                     }
 
                                         .nb_header
@@ -485,10 +498,14 @@ input[type="number"]::-webkit-outer-spin-button {
                                         .nb_subnavWrap > ul.nb_f_snList
                                         li.hav_sub_nav2
                                         ul.nb_s_snList
-                                        li {
-                                            list-style: none;
+                                        li
+                                        a {
+                                            display: block;
                                             width: 100%;
-                                            border-bottom: solid 1px #ddd;
+                                            font-size: 13px;
+                                            padding: 10px 10px;
+                                            color: #111;
+                                            font-family: "primaryfont_Normal";
                                             transition: all 0.3s ease;
                                         }
 
@@ -498,113 +515,121 @@ input[type="number"]::-webkit-outer-spin-button {
                                             li.hav_sub_nav2
                                             ul.nb_s_snList
                                             li
-                                            a {
-                                                display: block;
-                                                width: 100%;
-                                                font-size: 13px;
-                                                padding: 10px 10px;
-                                                color: #111;
-                                                font-family: "primaryfont_Normal";
-                                                transition: all 0.3s ease;
+                                            a:hover {
+                                                cursor: pointer;
+                                                color: #f33655;
+                                                padding-left: 8px;
                                             }
 
-                                                .nb_header
-                                                .nb_mainnav > ul > li.hav_sub_nav
-                                                .nb_subnavWrap > ul.nb_f_snList
-                                                li.hav_sub_nav2
-                                                ul.nb_s_snList
-                                                li
-                                                a:hover {
-                                                    cursor: pointer;
-                                                    color: #f33655;
-                                                    padding-left: 8px;
-                                                }
+                                        .nb_header
+                                        .nb_mainnav > ul > li.hav_sub_nav
+                                        .nb_subnavWrap > ul.nb_f_snList
+                                        li.hav_sub_nav2
+                                        ul.nb_s_snList
+                                        li:hover {
+                                            background-color: #f1f1f1;
+                                        }
 
-                                            .nb_header
-                                            .nb_mainnav > ul > li.hav_sub_nav
-                                            .nb_subnavWrap > ul.nb_f_snList
-                                            li.hav_sub_nav2
-                                            ul.nb_s_snList
-                                            li:hover {
-                                                background-color: #f1f1f1;
-                                            }
+                                .nb_header
+                                .nb_mainnav > ul > li.hav_sub_nav
+                                .nb_subnavWrap > ul.nb_f_snList
+                                li.hav_sub_nav2:hover
+                                ul.nb_s_snList {
+                                    opacity: 1;
+                                    visibility: visible;
+                                    transform: translateX(0px);
+                                }
 
-                                    .nb_header
-                                    .nb_mainnav > ul > li.hav_sub_nav
-                                    .nb_subnavWrap > ul.nb_f_snList
-                                    li.hav_sub_nav2:hover
-                                    ul.nb_s_snList {
-                                        opacity: 1;
-                                        visibility: visible;
-                                        transform: translateX(0px);
-                                    }
+                                .nb_header
+                                .nb_mainnav > ul > li.hav_sub_nav
+                                .nb_subnavWrap > ul.nb_f_snList
+                                li.hav_sub_nav2:after {
+                                    content: "";
+                                    width: 0;
+                                    height: 0;
+                                    border-left: 4px solid transparent;
+                                    border-right: 4px solid transparent;
+                                    border-top: 4px solid #111;
+                                    position: absolute;
+                                    right: 20px;
+                                    top: 50%;
+                                    margin-left: 8px;
+                                    transform: rotate(-90deg);
+                                }
 
-                                    .nb_header
-                                    .nb_mainnav > ul > li.hav_sub_nav
-                                    .nb_subnavWrap > ul.nb_f_snList
-                                    li.hav_sub_nav2:after {
-                                        content: "";
-                                        width: 0;
-                                        height: 0;
-                                        border-left: 4px solid transparent;
-                                        border-right: 4px solid transparent;
-                                        border-top: 4px solid #111;
-                                        position: absolute;
-                                        right: 20px;
-                                        top: 50%;
-                                        margin-left: 8px;
-                                        transform: rotate(-90deg);
-                                    }
+                .nb_header .nb_mainnav > ul > li.hav_sub_nav:hover .nb_subnavWrap {
+                    opacity: 1;
+                    visibility: visible;
+                    transform: translateY(0px);
+                }
 
-                    .nb_header .nb_mainnav > ul > li.hav_sub_nav:hover .nb_subnavWrap {
-                        opacity: 1;
-                        visibility: visible;
-                        transform: translateY(0px);
-                    }
+                .nb_header .nb_mainnav > ul > li.hav_sub_nav > a:before {
+                    content: "";
+                    width: 0;
+                    height: 0;
+                    border-left: 4px solid transparent;
+                    border-right: 4px solid transparent;
+                    border-top: 4px solid #fff;
+                    position: absolute;
+                    left: 100%;
+                    top: 50%;
+                    margin-left: 8px;
+                }
 
-                    .nb_header .nb_mainnav > ul > li.hav_sub_nav > a:before {
-                        content: "";
-                        width: 0;
-                        height: 0;
-                        border-left: 4px solid transparent;
-                        border-right: 4px solid transparent;
-                        border-top: 4px solid #fff;
-                        position: absolute;
-                        left: 100%;
-                        top: 50%;
-                        margin-left: 8px;
-                    }
+        .nb_header .nb_mainnav > ul li.hav_mega_nav {
+            position: relative;
+        }
 
-            .nb_header .nb_mainnav > ul li.hav_mega_nav {
-                position: relative;
+            .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap {
+                position: absolute;
+                top: 100%;
+                left: 0px;
+                padding-top: 20px;
+                z-index: 110;
+                opacity: 0;
+                pointer-events: none;
+                transform: translateY(20px);
+                transition: all 0.3s ease;
             }
 
-                .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap {
-                    position: absolute;
-                    top: 100%;
-                    left: 0px;
-                    padding-top: 20px;
-                    z-index: 110;
-                    opacity: 0;
-                    pointer-events: none;
-                    transform: translateY(20px);
-                    transition: all 0.3s ease;
+                .nb_header
+                .nb_mainnav > ul
+                li.hav_mega_nav
+                .mega_nav_wrap
+                .mega_nav_wrap_inner {
+                    min-width: 564px;
+                    min-height: 250px;
+                    padding-top: 35px;
+                    padding-right: 20px;
+                    padding-left: 220px;
+                    padding-bottom: 20px;
+                    overflow: hidden;
+                    position: relative;
+                    background-color: #fff;
                 }
 
                     .nb_header
                     .nb_mainnav > ul
                     li.hav_mega_nav
                     .mega_nav_wrap
-                    .mega_nav_wrap_inner {
-                        min-width: 564px;
-                        min-height: 250px;
-                        padding-top: 35px;
-                        padding-right: 20px;
-                        padding-left: 220px;
-                        padding-bottom: 20px;
-                        overflow: hidden;
-                        position: relative;
-                        background-color: #fff;
+                    .mega_nav_wrap_inner
+                    .head {
+                        font-family: "primaryfont_Bold";
+                        font-size: 20px;
+                        margin-bottom: 13px;
+                    }
+
+                    .nb_header
+                    .nb_mainnav > ul
+                    li.hav_mega_nav
+                    .mega_nav_wrap
+                    .mega_nav_wrap_inner
+                    .meganav_firstcatList {
+                        list-style: none;
+                        float: left;
+                        margin: 0px;
+                        padding: 0px;
+                        min-width: 90px;
                     }
 
                         .nb_header
@@ -612,23 +637,10 @@ input[type="number"]::-webkit-outer-spin-button {
                         li.hav_mega_nav
                         .mega_nav_wrap
                         .mega_nav_wrap_inner
-                        .head {
-                            font-family: "primaryfont_Bold";
-                            font-size: 20px;
-                            margin-bottom: 13px;
-                        }
-
-                        .nb_header
-                        .nb_mainnav > ul
-                        li.hav_mega_nav
-                        .mega_nav_wrap
-                        .mega_nav_wrap_inner
-                        .meganav_firstcatList {
-                            list-style: none;
-                            float: left;
-                            margin: 0px;
-                            padding: 0px;
-                            min-width: 90px;
+                        .meganav_firstcatList > li {
+                            margin-bottom: 8px;
+                            position: relative;
+                            padding-right: 10px;
                         }
 
                             .nb_header
@@ -636,10 +648,11 @@ input[type="number"]::-webkit-outer-spin-button {
                             li.hav_mega_nav
                             .mega_nav_wrap
                             .mega_nav_wrap_inner
-                            .meganav_firstcatList > li {
-                                margin-bottom: 8px;
-                                position: relative;
-                                padding-right: 10px;
+                            .meganav_firstcatList > li > a {
+                                font-family: "primaryfont_Normal";
+                                font-size: 16px;
+                                color: #000;
+                                transition: all 0.3s ease;
                             }
 
                                 .nb_header
@@ -647,59 +660,57 @@ input[type="number"]::-webkit-outer-spin-button {
                                 li.hav_mega_nav
                                 .mega_nav_wrap
                                 .mega_nav_wrap_inner
-                                .meganav_firstcatList > li > a {
-                                    font-family: "primaryfont_Normal";
-                                    font-size: 16px;
-                                    color: #000;
-                                    transition: all 0.3s ease;
+                                .meganav_firstcatList > li > a:hover {
+                                    font-family: "primaryfont_Bold";
                                 }
 
-                                    .nb_header
-                                    .nb_mainnav > ul
-                                    li.hav_mega_nav
-                                    .mega_nav_wrap
-                                    .mega_nav_wrap_inner
-                                    .meganav_firstcatList > li > a:hover {
-                                        font-family: "primaryfont_Bold";
-                                    }
+                            .nb_header
+                            .nb_mainnav > ul
+                            li.hav_mega_nav
+                            .mega_nav_wrap
+                            .mega_nav_wrap_inner
+                            .meganav_firstcatList > li:after {
+                                content: "";
+                                position: absolute;
+                                left: 100%;
+                                top: 50%;
+                                transform: translate(-50%, -50%);
+                                width: 0;
+                                height: 0;
+                                transition: all 0.3s ease;
+                                opacity: 0;
+                                margin-left: -10px;
+                                border-top: 6px solid transparent;
+                                border-bottom: 6px solid transparent;
+                                border-left: 6px solid #000000;
+                            }
+
+                            .nb_header
+                            .nb_mainnav > ul
+                            li.hav_mega_nav
+                            .mega_nav_wrap
+                            .mega_nav_wrap_inner
+                            .meganav_firstcatList > li > ul.subList {
+                                list-style: none;
+                                position: absolute;
+                                padding-left: 20px;
+                                left: 100%;
+                                top: 0px;
+                                min-width: 200px;
+                                transform: translateX(20px);
+                                opacity: 0;
+                                pointer-events: none;
+                                transition: all 0.3s ease;
+                            }
 
                                 .nb_header
                                 .nb_mainnav > ul
                                 li.hav_mega_nav
                                 .mega_nav_wrap
                                 .mega_nav_wrap_inner
-                                .meganav_firstcatList > li:after {
-                                    content: "";
-                                    position: absolute;
-                                    left: 100%;
-                                    top: 50%;
-                                    transform: translate(-50%, -50%);
-                                    width: 0;
-                                    height: 0;
-                                    transition: all 0.3s ease;
-                                    opacity: 0;
-                                    margin-left: -10px;
-                                    border-top: 6px solid transparent;
-                                    border-bottom: 6px solid transparent;
-                                    border-left: 6px solid #000000;
-                                }
-
-                                .nb_header
-                                .nb_mainnav > ul
-                                li.hav_mega_nav
-                                .mega_nav_wrap
-                                .mega_nav_wrap_inner
-                                .meganav_firstcatList > li > ul.subList {
-                                    list-style: none;
-                                    position: absolute;
-                                    padding-left: 20px;
-                                    left: 100%;
-                                    top: 0px;
-                                    min-width: 200px;
-                                    transform: translateX(20px);
-                                    opacity: 0;
-                                    pointer-events: none;
-                                    transition: all 0.3s ease;
+                                .meganav_firstcatList > li > ul.subList
+                                li {
+                                    display: inline-block;
                                 }
 
                                     .nb_header
@@ -708,8 +719,13 @@ input[type="number"]::-webkit-outer-spin-button {
                                     .mega_nav_wrap
                                     .mega_nav_wrap_inner
                                     .meganav_firstcatList > li > ul.subList
-                                    li {
-                                        display: inline-block;
+                                    li
+                                    a {
+                                        font-family: "primaryfont_Normal";
+                                        font-size: 14px;
+                                        color: #000;
+                                        padding-left: 0px;
+                                        transition: all 0.3s ease;
                                     }
 
                                         .nb_header
@@ -719,86 +735,71 @@ input[type="number"]::-webkit-outer-spin-button {
                                         .mega_nav_wrap_inner
                                         .meganav_firstcatList > li > ul.subList
                                         li
-                                        a {
-                                            font-family: "primaryfont_Normal";
-                                            font-size: 14px;
-                                            color: #000;
-                                            padding-left: 0px;
-                                            transition: all 0.3s ease;
+                                        a:hover {
+                                            padding-left: 5px;
                                         }
 
-                                            .nb_header
-                                            .nb_mainnav > ul
-                                            li.hav_mega_nav
-                                            .mega_nav_wrap
-                                            .mega_nav_wrap_inner
-                                            .meganav_firstcatList > li > ul.subList
-                                            li
-                                            a:hover {
-                                                padding-left: 5px;
-                                            }
+                            .nb_header
+                            .nb_mainnav > ul
+                            li.hav_mega_nav
+                            .mega_nav_wrap
+                            .mega_nav_wrap_inner
+                            .meganav_firstcatList > li:hover:after {
+                                opacity: 1;
+                                margin-left: 0px;
+                            }
 
-                                .nb_header
-                                .nb_mainnav > ul
-                                li.hav_mega_nav
-                                .mega_nav_wrap
-                                .mega_nav_wrap_inner
-                                .meganav_firstcatList > li:hover:after {
-                                    opacity: 1;
-                                    margin-left: 0px;
-                                }
+                            .nb_header
+                            .nb_mainnav > ul
+                            li.hav_mega_nav
+                            .mega_nav_wrap
+                            .mega_nav_wrap_inner
+                            .meganav_firstcatList > li:hover > ul.subList {
+                                transform: translateX(0px);
+                                opacity: 1;
+                                pointer-events: all;
+                            }
 
-                                .nb_header
-                                .nb_mainnav > ul
-                                li.hav_mega_nav
-                                .mega_nav_wrap
-                                .mega_nav_wrap_inner
-                                .meganav_firstcatList > li:hover > ul.subList {
-                                    transform: translateX(0px);
-                                    opacity: 1;
-                                    pointer-events: all;
-                                }
+                    .nb_header
+                    .nb_mainnav > ul
+                    li.hav_mega_nav
+                    .mega_nav_wrap
+                    .mega_nav_wrap_inner:before {
+                        content: "";
+                        width: 200px;
+                        height: 100%;
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        background-repeat: no-repeat;
+                        background-position: left top;
+                        background-size: cover;
+                    }
 
-                        .nb_header
-                        .nb_mainnav > ul
-                        li.hav_mega_nav
-                        .mega_nav_wrap
-                        .mega_nav_wrap_inner:before {
-                            content: "";
-                            width: 200px;
-                            height: 100%;
-                            position: absolute;
-                            left: 0;
-                            top: 0;
-                            background-repeat: no-repeat;
-                            background-position: left top;
-                            background-size: cover;
-                        }
-
-                .nb_header .nb_mainnav > ul li.hav_mega_nav:hover .mega_nav_wrap {
-                    opacity: 1;
-                    pointer-events: all;
-                    transform: translateY(0px);
-                }
-
-            .nb_header .nb_mainnav > ul > li:last-child {
-                padding-right: 0px;
+            .nb_header .nb_mainnav > ul li.hav_mega_nav:hover .mega_nav_wrap {
+                opacity: 1;
+                pointer-events: all;
+                transform: translateY(0px);
             }
 
-            .nb_header .nb_mainnav > ul > li.active a {
-                position: relative;
-            }
+        .nb_header .nb_mainnav > ul > li:last-child {
+            padding-right: 0px;
+        }
 
-                .nb_header .nb_mainnav > ul > li.active a:after {
-                    content: "";
-                    position: absolute;
-                    bottom: -10px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    width: 100%;
-                    height: 2px;
-                    background-color: #f33655;
-                }
+        .nb_header .nb_mainnav > ul > li.active a {
+            position: relative;
+        }
+
+            .nb_header .nb_mainnav > ul > li.active a:after {
+                content: "";
+                position: absolute;
+                bottom: -10px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 100%;
+                height: 2px;
+                background-color: #f33655;
+            }
 
 .nb_sec {
     width: 100%;
@@ -895,11 +896,10 @@ input[type="number"]::-webkit-outer-spin-button {
             font-family: "primaryfont_Bold";
             font-size: 30px;
             color: #fff;
-            width: 100%;
-            float: left;
             display: block;
             line-height: 40px;
-            margin: 0px 0px 70px 0px;
+            margin: 10px;
+            padding: 6px;
             letter-spacing: 4px;
             transform: translateY(-20px);
             opacity: 0;
@@ -918,13 +918,14 @@ input[type="number"]::-webkit-outer-spin-button {
             text-transform: uppercase;
             font-size: 20px;
             color: #fff;
-            padding: 0px 0px 15px 0px;
+            padding: 6px;
             transform: translateY(20px);
             opacity: 0;
             visibility: hidden;
             transition: all 0.2s ease;
             transition-duration: 1s;
             transition-delay: 1s;
+            margin: 10px;
         }
 
             .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap button:after,
@@ -934,7 +935,7 @@ input[type="number"]::-webkit-outer-spin-button {
                 font-size: 20px;
                 color: #fff;
                 text-transform: uppercase;
-                width: 76px;
+                width: 100%;
                 height: 5px;
                 position: absolute;
                 bottom: 0;
