@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using Ganedata.Core.Data.Migrations;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Models;
 using Ganedata.Core.Services;
+using Microsoft.Ajax.Utilities;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -180,6 +180,8 @@ namespace WarehouseEcommerce.Controllers
             {
                 return RedirectToAction("KitProductDetail", "Products", new { sku = sku });
             }
+
+            selectedProduct.ProductAttributeValuesMap = selectedProduct.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).ToList();
 
             return View(selectedProduct);
         }
@@ -487,7 +489,11 @@ namespace WarehouseEcommerce.Controllers
         {
             ProductMaster selectedProduct;
             var relatedProducts = _productServices.GetAllProductInKitsByKitProductId(product.ProductId).Where(k => k.IsActive == true && k.ProductType != ProductKitTypeEnum.ProductByAttribute && k.IsDeleted != true);
-            selectedProduct = productId != null ? relatedProducts.FirstOrDefault(p => p.IsDeleted != true && p.IsActive == true && (p.ProductId == productId && (p.ProductId != product.ProductId || p.ProductType != ProductKitTypeEnum.ProductByAttribute))) : product;
+
+            relatedProducts.ForEach(r => r.ProductAttributeValuesMap = r.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).ToList());
+
+            selectedProduct = relatedProducts.FirstOrDefault(p => p.ProductId == productId || productId == null);
+
             ViewBag.AvailableAttributes = relatedProducts
                                             .SelectMany(a => a.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).Select(k => k.ProductAttributeValues))
                                             .GroupBy(a => a.ProductAttributes).OrderBy(u=>u.Key.SortOrder)

@@ -23,20 +23,13 @@
                             <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { category = ViewBag.Category })">@ViewBag.Category</a></li>
                             <li>></li>
                         }
-                        @*@if (Url.Action() != Url.Action("list", "Products", new { department = Model.TenantDepartment.DepartmentName }))
-                            {
-                                if (!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup))
-                                {
-                                    <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { group = Model.ProductGroup.ProductGroup, department = Model.TenantDepartment.DepartmentName})">@(!string.IsNullOrEmpty(Model?.ProductGroup?.ProductGroup) ? Model.ProductGroup.ProductGroup : "")</a></li>
-                                }
-                            }*@
                         @if (ViewBag.SubCategory != null && !string.IsNullOrEmpty(ViewBag.SubCategory))
                         {
                             <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { category = ViewBag.SubCategory })">@ViewBag.SubCategory</a></li>
                             <li>></li>
                         }
 
-                        <li class="breadcrumb-item">@Model.Name</li>
+                        <li class="breadcrumb-item">@ViewBag.BaseProduct.Name</li>
                     </ol>
                 </nav>
             </div>
@@ -104,19 +97,16 @@
                         foreach (var item in ViewBag.AvailableAttributes)
                         {
                             var attribute = item.Key;
+                            var selectedAttributeValue = Model.ProductAttributeValuesMap.FirstOrDefault(a => a.IsDeleted != true && a.ProductAttributeValues.AttributeId == attribute.AttributeId)?.ProductAttributeValues;
                             <div>
                                 <div class="sizeWrap">
-                                    @{
-                                        var selectedAttributeValue = Model.ProductAttributeValuesMap.FirstOrDefault(a => a.IsDeleted != true && a.ProductAttributeValues.AttributeId == attribute.AttributeId)?.ProductAttributeValues;
-                                    }
-
                                     <p>@Html.Raw(attribute.AttributeName) : <span>@Html.Raw(selectedAttributeValue?.Value)</span></p>
                                     <ul class="size_boxList">
                                         @{
                                             foreach (var attributeValue in item.Value)
                                             {
 
-                                                var relatedProducts = (ViewBag.RelatedProducts as IEnumerable<ProductMaster>).Where(p => p.SKUCode != Model.SKUCode && p.IsActive &&
+                                                var relatedProducts = (ViewBag.RelatedProducts as IEnumerable<ProductMaster>).Where(p => p.SKUCode != Model.SKUCode &&
                                                                                                             p.ProductAttributeValuesMap.Any(m => m.IsDeleted != true && m.ProductAttributeValues.AttributeId == attribute.AttributeId &&
                                                                                                                                                  m.ProductAttributeValues.AttributeValueId == attributeValue.AttributeValueId));
 
@@ -140,11 +130,9 @@
                                                     }
                                                 }
 
-                                                var isAttributeWithSelection = true;
+                                                var isAttributeAvailableWithCurrentSelection = true;
 
                                                 var attribiteStatusCheckQuery = (ViewBag.RelatedProducts as IEnumerable<ProductMaster>).Where(m => m.SKUCode != Model.SKUCode &&
-                                                                                                            m.IsDeleted != true &&
-                                                                                                            m.IsActive == true &&
                                                                                                             m.ProductAttributeValuesMap.Any(p => p.IsDeleted != true &&
                                                                                                                                                  p.ProductAttributeValues.AttributeId == attribute.AttributeId &&
                                                                                                                                                  p.ProductAttributeValues.AttributeValueId == attributeValue.AttributeValueId));
@@ -155,12 +143,12 @@
                                                                                                                                                           p.ProductAttributeValues.AttributeId == currentProductAttribute.ProductAttributeValues.AttributeId &&
                                                                                                                                                           p.ProductAttributeValues.AttributeValueId == currentProductAttribute.AttributeValueId));
 
-                                                    isAttributeWithSelection = attribiteStatusCheckQuery.Any();
+                                                    isAttributeAvailableWithCurrentSelection = attribiteStatusCheckQuery.Any();
                                                 }
 
                                                 var isSelectedAttributeValue = attributeValue.AttributeValueId == selectedAttributeValue?.AttributeValueId;
 
-                                                @Html.Raw("<li class=\"col3 " + (isSelectedAttributeValue ? "active" : "") + (!isSelectedAttributeValue && !isAttributeWithSelection ? "unavailable-attribute\">" : "\">") +
+                                                @Html.Raw("<li class=\"col3 " + (isSelectedAttributeValue ? "active" : "") + (!isSelectedAttributeValue && !isAttributeAvailableWithCurrentSelection ? "unavailable-attribute\">" : "\">") +
                                                                 (isSelectedAttributeValue ? "<a>" : $"<a href=\"ProductDetails?sku={ViewBag.BaseProduct.SKUCode}&productId={relatedProducts.FirstOrDefault()?.ProductId ?? Model.ProductId}\">") +
                                                                 (attributeValue.ProductAttributes.AttributeName.ToLower().IndexOf("color") == -1 && attributeValue.ProductAttributes.AttributeName.ToLower().IndexOf("colour") == -1 ?
                                                                 "<span>" + attributeValue.Value + "</span>" :
