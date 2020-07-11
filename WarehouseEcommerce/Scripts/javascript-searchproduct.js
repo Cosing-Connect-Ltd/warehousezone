@@ -528,6 +528,7 @@ $("input[type=checkbox]").on("change", function (e) {
     if (!$(this).hasClass("notification-switch")) {
         var arr = [];
         var data = "";
+        $('#priceS').prop('checked', true);
         var str = $(location).attr('href');
         var pagerep = new RegExp("&page=\\d+");
         str = str.replace(pagerep, '');
@@ -923,4 +924,3 @@ $(".notification-switch").change(function (e) {
 
 
 });
-

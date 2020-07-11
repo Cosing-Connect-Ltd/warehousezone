@@ -19,7 +19,10 @@
     }
 }
 
+
+
 <script src="~/Scripts/javascript-product-by-attribute.js"></script>
+
 @Html.Partial("_ProductByAttributeSelectorModal")
 
 <section class="nb_sec nb_prdlisting_pgsec">
@@ -51,6 +54,7 @@
                 <span class="srtby_txt">Sort By</span>
                 <div class="sortBysec">
                     @Html.DropDownList("SortedValues", EnumHelper.GetSelectList(typeof(SortProductTypeEnum)), htmlAttributes: new { @class = "form-control", onchange = "searchPoducts();" })
+                 
                 </div>
             </div>
         </div>
@@ -58,6 +62,7 @@
             @Html.Action("_DynamicFilters", new { category = ViewBag.Category, productName = ViewBag.CurrentFilter })
             <div class="col-md-8 col-lg-9 list-on-tablets">
                 <div class="nb_prd_listing_wrap">
+               
                     <div class="row">
                         @foreach (var item in Model)
                         {

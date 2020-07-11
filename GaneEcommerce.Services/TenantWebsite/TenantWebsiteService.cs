@@ -977,28 +977,15 @@ namespace Ganedata.Core.Services
             return AttributeValueId.GroupBy(o => o.AttributeId).ToDictionary(g => g.Key.ToString(), g => g.Select(u => u.ProductAttributeValues).ToList());
 
         }
-        public List<Tuple<string, string>> AllPriceListAgainstGroupAndDept(IQueryable<ProductMaster> productMasters)
+        public Tuple<string, string> AllPriceListAgainstGroupAndDept(IQueryable<ProductMaster> productMasters)
         {
-            List<Tuple<string, string>> Prices = new List<Tuple<string, string>>();
+            Tuple<string, string> prices;
 
-            var avarageValue = productMasters.Select(u => u.SellPrice);
-
-            var avgValue = avarageValue.Average();
-            var averageInt = Convert.ToInt32(avgValue);
-            var minValue = Convert.ToInt32(avarageValue.Min());
-            var maxValue = Convert.ToInt32(avarageValue.Max());
-            if (minValue == maxValue)
-            {
-                return Prices;
-            }
-            else
-            {
-                var centervalue = Convert.ToInt32(avarageValue.FirstOrDefault(u => u.Value > avgValue && u.Value < maxValue) == null ? Convert.ToInt32(avarageValue.Max() / 3) : avarageValue.FirstOrDefault(u => u.Value > avgValue && u.Value < maxValue));
-                Prices.Add(new Tuple<string, string>(minValue.ToString(), averageInt.ToString()));
-                Prices.Add(new Tuple<string, string>((averageInt + 10) > maxValue ? maxValue.ToString() : (averageInt + 10).ToString(), (averageInt + 20) > maxValue ? maxValue.ToString() : (averageInt + 20).ToString()));
-                Prices.Add(new Tuple<string, string>((averageInt + 30) > maxValue ? maxValue.ToString() : (averageInt + 30).ToString(), (maxValue + 1).ToString()));
-            }
-            return Prices;
+            var sellList = productMasters.Select(u => u.SellPrice);
+            var minValue = Convert.ToInt32(sellList.Min());
+            var maxValue = Convert.ToInt32(sellList.Max());
+            prices = new Tuple<string, string>(minValue.ToString(), maxValue.ToString());
+            return prices;
         }
         public IEnumerable<ProductManufacturer> GetAllValidProductManufacturerGroupAndDeptByName(IQueryable<ProductMaster> productMasters)
         {

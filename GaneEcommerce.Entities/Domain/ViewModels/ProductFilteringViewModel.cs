@@ -11,7 +11,7 @@ namespace Ganedata.Core.Entities.Domain
     {
         public List<string> Manufacturer { get; set; }
 
-        public List<Tuple<string,string>> PriceInterval { get; set; }
+        public Tuple<string,string> PriceInterval { get; set; }
 
         public string  CurrencySymbol { get; set; }
 

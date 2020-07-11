@@ -347,6 +347,7 @@
     <Content Include="Content\Theme\Smart\app\js\Smart_KitProductDetail_Custom.js" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\Theme\University\app\css\customfontIcons.css" />
+    <Content Include="Content\Theme\University\app\css\rangeSlider.css" />
     <Content Include="Content\Theme\University\app\fonts\icomoon.svg" />
     <Content Include="Content\Theme\University\app\fonts\SegoeUI-Bold.svg" />
     <Content Include="Content\Theme\University\app\fonts\SegoeUI-Semibold.svg" />
