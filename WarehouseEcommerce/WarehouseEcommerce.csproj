@@ -1419,6 +1419,7 @@
     <Content Include="Views\Theme\University\Shared\_CollectionPointSelector.cshtml" />
     <Content Include="Views\Theme\University\Shared\_ShippingAddressSelector.cshtml" />
     <Content Include="Views\Theme\University\Orders\PayPal.cshtml" />
+    <Content Include="Views\Theme\University\Orders\_AddressDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

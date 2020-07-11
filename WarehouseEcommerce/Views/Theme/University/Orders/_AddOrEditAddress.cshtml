@@ -33,7 +33,17 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
+                        @Html.EditorFor(model => model.AccountAddress.Telephone, new { htmlattributes = new { @placeholder = "Telephone Number", @class = "Telephone", @required = "Required" } })
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
                         @Html.EditorFor(model => model.AccountAddress.AddressLine2, new { htmlattributes = new { @placeholder = "Address Line 2", @class = "AddressLine2", @required = "Required" } })
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        @Html.DropDownListFor(model => model.AccountAddress.CountryID, new SelectList(Model.Countries, "CountryID", "CountryName"), new { @required = "Required" })
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -44,16 +54,6 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         @Html.EditorFor(model => model.AccountAddress.PostCode, new { htmlattributes = new { @placeholder = "Postal Code", @class = "PostCode", @required = "Required" } })
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        @Html.EditorFor(model => model.AccountAddress.Telephone, new { htmlattributes = new { @placeholder = "Telephone Number", @class = "Telephone", @required = "Required" } })
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        @Html.DropDownListFor(model => model.AccountAddress.CountryID, new SelectList(Model.Countries, "CountryID", "CountryName"), new { @required = "Required" })
                     </div>
                 </div>
 
