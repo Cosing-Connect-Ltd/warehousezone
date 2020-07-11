@@ -291,7 +291,27 @@ input[type="number"]::-webkit-outer-spin-button {
         float: right;
         margin-bottom: 35px;
     }
-
+@media(max-width:768px) and (min-width:564px) {
+    .nb_header .nb_headicolst {
+        margin-top: 57px;
+        margin-bottom: unset
+    }
+}
+@media(max-width:563px) and (min-width:481px) {
+    .nb_header .nb_headicolst {
+        margin-top: -60px;
+    }
+}
+@media(max-width:480px) {
+    .nb_header .nb_headicolst {
+        margin-top: 62px;
+    }
+}
+@media(max-width:407px) {
+    .nb_header .nb_headicolst {
+        margin-top: -36px;
+    }
+}
         .nb_header .nb_headicolst li {
             float: left;
             padding: 0px 25px;
@@ -3948,7 +3968,7 @@ body.ZoomerActive {
     background-color: #f33655;
     position: fixed;
     right: 0px;
-    top: 40%;
+    top: 210px;
     z-index: 110;
     flex-direction: row;
     align-items: center;
