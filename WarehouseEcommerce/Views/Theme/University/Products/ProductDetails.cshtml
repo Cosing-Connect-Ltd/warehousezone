@@ -63,9 +63,6 @@
             <div class="col-md-7 col-lg-6 offset-lg-1">
                 <div class="nb_prd_det_rightsec">
                     <h2 class="head">@Model.Name</h2>
-                    <p class="subContent">
-                        @Model.SKUCode
-                    </p>
                     <span class="prd_amnt">@ViewBag.CurrencySymbol @Model.SellPrice</span>
                     <div class="availibility">
                         @if (Model.InventoryStocks.Any(i => i.Available > 0))
