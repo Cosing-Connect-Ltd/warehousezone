@@ -261,7 +261,7 @@ namespace WMS.Controllers
 
             string sourceFile = Server.MapPath(UploadTempDirectory + @"/" + FileName);
             string destFile = Server.MapPath(UploadDirectory + ProductmanuId.ToString() + @"/" + FileName);
-            if (!System.IO.File.Exists(destFile))
+            if (System.IO.File.Exists(sourceFile) && !System.IO.File.Exists(destFile))
             {
                 System.IO.File.Move(sourceFile, destFile);
             }

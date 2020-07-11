@@ -312,21 +312,22 @@ namespace Ganedata.Core.Services
 
 
 
-        public ProductAttributes SaveProductAttribute(string attributeName)
+        public ProductAttributes SaveProductAttribute(string attributeName,int sortOrder)
         {
             var chkAttribute = _currentDbContext.ProductAttributes.FirstOrDefault(a => a.AttributeName.Equals(attributeName, StringComparison.CurrentCultureIgnoreCase));
             if (chkAttribute != null) return null;
 
             var att = new ProductAttributes()
             {
-                AttributeName = attributeName
+                AttributeName = attributeName,
+                SortOrder = sortOrder
             };
             _currentDbContext.Entry(att).State = EntityState.Added;
             _currentDbContext.SaveChanges();
             return att;
         }
 
-        public ProductAttributeValues SaveProductAttributeValue(int attributeId, string attributeValue, int userId = 0)
+        public ProductAttributeValues SaveProductAttributeValue(int attributeId, string attributeValue, int sortOrder, int userId = 0)
         {
             var value = _currentDbContext.ProductAttributeValues.FirstOrDefault(m => m.AttributeId == attributeId && m.Value == attributeValue);
             if (value == null && userId > 0)
@@ -334,7 +335,8 @@ namespace Ganedata.Core.Services
                 value = new ProductAttributeValues()
                 {
                     AttributeId = attributeId,
-                    Value = attributeValue
+                    Value = attributeValue,
+                    SortOrder = sortOrder
                 };
 
                 value.UpdateCreatedInfo(userId);

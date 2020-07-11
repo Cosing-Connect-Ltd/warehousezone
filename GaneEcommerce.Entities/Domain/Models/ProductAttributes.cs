@@ -18,6 +18,9 @@ namespace Ganedata.Core.Entities.Domain
         [StringLength(50)]
         [Display(Name = "Attribute Name")]
         public string AttributeName { get; set; }
+
+        [Display(Name = "Sort Value")]
+        public int SortOrder { get; set; }
         public virtual ICollection<ProductAttributeValues> ProductAttributeValues { get; set; }
     }
 }

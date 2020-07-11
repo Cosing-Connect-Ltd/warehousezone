@@ -490,10 +490,10 @@ namespace WarehouseEcommerce.Controllers
             selectedProduct = productId != null ? relatedProducts.FirstOrDefault(p => p.IsDeleted != true && p.IsActive == true && (p.ProductId == productId && (p.ProductId != product.ProductId || p.ProductType != ProductKitTypeEnum.ProductByAttribute))) : product;
             ViewBag.AvailableAttributes = relatedProducts
                                             .SelectMany(a => a.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).Select(k => k.ProductAttributeValues))
-                                            .GroupBy(a => a.ProductAttributes)
-                                            .ToDictionary(g => g.Key, g => g.OrderBy(av => av.AttributeValueId)
+                                            .GroupBy(a => a.ProductAttributes).OrderBy(u=>u.Key.SortOrder)
+                                            .ToDictionary(g => g.Key, g => g.OrderBy(av => av.SortOrder)
                                                                                             .GroupBy(av => av.AttributeValueId)
-                                                                                            .Select(av => av.First())
+                                                                                            .Select(av => av.First()).OrderBy(u=>u.ProductAttributes.SortOrder)
                                                                                             .ToList());
             ViewBag.RelatedProducts = relatedProducts;
             return selectedProduct;

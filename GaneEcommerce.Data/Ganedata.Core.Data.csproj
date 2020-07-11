@@ -951,6 +951,14 @@
     <Compile Include="Migrations\202007100945322_added-IsCollectionAvailable-and-IsDeliveryAvailable-fields-to-tenant-website.designer.cs">
       <DependentUpon>202007100945322_added-IsCollectionAvailable-and-IsDeliveryAvailable-fields-to-tenant-website.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007111100543_sortOrdercolumn-added-in-Attributevaluemap.cs" />
+    <Compile Include="Migrations\202007111100543_sortOrdercolumn-added-in-Attributevaluemap.designer.cs">
+      <DependentUpon>202007111100543_sortOrdercolumn-added-in-Attributevaluemap.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007111214279_sortorderolumn-added-in-productarrtibutes.cs" />
+    <Compile Include="Migrations\202007111214279_sortorderolumn-added-in-productarrtibutes.designer.cs">
+      <DependentUpon>202007111214279_sortorderolumn-added-in-productarrtibutes.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -1984,6 +1992,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007100945322_added-IsCollectionAvailable-and-IsDeliveryAvailable-fields-to-tenant-website.resx">
       <DependentUpon>202007100945322_added-IsCollectionAvailable-and-IsDeliveryAvailable-fields-to-tenant-website.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007111100543_sortOrdercolumn-added-in-Attributevaluemap.resx">
+      <DependentUpon>202007111100543_sortOrdercolumn-added-in-Attributevaluemap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007111214279_sortorderolumn-added-in-productarrtibutes.resx">
+      <DependentUpon>202007111214279_sortorderolumn-added-in-productarrtibutes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
