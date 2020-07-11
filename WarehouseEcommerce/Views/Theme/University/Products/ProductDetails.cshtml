@@ -163,15 +163,13 @@
                     }
 
                     <div class="footSec">
-                        <div class="qty">
-                            <span>quantity</span>
-                            <div class="sortBysec">
-                                <input id="input-quantity" type="text" name="quantity" value="1" size="2" data-detail="true" class="input-number" />
-                            </div>
-                        </div>
                         @if (@Model.SellPrice > 0 && @Model.SellPrice.HasValue && @Model.PercentMargin > 0 && Model.InventoryStocks.Sum(i => i.Available) > 0)
                         {
-                            <button class="addTobasket" onclick="addToCart(@Model.ProductId)">Add to basket</button>
+                            <div class="qty">
+                                <span>quantity</span>
+                                @Html.DropDownList("product-quantity", Enumerable.Range(1, (int)Model.InventoryStocks.Sum(i => i.Available)).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), htmlAttributes: new { @class = "form-control" })
+                            </div>
+                            <button class="addTobasket" onclick="addToCart(@Model.ProductId, document.getElementById('product-quantity').value)">Add to basket</button>
                         }
 
                         <button class="addtowishlistbtn">Add to Wishlist</button>

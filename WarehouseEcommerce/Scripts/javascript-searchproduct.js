@@ -234,7 +234,10 @@ function getTopCategoryProducts(ProductnavigationId) {
 
 //--------add update remove cartitem----------------
 function addToCart(ProductId) {
-    var quantity = $(".input-number").val() ?? 1;
+    addToCart(ProductId, 1);
+}
+
+function addToCart(ProductId, quantity) {
     startLoading();
     $.ajax({
         type: "GET",
