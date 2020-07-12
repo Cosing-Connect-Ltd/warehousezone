@@ -144,12 +144,10 @@
 
         var min =Math.floor(@Model.PriceInterval.Item1);
         var max = Math.ceil(@Model.PriceInterval.Item2);
-        if ((max - min) <= 1) {
+        if ((max - min) <= 1 || isNaN(min) || isNaN(max)) {
             $(".price-range-div").hide();
             return;
         }
-
-
         var priceIndex = window.location.href.indexOf("priceS-");
         var prices = priceIndex > -1 ? window.location.href.substr((priceIndex + 7), 14) : null;
         if (prices != null) {
