@@ -1691,7 +1691,7 @@ body.modal-open {
 
             .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group .findAddrWrap .findAddrInput {
                 width: 100%;
-                height: 47px;
+                height: 46px;
                 margin-top: 1px;
                 font-family: "primaryfont_Normal";
                 font-size: 14px;
@@ -2208,8 +2208,8 @@ body.modal-open {
 
         .basketTable tr.cmnRow .subtotalCell .subtotalCellInner span {
             font-family: "primaryfont_Bold";
-            font-size: 14px;
             margin-right: 20px;
+            line-height: 24px;
         }
 
             .basketTable tr.cmnRow .subtotalCell .subtotalCellInner span:last-child {
@@ -2318,7 +2318,7 @@ body.modal-open {
 
             .basketTable tr.cmnRow .qty .QtyWrapinner .coutnerInput {
                 border: none;
-                height: 37px;
+                height: 36px;
                 margin-top: 1px;
                 width: 100%;
                 text-align: center;
