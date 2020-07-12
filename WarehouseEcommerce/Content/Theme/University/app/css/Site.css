@@ -598,7 +598,7 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
 .nb_header {
     position: fixed;
     top: 0;
-    z-index: 999;
+    z-index: 1010;
 }
 
     .nb_header .head-container .show span {
@@ -3517,3 +3517,18 @@ body {
 }
 }
 /*basket-modal-content command product-detain-section -end*/
+
+/*shipping-type check boxes -start*/
+.ship-type {
+    display:flex;
+}
+@media(max-width:768px) {
+    .styled-checkbox + label:before {
+        min-width: 30px;
+        min-height: 30px;
+    }
+}
+.ship-type b {
+    margin-right: 10px;
+}
+/*shipping-type check boxes -end*/
