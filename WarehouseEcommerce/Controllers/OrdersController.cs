@@ -96,7 +96,7 @@ namespace WarehouseEcommerce.Controllers
 
             var checkoutViewModel = (CheckoutViewModel)Session["CheckoutViewModel"];
 
-            if(checkoutViewModel == null || (!CurrentTenantWebsite.IsCollectionAvailable && !CurrentTenantWebsite.IsDeliveryAvailable))
+            if(checkoutViewModel == null || checkoutViewModel.CurrentStep == null || (!CurrentTenantWebsite.IsCollectionAvailable && !CurrentTenantWebsite.IsDeliveryAvailable))
             {
                 return RedirectToAction("AddToCart", "Products", new { PlaceOrder = true });
             }
@@ -125,16 +125,16 @@ namespace WarehouseEcommerce.Controllers
         {
             var checkoutViewModel = (CheckoutViewModel)Session["CheckoutViewModel"];
 
-            if (checkoutViewModel.StepsHistory.Count > 0) {
+            if (checkoutViewModel.StepsHistory?.Count > 0) {
                 checkoutViewModel.StepsHistory.RemoveAt(checkoutViewModel.StepsHistory.Count - 1);
             }
 
-            if (checkoutViewModel == null || checkoutViewModel.StepsHistory.Count == 0)
+            if (checkoutViewModel == null || checkoutViewModel.StepsHistory?.Count == 0)
             {
                 return RedirectToAction("AddToCart", "Products", new { PlaceOrder = true });
             }
 
-            checkoutViewModel.CurrentStep = checkoutViewModel.StepsHistory.Last();
+            checkoutViewModel.CurrentStep = checkoutViewModel.StepsHistory.LastOrDefault();
 
             Session["CheckoutViewModel"] = checkoutViewModel;
 
@@ -442,7 +442,9 @@ namespace WarehouseEcommerce.Controllers
             model.DeliveryMethodId = checkoutViewModel.DeliveryMethodId ?? (model.DeliveryMethodId??checkoutViewModel.DeliveryMethodId);
             model.CollectionPointId = checkoutViewModel.CollectionPointId ?? (model.CollectionPointId??checkoutViewModel.CollectionPointId);
             model.Countries = _lookupServices.GetAllGlobalCountries().Select(u => new CountryViewModel { CountryId = u.CountryID, CountryName = u.CountryName }).ToList();
+            model.CurrencySymbol = checkoutViewModel.CurrencySymbol ?? (Session["CurrencyDetail"] != null ? (Session["CurrencyDetail"] as caCurrencyDetail).Symbol : string.Empty);
             model.AccountAddressId = checkoutViewModel.AccountAddressId;
+            model.StepsHistory = checkoutViewModel.StepsHistory;
 
             if (model.noTrackStep != true && model.CurrentStep != null && model.StepsHistory.LastOrDefault() != model.CurrentStep)
             {

@@ -1261,8 +1261,8 @@ namespace Ganedata.Core.Services
 
         public CheckoutViewModel SetCheckOutProcessModel(CheckoutViewModel checkoutViewModel, int siteId, int tenantId, int userId, string sessionKey)
         {
-            var getTenantCurrency = _tenantsCurrencyRateServices.GetTenantCurrencies(tenantId).FirstOrDefault();
-            var currencyRate = _tenantsCurrencyRateServices.GetCurrencyRateByTenantid(getTenantCurrency?.TenantCurrencyID ?? 0);
+            var tenantCurrency = _tenantsCurrencyRateServices.GetTenantCurrencies(tenantId).FirstOrDefault();
+            var currencyRate = _tenantsCurrencyRateServices.GetCurrencyRateByTenantid(tenantCurrency?.TenantCurrencyID ?? 0);
             List<AccountAddresses> accountAddresses = new List<AccountAddresses>();
             if ((DeliveryMethod?)checkoutViewModel.DeliveryMethodId == DeliveryMethod.ToShipmentAddress)
             {
@@ -1273,6 +1273,7 @@ namespace Ganedata.Core.Services
             }
             accountAddresses.Add(_accountServices.GetAccountAddressById(checkoutViewModel.BillingAddressId ?? 0));
             checkoutViewModel.Addresses = _mapper.Map(accountAddresses, new List<AddressViewModel>());
+            checkoutViewModel.CurrencySymbol = tenantCurrency?.GlobalCurrency.Symbol;
             checkoutViewModel.CartItems = GetAllValidCartItems(siteId, userId, tenantId, sessionKey).ToList();
             if ((DeliveryMethod?)checkoutViewModel.DeliveryMethodId == DeliveryMethod.ToPickupPoint)
             {

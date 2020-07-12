@@ -50,6 +50,24 @@
                                 </p>
                             }
 
+                        }
+
+
+                        <h4 class="subHead">
+                            Delivery Method
+                        </h4>
+                        @if ((DeliveryMethod?)Model.DeliveryMethodId == DeliveryMethod.ToPickupPoint)
+                        {
+                            <p class="content">Pick up (from collection point) - Free</p>
+                        }
+                        else
+                        {
+                            <p class="content">@Model.CurrencySymbol@Model.ShippingRule.Price - By @Model.ShippingRule.Courier @(!string.IsNullOrEmpty(Model.ShippingRule.Description?.Trim()) ? $" - {Model.ShippingRule.Description}" : "")</p>
+                        }
+
+                        @if (addresses != null)
+                        {
+
                             if ((DeliveryMethod?)Model.DeliveryMethodId == DeliveryMethod.ToShipmentAddress)
                             {
                                 <h4 class="subHead">
@@ -85,17 +103,6 @@
                         }
 
                         <h4 class="subHead">
-                            Delivery Method
-                        </h4>
-                        @if ((DeliveryMethod?)Model.DeliveryMethodId == DeliveryMethod.ToPickupPoint)
-                        {
-                            <p class="content">Pick up (from collection point) - Free</p>
-                        }
-                        else
-                        {
-                            <p class="content">Delivery by @Model.ShippingRule.Courier @(!string.IsNullOrEmpty(Model.ShippingRule.Description?.Trim()) ? $"({Model.ShippingRule.Description})" : "") - @Model.CurrencySymbol@Model.ShippingRule.Price</p>
-                        }
-                        <h4 class="subHead">
                             Payment Method
                         </h4>
                         <p class="content">
@@ -111,7 +118,7 @@
                             {
                                 <li>
                                     @(item.ProductMaster?.Name)<br />
-                                    @ViewBag.CurrencySymbol@item.Price, Qty: @item.Quantity
+                                    @Model.CurrencySymbol@item.Price, Qty: @Convert.ToInt32(item.Quantity)
                                 </li>
                             }
                         </ul>
@@ -130,7 +137,7 @@
                                 @*<a href="@Url.Action("Index","Test")" class="btn btn-block cash-btn cashbtn" name="submitNewsletter"> Proceed To Payment</a>*@
                             </div>
 
-                            
+
                         }
                         else if ((PaymentMethodEnum?)Model.PaymentMethodId == PaymentMethodEnum.SagePay)
                         {

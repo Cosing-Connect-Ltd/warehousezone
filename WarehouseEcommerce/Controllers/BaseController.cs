@@ -20,13 +20,13 @@ namespace WarehouseEcommerce.Controllers
         protected readonly IPropertyService PropertyService;
         protected readonly IAccountServices AccountServices;
         protected readonly ILookupServices LookupServices;
-        private readonly ITenantsCurrencyRateServices tenantsCurrencyRateServices;
+        private readonly ITenantsCurrencyRateServices _tenantsCurrencyRateServices;
         public static string NoImage = "/UploadedFiles/Products/Products/no-image.png";
         public static string uploadedProductCategoryfilePath = "/UploadedFiles/ProductCategory/";
 
-        public BaseController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsService)
+        public BaseController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsCurrencyRateServices)
         {
-            tenantsCurrencyRateServices = tenantsService;
+            _tenantsCurrencyRateServices = tenantsCurrencyRateServices;
             OrderService = orderService;
             PropertyService = propertyService;
             AccountServices = accountServices;
@@ -278,9 +278,9 @@ namespace WarehouseEcommerce.Controllers
                     CurrencyName = u.CurrencyName
 
                 }).ToList();
-                var getTenantCurrencies = tenantsCurrencyRateServices.GetTenantCurrencies(CurrentTenantId).FirstOrDefault(u => u.CurrencyID == detail.FirstOrDefault()?.Id);
+                var getTenantCurrencies = _tenantsCurrencyRateServices.GetTenantCurrencies(CurrentTenantId).FirstOrDefault(u => u.CurrencyID == detail.FirstOrDefault()?.Id);
                 detail.ForEach(c =>
-                    c.Rate = tenantsCurrencyRateServices.GetCurrencyRateByTenantid(getTenantCurrencies.TenantCurrencyID)
+                    c.Rate = _tenantsCurrencyRateServices.GetCurrencyRateByTenantid(getTenantCurrencies.TenantCurrencyID)
                 );
                 Session["CurrencyDetail"] = detail.FirstOrDefault();
             }
@@ -299,9 +299,9 @@ namespace WarehouseEcommerce.Controllers
                         CurrencyName = u.CurrencyName
 
                     }).ToList();
-                    var getTenantCurrencies = tenantsCurrencyRateServices.GetTenantCurrencies(CurrentTenantId).FirstOrDefault(u => u.CurrencyID == detail.FirstOrDefault()?.Id);
+                    var getTenantCurrencies = _tenantsCurrencyRateServices.GetTenantCurrencies(CurrentTenantId).FirstOrDefault(u => u.CurrencyID == detail.FirstOrDefault()?.Id);
                     detail.ForEach(c =>
-                        c.Rate = tenantsCurrencyRateServices.GetCurrencyRateByTenantid(getTenantCurrencies?.TenantCurrencyID ?? 0)
+                        c.Rate = _tenantsCurrencyRateServices.GetCurrencyRateByTenantid(getTenantCurrencies?.TenantCurrencyID ?? 0)
                     );
                     Session["CurrencyDetail"] = detail.FirstOrDefault();
                 }
