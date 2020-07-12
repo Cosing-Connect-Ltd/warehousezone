@@ -3076,9 +3076,15 @@ body.modal-open {
 .price-b {
     display: none;
 }
+.basket-modal .basked-heading {
+    display: none;
+}
+.basket-modal .modal-footer {
+    border-top: unset !important;
+}
 @media(max-width:1200px) and (min-width:769px) {
-    .store-delivery,
-    .basketTable .cmnRow .store,
+    .store-delivery, 
+    .basketTable .cmnRow .store, 
     .basketTable .cmnRow .greyBox,
     .basketTable tr.cmnRow .tot .in-basket-price-total:after {
         display: none
@@ -3101,17 +3107,6 @@ body.modal-open {
         flex-wrap: wrap;
         flex-direction: column !important;
     }
-
-    .basketTable .prdCellwrap .imgWrap,
-    .basketTable .prdCellwrap .prdName {
-        width: 100% !important;
-        height: auto !important;
-    }
-
-        .basketTable .prdCellwrap .imgWrap img {
-            width: 320px !important;
-            height: 320px;
-        }
 
     .basketTable .priceWrapinner,
     .basketTable .priceTotal {
@@ -3145,19 +3140,26 @@ body.modal-open {
             .basketTable .cmnRow .subtotalCellInner {
                 justify-content: center !important;
             }
+        .basketTable .prdCellwrap .imgWrap,
+        .basketTable .prdCellwrap .prdName,
+        .basketTable .cmnRow .qty {
+            width: 320px !important;
+            height: auto !important;
+        }
+        .basketTable .prdCellwrap .imgWrap img {
+           width: 320px !important;
+           height: 320px;
+         }
 }
-
-@media(max-width:700px) {
-    .basketTable .prdCellwrap .imgWrap img {
-        width: 320px !important;
-        height: 320px;
-    }
-}
-
 @media(max-width:650px) {
     .basketTable .prdCellwrap .imgWrap img {
         width: 295px !important;
         height: 295px;
+    }
+    .basketTable .prdCellwrap .imgWrap,
+    .basketTable .prdCellwrap .prdName,
+    .basketTable .cmnRow .qty {
+        width: 295px !important;
     }
 }
 
@@ -3165,6 +3167,11 @@ body.modal-open {
     .basketTable .prdCellwrap .imgWrap img {
         width: 270px !important;
         height: 270px;
+    }
+    .basketTable .prdCellwrap .imgWrap,
+    .basketTable .prdCellwrap .prdName,
+    .basketTable .cmnRow .qty {
+        width: 270px !important;
     }
 }
 
@@ -3193,13 +3200,6 @@ body.modal-open {
     .basketTable .prdCellwrap .imgWrap img {
         width: 182px !important;
         height: 182px;
-    }
-}
-
-@media(max-width:375px) {
-    .basketTable .prdCellwrap .imgWrap img {
-        width: 157px !important;
-        height: 157px;
     }
 }
 
