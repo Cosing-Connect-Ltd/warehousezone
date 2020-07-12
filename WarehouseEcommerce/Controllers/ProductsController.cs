@@ -363,7 +363,7 @@ namespace WarehouseEcommerce.Controllers
         {
             if (productId.HasValue)
             {
-                var count = _tenantWebsiteService.RemoveWishListItem((productId ?? 0), CurrentTenantWebsite.SiteID, CurrentUserId);
+                var count = _tenantWebsiteService.RemoveWishListItem((productId ?? 0),false, CurrentTenantWebsite.SiteID, CurrentUserId);
                 return PartialView(_tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).ToList());
 
             }
@@ -434,16 +434,16 @@ namespace WarehouseEcommerce.Controllers
             productFiltering.AttributeValues = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(products);
             productFiltering.subCategories = _productlookupServices.GetAllValidSubCategoriesByDepartmentAndGroup(products).ToList();
             productFiltering.Count = products.Count();
+            productFiltering.CurrencySymbol = ViewBag.CurrencySymbol;
 
             return PartialView(productFiltering);
         }
 
 
-        public JsonResult RemoveWishList(int ProductId)
+        public JsonResult RemoveWishList(int ProductId,bool notification)
         {
-            var count = _tenantWebsiteService.RemoveWishListItem(ProductId, CurrentTenantWebsite.SiteID, CurrentUserId);
-            GaneWishListItemsSessionHelper.RemoveWishListSession(ProductId);
-            count = Math.Max(count, GaneWishListItemsSessionHelper.GetWishListItemsSession().Count);
+            var count = _tenantWebsiteService.RemoveWishListItem(ProductId, notification, CurrentTenantWebsite.SiteID, CurrentUserId);
+         
             return Json(count, JsonRequestBehavior.AllowGet);
         }
 

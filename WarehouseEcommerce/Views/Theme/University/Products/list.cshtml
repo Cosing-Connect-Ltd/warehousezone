@@ -54,7 +54,7 @@
                 <span class="srtby_txt">Sort By</span>
                 <div class="sortBysec">
                     @Html.DropDownList("SortedValues", EnumHelper.GetSelectList(typeof(SortProductTypeEnum)), htmlAttributes: new { @class = "form-control", onchange = "searchPoducts();" })
-                 
+
                 </div>
             </div>
         </div>
@@ -62,7 +62,7 @@
             @Html.Action("_DynamicFilters", new { category = ViewBag.Category, productName = ViewBag.CurrentFilter })
             <div class="col-md-8 col-lg-9 list-on-tablets">
                 <div class="nb_prd_listing_wrap">
-               
+
                     <div class="row">
                         @foreach (var item in Model)
                         {
@@ -99,7 +99,8 @@
                                         @if (item.ProductType != ProductKitTypeEnum.Grouped && item.ProductType != ProductKitTypeEnum.Kit)
                                         {
                                             <ul class="icolist">
-                                                @if (@item.SellPrice > 0 && @item.SellPrice.HasValue && @item.PercentMargin > 0 && item.ProductType != ProductKitTypeEnum.ProductByAttribute)
+
+                                                @if (item.SellPrice > 0 && item.SellPrice.HasValue && @item.PercentMargin > 0 && item.ProductType != ProductKitTypeEnum.ProductByAttribute)
                                                 {
                                                     if (item.InventoryStocks.Sum(i => i.Available) > 0)
                                                     {
@@ -107,6 +108,7 @@
                                                             <a href="javascript:;" onclick="addToCart(@item.ProductId)"><i class="icon-shopping-cart"></i></a>
                                                         </li>
                                                     }
+
                                                 }
                                                 else if (@item.SellPrice > 0 && @item.SellPrice.HasValue && @item.PercentMargin > 0 && item.ProductType == ProductKitTypeEnum.ProductByAttribute)
                                                 {
@@ -114,19 +116,40 @@
                                                         <a href="javascript:;" onclick="showProductByAttributeSelector('@item.SKUCode')"><i class="icon-shopping-cart"></i></a>
                                                     </li>
                                                 }
-                                                @{
-                                                    var totaltems = item.WebsiteWishListItems.Where(u => u.IsDeleted != true && u.UserId == ViewBag.CurrentUserId).ToList();
+                                                else
+                                                {
+                                                    var totalwishlistitems = item.WebsiteWishListItems.FirstOrDefault(u => u.IsDeleted != true && u.UserId == ViewBag.CurrentUserId && u.IsNotification);
+
+                                                    if (totalwishlistitems == null)
+                                                    {
+                                                        <li>
+                                                            <a href="javascript:;"  onclick="AddWishListItemStockNotAvailable(@item.ProductId)" class="notification-bell_@item.ProductId"><i class="fa fa-bell list-icon" style="color:black"></i></a>
+                                                        </li>
+                                                    }
+                                                    else
+                                                    {
+                                                        <li>
+                                                            <a href="javascript:;"  onclick="removeNotifyProduct(@item.ProductId,true)" class="notification-bell_@item.ProductId"><i class="fa fa-bell list-icon" style="color:red"></i></a>
+                                                        </li>
+                                                        
+                                                    }
+
+                                                    
                                                 }
-                                                @if (totaltems.Count <= 0)
+
+                                                @{
+                                                    var totaltems = item.WebsiteWishListItems.FirstOrDefault(u => u.IsDeleted != true && u.UserId == ViewBag.CurrentUserId && !u.IsNotification);
+                                                }
+                                                @if (totaltems == null)
                                                 {
                                                     <li>
-                                                        <a href="javascript:;" id="wish_@item.ProductId" onclick="AddWishListItem(@item.ProductId)"><i class="icon-love list-icon" style="color:black"></i></a>
+                                                        <a href="javascript:;" id="wish_@item.ProductId" onclick="AddToWishList(@item.ProductId, false)"><i class="icon-love list-icon" style="color: black"></i></a>
                                                     </li>
                                                 }
                                                 else
                                                 {
                                                     <li>
-                                                        <a href="javascript:;" id="wish_@item.ProductId" onclick="RemoveWishListPopUp(@item.ProductId)"><i class="icon-love list-icon" style="color:red"></i></a>
+                                                        <a href="javascript:;" id="wish_@item.ProductId" onclick="RemoveWishListPopUp(@item.ProductId,false)"><i class="icon-love list-icon" style="color: red"></i></a>
                                                     </li>
                                                 }
                                             </ul>

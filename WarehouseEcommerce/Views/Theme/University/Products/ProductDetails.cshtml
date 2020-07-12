@@ -166,15 +166,36 @@
                             
                             <button class="addTobasket" onclick="addToCart(@Model.ProductId, document.getElementById('product-quantity').value)">Add to basket</button>
                         }
+                        else
+                        {
+                                var totalwishlistitems = Model.WebsiteWishListItems.FirstOrDefault(u => u.IsDeleted != true && u.UserId == ViewBag.CurrentUserId && u.IsNotification);
+
+                                if (totalwishlistitems==null)
+                                {
+                                    <li>
+                                        <a href="javascript:;"  onclick="AddWishListItemStockNotAvailable(@ViewBag.BaseProduct.ProductId)" class="addtowishlist notification-bell_@ViewBag.BaseProduct.ProductId"><i class="fa fa-bell list-icon" style="color:black"></i></a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a href="javascript:;"  onclick="removeNotifyProduct(@ViewBag.BaseProduct.ProductId,true)" class="addtowishlist notification-bell_@ViewBag.BaseProduct.ProductId"><i class="fa fa-bell list-icon" style="color:red"></i></a>
+                                    </li>
+                                                        
+                                }
+
+                                                    
+                            
+                        }
                         <button class="addtowishlistbtn">Add to Wishlist</button>
 
-                        @if (Model.WebsiteWishListItems.Where(u => u.IsDeleted != true).ToList().Count <= 0)
+                        @if (Model.WebsiteWishListItems.FirstOrDefault(u => u.IsDeleted != true && !u.IsNotification)==null)
                         {
-                            <a href="javascript:;" class="addtowishlist" id="wish_@ViewBag.BaseProduct.ProductId" onclick="AddWishListItem(@ViewBag.BaseProduct.ProductId)"><i class="icon-love list-icon" style="color:black"></i></a>
+                            <a href="javascript:;" class="addtowishlist" id="wish_@ViewBag.BaseProduct.ProductId" onclick="AddToWishList(@ViewBag.BaseProduct.ProductId,false)"><i class="icon-love list-icon" style="color:black"></i></a>
                         }
                         else
                         {
-                            <a href="javascript:;" class="addtowishlist" id="wish_@ViewBag.BaseProduct.ProductId" onclick="RemoveWishListPopUp(@ViewBag.BaseProduct.ProductId)"><i class="icon-love list-icon" style="color:red"></i></a>
+                            <a href="javascript:;" class="addtowishlist" id="wish_@ViewBag.BaseProduct.ProductId" onclick="RemoveWishListPopUp(@ViewBag.BaseProduct.ProductId,false)"><i class="icon-love list-icon" style="color:red"></i></a>
                         }
                     </div>
                 </div>

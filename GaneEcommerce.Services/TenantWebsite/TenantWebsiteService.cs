@@ -1048,7 +1048,7 @@ namespace Ganedata.Core.Services
 
         public IEnumerable<WebsiteWishListItem> GetAllValidWishListItemsList(int siteId, int UserId)
         {
-            return _currentDbContext.WebsiteWishListItems.Where(u => u.SiteID == siteId && u.UserId == UserId && u.IsDeleted != true);
+            return _currentDbContext.WebsiteWishListItems.Where(u => u.SiteID == siteId && u.UserId == UserId && u.IsDeleted != true && !u.IsNotification);
         }
 
         public int AddOrUpdateCartItem(int siteId, int? userId, int tenantId, string sessionKey, int productId, decimal quantity, List<KitProductCartSession> kitProductCartItems = null)
@@ -1160,7 +1160,7 @@ namespace Ganedata.Core.Services
         {
             foreach (var orderDetail in wishListdeDetail)
             {
-                var wishListProduct = _currentDbContext.WebsiteWishListItems.FirstOrDefault(u => u.ProductId == orderDetail.ProductId && u.SiteID == SiteId && u.UserId == UserId);
+                var wishListProduct = _currentDbContext.WebsiteWishListItems.FirstOrDefault(u => u.ProductId == orderDetail.ProductId && u.SiteID == SiteId && u.UserId == UserId && u.IsNotification==orderDetail.isNotfication);
                 if (wishListProduct == null)
                 {
                     WebsiteWishListItem WishListItem = new WebsiteWishListItem();
@@ -1245,9 +1245,9 @@ namespace Ganedata.Core.Services
             return cartItem;
         }
 
-        public int RemoveWishListItem(int ProductId, int SiteId, int UserId)
+        public int RemoveWishListItem(int ProductId,bool notification, int SiteId, int UserId)
         {
-            var wishListProduct = _currentDbContext.WebsiteWishListItems.FirstOrDefault(u => u.ProductId == ProductId && u.SiteID == SiteId && u.UserId == UserId);
+            var wishListProduct = _currentDbContext.WebsiteWishListItems.FirstOrDefault(u => u.ProductId == ProductId && u.SiteID == SiteId && u.UserId == UserId && u.IsNotification==notification);
             if (wishListProduct != null)
             {
                 wishListProduct.IsDeleted = true;

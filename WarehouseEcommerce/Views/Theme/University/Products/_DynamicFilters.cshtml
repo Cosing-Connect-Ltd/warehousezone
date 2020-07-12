@@ -24,7 +24,7 @@
                         </button>
                     </h5>
                     <div>
-                        <input type="text" id="amount" readonly>
+                        <div id="amount"></div>
                     </div>
                 </div>
                 <div id="collapseOne"
@@ -143,7 +143,6 @@
 
 <script>
     $(function () {
-
         var min =Math.floor(@Model.PriceInterval.Item1);
         var max = Math.ceil(@Model.PriceInterval.Item2);
         if ((max - min) <= 1 || isNaN(min) || isNaN(max)) {
@@ -157,7 +156,7 @@
             min = Math.floor(parseFloat(prices[0]));
             max = Math.ceil(parseFloat(prices[1]));
             $('#priceS').prop('checked', true);
-            $("#priceS").val(@Model.CurrencySymbol + prices[0] + "_" + @Model.CurrencySymbol+prices[1]);
+            $("#priceS").val(prices[0] + "_" +prices[1]);
         }
         $("#slider-range").slider({
             range: true,
@@ -165,23 +164,62 @@
             max: Math.ceil(@Model.PriceInterval.Item2),
             values: [min, max],
             slide: function(event, ui) {
-                $("#amount").val("@Model.CurrencySymbol" + Math.floor(ui.values[0]) + " - @Model.CurrencySymbol" + Math.ceil(ui.values[1]));
-               
+                $("#amount").html('@Model.CurrencySymbol' + Math.floor(ui.values[0]) + " - "+'  @Model.CurrencySymbol' + Math.ceil(ui.values[1]));
+
             },
             stop: function (event, ui) {
 
                 $("#priceS").val(ui.values[0] + "_" + ui.values[1]);
-
-
                 $("#priceS").click();
 
 
             }
         });
-        $("#amount").val(@Model.CurrencySymbol+min +
-            "-" +
-            @Model.CurrencySymbol+max);
+        $("#amount").html('@Model.CurrencySymbol'+min+
+            " -" +
+            '  @Model.CurrencySymbol'+max);
+        $("input[type=checkbox]").on("change", function (e) {
+       
+                var arr = [];
+                var data = "";
+                $('#priceS').prop('checked', true);
+                var str = $(location).attr('href');
+                var pagerep = new RegExp("&page=\\d+");
+                str = str.replace(pagerep, '');
+                str = removeURLParameter(str, "page");
+                str = removeURLParameter(str, "values");
+                var parameter = "&values=";
+                str = str + parameter;
+                $(":checkbox").each(function () {
 
+                    if (this.checked) {
+                        if (str.indexOf($(this).val()) < 0) {
+                            arr.push($(this).val());
+                            data = this.id;
+                            if (str.indexOf(data) < 0) {
+                                var indexof = str.lastIndexOf("=");
+                                var checkpreviousString = str.substr(indexof - 6, 6);
+                                var found = str.charAt(indexof + 1);
+                                if (checkpreviousString === "values" && found === "") {
+                                    str = str + data + "-" + $(this).val();
+                                } else {
+                                    str = str + "/" + data + "-" + $(this).val();
+                                }
+                            } else {
+                                if (str.indexOf($(this).val()) < 0) {
+                                    str = str + "," + $(this).val();
+                                }
+                            }
+                        }
+
+                    }
+
+                });
+                location.href = str;
+            
+
+
+        });
 
     });
 </script>
