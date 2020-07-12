@@ -11,7 +11,7 @@
                         @Model.SKUCode
                     </p>
                     @Html.Hidden("step-number-tracking")
-                    <span class="prd_amnt">@ViewBag.CurrencySymbol @Model.SellPrice</span>
+                    <span class="prd_amnt">@ViewBag.CurrencySymbol@Model.SellPrice</span>
                     <div class="attribute-refresh">
                         <div class="availibility">
                             @if (Model.InventoryStocks.FirstOrDefault()?.Available > 0)

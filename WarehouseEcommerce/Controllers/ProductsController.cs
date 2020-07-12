@@ -511,6 +511,8 @@ namespace WarehouseEcommerce.Controllers
             var selectedProduct = product;
             ViewBag.BaseProduct = product;
             ViewBag.Quantity = quantity;
+            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
+            ViewBag.CurrencySymbol = currencyyDetail.Symbol;
             if (product.ProductType == ProductKitTypeEnum.ProductByAttribute)
             {
                 selectedProduct = GetSelectedProductByAttribute(productId, product);

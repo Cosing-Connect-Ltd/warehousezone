@@ -1,14 +1,19 @@
 ﻿@using Ganedata.Core.Entities.Domain
 @using Ganedata.Core.Entities.Enums
 @model ProductMaster
+<div class="modal-header">
+    <h2 class="head">@Model.Name</h2>
+</div>
+<div style="display:none">
+    <label style="color:red" id="#errorprint"></label>
+</div>
 <section class="nb_sec nb_prdlisting_pgsec">
     <div class="container">
         <div class="row">
             <div class="col-md-12 col-lg-12 offset-lg-1">
                 <div class="nb_prd_det_rightsec">
-                    <h2 class="head">@Model.Name</h2>
                     @Html.HiddenFor(model => model.ProductId)
-                    <span class="prd_amnt">@ViewBag.CurrencySymbol @Model.SellPrice</span>
+                    <span class="prd_amnt">@ViewBag.CurrencySymbol@Model.SellPrice</span>
                     <div class="availibility">
                         @if (Model.InventoryStocks.Any(i => i.Available > 0))
                         {
