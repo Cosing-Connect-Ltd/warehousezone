@@ -6,7 +6,7 @@
 
 <div class="address-wrapper">
     <h5 class="subheadCmn">Shipping Address</h5>
-    @if (address != null)
+    @if (address != null && address.Count > 0)
     {
         var count = Model.CurrentStep != CheckoutStep.ShippingAddress ? 1 : address.Count;
         for (int i = 0; i < count; i++)
@@ -29,12 +29,16 @@
 
             }
         }
-    }
 
-    <div class="btnWrap">
-        <a href="javascript:;" data-AccountId="@(Model.AccountId??null)" data-billingAddressId="@(Model.BillingAddressId)" data-currentstep="@((int)CheckoutStep.AddOrEditAddress)" data-deliveryMethodId="@(Model.DeliveryMethodId??null)" onclick="moveToNextStep(this)" class="btmBtn">
-            ADD NEW SHIPPING ADDRESS
-        </a>
-        <a href="@Url.Action("GoToPreviousStep","orders")" class="btmBtn">Back</a>
-    </div>
+        <div class="btnWrap">
+            <a href="javascript:;" data-AccountId="@(Model.AccountId??null)" data-billingAddressId="@(Model.BillingAddressId)" data-currentstep="@((int)CheckoutStep.AddOrEditAddress)" data-deliveryMethodId="@(Model.DeliveryMethodId??null)" onclick="moveToNextStep(this)" class="btmBtn">
+                ADD NEW SHIPPING ADDRESS
+            </a>
+            <a href="@Url.Action("GoToPreviousStep","orders")" class="btmBtn">Back</a>
+        </div>
+    }
+    else
+    {
+        @Html.Partial("_AddOrEditAddress", Model);
+    }
 </div>

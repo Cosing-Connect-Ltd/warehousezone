@@ -1,12 +1,12 @@
 ﻿@using Ganedata.Core.Entities.Enums;
 @model Ganedata.Core.Entities.Domain.CheckoutViewModel
-@{
-    var address = Model.Addresses;
-    var billingAddress = address.FirstOrDefault();
-    if (billingAddress != null)
-    {
-        <div class="address-wrapper">
-            <h5 class="subheadCmn">Billing Address</h5>
+<div class="address-wrapper">
+    <h5 class="subheadCmn">Billing Address</h5>
+    @{
+        var address = Model.Addresses;
+        var billingAddress = address.FirstOrDefault();
+        if (billingAddress != null)
+        {
             @Html.Partial("_AddressDetail", billingAddress)
             <div class="btnWrap">
                 <a href="javascript:;" data-AccountId="@(Model.AccountId??null)" data-billingAddressId="@(billingAddress.AddressID)" data-ShippingAddressId="@(Model.ShippingAddressId??null)" data-currentstep="@((int)CheckoutStep.PaymentMethod)" data-CollectionPointId="@(Model.CollectionPointId??null)" onclick="moveToNextStep(this)" data-ShipmentRuleId="@(Model.ShipmentRuleId??null)" class="btmBtn">
@@ -16,10 +16,10 @@
                 <a href="javascript:;" data-AccountId="@(Model.AccountId??null)" data-accountAddressId="@billingAddress.AddressID" data-currentstep="@((int)CheckoutStep.AddOrEditAddress)" onclick="moveToNextStep(this)" class="btmBtn">Edit Address</a>
                 <a href="@Url.Action("GoToPreviousStep","orders")" class="btmBtn">Back</a>
             </div>
-        </div>
+        }
+        else
+        {
+            @Html.Partial("_AddOrEditAddress", Model);
+        }
     }
-    else
-    {
-        @Html.Partial("_AddOrEditAddress", Model);
-    }
-}
+</div>

@@ -225,7 +225,29 @@ namespace WarehouseEcommerce.Controllers
 
             AccountServices.SaveAccountAddress(accountAddresses, CurrentUserId == 0 ? 1 : CurrentUserId);
 
-            return RedirectToAction("GoToPreviousStep");
+            checkoutViewModel = (CheckoutViewModel)Session["CheckoutViewModel"];
+
+            var nextStep = CheckoutStep.ShipmentRule;
+
+            if (accountAddresses.AddTypeBilling == true)
+            {
+                checkoutViewModel.BillingAddressId = accountAddresses.AddressID;
+                nextStep = CheckoutStep.PaymentMethod;
+            }
+
+            if (accountAddresses.AddTypeShipping == true)
+            {
+                checkoutViewModel.ShippingAddressId = accountAddresses.AddressID;
+            }
+
+            if (checkoutViewModel.StepsHistory?.LastOrDefault() == CheckoutStep.AddOrEditAddress)
+            {
+                checkoutViewModel.StepsHistory.RemoveAt(checkoutViewModel.StepsHistory.Count - 1);
+            }
+
+            Session["CheckoutViewModel"] = checkoutViewModel;
+
+            return RedirectToAction("Checkout", new { step = nextStep });
         }
 
         public ActionResult RemoveShippingAddress(int accountAddressId)
@@ -436,22 +458,17 @@ namespace WarehouseEcommerce.Controllers
 
             model.CurrentStep = checkoutViewModel.CurrentStep ?? model.CurrentStep;
             model.AccountId = checkoutViewModel.AccountId ?? (model.AccountId ?? CurrentUser.AccountId);
-            model.ShippingAddressId =checkoutViewModel.ShippingAddressId <= 0  ? null : (model.ShippingAddressId??checkoutViewModel.ShippingAddressId);
-            model.BillingAddressId = checkoutViewModel.BillingAddressId <= 0 ? null : (model.BillingAddressId??checkoutViewModel.BillingAddressId);
-            model.ShipmentRuleId = checkoutViewModel.ShipmentRuleId ?? (model.ShipmentRuleId??checkoutViewModel.ShipmentRuleId);
-            model.DeliveryMethodId = checkoutViewModel.DeliveryMethodId ?? (model.DeliveryMethodId??checkoutViewModel.DeliveryMethodId);
-            model.CollectionPointId = checkoutViewModel.CollectionPointId ?? (model.CollectionPointId??checkoutViewModel.CollectionPointId);
+            model.ShippingAddressId = checkoutViewModel.ShippingAddressId <= 0 ? null : (model.ShippingAddressId ?? checkoutViewModel.ShippingAddressId);
+            model.BillingAddressId = checkoutViewModel.BillingAddressId <= 0 ? null : (model.BillingAddressId ?? checkoutViewModel.BillingAddressId);
+            model.ShipmentRuleId = checkoutViewModel.ShipmentRuleId ?? (model.ShipmentRuleId ?? checkoutViewModel.ShipmentRuleId);
+            model.DeliveryMethodId = checkoutViewModel.DeliveryMethodId ?? (model.DeliveryMethodId ?? checkoutViewModel.DeliveryMethodId);
+            model.CollectionPointId = checkoutViewModel.CollectionPointId ?? (model.CollectionPointId ?? checkoutViewModel.CollectionPointId);
             model.Countries = _lookupServices.GetAllGlobalCountries().Select(u => new CountryViewModel { CountryId = u.CountryID, CountryName = u.CountryName }).ToList();
             model.CurrencySymbol = checkoutViewModel.CurrencySymbol ?? (Session["CurrencyDetail"] != null ? (Session["CurrencyDetail"] as caCurrencyDetail).Symbol : string.Empty);
             model.AccountAddressId = checkoutViewModel.AccountAddressId;
-            model.StepsHistory = checkoutViewModel.StepsHistory;
+            model.StepsHistory = checkoutViewModel.StepsHistory != null && checkoutViewModel.StepsHistory.Count > 0 ? checkoutViewModel.StepsHistory : model.StepsHistory;
 
-            if (model.noTrackStep != true && model.CurrentStep != null && model.StepsHistory.LastOrDefault() != model.CurrentStep)
-            {
-                model.StepsHistory.Add(model.CurrentStep.Value);
-            }
-
-            model.noTrackStep = null;
+            SetStepHistory(model);
 
             switch (model.CurrentStep)
             {
@@ -474,6 +491,16 @@ namespace WarehouseEcommerce.Controllers
             }
 
             return model;
+        }
+
+        private static void SetStepHistory(CheckoutViewModel model)
+        {
+            if (model.noTrackStep != true && model.CurrentStep != null && model.StepsHistory.LastOrDefault() != model.CurrentStep)
+            {
+                model.StepsHistory.Add(model.CurrentStep.Value);
+            }
+
+            model.noTrackStep = null;
         }
 
         public ActionResult CreateOrder(string sagePayReponse=null, string paypalTransactionId=null)
