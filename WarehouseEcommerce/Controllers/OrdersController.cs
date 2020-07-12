@@ -424,8 +424,9 @@ namespace WarehouseEcommerce.Controllers
             Console.WriteLine("3D confirmation");
             if (Session["CheckoutViewModel"] == null)
             {
-                RedirectToAction("Index", "Home");
+               return RedirectToAction("Index", "Home");
             }
+
 
             var checkOutModel = Session["CheckoutViewModel"] == null
                 ? new CheckoutViewModel()
@@ -519,14 +520,20 @@ namespace WarehouseEcommerce.Controllers
             if (!string.IsNullOrEmpty(sagePayReponse))
             {
                 checkoutModel.SagePayPaymentResponse = JsonConvert.DeserializeObject<SagePayPaymentResponseViewModel>(sagePayReponse);
-                Session["CheckoutViewModel"] = OrderService.CreateShopOrder(checkoutModel, CurrentTenantId, CurrentUserId, CurrentWarehouseId, CurrentTenantWebsite.SiteID);
+                var order = OrderService.CreateShopOrder(checkoutModel, CurrentTenantId, CurrentUserId, CurrentWarehouseId, CurrentTenantWebsite.SiteID); 
+                checkoutModel.OrderNumber = order.OrderNumber;
+                _configurationsHelper.CreateTenantEmailNotificationQueue("Order Confirmed", _mapper.Map(order, new OrderViewModel()), sendImmediately: true, worksOrderNotificationType: WorksOrderNotificationTypeEnum.WebsiteOrderConfirmation, TenantId: CurrentTenantId, accountId: order.AccountID, UserEmail: CurrentUser.UserEmail, userId: CurrentUser.UserId, siteId: CurrentTenantWebsite.SiteID);
+                Session["CheckoutViewModel"] = checkoutModel;
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
 
             if (!string.IsNullOrEmpty(paypalTransactionId))
             {
                 checkoutModel.SagePayPaymentResponse.transactionId = paypalTransactionId;
-                Session["CheckoutViewModel"] = OrderService.CreateShopOrder(checkoutModel, CurrentTenantId, CurrentUserId, CurrentWarehouseId, CurrentTenantWebsite.SiteID);
+                var order = OrderService.CreateShopOrder(checkoutModel, CurrentTenantId, CurrentUserId, CurrentWarehouseId, CurrentTenantWebsite.SiteID);
+                checkoutModel.OrderNumber = order.OrderNumber;
+                _configurationsHelper.CreateTenantEmailNotificationQueue("Order Confirmed", _mapper.Map(order, new OrderViewModel()), sendImmediately: true, worksOrderNotificationType: WorksOrderNotificationTypeEnum.WebsiteOrderConfirmation, TenantId: CurrentTenantId, accountId: order.AccountID, UserEmail: CurrentUser.UserEmail, userId: CurrentUser.UserId, siteId: CurrentTenantWebsite.SiteID);
+                Session["CheckoutViewModel"] = checkoutModel;
                 return Json(true,JsonRequestBehavior.AllowGet);
             }
 

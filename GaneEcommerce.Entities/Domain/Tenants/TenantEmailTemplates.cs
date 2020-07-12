@@ -16,6 +16,9 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Template Name")]
         public string EventName { get; set; }
         public WorksOrderNotificationTypeEnum NotificationType { get; set; }
+        [Display(Name = "Select Site")]
+        public int? SiteId { get; set; }
+
         [ForeignKey("TenantId")]
         public virtual Tenant Tenant { get; set; }
         [Display(Name = " Footer")]
@@ -28,6 +31,9 @@ namespace Ganedata.Core.Entities.Domain
         [DataType(DataType.MultilineText)]
         [Display(Name = " Body")]
         public string Body { get; set; }
+
+        [ForeignKey("SiteId")]
+        public virtual TenantWebsites TenantWebsites { get; set; }
     }
 
     public class TenantEmailTemplateVariable

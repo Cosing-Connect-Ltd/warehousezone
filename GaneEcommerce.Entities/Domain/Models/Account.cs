@@ -182,6 +182,8 @@ namespace Ganedata.Core.Entities.Domain
         public string Memo { get; set; }
         public string Status { get; set; }
         public string IPNData { get; set; }
+
+        public string PaymentTransactionId { get; set; }
         public AccountPaymentModeEnum? AccountPaymentModeId { get; set; }
         public AccountTransactionTypeEnum AccountTransactionTypeId { get; set; }
         public virtual ICollection<AccountTransactionFile> AccountTransactionFiles { get; set; }

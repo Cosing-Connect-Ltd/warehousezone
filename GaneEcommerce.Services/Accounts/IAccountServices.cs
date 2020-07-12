@@ -44,6 +44,8 @@ namespace Ganedata.Core.Services
 
         AccountTransactionViewModel GetAccountTransactionById(int transactionId);
 
+        string GetTransactionNumberByOrderId(int orderId);
+
         List<SelectListItem> GetAllAccountsSelectList(int tenantId);
         List<AccountStatusAuditViewModel> GetAccountAudits(int accountId);
 

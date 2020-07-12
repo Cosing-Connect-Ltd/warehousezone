@@ -12,13 +12,16 @@ namespace WMS.Controllers
     {
         private readonly IEmailNotificationService _emailNotificationService;
         private readonly EmailServices _emailServices;
+        private readonly ITenantWebsiteService _tenantWebsiteService;
+
 
         public EmailTemplatesController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices,
-            IEmailNotificationService emailNotificationService, EmailServices emailServices)
+            IEmailNotificationService emailNotificationService, EmailServices emailServices,ITenantWebsiteService tenantWebsiteService)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
             _emailNotificationService = emailNotificationService;
             _emailServices = emailServices;
+            _tenantWebsiteService = tenantWebsiteService;
         }
         // GET: /EmailTemplates/
         public ActionResult Index()
@@ -67,7 +70,15 @@ namespace WMS.Controllers
 
         public ActionResult Create()
         {
-            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+            if (!caSession.AuthoriseSession())
+            {
+                return Redirect((string)Session["ErrorUrl"]);
+
+
+            }
+
+            ViewBag.Sites = new SelectList(_tenantWebsiteService.GetAllValidTenantWebSite(CurrentTenantId), "SiteID",
+                "SiteName");
             return View("Create", new TenantEmailTemplates());
         }
 
@@ -109,6 +120,8 @@ namespace WMS.Controllers
                 return HttpNotFound();
             }
 
+            ViewBag.Sites = new SelectList(_tenantWebsiteService.GetAllValidTenantWebSite(CurrentTenantId), "SiteID",
+                "SiteName", template.SiteId);
             return View(template);
         }
 

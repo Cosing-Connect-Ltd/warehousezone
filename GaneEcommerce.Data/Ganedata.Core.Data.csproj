@@ -963,6 +963,14 @@
     <Compile Include="Migrations\202007111736215_add-color-field-to-attributes-table.designer.cs">
       <DependentUpon>202007111736215_add-color-field-to-attributes-table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007121325361_siteId-added-in-EmailTempaltes.cs" />
+    <Compile Include="Migrations\202007121325361_siteId-added-in-EmailTempaltes.designer.cs">
+      <DependentUpon>202007121325361_siteId-added-in-EmailTempaltes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007121433584_paymenttransction-and-siteId-added.cs" />
+    <Compile Include="Migrations\202007121433584_paymenttransction-and-siteId-added.designer.cs">
+      <DependentUpon>202007121433584_paymenttransction-and-siteId-added.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2005,6 +2013,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007111736215_add-color-field-to-attributes-table.resx">
       <DependentUpon>202007111736215_add-color-field-to-attributes-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007121325361_siteId-added-in-EmailTempaltes.resx">
+      <DependentUpon>202007121325361_siteId-added-in-EmailTempaltes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007121433584_paymenttransction-and-siteId-added.resx">
+      <DependentUpon>202007121433584_paymenttransction-and-siteId-added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

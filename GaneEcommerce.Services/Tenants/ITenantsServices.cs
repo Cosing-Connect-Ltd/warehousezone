@@ -20,7 +20,7 @@ namespace Ganedata.Core.Services
         void AddTenantConfig(TenantConfig tenantConfig);
         List<TenantModules> GetAllTenantModules(int tenantId);
 
-        TenantConfig GetTenantConfigById(int tenantId);
+        TenantConfig GetTenantConfigById(int tenantId,int?siteId=null);
 
         bool IsModuleEnabled(int tenantId, TenantModuleEnum tenantModule);
     };

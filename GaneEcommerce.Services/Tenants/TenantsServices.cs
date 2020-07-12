@@ -69,9 +69,9 @@ namespace Ganedata.Core.Services
             return _currentDbContext.TenantModules.Where(m => tenantId == 0 || m.TenantId == tenantId).ToList();
         }
 
-        public TenantConfig GetTenantConfigById(int tenantId)
+        public TenantConfig GetTenantConfigById(int tenantId, int? siteId = null)
         {
-            return _currentDbContext.TenantConfigs.AsNoTracking().FirstOrDefault(m => m.TenantId == tenantId);
+            return _currentDbContext.TenantConfigs.AsNoTracking().FirstOrDefault(m => m.TenantId == tenantId && (!siteId.HasValue || m.SiteId==siteId));
         }
 
         public bool IsModuleEnabled(int tenantId, TenantModuleEnum tenantModule)

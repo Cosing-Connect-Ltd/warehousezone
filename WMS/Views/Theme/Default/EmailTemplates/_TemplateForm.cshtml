@@ -20,6 +20,13 @@
                     @Html.EnumDropDownListFor(x => x.NotificationType, "Select Type", new { @class = "form-control" })
                 </div>
             </div>
+            
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(m => m.SiteId, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(x => x.SiteId, ViewBag.Sites as SelectList, "Select Site", new { @class = "form-control" })
+                </div>
+            </div>
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(m => m.HtmlHeader, htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">

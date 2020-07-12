@@ -162,7 +162,7 @@ namespace Ganedata.Core.Services
         }
 
 
-        public async Task<string> DispatchMailNotification(TenantEmailNotificationQueue notification, int tenantId, WorksOrderNotificationTypeEnum worksOrderNotificationType = WorksOrderNotificationTypeEnum.WorksOrderLogTemplate, bool sendImmediately = true, int? accountId = null, int? UserId = null, string userEmail = null, string confrmationLink = null)
+        public async Task<string> DispatchMailNotification(TenantEmailNotificationQueue notification, int tenantId, WorksOrderNotificationTypeEnum worksOrderNotificationType = WorksOrderNotificationTypeEnum.WorksOrderLogTemplate, bool sendImmediately = true, int? accountId = null, int? UserId = null, string userEmail = null, string confrmationLink = null,int?siteId=null)
         {
 
             if (!sendImmediately) return "Email notification has been scheduled.";
@@ -175,7 +175,7 @@ namespace Ganedata.Core.Services
 
             try
             {
-                var tenantConfig = _tenantServices.GetTenantConfigById(tenantId);
+                var tenantConfig = _tenantServices.GetTenantConfigById(tenantId,siteId);
 
                 mailmsg = new MailMessage();
                 mailmsg.ReplyToList.Add(new MailAddress(tenantConfig.DefaultReplyToAddress));
@@ -574,20 +574,22 @@ namespace Ganedata.Core.Services
             DateTime? scheduleStartTime = null, DateTime? scheduleEndTime = null, string scheduleResourceName = null,
             OrderRecipientInfo shipmentAndRecipientInfo = null,
             WorksOrderNotificationTypeEnum worksOrderNotificationType =
-                WorksOrderNotificationTypeEnum.WorksOrderLogTemplate, Appointments appointment = null, int TenantId = 0, int? accountId = null, string UserEmail = null, string confirmationLink = null, int? userId = null)
+                WorksOrderNotificationTypeEnum.WorksOrderLogTemplate, Appointments appointment = null, int TenantId = 0, int? accountId = null, string UserEmail = null, string confirmationLink = null, int? userId = null, int? siteId = null)
         {
 
-            var emailconfig = _emailServices.GetEmailConfigurationsById(order?.TenentId ?? TenantId);
+
+            var emailconfig = _emailServices.GetEmailConfigurationsById(order?.TenentId ?? TenantId,siteId);
             if (emailconfig == null)
             {
                 return "Could not send email, no email configuration found";
             }
 
-            var suitableTemplate = _emailServices.GetSuitableEmailTemplate(worksOrderNotificationType, (order?.TenentId ?? TenantId));
+            var suitableTemplate = _emailServices.GetSuitableEmailTemplate(worksOrderNotificationType, (order?.TenentId ?? TenantId),siteId);
             if (suitableTemplate == null)
             {
                 return "Could not send email, no suitable template found";
             }
+            
 
             var dispatchTime = DateTime.UtcNow.Date;
             int hour = 18;
@@ -605,7 +607,7 @@ namespace Ganedata.Core.Services
                 worksOrderNotificationType, appointment, emailconfig, dispatchTime, suitableTemplate.TemplateId);
             if (accountId.HasValue)
             {
-                var result = await DispatchMailNotification(notificationQueue, (order?.TenentId ?? TenantId), worksOrderNotificationType, sendImmediately, ((accountId.HasValue) ? accountId : null), userId, UserEmail, confirmationLink);
+                var result = await DispatchMailNotification(notificationQueue, (order?.TenentId ?? TenantId), worksOrderNotificationType, sendImmediately, ((accountId.HasValue) ? accountId : null), userId, UserEmail, confirmationLink,siteId);
                 return result;
             }
             else
@@ -939,6 +941,11 @@ namespace Ganedata.Core.Services
                             replaceWith = GetMailMergeVariableValueFromOrder(order, account,
                                     MailMergeVariableEnum.ConfirmationLink, null, (userId ?? 0), confirmationLink);
                             break;
+                        case "{ TransactionReferenceNumber }":
+                        case "{TransactionReferenceNumber}":
+                            replaceWith = GetMailMergeVariableValueFromOrder(order, account,
+                                MailMergeVariableEnum.TransactionReferenceNumber, null, (userId ?? 0), confirmationLink);
+                            break;
 
                         default:
                             replaceWith = string.Empty;
@@ -1108,6 +1115,9 @@ namespace Ganedata.Core.Services
                         break;
                     case MailMergeVariableEnum.ConfirmationLink:
                         variableValue = confirmationLink;
+                        break;
+                    case MailMergeVariableEnum.TransactionReferenceNumber:
+                        variableValue = _accountServices.GetTransactionNumberByOrderId(order?.OrderID??0);
                         break;
                     default:
                         variableValue = string.Empty;

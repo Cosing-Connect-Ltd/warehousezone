@@ -58,5 +58,8 @@ namespace Ganedata.Core.Entities.Domain
         public bool EmailAutoCheckedOnEdit { get; set; }
         public bool AllowDuplicateProductName { get; set; }
         public bool OrdersAuthroisingRequired { get; set; }
+        public int? SiteId { get; set; }
+        [ForeignKey("SiteId")]
+        public virtual TenantWebsites TenantWebsites { get; set; }
     }
 }

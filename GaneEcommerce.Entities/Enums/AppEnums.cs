@@ -68,7 +68,8 @@ namespace Ganedata.Core.Entities.Enums
         CustomMessage = 20,
         AccountPurchasingContactName = 21,
         UserName = 22,
-        ConfirmationLink = 23
+        ConfirmationLink = 23,
+        TransactionReferenceNumber=24
     }
 
     public enum WorksOrderNotificationTypeEnum
@@ -100,6 +101,8 @@ namespace Ganedata.Core.Entities.Enums
         DirectSalesOrderReportTemplate = 13,
         [Display(Name = "Email Confirmation")]
         EmailConfirmation = 14,
+        [Display(Name = "Website Order Confirmation")]
+        WebsiteOrderConfirmation = 15,
     }
 
     public enum InventoryTransactionTypeEnum

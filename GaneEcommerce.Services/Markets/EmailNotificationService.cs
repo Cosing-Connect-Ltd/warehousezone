@@ -39,6 +39,7 @@ namespace Ganedata.Core.Services
                 CreatedBy = template.CreatedBy,
                 NotificationType = template.NotificationType,
                 TenantId = template.TenantId,
+                SiteId = template.SiteId
             };
             _currentDbContext.Entry(emailTemplate).State = EntityState.Added;
             _currentDbContext.SaveChanges();
@@ -58,6 +59,7 @@ namespace Ganedata.Core.Services
                 template.DateUpdated = DateTime.UtcNow;
                 template.UpdatedBy = newTemplate.UpdatedBy;
                 template.TenantId = newTemplate.TenantId;
+                template.SiteId = newTemplate.SiteId;
 
                 _currentDbContext.Entry(template).State = EntityState.Modified;
                 _currentDbContext.SaveChanges();

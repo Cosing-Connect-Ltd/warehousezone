@@ -3303,7 +3303,7 @@ namespace Ganedata.Core.Services
             return discount;
         }
 
-        public CheckoutViewModel CreateShopOrder(CheckoutViewModel orderDetails, int tenantId, int UserId, int warehouseId, int SiteId)
+        public Order CreateShopOrder(CheckoutViewModel orderDetails, int tenantId, int UserId, int warehouseId, int SiteId)
         {
             Order order = new Order();
             decimal total = 0;
@@ -3373,16 +3373,17 @@ namespace Ganedata.Core.Services
                     Amount = total,
                     TenantId = tenantId,
                     FinalBalance = total,
-                    OrderId = order.OrderID
-
+                    OrderId = order.OrderID,
+                    PaymentTransactionId = orderDetails.SagePayPaymentResponse.transactionId
 
                 };
+                
                 _currentDbContext.AccountTransactions.Add(accountTransaction);
                 _currentDbContext.SaveChanges();
 
             }
 
-            return orderDetails;
+            return order;
         }
 
         public bool UpdatePickerId(int OrderId, int? pickerId, int userId)

@@ -42,6 +42,12 @@
             c.FieldName = "NotificationType";
             c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
         });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "TenantWebsites.SiteName";
+            c.Caption = "Site Name";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
 
         settings.Columns.Add(c =>
         {

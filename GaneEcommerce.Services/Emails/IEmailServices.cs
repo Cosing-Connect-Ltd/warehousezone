@@ -13,12 +13,12 @@ namespace Ganedata.Core.Services
     {
         List<TenantEmailTemplates> GetAllTenantEmailTemplates(int tenantId);
         List<TenantEmailConfig> GetAllActiveTenantEmailConfigurations(int tenantId);
-        TenantEmailConfig GetEmailConfigurationsById(int tenantId);
+        TenantEmailConfig GetEmailConfigurationsById(int tenantId,int? siteId=null);
         List<TenantEmailNotificationQueue> GetAllTenantEmailNotificationQueues();
         List<TenantEmailTemplateVariable> GetAllTenantEmailVariables(int tenantId);
         TenantEmailNotificationQueue SaveEmailNotificationQueue(TenantEmailNotificationQueueViewModel queueItem);
         TenantEmailNotificationQueue GetTenantEmailNotificationQueueById(int id);
-        TenantEmailTemplates GetSuitableEmailTemplate(WorksOrderNotificationTypeEnum notificationType, int tenantId);
+        TenantEmailTemplates GetSuitableEmailTemplate(WorksOrderNotificationTypeEnum notificationType, int tenantId,int? siteId=null);
         List<OrderPTenantEmailRecipient> GetAllPropertyTenantRecipients(int filterByOrderId = 0);
         OrderPTenantEmailRecipient AddPropertyTenantRecipients(int orderId, int shipPropertyId, int propertyTenantId, TenantEmailNotificationQueue lastNotification);
         OrderPTenantEmailRecipient DeletePropertyTenantEmailRecipient(OrderPTenantEmailRecipient notification, int userId);

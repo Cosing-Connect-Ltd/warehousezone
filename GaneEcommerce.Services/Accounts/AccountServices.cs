@@ -569,7 +569,12 @@ namespace Ganedata.Core.Services
             model.AccountTransactionTypeId = trans.AccountTransactionTypeId;
             return model;
         }
+        public string  GetTransactionNumberByOrderId(int orderId)
+        {
+           return _currentDbContext.AccountTransactions.FirstOrDefault(u=>u.OrderId==orderId && u.IsDeleted != true)?.PaymentTransactionId;
 
+            
+        }
         public List<SelectListItem> GetAllAccountsSelectList(int tenantId)
         {
             return _currentDbContext.Account.Where(x => x.TenantId == tenantId && x.IsDeleted != true)

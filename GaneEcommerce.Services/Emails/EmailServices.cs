@@ -31,9 +31,9 @@ namespace Ganedata.Core.Services
             return _applicationContext.TenantEmailConfigs.AsNoTracking().Where(e => e.TenantId == tenantId && e.IsActive && e.IsDeleted!= true).ToList();
         }
 
-        public TenantEmailConfig GetEmailConfigurationsById(int tenantId)
+        public TenantEmailConfig GetEmailConfigurationsById(int tenantId,int? siteId=null)
         {
-            return _applicationContext.TenantEmailConfigs.FirstOrDefault(m => m.TenantId == tenantId && m.IsActive == true && m.IsDeleted != true);
+            return _applicationContext.TenantEmailConfigs.FirstOrDefault(m => m.TenantId == tenantId && m.IsActive == true && m.IsDeleted != true && (!siteId.HasValue|| m.SiteId==siteId));
         }
 
         public List<TenantEmailNotificationQueue> GetAllTenantEmailNotificationQueues()
@@ -76,9 +76,9 @@ namespace Ganedata.Core.Services
             }
         }
 
-        public TenantEmailTemplates GetSuitableEmailTemplate(WorksOrderNotificationTypeEnum notificationType, int tenantId)
+        public TenantEmailTemplates GetSuitableEmailTemplate(WorksOrderNotificationTypeEnum notificationType, int tenantId, int? siteId = null)
         {
-            var selectedTemplate = _applicationContext.TenantEmailTemplates.FirstOrDefault(m => m.NotificationType == notificationType && m.TenantId == tenantId && m.IsDeleted !=true);
+            var selectedTemplate = _applicationContext.TenantEmailTemplates.FirstOrDefault(m => m.NotificationType == notificationType && m.TenantId == tenantId && m.IsDeleted !=true && (!siteId.HasValue|| m.SiteId==siteId));
             return selectedTemplate;
         }
 
