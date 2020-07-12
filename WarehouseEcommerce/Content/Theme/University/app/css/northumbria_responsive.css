@@ -443,7 +443,7 @@
     }
 
     .nb_prdlisting_pgsec .breadCrumbtopsec {
-        flex-direction: column;
+/*        flex-direction: column;*/
     }
 
         .nb_prdlisting_pgsec .breadCrumbtopsec .nb_bread_crumbwrap nav ol {

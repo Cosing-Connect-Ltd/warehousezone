@@ -3289,6 +3289,9 @@ margin-bottom:unset;
         justify-content: center;
         flex-direction: column;
     }
+    .wishlist-table .product-th {
+        display:none;
+    }
 }
 .wishlist-table .wishlist-table-btns {
     width: 200px;
