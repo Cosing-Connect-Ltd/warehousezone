@@ -51,7 +51,7 @@ namespace WarehouseEcommerce.Controllers
                                 ITenantLocationServices tenantLocationServices,
                                 ITenantWebsiteService tenantWebsiteService
                                 )
-            : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices)
+            : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices, tenantWebsiteService)
         {
             _paypalReturnUrl = ConfigurationManager.AppSettings["PAYPAL_RET_URL"] ?? "";
             _paypalUrl = ConfigurationManager.AppSettings["PAYPAL_URL"] ?? "";
@@ -96,16 +96,17 @@ namespace WarehouseEcommerce.Controllers
 
             var checkoutViewModel = (CheckoutViewModel)Session["CheckoutViewModel"];
 
-            if(checkoutViewModel == null || checkoutViewModel.CurrentStep == null || (!CurrentTenantWebsite.IsCollectionAvailable && !CurrentTenantWebsite.IsDeliveryAvailable))
+            if (checkoutViewModel == null || checkoutViewModel.CurrentStep == null || (!CurrentTenantWebsite.IsCollectionAvailable && !CurrentTenantWebsite.IsDeliveryAvailable))
             {
                 return RedirectToAction("AddToCart", "Products", new { PlaceOrder = true });
             }
 
-            if(step != null)
+            if (step != null)
             {
                 checkoutViewModel.CurrentStep = step.Value;
             }
-            else {
+            else
+            {
                 checkoutViewModel.noTrackStep = true;
             }
 
@@ -125,7 +126,8 @@ namespace WarehouseEcommerce.Controllers
         {
             var checkoutViewModel = (CheckoutViewModel)Session["CheckoutViewModel"];
 
-            if (checkoutViewModel.StepsHistory?.Count > 0) {
+            if (checkoutViewModel.StepsHistory?.Count > 0)
+            {
                 checkoutViewModel.StepsHistory.RemoveAt(checkoutViewModel.StepsHistory.Count - 1);
             }
 
@@ -149,7 +151,8 @@ namespace WarehouseEcommerce.Controllers
 
             checkoutViewModel.DeliveryMethodId = (int)deliveryMethod;
 
-            if (deliveryMethod == DeliveryMethod.ToPickupPoint) {
+            if (deliveryMethod == DeliveryMethod.ToPickupPoint)
+            {
                 if (!CurrentTenantWebsite.IsCollectionAvailable)
                 {
                     return RedirectToAction("AddToCart", "Products", new { PlaceOrder = true });
@@ -424,7 +427,7 @@ namespace WarehouseEcommerce.Controllers
             Console.WriteLine("3D confirmation");
             if (Session["CheckoutViewModel"] == null)
             {
-               return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home");
             }
 
 
@@ -509,18 +512,18 @@ namespace WarehouseEcommerce.Controllers
             model.noTrackStep = null;
         }
 
-        public ActionResult CreateOrder(string sagePayReponse=null, string paypalTransactionId=null)
+        public ActionResult CreateOrder(string sagePayReponse = null, string paypalTransactionId = null)
         {
             var checkoutModel = new CheckoutViewModel();
             if (Session["CheckoutViewModel"] == null)
             {
                 return RedirectToAction("Index", "Home");
             }
-            checkoutModel= Session["CheckoutViewModel"] as CheckoutViewModel;
+            checkoutModel = Session["CheckoutViewModel"] as CheckoutViewModel;
             if (!string.IsNullOrEmpty(sagePayReponse))
             {
                 checkoutModel.SagePayPaymentResponse = JsonConvert.DeserializeObject<SagePayPaymentResponseViewModel>(sagePayReponse);
-                var order = OrderService.CreateShopOrder(checkoutModel, CurrentTenantId, CurrentUserId, CurrentWarehouseId, CurrentTenantWebsite.SiteID); 
+                var order = OrderService.CreateShopOrder(checkoutModel, CurrentTenantId, CurrentUserId, CurrentWarehouseId, CurrentTenantWebsite.SiteID);
                 checkoutModel.OrderNumber = order.OrderNumber;
                 _configurationsHelper.CreateTenantEmailNotificationQueue("Order Confirmed", _mapper.Map(order, new OrderViewModel()), sendImmediately: true, worksOrderNotificationType: WorksOrderNotificationTypeEnum.WebsiteOrderConfirmation, TenantId: CurrentTenantId, accountId: order.AccountID, UserEmail: CurrentUser.UserEmail, userId: CurrentUser.UserId, siteId: CurrentTenantWebsite.SiteID);
                 Session["CheckoutViewModel"] = checkoutModel;
@@ -534,7 +537,7 @@ namespace WarehouseEcommerce.Controllers
                 checkoutModel.OrderNumber = order.OrderNumber;
                 _configurationsHelper.CreateTenantEmailNotificationQueue("Order Confirmed", _mapper.Map(order, new OrderViewModel()), sendImmediately: true, worksOrderNotificationType: WorksOrderNotificationTypeEnum.WebsiteOrderConfirmation, TenantId: CurrentTenantId, accountId: order.AccountID, UserEmail: CurrentUser.UserEmail, userId: CurrentUser.UserId, siteId: CurrentTenantWebsite.SiteID);
                 Session["CheckoutViewModel"] = checkoutModel;
-                return Json(true,JsonRequestBehavior.AllowGet);
+                return Json(true, JsonRequestBehavior.AllowGet);
             }
 
             return Json(false, JsonRequestBehavior.AllowGet);

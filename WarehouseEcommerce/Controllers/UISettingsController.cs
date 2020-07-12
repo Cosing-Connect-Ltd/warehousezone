@@ -18,8 +18,9 @@ namespace WMS.Controllers
                                     ILookupServices lookupServices,
                                     IUISettingServices uiSettingServices,
                                     ITenantsCurrencyRateServices tenantsCurrencyRateServices,
+                                    ITenantWebsiteService tenantWebsiteService,
                                     IAppCache cache)
-            : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices)
+            : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices, tenantWebsiteService)
         {
             _uiSettingServices = uiSettingServices;
             _cache = cache;

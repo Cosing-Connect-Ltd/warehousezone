@@ -43,7 +43,7 @@ namespace WarehouseEcommerce.Controllers
                                     IAccountServices accountServices,
                                     ILookupServices lookupServices,
                                     IActivityServices activityServices)
-            : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices)
+            : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices, tenantWebsiteService)
         {
             _userService = userService;
             _activityServices = activityServices;

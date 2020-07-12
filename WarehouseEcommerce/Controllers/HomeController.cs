@@ -28,7 +28,7 @@ namespace WarehouseEcommerce.Controllers
         public HomeController(ICoreOrderService orderService, IMapper mapper, IProductLookupService productlookupServices, IProductServices productServices, IPropertyService propertyService,
             IAccountServices accountServices, ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsCurrencyRateServices, IUserService userService, IActivityServices activityServices,
             ITenantsServices tenantServices, ITenantWebsiteService tenantWebsiteService, IProductPriceService productPriceService)
-            : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices)
+            : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices, tenantWebsiteService)
         {
             _lookupServices = lookupServices;
             _userService = userService;
@@ -123,7 +123,7 @@ namespace WarehouseEcommerce.Controllers
 
             specialProduct.productMasterList.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID), 2));
             specialProduct.CurrencySign = currencyyDetail.Symbol;
-            
+
 
             return PartialView(specialProduct);
 
@@ -220,7 +220,7 @@ namespace WarehouseEcommerce.Controllers
 
         public PartialViewResult _HorizontalNavbarPartial()
         {
-            var navigation = _tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, CurrentTenantWebsite.SiteID).Where(u => u.ShowInNavigation == true).OrderBy(u=>u.SortOrder).ToList();
+            var navigation = _tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, CurrentTenantWebsite.SiteID).Where(u => u.ShowInNavigation == true).OrderBy(u => u.SortOrder).ToList();
             ViewBag.UserName = CurrentUser.UserFirstName + " " + CurrentUser.UserLastName;
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
 

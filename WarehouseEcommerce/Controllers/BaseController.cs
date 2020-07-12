@@ -20,17 +20,20 @@ namespace WarehouseEcommerce.Controllers
         protected readonly IPropertyService PropertyService;
         protected readonly IAccountServices AccountServices;
         protected readonly ILookupServices LookupServices;
+        protected readonly ITenantWebsiteService TenantWebsiteServices;
         private readonly ITenantsCurrencyRateServices _tenantsCurrencyRateServices;
         public static string NoImage = "/UploadedFiles/Products/Products/no-image.png";
         public static string uploadedProductCategoryfilePath = "/UploadedFiles/ProductCategory/";
 
-        public BaseController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsCurrencyRateServices)
+        public BaseController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices,
+            ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsCurrencyRateServices, ITenantWebsiteService tenantWebsiteService)
         {
             _tenantsCurrencyRateServices = tenantsCurrencyRateServices;
             OrderService = orderService;
             PropertyService = propertyService;
             AccountServices = accountServices;
             LookupServices = lookupServices;
+            TenantWebsiteServices = tenantWebsiteService;
 
             var res = CurrentTenantWebsite;
         }
@@ -173,13 +176,15 @@ namespace WarehouseEcommerce.Controllers
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            var website = TenantWebsiteServices.GetTenantWebSiteBySiteId(CurrentTenantWebsite.SiteID);
+
             ViewBag.TimeZone = GetCurrentTimeZone();
             ViewBag.LoginDetail = CurrentUserId > 0 ? "Logout" : "Login";
             ViewBag.CurrentUserId = CurrentUserId;
             ViewBag.Currencies = LookupServices.GetAllGlobalCurrencies();
-            ViewBag.TenantWebsite = CurrentTenantWebsite;
-            ViewBag.BaseFilePath = CurrentTenantWebsite.BaseFilePath;
-            ViewBag.BasePath = Request.Url.Scheme + "://" + CurrentTenantWebsite.HostName;
+            ViewBag.TenantWebsite = website;
+            ViewBag.BaseFilePath = website.BaseFilePath;
+            ViewBag.BasePath = Request.Url.Scheme + "://" + website.HostName;
             if (Session["CurrencyDetail"] == null)
             {
                 CurrencyDetail(null);

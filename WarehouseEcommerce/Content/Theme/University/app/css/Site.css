@@ -2691,7 +2691,7 @@ body.modal-open {
     text-transform: none;
 }
 
-.main-logo {
+.main-logo, .nb_foot_logo img {
     max-height: 88px;
 }
 
@@ -3120,10 +3120,12 @@ body.modal-open {
     .basketTable {
         margin-top: 10px;
     }
+
     .botomBtnsec .mobile-checkout {
-        display: block!important;
+        display: block !important;
     }
 }
+
 @media(max-width:768px) {
     .price-b {
         display: block;
@@ -3171,6 +3173,7 @@ body.modal-open {
             .basketTable .cmnRow .subtotalCellInner {
                 justify-content: center !important;
             }
+
             .basketTable .prdCellwrap .imgWrap,
             .basketTable .prdCellwrap .prdName,
             .basketTable .cmnRow .qty,
@@ -3178,10 +3181,11 @@ body.modal-open {
                 width: 320px !important;
                 height: auto !important;
             }
-        .basketTable .prdCellwrap .imgWrap img {
-           width: 320px !important;
-           height: 320px;
-         }
+
+                .basketTable .prdCellwrap .imgWrap img {
+                    width: 320px !important;
+                    height: 320px;
+                }
 }
 
 @media(max-width:650px) {
@@ -3292,38 +3296,47 @@ body.modal-open {
 
 /*wishlist-table start*/
 .wishlist-main-div {
-margin-bottom:unset;
+    margin-bottom: unset;
 }
+
 .wishlist-table tr td {
     padding: 5px 0px !important;
     vertical-align: inherit !important;
 }
+
 .wishlist-table .prdCellwrap {
-    flex-direction:row !important;
+    flex-direction: row !important;
 }
-@media(max-width:768px){
+
+@media(max-width:768px) {
     .wishlist-table .prdCellwrap {
         flex-direction: column !important;
     }
+
     .wishlist-table tr {
-    align-items:center;
-}
+        align-items: center;
+    }
+
         .wishlist-table tr td {
             margin-bottom: 10px;
         }
-        .wishlist-table tr td .prdname {
-            margin-top: 20px;
-        }
+
+            .wishlist-table tr td .prdname {
+                margin-top: 20px;
+            }
+
     .wishlist-table .wishlist-btn-td {
         align-items: center;
         display: flex !important;
         justify-content: center;
         flex-direction: column;
     }
+
     .wishlist-table .product-th {
-        display:none;
+        display: none;
     }
 }
+
 .wishlist-table .wishlist-table-btns {
     width: 200px;
     height: 50px;
@@ -3332,6 +3345,7 @@ margin-bottom:unset;
     font-size: 16px;
     text-transform: uppercase;
 }
+
 .wishlist-table .wishlist-remove-btn {
     background-color: transparent;
     color: #707070;
@@ -3341,6 +3355,7 @@ margin-bottom:unset;
     align-items: center;
     justify-content: center;
 }
+
 .wishlist-table .wishlist-basket-btn {
     background-color: #f33655;
     color: #fff;
@@ -3350,15 +3365,17 @@ margin-bottom:unset;
     align-items: center;
     justify-content: center;
 }
-.wishlist-table .wishlist-remove-btn:hover,
-.wishlist-table .wishlist-basket-btn:hover {
-    background-color: #000;
-    border: solid 1px #000;
-    color: #fff;
-}
+
+    .wishlist-table .wishlist-remove-btn:hover,
+    .wishlist-table .wishlist-basket-btn:hover {
+        background-color: #000;
+        border: solid 1px #000;
+        color: #fff;
+    }
+
 .custom-control-input:checked ~ .custom-control-label::before {
-    border-color: #f33655!important;
-    background-color: #f33655!important;
+    border-color: #f33655 !important;
+    background-color: #f33655 !important;
 }
 /*wishlist-table end*/
 
@@ -3367,9 +3384,11 @@ margin-bottom:unset;
     background-color: black;
     border: unset !important;
 }
-#slider-range div {
-    background-color: #f33655;
-}
+
+    #slider-range div {
+        background-color: #f33655;
+    }
+
 .price-range-div input {
     color: #f33655;
     border: 0;
@@ -3380,9 +3399,10 @@ margin-bottom:unset;
 }
 /*price-range-bar in Dynamic filters - end*/
 
-.bg-white{
+.bg-white {
     margin-top: 5px;
 }
+
 .tab_myaccount .account-save-btn {
     background-color: #f33655 !important;
     color: #fff !important;
@@ -3398,11 +3418,13 @@ margin-bottom:unset;
     font-size: 16px !important;
     text-transform: uppercase !important;
 }
-.tab_myaccount .account-save-btn:hover {
-    background-color: #000 !important;
-    border: solid 1px #000 !important;
-    color: #fff !important;
-}
+
+    .tab_myaccount .account-save-btn:hover {
+        background-color: #000 !important;
+        border: solid 1px #000 !important;
+        color: #fff !important;
+    }
+
 @media(max-width:768px) {
     .tab_myaccount .account-save-btn {
         width: 100% !important;
