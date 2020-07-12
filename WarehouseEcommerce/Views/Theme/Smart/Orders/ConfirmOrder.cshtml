@@ -114,7 +114,7 @@
                                                     </li>
                                                     <li> Size: <span> M</span> </li>
                                                     <li>
-                                                        Quantity: <span>@item.Qty </span>
+                                                        Quantity: <span>@Convert.ToInt32(item.Qty) </span>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -216,8 +216,8 @@
 
                                         <input type="hidden" name="item_name_1" value="@item.ProductMaster.Name">
                                         <input type="hidden" name="item_number_1" value="@item.ProductMaster.SKUCode">
-                                        <input type="hidden" name="amount_1" value="@item.TotalAmount">
-                                        <input type="hidden" name="quantity_1" value="@item.Qty">
+                                        <input type="hidden" name="amount_1" value="@ViewBag.CurrencySymbol@item.TotalAmount">
+                                        <input type="hidden" name="quantity_1" value="@Convert.ToInt32(item.Qty)">
                                         break;
 
                                     }

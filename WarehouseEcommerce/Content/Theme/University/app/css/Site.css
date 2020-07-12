@@ -3259,7 +3259,7 @@ body.modal-open {
 
 /*wishlist-table start*/
 .wishlist-main-div {
-margin-bottom:unset;    
+margin-bottom:unset;
 }
 .wishlist-table tr td {
     padding: 5px 0px !important;
@@ -3345,7 +3345,7 @@ margin-bottom:unset;
     text-align: center;
     margin: 1px 0px 5px 0px;
 }
-/*price-range-bar in Dynamic filters - end*/ 
+/*price-range-bar in Dynamic filters - end*/
 
 .bg-white{
     margin-top: 5px;
@@ -3370,8 +3370,14 @@ margin-bottom:unset;
     border: solid 1px #000 !important;
     color: #fff !important;
 }
-@media(max-width:768px){
-.tab_myaccount .account-save-btn {
-    width:100% !important;
+@media(max-width:768px) {
+    .tab_myaccount .account-save-btn {
+        width: 100% !important;
+    }
 }
+
+.orderScdRw {
+    margin: 0 0 5px 0;
+    padding-bottom: 15px;
+    background-color: #f9f9f9;
 }

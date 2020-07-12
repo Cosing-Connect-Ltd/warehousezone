@@ -62,15 +62,12 @@ namespace WarehouseEcommerce.Controllers
         {
             try
             {
-
-                var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
                 //ViewBag.groupId = group;
                 ViewBag.Category = category;
                 ViewBag.CurrentSort = sort;
                 ViewBag.SortedValues = (sort ?? 1);
                 ViewBag.pageList = new SelectList(from d in Enumerable.Range(1, 5) select new SelectListItem { Text = (d * 10).ToString(), Value = (d * 10).ToString() }, "Value", "Text", pagesize);
                 ViewBag.searchString = search;
-                ViewBag.CurrencySymbol = currencyyDetail.Symbol;
                 ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
                 var product = _tenantWebsiteService.GetAllValidProductWebsiteSearch(CurrentTenantWebsite.SiteID, category);
                 ViewBag.Categories = _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID, Category: category);
@@ -140,8 +137,6 @@ namespace WarehouseEcommerce.Controllers
 
         public ActionResult ProductDetails(string sku, int? productId = null)
         {
-            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
-            ViewBag.CurrencySymbol = currencyyDetail.Symbol;
             ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
             var product = _productServices.GetProductMasterByProductCode(sku, CurrentTenantId);
 
@@ -188,8 +183,6 @@ namespace WarehouseEcommerce.Controllers
 
         public ActionResult GroupedProductDetail(string sku)
         {
-            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
-            ViewBag.CurrencySymbol = currencyyDetail.Symbol;
             ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
             var product = _productServices.GetProductMasterByProductCode(sku, CurrentTenantId);
             product.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(product.ProductId, CurrentTenantWebsite.SiteID), 2);
@@ -199,8 +192,6 @@ namespace WarehouseEcommerce.Controllers
         }
         public ActionResult KitProductDetail(string sku)
         {
-            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
-            ViewBag.CurrencySymbol = currencyyDetail.Symbol;
             ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
             var product = _productServices.GetProductMasterByProductCode(sku, CurrentTenantId);
             product.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(product.ProductId, CurrentTenantWebsite.SiteID), 2);
@@ -268,8 +259,6 @@ namespace WarehouseEcommerce.Controllers
             var model = new WebsiteCartItemsViewModel { WebsiteCartItems = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, HttpContext.Session.SessionID, cartId).ToList() };
 
             model.ShippmentAddresses = _mapper.Map(AccountServices.GetAllValidAccountAddressesByAccountId(CurrentUser.AccountId ?? 0).Where(u => u.AddTypeShipping == true && u.IsDeleted != true).ToList(), new List<AddressViewModel>());
-
-            model.CurrenySymbol = _tenantServices.GetTenantCurrencies(CurrentTenantId).FirstOrDefault()?.GlobalCurrency?.Symbol;
 
             model.ShowCartPopUp = cartId.HasValue;
             model.ShowLoginPopUp = CurrentUserId == 0;
@@ -438,8 +427,6 @@ namespace WarehouseEcommerce.Controllers
         public PartialViewResult _DynamicFilters(string category, string productName)
         {
             ProductFilteringViewModel productFiltering = new ProductFilteringViewModel();
-            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
-            ViewBag.CurrencySymbol = currencyyDetail.Symbol;
             var products = _tenantWebsiteService.GetAllValidProductWebsiteSearch(CurrentTenantWebsite.SiteID, category, ProductName: productName);
 
             productFiltering.Manufacturer = _tenantWebsiteService.GetAllValidProductManufacturerGroupAndDeptByName(products).Select(u => u.Name).ToList();
@@ -511,8 +498,6 @@ namespace WarehouseEcommerce.Controllers
             var selectedProduct = product;
             ViewBag.BaseProduct = product;
             ViewBag.Quantity = quantity;
-            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
-            ViewBag.CurrencySymbol = currencyyDetail.Symbol;
             if (product.ProductType == ProductKitTypeEnum.ProductByAttribute)
             {
                 selectedProduct = GetSelectedProductByAttribute(productId, product);

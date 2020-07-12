@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="nb_sec checkconfirmSec">
-           
+
 
             <div class="orderConfirmationSection">
                 <h4 class="ordConfirmHead">Order Confirmation</h4>
@@ -36,13 +36,13 @@
                     <div class="col-lg-6">
                         @if (addresses != null)
                         {
-                            
+
                                 <h4 class="subHead">Order Number</h4><p>@Model.OrderNumber</p>
                             <h4 class="subHead">Transaction Id</h4><p> @Model.SagePayPaymentResponse.transactionId</p>
 
-                            
 
-                            
+
+
 
                             <h4 class="subHead">
                                 Billing Address
@@ -115,7 +115,7 @@
                             {
                                 <li>
                                     @(item.ProductMaster?.Name)<br />
-                                    @ViewBag.CurrencySymbol@item.Price, Qty: @item.Quantity
+                                    @ViewBag.CurrencySymbol@item.Price, Qty: @Convert.ToInt32(item.Quantity)
                                 </li>
                             }
                         </ul>

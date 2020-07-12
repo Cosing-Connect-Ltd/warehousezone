@@ -29,7 +29,6 @@ namespace Ganedata.Core.Entities.Domain
         public bool IsDeliveryAvailable { get; set; }
         public bool IsCollectionAvailable { get; set; }
         public bool ShowCartPopUp { get; set; }
-        public string CurrenySymbol { get; set; }
         public int? ShippingAddressId { get; set; }
         public string ShippingAddressPostCode { get; set; }
         public int? CollectionPointId { get; set; }

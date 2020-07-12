@@ -185,6 +185,9 @@ namespace WarehouseEcommerce.Controllers
                 CurrencyDetail(null);
             }
 
+            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
+            ViewBag.CurrencySymbol = currencyyDetail.Symbol;
+
 
 
             var queryString = Request.QueryString["fragment"];

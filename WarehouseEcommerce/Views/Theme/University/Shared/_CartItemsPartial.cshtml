@@ -229,7 +229,7 @@
                                         </td>
                                         <td class="price">
                                             <div class="priceWrapinner">
-                                              <b class="price-b">Price:</b> <span>@Model.CurrenySymbol@item.Price</span>
+                                              <b class="price-b">Price:</b> <span>@ViewBag.CurrencySymbol@item.Price</span>
                                             </div>
                                         </td>
                                         <td class="qty">
@@ -243,7 +243,7 @@
                                         </td>
                                         <td class="tot">
                                             <div id="total_amnt" class="priceTotal @(Model.ShowCartPopUp != true ? "in-basket-price-total" : string.Empty)">
-                                              <b class="price-b">Total:</b> <span>@Model.CurrenySymbol@item.ProductTotalAmount</span>
+                                              <b class="price-b">Total:</b> <span>@ViewBag.CurrencySymbol@item.ProductTotalAmount</span>
                                             </div>
                                             @if (Model.ShowCartPopUp != true)
                                             {
@@ -284,7 +284,7 @@
                                     <td class="price"></td>
                                     <td class="qty subtotalCell" colspan="2">
                                         <div class="subtotalCellInner">
-                                            <b>Sub Total:</b> <span>@Model.CurrenySymbol@(Model.TotalAmount)</span>
+                                            <b>Sub Total:</b> <span>@ViewBag.CurrencySymbol@(Model.TotalAmount)</span>
                                         </div>
                                     </td>
 

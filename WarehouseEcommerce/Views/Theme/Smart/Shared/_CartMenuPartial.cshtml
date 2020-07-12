@@ -18,7 +18,7 @@
                             <td>
                                 <div class="ordered-items">
                                     <p>
-                                        <a href="@Url.Action("AddToCart","Products")">@(item.ProductMaster?.Name)<br /><span style="font-weight:bold;">Sku:</span>@(item.ProductMaster?.SKUCode)<br /><span style="font-weight:bold;">Qty:</span>@(item.Qty)</a>
+                                        <a href="@Url.Action("AddToCart","Products")">@(item.ProductMaster?.Name)<br /><span style="font-weight:bold;">Sku:</span>@(item.ProductMaster?.SKUCode)<br /><span style="font-weight:bold;">Qty:</span>@Convert.ToInt32(item.Qty)</a>
                                     </p>
 
                                     @*<ul>
