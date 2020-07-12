@@ -971,6 +971,10 @@
     <Compile Include="Migrations\202007121433584_paymenttransction-and-siteId-added.designer.cs">
       <DependentUpon>202007121433584_paymenttransction-and-siteId-added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007121916411_Contact-Page-Url-added-in-TenantWebsites.cs" />
+    <Compile Include="Migrations\202007121916411_Contact-Page-Url-added-in-TenantWebsites.designer.cs">
+      <DependentUpon>202007121916411_Contact-Page-Url-added-in-TenantWebsites.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2019,6 +2023,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007121433584_paymenttransction-and-siteId-added.resx">
       <DependentUpon>202007121433584_paymenttransction-and-siteId-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007121916411_Contact-Page-Url-added-in-TenantWebsites.resx">
+      <DependentUpon>202007121916411_Contact-Page-Url-added-in-TenantWebsites.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

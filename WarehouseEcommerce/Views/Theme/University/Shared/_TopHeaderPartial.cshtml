@@ -43,10 +43,10 @@
                     <i class="ico icon-search"></i>
                 </a>
             </li>
-            @if (!string.IsNullOrEmpty(siteProperties.WebsiteContactPhone))
+            @if (!string.IsNullOrEmpty(siteProperties.ContactPageUrl))
             {
                 <li>
-                    <a href="">
+                    <a href="@siteProperties.ContactPageUrl">
                         <i class="ico icon-phone-call"></i>
                     </a>
                 </li>
@@ -64,7 +64,7 @@
                         <i class="ico icon-user" title="@ViewBag.UserName"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right user_account user-fa-icons" style="background:black;">
-                        <li style="border-right:0px;"><a href="#")" style="color:white;" class="font-italic h6">Welcome @ViewBag.UserName</a></li>
+                        <li style="border-right:0px;"><a href="#" )" style="color:white;" class="font-italic h6">Welcome @ViewBag.UserName</a></li>
                         <li style="border-right:0px;"><a href="@Url.Action("Account","User")" style="color:white; border-right:0px;">My Account</a></li>
 
 

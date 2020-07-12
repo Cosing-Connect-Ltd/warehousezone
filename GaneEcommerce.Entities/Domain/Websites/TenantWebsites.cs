@@ -47,6 +47,8 @@ namespace Ganedata.Core.Entities.Domain
         [Url]
         public string InstaGramUrl { get; set; }
         public string FooterText { get; set; }
+        [Display(Name = "Contact Page Url")]
+        public string ContactPageUrl { get; set; }
         public bool IsActive { get; set; }
         [Display(Name = "Price Including Tax")]
         public bool ShowPricesIncludingTax { get; set; }

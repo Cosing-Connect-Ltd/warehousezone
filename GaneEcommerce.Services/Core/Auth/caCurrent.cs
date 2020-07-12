@@ -75,6 +75,7 @@ namespace Ganedata.Core.Services
                     tenantWebsite.YoutubeUrl = tenantWeb.YoutubeUrl;
                     tenantWebsite.TwitterUrl = tenantWeb.TwitterUrl;
                     tenantWebsite.FooterText = tenantWeb.FooterText;
+                    tenantWebsite.ContactPageUrl = tenantWeb.ContactPageUrl;
                     tenantWebsite.HostName = tenantWeb.HostName;
                     tenantWebsite.IsCollectionAvailable = tenantWeb.IsCollectionAvailable;
                     tenantWebsite.IsDeliveryAvailable = tenantWeb.IsDeliveryAvailable;
