@@ -72,7 +72,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Select Shipping Address</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Select Delivery Destination</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -184,7 +184,7 @@
                                         if (Model.IsDeliveryAvailable)
                                         {
                                             <td class="store">
-                                                <a href="" data-toggle="modal" data-target="#ChooseShippingAddressModal" class="chsStoreLnk">Choose Shipping Address</a>
+                                                <a href="" data-toggle="modal" data-target="#ChooseShippingAddressModal" class="chsStoreLnk">Choose Delivery Destination</a>
                                             </td>
                                         }
                                     }
@@ -271,7 +271,7 @@
                                                         <p class="orderNowTxt" id="delivery_status_@item.Id">
                                                             <span class="available" @( item.IsAvailableForDelivery ==  true ? "" : "hidden")><i class="fa fa-check-circle-o" aria-hidden="true"></i> Available for Delivery</span>
                                                             <span class="unavailable" @(item.IsAvailableForDelivery == false ? "" : "hidden")><i class="fa fa-ban" aria-hidden="true"></i> Unavailable For Delivery!</span>
-                                                            <span class="unselected" @(item.IsAvailableForDelivery == null && string.IsNullOrEmpty(Model.ShippingAddressPostCode?.Trim()) ? "" : "hidden")><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Choose A Shipping Address!</span>
+                                                            <span class="unselected" @(item.IsAvailableForDelivery == null && string.IsNullOrEmpty(Model.ShippingAddressPostCode?.Trim()) ? "" : "hidden")><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Choose A Delivery Destination!</span>
                                                         </p>
                                                     </div>
                                                 </td>

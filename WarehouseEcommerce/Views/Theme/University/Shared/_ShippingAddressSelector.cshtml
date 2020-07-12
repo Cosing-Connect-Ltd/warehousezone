@@ -4,6 +4,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="form-group">
+                <h6 class="pb-1">Please Put The Destination PostCode To Ckeck</h6>
                 <div class="findAddrWrap">
                     <input type="text" id="shipping-address-post-code__input" class="findAddrInput shipping-target-postCode" placeholder="Enter Postcode" />
                     <button class="fadBtn" onclick="selectPostCode();">Check</button>
@@ -12,8 +13,9 @@
         </div>
     </div>
     <div class="row mt-3">
-        @if (Model != null)
+        @if (Model != null && Model.Count > 0)
         {
+            <div class="col-lg-12"><h6 class="pb-1">Or Select Your Shipping Address</h6></div>
             for (int i = 0; i < Model.Count; i++)
             {
                 if (Model.ElementAtOrDefault(i) != null)
