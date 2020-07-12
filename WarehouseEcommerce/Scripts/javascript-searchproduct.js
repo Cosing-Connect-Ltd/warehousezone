@@ -233,11 +233,12 @@ function getTopCategoryProducts(ProductnavigationId) {
 }
 
 //--------add update remove cartitem----------------
-function addToCart(ProductId) {
-    addToCart(ProductId, 1);
-}
-
 function addToCart(ProductId, quantity) {
+
+    if (!quantity) {
+        quantity = 1;
+    }
+
     startLoading();
     $.ajax({
         type: "GET",
