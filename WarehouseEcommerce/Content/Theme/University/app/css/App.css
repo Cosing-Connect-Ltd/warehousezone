@@ -3962,17 +3962,21 @@ body.ZoomerActive {
     background-color: #f33655;
     position: fixed;
     right: 0px;
-    top: 210px;
+    top: 160px;
     z-index: 110;
     flex-direction: row;
     align-items: center;
     justify-content: center;
 }
-
-    #res_filterBox_trigger i {
-        color: #fff;
-        font-size: 20px;
+@media(max-width:768px){
+    .nb_prdlisting_pgsec .nb_prd_filterwrap {
+        padding-right:20px !important;
     }
+}
+#res_filterBox_trigger i {
+    color: #fff;
+    font-size: 20px;
+}
 
     #res_filterBox_trigger:hover {
         cursor: pointer;

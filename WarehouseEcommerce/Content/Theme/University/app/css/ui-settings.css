@@ -97,7 +97,7 @@ h6,
 .orderItems h3,
 .uni-pages-main .nb_prd_filterwrap .list-group-item,
 .btn .button {
-    font-weight: 800;
+    font-weight: 600;
     font-family: var(--primary-font-family);
 }
 
@@ -156,7 +156,7 @@ h6,
 #quickCartPopup .modal-dialog .modal-content .modal-body .loginForm .form-group label,
 #quickCartPopup .modal-dialog .modal-content .modal-body .loginForm .rememberWrap,
 .bloglistSec .bloglistSecInner .bloglistBox .nb_fb_con .date {
-    font-weight: 600;
+    font-weight: 500;
     font-family: var(--primary-font-family);
 }
 

@@ -27,51 +27,51 @@
         @using (Html.BeginForm("SaveAddress", "Orders", new { deliveryMethodId = Model.DeliveryMethodId, billingAddressId = Model.BillingAddressId }))
         {
             @Html.HiddenFor(model => model.AccountAddress.AddressID)
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        @Html.EditorFor(model => model.AccountAddress.AddressLine1, new { htmlattributes = new { @placeholder = "Address Line 1",@class= "AddressLine1", @required = "Required" } })
-                        @*<input type="text" class="form-control input-md inputNew" size="18" placeholder="Address Line 1">*@
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        @Html.EditorFor(model => model.AccountAddress.Telephone, new { htmlattributes = new { @placeholder = "Telephone Number", @class = "Telephone", @required = "Required" } })
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        @Html.EditorFor(model => model.AccountAddress.AddressLine2, new { htmlattributes = new { @placeholder = "Address Line 2", @class = "AddressLine2", @required = "Required" } })
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        @Html.DropDownListFor(model => model.AccountAddress.CountryID, new SelectList(Model.Countries, "CountryID", "CountryName"), new { @required = "Required" })
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        @Html.EditorFor(model => model.AccountAddress.AddressLine3, new { htmlattributes = new { @placeholder = "Address Line 3", @class = "AddressLine3", @required = "Required" } })
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        @Html.EditorFor(model => model.AccountAddress.PostCode, new { htmlattributes = new { @placeholder = "Postal Code", @class = "PostCode", @required = "Required" } })
-                    </div>
-                </div>
-
-                @if (Model.CurrentStep == CheckoutStep.ShippingAddress || (CheckoutStep)Model.StepsHistory.LastOrDefault(s => s != Model.CurrentStep) == CheckoutStep.ShippingAddress)
-                {
-
-                    <input type="hidden" name="AccountAddress.AddTypeShipping" id="AccountAddress.AddTypeShipping" value="true" />
-                }
-                else
-                {
-                    <input type="hidden" name="AccountAddress.AddTypeBilling" id="AccountAddress.AddTypeBilling" value="true" />
-                }
-
-                @Html.HiddenFor(model => model.AccountAddress.AccountID, (int)(Model.AccountId))
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group">
+                @Html.EditorFor(model => model.AccountAddress.AddressLine1, new { htmlattributes = new { @placeholder = "Address Line 1", @class = "AddressLine1", @required = "Required" } })
+                @*<input type="text" class="form-control input-md inputNew" size="18" placeholder="Address Line 1">*@
             </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                @Html.EditorFor(model => model.AccountAddress.AddressLine2, new { htmlattributes = new { @placeholder = "Address Line 2", @class = "AddressLine2", @required = "Required" } })
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                @Html.EditorFor(model => model.AccountAddress.AddressLine3, new { htmlattributes = new { @placeholder = "Address Line 3", @class = "AddressLine3", @required = "Required" } })
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                @Html.DropDownListFor(model => model.AccountAddress.CountryID, new SelectList(Model.Countries, "CountryID", "CountryName"), new { @required = "Required" })
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                @Html.EditorFor(model => model.AccountAddress.PostCode, new { htmlattributes = new { @placeholder = "Postal Code", @class = "PostCode", @required = "Required" } })
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                @Html.EditorFor(model => model.AccountAddress.Telephone, new { htmlattributes = new { @placeholder = "Telephone Number", @class = "Telephone", @required = "Required" } })
+            </div>
+        </div>
+
+        @if (Model.CurrentStep == CheckoutStep.ShippingAddress || (CheckoutStep)Model.StepsHistory.LastOrDefault(s => s != Model.CurrentStep) == CheckoutStep.ShippingAddress)
+        {
+
+            <input type="hidden" name="AccountAddress.AddTypeShipping" id="AccountAddress.AddTypeShipping" value="true" />
+        }
+        else
+        {
+            <input type="hidden" name="AccountAddress.AddTypeBilling" id="AccountAddress.AddTypeBilling" value="true" />
+        }
+
+        @Html.HiddenFor(model => model.AccountAddress.AccountID, (int)(Model.AccountId))
+    </div>
 
             <div class="saveAddrWrap">
                 <button type="Submit" name="submitNewsletter" class="saveAddrBtn">Save Address</button>&nbsp;&nbsp;
