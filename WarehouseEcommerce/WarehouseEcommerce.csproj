@@ -347,7 +347,6 @@
     <Content Include="Content\Theme\Smart\app\js\Smart_KitProductDetail_Custom.js" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\Theme\University\app\css\customfontIcons.css" />
-    <Content Include="Content\Theme\University\app\css\rangeSlider.css" />
     <Content Include="Content\Theme\University\app\fonts\icomoon.svg" />
     <Content Include="Content\Theme\University\app\fonts\SegoeUI-Bold.svg" />
     <Content Include="Content\Theme\University\app\fonts\SegoeUI-Semibold.svg" />
@@ -625,7 +624,6 @@
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jscolor.js" />
     <Content Include="Scripts\modal-steps.min.js" />
-    <Content Include="Scripts\rangeSlider.js" />
     <Content Include="Views\Theme\Smart\Shared\_TopCategoryProductsPartial.cshtml" />
     <Content Include="Views\Theme\Smart\User\Account.cshtml" />
     <Content Include="Views\Theme\Smart\User\OrderHistory.cshtml" />
