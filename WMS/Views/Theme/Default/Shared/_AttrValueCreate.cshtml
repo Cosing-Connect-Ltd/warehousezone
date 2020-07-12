@@ -7,22 +7,22 @@
 {
     <div class="col-md-12 pull-left">
         <div class="input-group h-100 justify-content-center align-items-center">
-            <label class="col-md-4">Attribute Value<span style="color:red">*</span></label>
-            <div class="col-md-8">
+            <label class="col-md-3">Attribute Value<span style="color:red">*</span></label>
+            <div class="col-md-9">
                 @Html.EditorFor(model => model.Value)
                 @Html.ValidationMessageFor(model => model.Value)
             </div>
         </div>
         <div class="input-group h-100 justify-content-center align-items-center">
-            <label class="col-md-4">Sort Value<span style="color:red">*</span></label>
-            <div class="col-md-8">
+            <label class="col-md-3">Sort Value<span style="color:red">*</span></label>
+            <div class="col-md-9">
                 @Html.EditorFor(model => model.SortOrder)
                 @Html.ValidationMessageFor(model => model.SortOrder)
             </div>
         </div>
         <div class="input-group h-100 justify-content-center align-items-center">
-            <label class="col-md-4">Color</label>
-            <div class="col-md-8">
+            <label class="col-md-3">Color</label>
+            <div class="col-md-9">
                 @Html.DevExpress().ColorEditFor(model => model.Color, ColorEditorHelper.ColorEditSettingsMethod).GetHtml()
                 @Html.ValidationMessageFor(model => model.Color)
             </div>
