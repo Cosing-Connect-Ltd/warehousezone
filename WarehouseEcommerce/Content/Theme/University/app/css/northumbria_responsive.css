@@ -252,11 +252,11 @@
         width: 43%;
         display: inline-block;
         margin-bottom: 20px;
-        height: 260px;
+        height: 182px;
     }
 
     .accordion ul li div a {
-        height: 260px;
+        height: 182px;
     }
 
     .nb_top_catSection .accordion ul li:last-child {

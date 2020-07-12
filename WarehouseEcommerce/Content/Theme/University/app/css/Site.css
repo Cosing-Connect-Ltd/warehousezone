@@ -2836,8 +2836,11 @@ body.modal-open {
     }
 }
 
+
 .nb_sec_navwrap .nb_sec_navlist li {
     cursor: pointer;
+    min-width: 200px;
+    text-align: center;
 }
 
 .ui-widget.ui-widget-content {
@@ -3058,11 +3061,13 @@ body.modal-open {
 .basketTable {
     width: 100%;
 }
+
     .basketTable .cmnRow .price,
     .basketTable .cmnRow .qty,
     .basketTable .cmnRow .tot {
         text-align: center;
     }
+
     .basketTable .priceWrapinner span {
         font-weight: 100;
         font-family: "primaryfont_SemiBold";
@@ -3076,12 +3081,15 @@ body.modal-open {
 .price-b {
     display: none;
 }
+
 .basket-modal .basked-heading {
     display: none;
 }
+
 .basket-modal .modal-footer {
     border-top: unset !important;
 }
+
 @media(max-width:1200px) and (min-width:769px) {
     .store-delivery,
     .basketTable .cmnRow .store,
@@ -3089,6 +3097,7 @@ body.modal-open {
     .basketTable tr.cmnRow .tot .in-basket-price-total:after {
         display: none
     }
+
     .basketTable {
         margin-top: 10px;
     }
@@ -3155,11 +3164,13 @@ body.modal-open {
            height: 320px;
          }
 }
+
 @media(max-width:650px) {
     .basketTable .prdCellwrap .imgWrap img {
         width: 295px !important;
         height: 295px;
     }
+
     .basketTable .prdCellwrap .imgWrap,
     .basketTable .prdCellwrap .prdName,
     .basketTable .cmnRow .qty,
@@ -3173,6 +3184,7 @@ body.modal-open {
         width: 270px !important;
         height: 270px;
     }
+
     .basketTable .prdCellwrap .imgWrap,
     .basketTable .prdCellwrap .prdName,
     .basketTable .cmnRow .qty,
