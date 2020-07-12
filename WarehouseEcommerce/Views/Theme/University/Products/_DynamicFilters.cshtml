@@ -13,7 +13,7 @@
         </div>
         <div class="nb_fltr_accrd_wrap">
             <div id="accordion" class="nb_filter_accordion">
-                <div class="nb_filter_head" id="filter1">
+                <div class="nb_filter_head price-range-div" id="filter1">
                     <h5 class="mb-0">
                         <button class="btn btn-link"
                                 data-toggle="collapse"
@@ -26,7 +26,7 @@
                     </h5>
                 </div>
                 <div id="collapseOne"
-                     class="collapse show"
+                     class="collapse show price-range-div"
                      aria-labelledby="filter1"
                      data-parent="#accordion">
                     <div class="nb_filter_body">
@@ -142,27 +142,31 @@
 <script>
     $(function () {
 
-        var min =@Model.PriceInterval.Item1;
-        var max=@Model.PriceInterval.Item2;
+        var min =Math.floor(@Model.PriceInterval.Item1);
+        var max = Math.ceil(@Model.PriceInterval.Item2);
+        if ((max - min) <= 1) {
+            $(".price-range-div").hide();
+            return;
+        }
+
+
         var priceIndex = window.location.href.indexOf("priceS-");
         var prices = priceIndex > -1 ? window.location.href.substr((priceIndex + 7), 14) : null;
         if (prices != null) {
             prices = prices.split("_");
-            min = parseInt(prices[0]);
-            max = parseInt(prices[1]);
+            min = Math.floor(parseFloat(prices[0]));
+            max = Math.ceil(parseFloat(prices[1]));
             $('#priceS').prop('checked', true);
             $("#priceS").val(@Model.CurrencySymbol + prices[0] + "_" + @Model.CurrencySymbol+prices[1]);
         }
         $("#slider-range").slider({
             range: true,
-            min: @Model.PriceInterval.Item1,
-            max: @Model.PriceInterval.Item2,
+            min: Math.floor(@Model.PriceInterval.Item1),
+            max: Math.ceil(@Model.PriceInterval.Item2),
             values: [min, max],
             slide: function(event, ui) {
-                $("#amount").val("@Model.CurrencySymbol" + ui.values[0] + " - @Model.CurrencySymbol" + ui.values[1]);
-                $("#amount").val("@Model.CurrencySymbol" +
-                    $("#slider-range").slider("values", 0) +
-                    " - @Model.CurrencySymbol" + $( "#slider-range" ).slider( "values", 1));
+                $("#amount").val("@Model.CurrencySymbol" + Math.floor(ui.values[0]) + " - @Model.CurrencySymbol" + Math.ceil(ui.values[1]));
+               
             },
             stop: function (event, ui) {
 

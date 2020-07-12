@@ -982,8 +982,8 @@ namespace Ganedata.Core.Services
             Tuple<string, string> prices;
 
             var sellList = productMasters.Select(u => u.SellPrice);
-            var minValue = Convert.ToInt32(sellList.Min());
-            var maxValue = Convert.ToInt32(sellList.Max());
+            var minValue = sellList.Min();
+            var maxValue = sellList.Max();
             prices = new Tuple<string, string>(minValue.ToString(), maxValue.ToString());
             return prices;
         }
