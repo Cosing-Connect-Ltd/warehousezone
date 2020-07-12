@@ -12,6 +12,7 @@
     @Styles.Render("~/Content/Themes/UI-WZ/uiwz")
     @Styles.Render("~/Content/fontawesome-bundle")
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/Theme/default/css")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryui")
@@ -24,7 +25,7 @@
     @Scripts.Render("~/bundles/ext-language")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/unobtrusive")
-    @RenderSection("scripts", required: false)
+    <script src="~/Scripts/jscolor.js"></script>
 
     @{ bool loginStatus = LayoutHelpers.UserLoginStatus(); }
 

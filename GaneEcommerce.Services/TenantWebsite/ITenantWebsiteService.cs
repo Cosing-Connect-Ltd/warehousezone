@@ -127,7 +127,7 @@ namespace Ganedata.Core.Services
         CheckoutViewModel SetCheckOutProcessModel(CheckoutViewModel checkoutViewModel, int siteId, int tenantId, int userId, string sessionKey);
 
         // deliveryInfoNavigation//
-        IEnumerable<WebsiteDeliveryNavigation> GetAllValidWebsiteDeliveryNavigations(int  tenantId, int siteId);
+        IEnumerable<WebsiteDeliveryNavigation> GetAllValidWebsiteDeliveryNavigations(int  tenantId, int siteId, bool includeInactive = false);
         WebsiteDeliveryNavigation GetWebsiteDeliveryNavigationById(int id);
         WebsiteDeliveryNavigation CreateOrUpdateWebsiteDeliveryNavigation(WebsiteDeliveryNavigation websiteDeliveryNavigation, int userId, int tenantId);
         int RemoveWebsiteDeliveryNavigation(int id, int userId);

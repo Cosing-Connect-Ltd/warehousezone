@@ -31,7 +31,7 @@ namespace WMS.Controllers
         public ActionResult _WebSiteDeliveryNavigationList(int siteId)
         {
             ViewBag.SiteId = siteId;
-            var model = _tenantWebsiteService.GetAllValidWebsiteDeliveryNavigations(CurrentTenantId, siteId);
+            var model = _tenantWebsiteService.GetAllValidWebsiteDeliveryNavigations(CurrentTenantId, siteId, true);
             return PartialView(model.ToList());
         }
 
@@ -61,7 +61,7 @@ namespace WMS.Controllers
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
-            var websiteDeliveryNavigation= _tenantWebsiteService.GetWebsiteDeliveryNavigationById(id);
+            var websiteDeliveryNavigation = _tenantWebsiteService.GetWebsiteDeliveryNavigationById(id);
             SiteName(websiteDeliveryNavigation.SiteId);
             return View(websiteDeliveryNavigation);
         }

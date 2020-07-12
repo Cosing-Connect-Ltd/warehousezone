@@ -280,7 +280,7 @@ function removeCartItem(id) {
                 });
             },
             No: function () {
-                AddToWishList(productId, false);
+                this.close();
             }
         }
     });
@@ -642,7 +642,7 @@ function LoggedIn() {
     $.ajax({
         type: "GET",
         url: basePath + "/User/LoginUsers/",
-        data: { UserName: UserName, UserPassword: UserPassword, PlaceOrder: placecheck},
+        data: { UserName: UserName, UserPassword: UserPassword, PlaceOrder: placecheck },
         dataType: 'json',
         success: function (data) {
             stopLoading();
@@ -651,7 +651,7 @@ function LoggedIn() {
                 $(".alert-message-login").html("User name or password is not correct").show().delay(2000).fadeOut();
 
             }
-            else if (placecheck=="true") {
+            else if (placecheck == "true") {
                 $('#signupPopup').modal('hide');
                 location.href = "/Orders/Checkout?accountId=" + data.AccountId;
             }

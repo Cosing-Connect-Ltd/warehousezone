@@ -115,11 +115,11 @@ namespace WMS
                 "~/Content/themes/base/progressbar.css",
                 "~/Content/themes/base/theme.css"));
 
-            bundles.Add(new StyleBundle("~/Content/css/default").Include(
+            bundles.Add(new StyleBundle("~/Content/Theme/default/css").Include(
              "~/Content/Theme/Default/site.css"));
 
-            bundles.Add(new StyleBundle("~/Content/css/modern").Include(
-             "~/Content/Theme/Default/site.css"));
+            bundles.Add(new StyleBundle("~/Content/Theme/modern/css").Include(
+             "~/Content/Theme/Modern/site.css"));
         }
     }
 }

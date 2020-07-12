@@ -1363,11 +1363,10 @@ namespace Ganedata.Core.Services
             return new Tuple<string, string>(body, subject);
         }
 
-
-        // deliveryInfoNavigation//
-        public IEnumerable<WebsiteDeliveryNavigation> GetAllValidWebsiteDeliveryNavigations(int tenantId, int siteId)
+        public IEnumerable<WebsiteDeliveryNavigation> GetAllValidWebsiteDeliveryNavigations(int tenantId, int siteId, bool includeInActive = false)
         {
-            return _currentDbContext.WebsiteDeliveryNavigations.Where(u => u.TenantId == tenantId && u.IsDeleted != true && u.SiteId == siteId && u.IsActive);
+            return _currentDbContext.WebsiteDeliveryNavigations.Where(u => u.TenantId == tenantId && u.IsDeleted != true
+            && u.SiteId == siteId && (includeInActive || u.IsActive));
         }
 
         public WebsiteDeliveryNavigation GetWebsiteDeliveryNavigationById(int id)
