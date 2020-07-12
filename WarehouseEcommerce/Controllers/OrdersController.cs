@@ -227,6 +227,11 @@ namespace WarehouseEcommerce.Controllers
 
             checkoutViewModel = (CheckoutViewModel)Session["CheckoutViewModel"];
 
+            if (accountAddresses.AddressID > 0 && checkoutViewModel?.CurrentStep == CheckoutStep.AddOrEditAddress)
+            {
+                return RedirectToAction("GoToPreviousStep");
+            }
+
             var nextStep = CheckoutStep.ShipmentRule;
 
             if (accountAddresses.AddTypeBilling == true)
