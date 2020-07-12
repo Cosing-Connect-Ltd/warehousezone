@@ -3326,6 +3326,52 @@ margin-bottom:unset;
 }
 /*wishlist-table end*/
 
+/*price-range-bar in Dynamic filters - start*/
+.nb_sec {
+    min-height: 400px;
+}
+#slider-range {
+    background-color: black;
+    border: unset !important;
+}
+#slider-range div {
+    background-color: #f33655;
+}
+.price-range-div input {
+    color: #f33655;
+    border: 0;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    margin: 1px 0px 5px 0px;
+}
+/*price-range-bar in Dynamic filters - end*/ 
+
 .bg-white{
     margin-top: 5px;
+}
+.tab_myaccount .account-save-btn {
+    background-color: #f33655 !important;
+    color: #fff !important;
+    border: solid 1px #f33655 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 200px !important;
+    height: 50px !important;
+    transition: all 0.3s ease !important;
+    font-family: "primaryfont_Bold" !important;
+    font-size: 16px !important;
+    text-transform: uppercase !important;
+}
+.tab_myaccount .account-save-btn:hover {
+    background-color: #000 !important;
+    border: solid 1px #000 !important;
+    color: #fff !important;
+}
+@media(max-width:768px){
+.tab_myaccount .account-save-btn {
+    width:100% !important;
+}
 }
