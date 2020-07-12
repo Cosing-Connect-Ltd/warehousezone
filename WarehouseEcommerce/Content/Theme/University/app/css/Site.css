@@ -2319,6 +2319,7 @@ body.modal-open {
             .basketTable tr.cmnRow .qty .QtyWrapinner .coutnerInput {
                 border: none;
                 height: 37px;
+                margin-top: 1px;
                 width: 100%;
                 text-align: center;
                 font-family: "primaryfont_Normal";
