@@ -312,25 +312,40 @@ namespace Ganedata.Core.Services
 
 
 
-        public ProductAttributes SaveProductAttribute(string attributeName,int sortOrder, bool isColorTyped)
+        public ProductAttributes SaveProductAttribute(string attributeName, int sortOrder, bool isColorTyped, int? attributeId = null)
         {
-            var chkAttribute = _currentDbContext.ProductAttributes.FirstOrDefault(a => a.AttributeName.Equals(attributeName, StringComparison.CurrentCultureIgnoreCase));
-            if (chkAttribute != null) return null;
-
-            var att = new ProductAttributes()
+            var att = _currentDbContext.ProductAttributes.FirstOrDefault(a => a.AttributeName.Equals(attributeName, StringComparison.CurrentCultureIgnoreCase) && (!attributeId.HasValue || a.AttributeId == attributeId));
+            if (att != null)
             {
-                AttributeName = attributeName,
-                SortOrder = sortOrder,
-                IsColorTyped = isColorTyped
-            };
-            _currentDbContext.Entry(att).State = EntityState.Added;
+
+                att.AttributeName = attributeName;
+                att.SortOrder = sortOrder;
+                att.IsColorTyped = isColorTyped;
+                _currentDbContext.Entry(att).State = EntityState.Modified;
+
+
+            }
+            else
+            {
+                ;
+
+                att = new ProductAttributes()
+                {
+                    AttributeName = attributeName,
+                    SortOrder = sortOrder,
+                    IsColorTyped = isColorTyped
+                };
+
+                _currentDbContext.Entry(att).State = EntityState.Added;
+            }
+
             _currentDbContext.SaveChanges();
             return att;
         }
 
-        public ProductAttributeValues SaveProductAttributeValue(int attributeId, string attributeValue, int sortOrder, string color, int userId = 0)
+        public ProductAttributeValues SaveProductAttributeValue(int attributeId, string attributeValue, int sortOrder, string color, int userId = 0, int? attributeValueId = null)
         {
-            var value = _currentDbContext.ProductAttributeValues.FirstOrDefault(m => m.AttributeId == attributeId && m.Value == attributeValue);
+            var value = _currentDbContext.ProductAttributeValues.FirstOrDefault(m => m.AttributeId == attributeId && m.Value == attributeValue && (!attributeValueId.HasValue || m.AttributeValueId == attributeValueId));
             if (value == null && userId > 0)
             {
                 value = new ProductAttributeValues()
@@ -340,23 +355,32 @@ namespace Ganedata.Core.Services
                     SortOrder = sortOrder,
                     Color = color
                 };
-
                 value.UpdateCreatedInfo(userId);
                 _currentDbContext.Entry(value).State = EntityState.Added;
-                _currentDbContext.SaveChanges();
-                return value;
-            }
 
-            else if (userId == 0)
+
+            }
+            else
             {
-                throw new Exception("Unable to create attribute : User information not available");
+
+                value.AttributeId = attributeId;
+                value.Value = attributeValue;
+                value.SortOrder = sortOrder;
+                value.Color = color;
+                value.UpdateUpdatedInfo(userId);
+                _currentDbContext.Entry(value).State = EntityState.Modified;
+
             }
 
 
+            _currentDbContext.SaveChanges();
             return value;
-
-
         }
+
+
+
+
+
 
         public ProductAttributeValues SaveProductAttributeValueMap(ProductAttributeValues model, int userId, int tenantId, int productId)
         {
@@ -788,6 +812,39 @@ namespace Ganedata.Core.Services
 
             }
             return productTags;
+        }
+
+        public bool RemoveProductAttriubteValueMap(int id, int userId)
+        {
+            var productAttributeValues = _currentDbContext.ProductAttributeValues.FirstOrDefault(u => u.AttributeValueId == id);
+            if (productAttributeValues != null)
+            {
+                productAttributeValues.IsDeleted = true;
+                productAttributeValues.DateUpdated = DateTime.Now;
+                productAttributeValues.UpdatedBy = userId;
+                _currentDbContext.Entry(productAttributeValues).State = System.Data.Entity.EntityState.Modified;
+                _currentDbContext.SaveChanges();
+
+            }
+            return true;
+
+
+
+        }
+        public bool RemoveProductAttriubte(int id)
+        {
+            var productAttributeValues = _currentDbContext.ProductAttributes.FirstOrDefault(u => u.AttributeId == id);
+            if (productAttributeValues != null)
+            {
+                productAttributeValues.IsDeleted = true;
+                _currentDbContext.Entry(productAttributeValues).State = System.Data.Entity.EntityState.Modified;
+                _currentDbContext.SaveChanges();
+
+            }
+            return true;
+
+
+
         }
 
         public ProductTag GetProductTagById(int Id)

@@ -11,39 +11,61 @@ namespace WMS.Controllers
     public class ProductAttributesController : BaseController
     {
         private readonly IProductServices _productServices;
-
-        public ProductAttributesController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IProductServices productServices) : base(orderService, propertyService, accountServices, lookupServices)
+        private readonly IProductLookupService _productLookupService;
+        public ProductAttributesController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IProductServices productServices, IProductLookupService productLookupService) : base(orderService, propertyService, accountServices, lookupServices)
         {
             _productServices = productServices;
+            _productLookupService = productLookupService;
         }
-        public ActionResult Index(int id = 0)
+        public ActionResult Index()
         {
-            if (id == 0)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ProductMaster productmaster = _productServices.GetProductMasterById(id);
-            if (productmaster == null)
-            {
-                return HttpNotFound();
-            }
-
-            ViewBag.ProductId = id;
-
-            var attr = _productServices.GetAllProductAttributes();
-            ViewBag.Attributes = new SelectList(attr, "AttributeId", "AttributeName");
-
-            try
-            {
-                ViewBag.Values = new SelectList(attr.First().ProductAttributeValues, "AttributeValueId", "Value");
-            }
-
-            catch (Exception ex)
-            {
-                throw new Exception("Exception while getting Product attribute values" + ex.Message.ToString(), ex.InnerException);
-            }
-            return View(productmaster);
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+            return View();
         }
+
+        public PartialViewResult _ProductAttributes()
+        {
+            var model= _productServices.GetAllProductAttributes();
+            return  PartialView(model);
+        }
+
+        [HttpGet]
+        public ActionResult Create()
+        {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Create(ProductAttributes productAttributes)
+        {
+            _productLookupService.SaveProductAttribute(productAttributes.AttributeName, productAttributes.SortOrder,
+                productAttributes.IsColorTyped);
+            return View("Index");
+        }
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+            var model = _productLookupService.GetAllValidProductAttributes().FirstOrDefault(u => u.AttributeId == id);
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(ProductAttributes productAttributes)
+        {
+            _productLookupService.SaveProductAttribute(productAttributes.AttributeName, productAttributes.SortOrder,
+                productAttributes.IsColorTyped,productAttributes.AttributeId);
+            return View("Index");
+
+        }
+        public ActionResult Delete(int? id)
+        {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+            var result = _productLookupService.RemoveProductAttriubte((id ?? 0));
+            return RedirectToAction("Index");
+        }
+
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]

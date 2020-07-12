@@ -23,6 +23,8 @@ namespace Ganedata.Core.Entities.Domain
         public int SortOrder { get; set; }
         [Display(Name = "Is Color Typed")]
         public bool IsColorTyped { get; set; }
+
+        public bool IsDeleted{ get; set; }
         public virtual ICollection<ProductAttributeValues> ProductAttributeValues { get; set; }
     }
 }

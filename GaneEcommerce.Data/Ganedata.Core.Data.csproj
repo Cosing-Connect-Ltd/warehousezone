@@ -975,6 +975,10 @@
     <Compile Include="Migrations\202007121916411_Contact-Page-Url-added-in-TenantWebsites.designer.cs">
       <DependentUpon>202007121916411_Contact-Page-Url-added-in-TenantWebsites.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007121957165_isdeleted-flag-in-attributes.cs" />
+    <Compile Include="Migrations\202007121957165_isdeleted-flag-in-attributes.designer.cs">
+      <DependentUpon>202007121957165_isdeleted-flag-in-attributes.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2026,6 +2030,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007121916411_Contact-Page-Url-added-in-TenantWebsites.resx">
       <DependentUpon>202007121916411_Contact-Page-Url-added-in-TenantWebsites.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007121957165_isdeleted-flag-in-attributes.resx">
+      <DependentUpon>202007121957165_isdeleted-flag-in-attributes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

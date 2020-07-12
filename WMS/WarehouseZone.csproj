@@ -517,6 +517,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AuthUserGroupsController.cs" />
     <Compile Include="Controllers\ApiCredentialsController.cs" />
+    <Compile Include="Controllers\ProductAttributeValuesController.cs" />
     <Compile Include="Controllers\WebAPI\ApiWebsitesController.cs" />
     <Compile Include="Controllers\WebsiteDeliveryNavigationsController.cs" />
     <Compile Include="Controllers\WebsiteWarehousesController.cs" />
@@ -2713,6 +2714,14 @@
     <Content Include="Views\Theme\Default\WebsiteDeliveryNavigations\Create.cshtml" />
     <Content Include="Views\Theme\Default\WebsiteDeliveryNavigations\_WebSiteDeliveryNavigationList.cshtml" />
     <Content Include="Views\Theme\Default\WebsiteDeliveryNavigations\Edit.cshtml" />
+    <Content Include="Views\Theme\Default\ProductAttributeValues\Index.cshtml" />
+    <Content Include="Views\Theme\Default\ProductAttributeValues\Create.cshtml" />
+    <Content Include="Views\Theme\Default\ProductAttributeValues\Edit.cshtml" />
+    <Content Include="Views\Theme\Default\ProductAttributeValues\_productAttributeValues.cshtml" />
+    <Content Include="Views\Theme\Default\ProductAttributes\Index.cshtml" />
+    <Content Include="Views\Theme\Default\ProductAttributes\_ProductAttributes.cshtml" />
+    <Content Include="Views\Theme\Default\ProductAttributes\Create.cshtml" />
+    <Content Include="Views\Theme\Default\ProductAttributes\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
