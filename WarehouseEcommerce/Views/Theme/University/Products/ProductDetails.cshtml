@@ -5,15 +5,12 @@
     ViewBag.Title = Model.Name + " | " + ViewBag.SiteDescription;
     var Images = ConfigurationManager.AppSettings["ImageFormats"].Split(new char[] { ',' });
 }
-<section class="nb_sec nb_prdlisting_pgsec">
+<section class="nb_sec nb_prdlisting_pgsec product-section">
     <div class="container">
         <div class="breadCrumbtopsec">
             <div class="nb_bread_crumbwrap">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="/"><i class="icon-home"></i></a>
-                        </li>
                         <li class="breadcrumb-item">
                             <a href="/">Home</a>
                         </li>
@@ -166,10 +163,11 @@
                                 <span>quantity</span>
                                 @Html.DropDownList("product-quantity", Enumerable.Range(1, (int)Model.InventoryStocks.Sum(i => i.Available)).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), htmlAttributes: new { @class = "form-control" })
                             </div>
+                            
                             <button class="addTobasket" onclick="addToCart(@Model.ProductId, document.getElementById('product-quantity').value)">Add to basket</button>
                         }
-
                         <button class="addtowishlistbtn">Add to Wishlist</button>
+
                         @if (Model.WebsiteWishListItems.Where(u => u.IsDeleted != true).ToList().Count <= 0)
                         {
                             <a href="javascript:;" class="addtowishlist" id="wish_@ViewBag.BaseProduct.ProductId" onclick="AddWishListItem(@ViewBag.BaseProduct.ProductId)"><i class="icon-love list-icon" style="color:black"></i></a>

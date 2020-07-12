@@ -3451,3 +3451,69 @@ body {
 .uni-pages-pt {
     min-height: calc(100% - 472px);
 }
+
+/*basket-modal-content command product-detain-section -start*/
+.basket-modal-content .modal-body {
+    padding: unset;
+}
+.basket-modal-content .basket-section {
+    padding: unset;
+}
+.basket-modal-content .basket-section .tableWrap, 
+.basket-modal-content .basket-section .basketTable{
+    margin: unset !important;
+}
+.basket-modal-content .basket-section .imgWrap img {
+    width: 130px !important;
+    height: 130px;
+}
+.basket-modal-content .basket-section .prdName,
+.basket-modal-content .basket-section .price,
+.basket-modal-content .basket-section .prd,
+.basket-modal-content .basket-section .qty,
+.basket-modal-content .basket-section .tot,
+.basket-modal-content .botomBtnsec {
+    padding-top: unset !important;
+    padding-bottom: unset !important;
+}
+.basket-modal-content .basket-section .subtotalCellInner {
+    padding: 10px 0px !important;
+}
+
+.product-section .footSec {
+    display: flex;
+    align-items: flex-end;
+}
+.product-section .footSec .addTobasket{
+    white-space:nowrap;
+}
+.product-section .footSec .addtowishlist{
+    margin-bottom: 5px;
+}
+.basket-modal-content .botomBtnsec {
+    margin-top:10px !important;
+    margin-bottom: 12px !important;
+}
+@media(max-width:575px) {
+    .basket-modal-content .botomBtnsec {
+    margin-top:unset !important;
+}
+}
+@media(max-width:480px) {
+    .product-section .footSec {
+    display: block;
+}
+ .footSec .addTobasket {
+     margin-right:unset !important;
+}
+.footSec .addtowishlistbtn {
+    margin-right:unset !important;
+}
+.basket-modal-content .botomBtnsec .btmbtn.sho {
+    margin: unset !important;
+}
+.basket-modal-content .botomBtnsec .btmbtn.pro {
+    margin: 10px 0px 0px 0px !important;
+}
+}
+/*basket-modal-content command product-detain-section -end*/
