@@ -1593,6 +1593,7 @@ body.modal-open {
     font-family: "primaryfont_Bold";
     font-size: 20px;
     margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 .billandshipsec .address-wrapper {
@@ -3083,8 +3084,8 @@ body.modal-open {
     border-top: unset !important;
 }
 @media(max-width:1200px) and (min-width:769px) {
-    .store-delivery, 
-    .basketTable .cmnRow .store, 
+    .store-delivery,
+    .basketTable .cmnRow .store,
     .basketTable .cmnRow .greyBox,
     .basketTable tr.cmnRow .tot .in-basket-price-total:after {
         display: none
@@ -3324,3 +3325,7 @@ margin-bottom:unset;
     background-color: #f33655!important;
 }
 /*wishlist-table end*/
+
+.bg-white{
+    margin-top: 5px;
+}

@@ -2,7 +2,10 @@
 @using Ganedata.Core.Entities.Enums;
 
 <div class="addNewAddrWrap">
-    <h5 class="subheadCmn">@(Model.AccountAddress == null? "Add a new address": "Edit Address")</h5>
+    @{
+        var titleTarget = (Model.CurrentStep == CheckoutStep.ShippingAddress || (CheckoutStep)Model.StepsHistory.LastOrDefault(s => s != Model.CurrentStep) == CheckoutStep.ShippingAddress ? "Shipping" : "Billing");
+    }
+    <h5 class="subheadCmn">@(Model.AccountAddress == null? "Add " + titleTarget + " address": "Edit " + titleTarget + " Address")</h5>
     <div class="addNwAdrrFormWrap">
         <div class="row">
             <div class="col-lg-6">
