@@ -1,13 +1,29 @@
 ﻿@model Ganedata.Core.Entities.Domain.WebsiteDeliveryNavigation
 @using Ganedata.Core.Entities.Helpers
-@using Ganedata.Core.Services;
-
 
 @{
     ViewBag.Title = "Create";
 }
 
+@section scripts {
 
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+         new StyleSheet { ExtensionType = ExtensionType.UploadControl, Theme = GaneStaticAppExtensions.DevexTheme },
+         new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.DataView, Theme = GaneStaticAppExtensions.DevexTheme }
+        )
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.SpinEdit },
+        new Script { ExtensionType = ExtensionType.DateEdit },
+          new Script { ExtensionType = ExtensionType.UploadControl },
+           new Script { ExtensionType = ExtensionType.GridView },
+        new Script { ExtensionType = ExtensionType.DataView }
+
+        )
+}
 
 <h2><span>Add USP Bar (@ViewBag.SiteName)</span></h2>
 

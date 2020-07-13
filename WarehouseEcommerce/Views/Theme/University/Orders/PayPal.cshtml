@@ -83,7 +83,6 @@
 
             // This function captures the funds from the transaction.
             return actions.order.capture().then(function (details) {
-                debugger;
                 if (details.status === "COMPLETED") {
                     CreateOrder(details.id);
 
@@ -107,7 +106,6 @@
             success: function (data) {
                 stopLoading();
                 if (data) {
-                    alert('Transaction completed');
                     window.location.href = basePath + '/Orders/ConfirmPaymentMessage';
 
                 } else {

@@ -1,19 +1,14 @@
 ﻿@model Ganedata.Core.Entities.Domain.CheckoutViewModel
 @using Ganedata.Core.Entities.Enums;
 @{
-    ViewBag.Title = "Confirm Order";
+    ViewBag.Title = "Order Review";
 }
 @{
     var addresses = Model.Addresses;
 
 }
 
-
-
-
 <section class="nb_sec nb_prdlisting_pgsec">
-
-
     <div class="container">
         <div class="breadCrumbtopsec">
             <div class="nb_bread_crumbwrap">
@@ -50,19 +45,6 @@
                                 </p>
                             }
 
-                        }
-
-
-                        <h4 class="subHead">
-                            Delivery Method
-                        </h4>
-                        @if ((DeliveryMethod?)Model.DeliveryMethodId == DeliveryMethod.ToPickupPoint)
-                        {
-                            <p class="content">Pick up (from collection point) - Free</p>
-                        }
-                        else
-                        {
-                            <p class="content">@Model.CurrencySymbol@Model.ShippingRule.Price - By @Model.ShippingRule.Courier @(!string.IsNullOrEmpty(Model.ShippingRule.Description?.Trim()) ? $" - {Model.ShippingRule.Description}" : "")</p>
                         }
 
                         @if (addresses != null)
@@ -103,10 +85,22 @@
                         }
 
                         <h4 class="subHead">
+                            Delivery Method
+                        </h4>
+                        @if ((DeliveryMethod?)Model.DeliveryMethodId == DeliveryMethod.ToPickupPoint)
+                        {
+                            <p class="content">Pick up (from collection point) - Free</p>
+                        }
+                        else
+                        {
+                            <p class="content">@Model.CurrencySymbol@Model.ShippingRule.Price - By @Model.ShippingRule.Courier @(!string.IsNullOrEmpty(Model.ShippingRule.Description?.Trim()) ? $" - {Model.ShippingRule.Description}" : "")</p>
+                        }
+
+                        <h4 class="subHead">
                             Payment Method
                         </h4>
                         <p class="content">
-                            @((PaymentMethodEnum?) Model.PaymentMethodId == PaymentMethodEnum.SagePay ? "Sage Pay" : ((PaymentMethodEnum?) Model.PaymentMethodId).ToString())
+                            @((PaymentMethodEnum?)Model.PaymentMethodId == PaymentMethodEnum.SagePay ? "Sage Pay" : ((PaymentMethodEnum?)Model.PaymentMethodId).ToString())
                         </p>
                     </div>
                     <div class="offset-lg-1 col-lg-3">
@@ -167,4 +161,3 @@
         </div>
     </div>
 </section>
-
