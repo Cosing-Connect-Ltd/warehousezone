@@ -3610,3 +3610,9 @@ body {
 .prd_det_sec .foot li a i:first-child {
     margin-right: 5px;
 }
+
+.nb_featuredPrdCarrousle .item .imagewrap {
+    box-shadow: 0px 0px 23px 2px #d8d8d8;
+    display: inline-block;
+    margin-top: 20px;
+}

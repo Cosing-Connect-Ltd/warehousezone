@@ -16,11 +16,13 @@
                         item.ProductTagMaps = item.ProductTagMaps.OrderBy(x => x.ProductTag.SortOrder).ToList();
 
                         <div class="item">
-                            <a href="@Url.Action("ProductDetails", "Products", new {sku = item.SKUCode})" class="nb_fp_boxwrap">
-                                <span class="prd_img">
-                                    <img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@item.Name" title="@item.Name" class="img-fluid center-block" />
-                                </span>
-                            </a>
+                            <span class="imagewrap">
+                                <a href="@Url.Action("ProductDetails", "Products", new {sku = item.SKUCode})" class="nb_fp_boxwrap">
+                                    <span class="prd_img">
+                                        <img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="@item.Name" title="@item.Name" class="img-fluid center-block" />
+                                    </span>
+                                </a>
+                            </span>
                             <div class="nb_fp_boxwrap">
                                 <div class="prd_det_sec">
                                     <h4 title="@item.Name" class="prd_name">@item.Name</h4>
