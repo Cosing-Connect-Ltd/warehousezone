@@ -173,7 +173,7 @@ $(function () {
                         seeall = false;
                         data = [
                             {
-                                Name: 'No matches found',
+                                Name: 'No Search Results, please try another search ',
                                 Path: baseFilePath + '/UploadedFiles/Products/no_image.gif'
                             }
                         ];
@@ -199,12 +199,18 @@ $(function () {
         focus: updateTextBox,
         select: updateTextBox
     }).autocomplete('instance')._renderItem = function (ul, item) {
-        return $('<li class="search-item">').append("")
-            .append("<a href=" + basePath + "/Products/list?search=" + item.Name + "><img style='width: 46px; height:46px;' src=" + encodeURI(item.DefaultImage) + " alt=" + item.Name + "/>" + item.Name + "</a>").appendTo(ul);
+        if (seeall) {
+            return $('<li class="search-item">').append("")
+                .append("<a href=" + basePath + "/Products/list?search=" + item.Name + "><img style='width: 46px; height:46px;' src=" + encodeURI(item.DefaultImage) + " alt=" + item.Name + "/>" + item.Name + "</a>").appendTo(ul);
+        }
+        else {
+            return $('<li class="search-item">').append("")
+                .append('<p class="no-serach-results">' + item.Name + "</p>").appendTo(ul);
+        }
+
     };
     $(".text-search").bind('keypress', function (e) {
         if (e.keyCode === 13) {
-
             $('#serchBtnico').trigger('click');
         }
     });

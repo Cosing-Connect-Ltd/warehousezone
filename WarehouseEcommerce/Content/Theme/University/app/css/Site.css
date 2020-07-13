@@ -3588,3 +3588,8 @@ body {
 .nb_featuredPrdCarrousle .prd_amnt {
     padding: 6px 6px !important;
 }
+
+.no-serach-results {
+    padding: 12px !important;
+    margin-left: 8px !important;
+}
