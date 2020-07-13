@@ -3440,12 +3440,10 @@ body.modal-open {
 
 html {
     position: relative;
-    min-height: 100%;
     height: 100%;
 }
 
 body {
-    min-height: 100%;
     height: 100%;
 }
 
@@ -3592,4 +3590,23 @@ body {
 .no-serach-results {
     padding: 12px !important;
     margin-left: 8px !important;
+}
+
+.nb_feat_prod_sec .nb_featuredPrdCarrousle .nb_fp_boxwrap .prd_det_sec {
+    padding: 0 5px;
+}
+
+    .nb_feat_prod_sec .nb_featuredPrdCarrousle .nb_fp_boxwrap .prd_det_sec .prd_amnt{
+        max-width:60%;
+    }
+
+.prd_det_sec .foot li a i {
+    font-size: 30px;
+    color: #111111;
+    transition: all 0.3s ease;
+    line-height: 50px;
+}
+
+.prd_det_sec .foot li a i:first-child {
+    margin-right: 5px;
 }
