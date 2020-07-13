@@ -3389,10 +3389,10 @@ body.modal-open {
         background-color: #f33655;
     }
 
-.price-range-div input {
+.price-range-div div#amount {
     color: #f33655;
     border: 0;
-    font-weight: bold;
+    font-weight: 600;
     width: 100%;
     text-align: center;
     margin: 1px 0px 5px 0px;
@@ -3463,10 +3463,10 @@ body {
 .basket-modal-content .basket-section .basketTable{
     margin: unset !important;
 }
-.basket-modal-content .basket-section .imgWrap img {
-    width: 130px !important;
-    height: 130px;
-}
+    .basket-modal-content .basket-section .imgWrap img {
+        width: 100px !important;
+        height: 100px;
+    }
 .basket-modal-content .basket-section .prdName,
 .basket-modal-content .basket-section .price,
 .basket-modal-content .basket-section .prd,
@@ -3493,6 +3493,12 @@ body {
 .basket-modal-content .botomBtnsec {
     margin-top:10px !important;
     margin-bottom: 12px !important;
+}
+@media(max-width:768px) {
+    .basket-modal-content .basket-section .imgWrap img {
+        width: 130px !important;
+        height: 130px;
+    }
 }
 @media(max-width:575px) {
     .basket-modal-content .botomBtnsec {
@@ -3532,3 +3538,8 @@ body {
     margin-right: 10px;
 }
 /*shipping-type check boxes -end*/
+
+.icolist li a i{
+    height:30px;
+    width:35px;
+}

@@ -123,13 +123,13 @@
                                                     if (totalwishlistitems == null)
                                                     {
                                                         <li>
-                                                            <a href="javascript:;"  onclick="AddWishListItemStockNotAvailable(@item.ProductId)" class="notification-bell_@item.ProductId"><i class="fa fa-bell list-icon" style="color:black"></i></a>
+                                                            <a href="javascript:;"  onclick="AddWishListItemStockNotAvailable(@item.ProductId)" class="notification-bell_@item.ProductId"><i class="fa fa-bell-o list-icon" style="color:black"></i></a>
                                                         </li>
                                                     }
                                                     else
                                                     {
                                                         <li>
-                                                            <a href="javascript:;"  onclick="removeNotifyProduct(@item.ProductId,true)" class="notification-bell_@item.ProductId"><i class="fa fa-bell list-icon" style="color:red"></i></a>
+                                                            <a href="javascript:;"  onclick="removeNotifyProduct(@item.ProductId,true)" class="notification-bell_@item.ProductId"><i class="fa fa-bell-o list-icon" style="color:red"></i></a>
                                                         </li>
                                                         
                                                     }
@@ -143,13 +143,13 @@
                                                 @if (totaltems == null)
                                                 {
                                                     <li>
-                                                        <a href="javascript:;" id="wish_@item.ProductId" onclick="AddToWishList(@item.ProductId, false)"><i class="icon-love list-icon" style="color: black"></i></a>
+                                                        <a href="javascript:;" id="wish_@item.ProductId" onclick="AddToWishList(@item.ProductId, false)"><i class="icon-love list-icon" style="color: black;font-size: 28px;"></i></a>
                                                     </li>
                                                 }
                                                 else
                                                 {
                                                     <li>
-                                                        <a href="javascript:;" id="wish_@item.ProductId" onclick="RemoveWishListPopUp(@item.ProductId,false)"><i class="icon-love list-icon" style="color: red"></i></a>
+                                                        <a href="javascript:;" id="wish_@item.ProductId" onclick="RemoveWishListPopUp(@item.ProductId,false)"><i class="icon-love list-icon" style="color: red;font-size: 28px;"></i></a>
                                                     </li>
                                                 }
                                             </ul>
