@@ -3640,3 +3640,68 @@ body {
         margin: 10px 0 0 0;
     }
 }
+
+
+/*Top category skwesing text on homePage and border css around it -start*/
+.nb_top_catSection .accordion ul li div a h2 {
+    transform: skew(12deg);
+    width: 105%;
+    left: -10px;
+}
+
+.nb_top_catSection .accordion ul li:nth-child(1) h2 {
+    transform: skew(0deg);
+    width: 105%;
+    left: -10px;
+}
+
+.nb_top_catSection .accordion ul li:last-child h2 {
+    transform: skew(0deg);
+    width: 105%;
+    left: -10px;
+}
+
+@media (max-width: 1199px) {
+    .nb_top_catSection .accordion ul li div a h2 {
+        transform: skew(0deg);
+        width: 100%;
+        left: auto;
+    }
+
+    .nb_top_catSection .accordion ul li:nth-child(1) h2 {
+        transform: skew(0deg);
+        width: 100%;
+        left: auto;
+    }
+
+    .nb_top_catSection .accordion ul li:last-child h2 {
+        transform: skew(0deg);
+        width: 100%;
+        left: auto;
+    }
+    .nb_top_catSection .accordion ul li div a {
+        padding: 0px;
+    }
+}
+/*/////////////*/
+@media (max-width: 768px) {
+    .accordion ul li div {
+        overflow: visible !important;
+    }
+
+    .nb_top_catSection .accordion ul li {
+        margin-bottom: 40px !important;
+    }
+
+    .accordion ul li div a h2 {
+        top: 100%;
+        background-color: #fff;
+    }
+}
+
+@media (max-width: 480px) {
+    .nb_top_catSection .accordion ul li {
+        margin-bottom: 40px;
+    }
+}
+/*Top category skwesing text on homePage and border css around it -end*/
