@@ -337,7 +337,7 @@ namespace WMS.Controllers
                 }
             }
 
-            ViewBag.Kits = _productServices.GetAllProductInKitsByKitProductId(id.Value).Any() ? _productServices.GetAllProductInKitsByKitProductId(id.Value) : null /*(bool?)true :*/;
+            ViewBag.Kits = _productServices.GetAllProductInKitsByProductId(id.Value).Any() ? _productServices.GetAllProductInKitsByProductId(id.Value) : null /*(bool?)true :*/;
 
             return View(productMaster);
         }

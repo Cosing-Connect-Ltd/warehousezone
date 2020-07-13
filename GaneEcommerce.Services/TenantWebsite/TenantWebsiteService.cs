@@ -1021,19 +1021,33 @@ namespace Ganedata.Core.Services
         public IEnumerable<WebsiteCartItemViewModel> GetAllValidCartItems(int siteId, int? userId, int tenantId, string sessionKey, int? cartId = null)
         {
             var model = _currentDbContext.WebsiteCartItems.Where(u => u.IsDeleted != true &&
-                                                                                     u.SiteID == siteId &&
-                                                                                     u.TenantId == tenantId &&
-                                                                                     (u.UserId == userId || u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase))
-                                                                                      && (!cartId.HasValue || u.Id == cartId)).ToList().Select(u => new WebsiteCartItemViewModel
-                                                                                      {
-                                                                                          Id = u.Id,
-                                                                                          ProductMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel()),
-                                                                                          Price = u.UnitPrice,
-                                                                                          Quantity = u.Quantity,
-                                                                                          ProductId = u.ProductId,
-                                                                                          CartId = u.Id,
-                                                                                          KitProductCartItems = GetAllValidKitCartItemsList(u.Id).ToList()
-                                                                                      });
+                                                                      u.SiteID == siteId &&
+                                                                      u.TenantId == tenantId &&
+                                                                      (u.UserId == userId || u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase)) &&
+                                                                      (!cartId.HasValue || u.Id == cartId))
+                                                           .ToList()
+                                                           .Select(u => {
+                                                               var productMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel());
+
+                                                               if (productMaster.ProductType == ProductKitTypeEnum.Simple && productMaster.DefaultImage == null)
+                                                               {
+                                                                   productMaster.DefaultImage = _productServices.GetParentProductsByKitProductId(u.ProductId)
+                                                                                                                .FirstOrDefault(k => k.IsActive == true &&
+                                                                                                                                     k.ProductType == ProductKitTypeEnum.ProductByAttribute &&
+                                                                                                                                     k.IsDeleted != true)?.DefaultImage;
+                                                               }
+
+                                                               return new WebsiteCartItemViewModel
+                                                               {
+                                                                   Id = u.Id,
+                                                                   ProductMaster = productMaster,
+                                                                   Price = u.UnitPrice,
+                                                                   Quantity = u.Quantity,
+                                                                   ProductId = u.ProductId,
+                                                                   CartId = u.Id,
+                                                                   KitProductCartItems = GetAllValidKitCartItemsList(u.Id).ToList()
+                                                               };
+                                                           });
             return model;
         }
         public IEnumerable<KitProductCartSession> GetAllValidKitCartItemsList(int cartId)

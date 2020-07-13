@@ -478,7 +478,7 @@ namespace WarehouseEcommerce.Controllers
         private ProductMaster GetSelectedProductByAttribute(int? productId, ProductMaster product)
         {
             ProductMaster selectedProduct;
-            var relatedProducts = _productServices.GetAllProductInKitsByKitProductId(product.ProductId).Where(k => k.IsActive == true && k.ProductType != ProductKitTypeEnum.ProductByAttribute && k.IsDeleted != true);
+            var relatedProducts = _productServices.GetAllProductInKitsByProductId(product.ProductId).Where(k => k.IsActive == true && k.ProductType != ProductKitTypeEnum.ProductByAttribute && k.IsDeleted != true);
 
             relatedProducts.ForEach(r => r.ProductAttributeValuesMap = r.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).ToList());
 
