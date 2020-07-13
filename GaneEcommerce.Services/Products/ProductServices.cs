@@ -1101,7 +1101,7 @@ namespace Ganedata.Core.Services
         {
             var products = _currentDbContext.ProductsWebsitesMap.Where(u => u.TenantId == tenantId && u.SiteID == SiteId && u.IsDeleted != true && u.IsActive).Select(u => u.ProductMaster);
             var ProductTagIds = _currentDbContext.ProductTags.Where(u => u.TagName.Equals(TagName, StringComparison.CurrentCultureIgnoreCase) && u.IsDeleted != true).Select(u => u.Id).ToList();
-            var productids = _currentDbContext.ProductTagMaps.Where(u => ProductTagIds.Contains(u.TagId)).Select(u => u.ProductId).ToList();
+            var productids = _currentDbContext.ProductTagMaps.Where(u => ProductTagIds.Contains(u.TagId) && u.IsDeleted != true).Select(u => u.ProductId).ToList();
             return products.Where(u => productids.Contains(u.ProductId) && u.IsDeleted != true).Take(NumberofProducts);
 
         }
