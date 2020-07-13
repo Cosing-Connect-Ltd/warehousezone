@@ -34,6 +34,8 @@ namespace Ganedata.Core.Entities.Domain
         public bool ShowInNavigation { get; set; }
         [Display(Name = "Show In Footer")]
         public bool ShowInFooter { get; set; }
+        [Display(Name = "Show In Top Categories")]
+        public bool ShowInTopCategory { get; set; }
         [ForeignKey("SiteID")]
         public virtual TenantWebsites TenantWebsites { get; set; }
         [ForeignKey("ParentId")]

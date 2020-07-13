@@ -50,6 +50,7 @@ namespace Ganedata.Core.Services
         IQueryable<NavigationProductsViewModel> GetAllValidWebsiteProducts(int TenantId, int SiteId);
         bool CreateOrUpdateWebsiteProducts(NavigationProductsViewModel websiteProduct, int UserId, int TenantId);
         IQueryable<WebsiteNavigation> GetAllValidWebsiteNavigationCategory(int TenantId, int? SiteId);
+        IQueryable<WebsiteNavigation> GetAllValidWebsiteNavigationTopCategory(int TenantId, int? SiteId);
         IQueryable<ProductMaster> GetProductByNavigationId(int navigationId);
 
         //WebsiteShippingRules
@@ -112,13 +113,13 @@ namespace Ganedata.Core.Services
         int AddOrUpdateCartItem(int siteId, int? userId, int tenantId, string sessionKey, int productId, decimal quantity, List<KitProductCartSession> kitProductCartItems = null);
         bool UpdateCartItemQuantity(int siteId, int? userId, int tenantId, string sessionKey, int cartId, decimal quantity);
 
-        IEnumerable<WebsiteCartItemViewModel> GetAllValidCartItems(int siteId, int? userId,int tenantId, string sessionKey, int? cartId=null);
+        IEnumerable<WebsiteCartItemViewModel> GetAllValidCartItems(int siteId, int? userId, int tenantId, string sessionKey, int? cartId = null);
 
         void UpdateUserIdInCartItem(string sessionKey, int userId, int siteId);
 
         int AddOrUpdateWishListItems(int SiteId, int UserId, int TenantId, List<OrderDetailSessionViewModel> wishListDetail);
         bool RemoveCartItem(int cartId, int siteId, int? userId, string sessionKey);
-        int RemoveWishListItem(int ProductId,bool notification, int SiteId, int UserId);
+        int RemoveWishListItem(int ProductId, bool notification, int SiteId, int UserId);
         bool GetWishlistNotificationStatus(int productId, int siteId, int userId);
         bool ChangeWishListStatus(int productId, bool notification, int siteId, int userId);
 
@@ -127,7 +128,7 @@ namespace Ganedata.Core.Services
         CheckoutViewModel SetCheckOutProcessModel(CheckoutViewModel checkoutViewModel, int siteId, int tenantId, int userId, string sessionKey);
 
         // deliveryInfoNavigation//
-        IEnumerable<WebsiteDeliveryNavigation> GetAllValidWebsiteDeliveryNavigations(int  tenantId, int siteId, bool includeInactive = false);
+        IEnumerable<WebsiteDeliveryNavigation> GetAllValidWebsiteDeliveryNavigations(int tenantId, int siteId, bool includeInactive = false);
         WebsiteDeliveryNavigation GetWebsiteDeliveryNavigationById(int id);
         WebsiteDeliveryNavigation CreateOrUpdateWebsiteDeliveryNavigation(WebsiteDeliveryNavigation websiteDeliveryNavigation, int userId, int tenantId);
         int RemoveWebsiteDeliveryNavigation(int id, int userId);

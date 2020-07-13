@@ -37,7 +37,7 @@ $(function () {
 
     // feautered product slider
     $(".nb_featuredPrdCarrousle").owlCarousel({
-        loop: true,
+        loop: false,
         margin: 10,
         nav: true,
         responsive: {

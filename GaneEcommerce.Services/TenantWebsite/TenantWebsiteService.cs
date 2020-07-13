@@ -230,6 +230,11 @@ namespace Ganedata.Core.Services
             return _currentDbContext.WebsiteNavigations.Where(u => u.IsDeleted != true && (!SiteId.HasValue || u.SiteID == SiteId) && u.TenantId == TenantId && u.Type == Entities.Enums.WebsiteNavigationType.Category && u.IsActive);
         }
 
+        public IQueryable<WebsiteNavigation> GetAllValidWebsiteNavigationTopCategory(int TenantId, int? SiteId)
+        {
+            return _currentDbContext.WebsiteNavigations.Where(u => u.IsDeleted != true && (!SiteId.HasValue || u.SiteID == SiteId) && u.TenantId == TenantId && u.ShowInTopCategory == true && u.IsActive);
+        }
+
         public IQueryable<NavigationProductsViewModel> GetAllValidWebsiteNavigations(int TenantId, int SiteId, int navigationId)
         {
 
@@ -1160,7 +1165,7 @@ namespace Ganedata.Core.Services
         {
             foreach (var orderDetail in wishListdeDetail)
             {
-                var wishListProduct = _currentDbContext.WebsiteWishListItems.FirstOrDefault(u => u.ProductId == orderDetail.ProductId && u.SiteID == SiteId && u.UserId == UserId && u.IsNotification==orderDetail.isNotfication);
+                var wishListProduct = _currentDbContext.WebsiteWishListItems.FirstOrDefault(u => u.ProductId == orderDetail.ProductId && u.SiteID == SiteId && u.UserId == UserId && u.IsNotification == orderDetail.isNotfication);
                 if (wishListProduct == null)
                 {
                     WebsiteWishListItem WishListItem = new WebsiteWishListItem();
@@ -1245,9 +1250,9 @@ namespace Ganedata.Core.Services
             return cartItem;
         }
 
-        public int RemoveWishListItem(int ProductId,bool notification, int SiteId, int UserId)
+        public int RemoveWishListItem(int ProductId, bool notification, int SiteId, int UserId)
         {
-            var wishListProduct = _currentDbContext.WebsiteWishListItems.FirstOrDefault(u => u.ProductId == ProductId && u.SiteID == SiteId && u.UserId == UserId && u.IsNotification==notification);
+            var wishListProduct = _currentDbContext.WebsiteWishListItems.FirstOrDefault(u => u.ProductId == ProductId && u.SiteID == SiteId && u.UserId == UserId && u.IsNotification == notification);
             if (wishListProduct != null)
             {
                 wishListProduct.IsDeleted = true;

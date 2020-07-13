@@ -979,6 +979,10 @@
     <Compile Include="Migrations\202007121957165_isdeleted-flag-in-attributes.designer.cs">
       <DependentUpon>202007121957165_isdeleted-flag-in-attributes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007130133158_ShowInTopCategory-flag-added-in-Website-Navigations.cs" />
+    <Compile Include="Migrations\202007130133158_ShowInTopCategory-flag-added-in-Website-Navigations.designer.cs">
+      <DependentUpon>202007130133158_ShowInTopCategory-flag-added-in-Website-Navigations.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2033,6 +2037,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007121957165_isdeleted-flag-in-attributes.resx">
       <DependentUpon>202007121957165_isdeleted-flag-in-attributes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007130133158_ShowInTopCategory-flag-added-in-Website-Navigations.resx">
+      <DependentUpon>202007130133158_ShowInTopCategory-flag-added-in-Website-Navigations.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

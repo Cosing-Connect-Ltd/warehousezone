@@ -165,7 +165,7 @@ namespace WarehouseEcommerce.Controllers
 
         public PartialViewResult _TopCategoryPartial()
         {
-            var TopCategory = _tenantWebsiteService.GetAllValidWebsiteNavigationCategory(CurrentTenantId, CurrentTenantWebsite.SiteID).OrderBy(u => u.SortOrder).Take(6).ToList();
+            var TopCategory = _tenantWebsiteService.GetAllValidWebsiteNavigationTopCategory(CurrentTenantId, CurrentTenantWebsite.SiteID).OrderBy(u => u.SortOrder).Take(6).ToList();
             return PartialView(TopCategory);
         }
 

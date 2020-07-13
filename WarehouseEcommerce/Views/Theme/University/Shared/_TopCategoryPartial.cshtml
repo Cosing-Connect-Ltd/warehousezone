@@ -10,12 +10,22 @@
                 <ul>
                     @foreach (var item in Model)
                     {
-                        var imagePath=!string.IsNullOrEmpty(item.Image) ? ViewBag.BaseFilePath + item.Image : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif";
+                        var imagePath = !string.IsNullOrEmpty(item.Image) ? ViewBag.BaseFilePath + item.Image : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif";
                         <li style="background-image:url('@imagePath')">
                             <div>
-                                <a href="@Url.Action("list","Products",new {category=item.Name })">
-                                    <h2>@item.Name</h2>
-                                </a>
+                                @if (item.Type == Ganedata.Core.Entities.Enums.WebsiteNavigationType.Category)
+                                {
+                                    <a href="@Url.Action("list","Products",new {category=item.Name })">
+                                        <h2>@item.Name</h2>
+                                    </a>
+                                }
+                                else if (item.Type == Ganedata.Core.Entities.Enums.WebsiteNavigationType.Content)
+                                {
+                                    <a href="@Url.Action("page", "home", new { pageurl = item.WebsiteContentPages.pageUrl})">
+                                        <h2>@item.Name</h2>
+                                    </a>
+                                }
+
                             </div>
                         </li>
                     }
