@@ -114,7 +114,6 @@ namespace WarehouseEcommerce.Controllers
 
         public PartialViewResult _SpecialProductPartial()
         {
-            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             var specialProduct = new ProductDetailViewModel
             {
                 productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID, CurrentTenantId, 6, "Featured").ToList(),
@@ -122,7 +121,6 @@ namespace WarehouseEcommerce.Controllers
             };
 
             specialProduct.productMasterList.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID), 2));
-            specialProduct.CurrencySign = currencyyDetail.Symbol;
 
 
             return PartialView(specialProduct);
@@ -130,13 +128,12 @@ namespace WarehouseEcommerce.Controllers
         }
         public PartialViewResult _TopProductPartial()
         {
-            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             var TopProduct = new ProductDetailViewModel
             {
                 productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID, (CurrentTenantId), 12, "TopProduct").ToList(),
             };
             TopProduct.productMasterList.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID), 2));
-            TopProduct.CurrencySign = currencyyDetail.Symbol;
+
             if (TopProduct.productMasterList != null)
             {
                 var prdouctIds = TopProduct.productMasterList.Select(u => u.ProductId).ToList();
@@ -147,13 +144,12 @@ namespace WarehouseEcommerce.Controllers
         }
         public PartialViewResult _OnSalePartial()
         {
-            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             var onsale = new ProductDetailViewModel
             {
                 productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID, CurrentTenantId, 6, "OnSaleProduct").ToList(),
             };
             onsale.productMasterList.ForEach(u => u.SellPrice = (Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID), 2)));
-            onsale.CurrencySign = currencyyDetail.Symbol;
+
             if (onsale.productMasterList != null)
             {
                 var prdouctIds = onsale.productMasterList.Select(u => u.ProductId).ToList();
@@ -173,13 +169,12 @@ namespace WarehouseEcommerce.Controllers
 
         public PartialViewResult _BestSellerPartial()
         {
-            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             var BestSellerProduct = new ProductDetailViewModel
             {
                 productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID, (CurrentTenantId), 2, "BestSellerProduct").ToList()
             };
             BestSellerProduct.productMasterList.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID), 2));
-            BestSellerProduct.CurrencySign = currencyyDetail.Symbol;
+
             if (BestSellerProduct.productMasterList != null)
             {
                 var prdouctIds = BestSellerProduct.productMasterList.Select(u => u.ProductId).ToList();

@@ -28,7 +28,7 @@
                                 <div class="caption col-sm-8 col-xs-8">
                                     <h4><a data-toggle="tooltip" title="@item.Name" href="@Url.Action("ProductDetails","Products", new { sku= item.SKUCode })">@item.Name</a></h4>
                                     <p class="price">
-                                        @Model.CurrencySign@item.SellPrice
+                                        @ViewBag.CurrencySymbol@item.SellPrice
                                     </p>
                                     <div class="rating">
                                         <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
