@@ -200,11 +200,12 @@
                                         </div>
                                         <div class="nb_prd_det_rightsec">
                                             <div class="footSec">
-                                                @if (@Model.SellPrice > 0 && @Model.SellPrice.HasValue && @Model.PercentMargin > 0 && Model.InventoryStocks.Sum(a => a.Available) > 0)
+                                                @{ var stockAvailable = Ganedata.Core.Services.Inventory.GetStockDetailByProductId(Model.ProductId); }
+                                                @if (Model.SellPrice > 0 && Model.SellPrice.HasValue && @Model.PercentMargin > 0 && stockAvailable > 0)
                                                 {
                                                     <div class="qty pull-left">
                                                         <span>quantity</span>
-                                                        @Html.DropDownList("product-quantity", Enumerable.Range(1, (int)Model.InventoryStocks.Sum(a => a.Available)).Select(a => new SelectListItem { Text = a.ToString(), Value = a.ToString() }), htmlAttributes: new { @class = "form-control" })
+                                                        @Html.DropDownList("product-quantity", Enumerable.Range(1, (int)stockAvailable).Select(a => new SelectListItem { Text = a.ToString(), Value = a.ToString() }), htmlAttributes: new { @class = "form-control" })
                                                     </div>
                                                     <div class="col-md-6 pull-right">
                                                         <button type="Submit" style="height: 45px" name="submitNewsletter" class="addTobasket add-kit-product" id="button-cart">Add to Basket</button>
