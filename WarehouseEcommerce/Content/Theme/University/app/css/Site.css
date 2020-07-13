@@ -3575,8 +3575,8 @@ body {
 }
 
 .product-section .bell-icon {
-    width: 120px;
-    margin-left: 11px;
+    margin-right: 10px;
+    padding-bottom: 1px;
 }
 
 .nb_featuredPrdCarrousle img {
@@ -3615,4 +3615,19 @@ body {
     box-shadow: 0px 0px 23px 2px #d8d8d8;
     display: inline-block;
     margin-top: 20px;
+}
+
+.nb_top_catSection .accordion h2 {
+    font-style: normal;
+}
+@media(max-with:364px){
+.feature-product-overflow {
+        overflow:hidden;
+    }
+}
+@media(max-width:560px){
+    .billandshipsec .checkout-options-wrapper .addnwShopAdrrbtn {
+        margin: unset;
+        margin-bottom: -12px;
+    }
 }
