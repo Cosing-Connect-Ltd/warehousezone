@@ -78,7 +78,14 @@ namespace WarehouseEcommerce.Controllers
         {
             var checkoutViewModel = new CheckoutViewModel();
 
-            checkoutViewModel.CurrentStep = CheckoutStep.DeliveryMethod;
+            if (CurrentTenantWebsite.IsCollectionAvailable && CurrentTenantWebsite.IsDeliveryAvailable)
+            {
+                checkoutViewModel.CurrentStep = CheckoutStep.DeliveryMethod;
+            }
+            else
+            {
+                checkoutViewModel.CurrentStep = CurrentTenantWebsite.IsDeliveryAvailable ? CheckoutStep.ShippingAddress : CheckoutStep.CollectionPoint;
+            }
 
             checkoutViewModel.StepsHistory.Add(checkoutViewModel.CurrentStep.Value);
 
