@@ -3631,10 +3631,12 @@ body {
         overflow: hidden;
     }
 }
-
-@media(max-width:560px) {
+@media(max-width:560px){
+    .payment-type-btns {
+        margin: unset !important;
+        margin-bottom: -12px !important;
+    }
     .billandshipsec .checkout-options-wrapper .addnwShopAdrrbtn {
-        margin: unset;
-        margin-bottom: -12px;
+        margin: 10px 0 0 0;
     }
 }
