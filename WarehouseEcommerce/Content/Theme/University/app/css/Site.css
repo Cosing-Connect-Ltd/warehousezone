@@ -3626,7 +3626,7 @@ body {
     font-style: normal;
 }
 
-@media(max-with:364px) {
+@media(max-width:364px) {
     .feature-product-overflow {
         overflow: hidden;
     }
@@ -3714,3 +3714,28 @@ body {
     }
 }
 /*Top category skwesing text on homePage and border css around it -end*/
+@media(min-width:768px){
+    .feature-product-overflow .imagewrap img {
+        height: 275px;
+        width: 275px !important;
+    }
+    .feature-product-overflow .nb_fp_boxwrap {
+        width: 275px !important;
+    }
+}
+.feature-product-overflow .nb_fp_boxwrap .prd_name {
+    min-height: unset !important;
+}
+@media(max-width:767px) {
+    .feature-product-overflow .imagewrap img {
+        height: 220px;
+        width: 220px !important;
+    }
+
+    .feature-product-overflow .nb_fp_boxwrap {
+        width: 220px !important;
+    }
+    .feature-product-overflow .owl-item {
+        width: 230px !important;
+    }
+}
