@@ -67,16 +67,39 @@
 <script>
 
     paypal.Buttons({
+        enableStandardCardFields: false,
         createOrder: function (data, actions) {
             // This function sets up the details of the transaction, including the amount and line item details.
             return actions.order.create({
+                payer: {
+                    name: {
+                        given_name: "@Model.UserFirstName",
+                        surname: "@Model.UserLastName"
+                    },
+                    address: {
+                        address_line_1: '@Model.Addresses.FirstOrDefault(u=>u.AddTypeBilling==true).AddressLine1',
+                        address_line_2: '@Model.Addresses.FirstOrDefault(u=>u.AddTypeBilling==true).AddressLine2',
+                        admin_area_2: '@Model.Addresses.FirstOrDefault(u=>u.AddTypeBilling==true).AddressLine3',
+                        admin_area_1: '@Model.Addresses.FirstOrDefault(u=>u.AddTypeBilling==true).County',
+                        postal_code: '@Model.Addresses.FirstOrDefault(u=>u.AddTypeBilling==true).PostCode',
+                        country_code: '@Model.Addresses.FirstOrDefault(u=>u.AddTypeBilling==true).GlobalCountry.CountryCode'
+                    },
+                    email_address: "@Model.Email"
+
+
+
+                },
                 purchase_units: [
                     {
                         amount: {
                             value: $(".total-amount").text()
                         }
+
                     }
-                ]
+                ],
+                application_context :  {
+                    shipping_preference:"NO_SHIPPING"
+                }
             });
         },
         onApprove: function (data, actions) {

@@ -1640,7 +1640,6 @@ namespace Ganedata.Core.Services
                         {
                             totalStock += product.InventoryStocks.Select(q => q.Available).DefaultIfEmpty(0).Sum(); ;
                         }
-
                         break;
 
                     default:
