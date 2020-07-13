@@ -200,7 +200,7 @@ $(function () {
         select: updateTextBox
     }).autocomplete('instance')._renderItem = function (ul, item) {
         return $('<li class="search-item">').append("")
-            .append("<a href=" + basePath + "/Products/list?search=" + item.Name + "><img style='width: 46px; height:46px;' src=" + item.Path + " alt=" + item.Name + "/>" + item.Name + "</a>").appendTo(ul);
+            .append("<a href=" + basePath + "/Products/list?search=" + item.Name + "><img style='width: 46px; height:46px;' src=" + encodeURI(item.DefaultImage) + " alt=" + item.Name + "/>" + item.Name + "</a>").appendTo(ul);
     };
     $(".text-search").bind('keypress', function (e) {
         if (e.keyCode === 13) {
@@ -685,7 +685,7 @@ function AddWishListItemStockNotAvailable(productId) {
                     addToNotify(productId, true);
                 },
                 No: function () {
-                    
+
                 }
             }
         });
@@ -717,18 +717,18 @@ function AddToWishList(productId, notification) {
 
 
 function addToNotify(productId, notification) {
-   var currentClass = $(".notification-bell_" + productId);
+    var currentClass = $(".notification-bell_" + productId);
     $.ajax({
         type: "GET",
         url: basePath + "/Products/AddWishListItem/",
         data: { ProductId: productId, isNotfication: notification },
         dataType: 'json',
         success: function (data) {
-            
+
             $(currentClass).find(".list-icon").css({ "color": "red" });
             $(currentClass).removeAttr("onclick", null);
             $(currentClass).attr("onclick", "removeNotifyProduct(" + productId + ",'true')");
-           
+
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert('Error' + textStatus + "/" + errorThrown);
@@ -738,7 +738,7 @@ function addToNotify(productId, notification) {
 
 }
 
-function RemoveWishListPopUp(RemoveProductId,notification) {
+function RemoveWishListPopUp(RemoveProductId, notification) {
     var CurrentId = $("#wish_" + RemoveProductId);
     $.confirm({
         title: 'Confirm!',
@@ -749,7 +749,7 @@ function RemoveWishListPopUp(RemoveProductId,notification) {
                 $.ajax({
                     type: "GET",
                     url: basePath + "/Products/RemoveWishList/",
-                    data: { ProductId: RemoveProductId,notification:notification },
+                    data: { ProductId: RemoveProductId, notification: notification },
                     dataType: 'json',
                     success: function (data) {
                         var ids = "#" + CurrentId[0].id;
@@ -772,7 +772,7 @@ function RemoveWishListPopUp(RemoveProductId,notification) {
 }
 
 
-function removeNotifyProduct(RemoveProductId, notification ) {
+function removeNotifyProduct(RemoveProductId, notification) {
     var currentClass = $(".notification-bell_" + RemoveProductId);
     $.confirm({
         title: 'Confirm!',
@@ -783,13 +783,13 @@ function removeNotifyProduct(RemoveProductId, notification ) {
                 $.ajax({
                     type: "GET",
                     url: basePath + "/Products/RemoveWishList/",
-                    data: { ProductId: RemoveProductId, notification: notification  },
+                    data: { ProductId: RemoveProductId, notification: notification },
                     dataType: 'json',
                     success: function (data) {
                         $(currentClass).find(".list-icon").css({ "color": "black" });
                         $(currentClass).removeAttr("onclick", null);
                         $(currentClass).attr("onclick", "AddWishListItemStockNotAvailable(" + RemoveProductId + ",true)");
-                        
+
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert('Error' + textStatus + "/" + errorThrown);

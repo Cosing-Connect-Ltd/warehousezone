@@ -8,6 +8,7 @@ using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using WarehouseEcommerce.Helpers;
@@ -116,7 +117,7 @@ namespace WarehouseEcommerce.Controllers
                 var data = product.ToPagedList((pageNumber == 0 ? 1 : pageNumber), pageSize);
                 if (data.Count > 0)
                 {
-                    data.ToList().ForEach(u => u.SellPrice = (Math.Round((_tenantWebsiteService.GetPriceForProduct(u.ProductId,CurrentTenantWebsite.SiteID)), 2)));
+                    data.ToList().ForEach(u => u.SellPrice = (Math.Round((_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID)), 2)));
 
 
 
@@ -166,7 +167,7 @@ namespace WarehouseEcommerce.Controllers
                 ViewBag.Category = category;
 
             }
-            selectedProduct.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(selectedProduct.ProductId, CurrentTenantWebsite.SiteID),2);
+            selectedProduct.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(selectedProduct.ProductId, CurrentTenantWebsite.SiteID), 2);
             if (product.ProductType == ProductKitTypeEnum.Grouped)
             {
                 return RedirectToAction("GroupedProductDetail", "Products", new { sku = sku });
@@ -222,13 +223,15 @@ namespace WarehouseEcommerce.Controllers
                          {
                              Id = product.ProductId,
                              Name = product.Name,
-                             Path = product.ProductFiles.FirstOrDefault(u => Images.Contains(u.FilePath)).FilePath,
+                             Path = product.ProductFiles.Where(x => x.IsDeleted != true).Select(x => x.FilePath).ToList(),
                              SKUCode = product.SKUCode,
                              SearchKey = searchkey
                          }).OrderBy(u => u.Id).Take(10).ToList();
 
 
-            model.ForEach(x => x.Path = CurrentTenantWebsite.BaseFilePath + (string.IsNullOrEmpty(x.Path) ? "/UploadedFiles/Products/no_image.gif" : x.Path));
+            model.ForEach(x => x.Path.Any(y => Images.Contains(Path.GetExtension(y))));
+
+            model.ForEach(x => x.DefaultImage = CurrentTenantWebsite.BaseFilePath + (string.IsNullOrEmpty(x.Path.FirstOrDefault()) ? "/UploadedFiles/Products/no_image.gif" : x.Path.FirstOrDefault()));
 
 
             return Json(model, JsonRequestBehavior.AllowGet);
@@ -282,7 +285,7 @@ namespace WarehouseEcommerce.Controllers
                 Session["shippingAddressPostCode"] = firstAddress?.PostCode;
             }
 
-            model.ShippingAddressId = Session["shippingAddressId"] != null ?(int)Session["shippingAddressId"] : (int?)null;
+            model.ShippingAddressId = Session["shippingAddressId"] != null ? (int)Session["shippingAddressId"] : (int?)null;
 
             var postCode = Session["shippingAddressPostCode"] != null ? (string)Session["shippingAddressPostCode"] : null;
             model.ShippingAddressPostCode = postCode;
@@ -363,7 +366,7 @@ namespace WarehouseEcommerce.Controllers
         {
             if (productId.HasValue)
             {
-                var count = _tenantWebsiteService.RemoveWishListItem((productId ?? 0),false, CurrentTenantWebsite.SiteID, CurrentUserId);
+                var count = _tenantWebsiteService.RemoveWishListItem((productId ?? 0), false, CurrentTenantWebsite.SiteID, CurrentUserId);
                 return PartialView(_tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).ToList());
 
             }
@@ -385,7 +388,7 @@ namespace WarehouseEcommerce.Controllers
                     CurrentUserId), JsonRequestBehavior.AllowGet);
 
         }
-        public JsonResult ChangeWishListStatus(int productId,bool notification)
+        public JsonResult ChangeWishListStatus(int productId, bool notification)
         {
 
             return Json(
@@ -440,10 +443,10 @@ namespace WarehouseEcommerce.Controllers
         }
 
 
-        public JsonResult RemoveWishList(int ProductId,bool notification)
+        public JsonResult RemoveWishList(int ProductId, bool notification)
         {
             var count = _tenantWebsiteService.RemoveWishListItem(ProductId, notification, CurrentTenantWebsite.SiteID, CurrentUserId);
-         
+
             return Json(count, JsonRequestBehavior.AllowGet);
         }
 
@@ -483,10 +486,10 @@ namespace WarehouseEcommerce.Controllers
 
             ViewBag.AvailableAttributes = relatedProducts
                                             .SelectMany(a => a.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).Select(k => k.ProductAttributeValues))
-                                            .GroupBy(a => a.ProductAttributes).OrderBy(u=>u.Key.SortOrder)
+                                            .GroupBy(a => a.ProductAttributes).OrderBy(u => u.Key.SortOrder)
                                             .ToDictionary(g => g.Key, g => g.OrderBy(av => av.SortOrder)
                                                                                             .GroupBy(av => av.AttributeValueId)
-                                                                                            .Select(av => av.First()).OrderBy(u=>u.ProductAttributes.SortOrder)
+                                                                                            .Select(av => av.First()).OrderBy(u => u.ProductAttributes.SortOrder)
                                                                                             .ToList());
             ViewBag.RelatedProducts = relatedProducts;
             return selectedProduct;
@@ -575,7 +578,8 @@ namespace WarehouseEcommerce.Controllers
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Path { get; set; }
+        public List<string> Path { get; set; }
+        public string DefaultImage { get; set; }
         public string Category { get; set; }
         public string SKUCode { get; set; }
         public string SearchKey { get; set; }
