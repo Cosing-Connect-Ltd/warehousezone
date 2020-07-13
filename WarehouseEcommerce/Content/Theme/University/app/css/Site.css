@@ -3697,6 +3697,15 @@ body {
         top: 100%;
         background-color: #fff;
     }
+
+    .nb_prd_viewingsecWrap #zoomViewTrigger {
+        display: none;
+    }
+
+    .zoomLens,
+    .zoomWindow {
+        display: none !important;
+    }
 }
 
 @media (max-width: 480px) {

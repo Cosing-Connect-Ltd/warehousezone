@@ -213,48 +213,26 @@
 
 <script>
     $(document).ready(function () {
+        $("#zoom_01").elevateZoom({
+            gallery: "gal01",
+            cursor: "pointer",
+            galleryActiveClass: "active",
+            imageCrossfade: true,
+            loadingIcon: "",
+            cursor: "crosshair",
+            zoomWindowFadeIn: 500,
+            zoomWindowFadeOut: 500,
+            easing: true,
+            zoomWindowWidth: 600,
+            zoomWindowHeight: 500,
+            responsive: true,
+            borderSize: 1,
+            destroyContainerOnResize: true,
+            zoomWindowOffetx: 50,
+            zoomWindowOffety: -25,
+            zoomType: "window",
+        });
 
-        if ($(window).width() < 768) {
-            $("#zoom_01").elevateZoom({
-                gallery: "gal01",
-                cursor: "pointer",
-                galleryActiveClass: "active",
-                imageCrossfade: true,
-                loadingIcon: "",
-                cursor: "crosshair",
-                zoomWindowFadeIn: 500,
-                zoomWindowFadeOut: 500,
-                easing: true,
-                zoomWindowWidth: 500,
-                zoomWindowHeight: 500,
-                responsive: true,
-                borderSize: 1,
-                destroyContainerOnResize: true,
-                zoomWindowOffetx: 50,
-                zoomWindowOffety: -25,
-                zoomType: "inner",
-            });
-        } else {
-            $("#zoom_01").elevateZoom({
-                gallery: "gal01",
-                cursor: "pointer",
-                galleryActiveClass: "active",
-                imageCrossfade: true,
-                loadingIcon: "",
-                cursor: "crosshair",
-                zoomWindowFadeIn: 500,
-                zoomWindowFadeOut: 500,
-                easing: true,
-                zoomWindowWidth: 600,
-                zoomWindowHeight: 500,
-                responsive: true,
-                borderSize: 1,
-                destroyContainerOnResize: true,
-                zoomWindowOffetx: 50,
-                zoomWindowOffety: -25,
-                zoomType: "window",
-            });
-        }
         //pass the images to Fancybox
         $("#zoom_01").bind("click", function (e) {
             var ez = $("#zoom_01").data("elevateZoom");
