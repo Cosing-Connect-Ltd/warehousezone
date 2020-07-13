@@ -699,6 +699,10 @@ function AddWishListItemStockNotAvailable(productId) {
 }
 
 function AddToWishList(productId, notification) {
+    if (userStatus === "Login") {
+        GetLoggedIn(false);
+        return;
+    }
     var currentWishId = $("#wish_" + productId);
     $.ajax({
         type: "GET",
@@ -723,6 +727,10 @@ function AddToWishList(productId, notification) {
 
 
 function addToNotify(productId, notification) {
+    if (userStatus === "Login") {
+        GetLoggedIn(false);
+        return;
+    }
     var currentClass = $(".notification-bell_" + productId);
     $.ajax({
         type: "GET",
@@ -745,6 +753,10 @@ function addToNotify(productId, notification) {
 }
 
 function RemoveWishListPopUp(RemoveProductId, notification) {
+    if (userStatus === "Login") {
+        GetLoggedIn(false);
+        return;
+    }
     var CurrentId = $("#wish_" + RemoveProductId);
     $.confirm({
         title: 'Confirm!',
@@ -779,6 +791,10 @@ function RemoveWishListPopUp(RemoveProductId, notification) {
 
 
 function removeNotifyProduct(RemoveProductId, notification) {
+    if (userStatus === "Login") {
+        GetLoggedIn(false);
+        return;
+    }
     var currentClass = $(".notification-bell_" + RemoveProductId);
     $.confirm({
         title: 'Confirm!',
