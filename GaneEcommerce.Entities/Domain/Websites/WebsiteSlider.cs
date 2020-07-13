@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ganedata.Core.Entities.Domain
 {
@@ -17,6 +13,7 @@ namespace Ganedata.Core.Entities.Domain
         public string ButtonLinkUrl { get; set; }
         public string TextColor { get; set; }
         public string ForeColor { get; set; }
+        public decimal ForeColorOpacity { get; set; }
         public int SortOrder { get; set; }
         public bool IsActive { get; set; }
         [ForeignKey("SiteID")]

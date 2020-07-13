@@ -8,6 +8,9 @@
             @{int i = 0;}
             @foreach (var item in Model)
             {
+                var rgbaColor = System.Drawing.ColorTranslator.FromHtml(!string.IsNullOrEmpty(item.ForeColor) ? @item.ForeColor : string.Empty);
+                var sliderTitleBackgroundColor = ("rgba(" + rgbaColor.R + "," + rgbaColor.G + "," + rgbaColor.B + "," + (item.ForeColorOpacity > 0 ? @item.ForeColorOpacity.ToString("#.#") : "1") + ")");
+                var sliderTitleColor = (string.IsNullOrEmpty(item.TextColor) ? @item.TextColor : string.Empty);
                 if (i == 0)
                 {
                     <div class="carousel-item active">
@@ -16,8 +19,8 @@
                              alt=" @item.ImageAltTag" />
                         <div class="np_bannerContentOuter">
                             <div class="nb_bannerCaptionWrap">
-                                <h5 style="color:@(!string.IsNullOrEmpty(item.TextColor) ? @item.TextColor : string.Empty); background-color:@(!string.IsNullOrEmpty(item.ForeColor) ? @item.ForeColor : string.Empty)">@item.Text</h5>
-                                <a style="color:@(!string.IsNullOrEmpty(item.TextColor) ? @item.TextColor : string.Empty); background-color:@(!string.IsNullOrEmpty(item.ForeColor) ? @item.ForeColor : string.Empty)" href="@item.ButtonLinkUrl">@item.ButtonText</a>
+                                <h5 style="color:@sliderTitleColor; background-color:@sliderTitleBackgroundColor">@item.Text</h5>
+                                <a style="color:@sliderTitleColor; background-color:@sliderTitleBackgroundColor" href="@item.ButtonLinkUrl">@item.ButtonText</a>
                             </div>
                         </div>
                     </div>
@@ -30,10 +33,10 @@
                              alt=" @item.ImageAltTag" />
                         <div class="np_bannerContentOuter">
                             <div class="nb_bannerCaptionWrap">
-                                <h5 style="color:@(!string.IsNullOrEmpty(item.TextColor) ? @item.TextColor : string.Empty); background-color:@(!string.IsNullOrEmpty(item.ForeColor) ? @item.ForeColor : string.Empty)">
+                                <h5 style="color:@sliderTitleColor; background-color:@sliderTitleBackgroundColor">
                                     @item.Text
                                 </h5>
-                                <a style="color:@(!string.IsNullOrEmpty(item.TextColor) ? @item.TextColor : string.Empty); background-color:@(!string.IsNullOrEmpty(item.ForeColor) ? @item.ForeColor : string.Empty)" href="@item.ButtonLinkUrl">@item.ButtonText</a>
+                                <a style="color:@sliderTitleColor; background-color:@sliderTitleBackgroundColor" href="@item.ButtonLinkUrl">@item.ButtonText</a>
                             </div>
                         </div>
                     </div>

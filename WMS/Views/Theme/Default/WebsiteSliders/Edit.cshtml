@@ -93,6 +93,14 @@
     </div>
 
     <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.ForeColorOpacity, htmlAttributes: new { @class = "control-label col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.ForeColorOpacity)
+            @Html.ValidationMessageFor(model => model.ForeColorOpacity, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="input-group h-100 justify-content-center align-items-center">
         @Html.LabelFor(model => model.SortOrder, htmlAttributes: new { @class = "control-label col-md-4" })
         <div class="col-md-8">
             @Html.EditorFor(model => model.SortOrder, new { htmlAttributes = new { @class = "form-control" } })
