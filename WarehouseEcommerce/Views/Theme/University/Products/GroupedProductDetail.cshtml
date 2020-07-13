@@ -244,7 +244,8 @@
                                                                 <p><span>Price:</span><b>@ViewBag.CurrencySymbol@productitems.KitProductMaster.SellPrice</b></p>
                                                                 @*<p><span>Total:</span><b>@ViewBag.CurrencySymbol@productitems.KitProductMaster.SellPrice</b></p>*@
                                                                 <div class="button-submit">
-                                                                    @if (productitems.KitProductMaster.SellPrice > 0 && productitems.KitProductMaster.SellPrice.HasValue && productitems.KitProductMaster.PercentMargin > 0)
+                                                                    @{ var stockAvailable = Ganedata.Core.Services.Inventory.GetStockDetailByProductId(Model.ProductId); }
+                                                                    @if (productitems.KitProductMaster.SellPrice > 0 && productitems.KitProductMaster.SellPrice.HasValue && productitems.KitProductMaster.PercentMargin > 0 && stockAvailable > 0)
                                                                     {
                                                                         <button type="Submit" name="submitNewsletter" class="btn btn-block move-to-cart-btn" id="button-cart" onclick="addToCart(@productitems.KitProductMaster.ProductId)">Add to Basket</button>
                                                                     }
@@ -332,7 +333,8 @@
                                                         <p><span>Price:</span><b>@ViewBag.CurrencySymbol@productitems.KitProductMaster.SellPrice</b></p>
                                                         @*<p><span>Total:</span><b>@ViewBag.CurrencySymbol@productitems.KitProductMaster.SellPrice</b></p>*@
                                                         <div class="button-submit">
-                                                            @if (productitems.KitProductMaster.SellPrice > 0 && productitems.KitProductMaster.SellPrice.HasValue && productitems.KitProductMaster.PercentMargin > 0)
+                                                            @{ var stockAvailable = Ganedata.Core.Services.Inventory.GetStockDetailByProductId(Model.ProductId); }
+                                                            @if (productitems.KitProductMaster.SellPrice > 0 && productitems.KitProductMaster.SellPrice.HasValue && productitems.KitProductMaster.PercentMargin > 0 && stockAvailable > 0)
                                                             {
                                                                 <button type="Submit" name="submitNewsletter" class="btn btn-block move-to-cart-btn" id="button-cart" onclick="addToCart(@productitems.KitProductMaster.ProductId)">Add to Basket</button>
                                                             }

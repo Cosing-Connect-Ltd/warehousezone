@@ -1613,10 +1613,17 @@ namespace Ganedata.Core.Services
         public static decimal GetStockDetailByProductId(int productId)
         {
             decimal totalStock = 0;
+
             var productService = DependencyResolver.Current.GetService<IProductServices>();
             var product = productService.GetProductMasterById(productId);
+
             if (product != null)
             {
+                if (product.DontMonitorStock == true)
+                {
+                    return 20;
+                }
+
                 switch (product.ProductType)
                 {
                     case ProductKitTypeEnum.ProductByAttribute:
