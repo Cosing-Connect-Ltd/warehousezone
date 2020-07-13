@@ -10,7 +10,6 @@
             stopLoading();
             if (data !== "False") {
                 $(".product-by-attribute-selector-model-body").html(data);
-
                 $("#product-by-attribute-selector").modal("show");
             }
         },

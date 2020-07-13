@@ -499,7 +499,7 @@ namespace WarehouseEcommerce.Controllers
 
             ViewBag.AvailableAttributes = relatedProducts
                                             .SelectMany(a => a.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).Select(k => k.ProductAttributeValues))
-                                            .GroupBy(a => a.ProductAttributes).OrderBy(u => u.Key.SortOrder)
+                                            .GroupBy(a => a.ProductAttributes).Where(u=>u.Key.IsDeleted != true).OrderBy(u=>u.Key.SortOrder)
                                             .ToDictionary(g => g.Key, g => g.OrderBy(av => av.SortOrder)
                                                                                             .GroupBy(av => av.AttributeValueId)
                                                                                             .Select(av => av.First()).OrderBy(u => u.ProductAttributes.SortOrder)
