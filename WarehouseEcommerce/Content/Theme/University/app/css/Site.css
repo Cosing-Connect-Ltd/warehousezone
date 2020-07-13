@@ -3456,108 +3456,138 @@ body {
 .basket-modal-content .modal-body {
     padding: unset;
 }
+
 .basket-modal-content .basket-section {
     padding: unset;
 }
-.basket-modal-content .basket-section .tableWrap, 
-.basket-modal-content .basket-section .basketTable{
-    margin: unset !important;
-}
+
+    .basket-modal-content .basket-section .tableWrap,
+    .basket-modal-content .basket-section .basketTable {
+        margin: unset !important;
+    }
+
     .basket-modal-content .basket-section .imgWrap img {
         min-width: 90px !important;
         height: 90px;
     }
-.basket-modal-content .basket-section td {
+
+    .basket-modal-content .basket-section td {
         vertical-align: inherit;
-}
-.basket-modal-content .basket-section .prdName,
-.basket-modal-content .basket-section .price,
-.basket-modal-content .basket-section .prd,
-.basket-modal-content .basket-section .qty,
-.basket-modal-content .basket-section .tot,
-.basket-modal-content .botomBtnsec {
-    padding-top: unset !important;
-    padding-bottom: unset !important;
-}
-.basket-modal-content .basket-section .subtotalCellInner {
-    padding: 10px 0px !important;
-}
+    }
+
+    .basket-modal-content .basket-section .prdName,
+    .basket-modal-content .basket-section .price,
+    .basket-modal-content .basket-section .prd,
+    .basket-modal-content .basket-section .qty,
+    .basket-modal-content .basket-section .tot,
+    .basket-modal-content .botomBtnsec {
+        padding-top: unset !important;
+        padding-bottom: unset !important;
+    }
+
+    .basket-modal-content .basket-section .subtotalCellInner {
+        padding: 10px 0px !important;
+    }
 
 .product-section .footSec {
     display: flex;
     align-items: flex-end;
 }
-.product-section .footSec .addTobasket{
-    white-space:nowrap;
-}
-.product-section .footSec .addtowishlist{
-    margin-bottom: 5px;
-}
+
+    .product-section .footSec .addTobasket {
+        white-space: nowrap;
+    }
+
+    .product-section .footSec .addtowishlist {
+        margin-bottom: 5px;
+    }
+
 .basket-modal-content .botomBtnsec {
-    margin-top:10px !important;
+    margin-top: 10px !important;
     margin-bottom: 12px !important;
 }
+
 @media(max-width:768px) {
     .basket-modal-content .basket-section .imgWrap img {
         width: 130px !important;
         height: 130px;
     }
 }
+
 @media(max-width:575px) {
     .basket-modal-content .botomBtnsec {
-    margin-top:unset !important;
+        margin-top: unset !important;
+    }
 }
-}
+
 @media(max-width:480px) {
     .product-section .footSec {
-    display: block;
-}
- .footSec .addTobasket {
-     margin-right:unset !important;
-}
-.footSec .addtowishlistbtn {
-    margin-right:unset !important;
-}
-.basket-modal-content .botomBtnsec .btmbtn.sho {
-    margin: unset !important;
-}
-.basket-modal-content .botomBtnsec .btmbtn.pro {
-    margin: 10px 0px 0px 0px !important;
-}
+        display: block;
+    }
+
+    .footSec .addTobasket {
+        margin-right: unset !important;
+    }
+
+    .footSec .addtowishlistbtn {
+        margin-right: unset !important;
+    }
+
+    .basket-modal-content .botomBtnsec .btmbtn.sho {
+        margin: unset !important;
+    }
+
+    .basket-modal-content .botomBtnsec .btmbtn.pro {
+        margin: 10px 0px 0px 0px !important;
+    }
 }
 /*basket-modal-content command product-detain-section -end*/
 
 /*shipping-type check boxes -start*/
 .ship-type {
-    display:flex;
+    display: flex;
 }
+
 @media(max-width:768px) {
     .styled-checkbox + label:before {
         min-width: 30px;
         min-height: 30px;
     }
 }
+
 .ship-type b {
     margin-right: 10px;
 }
 /*shipping-type check boxes -end*/
 
-.icolist li a i{
-    height:30px;
-    width:35px;
+.icolist li a i {
+    height: 30px;
+    width: 35px;
 }
+
 .product-section .notify-btn {
     display: none !important;
 }
-@media(max-width:480px){
-.product-section .notify-btn {
-    display:block !important;
-}
-.product-section .footSec .addtowishlistbtn {
+
+@media(max-width:480px) {
+    .product-section .notify-btn {
+        display: block !important;
+    }
+
+    .product-section .footSec .addtowishlistbtn {
         background-color: #292929 !important;
     }
 }
+
 .product-section .bell-icon {
     width: 120px;
     margin-left: 11px;
+}
+
+.nb_featuredPrdCarrousle img {
+    height: 220px;
+}
+
+.nb_featuredPrdCarrousle .prd_amnt {
+    padding: 6px 6px !important;
 }
