@@ -3714,7 +3714,12 @@ body {
     }
 }
 /*Top category skwesing text on homePage and border css around it -end*/
-@media(min-width:768px){
+
+/*feacture product img -start*/
+.feature-product-overflow .nb_fp_boxwrap .prd_name {
+    min-height: unset !important;
+}
+@media(min-width:768px) and (max-width:991px) {
     .feature-product-overflow .imagewrap img {
         height: 275px;
         width: 275px !important;
@@ -3723,10 +3728,7 @@ body {
         width: 275px !important;
     }
 }
-.feature-product-overflow .nb_fp_boxwrap .prd_name {
-    min-height: unset !important;
-}
-@media(max-width:767px) {
+@media(max-width:767px) and (min-width:475px) {
     .feature-product-overflow .imagewrap img {
         height: 220px;
         width: 220px !important;
@@ -3739,3 +3741,57 @@ body {
         width: 230px !important;
     }
 }
+@media(max-width:474px) and (min-width:425px) {
+    .feature-product-overflow .imagewrap img {
+        height: 180px;
+        width: 180px !important;
+    }
+
+    .feature-product-overflow .nb_fp_boxwrap {
+        width: 200px !important;
+    }
+    .feature-product-overflow .prd_amnt {
+        font-size: 15px !important;
+        width: 100px !important;
+        line-height: 29px;
+    }
+}
+@media(max-width:474px) {
+.feature-product-overflow .prd_amnt {
+        font-size: 15px !important;
+        width: 100px !important;
+        line-height: 29px;
+    }
+}
+@media(max-width:424px) and (min-width:365px) {
+    .feature-product-overflow .imagewrap img {
+        height: 150px;
+        width: 150px !important;
+    }
+    .feature-product-overflow .nb_fp_boxwrap {
+        width: 151px !important;
+    }
+    .feature-product-overflow .foot i{
+        font-size: 18px !important;
+    }
+    .feature-product-overflow .prd_amnt {
+        font-size: 13px !important;
+        width: 100px !important;
+        line-height: 25px;
+    }
+}
+@media(max-width:364px) {
+    .feature-product-overflow .imagewrap img {
+        height: 220px;
+        width: 220px !important;
+    }
+
+    .feature-product-overflow .nb_fp_boxwrap {
+        width: 220px !important;
+    }
+
+    .feature-product-overflow .owl-item {
+        width: 230px !important;
+    }
+}
+/*feacture product img -end*/
