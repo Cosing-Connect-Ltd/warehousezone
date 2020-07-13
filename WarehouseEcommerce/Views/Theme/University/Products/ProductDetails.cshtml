@@ -175,12 +175,12 @@
 
                         if (totalwishlistitems == null)
                         {
-                            <button class="notify-btn addTobasket notification-bell_@Model.ProductId" onclick="AddWishListItemStockNotAvailable(@Model.ProductId)">Notify</button>
+                            <button class="notify-btn addTobasket btn_notification-bell_@Model.ProductId" onclick="AddWishListItemStockNotAvailable(@Model.ProductId)">Notify</button>
                             <a href="javascript:;" onclick="AddWishListItemStockNotAvailable(@Model.ProductId)" class="addtowishlist list-icon bell-icon notification-bell_@Model.ProductId"><i class="fa fa-bell-o list-icon" style="color:black"></i></a>
                         }
                         else
                         {
-                            <button class="notify-btn addTobasket notification-bell_@Model.ProductId" onclick="removeNotifyProduct(@Model.ProductId,true)">Notify</button>
+                            <button class="notify-btn addTobasket btn_notification-bell_@Model.ProductId" onclick="removeNotifyProduct(@Model.ProductId,true)">Notify</button>
                             <a href="javascript:;" onclick="removeNotifyProduct(@Model.ProductId,true)" class="addtowishlist list-icon bell-icon notification-bell_@Model.ProductId"><i class="fa fa-bell-o list-icon" style="color:red"></i></a>
 
                         }
