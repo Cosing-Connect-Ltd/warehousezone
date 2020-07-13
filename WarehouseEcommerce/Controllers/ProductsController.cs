@@ -139,13 +139,13 @@ namespace WarehouseEcommerce.Controllers
         public ActionResult ProductDetails(string sku, int? productId = null)
         {
             ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
-            var product = _productServices.GetProductMasterByProductCode(sku, CurrentTenantId);
+            var baseProduct = _productServices.GetProductMasterByProductCode(sku, CurrentTenantId);
 
-            var selectedProduct = product;
+            var selectedProduct = baseProduct;
 
-            if (product?.ProductType == ProductKitTypeEnum.ProductByAttribute)
+            if (baseProduct?.ProductType == ProductKitTypeEnum.ProductByAttribute)
             {
-                selectedProduct = GetSelectedProductByAttribute(productId, product);
+                selectedProduct = GetSelectedProductByAttribute(productId, baseProduct);
             }
 
             if (selectedProduct == null)
@@ -153,11 +153,23 @@ namespace WarehouseEcommerce.Controllers
                 return RedirectToAction("List", "Products", new { sku = sku });
             }
 
-            product.ProductFiles = product.ProductFiles.Where(p => p.IsDeleted != true).ToList();
             selectedProduct.ProductFiles = selectedProduct.ProductFiles.Where(p => p.IsDeleted != true).ToList();
 
-            ViewBag.BaseProduct = product;
-            ViewBag.Category = _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID, product.ProductId);
+
+            if (baseProduct?.ProductType == ProductKitTypeEnum.ProductByAttribute && baseProduct.ProductId != selectedProduct.ProductId) {
+                baseProduct.ProductFiles.Where(p => p.IsDeleted != true).ForEach(p => {
+                    selectedProduct.ProductFiles.Add(p);
+                });
+
+                selectedProduct.Description = string.IsNullOrEmpty(selectedProduct.Description?.Trim()) ? baseProduct.Description : selectedProduct.Description;
+            }
+
+            ViewBag.BaseProductId = baseProduct.ProductId;
+            ViewBag.BaseProductName = baseProduct.Name;
+            ViewBag.BaseProductType = baseProduct.ProductType;
+            ViewBag.BaseProductSKUCode = baseProduct.SKUCode;
+
+            ViewBag.Category = _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID, baseProduct.ProductId);
             ViewBag.SubCategory = _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID, SubCategory: ViewBag.Category);
 
             if (ViewBag.SubCategory != null && !string.IsNullOrEmpty(ViewBag.SubCategory))
@@ -168,11 +180,11 @@ namespace WarehouseEcommerce.Controllers
 
             }
             selectedProduct.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(selectedProduct.ProductId, CurrentTenantWebsite.SiteID), 2);
-            if (product.ProductType == ProductKitTypeEnum.Grouped)
+            if (baseProduct.ProductType == ProductKitTypeEnum.Grouped)
             {
                 return RedirectToAction("GroupedProductDetail", "Products", new { sku = sku });
             }
-            else if (product.ProductType == ProductKitTypeEnum.Kit)
+            else if (baseProduct.ProductType == ProductKitTypeEnum.Kit)
             {
                 return RedirectToAction("KitProductDetail", "Products", new { sku = sku });
             }
@@ -452,8 +464,8 @@ namespace WarehouseEcommerce.Controllers
 
         public ActionResult _KitProductAttributeDetail(string skuCode, decimal? quantity = null, int? productId = null)
         {
-            var product = _productServices.GetProductMasterByProductCode(skuCode, CurrentTenantId);
-            var selectedProduct = product;
+            var baseProduct = _productServices.GetProductMasterByProductCode(skuCode, CurrentTenantId);
+            var selectedProduct = baseProduct;
             IEnumerable<SelectListItem> squares = Enumerable.Range(1, (quantity.HasValue ? Convert.ToInt32(quantity) : 1)).Select(u => new SelectListItem
             {
                 Text = u.ToString(),
@@ -461,15 +473,16 @@ namespace WarehouseEcommerce.Controllers
             }
                 ).ToList();
             ViewBag.QuantityList = new SelectList(squares, "Text", "Value");
-            if (product.ProductType == ProductKitTypeEnum.ProductByAttribute)
+            if (baseProduct.ProductType == ProductKitTypeEnum.ProductByAttribute)
             {
-                selectedProduct = GetSelectedProductByAttribute(productId, product);
+                selectedProduct = GetSelectedProductByAttribute(productId, baseProduct);
             }
 
-            product.ProductFiles = product.ProductFiles.Where(p => p.IsDeleted != true).ToList();
+            baseProduct.ProductFiles = baseProduct.ProductFiles.Where(p => p.IsDeleted != true).ToList();
             selectedProduct.ProductFiles = selectedProduct.ProductFiles.Where(p => p.IsDeleted != true).ToList();
 
-            ViewBag.BaseProduct = product;
+            ViewBag.BaseProductType = baseProduct.ProductType;
+            ViewBag.BaseProductSKUCode = baseProduct.SKUCode;
             ViewBag.Quantity = quantity;
 
             return PartialView(selectedProduct);
@@ -497,13 +510,14 @@ namespace WarehouseEcommerce.Controllers
 
         public ActionResult _ProductByAttributeSelector(string skuCode, int? quantity = null, int? productId = null)
         {
-            var product = _productServices.GetProductMasterByProductCode(skuCode, CurrentTenantId);
-            var selectedProduct = product;
-            ViewBag.BaseProduct = product;
+            var baseProduct = _productServices.GetProductMasterByProductCode(skuCode, CurrentTenantId);
+            var selectedProduct = baseProduct;
+            ViewBag.BaseProductType = baseProduct.ProductType;
+            ViewBag.BaseProductSKUCode = baseProduct.SKUCode;
             ViewBag.Quantity = quantity;
-            if (product.ProductType == ProductKitTypeEnum.ProductByAttribute)
+            if (baseProduct.ProductType == ProductKitTypeEnum.ProductByAttribute)
             {
-                selectedProduct = GetSelectedProductByAttribute(productId, product);
+                selectedProduct = GetSelectedProductByAttribute(productId, baseProduct);
             }
 
             return PartialView(selectedProduct);

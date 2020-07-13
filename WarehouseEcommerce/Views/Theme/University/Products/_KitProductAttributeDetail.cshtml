@@ -23,7 +23,7 @@
                         }
                     </div>
 
-                    @if (ViewBag.BaseProduct.ProductType != Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
+                    @if (ViewBag.BaseProductType != Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
                     {
                         foreach (var item in Model.ProductAttributeValuesMap.Where(a => a.IsDeleted != true).OrderBy(m => m.ProductAttributeValues.AttributeId))
                         {
@@ -35,7 +35,7 @@
                         }
                     }
 
-                    @if (ViewBag.BaseProduct.ProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
+                    @if (ViewBag.BaseProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
                     {
                         foreach (var item in ViewBag.AvailableAttributes)
                         {
@@ -93,7 +93,7 @@
                                                 var isSelectedAttributeValue = attributeValue.AttributeValueId == selectedAttributeValue?.AttributeValueId;
 
                                                 @Html.Raw("<li class=\"col3 " + (isSelectedAttributeValue ? "active" : "") + (!isSelectedAttributeValue && !isAttributeAvailableWithCurrentSelection ? "unavailable-attribute\">" : "\">") +
-                                                                (isSelectedAttributeValue ? "<a href='javascript:;'id='selected-productids' data-productid=" + Model.ProductId + " data-skuCode=" + Model.SKUCode + ">" : $"<a href='javascript:;' onclick = 'getSelectedAttributes(event,\"" + ViewBag.BaseProduct.SKUCode + "\"," + (relatedProducts.FirstOrDefault()?.ProductId ?? Model.ProductId) + "," + ViewBag.Quantity + ")'>") +
+                                                                (isSelectedAttributeValue ? "<a href='javascript:;'id='selected-productids' data-productid=" + Model.ProductId + " data-skuCode=" + Model.SKUCode + ">" : $"<a href='javascript:;' onclick = 'getSelectedAttributes(event,\"" + ViewBag.BaseProductSKUCode + "\"," + (relatedProducts.FirstOrDefault()?.ProductId ?? Model.ProductId) + "," + ViewBag.Quantity + ")'>") +
                                                                 (!attributeValue.ProductAttributes.IsColorTyped ?
                                                                                 "<span style=\"color:" + (!string.IsNullOrEmpty(attributeValue.Color?.Trim()) ? attributeValue.Color : attributeValue.Value) + "\">" + attributeValue.Value + "</span>" :
                                                                                 "<span style=\"background-color:" + (!string.IsNullOrEmpty(attributeValue.Color?.Trim()) ? attributeValue.Color : attributeValue.Value) + ";color:" + (!string.IsNullOrEmpty(attributeValue.Color?.Trim()) ? attributeValue.Color : attributeValue.Value) + "\">-</span>") +

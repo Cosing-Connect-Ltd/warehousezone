@@ -26,7 +26,7 @@
                             <li>></li>
                         }
 
-                        <li class="breadcrumb-item">@ViewBag.BaseProduct.Name</li>
+                        <li class="breadcrumb-item">@ViewBag.BaseProductName</li>
                     </ol>
                 </nav>
             </div>
@@ -37,12 +37,12 @@
                     <span id="zoomViewTrigger"><i class="icon-search"></i></span>
                     <span class="img_view_area">
                         <img id="zoom_01"
-                             src="@(!string.IsNullOrEmpty((Model.DefaultImage ?? ViewBag.BaseProduct.DefaultImage)) ? ViewBag.BaseFilePath + (Model.DefaultImage ?? ViewBag.BaseProduct.DefaultImage) : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"
-                             data-zoom-image="@(!string.IsNullOrEmpty(Model.DefaultImage ?? ViewBag.BaseProduct.DefaultImage) ? ViewBag.BaseFilePath + (Model.DefaultImage ?? ViewBag.BaseProduct.DefaultImage) : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
+                             src="@(!string.IsNullOrEmpty(Model.DefaultImage?.Trim()) ? ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"
+                             data-zoom-image="@(!string.IsNullOrEmpty(Model.DefaultImage?.Trim()) ? ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
                     </span>
                     <div class="img_thumb_sliderwrap">
                         <div id="gal01" class="owl-carousel owl-theme nb_imageZoomCarrousle">
-                            @foreach (var item in ((Model.ProductFiles ?? ViewBag.BaseProduct.ProductFiles)))
+                            @foreach (var item in (Model.ProductFiles))
                             {
                                 var extension = Path.GetExtension(item.FilePath);
                                 <div class="item">
@@ -74,7 +74,7 @@
                         }
                     </div>
 
-                    @if (ViewBag.BaseProduct.ProductType != Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
+                    @if (ViewBag.BaseProductType != Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
                     {
                         foreach (var item in Model.ProductAttributeValuesMap.Where(a => a.IsDeleted != true).OrderBy(m => m.ProductAttributeValues.AttributeId))
                         {
@@ -86,7 +86,7 @@
                         }
                     }
 
-                    @if (ViewBag.BaseProduct.ProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
+                    @if (ViewBag.BaseProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
                     {
                         foreach (var item in ViewBag.AvailableAttributes)
                         {
@@ -143,7 +143,7 @@
                                                 var isSelectedAttributeValue = attributeValue.AttributeValueId == selectedAttributeValue?.AttributeValueId;
 
                                                 @Html.Raw("<li class=\"col3 " + (isSelectedAttributeValue ? "active" : "") + (!isSelectedAttributeValue && !isAttributeAvailableWithCurrentSelection ? "unavailable-attribute\">" : "\">") +
-                                                                (isSelectedAttributeValue ? "<a>" : $"<a href=\"ProductDetails?sku={ViewBag.BaseProduct.SKUCode}&productId={relatedProducts.FirstOrDefault()?.ProductId ?? Model.ProductId}\">") +
+                                                                (isSelectedAttributeValue ? "<a>" : $"<a href=\"ProductDetails?sku={ViewBag.BaseProductSKUCode}&productId={relatedProducts.FirstOrDefault()?.ProductId ?? Model.ProductId}\">") +
                                                                 (!attributeValue.ProductAttributes.IsColorTyped ?
                                                                                 "<span style=\"color:" + (!string.IsNullOrEmpty(attributeValue.Color?.Trim()) ? attributeValue.Color : attributeValue.Value) + "\">" + attributeValue.Value + "</span>" :
                                                                                 "<span style=\"background-color:" + (!string.IsNullOrEmpty(attributeValue.Color?.Trim()) ? attributeValue.Color : attributeValue.Value) + ";color:" + (!string.IsNullOrEmpty(attributeValue.Color?.Trim()) ? attributeValue.Color : attributeValue.Value) + "\">-</span>") +
@@ -172,13 +172,13 @@
 
                         if (totalwishlistitems == null)
                         {
-                            <button class="notify-btn addTobasket notification-bell_@ViewBag.BaseProduct.ProductId" onclick="AddWishListItemStockNotAvailable(@ViewBag.BaseProduct.ProductId)">Notify</button>
-                            <a href="javascript:;" onclick="AddWishListItemStockNotAvailable(@ViewBag.BaseProduct.ProductId)" class="addtowishlist bell-icon notification-bell_@ViewBag.BaseProduct.ProductId"><i class="fa fa-bell-o list-icon" style="color:black"></i></a>
+                            <button class="notify-btn addTobasket notification-bell_@ViewBag.BaseProductId" onclick="AddWishListItemStockNotAvailable(@ViewBag.BaseProductId)">Notify</button>
+                            <a href="javascript:;" onclick="AddWishListItemStockNotAvailable(@ViewBag.BaseProductId)" class="addtowishlist bell-icon notification-bell_@ViewBag.BaseProductId"><i class="fa fa-bell-o list-icon" style="color:black"></i></a>
                         }
                         else
                         {
-                            <button class="notify-btn addTobasket notification-bell_@ViewBag.BaseProduct.ProductId" onclick="removeNotifyProduct(@ViewBag.BaseProduct.ProductId,true)">Notify</button>
-                            <a href="javascript:;" onclick="removeNotifyProduct(@ViewBag.BaseProduct.ProductId,true)" class="addtowishlist bell-icon notification-bell_@ViewBag.BaseProduct.ProductId"><i class="fa fa-bell-o list-icon" style="color:red"></i></a>
+                            <button class="notify-btn addTobasket notification-bell_@ViewBag.BaseProductId" onclick="removeNotifyProduct(@ViewBag.BaseProductId,true)">Notify</button>
+                            <a href="javascript:;" onclick="removeNotifyProduct(@ViewBag.BaseProductId,true)" class="addtowishlist bell-icon notification-bell_@ViewBag.BaseProductId"><i class="fa fa-bell-o list-icon" style="color:red"></i></a>
 
                         }
 
@@ -186,13 +186,13 @@
 
                     @if (Model.WebsiteWishListItems.FirstOrDefault(u => u.IsDeleted != true && !u.IsNotification) == null)
                     {
-                        <button id="wish_@ViewBag.BaseProduct.ProductId" onclick="AddToWishList(@ViewBag.BaseProduct.ProductId,false)" class="addtowishlistbtn">Add to Wishlist</button>
-                        <a href="javascript:;" class="addtowishlist" id="wish_@ViewBag.BaseProduct.ProductId" onclick="AddToWishList(@ViewBag.BaseProduct.ProductId,false)"><i class="icon-love list-icon" style="color:black;font-size:28px"></i></a>
+                        <button id="wish_@ViewBag.BaseProductId" onclick="AddToWishList(@ViewBag.BaseProductId,false)" class="addtowishlistbtn">Add to Wishlist</button>
+                        <a href="javascript:;" class="addtowishlist" id="wish_@ViewBag.BaseProductId" onclick="AddToWishList(@ViewBag.BaseProductId,false)"><i class="icon-love list-icon" style="color:black;font-size:28px"></i></a>
                     }
                     else
                     {
-                        <button id="wish_@ViewBag.BaseProduct.ProductId" onclick="RemoveWishListPopUp(@ViewBag.BaseProduct.ProductId,false)" class="addtowishlistbtn">Add to Wishlist</button>
-                        <a href="javascript:;" class="addtowishlist" id="wish_@ViewBag.BaseProduct.ProductId" onclick="RemoveWishListPopUp(@ViewBag.BaseProduct.ProductId,false)"><i class="icon-love list-icon" style="color:red;font-size:28px"></i></a>
+                        <button id="wish_@ViewBag.BaseProductId" onclick="RemoveWishListPopUp(@ViewBag.BaseProductId,false)" class="addtowishlistbtn">Add to Wishlist</button>
+                        <a href="javascript:;" class="addtowishlist" id="wish_@ViewBag.BaseProductId" onclick="RemoveWishListPopUp(@ViewBag.BaseProductId,false)"><i class="icon-love list-icon" style="color:red;font-size:28px"></i></a>
                     }
                 </div>
                 </div>
@@ -201,14 +201,7 @@
                 <div class="nb_prod_bottomdes">
                     <h3 class="head">Description</h3>
                     <p class="content">
-                        @if (string.IsNullOrEmpty(Model.Description))
-                        {
-                            @ViewBag.BaseProduct.Description;
-                        }
-                        else
-                        {
-                            @Model.Description;
-                        }
+                        @Model.Description;
                     </p>
                 </div>
             </div>
