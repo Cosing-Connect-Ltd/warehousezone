@@ -15,14 +15,18 @@
                     @Html.HiddenFor(model => model.ProductId)
                     <span class="prd_amnt">@ViewBag.CurrencySymbol@Model.SellPrice</span>
                     <div class="availibility">
-                        @if (Model.InventoryStocks.Any(i => i.Available > 0))
+                        @{ var stockAvailable = Ganedata.Core.Services.Inventory.GetStockDetailByProductId(Model.ProductId); }
+                        @if (stockAvailable > 0)
                         {
-                            <span>Availability:</span> <br />
-                            @((Model.InventoryStocks.Sum(i => i.Available) <= 10 ? "only " : "") + Model.InventoryStocks.Sum(i => i.Available).ToString("#") + " items left")
+                            <input type="hidden" class="availablity" value="true">
+                            <span>Availability:</span>
+                            <br />
+                            @((stockAvailable <= 10 ? "only "+ stockAvailable.ToString("#") + " items left" : "Available"))
                         }
                         else
                         {
-                            <span></span> <br />
+                            <span></span>
+                            <br />
                             <span>Currently unavailable.</span>
                         }
                     </div>

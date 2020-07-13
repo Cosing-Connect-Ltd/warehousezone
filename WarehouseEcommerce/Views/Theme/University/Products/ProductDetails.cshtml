@@ -63,16 +63,16 @@
                     <span class="prd_amnt">@ViewBag.CurrencySymbol@Model.SellPrice</span>
                     <div class="availibility">
                         @{ var stockAvailable = Ganedata.Core.Services.Inventory.GetStockDetailByProductId(Model.ProductId); }
-                        @if (stockAvailable>0)
+                        @if (stockAvailable > 0)
                         {
                             <span>Availability:</span>
-                            <br/>
-                            @((stockAvailable <= 10 ? "only " : "") + stockAvailable.ToString("#") + " items left")
+                            <br />
+                            @((stockAvailable <= 10 ? "only "+ stockAvailable.ToString("#") + " items left" : "Available"))
                         }
                         else
                         {
                             <span></span>
-                            <br/>
+                            <br />
                             <span>Currently unavailable.</span>
                         }
                     </div>
@@ -159,45 +159,45 @@
                         }
                     }
 
-                <div class="footSec">
-                    @if (@Model.SellPrice > 0 && @Model.SellPrice.HasValue && @Model.PercentMargin > 0 && stockAvailable > 0)
-                    {
-                        <div class="qty">
-                            <span>quantity</span>
-                            @Html.DropDownList("product-quantity", Enumerable.Range(1, (int)stockAvailable).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), htmlAttributes: new { @class = "form-control" })
-                        </div>
-
-                        <button class="addTobasket" onclick="addToCart(@Model.ProductId, document.getElementById('product-quantity').value)">Add to basket</button>
-                    }
-                    else
-                    {
-                        var totalwishlistitems = Model.WebsiteWishListItems.FirstOrDefault(u => u.IsDeleted != true && u.UserId == ViewBag.CurrentUserId && u.IsNotification);
-
-                        if (totalwishlistitems == null)
+                    <div class="footSec">
+                        @if (@Model.SellPrice > 0 && @Model.SellPrice.HasValue && @Model.PercentMargin > 0 && (stockAvailable > 0))
                         {
-                            <button class="notify-btn addTobasket btn_notification-bell_@Model.ProductId" onclick="AddWishListItemStockNotAvailable(@Model.ProductId)">Notify</button>
-                            <a href="javascript:;" onclick="AddWishListItemStockNotAvailable(@Model.ProductId)" class="addtowishlist list-icon bell-icon notification-bell_@Model.ProductId"><i class="fa fa-bell-o list-icon" style="color:black"></i></a>
+                            <div class="qty">
+                                <span>quantity</span>
+                                @Html.DropDownList("product-quantity", Enumerable.Range(1, (int)stockAvailable).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), htmlAttributes: new { @class = "form-control" })
+                            </div>
+
+                            <button class="addTobasket" onclick="addToCart(@Model.ProductId, document.getElementById('product-quantity').value)">Add to basket</button>
                         }
                         else
                         {
-                            <button class="notify-btn addTobasket btn_notification-bell_@Model.ProductId" onclick="removeNotifyProduct(@Model.ProductId,true)">Notify</button>
-                            <a href="javascript:;" onclick="removeNotifyProduct(@Model.ProductId,true)" class="addtowishlist list-icon bell-icon notification-bell_@Model.ProductId"><i class="fa fa-bell-o list-icon" style="color:red"></i></a>
+                            var totalwishlistitems = Model.WebsiteWishListItems.FirstOrDefault(u => u.IsDeleted != true && u.UserId == ViewBag.CurrentUserId && u.IsNotification);
+
+                            if (totalwishlistitems == null)
+                            {
+                                <button class="notify-btn addTobasket btn_notification-bell_@Model.ProductId" onclick="AddWishListItemStockNotAvailable(@Model.ProductId)">Notify</button>
+                                <a href="javascript:;" onclick="AddWishListItemStockNotAvailable(@Model.ProductId)" class="addtowishlist list-icon bell-icon notification-bell_@Model.ProductId"><i class="fa fa-bell-o list-icon" style="color:black"></i></a>
+                            }
+                            else
+                            {
+                                <button class="notify-btn addTobasket btn_notification-bell_@Model.ProductId" onclick="removeNotifyProduct(@Model.ProductId,true)">Notify</button>
+                                <a href="javascript:;" onclick="removeNotifyProduct(@Model.ProductId,true)" class="addtowishlist list-icon bell-icon notification-bell_@Model.ProductId"><i class="fa fa-bell-o list-icon" style="color:red"></i></a>
+
+                            }
 
                         }
-
-                    }
-
-                    @if (Model.WebsiteWishListItems.FirstOrDefault(u => u.IsDeleted != true && !u.IsNotification) == null)
-                    {
-                        <button id="btnwish_@Model.ProductId" onclick="AddToWishList(@Model.ProductId,false)" class="addtowishlistbtn">Add to Wishlist</button>
-                        <a href="javascript:;" class="addtowishlist " id="wish_@Model.ProductId" onclick="AddToWishList(@Model.ProductId,false)"><i class="icon-love list-icon" style="color:black;font-size:28px"></i></a>
-                    }
-                    else
-                    {
-                        <button id="btnwish_@Model.ProductId" onclick="RemoveWishListPopUp(@Model.ProductId,false)" class="addtowishlistbtn">Add to Wishlist</button>
-                        <a href="javascript:;" class="addtowishlist" id="wish_@Model.ProductId" onclick="RemoveWishListPopUp(@Model.ProductId,false)"><i class="icon-love list-icon" style="color:red;font-size:28px"></i></a>
-                    }
-                </div>
+                       
+                        @if (Model.WebsiteWishListItems.FirstOrDefault(u => u.IsDeleted != true && !u.IsNotification) == null)
+                        {
+                            <button id="btnwish_@Model.ProductId" onclick="AddToWishList(@Model.ProductId,false)" class="addtowishlistbtn">Add to Wishlist</button>
+                            <a href="javascript:;" class="addtowishlist " id="wish_@Model.ProductId" onclick="AddToWishList(@Model.ProductId,false)"><i class="icon-love list-icon" style="color:black;font-size:28px"></i></a>
+                        }
+                        else
+                        {
+                            <button id="btnwish_@Model.ProductId" onclick="RemoveWishListPopUp(@Model.ProductId,false)" class="addtowishlistbtn">Add to Wishlist</button>
+                            <a href="javascript:;" class="addtowishlist" id="wish_@Model.ProductId" onclick="RemoveWishListPopUp(@Model.ProductId,false)"><i class="icon-love list-icon" style="color:red;font-size:28px"></i></a>
+                        }
+                    </div>
                 </div>
             </div>
             <div class="col-md-12">
