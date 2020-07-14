@@ -3653,6 +3653,9 @@ body {
 
 
 /*Top category skwesing text on homePage and border css around it -start*/
+.nb_top_catSection .accordion ul li {
+    background-color: white !important;
+}
 .nb_top_catSection .accordion ul li div a h2 {
     transform: skew(12deg);
     width: 105%;
