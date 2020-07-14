@@ -220,7 +220,7 @@ namespace WMS.Controllers
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             SetProductCreateViewBags(id);
-            return View(new ProductMaster { SKUCode = string.IsNullOrEmpty(id) ? _productServices.GenerateNextProductCode(CurrentTenantId) : id, ProdStartDate = DateTime.Today, IsActive = true, DiscontDate = DateTime.Today.AddDays(15), ProductType = ProductKitTypeEnum.Simple });
+            return View(new ProductMaster { SKUCode = string.IsNullOrEmpty(id) ? _productServices.GenerateNextProductCode(CurrentTenantId) : id, ProdStartDate = DateTime.Today, EnableTax = true, IsActive = true, DiscontDate = DateTime.Today.AddDays(15), ProductType = ProductKitTypeEnum.Simple });
         }
 
         // POST: Products/Create
