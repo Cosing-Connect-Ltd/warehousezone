@@ -185,17 +185,20 @@ namespace Ganedata.Core.Services
                     {
                         if (item.Key.Equals("stockS"))
                         {
+
                             if (item.Value.Count > 1)
                             {
-                                productMaster = productMaster.Where(u => ((u.InventoryStocks.Sum(rv => rv.Available)) > 0) || (u.InventoryStocks.Any(rv => rv.InStock <= 0) || u.InventoryStocks.Count < 0));
+                                productMaster = productMaster.Where(u => ((u.InventoryStocks.Sum(rv => rv.Available)) > 0 ||  (u.InventoryStocks.Sum(rv => rv.Available) <= 0 || u.ProductKitItems.Any(a => a.KitProductMaster.InventoryStocks.Sum(c => c.Available) <= 0))));
+
                             }
+
                             else if (item.Value.Contains("in_stock"))
                             {
-                                productMaster = productMaster.Where(u => (u.InventoryStocks.Sum(rv => rv.Available)) > 0);
+                                productMaster = productMaster.Where(u => (u.InventoryStocks.Sum(rv => rv.Available)) > 0 || u.ProductKitItems.Any(a=>a.KitProductMaster.InventoryStocks.Sum(c=>c.Available)>0));
                             }
                             else if (item.Value.Contains("out_stock"))
                             {
-                                productMaster = productMaster.Where(u => u.InventoryStocks.Any(rv => rv.InStock <= 0));
+                                productMaster = productMaster.Where(u => u.InventoryStocks.Sum(rv => rv.Available) <= 0 ||  u.ProductKitItems.Any(a => a.KitProductMaster.InventoryStocks.Sum(c => c.Available) <= 0));
                             }
 
                         }
