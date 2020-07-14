@@ -13,7 +13,7 @@
                    type="radio"
                    name="shipment-rule-radio"
                    value="@rule.Id" />
-            <label class="ship-type" for="shipment-rule__checkbox-@rule.Id"><b>@Model.CurrencySymbol@rule.Price</b> <label>(@rule.Courier @(string.IsNullOrEmpty(rule.Description) ? string.Empty : $" - {rule.Description}"))</label> </label>
+            <label class="ship-type" for="shipment-rule__checkbox-@rule.Id"><b>@ViewBag.CurrencySymbol@rule.Price</b> <label>(@rule.Courier @(string.IsNullOrEmpty(rule.Description) ? string.Empty : $" - {rule.Description}"))</label> </label>
         </div>
     }
     <div class="btnWrap">

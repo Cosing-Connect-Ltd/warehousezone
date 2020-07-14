@@ -1292,7 +1292,6 @@ namespace Ganedata.Core.Services
             }
             accountAddresses.Add(_accountServices.GetAccountAddressById(checkoutViewModel.BillingAddressId ?? 0));
             checkoutViewModel.Addresses = _mapper.Map(accountAddresses, new List<AddressViewModel>());
-            checkoutViewModel.CurrencySymbol = tenantCurrency?.GlobalCurrency.Symbol;
             checkoutViewModel.CartItems = GetAllValidCartItems(siteId, userId, tenantId, sessionKey).ToList();
             if ((DeliveryMethod?)checkoutViewModel.DeliveryMethodId == DeliveryMethod.ToPickupPoint)
             {

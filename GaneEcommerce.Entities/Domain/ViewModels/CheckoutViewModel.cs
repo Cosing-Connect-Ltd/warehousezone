@@ -36,8 +36,6 @@ namespace Ganedata.Core.Entities.Domain
         public List<CheckoutStep> StepsHistory { get; set; }
         public int? DeliveryMethodId { get; set; }
         public int? CollectionPointId { get; set; }
-        public string CurrencySymbol { get; set; }
-
         public string OrderNumber { get; set; }
 
         public string UserFirstName { get; set; }

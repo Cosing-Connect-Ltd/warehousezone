@@ -93,7 +93,7 @@
                         }
                         else
                         {
-                            <p class="content">@Model.CurrencySymbol@Model.ShippingRule.Price - By @Model.ShippingRule.Courier @(!string.IsNullOrEmpty(Model.ShippingRule.Description?.Trim()) ? $" - {Model.ShippingRule.Description}" : "")</p>
+                            <p class="content">@ViewBag.CurrencySymbol@Model.ShippingRule.Price - By @Model.ShippingRule.Courier @(!string.IsNullOrEmpty(Model.ShippingRule.Description?.Trim()) ? $" - {Model.ShippingRule.Description}" : "")</p>
                         }
 
                         <h4 class="subHead">
@@ -112,12 +112,12 @@
                             {
                                 <li>
                                     @(item.ProductMaster?.Name)<br />
-                                    @Model.CurrencySymbol@item.Price, Qty: @Convert.ToInt32(item.Quantity)
+                                    @ViewBag.CurrencySymbol@item.Price, Qty: @Convert.ToInt32(item.Quantity)
                                 </li>
                             }
                         </ul>
                         <h4 class="subHead">Total Amount</h4>
-                        <h4 class="subHead">@Model.CurrencySymbol@(Model?.TotalOrderAmount ?? 0)</h4>
+                        <h4 class="subHead">@ViewBag.CurrencySymbol@(Model?.TotalOrderAmount ?? 0)</h4>
 
                     </div>
                     <div class="saveAddrWrap mt-5 mb-5 ml-3 mr-3">

@@ -164,7 +164,7 @@
             max: Math.ceil(@Model.PriceInterval.Item2),
             values: [min, max],
             slide: function(event, ui) {
-                $("#amount").html('@Model.CurrencySymbol' + Math.floor(ui.values[0]) + " - "+'  @Model.CurrencySymbol' + Math.ceil(ui.values[1]));
+                $("#amount").html('@ViewBag.CurrencySymbol' + Math.floor(ui.values[0]) + " - "+'  @ViewBag.CurrencySymbol' + Math.ceil(ui.values[1]));
 
             },
             stop: function (event, ui) {
@@ -175,11 +175,11 @@
 
             }
         });
-        $("#amount").html('@Model.CurrencySymbol'+min+
+        $("#amount").html('@ViewBag.CurrencySymbol'+min+
             " -" +
-            '  @Model.CurrencySymbol'+max);
+            '  @ViewBag.CurrencySymbol'+max);
         $("input[type=checkbox]").on("change", function (e) {
-       
+
                 var arr = [];
                 var data = "";
                 $('#priceS').prop('checked', true);
@@ -216,7 +216,7 @@
 
                 });
                 location.href = str;
-            
+
 
 
         });
