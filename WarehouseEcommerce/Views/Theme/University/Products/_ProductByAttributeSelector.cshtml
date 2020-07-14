@@ -19,7 +19,7 @@
                         @if (stockAvailable > 0)
                         {
                             <input type="hidden" class="availablity" value="true">
-                            <span>Availability:</span>
+                            @*<span>Availability:</span>*@
                             <br />
                             @((stockAvailable <= 10 ? "only "+ stockAvailable.ToString("#") + " items left" : "Available"))
                         }

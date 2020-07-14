@@ -160,6 +160,7 @@
         }
         $("#slider-range").slider({
             range: true,
+            step:1,
             min: Math.floor(@Model.PriceInterval.Item1),
             max: Math.ceil(@Model.PriceInterval.Item2),
             values: [min, max],

@@ -65,8 +65,8 @@
                         @{ var stockAvailable = Ganedata.Core.Services.Inventory.GetStockDetailByProductId(Model.ProductId); }
                         @if (stockAvailable > 0)
                         {
-                            <span>Availability:</span>
-                            <br />
+                            @*<span>Availability:</span>
+                            <br />*@
                             @((stockAvailable <= 10 ? "only "+ stockAvailable.ToString("#") + " items left" : "Available"))
                         }
                         else
