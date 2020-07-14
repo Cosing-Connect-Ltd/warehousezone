@@ -3738,35 +3738,67 @@ body {
 .feature-product-overflow .nb_fp_boxwrap .prd_name {
     min-height: unset !important;
 }
-
+.feature-product-overflow .imagewrap img {
+    max-width: unset !important;
+    height: unset !important;
+}
+@media(min-width:991px) and (max-width:1024px) {
+    .feature-product-overflow .imagewrap img {
+        height: 220px;
+        width: 220px !important;
+    }
+    .feature-product-overflow .imagewrap img {
+        max-width: unset !important;
+    }
+}
+@media(max-width:1024px) {
+    .feature-product-overflow .imagewrap img {
+        max-width: unset !important;
+    }
+}
 @media(min-width:768px) and (max-width:991px) {
     .feature-product-overflow .imagewrap img {
         height: 275px;
         width: 275px !important;
     }
-
     .feature-product-overflow .nb_fp_boxwrap {
         width: 275px !important;
     }
 }
-
+@media(max-width:768px) {
+    .feature-product-overflow .imagewrap,
+    .feature-product-overflow .imagewrap a{
+        margin-top:unset !important;
+        margin-bottom:unset !important;
+    }
+    .feature-product-overflow .prd_det_sec h4 {
+        font-size: 15px !important;
+        font-weight: 600 !important;
+        margin-bottom: 10px !important;
+    }
+}
+@media(max-width:500px){
+    .feature-product-overflow .prd_det_sec h4 {
+        font-size: 13px !important;
+    }
+}
 @media(max-width:767px) and (min-width:475px) {
-    .feature-product-overflow .imagewrap img {
+    .feature-product-overflow .imagewrap img,
+    .feature-product-overflow .imagewrap {
         height: 220px;
         width: 220px !important;
     }
-
     .feature-product-overflow .nb_fp_boxwrap {
         width: 220px !important;
     }
-
     .feature-product-overflow .owl-item {
         width: 230px !important;
     }
 }
 
 @media(max-width:474px) and (min-width:425px) {
-    .feature-product-overflow .imagewrap img {
+    .feature-product-overflow .imagewrap img,
+    .feature-product-overflow .imagewrap {
         height: 180px;
         width: 180px !important;
     }
@@ -3812,8 +3844,10 @@ body {
 }
 
 @media(max-width:364px) {
-    .feature-product-overflow .imagewrap img {
-        height: 220px;
+    .feature-product-overflow .imagewrap img,
+    .feature-product-overflow .imagewrap a,
+    .feature-product-overflow .imagewrap .prd_img {
+        height: 220px !important;
         width: 220px !important;
     }
 
