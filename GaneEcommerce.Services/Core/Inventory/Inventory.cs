@@ -1619,7 +1619,7 @@ namespace Ganedata.Core.Services
 
             if (product != null)
             {
-                if (product.DontMonitorStock == true)
+                if (product.DontMonitorStock == true && product.IsStockItem==true)
                 {
                     return 20;
                 }
