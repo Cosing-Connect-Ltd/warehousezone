@@ -38,7 +38,7 @@ namespace Ganedata.Core.Services
         void DeletePalletType(int palletTypeId, int userId);
         ProductAttributes SaveProductAttribute(string attributeName, int sortOrder, bool isColorTyped, int? attributeId=null);
         ProductAttributeValues SaveProductAttributeValue(int attributeId, string attributeValue, int sortOrder, string color, int userId = 0, int? attributeValueId = null);
-        ProductAttributeValues SaveProductAttributeValueMap(ProductAttributeValues attributeValue, int userId, int tenantId, int productId);
+        bool SaveProductAttributeValueMap(int attributeValueId, int attributeId, int userId, int tenantId, int productId);
         void DeleteProductAttributeValue(int productId, int attributeValueId, int userId, int tenantId);
 
 

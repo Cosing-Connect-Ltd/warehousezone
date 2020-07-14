@@ -84,7 +84,7 @@
     $(document).ready(function () {
         $("#tabs").tabs({
             activate: function (event, ui) {
-                
+
                 var active = $('#tabs').tabs('option', 'active');
                 var TabId = $("#tabs ul>li a").eq(active).attr("href");
                 var kit = $('#ProductType :selected').val();
@@ -734,17 +734,6 @@
                         </div>
                         <div class="col-1 p-0 pull-left">
                             <input type="button" onclick="javascript: pcModalLocations.Show()" id="ProdLocationAdd" class="btn btn-primary" value="+">
-                        </div>
-                    </div>
-                </div>
-                <div class="input-group h-100 justify-content-center align-items-center simpleDiv" style="@(Model.ProductType==Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute?"display:none":"")">
-                    @Html.Label("Product Attributes", htmlAttributes: new { @class = "col-md-4" })
-                    <div class="col-md-8">
-                        <div class="col-11 p-0 mt-1 pull-left">
-                            @Html.ListBox("ProductAttributesIds", new MultiSelectList(ViewBag.Attributes, "Id", "Value", "Attribute", ViewBag.ProductAttributesIds), new { @include_group_label_in_selected = "true", Multiple = "multiple", size = "5", @class = "chosen-select", data_placeholder = "Choose Attributes" })
-                        </div>
-                        <div class="col-1 p-0 pull-left">
-                            <input type="button" onclick="javascript: pcModalAttributesValues.Show();" id="ProdAttributeAdd" class="btn btn-primary" value="+">
                         </div>
                     </div>
                 </div>

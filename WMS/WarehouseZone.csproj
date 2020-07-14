@@ -1535,7 +1535,7 @@
     <Content Include="Views\Theme\Default\Products\SaveSCCCode.cshtml" />
     <Content Include="Views\Theme\Default\Shared\_SCCCode.cshtml" />
     <Content Include="Views\Theme\Default\Products\DeleteSCCCode.cshtml" />
-    <Content Include="Views\Theme\Default\Products\SaveAttributeValue.cshtml" />
+    <Content Include="Views\Theme\Default\Products\SaveProductAttributeValueMap.cshtml" />
     <Content Include="Views\Theme\Default\Products\DeleteAttributeValue.cshtml" />
     <Content Include="Views\Theme\Default\Products\SaveCategory.cshtml" />
     <Content Include="Views\Theme\Default\Products\DeleteProductCategory.cshtml" />

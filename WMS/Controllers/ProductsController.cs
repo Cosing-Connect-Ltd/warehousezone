@@ -476,8 +476,19 @@ namespace WMS.Controllers
 
         public ActionResult _AttributeValueCreate(int? Id)
         {
-            ViewBag.AttributeGroups = _productLookupService.GetAllValidProductAttributes();
-            ViewBag.AttributeValues = _productLookupService.GetAllValidProductAttributeValues();
+            if (Id == null)
+            {
+                var productId = (int)Session["pId"];
+                var assignedAttributeIds = _productLookupService.GetAllValidProductAttributeValuesByProductId(productId).Select(p => p.AttributeId);
+                ViewBag.Attributes = _productLookupService.GetAllValidProductAttributes().Where(s => !assignedAttributeIds.Contains(s.AttributeId));
+                ViewBag.AttributeValues = _productLookupService.GetAllValidProductAttributeValues().Where(a => !assignedAttributeIds.Contains(a.AttributeId));
+            }
+            else
+            {
+                ViewBag.AttributeValues = _productLookupService.GetAllValidProductAttributeValues().Where(a => a.AttributeId == _productLookupService.GetProductAttributeValueById(Id.Value).AttributeId);
+            }
+
+
             if (Id == null)
             {
                 return PartialView();
@@ -1539,16 +1550,16 @@ namespace WMS.Controllers
             return PartialView(data);
         }
         [HttpPost]
-        public ActionResult SaveAttributeValue(ProductAttributeValues model)
+        public ActionResult SaveProductAttributeValueMap(ProductAttributeValues model)
         {
             var productId = (int)Session["pId"];
 
-            _productLookupService.SaveProductAttributeValueMap(model, CurrentUserId, CurrentTenantId, productId);
+            _productLookupService.SaveProductAttributeValueMap(model.AttributeValueId, model.AttributeId, CurrentUserId, CurrentTenantId, productId);
 
             return Redirect(Url.Action("Edit", new { id = productId }) + "#product-attributes");
 
         }
-        public ActionResult SaveAttributeValue(int? Id)
+        public ActionResult SaveProductAttributeValueMap(int? Id)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             return View(Id);

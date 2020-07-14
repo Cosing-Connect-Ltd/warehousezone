@@ -8,6 +8,7 @@ using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Entities.Helpers;
+using Microsoft.Ajax.Utilities;
 
 namespace Ganedata.Core.Services
 {
@@ -385,31 +386,35 @@ namespace Ganedata.Core.Services
 
 
 
-        public ProductAttributeValues SaveProductAttributeValueMap(ProductAttributeValues model, int userId, int tenantId, int productId)
+        public bool SaveProductAttributeValueMap(int attributeValueId, int attributeId, int userId, int tenantId, int productId)
         {
-            if (model.AttributeValueId == 0)
+            if (attributeValueId > 0)
             {
-                var valuetoAdd = SaveProductAttributeValue(model.AttributeId, model.Value, userId, model.Color);
+                var previousAttributeMaps = _currentDbContext.ProductAttributeValuesMap.Where(a => a.ProductId == productId &&
+                                                                                                   a.ProductAttributeValues.AttributeId == attributeId &&
+                                                                                                   a.TenantId == tenantId);
+
+                previousAttributeMaps.ForEach(a => {
+                                                    a.IsDeleted = true;
+                                                    a.UpdatedBy = userId;
+                                                    a.DateUpdated = DateTime.Now;
+                                                });
+
                 var valueMap = new ProductAttributeValuesMap
                 {
-                    AttributeValueId = valuetoAdd.AttributeValueId,
+                    AttributeValueId = attributeValueId,
                     CreatedBy = userId,
                     TenantId = tenantId,
                     DateCreated = DateTime.UtcNow,
                     ProductId = productId,
                 };
+
                 _currentDbContext.ProductAttributeValuesMap.Add(valueMap);
+
+                _currentDbContext.SaveChanges();
             }
-            else
-            {
-                model.UpdateUpdatedInfo(userId);
-                _currentDbContext.ProductAttributeValues.Attach(model);
-                var entry = _currentDbContext.Entry(model);
-                entry.Property(e => e.Value).IsModified = true;
-                entry.Property(e => e.AttributeId).IsModified = true;
-            }
-            _currentDbContext.SaveChanges();
-            return model;
+
+            return true;
         }
 
         public void DeleteProductAttributeValue(int productId, int attributeValueId, int userId, int tenantId)

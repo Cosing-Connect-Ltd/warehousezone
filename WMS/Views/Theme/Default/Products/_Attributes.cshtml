@@ -36,8 +36,8 @@
 @if (Request.Url.AbsolutePath.ToLower().Contains("edit"))
 {
     <div class="bottom-right">
-        @Html.ActionLink("Create New", "SaveAttributeValue", null, new { @class = "btn btn-primary  " })
-        @Html.ActionLink("Update", "SaveAttributeValue", null, new { @class = "btn btn-primary  Caction", @id = "lnksavePrdAttributes" })
+        @Html.ActionLink("Assign New", "SaveProductAttributeValueMap", null, new { @class = "btn btn-primary  " })
+        @Html.ActionLink("Update", "SaveProductAttributeValueMap", null, new { @class = "btn btn-primary  Caction", @id = "lnksavePrdAttributes" })
         @Html.ActionLink("Delete", "DeleteAttributeValue", null, new { @class = "btn btn-primary  Caction", @id = "lnksavePrdAttributes" })
     </div>
 }

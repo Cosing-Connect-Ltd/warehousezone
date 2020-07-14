@@ -1,6 +1,7 @@
 ﻿@model Ganedata.Core.Entities.Domain.ProductMaster
 @using Ganedata.Core.Entities.Helpers
 @using Ganedata.Core.Models;
+@using Ganedata.Core.Entities.Enums
 
 @section scripts {
 
@@ -83,16 +84,17 @@
     $(document).ready(function () {
         $("#tabs").tabs({
             activate: function (event, ui) {
-               
+
                 var active = $('#tabs').tabs('option', 'active');
                 var TabId = $("#tabs ul>li a").eq(active).attr("href");
                 var kit = $('#ProductType :selected').val();
-                
+                var productId = $('#ProductId').val();
+
                 if (TabId === "#product-associated-items") {
                     $.ajax({
                         type: "GET",
                         url: "/Products/_GetAssociatedItems/",
-                        data: { productKitType: kit },
+                        data: { productKitType: kit, productId: productId },
                         dataType: 'html',
                         success: function (data) {
                             $('.associatedItems').empty();
@@ -105,6 +107,25 @@
                     });
                 }
 
+            }
+        });
+        $("#ProductType").change(function () {
+            var kit = $('#ProductType :selected').val();
+            if (kit == "4") {
+                $(".associated-items").hide();
+            }
+            else {
+                $(".associated-items").show();
+            }
+        });
+
+        $("#ProductType").change(function () {
+            var kit = $('#ProductType :selected').val();
+            if (kit == "5") {
+                $(".product-attributes").hide();
+            }
+            else {
+                $(".product-attributes").show();
             }
         });
     });
@@ -142,13 +163,11 @@
         <ul>
             <li><a href="#product-detail">Product Detail</a></li>
             <li><a href="#product-codes">Product Codes</a></li>
-            <li><a href="#product-attributes">Product Attributes</a></li>
+            <li><a href="#product-attributes" class="product-attributes" style=@(Model.ProductType!=Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute?"":"display:none")>Product Attributes</a></li>
             <li><a href="#product-locations">Product Locations</a></li>
             <li><a href="#product-inventory">Inventory</a></li>
-            @if (Model.ProductType > 0 && Model.ProductType != Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Simple)
-            {
-                <li><a href="#product-associated-items">Associated Items</a></li>
-            }
+            <li><a href="#product-associated-items" class="associated-items" style=@(Model.ProductType != ProductKitTypeEnum.Simple?"":"display:none")>Associated Items</a></li>
+
 
         </ul>
         <div id="product-detail">
@@ -238,7 +257,7 @@
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.LabelFor(model => model.ProductType, htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
-                        @Html.EnumDropDownListFor(model => model.ProductType, htmlAttributes: new { @class = "form-control" })
+                        @Html.EnumDropDownListFor(model => model.ProductType, htmlAttributes: new { @class = "form-control chosen-select" })
                         @Html.ValidationMessageFor(model => model.ProductType, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -246,7 +265,6 @@
                     @Html.Label("Product Attribute", htmlAttributes: new { @class = "col-md-4" })
                     <div class="col-md-8">
                         @Html.ListBox("AttributeIds", new MultiSelectList(ViewBag.AttributeGroups, "AttributeId", "AttributeName", ViewBag.productAttributeids), new { Multiple = "multiple", @class = "chosen-select", data_placeholder = "Choose Atttribute" })
-
                     </div>
                 </div>
 
@@ -719,17 +737,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="input-group h-100 justify-content-center align-items-center simpleDiv" style="@(Model.ProductType==Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute?"display:none":"")">
-                    @Html.Label("Product Attributes", htmlAttributes: new { @class = "col-md-4" })
-                    <div class="col-md-8">
-                        <div class="col-11 p-0 mt-1 pull-left">
-                            @Html.ListBox("ProductAttributesIds", new MultiSelectList(ViewBag.Attributes, "Id", "Value", "Attribute", ViewBag.ProductAttributesIds), new { @include_group_label_in_selected = "true", Multiple = "multiple", size = "5", @class = "chosen-select", data_placeholder = "Choose Attributes" })
-                        </div>
-                        <div class="col-1 p-0 pull-left">
-                            <input type="button" onclick="javascript: pcModalAttributesValues.Show();" id="ProdAttributeAdd" class="btn btn-primary" value="+">
-                        </div>
-                    </div>
-                </div>
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.Label("Product Accounts", htmlAttributes: new { @class = "col-md-4" })
                     <div class="col-md-8">
@@ -782,15 +789,14 @@
             </div>
         </div>
 
-        @if (Model.ProductType > 0 && Model.ProductType != Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Simple)
-        {
-            <div id="product-associated-items">
-                <div class="input-group h-100 justify-content-center align-items-center associatedItems">
+
+        <div id="product-associated-items" style=@(Model.ProductType!=Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Simple?"":"display:none")>
+            <div class="input-group h-100 justify-content-center align-items-center associatedItems">
 
 
-                </div>
             </div>
-        }
+        </div>
+
 
         <div id="product-inventory">
             <div class="input-group h-100 justify-content-center align-items-center">
