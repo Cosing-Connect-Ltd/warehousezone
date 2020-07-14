@@ -1750,13 +1750,10 @@ body.modal-open {
 @media(max-width:425px) {
     .billandshipsec .checkout-options-wrapper .checkboxwrap label {
         font-size: 14px;
-        display: flex;
-        align-items: center;
     }
 
     .styled-checkbox + label:before {
         margin-right: 12px;
-        margin-top: 3px;
     }
 }
 
