@@ -3559,21 +3559,32 @@ body {
     height: 30px;
     width: 35px;
 }
-
 .product-section .notify-btn {
-    display: none !important;
+    color: white;
+    margin-right: 5px;
 }
-
-@media(max-width:480px) {
+.product-section .footSec .addtowishlistbtn {
+    background-color: #292929 !important;
+}
+.product-section button {
+    margin-right: 20px !important;
+    line-height: 30px;
+}
+@media(max-width:850px){
+    .product-section .footSec button {
+        font-size: 16px !important;
+    }
+}
+@media(max-width:767px) {
     .product-section .notify-btn {
-        display: block !important;
-    }
-
-    .product-section .footSec .addtowishlistbtn {
-        background-color: #292929 !important;
+        margin-right: unset !important;
     }
 }
-
+@media(max-width:350px) {
+    .product-section .footSec button {
+        font-size: 14px !important;
+    }
+}
 .product-section .bell-icon {
     margin-right: 10px;
     padding-bottom: 1px;
