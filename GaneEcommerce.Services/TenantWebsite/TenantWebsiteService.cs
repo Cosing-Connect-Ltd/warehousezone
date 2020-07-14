@@ -1026,7 +1026,8 @@ namespace Ganedata.Core.Services
                                                                       (u.UserId == userId || u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase)) &&
                                                                       (!cartId.HasValue || u.Id == cartId))
                                                            .ToList()
-                                                           .Select(u => {
+                                                           .Select(u =>
+                                                           {
                                                                var productMaster = _mapper.Map(u.ProductMaster, new ProductMasterViewModel());
 
                                                                if (productMaster.ProductType == ProductKitTypeEnum.Simple && productMaster.DefaultImage == null)
@@ -1177,6 +1178,7 @@ namespace Ganedata.Core.Services
 
         public int AddOrUpdateWishListItems(int SiteId, int UserId, int TenantId, List<OrderDetailSessionViewModel> wishListdeDetail)
         {
+
             foreach (var orderDetail in wishListdeDetail)
             {
                 var wishListProduct = _currentDbContext.WebsiteWishListItems.FirstOrDefault(u => u.ProductId == orderDetail.ProductId && u.SiteID == SiteId && u.UserId == UserId && u.IsNotification == orderDetail.isNotfication);

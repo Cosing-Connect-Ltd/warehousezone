@@ -16,8 +16,7 @@ function moveToNextStep(e) {
         "CurrentStep": e.dataset.currentstep,
         "ShipmentRuleId": e.dataset.shipmentruleid
 
-    }
-
+    };
 
     ChangeUrlParameterValue(e.dataset.currentstep);
     GetDataForNextStep(checkoutViewModels);
@@ -27,16 +26,14 @@ function GetDataForNextStep(checkoutViewModels, step) {
     $.ajax({
         url: basePath + '/Orders/_CheckoutProcessPartial',
         method: 'post',
-        data: { checkoutViewModel: checkoutViewModels, step: step},
+        data: { checkoutViewModel: checkoutViewModels, step: step },
         dataType: 'html',
         success: function (data) {
-
             $(".checkout-main-div").html("").html(data);
             stopLoading();
-
+            getAsteriskForRequiredFields();
         }
     });
-
 }
 
 function ChangeUrlParameterValue(currentStep) {

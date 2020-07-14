@@ -1684,14 +1684,14 @@ body.modal-open {
 
         .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group .findAddrWrap {
             position: relative;
-            width: 100%;
+            width: 96%;
             height: 50px;
             border: solid 1px #707070;
             padding-right: 140px;
         }
 
             .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group .findAddrWrap .findAddrInput {
-                width: 100%;
+                width: 96%;
                 height: 46px;
                 margin-top: 1px;
                 font-family: "primaryfont_Normal";
@@ -1724,7 +1724,7 @@ body.modal-open {
         .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group input[type="tel"],
         .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group input[type="text"],
         .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group input[type="number"] {
-            width: 100%;
+            width: 96%;
             height: 50px;
             border: solid 1px #707070;
             outline: none;
@@ -3604,8 +3604,8 @@ body {
     padding: 0 5px;
 }
 
-    .nb_feat_prod_sec .nb_featuredPrdCarrousle .nb_fp_boxwrap .prd_det_sec .prd_amnt{
-        max-width:60%;
+    .nb_feat_prod_sec .nb_featuredPrdCarrousle .nb_fp_boxwrap .prd_det_sec .prd_amnt {
+        max-width: 60%;
     }
 
 .prd_det_sec .foot li a i {
@@ -3615,9 +3615,9 @@ body {
     line-height: 50px;
 }
 
-.prd_det_sec .foot li a i:first-child {
-    margin-right: 5px;
-}
+    .prd_det_sec .foot li a i:first-child {
+        margin-right: 5px;
+    }
 
 .nb_featuredPrdCarrousle .item .imagewrap {
     box-shadow: 0px 0px 23px 2px #d8d8d8;
@@ -3626,7 +3626,7 @@ body {
     margin-bottom: 30px;
 }
 
-.nb_feat_prod_sec .nb_featuredPrdCarrousle .nb_fp_boxwrap .prd_img{
+.nb_feat_prod_sec .nb_featuredPrdCarrousle .nb_fp_boxwrap .prd_img {
     margin-bottom: 0;
 }
 
@@ -3639,11 +3639,13 @@ body {
         overflow: hidden;
     }
 }
-@media(max-width:560px){
+
+@media(max-width:560px) {
     .payment-type-btns {
         margin: unset !important;
         margin-bottom: -12px !important;
     }
+
     .billandshipsec .checkout-options-wrapper .addnwShopAdrrbtn {
         margin: 10px 0 0 0;
     }
@@ -3687,6 +3689,7 @@ body {
         width: 100%;
         left: auto;
     }
+
     .nb_top_catSection .accordion ul li div a {
         padding: 0px;
     }
@@ -3735,15 +3738,18 @@ body {
 .feature-product-overflow .nb_fp_boxwrap .prd_name {
     min-height: unset !important;
 }
+
 @media(min-width:768px) and (max-width:991px) {
     .feature-product-overflow .imagewrap img {
         height: 275px;
         width: 275px !important;
     }
+
     .feature-product-overflow .nb_fp_boxwrap {
         width: 275px !important;
     }
 }
+
 @media(max-width:767px) and (min-width:475px) {
     .feature-product-overflow .imagewrap img {
         height: 220px;
@@ -3753,10 +3759,12 @@ body {
     .feature-product-overflow .nb_fp_boxwrap {
         width: 220px !important;
     }
+
     .feature-product-overflow .owl-item {
         width: 230px !important;
     }
 }
+
 @media(max-width:474px) and (min-width:425px) {
     .feature-product-overflow .imagewrap img {
         height: 180px;
@@ -3766,36 +3774,43 @@ body {
     .feature-product-overflow .nb_fp_boxwrap {
         width: 200px !important;
     }
+
     .feature-product-overflow .prd_amnt {
         font-size: 15px !important;
         width: 100px !important;
         line-height: 29px;
     }
 }
+
 @media(max-width:474px) {
-.feature-product-overflow .prd_amnt {
+    .feature-product-overflow .prd_amnt {
         font-size: 15px !important;
         width: 100px !important;
         line-height: 29px;
     }
 }
+
 @media(max-width:424px) and (min-width:365px) {
     .feature-product-overflow .imagewrap img {
         height: 150px;
         width: 150px !important;
     }
+
     .feature-product-overflow .nb_fp_boxwrap {
         width: 151px !important;
     }
-    .feature-product-overflow .foot i{
+
+    .feature-product-overflow .foot i {
         font-size: 18px !important;
     }
+
     .feature-product-overflow .prd_amnt {
         font-size: 13px !important;
         width: 100px !important;
         line-height: 25px;
     }
 }
+
 @media(max-width:364px) {
     .feature-product-overflow .imagewrap img {
         height: 220px;

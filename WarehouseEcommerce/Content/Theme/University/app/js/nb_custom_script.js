@@ -138,7 +138,7 @@ $(function () {
     // showRegForm
 
     $("#triggerSearch").click(function (e) {
-       
+
         e.preventDefault();
         $(".search_wrap_main").addClass("show");
         $(".search_wrap_main").show();
@@ -153,7 +153,20 @@ $(function () {
         $(".search_wrap_main").removeClass("show");
     });
 
+    getAsteriskForRequiredFields();
+
 });
 function getVoidData() {
     return false;
+}
+
+function getAsteriskForRequiredFields() {
+
+    /////////////// add Asteric on the required data fields in views using jquery validation attribute value///////////////////
+    $('input:not([type="checkbox"])').each(function () {
+        var req = $(this).attr('required');
+        if (undefined != req) {
+            $(this).after('<span id="required-asterisk" style="color:red"> *</span>');
+        }
+    });
 }
