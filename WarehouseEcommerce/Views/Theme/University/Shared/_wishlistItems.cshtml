@@ -1,54 +1,66 @@
 ﻿@model List<Ganedata.Core.Entities.Domain.WebsiteWishListItem>
 
-<div class="row">
+    <div class="row">
+        @if (Model.Count > 0)
+        {
+            <div class="nb_basket_wrap">
+                <table class="basketTable wishlist-table">
+                    <thead>
+                        <tr>
+                            <th class="product-th">Product</th>
+                            <th class="price-th">Price</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-    <div class="nb_basket_wrap">
-        <table class="basketTable wishlist-table">
-            <thead>
-                <tr>
-                    <th class="product-th">Product</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="cmnRow">
+                                <td class="prd">
+                                    <div class="prdCellwrap ">
+                                        <span class="imgWrap">
+                                            <img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage)? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
+                                        </span>
+                                        <span class="prdname">@(item.ProductMaster?.Name)</span>
+                                    </div>
+                                </td>
+                                <td>@ViewBag.CurrencySymbol@item.ProductMaster.SellPrice</td>
+                                <td>
+                                    <div>
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input notification-switch" id="notification-switch-@item.ProductMaster.ProductId" value="@item.ProductMaster.ProductId" @(item.IsNotification ? "checked" : "")>
+                                            <label class="custom-control-label" for="notification-switch-@item.ProductMaster.ProductId">Back in Stock Notification</label>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="wishlist-btn-td">
+                                    <a href="javascript:;" class="wishlist-table-btns wishlist-basket-btn" onclick="addToCart(@item.ProductMaster.ProductId)">Add to Basket</a><br />
+                                    <a href="javascript:;" class="wishlist-table-btns wishlist-remove-btn" onclick="RemoveWishItem(@item.ProductMaster.ProductId)">Remove</a>
+                                </td>
 
-                @foreach (var item in Model)
-                {
-                    <tr class="cmnRow">
-                        <td class="prd">
-                            <div class="prdCellwrap ">
-                                <span class="imgWrap">
-                                    <img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage)? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
-                                </span>
-                                <span class="prdname">@(item.ProductMaster?.Name)</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div>
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input notification-switch" id="notification-switch-@item.ProductMaster.ProductId" value="@item.ProductMaster.ProductId" @(item.IsNotification ? "checked" : "")>
-                                    <label class="custom-control-label" for="notification-switch-@item.ProductMaster.ProductId">Back in Stock Notification</label>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="wishlist-btn-td">
-                                <a href="javascript:;" class="wishlist-table-btns wishlist-basket-btn" onclick="addToCart(@item.ProductMaster.ProductId)">Add to Basket</a><br />
-                                <a href="javascript:;" class="wishlist-table-btns wishlist-remove-btn" onclick="RemoveWishItem(@item.ProductMaster.ProductId)">Remove</a>
-                        </td>
-
-                    </tr>
-                }
+                            </tr>
+                        }
 
 
-            </tbody>
-        </table>
+                    </tbody>
+                </table>
 
-        <div class="coupen_codewrap">
+                <div class="coupen_codewrap">
+                </div>
+
+
+            </div>
+        }
+        else
+        {
+        <div class="col-lg-12">
+            <div class="text-center m-4">Oops, Your Wishlist Is Empty!</div>
+            <div class="botomBtnsec">
+                <a class="btmbtn sho" href="@Url.Action("list", "Products")">CONTINUE SHOPPING</a>
+            </div>
         </div>
-
+        }
 
     </div>
-
-
-</div>

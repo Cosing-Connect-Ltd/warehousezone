@@ -3305,7 +3305,17 @@ body.modal-open {
 .wishlist-table .prdCellwrap {
     flex-direction: row !important;
 }
+.wishlist-table .prd {
+    width: 320px !important;
+}
 
+@media(min-width:769px){
+    .wishlist-table .imgWrap img {
+    width: 120px !important;
+    height:120px !important;
+    max-width:unset !important;
+}
+}
 @media(max-width:768px) {
     .wishlist-table .prdCellwrap {
         flex-direction: column !important;
@@ -3330,13 +3340,23 @@ body.modal-open {
         flex-direction: column;
     }
 
-    .wishlist-table .product-th {
+    .wishlist-table .product-th,
+    .wishlist-table .price-th {
         display: none;
     }
+    .wishlist-table .wishlist-btn-td,
+    .wishlist-table .wishlist-table-btns {
+        width: 100%;
+    }
+    .wishlist-table .wishlist-btn-td {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
 }
-
+.wishlist-table .wishlist-btn-td {
+    line-height: 6px;
+}
 .wishlist-table .wishlist-table-btns {
-    width: 200px;
     height: 50px;
     transition: all 0.3s ease;
     font-family: "primaryfont_Bold";
@@ -3375,8 +3395,8 @@ body.modal-open {
     border-color: #f33655 !important;
     background-color: #f33655 !important;
 }
-/*wishlist-table end*/
 
+/*wishlist-table end*/
 /*price-range-bar in Dynamic filters - start*/
 #slider-range {
     background-color: black;
