@@ -620,6 +620,7 @@
     <Content Include="Scripts\javascript-kit-product.js" />
     <Content Include="Scripts\javascript-product-by-attribute.js" />
     <Content Include="Scripts\jquery.modal-wizard.js" />
+    <Content Include="Scripts\jquery.ui.touch-punch.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jscolor.js" />
