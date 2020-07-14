@@ -69,7 +69,7 @@ namespace Ganedata.Core.Entities.Enums
         AccountPurchasingContactName = 21,
         UserName = 22,
         ConfirmationLink = 23,
-        TransactionReferenceNumber=24
+        TransactionReferenceNumber = 24
     }
 
     public enum WorksOrderNotificationTypeEnum
@@ -361,13 +361,12 @@ namespace Ganedata.Core.Entities.Enums
     public enum SortProductTypeEnum
     {
         [Display(Name = "Name(A-Z)")]
-        NameByDesc = 1,
+        NameByAsc = 1,
         [Display(Name = "Name(Z-A)")]
-        NameByAsc = 2,
+        NameByDesc = 2,
         [Display(Name = "Price (High > Low)")]
         PriceByDesc = 3,
         [Display(Name = "Price (Low > High)")]
-
         PriceByAsc = 4
     }
 

@@ -99,8 +99,8 @@ namespace WarehouseEcommerce.Controllers
                     case SortProductTypeEnum.PriceByDesc:
                         product = product.OrderByDescending(s => s.SellPrice);
                         break;
-                    case SortProductTypeEnum.NameByAsc:
-                        product = product.OrderBy(s => s.Name);
+                    case SortProductTypeEnum.NameByDesc:
+                        product = product.OrderByDescending(s => s.Name);
                         break;
                     case SortProductTypeEnum.PriceByAsc:
                         product = product.OrderBy(s => s.SellPrice);
