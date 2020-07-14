@@ -704,18 +704,22 @@ function AddToWishList(productId, notification) {
         return;
     }
     var currentWishId = $("#wish_" + productId);
+    var wisListBtnId = $("#btnwish_" + productId);
     $.ajax({
         type: "GET",
         url: basePath + "/Products/AddWishListItem/",
         data: { ProductId: productId, isNotfication: notification },
         dataType: 'json',
         success: function (data) {
+            debugger;
             var ids = "#" + currentWishId[0].id;
             $(ids).find(".list-icon").css({ "color": "red" });
             $("#" + currentWishId[0].id).removeAttr("onclick", null);
             $("#" + currentWishId[0].id).attr("onclick", "RemoveWishListPopUp(" + productId + ",false)");
             var cardItemsValue = parseInt($("#WishList-total").text());
-
+            $(wisListBtnId).css({"background-color": "red" });
+            $(wisListBtnId).removeAttr("onclick", null);
+            $(wisListBtnId).attr("onclick", "RemoveWishListPopUp(" + productId + ",false)");
             $("#WishList-total").text(cardItemsValue + 1);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -763,6 +767,9 @@ function RemoveWishListPopUp(RemoveProductId, notification) {
         return;
     }
     var CurrentId = $("#wish_" + RemoveProductId);
+    var wisListBtnId = $("#btnwish_" + RemoveProductId);
+    
+
     $.confirm({
         title: 'Confirm!',
         content: 'This item is already on your wishlist, would you like to remove it?',
@@ -779,6 +786,11 @@ function RemoveWishListPopUp(RemoveProductId, notification) {
                         $(ids).find(".list-icon").css({ "color": "black" });
                         $("#" + CurrentId[0].id).removeAttr("onclick", null);
                         $("#" + CurrentId[0].id).attr("onclick", "AddToWishList(" + RemoveProductId + ",false)");
+                        $(wisListBtnId).css({ "background-color": "black" });
+                        $(wisListBtnId).removeAttr("onclick", null);
+                        $(wisListBtnId).attr("onclick", "AddToWishList(" + RemoveProductId + ",false)");
+
+
                         var cardItemsValue = parseInt($("#WishList-total").text());
                         $("#WishList-total").text(data);
                     },
