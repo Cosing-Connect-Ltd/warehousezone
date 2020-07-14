@@ -3384,11 +3384,11 @@ body.modal-open {
 }
 
     #slider-range div {
-        background-color: #f33655;
+        background-color: var(--secondary-color);
     }
 
 .price-range-div div#amount {
-    color: #f33655;
+    color: var(--secondary-color);
     border: 0;
     font-weight: 600;
     width: 100%;
