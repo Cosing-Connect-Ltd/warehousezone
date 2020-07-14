@@ -711,13 +711,12 @@ function AddToWishList(productId, notification) {
         data: { ProductId: productId, isNotfication: notification },
         dataType: 'json',
         success: function (data) {
-            debugger;
             var ids = "#" + currentWishId[0].id;
             $(ids).find(".list-icon").css({ "color": "red" });
             $("#" + currentWishId[0].id).removeAttr("onclick", null);
             $("#" + currentWishId[0].id).attr("onclick", "RemoveWishListPopUp(" + productId + ",false)");
             var cardItemsValue = parseInt($("#WishList-total").text());
-            $(wisListBtnId).css({"background-color": "red" });
+            $(wisListBtnId).css("cssText", "background-color: red !important;");
             $(wisListBtnId).removeAttr("onclick", null);
             $(wisListBtnId).attr("onclick", "RemoveWishListPopUp(" + productId + ",false)");
             $("#WishList-total").text(cardItemsValue + 1);
