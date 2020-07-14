@@ -732,6 +732,7 @@ function addToNotify(productId, notification) {
         return;
     }
     var currentClass = $(".notification-bell_" + productId);
+    var notifyBtnClass = $(".btn_notification-bell_" + productId);
     $.ajax({
         type: "GET",
         url: basePath + "/Products/AddWishListItem/",
@@ -742,6 +743,10 @@ function addToNotify(productId, notification) {
             $(currentClass).find(".list-icon").css({ "color": "red" });
             $(currentClass).removeAttr("onclick", null);
             $(currentClass).attr("onclick", "removeNotifyProduct(" + productId + ",'true')");
+            $(notifyBtnClass).css({ "background-color": "red" });
+            $(notifyBtnClass).removeAttr("onclick", null);
+            $(notifyBtnClass).attr("onclick", "removeNotifyProduct(" + productId + ",'true')");
+            
 
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -796,6 +801,7 @@ function removeNotifyProduct(RemoveProductId, notification) {
         return;
     }
     var currentClass = $(".notification-bell_" + RemoveProductId);
+    var notifyBtnClass = $(".btn_notification-bell_" + RemoveProductId);
     $.confirm({
         title: 'Confirm!',
         content: 'Would you like to remove notification for this product?',
@@ -811,6 +817,9 @@ function removeNotifyProduct(RemoveProductId, notification) {
                         $(currentClass).find(".list-icon").css({ "color": "black" });
                         $(currentClass).removeAttr("onclick", null);
                         $(currentClass).attr("onclick", "AddWishListItemStockNotAvailable(" + RemoveProductId + ",true)");
+                        $(notifyBtnClass).css({ "background-color": "black" });
+                        $(notifyBtnClass).removeAttr("onclick", null);
+                        $(notifyBtnClass).attr("onclick", "AddWishListItemStockNotAvailable(" + RemoveProductId + ",true)");
 
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
