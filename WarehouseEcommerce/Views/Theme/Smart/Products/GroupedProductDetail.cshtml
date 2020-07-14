@@ -131,9 +131,9 @@
                                         {
                                             var extension = Path.GetExtension(item.FilePath);
                                             @*if (Images.Contains(extension))
-                            {
-                                <li> <a target='_new' href="@(ViewBag.BaseFilePath+item.FilePath.ToString())"><img style='width:100%' src="@(ViewBag.BaseFilePath+item.FilePath.ToString())" /></a></li> <br />
-                            }*@
+                                                {
+                                                    <li> <a target='_new' href="@(ViewBag.BaseFilePath+item.FilePath.ToString())"><img style='width:100%' src="@(ViewBag.BaseFilePath+item.FilePath.ToString())" /></a></li> <br />
+                                                }*@
                                             if (Videos.Contains(extension))
                                             {
                                                 <li>
@@ -208,32 +208,34 @@
                                             @foreach (var productitems in products)
                                             {
 
-                                                    <div class="cartitem-details">
-                                                        <div class="cartitem-imgtext ">
-                                                            <div class="cartitem-text">
-                                                                <p><a href="@Url.Action("ProductDetails","Products", new {sku=productitems.KitProductMaster.SKUCode})" target="_blank"><strong>@productitems.KitProductMaster.Name</strong></a></p>
-                                                                <p><b style="color: #007600 !important;">@(productitems.KitProductMaster.InventoryStocks.Count == 0 ? "Not Avaialable" : "In Stock")</b></p>
-                                                                <p><b>Brands:</b> <span>@(productitems.KitProductMaster.ProductManufacturer == null ? "" : productitems.KitProductMaster.ProductManufacturer.Name)</span></p>
-                                                                <p><b>SKU Code:</b> <span>@productitems.KitProductMaster.SKUCode</span></p>
-                                                                <p><b>Product Code::</b> <span>@productitems.KitProductMaster.BarCode</span></p>
+                                                <div class="cartitem-details">
+                                                    <div class="cartitem-imgtext ">
+                                                        <div class="cartitem-text">
+                                                            <p><a href="@Url.Action("ProductDetails","Products", new {sku=productitems.KitProductMaster.SKUCode})" target="_blank"><strong>@productitems.KitProductMaster.Name</strong></a></p>
+                                                            <p><b style="color: #007600 !important;">@(productitems.KitProductMaster.InventoryStocks.Count == 0 ? "Not Avaialable" : "In Stock")</b></p>
+                                                            <p><b>Brands:</b> <span>@(productitems.KitProductMaster.ProductManufacturer == null ? "" : productitems.KitProductMaster.ProductManufacturer.Name)</span></p>
+                                                            <p><b>SKU Code:</b> <span>@productitems.KitProductMaster.SKUCode</span></p>
+                                                            <p><b>Product Code::</b> <span>@productitems.KitProductMaster.BarCode</span></p>
 
 
 
 
-                                                            </div>
                                                         </div>
-                                                        <div class="cartitem-price">
-                                                            <p><span>Price:</span><b>@ViewBag.CurrencySymbol@productitems.KitProductMaster.SellPrice</b></p>
-                                                            @*<p><span>Total:</span><b>@ViewBag.CurrencySymbol@productitems.KitProductMaster.SellPrice</b></p>*@
-                                                            <div class="button-submit">
-                                                                @if (productitems.KitProductMaster.SellPrice > 0 && productitems.KitProductMaster.SellPrice.HasValue && productitems.KitProductMaster.PercentMargin > 0)
-                                                                {
-                                                                    <button type="Submit" name="submitNewsletter" class="btn btn-block move-to-cart-btn" id="button-cart" onclick="addToCart(@productitems.KitProductMaster.ProductId)">Add to Basket</button>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <button type="button" class=" btn btn-block disabled-btn" disabled><span>Add to Basket</span></button>
-                                                                }
+                                                    </div>
+                                                    <div class="cartitem-price">
+                                                        <p><span>Price:</span><b>@ViewBag.CurrencySymbol@productitems.KitProductMaster.SellPrice</b></p>
+                                                        @*<p><span>Total:</span><b>@ViewBag.CurrencySymbol@productitems.KitProductMaster.SellPrice</b></p>*@
+                                                        <div class="button-submit">
+                                                            @{ var stockAvailable = Ganedata.Core.Services.Inventory.GetStockDetailByProductId(Model.ProductId); }
+
+                                                            @if (productitems.KitProductMaster.SellPrice > 0 && productitems.KitProductMaster.SellPrice.HasValue && stockAvailable > 0)
+                                                            {
+                                                                <button type="Submit" name="submitNewsletter" class="btn btn-block move-to-cart-btn" id="button-cart" onclick="addToCart(@productitems.KitProductMaster.ProductId)">Add to Basket</button>
+                                                            }
+                                                            else
+                                                            {
+                                                                <button type="button" class=" btn btn-block disabled-btn" disabled><span>Add to Basket</span></button>
+                                                            }
 
                                                         </div>
                                                     </div>
@@ -249,33 +251,38 @@
                                         <div role="tabpanel" class="tab-pane" id="@item.Name.Replace(" ", "-")">
 
                                             @{
+                                                var stockAvailable = Ganedata.Core.Services.Inventory.GetStockDetailByProductId(Model.ProductId);
+
+
+
                                                 var products = Model.ProductKitItems.Where(u => u.ProductKitTypeId == item.Id && u.ProductKitType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Grouped && u.IsDeleted != true).ToList();
                                             }
                                             @foreach (var productitems in products)
                                             {
 
-                                                    <div class="cartitem-details">
-                                                        <div class="cartitem-imgtext ">
-                                                            <div class="cartitem-text">
-                                                                <p><a href=""><strong>@productitems.KitProductMaster.Name</strong></a></p>
-                                                                <p><b style="color: #007600 !important;">@(productitems.KitProductMaster.InventoryStocks.Count == 0 ? "Not Avaialable" : "In Stock")</b></p>
-                                                                <p><b>Brands:</b> <span>@(productitems.KitProductMaster.ProductManufacturer == null ? "" : productitems.KitProductMaster.ProductManufacturer.Name)</span></p>
-                                                                <p><b>SKU Code:</b> <span>@productitems.KitProductMaster.SKUCode</span></p>
-                                                                <p><b>Product Code::</b> <span>@productitems.KitProductMaster.BarCode</span></p>
-                                                            </div>
+                                                <div class="cartitem-details">
+                                                    <div class="cartitem-imgtext ">
+                                                        <div class="cartitem-text">
+                                                            <p><a href=""><strong>@productitems.KitProductMaster.Name</strong></a></p>
+                                                            <p><b style="color: #007600 !important;">@(productitems.KitProductMaster.InventoryStocks.Count == 0 ? "Not Avaialable" : "In Stock")</b></p>
+                                                            <p><b>Brands:</b> <span>@(productitems.KitProductMaster.ProductManufacturer == null ? "" : productitems.KitProductMaster.ProductManufacturer.Name)</span></p>
+                                                            <p><b>SKU Code:</b> <span>@productitems.KitProductMaster.SKUCode</span></p>
+                                                            <p><b>Product Code::</b> <span>@productitems.KitProductMaster.BarCode</span></p>
                                                         </div>
-                                                        <div class="cartitem-price">
-                                                            <p><span>Price:</span><b>@ViewBag.CurrencySymbol@productitems.KitProductMaster.SellPrice</b></p>
-                                                            @*<p><span>Total:</span><b>@ViewBag.CurrencySymbol@productitems.KitProductMaster.SellPrice</b></p>*@
-                                                            <div class="button-submit">
-                                                                @if (productitems.KitProductMaster.SellPrice > 0 && productitems.KitProductMaster.SellPrice.HasValue && productitems.KitProductMaster.PercentMargin > 0)
-                                                                {
-                                                                    <button type="Submit" name="submitNewsletter" class="btn btn-block move-to-cart-btn" id="button-cart" onclick="addToCart(@productitems.KitProductMaster.ProductId)">Add to Basket</button>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <button type="button" class=" btn btn-block disabled-btn" disabled><span>Add to Basket</span></button>
-                                                                }
+                                                    </div>
+                                                    <div class="cartitem-price">
+                                                        <p><span>Price:</span><b>@ViewBag.CurrencySymbol@productitems.KitProductMaster.SellPrice</b></p>
+                                                        @*<p><span>Total:</span><b>@ViewBag.CurrencySymbol@productitems.KitProductMaster.SellPrice</b></p>*@
+                                                        <div class="button-submit">
+
+                                                            @if (productitems.KitProductMaster.SellPrice > 0 && productitems.KitProductMaster.SellPrice.HasValue && Ganedata.Core.Services.Inventory.GetStockDetailByProductId(productitems.KitProductMaster.ProductId) > 0)
+                                                            {
+                                                                <button type="Submit" name="submitNewsletter" class="btn btn-block move-to-cart-btn" id="button-cart" onclick="addToCart(@productitems.KitProductMaster.ProductId)">Add to Basket</button>
+                                                            }
+                                                            else
+                                                            {
+                                                                <button type="button" class=" btn btn-block disabled-btn" disabled><span>Add to Basket</span></button>
+                                                            }
 
                                                         </div>
                                                     </div>

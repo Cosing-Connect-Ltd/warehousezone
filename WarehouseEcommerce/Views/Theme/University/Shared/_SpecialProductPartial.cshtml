@@ -48,15 +48,14 @@
                                             </li>
 
                                             <li>
-                                                @if (item.SellPrice > 0 && item.SellPrice.HasValue && @item.PercentMargin > 0 && item.ProductType != ProductKitTypeEnum.ProductByAttribute)
+                                                @if (item.SellPrice > 0 && item.SellPrice.HasValue && item.ProductType != ProductKitTypeEnum.ProductByAttribute && Ganedata.Core.Services.Inventory.GetStockDetailByProductId(item.ProductId) > 0)
                                                 {
-                                                    if (item.InventoryStocks.Sum(i => i.Available) > 0)
-                                                    {
-                                                        <a href="javascript:;" onclick="addToCart(@item.ProductId)"><i class="icon-shopping-cart list-icon pull-right"></i></a>
-                                                    }
+
+                                                    <a href="javascript:;" onclick="addToCart(@item.ProductId)"><i class="icon-shopping-cart list-icon pull-right"></i></a>
+
 
                                                 }
-                                                else if (@item.SellPrice > 0 && @item.SellPrice.HasValue && @item.PercentMargin > 0 && item.ProductType == ProductKitTypeEnum.ProductByAttribute)
+                                                else if (@item.SellPrice > 0 && @item.SellPrice.HasValue  && item.ProductType == ProductKitTypeEnum.ProductByAttribute && Ganedata.Core.Services.Inventory.GetStockDetailByProductId(item.ProductId) > 0)
                                                 {
                                                     <a href="javascript:;" onclick="showProductByAttributeSelector('@item.SKUCode')"><i class="icon-shopping-cart pull-right"></i></a>
                                                 }

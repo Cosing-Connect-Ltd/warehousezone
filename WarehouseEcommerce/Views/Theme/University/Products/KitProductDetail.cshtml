@@ -201,7 +201,7 @@
                                         <div class="nb_prd_det_rightsec">
                                             <div class="footSec">
                                                 @{ var stockAvailable = Ganedata.Core.Services.Inventory.GetStockDetailByProductId(Model.ProductId); }
-                                                @if (Model.SellPrice > 0 && Model.SellPrice.HasValue && @Model.PercentMargin > 0 && stockAvailable > 0)
+                                                @if (Model.SellPrice > 0 && Model.SellPrice.HasValue && stockAvailable > 0)
                                                 {
                                                     <div class="qty pull-left">
                                                         <span>quantity</span>
