@@ -93,7 +93,7 @@
                         }
                         else
                         {
-                            <p class="content">@ViewBag.CurrencySymbol@Model.ShippingRule?.Price - By @Model.ShippingRule?.Courier @(!string.IsNullOrEmpty(Model.ShippingRule?.Description?.Trim()) ? $" - {Model.ShippingRule?.Description}" : "")</p>
+                            <p class="content">@ViewBag.CurrencySymbol@Model.ShippingRule.Price - By @Model.ShippingRule.Courier @(!string.IsNullOrEmpty(Model.ShippingRule.Description?.Trim()) ? $" - {Model.ShippingRule.Description}" : "")</p>
                         }
 
                         <h4 class="subHead">
