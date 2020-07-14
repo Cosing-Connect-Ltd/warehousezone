@@ -3351,6 +3351,7 @@ namespace Ganedata.Core.Services
                     detail.OrderID = order.OrderID;
                     total = total + (item.Price * item.Quantity);
                     _currentDbContext.OrderDetail.Add(detail);
+                    Inventory.StockRecalculate(item.ProductId, warehouseId, tenantId, UserId);
                 }
                 order.OrderTotal = total;
 
