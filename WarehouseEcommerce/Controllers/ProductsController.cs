@@ -157,7 +157,7 @@ namespace WarehouseEcommerce.Controllers
 
 
             if (baseProduct?.ProductType == ProductKitTypeEnum.ProductByAttribute && baseProduct.ProductId != selectedProduct.ProductId) {
-                baseProduct.ProductFiles.Where(p => p.IsDeleted != true).ForEach(p => {
+                baseProduct.ProductFiles.Where(p => p.IsDeleted != true && !selectedProduct.ProductFiles.Select(f => Path.GetFileNameWithoutExtension(f.FilePath)).Contains(Path.GetFileNameWithoutExtension(p.FilePath))).ForEach(p => {
                     selectedProduct.ProductFiles.Add(p);
                 });
 
