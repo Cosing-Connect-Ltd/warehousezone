@@ -3799,6 +3799,10 @@ body {
         font-weight: 600 !important;
         margin-bottom: 10px !important;
     }
+    .feature-product-overflow .nb_header_style1,
+    .nb_top_catSection .nb_header_style1 {
+        margin-bottom: 35px !important;
+    }
 }
 @media(max-width:500px){
     .feature-product-overflow .prd_det_sec h4 {
@@ -3857,6 +3861,7 @@ body {
 
     .feature-product-overflow .foot i {
         font-size: 18px !important;
+        margin-top: -7px;
     }
 
     .feature-product-overflow .prd_amnt {
@@ -3880,6 +3885,9 @@ body {
 
     .feature-product-overflow .owl-item {
         width: 230px !important;
+    }
+    .feature-product-overflow .foot i {
+        margin-top: -5px;
     }
 }
 .feature-product-overflow .owl-item .imagewrap a {
