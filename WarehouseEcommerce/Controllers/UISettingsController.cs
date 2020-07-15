@@ -42,7 +42,7 @@ namespace WMS.Controllers
             {
                 _uiSettingServices.Save(uiSettings, CurrentUserId, CurrentTenantId, CurrentTenantWebsite.SiteID);
 
-                ClearStyleCache();
+                ClearStyleCache(CurrentTenantWebsite.SiteID);
             }
         }
 
@@ -66,10 +66,10 @@ namespace WMS.Controllers
             return Content(cssContent, "text/css");
         }
 
-        public void ClearStyleCache()
+        public void ClearStyleCache(int? siteId)
         {
-            _cache.Remove(CurrentTenantWebsite.SiteID + "-ui-settings-variable");
-            _cache.Remove(CurrentTenantWebsite.SiteID + "-ui-settings-fixed");
+            _cache.Remove(siteId + "-ui-settings-variable");
+            _cache.Remove(siteId + "-ui-settings-fixed");
         }
     }
 }

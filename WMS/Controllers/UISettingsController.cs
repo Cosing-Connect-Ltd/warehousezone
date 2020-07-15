@@ -4,6 +4,7 @@ using Ganedata.Core.Services;
 using LazyCache;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Web.Mvc;
 
@@ -68,20 +69,23 @@ namespace WMS.Controllers
             {
                 _uiSettingServices.Save(uiSettings, CurrentUserId, CurrentTenantId);
 
-                if (Uri.TryCreate($"http://{WebsiteHostName}", UriKind.Absolute, out Uri websiteUri))
-                {
-                    var client = new HttpClient
-                    {
-                        BaseAddress = websiteUri
-                    };
+                if (uiSettings.Count > 0) {
 
-                    try
+                    if (Uri.TryCreate($"http://{WebsiteHostName}", UriKind.Absolute, out Uri websiteUri))
                     {
-                        client.GetAsync("/UISettings/ClearStyleCache").GetAwaiter().GetResult();
-                    }
-                    finally
-                    {
-                        client.Dispose();
+                        var client = new HttpClient
+                        {
+                            BaseAddress = websiteUri
+                        };
+
+                        try
+                        {
+                            client.GetAsync("/UISettings/ClearStyleCache?siteId=" + uiSettings.First().SiteId).GetAwaiter().GetResult();
+                        }
+                        finally
+                        {
+                            client.Dispose();
+                        }
                     }
                 }
 
