@@ -2968,11 +2968,20 @@ body.modal-open {
 .search-item:hover {
     background-color: #111111;
 }
-
 .search-item .ui-menu-item-wrapper {
     padding-left: 2px !important;
 }
-
+.search-item p.no-serach-results {
+    padding: 12px !important;
+    border: 1px solid white;
+}
+.search-item p.no-serach-results:hover {
+    background-color: var(--primary-color) !important;
+    background: var(--primary-color) !important;
+    color: white;
+    padding: 12px !important;
+    border: 1px solid white;
+}
 .search-item .ui-state-active {
     padding-left: 2px !important;
 }
@@ -3043,7 +3052,11 @@ body.modal-open {
         font-size: 12px !important;
     }
 }
-
+@media(max-width:390px) {
+    .ui-autocomplete {
+        width: 291px !important;
+    }
+}
 @media(max-width:360px) {
     .ui-autocomplete {
         left: 15px !important;
@@ -3614,12 +3627,6 @@ body {
 .nb_featuredPrdCarrousle .prd_amnt {
     padding: 6px 6px !important;
 }
-
-.no-serach-results {
-    padding: 12px !important;
-    margin-left: 8px !important;
-}
-
 .nb_feat_prod_sec .nb_featuredPrdCarrousle .nb_fp_boxwrap .prd_det_sec {
     padding: 0 5px;
 }
