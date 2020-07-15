@@ -31,5 +31,8 @@ namespace Ganedata.Core.Services
         public string WebsiteContactAddress { get; set; }
         public string WebsiteContactPhone { get; set; }
         public string WebsiteContactEmail { get; set; }
+        public string HomeTopCategoryText { get; set; }
+        public string HomeFeaturedProductText { get; set; }
+        public int? FeaturedTagId { get; set; }
     }
 }

@@ -14,14 +14,16 @@ namespace WMS.Controllers
     public class TenantWebsitesController : BaseController
     {
         private readonly ITenantWebsiteService _tenantWebsiteService;
+        private readonly IProductLookupService _productLookupService;
 
         string UploadDirectory = "~/UploadedFiles/TenantWebSite/";
         string UploadTempDirectory = "~/UploadedFiles/TenantWebSite/TempFiles/";
 
-        public TenantWebsitesController(ICoreOrderService orderService, IMarketServices marketServices, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IUserService userService, IInvoiceService invoiceService, ITenantWebsiteService tenantWebsiteService)
+        public TenantWebsitesController(ICoreOrderService orderService, IMarketServices marketServices, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IUserService userService, IInvoiceService invoiceService, ITenantWebsiteService tenantWebsiteService,IProductLookupService productLookupService)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
             _tenantWebsiteService = tenantWebsiteService;
+            _productLookupService = productLookupService;
         }
 
 
@@ -54,6 +56,8 @@ namespace WMS.Controllers
         public ActionResult Create()
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+
+            ViewBag.ProductTag = new SelectList(_productLookupService.GetAllValidProductTag(CurrentTenantId),"Id","TagName");
             ViewBag.ControllerName = "TenantWebsites";
             return View();
         }
@@ -115,6 +119,7 @@ namespace WMS.Controllers
                 Session["UploadTenantWebsiteLogo"] = files;
                 ViewBag.Files = files;
             }
+            ViewBag.ProductTag = new SelectList(_productLookupService.GetAllValidProductTag(CurrentTenantId), "Id", "TagName");
             return View(tenantWebsites);
         }
 

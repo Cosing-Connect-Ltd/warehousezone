@@ -50,16 +50,16 @@ namespace Ganedata.Core.Services
         ProductMaster GetProductMasterByOuterBarcode(string outerBarcode, int tenantId);
         IEnumerable<ProductMaster> GetProductMasterDropdown(int productId);
 
-        IEnumerable<ProductMaster> GetProductByCategory(int SitId, int tenantId, int NumberofProducts, string TagName);
+        IEnumerable<ProductMaster> GetProductByCategory(int siteId, int tenantId, int numberofProducts, string tagName,int? tagId=null);
 
         string GenerateNextProductCode(int tenantId);
         bool IsCodeAvailableForUse(string code, int tenantId, EnumProductCodeType codeType = EnumProductCodeType.All, int productId = 0);
 
-        bool IsNameAvailableForUse(string Name, int tenantId, EnumProductCodeType codeType = EnumProductCodeType.All, int productId = 0);
-        IQueryable<InventoryTransaction> GetInventoryTransactionsByProductSerialId(int Id);
+        bool IsNameAvailableForUse(string name, int tenantId, EnumProductCodeType codeType = EnumProductCodeType.All, int productId = 0);
+        IQueryable<InventoryTransaction> GetInventoryTransactionsByProductSerialId(int id);
         ProductMaster SaveProduct(ProductMaster productMaster, List<string> productAccountCodeIds,
             List<int> productAttributesIds,
-            List<int> productLocationIds, List<int> AttributeIds, int userId, int tenantId, List<int> SiteId, List<RecipeProductItemRequest> recipeProductItems);
+            List<int> productLocationIds, List<int> attributeIds, int userId, int tenantId, List<int> siteId, List<RecipeProductItemRequest> recipeProductItems);
 
         LocationGroup SaveLocationGroup(string locationGroupName, int userId, int tenantId);
         bool AddOrderId(int? orderId, int palletTrackingId, int? type);

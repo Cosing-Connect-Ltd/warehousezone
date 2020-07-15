@@ -98,71 +98,75 @@ namespace WarehouseEcommerce.Controllers
         }
         public PartialViewResult _CartMenuPartial()
         {
-            var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
+            var currencyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
             ViewBag.ProductGroups = new SelectList(_lookupServices.GetAllValidProductGroups((CurrentTenantId), 12), "ProductGroupId", "ProductGroup");
             ViewBag.UserName = CurrentUser.UserFirstName + " " + CurrentUser.UserLastName;
-            ViewBag.Symbol = currencyyDetail.Symbol;
-            ViewBag.CurrencyName = currencyyDetail.CurrencyName;
+            ViewBag.Symbol = currencyDetail.Symbol;
+            ViewBag.CurrencyName = currencyDetail.CurrencyName;
             return PartialView();
         }
 
         public PartialViewResult _VerticalNavBarPartial()
         {
-            var ProductCategories = _lookupServices.GetAllValidProductGroups((CurrentTenantId), 12);
-            return PartialView(ProductCategories);
+            var productCategories = _lookupServices.GetAllValidProductGroups((CurrentTenantId), 12);
+            return PartialView(productCategories);
         }
 
         public PartialViewResult _SpecialProductPartial()
         {
+            var tenantWebsite = ViewBag.TenantWebsite as TenantWebsites;
             var specialProduct = new ProductDetailViewModel
             {
-                productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID, CurrentTenantId, 6, "Featured").ToList(),
+                productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID, CurrentTenantId, 6,string.Empty, tagId: tenantWebsite?.FeaturedTagId).ToList(),
 
             };
 
             specialProduct.productMasterList.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID), 2));
-
+            specialProduct.FeaturedText = tenantWebsite?.HomeFeaturedProductText;
 
             return PartialView(specialProduct);
 
         }
         public PartialViewResult _TopProductPartial()
         {
-            var TopProduct = new ProductDetailViewModel
+            
+            var topProduct = new ProductDetailViewModel
             {
                 productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID, (CurrentTenantId), 12, "TopProduct").ToList(),
             };
-            TopProduct.productMasterList.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID), 2));
+            topProduct.productMasterList.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID), 2));
 
-            if (TopProduct.productMasterList != null)
+            if (topProduct.productMasterList != null)
             {
-                var prdouctIds = TopProduct.productMasterList.Select(u => u.ProductId).ToList();
+                var prdouctIds = topProduct.productMasterList.Select(u => u.ProductId).ToList();
             }
 
-            return PartialView(TopProduct);
+            return PartialView(topProduct);
 
         }
         public PartialViewResult _OnSalePartial()
         {
-            var onsale = new ProductDetailViewModel
+            var onSale = new ProductDetailViewModel
             {
                 productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID, CurrentTenantId, 6, "OnSaleProduct").ToList(),
             };
-            onsale.productMasterList.ForEach(u => u.SellPrice = (Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID), 2)));
+            onSale.productMasterList.ForEach(u => u.SellPrice = (Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID), 2)));
 
-            if (onsale.productMasterList != null)
+            if (onSale.productMasterList != null)
             {
-                var prdouctIds = onsale.productMasterList.Select(u => u.ProductId).ToList();
+                var prdouctIds = onSale.productMasterList.Select(u => u.ProductId).ToList();
             }
 
-            return PartialView(onsale);
+            return PartialView(onSale);
 
         }
 
         public PartialViewResult _TopCategoryPartial()
         {
-            var TopCategory = _tenantWebsiteService.GetAllValidWebsiteNavigationTopCategory(CurrentTenantId, CurrentTenantWebsite.SiteID).OrderBy(u => u.SortOrder).Take(6).ToList();
-            return PartialView(TopCategory);
+            var tenantWebsite = ViewBag.TenantWebsite as TenantWebsites;
+            var topCategory = _tenantWebsiteService.GetAllValidWebsiteNavigationTopCategory(CurrentTenantId, CurrentTenantWebsite.SiteID).OrderBy(u => u.SortOrder).Take(6).ToList();
+            ViewBag.TopCategoryText = tenantWebsite?.HomeTopCategoryText;
+            return PartialView(topCategory);
         }
 
 

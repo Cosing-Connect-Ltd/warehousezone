@@ -56,10 +56,19 @@ namespace Ganedata.Core.Entities.Domain
         public bool IsCollectionAvailable { get; set; }
         [Display(Name = "Delivery Is Available")]
         public bool IsDeliveryAvailable { get; set; }
-
+        [Display(Name = "Website Contact Address")]
         public string WebsiteContactAddress { get; set; }
+        [Display(Name = "Website Contact Phone")]
         public string WebsiteContactPhone { get; set; }
+        [Display(Name = "Website Contact Email")]
         public string WebsiteContactEmail { get; set; }
+        [Display(Name = "Home Top Category Text")]
+        public string HomeTopCategoryText { get; set; }
+        [Display(Name = "Home Featured Product Text")]
+        public string HomeFeaturedProductText { get; set; }
+        [Display(Name = "Featured Product Tag")]
+        public int? FeaturedTagId { get; set; }
+
         [ForeignKey("DefaultWarehouseId")]
         public virtual TenantLocations Warehouse { get; set; }
         [ForeignKey("TenantId")]

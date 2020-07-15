@@ -1097,12 +1097,12 @@ namespace Ganedata.Core.Services
             return _currentDbContext.InventoryStocks.FirstOrDefault(a => a.ProductId == productId && a.WarehouseId == tenantLocationId && a.IsDeleted != true);
         }
 
-        public IEnumerable<ProductMaster> GetProductByCategory(int SiteId, int tenantId, int NumberofProducts, string TagName)
+        public IEnumerable<ProductMaster> GetProductByCategory(int siteId, int tenantId, int numberofProducts, string tagName, int? tagId = null)
         {
-            var products = _currentDbContext.ProductsWebsitesMap.Where(u => u.TenantId == tenantId && u.SiteID == SiteId && u.IsDeleted != true && u.IsActive).Select(u => u.ProductMaster);
-            var ProductTagIds = _currentDbContext.ProductTags.Where(u => u.TagName.Equals(TagName, StringComparison.CurrentCultureIgnoreCase) && u.IsDeleted != true).Select(u => u.Id).ToList();
-            var productids = _currentDbContext.ProductTagMaps.Where(u => ProductTagIds.Contains(u.TagId) && u.IsDeleted != true).Select(u => u.ProductId).ToList();
-            return products.Where(u => productids.Contains(u.ProductId) && u.IsDeleted != true).Take(NumberofProducts);
+            var products = _currentDbContext.ProductsWebsitesMap.Where(u => u.TenantId == tenantId && u.SiteID == siteId && u.IsDeleted != true && u.IsActive).Select(u => u.ProductMaster);
+            var productTagIds = _currentDbContext.ProductTags.Where(u => (u.TagName.Equals(tagName, StringComparison.CurrentCultureIgnoreCase) || u.Id == tagId) && u.IsDeleted != true).Select(u => u.Id).ToList();
+            var productIds = _currentDbContext.ProductTagMaps.Where(u => productTagIds.Contains(u.TagId) && u.IsDeleted != true).Select(u => u.ProductId).ToList();
+            return products.Where(u => productIds.Contains(u.ProductId) && u.IsDeleted != true).Take(numberofProducts);
 
         }
         public IQueryable<InventoryStock> GetAllInventoryStocks(int tenantId, int warehouseId, DateTime? reqDate = null)

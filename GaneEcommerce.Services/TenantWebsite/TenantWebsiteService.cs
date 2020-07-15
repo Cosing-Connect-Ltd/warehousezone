@@ -221,25 +221,25 @@ namespace Ganedata.Core.Services
 
         //WebsiteNavigation
 
-        public IEnumerable<WebsiteNavigation> GetAllValidWebsiteNavigation(int TenantId, int? SiteId)
+        public IEnumerable<WebsiteNavigation> GetAllValidWebsiteNavigation(int tenantId, int? siteId)
         {
-            return _currentDbContext.WebsiteNavigations.Where(u => u.IsDeleted != true && (!SiteId.HasValue || u.SiteID == SiteId) && u.TenantId == TenantId && u.IsActive);
+            return _currentDbContext.WebsiteNavigations.Where(u => u.IsDeleted != true && (!siteId.HasValue || u.SiteID == siteId) && u.TenantId == tenantId && u.IsActive);
         }
         public IQueryable<WebsiteNavigation> GetAllValidWebsiteNavigationCategory(int TenantId, int? SiteId)
         {
             return _currentDbContext.WebsiteNavigations.Where(u => u.IsDeleted != true && (!SiteId.HasValue || u.SiteID == SiteId) && u.TenantId == TenantId && u.Type == Entities.Enums.WebsiteNavigationType.Category && u.IsActive);
         }
 
-        public IQueryable<WebsiteNavigation> GetAllValidWebsiteNavigationTopCategory(int TenantId, int? SiteId)
+        public IQueryable<WebsiteNavigation> GetAllValidWebsiteNavigationTopCategory(int tenantId, int? siteId)
         {
-            return _currentDbContext.WebsiteNavigations.Where(u => u.IsDeleted != true && (!SiteId.HasValue || u.SiteID == SiteId) && u.TenantId == TenantId && u.ShowInTopCategory == true && u.IsActive);
+            return _currentDbContext.WebsiteNavigations.Where(u => u.IsDeleted != true && (!siteId.HasValue || u.SiteID == siteId) && u.TenantId == tenantId && u.ShowInTopCategory == true && u.IsActive);
         }
 
-        public IQueryable<NavigationProductsViewModel> GetAllValidWebsiteNavigations(int TenantId, int SiteId, int navigationId)
+        public IQueryable<NavigationProductsViewModel> GetAllValidWebsiteNavigations(int tenantId, int siteId, int navigationId)
         {
 
-            var websiteMap = _currentDbContext.ProductsWebsitesMap.Where(u => u.IsDeleted != true && u.SiteID == SiteId && u.TenantId == TenantId && u.IsActive);
-            var allProducts = _currentDbContext.ProductMaster.Where(m => m.TenantId == TenantId && m.IsDeleted != true);
+            var websiteMap = _currentDbContext.ProductsWebsitesMap.Where(u => u.IsDeleted != true && u.SiteID == siteId && u.TenantId == tenantId && u.IsActive);
+            var allProducts = _currentDbContext.ProductMaster.Where(m => m.TenantId == tenantId && m.IsDeleted != true);
             var navigationMap = _currentDbContext.ProductsNavigationMaps.Where(x => x.NavigationId == navigationId && x.IsDeleted != true && x.IsActive);
 
 

@@ -45,11 +45,11 @@ namespace Ganedata.Core.Services
         IQueryable<NavigationProductsViewModel> GetAllValidWebsiteNavigations(int TenantId, int SiteId, int navigationId);
         WebsiteNavigation CreateOrUpdateWebsiteNavigation(WebsiteNavigation websiteNavigation, int UserId, int TenantId);
         WebsiteNavigation RemoveWebsiteNavigation(int Id, int UserId);
-        WebsiteNavigation GetWebsiteNavigationId(int NavigationId);
+        WebsiteNavigation GetWebsiteNavigationId(int navigationId);
         bool CreateOrUpdateWebsiteNavigationProducts(NavigationProductsViewModel navigationProduct, int UserId, int TenantId);
-        IQueryable<NavigationProductsViewModel> GetAllValidWebsiteProducts(int TenantId, int SiteId);
+        IQueryable<NavigationProductsViewModel> GetAllValidWebsiteProducts(int tenantId, int SiteId);
         bool CreateOrUpdateWebsiteProducts(NavigationProductsViewModel websiteProduct, int UserId, int TenantId);
-        IQueryable<WebsiteNavigation> GetAllValidWebsiteNavigationCategory(int TenantId, int? SiteId);
+        IQueryable<WebsiteNavigation> GetAllValidWebsiteNavigationCategory(int tenantId, int? SiteId);
         IQueryable<WebsiteNavigation> GetAllValidWebsiteNavigationTopCategory(int TenantId, int? SiteId);
         IQueryable<ProductMaster> GetProductByNavigationId(int navigationId);
 

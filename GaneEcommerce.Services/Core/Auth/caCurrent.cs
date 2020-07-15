@@ -80,6 +80,9 @@ namespace Ganedata.Core.Services
                     tenantWebsite.IsCollectionAvailable = tenantWeb.IsCollectionAvailable;
                     tenantWebsite.IsDeliveryAvailable = tenantWeb.IsDeliveryAvailable;
                     tenantWebsite.BaseFilePath = tenantWeb.BaseFilePath;
+                    tenantWebsite.HomeFeaturedProductText = tenantWeb.HomeFeaturedProductText;
+                    tenantWebsite.FeaturedTagId = tenantWeb.FeaturedTagId;
+                    tenantWebsite.HomeTopCategoryText = tenantWeb.HomeTopCategoryText;
                     HttpContext.Current.Session["CurrentTenantWebsites"] = tenantWebsite;
                     HttpContext.Current.Session["caErrors"] = null;
                 }
@@ -96,6 +99,7 @@ namespace Ganedata.Core.Services
             else
             {
                 tenantWebsite = (caTenantWebsites)HttpContext.Current.Session["CurrentTenantWebsites"];
+
             }
             return tenantWebsite;
         }
