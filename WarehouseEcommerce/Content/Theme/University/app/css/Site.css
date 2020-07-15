@@ -3941,3 +3941,8 @@ body {
 .list-on-tablets .badge {
     z-index: 1;
 }
+.list-on-tablets .icolist {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
