@@ -61,28 +61,30 @@
                                         @*<img src="~/Content/Theme/Smart/app/img/product/Canon-EOS-1300D-DSLR-Camera-Body-with-Single-Lens-1.jpg" id="zoom_03" class="img-responsive center-block" alt="image">*@
                                     </a>
                                 </li>
+                                @if (Model.ProductFiles.Count > 1)
+                                {
+                                    <li>
+                                        <div class="row">
+                                            <div id="gallery_01" class="owl-carousel">
+                                                @foreach (var item in Model.ProductFiles)
+                                                {
+                                                    var extension = Path.GetExtension(item.FilePath);
 
-                                <li>
-                                    <div class="row">
-                                        <div id="gallery_01" class="owl-carousel">
-                                            @foreach (var item in Model.ProductFiles)
-                                            {
-                                                var extension = Path.GetExtension(item.FilePath);
+                                                    <div class="col-xs-12">
+                                                        @if (Images.Contains(extension))
+                                                        {
+                                                            <a data-zoom-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" data-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" href="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")">
+                                                                <img src="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive center-block" alt="additional image">
+                                                                @*<img src="~/Content/Theme/Smart/app/img/product/Canon-EOS-1300D-DSLR-Camera-Body-with-Single-Lens-1.jpg" id="zoom_03" class="img-responsive center-block" alt="image">*@
+                                                            </a>
+                                                        }
+                                                    </div>
+                                                }
 
-                                                <div class="col-xs-12">
-                                                    @if (Images.Contains(extension))
-                                                    {
-                                                        <a data-zoom-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" data-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" href="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")">
-                                                            <img src="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" class="img-responsive center-block" alt="additional image">
-                                                            @*<img src="~/Content/Theme/Smart/app/img/product/Canon-EOS-1300D-DSLR-Camera-Body-with-Single-Lens-1.jpg" id="zoom_03" class="img-responsive center-block" alt="image">*@
-                                                        </a>
-                                                    }
-                                                </div>
-                                            }
-
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
+                                    </li>
+                                }
                             </ul>
                             <!-- product Reviews Start-->
                             <div class="product-tab">
