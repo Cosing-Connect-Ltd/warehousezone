@@ -68,8 +68,8 @@ namespace WMS.Controllers
 
         public void ClearStyleCache()
         {
-            _cache.Remove("ui-settings-variable");
-            _cache.Remove("ui-settings-fixed");
+            _cache.Remove(CurrentTenantWebsite.SiteID + "-ui-settings-variable");
+            _cache.Remove(CurrentTenantWebsite.SiteID + "-ui-settings-fixed");
         }
     }
 }

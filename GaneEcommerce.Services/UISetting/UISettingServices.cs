@@ -17,14 +17,12 @@ namespace Ganedata.Core.Services
         private readonly IApplicationContext _currentDbContext;
         private readonly IMapper _mapper;
         private readonly IAppCache _cache;
-        private readonly ITenantWebsiteService _tenantWebsiteService;
 
         public UISettingServices(IApplicationContext currentDbContext, IMapper mapper, IAppCache cache, ITenantWebsiteService tenantWebsiteService)
         {
             _currentDbContext = currentDbContext;
             _mapper = mapper;
             _cache = cache;
-            _tenantWebsiteService = tenantWebsiteService;
         }
 
         public List<UISettingViewModel> GetWebsiteUISettings(int tenantId, int siteId, WebsiteThemeEnum websiteTheme)
@@ -161,17 +159,17 @@ namespace Ganedata.Core.Services
         {
             var uiSettings = GetWarehouseUISettings(tenantId, warehouseTheme);
 
-            return GetCustomStylesContent(filePath, browserType, browserVersion, uiSettings);
+            return GetCustomStylesContent(filePath, browserType, browserVersion, uiSettings, tenantId);
         }
 
         public string GetWebsiteCustomStylesContent(string filePath, string browserType, int browserVersion, int tenantId, int siteId, WebsiteThemeEnum websiteTheme)
         {
             var uiSettings = GetWebsiteUISettings(tenantId, siteId, websiteTheme);
 
-            return GetCustomStylesContent(filePath, browserType, browserVersion, uiSettings);
+            return GetCustomStylesContent(filePath, browserType, browserVersion, uiSettings, siteId);
         }
 
-        private string GetCustomStylesContent(string filePath, string browserType, int browserVersion, List<UISettingViewModel> uiSettings)
+        private string GetCustomStylesContent(string filePath, string browserType, int browserVersion, List<UISettingViewModel> uiSettings, int siteId)
         {
             browserType = browserType.ToUpper();
 
@@ -182,7 +180,7 @@ namespace Ganedata.Core.Services
                                 (browserType.Contains("SAFARI") && browserVersion < 9) ||
                                 (browserType.Contains("OPERA") && browserVersion < 36));
 
-            var cssContent = _cache.GetOrAdd("ui-settings-" + (isCSSVariablesSupported ? "variable" : "fixed"),
+            var cssContent = _cache.GetOrAdd(siteId + "-ui-settings-" + (isCSSVariablesSupported ? "variable" : "fixed"),
                                                 () => {
 
                                                     if (!new FileInfo(filePath).Exists)
