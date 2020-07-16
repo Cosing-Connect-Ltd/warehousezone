@@ -54,11 +54,12 @@ namespace WarehouseEcommerce.Controllers
             return View();
         }
 
-        public ActionResult page(string pageUrl, string BlogDetail = null)
+        public ActionResult page(string pageUrl, string blogDetail = null)
         {
             ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
-            ViewBag.BlogDetail = BlogDetail;
+            ViewBag.BlogDetail = blogDetail;
             var content = _tenantWebsiteService.GetWebsiteContentByUrl(CurrentTenantWebsite.SiteID, pageUrl);
+            if (string.IsNullOrEmpty(pageUrl) || content == null) { RedirectToAction("Index"); }
             ViewBag.BlogList = _tenantWebsiteService.GetAllValidWebsiteContentPages(CurrentTenantId, CurrentTenantWebsite.SiteID).Where(u => u.Id != content.Id && u.Type == ContentType.post).OrderByDescending(u => u.DateCreated).Take(7).ToList();
 
             return View(content);
@@ -288,7 +289,6 @@ namespace WarehouseEcommerce.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult GetStarted(DemoBooking model)
         {
             if (ModelState.IsValid)

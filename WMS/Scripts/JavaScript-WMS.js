@@ -1,33 +1,24 @@
 ﻿//// function Fires when DOM is parsed, equlaent to document.ready ///////
 $(function () {
 
-
-
-
-    // Validate Chosen dropdowns
-    //$.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" });
-
     $(document).bind('keydown', 'shift+c', function () {
         $(".profiler-results").remove();
     });
 
-    $(document).ready(function () {
-
-        $("#ProductType").change(function () {
-            
-            if ($("#ProductType").val() === "5") {
-                $("#dvgrp").show();
-                $(".simpleDiv").hide();
-            }
-            else if ($("#ProductType").val() === "4")
-            {
-                $(".simpleDiv").show();
-                $("#dvgrp").hide();
-            }
-            else {
-                $("#dvgrp").hide(); }
-        });
+    $("#ProductType").change(function () {
+        if ($("#ProductType").val() === "5") {
+            $("#dvgrp").show();
+            $(".simpleDiv").hide();
+        }
+        else if ($("#ProductType").val() === "4") {
+            $(".simpleDiv").show();
+            $("#dvgrp").hide();
+        }
+        else {
+            $("#dvgrp").hide();
+        }
     });
+
     $('#dvloan').hide();
     $('.graccount').hide();
     $('.data-datepicker').datepicker({ dateFormat: 'dd/mm/yy' });
@@ -37,14 +28,12 @@ $(function () {
         if (departmentId === null || departmentId === "" || departmentId === 0) { return; }
         LoadingPanel.Show();
 
-        //var pid = $("#prdid option:selected").val();
         $('#drpPG').empty();
         $("#drpPG").trigger("chosen:updated");
         $.ajax({
             type: "GET",
             url: "/PurchaseOrders/_GetProductGroup/",
             data: { DepartmentId: departmentId },
-
 
             success: function (data) {
                 var options = "<option value='0'>Select Group</option>";
@@ -60,11 +49,8 @@ $(function () {
                 // alert(xhr.status);
                 LoadingPanel.Hide();
                 alert('Error' + textStatus + "/" + errorThrown);
-
             }
-
         });
-
     });
 
     $("#drpPG").on("change", function () {
@@ -94,30 +80,23 @@ $(function () {
                 // alert(xhr.status);
                 LoadingPanel.Hide();
                 alert('Error' + textStatus + "/" + errorThrown);
-
             }
-
         });
-
     });
 
     $('#grProducts').prop('disabled', true).trigger("chosen:updated");
     $('.deletepg').click(function (e) {
         var r = confirm("Are You Sure You Want to Delete?");
-
         if (r == false) {
             e.preventDefault();
         }
-
     });
+
     $('.perror').hide();
     $('.close').click(function (e) {
-
         $('.mdl').hide();
         $('.mdl2').hide();
-
     });
-
 
     $('.Caction').click(function (e) {
         var id = e.target.id;
@@ -269,10 +248,8 @@ $(function () {
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     // alert(xhr.status);
                     alert('Error' + textStatus + "/" + errorThrown);
-
                 }
             });
-
         }
         else if (id === "lnkTransferOrderUpdate") {
             value = $('#selkeyTransferOrderList').val();
@@ -295,7 +272,6 @@ $(function () {
             var type = $(this).data("type");
             DeleteTranserOrders(orderId, type);
             return;
-
         }
 
         else if (id === "lnkTransferOutOrderUpdate") {
@@ -366,34 +342,25 @@ $(function () {
                     }
 
                     return this.href + '/' + value;
-
                 });
         } else {
             e.preventDefault();
         }
-
     });
 
-
-
-
-
-
     ////////////
-
     ////////////////////////////////////////////////Locations ////////////////////
+
     $('#OrderTypeID').change(function (e) {
         var a = $("#OrderTypeID option:selected").text();
         if (a == "Loan") {
             $('#dvloan').show();
-
-
         }
         else {
             $('#dvloan').hide();
         }
-
     });
+
     $('#Warehouse').change(function (e) {
         var a = $(this).val();
         $.ajax({
@@ -408,7 +375,6 @@ $(function () {
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 // alert(xhr.status);
                 alert('Error' + textStatus + "/" + errorThrown);
-
             }
         });
     });
@@ -429,7 +395,6 @@ $(function () {
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 // alert(xhr.status);
                 alert('Error' + textStatus + "/" + errorThrown);
-
             }
         });
 
@@ -463,7 +428,6 @@ $(function () {
 
 
     $('#SearchValue').click(function (e) {
-
         var a = $('#Attributes').val();
         var pid = $('#ProductId').val();
         var q = '';
@@ -473,7 +437,6 @@ $(function () {
     });
 
     $("#pasearch").submit(function () {
-
         var a = $('#Attributes').val();
         var pid = $('#ProductId').val();
         var q = $('#pasearch #q').val();
@@ -532,7 +495,6 @@ $(function () {
 
     //////////////////////////////  On page search submit ///////////////////////////////
     $("#pgsearchForm").submit(function () {
-
         var pid = $('#ProductId').val();
         var q = $('#pgsearchForm #q').val();
         Get_PGroups(pid, q);
@@ -593,9 +555,7 @@ $(function () {
         if (status == 1) {
             navToggleWide();
         }
-
     });
-
 
     /////////////////// Initialize Chosen plugin for select boxes ///////////////////////
     var config = {
