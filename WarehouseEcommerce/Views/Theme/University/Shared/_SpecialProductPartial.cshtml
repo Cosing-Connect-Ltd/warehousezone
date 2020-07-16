@@ -46,7 +46,7 @@
                                 {
                                     <ul class="icolist">
 
-                                        @if (item.SellPrice > 0 && item.SellPrice.HasValue && item.ProductType != ProductKitTypeEnum.ProductByAttribute && Ganedata.Core.Services.Inventory.GetStockDetailByProductId(@item.ProductId) > 0)
+                                        @if (item.SellPrice > 0 && item.SellPrice.HasValue && item.ProductType != ProductKitTypeEnum.ProductByAttribute && Ganedata.Core.Services.Inventory.GetStockDetailByProductId(@item.ProductId, ViewBag.SiteId) > 0)
                                         {
                                             <li>
                                                 <a href="javascript:;" onclick="addToCart(@item.ProductId)"><i class="cart-icon icon-shopping-cart"></i></a>
@@ -54,7 +54,7 @@
 
 
                                         }
-                                        else if (@item.SellPrice > 0 && item.SellPrice.HasValue && item.ProductType == ProductKitTypeEnum.ProductByAttribute && Ganedata.Core.Services.Inventory.GetStockDetailByProductId(@item.ProductId) > 0)
+                                        else if (@item.SellPrice > 0 && item.SellPrice.HasValue && item.ProductType == ProductKitTypeEnum.ProductByAttribute && Ganedata.Core.Services.Inventory.GetStockDetailByProductId(@item.ProductId, ViewBag.SiteId) > 0)
                                         {
                                             <li>
                                                 <a href="javascript:;" onclick="showProductByAttributeSelector('@item.SKUCode')"><i class="cart-icon icon-shopping-cart"></i></a>

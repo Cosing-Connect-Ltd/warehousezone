@@ -65,7 +65,7 @@
                     <h2 class="head">@Model.Name</h2>
                     <span class="prd_amnt">@ViewBag.CurrencySymbol@Model.SellPrice</span>
                     <div class="availibility">
-                        @{ var stockAvailable = Ganedata.Core.Services.Inventory.GetStockDetailByProductId(Model.ProductId); }
+                        @{ var stockAvailable = Ganedata.Core.Services.Inventory.GetStockDetailByProductId(Model.ProductId, ViewBag.SiteId); }
                         @if (stockAvailable > 0)
                         {
                             @((stockAvailable <= 10 ? "only "+ stockAvailable.ToString("#") + " items left" : "Available"))

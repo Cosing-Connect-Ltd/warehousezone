@@ -15,7 +15,7 @@
                     @Html.HiddenFor(model => model.ProductId)
                     <span class="prd_amnt">@ViewBag.CurrencySymbol@Model.SellPrice</span>
                     <div class="availibility">
-                        @{ var stockAvailable = Ganedata.Core.Services.Inventory.GetStockDetailByProductId(Model.ProductId); }
+                        @{ var stockAvailable = Ganedata.Core.Services.Inventory.GetStockDetailByProductId(Model.ProductId, ViewBag.SiteId); }
                         @if (stockAvailable > 0)
                         {
                             <input type="hidden" class="availablity" value="true">

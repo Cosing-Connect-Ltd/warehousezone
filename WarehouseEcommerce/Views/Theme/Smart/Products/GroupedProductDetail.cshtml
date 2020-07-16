@@ -226,7 +226,7 @@
                                                         <p><span>Price:</span><b>@ViewBag.CurrencySymbol@productitems.KitProductMaster.SellPrice</b></p>
                                                         @*<p><span>Total:</span><b>@ViewBag.CurrencySymbol@productitems.KitProductMaster.SellPrice</b></p>*@
                                                         <div class="button-submit">
-                                                            @{ var stockAvailable = Ganedata.Core.Services.Inventory.GetStockDetailByProductId(Model.ProductId); }
+                                                            @{ var stockAvailable = Ganedata.Core.Services.Inventory.GetStockDetailByProductId(Model.ProductId, ViewBag.SiteId); }
 
                                                             @if (productitems.KitProductMaster.SellPrice > 0 && productitems.KitProductMaster.SellPrice.HasValue && stockAvailable > 0)
                                                             {
@@ -251,7 +251,7 @@
                                         <div role="tabpanel" class="tab-pane" id="@item.Name.Replace(" ", "-")">
 
                                             @{
-                                                var stockAvailable = Ganedata.Core.Services.Inventory.GetStockDetailByProductId(Model.ProductId);
+                                                var stockAvailable = Ganedata.Core.Services.Inventory.GetStockDetailByProductId(Model.ProductId, ViewBag.SiteId);
 
 
 
@@ -275,7 +275,7 @@
                                                         @*<p><span>Total:</span><b>@ViewBag.CurrencySymbol@productitems.KitProductMaster.SellPrice</b></p>*@
                                                         <div class="button-submit">
 
-                                                            @if (productitems.KitProductMaster.SellPrice > 0 && productitems.KitProductMaster.SellPrice.HasValue && Ganedata.Core.Services.Inventory.GetStockDetailByProductId(productitems.KitProductMaster.ProductId) > 0)
+                                                            @if (productitems.KitProductMaster.SellPrice > 0 && productitems.KitProductMaster.SellPrice.HasValue && Ganedata.Core.Services.Inventory.GetStockDetailByProductId(productitems.KitProductMaster.ProductId, ViewBag.SiteId) > 0)
                                                             {
                                                                 <button type="Submit" name="submitNewsletter" class="btn btn-block move-to-cart-btn" id="button-cart" onclick="addToCart(@productitems.KitProductMaster.ProductId)">Add to Basket</button>
                                                             }

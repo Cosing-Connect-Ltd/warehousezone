@@ -8,6 +8,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
+using Microsoft.Ajax.Utilities;
 
 namespace Ganedata.Core.Services
 {
@@ -1610,16 +1611,20 @@ namespace Ganedata.Core.Services
 
         }
 
-        public static decimal GetStockDetailByProductId(int productId)
+        public static decimal GetStockDetailByProductId(int productId, int siteId)
         {
             decimal totalStock = 0;
+            var tenantWebsiteService = DependencyResolver.Current.GetService<ITenantWebsiteService>();
+            //if (!tenantWebsiteService.VerifyProductAgainstWebsite(productId, siteId)) { return 0; }
 
+            var tenantWebsite = tenantWebsiteService.GetTenantWebSiteBySiteId(siteId);
             var productService = DependencyResolver.Current.GetService<IProductServices>();
             var product = productService.GetProductMasterById(productId);
+            var warehouseIds = tenantWebsiteService.GetAllValidWebsiteWarehouses(tenantWebsite.TenantId, siteId).Select(u => u.Id).ToList();
 
             if (product != null)
             {
-                if (product.DontMonitorStock == true && product.IsStockItem==true)
+                if (product.DontMonitorStock == true && product.IsStockItem == true)
                 {
                     return 20;
                 }
@@ -1627,25 +1632,12 @@ namespace Ganedata.Core.Services
                 switch (product.ProductType)
                 {
                     case ProductKitTypeEnum.ProductByAttribute:
-                        var kitProductMaster = product.ProductKitItems.Where(u => u.IsDeleted != true && u.IsActive)
-                            .Select(a => a.KitProductMaster.ProductId).Distinct().ToList();
-                        foreach (var item in kitProductMaster)
-                        {
-                            var childProduct = productService.GetProductMasterById(item);
-                            if (childProduct != null)
-                            {
-                                if (childProduct.InventoryStocks != null && childProduct.InventoryStocks.Count > 0)
-                                {
-                                    totalStock += childProduct.InventoryStocks.Select(q => q.Available).DefaultIfEmpty(0).Sum(); ;
-                                }
-                            }
-
-                        }
+                        totalStock = tenantWebsiteService.GetStockForAttributedProduct(productId, warehouseIds);
                         break;
                     case ProductKitTypeEnum.Simple:
                         if (product.InventoryStocks != null && product.InventoryStocks.Count > 0)
                         {
-                            totalStock += product.InventoryStocks.Select(q => q.Available).DefaultIfEmpty(0).Sum(); ;
+                            totalStock += product.InventoryStocks.Where(u=> warehouseIds.Contains(u.WarehouseId)).Select(q => q.Available).DefaultIfEmpty(0).Sum(); ;
                         }
                         break;
 

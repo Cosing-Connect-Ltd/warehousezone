@@ -40,6 +40,13 @@ namespace Ganedata.Core.Services
             _tenantsCurrencyRateServices = tenantsCurrencyRateServices;
             _accountServices = accountServices;
         }
+
+        public bool VerifyProductAgainstWebsite(int productId, int siteId)
+        {
+            return _currentDbContext.ProductsWebsitesMap.Any(u =>
+                u.ProductId == productId && u.SiteID == siteId && u.IsDeleted != true && u.IsActive);
+        }
+
         public IEnumerable<TenantWebsites> GetAllValidTenantWebSite(int TenantId)
         {
             return _currentDbContext.TenantWebsites.Where(u => u.IsDeleted != true && u.TenantId == TenantId && u.IsActive == true);
@@ -409,17 +416,17 @@ namespace Ganedata.Core.Services
             return true;
         }
 
-        public IQueryable<WebsiteWarehousesViewModel> GetAllValidWebsiteWarehouses(int TenantId, int SiteId)
+        public IQueryable<WebsiteWarehousesViewModel> GetAllValidWebsiteWarehouses(int tenantId, int siteId)
         {
-            var allWarehouses = _currentDbContext.TenantWarehouses.Where(m => m.TenantId == TenantId && m.IsDeleted != true && m.IsActive);
-            var websiteWarehouses = _currentDbContext.WebsiteWarehouses.Where(u => u.IsDeleted != true && u.SiteID == SiteId && u.TenantId == TenantId && u.IsActive);
+            var allWarehouses = _currentDbContext.TenantWarehouses.Where(m => m.TenantId == tenantId && m.IsDeleted != true && m.IsActive);
+            var websiteWarehouses = _currentDbContext.WebsiteWarehouses.Where(u => u.IsDeleted != true && u.SiteID == siteId && u.TenantId == tenantId && u.IsActive);
             var result = (from p in allWarehouses
                           join w in websiteWarehouses on p.WarehouseId equals w.WarehouseId into tempMap
                           from d in tempMap.DefaultIfEmpty()
                           select new WebsiteWarehousesViewModel()
                           {
                               Id = p.WarehouseId,
-                              SiteID = SiteId,
+                              SiteID = siteId,
                               WarehouseId = p.WarehouseId,
                               WarehouseName = p.WarehouseName,
                               WarehouseAddress = p.AddressLine1,
@@ -994,21 +1001,19 @@ namespace Ganedata.Core.Services
         }
         public IEnumerable<ProductManufacturer> GetAllValidProductManufacturerGroupAndDeptByName(IQueryable<ProductMaster> productMasters)
         {
-
             var productmanufacturerId = productMasters.Select(u => u.ManufacturerId).ToList();
             return _currentDbContext.ProductManufacturers.Where(u => productmanufacturerId.Contains(u.Id));
-
         }
 
-        public string CategoryAndSubCategoryBreedCrumb(int siteId, int? productId = null, string Category = "", string SubCategory = "")
+        public string CategoryAndSubCategoryBreedCrumb(int siteId, int? productId = null, string category = "", string subCategory = "")
         {
-            var naviagtionMapId = _currentDbContext.ProductsWebsitesMap.FirstOrDefault(u => u.SiteID == siteId && u.ProductId == productId && u.IsDeleted != true && u.IsActive == true)?.Id;
-            if (!string.IsNullOrEmpty(SubCategory))
+            var navigationMapId = _currentDbContext.ProductsWebsitesMap.FirstOrDefault(u => u.SiteID == siteId && u.ProductId == productId && u.IsDeleted != true && u.IsActive == true)?.Id;
+            if (!string.IsNullOrEmpty(subCategory))
             {
-                return _currentDbContext.WebsiteNavigations.FirstOrDefault(u => u.Name == SubCategory)?.Parent?.Name;
+                return _currentDbContext.WebsiteNavigations.FirstOrDefault(u => u.Name == subCategory)?.Parent?.Name;
             }
-            int? naviagtionId = _currentDbContext.ProductsNavigationMaps.FirstOrDefault(u => u.ProductWebsiteMapId == naviagtionMapId)?.NavigationId;
-            return _currentDbContext.WebsiteNavigations.FirstOrDefault(u => (u.Id == naviagtionId || !naviagtionId.HasValue) && (string.IsNullOrEmpty(Category) || u.Name == Category)).Name;
+            int? navigationId = _currentDbContext.ProductsNavigationMaps.FirstOrDefault(u => u.ProductWebsiteMapId == navigationMapId)?.NavigationId;
+            return _currentDbContext.WebsiteNavigations.FirstOrDefault(u => (u.Id == navigationId || !navigationId.HasValue) && (string.IsNullOrEmpty(category) || u.Name == category))?.Name;
         }
 
         // WebsiteCartAndWishlist
@@ -1471,6 +1476,34 @@ namespace Ganedata.Core.Services
             }
 
             return sellPrice;
+        }
+
+        public decimal GetStockForAttributedProduct(int productId, List<int> warehouseIds)
+        {
+            decimal totalStock = 0;
+            var product = _productServices.GetProductMasterById(productId);
+            var kitProductMaster = product.ProductKitItems.Where(u => u.IsDeleted != true && u.IsActive)
+                .Select(a => a.KitProductMaster.ProductId).Distinct().ToList();
+            foreach (var item in kitProductMaster)
+            {
+                var childProduct = _productServices.GetProductMasterById(item);
+                var stock = childProduct?.InventoryStocks?.Where(u => warehouseIds.Contains(u.WarehouseId)).ToList();
+                if (childProduct != null)
+                {
+                    if (childProduct.IsStockItem == true && childProduct.DontMonitorStock == true)
+                    {
+                        return 20;
+                    }
+
+                    if (stock != null && stock.Count > 0)
+                    {
+                        totalStock += stock.Select(q => q.Available).DefaultIfEmpty(0).Sum(); ;
+                    }
+                }
+
+            }
+
+            return totalStock;
         }
 
     }

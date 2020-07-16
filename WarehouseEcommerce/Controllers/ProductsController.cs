@@ -75,9 +75,9 @@ namespace WarehouseEcommerce.Controllers
                 ViewBag.SubCategory = _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID, SubCategory: ViewBag.Category);
                 if (ViewBag.SubCategory != null && !string.IsNullOrEmpty(ViewBag.SubCategory))
                 {
-                    var catg = ViewBag.SubCategory;
+                    var subCategory = ViewBag.SubCategory;
                     ViewBag.SubCategory = ViewBag.Category;
-                    ViewBag.Categories = catg;
+                    ViewBag.Categories = subCategory;
 
                 }
                 if (!string.IsNullOrEmpty(search))
@@ -214,10 +214,10 @@ namespace WarehouseEcommerce.Controllers
         public JsonResult GetProductCategories()
         {
 
-            var ProductCategories = _lookupServices.GetAllValidProductGroups((CurrentTenantId), 12);
-            if (ProductCategories.Count() <= 0 || ProductCategories == null) return Json(false, JsonRequestBehavior.AllowGet);
+            var productCategories = _lookupServices.GetAllValidProductGroups((CurrentTenantId), 12);
+            if (productCategories.Count() <= 0 || productCategories == null) return Json(false, JsonRequestBehavior.AllowGet);
 
-            var data = (from pac in ProductCategories
+            var data = (from pac in productCategories
                         select new
                         {
                             pac.ProductGroupId,
@@ -344,9 +344,9 @@ namespace WarehouseEcommerce.Controllers
 
         public JsonResult AddWishListItem(int ProductId, bool isNotfication)
         {
-            var Product = _productServices.GetProductMasterById(ProductId);
+            var product = _productServices.GetProductMasterById(ProductId);
             var model = new OrderDetail();
-            model.ProductMaster = Product;
+            model.ProductMaster = product;
             model.Qty = 0;
             model.ProductId = ProductId;
             model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
@@ -409,11 +409,11 @@ namespace WarehouseEcommerce.Controllers
 
         }
 
-        public void CurrencyChanged(int? CurrencyId)
+        public void CurrencyChanged(int? currencyId)
         {
-            if (CurrencyId.HasValue)
+            if (currencyId.HasValue)
             {
-                var detail = LookupServices.GetAllGlobalCurrencies().Where(c => (!CurrencyId.HasValue || c.CurrencyID == CurrencyId)).Select(u => new caCurrencyDetail
+                var detail = LookupServices.GetAllGlobalCurrencies().Where(c => (!currencyId.HasValue || c.CurrencyID == currencyId)).Select(u => new caCurrencyDetail
                 {
 
                     Symbol = u.Symbol,

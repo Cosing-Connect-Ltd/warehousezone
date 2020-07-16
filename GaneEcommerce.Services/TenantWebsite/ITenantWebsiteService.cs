@@ -11,6 +11,7 @@ namespace Ganedata.Core.Services
     public interface ITenantWebsiteService
     {
         // TenantWebsite//
+        bool VerifyProductAgainstWebsite(int productId, int siteId);
         IEnumerable<TenantWebsites> GetAllValidTenantWebSite(int TenantId);
         WebsiteLayoutSettings GetWebsiteLayoutSettingsInfoBySiteId(int SiteId);
         TenantWebsites GetTenantWebSiteBySiteId(int SiteId);
@@ -135,7 +136,7 @@ namespace Ganedata.Core.Services
 
         decimal GetPriceForProduct(int productId, int siteId);
 
-
+        decimal GetStockForAttributedProduct(int productId, List<int> warehouseIds);
 
     }
 }

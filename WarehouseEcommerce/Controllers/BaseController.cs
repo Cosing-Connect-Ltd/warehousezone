@@ -177,7 +177,7 @@ namespace WarehouseEcommerce.Controllers
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             var website = TenantWebsiteServices.GetTenantWebSiteBySiteId(CurrentTenantWebsite.SiteID);
-
+            ViewBag.SiteId = CurrentTenantWebsite.SiteID;
             ViewBag.TimeZone = GetCurrentTimeZone();
             ViewBag.LoginDetail = CurrentUserId > 0 ? "Logout" : "Login";
             ViewBag.CurrentUserId = CurrentUserId;

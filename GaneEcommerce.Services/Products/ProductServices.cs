@@ -1349,9 +1349,9 @@ namespace Ganedata.Core.Services
                 var product = _currentDbContext.ProductMaster.Where(m => m.SKUCode.Contains(tenant.ProductCodePrefix) && m.TenantId == tenantId).OrderByDescending(m => m.SKUCode).FirstOrDefault();
                 if (product != null)
                 {
-                    int ValidSkuCode = 0;
+                    int validSkuCode = 0;
                     var lastCode = product.SKUCode.Split(new[] { tenant.ProductCodePrefix, tenant.ProductCodePrefix.ToLower() }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
-                    if (int.TryParse(lastCode, out ValidSkuCode))
+                    if (int.TryParse(lastCode, out validSkuCode))
                     {
                         if (lastCode != null)
                         {
