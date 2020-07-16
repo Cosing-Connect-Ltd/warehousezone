@@ -3586,7 +3586,7 @@ body {
         margin: 10px 0px 0px 0px !important;
     }
 }
-/*basket-modal-content command product-detain-section -end*/
+/*basket-modal-content and product-detail-section -end*/
 
 /*shipping-type check boxes -start*/
 .ship-type {
@@ -3822,4 +3822,14 @@ body {
     width: 100%;
     display: flex;
     justify-content: space-evenly;
+}
+@media(max-width:600px){
+    .paypal-form,
+    sagepay-form {
+        width: 100%;
+    }
+    .paypal-form .button-submit a.saveAddrBtn,
+    .sagepay-form .button-submit a.saveAddrBtn{
+        width: 100%;
+    }
 }

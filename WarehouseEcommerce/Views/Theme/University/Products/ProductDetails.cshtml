@@ -189,12 +189,12 @@
                     @if (Model.WebsiteWishListItems.FirstOrDefault(u => u.IsDeleted != true && !u.IsNotification) == null)
                     {
                         <button id="btnwish_@Model.ProductId" onclick="AddToWishList(@Model.ProductId,false)" class="addtowishlistbtn">Add to Wishlist</button>
-                        <a href="javascript:;" class="addtowishlist " id="wish_@Model.ProductId" onclick="AddToWishList(@Model.ProductId,false)"><i class="icon-love list-icon" style="color:black;font-size:28px"></i></a>
+                        <a href="javascript:;" class="addtowishlist " id="wish_@Model.ProductId" onclick="AddToWishList(@Model.ProductId,false)"><i class="icon-love list-icon" style="color:black;font-size:28px;margin-left:15px"></i></a>
                     }
                     else
                     {
                         <button id="btnwish_@Model.ProductId" onclick="RemoveWishListPopUp(@Model.ProductId,false)" class="addtowishlistbtn" style="background-color: red !important">Add to Wishlist</button>
-                        <a href="javascript:;" class="addtowishlist" id="wish_@Model.ProductId" onclick="RemoveWishListPopUp(@Model.ProductId,false)"><i class="icon-love list-icon" style="color:red;font-size:28px"></i></a>
+                        <a href="javascript:;" class="addtowishlist" id="wish_@Model.ProductId" onclick="RemoveWishListPopUp(@Model.ProductId,false)"><i class="icon-love list-icon" style="color:red;font-size:28px;margin-left:15px"></i></a>
                     }
                 </div>
                 </div>
