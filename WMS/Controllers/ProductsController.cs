@@ -1,5 +1,4 @@
-﻿using DevExpress.Web;
-using DevExpress.Web.Mvc;
+﻿using DevExpress.Web.Mvc;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Models;
@@ -7,14 +6,12 @@ using Ganedata.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using System.Web.WebPages;
 using WMS.CustomBindings;
 
 

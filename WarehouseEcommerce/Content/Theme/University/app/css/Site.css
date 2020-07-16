@@ -2126,6 +2126,7 @@ body.modal-open {
             .basketTable tr.cmnRow td.greyBox .greyBoxInner {
                 background-color: #f3f3f3;
                 height: 145px;
+                max-width: 202px;
                 display: flex;
                 flex-direction: row;
                 align-items: center;
@@ -2390,13 +2391,13 @@ body.modal-open {
             font-family: "primaryfont_SemiBold";
         }
 
-    .basketTable tr.cmnRow .store {
-        width: 13%;
-        width: 175px;
+    .basketTable tr.cmnRow .delivery {
+        width: 10%;
+        min-width: 218px;
         border-bottom: solid 1px transparent;
     }
 
-        .basketTable tr.cmnRow .store .chsStoreLnk {
+        .basketTable tr.cmnRow .delivery .chsLnk {
             font-family: "primaryfont_Bold";
             padding-left: 10px;
             text-decoration: underline !important;
@@ -2405,50 +2406,6 @@ body.modal-open {
             font-style: italic;
         }
 
-    .basketTable tr.cmnRow .homeDel {
-        width: 20%;
-        width: 176px;
-        border-bottom: solid 1px transparent;
-    }
-
-        .basketTable tr.cmnRow .homeDel .postCodeCheckFormwrap {
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-        }
-
-            .basketTable tr.cmnRow .homeDel .postCodeCheckFormwrap input[type="text"] {
-                width: 70%;
-                height: 30px;
-                border: solid 1px #ddd;
-                text-indent: 10px;
-            }
-
-                .basketTable tr.cmnRow .homeDel .postCodeCheckFormwrap input[type="text"]:focus {
-                    outline: none;
-                }
-
-                .basketTable tr.cmnRow .homeDel .postCodeCheckFormwrap input[type="text"]:active {
-                    outline: none;
-                }
-
-            .basketTable tr.cmnRow .homeDel .postCodeCheckFormwrap .chckBtn {
-                width: 30%;
-                height: 30px;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: center;
-                font-family: "primaryfont_Bold";
-                font-size: 12px;
-                font-style: italic;
-                background-color: #f33655;
-                color: #fff;
-                outline: none;
-                border: none;
-            }
 
 .gotApromoSec {
     width: 100%;
@@ -2545,7 +2502,7 @@ body.modal-open {
 }
 
 .botomBtnsec .btmbtn {
-    width: 200px;
+    width: 202px;
     height: 50px;
     transition: all 0.3s ease;
     font-family: "primaryfont_Bold";
@@ -2713,6 +2670,10 @@ body.modal-open {
     margin: 15px;
 }
 
+.mobile-checkout {
+    display: none !important;
+}
+
 @media (max-width: 768px) {
 
     .accordion {
@@ -2761,14 +2722,13 @@ body.modal-open {
         }
 
     .mobile-checkout {
-        display: block !important;
+        display: flex !important;
         margin: 0 10px
     }
 
     .headBoxTop,
     .basketTable tr.cmnRow .tot .in-basket-price-total:after,
-    .basketTable tr.cmnRow .homeDel,
-    .basketTable tr.cmnRow .store,
+    .basketTable tr.cmnRow .delivery,
     .basketTable tr.headRow {
         display: none;
     }
@@ -3109,7 +3069,7 @@ body.modal-open {
 
 @media(max-width:1200px) and (min-width:769px) {
     .store-delivery,
-    .basketTable .cmnRow .store,
+    .basketTable .cmnRow .delivery,
     .basketTable .cmnRow .greyBox,
     .basketTable tr.cmnRow .tot .in-basket-price-total:after {
         display: none

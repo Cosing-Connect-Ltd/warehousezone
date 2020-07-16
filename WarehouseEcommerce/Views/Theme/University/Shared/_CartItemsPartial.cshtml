@@ -133,12 +133,12 @@
         <div class="nb_sec checkconfirmSec">
 
             <div class="checkoutInnersec Paymentsec">
-                @if (Model.WebsiteCartItems == null || Model.WebsiteCartItems.Count > 0)
+                @if (Model.WebsiteCartItems != null && Model.WebsiteCartItems.Count > 0)
                 {
                     <h4 class="ordConfirmHead basked-heading">Basket</h4>
                 }
                 <div class="tableWrap mb-4">
-                    @if (Model.WebsiteCartItems == null || Model.WebsiteCartItems.Count > 0)
+                    @if (Model.WebsiteCartItems != null && Model.WebsiteCartItems.Count > 0)
                     {
                         <table class="basketTable mb-4">
                             <tbody>
@@ -177,14 +177,14 @@
                                     {
                                         if (Model.IsCollectionAvailable)
                                         {
-                                            <td class="store">
-                                                <a href="" data-toggle="modal" data-target="#ChooseStoreModal" class="chsStoreLnk">Choose Store</a>
+                                            <td class="delivery">
+                                                <a href="" data-toggle="modal" data-target="#ChooseStoreModal" class="chsLnk">Choose Store</a>
                                             </td>
                                         }
                                         if (Model.IsDeliveryAvailable)
                                         {
-                                            <td class="store">
-                                                <a href="" data-toggle="modal" data-target="#ChooseShippingAddressModal" class="chsStoreLnk">Choose Delivery Destination</a>
+                                            <td class="delivery">
+                                                <a href="" data-toggle="modal" data-target="#ChooseShippingAddressModal" class="chsLnk">Choose Delivery Destination</a>
                                             </td>
                                         }
                                     }
@@ -254,7 +254,7 @@
                                         {
                                             if (Model.IsCollectionAvailable)
                                             {
-                                                <td class="store greyBox">
+                                                <td class="delivery greyBox">
                                                     <div class="greyBoxInner">
                                                         <p class="orderNowTxt" id="collection_status_@item.Id">
                                                             <span class="available" @(item.IsAvailableForCollection == true ? "" : "hidden")><i class="fa fa-check-circle-o" aria-hidden="true"></i> Available for Collection</span>
@@ -266,7 +266,7 @@
                                             }
                                             if (Model.IsDeliveryAvailable)
                                             {
-                                                <td class="homeDel greyBox">
+                                                <td class="delivery greyBox">
                                                     <div class="greyBoxInner">
                                                         <p class="orderNowTxt" id="delivery_status_@item.Id">
                                                             <span class="available" @( item.IsAvailableForDelivery ==  true ? "" : "hidden")><i class="fa fa-check-circle-o" aria-hidden="true"></i> Available for Delivery</span>
@@ -292,7 +292,7 @@
                                     {
                                         if (Model.IsCollectionAvailable)
                                         {
-                                            <td class="store greyBox">
+                                            <td class="delivery greyBox">
                                                 <div class="botomBtnsec in-table-button-section">
                                                     <button class="btmbtn pro" onclick="@(Model.ShowLoginPopUp == true ? "GetLoggedIn('" + (bool?)Model.ShowLoginPopUp + "');" : "proceedToPickup();")">PROCEED TO PICKUP</button>
                                                 </div>
@@ -300,7 +300,7 @@
                                         }
                                         if (Model.IsDeliveryAvailable)
                                         {
-                                            <td class="homeDel greyBox">
+                                            <td class="delivery greyBox">
                                                 <div class="botomBtnsec in-table-button-section">
                                                     <button class="btmbtn pro" onclick="@(Model.ShowLoginPopUp == true ? "GetLoggedIn('" + (bool?)Model.ShowLoginPopUp + "');" : "proceedToDelivery();")">PROCEED TO DELIVERY</button>
                                                 </div>
@@ -319,9 +319,9 @@
                 <div class="botomBtnsec">
                     @if (Model.ShowCartPopUp != true)
                     {
-                        if (Model.IsCollectionAvailable || Model.IsDeliveryAvailable)
+                        if ((Model.IsCollectionAvailable || Model.IsDeliveryAvailable) && (Model.WebsiteCartItems != null && Model.WebsiteCartItems.Count != 0))
                         {
-                            <button class="btmbtn pro mobile-checkout" style="display: none;" onclick="@(Model.ShowLoginPopUp == true ? "GetLoggedIn('" + (bool?)Model.ShowLoginPopUp + "');" : "proceedToMobileCheckout();")">PROCEED TO CHECKOUT</button>
+                            <button class="btmbtn pro mobile-checkout" onclick="@(Model.ShowLoginPopUp == true ? "GetLoggedIn('" + (bool?)Model.ShowLoginPopUp + "');" : "proceedToMobileCheckout();")">PROCEED TO CHECKOUT</button>
                         }
                         <a class="btmbtn sho" href="@Url.Action("list", "Products")">CONTINUE SHOPPING</a>
                     }
