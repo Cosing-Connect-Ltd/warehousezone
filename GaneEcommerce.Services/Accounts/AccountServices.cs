@@ -513,6 +513,19 @@ namespace Ganedata.Core.Services
         }
 
 
+        public void SetAddressType(int addressId, bool isShippingType, bool isBillingType, int currentUserId)
+        {
+            if (addressId >= 1)
+            {
+                var address = _currentDbContext.AccountAddresses.Find(addressId);
+                address.AddTypeBilling = isBillingType;
+                address.AddTypeShipping = isShippingType;
+                address.DateUpdated = DateTime.Now;
+                address.UpdatedBy = currentUserId;
+                _currentDbContext.SaveChanges();
+            }
+        }
+
         public AccountAddresses SaveAccountAddress(AccountAddresses customeraddresses, int currentUserId)
         {
             if (customeraddresses.AddressID >= 1)
@@ -525,8 +538,6 @@ namespace Ganedata.Core.Services
                 entry2.Property(e => e.DateUpdated).IsModified = true;
                 entry2.Property(e => e.UpdatedBy).IsModified = true;
                 entry2.Property(e => e.IsDeleted).IsModified = true;
-
-
             }
 
             customeraddresses.Name = customeraddresses.Name.Trim();
@@ -573,7 +584,7 @@ namespace Ganedata.Core.Services
         {
            return _currentDbContext.AccountTransactions.FirstOrDefault(u=>u.OrderId==orderId && u.IsDeleted != true)?.PaymentTransactionId;
 
-            
+
         }
         public List<SelectListItem> GetAllAccountsSelectList(int tenantId)
         {

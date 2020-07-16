@@ -229,7 +229,7 @@ namespace WarehouseEcommerce.Controllers
             var AccountDetailViewModel = new AccountDetailViewModel()
             {
                 AuthUser = _userService.GetAuthUserById(CurrentUserId),
-                OrderHistory = OrderService.GetOrdersHistory(CurrentUserId, CurrentTenantWebsite.SiteID).Take(10).ToList(),
+                OrderHistory = _orderService.GetOrdersHistory(CurrentUserId, CurrentTenantWebsite.SiteID).Take(10).ToList(),
                 WebsiteWishList = _tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).ToList()
 
 

@@ -1501,13 +1501,14 @@ body.modal-open {
     position: absolute;
     opacity: 0;
 }
-
+    .same-billing-address__label,
     .styled-checkbox + label {
         position: relative;
         cursor: pointer;
         padding: 0;
     }
 
+        .same-billing-address__label:before,
         .styled-checkbox + label:before {
             content: "";
             margin-right: 20px;
@@ -1519,28 +1520,34 @@ body.modal-open {
             background: #ddd;
         }
 
+    .styled-checkbox:hover .same-billing-address__label:before,
     .styled-checkbox:hover + label:before {
         background: #f33655;
     }
 
+    .styled-checkbox:focus .same-billing-address__label:before,
     .styled-checkbox:focus + label:before {
         box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
     }
 
+    .styled-checkbox:checked .same-billing-address__label:before,
     .styled-checkbox:checked + label:before {
         background: #f33655;
     }
 
+    .styled-checkbox:disabled .same-billing-address__label:before,
     .styled-checkbox:disabled + label {
         color: #b8b8b8;
         cursor: auto;
     }
 
+        .styled-checkbox:disabled .same-billing-address__label:before,
         .styled-checkbox:disabled + label:before {
             box-shadow: none;
             background: #ddd;
         }
 
+    .styled-checkbox:checked .same-billing-address__label:before,
     .styled-checkbox:checked + label:after {
         content: "";
         position: absolute;
@@ -1746,6 +1753,7 @@ body.modal-open {
         font-size: 14px;
     }
 
+    .styled-checkbox .same-billing-address__label:before,
     .styled-checkbox + label:before {
         margin-right: 12px;
     }
@@ -3749,6 +3757,7 @@ body {
 }
 
 @media(max-width:768px) {
+    .styled-checkbox .same-billing-address__label:before,
     .styled-checkbox + label:before {
         min-width: 30px;
         min-height: 30px;
@@ -4019,4 +4028,10 @@ body {
 .termandcondition h3 {
     margin-bottom: unset !important;
     margin-top: 15px !important;
+}
+
+.btmBtn:disabled,
+.saveAddrWrap .saveAddrBtn:disabled {
+    background-color: gray;
+    color: lightgray;
 }

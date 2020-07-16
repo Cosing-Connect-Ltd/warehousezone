@@ -1,0 +1,76 @@
+﻿@using Ganedata.Core.Entities.Enums;
+@model Ganedata.Core.Entities.Domain.CheckoutViewModel
+    <div class="address-wrapper">
+        @{
+            var address = Model.Addresses;
+            var billingAddress = address.FirstOrDefault();
+            <h5 class="subheadCmn">Billing Address</h5>
+            if (Model.DeliveryMethodId == (int)DeliveryMethod.ToShipmentAddress)
+            {
+                <div class="checkout-options-wrapper">
+                    <div class="checkboxwrap">
+                        <input class="styled-checkbox"
+                               id="IsAddressSameForBilling"
+                               type="checkbox"
+                               name="IsAddressSameForBilling"
+                               value="@(Model.IsAddressSameForBilling.ToString())"
+                               checked="@Model.IsAddressSameForBilling" />
+                        <label for="IsAddressSameForBilling" class="same-billing-address__label" onclick="toggleSameBillingAddressCheckBox()">Same as shipping address</label>
+                    </div>
+                </div>
+            }
+            else
+            {
+                @Html.Hidden("IsAddressSameForBilling", false);
+            }
+            <div id="address__detail-box" style="display:@(Model.DeliveryMethodId == (int)DeliveryMethod.ToShipmentAddress && Model.IsAddressSameForBilling == true ? "none" : "block")">
+                @Html.HiddenFor(model => model.BillingAddressId)
+                @if (billingAddress != null)
+                {
+                    @Html.Partial("_AddressDetail", billingAddress)
+                    <div class="btnWrap">
+                        <a href="javascript:;" data-AccountId="@(Model.AccountId??null)" data-accountAddressId="@billingAddress.AddressID" data-currentstep="@((int)CheckoutStep.AddOrEditAddress)" onclick="moveToNextStep(this)" class="btmBtn">EDIT ADDRESS</a>
+                    </div>
+                }
+                else
+                {
+                    @Html.Partial("_AddOrEditAddress", Model);
+                }
+            </div>
+            <h5 class="subheadCmn">Payment Method</h5>
+            <div class="checkout-options-wrapper">
+                <div class="checkboxwrap">
+                    <input class="styled-checkbox"
+                           id="paypal__checkbox"
+                           type="radio"
+                           name="payment-method-radio"
+                           value="@((int)PaymentMethodEnum.PayPal)"
+                           checked="@(Model.PaymentMethodId == (int)PaymentMethodEnum.PayPal)"/>
+                    <label for="paypal__checkbox">PayPal</label>
+                </div>
+                <div class="checkboxwrap">
+                    <input class="styled-checkbox"
+                           id="sagepay__checkbox"
+                           type="radio"
+                           name="payment-method-radio"
+                           value="@((int)PaymentMethodEnum.SagePay)"
+                           checked="@(Model.PaymentMethodId == (int)PaymentMethodEnum.SagePay)"/>
+                    <label for="sagepay__checkbox">SagePay</label>
+                </div>
+            </div>
+
+            <div class="btnWrap">
+                <a class="btmBtn" href="javascript:;" id="review-order__button" onclick="goToOrderConfirmation()">REVIEW ORDER</a>
+
+                <a href="@Url.Action("GoToPreviousStep","orders")" class="btmBtn">BACK</a>
+            </div>
+
+            <script>
+                function toggleSameBillingAddressCheckBox() {
+                    $("#address__detail-box").toggle();
+                    var e = $("#IsAddressSameForBilling");
+                    e.val(e.val().toLowerCase() == "true" ? "False" : "True");
+                }
+            </script>
+        }
+    </div>

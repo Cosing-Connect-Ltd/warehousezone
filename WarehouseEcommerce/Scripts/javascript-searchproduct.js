@@ -109,7 +109,7 @@ function selectCollectionPointId(id, name, postcode, address, element) {
     }
 
     if (!!onCollectionPointSelected && typeof onCollectionPointSelected === "function") {
-        onCollectionPointSelected(id, name, postcode, address);
+        onCollectionPointSelected(id, name, postcode, address)
     }
 }
 
@@ -121,19 +121,19 @@ function OnchangeDropdownAddress() {
         var addressLine1 = "";
 
         for (var i = 0; i <= 1; i++) {
-            addressLine1 += (selOption[i] != " " ? (addressLine1 != "" ? ', ' : '') + selOption[i] : '');
+            addressLine1 += (selOption[i] != " " ? (addressLine1 != "" ? ', ' : '') + selOption[i] : '')
         }
 
         var addressLine2 = "";
 
         for (var i = 2; i <= 4; i++) {
-            addressLine2 += (selOption[i] != " " ? (addressLine2 != "" ? ', ' : '') + selOption[i] : '');
+            addressLine2 += (selOption[i] != " " ? (addressLine2 != "" ? ', ' : '') + selOption[i] : '')
         }
 
         var addressLine3 = "";
 
         for (var i = 5; i <= 6; i++) {
-            addressLine3 += (selOption[i] != " " ? (addressLine3 != "" ? ', ' : '') + selOption[i] : '');
+            addressLine3 += (selOption[i] != " " ? (addressLine3 != "" ? ', ' : '') + selOption[i] : '')
         }
 
         $(".AddressLine1").val(addressLine1);
@@ -360,128 +360,6 @@ function CartItemCount() {
     });
     $('#top-header').load(basePath + "/Home/_TopHeaderPartial");
 }
-function ConfirmOrder() {
-    var paymentMethodId = $("#PaymentType").val();
-    var ShippingTypeId = $("#ShippingType").val();
-    var AccountAddressIds = $("#AccountAddressId").val();
-    if (!paymentMethodId) {
-        alert("Select payment type before placing order");
-        return;
-    }
-    if (!ShippingTypeId) {
-        alert("Select shipping type before placing order");
-        return;
-    }
-
-    window.location.href = basePath + "/Orders/ConfirmOrder/?accountAddressId=" + AccountAddressIds + "&paymentTypeId=" + paymentMethodId + "&deliveryMethodId=" + ShippingTypeId;
-}
-function updateQueryStringParameter(uri, key, value) {
-    var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
-    var separator = uri.indexOf('?') !== -1 ? "&" : "?";
-    if (uri.match(re)) {
-        return uri.replace(re, '$1' + key + "=" + value + '$2');
-    }
-    else {
-        return uri + separator + key + "=" + value;
-    }
-}
-function updateQueryAndGoToStep(step, key, value) {
-    var uri = location.href;
-
-    uri = updateQueryStringParameter(uri, "step", step);
-
-    if (!!key && !!value) {
-        uri = updateQueryStringParameter(uri, key, value);
-    }
-
-    location.href = uri;
-}
-
-function getUrlVariables() {
-    var variables = [], hash;
-    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-    for (var i = 0; i < hashes.length; i++) {
-        hash = hashes[i].split('=');
-        variables.push(hash[0]);
-        variables[hash[0]] = hash[1];
-    }
-    return variables;
-}
-
-function chooseDeliveryMethod() {
-    var deliveryMethodId = $("input[name='delivery-method-radio']:checked").val();
-    if (!deliveryMethodId) {
-        alert("Please select shipping method.");
-        return;
-    }
-    var nextStep = (deliveryMethodId === '2' ? 1 : 2);
-    var checkoutViewModels =
-    {
-        "DeliveryMethodId": deliveryMethodId,
-        "CurrentStep": nextStep,
-        "ParentStep": 1
-    };
-    ChangeUrlParameterValue(nextStep);
-    GetDataForNextStep(checkoutViewModels, nextStep);
-}
-
-function chooseCollectionPoint(nextStep) {
-    var collectionPointId = $("#collectionPointId")[0].value;
-    if (!collectionPointId) {
-        alert("Please select collection point.");
-        return;
-    }
-    var checkoutViewModels =
-    {
-        "CollectionPointId": collectionPointId,
-        "CurrentStep": nextStep,
-        "ParentStep": 3
-    };
-    ChangeUrlParameterValue(nextStep);
-    GetDataForNextStep(checkoutViewModels, nextStep);
-}
-
-function goToStep(step) {
-    updateQueryAndGoToStep(step, null, null);
-}
-
-function chooseShippingRule(nextStep) {
-    var shipmentRuleId = $("input[name='shipment-rule-radio']:checked").val();
-    if (!shipmentRuleId) {
-        alert("Please select shipping rule.");
-        return;
-    }
-    var checkoutViewModels =
-    {
-        "ShipmentRuleId": shipmentRuleId,
-        "CurrentStep": nextStep,
-        "ParentStep": 4
-    };
-    ChangeUrlParameterValue(nextStep);
-    GetDataForNextStep(checkoutViewModels, nextStep);
-}
-
-function choosePaymentMethod() {
-    var paymenttypeId = $("input[name='payment-method-radio']:checked").val();
-    if (!paymenttypeId) {
-        alert("Please select payment method.");
-        return;
-    }
-
-    window.location.href = basePath + "/Orders/ConfirmOrder?paymentTypeId=" + paymenttypeId;
-
-}
-
-$("input[name='paymentMethod']").on("click", function (e) {
-    if (e.target.value === "2") {
-        $(".paypal-btn").hide();
-        $(".cash-btn").show();
-    }
-    else {
-        $(".paypal-btn").show();
-        $(".cash-btn").hide();
-    }
-});
 
 $(document).ready(function () {
 
@@ -492,6 +370,7 @@ $(document).ready(function () {
     var id = $('#ProductGroupIds').val();
     //getTopCategoryProducts(id);
 });
+
 function onCurrencyChange(event) {
 
     var currencyId = event.currentTarget.id;

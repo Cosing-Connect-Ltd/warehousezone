@@ -27,6 +27,7 @@ namespace Ganedata.Core.Services
         IEnumerable<AccountAddresses> GetAllValidAccountAddressesByAccountId(int accountId);
 
         AccountAddresses SaveAccountAddress(AccountAddresses customeraddresses, int currentUserId);
+        void SetAddressType(int addressId, bool isShippingType, bool isBillingType, int currentUserId);
         AccountAddresses GetAccountAddressById(int id);
         IEnumerable<AccountAddresses> GetAccountAddress();
         AccountAddresses DeleteAccountAddress(int addressId, int currentUserId);

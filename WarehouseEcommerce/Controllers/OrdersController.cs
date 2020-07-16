@@ -165,7 +165,7 @@ namespace WarehouseEcommerce.Controllers
                 {
                     return RedirectToAction("AddToCart", "Products", new { PlaceOrder = true });
                 }
-                checkoutViewModel.CurrentStep = destinationId > 0 ? CheckoutStep.BillingAddress : CheckoutStep.CollectionPoint;
+                checkoutViewModel.CurrentStep = destinationId > 0 ? CheckoutStep.PaymentDetails : CheckoutStep.CollectionPoint;
                 checkoutViewModel.CollectionPointId = destinationId;
             }
             else if (deliveryMethod == DeliveryMethod.ToShipmentAddress)
@@ -234,26 +234,29 @@ namespace WarehouseEcommerce.Controllers
                 accountAddresses.AccountID = caCurrent.CurrentWebsiteUser().AccountId ?? 0;
             }
 
-            AccountServices.SaveAccountAddress(accountAddresses, CurrentUserId == 0 ? 1 : CurrentUserId);
+            accountAddresses = _accountServices.SaveAccountAddress(accountAddresses, CurrentUserId == 0 ? 1 : CurrentUserId);
 
             checkoutViewModel = (CheckoutViewModel)Session["CheckoutViewModel"];
-
-            if (accountAddresses.AddressID > 0 && checkoutViewModel?.CurrentStep == CheckoutStep.AddOrEditAddress)
-            {
-                return RedirectToAction("GoToPreviousStep");
-            }
 
             var nextStep = CheckoutStep.ShipmentRule;
 
             if (accountAddresses.AddTypeBilling == true)
             {
                 checkoutViewModel.BillingAddressId = accountAddresses.AddressID;
-                nextStep = CheckoutStep.PaymentMethod;
+                checkoutViewModel.IsAddressSameForBilling = false;
+                nextStep = CheckoutStep.PaymentDetails;
             }
 
             if (accountAddresses.AddTypeShipping == true)
             {
                 checkoutViewModel.ShippingAddressId = accountAddresses.AddressID;
+            }
+
+
+            if (accountAddresses.AddressID > 0 && checkoutViewModel?.CurrentStep == CheckoutStep.AddOrEditAddress)
+            {
+                Session["CheckoutViewModel"] = checkoutViewModel;
+                return RedirectToAction("GoToPreviousStep");
             }
 
             if (checkoutViewModel.StepsHistory?.LastOrDefault() == CheckoutStep.AddOrEditAddress)
@@ -268,24 +271,42 @@ namespace WarehouseEcommerce.Controllers
 
         public ActionResult RemoveShippingAddress(int accountAddressId)
         {
-            AccountServices.DeleteAccountAddress(accountAddressId, (CurrentUserId == 0 ? 1 : CurrentUserId));
+            _accountServices.DeleteAccountAddress(accountAddressId, (CurrentUserId == 0 ? 1 : CurrentUserId));
             return RedirectToAction("Checkout");
         }
 
-        public ActionResult ConfirmOrder(int paymentTypeId)
+        public ActionResult ConfirmOrder()
         {
-
             var model = Session["CheckoutViewModel"] as CheckoutViewModel;
             model = _tenantWebsiteService.SetCheckOutProcessModel(model, CurrentTenantWebsite.SiteID, CurrentTenantId, CurrentUserId, Session.SessionID);
-            model.PaymentMethodId = paymentTypeId;
             ViewBag.cart = true;
             ViewBag.CartModal = true;
-            ViewBag.paymentMethod = paymentTypeId;
+            ViewBag.paymentMethod = model.PaymentMethodId;
             ViewBag.RetUrl = _paypalReturnUrl;
             ViewBag.PAYPALURL = _paypalUrl;
             ViewBag.PayPalIpnUrl = _paypalIpnUrl;
             Session["AllCheckoutData"] = model;
             return View(model);
+        }
+
+        public JsonResult SetPaymentDetails(int paymentMethodId, bool isAddressSameForBilling)
+        {
+            var model = new CheckoutViewModel();
+            if (Session["CheckoutViewModel"] != null)
+            {
+                model = Session["CheckoutViewModel"] as CheckoutViewModel;
+            }
+
+            model.PaymentMethodId = paymentMethodId;
+            model.IsAddressSameForBilling = isAddressSameForBilling;
+            if (isAddressSameForBilling)
+            {
+                model.BillingAddressId = model.ShippingAddressId;
+            }
+
+            Session["CheckoutViewModel"] = model;
+
+            return Json(true, JsonRequestBehavior.AllowGet);
         }
 
         public async Task<JsonResult> GetApiAddressAsync(string postCode)
@@ -488,20 +509,30 @@ namespace WarehouseEcommerce.Controllers
             model.AccountAddressId = checkoutViewModel.AccountAddressId;
             model.StepsHistory = checkoutViewModel.StepsHistory != null && checkoutViewModel.StepsHistory.Count > 0 ? checkoutViewModel.StepsHistory : model.StepsHistory;
 
+            if (model.DeliveryMethodId != null) {
+                model.IsAddressSameForBilling = model.IsAddressSameForBilling ?? model.DeliveryMethodId == (int)DeliveryMethod.ToShipmentAddress;
+            }
+
+            if (model.IsAddressSameForBilling == true)
+            {
+                model.BillingAddressId = model.ShippingAddressId;
+            }
+
             SetStepHistory(model);
 
             switch (model.CurrentStep)
             {
-                case CheckoutStep.BillingAddress:
-                    model.BillingAddressId = null;
-                    model.Addresses = _mapper.Map(AccountServices.GetAllValidAccountAddressesByAccountId(model.AccountId ?? 0).Where(u => (!model.BillingAddressId.HasValue || u.AddressID == model.BillingAddressId) && u.AddTypeBilling == true).ToList(), new List<AddressViewModel>());
+                case CheckoutStep.PaymentDetails:
+                    model.Addresses = _mapper.Map(_accountServices.GetAllValidAccountAddressesByAccountId(model.AccountId ?? 0).Where(u => (model.IsAddressSameForBilling == true || !model.BillingAddressId.HasValue || u.AddressID == model.BillingAddressId) && u.AddTypeBilling == true).ToList(), new List<AddressViewModel>());
+                    model.AccountAddress = model.Addresses.FirstOrDefault();
+                    model.BillingAddressId = model.AccountAddress?.AddressID;
                     break;
                 case CheckoutStep.ShippingAddress:
                     model.ShippingAddressId = null;
-                    model.Addresses = _mapper.Map(AccountServices.GetAllValidAccountAddressesByAccountId(model.AccountId ?? 0).Where(u => (!model.ShippingAddressId.HasValue || u.AddressID == model.ShippingAddressId) && u.AddTypeShipping == true && u.IsDeleted != true).ToList(), new List<AddressViewModel>());
+                    model.Addresses = _mapper.Map(_accountServices.GetAllValidAccountAddressesByAccountId(model.AccountId ?? 0).Where(u => (!model.ShippingAddressId.HasValue || u.AddressID == model.ShippingAddressId) && u.AddTypeShipping == true && u.IsDeleted != true).ToList(), new List<AddressViewModel>());
                     break;
                 case CheckoutStep.AddOrEditAddress:
-                    model.AccountAddress = _mapper.Map(AccountServices.GetAccountAddressById(model.AccountAddressId ?? 0), new AddressViewModel());
+                    model.AccountAddress = _mapper.Map(_accountServices.GetAccountAddressById(model.AccountAddressId ?? 0), new AddressViewModel());
                     break;
                 case CheckoutStep.ShipmentRule:
                     var cartItems = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, Session.SessionID);
@@ -534,7 +565,7 @@ namespace WarehouseEcommerce.Controllers
             if (!string.IsNullOrEmpty(sagePayReponse))
             {
                 checkoutModel.SagePayPaymentResponse = JsonConvert.DeserializeObject<SagePayPaymentResponseViewModel>(sagePayReponse);
-                var order = OrderService.CreateShopOrder(checkoutModel, CurrentTenantId, CurrentUserId, CurrentWarehouseId, CurrentTenantWebsite.SiteID);
+                var order = base._orderService.CreateShopOrder(checkoutModel, CurrentTenantId, CurrentUserId, CurrentWarehouseId, CurrentTenantWebsite.SiteID);
                 checkoutModel.OrderNumber = order.OrderNumber;
                 _configurationsHelper.CreateTenantEmailNotificationQueue("Order Confirmed", _mapper.Map(order, new OrderViewModel()), sendImmediately: true, worksOrderNotificationType: WorksOrderNotificationTypeEnum.WebsiteOrderConfirmation, TenantId: CurrentTenantId, accountId: order.AccountID, UserEmail: CurrentUser.UserEmail, userId: CurrentUser.UserId, siteId: CurrentTenantWebsite.SiteID);
                 Session["CheckoutViewModel"] = checkoutModel;
@@ -544,7 +575,7 @@ namespace WarehouseEcommerce.Controllers
             if (!string.IsNullOrEmpty(paypalTransactionId))
             {
                 checkoutModel.SagePayPaymentResponse.transactionId = paypalTransactionId;
-                var order = OrderService.CreateShopOrder(checkoutModel, CurrentTenantId, CurrentUserId, CurrentWarehouseId, CurrentTenantWebsite.SiteID);
+                var order = base._orderService.CreateShopOrder(checkoutModel, CurrentTenantId, CurrentUserId, CurrentWarehouseId, CurrentTenantWebsite.SiteID);
                 checkoutModel.OrderNumber = order.OrderNumber;
                 _configurationsHelper.CreateTenantEmailNotificationQueue("Order Confirmed", _mapper.Map(order, new OrderViewModel()), sendImmediately: true, worksOrderNotificationType: WorksOrderNotificationTypeEnum.WebsiteOrderConfirmation, TenantId: CurrentTenantId, accountId: order.AccountID, UserEmail: CurrentUser.UserEmail, userId: CurrentUser.UserId, siteId: CurrentTenantWebsite.SiteID);
                 Session["CheckoutViewModel"] = checkoutModel;
@@ -552,10 +583,6 @@ namespace WarehouseEcommerce.Controllers
             }
 
             return Json(false, JsonRequestBehavior.AllowGet);
-
-
-
-
         }
     }
 }

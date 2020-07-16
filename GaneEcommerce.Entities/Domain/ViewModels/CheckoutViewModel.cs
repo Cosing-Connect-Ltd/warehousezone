@@ -29,6 +29,7 @@ namespace Ganedata.Core.Entities.Domain
         public List<CountryViewModel> Countries { get; set; }
         public int? ShippingAddressId { get; set; }
         public int? BillingAddressId { get; set; }
+        public bool? IsAddressSameForBilling { get; set; }
         public int? ShipmentRuleId { get; set; }
         public int? PaymentMethodId { get; set; }
         public bool? noTrackStep { get; set; }

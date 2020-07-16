@@ -504,15 +504,20 @@ namespace Ganedata.Core.Entities.Enums
         ShippingAddress = 1,
         CollectionPoint = 2,
         ShipmentRule = 3,
-        BillingAddress = 4,
-        PaymentMethod = 5,
-        AddOrEditAddress = 6,
+        PaymentDetails = 4,
+        AddOrEditAddress = 5,
     }
 
     public enum DeliveryMethod
     {
         ToPickupPoint = 1,
         ToShipmentAddress = 2
+    }
+
+    public enum AddressType
+    {
+        Billing = 1,
+        Shipping = 2
     }
 
     public enum PaymentMethodEnum

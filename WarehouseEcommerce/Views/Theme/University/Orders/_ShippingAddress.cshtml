@@ -17,10 +17,10 @@
                     <div class="btnWrap">
 
                         <a href="javascript:;" data-AccountId="@(Model.AccountId??null)" data-billingAddressId="@(Model.BillingAddressId)" data-ShippingAddressId="@(address[i].AddressID)" data-currentstep="@((int)CheckoutStep.ShipmentRule)" data-deliveryMethodId="@(Model.DeliveryMethodId??null)" onclick="moveToNextStep(this)" class="btmBtn">
-                            Select Address
+                            SELECT ADDRESS
                         </a>
                         <a href="javascript:;" data-AccountId="@(Model.AccountId??null)" data-billingAddressId="@(Model.BillingAddressId)" data-accountAddressId="@(address[i].AddressID)" data-currentstep="@((int)CheckoutStep.AddOrEditAddress)" data-deliveryMethodId="@(Model.DeliveryMethodId??null)" onclick="moveToNextStep(this)" class="btmBtn">
-                            Edit Address
+                            EDIT ADDRESS
                         </a>
 
                         <a href="@Url.Action("RemoveShippingAddress", "Orders", new {accountId = address[i].AccountID, billingAddressId = Model.BillingAddressId, deliveryMethodId = Model.DeliveryMethodId, accountAddressId = address[i].AddressID})" class="btmBtn">Remove Address</a>
@@ -32,9 +32,9 @@
 
             <div class="btnWrap">
                 <a href="javascript:;" data-AccountId="@(Model.AccountId??null)" data-billingAddressId="@(Model.BillingAddressId)" data-currentstep="@((int)CheckoutStep.AddOrEditAddress)" data-deliveryMethodId="@(Model.DeliveryMethodId??null)" onclick="moveToNextStep(this)" class="btmBtn">
-                    ADD NEW SHIPPING ADDRESS
+                    ADD NEW ADDRESS
                 </a>
-                <a href="@Url.Action("GoToPreviousStep","orders")" class="btmBtn">Back</a>
+                <a href="@Url.Action("GoToPreviousStep","orders")" class="btmBtn">BACK</a>
             </div>
         }
         else

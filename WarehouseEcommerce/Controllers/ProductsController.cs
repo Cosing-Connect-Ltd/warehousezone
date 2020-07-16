@@ -273,7 +273,7 @@ namespace WarehouseEcommerce.Controllers
         {
             var model = new WebsiteCartItemsViewModel { WebsiteCartItems = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, HttpContext.Session.SessionID, cartId).ToList() };
 
-            model.ShippmentAddresses = _mapper.Map(AccountServices.GetAllValidAccountAddressesByAccountId(CurrentUser.AccountId ?? 0).Where(u => u.AddTypeShipping == true && u.IsDeleted != true).ToList(), new List<AddressViewModel>());
+            model.ShippmentAddresses = _mapper.Map(_accountServices.GetAllValidAccountAddressesByAccountId(CurrentUser.AccountId ?? 0).Where(u => u.AddTypeShipping == true && u.IsDeleted != true).ToList(), new List<AddressViewModel>());
 
             model.ShowCartPopUp = cartId.HasValue;
             model.ShowLoginPopUp = CurrentUserId == 0;
@@ -413,7 +413,7 @@ namespace WarehouseEcommerce.Controllers
         {
             if (currencyId.HasValue)
             {
-                var detail = LookupServices.GetAllGlobalCurrencies().Where(c => (!currencyId.HasValue || c.CurrencyID == currencyId)).Select(u => new caCurrencyDetail
+                var detail = _lookupServices.GetAllGlobalCurrencies().Where(c => (!currencyId.HasValue || c.CurrencyID == currencyId)).Select(u => new caCurrencyDetail
                 {
 
                     Symbol = u.Symbol,

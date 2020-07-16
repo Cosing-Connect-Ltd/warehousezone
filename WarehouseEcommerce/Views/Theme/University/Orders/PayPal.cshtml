@@ -77,12 +77,15 @@
                         surname: "@Model.UserLastName"
                     },
                     address: {
-                        address_line_1: '@Model.Addresses.FirstOrDefault(u=>u.AddTypeBilling==true).AddressLine1',
-                        address_line_2: '@Model.Addresses.FirstOrDefault(u=>u.AddTypeBilling==true).AddressLine2',
-                        admin_area_2: '@Model.Addresses.FirstOrDefault(u=>u.AddTypeBilling==true).AddressLine3',
-                        admin_area_1: '@Model.Addresses.FirstOrDefault(u=>u.AddTypeBilling==true).County',
-                        postal_code: '@Model.Addresses.FirstOrDefault(u=>u.AddTypeBilling==true).PostCode',
-                        country_code: '@Model.Addresses.FirstOrDefault(u=>u.AddTypeBilling==true).GlobalCountry.CountryCode'
+                        @{
+                            var billingAddress = Model.Addresses.FirstOrDefault(u => u.AddTypeBilling == true || (Model.IsAddressSameForBilling == true && Model.DeliveryMethodId == (int)DeliveryMethod.ToShipmentAddress));
+                        }
+                        address_line_1: '@billingAddress.AddressLine1',
+                        address_line_2: '@billingAddress.AddressLine2',
+                        admin_area_2: '@billingAddress.AddressLine3',
+                        admin_area_1: '@billingAddress.County',
+                        postal_code: '@billingAddress.PostCode',
+                        country_code: '@billingAddress.GlobalCountry.CountryCode'
                     },
                     email_address: "@Model.Email"
 

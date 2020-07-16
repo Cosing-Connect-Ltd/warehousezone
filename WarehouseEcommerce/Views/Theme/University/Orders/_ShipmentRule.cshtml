@@ -12,13 +12,16 @@
                    id="shipment-rule__checkbox-@rule.Id"
                    type="radio"
                    name="shipment-rule-radio"
-                   value="@rule.Id" />
+                   value="@rule.Id"
+                   checked="@(rule.Id == Model.ShipmentRuleId)"/>
             <label class="ship-type" for="shipment-rule__checkbox-@rule.Id"><b>@ViewBag.CurrencySymbol@rule.Price</b> <label>(@rule.Courier @(string.IsNullOrEmpty(rule.Description) ? string.Empty : $" - {rule.Description}"))</label> </label>
         </div>
     }
     <div class="btnWrap">
-        <a href="javascript:;" class="addnwShopAdrrbtn payment-type-btns" onclick="chooseShippingRule(@((int)CheckoutStep.BillingAddress))">SELECT SHIPMENT TYPE</a>&nbsp;
+        <a href="javascript:;" class="addnwShopAdrrbtn payment-type-btns" onclick="chooseShippingRule(@((int)CheckoutStep.PaymentDetails))">SELECT SHIPMENT TYPE</a>&nbsp;
         <a href="@Url.Action("GoToPreviousStep","orders")" class="btmBtn addnwShopAdrrbtn payment-type-btns">BACK</a>
-
     </div>
 </div>
+
+<script>
+</script>

@@ -40,22 +40,24 @@
                             <h4 class="subHead">Order Number</h4><p class="content">@Model.OrderNumber</p>
                             <h4 class="subHead">Transaction Id</h4><p class="content"> @Model.SagePayPaymentResponse.transactionId</p>
 
-                            <h4 class="subHead">
-                                Billing Address
-                            </h4>
-                            var billingaddress = addresses.FirstOrDefault(u => u.AddTypeBilling == true);
-                            if (billingaddress != null)
+                            if (Model.IsAddressSameForBilling != true)
                             {
-                                <p class="content">
-                                    @billingaddress.AddressLine1@(!string.IsNullOrEmpty(billingaddress.AddressLine2) ? $", {billingaddress.AddressLine2}" : "")@(!string.IsNullOrEmpty(billingaddress.AddressLine3) ? $", {billingaddress.AddressLine3}" : "") <br />
-                                    @billingaddress.PostCode@(!string.IsNullOrEmpty(billingaddress.GlobalCountry?.CountryName) ? $", {billingaddress.GlobalCountry.CountryName}" : ""), Phone: @billingaddress.Telephone
-                                </p>
+                                <h4 class="subHead">
+                                    Billing Address
+                                </h4>
+                                var billingaddress = addresses.FirstOrDefault(u => u.AddTypeBilling == true);
+                                if (billingaddress != null)
+                                {
+                                    <p class="content">
+                                        @billingaddress.AddressLine1@(!string.IsNullOrEmpty(billingaddress.AddressLine2) ? $", {billingaddress.AddressLine2}" : "")@(!string.IsNullOrEmpty(billingaddress.AddressLine3) ? $", {billingaddress.AddressLine3}" : "") <br />
+                                        @billingaddress.PostCode@(!string.IsNullOrEmpty(billingaddress.GlobalCountry?.CountryName) ? $", {billingaddress.GlobalCountry.CountryName}" : ""), Phone: @billingaddress.Telephone
+                                    </p>
+                                }
                             }
-
                             if ((DeliveryMethod?)Model.DeliveryMethodId == DeliveryMethod.ToShipmentAddress)
                             {
                                 <h4 class="subHead">
-                                    Shipment Address
+                                    @(Model.IsAddressSameForBilling == true ? "Billing / " : "") Shipment Address
                                 </h4>
                                 var shipppingAddress = addresses.FirstOrDefault(u => u.AddTypeShipping == true);
                                 if (shipppingAddress != null)
@@ -93,7 +95,7 @@
                         }
                         else
                         {
-                    <p class="content">@ViewBag.CurrencySymbol@Model.ShippingRule.Price - By @Model.ShippingRule.Courier @(!string.IsNullOrEmpty(Model.ShippingRule.Description?.Trim()) ? $"({Model.ShippingRule.Description})" : "")</p>
+                            <p class="content">@ViewBag.CurrencySymbol@Model.ShippingRule.Price - By @Model.ShippingRule.Courier @(!string.IsNullOrEmpty(Model.ShippingRule.Description?.Trim()) ? $"({Model.ShippingRule.Description})" : "")</p>
                         }
                         <h4 class="subHead">
                             Payment Method
@@ -138,7 +140,7 @@
                                 </div>
                                 <div class="button-submit">
                                     @*<a href="@Url.Action("list","products")" class="btn saveAddrBtn">Continue Shopping</a>*@
-                                    <a href="@Url.Action("list","products")" class="saveAddrBtn after-pament">Continue Shopping</a>
+                                    <a href="@Url.Action("list","products")" class="saveAddrBtn">CONTINUE SHOPPING</a>
                                     @*<a href="@Url.Action("Index","Test")" class="btn btn-block cash-btn cashbtn" name="submitNewsletter"> Proceed To Payment</a>*@
                                 </div>
 
@@ -158,7 +160,7 @@
                                     </fieldset>
                                 </div>
                                 <div class="button-submit">
-                                    <a href="@Url.Action("Index","Home")" class="saveAddrBtn after-pament">Continue Shopping</a>
+                                    <a href="@Url.Action("Index","Home")" class="saveAddrBtn">CONTINUE SHOPPING</a>
                                 </div>
 
 

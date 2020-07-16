@@ -1396,12 +1396,11 @@
     <Content Include="Views\Theme\University\Orders\_AddOrEditAddress.cshtml" />
     <Content Include="Views\Theme\University\Orders\SagePay3DAuth.cshtml" />
     <Content Include="Views\Theme\University\Orders\SagePay.cshtml" />
-    <Content Include="Views\Theme\University\Orders\_BillingAddress.cshtml" />
+    <Content Include="Views\Theme\University\Orders\_PaymentDetails.cshtml" />
     <Content Include="Views\Theme\University\Orders\_ShippingAddress.cshtml" />
     <Content Include="Views\Theme\University\Orders\_DeliveryMethod.cshtml" />
     <Content Include="Views\Theme\University\Orders\_CollectionPoint.cshtml" />
     <Content Include="Views\Theme\University\Orders\_ShipmentRule.cshtml" />
-    <Content Include="Views\Theme\University\Orders\_PaymentMethod.cshtml" />
     <Content Include="Views\Theme\University\Orders\_OrderProgressBar.cshtml" />
     <Content Include="Views\Theme\Smart\Orders\Checkout.cshtml" />
     <Content Include="Views\Theme\Smart\Orders\SagePay.cshtml" />

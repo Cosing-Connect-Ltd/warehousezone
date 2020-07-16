@@ -1,26 +1,21 @@
-﻿using Ganedata.Core.Entities.Domain;
-using Ganedata.Core.Entities.Domain.Models;
-using Ganedata.Core.Entities.Enums;
+﻿using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Services;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
-using WarehouseEcommerce.Helpers;
-using System.Web;
 
 namespace WarehouseEcommerce.Controllers
 {
     public class BaseController : Controller
     {
-        protected readonly ICoreOrderService OrderService;
-        protected readonly IPropertyService PropertyService;
-        protected readonly IAccountServices AccountServices;
-        protected readonly ILookupServices LookupServices;
-        protected readonly ITenantWebsiteService TenantWebsiteServices;
+        protected readonly ICoreOrderService _orderService;
+        protected readonly IPropertyService _propertyService;
+        protected readonly IAccountServices _accountServices;
+        protected readonly ILookupServices _lookupServices;
+        protected readonly ITenantWebsiteService _tenantWebsiteServices;
         private readonly ITenantsCurrencyRateServices _tenantsCurrencyRateServices;
         public static string NoImage = "/UploadedFiles/Products/Products/no-image.png";
         public static string uploadedProductCategoryfilePath = "/UploadedFiles/ProductCategory/";
@@ -29,11 +24,11 @@ namespace WarehouseEcommerce.Controllers
             ILookupServices lookupServices, ITenantsCurrencyRateServices tenantsCurrencyRateServices, ITenantWebsiteService tenantWebsiteService)
         {
             _tenantsCurrencyRateServices = tenantsCurrencyRateServices;
-            OrderService = orderService;
-            PropertyService = propertyService;
-            AccountServices = accountServices;
-            LookupServices = lookupServices;
-            TenantWebsiteServices = tenantWebsiteService;
+            _orderService = orderService;
+            _propertyService = propertyService;
+            _accountServices = accountServices;
+            _lookupServices = lookupServices;
+            _tenantWebsiteServices = tenantWebsiteService;
 
             var res = CurrentTenantWebsite;
         }
@@ -91,7 +86,7 @@ namespace WarehouseEcommerce.Controllers
 
         public string GenerateNextOrderNumber(InventoryTransactionTypeEnum type)
         {
-            return OrderService.GenerateNextOrderNumber(type, CurrentTenantId);
+            return _orderService.GenerateNextOrderNumber(type, CurrentTenantId);
         }
         public string GenerateNextOrderNumber(string type)
         {
@@ -176,12 +171,12 @@ namespace WarehouseEcommerce.Controllers
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            var website = TenantWebsiteServices.GetTenantWebSiteBySiteId(CurrentTenantWebsite.SiteID);
+            var website = _tenantWebsiteServices.GetTenantWebSiteBySiteId(CurrentTenantWebsite.SiteID);
             ViewBag.SiteId = CurrentTenantWebsite.SiteID;
             ViewBag.TimeZone = GetCurrentTimeZone();
             ViewBag.LoginDetail = CurrentUserId > 0 ? "Logout" : "Login";
             ViewBag.CurrentUserId = CurrentUserId;
-            ViewBag.Currencies = LookupServices.GetAllGlobalCurrencies();
+            ViewBag.Currencies = _lookupServices.GetAllGlobalCurrencies();
             ViewBag.TenantWebsite = website;
             ViewBag.BaseFilePath = website.BaseFilePath;
             ViewBag.BasePath = Request.Url.Scheme + "://" + website.HostName;
@@ -223,7 +218,7 @@ namespace WarehouseEcommerce.Controllers
 
         public void VerifyOrderStatus(int orderId)
         {
-            var order = OrderService.GetOrderById(orderId);
+            var order = _orderService.GetOrderById(orderId);
             if (order.OrderStatusID == OrderStatusEnum.Active)
             {
                 ViewBag.PreventProcessing = false;
@@ -278,7 +273,7 @@ namespace WarehouseEcommerce.Controllers
 
             if (CurrencyId.HasValue)
             {
-                var detail = LookupServices.GetAllGlobalCurrencies().Where(c => (!CurrencyId.HasValue || c.CurrencyID == CurrencyId)).Select(u => new caCurrencyDetail
+                var detail = _lookupServices.GetAllGlobalCurrencies().Where(c => (!CurrencyId.HasValue || c.CurrencyID == CurrencyId)).Select(u => new caCurrencyDetail
                 {
 
                     Symbol = u.Symbol,
@@ -299,7 +294,7 @@ namespace WarehouseEcommerce.Controllers
                 {
                     CurrencyId = 1;
 
-                    var detail = LookupServices.GetAllGlobalCurrencies().Where(c => (!CurrencyId.HasValue || c.CurrencyID == CurrencyId)).Select(u => new caCurrencyDetail
+                    var detail = _lookupServices.GetAllGlobalCurrencies().Where(c => (!CurrencyId.HasValue || c.CurrencyID == CurrencyId)).Select(u => new caCurrencyDetail
                     {
 
                         Symbol = u.Symbol,

@@ -7,7 +7,7 @@
         <h5 class="subheadCmn">Select Collection Point</h5>
         @Html.Partial("_CollectionPointSelector")
         <div class="btnWrap">
-            <button class="addnwShopAdrrbtn" id="select-collection-point__button" disabled onclick="chooseCollectionPoint(@((int)CheckoutStep.BillingAddress))">Select Collection Point</button>
+            <button class="addnwShopAdrrbtn" id="select-collection-point__button" disabled onclick="chooseCollectionPoint(@((int)CheckoutStep.PaymentDetails))">Select Collection Point</button>
             <a href="@Url.Action("GoToPreviousStep","orders")" class="addnwShopAdrrbtn">BACK</a>
         </div>
     </div>

@@ -31,7 +31,7 @@
                 <h4 class="ordConfirmHead">Order Review</h4>
                 <div class="row">
                     <div class="col-lg-6">
-                        @if (addresses != null)
+                        @if (addresses != null && Model.IsAddressSameForBilling != true)
                         {
                             <h4 class="subHead">
                                 Billing Address
@@ -53,7 +53,7 @@
                             if ((DeliveryMethod?)Model.DeliveryMethodId == DeliveryMethod.ToShipmentAddress)
                             {
                                 <h4 class="subHead">
-                                    Shipment Address
+                                    @(Model.IsAddressSameForBilling == true ? "Billing / " : "") Shipment Address
                                 </h4>
                                 var shipppingAddress = addresses.FirstOrDefault(u => u.AddTypeShipping == true);
                                 if (shipppingAddress != null)
@@ -127,7 +127,7 @@
 
                             <div class="button-submit">
                                 <button type="button" name="submitNewsletter" class="saveAddrBtn" onclick="window.location.href='@Url.Action("PayPal","orders")'">Proceed To Payment</button>
-                                <a href="@Url.Action("checkout", "orders", new {checkoutStep = CheckoutStep.PaymentMethod})" class="saveAddrBtn mt-3">Back</a>
+                                <a href="@Url.Action("checkout", "orders", new {checkoutStep = CheckoutStep.PaymentDetails})" class="saveAddrBtn mt-3">Back</a>
                                 @*<a href="@Url.Action("Index","Test")" class="btn btn-block cash-btn cashbtn" name="submitNewsletter"> Proceed To Payment</a>*@
                             </div>
 
@@ -147,11 +147,9 @@
                                     </fieldset>
                                 </div>
                                 <div class="button-submit">
-                                    <button type="Submit" name="submitNewsletter" class="saveAddrBtn">Proceed To Payment</button>
-                                    <a href="@Url.Action("checkout","orders",new{ step = (int)CheckoutStep.PaymentMethod})" class="saveAddrBtn mt-3">Back</a>
+                                    <button type="Submit" name="submitNewsletter" class="saveAddrBtn">PROCEED TO PAYMENT</button>
+                                    <a href="@Url.Action("checkout","orders",new{ step = (int)CheckoutStep.PaymentDetails})" class="saveAddrBtn mt-3">BACK</a>
                                 </div>
-
-
                             }
                         }
                     </div>
