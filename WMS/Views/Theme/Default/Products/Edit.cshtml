@@ -2,25 +2,28 @@
 @using Ganedata.Core.Entities.Helpers
 @using Ganedata.Core.Models;
 @using Ganedata.Core.Entities.Enums
+@using Ganedata.Core.Services;
 
 @section scripts {
 
     @Html.DevExpress().GetStyleSheets(
-     new StyleSheet { ExtensionType = ExtensionType.TokenBox, Theme = GaneStaticAppExtensions.DevexTheme },
-        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.TokenBox, Theme = GaneStaticAppExtensions.DevexTheme },
         new StyleSheet { ExtensionType = ExtensionType.UploadControl, Theme = GaneStaticAppExtensions.DevexTheme },
         new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
         new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
-        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+        new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme },
+        new StyleSheet { ExtensionType = ExtensionType.HtmlEditor, Theme = GaneStaticAppExtensions.DevexTheme }
+
         )
 
     @Html.DevExpress().GetScripts(
-     new Script { ExtensionType = ExtensionType.TokenBox },
-    new Script { ExtensionType = ExtensionType.GridView },
-         new Script { ExtensionType = ExtensionType.UploadControl },
+        new Script { ExtensionType = ExtensionType.TokenBox },
+        new Script { ExtensionType = ExtensionType.UploadControl },
         new Script { ExtensionType = ExtensionType.PopupControl },
         new Script { ExtensionType = ExtensionType.SpinEdit },
-        new Script { ExtensionType = ExtensionType.DateEdit }
+        new Script { ExtensionType = ExtensionType.DateEdit },
+        new Script { ExtensionType = ExtensionType.HtmlEditor }
+
         )
 }
 @{
@@ -210,7 +213,7 @@
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "col-md-4" })
                     <div class="col-md-8">
-                        @Html.EditorFor(model => model.Description)
+                        @Html.Partial("PlaceholdersHtmlEditorPartial", new HtmlEditorModel() { HtmlContent = Model.Description, EditorName = "Description", CallbackController = "DevexHelper", CallbackAction = "HtmlEditorWebsiteDescriptionEditorPartial", Height = 300 })
                         @Html.ValidationMessageFor(model => model.Description)
                     </div>
                 </div>

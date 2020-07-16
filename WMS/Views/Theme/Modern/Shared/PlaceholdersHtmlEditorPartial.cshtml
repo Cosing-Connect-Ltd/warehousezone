@@ -11,7 +11,7 @@
         settings.Settings.AllowPreview = false;
 
         settings.CallbackRouteValues = new { Controller = "DevexHelper", Action = Model.CallbackAction };
-        settings.SettingsDialogs.InsertImageDialog.SettingsImageUpload.UploadCallbackRouteValues = new { Controller = "DevexHelper", Action = "UploadProcessingImageUpload" };
+        settings.SettingsDialogs.InsertImageDialog.SettingsImageUpload.UploadCallbackRouteValues = new { Controller = "DevexHelper", Action = "UploadProcessingImageUpload"};
         settings.Settings.AllowInsertDirectImageUrls = false;
 
         settings.Placeholders.AddRange(LayoutHelpers.MailMergeVariablesList.Select(m => new HtmlEditorPlaceholderItem(m.Text)));
@@ -39,7 +39,7 @@
 
         toolbar.Items.Add(new ToolbarInsertPlaceholderDialogButton(true));
         settings.Toolbars.Add(toolbar);
-        settings.SettingsDialogs.InsertImageDialog.SettingsImageUpload.UploadCallbackRouteValues = new { Controller = "DevexHelper", Action = "ImageUpload" };
+        settings.SettingsDialogs.InsertImageDialog.SettingsImageUpload.UploadCallbackRouteValues = new { Controller = "DevexHelper", Action = "ImageUpload", editorName = Model.EditorName };
         settings.SettingsDialogs.InsertImageDialog.SettingsImageUpload.UploadFolder = HtmlEditorFeaturesDemosHelper.ImagesDirectory;
         settings.SettingsDialogs.InsertImageDialog.SettingsImageUpload.ValidationSettings.Assign(HtmlEditorFeaturesDemosHelper.ImageUploadValidationSettings);
     }).Bind(Model.HtmlContent).GetHtml()

@@ -97,7 +97,8 @@ namespace WMS.Controllers
                 return RedirectToAction("Index");
 
             }
-
+            ViewBag.Sites = new SelectList(_tenantWebsiteService.GetAllValidTenantWebSite(CurrentTenantId), "SiteID",
+                "SiteName");
             return View(template);
 
 
@@ -141,7 +142,8 @@ namespace WMS.Controllers
 
                 return RedirectToAction("Index");
             }
-
+            ViewBag.Sites = new SelectList(_tenantWebsiteService.GetAllValidTenantWebSite(CurrentTenantId), "SiteID",
+                "SiteName");
             return View(emailtemp);
         }
 
