@@ -13,7 +13,7 @@
 
 <section class="nb_sec nb_prdlisting_pgsec">
     <div class="container">
-        <div class="breadCrumbtopsec">
+        <div class="breadCrumbtopsec order-review-breadcrum">
             <div class="nb_bread_crumbwrap">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
@@ -119,7 +119,7 @@
                         <h4 class="subHead">@ViewBag.CurrencySymbol@(Model?.TotalOrderAmount ?? 0)</h4>
 
                     </div>
-                    <div class="saveAddrWrap mt-5 mb-5 ml-3 mr-3">
+                    <div class="saveAddrWrap mt-3 ml-3 mr-3 payment-bottom-btn">
                         @if ((PaymentMethodEnum?)Model.PaymentMethodId == PaymentMethodEnum.PayPal)
                         {
                             <form class="paypal-form" action="@((string)ViewBag.PAYPALURL)" method="post">

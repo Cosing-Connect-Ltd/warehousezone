@@ -1877,7 +1877,7 @@ body.modal-open {
 }
 
 .Paymentsec .paymentTabsec .myAccLeftNavsec .tabcontentInner {
-    padding: 0px 35px;
+    padding: 0px 0px;
 }
 
     .Paymentsec .paymentTabsec .myAccLeftNavsec .tabcontentInner .subhead:after {
@@ -1889,7 +1889,7 @@ body.modal-open {
 }
 
 .Paymentsec .paymentTabsec .myAccLeftNavsec .tabcontentInner .subcontBox > div {
-    padding: 35px 0px;
+    padding: 0px 0px;
     border-bottom: solid 1px #707070;
 }
 
@@ -1999,7 +1999,7 @@ body.modal-open {
         letter-spacing: 2px;
         padding-bottom: 20px;
         position: relative;
-        margin-bottom: 57px;
+        margin-bottom: 20px;
     }
 
         .orderConfirmationSection .ordConfirmHead:after {
@@ -2069,9 +2069,26 @@ body.modal-open {
         box-shadow: 0 -10px 30px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
     }
 
+@media(max-width:767px) {
+    .payment-bottom-btn .button-submit {
+        width: 100% !important;
+    }
+    .payment-bottom-btn .saveAddrBtn {
+        width: 100% !important;
+    }
+    .payment-bottom-btn {
+        display: block !important;
+    }
+    .submitBtnwra #my-tokenisation-trigger {
+        width: 100% !important;
+    }
+}
+@media(max-width:768px) {
+    .submitBtnwra #my-tokenisation-trigger {
+        width: 100% !important;
+    }
+}
 /*payment pages from GetAddress to FinalPayment- css start*/
-
-
 /*new cart page- css start*/
 .basketTable tr td {
     vertical-align: top;
@@ -2723,9 +2740,12 @@ body.modal-open {
 
     .mobile-checkout {
         display: flex !important;
-        margin: 0 10px
+/*        margin: 0 10px*/
     }
-
+    .basket-section .botomBtnsec .btmbtn.sho {
+        margin-right: unset;
+        margin-left: unset;
+    }
     .headBoxTop,
     .basketTable tr.cmnRow .tot .in-basket-price-total:after,
     .basketTable tr.cmnRow .delivery,
@@ -3003,8 +3023,6 @@ body.modal-open {
     }
 }
 /*product list and feature product -start*/
-
-
 .nb_sec_navwrap .nb_sec_navlist li {
     cursor: pointer;
     min-width: 200px;
@@ -3348,6 +3366,12 @@ body.modal-open {
                     width: 320px !important;
                     height: 320px;
                 }
+        .basketTable .prd,
+        .basketTable .price,
+        .basketTable .qty,
+        .basketTable .subtotalCellInner {
+            padding:unset;
+        }
 }
 
 @media(max-width:650px) {
@@ -3943,7 +3967,13 @@ body {
 .list-on-tablets .prd_lst_boxouter:hover  .imagewrap {
     border: 1px solid var(--secondary-color);
 }
+.feature-product-overflow .prd_lst_boxouter:hover .imagewrap {
+    border: 1px solid var(--secondary-color);
+}
 .list-on-tablets .prd_lst_boxouter:hover .prd_amnt {
+    background-color: var(--secondary-color) !important;
+}
+.feature-product-overflow .prd_lst_boxouter:hover .prd_amnt {
     background-color: var(--secondary-color) !important;
 }
 .list-on-tablets .badge {
@@ -3976,4 +4006,17 @@ body {
     .product-section .breadCrumbtopsec {
         margin-bottom: 20px;
     }
+    .checkout-process-breadcrum,
+    .order-review-breadcrum,
+    .sagepay-breadcrum,
+    .paypal-breadcrum{
+        margin-bottom: unset !important;
+    }
+}
+.basket-page-breadcrum {
+    margin-bottom: unset !important;
+}
+.termandcondition h3 {
+    margin-bottom: unset !important;
+    margin-top: 15px !important;
 }
