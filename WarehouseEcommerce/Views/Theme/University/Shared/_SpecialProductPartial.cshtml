@@ -9,7 +9,7 @@
             <div class="nb_header_style1">
                 <h3>@(!string.IsNullOrEmpty(Model.FeaturedText)?Model.FeaturedText:"Featured Products")</h3>
             </div>
-            <div class="row list-on-tablets">
+            <div class="row feature-list">
                 <div class="owl-carousel owl-theme nb_featuredPrdCarrousle nb_prd_listing_wrap">
                     @foreach (var item in Model.productMasterList)
                     {
