@@ -188,8 +188,12 @@
                 var pagerep = new RegExp("&page=\\d+");
                 str = str.replace(pagerep, '');
                 str = removeURLParameter(str, "page");
-                str = removeURLParameter(str, "values");
-                var parameter = "&values=";
+            str = removeURLParameter(str, "values");
+            var parameter = "?values=";
+            if (window.location.href.indexOf('?') !== -1) {
+                 parameter = "&values=";
+            }
+
                 str = str + parameter;
                 $(":checkbox").each(function () {
 
