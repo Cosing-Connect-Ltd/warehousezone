@@ -1238,14 +1238,20 @@ namespace Ganedata.Core.Services
         public bool ChangeWishListStatus(int productId, bool notification, int siteId, int userId)
         {
             var wishListItem = _currentDbContext.WebsiteWishListItems
-                .FirstOrDefault(u => u.ProductId == productId && u.SiteID == siteId && u.UserId == userId);
-            if (wishListItem != null)
+                .Where(u => u.ProductId == productId && u.SiteID == siteId && u.UserId == userId).ToList();
+            if (wishListItem.Count > 0)
             {
-                wishListItem.IsNotification = notification;
-                wishListItem.UpdateUpdatedInfo(userId);
-                _currentDbContext.Entry(wishListItem).State = EntityState.Modified;
+                foreach (var item in wishListItem)
+                {
+                    item.IsNotification = notification;
+                    item.UpdateUpdatedInfo(userId);
+                    _currentDbContext.Entry(item).State = EntityState.Modified;
+                }
                 _currentDbContext.SaveChanges();
             }
+
+            
+            
 
             return true;
 
@@ -1268,12 +1274,17 @@ namespace Ganedata.Core.Services
 
         public int RemoveWishListItem(int ProductId, bool notification, int SiteId, int UserId)
         {
-            var wishListProduct = _currentDbContext.WebsiteWishListItems.FirstOrDefault(u => u.ProductId == ProductId && u.SiteID == SiteId && u.UserId == UserId && u.IsNotification == notification);
-            if (wishListProduct != null)
+            var wishListProduct = _currentDbContext.WebsiteWishListItems.Where(u => u.ProductId == ProductId && u.SiteID == SiteId && u.UserId == UserId && u.IsNotification == notification).ToList();
+            if (wishListProduct.Count>0)
             {
-                wishListProduct.IsDeleted = true;
-                wishListProduct.UpdateUpdatedInfo(UserId);
-                _currentDbContext.Entry(wishListProduct).State = System.Data.Entity.EntityState.Modified;
+                foreach (var item in wishListProduct)
+                {
+                    item.IsDeleted = true;
+                    item.UpdateUpdatedInfo(UserId);
+                    _currentDbContext.Entry(item).State = EntityState.Modified;
+
+                }
+
                 _currentDbContext.SaveChanges();
 
             }

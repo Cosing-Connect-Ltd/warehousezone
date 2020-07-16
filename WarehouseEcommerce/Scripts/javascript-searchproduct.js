@@ -934,7 +934,22 @@ function ChangeWishListStatus(productId, notification) {
         data: { productId: productId, notification: notification },
         dataType: 'json',
         success: function (data) {
+           
+            $.ajax({
+                type: "GET",
+                url: basePath + "/Products/_wishlistItems/",
+                dataType: 'html',
+                success: function (data) {
 
+                    var cardItemsValue = parseInt($("#WishList-total").text());
+                    $("#WishList-total").text((cardItemsValue - 1));
+                    $('#UpdateWishList').empty();
+                    $('#UpdateWishList').html(data);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert('Error' + textStatus + "/" + errorThrown);
+                }
+            });
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert('Error' + textStatus + "/" + errorThrown);
