@@ -189,7 +189,7 @@
     }
 
     .nb_feat_prod_sec {
-        padding: 60px 0px;
+        padding: 0px 0px;
     }
 
         .nb_feat_prod_sec .nb_fp_boxwrap .prd_det_sec .prd_name {
@@ -428,15 +428,6 @@
     .nb_prd_listing_wrap .prd_lst_boxouter .foot .prd_amnt {
         padding: 3px 11px;
     }
-
-    .nb_prd_listing_wrap .prd_lst_boxouter .foot .icolist {
-/*        display: none;*/
-    }
-
-    .nb_prd_listing_wrap .prd_lst_boxouter .foot {
-/*        flex-direction: column;*/
-    }
-
     .nb_prd_listing_wrap .prd_lst_boxouter .prdName {
         min-height: auto;
         max-height: auto;

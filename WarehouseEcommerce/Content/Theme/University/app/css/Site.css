@@ -2832,6 +2832,9 @@ body.modal-open {
 .list-on-tablets .foot .icolist .bel-icon{
     margin-left: 31px;
 }
+.list-on-tablets .foot .icolist .cart-icon{
+    margin-left: 30px;
+}
 .feature-product-overflow .foot .icolist .cart-icon,
 .feature-product-overflow .foot .icolist .bel-icon{
     margin-left: 16px;
@@ -2912,6 +2915,14 @@ body.modal-open {
         margin-left: 0;
         margin-right: -8px;
     }
+    .feature-product-overflow .foot .icolist .cart-icon {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+    .list-on-tablets .foot .icolist .cart-icon {
+        margin-left: 0;
+        margin-right: -3px;
+    }
     .feature-product-overflow .owl-item {
         width: 175px !important;
     }
@@ -2945,10 +2956,16 @@ body.modal-open {
         margin-left: 18px;
         margin-right: 0px;
     }
-    .feature-product-overflow .foot .icolist .cart-icon,
     .feature-product-overflow .foot .icolist .bel-icon {
         margin-left: 4px;
         margin-right: 0px;
+    }
+    .prd_lst_boxouter .foot .icolist .bel-icon {
+        margin-left: 6px;
+    }
+    .feature-product-overflow .foot .icolist .cart-icon {
+        margin-left: 6px;
+        margin-right: 6px;
     }
 }
 @media(max-width:381px) {
@@ -2959,16 +2976,30 @@ body.modal-open {
         width: 130px !important;
         height: 130px;
     }
-    .prd_lst_boxouter .foot .icolist .cart-icon,
     .prd_lst_boxouter .foot .icolist .bel-icon {
         margin-left: 6px;
     }
+    .feature-product-overflow .foot .icolist .cart-icon {
+        margin-left: 6px;
+        margin-right: 6px;
+    }
+    .list-on-tablets .foot .icolist .cart-icon {
+        margin-left: 13px;
+        margin-right: 0px;
+    }
 }
 @media(max-width:350px){
-    .prd_lst_boxouter .foot .icolist .cart-icon,
     .prd_lst_boxouter .foot .icolist .bel-icon {
         margin-left: -4px;
         margin-right: -5px;
+    }
+    .feature-product-overflow .foot .icolist .cart-icon {
+        margin-left: 5px;
+        margin-right: 6px;
+    }
+    .list-on-tablets .foot .icolist .cart-icon {
+        margin-left: 3px;
+        margin-right: 7px;
     }
 }
 /*product list and feature product -start*/
@@ -3927,4 +3958,22 @@ body {
         .sagepay-form .button-submit a.saveAddrBtn {
             width: 100%;
         }
+}
+.product-section .breadCrumbtopsec {
+    margin-bottom: 30px;
+}
+@media(max-width:768px){
+    .nb_prd_viewingsecWrap .img_view_area {
+        height: 287px;
+        padding: unset;
+        justify-content: center;
+        display: flex;
+    }
+    .img_view_area .zoomWrapper {
+        height: 287px !important;
+        width: 286.797px !important;
+    }
+    .product-section .breadCrumbtopsec {
+        margin-bottom: 20px;
+    }
 }

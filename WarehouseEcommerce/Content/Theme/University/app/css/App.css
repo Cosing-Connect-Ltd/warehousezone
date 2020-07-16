@@ -1054,7 +1054,7 @@ input[type="number"]::-webkit-outer-spin-button {
         }
 
 .nb_feat_prod_sec {
-    padding: 90px 0px 140px 0px;
+    padding: 0px 0px 140px 0px;
     background-size: cover;
 }
 
@@ -3784,6 +3784,12 @@ body.ZoomerActive {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+@media(min-width:769px){
+    .img_view_area .zoomWrapper {
+        width: 100% !important;
+        height: 100% !important;
+    }
 }
 
 #quickCartPopup .modal-dialog {
