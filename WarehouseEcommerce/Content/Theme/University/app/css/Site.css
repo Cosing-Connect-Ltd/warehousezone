@@ -2120,7 +2120,7 @@ body.modal-open {
     }
 
         .basketTable tr.cmnRow td.greyBox {
-            padding: 0px 8px;
+            padding: 0 0 0 8px;
         }
 
             .basketTable tr.cmnRow td.greyBox .greyBoxInner {
@@ -2393,7 +2393,7 @@ body.modal-open {
 
     .basketTable tr.cmnRow .delivery {
         width: 10%;
-        min-width: 218px;
+        min-width: 210px;
         border-bottom: solid 1px transparent;
     }
 
