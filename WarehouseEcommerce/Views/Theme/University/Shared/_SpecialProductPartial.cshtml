@@ -49,7 +49,7 @@
                                         @if (item.SellPrice > 0 && item.SellPrice.HasValue && item.ProductType != ProductKitTypeEnum.ProductByAttribute && Ganedata.Core.Services.Inventory.GetStockDetailByProductId(@item.ProductId) > 0)
                                         {
                                             <li>
-                                                <a href="javascript:;" onclick="addToCart(@item.ProductId)"><i class="icon-shopping-cart"></i></a>
+                                                <a href="javascript:;" onclick="addToCart(@item.ProductId)"><i class="cart-icon icon-shopping-cart"></i></a>
                                             </li>
 
 
@@ -57,7 +57,7 @@
                                         else if (@item.SellPrice > 0 && item.SellPrice.HasValue && item.ProductType == ProductKitTypeEnum.ProductByAttribute && Ganedata.Core.Services.Inventory.GetStockDetailByProductId(@item.ProductId) > 0)
                                         {
                                             <li>
-                                                <a href="javascript:;" onclick="showProductByAttributeSelector('@item.SKUCode')"><i class="icon-shopping-cart"></i></a>
+                                                <a href="javascript:;" onclick="showProductByAttributeSelector('@item.SKUCode')"><i class="cart-icon icon-shopping-cart"></i></a>
                                             </li>
                                         }
                                         else
@@ -67,13 +67,13 @@
                                             if (totalwishlistitems == null)
                                             {
                                                 <li>
-                                                    <a href="javascript:;" onclick="AddWishListItemStockNotAvailable(@item.ProductId)" class="notification-bell_@item.ProductId"><i class="fa fa-bell-o list-icon" style="color:black"></i></a>
+                                                    <a href="javascript:;" onclick="AddWishListItemStockNotAvailable(@item.ProductId)" class="notification-bell_@item.ProductId"><i class="bel-icon fa fa-bell-o list-icon" style="color:black"></i></a>
                                                 </li>
                                             }
                                             else
                                             {
                                                 <li>
-                                                    <a href="javascript:;" onclick="removeNotifyProduct(@item.ProductId,true)" class="notification-bell_@item.ProductId"><i class="fa fa-bell-o list-icon" style="color:red"></i></a>
+                                                    <a href="javascript:;" onclick="removeNotifyProduct(@item.ProductId,true)" class="notification-bell_@item.ProductId"><i class="bel-icon fa fa-bell-o list-icon" style="color:red"></i></a>
                                                 </li>
 
                                             }

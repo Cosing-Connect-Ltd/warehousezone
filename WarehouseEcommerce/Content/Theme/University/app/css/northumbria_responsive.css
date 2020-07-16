@@ -430,11 +430,11 @@
     }
 
     .nb_prd_listing_wrap .prd_lst_boxouter .foot .icolist {
-        display: none;
+/*        display: none;*/
     }
 
     .nb_prd_listing_wrap .prd_lst_boxouter .foot {
-        flex-direction: column;
+/*        flex-direction: column;*/
     }
 
     .nb_prd_listing_wrap .prd_lst_boxouter .prdName {
