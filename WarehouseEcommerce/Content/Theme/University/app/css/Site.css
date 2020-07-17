@@ -1692,7 +1692,7 @@ body.modal-open {
         }
 
             .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group .findAddrWrap .findAddrInput {
-                width: 96%;
+                width: 100%;
                 height: 46px;
                 margin-top: 1px;
                 font-family: "primaryfont_Normal";
