@@ -1,4 +1,5 @@
-﻿@model List<Ganedata.Core.Entities.Domain.WebsiteWishListItem>
+﻿@using Ganedata.Core.Entities.Enums
+@model List<Ganedata.Core.Entities.Domain.WebsiteWishListItem>
 
     <div class="row">
         @if (Model.Count > 0)
@@ -36,7 +37,12 @@
                                     </div>
                                 </td>
                                 <td class="wishlist-btn-td">
-                                    <a href="javascript:;" class="wishlist-table-btns wishlist-basket-btn" onclick="addToCart(@item.ProductMaster.ProductId)">Add to Basket</a><br />
+                                    @if (item.ProductMaster.SellPrice > 0 && item.ProductMaster.SellPrice.HasValue && item.ProductMaster.ProductType == ProductKitTypeEnum.ProductByAttribute && Ganedata.Core.Services.Inventory.GetStockDetailByProductId(@item.ProductId, ViewBag.SiteId) > 0)
+                                    {
+                                        <a href="javascript:;" class="wishlist-table-btns wishlist-basket-btn" onclick="addToCart(@item.ProductMaster.ProductId)">Add to Basket</a>
+                                        <br/>
+                                    }
+
                                     <a href="javascript:;" class="wishlist-table-btns wishlist-remove-btn" onclick="RemoveWishItem(@item.ProductMaster.ProductId)">Remove</a>
                                 </td>
 
