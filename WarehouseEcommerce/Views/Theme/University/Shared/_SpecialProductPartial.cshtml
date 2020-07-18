@@ -6,6 +6,7 @@
     @Html.Partial("_ProductByAttributeSelectorModal")
     <section class="nb_sec nb_feat_prod_sec feature-product-overflow">
         <div class="container">
+        <div class="inside-container">
             <div class="nb_header_style1">
                 <h3>@(!string.IsNullOrEmpty(Model.FeaturedText)?Model.FeaturedText:"Featured Products")</h3>
             </div>
@@ -108,6 +109,7 @@
                 </div>
 
             </div>
+        </div>
         </div>
     </section>
 }

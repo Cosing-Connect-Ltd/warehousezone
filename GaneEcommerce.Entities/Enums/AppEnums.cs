@@ -360,9 +360,9 @@ namespace Ganedata.Core.Entities.Enums
     }
     public enum SortProductTypeEnum
     {
-        [Display(Name = "Name(A-Z)")]
+        [Display(Name = "Name (A-Z)")]
         NameByAsc = 1,
-        [Display(Name = "Name(Z-A)")]
+        [Display(Name = "Name (Z-A)")]
         NameByDesc = 2,
         [Display(Name = "Price (High > Low)")]
         PriceByDesc = 3,
