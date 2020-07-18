@@ -2828,6 +2828,10 @@ body.modal-open {
 }
 
 /*product-list and feature-product -middle*/
+.nb_top_catSection .nb_header_style1,
+.feature-product-overflow .nb_header_style1 {
+    margin-bottom: 25px !important;
+}
 .feature-product-overflow .prd_lst_boxouter .badge {
     top: -3px;
 }
@@ -2873,10 +2877,8 @@ body.modal-open {
     margin-left: 9px;
 }
 }
-@media(max-width:1200px) {
 .feature-product-overflow .owl-stage {
-    width: unset !important;
-    }
+    width: 2500px !important;
 }
 @media(width:768px) {
     .list-on-tablets .prd_lst_boxouter .imagewrap img {
