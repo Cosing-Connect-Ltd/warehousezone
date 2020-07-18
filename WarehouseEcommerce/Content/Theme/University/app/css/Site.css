@@ -2839,6 +2839,7 @@ body.modal-open {
 .nb_top_catSection .nb_header_style1,
 .feature-product-overflow .nb_header_style1 {
     margin-bottom: 30px !important;
+    white-space:nowrap;
 }
 
 .feature-product-overflow .prd_lst_boxouter .badge {

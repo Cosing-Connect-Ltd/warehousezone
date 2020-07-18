@@ -824,7 +824,7 @@ input[type="number"]::-webkit-outer-spin-button {
         flex-direction: row;
         padding: 12px 0px;
         align-items: center;
-        justify-content: space-between;
+        justify-content: space-around;
     }
 
         .nb_sec_navwrap .nb_sec_navlist li a {
