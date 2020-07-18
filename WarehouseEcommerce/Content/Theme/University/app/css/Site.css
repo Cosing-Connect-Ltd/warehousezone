@@ -3590,7 +3590,6 @@ body.modal-open {
             max-width: unset !important;
         }
     }
-
     @media(max-width:768px) {
         .wishlist-table .prdCellwrap {
             flex-direction: column !important;
