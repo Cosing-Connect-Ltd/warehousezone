@@ -2722,6 +2722,12 @@
     <Content Include="Views\Theme\Default\ProductAttributes\_ProductAttributes.cshtml" />
     <Content Include="Views\Theme\Default\ProductAttributes\Create.cshtml" />
     <Content Include="Views\Theme\Default\ProductAttributes\Edit.cshtml" />
+    <Content Include="Views\Theme\Default\TenantDepartment\Create.cshtml" />
+    <Content Include="Views\Theme\Default\TenantDepartment\Delete.cshtml" />
+    <Content Include="Views\Theme\Default\TenantDepartment\Details.cshtml" />
+    <Content Include="Views\Theme\Default\TenantDepartment\Edit.cshtml" />
+    <Content Include="Views\Theme\Default\TenantDepartment\Index.cshtml" />
+    <Content Include="Views\Theme\Default\TenantDepartment\_TenantDepartmentList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

@@ -43,8 +43,8 @@ namespace WMS.Controllers.WebAPI
             {
                 var product = new ProductMasterSync();
                 var mappedProduct = _mapper.Map(p, product);
-                mappedProduct.ProductGroupName = p.Name;
-                mappedProduct.DepartmentName = p.TenantDepartment.DepartmentName;
+                mappedProduct.ProductGroupName = p?.ProductGroup?.ProductGroup;
+                mappedProduct.DepartmentName = p?.TenantDepartment?.DepartmentName;
                 mappedProduct.TaxPercent = p.GlobalTax.PercentageOfAmount;
                 mappedProduct.ProductKitMapViewModelList = _mapper.Map(p.ProductKitItems.ToList(), mappedProduct.ProductKitMapViewModelList);
 
