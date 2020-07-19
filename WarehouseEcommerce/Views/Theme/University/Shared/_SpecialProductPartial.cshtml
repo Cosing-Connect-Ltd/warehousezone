@@ -6,110 +6,114 @@
     @Html.Partial("_ProductByAttributeSelectorModal")
     <section class="nb_sec nb_feat_prod_sec feature-product-overflow">
         <div class="container">
-        <div class="inside-container">
-            <div class="nb_header_style1">
-                <h3>@(!string.IsNullOrEmpty(Model.FeaturedText)?Model.FeaturedText:"Featured Products")</h3>
-            </div>
-            <div class="row feature-list">
-                <div class="owl-carousel owl-theme nb_featuredPrdCarrousle nb_prd_listing_wrap">
-                    @foreach (var item in Model.productMasterList)
-                    {
-                        item.ProductTagMaps = item.ProductTagMaps.Where(u => u.IsDeleted != true).Where(u => u.ProductTag.IsDeleted != true).OrderBy(x => x.ProductTag.SortOrder).ToList();
+            <div class="inside-container">
+                
+                @if (!string.IsNullOrEmpty(Model.FeaturedText))
+                {
+                    <div class="nb_header_style1">
+                        <h3>@Model.FeaturedText</h3>
+                    </div>
+                }
+                <div class="row feature-list">
+                    <div class="owl-carousel owl-theme nb_featuredPrdCarrousle nb_prd_listing_wrap">
+                        @foreach (var item in Model.productMasterList)
+                        {
+                            item.ProductTagMaps = item.ProductTagMaps.Where(u => u.IsDeleted != true).Where(u => u.ProductTag.IsDeleted != true).OrderBy(x => x.ProductTag.SortOrder).ToList();
 
 
-                        <div class="item prd_lst_boxouter">
-                            @for (int i = 0; i < item.ProductTagMaps.Count; i++)
-                            {
-                                if (i < 3)
+                            <div class="item prd_lst_boxouter">
+                                @for (int i = 0; i < item.ProductTagMaps.Count; i++)
                                 {
-                                    <span class="badge badge-@i">
-                                        <img src="@(ViewBag.BaseFilePath + item.ProductTagMaps.ToList()[i].ProductTag.IconImage)" alt="" />
-                                    </span>
+                                    if (i < 3)
+                                    {
+                                        <span class="badge badge-@i">
+                                            <img src="@(ViewBag.BaseFilePath + item.ProductTagMaps.ToList()[i].ProductTag.IconImage)" alt=""/>
+                                        </span>
+                                    }
+
                                 }
 
-                            }
+                                <span class="imagewrap">
+                                    <a href="@Url.Action("ProductDetails", "Products", new {sku = item.SKUCode})">
+                                        <img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"/>
+                                    </a>
+                                </span>
+                                <h3 class="prdName">
+                                    <a class="prdName" href="@Url.Action("ProductDetails", "Products", new {sku = item.SKUCode})">
+                                        @item.Name
+                                    </a>
+                                </h3>
+                                <div class="foot">
+                                    <a class="prd_amnt" href="@Url.Action("ProductDetails", "Products", new {sku = item.SKUCode})">
+                                        @ViewBag.CurrencySymbol@item.SellPrice
+                                    </a>
+                                    @if (item.ProductType != ProductKitTypeEnum.Grouped && item.ProductType != ProductKitTypeEnum.Kit)
+                                    {
+                                        <ul class="icolist">
 
-                            <span class="imagewrap">
-                                <a href="@Url.Action("ProductDetails","Products", new {sku=item.SKUCode})">
-                                    <img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
-                                </a>
-                            </span>
-                            <h3 class="prdName">
-                                <a class="prdName" href="@Url.Action("ProductDetails","Products", new {sku=item.SKUCode})">
-                                    @item.Name
-                                </a>
-                            </h3>
-                            <div class="foot">
-                                <a class="prd_amnt" href="@Url.Action("ProductDetails","Products", new {sku=item.SKUCode})">
-                                    @ViewBag.CurrencySymbol@item.SellPrice
-                                </a>
-                                @if (item.ProductType != ProductKitTypeEnum.Grouped && item.ProductType != ProductKitTypeEnum.Kit)
-                                {
-                                    <ul class="icolist">
-
-                                        @if (item.SellPrice > 0 && item.SellPrice.HasValue && item.ProductType != ProductKitTypeEnum.ProductByAttribute && Ganedata.Core.Services.Inventory.GetStockDetailByProductId(@item.ProductId, ViewBag.SiteId) > 0)
-                                        {
-                                            <li>
-                                                <a href="javascript:;" onclick="addToCart(@item.ProductId)"><i class="cart-icon icon-shopping-cart"></i></a>
-                                            </li>
-
-
-                                        }
-                                        else if (@item.SellPrice > 0 && item.SellPrice.HasValue && item.ProductType == ProductKitTypeEnum.ProductByAttribute && Ganedata.Core.Services.Inventory.GetStockDetailByProductId(@item.ProductId, ViewBag.SiteId) > 0)
-                                        {
-                                            <li>
-                                                <a href="javascript:;" onclick="showProductByAttributeSelector('@item.SKUCode')"><i class="cart-icon icon-shopping-cart"></i></a>
-                                            </li>
-                                        }
-                                        else
-                                        {
-                                            var totalwishlistitems = item.WebsiteWishListItems.FirstOrDefault(u => u.IsDeleted != true && u.UserId == ViewBag.CurrentUserId && u.IsNotification);
-
-                                            if (totalwishlistitems == null)
+                                            @if (item.SellPrice > 0 && item.SellPrice.HasValue && item.ProductType != ProductKitTypeEnum.ProductByAttribute && Ganedata.Core.Services.Inventory.GetStockDetailByProductId(@item.ProductId, ViewBag.SiteId) > 0)
                                             {
                                                 <li>
-                                                    <a href="javascript:;" onclick="AddWishListItemStockNotAvailable(@item.ProductId)" class="notification-bell_@item.ProductId"><i class="bel-icon fa fa-bell-o list-icon" style="color:black"></i></a>
+                                                    <a href="javascript:;" onclick="addToCart(@item.ProductId)"><i class="cart-icon icon-shopping-cart"></i></a>
+                                                </li>
+
+
+                                            }
+                                            else if (@item.SellPrice > 0 && item.SellPrice.HasValue && item.ProductType == ProductKitTypeEnum.ProductByAttribute && Ganedata.Core.Services.Inventory.GetStockDetailByProductId(@item.ProductId, ViewBag.SiteId) > 0)
+                                            {
+                                                <li>
+                                                    <a href="javascript:;" onclick="showProductByAttributeSelector('@item.SKUCode')"><i class="cart-icon icon-shopping-cart"></i></a>
+                                                </li>
+                                            }
+                                            else
+                                            {
+                                                var totalwishlistitems = item.WebsiteWishListItems.FirstOrDefault(u => u.IsDeleted != true && u.UserId == ViewBag.CurrentUserId && u.IsNotification);
+
+                                                if (totalwishlistitems == null)
+                                                {
+                                                    <li>
+                                                        <a href="javascript:;" onclick="AddWishListItemStockNotAvailable(@item.ProductId)" class="notification-bell_@item.ProductId"><i class="bel-icon fa fa-bell-o list-icon" style="color: black"></i></a>
+                                                    </li>
+                                                }
+                                                else
+                                                {
+                                                    <li>
+                                                        <a href="javascript:;" onclick="removeNotifyProduct(@item.ProductId, true)" class="notification-bell_@item.ProductId"><i class="bel-icon fa fa-bell-o list-icon" style="color: red"></i></a>
+                                                    </li>
+
+                                                }
+
+
+                                            }
+
+                                            @{
+                                                var totaltems = item.WebsiteWishListItems.FirstOrDefault(u => u.IsDeleted != true && u.UserId == ViewBag.CurrentUserId && !u.IsNotification);
+                                            }
+                                            @if (totaltems == null)
+                                            {
+                                                <li>
+                                                    <a href="javascript:;" id="wish_@item.ProductId" onclick="AddToWishList(@item.ProductId, false)"><i class="icon-love list-icon" style="color: black; font-size: 28px;"></i></a>
                                                 </li>
                                             }
                                             else
                                             {
                                                 <li>
-                                                    <a href="javascript:;" onclick="removeNotifyProduct(@item.ProductId,true)" class="notification-bell_@item.ProductId"><i class="bel-icon fa fa-bell-o list-icon" style="color:red"></i></a>
+                                                    <a href="javascript:;" id="wish_@item.ProductId" onclick="RemoveWishListPopUp(@item.ProductId, false)"><i class="icon-love list-icon" style="color: red; font-size: 28px;"></i></a>
                                                 </li>
-
                                             }
+                                        </ul>
+                                    }
+                                </div>
 
 
-                                        }
 
-                                        @{
-                                            var totaltems = item.WebsiteWishListItems.FirstOrDefault(u => u.IsDeleted != true && u.UserId == ViewBag.CurrentUserId && !u.IsNotification);
-                                        }
-                                        @if (totaltems == null)
-                                        {
-                                            <li>
-                                                <a href="javascript:;" id="wish_@item.ProductId" onclick="AddToWishList(@item.ProductId, false)"><i class="icon-love list-icon" style="color: black;font-size: 28px;"></i></a>
-                                            </li>
-                                        }
-                                        else
-                                        {
-                                            <li>
-                                                <a href="javascript:;" id="wish_@item.ProductId" onclick="RemoveWishListPopUp(@item.ProductId,false)"><i class="icon-love list-icon" style="color: red;font-size: 28px;"></i></a>
-                                            </li>
-                                        }
-                                    </ul>
-                                }
                             </div>
 
+                        }
+                    </div>
 
-
-                        </div>
-
-                    }
                 </div>
-
             </div>
-        </div>
         </div>
     </section>
 }

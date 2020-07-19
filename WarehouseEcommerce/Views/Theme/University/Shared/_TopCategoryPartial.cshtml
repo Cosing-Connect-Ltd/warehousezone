@@ -3,25 +3,31 @@
 {
     <section class="nb_sec nb_top_catSection">
         <div class="container">
-            <div class="nb_header_style1">
-                <h3>@(ViewBag.TopCategoryText==null ? "Top Categories" : ViewBag.TopCategoryText)</h3>
-            </div>
+            @if (ViewBag.TopCategoryText != null)
+            {
+                <div class="nb_header_style1">
+
+                    <h3>@(ViewBag.TopCategoryText)</h3>
+
+                </div>
+            }
+
             <div class="accordion">
                 <ul>
                     @foreach (var item in Model)
                     {
                         var imagePath = !string.IsNullOrEmpty(item.Image) ? ViewBag.BaseFilePath + item.Image : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif";
-                        <li style="background-image:url('@imagePath')">
+                        <li style="background-image: url('@imagePath')">
                             <div>
                                 @if (item.Type == Ganedata.Core.Entities.Enums.WebsiteNavigationType.Category)
                                 {
-                                    <a href="@Url.Action("list","Products",new {category=item.Name })">
+                                    <a href="@Url.Action("list", "Products", new {category = item.Name})">
                                         <h2>@item.Name</h2>
                                     </a>
                                 }
                                 else if (item.Type == Ganedata.Core.Entities.Enums.WebsiteNavigationType.Content)
                                 {
-                                    <a href="@Url.Action("page", "home", new { pageurl = item.WebsiteContentPages.pageUrl})">
+                                    <a href="@Url.Action("page", "home", new {pageurl = item.WebsiteContentPages.pageUrl})">
                                         <h2>@item.Name</h2>
                                     </a>
                                 }
