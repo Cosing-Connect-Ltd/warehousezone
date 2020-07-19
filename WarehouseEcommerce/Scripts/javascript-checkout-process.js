@@ -61,11 +61,19 @@ function SearchPostCode() {
             }
             else {
                 $.each(data, function (i, item) {
-                    alert(data[i]);
+                    var result = $.parseJSON(data[i]);
+                    if (result !== null) {
+                        $.dialog({
+                            title: 'Information!',
+                            content: result.Message
+                        });
+                        
+                    }
                 });
             }
         },
         error: function (err) {
+            
             alert(err);
         }
     });
