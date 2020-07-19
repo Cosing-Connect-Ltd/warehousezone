@@ -59,6 +59,7 @@ namespace Ganedata.Core.Models
         public int TaxPercent { get; set; }
         public bool AllowModifyPrice { get; set; }
         public List<ProductKitMapViewModel> ProductKitMapViewModelList { get; set; }
+        public string MainImage { get; set; }
     }
 
     [Serializable]

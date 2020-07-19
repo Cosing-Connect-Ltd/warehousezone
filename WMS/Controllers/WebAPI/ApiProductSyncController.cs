@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Linq;
+using System.Web.Hosting;
 using System.Web.Http;
 using AutoMapper;
 using Ganedata.Core.Entities.Enums;
@@ -44,6 +47,12 @@ namespace WMS.Controllers.WebAPI
                 mappedProduct.DepartmentName = p.TenantDepartment.DepartmentName;
                 mappedProduct.TaxPercent = p.GlobalTax.PercentageOfAmount;
                 mappedProduct.ProductKitMapViewModelList = _mapper.Map(p.ProductKitItems.ToList(), mappedProduct.ProductKitMapViewModelList);
+
+                var baseUrl = new Uri(ConfigurationManager.AppSettings["WarehouseStoreBaseUri"]);
+                string[] imageFormats = ConfigurationManager.AppSettings["ImageFormats"].Split(new char[] { ',' });
+                var filePath = p.ProductFiles.Where(a => imageFormats.Contains(new DirectoryInfo(a.FilePath).Extension, StringComparer.CurrentCultureIgnoreCase))
+                    .OrderBy(a => a.SortOrder).FirstOrDefault()?.FilePath;
+                mappedProduct.MainImage = filePath == null ? "" : baseUrl + filePath;
                 products.Add(mappedProduct);
             }
 
