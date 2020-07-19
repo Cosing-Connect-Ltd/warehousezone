@@ -64,8 +64,8 @@ function SearchPostCode() {
                     var result = $.parseJSON(data[i]);
                     if (result !== null) {
                         $.dialog({
-                            title: 'Information!',
-                            content: result.Message
+                            title: '',
+                            content: 'Invalid postcode'
                         });
                         
                     }
