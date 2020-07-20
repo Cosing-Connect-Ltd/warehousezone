@@ -14,7 +14,7 @@
     </div>
     <div class="form-group">
         
-        @Html.PasswordFor(model => model.UserPassword, new {@class = "form-control", @placeholder = "Enter your password" })
+        @Html.PasswordFor(model => model.UserPassword, new {@class = "form-control", @placeholder = "Enter your password" , onkeyup="OnEnter(event);"})
       
     </div>
     <button type="button" class="btn btn-primary loginBtn" onclick="LoggedIn()">

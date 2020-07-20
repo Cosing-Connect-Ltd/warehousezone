@@ -214,6 +214,8 @@ $(function () {
             $('#serchBtnico').trigger('click');
         }
     });
+
+   
 });
 
 function updateTextBox(event, ui) {
@@ -804,7 +806,11 @@ function UpdateUser() {
     });
 
 }
-
+function OnEnter(e) {
+    if (e.keyCode === 13) {
+        LoggedIn();
+    }
+}
 function ChangeWishListStatus(productId, notification) {
 
     $.ajax({
