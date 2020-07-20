@@ -50,7 +50,7 @@
             </div>
         </div>
     </div>
-
+    
     <script>
         function startLoading() {
             $("#divLoading").show();
@@ -60,7 +60,7 @@
             $("#divLoading").hide();
         };
     </script>
-
+    @Html.Partial("_CartItemModal")
     @if (loginStatus && isSuperUser)
     {
         <div class="settings-bar">
@@ -75,27 +75,7 @@
     }
 
 
-    <!-- Modals for add to cart and kit product attribute selection -->
-    <div class="modal fade basket-modal" id="myModal" role="dialog">
-        <div class="modal-dialog modal-lg">
-
-            <!-- Modal content-->
-            <div class="modal-content basket-modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Added to Basket</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-
-                </div>
-                <div class="modal-body">
-
-                </div>
-                <div class="botomBtnsec modal-footer">
-                    <button class="btmbtn sho" onclick="CartItemCount();">CONTINUE SHOPPING</button>
-                    <button class="btmbtn pro" onclick="window.location.href='@Url.Action("AddToCart", "Products")'">Go To Basket</button>
-                </div>
-            </div>
-        </div>
-    </div>
+  
 
 
 
@@ -145,10 +125,6 @@
         });
         $("#user_menue").mouseleave(function () {
             $('#user_menue').removeClass('open');
-        });
-
-        $('#signupPopup').on('shown.bs.modal', function (e) {
-            //do something on bootstrap model show
         });
 
         $('#show-hidden-menu').click(function () {

@@ -342,13 +342,13 @@ namespace WarehouseEcommerce.Controllers
             return string.IsNullOrEmpty(postCode?.Trim()) ? (bool?)null : true;
         }
 
-        public JsonResult AddWishListItem(int ProductId, bool isNotfication)
+        public JsonResult AddWishListItem(int productId, bool isNotfication)
         {
-            var product = _productServices.GetProductMasterById(ProductId);
+            var product = _productServices.GetProductMasterById(productId);
             var model = new OrderDetail();
             model.ProductMaster = product;
             model.Qty = 0;
-            model.ProductId = ProductId;
+            model.ProductId = productId;
             model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
             ViewBag.CartModal = false;
             var details = _mapper.Map(model, new OrderDetailSessionViewModel());
@@ -431,7 +431,7 @@ namespace WarehouseEcommerce.Controllers
 
         public int CartItemsCount()
         {
-            return GaneCartItemsSessionHelper.GetCartItemsSession().Count;
+            return _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID,CurrentUserId, Session.SessionID).Count();
         }
 
         public ActionResult PaymentInfo()

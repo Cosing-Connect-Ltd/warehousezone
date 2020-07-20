@@ -325,12 +325,12 @@ function getCartitems(cartId) {
         success: function (data) {
             stopLoading();
             if (cartId != null) {
-                $('.modal-body').empty();
-                $('.modal-body').html(data);
+                $('.cart-item-data').html("");
+                $('.cart-item-data').html(data);
                 $('#myModal').modal('show');
             }
             else {
-                $('#updateCart').empty();
+                $('#updateCart').html("");
                 $('#updateCart').html(data);
 
             }
@@ -440,6 +440,7 @@ function GetLoggedIn(placeholder, topheader) {
         data: { PlaceOrder: placeholder },
         dataType: 'Html',
         success: function (data) {
+
             $(".login-model-body").html("");
             $(".login-model-body").html(data);
             if (placeholder !== "") {
