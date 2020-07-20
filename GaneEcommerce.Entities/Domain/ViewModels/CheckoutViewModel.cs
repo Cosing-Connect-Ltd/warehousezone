@@ -43,6 +43,8 @@ namespace Ganedata.Core.Entities.Domain
         public string UserLastName { get; set; }
         public string Email { get; set; }
 
+        public string PaypalClientId { get; set; }
+
         public decimal TotalOrderAmount => Math.Round((CartItems?.Sum(u => u.ProductTotalAmount) ?? 0) + (ShippingRule?.Price ?? 0), 2);
         public List<AddressViewModel> Addresses { get; set; }
         public AddressViewModel AccountAddress { get; set; }

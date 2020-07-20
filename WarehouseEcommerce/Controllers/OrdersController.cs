@@ -32,10 +32,7 @@ namespace WarehouseEcommerce.Controllers
         private readonly IGaneConfigurationsHelper _configurationsHelper;
         private readonly ITenantLocationServices _tenantLocationServices;
         private readonly ITenantWebsiteService _tenantWebsiteService;
-        private readonly string _paypalReturnUrl;
-        private readonly string _paypalUrl;
-        private readonly string _paypalIpnUrl;
-
+        private readonly string _paypalClientId;
         public OrdersController(IProductServices productServices,
                                 IProductLookupService productlookupServices,
                                 ICoreOrderService orderService,
@@ -53,9 +50,7 @@ namespace WarehouseEcommerce.Controllers
                                 )
             : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices, tenantWebsiteService)
         {
-            _paypalReturnUrl = ConfigurationManager.AppSettings["PAYPAL_RET_URL"] ?? "";
-            _paypalUrl = ConfigurationManager.AppSettings["PAYPAL_URL"] ?? "";
-            _paypalIpnUrl = ConfigurationManager.AppSettings["PAYPAL_IPN_URL"] ?? "";
+            _paypalClientId = ConfigurationManager.AppSettings["Client_Id"] ?? "";
             _productServices = productServices;
             _userService = userService;
             _activityServices = activityServices;
@@ -282,9 +277,6 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.cart = true;
             ViewBag.CartModal = true;
             ViewBag.paymentMethod = model.PaymentMethodId;
-            ViewBag.RetUrl = _paypalReturnUrl;
-            ViewBag.PAYPALURL = _paypalUrl;
-            ViewBag.PayPalIpnUrl = _paypalIpnUrl;
             Session["AllCheckoutData"] = model;
             return View(model);
         }
@@ -317,53 +309,6 @@ namespace WarehouseEcommerce.Controllers
             return Json(addresses, JsonRequestBehavior.AllowGet);
         }
 
-        public async Task<ActionResult> IPN(FormCollection form)
-
-        {
-            var datas = Request.QueryString.Get("tx");
-            var propertyId = 0;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-            var ipn = Request.Form.AllKeys.ToDictionary(k => k, k => Request[k]);
-            ipn.Add("cmd", "_notify-validate");
-            var isIpnValid = await ValidateIpnAsync(ipn);
-
-            if (isIpnValid && ipn["custom"] == "Test")
-            {
-                return RedirectToAction("Success", new { id = -10 });
-            }
-            if (!isIpnValid && ipn["custom"] == "Test")
-            {
-                return RedirectToAction("Failed", new { id = -10 });
-            }
-
-            var custom = ipn["custom"].Split('|');
-            propertyId = Convert.ToInt32(custom[0]);
-
-            //OrderService.UpdateOrderStatus( )
-            //var report = CreateSalesOrderPrint(Order.OrderID);
-            //PrepareDirectory("~/UploadedFiles/reports/so/");
-            //var reportPath = "~/UploadedFiles/reports/so/" + Order.OrderNumber + ".pdf";
-            //report.ExportToPdf(Server.MapPath(reportPath));
-            //var result = await GaneConfigurationsHelper.CreateTenantEmailNotificationQueue($"#{Order.OrderNumber} - Sales order", _mapper.Map(Order, new OrderViewModel()), reportPath, shipmentAndRecipientInfo: shipmentAndRecipientInfo,
-            //    worksOrderNotificationType: (WorksOrderNotificationTypeEnum)EmailTemplate);
-            //if (result != "Success")
-            //{
-            //    TempData["Error"] = result;
-            //}
-            return View();
-        }
-        public ActionResult Success(int Id)
-
-        {
-            ViewBag.Id = Id;
-            return View();
-        }
-        public ActionResult Failed(int Id)
-        {
-            ViewBag.Id = Id;
-            return View();
-        }
-
         public ActionResult PayPal()
         {
             var checkOutModel = Session["CheckoutViewModel"] == null
@@ -372,24 +317,14 @@ namespace WarehouseEcommerce.Controllers
             checkOutModel.UserFirstName = CurrentUser.UserFirstName;
             checkOutModel.UserLastName = CurrentUser.UserLastName;
             checkOutModel.Email = CurrentUser.UserEmail;
-
+            checkOutModel.PaypalClientId = _paypalClientId;
             return View(checkOutModel);
         }
 
 
 
 
-        private async Task<bool> ValidateIpnAsync(IEnumerable<KeyValuePair<string, string>> ipn)
-        {
-            using (var client = new HttpClient())
-            {
-                // This is necessary in order for PayPal to not resend the IPN.
-                await client.PostAsync(_paypalUrl, new StringContent(string.Empty));
-                var response = await client.PostAsync(_paypalUrl, new FormUrlEncodedContent(ipn));
-                var responseString = await response.Content.ReadAsStringAsync();
-                return (responseString == "VERIFIED");
-            }
-        }
+       
 
 
         public async Task<ActionResult> SagePay()
