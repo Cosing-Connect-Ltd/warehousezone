@@ -4169,7 +4169,8 @@ body.modal-open {
         transform-origin: 50% 50%;
     }
 
-    .list-on-tablets .imagewrap {
+    .list-on-tablets .imagewrap,
+    .feature-product-overflow .imagewrap{
         border: 1px solid white;
     }
 
