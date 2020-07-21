@@ -1161,38 +1161,36 @@ namespace Ganedata.Core.Services
         public void UpdateUserIdInCartItem(string sessionKey, int userId, int siteId)
         {
             var cartItems = _currentDbContext.WebsiteCartItems.Where(u => u.IsDeleted != true &&
-                                                                                                      u.SiteID == siteId &&
-                                                                                                      (!u.UserId.HasValue) &&
-                                                                                                      u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase))
-                                                                              .ToList();
+                                                                          u.SiteID == siteId &&
+                                                                          !u.UserId.HasValue &&
+                                                                          u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase))
+                                                              .ToList();
             if (cartItems.Count <= 0)
             {
                 return;
             }
+
             foreach (var item in cartItems)
             {
-                var sameProduct =
-                    _currentDbContext.WebsiteCartItems.FirstOrDefault(u =>
-                        u.UserId == userId && 
-                        u.ProductId == item.ProductId &&
-                        u.IsDeleted != true);
-                if (sameProduct == null)
-                {
-                    item.UserId = userId;
-                    item.SessionKey = userId > 0 ? null : sessionKey;
-                    item.UpdateUpdatedInfo(userId);
-                    _currentDbContext.Entry(item).State = System.Data.Entity.EntityState.Modified;
-                }
-                else
+                var sameProduct = _currentDbContext.WebsiteCartItems.FirstOrDefault(u => u.UserId == userId &&
+                                                                                         u.ProductId == item.ProductId &&
+                                                                                         u.IsDeleted != true);
+                if (sameProduct != null)
                 {
                     sameProduct.Quantity += item.Quantity;
                     sameProduct.SessionKey = userId > 0 ? null : sessionKey;
                     item.IsDeleted = true;
                     sameProduct.UpdateUpdatedInfo(userId);
-                    _currentDbContext.Entry(sameProduct).State = System.Data.Entity.EntityState.Modified;
+                    _currentDbContext.Entry(sameProduct).State = EntityState.Modified;
+                    continue;
                 }
 
+                item.UserId = userId;
+                item.SessionKey = userId > 0 ? null : sessionKey;
+                item.UpdateUpdatedInfo(userId);
+                _currentDbContext.Entry(item).State = EntityState.Modified;
             }
+
             _currentDbContext.SaveChanges();
         }
 

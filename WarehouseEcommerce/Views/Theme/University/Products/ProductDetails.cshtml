@@ -48,7 +48,9 @@
                                 {
                                     var extension = Path.GetExtension(item.FilePath);
                                     <div class="item">
-                                        <a href="#" data-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" data-zoom-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")">
+                                        <a href="#" data-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"
+                                                    data-zoom-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"
+                                                    class="@(Model.DefaultImage == item.FilePath? "active" : "")">
                                             <img id="zoom_01" src="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="" />
                                         </a>
                                     </div>

@@ -4131,9 +4131,15 @@ body.modal-open {
             display: none;
         }
 
+        .zoomWrapper{
+            pointer-events: none;
+        }
+
+        .zoomContainer,
         .zoomLens,
         .zoomWindow {
             display: none !important;
+            pointer-events: none;
         }
     }
 
@@ -4252,4 +4258,12 @@ body.modal-open {
 
 .nb_foot_payment_opt_lst a {
     pointer-events: none;
+}
+
+.nb_prd_viewingsecWrap .img_thumb_sliderwrap .nb_imageZoomCarrousle div.item > .active img {
+    border: solid 1px lightgray;
+}
+
+.nb_prd_viewingsecWrap .img_thumb_sliderwrap .nb_imageZoomCarrousle div.item {
+    padding: 0;
 }
