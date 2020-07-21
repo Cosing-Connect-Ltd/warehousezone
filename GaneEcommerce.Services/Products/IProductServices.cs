@@ -21,6 +21,7 @@ namespace Ganedata.Core.Services
         PalletTracking GetPalletbyPalletId(int palletTrackingId);
         IEnumerable<ProductKitMap> GetAllProductInKitsByProductId(int productId, ProductKitTypeEnum productKitType);
         IEnumerable<ProductMaster> GetAllProductInKitsByProductId(int productId);
+        IEnumerable<ProductMaster> GetAllProductInKitsByProductIds(List<int> productId);
         IEnumerable<ProductMaster> GetParentProductsByKitProductId(int kitProductId);
         IEnumerable<ProductMaster> GetAllProductInKitsByKitProductId(int productId);
 
