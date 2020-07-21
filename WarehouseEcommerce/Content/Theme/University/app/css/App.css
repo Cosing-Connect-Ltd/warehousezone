@@ -291,15 +291,18 @@ input[type="number"]::-webkit-outer-spin-button {
         float: right;
         margin-bottom: 35px;
     }
+
 @media(max-width:768px) {
     .nb_header .nb_headicolst {
         margin-top: 60px;
         margin-bottom: unset
     }
+
     .nb_header .nb_logowrap {
-        width:unset !important;
+        width: unset !important;
     }
 }
+
 @media(max-width:339px) {
     .nb_header .nb_headicolst {
         margin-top: -36px;
@@ -669,11 +672,11 @@ input[type="number"]::-webkit-outer-spin-button {
                             li.hav_mega_nav
                             .mega_nav_wrap
                             .mega_nav_wrap_inner
-                            .meganav_firstcatList > li:after {
+                            .meganav_firstcatList > li ul.subList:before {
                                 content: "";
                                 position: absolute;
-                                left: 100%;
-                                top: 50%;
+                                left: 0px;
+                                top: 12px;
                                 transform: translate(-50%, -50%);
                                 width: 0;
                                 height: 0;
@@ -683,6 +686,15 @@ input[type="number"]::-webkit-outer-spin-button {
                                 border-top: 6px solid transparent;
                                 border-bottom: 6px solid transparent;
                                 border-left: 6px solid #000000;
+                            }
+                            .nb_header
+                            .nb_mainnav > ul
+                            li.hav_mega_nav
+                            .mega_nav_wrap
+                            .mega_nav_wrap_inner
+                            .meganav_firstcatList > li:hover ul.subList:before {
+                                opacity: 1;
+                                margin-left: 0px;
                             }
 
                             .nb_header
@@ -738,16 +750,6 @@ input[type="number"]::-webkit-outer-spin-button {
                                         a:hover {
                                             padding-left: 5px;
                                         }
-
-                            .nb_header
-                            .nb_mainnav > ul
-                            li.hav_mega_nav
-                            .mega_nav_wrap
-                            .mega_nav_wrap_inner
-                            .meganav_firstcatList > li:hover:after {
-                                opacity: 1;
-                                margin-left: 0px;
-                            }
 
                             .nb_header
                             .nb_mainnav > ul
@@ -1193,7 +1195,7 @@ input[type="number"]::-webkit-outer-spin-button {
             }
 
             .nb_feat_prod_sec .nb_featuredPrdCarrousle .nb_fp_boxwrap:hover .prd_img {
-/*                border: solid 1px #f33655;*/
+                /*                border: solid 1px #f33655;*/
             }
 
                 .nb_feat_prod_sec .nb_featuredPrdCarrousle .nb_fp_boxwrap:hover .prd_img img {
@@ -2138,11 +2140,13 @@ input[type="number"]::-webkit-outer-spin-button {
             padding: 10px 10px;
             letter-spacing: 0px;
         }
+
 @media(min-width:600px) {
     .prd_lst_boxouter .foot .prd_amnt {
         min-width: 125px;
     }
 }
+
 @media(max-width:599px) {
     .prd_lst_boxouter .foot .prd_amnt {
         min-width: 57px;
@@ -2155,24 +2159,24 @@ input[type="number"]::-webkit-outer-spin-button {
     padding: 0px;
 }
 
-            .prd_lst_boxouter .foot .icolist li {
-                float: left;
-                margin: 0px 5px;
-            }
-
-                .prd_lst_boxouter .foot .icolist li a i {
-                    font-size: 30px;
-                    color: #111111;
-                    transition: all 0.3s ease;
-                }
-
-                .prd_lst_boxouter .foot .icolist li a:hover i {
-                    color: #f33655;
-                }
-
-    .prd_lst_boxouter:hover {
-        cursor: pointer;
+    .prd_lst_boxouter .foot .icolist li {
+        float: left;
+        margin: 0px 5px;
     }
+
+        .prd_lst_boxouter .foot .icolist li a i {
+            font-size: 30px;
+            color: #111111;
+            transition: all 0.3s ease;
+        }
+
+        .prd_lst_boxouter .foot .icolist li a:hover i {
+            color: #f33655;
+        }
+
+.prd_lst_boxouter:hover {
+    cursor: pointer;
+}
 
 .nb_prd_viewingsecWrap {
     position: relative;
@@ -3795,7 +3799,8 @@ body.ZoomerActive {
     align-items: center;
     justify-content: center;
 }
-@media(min-width:769px){
+
+@media(min-width:769px) {
     .img_view_area .zoomWrapper {
         width: 100% !important;
         height: 100% !important;
@@ -3984,19 +3989,21 @@ body.ZoomerActive {
     align-items: center;
     justify-content: center;
 }
-@media(max-width:768px){
+
+@media(max-width:768px) {
     .nb_prdlisting_pgsec .nb_prd_filterwrap {
-        padding-right:20px !important;
+        padding-right: 20px !important;
     }
 }
+
 #res_filterBox_trigger i {
     color: #fff;
     font-size: 20px;
 }
 
-    #res_filterBox_trigger:hover {
-        cursor: pointer;
-    }
+#res_filterBox_trigger:hover {
+    cursor: pointer;
+}
 
 .nb_firstNav_res_lst_wrap .hav_mega_nav {
     position: relative;
