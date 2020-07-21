@@ -2925,7 +2925,7 @@ body.modal-open {
     height: 241px;
 }
 @media(max-width:1440px) {
-    
+
 }
  @media(max-width:1024px){
     .feature-product-overflow .owl-item {
@@ -4248,3 +4248,7 @@ body.modal-open {
         background-color: gray;
         color: lightgray;
     }
+
+.nb_foot_payment_opt_lst a {
+    pointer-events: none;
+}
