@@ -3410,7 +3410,7 @@ body.modal-open {
     /*uni theme search end*/
 
     .nb_prod_bottomdes .content {
-        white-space: pre-wrap;
+        white-space: pre-line;
     }
 
     .prd_lst_boxouter .prdName {
