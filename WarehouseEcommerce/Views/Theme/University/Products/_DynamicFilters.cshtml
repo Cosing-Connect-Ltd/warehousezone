@@ -109,26 +109,26 @@
                 @foreach (var item in Model.AttributeValues)
                 {
 
-                    <div class="nb_filter_head" id="filter_@(item.Key)">
+                    <div class="nb_filter_head" id="filter_@(item.Key.AttributeId+item.Value.Count)">
                         <h5 class="mb-0">
                             <button class="btn btn-link collapsed"
                                     data-toggle="collapse"
-                                    data-target="#collapse_@(item.Key)"
+                                    data-target="#collapse_@(item.Key.AttributeId+item.Value.Count)"
                                     aria-expanded="true"
-                                    aria-controls="collapse_@(item.Key)">
+                                    aria-controls="collapse_@(item.Key.AttributeId+item.Value.Count)">
                                 @item.Value.FirstOrDefault().ProductAttributes.AttributeName
                             </button>
                         </h5>
                     </div>
-                    <div id="collapse_@(item.Key)"
+                    <div id="collapse_@(item.Key.AttributeId+item.Value.Count)"
                          class="collapse show"
-                         aria-labelledby="filter_@(item.Key)"
+                         aria-labelledby="filter_@(item.Key.AttributeId+item.Value.Count)"
                          data-parent="#accordion">
                         <div class="nb_filter_body">
                             <ul class="nb_prd_filter_listouter">
                                 @foreach (var items in item.Value)
                                 {
-                                    string name = items.Value.Replace(" ", "_").Replace(",", "^");
+                                    string name = items.Value.Replace(" ", "_").Replace(",", "^")+"^"+@items.AttributeValueId;
                                     <li class="list-group-item"><input type="checkbox" id="@items.ProductAttributes.AttributeName.Replace(" ", "_")" class="checkbox-inline" value="@name" @(Request.Url.OriginalString.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(items.Value)</li>
                                 }
                             </ul>

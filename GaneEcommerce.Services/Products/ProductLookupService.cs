@@ -186,20 +186,26 @@ namespace Ganedata.Core.Services
                     {
                         if (item.Key.Equals("stockS"))
                         {
-
+                            FilterStockItemsProduct(productMaster, true);
                             if (item.Value.Count > 1)
                             {
-                                productMaster = productMaster.Where(u => ((u.InventoryStocks.Sum(rv => rv.Available)) > 0 ||  (u.InventoryStocks.Sum(rv => rv.Available) <= 0 || u.ProductKitItems.Any(a => a.KitProductMaster.InventoryStocks.Sum(c => c.Available) <= 0))));
+                                productMaster = productMaster.Where(u => ((u.InventoryStocks.Sum(rv => rv.Available)) > 0 ||
+                                                                                     u.ProductKitItems.Any(a => a.KitProductMaster.InventoryStocks.Sum(c => c.Available) > 0)) ||
+                                                                                    (u.InventoryStocks.Sum(rv => rv.Available) <= 0 ||
+                                                                                     u.ProductKitItems.Sum(a => a.KitProductMaster.InventoryStocks.Sum(c => c.Available)) <= 0));
 
                             }
 
                             else if (item.Value.Contains("in_stock"))
                             {
-                                productMaster = productMaster.Where(u => (u.InventoryStocks.Sum(rv => rv.Available)) > 0 || u.ProductKitItems.Any(a=>a.KitProductMaster.InventoryStocks.Sum(c=>c.Available)>0));
+                                productMaster = productMaster.Where(u => (u.InventoryStocks.Sum(rv => rv.Available)) > 0 ||
+                                                                                     (u.ProductKitItems.Any(a => a.KitProductMaster.InventoryStocks.Sum(c => c.Available) > 0)));
+                                var test = productMaster.ToList();
                             }
                             else if (item.Value.Contains("out_stock"))
                             {
-                                productMaster = productMaster.Where(u => u.InventoryStocks.Sum(rv => rv.Available) <= 0 ||  u.ProductKitItems.Any(a => a.KitProductMaster.InventoryStocks.Sum(c => c.Available) <= 0));
+                                productMaster = productMaster.Where(u => (u.InventoryStocks.Sum(rv => rv.Available) <= 0) ||
+                                                                                   (u.ProductKitItems.All(a => a.KitProductMaster.InventoryStocks.Sum(c => c.Available) <= 0)));
                             }
 
                         }
@@ -241,9 +247,11 @@ namespace Ganedata.Core.Services
                         if (item.Key.Length > 0 && (!item.Key.Equals("BrandS") && !item.Key.Equals("priceS") && !item.Key.Equals("stockS") && !item.Key.Equals("TypeS")))
                         {
                             var result = item.Value.Select(s => s.Replace("_", " ").Replace("??", ",")).ToList();
-                            var attributeValueId = _currentDbContext.ProductAttributeValues.Where(u => result.Contains(u.Value)).Select(u => u.AttributeValueId).ToList();
-                            var productids = _currentDbContext.ProductAttributeValuesMap.Where(u => attributeValueId.Contains(u.AttributeValueId)).Select(u => u.ProductId).ToList();
-                            productMaster = productMaster.Where(u => productids.Contains(u.ProductId));
+                            var values = result.Select(u => u.Split('^').LastOrDefault()).ToList();
+                            var attributeValueId = _currentDbContext.ProductAttributeValues.Where(u => values.Contains(u.AttributeValueId.ToString()) && u.IsDeleted != true).Select(u => u.AttributeValueId).ToList();
+                            var productids = _currentDbContext.ProductAttributeValuesMap.Where(u => attributeValueId.Contains(u.AttributeValueId) && u.IsDeleted != true).Select(u => u.ProductId).ToList();
+                            productMaster = productMaster.Where(u => (productids.Contains(u.ProductId)) ||
+                                                                               (productids.Any(a => u.ProductKitItems.Select(c => c.KitProductId).ToList().Contains(a))));
                         }
 
                     }
@@ -394,11 +402,12 @@ namespace Ganedata.Core.Services
                                                                                                    a.ProductAttributeValues.AttributeId == attributeId &&
                                                                                                    a.TenantId == tenantId);
 
-                previousAttributeMaps.ForEach(a => {
-                                                    a.IsDeleted = true;
-                                                    a.UpdatedBy = userId;
-                                                    a.DateUpdated = DateTime.Now;
-                                                });
+                previousAttributeMaps.ForEach(a =>
+                {
+                    a.IsDeleted = true;
+                    a.UpdatedBy = userId;
+                    a.DateUpdated = DateTime.Now;
+                });
 
                 var valueMap = new ProductAttributeValuesMap
                 {
@@ -897,5 +906,30 @@ namespace Ganedata.Core.Services
             return true;
 
         }
+
+        private IQueryable<ProductMaster> FilterStockItemsProduct(IQueryable<ProductMaster> productMasters, bool inStock = false, bool outOfStock = false)
+        {
+            if (inStock && outOfStock)
+            {
+                return productMasters;
+            }
+            else if (inStock)
+            {
+                var productAvailable = productMasters.Where(u =>
+                    u.IsStockItem == true &&
+                    u.DontMonitorStock == true &&
+                    u.IsDeleted != true);
+                var stockProduct = productMasters.Where(u => u.InventoryStocks.Sum(c => c.Available) > 0);
+
+                var childProductAvailablity = productMasters.Select(u => u.ProductKitItems.Where(c=>c.IsDeleted != true)).ToList();
+                var test = productMasters.Select(u =>
+                    u.ProductKitItems.Select(c =>
+                            c.KitProductMaster.InventoryStocks.Select((g => g.Available)).DefaultIfEmpty(0).Sum())
+                        ).ToList();
+            }
+
+            return productMasters;
+        }
+
     }
 }

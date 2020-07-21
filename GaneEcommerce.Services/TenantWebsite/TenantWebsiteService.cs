@@ -978,12 +978,12 @@ namespace Ganedata.Core.Services
 
 
             return relatedProducts
-                                               .SelectMany(a => a.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).Select(k => k.ProductAttributeValues))
-                                               .GroupBy(a => a.ProductAttributes).Where(u => u.Key.IsDeleted != true).OrderBy(u => u.Key.SortOrder)
-                                               .ToDictionary(g => g.Key, g => g.OrderBy(av => av.SortOrder)
-                                                                                               .GroupBy(av => av.AttributeValueId)
-                                                                                               .Select(av => av.First()).OrderBy(u => u.ProductAttributes.SortOrder)
-                                                                                               .ToList());
+                .SelectMany(a => a.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).Select(k => k.ProductAttributeValues))
+                .GroupBy(a => a.ProductAttributes).Where(u => u.Key.IsDeleted != true).OrderBy(u => u.Key.SortOrder)
+                .ToDictionary(g => g.Key, g => g.OrderBy(av => av.SortOrder)
+                    .GroupBy(av => av.AttributeValueId)
+                    .Select(av => av.First()).OrderBy(u => u.ProductAttributes.SortOrder)
+                    .ToList());
 
 
         }
