@@ -221,6 +221,8 @@ namespace WarehouseEcommerce.Controllers
 
             Session.Clear();
             Session.Abandon();
+            Session.RemoveAll();
+            HttpContext.Session.Abandon();
             return RedirectToAction("Index", "Home");
 
         }

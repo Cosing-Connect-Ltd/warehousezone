@@ -318,8 +318,10 @@ namespace WarehouseEcommerce.Controllers
         {
 
             var _tenantWebsiteService = DependencyResolver.Current.GetService<ITenantWebsiteService>();
-            ViewBag.CartItemCount = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId, HttpContext.Session.SessionID).Count();
-            ViewBag.CartItems = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId, HttpContext.Session.SessionID).ToList();
+            var cartItems = _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId,
+                HttpContext.Session.SessionID);
+            ViewBag.CartItemCount = cartItems.Count();
+            ViewBag.CartItems = cartItems.ToList();
             ViewBag.WishListItemCount = _tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).Count();
 
         }

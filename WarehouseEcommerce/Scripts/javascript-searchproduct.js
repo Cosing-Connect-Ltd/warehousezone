@@ -335,7 +335,7 @@ function getCartitems(cartId) {
 
             }
         },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
+        error: function (xmlHttpRequest, textStatus, errorThrown) {
             stopLoading();
             alert('Error' + textStatus + "/" + errorThrown);
         }

@@ -1161,21 +1161,37 @@ namespace Ganedata.Core.Services
 
         public void UpdateUserIdInCartItem(string sessionKey, int userId, int siteId)
         {
-            var cartitems = _currentDbContext.WebsiteCartItems.Where(u => u.IsDeleted != true && u.SiteID == siteId && (!u.UserId.HasValue) && u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase)).ToList();
-            if (cartitems.Count > 0)
+            var cartItems = _currentDbContext.WebsiteCartItems.Where(u => u.IsDeleted != true && u.SiteID == siteId && (!u.UserId.HasValue) && u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase)).ToList();
+            if (cartItems.Count > 0)
             {
-                foreach (var item in cartitems)
+                foreach (var item in cartItems)
                 {
-                    item.UserId = userId;
-                    item.UpdateUpdatedInfo(userId);
-                    _currentDbContext.Entry(item).State = System.Data.Entity.EntityState.Modified;
+                    var sameProduct =
+                        _currentDbContext.WebsiteCartItems.FirstOrDefault(u =>
+                            u.UserId == userId && u.ProductId == item.ProductId);
+                    if (sameProduct == null)
+                    {
+                        item.UserId = userId;
+                        item.SessionKey = null;
+                        item.UpdateUpdatedInfo(userId);
+                        _currentDbContext.Entry(item).State = System.Data.Entity.EntityState.Modified;
+                    }
+                    else
+                    {
+                        sameProduct.Quantity += item.Quantity;
+                        sameProduct.SessionKey = null;
+                        item.IsDeleted = true;
+                        sameProduct.UpdateUpdatedInfo(userId);
+                        _currentDbContext.Entry(sameProduct).State = System.Data.Entity.EntityState.Modified;
+
+                    }
 
                 }
+                _currentDbContext.SaveChanges();
 
 
             }
 
-            _currentDbContext.SaveChanges();
 
 
 
