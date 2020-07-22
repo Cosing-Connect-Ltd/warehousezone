@@ -31,19 +31,22 @@
                                 <td>
                                     <div>
                                         <div class="custom-control custom-switch">
-                                            @if (!Ganedata.Core.Services.Inventory.IsProductInNotifyList(@item.ProductMaster, ViewBag.CurrentUserId))
+                                            @if (!Ganedata.Core.Services.Inventory.IsProductAvailableToSell(@item.ProductMaster, ViewBag.SiteId))
                                             {
-                                            <a href="javascript:;" class="notify-btn wishlist-table-btns" onclick="addNotifyProductAvailibility(@item.ProductId)" id="notification-bell_@item.ProductId" title="NOTIFY ME WHEN AVAILABLE" style="font-size: 28px; color: black"><i class="fa fa-bell-o list-icon"></i></a>
-                                            }
-                                            else
-                                            {
-                                            <a href="javascript:;" class="notify-btn wishlist-table-btns" onclick="removeNotifyProduct(@item.ProductId)" id="notification-bell_@item.ProductId" title="NOTIFY ME WHEN AVAILABLE" style="font-size: 28px; color: red;"><i class="fa fa-bell-o list-icon"></i></a>
+                                                if (!Ganedata.Core.Services.Inventory.IsProductInNotifyList(@item.ProductMaster, ViewBag.CurrentUserId))
+                                                {
+                                                    <a href="javascript:;" class="notify-btn wishlist-table-btns" onclick="addNotifyProductAvailibility(@item.ProductId)" id="notification-bell_@item.ProductId" title="NOTIFY ME WHEN AVAILABLE" style="font-size: 28px; color: black"><i class="fa fa-bell-o list-icon"></i></a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="javascript:;" class="notify-btn wishlist-table-btns" onclick="removeNotifyProduct(@item.ProductId)" id="notification-bell_@item.ProductId" title="NOTIFY ME WHEN AVAILABLE" style="font-size: 28px; color: red;"><i class="fa fa-bell-o list-icon"></i></a>
+                                                }
                                             }
                                         </div>
                                     </div>
                                 </td>
                                 <td class="wishlist-btn-td">
-                                    @if (Ganedata.Core.Services.Inventory.IsProductAvailableToSell(@item.ProductMaster, ViewBag.SiteId) && item.ProductMaster.ProductType == ProductKitTypeEnum.ProductByAttribute)
+                                    @if (Ganedata.Core.Services.Inventory.IsProductAvailableToSell(@item.ProductMaster, ViewBag.SiteId))
                                     {
                                         <a href="javascript:;" class="wishlist-table-btns wishlist-basket-btn" onclick="addToCart(@item.ProductId)">Add to Basket</a>
                                         <br/>

@@ -4216,8 +4216,12 @@ body.modal-open {
         margin-bottom: 30px;
     }
 
+    .nb_prd_viewingsecWrap .img_view_area{
+        padding: 0px;
+    }
+
     @media(max-width:768px) {
-        .nb_prd_viewingsecWrap .img_view_area {
+    .nb_prd_viewingsecWrap .img_view_area {
             height: 287px;
             padding: unset;
             justify-content: center;
