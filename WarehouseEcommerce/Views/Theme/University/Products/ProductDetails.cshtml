@@ -66,10 +66,10 @@
                     <h2 class="head">@Model.SelectedProduct.Name</h2>
                     <span class="prd_amnt">@ViewBag.CurrencySymbol@Model.SelectedProduct.SellPrice</span>
                     <div class="availibility">
-                        @{ var stockAvailable = Ganedata.Core.Services.Inventory.GetStockDetailByProductId(Model.SelectedProduct.ProductId, ViewBag.SiteId); }
-                        @if (stockAvailable > 0)
+                        @{ var availableProductCount = Ganedata.Core.Services.Inventory.GetAvailableProductCount(Model.SelectedProduct, ViewBag.SiteId); }
+                        @if (availableProductCount > 0)
                         {
-                            @((stockAvailable <= 10 ? "only "+ stockAvailable.ToString("#") + " items left" : "Available"))
+                            @((availableProductCount <= 10 ? "only "+ availableProductCount.ToString("#") + " items left" : "Available"))
                         }
                         else
                         {
@@ -115,11 +115,11 @@
                     }
 
                 <div class="footSec">
-                    @if (@Model.SelectedProduct.SellPrice > 0 && @Model.SelectedProduct.SellPrice.HasValue && (stockAvailable > 0))
+                    @if (@Model.SelectedProduct.SellPrice > 0 && @Model.SelectedProduct.SellPrice.HasValue && (availableProductCount > 0))
                     {
                         <div class="qty">
                             <span>quantity</span>
-                            @Html.DropDownList("product-quantity", Enumerable.Range(1, (int)stockAvailable).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), htmlAttributes: new { @class = "form-control" })
+                            @Html.DropDownList("product-quantity", Enumerable.Range(1, (int)availableProductCount).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), htmlAttributes: new { @class = "form-control" })
                         </div>
 
                         <button class="addTobasket" onclick="addToCart(@Model.SelectedProduct.ProductId, document.getElementById('product-quantity').value)">Add to basket</button>
@@ -130,8 +130,8 @@
 
                         if (totalwishlistitems == null)
                         {
-                            <button class="notify-btn addTobasket btn_notification-bell_@Model.SelectedProduct.ProductId" onclick="AddWishListItemStockNotAvailable(@Model.SelectedProduct.ProductId)"><i class="fa fa-bell-o list-icon"></i> NOTIFY ME WHEN AVAILABLE</button>
-                            @*<a href="javascript:;" onclick="AddWishListItemStockNotAvailable(@Model.SelectedProduct.ProductId)" class="addtowishlist list-icon bell-icon notification-bell_@Model.SelectedProduct.ProductId"><i class="fa fa-bell-o list-icon" style="color:black"></i></a>*@
+                            <button class="notify-btn addTobasket btn_notification-bell_@Model.SelectedProduct.ProductId" onclick="addNotifyProductAvailibility(@Model.SelectedProduct.ProductId)"><i class="fa fa-bell-o list-icon"></i> NOTIFY ME WHEN AVAILABLE</button>
+                            @*<a href="javascript:;" onclick="addNotifyProductAvailibility(@Model.SelectedProduct.ProductId)" class="addtowishlist list-icon bell-icon notification-bell_@Model.SelectedProduct.ProductId"><i class="fa fa-bell-o list-icon" style="color:black"></i></a>*@
                         }
                         else
                         {
@@ -144,13 +144,13 @@
 
                     @if (Model.SelectedProduct.WebsiteWishListItems.FirstOrDefault(u => u.IsDeleted != true && !u.IsNotification) == null)
                     {
-                        <button id="btnwish_@Model.SelectedProduct.ProductId" onclick="AddToWishList(@Model.SelectedProduct.ProductId,false)" class="addtowishlistbtn">Add to Wishlist</button>
-                        <a href="javascript:;" class="addtowishlist " id="wish_@Model.SelectedProduct.ProductId" onclick="AddToWishList(@Model.SelectedProduct.ProductId,false)"><i class="icon-love list-icon" style="color:black;font-size:28px;margin-left:15px"></i></a>
+                        <button id="btnwish_@Model.SelectedProduct.ProductId" onclick="addToWishList(@Model.SelectedProduct.ProductId,false)" class="addtowishlistbtn">Add to Wishlist</button>
+                        <a href="javascript:;" class="addtowishlist " id="wish_@Model.SelectedProduct.ProductId" onclick="addToWishList(@Model.SelectedProduct.ProductId,false)"><i class="icon-love list-icon" style="color:black;font-size:28px;margin-left:15px"></i></a>
                     }
                     else
                     {
-                        <button id="btnwish_@Model.SelectedProduct.ProductId" onclick="RemoveWishListPopUp(@Model.SelectedProduct.ProductId,false)" class="addtowishlistbtn" style="background-color: red !important">Add to Wishlist</button>
-                        <a href="javascript:;" class="addtowishlist" id="wish_@Model.SelectedProduct.ProductId" onclick="RemoveWishListPopUp(@Model.SelectedProduct.ProductId,false)"><i class="icon-love list-icon" style="color:red;font-size:28px;margin-left:15px"></i></a>
+                        <button id="btnwish_@Model.SelectedProduct.ProductId" onclick="removeFromWishListPopUp(@Model.SelectedProduct.ProductId,false)" class="addtowishlistbtn" style="background-color: red !important">Add to Wishlist</button>
+                        <a href="javascript:;" class="addtowishlist" id="wish_@Model.SelectedProduct.ProductId" onclick="removeFromWishListPopUp(@Model.SelectedProduct.ProductId,false)"><i class="icon-love list-icon" style="color:red;font-size:28px;margin-left:15px"></i></a>
                     }
                 </div>
                 </div>

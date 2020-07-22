@@ -1149,7 +1149,7 @@ namespace Ganedata.Core.Services
         }
 
         /// <summary>
-        /// recalculate stock of all products and update it in InventoryStocks. 
+        /// recalculate stock of all products and update it in InventoryStocks.
         /// This operation can take a while depending upon number of products in database.
         /// </summary>
         /// <param name="WarehouseId"></param>
@@ -1611,15 +1611,14 @@ namespace Ganedata.Core.Services
 
         }
 
-        public static decimal GetStockDetailByProductId(int productId, int siteId)
+        public static decimal GetAvailableProductCount(ProductMaster product, int siteId)
         {
-            decimal totalStock = 0;
+            decimal availableProductCount = 0;
             var tenantWebsiteService = DependencyResolver.Current.GetService<ITenantWebsiteService>();
             //if (!tenantWebsiteService.VerifyProductAgainstWebsite(productId, siteId)) { return 0; }
 
             var tenantWebsite = tenantWebsiteService.GetTenantWebSiteBySiteId(siteId);
             var productService = DependencyResolver.Current.GetService<IProductServices>();
-            var product = productService.GetProductMasterById(productId);
             var warehouseIds = tenantWebsiteService.GetAllValidWebsiteWarehouses(tenantWebsite.TenantId, siteId).Select(u => u.Id).ToList();
 
             if (product != null)
@@ -1632,24 +1631,27 @@ namespace Ganedata.Core.Services
                 switch (product.ProductType)
                 {
                     case ProductKitTypeEnum.ProductByAttribute:
-                        totalStock = tenantWebsiteService.GetStockForAttributedProduct(productId, warehouseIds);
+                        availableProductCount = tenantWebsiteService.GetProductByAttributeAvailableCount(product.ProductId, warehouseIds);
                         break;
                     case ProductKitTypeEnum.Simple:
                         if (product.InventoryStocks != null && product.InventoryStocks.Count > 0)
                         {
-                            totalStock += product.InventoryStocks.Where(u=> warehouseIds.Contains(u.WarehouseId)).Select(q => q.Available).DefaultIfEmpty(0).Sum(); ;
+                            availableProductCount += product.InventoryStocks.Where(u=> warehouseIds.Contains(u.WarehouseId)).Select(q => q.Available).DefaultIfEmpty(0).Sum(); ;
                         }
                         break;
 
                     default:
-                        totalStock = 0;
+                        availableProductCount = 0;
                         break;
 
                 }
             }
-            return totalStock;
+            return availableProductCount;
+        }
 
-
+        public static bool IsProductAvailableToSell(ProductMaster product, int siteId)
+        {
+            return product.SellPrice > 0 && product.SellPrice.HasValue && Ganedata.Core.Services.Inventory.GetAvailableProductCount(product, siteId) > 0;
         }
     }
 }

@@ -1496,7 +1496,7 @@ namespace Ganedata.Core.Services
         return sellPrice;
     }
 
-    public decimal GetStockForAttributedProduct(int productId, List<int> warehouseIds)
+    public decimal GetProductByAttributeAvailableCount(int productId, List<int> warehouseIds)
     {
         decimal totalStock = 0;
         var product = _productServices.GetProductMasterById(productId);

@@ -37,7 +37,7 @@
                                     </div>
                                 </td>
                                 <td class="wishlist-btn-td">
-                                    @if (item.ProductMaster.SellPrice > 0 && item.ProductMaster.SellPrice.HasValue && item.ProductMaster.ProductType == ProductKitTypeEnum.ProductByAttribute && Ganedata.Core.Services.Inventory.GetStockDetailByProductId(@item.ProductId, ViewBag.SiteId) > 0)
+                                    @if (Ganedata.Core.Services.Inventory.IsProductAvailableToSell(@item.ProductMaster, ViewBag.SiteId) && item.ProductMaster.ProductType == ProductKitTypeEnum.ProductByAttribute)
                                     {
                                         <a href="javascript:;" class="wishlist-table-btns wishlist-basket-btn" onclick="addToCart(@item.ProductMaster.ProductId)">Add to Basket</a>
                                         <br/>

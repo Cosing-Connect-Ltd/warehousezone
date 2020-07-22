@@ -226,9 +226,7 @@
                                                         <p><span>Price:</span><b>@ViewBag.CurrencySymbol@productitems.KitProductMaster.SellPrice</b></p>
                                                         @*<p><span>Total:</span><b>@ViewBag.CurrencySymbol@productitems.KitProductMaster.SellPrice</b></p>*@
                                                         <div class="button-submit">
-                                                            @{ var stockAvailable = Ganedata.Core.Services.Inventory.GetStockDetailByProductId(Model.ProductId, ViewBag.SiteId); }
-
-                                                            @if (productitems.KitProductMaster.SellPrice > 0 && productitems.KitProductMaster.SellPrice.HasValue && stockAvailable > 0)
+                                                            @if (Ganedata.Core.Services.Inventory.IsProductAvailableToSell(Model, ViewBag.SiteId))
                                                             {
                                                                 <button type="Submit" name="submitNewsletter" class="btn btn-block move-to-cart-btn" id="button-cart" onclick="addToCart(@productitems.KitProductMaster.ProductId)">Add to Basket</button>
                                                             }
@@ -251,10 +249,6 @@
                                         <div role="tabpanel" class="tab-pane" id="@item.Name.Replace(" ", "-")">
 
                                             @{
-                                                var stockAvailable = Ganedata.Core.Services.Inventory.GetStockDetailByProductId(Model.ProductId, ViewBag.SiteId);
-
-
-
                                                 var products = Model.ProductKitItems.Where(u => u.ProductKitTypeId == item.Id && u.ProductKitType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Grouped && u.IsDeleted != true).ToList();
                                             }
                                             @foreach (var productitems in products)
@@ -275,7 +269,7 @@
                                                         @*<p><span>Total:</span><b>@ViewBag.CurrencySymbol@productitems.KitProductMaster.SellPrice</b></p>*@
                                                         <div class="button-submit">
 
-                                                            @if (productitems.KitProductMaster.SellPrice > 0 && productitems.KitProductMaster.SellPrice.HasValue && Ganedata.Core.Services.Inventory.GetStockDetailByProductId(productitems.KitProductMaster.ProductId, ViewBag.SiteId) > 0)
+                                                            @if (Ganedata.Core.Services.Inventory.IsProductAvailableToSell(productitems.KitProductMaster, ViewBag.SiteId))
                                                             {
                                                                 <button type="Submit" name="submitNewsletter" class="btn btn-block move-to-cart-btn" id="button-cart" onclick="addToCart(@productitems.KitProductMaster.ProductId)">Add to Basket</button>
                                                             }

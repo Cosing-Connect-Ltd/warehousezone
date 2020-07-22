@@ -136,7 +136,7 @@ namespace Ganedata.Core.Services
 
         decimal GetPriceForProduct(int productId, int siteId);
 
-        decimal GetStockForAttributedProduct(int productId, List<int> warehouseIds);
+        decimal GetProductByAttributeAvailableCount(int productId, List<int> warehouseIds);
 
     }
 }
