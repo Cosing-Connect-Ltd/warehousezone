@@ -1,12 +1,12 @@
-﻿
-@{
-    ViewBag.Title = "Contact";
+﻿@model WarehouseEcommerce.Models.ContactUs
 
+@{
+    ViewBag.Title = "Contact Us";
 }
 
 <section class="nb_sec nb_prdlisting_pgsec">
     <div class="container">
-        
+
         <div class="breadCrumbtopsec">
             <div class="nb_bread_crumbwrap">
                 <nav aria-label="breadcrumb">
@@ -16,37 +16,44 @@
                         </li>
 
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Contact</a></li>
+                        <li class="breadcrumb-item"><a href="#">ContactUs</a></li>
                     </ol>
                 </nav>
             </div>
         </div>
         <div class="nb_sec contact_form_sec">
             <div class="nb_header_style1">
-                <h3>Contact</h3>
+                <h3>Contact Us</h3>
             </div>
             <p class="subHead_content">If you have an enquiry, suggestion, complaint or just want to tell us what you think, please use the contact form below.</p>
-
             <div class="contact_pg_wrap">
-                <form action="" class="nb_contact_form">
-                    <div class="row">
-                        <div class="col-sm-6 col-md-6 col-lg-6">
-                            <span class="reqfield_msg">*indicates required field.</span>
-
+                @using (Html.BeginForm("Contact", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @class = "nb_contact_form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    if (Session["success"] != null)
+                    {
+                        <div class="alert custom-alert-success alert-dismissible" role="alert">
+                            <strong>Many thanks. Your message has been received – we will be in contact with you shortly.</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                    </div>
+                        Session["success"] = null;
+                    }
                     <div class="row">
-
                         <div class="col-sm-6 col-md-6 col-lg-6">
                             <div class="form-group">
-                                <label for="name">*Name</label>
-                                <input type="text" class="form-control" id="name" placeholder="Enter your name" />
+                                <label for="name">Name *</label>
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "YOUR NAME" } })
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "error-text" })
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-6 col-lg-6">
                             <div class="form-group">
-                                <label for="email">*Email</label>
-                                <input type="text" class="form-control" id="email" placeholder="Enter your email" />
+                                <label for="email">Email *</label>
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "YOUR EMAIL" } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "error-text" })
                             </div>
                         </div>
 
@@ -55,10 +62,11 @@
                     <div class="row">
                         <div class="col-md-12 col-lg-12">
                             <div class="form-group">
-                                <textarea placeholder="Enter your message"></textarea>
+                                @Html.EditorFor(model => model.Message, new { htmlAttributes = new { @class = "form-control", @placeholder = "MESSAGE" } })
+                                @Html.ValidationMessageFor(model => model.Message, "", new { @class = "error-text" })
                             </div>
                         </div>
-                        <div class="col-md-12 col-lg-12">
+                        @*<div class="col-md-12 col-lg-12">
                             <div class="form-group captcha_formGroup">
                                 <span class="captchaimg">
                                     <img src="images/captchaimg.jpg" alt="">
@@ -69,25 +77,23 @@
                                 </div>
 
                             </div>
-                        </div>
+                        </div>*@
                         <div class="col-md-12 col-lg-12">
                             <div class="form-group">
                                 <input type="submit" value="Submit" class="submitBtn">
                             </div>
                         </div>
-                        <div class="col-md-12 col-lg-12">
+                        @*<div class="col-md-12 col-lg-12">
                             <div class="form-group callus_frmgrp">
                                 <p>You can call us on:<span>0845 307 3984</span></p>
                                 <a href="tel:08453073984" class="submitBtn">Call us</a>
                             </div>
-                        </div>
+                        </div>*@
 
                     </div>
-
-
-                </form>
+                }
             </div>
-        </div>
+            </div>
 
         </div>
 </section>

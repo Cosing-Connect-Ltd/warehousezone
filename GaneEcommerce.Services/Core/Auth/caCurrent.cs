@@ -81,6 +81,7 @@ namespace Ganedata.Core.Services
                     tenantWebsite.IsDeliveryAvailable = tenantWeb.IsDeliveryAvailable;
                     tenantWebsite.BaseFilePath = tenantWeb.BaseFilePath;
                     tenantWebsite.HomeFeaturedProductText = tenantWeb.HomeFeaturedProductText;
+                    tenantWebsite.ContactReceiverEmail = tenantWeb.ContactReceiverEmail;
                     tenantWebsite.FeaturedTagId = tenantWeb.FeaturedTagId;
                     tenantWebsite.HomeTopCategoryText = tenantWeb.HomeTopCategoryText;
                     HttpContext.Current.Session["CurrentTenantWebsites"] = tenantWebsite;

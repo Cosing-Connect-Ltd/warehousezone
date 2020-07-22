@@ -78,6 +78,50 @@ namespace WarehouseEcommerce.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult Contact(ContactUs model)
+        {
+            var tenantWebsite = ViewBag.TenantWebsite as TenantWebsites;
+
+            if (ModelState.IsValid && tenantWebsite?.ContactReceiverEmail != null)
+            {
+                var message = new MailMessage();
+                message.To.Add(new MailAddress(tenantWebsite?.ContactReceiverEmail));
+                message.From = new MailAddress(model.Email);
+                message.Subject = $"Customer Request - {model.Name}";
+                message.Body = $"<p><strong>Name:</strong> {model.Name} <br/> <strong> Email: </strong> {model.Email} <br/> <strong> Message: </strong> {model.Message}</p>";
+                message.IsBodyHtml = true;
+
+                using (var smtp = new SmtpClient())
+                {
+                    var credential = new NetworkCredential
+                    {
+                        UserName = ConfigurationManager.AppSettings["SmtpClientUserName"],
+                        Password = ConfigurationManager.AppSettings["SmtpClientPassword"]
+                    };
+                    smtp.Credentials = credential;
+                    smtp.Host = "smtp.gmail.com";
+                    smtp.Port = 587;
+                    smtp.EnableSsl = true;
+
+                    try
+                    {
+                        smtp.Send(message);
+                    }
+                    catch (Exception ex)
+                    {
+                        Session["EXCP"] = ex;
+                        return RedirectToAction("Contact", "Home", new { area = "" });
+                    }
+
+
+                    Session["success"] = 1;
+                    return RedirectToAction("Contact", "Home", new { area = "" });
+                }
+            }
+            return View(model);
+        }
+
         public PartialViewResult _TopHeaderPartial()
         {
             var currencyyDetail = Session["CurrencyDetail"] as caCurrencyDetail;
@@ -130,7 +174,7 @@ namespace WarehouseEcommerce.Controllers
         }
         public PartialViewResult _TopProductPartial()
         {
-            
+
             var topProduct = new ProductViewModel
             {
                 productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID, (CurrentTenantId), 12, "TopProduct").ToList(),
@@ -256,7 +300,7 @@ namespace WarehouseEcommerce.Controllers
         }
         public PartialViewResult _FooterPartialArea(bool university = false)
         {
-            ViewBag.FooterNavigation = _tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, CurrentTenantWebsite.SiteID).Where(u => u.ShowInFooter == true && u.Type == WebsiteNavigationType.Content).ToList();
+            ViewBag.FooterNavigation = _tenantWebsiteService.GetAllValidWebsiteNavigation(CurrentTenantId, CurrentTenantWebsite.SiteID).Where(u => u.ShowInFooter == true && (u.Type == WebsiteNavigationType.Content || u.Type == WebsiteNavigationType.Link)).ToList();
 
             if (university)
             {

@@ -30,6 +30,8 @@ namespace Ganedata.Core.Entities.Domain
         public WebsiteNavigationType Type { get; set; }
         [Display(Name = "Content Page")]
         public int? ContentPageId { get; set; }
+        [Display(Name = "Link Page URL")]
+        public string LinkPageUrl { get; set; }
         [Display(Name = "Show In Navigation")]
         public bool ShowInNavigation { get; set; }
         [Display(Name = "Show In Footer")]

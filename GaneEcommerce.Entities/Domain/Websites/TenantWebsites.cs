@@ -66,6 +66,8 @@ namespace Ganedata.Core.Entities.Domain
         public string HomeTopCategoryText { get; set; }
         [Display(Name = "Home Featured Product Text")]
         public string HomeFeaturedProductText { get; set; }
+        [Display(Name = "Contact Receiver Email")]
+        public string ContactReceiverEmail { get; set; }
         [Display(Name = "Featured Product Tag")]
         public int? FeaturedTagId { get; set; }
 

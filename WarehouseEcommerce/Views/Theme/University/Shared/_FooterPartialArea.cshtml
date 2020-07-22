@@ -1,4 +1,5 @@
 ﻿  <!-- footer section -->
+@using Ganedata.Core.Entities.Enums
 @model Ganedata.Core.Entities.Domain.TenantWebsites
 <footer class="nb_footer mt-5">
     <div class="container">
@@ -48,9 +49,18 @@
                     @foreach (var item in naviagtion)
                     {
                     <li>
-                        <a href="@Url.Action("page", "Home", new { pageUrl = item.WebsiteContentPages?.pageUrl })">
-                            @item.Name
-                        </a>
+                        @if (item.Type == WebsiteNavigationType.Content)
+                        {
+                            <a href="@Url.Action("page", "Home", new { pageUrl = item.WebsiteContentPages?.pageUrl })">
+                                @item.Name
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="@item.LinkPageUrl">
+                                @item.Name
+                            </a>
+                        }
                     </li>
 
                     }

@@ -434,7 +434,8 @@ namespace Ganedata.Core.Entities.Enums
     {
         Blank = 1,
         Content = 2,
-        Category = 3
+        Category = 3,
+        Link = 4
     }
 
     public enum WebsiteDiscountTypeEnum

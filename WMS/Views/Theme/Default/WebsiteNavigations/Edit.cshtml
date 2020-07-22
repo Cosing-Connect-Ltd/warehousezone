@@ -111,16 +111,24 @@
             var typeId = $("#Type :selected").val();
             if (typeId == "1") {
                 $(".showcontentpage").hide();
+                $(".showLinkUrl").hide();
                 $(".ProductsShow").hide();
             }
             else if (typeId == "2") {
                 $(".showcontentpage").show();
+                $(".showLinkUrl").hide();
                 $(".ProductsShow").hide();
             }
             else if (typeId == "3") {
 
                 $(".showcontentpage").hide();
+                $(".showLinkUrl").hide();
                 $(".ProductsShow").show();
+            }
+            else if (typeId == "4") {
+                $(".showcontentpage").hide();
+                $(".showLinkUrl").show();
+                $(".ProductsShow").hide();
             }
         });
     });
@@ -171,6 +179,13 @@
                 <div class="col-md-8">
                     @Html.DropDownListFor(model => model.ContentPageId, ViewBag.contentId as SelectList, "Select Content Page", htmlAttributes: new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.ContentPageId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center showLinkUrl" style="@(Model.Type==Ganedata.Core.Entities.Enums.WebsiteNavigationType.Link?"":"display:none;")">
+                @Html.LabelFor(model => model.LinkPageUrl, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.LinkPageUrl, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.LinkPageUrl, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">

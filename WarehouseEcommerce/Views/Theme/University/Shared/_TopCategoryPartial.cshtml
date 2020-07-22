@@ -31,6 +31,12 @@
                                         <h2>@item.Name</h2>
                                     </a>
                                 }
+                                else if (item.Type == Ganedata.Core.Entities.Enums.WebsiteNavigationType.Link)
+                                {
+                                    <a href="@item.LinkPageUrl">
+                                        <h2>@item.Name</h2>
+                                    </a>
+                                }
 
                             </div>
                         </li>
