@@ -348,21 +348,30 @@ namespace WarehouseEcommerce.Controllers
             return string.IsNullOrEmpty(postCode?.Trim()) ? (bool?)null : true;
         }
 
-        public JsonResult AddWishListItem(int productId, bool isNotfication)
+        public JsonResult AddWishListItem(int productId)
         {
-            var product = _productServices.GetProductMasterById(productId);
-            var model = new OrderDetail();
-            model.ProductMaster = product;
-            model.Qty = 0;
-            model.ProductId = productId;
-            model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
             ViewBag.CartModal = false;
-            var details = _mapper.Map(model, new OrderDetailSessionViewModel());
-            details.isNotfication = isNotfication;
-            _tenantWebsiteService.AddOrUpdateWishListItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, new List<OrderDetailSessionViewModel>() { details });
-            return Json(_tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).Count(), JsonRequestBehavior.AllowGet);
 
+            var itemsCount = _tenantWebsiteService.AddOrUpdateWishListItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, productId);
+            return Json(itemsCount, JsonRequestBehavior.AllowGet);
+        }
 
+        public JsonResult AddNotifyListItem(int productId)
+        {
+            ViewBag.CartModal = false;
+
+            var itemsCount = _tenantWebsiteService.AddOrUpdateNotifyListItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, productId);
+            return Json(itemsCount, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult IsProductInWishList(int productId)
+        {
+            return Json(Inventory.IsProductInWishList(productId, CurrentUserId), JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult IsProductInNotifyList(int productId)
+        {
+            return Json(Inventory.IsProductInNotifyList(productId, CurrentUserId), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult WishList()
@@ -384,7 +393,7 @@ namespace WarehouseEcommerce.Controllers
         {
             if (productId.HasValue)
             {
-                var count = _tenantWebsiteService.RemoveWishListItem((productId ?? 0), false, CurrentTenantWebsite.SiteID, CurrentUserId);
+                var count = _tenantWebsiteService.RemoveWishListItem((productId ?? 0), CurrentTenantWebsite.SiteID, CurrentUserId);
                 return PartialView(_tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).ToList());
 
             }
@@ -461,9 +470,16 @@ namespace WarehouseEcommerce.Controllers
         }
 
 
-        public JsonResult RemoveWishList(int ProductId, bool notification)
+        public JsonResult RemoveWishListItem(int ProductId)
         {
-            var count = _tenantWebsiteService.RemoveWishListItem(ProductId, notification, CurrentTenantWebsite.SiteID, CurrentUserId);
+            var count = _tenantWebsiteService.RemoveWishListItem(ProductId, CurrentTenantWebsite.SiteID, CurrentUserId);
+
+            return Json(count, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult RemoveNotifyListItem(int ProductId)
+        {
+            var count = _tenantWebsiteService.RemoveNotifyItem(ProductId, CurrentTenantWebsite.SiteID, CurrentUserId);
 
             return Json(count, JsonRequestBehavior.AllowGet);
         }
@@ -618,6 +634,7 @@ namespace WarehouseEcommerce.Controllers
                 model.SelectedProduct = baseProduct;
             }
 
+            model.BaseProductId = baseProduct.ProductId;
             model.BaseProductType = baseProduct.ProductType;
             model.BaseProductSKUCode = baseProduct.SKUCode;
             model.Quantity = quantity;

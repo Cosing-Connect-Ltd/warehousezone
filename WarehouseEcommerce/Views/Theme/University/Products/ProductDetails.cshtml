@@ -130,13 +130,11 @@
 
                         if (totalwishlistitems == null)
                         {
-                            <button class="notify-btn addTobasket btn_notification-bell_@Model.SelectedProduct.ProductId" onclick="addNotifyProductAvailibility(@Model.SelectedProduct.ProductId)"><i class="fa fa-bell-o list-icon"></i> NOTIFY ME WHEN AVAILABLE</button>
-                            @*<a href="javascript:;" onclick="addNotifyProductAvailibility(@Model.SelectedProduct.ProductId)" class="addtowishlist list-icon bell-icon notification-bell_@Model.SelectedProduct.ProductId"><i class="fa fa-bell-o list-icon" style="color:black"></i></a>*@
+                            <button class="notify-btn addTobasket" id="notification-bell__button_@Model.SelectedProduct.ProductId" onclick="addNotifyProductAvailibility(@Model.SelectedProduct.ProductId)"><i class="fa fa-bell-o list-icon"></i> NOTIFY ME WHEN AVAILABLE</button>
                         }
                         else
                         {
-                            <button class="notify-btn addTobasket btn_notification-bell_@Model.SelectedProduct.ProductId" style="background-color: red" onclick="removeNotifyProduct(@Model.SelectedProduct.ProductId,true)"><i class="fa fa-bell-o list-icon"></i> NOTIFY ME WHEN AVAILABLE</button>
-                            @*<a href="javascript:;" onclick="removeNotifyProduct(@Model.SelectedProduct.ProductId,true)" class="addtowishlist list-icon bell-icon notification-bell_@Model.SelectedProduct.ProductId"><i class="fa fa-bell-o list-icon" style="color:red"></i></a>*@
+                            <button class="notify-btn addTobasket" id="notification-bell__button_@Model.SelectedProduct.ProductId" style="background-color: red" onclick="removeNotifyProduct(@Model.SelectedProduct.ProductId)"><i class="fa fa-bell-o list-icon"></i> NOTIFY ME WHEN AVAILABLE</button>
 
                         }
 
@@ -144,13 +142,13 @@
 
                     @if (Model.SelectedProduct.WebsiteWishListItems.FirstOrDefault(u => u.IsDeleted != true && !u.IsNotification) == null)
                     {
-                        <button id="btnwish_@Model.SelectedProduct.ProductId" onclick="addToWishList(@Model.SelectedProduct.ProductId,false)" class="addtowishlistbtn">Add to Wishlist</button>
-                        <a href="javascript:;" class="addtowishlist " id="wish_@Model.SelectedProduct.ProductId" onclick="addToWishList(@Model.SelectedProduct.ProductId,false)"><i class="icon-love list-icon" style="color:black;font-size:28px;margin-left:15px"></i></a>
+                        <button id="btnwish_@Model.SelectedProduct.ProductId" onclick="addToWishList(@Model.SelectedProduct.ProductId)" class="addtowishlistbtn">Add to Wishlist</button>
+                        <a href="javascript:;" class="addtowishlist " id="wish_@Model.SelectedProduct.ProductId" onclick="addToWishList(@Model.SelectedProduct.ProductId)"><i class="icon-love list-icon" style="color:black;font-size:28px;margin-left:15px"></i></a>
                     }
                     else
                     {
-                        <button id="btnwish_@Model.SelectedProduct.ProductId" onclick="removeFromWishListPopUp(@Model.SelectedProduct.ProductId,false)" class="addtowishlistbtn" style="background-color: red !important">Add to Wishlist</button>
-                        <a href="javascript:;" class="addtowishlist" id="wish_@Model.SelectedProduct.ProductId" onclick="removeFromWishListPopUp(@Model.SelectedProduct.ProductId,false)"><i class="icon-love list-icon" style="color:red;font-size:28px;margin-left:15px"></i></a>
+                        <button id="btnwish_@Model.SelectedProduct.ProductId" onclick="removeFromWishListPopUp(@Model.SelectedProduct.ProductId)" class="addtowishlistbtn" style="background-color: red !important">Add to Wishlist</button>
+                        <a href="javascript:;" class="addtowishlist" id="wish_@Model.SelectedProduct.ProductId" onclick="removeFromWishListPopUp(@Model.SelectedProduct.ProductId)"><i class="icon-love list-icon" style="color:red;font-size:28px;margin-left:15px"></i></a>
                     }
                 </div>
                 </div>

@@ -71,13 +71,13 @@
                                                 if (!isItemInNotifyList)
                                                 {
                                                     <li>
-                                                        <a href="javascript:;" onclick="@(item.ProductType != ProductKitTypeEnum.ProductByAttribute ? "addNotifyProductAvailibility(" + item.ProductId + ", false)" : "showProductByAttributeSelector('" + item.SKUCode + "')")" class="notification-bell_@item.ProductId"><i class="bel-icon fa fa-bell-o list-icon" style="color:black"></i></a>
+                                                        <a href="javascript:;" onclick="@(item.ProductType != ProductKitTypeEnum.ProductByAttribute ? "addNotifyProductAvailibility(" + item.ProductId + ")" : "showProductByAttributeSelector('" + item.SKUCode + "')")" id="notification-bell_@item.ProductId"><i class="bel-icon fa fa-bell-o list-icon" style="color:black"></i></a>
                                                     </li>
                                                 }
                                                 else
                                                 {
                                                     <li>
-                                                        <a href="javascript:;" onclick="@(item.ProductType != ProductKitTypeEnum.ProductByAttribute ? "removeNotifyProduct(" + item.ProductId + ", true)" : "showProductByAttributeSelector('" + item.SKUCode + "')")" class="notification-bell_@item.ProductId"><i class="bel-icon fa fa-bell-o list-icon" style="color:red"></i></a>
+                                                        <a href="javascript:;" onclick="@(item.ProductType != ProductKitTypeEnum.ProductByAttribute ? "removeNotifyProduct(" + item.ProductId + ")" : "showProductByAttributeSelector('" + item.SKUCode + "')")" id="notification-bell_@item.ProductId"><i class="bel-icon fa fa-bell-o list-icon" style="color:red"></i></a>
                                                     </li>
 
                                                 }
@@ -92,13 +92,13 @@
                                             @if (!isItemInWishList)
                                             {
                                                 <li>
-                                                    <a href="javascript:;" id="wish_@item.ProductId" onclick="@(item.ProductType != ProductKitTypeEnum.ProductByAttribute ? "addToWishList(" + item.ProductId + ", false)" : "showProductByAttributeSelector('" + item.SKUCode + "')")"><i class="icon-love list-icon" style="color: black;font-size: 28px;"></i></a>
+                                                    <a href="javascript:;" id="wish_@item.ProductId" onclick="@(item.ProductType != ProductKitTypeEnum.ProductByAttribute ? "addToWishList(" + item.ProductId + ")" : "showProductByAttributeSelector('" + item.SKUCode + "')")"><i class="icon-love list-icon" style="color: black;font-size: 28px;"></i></a>
                                                 </li>
                                             }
                                             else
                                             {
                                                 <li>
-                                                    <a href="javascript:;" id="wish_@item.ProductId" onclick="@(item.ProductType != ProductKitTypeEnum.ProductByAttribute ? "removeFromWishListPopUp(" + item.ProductId + ", false)" : "showProductByAttributeSelector('" + item.SKUCode + "')")"><i class="icon-love list-icon" style="color: red;font-size: 28px;"></i></a>
+                                                    <a href="javascript:;" id="wish_@item.ProductId" onclick="@(item.ProductType != ProductKitTypeEnum.ProductByAttribute ? "removeFromWishListPopUp(" + item.ProductId + ")" : "showProductByAttributeSelector('" + item.SKUCode + "')")"><i class="icon-love list-icon" style="color: red;font-size: 28px;"></i></a>
                                                 </li>
                                             }
                                         </ul>

@@ -1,4 +1,5 @@
-﻿using Ganedata.Core.Data;
+﻿using AutoMapper;
+using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Models;
@@ -7,8 +8,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
-using AutoMapper;
-using Microsoft.Ajax.Utilities;
 
 namespace Ganedata.Core.Services
 {
@@ -1618,7 +1617,6 @@ namespace Ganedata.Core.Services
             //if (!tenantWebsiteService.VerifyProductAgainstWebsite(productId, siteId)) { return 0; }
 
             var tenantWebsite = tenantWebsiteService.GetTenantWebSiteBySiteId(siteId);
-            var productService = DependencyResolver.Current.GetService<IProductServices>();
             var warehouseIds = tenantWebsiteService.GetAllValidWebsiteWarehouses(tenantWebsite.TenantId, siteId).Select(u => u.Id).ToList();
 
             if (product != null)
@@ -1651,7 +1649,45 @@ namespace Ganedata.Core.Services
 
         public static bool IsProductAvailableToSell(ProductMaster product, int siteId)
         {
-            return product.SellPrice > 0 && product.SellPrice.HasValue && Ganedata.Core.Services.Inventory.GetAvailableProductCount(product, siteId) > 0;
+            return product.SellPrice > 0 && product.SellPrice.HasValue && GetAvailableProductCount(product, siteId) > 0;
+        }
+
+        public static bool IsProductInWishList(ProductMaster product, int userId)
+        {
+            return IsInWishListOrNotifyList(product, userId, false);
+        }
+
+        public static bool IsProductInNotifyList(ProductMaster product, int userId)
+        {
+            return IsInWishListOrNotifyList(product, userId, true);
+        }
+
+        public static bool IsProductInWishList(int productId, int userId)
+        {
+            var productService = DependencyResolver.Current.GetService<IProductServices>();
+            var product = productService.GetProductMasterById(productId);
+            return IsInWishListOrNotifyList(product, userId, false);
+        }
+
+        public static bool IsProductInNotifyList(int productId, int userId)
+        {
+            var productService = DependencyResolver.Current.GetService<IProductServices>();
+            var product = productService.GetProductMasterById(productId);
+            return IsInWishListOrNotifyList(product, userId, true);
+        }
+
+        private static bool IsInWishListOrNotifyList(ProductMaster product, int userId, bool isNoftification)
+        {
+            if (product.ProductType != ProductKitTypeEnum.ProductByAttribute)
+            {
+                return product.WebsiteWishListItems.Any(u => u.IsDeleted != true && u.UserId == userId && u.IsNotification == isNoftification);
+            }
+            else
+            {
+                return product.ProductKitItems.Any(u => u.IsDeleted != true &&
+                                                        u.IsActive &&
+                                                        u.KitProductMaster.WebsiteWishListItems.Any(a => a.IsDeleted != true && a.UserId == userId && a.IsNotification == isNoftification));
+            }
         }
     }
 }

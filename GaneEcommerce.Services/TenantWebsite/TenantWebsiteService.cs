@@ -1194,21 +1194,28 @@ namespace Ganedata.Core.Services
             _currentDbContext.SaveChanges();
         }
 
-    public int AddOrUpdateWishListItems(int siteId, int userId, int tenantId, List<OrderDetailSessionViewModel> wishListDetail)
-    {
-
-        foreach (var orderDetail in wishListDetail)
+        public int AddOrUpdateWishListItems(int siteId, int userId, int tenantId, int productId)
         {
-            var wishListProduct = _currentDbContext.WebsiteWishListItems.FirstOrDefault(u => u.ProductId == orderDetail.ProductId &&
+            return AddOrUpdateWishListNotifyListItems(siteId, userId, tenantId, productId, false);
+        }
+
+        public int AddOrUpdateNotifyListItems(int siteId, int userId, int tenantId, int productId)
+        {
+            return AddOrUpdateWishListNotifyListItems(siteId, userId, tenantId, productId, true);
+        }
+
+        private int AddOrUpdateWishListNotifyListItems(int siteId, int userId, int tenantId, int productId, bool isNotification)
+        {
+            var wishListProduct = _currentDbContext.WebsiteWishListItems.FirstOrDefault(u => u.ProductId == productId &&
                                                                                                             u.SiteID == siteId &&
                                                                                                             u.UserId == userId &&
-                                                                                                            u.IsNotification == orderDetail.isNotfication);
+                                                                                                            u.IsNotification == isNotification);
             if (wishListProduct == null)
             {
                 WebsiteWishListItem wishListItem = new WebsiteWishListItem
                 {
-                    ProductId = orderDetail.ProductId,
-                    IsNotification = orderDetail.isNotfication ?? false,
+                    ProductId = productId,
+                    IsNotification = isNotification,
                     SiteID = siteId,
                     UserId = userId,
                     TenantId = tenantId
@@ -1220,309 +1227,316 @@ namespace Ganedata.Core.Services
             else
             {
                 wishListProduct.IsDeleted = false;
-                wishListProduct.IsNotification = orderDetail.isNotfication ?? false;
+                wishListProduct.IsNotification = isNotification;
                 wishListProduct.UpdateUpdatedInfo(userId);
                 _currentDbContext.Entry(wishListProduct).State = System.Data.Entity.EntityState.Modified;
                 _currentDbContext.SaveChanges();
             }
+
+            return GetAllValidWishListItemsList(siteId, userId).Count();
         }
-        return GetAllValidWishListItemsList(siteId, userId).Count();
 
 
-    }
-
-
-    public bool RemoveCartItem(int cartId, int siteId, int? userId, string sessionKey)
-    {
-
-        var cartProduct = _currentDbContext.WebsiteCartItems.FirstOrDefault(u => u.Id == cartId &&
-                                                                                 u.IsDeleted != true &&
-                                                                                 u.SiteID == siteId &&
-                                                                                 ((((!userId.HasValue || userId == 0) || u.UserId == userId) ||
-                                                                                   (string.IsNullOrEmpty(sessionKey) ||
-                                                                                   u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase)))));
-        if (cartProduct != null)
+        public bool RemoveCartItem(int cartId, int siteId, int? userId, string sessionKey)
         {
-            cartProduct.IsDeleted = true;
-            cartProduct.UpdateUpdatedInfo(userId ?? 0);
-            _currentDbContext.Entry(cartProduct).State = System.Data.Entity.EntityState.Modified;
-            _currentDbContext.SaveChanges();
 
-        }
-        return true;
-    }
-
-    public bool GetWishlistNotificationStatus(int productId, int siteId, int userId)
-    {
-        return _currentDbContext.WebsiteWishListItems
-            .FirstOrDefault(u => u.ProductId == productId && u.SiteID == siteId && u.UserId == userId)
-            .IsNotification;
-    }
-    public bool ChangeWishListStatus(int productId, bool notification, int siteId, int userId)
-    {
-        var wishListItem = _currentDbContext.WebsiteWishListItems
-            .Where(u => u.ProductId == productId && u.SiteID == siteId && u.UserId == userId).ToList();
-        if (wishListItem.Count > 0)
-        {
-            foreach (var item in wishListItem)
+            var cartProduct = _currentDbContext.WebsiteCartItems.FirstOrDefault(u => u.Id == cartId &&
+                                                                                     u.IsDeleted != true &&
+                                                                                     u.SiteID == siteId &&
+                                                                                     ((((!userId.HasValue || userId == 0) || u.UserId == userId) ||
+                                                                                       (string.IsNullOrEmpty(sessionKey) ||
+                                                                                       u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase)))));
+            if (cartProduct != null)
             {
-                item.IsNotification = notification;
-                item.UpdateUpdatedInfo(userId);
-                _currentDbContext.Entry(item).State = EntityState.Modified;
-            }
-            _currentDbContext.SaveChanges();
-        }
-
-
-
-
-        return true;
-
-    }
-
-    public OrderDetailSessionViewModel SetCartItem(int productId, decimal quantity, decimal? currencyRate, int? currencyId)
-    {
-        var model = new OrderDetail();
-        var product = _productServices.GetProductMasterById(productId);
-        model.ProductMaster = product;
-        model.Qty = quantity;
-        model.ProductId = productId;
-        model.Price = Math.Round(((_productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, null).SellPrice) * ((!currencyRate.HasValue || currencyRate <= 0) ? 1 : currencyRate.Value)), 2);
-        model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
-        var cartItem = _mapper.Map(model, new OrderDetailSessionViewModel());
-        cartItem.Price = Math.Round(((cartItem.Price) * ((!currencyRate.HasValue || currencyRate <= 0) ? 1 : currencyRate.Value)), 2);
-        cartItem.CurrencyId = currencyId;
-        return cartItem;
-    }
-
-    public int RemoveWishListItem(int ProductId, bool notification, int SiteId, int UserId)
-    {
-        var wishListProduct = _currentDbContext.WebsiteWishListItems.Where(u => u.ProductId == ProductId && u.SiteID == SiteId && u.UserId == UserId && u.IsNotification == notification).ToList();
-        if (wishListProduct.Count > 0)
-        {
-            foreach (var item in wishListProduct)
-            {
-                item.IsDeleted = true;
-                item.UpdateUpdatedInfo(UserId);
-                _currentDbContext.Entry(item).State = EntityState.Modified;
+                cartProduct.IsDeleted = true;
+                cartProduct.UpdateUpdatedInfo(userId ?? 0);
+                _currentDbContext.Entry(cartProduct).State = System.Data.Entity.EntityState.Modified;
+                _currentDbContext.SaveChanges();
 
             }
-
-            _currentDbContext.SaveChanges();
-
-        }
-        return GetAllValidWishListItemsList(SiteId, UserId).Count();
-    }
-
-    public CheckoutViewModel SetCheckOutProcessModel(CheckoutViewModel checkoutViewModel, int siteId, int tenantId, int userId, string sessionKey)
-    {
-        var tenantCurrency = _tenantsCurrencyRateServices.GetTenantCurrencies(tenantId).FirstOrDefault();
-        var currencyRate = _tenantsCurrencyRateServices.GetCurrencyRateByTenantid(tenantCurrency?.TenantCurrencyID ?? 0);
-        List<AccountAddresses> accountAddresses = new List<AccountAddresses>();
-        if ((DeliveryMethod?)checkoutViewModel.DeliveryMethodId == DeliveryMethod.ToShipmentAddress)
-        {
-            accountAddresses.Add(_accountServices.GetAccountAddressById(checkoutViewModel.ShippingAddressId ?? 0));
-            var shippingRule = GetWebsiteShippingRulesById(checkoutViewModel.ShipmentRuleId ?? 0);
-            shippingRule.Price = Math.Round(((shippingRule.Price) * ((currencyRate <= 0) ? 1 : currencyRate)), 2);
-            checkoutViewModel.ShippingRule = _mapper.Map(shippingRule, new WebsiteShippingRulesViewModel());
-        }
-        accountAddresses.Add(_accountServices.GetAccountAddressById(checkoutViewModel.BillingAddressId ?? 0));
-        checkoutViewModel.Addresses = _mapper.Map(accountAddresses, new List<AddressViewModel>());
-        checkoutViewModel.CartItems = GetAllValidCartItems(siteId, userId, tenantId, sessionKey).ToList();
-        if ((DeliveryMethod?)checkoutViewModel.DeliveryMethodId == DeliveryMethod.ToPickupPoint)
-        {
-            checkoutViewModel.CollectionPoint =
-                _mapper.Map((_currentDbContext.TenantWarehouses.FirstOrDefault(e => e.WarehouseId == (checkoutViewModel.CollectionPointId ?? 0) && e.IsDeleted != true && e.IsActive == true)), new CollectionPointViewModel());
+            return true;
         }
 
-
-
-        return checkoutViewModel;
-
-
-
-    }
-
-    public void SendNotificationForAbandonedCarts()
-    {
-        var abandonedCartSettings = _currentDbContext.AbandonedCartSettings
-                                                    .AsNoTracking()
-                                                    .Where(s => s.IsNotificationEnabled &&
-                                                                s.IsDeleted != true &&
-                                                                s.TenantWebsite.IsDeleted != true &&
-                                                                s.TenantWebsite.IsActive == true);
-
-        foreach (var settings in abandonedCartSettings)
+        public bool GetWishlistNotificationStatus(int productId, int siteId, int userId)
         {
-            var targetTime = DateTime.Now.AddMinutes(-1 * settings.NotificationDelay);
-
-            var websiteCartItems = _currentDbContext.WebsiteCartItems.Where(i => i.IsDeleted != true &&
-                                                                                i.SiteID == settings.SiteID &&
-                                                                                (i.DateUpdated ?? i.DateCreated) < targetTime &&
-                                                                                i.AuthUser.IsActive == true &&
-                                                                                i.AuthUser.IsDeleted != true)
-                                                                      .OrderByDescending(o => o.DateUpdated)
-                                                                      .ThenByDescending(o => o.DateCreated)
-                                                                      .ToList();
-
-            var emailconfig = _emailServices.GetAllActiveTenantEmailConfigurations(settings.TenantId).FirstOrDefault();
-
-            foreach (var item in websiteCartItems.GroupBy(i => i.UserId)
-                                                .Select(g =>
-                                                {
-                                                    var item = g.First();
-                                                    return new
-                                                    {
-                                                        Date = item.DateUpdated ?? item.DateCreated,
-                                                        item.AuthUser
-                                                    };
-                                                }))
+            return _currentDbContext.WebsiteWishListItems
+                .FirstOrDefault(u => u.ProductId == productId && u.SiteID == siteId && u.UserId == userId)
+                .IsNotification;
+        }
+        public bool ChangeWishListStatus(int productId, bool notification, int siteId, int userId)
+        {
+            var wishListItem = _currentDbContext.WebsiteWishListItems
+                .Where(u => u.ProductId == productId && u.SiteID == siteId && u.UserId == userId).ToList();
+            if (wishListItem.Count > 0)
             {
-                if (!_currentDbContext.AbandonedCartNotifications.Any(a => a.SiteId == settings.SiteID && a.UserId == item.AuthUser.UserId && a.SendDate >= (item.Date)))
+                foreach (var item in wishListItem)
                 {
-                    var (body, subject) = GetEmailContent(settings, item.AuthUser);
-
-                    SendAbandonedCartNotification(item.AuthUser.UserEmail, subject, body, emailconfig);
-
-                    _currentDbContext.AbandonedCartNotifications.Add(new AbandonedCartNotification
-                    {
-                        SendDate = DateTime.Now,
-                        SiteId = settings.SiteID,
-                        UserId = item.AuthUser.UserId
-                    });
+                    item.IsNotification = notification;
+                    item.UpdateUpdatedInfo(userId);
+                    _currentDbContext.Entry(item).State = EntityState.Modified;
                 }
-            }
-        }
-
-        _currentDbContext.SaveChanges();
-    }
-
-    public bool SendAbandonedCartNotification(string to, string subject, string body, TenantEmailConfig emailconfig)
-    {
-        var emailSender = new EmailSender(to, emailconfig.UserEmail, body, subject, string.Empty, emailconfig.SmtpHost, emailconfig.SmtpPort, emailconfig.UserEmail, emailconfig.Password);
-
-        return emailSender.SendMail(true);
-    }
-
-    private Tuple<string, string> GetEmailContent(AbandonedCartSetting settings, AuthUser user)
-    {
-        var body = settings.NotificationEmailTemplate
-            .Replace("[USERFULLNAME]", $"{user.UserFirstName} {user.UserLastName}")
-            .Replace("[WEBSITENAME]", settings.TenantWebsite.SiteName)
-            .Replace("[SITELINK]", $"http://{settings.TenantWebsite.HostName}")
-            .Replace("[CARTLINK]", $"http://{settings.TenantWebsite.HostName}/Products/AddToCart");
-
-        var subject = settings.NotificationEmailSubjectTemplate.Replace("[USERFIRSTNAME]", user.UserFirstName);
-
-        return new Tuple<string, string>(body, subject);
-    }
-
-    public IEnumerable<WebsiteDeliveryNavigation> GetAllValidWebsiteDeliveryNavigations(int tenantId, int siteId, bool includeInActive = false)
-    {
-        return _currentDbContext.WebsiteDeliveryNavigations.Where(u => u.TenantId == tenantId && u.IsDeleted != true
-        && u.SiteId == siteId && (includeInActive || u.IsActive));
-    }
-
-    public WebsiteDeliveryNavigation GetWebsiteDeliveryNavigationById(int id)
-    {
-        return _currentDbContext.WebsiteDeliveryNavigations.Find(id);
-    }
-
-    public WebsiteDeliveryNavigation CreateOrUpdateWebsiteDeliveryNavigation(
-        WebsiteDeliveryNavigation websiteDeliveryNavigation, int userId, int tenantId)
-    {
-        if (websiteDeliveryNavigation.Id <= 0)
-        {
-            websiteDeliveryNavigation.TenantId = tenantId;
-            websiteDeliveryNavigation.UpdateCreatedInfo(userId);
-            _currentDbContext.WebsiteDeliveryNavigations.Add(websiteDeliveryNavigation);
-            _currentDbContext.SaveChanges();
-        }
-        else
-        {
-            var updatedRecored = _currentDbContext.WebsiteDeliveryNavigations.AsNoTracking().FirstOrDefault(u => u.Id == websiteDeliveryNavigation.Id);
-            if (updatedRecored != null)
-            {
-                websiteDeliveryNavigation.CreatedBy = updatedRecored.CreatedBy;
-                websiteDeliveryNavigation.DateCreated = updatedRecored.DateCreated;
-                websiteDeliveryNavigation.TenantId = tenantId;
-                websiteDeliveryNavigation.UpdateUpdatedInfo(userId);
-                _currentDbContext.Entry(websiteDeliveryNavigation).State = System.Data.Entity.EntityState.Modified;
                 _currentDbContext.SaveChanges();
             }
+
+
+
+
+            return true;
+
         }
 
-        return websiteDeliveryNavigation;
-    }
-
-    public int RemoveWebsiteDeliveryNavigation(int id, int userId)
-    {
-        var updatedRecored = _currentDbContext.WebsiteDeliveryNavigations.AsNoTracking().FirstOrDefault(u => u.Id == id);
-        if (updatedRecored != null)
+        public OrderDetailSessionViewModel SetCartItem(int productId, decimal quantity, decimal? currencyRate, int? currencyId)
         {
-            updatedRecored.IsDeleted = true;
-            updatedRecored.UpdateUpdatedInfo(userId);
-            _currentDbContext.Entry(updatedRecored).State = System.Data.Entity.EntityState.Modified;
+            var model = new OrderDetail();
+            var product = _productServices.GetProductMasterById(productId);
+            model.ProductMaster = product;
+            model.Qty = quantity;
+            model.ProductId = productId;
+            model.Price = Math.Round(((_productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, null).SellPrice) * ((!currencyRate.HasValue || currencyRate <= 0) ? 1 : currencyRate.Value)), 2);
+            model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
+            var cartItem = _mapper.Map(model, new OrderDetailSessionViewModel());
+            cartItem.Price = Math.Round(((cartItem.Price) * ((!currencyRate.HasValue || currencyRate <= 0) ? 1 : currencyRate.Value)), 2);
+            cartItem.CurrencyId = currencyId;
+            return cartItem;
+        }
+
+        public int RemoveWishListItem(int ProductId, int siteId, int userId)
+        {
+            return RemoveWishListOrNotifyListItem(ProductId, false, siteId, userId);
+        }
+
+        public int RemoveNotifyItem(int ProductId, int siteId, int userId)
+        {
+            return RemoveWishListOrNotifyListItem(ProductId, true, siteId, userId);
+        }
+
+        private int RemoveWishListOrNotifyListItem(int ProductId, bool isNotification, int SiteId, int UserId)
+        {
+            var wishListProduct = _currentDbContext.WebsiteWishListItems.Where(u => u.ProductId == ProductId && u.SiteID == SiteId && u.UserId == UserId && u.IsNotification == isNotification).ToList();
+            if (wishListProduct.Count > 0)
+            {
+                foreach (var item in wishListProduct)
+                {
+                    item.IsDeleted = true;
+                    item.UpdateUpdatedInfo(UserId);
+                    _currentDbContext.Entry(item).State = EntityState.Modified;
+
+                }
+
+                _currentDbContext.SaveChanges();
+
+            }
+            return GetAllValidWishListItemsList(SiteId, UserId).Count();
+        }
+
+        public CheckoutViewModel SetCheckOutProcessModel(CheckoutViewModel checkoutViewModel, int siteId, int tenantId, int userId, string sessionKey)
+        {
+            var tenantCurrency = _tenantsCurrencyRateServices.GetTenantCurrencies(tenantId).FirstOrDefault();
+            var currencyRate = _tenantsCurrencyRateServices.GetCurrencyRateByTenantid(tenantCurrency?.TenantCurrencyID ?? 0);
+            List<AccountAddresses> accountAddresses = new List<AccountAddresses>();
+            if ((DeliveryMethod?)checkoutViewModel.DeliveryMethodId == DeliveryMethod.ToShipmentAddress)
+            {
+                accountAddresses.Add(_accountServices.GetAccountAddressById(checkoutViewModel.ShippingAddressId ?? 0));
+                var shippingRule = GetWebsiteShippingRulesById(checkoutViewModel.ShipmentRuleId ?? 0);
+                shippingRule.Price = Math.Round(((shippingRule.Price) * ((currencyRate <= 0) ? 1 : currencyRate)), 2);
+                checkoutViewModel.ShippingRule = _mapper.Map(shippingRule, new WebsiteShippingRulesViewModel());
+            }
+            accountAddresses.Add(_accountServices.GetAccountAddressById(checkoutViewModel.BillingAddressId ?? 0));
+            checkoutViewModel.Addresses = _mapper.Map(accountAddresses, new List<AddressViewModel>());
+            checkoutViewModel.CartItems = GetAllValidCartItems(siteId, userId, tenantId, sessionKey).ToList();
+            if ((DeliveryMethod?)checkoutViewModel.DeliveryMethodId == DeliveryMethod.ToPickupPoint)
+            {
+                checkoutViewModel.CollectionPoint =
+                    _mapper.Map((_currentDbContext.TenantWarehouses.FirstOrDefault(e => e.WarehouseId == (checkoutViewModel.CollectionPointId ?? 0) && e.IsDeleted != true && e.IsActive == true)), new CollectionPointViewModel());
+            }
+
+
+
+            return checkoutViewModel;
+
+
+
+        }
+
+        public void SendNotificationForAbandonedCarts()
+        {
+            var abandonedCartSettings = _currentDbContext.AbandonedCartSettings
+                                                        .AsNoTracking()
+                                                        .Where(s => s.IsNotificationEnabled &&
+                                                                    s.IsDeleted != true &&
+                                                                    s.TenantWebsite.IsDeleted != true &&
+                                                                    s.TenantWebsite.IsActive == true);
+
+            foreach (var settings in abandonedCartSettings)
+            {
+                var targetTime = DateTime.Now.AddMinutes(-1 * settings.NotificationDelay);
+
+                var websiteCartItems = _currentDbContext.WebsiteCartItems.Where(i => i.IsDeleted != true &&
+                                                                                    i.SiteID == settings.SiteID &&
+                                                                                    (i.DateUpdated ?? i.DateCreated) < targetTime &&
+                                                                                    i.AuthUser.IsActive == true &&
+                                                                                    i.AuthUser.IsDeleted != true)
+                                                                          .OrderByDescending(o => o.DateUpdated)
+                                                                          .ThenByDescending(o => o.DateCreated)
+                                                                          .ToList();
+
+                var emailconfig = _emailServices.GetAllActiveTenantEmailConfigurations(settings.TenantId).FirstOrDefault();
+
+                foreach (var item in websiteCartItems.GroupBy(i => i.UserId)
+                                                    .Select(g =>
+                                                    {
+                                                        var item = g.First();
+                                                        return new
+                                                        {
+                                                            Date = item.DateUpdated ?? item.DateCreated,
+                                                            item.AuthUser
+                                                        };
+                                                    }))
+                {
+                    if (!_currentDbContext.AbandonedCartNotifications.Any(a => a.SiteId == settings.SiteID && a.UserId == item.AuthUser.UserId && a.SendDate >= (item.Date)))
+                    {
+                        var (body, subject) = GetEmailContent(settings, item.AuthUser);
+
+                        SendAbandonedCartNotification(item.AuthUser.UserEmail, subject, body, emailconfig);
+
+                        _currentDbContext.AbandonedCartNotifications.Add(new AbandonedCartNotification
+                        {
+                            SendDate = DateTime.Now,
+                            SiteId = settings.SiteID,
+                            UserId = item.AuthUser.UserId
+                        });
+                    }
+                }
+            }
+
             _currentDbContext.SaveChanges();
         }
 
-        return updatedRecored.SiteId;
-    }
-
-
-    public decimal GetPriceForProduct(int productId, int siteId)
-    {
-        var calculateTax = GetTenantWebSiteBySiteId(siteId).ShowPricesIncludingTax;
-        var sellPrice = _productPriceService.GetProductPriceThresholdByAccountId(productId, null).SellPrice;
-        if (calculateTax)
+        public bool SendAbandonedCartNotification(string to, string subject, string body, TenantEmailConfig emailconfig)
         {
-            var product = _currentDbContext.ProductMaster.AsNoTracking().FirstOrDefault(u => u.ProductId == productId);
+            var emailSender = new EmailSender(to, emailconfig.UserEmail, body, subject, string.Empty, emailconfig.SmtpHost, emailconfig.SmtpPort, emailconfig.UserEmail, emailconfig.Password);
 
-            if (product != null && product.TaxID > 0 && product.EnableTax == true)
+            return emailSender.SendMail(true);
+        }
+
+        private Tuple<string, string> GetEmailContent(AbandonedCartSetting settings, AuthUser user)
+        {
+            var body = settings.NotificationEmailTemplate
+                .Replace("[USERFULLNAME]", $"{user.UserFirstName} {user.UserLastName}")
+                .Replace("[WEBSITENAME]", settings.TenantWebsite.SiteName)
+                .Replace("[SITELINK]", $"http://{settings.TenantWebsite.HostName}")
+                .Replace("[CARTLINK]", $"http://{settings.TenantWebsite.HostName}/Products/AddToCart");
+
+            var subject = settings.NotificationEmailSubjectTemplate.Replace("[USERFIRSTNAME]", user.UserFirstName);
+
+            return new Tuple<string, string>(body, subject);
+        }
+
+        public IEnumerable<WebsiteDeliveryNavigation> GetAllValidWebsiteDeliveryNavigations(int tenantId, int siteId, bool includeInActive = false)
+        {
+            return _currentDbContext.WebsiteDeliveryNavigations.Where(u => u.TenantId == tenantId && u.IsDeleted != true
+            && u.SiteId == siteId && (includeInActive || u.IsActive));
+        }
+
+        public WebsiteDeliveryNavigation GetWebsiteDeliveryNavigationById(int id)
+        {
+            return _currentDbContext.WebsiteDeliveryNavigations.Find(id);
+        }
+
+        public WebsiteDeliveryNavigation CreateOrUpdateWebsiteDeliveryNavigation(
+            WebsiteDeliveryNavigation websiteDeliveryNavigation, int userId, int tenantId)
+        {
+            if (websiteDeliveryNavigation.Id <= 0)
             {
-                var taxPercentage = _currentDbContext.GlobalTax.AsNoTracking().FirstOrDefault(a => a.TaxID == product.TaxID)?.PercentageOfAmount;
-                if (taxPercentage.HasValue && taxPercentage > 0)
+                websiteDeliveryNavigation.TenantId = tenantId;
+                websiteDeliveryNavigation.UpdateCreatedInfo(userId);
+                _currentDbContext.WebsiteDeliveryNavigations.Add(websiteDeliveryNavigation);
+                _currentDbContext.SaveChanges();
+            }
+            else
+            {
+                var updatedRecored = _currentDbContext.WebsiteDeliveryNavigations.AsNoTracking().FirstOrDefault(u => u.Id == websiteDeliveryNavigation.Id);
+                if (updatedRecored != null)
                 {
-                    var taxAmount = product.SellPrice.HasValue
-                        ? Math.Round(d: ((product.SellPrice.Value) / 100) * (taxPercentage.Value), 2)
-                        : 0;
-                    sellPrice = sellPrice + taxAmount;
+                    websiteDeliveryNavigation.CreatedBy = updatedRecored.CreatedBy;
+                    websiteDeliveryNavigation.DateCreated = updatedRecored.DateCreated;
+                    websiteDeliveryNavigation.TenantId = tenantId;
+                    websiteDeliveryNavigation.UpdateUpdatedInfo(userId);
+                    _currentDbContext.Entry(websiteDeliveryNavigation).State = System.Data.Entity.EntityState.Modified;
+                    _currentDbContext.SaveChanges();
                 }
             }
 
-
+            return websiteDeliveryNavigation;
         }
 
-        return sellPrice;
-    }
-
-    public decimal GetProductByAttributeAvailableCount(int productId, List<int> warehouseIds)
-    {
-        decimal totalStock = 0;
-        var product = _productServices.GetProductMasterById(productId);
-        var kitProductMaster = product.ProductKitItems.Where(u => u.IsDeleted != true && u.IsActive)
-            .Select(a => a.KitProductMaster.ProductId).Distinct().ToList();
-        foreach (var item in kitProductMaster)
+        public int RemoveWebsiteDeliveryNavigation(int id, int userId)
         {
-            var childProduct = _productServices.GetProductMasterById(item);
-            var stock = childProduct?.InventoryStocks?.Where(u => warehouseIds.Contains(u.WarehouseId)).ToList();
-            if (childProduct != null)
+            var updatedRecored = _currentDbContext.WebsiteDeliveryNavigations.AsNoTracking().FirstOrDefault(u => u.Id == id);
+            if (updatedRecored != null)
             {
-                if (childProduct.IsStockItem == true && childProduct.DontMonitorStock == true)
+                updatedRecored.IsDeleted = true;
+                updatedRecored.UpdateUpdatedInfo(userId);
+                _currentDbContext.Entry(updatedRecored).State = System.Data.Entity.EntityState.Modified;
+                _currentDbContext.SaveChanges();
+            }
+
+            return updatedRecored.SiteId;
+        }
+
+
+        public decimal GetPriceForProduct(int productId, int siteId)
+        {
+            var calculateTax = GetTenantWebSiteBySiteId(siteId).ShowPricesIncludingTax;
+            var sellPrice = _productPriceService.GetProductPriceThresholdByAccountId(productId, null).SellPrice;
+            if (calculateTax)
+            {
+                var product = _currentDbContext.ProductMaster.AsNoTracking().FirstOrDefault(u => u.ProductId == productId);
+
+                if (product != null && product.TaxID > 0 && product.EnableTax == true)
                 {
-                    return 20;
+                    var taxPercentage = _currentDbContext.GlobalTax.AsNoTracking().FirstOrDefault(a => a.TaxID == product.TaxID)?.PercentageOfAmount;
+                    if (taxPercentage.HasValue && taxPercentage > 0)
+                    {
+                        var taxAmount = product.SellPrice.HasValue
+                            ? Math.Round(d: ((product.SellPrice.Value) / 100) * (taxPercentage.Value), 2)
+                            : 0;
+                        sellPrice = sellPrice + taxAmount;
+                    }
                 }
 
-                if (stock != null && stock.Count > 0)
+
+            }
+
+            return sellPrice;
+        }
+
+        public decimal GetProductByAttributeAvailableCount(int productId, List<int> warehouseIds)
+        {
+            decimal totalStock = 0;
+            var product = _productServices.GetProductMasterById(productId);
+            var kitProductMaster = product.ProductKitItems.Where(u => u.IsDeleted != true && u.IsActive)
+                .Select(a => a.KitProductMaster.ProductId).Distinct().ToList();
+            foreach (var item in kitProductMaster)
+            {
+                var childProduct = _productServices.GetProductMasterById(item);
+                var stock = childProduct?.InventoryStocks?.Where(u => warehouseIds.Contains(u.WarehouseId)).ToList();
+                if (childProduct != null)
                 {
-                    totalStock += stock.Select(q => q.Available).DefaultIfEmpty(0).Sum(); ;
+                    if (childProduct.IsStockItem == true && childProduct.DontMonitorStock == true)
+                    {
+                        return 20;
+                    }
+
+                    if (stock != null && stock.Count > 0)
+                    {
+                        totalStock += stock.Select(q => q.Available).DefaultIfEmpty(0).Sum(); ;
+                    }
                 }
             }
 
+            return totalStock;
         }
 
-        return totalStock;
     }
-
-}
 }

@@ -215,7 +215,7 @@ $(function () {
         }
     });
 
-   
+
 });
 
 function updateTextBox(event, ui) {
@@ -509,12 +509,7 @@ function LoggedIn() {
                     $(".temproryShow").prop('title', data.Name);
                     location.reload();
                 }
-
-
-
             }
-
-
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             stopLoading();
@@ -559,7 +554,7 @@ function CreateUsers() {
     });
 }
 
-function addNotifyProductAvailibility(productId) {
+function addNotifyProductAvailibility(productId, parentProductId) {
     if (userStatus === "Login") {
         GetLoggedIn(false);
     }
@@ -570,7 +565,7 @@ function addNotifyProductAvailibility(productId) {
             content: 'Would you like to be notified when this item is back in stock?',
             buttons: {
                 Yes: function () {
-                    addToNotify(productId, true);
+                    addToNotify(productId, parentProductId);
                 },
                 No: function () {
 
@@ -580,28 +575,37 @@ function addNotifyProductAvailibility(productId) {
     }
 }
 
-function addToWishList(productId, notification) {
+function addToWishList(productId, parentProductId) {
     if (userStatus === "Login") {
         GetLoggedIn(false);
         return;
     }
     var currentWishId = $("#wish_" + productId);
     var wishListBtnId = $("#btnwish_" + productId);
+
+    if (!!parentProductId && parentProductId > 0) {
+        var currentParentClass = $("#wish_" + parentProductId);
+    }
+
     $.ajax({
         type: "GET",
         url: basePath + "/Products/AddWishListItem/",
-        data: { ProductId: productId, isNotfication: notification },
+        data: { ProductId: productId },
         dataType: 'json',
         success: function (data) {
             var iconId = currentWishId[0] == null ? "" : "#" + currentWishId[0].id;
             $(iconId).find(".list-icon").css({ "color": "red" });
             $(iconId).removeAttr("onclick", null);
-            $(iconId).attr("onclick", "removeFromWishListPopUp(" + productId + ",false)");
+            $(iconId).attr("onclick", "removeFromWishListPopUp(" + productId + "," + parentProductId +  ")");
             var cardItemsValue = parseInt($("#WishList-total").text());
             $(wishListBtnId).css("cssText", "background-color: red !important;");
             $(wishListBtnId).removeAttr("onclick", null);
-            $(wishListBtnId).attr("onclick", "removeFromWishListPopUp(" + productId + ",false)");
+            $(wishListBtnId).attr("onclick", "removeFromWishListPopUp(" + productId + "," + parentProductId +  ")");
             $("#WishList-total").text(cardItemsValue + 1);
+
+            if (!!parentProductId && parentProductId > 0) {
+                $(currentParentClass).find(".list-icon").css({ "color": "red" });
+            }
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert('Error' + textStatus + "/" + errorThrown);
@@ -611,28 +615,33 @@ function addToWishList(productId, notification) {
 }
 
 
-function addToNotify(productId, notification) {
+function addToNotify(productId, parentProductId) {
     if (userStatus === "Login") {
         GetLoggedIn(false);
         return;
     }
-    var currentClass = $(".notification-bell_" + productId);
-    var notifyBtnClass = $(".btn_notification-bell_" + productId);
+    var currentClass = $("#notification-bell_" + productId);
+    var notifyBtnClass = $("#notification-bell__button_" + productId);
+    if (!!parentProductId && parentProductId > 0) {
+        var currentParentClass = $("#notification-bell_" + parentProductId);
+    }
+
     $.ajax({
         type: "GET",
-        url: basePath + "/Products/AddWishListItem/",
-        data: { ProductId: productId, isNotfication: notification },
+        url: basePath + "/Products/AddNotifyListItem/",
+        data: { ProductId: productId },
         dataType: 'json',
         success: function (data) {
 
             $(currentClass).find(".list-icon").css({ "color": "red" });
             $(currentClass).removeAttr("onclick", null);
-            $(currentClass).attr("onclick", "removeNotifyProduct(" + productId + ",'true')");
+            $(currentClass).attr("onclick", "removeNotifyProduct(" + productId + "," + parentProductId + ")");
             $(notifyBtnClass).css({ "background-color": "red" });
             $(notifyBtnClass).removeAttr("onclick", null);
-            $(notifyBtnClass).attr("onclick", "removeNotifyProduct(" + productId + ",'true')");
-
-
+            $(notifyBtnClass).attr("onclick", "removeNotifyProduct(" + productId + "," + parentProductId + ")");
+            if (!!parentProductId && parentProductId > 0) {
+                $(currentParentClass).find(".list-icon").css({ "color": "red" });
+            }
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert('Error' + textStatus + "/" + errorThrown);
@@ -642,13 +651,16 @@ function addToNotify(productId, notification) {
 
 }
 
-function removeFromWishListPopUp(removeProductId, notification) {
+function removeFromWishListPopUp(productId, parentProductId) {
     if (userStatus === "Login") {
         GetLoggedIn(false);
         return;
     }
-    var currentWishId = $("#wish_" + removeProductId);
-    var wisListBtnId = $("#btnwish_" + removeProductId);
+    var currentWishId = $("#wish_" + productId);
+    var wisListBtnId = $("#btnwish_" + productId);
+    if (!!parentProductId && parentProductId > 0) {
+        var currentParentClass = $("#wish_" + parentProductId);
+    }
 
 
     $.confirm({
@@ -659,21 +671,38 @@ function removeFromWishListPopUp(removeProductId, notification) {
 
                 $.ajax({
                     type: "GET",
-                    url: basePath + "/Products/RemoveWishList/",
-                    data: { ProductId: removeProductId, notification: notification },
+                    url: basePath + "/Products/RemoveWishListItem/",
+                    data: { ProductId: productId },
                     dataType: 'json',
                     success: function (data) {
                         var iconId = currentWishId[0] == null ? "" : "#" + currentWishId[0].id;
                         $(iconId).find(".list-icon").css({ "color": "black" });
                         $(iconId).removeAttr("onclick", null);
-                        $(iconId).attr("onclick", "addToWishList(" + removeProductId + ",false)");
+                        $(iconId).attr("onclick", "addToWishList(" + productId + "," + parentProductId + ")");
                         $(wisListBtnId).css({ "background-color": "black" });
                         $(wisListBtnId).removeAttr("onclick", null);
-                        $(wisListBtnId).attr("onclick", "addToWishList(" + removeProductId + ",false)");
+                        $(wisListBtnId).attr("onclick", "addToWishList(" + productId + "," + parentProductId + ")");
 
 
                         var cardItemsValue = parseInt($("#WishList-total").text());
                         $("#WishList-total").text(data);
+
+                        if (!!parentProductId && parentProductId > 0) {
+                            $.ajax({
+                                type: "GET",
+                                url: basePath + "/Products/IsProductInWishList/",
+                                data: { ProductId: parentProductId },
+                                dataType: 'json',
+                                success: function (data) {
+                                    if (data != undefined && data != true) {
+                                        $(currentParentClass).find(".list-icon").css({ "color": "" });
+                                    }
+                                },
+                                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                    alert('Error' + textStatus + "/" + errorThrown);
+                                }
+                            });
+                        }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert('Error' + textStatus + "/" + errorThrown);
@@ -722,13 +751,16 @@ function RemoveWishItem(id) {
 
 }
 
-function removeNotifyProduct(removeProductId, notification) {
+function removeNotifyProduct(productId, parentProductId) {
     if (userStatus === "Login") {
         GetLoggedIn(false);
         return;
     }
-    var currentClass = $(".notification-bell_" + removeProductId);
-    var notifyBtnClass = $(".btn_notification-bell_" + removeProductId);
+    var currentClass = $("#notification-bell_" + productId);
+    var notifyBtnClass = $("#notification-bell__button_" + productId);
+    if (!!parentProductId && parentProductId > 0) {
+        var currentParentClass = $("#notification-bell_" + parentProductId);
+    }
     $.confirm({
         title: 'Confirm!',
         content: 'Would you like to remove notification for this product?',
@@ -737,16 +769,32 @@ function removeNotifyProduct(removeProductId, notification) {
 
                 $.ajax({
                     type: "GET",
-                    url: basePath + "/Products/RemoveWishList/",
-                    data: { ProductId: removeProductId, notification: notification },
+                    url: basePath + "/Products/RemoveNotifyListItem/",
+                    data: { ProductId: productId },
                     dataType: 'json',
                     success: function (data) {
                         $(currentClass).find(".list-icon").css({ "color": "black" });
                         $(currentClass).removeAttr("onclick", null);
-                        $(currentClass).attr("onclick", "addNotifyProductAvailibility(" + removeProductId + ",true)");
+                        $(currentClass).attr("onclick", "addNotifyProductAvailibility(" + productId + "," + parentProductId + ")");
                         $(notifyBtnClass).css({ "background-color": "black" });
                         $(notifyBtnClass).removeAttr("onclick", null);
-                        $(notifyBtnClass).attr("onclick", "addNotifyProductAvailibility(" + removeProductId + ",true)");
+                        $(notifyBtnClass).attr("onclick", "addNotifyProductAvailibility(" + productId + "," + parentProductId + ")");
+                        if (!!parentProductId && parentProductId > 0) {
+                            $.ajax({
+                                type: "GET",
+                                url: basePath + "/Products/IsProductInNotifyList/",
+                                data: { ProductId: parentProductId },
+                                dataType: 'json',
+                                success: function (data) {
+                                    if (data != undefined && data != true) {
+                                        $(currentParentClass).find(".list-icon").css({ "color": "" });
+                                    }
+                                },
+                                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                    alert('Error' + textStatus + "/" + errorThrown);
+                                }
+                            });
+                        }
 
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -820,7 +868,7 @@ function ChangeWishListStatus(productId, notification) {
         data: { productId: productId, notification: notification },
         dataType: 'json',
         success: function (data) {
-           
+
             $.ajax({
                 type: "GET",
                 url: basePath + "/Products/_wishlistItems/",
