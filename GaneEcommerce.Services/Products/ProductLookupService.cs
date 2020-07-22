@@ -248,10 +248,19 @@ namespace Ganedata.Core.Services
                         {
                             var result = item.Value.Select(s => s.Replace("_", " ").Replace("??", ",")).ToList();
                             var values = result.Select(u => u.Split('^').LastOrDefault()).ToList();
-                            var attributeValueId = _currentDbContext.ProductAttributeValues.Where(u => values.Contains(u.AttributeValueId.ToString()) && u.IsDeleted != true).Select(u => u.AttributeValueId).ToList();
-                            var productids = _currentDbContext.ProductAttributeValuesMap.Where(u => attributeValueId.Contains(u.AttributeValueId) && u.IsDeleted != true).Select(u => u.ProductId).ToList();
-                            productMaster = productMaster.Where(u => (productids.Contains(u.ProductId)) ||
-                                                                               (productids.Any(a => u.ProductKitItems.Select(c => c.KitProductId).ToList().Contains(a))));
+                            var attributeValueIds = _currentDbContext.ProductAttributeValues.Where(u => values.Contains(u.AttributeValueId.ToString()) && u.IsDeleted != true)
+                                                                                            .Select(u => u.AttributeValueId)
+                                                                                            .ToList();
+
+                            var productids = _currentDbContext.ProductAttributeValuesMap.Where(u => attributeValueIds.Contains(u.AttributeValueId) &&
+                                                                                                    u.IsDeleted != true &&
+                                                                                                    u.ProductMaster.IsDeleted != true &&
+                                                                                                    u.ProductMaster.IsActive == true)
+                                                                                        .Select(u => u.ProductId)
+                                                                                        .ToList();
+
+                            productMaster = productMaster.Where(u => productids.Contains(u.ProductId) ||
+                                                                     productids.Any(a => u.ProductKitItems.Select(c => c.KitProductId).ToList().Contains(a)));
                         }
 
                     }
