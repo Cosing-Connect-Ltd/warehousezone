@@ -76,6 +76,7 @@
     </button>
     @if (Ganedata.Core.Services.Inventory.IsProductAvailableToSell(Model.SelectedProduct, ViewBag.SiteId))
     {
+        @Html.HiddenFor(m => m.SelectedProduct.ProductId)
         <button type="submit" class="btmbtn pro" style="margin-left: 10px; margin-right: 10px;" onclick="addProductByAttributeToCart()">
             Add To Basket
         </button>
