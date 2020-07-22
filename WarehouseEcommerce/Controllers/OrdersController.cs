@@ -50,7 +50,7 @@ namespace WarehouseEcommerce.Controllers
                                 )
             : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices, tenantWebsiteService)
         {
-            _paypalClientId = ConfigurationManager.AppSettings["Client_Id"] ?? "";
+            _paypalClientId = ConfigurationManager.AppSettings["PaypalClientId"] ?? "";
             _productServices = productServices;
             _userService = userService;
             _activityServices = activityServices;
