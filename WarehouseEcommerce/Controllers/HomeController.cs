@@ -116,7 +116,7 @@ namespace WarehouseEcommerce.Controllers
         public PartialViewResult _SpecialProductPartial()
         {
             var tenantWebsite = ViewBag.TenantWebsite as TenantWebsites;
-            var specialProduct = new ProductDetailViewModel
+            var specialProduct = new ProductViewModel
             {
                 productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID, CurrentTenantId, 6,string.Empty, tagId: tenantWebsite?.FeaturedTagId).ToList(),
 
@@ -131,7 +131,7 @@ namespace WarehouseEcommerce.Controllers
         public PartialViewResult _TopProductPartial()
         {
             
-            var topProduct = new ProductDetailViewModel
+            var topProduct = new ProductViewModel
             {
                 productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID, (CurrentTenantId), 12, "TopProduct").ToList(),
             };
@@ -147,7 +147,7 @@ namespace WarehouseEcommerce.Controllers
         }
         public PartialViewResult _OnSalePartial()
         {
-            var onSale = new ProductDetailViewModel
+            var onSale = new ProductViewModel
             {
                 productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID, CurrentTenantId, 6, "OnSaleProduct").ToList(),
             };
@@ -174,7 +174,7 @@ namespace WarehouseEcommerce.Controllers
 
         public PartialViewResult _BestSellerPartial()
         {
-            var BestSellerProduct = new ProductDetailViewModel
+            var BestSellerProduct = new ProductViewModel
             {
                 productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID, (CurrentTenantId), 2, "BestSellerProduct").ToList()
             };

@@ -272,7 +272,10 @@
     <Compile Include="Models\DemoBooking.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AccountDetailViewModel.cs" />
+    <Compile Include="ViewModels\ProductDetailAttributeValueViewModel.cs" />
+    <Compile Include="ViewModels\ProductDetailAttributeViewModel.cs" />
     <Compile Include="ViewModels\ProductDetailViewModel.cs" />
+    <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

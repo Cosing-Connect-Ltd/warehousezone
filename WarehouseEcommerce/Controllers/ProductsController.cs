@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using WarehouseEcommerce.Helpers;
+using WarehouseEcommerce.ViewModels;
 
 namespace WarehouseEcommerce.Controllers
 {
@@ -141,45 +142,6 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
             var baseProduct = _productServices.GetProductMasterByProductCode(sku, CurrentTenantId);
 
-            var selectedProduct = baseProduct;
-
-            if (baseProduct?.ProductType == ProductKitTypeEnum.ProductByAttribute)
-            {
-                selectedProduct = GetSelectedProductByAttribute(productId, baseProduct);
-            }
-
-            if (selectedProduct == null)
-            {
-                return RedirectToAction("List", "Products", new { sku = sku });
-            }
-
-            selectedProduct.ProductFiles = selectedProduct.ProductFiles.Where(p => p.IsDeleted != true).ToList();
-
-
-            if (baseProduct?.ProductType == ProductKitTypeEnum.ProductByAttribute && baseProduct.ProductId != selectedProduct.ProductId) {
-                baseProduct.ProductFiles.Where(p => p.IsDeleted != true && !selectedProduct.ProductFiles.Select(f => Path.GetFileNameWithoutExtension(f.FilePath)).Contains(Path.GetFileNameWithoutExtension(p.FilePath))).ForEach(p => {
-                    selectedProduct.ProductFiles.Add(p);
-                });
-
-                selectedProduct.Description = string.IsNullOrEmpty(selectedProduct.Description?.Trim()) ? baseProduct.Description : selectedProduct.Description;
-            }
-
-            ViewBag.BaseProductId = baseProduct.ProductId;
-            ViewBag.BaseProductName = baseProduct.Name;
-            ViewBag.BaseProductType = baseProduct.ProductType;
-            ViewBag.BaseProductSKUCode = baseProduct.SKUCode;
-
-            ViewBag.Category = _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID, baseProduct.ProductId);
-            ViewBag.SubCategory = _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID, SubCategory: ViewBag.Category);
-
-            if (ViewBag.SubCategory != null && !string.IsNullOrEmpty(ViewBag.SubCategory))
-            {
-                var category = ViewBag.SubCategory;
-                ViewBag.SubCategory = ViewBag.Category;
-                ViewBag.Category = category;
-
-            }
-            selectedProduct.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(selectedProduct.ProductId, CurrentTenantWebsite.SiteID), 2);
             if (baseProduct.ProductType == ProductKitTypeEnum.Grouped)
             {
                 return RedirectToAction("GroupedProductDetail", "Products", new { sku = sku });
@@ -189,9 +151,53 @@ namespace WarehouseEcommerce.Controllers
                 return RedirectToAction("KitProductDetail", "Products", new { sku = sku });
             }
 
-            selectedProduct.ProductAttributeValuesMap = selectedProduct.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).ToList();
+            var model = new ProductDetailViewModel();
 
-            return View(selectedProduct);
+            if (baseProduct?.ProductType == ProductKitTypeEnum.ProductByAttribute)
+            {
+                model = GetSelectedProductByAttribute(productId, baseProduct);
+            }
+            else
+            {
+                model.SelectedProduct = baseProduct;
+            }
+
+            if (model == null)
+            {
+                return RedirectToAction("List", "Products", new { sku = sku });
+            }
+
+
+
+            model.SelectedProduct.ProductFiles = model.SelectedProduct.ProductFiles.Where(p => p.IsDeleted != true).ToList();
+
+            if (baseProduct?.ProductType == ProductKitTypeEnum.ProductByAttribute && baseProduct.ProductId != model.SelectedProduct.ProductId) {
+                baseProduct.ProductFiles.Where(p => p.IsDeleted != true && !model.SelectedProduct.ProductFiles.Select(f => Path.GetFileNameWithoutExtension(f.FilePath)).Contains(Path.GetFileNameWithoutExtension(p.FilePath))).ForEach(p => {
+                    model.SelectedProduct.ProductFiles.Add(p);
+                });
+
+                model.SelectedProduct.Description = string.IsNullOrEmpty(model.SelectedProduct.Description?.Trim()) ? baseProduct.Description : model.SelectedProduct.Description;
+            }
+
+            model.BaseProductId = baseProduct.ProductId;
+            model.BaseProductName = baseProduct.Name;
+            model.BaseProductType = baseProduct.ProductType;
+            model.BaseProductSKUCode = baseProduct.SKUCode;
+
+            model.Category = _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID, baseProduct.ProductId);
+            model.SubCategory = _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID, SubCategory: model.Category);
+
+            if (model.SubCategory != null && !string.IsNullOrEmpty(model.SubCategory))
+            {
+                var category = model.SubCategory;
+                model.SubCategory = model.Category;
+                model.Category = category;
+
+            }
+
+            model.SelectedProduct.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(model.SelectedProduct.ProductId, CurrentTenantWebsite.SiteID), 2);
+
+            return View(model);
         }
 
         public ActionResult GroupedProductDetail(string sku)
@@ -465,30 +471,36 @@ namespace WarehouseEcommerce.Controllers
         public ActionResult _KitProductAttributeDetail(string skuCode, decimal? quantity = null, int? productId = null)
         {
             var baseProduct = _productServices.GetProductMasterByProductCode(skuCode, CurrentTenantId);
-            var selectedProduct = baseProduct;
-            IEnumerable<SelectListItem> squares = Enumerable.Range(1, (quantity.HasValue ? Convert.ToInt32(quantity) : 1)).Select(u => new SelectListItem
-            {
-                Text = u.ToString(),
-                Value = u.ToString()
-            }
-                ).ToList();
+            baseProduct.ProductFiles = baseProduct.ProductFiles.Where(p => p.IsDeleted != true).ToList();
+
+            IEnumerable<SelectListItem> squares = Enumerable.Range(1, (quantity.HasValue ? Convert.ToInt32(quantity) : 1))
+                                                            .Select(u => new SelectListItem
+                                                                        {
+                                                                            Text = u.ToString(),
+                                                                            Value = u.ToString()
+                                                                        })
+                                                            .ToList();
+
             ViewBag.QuantityList = new SelectList(squares, "Text", "Value");
+
+            var model = new ProductDetailViewModel();
             if (baseProduct.ProductType == ProductKitTypeEnum.ProductByAttribute)
             {
-                selectedProduct = GetSelectedProductByAttribute(productId, baseProduct);
+                model = GetSelectedProductByAttribute(productId, baseProduct);
+            }
+            else
+            {
+                model.SelectedProduct = baseProduct;
             }
 
-            baseProduct.ProductFiles = baseProduct.ProductFiles.Where(p => p.IsDeleted != true).ToList();
-            selectedProduct.ProductFiles = selectedProduct.ProductFiles.Where(p => p.IsDeleted != true).ToList();
+            model.BaseProductType = baseProduct.ProductType;
+            model.BaseProductSKUCode = baseProduct.SKUCode;
+            model.Quantity = quantity;
 
-            ViewBag.BaseProductType = baseProduct.ProductType;
-            ViewBag.BaseProductSKUCode = baseProduct.SKUCode;
-            ViewBag.Quantity = quantity;
-
-            return PartialView(selectedProduct);
+            return PartialView(model);
         }
 
-        private ProductMaster GetSelectedProductByAttribute(int? productId, ProductMaster product)
+        private ProductDetailViewModel GetSelectedProductByAttribute(int? productId, ProductMaster product)
         {
             ProductMaster selectedProduct;
             var relatedProducts = _productServices.GetAllProductInKitsByProductId(product.ProductId).Where(k => k.IsActive == true && k.ProductType != ProductKitTypeEnum.ProductByAttribute && k.IsDeleted != true);
@@ -497,30 +509,120 @@ namespace WarehouseEcommerce.Controllers
 
             selectedProduct = relatedProducts.FirstOrDefault(p => p.ProductId == productId || productId == null);
 
-            ViewBag.AvailableAttributes = relatedProducts
-                                            .SelectMany(a => a.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).Select(k => k.ProductAttributeValues))
-                                            .GroupBy(a => a.ProductAttributes).Where(u=>u.Key.IsDeleted != true).OrderBy(u=>u.Key.SortOrder)
-                                            .ToDictionary(g => g.Key, g => g.OrderBy(av => av.SortOrder)
-                                                                                            .GroupBy(av => av.AttributeValueId)
-                                                                                            .Select(av => av.First()).OrderBy(u => u.ProductAttributes.SortOrder)
-                                                                                            .ToList());
-            ViewBag.RelatedProducts = relatedProducts;
-            return selectedProduct;
+            selectedProduct.ProductAttributeValuesMap = selectedProduct.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).ToList();
+
+            var productDetailViewModel = new ProductDetailViewModel
+            {
+                SelectedProduct = selectedProduct,
+                AvailableAttributes = GetProductAttributes(relatedProducts, selectedProduct)
+            };
+
+            return productDetailViewModel;
+        }
+
+        private List<ProductDetailAttributeViewModel> GetProductAttributes(IEnumerable<ProductMaster> relatedProducts, ProductMaster selectedProduct)
+        {
+            var availableAttributes = relatedProducts
+                                    .SelectMany(a => a.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).Select(k => k.ProductAttributeValues))
+                                    .GroupBy(a => a.ProductAttributes).Where(u => u.Key.IsDeleted != true).OrderBy(u => u.Key.SortOrder)
+                                    .ToDictionary(g => g.Key, g => g.OrderBy(av => av.SortOrder)
+                                                                                    .GroupBy(av => av.AttributeValueId)
+                                                                                    .Select(av => av.First()).OrderBy(u => u.ProductAttributes.SortOrder)
+                                                                                    .ToList());
+
+            var processedProductAttributes = new List<ProductDetailAttributeViewModel>();
+
+            foreach (var item in availableAttributes)
+            {
+                var attribute = item.Key;
+                var selectedAttributeValue = selectedProduct.ProductAttributeValuesMap.FirstOrDefault(a => a.IsDeleted != true && a.ProductAttributeValues.AttributeId == attribute.AttributeId)?.ProductAttributeValues;
+
+                var attributeViewModel = new ProductDetailAttributeViewModel();
+                attributeViewModel.Name = attribute.AttributeName;
+                attributeViewModel.SelectedValue = selectedAttributeValue?.Value;
+
+                foreach (var attributeValue in item.Value)
+                {
+                    var attributeRelatedProducts = relatedProducts.Where(p => p.SKUCode != selectedProduct.SKUCode &&
+                                                                              p.ProductAttributeValuesMap.Any(m => m.IsDeleted != true &&
+                                                                                                                   m.ProductAttributeValues.AttributeId == attribute.AttributeId &&
+                                                                                                                   m.ProductAttributeValues.AttributeValueId == attributeValue.AttributeValueId));
+
+                    if (attributeRelatedProducts.Count() > 1)
+                    {
+                        foreach (var currentProductAttribute in selectedProduct.ProductAttributeValuesMap.Where(am => am.IsDeleted != true && am.ProductAttributeValues.AttributeId != attribute.AttributeId))
+                        {
+                            var resultQuery = attributeRelatedProducts.Where(p => p.ProductAttributeValuesMap.Any(m => m.IsDeleted != true && m.ProductAttributeValues.AttributeId == currentProductAttribute.ProductAttributeValues.AttributeId &&
+                                                                                                              m.ProductAttributeValues.AttributeValueId == currentProductAttribute.AttributeValueId));
+
+                            if (resultQuery.Count() == 1)
+                            {
+                                attributeRelatedProducts = resultQuery;
+                                break;
+                            }
+
+                            if (resultQuery.Count() != 0)
+                            {
+                                attributeRelatedProducts = resultQuery;
+                            }
+                        }
+                    }
+
+                    var isAttributeAvailableWithCurrentSelection = true;
+
+                    var attribiteStatusCheckQuery = relatedProducts.Where(m => m.SKUCode != selectedProduct.SKUCode &&
+                                                                                m.ProductAttributeValuesMap.Any(p => p.IsDeleted != true &&
+                                                                                                                     p.ProductAttributeValues.AttributeId == attribute.AttributeId &&
+                                                                                                                     p.ProductAttributeValues.AttributeValueId == attributeValue.AttributeValueId));
+
+                    foreach (var currentProductAttribute in selectedProduct.ProductAttributeValuesMap.Where(m => m.ProductAttributeValues.AttributeId != attribute.AttributeId))
+                    {
+                        attribiteStatusCheckQuery = attribiteStatusCheckQuery.Where(m => m.ProductAttributeValuesMap.Any(p => p.IsDeleted != true &&
+                                                                                                                              p.ProductAttributeValues.AttributeId == currentProductAttribute.ProductAttributeValues.AttributeId &&
+                                                                                                                              p.ProductAttributeValues.AttributeValueId == currentProductAttribute.AttributeValueId));
+
+                        isAttributeAvailableWithCurrentSelection = attribiteStatusCheckQuery.Any();
+                    }
+
+                    var isSelectedAttributeValue = attributeValue.AttributeValueId == selectedAttributeValue?.AttributeValueId;
+
+                    attributeViewModel.AttributeValues.Add(new ProductDetailAttributeValueViewModel
+                    {
+                        IsAvailableWithCurrentSelection = (isSelectedAttributeValue || isAttributeAvailableWithCurrentSelection),
+                        IsSelected = attributeValue.AttributeValueId == selectedAttributeValue?.AttributeValueId,
+                        RelatedProductId = attributeRelatedProducts.FirstOrDefault()?.ProductId ?? selectedProduct.ProductId,
+                        Value = attributeValue.Value,
+                        Color = !string.IsNullOrEmpty(attributeValue.Color?.Trim()) ? attributeValue.Color : attributeValue.Value,
+                        IsColorTyped = attribute.IsColorTyped
+                    });
+
+                }
+
+                processedProductAttributes.Add(attributeViewModel);
+            }
+
+            return processedProductAttributes;
         }
 
         public ActionResult _ProductByAttributeSelector(string skuCode, int? quantity = null, int? productId = null)
         {
             var baseProduct = _productServices.GetProductMasterByProductCode(skuCode, CurrentTenantId);
-            var selectedProduct = baseProduct;
-            ViewBag.BaseProductType = baseProduct.ProductType;
-            ViewBag.BaseProductSKUCode = baseProduct.SKUCode;
-            ViewBag.Quantity = quantity;
+            var model = new ProductDetailViewModel();
+
             if (baseProduct.ProductType == ProductKitTypeEnum.ProductByAttribute)
             {
-                selectedProduct = GetSelectedProductByAttribute(productId, baseProduct);
+                model = GetSelectedProductByAttribute(productId, baseProduct);
+            }
+            else
+            {
+                model.SelectedProduct = baseProduct;
             }
 
-            return PartialView(selectedProduct);
+            model.BaseProductType = baseProduct.ProductType;
+            model.BaseProductSKUCode = baseProduct.SKUCode;
+            model.Quantity = quantity;
+
+            return PartialView(model);
         }
 
         public JsonResult EditCartItem(int cartId, decimal quantity)

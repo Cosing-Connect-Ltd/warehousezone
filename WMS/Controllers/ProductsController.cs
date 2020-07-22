@@ -479,20 +479,13 @@ namespace WMS.Controllers
                 var assignedAttributeIds = _productLookupService.GetAllValidProductAttributeValuesByProductId(productId).Select(p => p.AttributeId);
                 ViewBag.Attributes = _productLookupService.GetAllValidProductAttributes().Where(s => !assignedAttributeIds.Contains(s.AttributeId));
                 ViewBag.AttributeValues = _productLookupService.GetAllValidProductAttributeValues().Where(a => !assignedAttributeIds.Contains(a.AttributeId));
-            }
-            else
-            {
-                ViewBag.AttributeValues = _productLookupService.GetAllValidProductAttributeValues().Where(a => a.AttributeId == _productLookupService.GetProductAttributeValueById(Id.Value).AttributeId);
-            }
-
-
-            if (Id == null)
-            {
                 return PartialView();
             }
             else
             {
-                return PartialView(_productLookupService.GetProductAttributeValueById(Id.Value));
+                var attributeValue = _productLookupService.GetProductAttributeValueById(Id.Value);
+                ViewBag.AttributeValues = _productLookupService.GetAllValidProductAttributeValues().Where(a => a.AttributeId == attributeValue.AttributeId);
+                return PartialView(attributeValue);
             }
         }
 

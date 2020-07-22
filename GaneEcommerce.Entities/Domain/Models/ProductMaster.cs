@@ -42,7 +42,6 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Second Code")]
         public string SecondCode { get; set; }
         [Required]
-        [Remote("IsNameAvailable", "Products", AdditionalFields = "ProductId", ErrorMessage = "Name already exists.")]
         [Display(Name = "Product Name")]
         public string Name { get; set; }
         [Display(Name = "PackSize")]
