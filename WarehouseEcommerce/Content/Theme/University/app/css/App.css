@@ -2195,6 +2195,7 @@ input[type="number"]::-webkit-outer-spin-button {
         align-items: center;
         justify-content: center;
         z-index: 150;
+        display:none;
     }
 
         .nb_prd_viewingsecWrap #zoomViewTrigger i {
