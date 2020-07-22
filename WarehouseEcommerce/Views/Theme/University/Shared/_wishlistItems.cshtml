@@ -31,19 +31,25 @@
                                 <td>
                                     <div>
                                         <div class="custom-control custom-switch">
-                                            <input type="checkbox" class="custom-control-input notification-switch" id="notification-switch-@item.ProductMaster.ProductId" value="@item.ProductMaster.ProductId" @(item.IsNotification ? "checked" : "")>
-                                            <label class="custom-control-label" for="notification-switch-@item.ProductMaster.ProductId">Back in Stock Notification</label>
+                                            @if (!Ganedata.Core.Services.Inventory.IsProductInNotifyList(@item.ProductMaster, ViewBag.CurrentUserId))
+                                            {
+                                            <a href="javascript:;" class="notify-btn wishlist-table-btns" onclick="addNotifyProductAvailibility(@item.ProductId)" id="notification-bell_@item.ProductId" title="NOTIFY ME WHEN AVAILABLE" style="font-size: 28px;"><i class="fa fa-bell-o list-icon"></i></a>
+                                            }
+                                            else
+                                            {
+                                            <a href="javascript:;" class="notify-btn wishlist-table-btns" onclick="removeNotifyProduct(@item.ProductId)" id="notification-bell_@item.ProductId" title="NOTIFY ME WHEN AVAILABLE" style="font-size: 28px; color: red;"><i class="fa fa-bell-o list-icon"></i></a>
+                                            }
                                         </div>
                                     </div>
                                 </td>
                                 <td class="wishlist-btn-td">
                                     @if (Ganedata.Core.Services.Inventory.IsProductAvailableToSell(@item.ProductMaster, ViewBag.SiteId) && item.ProductMaster.ProductType == ProductKitTypeEnum.ProductByAttribute)
                                     {
-                                        <a href="javascript:;" class="wishlist-table-btns wishlist-basket-btn" onclick="addToCart(@item.ProductMaster.ProductId)">Add to Basket</a>
+                                        <a href="javascript:;" class="wishlist-table-btns wishlist-basket-btn" onclick="addToCart(@item.ProductId)">Add to Basket</a>
                                         <br/>
                                     }
 
-                                    <a href="javascript:;" class="wishlist-table-btns wishlist-remove-btn" onclick="RemoveWishItem(@item.ProductMaster.ProductId)">Remove</a>
+                                    <a href="javascript:;" class="wishlist-table-btns wishlist-remove-btn" onclick="RemoveWishItem(@item.ProductId)">Remove</a>
                                 </td>
 
                             </tr>
