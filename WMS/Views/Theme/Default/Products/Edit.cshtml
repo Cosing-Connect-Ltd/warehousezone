@@ -7,8 +7,10 @@
 @section scripts {
 
     @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
         new StyleSheet { ExtensionType = ExtensionType.TokenBox, Theme = GaneStaticAppExtensions.DevexTheme },
         new StyleSheet { ExtensionType = ExtensionType.UploadControl, Theme = GaneStaticAppExtensions.DevexTheme },
+       
         new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
         new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
         new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme },
@@ -17,6 +19,7 @@
         )
 
     @Html.DevExpress().GetScripts(
+        new Script { ExtensionType = ExtensionType.GridView },
         new Script { ExtensionType = ExtensionType.TokenBox },
         new Script { ExtensionType = ExtensionType.UploadControl },
         new Script { ExtensionType = ExtensionType.PopupControl },
