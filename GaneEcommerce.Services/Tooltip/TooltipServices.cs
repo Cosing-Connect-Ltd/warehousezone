@@ -20,6 +20,11 @@ namespace Ganedata.Core.Services
 
         public async Task<IEnumerable<Tooltip>> GetTooltipsByKey(string[] keys, int tenantId)
         {
+            if(keys == null || keys.Length == 0)
+            {
+                return null;
+            }
+
             var tooltips = await _currentDbContext.Tooltips
                                     .Where(t => keys.Contains(t.Key) && t.IsDeleted != true &&
                                             (t.Localization == CultureInfo.CurrentCulture.Name || string.IsNullOrEmpty(t.Localization)) &&
