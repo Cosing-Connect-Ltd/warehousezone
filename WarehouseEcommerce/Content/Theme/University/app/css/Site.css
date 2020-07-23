@@ -4272,3 +4272,14 @@ body {
         font-size: 21px;
     }
 }
+
+.nb_prdlisting_pgsec .nb_prd_filterwrap .prod_count_sec {
+    margin-top: -10px;
+    padding-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    .nb_prd_filterwrap {
+        top:126px !important;
+    }
+}
