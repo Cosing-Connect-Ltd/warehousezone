@@ -3996,7 +3996,7 @@ body.ZoomerActive {
     background-color: #f33655;
     position: fixed;
     right: 0px;
-    top: 160px;
+    top: 130px;
     z-index: 110;
     flex-direction: row;
     align-items: center;
