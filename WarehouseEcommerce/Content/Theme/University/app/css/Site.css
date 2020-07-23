@@ -4173,11 +4173,6 @@ body.modal-open {
             transition: transform .4s;
         }
 
-    .list-on-tablets .prd_lst_boxouter:hover img {
-        transform: scale(1.1);
-        transform-origin: 50% 50%;
-    }
-
     .list-on-tablets .imagewrap,
     .feature-product-overflow .imagewrap{
         border: 1px solid white;
