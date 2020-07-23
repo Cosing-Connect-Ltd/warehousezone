@@ -5,7 +5,8 @@ using DevExpress.Web.ASPxHtmlEditor;
 using DevExpress.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
-
+using System.Net.Http;
+using System.Web;
 namespace WMS.Helpers.DevexHelpers
 {
     public class FeaturesOptions : BaseOptions
@@ -130,6 +131,19 @@ namespace WMS.Helpers.DevexHelpers
             string result = GeHtmlContentByFileName(fileName);
             return demoPageIsInRoot ? result : result.Replace("Content/", "../Content/");
         }
+
+        public static string GetImageEditorFilePath()
+        {
+            
+            string baseUrl = "~/UploadedFiles/HtmlEditor/";
+            if (HttpContext.Current.Request.Url != null)
+            {
+                baseUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority;
+                baseUrl = baseUrl + HtmlEditorFeaturesDemosHelper.ImagesDirectory;
+            }
+            return baseUrl;
+        }
+    
 
         public static void SetupGlobalUploadBehaviour(HtmlEditorSettings settings)
         {

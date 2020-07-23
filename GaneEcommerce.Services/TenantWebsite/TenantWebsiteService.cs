@@ -969,13 +969,23 @@ namespace Ganedata.Core.Services
                                        (string.IsNullOrEmpty(ProductName) || (a.Name.Contains(ProductName) || a.SKUCode.Contains(ProductName) || a.Description.Contains(ProductName))));
 
         }
+
+        public IQueryable<ProductMaster> GetAllValidProductForDynamicFilter(int siteId, List<int> productIds)
+        {
+            return _currentDbContext.ProductsWebsitesMap.Where(a => a.IsActive == true && a.IsDeleted != true && a.SiteID == siteId && productIds.Contains(a.ProductId)).Select(u => u.ProductMaster);
+
+        }
+
         public Dictionary<ProductAttributes, List<ProductAttributeValues>> GetAllValidProductAttributeValuesByProductIds(IQueryable<ProductMaster> product)
         {
             var productIds = product.Select(u => u.ProductId).ToList();
-            var relatedProducts = _productServices.GetAllProductInKitsByProductIds(productIds).Where(k => k.IsActive == true && k.ProductType != ProductKitTypeEnum.ProductByAttribute && k.IsDeleted != true).ToList();
-
+            var relatedProducts = _productServices.GetAllProductInKitsByProductIds(productIds, true).Where(k => k.IsActive == true && k.ProductType != ProductKitTypeEnum.ProductByAttribute && k.IsDeleted != true).ToList();
+            var simpleProducts = _productServices.GetAllProductInKitsByProductIds(productIds).ToList();
+            if (simpleProducts.Count > 0)
+            {
+                relatedProducts.AddRange(simpleProducts);
+            }
             relatedProducts.ForEach(r => r.ProductAttributeValuesMap = r.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).ToList());
-
 
             return relatedProducts
                 .SelectMany(a => a.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).Select(k => k.ProductAttributeValues))

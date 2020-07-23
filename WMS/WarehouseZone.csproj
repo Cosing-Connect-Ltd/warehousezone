@@ -2912,7 +2912,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>8005</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8005/</IISUrl>
+          <IISUrl>http://admin47814.linkplatform.co.uk:8005/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

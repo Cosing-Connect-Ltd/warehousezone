@@ -5,13 +5,8 @@
 <div class="col-md-4 col-lg-3">
     <div class="nb_prd_filterwrap">
         <div class="prod_count_sec">
-            <h5 class="count">@Model.Count Products</h5>
-            <div class="nb_filter_body">
-                <ul>
-                    <li class="list-group-item"><input type="checkbox" id="stockS" class="checkbox-inline" value="In_stock" @(Request.Url.OriginalString.ToLower().Contains("in_stock") ? "checked" : "")>In stock </li>
-                    <li class="list-group-item"><input type="checkbox" id="stockS" class="checkbox-inline" value="Out_stock" @(Request.Url.OriginalString.ToLower().Contains("out_stock") ? "checked" : "")>Out of stock</li>
-                </ul>
-            </div>
+            <h5 class="count">@(Model.Count+"Products")</h5>
+          
         </div>
         <div class="nb_fltr_accrd_wrap">
             <div id="accordion" class="nb_filter_accordion">

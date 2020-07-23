@@ -2,6 +2,8 @@
 @using WMS.Helpers.DevexHelpers
 @model Ganedata.Core.Services.HtmlEditorModel
 
+
+
 @Html.DevExpress().HtmlEditor(
     settings =>
     {
@@ -40,14 +42,8 @@
         toolbar.Items.Add(new ToolbarInsertPlaceholderDialogButton(true));
         settings.Toolbars.Add(toolbar);
         settings.SettingsDialogs.InsertImageDialog.SettingsImageUpload.UploadCallbackRouteValues = new { Controller = "DevexHelper", Action = "ImageUpload" };
-        settings.SettingsDialogs.InsertImageDialog.SettingsImageUpload.UploadFolder = HtmlEditorFeaturesDemosHelper.ImagesDirectory;
+        settings.SettingsDialogs.InsertImageDialog.SettingsImageUpload.UploadFolder =  HtmlEditorFeaturesDemosHelper.GetImageEditorFilePath();
         settings.SettingsDialogs.InsertImageDialog.SettingsImageUpload.ValidationSettings.Assign(HtmlEditorFeaturesDemosHelper.ImageUploadValidationSettings);
-
-        //settings.SettingsHtmlEditing.AllowIFrames = true;
-        //settings.SettingsHtmlEditing.AllowHTML5MediaElements = true;
-        //settings.SettingsHtmlEditing.AllowObjectAndEmbedElements = true;
-        //settings.SettingsHtmlEditing.AllowStyleAttributes = true;
-        //settings.SettingsHtmlEditing.AllowScripts = true;
-        //settings.SettingsHtmlEditing.AllowYouTubeVideoIFrames = true;
+        settings.ClientSideEvents.CommandExecuted = "onCommandExecutedByHtmlEditor";
 
     }).Bind(Model.HtmlContent).GetHtml()

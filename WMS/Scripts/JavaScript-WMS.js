@@ -1345,3 +1345,12 @@ function ReturnsOrderPrint() {
     var id = $("#selkeyDirectSalesOrderId").val();
     window.open("/Reports/SalesOrderPrint?id=" + id + "&returns=true");
 }
+function onCommandExecutedByHtmlEditor(s, e) {
+    if (e.commandName === "insertimage" || e.commandName === "changeimage") {
+        var url = window.location.origin;
+        var html = s.GetHtml();
+        var baseUrl = url + e.parameter.src;
+        var result = html.replace(('img src="' + e.parameter.src + '"'), 'img src="' + baseUrl + '"');
+        s.SetHtml(result);
+    }
+}

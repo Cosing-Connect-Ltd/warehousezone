@@ -17,6 +17,8 @@
         Manufacturer = breadcumbstring.FirstOrDefault(u => u.Contains("BrandS-"));
 
     }
+
+    List<int> productIds = Model.Select(u => u.ProductId).ToList();
 }
 
 @Html.Partial("_ProductByAttributeSelectorModal")
@@ -55,7 +57,7 @@
             </div>
         </div>
         <div class="row">
-            @Html.Action("_DynamicFilters", new { category = ViewBag.Category, productName = ViewBag.CurrentFilter })
+            @Html.Action("_DynamicFilters", new { productIds= productIds,  category = ViewBag.Category, productName = ViewBag.CurrentFilter })
             <div class="col-md-8 col-lg-9 list-on-tablets">
                 <div class="nb_prd_listing_wrap">
 
