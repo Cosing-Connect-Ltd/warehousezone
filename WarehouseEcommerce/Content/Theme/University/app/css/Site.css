@@ -4274,3 +4274,7 @@ body.modal-open {
 .nb_prd_viewingsecWrap .img_thumb_sliderwrap .nb_imageZoomCarrousle div.item {
     padding: 0;
 }
+.nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap a {
+    letter-spacing: 2px;
+    padding: 9px;
+}

@@ -12,8 +12,11 @@
         }
 
         .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap h5 {
-            font-size: 22px;
+            font-size: 12px;
             line-height: 30px;
+        }
+        .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap a {
+            font-size: 12px;
         }
 
         .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap button {
