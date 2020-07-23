@@ -2,7 +2,7 @@
 
 namespace WarehouseEcommerce.Models
 {
-    public class ContactUs
+    public class ContactUsViewModel
     {
         public int ID { get; set; }
         [Required]
@@ -11,5 +11,8 @@ namespace WarehouseEcommerce.Models
         public string Email { get; set; }
         [Required, DataType(DataType.MultilineText)]
         public string Message { get; set; }
+        public string WebsiteContactAddress { get; set; }
+        public string WebsiteContactPhone { get; set; }
+        public string WebsiteContactEmail { get; set; }
     }
 }

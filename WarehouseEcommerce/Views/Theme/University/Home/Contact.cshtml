@@ -1,4 +1,4 @@
-﻿@model WarehouseEcommerce.Models.ContactUs
+﻿@model WarehouseEcommerce.Models.ContactUsViewModel
 
 @{
     ViewBag.Title = "Contact Us";
@@ -75,7 +75,6 @@
                                     <label for="captchaText">Text in the box</label>
                                     <input type="text" class="form-control" id="captchaText" />
                                 </div>
-
                             </div>
                         </div>*@
                         <div class="col-md-12 col-lg-12">
@@ -83,12 +82,12 @@
                                 <input type="submit" value="Submit" class="submitBtn">
                             </div>
                         </div>
-                        @*<div class="col-md-12 col-lg-12">
+                        <div class="col-md-12 col-lg-12">
                             <div class="form-group callus_frmgrp">
-                                <p>You can call us on:<span>0845 307 3984</span></p>
-                                <a href="tel:08453073984" class="submitBtn">Call us</a>
+                                <p>You can call us on:<span>@Model.WebsiteContactPhone</span></p>
+                                <a href="tel:@Model.WebsiteContactPhone" class="submitBtn">Call us</a>
                             </div>
-                        </div>*@
+                        </div>
 
                     </div>
                 }

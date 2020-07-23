@@ -269,7 +269,7 @@
     </Compile>
     <Compile Include="Helpers\GaneCartItemsSessionHelper.cs" />
     <Compile Include="Helpers\LayoutHelpers.cs" />
-    <Compile Include="Models\ContactUs.cs" />
+    <Compile Include="ViewModels\ContactUsViewModel.cs" />
     <Compile Include="Models\DemoBooking.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AccountDetailViewModel.cs" />

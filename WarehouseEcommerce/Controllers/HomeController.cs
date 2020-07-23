@@ -75,18 +75,26 @@ namespace WarehouseEcommerce.Controllers
         {
             ViewBag.Message = "Your contact page.";
 
-            return View();
+            var tenantWebsite = ViewBag.TenantWebsite as TenantWebsites;
+
+            var model = new ContactUsViewModel
+            {
+                WebsiteContactAddress = tenantWebsite.WebsiteContactAddress,
+                WebsiteContactEmail = tenantWebsite.WebsiteContactEmail,
+                WebsiteContactPhone = tenantWebsite.WebsiteContactPhone
+            };
+            return View(model);
         }
 
         [HttpPost]
-        public ActionResult Contact(ContactUs model)
+        public ActionResult Contact(ContactUsViewModel model)
         {
             var tenantWebsite = ViewBag.TenantWebsite as TenantWebsites;
 
-            if (ModelState.IsValid && tenantWebsite?.ContactReceiverEmail != null)
+            if (ModelState.IsValid && tenantWebsite?.WebsiteContactEmail != null)
             {
                 var message = new MailMessage();
-                message.To.Add(new MailAddress(tenantWebsite?.ContactReceiverEmail));
+                message.To.Add(new MailAddress(tenantWebsite?.WebsiteContactEmail));
                 message.From = new MailAddress(model.Email);
                 message.Subject = $"Customer Request - {model.Name}";
                 message.Body = $"<p><strong>Name:</strong> {model.Name} <br/> <strong> Email: </strong> {model.Email} <br/> <strong> Message: </strong> {model.Message}</p>";

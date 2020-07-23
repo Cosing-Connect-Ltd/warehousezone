@@ -999,6 +999,10 @@
     <Compile Include="Migrations\202007222055027_added_LinkPageUrl_field_to_WebsiteNavigations_table.designer.cs">
       <DependentUpon>202007222055027_added_LinkPageUrl_field_to_WebsiteNavigations_table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007231635018_remove_ContactReceiverEmail_field_from_TenantWebsites_table.cs" />
+    <Compile Include="Migrations\202007231635018_remove_ContactReceiverEmail_field_from_TenantWebsites_table.designer.cs">
+      <DependentUpon>202007231635018_remove_ContactReceiverEmail_field_from_TenantWebsites_table.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2068,6 +2072,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007222055027_added_LinkPageUrl_field_to_WebsiteNavigations_table.resx">
       <DependentUpon>202007222055027_added_LinkPageUrl_field_to_WebsiteNavigations_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007231635018_remove_ContactReceiverEmail_field_from_TenantWebsites_table.resx">
+      <DependentUpon>202007231635018_remove_ContactReceiverEmail_field_from_TenantWebsites_table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

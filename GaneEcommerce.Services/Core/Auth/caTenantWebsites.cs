@@ -25,7 +25,6 @@ namespace Ganedata.Core.Services
         public string InstaGramUrl { get; set; }
         public string FooterText { get; set; }
         public string ContactPageUrl { get; set; }
-        public string ContactReceiverEmail { get; set; }
         public bool IsActive { get; set; }
         public bool IsCollectionAvailable { get; set; }
         public bool IsDeliveryAvailable { get; set; }
