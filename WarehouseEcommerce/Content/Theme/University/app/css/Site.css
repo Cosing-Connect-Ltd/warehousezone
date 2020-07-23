@@ -627,7 +627,7 @@ ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
 }
 
 .uni-pages-pt {
-    padding-top: 157px !important;
+    padding-top: 128px !important;
     min-height: calc(100% - 452px);
 }
 
@@ -2727,16 +2727,11 @@ body.modal-open {
 
 
     .nb_header {
-        height: 150px;
-        padding: 35px 10px 18px 10px;
+        padding: 18px 10px;
     }
 
     .main-logo {
         max-height: 88px;
-    }
-
-    .uni-pages-pt {
-        padding-top: 150px !important;
     }
 
     .basketTable tr td {
@@ -4272,4 +4267,16 @@ body.modal-open {
 .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap a {
     letter-spacing: 2px;
     padding: 9px;
+}
+.search-box-buttons .search_btn {
+    padding-bottom: unset;
+    padding-top: unset;
+}
+@media(max-width:768px) {
+    .search-box-buttons .search_btn {
+        font-size: 22px;
+    }
+    .search_wrap_main .search_btn i {
+        font-size: 21px;
+    }
 }

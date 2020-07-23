@@ -214,9 +214,8 @@ input[type="number"]::-webkit-outer-spin-button {
     background-color: #fff;
     z-index: 150;
     position: fixed;
-    top: -10px;
+    top: 0px;
     left: 0;
-    padding: 3px 0px;
     box-shadow: 0px 0px 7px -3px #000;
     transition: all 0.3s ease;
     transform: translateY(-165px);
@@ -229,7 +228,7 @@ input[type="number"]::-webkit-outer-spin-button {
     .search_wrap_main .search_input {
         width: 92%;
         border-radius: 0px;
-        height: 55px;
+        height: 30px;
         border-bottom: solid 1px #707070;
         border-left: none;
         border-top: none;
@@ -278,7 +277,8 @@ input[type="number"]::-webkit-outer-spin-button {
     width: 100%;
     float: left;
     background-color: #111111;
-    padding: 35px 0px;
+    padding: 20px 0px;
+    height: 125px;
 }
 
     .nb_header .nb_logowrap {
