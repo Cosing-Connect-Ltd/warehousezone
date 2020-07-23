@@ -35,11 +35,11 @@
                                             {
                                                 if (!Ganedata.Core.Services.Inventory.IsProductInNotifyList(@item.ProductMaster, ViewBag.CurrentUserId))
                                                 {
-                                                    <a href="javascript:;" class="notify-btn wishlist-table-btns" onclick="addNotifyProductAvailibility(@item.ProductId)" id="notification-bell_@item.ProductId" title="NOTIFY ME WHEN AVAILABLE" style="font-size: 28px; color: black"><i class="fa fa-bell-o list-icon"></i></a>
+                                                    <a href="javascript:;" class="notify-btn wishlist-table-btns" onclick="addToNotifyListByConfirmation(@item.ProductId)" id="notification-bell_@item.ProductId" title="NOTIFY ME WHEN AVAILABLE" style="font-size: 28px; color: black"><i class="fa fa-bell-o list-icon"></i></a>
                                                 }
                                                 else
                                                 {
-                                                    <a href="javascript:;" class="notify-btn wishlist-table-btns" onclick="removeNotifyProduct(@item.ProductId)" id="notification-bell_@item.ProductId" title="NOTIFY ME WHEN AVAILABLE" style="font-size: 28px; color: red;"><i class="fa fa-bell-o list-icon"></i></a>
+                                                    <a href="javascript:;" class="notify-btn wishlist-table-btns" onclick="removeNotifyListItemByConfirmation(@item.ProductId)" id="notification-bell_@item.ProductId" title="NOTIFY ME WHEN AVAILABLE" style="font-size: 28px; color: red;"><i class="fa fa-bell-o list-icon"></i></a>
                                                 }
                                             }
                                         </div>
@@ -52,7 +52,7 @@
                                         <br/>
                                     }
 
-                                    <a href="javascript:;" class="wishlist-table-btns wishlist-remove-btn" onclick="RemoveWishItem(@item.ProductId)">Remove</a>
+                                    <a href="javascript:;" class="wishlist-table-btns wishlist-remove-btn" onclick="removeWishListItemAndUpdateTheList(@item.ProductId)">Remove</a>
                                 </td>
 
                             </tr>

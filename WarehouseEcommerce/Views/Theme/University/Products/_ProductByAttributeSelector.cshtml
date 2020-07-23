@@ -1,14 +1,14 @@
 ﻿@model WarehouseEcommerce.ViewModels.ProductDetailViewModel
-<div class="modal-header">
-    <h2 class="head">@Model.SelectedProduct.Name</h2>
-</div>
 <div style="display:none">
     <label style="color:red" id="#errorprint"></label>
 </div>
 <section class="nb_sec nb_prdlisting_pgsec">
     <div class="container">
+        <div>
+            <h2 class="head">@Model.SelectedProduct.Name</h2>
+        </div>
         <div class="row">
-            <div class="col-md-12 col-lg-12 offset-lg-1">
+            <div class="col-md-12 col-lg-12">
                 <div class="nb_prd_det_rightsec">
                     @Html.HiddenFor(model => Model.SelectedProduct.ProductId)
                     <span class="prd_amnt">@ViewBag.CurrencySymbol@Model.SelectedProduct.SellPrice</span>
@@ -18,13 +18,11 @@
                         {
                             <input type="hidden" class="availablity" value="true">
                             @*<span>Availability:</span>*@
-                            <br />
                             @((availableProductCount <= 10 ? "only "+ availableProductCount.ToString("#") + " items left" : "Available"))
                         }
                         else
                         {
                             <span></span>
-                            <br />
                             <span>Currently unavailable.</span>
                         }
                     </div>
@@ -70,7 +68,7 @@
         </div>
     </div>
 </section>
-<div class="modal-footer botomBtnsec" style="padding: 5px 0 0 0">
+<div class="botomBtnsec">
     <button type="button" class="btmbtn sho" data-dismiss="modal">
         Close
     </button>
@@ -85,11 +83,11 @@
     {
         if (!Ganedata.Core.Services.Inventory.IsProductInNotifyList(Model.SelectedProduct, ViewBag.CurrentUserId))
         {
-            <button class="btmbtn sho" onclick="addNotifyProductAvailibility(@Model.SelectedProduct.ProductId, @Model.BaseProductId)" id="notification-bell_@Model.SelectedProduct.ProductId"><i class="bel-icon fa fa-bell-o list-icon" style="font-size: 28px;"></i></button>
+            <button class="btmbtn sho" onclick="addToNotifyListByConfirmation(@Model.SelectedProduct.ProductId, @Model.BaseProductId)" id="notification-bell_@Model.SelectedProduct.ProductId"><i class="bel-icon fa fa-bell-o list-icon" style="font-size: 28px;"></i></button>
         }
         else
         {
-            <button class="btmbtn sho" onclick="removeNotifyProduct(@Model.SelectedProduct.ProductId, @Model.BaseProductId)" id="notification-bell_@Model.SelectedProduct.ProductId"><i class="bel-icon fa fa-bell-o list-icon" style="color:red; font-size: 28px;"></i></button>
+            <button class="btmbtn sho" onclick="removeNotifyListItemByConfirmation(@Model.SelectedProduct.ProductId, @Model.BaseProductId)" id="notification-bell_@Model.SelectedProduct.ProductId"><i class="bel-icon fa fa-bell-o list-icon" style="color:red; font-size: 28px;"></i></button>
         }
     }
 
@@ -99,6 +97,6 @@
     }
     else
     {
-        <button class="btmbtn sho" id="wish_@Model.SelectedProduct.ProductId" onclick="removeFromWishListPopUp(@Model.SelectedProduct.ProductId, @Model.BaseProductId)"><i class="icon-love list-icon" style="color: red;font-size: 28px;"></i></button>
+        <button class="btmbtn sho" id="wish_@Model.SelectedProduct.ProductId" onclick="removeWishListItemByConfirmation(@Model.SelectedProduct.ProductId, @Model.BaseProductId)"><i class="icon-love list-icon" style="color: red;font-size: 28px;"></i></button>
     }
 </div>
