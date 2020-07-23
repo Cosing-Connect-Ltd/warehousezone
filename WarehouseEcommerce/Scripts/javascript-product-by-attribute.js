@@ -1,4 +1,9 @@
-﻿function showProductByAttributeSelector(skuCode) {
+﻿function showProductByAttributeSelector(skuCode, validateLogin) {
+    if (validateLogin == true && userStatus === "Login") {
+        GetLoggedIn(false);
+        return;
+    }
+
     $(".product-by-attribute-selector-model-body").html("");
     startLoading();
     $.ajax({
