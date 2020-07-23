@@ -10,7 +10,7 @@
             {
                 var rgbaColor = System.Drawing.ColorTranslator.FromHtml(!string.IsNullOrEmpty(item.ForeColor) ? @item.ForeColor : string.Empty);
                 var sliderTitleBackgroundColor = ("rgba(" + rgbaColor.R + "," + rgbaColor.G + "," + rgbaColor.B + "," + (item.ForeColorOpacity > 0 ? @item.ForeColorOpacity.ToString("#.#") : "1") + ")");
-                var sliderTitleColor = (string.IsNullOrEmpty(item.TextColor) ? @item.TextColor : string.Empty);
+                var sliderTitleColor = (!string.IsNullOrEmpty(item.TextColor) ? @item.TextColor : string.Empty);
                 if (i == 0)
                 {
                     <div class="carousel-item active">
