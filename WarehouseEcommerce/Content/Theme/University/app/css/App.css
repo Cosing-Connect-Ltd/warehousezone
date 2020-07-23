@@ -1786,10 +1786,10 @@ input[type="number"]::-webkit-outer-spin-button {
 .nb_prdlisting_pgsec .breadCrumbtopsec {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: unset;
     justify-content: space-between;
     margin-bottom: 32px;
-    margin-top: 16px;
+    margin-top: 15px;
 }
 
     .nb_prdlisting_pgsec .breadCrumbtopsec .nb_bread_crumbwrap {

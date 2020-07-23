@@ -1440,16 +1440,6 @@ body.modal-open {
 }
 
 /*breadcrumbs start*/
-.breadCrumbtopsec {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
-    margin-top: 16px;
-    font-family: "primaryfont_SemiBold"
-}
-
     .breadCrumbtopsec .nb_bread_crumbwrap nav ol {
         background-color: transparent;
         margin: 0px;
