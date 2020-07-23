@@ -17,6 +17,7 @@
 .uni-pages-main .nb_prd_filterwrap .list-group-item {
     padding-top: 0px;
     padding-bottom: 0px;
+    padding-left: 0px;
 }
 
 .uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a i {
@@ -3769,6 +3770,8 @@ body.modal-open {
 #slider-range {
     background-color: black;
     border: unset !important;
+    margin-right: 15px;
+    margin-left: 12px;
 }
 
     #slider-range div {

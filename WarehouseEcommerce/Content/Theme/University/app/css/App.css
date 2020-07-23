@@ -1905,9 +1905,7 @@ input[type="number"]::-webkit-outer-spin-button {
             font-size: 20px;
             color: #000000;
             letter-spacing: 5px;
-            padding-bottom: 15px;
             margin-bottom: 0px;
-            border-bottom: solid 1px #111111;
         }
 
         .nb_prdlisting_pgsec .nb_prd_filterwrap .prod_count_sec > ul {
@@ -2018,7 +2016,7 @@ input[type="number"]::-webkit-outer-spin-button {
         font-family: "primaryfont_SemiBold";
         font-size: 15px;
         border-bottom: solid 1px #000;
-        padding: 0px 0px 10px 0px;
+        padding: 0px 0px 5px 0px;
         border-radius: 0px;
         margin-bottom: 0px;
         position: relative;
@@ -2028,7 +2026,7 @@ input[type="number"]::-webkit-outer-spin-button {
             content: "\e912";
             font-family: "icomoon" !important;
             position: absolute;
-            right: 10px;
+            right: 1px;
             top: 50%;
             transform: translateY(-50%);
             font-weight: 100;
