@@ -5,14 +5,17 @@
 <div class="col-md-4 col-lg-3">
     <div class="nb_prd_filterwrap">
         <div class="prod_count_sec">
-            <span class="count">@Model.Count Products</span>
-            <ul>
-                <li class="list-group-item"><input type="checkbox" id="stockS" class="checkbox-inline" value="In_stock" @(Request.Url.OriginalString.ToLower().Contains("in_stock") ? "checked" : "")>In stock </li>
-                <li class="list-group-item"><input type="checkbox" id="stockS" class="checkbox-inline" value="Out_stock" @(Request.Url.OriginalString.ToLower().Contains("out_stock") ? "checked" : "")>Out of stock</li>
-            </ul>
+            <h5 class="count">@Model.Count Products</h5>
+            <div class="nb_filter_body">
+                <ul>
+                    <li class="list-group-item"><input type="checkbox" id="stockS" class="checkbox-inline" value="In_stock" @(Request.Url.OriginalString.ToLower().Contains("in_stock") ? "checked" : "")>In stock </li>
+                    <li class="list-group-item"><input type="checkbox" id="stockS" class="checkbox-inline" value="Out_stock" @(Request.Url.OriginalString.ToLower().Contains("out_stock") ? "checked" : "")>Out of stock</li>
+                </ul>
+            </div>
         </div>
         <div class="nb_fltr_accrd_wrap">
             <div id="accordion" class="nb_filter_accordion">
+
                 <div class="nb_filter_head price-range-div" id="filter1">
                     <h5 class="mb-0">
                         <button class="btn btn-link"
@@ -23,27 +26,30 @@
                             Price
                         </button>
                     </h5>
-                    <div>
+                </div>
+                <div class="nb_filter_body">
+                    <div class="filtered-amout">
                         <div id="amount"></div>
                     </div>
-                </div>
-                <div id="collapseOne"
-                     class="collapse show price-range-div"
-                     aria-labelledby="filter1"
-                     data-parent="#accordion">
-                    <div class="nb_filter_body">
-                        <ul class="nb_prd_filter_listouter">
 
-                            <div id="slider-range"></div>
+                    <div id="collapseOne"
+                         class="collapse show price-range-div"
+                         aria-labelledby="filter1"
+                         data-parent="#accordion">
+                        <div class="nb_filter_body pb-0">
+                            <ul class="nb_prd_filter_listouter">
 
-                            <li class="list-group-item" style="display: none">
-                                <input type="checkbox" id="priceS" class="checkbox-inline" value="" @(Request.Url.OriginalString.ToLower().Contains("prices") ? "checked" : "")>
+                                <div id="slider-range"></div>
 
-                            </li>
+                                <li class="list-group-item" style="display: none">
+                                    <input type="checkbox" id="priceS" class="checkbox-inline" value="" @(Request.Url.OriginalString.ToLower().Contains("prices") ? "checked" : "")>
+
+                                </li>
 
 
 
-                        </ul>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 @if (Model.Manufacturer.Count > 0)
@@ -128,7 +134,7 @@
                             <ul class="nb_prd_filter_listouter">
                                 @foreach (var items in item.Value)
                                 {
-                                    string name = items.Value.Replace(" ", "_").Replace(",", "^")+"^"+@items.AttributeValueId;
+                                    string name = items.Value.Replace(" ", "_").Replace(",", "^") + "^" + @items.AttributeValueId;
                                     <li class="list-group-item"><input type="checkbox" id="@items.ProductAttributes.AttributeName.Replace(" ", "_")" class="checkbox-inline" value="@name" @(Request.Url.OriginalString.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(items.Value)</li>
                                 }
                             </ul>

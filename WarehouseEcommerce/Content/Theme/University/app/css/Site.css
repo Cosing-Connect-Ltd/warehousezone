@@ -14,6 +14,10 @@
         width: 18px;
         height: 18px;
     }
+    .uni-pages-main .nb_prd_filterwrap .list-group-item {
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
 
 .uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a i {
     margin-right: unset;
@@ -3787,13 +3791,12 @@ body.modal-open {
             background-color: var(--secondary-color);
         }
 
-    .price-range-div div#amount {
+    .filtered-amout div#amount {
         color: var(--secondary-color);
         border: 0;
         font-weight: 600;
         width: 100%;
         text-align: center;
-        margin: 1px 0px 5px 0px;
     }
     /*price-range-bar in Dynamic filters - end*/
 

@@ -1484,10 +1484,11 @@ input[type="number"]::-webkit-outer-spin-button {
         .nb_footer .nb_footersec_inner .nb_footnav_wrap ul {
             list-style: none;
             display: flex;
+            flex-wrap: wrap;
             flex-direction: row;
             align-items: center;
             margin-bottom: 37px;
-            justify-content: space-between;
+            justify-content: center;
         }
             .nb_footer .nb_footersec_inner .nb_footnav_wrap ul li a {
                 display: block;
@@ -1506,7 +1507,7 @@ input[type="number"]::-webkit-outer-spin-button {
                     height: 15px;
                     position: absolute;
                     right: 0;
-                    top: 6px;
+                    top: 3px;
                     background-color: #fff;
                 }
                 
@@ -1581,25 +1582,6 @@ input[type="number"]::-webkit-outer-spin-button {
                 line-height: 20px;
                 letter-spacing: 1.7px;
             }
-@media(max-width:767px){
-            .nb_footer .nb_footersec_inner .nb_footnav_wrap ul {
-                flex-direction: column;
-            }
-            .nb_footer .nb_footersec_inner .nb_footnav_wrap ul li a:after {
-                    display:none;
-            }
-            .nb_footer .nb_footersec_inner .nb_footnav_wrap ul li:first-child a {
-                padding-left: unset;
-                padding-right:unset;
-            }
-            .nb_footer .nb_footersec_inner .nb_footnav_wrap ul li:last-child a {
-                padding-left: unset;
-                padding-right:unset;
-            }
-            .nb_footer .nb_footersec_inner .nb_footnav_wrap ul li a {
-                padding-bottom:5px;
-            }
-        }
 .accordion ul li div a h2 {
     font-family: @fontb;
     font-size: 15px;
@@ -1911,6 +1893,8 @@ input[type="number"]::-webkit-outer-spin-button {
     .nb_prdlisting_pgsec .nb_prd_filterwrap .prod_count_sec {
         width: 100%;
         float: left;
+        display: flex;
+        flex-direction: column;
     }
 
         .nb_prdlisting_pgsec .nb_prd_filterwrap .prod_count_sec .count {
@@ -1922,7 +1906,7 @@ input[type="number"]::-webkit-outer-spin-button {
             color: #000000;
             letter-spacing: 5px;
             padding-bottom: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 0px;
             border-bottom: solid 1px #111111;
         }
 
@@ -1955,6 +1939,13 @@ input[type="number"]::-webkit-outer-spin-button {
                 float: left;
             }
 
+.nb_prd_filterwrap li {
+    font-weight: 100 !important;
+    font-family: sans-serif !important;
+}
+.nb_prd_filterwrap button {
+    font-weight: 600 !important;
+}
 .nb_prdpg_fg {
     display: block;
     margin-bottom: 8px;
@@ -2027,9 +2018,9 @@ input[type="number"]::-webkit-outer-spin-button {
         font-family: "primaryfont_SemiBold";
         font-size: 15px;
         border-bottom: solid 1px #000;
-        padding: 10px 0px;
+        padding: 0px 0px 10px 0px;
         border-radius: 0px;
-        margin-bottom: 10px;
+        margin-bottom: 0px;
         position: relative;
     }
 
@@ -2040,11 +2031,16 @@ input[type="number"]::-webkit-outer-spin-button {
             right: 10px;
             top: 50%;
             transform: translateY(-50%);
+            font-weight: 100;
         }
 
 .nb_filter_accordion .nb_filter_body {
     width: 100%;
     display: inline-block;
+}
+.nb_prd_filterwrap .nb_filter_body {
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .nb_prd_listing_wrap {
