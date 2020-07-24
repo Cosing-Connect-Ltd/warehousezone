@@ -211,10 +211,10 @@ namespace Ganedata.Core.Entities.Domain
         {
             get
             {
-                var file = ProductFiles.Where(x => x.HoverImage == true && x.IsDeleted != true).FirstOrDefault();
+                var file = ProductFiles.Where(x => x != null).FirstOrDefault(x => x.HoverImage == true && x.IsDeleted != true);
                 if (file == null)
                 {
-                    file = ProductFiles.Where(x => x.IsDeleted != true).FirstOrDefault();
+                    file = ProductFiles.Where(x => x != null).FirstOrDefault(x => x.IsDeleted != true);
                 }
                 return file?.FilePath;
             }
@@ -223,10 +223,10 @@ namespace Ganedata.Core.Entities.Domain
         {
             get
             {
-                var file = ProductFiles.Where(x => x.DefaultImage == true && x.IsDeleted != true).FirstOrDefault();
+                var file = ProductFiles.Where(x => x != null).FirstOrDefault(x => x.DefaultImage == true && x.IsDeleted != true);
                 if (file == null)
                 {
-                    file = ProductFiles.Where(x => x.IsDeleted != true).FirstOrDefault();
+                    file = ProductFiles.Where(x => x != null).FirstOrDefault(x => x.IsDeleted != true);
                 }
                 return file?.FilePath;
             }

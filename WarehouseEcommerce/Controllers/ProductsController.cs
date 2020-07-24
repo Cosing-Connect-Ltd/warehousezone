@@ -204,7 +204,7 @@ namespace WarehouseEcommerce.Controllers
             }
 
             model.SelectedProduct.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(model.SelectedProduct.ProductId, CurrentTenantWebsite.SiteID), 2);
-           
+
             return View(model);
         }
 
@@ -534,12 +534,15 @@ namespace WarehouseEcommerce.Controllers
 
             selectedProduct = relatedProducts.FirstOrDefault(p => p.ProductId == productId || productId == null);
 
-            selectedProduct.ProductAttributeValuesMap = selectedProduct.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).ToList();
+            if (selectedProduct != null)
+            {
+                selectedProduct.ProductAttributeValuesMap = selectedProduct.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).ToList();
+            }
 
             var productDetailViewModel = new ProductDetailViewModel
             {
-                SelectedProduct = selectedProduct,
-                AvailableAttributes = GetProductAttributes(relatedProducts, selectedProduct)
+                SelectedProduct = selectedProduct ?? product,
+                AvailableAttributes = GetProductAttributes(relatedProducts, selectedProduct ?? product)
             };
 
             return productDetailViewModel;
