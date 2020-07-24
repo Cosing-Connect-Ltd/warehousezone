@@ -57,7 +57,7 @@
             </div>
         </div>
         <div class="row">
-            @Html.Action("_DynamicFilters", new { productIds= productIds,  category = ViewBag.Category, productName = ViewBag.CurrentFilter })
+            @Html.Action("_DynamicFilters", new { productIds = productIds, category = ViewBag.Category, productName = ViewBag.CurrentFilter })
             <div class="col-md-8 col-lg-9 list-on-tablets">
                 <div class="nb_prd_listing_wrap">
 
@@ -66,16 +66,20 @@
                         {
 
 
-                            item.ProductTagMaps = item.ProductTagMaps.Where(u => u.IsDeleted != true).Where(u => u.ProductTag.IsDeleted != true).OrderBy(x => x.ProductTag.SortOrder).ToList();
+                            item.ProductTagMaps = item.ProductTagMaps.Where(u => u.IsDeleted != true).Where(u => u.ProductTag.IsDeleted != true && !string.IsNullOrEmpty(u.ProductTag.IconImage)).OrderBy(x => x.ProductTag.SortOrder).ToList();
                             <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-4 list-product-col">
                                 <div class="prd_lst_boxouter">
                                     @for (int i = 0; i < item.ProductTagMaps.Count; i++)
                                     {
+
                                         if (i < 3)
                                         {
+                                            var imageIcon = item.ProductTagMaps.ToList()[i].ProductTag.IconImage;
+
                                             <span class="badge badge-@i">
-                                                <img src="@(ViewBag.BaseFilePath + item.ProductTagMaps.ToList()[i].ProductTag.IconImage)" alt="" />
+                                                <img src="@(ViewBag.BaseFilePath + imageIcon)" alt="" />
                                             </span>
+
                                         }
 
                                     }

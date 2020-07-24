@@ -18,24 +18,27 @@
                     <div class="owl-carousel owl-theme nb_featuredPrdCarrousle nb_prd_listing_wrap">
                         @foreach (var item in Model.productMasterList)
                         {
-                            item.ProductTagMaps = item.ProductTagMaps.Where(u => u.IsDeleted != true).Where(u => u.ProductTag.IsDeleted != true).OrderBy(x => x.ProductTag.SortOrder).ToList();
+                            item.ProductTagMaps = item.ProductTagMaps.Where(u => u.IsDeleted != true).Where(u => u.ProductTag.IsDeleted != true && !string.IsNullOrEmpty(u.ProductTag.IconImage)).OrderBy(x => x.ProductTag.SortOrder).ToList();
 
 
                             <div class="item prd_lst_boxouter">
                                 @for (int i = 0; i < item.ProductTagMaps.Count; i++)
                                 {
+
                                     if (i < 3)
                                     {
+                                        var imageIcon = item.ProductTagMaps.ToList()[i].ProductTag.IconImage;
                                         <span class="badge badge-@i">
-                                            <img src="@(ViewBag.BaseFilePath + item.ProductTagMaps.ToList()[i].ProductTag.IconImage)" alt=""/>
+                                            <img src="@(ViewBag.BaseFilePath + imageIcon)" alt="" />
                                         </span>
+
                                     }
 
                                 }
 
                                 <span class="imagewrap">
                                     <a href="@Url.Action("ProductDetails", "Products", new {sku = item.SKUCode})">
-                                        <img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"/>
+                                        <img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
                                     </a>
                                 </span>
                                 <h3 class="prdName">
