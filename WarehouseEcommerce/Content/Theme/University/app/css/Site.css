@@ -4283,3 +4283,7 @@ body {
         top:126px !important;
     }
 }
+
+.nb_feat_prod_sec .nb_featuredPrdCarrousle .owl-nav{
+    z-index: -1;
+}
