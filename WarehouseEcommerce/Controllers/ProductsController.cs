@@ -204,7 +204,7 @@ namespace WarehouseEcommerce.Controllers
             }
 
             model.SelectedProduct.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(model.SelectedProduct.ProductId, CurrentTenantWebsite.SiteID), 2);
-
+           
             return View(model);
         }
 

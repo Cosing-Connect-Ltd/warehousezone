@@ -1,11 +1,21 @@
 ﻿@{
     var grid = Html.DevExpress().GridView(settings =>
     {
-        settings.Name = "ProductEditListGridView";
+        var gridname = "ProductEditListGridView";
+        if (ViewBag.AssociatedItem != null)
+        {
+            if(ViewBag.KitTypes != null && ViewBag.KitTypes == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.RelatedProduct)
+            {
+                gridname = "RelatedProductListGridView";
+            }
+        }
+
+        settings.Name = gridname;
         settings.CallbackRouteValues = new
         {
             Controller = "Products",
             Action = "_EditableProductGrid",
+            gridName = gridname,
             AssociatedItem = ViewBag.AssociatedItem,
             KitType = ViewBag.KitTypes,
             productId = ViewBag.ProductId
@@ -19,17 +29,17 @@
         settings.EnableCallbackAnimation = false;
         settings.CustomBindingRouteValuesCollection.Add(
             GridViewOperationType.Paging,
-            new { Controller = "Products", Action = "_ProductEditListPaging", AssociatedItem = ViewBag.AssociatedItem, KitType = ViewBag.KitTypes, productId = ViewBag.ProductId }
+            new { Controller = "Products", Action = "_ProductEditListPaging", gridName = gridname, AssociatedItem = ViewBag.AssociatedItem, KitType = ViewBag.KitTypes, productId = ViewBag.ProductId }
         );
 
         settings.CustomBindingRouteValuesCollection.Add(
         GridViewOperationType.Filtering,
-        new { Controller = "Products", Action = "_ProductsEditFiltering", AssociatedItem = ViewBag.AssociatedItem, KitType = ViewBag.KitTypes, productId = ViewBag.ProductId }
+        new { Controller = "Products", Action = "_ProductsEditFiltering", gridName=gridname, AssociatedItem = ViewBag.AssociatedItem, KitType = ViewBag.KitTypes, productId = ViewBag.ProductId }
         );
 
         settings.CustomBindingRouteValuesCollection.Add(
         GridViewOperationType.Sorting,
-        new { Controller = "Products", Action = "_ProductsEditGetDataSorting", AssociatedItem = ViewBag.AssociatedItem, KitType = ViewBag.KitTypes, productId = ViewBag.ProductId }
+        new { Controller = "Products", Action = "_ProductsEditGetDataSorting", gridName = gridname, AssociatedItem = ViewBag.AssociatedItem, KitType = ViewBag.KitTypes, productId = ViewBag.ProductId }
         );
 
         settings.Settings.ShowHeaderFilterButton = true;
@@ -150,7 +160,7 @@
         }
         else
         {
-            settings.SettingsEditing.BatchUpdateRouteValues = new { Controller = "Products", Action = "SaveAssociated", AssociatedItem = ViewBag.AssociatedItem, KitType = ViewBag.KitTypes };
+            settings.SettingsEditing.BatchUpdateRouteValues = new { Controller = "Products", Action = "SaveAssociated", gridName = gridname, AssociatedItem = ViewBag.AssociatedItem, KitType = ViewBag.KitTypes };
             settings.Columns.Add(c =>
             {
                 c.FieldName = "Name";
@@ -166,43 +176,43 @@
             });
 
             settings.Columns.Add(column =>
-    {
-        column.Caption = "Attributes";
-        column.Name = "AttributeValues";
-        column.EditFormSettings.Visible = DefaultBoolean.False;
-        column.SetDataItemTemplateContent(container =>
-{
-    List<string> type = DataBinder.Eval(container.DataItem, "AttributeValueNames") as List<string>;
-
-    if (type != null && type.Count() > 0)
-    {
-        var listSplit = type.Select(u => u.Split(':')).ToList();
-        Dictionary<string, string>
-    data = new Dictionary<string, string>
-        ();
-        foreach (var item in listSplit)
-        {
-            if (!data.ContainsKey(item[0].ToString()))
             {
-                data.Add(item[0], item[1]);
-            }
-            else
-            {
-                var value = data[item[0].ToString()];
-                data[item[0].ToString()] = value + ", " + item[1];
+                column.Caption = "Attributes";
+                column.Name = "AttributeValues";
+                column.EditFormSettings.Visible = DefaultBoolean.False;
+                column.SetDataItemTemplateContent(container =>
+                {
+                    List<string> type = DataBinder.Eval(container.DataItem, "AttributeValueNames") as List<string>;
 
-            }
+                    if (type != null && type.Count() > 0)
+                    {
+                        var listSplit = type.Select(u => u.Split(':')).ToList();
+                        Dictionary<string, string>
+                    data = new Dictionary<string, string>
+                        ();
+                        foreach (var item in listSplit)
+                        {
+                            if (!data.ContainsKey(item[0].ToString()))
+                            {
+                                data.Add(item[0], item[1]);
+                            }
+                            else
+                            {
+                                var value = data[item[0].ToString()];
+                                data[item[0].ToString()] = value + ", " + item[1];
 
-        }
-        var attributes = String.Join(", ", data.Select(d => String.Format("{0}:{1}", d.Key, d.Value)));
-        ViewContext.Writer.Write(attributes);
+                            }
 
-    }
+                        }
+                        var attributes = String.Join(", ", data.Select(d => String.Format("{0}:{1}", d.Key, d.Value)));
+                        ViewContext.Writer.Write(attributes);
 
-});
-    });
+                    }
 
-            if (ViewBag.KitTypes != Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Grouped && ViewBag.KitTypes != Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
+                });
+            });
+
+            if (ViewBag.KitTypes != Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Grouped && ViewBag.KitTypes != Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute && ViewBag.KitTypes != Ganedata.Core.Entities.Enums.ProductKitTypeEnum.RelatedProduct)
             {
                 settings.Columns.Add(c =>
                 {
@@ -214,7 +224,8 @@
                     {
                         p.MinValue = 0;
                         p.MaxValue = 1000000000;
-                        p.ClientSideEvents.LostFocus = "function(s,e){ OnDetailsChanged(s,e);}";
+
+                        p.ClientSideEvents.LostFocus = string.Format("function(s,e){{ OnDetailsChanged(s,e,{0}); }}", gridname);
                     });
                 });
             }
@@ -231,7 +242,7 @@
                         p.TextField = "Name";
                         p.ValueType = typeof(Int32);
                         p.DataSource = (List<Ganedata.Core.Entities.Domain.ProductKitType>)ViewBag.GetKitTypes;
-                        p.ClientSideEvents.ValueChanged = "function(s,e){ OnDetailsChanged(s,e);}";
+                        p.ClientSideEvents.ValueChanged = string.Format("function(s,e){{ OnDetailsChanged(s,e,{0}); }}", gridname);
                     });
 
                 });
@@ -245,7 +256,7 @@
                 c.ColumnType = MVCxGridViewColumnType.CheckBox;
                 c.EditorProperties().CheckBox(p =>
                 {
-                    p.ClientSideEvents.ValueChanged = "function(s,e){ OnDetailsChanged(s,e);}";
+                    p.ClientSideEvents.ValueChanged = string.Format("function(s,e){{ OnDetailsChanged(s,e,{0}); }}", gridname);
                     p.ValidationSettings.Display = Display.Dynamic;
                     p.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.None;
                 });

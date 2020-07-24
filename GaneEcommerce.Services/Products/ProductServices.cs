@@ -1398,7 +1398,7 @@ namespace Ganedata.Core.Services
             var model = _currentDbContext.ProductMaster.AsNoTracking()
                 .Include(u => u.ProductKitMap)
                 .Include(x => x.ProductAttributeValuesMap)
-                .Where(x => x.TenantId == tenantId && x.IsDeleted != true
+                .Where(x => x.TenantId == tenantId && x.IsDeleted != true && (!productId.HasValue || x.ProductId != productId)
                 && ((!productAttributeIds.Any() && KitType != ProductKitTypeEnum.ProductByAttribute)
                 || x.ProductAttributeValuesMap.Where(a => a.IsDeleted != true).Select(m => m.ProductAttributeValues.ProductAttributes.AttributeId).Any(n => productAttributeIds.Contains(n))))
                 .Select(prd => new ProductMasterViewModel

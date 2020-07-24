@@ -10,7 +10,7 @@
         new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
         new StyleSheet { ExtensionType = ExtensionType.TokenBox, Theme = GaneStaticAppExtensions.DevexTheme },
         new StyleSheet { ExtensionType = ExtensionType.UploadControl, Theme = GaneStaticAppExtensions.DevexTheme },
-       
+
         new StyleSheet { ExtensionType = ExtensionType.PopupControl, Theme = GaneStaticAppExtensions.DevexTheme },
         new StyleSheet { ExtensionType = ExtensionType.SpinEdit, Theme = GaneStaticAppExtensions.DevexTheme },
         new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme },
@@ -134,6 +134,10 @@
                 $(".product-attributes").show();
             }
         });
+      
+        $("#ProductType option[value='6']").remove();
+        $("#ProductType").trigger("chosen:updated");
+
     });
 </script>
 @Html.Hidden("selkey", null, new { @class = "selkey" })
@@ -172,6 +176,7 @@
             <li><a href="#product-attributes" class="product-attributes" style=@(Model.ProductType!=Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute?"":"display:none")>Product Attributes</a></li>
             <li><a href="#product-locations">Product Locations</a></li>
             <li><a href="#product-inventory">Inventory</a></li>
+            <li><a href="#related-product">Related Product</a></li>
             <li><a href="#product-associated-items" class="associated-items" style=@(Model.ProductType != ProductKitTypeEnum.Simple?"":"display:none")>Associated Items</a></li>
 
 
@@ -744,17 +749,17 @@
                     </div>
                 </div>
                 @*<div class="input-group h-100 justify-content-center align-items-center simpleDiv" style=@(Model.ProductType!=Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute?"":"display:none")>
-                    @Html.Label("Product Attributes", htmlAttributes: new { @class = "col-md-4" })
-                    <div class="col-md-8">
-                        <div class="col-11 p-0 mt-1 pull-left">
-                            @Html.ListBox("ProductAttributesIds", new MultiSelectList(ViewBag.Attributes, "Id", "Value", "Attribute"), new { @include_group_label_in_selected = "true", @class = "chosen-select", Multiple = "multiple", size = "5", data_placeholder = "Choose Attributes" })
-                        </div>
-                        <div class="col-1 p-0 pull-left">
-                            <input type="button" onclick="javascript: pcModalAttributesValues.Show();" id="ProdAttributeAdd" class="btn btn-primary" value="+">
-                        </div>
+                        @Html.Label("Product Attributes", htmlAttributes: new { @class = "col-md-4" })
+                        <div class="col-md-8">
+                            <div class="col-11 p-0 mt-1 pull-left">
+                                @Html.ListBox("ProductAttributesIds", new MultiSelectList(ViewBag.Attributes, "Id", "Value", "Attribute"), new { @include_group_label_in_selected = "true", @class = "chosen-select", Multiple = "multiple", size = "5", data_placeholder = "Choose Attributes" })
+                            </div>
+                            <div class="col-1 p-0 pull-left">
+                                <input type="button" onclick="javascript: pcModalAttributesValues.Show();" id="ProdAttributeAdd" class="btn btn-primary" value="+">
+                            </div>
 
-                    </div>
-                </div>*@
+                        </div>
+                    </div>*@
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.Label("Product Accounts", htmlAttributes: new { @class = "col-md-4" })
                     <div class="col-md-8">
@@ -804,6 +809,11 @@
         <div id="product-locations">
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.Action("_ProductLocations", new { productId = Model.ProductId })
+            </div>
+        </div>
+        <div id="related-product">
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Action("_GetAssociatedItems", new { productKitType = ProductKitTypeEnum.RelatedProduct, productId = Model.ProductId })
             </div>
         </div>
 

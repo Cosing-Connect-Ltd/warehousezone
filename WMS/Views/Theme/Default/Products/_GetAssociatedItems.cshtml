@@ -12,15 +12,22 @@
 
     function OnEndGridCallback(s, e) {
         var lastIndex = parseInt($("#LastEditingRowIndex").val()) || 0;
-        SetGridEditorToRowIndex(lastIndex);
+        SetGridEditorToRowIndex(lastIndex, s);
     }
 
-    function SetGridEditorToRowIndex(index) {
-        ProductEditListGridView.batchEditApi.StartEdit(index, ProductEditListGridView.GetColumnByField($("#LastEditingColIndex").val()).index);
+    function SetGridEditorToRowIndex(index, s) {
+        s.batchEditApi.StartEdit(index, s.GetColumnByField($("#LastEditingColIndex").val()).index);
     }
 
-    function OnDetailsChanged(s, e) {
-        ProductEditListGridView.UpdateEdit();
+    function OnDetailsChanged(s, e, gridName) {
+        debugger;
+        if (gridName.name === "RelatedProductListGridView") {
+            RelatedProductListGridView.UpdateEdit();
+        }
+        else {
+            ProductEditListGridView.UpdateEdit();
+        }
+
     }
 
     function OnSpecialPricesGridFocusChanged(s, e) {

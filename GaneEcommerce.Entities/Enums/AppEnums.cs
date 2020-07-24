@@ -415,7 +415,8 @@ namespace Ganedata.Core.Entities.Enums
         Recipe = 3,
         Simple = 4,
         [Display(Name = "Product By Attribute")]
-        ProductByAttribute = 5
+        ProductByAttribute = 5,
+        RelatedProduct=6
     }
 
     public enum WarehouseThemeEnum

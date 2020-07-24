@@ -781,7 +781,7 @@ namespace WMS.Controllers
         {
             return View();
         }
-        public ActionResult _EditableProductGrid(bool? AssociatedItem, ProductKitTypeEnum? KitType = null, int? productId = null)
+        public ActionResult _EditableProductGrid(bool? AssociatedItem, string gridName, ProductKitTypeEnum? KitType = null, int? productId = null)
         {
             ViewBag.AssociatedItem = AssociatedItem;
             ViewBag.KitTypes = KitType;
@@ -790,14 +790,18 @@ namespace WMS.Controllers
             {
                 ViewBag.GetKitTypes = _productLookupService.GetProductKitTypes(CurrentTenantId).ToList();
             }
-            var viewModel = GridViewExtension.GetViewModel("ProductEditListGridView");
+
+            gridName = string.IsNullOrEmpty(gridName)
+                ? (KitType.HasValue ? (KitType == ProductKitTypeEnum.RelatedProduct ? "RelatedProductListGridView" :
+                "ProductEditListGridView") : "ProductEditListGridView") : gridName;
+            var viewModel = GridViewExtension.GetViewModel(gridName);
 
             if (viewModel == null)
                 viewModel = ProductListCustomBinding.CreateProductGridViewModel();
 
             return ProductEditGridActionCore(viewModel, KitType, productId);
         }
-        public ActionResult _ProductEditListPaging(GridViewPagerState pager, bool? AssociatedItem, ProductKitTypeEnum? KitType = null, int? productId = null)
+        public ActionResult _ProductEditListPaging(GridViewPagerState pager, string gridName, bool? AssociatedItem, ProductKitTypeEnum? KitType = null, int? productId = null)
         {
             ViewBag.AssociatedItem = AssociatedItem;
             ViewBag.KitTypes = KitType;
@@ -805,11 +809,11 @@ namespace WMS.Controllers
             {
                 ViewBag.GetKitTypes = _productLookupService.GetProductKitTypes(CurrentTenantId).ToList();
             }
-            var viewModel = GridViewExtension.GetViewModel("ProductEditListGridView");
+            var viewModel = GridViewExtension.GetViewModel(gridName);
             viewModel.Pager.Assign(pager);
             return ProductEditGridActionCore(viewModel, KitType, productId);
         }
-        public ActionResult _ProductsEditFiltering(GridViewFilteringState filteringState, bool? AssociatedItem, ProductKitTypeEnum? KitType = null, int? productId = null)
+        public ActionResult _ProductsEditFiltering(GridViewFilteringState filteringState, string gridName, bool? AssociatedItem, ProductKitTypeEnum? KitType = null, int? productId = null)
         {
             ViewBag.AssociatedItem = AssociatedItem;
             ViewBag.KitTypes = KitType;
@@ -817,11 +821,11 @@ namespace WMS.Controllers
             {
                 ViewBag.GetKitTypes = _productLookupService.GetProductKitTypes(CurrentTenantId).ToList();
             }
-            var viewModel = GridViewExtension.GetViewModel("ProductEditListGridView");
+            var viewModel = GridViewExtension.GetViewModel(gridName);
             viewModel.ApplyFilteringState(filteringState);
             return ProductEditGridActionCore(viewModel, KitType, productId);
         }
-        public ActionResult _ProductsEditGetDataSorting(GridViewColumnState column, bool reset, bool? AssociatedItem, ProductKitTypeEnum? KitType = null, int? productId = null)
+        public ActionResult _ProductsEditGetDataSorting(GridViewColumnState column, bool reset, string gridName, bool? AssociatedItem, ProductKitTypeEnum? KitType = null, int? productId = null)
         {
             ViewBag.AssociatedItem = AssociatedItem;
             ViewBag.KitTypes = KitType;
@@ -829,7 +833,7 @@ namespace WMS.Controllers
             {
                 ViewBag.GetKitTypes = _productLookupService.GetProductKitTypes(CurrentTenantId).ToList();
             }
-            var viewModel = GridViewExtension.GetViewModel("ProductEditListGridView");
+            var viewModel = GridViewExtension.GetViewModel(gridName);
             viewModel.ApplySortingState(column, reset);
             return ProductEditGridActionCore(viewModel, KitType, productId);
         }
@@ -859,7 +863,7 @@ namespace WMS.Controllers
             productMaster.ProcessByPallet = ProcessByPallet ?? productMaster.ProcessByPallet;
 
             _productServices.SaveEditProduct(productMaster, CurrentUserId, CurrentTenantId);
-            return _EditableProductGrid(null);
+            return _EditableProductGrid(null, null);
         }
         public PartialViewResult _GetAssociatedItems(ProductKitTypeEnum productKitType, int productId)
         {
@@ -868,7 +872,7 @@ namespace WMS.Controllers
             ViewBag.ProductId = productId;
             return PartialView();
         }
-        public ActionResult SaveAssociated(bool? AssociatedItem, ProductKitTypeEnum KitType, int ProductID, MVCxGridViewBatchUpdateValues<ProductMasterViewModel, int> updateValues)
+        public ActionResult SaveAssociated(string gridName, bool? AssociatedItem, ProductKitTypeEnum KitType, int ProductID, MVCxGridViewBatchUpdateValues<ProductMasterViewModel, int> updateValues)
         {
             List<bool> results = new List<bool>();
             foreach (var value in updateValues.Update)
@@ -878,7 +882,7 @@ namespace WMS.Controllers
                 //results.Add(res);
             }
 
-            return _EditableProductGrid(AssociatedItem, KitType, ProductID);
+            return _EditableProductGrid(AssociatedItem, gridName, KitType, ProductID);
         }
 
         #endregion
