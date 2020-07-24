@@ -124,14 +124,16 @@
         }
         var prices;
         var parameterValue = getUrlParameter("values");
+        if (parameterValue != null)
+            {
         var parameterValueList = parameterValue.split("/");
         jQuery.each(parameterValueList, function(index, item) {
             if (item.indexOf('priceS-') > -1) {
                 prices = item.replace('priceS-', '');
             }
         });
-        if (prices != null) {
-            debugger;
+        }
+        if (prices != null) {;
             prices = prices.split("_");
             min = Math.floor(parseFloat(prices[0]));
             max = Math.ceil(parseFloat(prices[1]));
@@ -178,7 +180,6 @@
                 $(":checkbox").each(function () {
 
                     if (this.checked) {
-                        debugger;
                         if (str.indexOf($(this).val()) < 0) {
                             arr.push($(this).val());
                             data = this.id;
@@ -219,7 +220,7 @@
         });
         $('#type_btn').click(function () {
             $('.type-content').slideToggle("fast");;
-        }); 
+        });
     });
     var getUrlParameter = function getUrlParameter(sParam) {
         var sPageURL = window.location.search.substring(1),
