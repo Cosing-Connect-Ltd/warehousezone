@@ -1102,14 +1102,14 @@ namespace Ganedata.Core.Services
                 if(w.ProductMaster != null && w.ProductMaster?.ProductType == ProductKitTypeEnum.Simple && w.ProductMaster?.DefaultImage == null)
                 {
                     var parentProduct = _productServices.GetParentProductsByKitProductId(w.ProductId)
-                                    .FirstOrDefault(k => k.IsActive == true &&
-                                                            k.ProductType == ProductKitTypeEnum.ProductByAttribute &&
-                                                            k.IsDeleted != true);
+                                                        .FirstOrDefault(k => k.IsActive == true &&
+                                                                             k.ProductType == ProductKitTypeEnum.ProductByAttribute &&
+                                                                             k.IsDeleted != true);
 
-                    var file = parentProduct.ProductFiles.Where(x => x.DefaultImage == true && x.IsDeleted != true).FirstOrDefault();
+                    var file = parentProduct?.ProductFiles.Where(x => x.DefaultImage == true && x.IsDeleted != true).FirstOrDefault();
                     if (file == null)
                     {
-                        file = parentProduct.ProductFiles.Where(x => x.IsDeleted != true).FirstOrDefault();
+                        file = parentProduct?.ProductFiles.Where(x => x.IsDeleted != true).FirstOrDefault();
                     }
 
                     w.ProductMaster.ProductFiles.Add(file);
