@@ -227,6 +227,7 @@
     <Compile Include="Domain\Models\UISettingItem.cs" />
     <Compile Include="Domain\Models\UISetting.cs" />
     <Compile Include="Domain\ViewModels\ApiCredentialsViewModel.cs" />
+    <Compile Include="Domain\ViewModels\ApiModels\TenantLocationsSync.cs" />
     <Compile Include="Domain\ViewModels\WebsiteCartItemViewModel.cs" />
     <Compile Include="Domain\ViewModels\WebsiteShippingRulesViewModel.cs" />
     <Compile Include="Domain\ViewModels\CollectionPointViewModel.cs" />

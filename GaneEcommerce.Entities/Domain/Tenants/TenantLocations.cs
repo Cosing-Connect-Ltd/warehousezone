@@ -119,6 +119,9 @@ namespace Ganedata.Core.Entities.Domain
         public bool ShowPriceAlertInSalesOrder { get; set; }
         public bool PickByContainer { get; set; }
         public bool MandatoryPickByContainer { get; set; }
+        public decimal DeliveryCharges { get; set; }
+        public decimal CollectionCharges { get; set; }
+        public decimal DeliveryRadiusMiles { get; set; }
 
         [ForeignKey("TenantId")]
         public virtual Tenant Tenants { get; set; }

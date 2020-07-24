@@ -267,7 +267,8 @@ namespace Ganedata.Core.Entities.Enums
         PalletProductsSync = 31,
         PrestaShopOrderSync = 32,
         LocationsSync = 33,
-        PostStockMovement = 34
+        PostStockMovement = 34,
+        TenantLOcationsSyncLog = 35
 
     }
 

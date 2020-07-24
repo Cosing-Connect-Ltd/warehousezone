@@ -38,9 +38,9 @@ namespace WMS
             config.Routes.MapHttpRoute("PalletsProofsSync", "api/sync/pallet-images/{serialNo}/{palletId}", new { controller = "ApiPalletsSync", action = "UpdatePalletImages", serialNo = string.Empty, palletId = string.Empty, statusId = string.Empty });
             config.Routes.MapHttpRoute("PalletsProductsSync", "api/sync/pallet-products/{serialNo}/{reqDate}", new { controller = "ApiPalletsSync", action = "GetPalletProducts", serialNo = string.Empty, reqDate = string.Empty });
             config.Routes.MapHttpRoute("PalletsDispatchMethodsSync", "api/sync/pallet-dispatchmethods/{serialNo}/{reqDate}", new { controller = "ApiPalletsSync", action = "GetPalletDispatchMethods", serialNo = string.Empty, reqDate = string.Empty });
-
             config.Routes.MapHttpRoute("AllPalletsDispatchesSync", "api/sync/all-pallet-dispatches/{serialNo}/{reqDate}", new { controller = "ApiPalletsSync", action = "GetPalletDispatches", serialNo = string.Empty, reqDate = string.Empty });
             config.Routes.MapHttpRoute("LocationSync", "api/sync/Locations/{reqDate}/{serialNo}", new { controller = "ApiLocationSync", action = "GetLoctions", serialNo = string.Empty, reqDate = string.Empty });
+            config.Routes.MapHttpRoute("TenantLocationSync", "api/sync/tenant-locations/{reqDate}/{serialNo}", new { controller = "ApiTenantLocationsSync", action = "GetTenantLoctions", serialNo = string.Empty, reqDate = string.Empty });
             config.Routes.MapHttpRoute("StockMovementUpdateSync", "api/sync/post-stockmovement-detail", new { controller = "ApiLocationSync", action = "PostStockMovementDetail" });
             config.Routes.MapHttpRoute("PalletsUpdateProductsSync", "api/sync/pallet-products-processes/{serialNo}", new { controller = "ApiPalletsSync", action = "UpdatePalletProducts", serialNo = string.Empty });
             config.Routes.MapHttpRoute("PalletsDispatchesSync", "api/sync/pallet-dispatch/{serialNo}/{palletId}", new { controller = "ApiPalletsSync", action = "DispatchPallet", serialNo = string.Empty, palletId = string.Empty, statusId = string.Empty });

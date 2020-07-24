@@ -1003,6 +1003,10 @@
     <Compile Include="Migrations\202007231635018_remove_ContactReceiverEmail_field_from_TenantWebsites_table.designer.cs">
       <DependentUpon>202007231635018_remove_ContactReceiverEmail_field_from_TenantWebsites_table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007240336371_delivery-collection-charges-properties-added-in-TenantLocations.cs" />
+    <Compile Include="Migrations\202007240336371_delivery-collection-charges-properties-added-in-TenantLocations.designer.cs">
+      <DependentUpon>202007240336371_delivery-collection-charges-properties-added-in-TenantLocations.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2075,6 +2079,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007231635018_remove_ContactReceiverEmail_field_from_TenantWebsites_table.resx">
       <DependentUpon>202007231635018_remove_ContactReceiverEmail_field_from_TenantWebsites_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007240336371_delivery-collection-charges-properties-added-in-TenantLocations.resx">
+      <DependentUpon>202007240336371_delivery-collection-charges-properties-added-in-TenantLocations.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

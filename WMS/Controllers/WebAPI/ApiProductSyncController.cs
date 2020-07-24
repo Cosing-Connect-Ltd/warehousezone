@@ -47,6 +47,7 @@ namespace WMS.Controllers.WebAPI
                 mappedProduct.DepartmentName = p?.TenantDepartment?.DepartmentName;
                 mappedProduct.TaxPercent = p.GlobalTax.PercentageOfAmount;
                 mappedProduct.ProductKitMapViewModelList = _mapper.Map(p.ProductKitItems.ToList(), mappedProduct.ProductKitMapViewModelList);
+                mappedProduct.ProductTags = p.ProductTagMaps.Where(x => x.IsDeleted != true && x.ProductTag.IsDeleted != true).Select(x => x.ProductTag.TagName).ToList();
 
                 var baseUrl = new Uri(ConfigurationManager.AppSettings["WarehouseStoreBaseUri"]);
                 string[] imageFormats = ConfigurationManager.AppSettings["ImageFormats"].Split(new char[] { ',' });

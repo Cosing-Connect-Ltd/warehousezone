@@ -32,7 +32,7 @@ namespace Ganedata.Core.Data.Migrations
 
             //Customer Data Seeds
             // ***** only one customer seed should run at a time of first deployment. Should be commented out after first run *****
-            SeedOrderingApp(context);
+            //SeedOrderingApp(context);
 
 
             //var maxId = 1001;

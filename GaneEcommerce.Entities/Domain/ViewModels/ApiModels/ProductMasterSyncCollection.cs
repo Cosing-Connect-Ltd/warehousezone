@@ -60,6 +60,7 @@ namespace Ganedata.Core.Models
         public bool AllowModifyPrice { get; set; }
         public List<ProductKitMapViewModel> ProductKitMapViewModelList { get; set; }
         public string MainImage { get; set; }
+        public List<string> ProductTags { get; set; }
     }
 
     [Serializable]

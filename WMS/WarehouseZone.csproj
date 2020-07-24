@@ -518,6 +518,7 @@
     <Compile Include="Controllers\AuthUserGroupsController.cs" />
     <Compile Include="Controllers\ApiCredentialsController.cs" />
     <Compile Include="Controllers\ProductAttributeValuesController.cs" />
+    <Compile Include="Controllers\WebAPI\ApiTenantLocationsSyncController.cs" />
     <Compile Include="Controllers\WebAPI\ApiWebsitesController.cs" />
     <Compile Include="Controllers\WebsiteDeliveryNavigationsController.cs" />
     <Compile Include="Controllers\WebsiteWarehousesController.cs" />
