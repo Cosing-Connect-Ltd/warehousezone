@@ -2951,10 +2951,6 @@ body.modal-open {
         width: 203px !important;
         height: 203px;
     }
-
-    .feature-product-overflow .prd_lst_boxouter .foot .icolist li a i {
-        font-size: 23px !important;
-    }
 }
 
 @media(max-width:650px) {
@@ -2991,13 +2987,13 @@ body.modal-open {
     .list-on-tablets .foot .icolist .bel-icon {
         margin-left: 18px;
     }
+
+    .list-on-tablets .prd_lst_boxouter .foot .icolist li a i {
+        font-size: 23px !important;
+    }
 }
 
 @media(max-width:455px) {
-    .list-on-tablets .foot .icolist i {
-        font-size: 23px !important;
-    }
-
     .list-on-tablets .foot .icolist .cart-icon,
     .list-on-tablets .foot .icolist .bel-icon {
         margin-left: 0;
@@ -3064,12 +3060,19 @@ body.modal-open {
         margin-right: -8px;
     }
 }
-
+@media(min-width:411px) {
+    .prd_lst_boxouter .foot .prd_amnt {
+        min-width: 125px;
+    }
+}
 @media(max-width:410px) {
     .prd_lst_boxouter .prd_amnt {
         font-size: 10px !important;
         padding: 3px 4px !important;
         margin-bottom: 6px;
+    }
+    .prd_lst_boxouter .foot .prd_amnt {
+        min-width: 57px;
     }
 
     .prd_lst_boxouter .foot .icolist li {
@@ -3094,6 +3097,9 @@ body.modal-open {
     .feature-product-overflow .foot .icolist .cart-icon {
         margin-left: 6px;
         margin-right: 6px;
+    }
+    .list-on-tablets .prd_lst_boxouter .foot .icolist li a i {
+        font-size: 17px !important;
     }
 }
 
