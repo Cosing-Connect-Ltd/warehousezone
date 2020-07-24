@@ -1087,12 +1087,19 @@ namespace Ganedata.Core.Services
             return data;
         }
 
+        public int GetAllValidWishListItemsCount(int siteId, int UserId)
+        {
+            return _currentDbContext.WebsiteWishListItems.Count(u => u.SiteID == siteId && u.UserId == UserId && u.IsDeleted != true && !u.IsNotification);
+        }
+
         public IEnumerable<WebsiteWishListItem> GetAllValidWishListItemsList(int siteId, int UserId)
         {
-            var wishlistItems = _currentDbContext.WebsiteWishListItems.Where(u => u.SiteID == siteId && u.UserId == UserId && u.IsDeleted != true && !u.IsNotification);
+            var wishlistItems = _currentDbContext.WebsiteWishListItems
+                                                .Include(w => w.ProductMaster)
+                                                .Where(u => u.SiteID == siteId && u.UserId == UserId && u.IsDeleted != true && !u.IsNotification);
 
             wishlistItems.ForEach(w => {
-                if(w.ProductMaster.ProductType == ProductKitTypeEnum.Simple && w.ProductMaster.DefaultImage == null)
+                if(w.ProductMaster != null && w.ProductMaster?.ProductType == ProductKitTypeEnum.Simple && w.ProductMaster?.DefaultImage == null)
                 {
                     var parentProduct = _productServices.GetParentProductsByKitProductId(w.ProductId)
                                     .FirstOrDefault(k => k.IsActive == true &&
@@ -1243,38 +1250,46 @@ namespace Ganedata.Core.Services
             return AddOrUpdateWishListNotifyListItems(siteId, userId, tenantId, productId, true);
         }
 
-        private int AddOrUpdateWishListNotifyListItems(int siteId, int userId, int tenantId, int productId, bool isNotification)
+        private int AddOrUpdateWishListNotifyListItems(int siteId, int userId, int tenantId, int productId, bool isNotificationItem)
         {
-            var wishListProduct = _currentDbContext.WebsiteWishListItems.FirstOrDefault(u => u.ProductId == productId &&
-                                                                                                            u.SiteID == siteId &&
-                                                                                                            u.UserId == userId &&
-                                                                                                            u.IsNotification == isNotification);
-            if (wishListProduct == null)
+            var wishListItems = _currentDbContext.WebsiteWishListItems.Where(u => u.ProductId == productId &&
+                                                                                    u.SiteID == siteId &&
+                                                                                    u.UserId == userId &&
+                                                                                    u.IsDeleted != true &&
+                                                                                    (!u.IsNotification || !isNotificationItem))
+                                                                       .ToList();
+
+            if (!wishListItems.Any(w => !w.IsNotification))
             {
-                WebsiteWishListItem wishListItem = new WebsiteWishListItem
+                AddWishlistItem(siteId, userId, tenantId, productId, false);
+            }
+
+            if (isNotificationItem)
+            {
+                if (!wishListItems.Any(w => w.IsNotification))
                 {
-                    ProductId = productId,
-                    IsNotification = isNotification,
-                    SiteID = siteId,
-                    UserId = userId,
-                    TenantId = tenantId
-                };
-                wishListItem.UpdateCreatedInfo(userId);
-                _currentDbContext.WebsiteWishListItems.Add(wishListItem);
-                _currentDbContext.SaveChanges();
+                    AddWishlistItem(siteId, userId, tenantId, productId, true);
+                }
             }
-            else
-            {
-                wishListProduct.IsDeleted = false;
-                wishListProduct.IsNotification = isNotification;
-                wishListProduct.UpdateUpdatedInfo(userId);
-                _currentDbContext.Entry(wishListProduct).State = System.Data.Entity.EntityState.Modified;
-                _currentDbContext.SaveChanges();
-            }
+
+            _currentDbContext.SaveChanges();
 
             return GetAllValidWishListItemsList(siteId, userId).Count();
         }
 
+        private void AddWishlistItem(int siteId, int userId, int tenantId, int productId, bool isNotification)
+        {
+            var wishListItem = new WebsiteWishListItem
+            {
+                ProductId = productId,
+                IsNotification = isNotification,
+                SiteID = siteId,
+                UserId = userId,
+                TenantId = tenantId
+            };
+            wishListItem.UpdateCreatedInfo(userId);
+            _currentDbContext.WebsiteWishListItems.Add(wishListItem);
+        }
 
         public bool RemoveCartItem(int cartId, int siteId, int? userId, string sessionKey)
         {
@@ -1289,7 +1304,7 @@ namespace Ganedata.Core.Services
             {
                 cartProduct.IsDeleted = true;
                 cartProduct.UpdateUpdatedInfo(userId ?? 0);
-                _currentDbContext.Entry(cartProduct).State = System.Data.Entity.EntityState.Modified;
+                _currentDbContext.Entry(cartProduct).State = EntityState.Modified;
                 _currentDbContext.SaveChanges();
 
             }
@@ -1349,23 +1364,21 @@ namespace Ganedata.Core.Services
             return RemoveWishListOrNotifyListItem(ProductId, true, siteId, userId);
         }
 
-        private int RemoveWishListOrNotifyListItem(int ProductId, bool isNotification, int SiteId, int UserId)
+        private int RemoveWishListOrNotifyListItem(int ProductId, bool onlyNotification, int SiteId, int UserId)
         {
-            var wishListProduct = _currentDbContext.WebsiteWishListItems.Where(u => u.ProductId == ProductId && u.SiteID == SiteId && u.UserId == UserId && u.IsNotification == isNotification).ToList();
+            var wishListProduct = _currentDbContext.WebsiteWishListItems.Where(u => u.ProductId == ProductId && u.SiteID == SiteId && u.UserId == UserId && (u.IsNotification == onlyNotification || !onlyNotification)).ToList();
             if (wishListProduct.Count > 0)
             {
                 foreach (var item in wishListProduct)
                 {
                     item.IsDeleted = true;
                     item.UpdateUpdatedInfo(UserId);
-                    _currentDbContext.Entry(item).State = EntityState.Modified;
-
                 }
 
                 _currentDbContext.SaveChanges();
 
             }
-            return GetAllValidWishListItemsList(SiteId, UserId).Count();
+            return GetAllValidWishListItemsCount(SiteId, UserId);
         }
 
         public CheckoutViewModel SetCheckOutProcessModel(CheckoutViewModel checkoutViewModel, int siteId, int tenantId, int userId, string sessionKey)
@@ -1388,8 +1401,6 @@ namespace Ganedata.Core.Services
                 checkoutViewModel.CollectionPoint =
                     _mapper.Map((_currentDbContext.TenantWarehouses.FirstOrDefault(e => e.WarehouseId == (checkoutViewModel.CollectionPointId ?? 0) && e.IsDeleted != true && e.IsActive == true)), new CollectionPointViewModel());
             }
-
-
 
             return checkoutViewModel;
 

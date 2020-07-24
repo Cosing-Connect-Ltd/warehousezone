@@ -322,7 +322,7 @@ namespace WarehouseEcommerce.Controllers
                 HttpContext.Session.SessionID);
             ViewBag.CartItemCount = cartItems.Count();
             ViewBag.CartItems = cartItems.ToList();
-            ViewBag.WishListItemCount = _tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).Count();
+            ViewBag.WishListItemCount = _tenantWebsiteService.GetAllValidWishListItemsCount(CurrentTenantWebsite.SiteID, CurrentUserId);
 
         }
 
