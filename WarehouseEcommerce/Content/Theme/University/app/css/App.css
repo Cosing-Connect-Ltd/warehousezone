@@ -810,7 +810,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .nb_header_btm_beedsec {
     box-shadow: 0px 0px 7px -2px #000;
-    margin-top: -3px;
+    margin-top: -1px;
 }
 
 .nb_sec_navwrap {
@@ -3989,7 +3989,9 @@ body.ZoomerActive {
     align-items: center;
     justify-content: center;
 }
-
+.nav-drop-btn a{
+    color: var(--light-font-color);
+}
 @media(max-width:768px) {
     .nb_prdlisting_pgsec .nb_prd_filterwrap {
         padding-right: 20px !important;
