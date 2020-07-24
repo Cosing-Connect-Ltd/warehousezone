@@ -86,7 +86,8 @@ namespace WMS
             config.Routes.MapHttpRoute("GetPalletDispatchLabel", "api/sync/get-dispatch-for-label", new { controller = "ApiPalletsSync", action = "GetPalletDispatchLabelPrint", tenantId = string.Empty, userId = string.Empty });
             config.Routes.MapHttpRoute("GetPalletDispatchLabelStatus", "api/sync/update-dispatch-for-label", new { controller = "ApiPalletsSync", action = "UpdatePalletDispatchLabelPrintStatus", shipmentId = string.Empty });
 
-            config.Routes.MapHttpRoute("SendNotificationForAbandonedCarts", "api/Websites/AbandonedCarts/SendNotification", new { controller = "ApiWebsites", action = "SendNotificationForAbandonedCarts" });
+            config.Routes.MapHttpRoute("SendNotificationForAbandonedCarts", "api/Websites/SendNotificationForAbandonedCarts", new { controller = "ApiWebsites", action = "SendNotificationForAbandonedCarts" });
+            config.Routes.MapHttpRoute("SendProductAvailabilityNotifications", "api/Websites/SendProductAvailabilityNotifications", new { controller = "ApiWebsites", action = "SendProductAvailabilityNotifications" });
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

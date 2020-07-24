@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Ganedata.Core.Data;
+using Ganedata.Core.Data.Migrations;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Domain.ViewModels;
 using Ganedata.Core.Entities.Enums;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
+using System.Text.RegularExpressions;
 using WebGrease.Css.Extensions;
 
 namespace Ganedata.Core.Services
@@ -1045,10 +1047,7 @@ namespace Ganedata.Core.Services
 
                                                                if (productMaster.ProductType == ProductKitTypeEnum.Simple && productMaster.DefaultImage == null)
                                                                {
-                                                                   productMaster.DefaultImage = _productServices.GetParentProductsByKitProductId(u.ProductId)
-                                                                                                                .FirstOrDefault(k => k.IsActive == true &&
-                                                                                                                                     k.ProductType == ProductKitTypeEnum.ProductByAttribute &&
-                                                                                                                                     k.IsDeleted != true)?.DefaultImage;
+                                                                   productMaster.DefaultImage = GetDefaultImageFromParentProduct(u.ProductId);
                                                                }
 
                                                                return new WebsiteCartItemViewModel
@@ -1064,6 +1063,15 @@ namespace Ganedata.Core.Services
                                                            });
             return model;
         }
+
+        private string GetDefaultImageFromParentProduct(int productId)
+        {
+            return _productServices.GetParentProductsByKitProductId(productId)
+                                    .FirstOrDefault(k => k.IsActive == true &&
+                                                            k.ProductType == ProductKitTypeEnum.ProductByAttribute &&
+                                                            k.IsDeleted != true)?.DefaultImage;
+        }
+
         public IEnumerable<KitProductCartSession> GetAllValidKitCartItemsList(int cartId)
         {
 
@@ -1081,7 +1089,27 @@ namespace Ganedata.Core.Services
 
         public IEnumerable<WebsiteWishListItem> GetAllValidWishListItemsList(int siteId, int UserId)
         {
-            return _currentDbContext.WebsiteWishListItems.Where(u => u.SiteID == siteId && u.UserId == UserId && u.IsDeleted != true && !u.IsNotification);
+            var wishlistItems = _currentDbContext.WebsiteWishListItems.Where(u => u.SiteID == siteId && u.UserId == UserId && u.IsDeleted != true && !u.IsNotification);
+
+            wishlistItems.ForEach(w => {
+                if(w.ProductMaster.ProductType == ProductKitTypeEnum.Simple && w.ProductMaster.DefaultImage == null)
+                {
+                    var parentProduct = _productServices.GetParentProductsByKitProductId(w.ProductId)
+                                    .FirstOrDefault(k => k.IsActive == true &&
+                                                            k.ProductType == ProductKitTypeEnum.ProductByAttribute &&
+                                                            k.IsDeleted != true);
+
+                    var file = parentProduct.ProductFiles.Where(x => x.DefaultImage == true && x.IsDeleted != true).FirstOrDefault();
+                    if (file == null)
+                    {
+                        file = parentProduct.ProductFiles.Where(x => x.IsDeleted != true).FirstOrDefault();
+                    }
+
+                    w.ProductMaster.ProductFiles.Add(file);
+                }
+            });
+
+            return wishlistItems;
         }
 
         public int AddOrUpdateCartItem(int siteId, int? userId, int tenantId, string sessionKey, int productId, decimal quantity, List<KitProductCartSession> kitProductCartItems = null)
@@ -1408,7 +1436,7 @@ namespace Ganedata.Core.Services
                     {
                         var (body, subject) = GetEmailContent(settings, item.AuthUser);
 
-                        SendAbandonedCartNotification(item.AuthUser.UserEmail, subject, body, emailconfig);
+                        SendNotification(item.AuthUser.UserEmail, subject, body, emailconfig);
 
                         _currentDbContext.AbandonedCartNotifications.Add(new AbandonedCartNotification
                         {
@@ -1423,7 +1451,51 @@ namespace Ganedata.Core.Services
             _currentDbContext.SaveChanges();
         }
 
-        public bool SendAbandonedCartNotification(string to, string subject, string body, TenantEmailConfig emailconfig)
+        public void SendProductAvailabilityNotifications()
+        {
+            var productAvailabilityNotificationSettings = _currentDbContext.ProductAvailabilityNotificationSettings
+                                                                            .AsNoTracking()
+                                                                            .Where(s => s.IsNotificationEnabled &&
+                                                                                        s.IsDeleted != true &&
+                                                                                        s.TenantWebsite.IsDeleted != true &&
+                                                                                        s.TenantWebsite.IsActive == true);
+
+            foreach (var settings in productAvailabilityNotificationSettings)
+            {
+                var emailconfig = _emailServices.GetAllActiveTenantEmailConfigurations(settings.TenantId).FirstOrDefault();
+
+                var productAvailabilityNotifys = _currentDbContext.ProductAvailabilityNotifyQueue.Where(p => p.TenantId == settings.TenantId).ToList();
+
+                if (productAvailabilityNotifys == null || productAvailabilityNotifys.Count <= 0)
+                {
+                    continue;
+                }
+
+                foreach (var productAvailabilityNotify in productAvailabilityNotifys)
+                {
+                    var notificationListItems = _currentDbContext.WebsiteWishListItems.Where(w => w.IsNotification &&
+                                                                                                      w.IsDeleted != true &&
+                                                                                                      w.ProductId == productAvailabilityNotify.ProductId &&
+                                                                                                      w.TenantId == productAvailabilityNotify.TenantId &&
+                                                                                                      w.SiteID == settings.SiteID);
+                    //TODO add check for associated warehouses to the website
+
+                    foreach (var item in notificationListItems)
+                    {
+                        var (body, subject) = GetEmailContent(settings, item.AuthUser, productAvailabilityNotify.Product);
+
+                        SendNotification(item.AuthUser.UserEmail, subject, body, emailconfig);
+
+                        item.IsDeleted = true;
+                    }
+
+                    _currentDbContext.ProductAvailabilityNotifyQueue.Remove(productAvailabilityNotify);
+                }
+            }
+
+            _currentDbContext.SaveChanges();
+        }
+        public bool SendNotification(string to, string subject, string body, TenantEmailConfig emailconfig)
         {
             var emailSender = new EmailSender(to, emailconfig.UserEmail, body, subject, string.Empty, emailconfig.SmtpHost, emailconfig.SmtpPort, emailconfig.UserEmail, emailconfig.Password);
 
@@ -1432,15 +1504,54 @@ namespace Ganedata.Core.Services
 
         private Tuple<string, string> GetEmailContent(AbandonedCartSetting settings, AuthUser user)
         {
-            var body = settings.NotificationEmailTemplate
-                .Replace("[USERFULLNAME]", $"{user.UserFirstName} {user.UserLastName}")
-                .Replace("[WEBSITENAME]", settings.TenantWebsite.SiteName)
-                .Replace("[SITELINK]", $"http://{settings.TenantWebsite.HostName}")
-                .Replace("[CARTLINK]", $"http://{settings.TenantWebsite.HostName}/Products/AddToCart");
+            var body = PrepareNotificationTemplate(settings.NotificationEmailTemplate, settings.TenantWebsite, user, null);
 
-            var subject = settings.NotificationEmailSubjectTemplate.Replace("[USERFIRSTNAME]", user.UserFirstName);
+            var subject = PrepareNotificationTemplate(settings.NotificationEmailSubjectTemplate, settings.TenantWebsite, user, null);
 
             return new Tuple<string, string>(body, subject);
+        }
+
+        private Tuple<string, string> GetEmailContent(ProductAvailabilityNotificationSetting settings, AuthUser user, ProductMaster product)
+        {
+            var body = PrepareNotificationTemplate(settings.NotificationEmailTemplate, settings.TenantWebsite, user, product);
+
+            var subject = PrepareNotificationTemplate(settings.NotificationEmailSubjectTemplate, settings.TenantWebsite, user, product);
+
+            return new Tuple<string, string>(body, subject);
+        }
+
+        private string PrepareNotificationTemplate(string template, TenantWebsites tenantWebsite, AuthUser user, ProductMaster product)
+        {
+            var productSkuCode = product?.SKUCode;
+            var productDefaultImage = product?.DefaultImage;
+            var productDescription = product?.Description;
+            if (product?.ProductType == ProductKitTypeEnum.Simple)
+            {
+                var parentProduct = _productServices.GetParentProductsByKitProductId(product.ProductId)
+                                    .FirstOrDefault(k => k.IsActive == true &&
+                                                            k.ProductType == ProductKitTypeEnum.ProductByAttribute &&
+                                                            k.IsDeleted != true);
+
+                productSkuCode = parentProduct?.SKUCode ?? productSkuCode;
+                productDefaultImage = parentProduct?.DefaultImage ?? productDefaultImage;
+                productDescription = parentProduct?.Description ?? productDescription;
+            }
+
+            template = Regex.Replace(template, "{CUSTOMERFULLNAME}", $"{user?.UserFirstName} {user?.UserLastName}", RegexOptions.IgnoreCase);
+            template = Regex.Replace(template, "{CUSTOMERFIRSTNAME}", $"{user?.UserFirstName}", RegexOptions.IgnoreCase);
+            template = Regex.Replace(template, "{CUSTOMERLASTNAME}", $"{user?.UserLastName}", RegexOptions.IgnoreCase);
+            template = Regex.Replace(template, "{PRODUCTNAME}", $"{product?.Name}", RegexOptions.IgnoreCase);
+            template = Regex.Replace(template, "{PRODUCTSKUCODE}", $"{productSkuCode}", RegexOptions.IgnoreCase);
+            template = Regex.Replace(template, "{PRODUCTDEFAULTIMAGE}", $"{tenantWebsite?.BaseFilePath + productDefaultImage}", RegexOptions.IgnoreCase);
+            template = Regex.Replace(template, "{PRODUCTDESCRIPTION}", $"{productDescription}", RegexOptions.IgnoreCase);
+            template = Regex.Replace(template, "{PRODUCTID}", $"{product?.ProductId}", RegexOptions.IgnoreCase);
+            template = Regex.Replace(template, "{WEBSITENAME}", $"{tenantWebsite?.SiteName}", RegexOptions.IgnoreCase);
+            template = Regex.Replace(template, "{WEBSITEURL}", $"http://{tenantWebsite?.HostName}", RegexOptions.IgnoreCase);
+            template = Regex.Replace(template, "{WEBSITECONTACTEMAIL}", $"{tenantWebsite?.WebsiteContactEmail}", RegexOptions.IgnoreCase);
+            template = Regex.Replace(template, "{WEBSITECONTACTPHONE}", $"{tenantWebsite?.WebsiteContactPhone}", RegexOptions.IgnoreCase);
+            template = Regex.Replace(template, "{WEBSITECONTACTADDRESS}", $"{tenantWebsite?.WebsiteContactAddress}", RegexOptions.IgnoreCase);
+
+            return template;
         }
 
         public IEnumerable<WebsiteDeliveryNavigation> GetAllValidWebsiteDeliveryNavigations(int tenantId, int siteId, bool includeInActive = false)

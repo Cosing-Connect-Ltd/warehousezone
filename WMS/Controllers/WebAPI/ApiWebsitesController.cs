@@ -15,11 +15,20 @@ namespace WMS.Controllers.WebAPI
             _tenantWebsiteService = tenantWebsiteService;
         }
 
-        // GET http://localhost:8005/api/websites/AbandonedCarts/SendNotification}
+        // POST http://localhost:8005/api/websites/SendNotificationForAbandonedCarts}
         [HttpPost]
         public IHttpActionResult SendNotificationForAbandonedCarts()
         {
             _tenantWebsiteService.SendNotificationForAbandonedCarts();
+
+            return Ok();
+        }
+
+        // POST http://localhost:8005/api/websites/SendProductAvailabilityNotifications}
+        [HttpPost]
+        public IHttpActionResult SendProductAvailabilityNotifications()
+        {
+            _tenantWebsiteService.SendProductAvailabilityNotifications();
 
             return Ok();
         }

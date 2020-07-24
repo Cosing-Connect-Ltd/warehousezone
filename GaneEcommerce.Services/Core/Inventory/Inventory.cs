@@ -3,6 +3,7 @@ using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Models;
+using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -1097,6 +1098,11 @@ namespace Ganedata.Core.Services
 
             if (OldStock != null)
             {
+                if (OldStock.Available <= 0 && available > 0)
+                {
+                    AddProductToNotifyQueue(ProductId, TenantId, WarehouseId, context);
+                }
+
                 OldStock.InStock = InStock;
                 OldStock.Allocated = itemsAllocated;
                 OldStock.OnOrder = itemsOnOrder;
@@ -1111,6 +1117,11 @@ namespace Ganedata.Core.Services
                 }
 
                 status = true;
+
+                if (available <= 0)
+                {
+                    RemoveProductFromNotifyQueue(ProductId, TenantId, WarehouseId, context);
+                }
 
             }
             else
@@ -1142,9 +1153,41 @@ namespace Ganedata.Core.Services
                 }
 
                 status = true;
+
+                AddProductToNotifyQueue(ProductId, TenantId, WarehouseId, context);
             }
 
             return status;
+        }
+
+        private static void AddProductToNotifyQueue(int productId, int tenantId, int warehouseId, IApplicationContext context = null)
+        {
+            if (!context.ProductAvailabilityNotifyQueue.Any(n => n.ProductId == productId &&
+                                                                 n.TenantId == tenantId &&
+                                                                 n.WarehouseId == warehouseId))
+            {
+                var productAvailabilityNotify = new ProductAvailabilityNotifyQueue
+                {
+                    ProductId = productId,
+                    WarehouseId = warehouseId,
+                    TenantId = tenantId,
+                    DateCreated = DateTime.Now
+                };
+                context.ProductAvailabilityNotifyQueue.Add(productAvailabilityNotify);
+                context.SaveChanges();
+            }
+        }
+
+        private static void RemoveProductFromNotifyQueue(int productId, int tenantId, int warehouseId, IApplicationContext context = null)
+        {
+            var productAvailabilityNotify = context.ProductAvailabilityNotifyQueue.FirstOrDefault(n => n.ProductId == productId &&
+                                                                 n.TenantId == tenantId &&
+                                                                 n.WarehouseId == warehouseId);
+            if (productAvailabilityNotify != null)
+            {
+                context.ProductAvailabilityNotifyQueue.Remove(productAvailabilityNotify);
+                context.SaveChanges();
+            }
         }
 
         /// <summary>

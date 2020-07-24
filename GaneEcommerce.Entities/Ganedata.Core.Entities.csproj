@@ -196,6 +196,7 @@
     <Compile Include="Domain\Auth\Module.cs" />
     <Compile Include="Domain\Models\ApiCredentials.cs" />
     <Compile Include="Domain\Models\ProductAttributeMap.cs" />
+    <Compile Include="Domain\Models\ProductAvailabilityNotifyQueue.cs" />
     <Compile Include="Domain\Models\ProductTagMap .cs" />
     <Compile Include="Domain\Models\ProductTag.cs" />
     <Compile Include="Domain\Models\Tooltip.cs" />
@@ -240,6 +241,7 @@
     <Compile Include="Domain\ViewModels\UISettingViewModel.cs" />
     <Compile Include="Domain\ViewModels\TooltipViewModel.cs" />
     <Compile Include="Domain\ViewModels\WebsiteDiscountCodesProductsViewModel.cs" />
+    <Compile Include="Domain\Websites\ProductAvailabilityNotificationSetting.cs" />
     <Compile Include="Domain\Websites\AbandonedCartSetting .cs" />
     <Compile Include="Domain\Websites\AbandonedCartNotification.cs" />
     <Compile Include="Domain\Websites\KitProductCartItem.cs" />

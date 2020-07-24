@@ -1007,6 +1007,14 @@
     <Compile Include="Migrations\202007240336371_delivery-collection-charges-properties-added-in-TenantLocations.designer.cs">
       <DependentUpon>202007240336371_delivery-collection-charges-properties-added-in-TenantLocations.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007241548414_added_ProductAvailabilityNotifyQueue_table.cs" />
+    <Compile Include="Migrations\202007241548414_added_ProductAvailabilityNotifyQueue_table.designer.cs">
+      <DependentUpon>202007241548414_added_ProductAvailabilityNotifyQueue_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007241749548_added_ProductAvailabilityNotificationSettings_table.cs" />
+    <Compile Include="Migrations\202007241749548_added_ProductAvailabilityNotificationSettings_table.designer.cs">
+      <DependentUpon>202007241749548_added_ProductAvailabilityNotificationSettings_table.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2082,6 +2090,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007240336371_delivery-collection-charges-properties-added-in-TenantLocations.resx">
       <DependentUpon>202007240336371_delivery-collection-charges-properties-added-in-TenantLocations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007241548414_added_ProductAvailabilityNotifyQueue_table.resx">
+      <DependentUpon>202007241548414_added_ProductAvailabilityNotifyQueue_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007241749548_added_ProductAvailabilityNotificationSettings_table.resx">
+      <DependentUpon>202007241749548_added_ProductAvailabilityNotificationSettings_table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
