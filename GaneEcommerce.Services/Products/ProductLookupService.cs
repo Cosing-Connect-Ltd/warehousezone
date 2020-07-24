@@ -15,9 +15,11 @@ namespace Ganedata.Core.Services
     public class ProductLookupService : IProductLookupService
     {
         private readonly IApplicationContext _currentDbContext;
-        public ProductLookupService(IApplicationContext currentDbContext)
+        private readonly ITenantWebsiteService _tenantWebsiteService;
+        public ProductLookupService(IApplicationContext currentDbContext,ITenantWebsiteService tenantWebsiteService)
         {
             _currentDbContext = currentDbContext;
+            _tenantWebsiteService= tenantWebsiteService;
         }
 
         public IEnumerable<ProductLotOptionsCodes> GetAllValidProductLotOptionsCodes()
@@ -155,14 +157,14 @@ namespace Ganedata.Core.Services
             return _currentDbContext.ProductLocationsMap.Where(
                 a => a.Locations.IsDeleted != true && a.IsDeleted != true && a.ProductId == productId);
         }
-        public IQueryable<ProductMaster> FilterProduct(IQueryable<ProductMaster> productMaster, string filterstring)
+        public IQueryable<ProductMaster> FilterProduct(IQueryable<ProductMaster> productMaster, string filterString, int siteId)
         {
             Dictionary<string, List<string>> filters = new Dictionary<string, List<string>>();
             try
             {
-                if (!string.IsNullOrEmpty(filterstring))
+                if (!string.IsNullOrEmpty(filterString))
                 {
-                    var data = filterstring.Split('/');
+                    var data = filterString.Split('/');
                     foreach (var item in data)
                     {
                         if (!string.IsNullOrEmpty(item))
@@ -229,7 +231,10 @@ namespace Ganedata.Core.Services
                             {
                                 decimal? min = prices.Min();
                                 decimal? max = prices.Max();
-                                productMaster = productMaster.Where(u => u.SellPrice >= min && u.SellPrice <= max);
+                                productMaster.ForEach(u =>
+                                    u.SellPrice = _tenantWebsiteService.GetPriceForProduct(u.ProductId, siteId));
+                                var productIds= productMaster.ToList().Where(u => u.SellPrice >= min && u.SellPrice <= max).Select(u=>u.ProductId);
+                                productMaster = productMaster.Where(u => productIds.Contains(u.ProductId));
                             }
                         }
                         if (item.Key.Contains("BrandS"))

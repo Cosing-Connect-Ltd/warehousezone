@@ -99,7 +99,7 @@ namespace Ganedata.Core.Services
         IQueryable<ProductMaster> GetAllValidProductWebsiteSearch(int siteId, string category = "", string ProductName = "");
         IQueryable<ProductMaster> GetAllValidProductForDynamicFilter(int siteId, List<int> productIds);
         Dictionary<ProductAttributes, List<ProductAttributeValues>> GetAllValidProductAttributeValuesByProductIds(IQueryable<ProductMaster> product);
-        Tuple<string, string> AllPriceListAgainstGroupAndDept(IQueryable<ProductMaster> productMasters);
+        Tuple<string, string> AllPriceListAgainstGroupAndDept(IQueryable<ProductMaster> productMasters,int siteId);
         IEnumerable<ProductManufacturer> GetAllValidProductManufacturerGroupAndDeptByName(IQueryable<ProductMaster> productMasters);
         string CategoryAndSubCategoryBreedCrumb(int siteId, int? productId = null, string Category = "", string SubCategory = "");
 

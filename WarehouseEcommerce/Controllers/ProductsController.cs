@@ -72,15 +72,23 @@ namespace WarehouseEcommerce.Controllers
                 ViewBag.searchString = search;
                 ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
                 var product = _tenantWebsiteService.GetAllValidProductWebsiteSearch(CurrentTenantWebsite.SiteID, category);
-                ViewBag.Categories = _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID, Category: category);
-                ViewBag.SubCategory = _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID, SubCategory: ViewBag.Category);
-                if (ViewBag.SubCategory != null && !string.IsNullOrEmpty(ViewBag.SubCategory))
+                if (!string.IsNullOrEmpty(category))
                 {
-                    var subCategory = ViewBag.SubCategory;
-                    ViewBag.SubCategory = ViewBag.Category;
-                    ViewBag.Categories = subCategory;
+                    ViewBag.Categories =
+                        _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID,
+                            Category: category);
+                    ViewBag.SubCategory =
+                        _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID,
+                            SubCategory: ViewBag.Category);
+                    if (ViewBag.SubCategory != null && !string.IsNullOrEmpty(ViewBag.SubCategory))
+                    {
+                        var subCategory = ViewBag.SubCategory;
+                        ViewBag.SubCategory = ViewBag.Category;
+                        ViewBag.Categories = subCategory;
 
+                    }
                 }
+
                 if (!string.IsNullOrEmpty(search))
                 {
                     page = 1;
@@ -94,7 +102,7 @@ namespace WarehouseEcommerce.Controllers
                 {
                     product = product.Where(s => s.SKUCode.Contains(search) || s.Name.Contains(search));
                 }
-                product = _productlookupServices.FilterProduct(product, values);
+                product = _productlookupServices.FilterProduct(product, values,CurrentTenantWebsite.SiteID);
                 switch ((SortProductTypeEnum)(sort ?? 1))
                 {
                     case SortProductTypeEnum.PriceByDesc:
@@ -461,7 +469,7 @@ namespace WarehouseEcommerce.Controllers
             var attributedProduct =
                 _tenantWebsiteService.GetAllValidProductForDynamicFilter(CurrentTenantWebsite.SiteID, productIds);
             productFiltering.Manufacturer = _tenantWebsiteService.GetAllValidProductManufacturerGroupAndDeptByName(products).Select(u => u.Name).ToList();
-            productFiltering.PriceInterval = _tenantWebsiteService.AllPriceListAgainstGroupAndDept(products);
+            productFiltering.PriceInterval = _tenantWebsiteService.AllPriceListAgainstGroupAndDept(products,CurrentTenantWebsite.SiteID);
             productFiltering.AttributeValues = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(attributedProduct);
             productFiltering.subCategories = _productlookupServices.GetAllValidSubCategoriesByDepartmentAndGroup(products).ToList();
             productFiltering.Count = attributedProduct.Count();

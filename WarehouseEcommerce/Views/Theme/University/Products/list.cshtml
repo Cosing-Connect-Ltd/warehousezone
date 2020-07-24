@@ -31,12 +31,12 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
 
-                        <li class="breadcrumb-item">
-                            <a href="/">Home</a>
-                        </li>
-                        <li>></li>
                         @if (ViewBag.Categories != null && !string.IsNullOrEmpty(ViewBag.Categories))
                         {
+                            <li class="breadcrumb-item">
+                                <a href="/">Home</a>
+                            </li>
+                            <li>></li>
                             <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { category = ViewBag.Categories })">@ViewBag.Categories</a></li>
                         }
 

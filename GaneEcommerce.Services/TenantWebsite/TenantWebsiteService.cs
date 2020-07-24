@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
+using WebGrease.Css.Extensions;
 
 namespace Ganedata.Core.Services
 {
@@ -997,11 +998,11 @@ namespace Ganedata.Core.Services
 
 
         }
-        public Tuple<string, string> AllPriceListAgainstGroupAndDept(IQueryable<ProductMaster> productMasters)
+        public Tuple<string, string> AllPriceListAgainstGroupAndDept(IQueryable<ProductMaster> productMasters,int siteId)
         {
             Tuple<string, string> prices;
-
-            var sellList = productMasters.Select(u => u.SellPrice);
+            productMasters.ForEach(u => u.SellPrice = GetPriceForProduct(u.ProductId, siteId));
+            var sellList = productMasters.ToList().Select(u => u.SellPrice);
             var minValue = sellList.Min();
             var maxValue = sellList.Max();
             prices = new Tuple<string, string>(minValue.ToString(), maxValue.ToString());

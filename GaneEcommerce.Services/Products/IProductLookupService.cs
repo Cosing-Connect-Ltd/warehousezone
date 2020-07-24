@@ -63,7 +63,7 @@ namespace Ganedata.Core.Services
         ProductKitType UpdateProductKitType(ProductKitType model, int userId, int tenantId);
         void DeleteProductKitType(int productKitTypeId, int userId);
         ProductKitType GetProductKitTypeByName(string productKitTypeName);
-        IQueryable<ProductMaster> FilterProduct(IQueryable<ProductMaster> productMaster, string filterstring);
+        IQueryable<ProductMaster> FilterProduct(IQueryable<ProductMaster> productMaster, string filterString,int siteId);
 
         IEnumerable<ProductKitType> GetProductKitTypes(List<int?> kitIds);
 
