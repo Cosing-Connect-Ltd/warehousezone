@@ -210,7 +210,7 @@
 
     });
 
-//filter Show/Hide
+//filter collapse Show/Hide start
     $(document).ready(function () {
         $('#price_btn').click(function () {
             $('.price-content').slideToggle("fast");;
@@ -222,6 +222,11 @@
             $('.type-content').slideToggle("fast");;
         });
     });
+    function showAttribute(event) {
+        var id = event.target.id
+        $('.content_' + id).slideToggle("fast");
+    };
+//filter collapse Show/Hide end
     var getUrlParameter = function getUrlParameter(sParam) {
         var sPageURL = window.location.search.substring(1),
             sURLVariables = sPageURL.split('&'),
