@@ -43,13 +43,9 @@ namespace Ganedata.Core.Models
         public bool? AutoTransferOrders { get; set; }
         public bool? MonitorStockVariance { get; set; }
         public virtual int? MarketVehicleID { get; set; }
-        public virtual MarketVehicle MarketVehicle { get; set; }
         public int? ParentWarehouseId { get; set; }
-        public virtual TenantLocations ParentWarehouse { get; set; }
         public int? SalesTerminalId { get; set; }
-        public virtual Terminals SalesTerminal { get; set; }
         public int? SalesManUserId { get; set; }
-        public virtual AuthUser SalesManUser { get; set; }
         public PalletTrackingSchemeEnum PalletTrackingScheme { get; set; }
         public bool EnableGlobalProcessByPallet { get; set; }
         public bool AutoAllowProcess { get; set; }
