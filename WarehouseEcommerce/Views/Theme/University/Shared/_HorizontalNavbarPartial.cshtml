@@ -169,10 +169,13 @@
                 if (level1.Any())
                 {
                     <li class="hav_mega_nav">
-                        <a href="@Url.Action("list", "Products", new { category = item.Name})">
-                            @item.Name
-                        </a>
-                        <div class="mega_nav_wrap">
+                        <div class="nav-drop-btn">
+                            <a href="@Url.Action("list", "Products", new { category = item.Name})">
+                                @item.Name
+                            </a>
+                            <span id="@item.Id" onclick="showCategoryContent(event)"></span>
+                        </div>
+                        <div class="mega_nav_wrap content_@item.Id">
                             @{ var imagePath = !string.IsNullOrEmpty(item.Image) ? ViewBag.BaseFilePath + item.Image : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif";}
                             <style>
                                 #category-@item.Name:before {
@@ -313,3 +316,11 @@
         }
     </ul>
 </nav>
+
+<script>
+//category - dropdown in side navbar menue on mobile view
+    function showCategoryContent(event) {
+        var id = event.target.id
+        $('.content_' + id).slideToggle("fast");
+    };
+</script>

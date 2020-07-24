@@ -4012,20 +4012,24 @@ body.ZoomerActive {
     .nb_firstNav_res_lst_wrap .hav_mega_nav > a {
         display: inline-block !important;
     }
-
-    .nb_firstNav_res_lst_wrap .hav_mega_nav:hover .mega_nav_wrap {
-        display: block;
-    }
-
-    .nb_firstNav_res_lst_wrap .hav_mega_nav:after {
-        content: ">";
-        position: absolute;
-        right: 0;
-        top: 25px;
-        font-family: "primaryfont_Bold";
-        transform: translate(-50%, -50%) rotate(90deg);
-    }
-
+   
+.nav-drop-btn {
+    display:flex;
+    flex-wrap:nowrap;
+    justify-content:space-between;
+    align-items:center;
+}
+.nb_firstNav_res_lst_wrap .hav_mega_nav .nav-drop-btn span:after {
+    content: "\e912";
+    font-family: "icomoon" !important;
+    position: absolute;
+    transform: translateY(-50%);
+    font-weight: 100 !important;
+    right: 0;
+    top: 25px;
+    cursor:pointer
+}
+/*category-dropdown in side navbar menue on mobile view*/
 .nb_firstNav_res_lst_wrap .mega_nav_wrap {
     display: none;
 }
