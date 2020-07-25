@@ -1111,17 +1111,18 @@ namespace Ganedata.Core.Services
                 OldStock.UpdatedBy = UserId;
                 OldStock.IsActive = true;
                 context.Entry(OldStock).State = EntityState.Modified;
+
+                if (available <= 0)
+                {
+                    RemoveProductFromNotifyQueue(ProductId, TenantId, WarehouseId, context);
+                }
+
                 if (saveContext)
                 {
                     context.SaveChanges();
                 }
 
                 status = true;
-
-                if (available <= 0)
-                {
-                    RemoveProductFromNotifyQueue(ProductId, TenantId, WarehouseId, context);
-                }
 
             }
             else
@@ -1145,6 +1146,8 @@ namespace Ganedata.Core.Services
                 };
 
 
+                AddProductToNotifyQueue(ProductId, TenantId, WarehouseId, context);
+
                 // add adition into database context
                 context.InventoryStocks.Add(NewStock);
                 if (saveContext)
@@ -1153,8 +1156,6 @@ namespace Ganedata.Core.Services
                 }
 
                 status = true;
-
-                AddProductToNotifyQueue(ProductId, TenantId, WarehouseId, context);
             }
 
             return status;
@@ -1174,7 +1175,6 @@ namespace Ganedata.Core.Services
                     DateCreated = DateTime.Now
                 };
                 context.ProductAvailabilityNotifyQueue.Add(productAvailabilityNotify);
-                context.SaveChanges();
             }
         }
 
@@ -1186,7 +1186,6 @@ namespace Ganedata.Core.Services
             if (productAvailabilityNotify != null)
             {
                 context.ProductAvailabilityNotifyQueue.Remove(productAvailabilityNotify);
-                context.SaveChanges();
             }
         }
 
