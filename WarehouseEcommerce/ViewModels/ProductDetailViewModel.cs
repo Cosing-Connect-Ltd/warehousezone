@@ -8,6 +8,7 @@ namespace WarehouseEcommerce.ViewModels
     {
         public ProductMaster SelectedProduct { get; set; }
         public List<ProductDetailAttributeViewModel> AvailableAttributes { get; set; }
+        public List<ProductMaster> RelatedProducts { get; set; }
         public int BaseProductId { get; set; }
         public string BaseProductSKUCode { get; set; }
         public string BaseProductName { get; set; }

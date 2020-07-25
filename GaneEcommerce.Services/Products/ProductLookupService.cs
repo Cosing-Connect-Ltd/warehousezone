@@ -157,7 +157,7 @@ namespace Ganedata.Core.Services
             return _currentDbContext.ProductLocationsMap.Where(
                 a => a.Locations.IsDeleted != true && a.IsDeleted != true && a.ProductId == productId);
         }
-        public IQueryable<ProductMaster> FilterProduct(IQueryable<ProductMaster> productMaster, string filterString, int siteId)
+        public IQueryable<ProductMaster> FilterProduct(IQueryable<ProductMaster> products, string filterString, int siteId)
         {
             Dictionary<string, List<string>> filters = new Dictionary<string, List<string>>();
             try
@@ -188,10 +188,10 @@ namespace Ganedata.Core.Services
                     {
                         if (item.Key.Equals("stockS"))
                         {
-                            FilterStockItemsProduct(productMaster, true);
+                            FilterStockItemsProduct(products, true);
                             if (item.Value.Count > 1)
                             {
-                                productMaster = productMaster.Where(u => ((u.InventoryStocks.Sum(rv => rv.Available)) > 0 ||
+                                products = products.Where(u => ((u.InventoryStocks.Sum(rv => rv.Available)) > 0 ||
                                                                                      u.ProductKitItems.Any(a => a.KitProductMaster.InventoryStocks.Sum(c => c.Available) > 0)) ||
                                                                                     (u.InventoryStocks.Sum(rv => rv.Available) <= 0 ||
                                                                                      u.ProductKitItems.Sum(a => a.KitProductMaster.InventoryStocks.Sum(c => c.Available)) <= 0));
@@ -200,13 +200,13 @@ namespace Ganedata.Core.Services
 
                             else if (item.Value.Contains("in_stock"))
                             {
-                                productMaster = productMaster.Where(u => (u.InventoryStocks.Sum(rv => rv.Available)) > 0 ||
+                                products = products.Where(u => (u.InventoryStocks.Sum(rv => rv.Available)) > 0 ||
                                                                                      (u.ProductKitItems.Any(a => a.KitProductMaster.InventoryStocks.Sum(c => c.Available) > 0)));
-                                var test = productMaster.ToList();
+                                var test = products.ToList();
                             }
                             else if (item.Value.Contains("out_stock"))
                             {
-                                productMaster = productMaster.Where(u => (u.InventoryStocks.Sum(rv => rv.Available) <= 0) ||
+                                products = products.Where(u => (u.InventoryStocks.Sum(rv => rv.Available) <= 0) ||
                                                                                    (u.ProductKitItems.All(a => a.KitProductMaster.InventoryStocks.Sum(c => c.Available) <= 0)));
                             }
 
@@ -231,22 +231,22 @@ namespace Ganedata.Core.Services
                             {
                                 decimal? min = prices.Min();
                                 decimal? max = prices.Max();
-                                productMaster.ForEach(u =>
+                                products.ForEach(u =>
                                     u.SellPrice = _tenantWebsiteService.GetPriceForProduct(u.ProductId, siteId));
-                                var productIds= productMaster.ToList().Where(u => u.SellPrice >= min && u.SellPrice <= max).Select(u=>u.ProductId);
-                                productMaster = productMaster.Where(u => productIds.Contains(u.ProductId));
+                                var productIds= products.ToList().Where(u => u.SellPrice >= min && u.SellPrice <= max).Select(u=>u.ProductId);
+                                products = products.Where(u => productIds.Contains(u.ProductId));
                             }
                         }
                         if (item.Key.Contains("BrandS"))
                         {
                             var result = item.Value.Select(s => s.Replace("_", " ").Replace("^", ",")).ToList();
-                            productMaster = productMaster.Where(u => result.Contains(u.ProductManufacturer.Name));
+                            products = products.Where(u => result.Contains(u.ProductManufacturer.Name));
 
                         }
                         if (item.Key.Contains("TypeS"))
                         {
                             var result = item.Value.Select(s => s.Replace("_", " ").Replace("^", ",")).ToList();
-                            productMaster = productMaster.Where(u => result.Contains(u.ProductCategory.ProductCategoryName));
+                            products = products.Where(u => result.Contains(u.ProductCategory.ProductCategoryName));
 
                         }
                         if (item.Key.Length > 0 && (!item.Key.Equals("BrandS") && !item.Key.Equals("priceS") && !item.Key.Equals("stockS") && !item.Key.Equals("TypeS")))
@@ -264,7 +264,7 @@ namespace Ganedata.Core.Services
                                                                                         .Select(u => u.ProductId)
                                                                                         .ToList();
 
-                            productMaster = productMaster.Where(u => productids.Contains(u.ProductId) ||
+                            products = products.Where(u => productids.Contains(u.ProductId) ||
                                                                      productids.Any(a => u.ProductKitItems.Select(c => c.KitProductId).ToList().Contains(a)));
                         }
 
@@ -275,7 +275,7 @@ namespace Ganedata.Core.Services
             {
                 ErrorSignal.FromCurrentContext().Raise(ex);
             }
-            return productMaster;
+            return products;
 
         }
 

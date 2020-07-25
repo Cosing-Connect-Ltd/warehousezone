@@ -157,13 +157,33 @@ namespace Ganedata.Core.Services
 
             return new List<ProductMaster>();
         }
+
+        public IEnumerable<ProductMaster> GetAllProductByAttributeKitsByProductId(int productId)
+        {
+            var kitProductIds = _currentDbContext.ProductKitMaps.Where(a => a.ProductId == productId &&
+                                                                            a.IsDeleted != true &&
+                                                                            a.ProductKitType == ProductKitTypeEnum.ProductByAttribute)
+                                                             .Select(a => a.KitProductMaster.ProductId)
+                                                             .Distinct()
+                                                             .ToList();
+
+            var kitProducts = kitProductIds.Any() ? _currentDbContext.ProductMaster.Where(a => kitProductIds.Contains(a.ProductId) &&
+                                                                a.IsActive == true &&
+                                                                a.ProductType != ProductKitTypeEnum.ProductByAttribute &&
+                                                                a.IsDeleted != true).ToList() : new List<ProductMaster>();
+
+            kitProducts.ForEach(r => r.ProductAttributeValuesMap = r.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).ToList());
+
+            return kitProducts;
+        }
+
         public IEnumerable<ProductMaster> GetAllProductInKitsByProductIds(List<int> productId,bool kitProducts=false)
         {
             if (!kitProducts)
             {
-                return _currentDbContext.ProductMaster.Where(a => productId.Contains(a.ProductId) && 
+                return _currentDbContext.ProductMaster.Where(a => productId.Contains(a.ProductId) &&
                                                                              a.IsDeleted != true &&
-                                                                             a.IsActive && 
+                                                                             a.IsActive &&
                                                                              a.ProductType != ProductKitTypeEnum.ProductByAttribute)
                                                        .ToList();
             }

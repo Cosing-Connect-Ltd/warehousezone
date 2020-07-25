@@ -71,7 +71,7 @@ namespace WarehouseEcommerce.Controllers
                 ViewBag.pageList = new SelectList(from d in Enumerable.Range(1, 5) select new SelectListItem { Text = (d * 10).ToString(), Value = (d * 10).ToString() }, "Value", "Text", pagesize);
                 ViewBag.searchString = search;
                 ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
-                var product = _tenantWebsiteService.GetAllValidProductWebsiteSearch(CurrentTenantWebsite.SiteID, category);
+                var products = _tenantWebsiteService.GetAllValidProductWebsiteSearch(CurrentTenantWebsite.SiteID, category);
                 if (!string.IsNullOrEmpty(category))
                 {
                     ViewBag.Categories =
@@ -85,7 +85,6 @@ namespace WarehouseEcommerce.Controllers
                         var subCategory = ViewBag.SubCategory;
                         ViewBag.SubCategory = ViewBag.Category;
                         ViewBag.Categories = subCategory;
-
                     }
                 }
 
@@ -97,48 +96,45 @@ namespace WarehouseEcommerce.Controllers
                 {
                     search = filter;
                 }
+
                 ViewBag.CurrentFilter = search;
+
                 if (!string.IsNullOrEmpty(search))
                 {
-                    product = product.Where(s => s.SKUCode.Contains(search) || s.Name.Contains(search));
+                    products = products.Where(s => s.SKUCode.Contains(search) || s.Name.Contains(search));
                 }
-                product = _productlookupServices.FilterProduct(product, values,CurrentTenantWebsite.SiteID);
+
+                products = _productlookupServices.FilterProduct(products, values, CurrentTenantWebsite.SiteID);
                 switch ((SortProductTypeEnum)(sort ?? 1))
                 {
                     case SortProductTypeEnum.PriceByDesc:
-                        product = product.OrderByDescending(s => s.SellPrice);
+                        products = products.OrderByDescending(s => s.SellPrice);
                         break;
                     case SortProductTypeEnum.NameByDesc:
-                        product = product.OrderByDescending(s => s.Name);
+                        products = products.OrderByDescending(s => s.Name);
                         break;
                     case SortProductTypeEnum.PriceByAsc:
-                        product = product.OrderBy(s => s.SellPrice);
+                        products = products.OrderBy(s => s.SellPrice);
                         break;
                     default:  // Name ascending
-                        product = product.OrderBy(s => s.Name);
+                        products = products.OrderBy(s => s.Name);
                         break;
                 }
 
                 int pageSize = pagesize ?? 10;
                 int pageNumber = (page ?? 1);
-                var pageedlist = product.ToPagedList(pageNumber, pageSize);
-                page = pageNumber = pageNumber > pageedlist.PageCount ? pageedlist.PageCount : pageNumber;
-                var data = product.ToPagedList((pageNumber == 0 ? 1 : pageNumber), pageSize);
+                var productsPagedList = products.ToPagedList(pageNumber, pageSize);
+                page = pageNumber = pageNumber > productsPagedList.PageCount ? productsPagedList.PageCount : pageNumber;
+                var data = products.ToPagedList((pageNumber == 0 ? 1 : pageNumber), pageSize);
                 if (data.Count > 0)
                 {
                     data.ToList().ForEach(u => u.SellPrice = (Math.Round((_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID)), 2)));
-
-
-
-
                 }
-
 
                 return View(data);
             }
             catch (Exception ex)
             {
-
                 return Content("Issue of getting data  " + ex.Message);
 
             }
@@ -205,7 +201,32 @@ namespace WarehouseEcommerce.Controllers
 
             model.SelectedProduct.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(model.SelectedProduct.ProductId, CurrentTenantWebsite.SiteID), 2);
 
+            model.RelatedProducts = GetRelatedProducts(model.SelectedProduct, baseProduct);
+
             return View(model);
+        }
+
+        private List<ProductMaster> GetRelatedProducts(ProductMaster selectedProduct, ProductMaster baseProduct)
+        {
+
+            var relatedProducts = selectedProduct.ProductKitItems.Where(u => u.ProductKitType == ProductKitTypeEnum.RelatedProduct &&
+                                                                                                   u.IsDeleted != true &&
+                                                                                                   u.IsActive &&
+                                                                                                   u.KitProductMaster.IsDeleted != true)
+                                                                                                  .Select(u => u.KitProductMaster).ToList();
+
+            relatedProducts.AddRange(baseProduct.ProductKitItems.Where(u => u.ProductKitType == ProductKitTypeEnum.RelatedProduct &&
+                                                                                                   u.IsDeleted != true &&
+                                                                                                   u.IsActive &&
+                                                                                                   u.KitProductMaster.IsDeleted != true &&
+                                                                                                   !relatedProducts.Select(r => r.ProductId).Contains(u.ProductId))
+                                                                                                  .Select(u => u.KitProductMaster).ToList());
+
+            var websiteProductIds = _tenantWebsiteService.GetAllValidWebsiteProductsMap(CurrentTenantId, CurrentTenantWebsite.SiteID).Select(w => w.ProductId);
+
+            relatedProducts = relatedProducts.Where(r => websiteProductIds.Contains(r.ProductId)).ToList();
+
+            return relatedProducts;
         }
 
         public ActionResult GroupedProductDetail(string sku)
@@ -527,12 +548,9 @@ namespace WarehouseEcommerce.Controllers
 
         private ProductDetailViewModel GetSelectedProductByAttribute(int? productId, ProductMaster product)
         {
-            ProductMaster selectedProduct;
-            var relatedProducts = _productServices.GetAllProductInKitsByProductId(product.ProductId).Where(k => k.IsActive == true && k.ProductType != ProductKitTypeEnum.ProductByAttribute && k.IsDeleted != true);
+            var relatedProducts = _productServices.GetAllProductByAttributeKitsByProductId(product.ProductId);
 
-            relatedProducts.ForEach(r => r.ProductAttributeValuesMap = r.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).ToList());
-
-            selectedProduct = relatedProducts.FirstOrDefault(p => p.ProductId == productId || productId == null);
+            var selectedProduct = relatedProducts.FirstOrDefault(p => p.ProductId == productId || productId == null);
 
             if (selectedProduct != null)
             {
