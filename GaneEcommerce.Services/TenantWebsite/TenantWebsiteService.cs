@@ -311,13 +311,9 @@ namespace Ganedata.Core.Services
                     ProductId = u.ProductId,
                     Name = u.ProductMaster.Name,
                     SKUCode = u.ProductMaster.SKUCode,
-
-
                 });
 
-
             return websiteMap;
-
         }
 
         public WebsiteNavigation CreateOrUpdateWebsiteNavigation(WebsiteNavigation websiteNavigation, int UserId, int TenantId)

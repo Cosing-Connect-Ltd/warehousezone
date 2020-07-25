@@ -201,32 +201,9 @@ namespace WarehouseEcommerce.Controllers
 
             model.SelectedProduct.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(model.SelectedProduct.ProductId, CurrentTenantWebsite.SiteID), 2);
 
-            model.RelatedProducts = GetRelatedProducts(model.SelectedProduct, baseProduct);
+            model.RelatedProducts = _productServices.GetRelatedProductsByProductId(model.SelectedProduct.ProductId, CurrentTenantId, CurrentTenantWebsite.SiteID, baseProduct.ProductId);
 
             return View(model);
-        }
-
-        private List<ProductMaster> GetRelatedProducts(ProductMaster selectedProduct, ProductMaster baseProduct)
-        {
-
-            var relatedProducts = selectedProduct.ProductKitItems.Where(u => u.ProductKitType == ProductKitTypeEnum.RelatedProduct &&
-                                                                                                   u.IsDeleted != true &&
-                                                                                                   u.IsActive &&
-                                                                                                   u.KitProductMaster.IsDeleted != true)
-                                                                                                  .Select(u => u.KitProductMaster).ToList();
-
-            relatedProducts.AddRange(baseProduct.ProductKitItems.Where(u => u.ProductKitType == ProductKitTypeEnum.RelatedProduct &&
-                                                                                                   u.IsDeleted != true &&
-                                                                                                   u.IsActive &&
-                                                                                                   u.KitProductMaster.IsDeleted != true &&
-                                                                                                   !relatedProducts.Select(r => r.ProductId).Contains(u.ProductId))
-                                                                                                  .Select(u => u.KitProductMaster).ToList());
-
-            var websiteProductIds = _tenantWebsiteService.GetAllValidWebsiteProductsMap(CurrentTenantId, CurrentTenantWebsite.SiteID).Select(w => w.ProductId);
-
-            relatedProducts = relatedProducts.Where(r => websiteProductIds.Contains(r.ProductId)).ToList();
-
-            return relatedProducts;
         }
 
         public ActionResult GroupedProductDetail(string sku)

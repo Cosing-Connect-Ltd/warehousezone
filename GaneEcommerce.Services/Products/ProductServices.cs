@@ -178,6 +178,21 @@ namespace Ganedata.Core.Services
             return kitProducts;
         }
 
+        public List<ProductMaster> GetRelatedProductsByProductId(int productId, int tenantId, int siteId, int? parentProductId = null)
+        {
+            var relatedProducts = _currentDbContext.ProductKitMaps.Where(u => u.ProductKitType == ProductKitTypeEnum.RelatedProduct &&
+                                                                                u.IsDeleted != true &&
+                                                                                u.TenantId == tenantId &&
+                                                                                (u.ProductId == productId || u.KitProductId == productId || u.ProductId == parentProductId || u.KitProductId == parentProductId) &&
+                                                                                _currentDbContext.ProductsWebsitesMap.Any(w => w.IsDeleted != true && w.SiteID == siteId && w.TenantId == tenantId && w.IsActive && w.ProductId == u.ProductId) &&
+                                                                                u.IsActive &&
+                                                                                u.KitProductMaster.IsDeleted != true)
+                                                                    .Select(u => (u.ProductId == productId || u.ProductId == parentProductId ? u.KitProductMaster : u.ProductMaster))
+                                                                    .ToList();
+
+            return relatedProducts.GroupBy(p => productId).Select(p => p.First()).ToList();
+        }
+
         public IEnumerable<ProductMaster> GetAllProductInKitsByProductIds(List<int> productId,bool kitProducts=false)
         {
             if (!kitProducts)

@@ -22,6 +22,7 @@ namespace Ganedata.Core.Services
         IEnumerable<ProductKitMap> GetAllProductInKitsByProductId(int productId, ProductKitTypeEnum productKitType);
         IEnumerable<ProductMaster> GetAllProductInKitsByProductId(int productId);
         IEnumerable<ProductMaster> GetAllProductByAttributeKitsByProductId(int productId);
+        List<ProductMaster> GetRelatedProductsByProductId(int productId, int tenantId, int siteId, int? parentProductId = null);
         IEnumerable<ProductMaster> GetAllProductInKitsByProductIds(List<int> productId, bool kitProducts=false);
         IEnumerable<ProductMaster> GetParentProductsByKitProductId(int kitProductId);
         IEnumerable<ProductMaster> GetAllProductInKitsByKitProductId(int productId);
