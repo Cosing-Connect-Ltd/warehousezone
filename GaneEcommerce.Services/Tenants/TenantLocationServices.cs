@@ -22,9 +22,9 @@ namespace Ganedata.Core.Services
             _marketServices = marketServices;
         }
 
-        public IEnumerable<TenantLocations> GetAllTenantLocations(int tenantId)
+        public IEnumerable<TenantLocations> GetAllTenantLocations(int tenantId, bool includeDeleted = false)
         {
-            return _currentDbContext.TenantWarehouses.Where(e => e.TenantId == tenantId && e.IsDeleted != true).ToList();
+            return _currentDbContext.TenantWarehouses.Where(e => e.TenantId == tenantId && (includeDeleted || e.IsDeleted != true)).ToList();
         }
 
         public IEnumerable<TenantLocations> GetAllMobileTenantLocations(int tenantId)

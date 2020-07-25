@@ -37,7 +37,7 @@ namespace WMS.Controllers.WebAPI
 
             var result = new TenantLocationsSyncCollection();
 
-            var allTenantLocations = TenantLocationServices.GetAllTenantLocations(terminal.TenantId).ToList();
+            var allTenantLocations = TenantLocationServices.GetAllTenantLocations(terminal.TenantId, true).ToList();
 
             _mapper.Map(allTenantLocations, result.TenantLocationSync);
 

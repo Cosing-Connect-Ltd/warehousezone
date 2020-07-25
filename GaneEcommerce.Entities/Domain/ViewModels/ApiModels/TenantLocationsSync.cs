@@ -68,5 +68,7 @@ namespace Ganedata.Core.Models
         public decimal DeliveryCharges { get; set; }
         public decimal CollectionCharges { get; set; }
         public decimal DeliveryRadiusMiles { get; set; }
+        public int TenantId { get; set; }
+        public bool? IsDeleted { get; set; }
     }
 }

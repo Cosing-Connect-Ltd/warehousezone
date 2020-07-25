@@ -9,7 +9,7 @@ namespace Ganedata.Core.Services
 {
     public interface ITenantLocationServices
     {
-        IEnumerable<TenantLocations> GetAllTenantLocations(int tenantId);
+        IEnumerable<TenantLocations> GetAllTenantLocations(int tenantId, bool includeDeleted = false);
         IEnumerable<TenantLocations> GetAllMobileTenantLocations(int tenantId);
         TenantLocations GetTenantLocationById(int tenantLocationsId);
         TenantLocations GetActiveTenantLocationById(int tenantLocationsId);
