@@ -487,19 +487,26 @@ namespace Ganedata.Core.Services
         public List<WebsiteShippingRulesViewModel> GetShippingRulesByShippingAddress(int tenantId, int siteId, int shippingAddressId, double parcelWeightInGrams)
         {
             var address = _currentDbContext.AccountAddresses.Find(shippingAddressId);
+
+            if (address == null)
+            {
+                return null;
+            }
+
             var getTenantCurrency = _tenantsCurrencyRateServices.GetTenantCurrencies(tenantId).FirstOrDefault();
             var currencyRate = _tenantsCurrencyRateServices.GetCurrencyRateByTenantid(getTenantCurrency?.TenantCurrencyID ?? 0);
 
             var allRules = GetAllValidWebsiteShippingRules(tenantId, siteId)
                 .Where(r => r.IsActive == true && r.CountryId == address.CountryID && r.WeightinGrams >= parcelWeightInGrams);
 
-            var rules = allRules.Where(r => (address.PostCode.StartsWith(r.PostalArea) ||
-                                    (!address.PostCode.StartsWith(r.PostalArea) && (address.Town.Contains(r.Region) ||
-                                    address.AddressLine1.Contains(r.Region) ||
-                                    address.AddressLine2.Contains(r.Region) ||
-                                    address.AddressLine3.Contains(r.Region) ||
-                                    address.AddressLine3.Contains(r.Region) ||
-                                    address.AddressLine4.Contains(r.Region)))));
+            var rules = allRules.Where(r => address.PostCode.StartsWith(r.PostalArea) ||
+                                            (!address.PostCode.StartsWith(r.PostalArea) &&
+                                            (address.Town.Contains(r.Region) ||
+                                            address.AddressLine1.Contains(r.Region) ||
+                                            address.AddressLine2.Contains(r.Region) ||
+                                            address.AddressLine3.Contains(r.Region) ||
+                                            address.AddressLine3.Contains(r.Region) ||
+                                            address.AddressLine4.Contains(r.Region))));
 
             if (!rules.Any())
             {

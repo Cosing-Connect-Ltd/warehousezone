@@ -2,26 +2,35 @@
 @using Ganedata.Core.Entities.Enums;
 @using Ganedata.Core.Entities.Enums;
 <div class="checkout-options-wrapper">
-    <h5 class="subheadCmn">Select Shipment Type</h5>
-    @Html.Hidden("shipmentRuleId", (int?)Model.ShipmentRuleId)
 
-    @foreach (var rule in Model.ShippingRules)
+    @if (Model.ShippingRules == null || Model.ShippingRules.Count() <= 0)
     {
-        <div class="checkboxwrap">
-            <input class="styled-checkbox"
-                   id="shipment-rule__checkbox-@rule.Id"
-                   type="radio"
-                   name="shipment-rule-radio"
-                   value="@rule.Id"
-                   checked="@(rule.Id == Model.ShipmentRuleId)"/>
-            <label class="ship-type" for="shipment-rule__checkbox-@rule.Id"><b>@ViewBag.CurrencySymbol@rule.Price</b> <label>(@rule.Courier @(string.IsNullOrEmpty(rule.Description) ? string.Empty : $" - {rule.Description}"))</label> </label>
-        </div>
+        <br />
+        <div class="checkboxwrap">We are not able to ship the orders to the selected address, please select a different Sgipping address.</div>
+    }
+    else
+    {
+        <h5 class="subheadCmn">Select Shipment Type</h5>
+        @Html.Hidden("shipmentRuleId", (int?)Model.ShipmentRuleId)
+        foreach (var rule in Model.ShippingRules)
+        {
+            <div class="checkboxwrap">
+                <input class="styled-checkbox"
+                       id="shipment-rule__checkbox-@rule.Id"
+                       type="radio"
+                       name="shipment-rule-radio"
+                       value="@rule.Id"
+                       checked="@(rule.Id == Model.ShipmentRuleId)" />
+                <label class="ship-type" for="shipment-rule__checkbox-@rule.Id"><b>@ViewBag.CurrencySymbol@rule.Price</b> <label>(@rule.Courier @(string.IsNullOrEmpty(rule.Description) ? string.Empty : $" - {rule.Description}"))</label> </label>
+            </div>
+        }
     }
     <div class="btnWrap">
-        <a href="javascript:;" class="addnwShopAdrrbtn payment-type-btns" onclick="chooseShippingRule(@((int)CheckoutStep.PaymentDetails))">SELECT SHIPMENT TYPE</a>&nbsp;
+        @if (Model.ShippingRules != null && Model.ShippingRules.Count() > 0)
+        {
+            <a href="javascript:;" class="addnwShopAdrrbtn payment-type-btns" onclick="chooseShippingRule(@((int)CheckoutStep.PaymentDetails))">SELECT SHIPMENT TYPE</a>
+        }
+        &nbsp;
         <a href="@Url.Action("GoToPreviousStep","orders")" class="btmBtn addnwShopAdrrbtn payment-type-btns">BACK</a>
     </div>
 </div>
-
-<script>
-</script>
