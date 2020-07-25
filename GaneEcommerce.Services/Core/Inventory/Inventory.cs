@@ -1103,6 +1103,11 @@ namespace Ganedata.Core.Services
                     AddProductToNotifyQueue(ProductId, TenantId, WarehouseId, context);
                 }
 
+                if (available <= 0 && OldStock.Available > 0)
+                {
+                    RemoveProductFromNotifyQueue(ProductId, TenantId, WarehouseId, context);
+                }
+
                 OldStock.InStock = InStock;
                 OldStock.Allocated = itemsAllocated;
                 OldStock.OnOrder = itemsOnOrder;
@@ -1111,11 +1116,6 @@ namespace Ganedata.Core.Services
                 OldStock.UpdatedBy = UserId;
                 OldStock.IsActive = true;
                 context.Entry(OldStock).State = EntityState.Modified;
-
-                if (available <= 0)
-                {
-                    RemoveProductFromNotifyQueue(ProductId, TenantId, WarehouseId, context);
-                }
 
                 if (saveContext)
                 {
