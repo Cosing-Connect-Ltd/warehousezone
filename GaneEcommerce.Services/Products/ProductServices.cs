@@ -184,13 +184,19 @@ namespace Ganedata.Core.Services
                                                                                 u.IsDeleted != true &&
                                                                                 u.TenantId == tenantId &&
                                                                                 (u.ProductId == productId || u.KitProductId == productId || u.ProductId == parentProductId || u.KitProductId == parentProductId) &&
-                                                                                _currentDbContext.ProductsWebsitesMap.Any(w => w.IsDeleted != true && w.SiteID == siteId && w.TenantId == tenantId && w.IsActive && w.ProductId == u.ProductId) &&
                                                                                 u.IsActive &&
                                                                                 u.KitProductMaster.IsDeleted != true)
                                                                     .Select(u => (u.ProductId == productId || u.ProductId == parentProductId ? u.KitProductMaster : u.ProductMaster))
                                                                     .ToList();
 
-            return relatedProducts.GroupBy(p => productId).Select(p => p.First()).ToList();
+            return relatedProducts.GroupBy(p => p.ProductId)
+                                  .Select(p => p.First())
+                                  .Where(p => _currentDbContext.ProductsWebsitesMap.Any(w => w.IsDeleted != true &&
+                                                                                             w.SiteID == siteId &&
+                                                                                             w.TenantId == tenantId &&
+                                                                                             w.IsActive &&
+                                                                                             w.ProductId == p.ProductId))
+                                  .ToList();
         }
 
         public IEnumerable<ProductMaster> GetAllProductInKitsByProductIds(List<int> productId,bool kitProducts=false)
