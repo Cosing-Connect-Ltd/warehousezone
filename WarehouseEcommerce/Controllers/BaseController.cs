@@ -172,14 +172,19 @@ namespace WarehouseEcommerce.Controllers
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             var website = _tenantWebsiteServices.GetTenantWebSiteBySiteId(CurrentTenantWebsite.SiteID);
+            if (website != null)
+            {
+                ViewBag.TenantWebsite = website;
+                ViewBag.BaseFilePath = website.BaseFilePath;
+                ViewBag.BasePath = Request.Url.Scheme + "://" + website.HostName;
+            }
             ViewBag.SiteId = CurrentTenantWebsite.SiteID;
             ViewBag.TimeZone = GetCurrentTimeZone();
             ViewBag.LoginDetail = CurrentUserId > 0 ? "Logout" : "Login";
             ViewBag.CurrentUserId = CurrentUserId;
             ViewBag.Currencies = _lookupServices.GetAllGlobalCurrencies();
-            ViewBag.TenantWebsite = website;
-            ViewBag.BaseFilePath = website.BaseFilePath;
-            ViewBag.BasePath = Request.Url.Scheme + "://" + website.HostName;
+
+
             if (Session["CurrencyDetail"] == null)
             {
                 CurrencyDetail(null);

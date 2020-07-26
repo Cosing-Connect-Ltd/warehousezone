@@ -37,15 +37,12 @@ namespace WarehouseEcommerce
                       "~/Content/Theme/Smart/app/css/Site.css"
                       ));
             bundles.Add(new StyleBundle("~/Content/Theme/University/app/css/university").Include(
-                     "~/Content/Theme/University/app/css/App.css",
-                     "~/Content/Theme/University/app/css/Site.css",
+                     "~/Content/Theme/University/app/css/app.css",
                      "~/Content/Theme/University/app/css/customfontIcons.css",
                      "~/Content/Theme/University/app/css/skew_carousle_style.css",
-                     "~/Content/Theme/University/app/css/northumbria_responsive.css",
-                     "~/Content/Theme/University/app/css/skew_carousle_style.css",
-                     "~/Content/Theme/University/app/css/skew_carousle_style.css",
+                     "~/Content/Theme/University/app/css/app_responsive.css",
                      "~/Content/owl.carousel/owl.carousel.css"
-                     
+
                      ));
 
             bundles.Add(new StyleBundle("~/Content/bootstrap").Include(

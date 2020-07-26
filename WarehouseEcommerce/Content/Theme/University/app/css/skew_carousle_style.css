@@ -11,10 +11,11 @@
         table-layout: fixed;
         margin: 0;
         padding: 0;
-        border-spacing: 10px;
+        border-spacing: 9px;
     }
 
         .accordion ul li {
+            background-color: white !important;
             display: table-cell;
             vertical-align: bottom;
             position: relative;
@@ -61,49 +62,8 @@
                 width: 15%;
             }
 
-                .accordion ul:hover li:hover a {
-                    /* background: rgba(0, 0, 0, 0.4); */
+                .accordion ul:hover li:hover a * {
+                    opacity: 1;
+                    -webkit-transform: translateX(0);
+                    transform: translateX(0);
                 }
-
-                    .accordion ul:hover li:hover a * {
-                        opacity: 1;
-                        -webkit-transform: translateX(0);
-                        transform: translateX(0);
-                    }
-/* @media screen and (max-width: 600px) {
-  body {
-    margin: 0;
-  }
-
-  .accordion {
-    height: auto;
-  }
-
-  .accordion ul li,
-  .accordion ul li:hover,
-  .accordion ul:hover li,
-  .accordion ul:hover li:hover {
-    position: relative;
-    display: table;
-    table-layout: fixed;
-    width: 100%;
-    -webkit-transition: none;
-    transition: none;
-  }
-}
-
-.about {
-  text-align: center;
-  font-family: "Open Sans", sans-serif;
-  font-size: 12px;
-  color: #666;
-}
-
-.about a {
-  color: blue;
-  text-decoration: none;
-}
-
-.about a:hover {
-  text-decoration: underline;
-} */
