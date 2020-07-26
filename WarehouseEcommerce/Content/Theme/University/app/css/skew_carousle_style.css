@@ -1,8 +1,7 @@
 .accordion {
     width: 100%;
     max-width: 1090px;
-    height: 328px;
-    /* overflow: hidden; */
+    height: 328px
 }
 
     .accordion ul {
@@ -11,11 +10,11 @@
         table-layout: fixed;
         margin: 0;
         padding: 0;
-        border-spacing: 9px;
+        border-spacing: 9px
     }
 
         .accordion ul li {
-            background-color: white !important;
+            background-color: #fff !important;
             display: table-cell;
             vertical-align: bottom;
             position: relative;
@@ -26,13 +25,13 @@
             background-position: center center;
             transform: skew(-12deg);
             transition: all 500ms ease;
-            z-index: 2;
+            z-index: 2
         }
 
             .accordion ul li div {
                 display: block;
                 overflow: hidden;
-                width: 100%;
+                width: 100%
             }
 
                 .accordion ul li div a {
@@ -45,25 +44,25 @@
                     box-sizing: border-box;
                     color: #fff;
                     text-decoration: none;
-                    font-family: Open Sans, sans-serif;
-                    transition: all 200ms ease;
+                    font-family: Open Sans,sans-serif;
+                    transition: all 200ms ease
                 }
 
                     .accordion ul li div a p {
                         top: 160px;
-                        font-size: 13.5px;
+                        font-size: 13.5px
                     }
 
         .accordion ul:hover li {
-            width: 8%;
+            width: 8%
         }
 
             .accordion ul:hover li:hover {
-                width: 15%;
+                width: 15%
             }
 
                 .accordion ul:hover li:hover a * {
                     opacity: 1;
                     -webkit-transform: translateX(0);
-                    transform: translateX(0);
+                    transform: translateX(0)
                 }

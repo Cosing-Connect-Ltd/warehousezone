@@ -1,191 +1,184 @@
 @font-face {
-  font-family: "icomoon";
-  src: url("~/Content/Theme/University/app/fonts/icomoon.eot");
-  src: url("../fonts/icomoon.eot?gipjlx#iefix") format("embedded-opentype"),
-    url("../fonts/icomoon.ttf?gipjlx") format("truetype"),
-    url("../fonts/icomoon.woff?gipjlx") format("woff"),
-    url("../fonts/icomoon.svg?gipjlx#icomoon") format("svg");
-  font-weight: normal;
-  font-style: normal;
-  font-display: block;
+    font-family: "icomoon";
+    src: url(~/Content/Theme/University/app/fonts/icomoon.eot);
+    src: url(../fonts/icomoon.eot?gipjlx#iefix) format("embedded-opentype"),url(../fonts/icomoon.ttf?gipjlx) format("truetype"),url(../fonts/icomoon.woff?gipjlx) format("woff"),url(../fonts/icomoon.svg?gipjlx#icomoon) format("svg");
+    font-weight: 400;
+    font-style: normal;
+    font-display: block
 }
 
-[class^="icon-"],
-[class*=" icon-"] {
-  /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: "icomoon" !important;
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-
-  /* Better Font Rendering =========== */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+[class*=" icon-"], [class^=icon-] {
+    font-family: "icomoon" !important;
+    speak: none;
+    font-style: normal;
+    font-weight: 400;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale
 }
 
 .icon-product:before {
-    content: "\e923";
+    content: "\e923"
 }
 
 .icon-basket-cart:before {
-    content: "\e924";
+    content: "\e924"
 }
 
 .icon-review-items:before {
-    content: "\e925";
+    content: "\e925"
 }
 
 .icon-billing-shipping:before {
-    content: "\e926";
+    content: "\e926"
 }
 
 .icon-credit-card:before {
-    content: "\e927";
+    content: "\e927"
 }
 
 .icon-tick1:before {
-    content: "\e928";
+    content: "\e928"
 }
 
 .icon-edit:before {
-    content: "\e916";
+    content: "\e916"
 }
 
 .icon-edit-2:before {
-    content: "\e917";
+    content: "\e917"
 }
 
 .icon-edit-3:before {
-    content: "\e918";
+    content: "\e918"
 }
 
 .icon-file-text:before {
-    content: "\e919";
+    content: "\e919"
 }
 
 .icon-home1:before {
-    content: "\e91a";
+    content: "\e91a"
 }
 
 .icon-image:before {
-    content: "\e91b";
+    content: "\e91b"
 }
 
 .icon-map:before {
-    content: "\e91c";
+    content: "\e91c"
 }
 
 .icon-map-pin:before {
-    content: "\e91d";
+    content: "\e91d"
 }
 
 .icon-printer:before {
-    content: "\e91e";
+    content: "\e91e"
 }
 
 .icon-save:before {
-    content: "\e91f";
+    content: "\e91f"
 }
 
 .icon-settings:before {
-    content: "\e920";
+    content: "\e920"
 }
 
 .icon-target:before {
-    content: "\e921";
+    content: "\e921"
 }
 
 .icon-truck:before {
-    content: "\e922";
+    content: "\e922"
 }
 
 .icon-calander:before {
-    content: "\e915";
+    content: "\e915"
 }
 
 .icon-search1:before {
-    content: "\e913";
+    content: "\e913"
 }
 
 .icon-home:before {
-    content: "\e910";
+    content: "\e910"
 }
 
 .icon-arrow_right:before {
-    content: "\e911";
+    content: "\e911"
 }
 
 .icon-arrow_down:before {
-    content: "\e912";
+    content: "\e912"
 }
 
 .icon-list-menu:before {
-    content: "\e90f";
+    content: "\e90f"
 }
 
 .icon-twitter-logo:before {
-    content: "\e90a";
+    content: "\e90a"
 }
 
 .icon-facebook-logo:before {
-    content: "\e90b";
+    content: "\e90b"
 }
 
 .icon-instagram-logo:before {
-    content: "\e90c";
+    content: "\e90c"
 }
 
 .icon-linkedin-logo:before {
-    content: "\e90d";
+    content: "\e90d"
 }
 
 .icon-right-arrow:before {
-    content: "\e90e";
+    content: "\e90e"
 }
 
 .icon-click:before {
-    content: "\e905";
+    content: "\e905"
 }
 
 .icon-delivery-truck:before {
-    content: "\e906";
+    content: "\e906"
 }
 
 .icon-star:before {
-    content: "\e907";
+    content: "\e907"
 }
 
 .icon-tick:before {
-    content: "\e908";
+    content: "\e908"
 }
 
 .icon-verified:before {
-    content: "\e909";
+    content: "\e909"
 }
 
 .icon-love:before {
-    content: "\e900";
+    content: "\e900"
 }
 
 .icon-phone-call:before {
-    content: "\e901";
+    content: "\e901"
 }
 
 .icon-search:before {
-    content: "\e902";
+    content: "\e902"
 }
 
 .icon-shopping-cart:before {
-    content: "\e903";
+    content: "\e903"
 }
 
 .icon-user:before {
-    content: "\e904";
+    content: "\e904"
 }
 
 .icon-filter:before {
-    content: "\e914";
+    content: "\e914"
 }

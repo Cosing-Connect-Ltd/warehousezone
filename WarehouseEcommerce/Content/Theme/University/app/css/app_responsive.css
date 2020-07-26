@@ -1,275 +1,225 @@
-@media (max-width: 1199px) {
-    .list-on-tablets .foot .icolist .cart-icon,
-    .list-on-tablets .foot .icolist .bel-icon {
-        margin-left: 9px;
+@media (max-width:1199px) {
+    .list-on-tablets .foot .icolist .bel-icon, .list-on-tablets .foot .icolist .cart-icon {
+        margin-left: 9px
     }
 
     .feature-product-overflow .inside-container {
-        margin: 0px 11px 0px 14px;
+        margin: 0 11px 0 14px
     }
 
-    .store-delivery,
-    .basketTable .cmnRow .delivery,
-    .basketTable .cmnRow .greyBox,
-    .basketTable tr.cmnRow .tot .in-basket-price-total:after {
+    .basketTable .cmnRow .delivery, .basketTable .cmnRow .greyBox, .basketTable tr.cmnRow .tot .in-basket-price-total:after, .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner:before, .store-delivery {
         display: none
     }
 
     .basketTable {
-        margin-top: 10px;
+        margin-top: 10px
     }
 
     .botomBtnsec .mobile-checkout {
-        display: block !important;
+        display: block !important
     }
 
     .wishlist-table .imgWrap img {
         width: 120px !important;
         height: 120px !important;
-        max-width: unset !important;
+        max-width: unset !important
     }
 
     .wishlist-table .imgWrap {
-        margin-right: 10px;
+        margin-right: 10px
     }
 
     .nb_header .nb_mainnav ul li {
-        padding: 0px 26px;
+        padding: 0 26px
     }
 
     .nb_bannersec .np_bannerContentOuter {
-        width: 90%;
+        width: 90%
     }
 
         .nb_bannersec .np_bannerContentOuter .nb_bnr_count {
-            font-size: 18px;
+            font-size: 18px
         }
 
         .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap h5 {
             font-size: 12px;
-            line-height: 30px;
+            line-height: 30px
         }
 
         .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap a {
-            font-size: 12px;
+            font-size: 12px
         }
 
         .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap button {
-            font-size: 16px;
+            font-size: 16px
         }
 
     .nb_feat_prod_sec .nb_fp_boxwrap .prd_det_sec {
-        padding: 0px;
+        padding: 0
     }
 
     .nb_sub_sec .nb_sub_wrap {
-        padding: 0px 35px;
+        padding: 0 35px
     }
-
-        .nb_sub_sec .nb_sub_wrap .sub_form_wrap .sub_form_wrap_inner {
-            padding-right: 0px;
-        }
 
     .nb_prd_listing_wrap .tagList {
         display: inline-block;
         text-align: center;
-        width: 100%;
+        width: 100%
     }
 
         .nb_prd_listing_wrap .tagList li {
             display: inline-block;
             margin-bottom: 10px;
             margin-left: 5px;
-            margin-right: 5px;
+            margin-right: 5px
         }
 
-    .nb_prdlisting_pgsec .nb_prd_filterwrap {
-        padding-right: 0px;
+    .nb_prdlisting_pgsec .nb_prd_filterwrap, .nb_sub_sec .nb_sub_wrap .sub_form_wrap .sub_form_wrap_inner {
+        padding-right: 0
     }
 
-    .contact_form_sec .contact_pg_wrap {
-        padding: 0px;
+    .contact_form_sec .contact_pg_wrap, .contact_form_sec .subHead_content, .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner .meganav_firstcatList > li {
+        padding: 0
     }
 
-    .contact_form_sec .subHead_content {
-        padding: 0px;
-    }
-
-    .nb_header
-    .nb_mainnav > ul
-    li.hav_mega_nav
-    .mega_nav_wrap
-    .mega_nav_wrap_inner {
+    .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner {
         padding-left: 20px;
         min-width: 400px;
-        min-height: 280px;
+        min-height: 280px
     }
 
-        .nb_header
-        .nb_mainnav > ul
-        li.hav_mega_nav
-        .mega_nav_wrap
-        .mega_nav_wrap_inner:before {
-            display: none;
-        }
-
-        .nb_header
-        .nb_mainnav > ul
-        li.hav_mega_nav
-        .mega_nav_wrap
-        .mega_nav_wrap_inner
-        .meganav_firstcatList > li {
-            padding: 0px;
-        }
-
     #marqueeWrap ul {
-        animation: marquee 15s linear infinite;
+        animation: marquee 15s linear infinite
     }
 
     .progressBarStep ul#progressList {
-        width: 100%;
+        width: 100%
     }
 
     .accordion ul li {
         transform: skew(0deg);
-        width: 20%;
+        width: 20%
     }
 
         .accordion ul li:nth-child(1) {
-            right: auto;
+            right: auto
         }
 
-            .accordion ul li:nth-child(1):after {
-                display: none;
+            .accordion ul li:nth-child(1):after, .accordion ul li:nth-child(5):after {
+                display: none
             }
 
-            .accordion ul li:nth-child(1) h2 {
-                padding-right: initial;
-            }
-
-        .accordion ul li:nth-child(5) {
-            left: auto;
-        }
-
-            .accordion ul li:nth-child(5):after {
-                display: none;
-            }
-
-                .accordion ul li:nth-child(5):after h2 {
-                    padding-right: initial;
+                .accordion ul li:nth-child(1) h2, .accordion ul li:nth-child(5):after h2 {
+                    padding-right: initial
                 }
 
-        .accordion ul li:last-child {
-            left: auto;
+        .accordion ul li:nth-child(5) {
+            left: auto
         }
 
-            .accordion ul li:last-child:after {
-                display: none;
+        .accordion ul li:last-child {
+            left: auto
+        }
+
+            .accordion ul li:last-child:after, .accordion.have2child ul li:last-child:after {
+                display: none
             }
 
     .accordion.have2child ul li:first-child {
         width: 48%;
-        clip-path: none;
+        clip-path: none
     }
 
     .accordion.have2child ul li:last-child {
         width: 48%;
-        clip-path: none;
+        clip-path: none
     }
 
-        .accordion.have2child ul li:last-child:after {
-            display: none;
-        }
-
     .accordion ul li div a h2 {
-        transform: skew(0deg);
+        transform: skew(0deg)
     }
 }
 
-@media (max-width: 1024px) {
+@media (max-width:1024px) {
     .product-bg img {
-        width: 380px !important;
+        width: 380px !important
     }
 
     .sticky {
-        width: 380px;
+        width: 380px
     }
 
     .feature-product-overflow .owl-item {
-        width: 224px !important;
+        width: 224px !important
     }
 
     .feature-product-overflow .prd_lst_boxouter .imagewrap img {
         width: 224px !important;
-        height: 224px;
+        height: 224px
     }
 
     .feature-product-overflow .prd_lst_boxouter .foot .icolist li a i {
-        font-size: 23px !important;
+        font-size: 23px !important
     }
 
-    .feature-product-overflow .foot .icolist .cart-icon,
-    .feature-product-overflow .foot .icolist .bel-icon {
-        margin-left: -1px;
+    .feature-product-overflow .foot .icolist .bel-icon, .feature-product-overflow .foot .icolist .cart-icon {
+        margin-left: -1px
     }
 
     .uni-search-div {
-        width: 80%;
+        width: 80%
     }
 
         .uni-search-div input {
-            font-size: 24px !important;
+            font-size: 24px !important
         }
 
     .nb_prd_det_rightsec .head {
-        font-size: 26px;
+        font-size: 26px
     }
 
     .nb_prd_det_rightsec .subContent {
-        font-size: 14px;
+        font-size: 14px
     }
 
     .nb_prd_det_rightsec .prd_amnt {
-        font-size: 24px;
+        font-size: 24px
     }
 
-    .nb_prd_det_rightsec .footSec .qty {
-        margin-right: 20px;
-    }
-
-    .nb_prd_det_rightsec .footSec button.addTobasket {
-        margin-right: 20px;
+    .nb_prd_det_rightsec .footSec .qty, .nb_prd_det_rightsec .footSec button.addTobasket {
+        margin-right: 20px
     }
 }
 
-@media (max-width: 991px) {
+@media (max-width:991px) {
     .about-cnt {
-        padding-right: 0;
+        padding-right: 0
     }
 
-    .select-shipping-method-btn, .select-payment-method-btn {
+    .select-payment-method-btn, .select-shipping-method-btn {
         width: 100%;
-        height: 33px;
+        height: 33px
     }
 
     .paypal-btn {
-        width: 100% !important;
+        width: 100% !important
     }
 
     .p-mt-20 {
-        margin-top: 20px;
+        margin-top: 20px
     }
 
     .confirm-order-addresses {
-        width: 100%;
+        width: 100%
     }
 
     .cat-list {
-        margin-bottom: 16px;
+        margin-bottom: 16px
     }
 
     .top-cat-tab .cat-list a {
-        padding: 9px 0;
+        padding: 9px 0
     }
 
     .sticky {
@@ -277,1410 +227,1207 @@
         max-width: 550px;
         max-height: none;
         margin-right: 100px;
-        top: 15px;
+        top: 15px
     }
 
     .product-bg {
-        flex-wrap: wrap;
+        flex-wrap: wrap
     }
 
     .pro-content {
-        width: 100%;
+        width: 100%
     }
 
     .feature-product-overflow .owl-item {
-        width: 222px !important;
+        width: 222px !important
     }
 
     .feature-product-overflow .prd_lst_boxouter .imagewrap img {
         width: 222px !important;
-        height: 222px;
+        height: 222px
     }
 
     .feature-product-overflow .inside-container {
-        margin: 0px 11px 0px 14px;
+        margin: 0 11px 0 14px
     }
 
     .nb_header .nb_mainnav ul li {
-        padding: 0px 15px;
+        padding: 0 15px
     }
 
     .nb_header .nb_mainnav > ul > li.hav_sub_nav > a:before {
-        margin-left: 5px;
+        margin-left: 5px
     }
 
     .nb_header .nb_logowrap {
-        width: 180px;
+        width: 180px
     }
 
     .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap {
-        left: 110px;
+        left: 110px
     }
 
     .nb_feat_prod_sec .nb_fp_boxwrap .prd_det_sec .prd_amnt {
-        font-size: 20px;
+        font-size: 20px
     }
 
     .nb_feat_prod_sec {
-        padding: 0px 0px;
+        padding: 0
     }
 
         .nb_feat_prod_sec .nb_fp_boxwrap .prd_det_sec .prd_name {
-            letter-spacing: 2px;
+            letter-spacing: 2px
         }
 
     .nb_sub_sec {
         display: flex;
-        align-items: center;
+        align-items: center
     }
 
     .search_wrap_main form {
-        width: 80%;
+        width: 80%
     }
 
     .nb_sec_navlist li a {
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        justify-content: center
     }
 
         .nb_sec_navlist li a i {
-            margin: 5px 0px;
+            margin: 5px 0
         }
 }
 
-@media(max-width:850px) {
+@media (max-width:850px) {
     .product-section .footSec button {
-        font-size: 16px !important;
+        font-size: 16px !important
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width:768px) {
     .nb_header .nb_headicolst {
         margin-top: 60px;
         margin-bottom: unset
     }
 
     .nb_header .nb_logowrap {
-        width: unset !important;
+        width: unset !important
     }
 
     .nb_prdlisting_pgsec .nb_prd_filterwrap {
-        padding-right: 20px !important;
+        padding-right: 20px !important
     }
 
     .order-details thead {
-        display: none;
+        display: none
     }
 
     .order-details tbody {
-        border-top: none;
+        border-top: none
     }
 
     .single-blog_page_header h1 {
-        font-size: 23px;
+        font-size: 23px
     }
 
     .blog_cnt blockquote {
         font-size: 24px;
         padding: 15px;
         margin-bottom: 25px;
-        line-height: 36px;
+        line-height: 36px
     }
 
     .blog_inside_img {
-        min-height: 200px;
+        min-height: 200px
     }
 
     .navbar-nav .open .dropdown-menu {
-        padding-left: 15px;
+        padding-left: 15px
     }
 
-    .get-address-page .button-submit button {
-        width: 100% !important;
-    }
-
-    .payment-bottom-btn .button-submit {
-        width: 100% !important;
-    }
-
-    .payment-bottom-btn .saveAddrBtn {
-        width: 100% !important;
+    .get-address-page .button-submit button, .payment-bottom-btn .button-submit, .payment-bottom-btn .saveAddrBtn, .submitBtnwra #my-tokenisation-trigger {
+        width: 100% !important
     }
 
     .payment-bottom-btn {
-        display: block !important;
-    }
-
-    .submitBtnwra #my-tokenisation-trigger {
-        width: 100% !important;
+        display: block !important
     }
 
     .nb_header {
-        padding: 18px 10px;
+        padding: 18px 10px
     }
 
     .main-logo {
-        max-height: 88px;
+        max-height: 88px
     }
 
     .basketTable tr td {
-        display: table-row;
+        display: table-row
     }
 
-    .basketTable tr.cmnRow .prd,
-    .basketTable tr.cmnRow .qty,
-    .basketTable tr.cmnRow .tot,
-    .basketTable tr.cmnRow .price {
-        width: 100%;
+    .basketTable tr.cmnRow .prd, .basketTable tr.cmnRow .price, .basketTable tr.cmnRow .qty, .basketTable tr.cmnRow .tot {
+        width: 100%
     }
 
-        .basketTable tr.cmnRow .qty .QtyWrap,
-        .basketTable tr.cmnRow .tot .priceTotal,
-        .basketTable tr.cmnRow .price .priceWrapinner {
-            height: 40px;
+        .basketTable tr.cmnRow .price .priceWrapinner, .basketTable tr.cmnRow .qty .QtyWrap, .basketTable tr.cmnRow .tot .priceTotal {
+            height: 40px
         }
 
     .mobile-checkout {
-        display: flex !important;
-        /*        margin: 0 10px*/
+        display: flex !important
     }
 
     .basket-section .botomBtnsec .btmbtn.sho {
         margin-right: unset;
-        margin-left: unset;
+        margin-left: unset
     }
 
-    .headBoxTop,
-    .basketTable tr.cmnRow .tot .in-basket-price-total:after,
-    .basketTable tr.cmnRow .delivery,
-    .basketTable tr.headRow {
-        display: none;
+    .basketTable tr.cmnRow .delivery, .basketTable tr.cmnRow .tot .in-basket-price-total:after, .basketTable tr.headRow, .headBoxTop {
+        display: none
     }
 
     .list-on-tablets .prd_lst_boxouter .imagewrap img {
-        width: 354px !important;
+        width: 354px !important
     }
 
     .list-on-tablets .prd_lst_boxouter {
-        width: 240px !important;
+        width: 240px !important
     }
 
     .list-on-tablets .list-product-col {
         width: unset;
         flex: unset;
-        max-width: unset;
+        max-width: unset
     }
 
     .list-on-tablets .list-product-row {
-        justify-content: center;
+        justify-content: center
     }
 
     .feature-product-overflow .owl-item {
-        width: 203px !important;
+        width: 203px !important
     }
 
     .feature-product-overflow .prd_lst_boxouter .imagewrap img {
         width: 203px !important;
-        height: 203px;
+        height: 203px
     }
 
     .feature-product-overflow .inside-container {
-        margin: 0px 44px 0px 37px;
+        margin: 0 44px 0 37px
     }
 
     .ui-autocomplete {
-        font-size: 12px !important;
+        font-size: 12px !important
     }
 
     .list-on-tablets {
         width: 100%;
         flex: unset;
-        max-width: unset;
+        max-width: unset
     }
 
-    .price-b {
-        display: block;
+    #nb_res_navTrigger, .nb_header .nb_headicolst li.sir, .price-b {
+        display: block
     }
 
     .tableWrap {
         margin-top: 20px;
-        overflow: hidden;
+        overflow: hidden
     }
 
     .basketTable .prdCellwrap .inrow {
         flex-wrap: wrap;
-        flex-direction: column !important;
+        flex-direction: column !important
     }
 
-    .basketTable .priceWrapinner,
-    .basketTable .priceTotal {
-        flex-direction: row !important;
+    .basketTable .priceTotal, .basketTable .priceWrapinner {
+        flex-direction: row !important
     }
 
-        .basketTable .priceWrapinner b,
-        .basketTable .priceTotal b,
-        .basketTable .subtotalCellInner b {
+        .basketTable .priceTotal b, .basketTable .priceWrapinner b, .basketTable .subtotalCellInner b {
             text-align: right;
             white-space: nowrap;
-            margin-right: 10px;
+            margin-right: 10px
         }
 
-    .basketTable {
+    .basketTable, .basketTable .cmnRow {
         display: flex;
-        justify-content: center;
+        justify-content: center
     }
 
         .basketTable .cmnRow {
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
+            flex-direction: column
         }
 
-            .basketTable .cmnRow .prd,
-            .basketTable .cmnRow .tot {
-                text-align: center !important;
+            .basketTable .cmnRow .prd, .basketTable .cmnRow .tot {
+                text-align: center !important
             }
 
             .basketTable .cmnRow .subtotalCellInner {
-                justify-content: center !important;
+                justify-content: center !important
             }
 
-            .basketTable .prdCellwrap .imgWrap,
-            .basketTable .prdCellwrap .prdName,
-            .basketTable .cmnRow .qty,
-            .wishlist-table tr td .prdname {
+            .basketTable .cmnRow .qty, .basketTable .prdCellwrap .imgWrap, .basketTable .prdCellwrap .prdName, .wishlist-table tr td .prdname {
                 width: 320px !important;
-                height: auto !important;
+                height: auto !important
             }
 
                 .basketTable .prdCellwrap .imgWrap img {
                     width: 320px !important;
-                    height: 320px;
+                    height: 320px
                 }
 
-        .basketTable .prd,
-        .basketTable .price,
-        .basketTable .qty,
-        .basketTable .subtotalCellInner {
-            padding: unset;
+        .basketTable .prd, .basketTable .price, .basketTable .qty, .basketTable .subtotalCellInner {
+            padding: unset
         }
 
     .wishlist-table .prdCellwrap {
-        flex-direction: column !important;
+        flex-direction: column !important
     }
 
-    .wishlist-table tr {
-        align-items: center;
+    .accordion ul, .wishlist-table tr {
+        align-items: center
     }
 
         .wishlist-table tr td {
-            margin-bottom: 10px;
+            margin-bottom: 10px
         }
 
             .wishlist-table tr td .prdname {
-                margin-top: 20px;
+                margin-top: 20px
             }
 
     .wishlist-table .wishlist-btn-td {
         align-items: center;
         display: flex !important;
         justify-content: center;
-        flex-direction: column;
+        flex-direction: column
     }
 
-    .wishlist-table .product-th,
-    .wishlist-table .price-th {
-        display: none;
+    .nb_prd_viewingsecWrap #zoomViewTrigger, .wishlist-table .price-th, .wishlist-table .product-th {
+        display: none
     }
 
-    .wishlist-table .wishlist-btn-td,
-    .wishlist-table .wishlist-table-btns {
-        width: 100%;
+    .wishlist-table .wishlist-btn-td, .wishlist-table .wishlist-table-btns {
+        width: 100%
     }
 
     .wishlist-table .wishlist-btn-td {
         padding-left: 10px !important;
-        padding-right: 10px !important;
+        padding-right: 10px !important
     }
 
     .tab_myaccount .account-save-btn {
-        width: 100% !important;
+        width: 100% !important
     }
 
     .basket-modal-content .basket-section .imgWrap img {
         width: 130px !important;
-        height: 130px;
+        height: 130px
     }
 
-    .styled-checkbox .same-billing-address__label:before,
-    .styled-checkbox + label:before {
+    .styled-checkbox .same-billing-address__label:before, .styled-checkbox + label:before {
         min-width: 30px;
-        min-height: 30px;
+        min-height: 30px
     }
 
     .search-box-buttons .search_btn {
-        font-size: 22px;
+        font-size: 22px
     }
 
     .search_wrap_main .search_btn i {
-        font-size: 21px;
+        font-size: 21px
     }
 
     .nb_prd_filterwrap {
-        top: 126px !important;
+        top: 126px !important
     }
 
     .nb_prd_viewingsecWrap .img_view_area {
         height: 287px;
         padding: unset;
         justify-content: center;
-        display: flex;
+        display: flex
     }
 
     .img_view_area .zoomWrapper {
         height: 287px !important;
-        width: 286.797px !important;
+        width: 286.797px !important
     }
 
     .product-section .breadCrumbtopsec {
-        margin-bottom: 20px;
+        margin-bottom: 20px
     }
 
-    .checkout-process-breadcrum,
-    .order-review-breadcrum,
-    .sagepay-breadcrum,
-    .paypal-breadcrum {
-        margin-bottom: unset !important;
-    }
-
-    .nb_prd_viewingsecWrap #zoomViewTrigger {
-        display: none;
+    .checkout-process-breadcrum, .order-review-breadcrum, .paypal-breadcrum, .sagepay-breadcrum {
+        margin-bottom: unset !important
     }
 
     .zoomWrapper {
-        pointer-events: none;
+        pointer-events: none
     }
 
-    .zoomContainer,
-    .zoomLens,
-    .zoomWindow {
+    .zoomContainer, .zoomLens, .zoomWindow {
         display: none !important;
-        pointer-events: none;
+        pointer-events: none
     }
 
     .product-section .notify-btn {
-        margin-right: unset !important;
+        margin-right: unset !important
     }
 
     .nb_fp_boxwrap {
-        margin-bottom: 20px;
+        margin-bottom: 20px
     }
 
     .nb_ftb_box {
-        margin-bottom: 23px;
+        margin-bottom: 23px
     }
 
-    .left_beer {
-        display: none;
+    .left_beer, .nb_bnr_count, .nb_header .nb_headicolst li {
+        display: none
     }
 
     .nb_sub_sec .nb_sub_wrap {
-        padding: 0px 20px;
-        text-align: center;
-    }
-
-    .nb_bnr_count {
-        display: none;
+        padding: 0 20px;
+        text-align: center
     }
 
     .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap {
-        left: 20px;
+        left: 20px
     }
 
         .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap h5 {
             font-size: 12px;
-            margin-bottom: 10px;
+            margin-bottom: 10px
         }
 
         .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap button {
             font-size: 10px;
-            padding-bottom: 8px;
+            padding-bottom: 8px
         }
 
             .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap button:after {
                 width: 60px;
-                height: 2px;
+                height: 2px
             }
 
     .nb_top_catSection {
-        padding: 30px 0px;
+        padding: 30px 0
     }
 
     .nb_header_style1 h3 {
-        font-size: 20px;
+        font-size: 20px
     }
 
     .nb_header_style1 {
-        margin-bottom: 18px;
+        margin-bottom: 18px
     }
 
     .ftb_sec {
-        padding: 50px 0px;
-    }
-
-    .nb_header .nb_headicolst li {
-        display: none;
-    }
-
-        .nb_header .nb_headicolst li.sir {
-            display: block;
-        }
-
-    #nb_res_navTrigger {
-        display: block;
+        padding: 50px 0
     }
 
     .nb_mainnav {
-        display: none;
+        display: none
     }
 
     .nb_header .nb_logowrap {
-        padding: 29px;
-        width: 215px;
+        padding: 29px
     }
 
     .nb_firstNav_res_lst .nb_subnavWrap {
         position: relative;
         width: 100%;
         float: left;
-        display: none;
+        display: none
     }
 
-        .nb_firstNav_res_lst .nb_subnavWrap ul {
+        .nb_firstNav_res_lst .nb_subnavWrap ul, .nb_firstNav_res_lst .nb_subnavWrap ul li, .nb_s_snList, .nb_s_snList li {
             width: 100%;
-            float: left;
+            float: left
         }
-
-            .nb_firstNav_res_lst .nb_subnavWrap ul li {
-                width: 100%;
-                float: left;
-            }
 
     .nb_s_snList {
         display: none;
-        padding-left: 20px;
-        width: 100%;
-        float: left;
-    }
-
-        .nb_s_snList li {
-            width: 100%;
-            float: left;
-        }
-
-            .nb_s_snList li a {
-                display: inline !important;
-                float: left;
-            }
-
-    .hav_sub_nav2:hover .nb_s_snList {
-        display: block;
-    }
-
-    .nb_f_snList {
-        margin: 0px;
-        padding-left: 10px;
-    }
-
-        .nb_f_snList li a {
-            font-size: 16px !important;
-        }
-
-    .nb_s_snList {
-        margin: 0px;
+        padding-left: 20px
     }
 
         .nb_s_snList li a {
-            font-size: 14px !important;
+            display: inline !important;
+            float: left
+        }
+
+    .hav_sub_nav2:hover .nb_s_snList, .hav_sub_nav:hover .nb_subnavWrap {
+        display: block
+    }
+
+    .nb_f_snList {
+        margin: 0;
+        padding-left: 10px
+    }
+
+        .nb_f_snList li a {
+            font-size: 16px !important
+        }
+
+    .nb_s_snList {
+        margin: 0
+    }
+
+        .nb_s_snList li a {
+            font-size: 14px !important
         }
 
     .hav_sub_nav a {
         display: inline !important;
-        font-size: 16px;
-    }
-
-    .hav_sub_nav:hover .nb_subnavWrap {
-        display: block;
+        font-size: 16px
     }
 
     .hav_sub_nav2 a {
-        display: inline;
+        display: inline
     }
 
     .nb_fltr_accrd_wrap {
-        margin-bottom: 50px;
+        margin-bottom: 50px
     }
 
     .nb_prd_listing_wrap .prd_lst_boxouter .foot .prd_amnt {
-        padding: 3px 11px;
+        padding: 3px 11px
     }
 
     .nb_prd_listing_wrap .prd_lst_boxouter .prdName {
         min-height: auto;
-        max-height: auto;
+        max-height: auto
     }
 
     .nb_prdlisting_pgsec .breadCrumbtopsec {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: flex-start
     }
 
         .nb_prdlisting_pgsec .breadCrumbtopsec .nb_bread_crumbwrap nav ol {
-            margin-bottom: 25px;
+            margin-bottom: 25px
         }
 
     .contact_form_sec .contact_pg_wrap .nb_contact_form .form-group {
-        margin-bottom: 15px;
+        margin-bottom: 15px
     }
 
     .nb_prd_filterwrap {
         position: fixed;
         width: 320px !important;
         left: 0;
-        top: 150px;
         background-color: #fff;
         z-index: 100;
         padding: 20px;
-        box-shadow: 0px 0px 10px -5px #000;
+        box-shadow: 0 0 10px -5px #000;
         overflow-y: auto;
         height: 100%;
-        transition: all 0.3s ease;
-        transform: translateX(-320px);
+        transition: all .3s ease;
+        transform: translateX(-320px)
     }
 
         .nb_prd_filterwrap.show {
-            transform: translateX(0px);
+            transform: translateX(0)
         }
 
     #res_filterBox_trigger {
-        display: flex;
+        display: flex
     }
 
-    .search_wrap_main {
-        display: none;
+    .progressBarStep ul#progressList li .HalfCircle, .progressBarStep ul#progressList li span.txt, .search_wrap_main {
+        display: none
     }
 
     .nb_sec_navwrap .nb_sec_navlist {
-        width: 620px;
+        width: 620px
     }
 
     .navListWrap {
-        overflow: scroll;
-    }
-
-    .progressBarStep ul#progressList li span.txt {
-        display: none;
-    }
-
-    .progressBarStep ul#progressList li .HalfCircle {
-        display: none;
+        overflow: scroll
     }
 
     .progressBarStep ul#progressList li:after {
         width: 60px;
-        height: 60px;
+        height: 60px
     }
 
     .progressBarStep {
         padding-bottom: 30px;
-        margin-bottom: 30px;
+        margin-bottom: 30px
     }
-
 
     .accordion {
         height: auto;
-        overflow: visible;
+        overflow: visible
     }
 
         .accordion ul {
             width: 100%;
             display: flex;
             flex-direction: row;
-            align-items: center;
             justify-content: space-between;
-            flex-wrap: wrap;
+            flex-wrap: wrap
         }
 
     .nb_top_catSection .accordion ul li {
         width: 43%;
         display: inline-block;
-        height: 180px;
+        height: 180px
     }
 
     .accordion ul li div {
-        overflow: visible !important;
+        overflow: visible !important
     }
 
         .accordion ul li div a {
-            height: 180px;
+            height: 180px
         }
 
     .nb_top_catSection .accordion ul li:last-child {
         width: 43%;
-        left: auto;
+        left: auto
     }
 
     .nb_top_catSection .accordion ul li div a h2 {
         width: 100%;
         left: 0;
         color: #000;
-        background: rgb(255, 255, 255);
+        background: #fff
     }
 
     .nb_top_catSection .accordion ul li:nth-child(1) {
-        width: 43%;
+        width: 43%
     }
 
-    .accordion ul:hover li {
-        width: 43%;
+    .accordion ul:hover li, .accordion ul:hover li:hover {
+        width: 43%
     }
-
-        .accordion ul:hover li:hover {
-            width: 43%;
-        }
 
     .accordion.have2child ul li:first-child {
-        clip-path: none;
+        clip-path: none
     }
 
     .accordion.have2child ul li:last-child {
-        clip-path: none;
+        clip-path: none
     }
 
     .accordion.have1child ul li {
-        width: 100%;
+        width: 100%
     }
 }
 
-@media(max-width:767px) {
+@media (max-width:767px) {
     .feature-product-overflow .inside-container {
-        margin: 0px 22px 0px 24px;
+        margin: 0 22px 0 24px
     }
 }
 
-@media(max-width:700px) {
+@media (max-width:700px) {
     .list-on-tablets .prd_lst_boxouter .imagewrap img {
-        width: 320px !important;
+        width: 320px !important
     }
 }
 
-@media(max-width:650px) {
-    .list-on-tablets .prd_lst_boxouter .imagewrap img {
-        width: 295px !important;
+@media (max-width:650px) {
+    .basketTable .cmnRow .qty, .basketTable .prdCellwrap .imgWrap, .basketTable .prdCellwrap .prdName, .list-on-tablets .prd_lst_boxouter .imagewrap img, .wishlist-table tr td .prdname {
+        width: 295px !important
     }
 
     .feature-product-overflow .prd_lst_boxouter .imagewrap img {
         width: 295px !important;
-        height: 213px;
+        height: 213px
     }
 
     .basketTable .prdCellwrap .imgWrap img {
         width: 295px !important;
-        height: 295px;
-    }
-
-    .basketTable .prdCellwrap .imgWrap,
-    .basketTable .prdCellwrap .prdName,
-    .basketTable .cmnRow .qty,
-    .wishlist-table tr td .prdname {
-        width: 295px !important;
+        height: 295px
     }
 }
 
-@media(max-width:600px) {
-    .list-on-tablets .prd_lst_boxouter .imagewrap img {
-        width: 270px !important;
+@media (max-width:600px) {
+    .basketTable .cmnRow .qty, .basketTable .prdCellwrap .imgWrap, .basketTable .prdCellwrap .prdName, .list-on-tablets .prd_lst_boxouter .imagewrap img, .wishlist-table tr td .prdname {
+        width: 270px !important
     }
 
     .feature-product-overflow .owl-item {
         width: 202px !important;
-        text-align: center;
+        text-align: center
     }
 
     .feature-product-overflow .prd_lst_boxouter .imagewrap img {
         width: 180px !important;
-        height: 180px;
+        height: 180px
     }
 
     .feature-product-overflow .foot .icolist i {
-        font-size: 23px !important;
+        font-size: 23px !important
     }
 
-    .feature-product-overflow .foot .icolist .cart-icon,
-    .feature-product-overflow .foot .icolist .bel-icon {
+    .feature-product-overflow .foot .icolist .bel-icon, .feature-product-overflow .foot .icolist .cart-icon {
         margin-left: 0;
-        margin-right: -8px;
+        margin-right: -8px
     }
 
     .basketTable .prdCellwrap .imgWrap img {
         width: 270px !important;
-        height: 270px;
-    }
-
-    .basketTable .prdCellwrap .imgWrap,
-    .basketTable .prdCellwrap .prdName,
-    .basketTable .cmnRow .qty,
-    .wishlist-table tr td .prdname {
-        width: 270px !important;
+        height: 270px
     }
 }
 
-@media(max-width:575px) {
+@media (max-width:575px) {
     .confirm-order-addresses .shipping-address-col {
-        margin-top: 35px;
+        margin-top: 35px
     }
 
     .cartitem-details {
-        flex-wrap: wrap;
+        flex-wrap: wrap
     }
 
-    .cartitem-imgtext {
-        width: 100%;
-    }
-
-    .cartitem-price {
-        width: 100%;
+    .cartitem-imgtext, .cartitem-price {
+        width: 100%
     }
 
         .cartitem-price span {
             padding-top: unset !important;
-            padding-left: unset !important;
+            padding-left: unset !important
         }
 
     .kit-product .card-body {
         padding-bottom: unset !important;
-        padding-top: unset !important;
+        padding-top: unset !important
     }
 
     .cartitem-text {
-        padding-right: unset;
+        padding-right: unset
     }
 
     .kit-product .product-bg .thumbnails .owl-wrapper-outer .owl-item {
-        width: 88px !important;
+        width: 88px !important
     }
 
     .kit-product .card-header {
-        padding: unset !important;
+        padding: unset !important
     }
 
     .kit-product .card {
-        margin-bottom: 7px;
+        margin-bottom: 7px
     }
 
     .kit-product .description-row {
         width: 100%;
-        padding: unset;
+        padding: unset
     }
 
     .kit-product .card-title {
-        margin-bottom: auto;
+        margin-bottom: auto
     }
 
     .kit-product .thumbnail a img {
-        position: unset;
+        position: unset
     }
 
     .kit-product .product-bg .card-header h4 {
-        font-size: unset;
+        font-size: unset
     }
 
     .botomBtnsec {
-        flex-wrap: wrap;
+        flex-wrap: wrap
     }
 
         .botomBtnsec .btmbtn {
             width: 100% !important;
-            margin-top: 15px !important;
+            margin-top: 15px !important
         }
 }
 
 @media screen and (min-width:568px) and (max-width:767px) {
     .order-details td:first-child {
-        width: 120px;
+        width: 120px
     }
 
     .ordered-items p {
-        margin-bottom: 10px;
+        margin-bottom: 10px
     }
 }
 
-@media(max-width:560px) {
+@media (max-width:560px) {
     .order-details td:first-child {
-        width: 100px;
+        width: 100px
     }
 
     .ordered-items {
-        padding: 10px;
-        padding-bottom: 10px;
+        padding: 10px
     }
 
         .ordered-items p {
-            margin-bottom: 10px;
+            margin-bottom: 10px
         }
 
     .billandshipsec .address-wrapper .btnWrap .btmBtn {
         width: 100%;
-        margin-top: 10px;
+        margin-top: 10px
     }
 
     .billandshipsec .address-wrapper .btnWrap {
-        display: unset;
+        display: unset
     }
 
     .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group .findAddrWrap .fadBtn {
-        width: 85px !important;
+        width: 85px !important
     }
 
-    .saveAddrWrap .saveAddrBtn {
-        width: 100% !important;
+    .billandshipsec .address-wrapper .addnwShopAdrrbtn, .billandshipsec .checkout-options-wrapper .addnwShopAdrrbtn, .saveAddrWrap .saveAddrBtn {
+        width: 100% !important
     }
 
-    .billandshipsec .checkout-options-wrapper .addnwShopAdrrbtn,
-    .billandshipsec .address-wrapper .addnwShopAdrrbtn {
-        width: 100% !important;
+    .billandshipsec .address-wrapper .btnWrap, .billandshipsec .checkout-options-wrapper .btnWrap, .saveAddrWrap {
+        flex-wrap: wrap
     }
 
-    .billandshipsec .checkout-options-wrapper .btnWrap, .billandshipsec .address-wrapper .btnWrap, .saveAddrWrap {
-        flex-wrap: wrap;
-    }
-
-    .list-on-tablets .prd_lst_boxouter .imagewrap img {
+    .basketTable .prdCellwrap .imgWrap img, .list-on-tablets .prd_lst_boxouter .imagewrap img {
         width: 245px !important;
-        height: 245px;
-    }
-
-    .basketTable .prdCellwrap .imgWrap img {
-        width: 245px !important;
-        height: 245px;
+        height: 245px
     }
 
     .basket-modal-content .botomBtnsec {
-        margin-top: unset !important;
+        margin-top: unset !important
     }
 
-    .paypal-form,
-    sagepay-form {
-        width: 100%;
+    .paypal-form, .paypal-form .button-submit a.saveAddrBtn, .sagepay-form .button-submit a.saveAddrBtn, sagepay-form {
+        width: 100%
     }
-
-        .paypal-form .button-submit a.saveAddrBtn,
-        .sagepay-form .button-submit a.saveAddrBtn {
-            width: 100%;
-        }
 
     .payment-type-btns {
         margin: unset !important;
-        margin-bottom: -12px !important;
+        margin-bottom: -12px !important
     }
 
     .billandshipsec .checkout-options-wrapper .addnwShopAdrrbtn {
-        margin: 10px 0 0 0;
+        margin: 10px 0 0
     }
 }
 
-@media(max-width:525px) {
-    .list-on-tablets .foot .icolist .cart-icon,
-    .list-on-tablets .foot .icolist .bel-icon {
-        margin-left: 18px;
+@media (max-width:525px) {
+    .list-on-tablets .foot .icolist .bel-icon, .list-on-tablets .foot .icolist .cart-icon {
+        margin-left: 18px
     }
 
     .list-on-tablets .prd_lst_boxouter .foot .icolist li a i {
-        font-size: 23px !important;
+        font-size: 23px !important
     }
 }
 
-@media(max-width:500px) {
-
+@media (max-width:500px) {
     .get-address-page .both-btn a {
         width: 100%;
-        margin-top: 8px;
+        margin-top: 8px
     }
 
-    .list-on-tablets .prd_lst_boxouter .imagewrap img {
+    .basketTable .prdCellwrap .imgWrap img, .list-on-tablets .prd_lst_boxouter .imagewrap img {
         width: 220px !important;
-        height: 220px;
-    }
-
-    .basketTable .prdCellwrap .imgWrap img {
-        width: 220px !important;
-        height: 220px;
+        height: 220px
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width:480px) {
     .wishlist-table .cmnRow {
-        display: flex !important;
+        display: flex !important
     }
 
     .product-section .footSec {
-        display: block;
+        display: block
     }
 
-    .footSec .addTobasket {
-        margin-right: unset !important;
-    }
-
-    .footSec .addtowishlistbtn {
-        margin-right: unset !important;
+    .footSec .addTobasket, .footSec .addtowishlistbtn {
+        margin-right: unset !important
     }
 
     .basket-modal-content .botomBtnsec .btmbtn.sho {
-        margin: unset !important;
+        margin: unset !important
     }
 
     .basket-modal-content .botomBtnsec .btmbtn.pro {
-        margin: 10px 0px 0px 0px !important;
+        margin: 10px 0 0 !important
     }
 
     .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap h5 {
         font-size: 13px;
-        line-height: 18px;
+        line-height: 18px
     }
 
     .nb_header .nb_logowrap {
-        padding: 0px 10px 10px 10px;
-        width: 150px;
+        padding: 0 10px 10px;
+        width: 150px
     }
 
     .nb_header .nb_headicolst li i {
-        font-size: 20px;
+        font-size: 20px
     }
 
     .nb_header .nb_headicolst li {
-        padding: 0px 16px;
+        padding: 0 16px
     }
 
     .nb_prd_det_rightsec .footSec .qty {
-        margin-right: 0px;
-        margin-bottom: 20px;
+        margin-right: 0;
+        margin-bottom: 20px
     }
 
     .nb_prd_det_rightsec .footSec button.addTobasket {
         width: 100%;
-        margin-bottom: 13px;
+        margin-bottom: 13px
     }
 
-    .nb_prd_det_rightsec .footSec .addtowishlist {
-        display: none;
+    .nb_basket_wrap table.basketTable thead, .nb_prd_det_rightsec .footSec .addtowishlist {
+        display: none
     }
 
     .nb_prd_det_rightsec .footSec .addtowishlistbtn {
         display: inline-block;
         width: 100%;
-        background-color: #f33655;
+        background-color: #f33655
     }
 
         .nb_prd_det_rightsec .footSec .addtowishlistbtn:hover {
-            background-color: #000;
+            background-color: #000
         }
 
     .nb_basket_wrap table.basketTable tbody tr td .prdimgsec .prdimg {
-        margin-right: 10px;
+        margin-right: 10px
     }
 
     .nb_basket_wrap table.basketTable tbody tr td .prdimgsec .prdname {
         width: 65%;
-        letter-spacing: 0px;
-        font-size: 14px;
+        letter-spacing: 0;
+        font-size: 14px
     }
 
     .nb_basket_wrap table.basketTable tbody tr td {
         padding: 10px;
+        width: 100%;
+        float: left;
+        display: block
     }
 
         .nb_basket_wrap table.basketTable tbody tr td .prdimgsec .prdimg {
-            width: 35%;
+            width: 35%
         }
 
     .nb_basket_wrap div.coupen_codewrap {
-        justify-content: center;
+        justify-content: center
     }
 
-    .nb_basket_wrap table.basketTable tbody tr td {
-        display: block;
-    }
-
-    .nb_basket_wrap table.basketTable {
+    .nb_basket_wrap table.basketTable, .nb_basket_wrap table.basketTable tbody, .nb_basket_wrap table.basketTable tbody tr {
         width: 100%;
-        float: left;
         display: block;
+        float: left
     }
 
-        .nb_basket_wrap table.basketTable thead {
-            display: none;
-        }
-
-        .nb_basket_wrap table.basketTable tbody {
-            width: 100%;
-            display: block;
-            float: left;
-        }
-
-            .nb_basket_wrap table.basketTable tbody tr {
-                width: 100%;
-                float: left;
-                display: block;
-            }
-
-                .nb_basket_wrap table.basketTable tbody tr td {
-                    width: 100%;
-                    float: left;
-                    display: block;
-                }
-
-    #signupPopup
-    .modal-dialog
-    .modal-content
-    .modal-body
-    .loginForm
-    .rememberWrap {
-        flex-direction: column;
+    #signupPopup .modal-dialog .modal-content .modal-body .loginForm .rememberWrap {
+        flex-direction: column
     }
 
-        #signupPopup
-        .modal-dialog
-        .modal-content
-        .modal-body
-        .loginForm
-        .rememberWrap
-        .form-check {
-            margin-bottom: 10px;
+        #signupPopup .modal-dialog .modal-content .modal-body .loginForm .rememberWrap .form-check {
+            margin-bottom: 10px
         }
 
     .nb_top_catSection .accordion ul li {
         width: 43%;
         margin: 10px;
-        display: inline-block;
+        display: inline-block
     }
 
         .nb_top_catSection .accordion ul li:last-child {
             width: 43%;
-            left: auto;
+            left: auto
         }
 
         .nb_top_catSection .accordion ul li:nth-child(1) {
-            width: 43%;
+            width: 43%
         }
 
     .nb_top_catSection .accordion ul:hover li {
-        width: 43%;
+        width: 43%
     }
 }
 
-@media(max-width:455px) {
-    .list-on-tablets .foot .icolist .cart-icon,
+@media (max-width:455px) {
     .list-on-tablets .foot .icolist .bel-icon {
         margin-left: 0;
-        margin-right: -8px;
+        margin-right: -8px
     }
 
     .feature-product-overflow .foot .icolist .cart-icon {
-        margin-left: 0px;
-        margin-right: 0px;
+        margin-left: 0;
+        margin-right: 0
     }
 
     .list-on-tablets .foot .icolist .cart-icon {
         margin-left: 0;
-        margin-right: -3px;
+        margin-right: -3px
     }
 
     .feature-product-overflow .owl-item {
-        width: 139px !important;
+        width: 139px !important
     }
 
     .feature-product-overflow .prd_lst_boxouter .imagewrap img {
         width: 125px !important;
-        height: 125px;
+        height: 125px
     }
 
     .prd_lst_boxouter .imagewrap {
-        margin-bottom: 5px !important;
+        margin-bottom: 5px !important
     }
 
     .prd_lst_boxouter .prdName {
         font-size: 12px;
-        margin-bottom: 6px;
+        margin-bottom: 6px
     }
 
     .feature-product-overflow .prd_lst_boxouter .badge {
         width: 40px;
         height: 40px;
-    }
-
-    .feature-product-overflow .prd_lst_boxouter .badge {
-        top: 3px;
+        top: 3px
     }
 
     .feature-product-overflow .prd_lst_boxouter .badge-1 {
-        right: 35px;
+        right: 35px
     }
 
     .feature-product-overflow .prd_lst_boxouter .badge-0 {
-        right: 0px;
+        right: 0
     }
 
     .feature-product-overflow .prd_lst_boxouter .prd_amnt {
         font-size: 10px !important;
         padding: 3px 4px !important;
-        margin-bottom: 6px;
+        margin-bottom: 6px
     }
 
     .feature-product-overflow .prd_lst_boxouter .foot .icolist li a i {
-        font-size: 17px !important;
+        font-size: 17px !important
     }
 }
 
-@media(max-width:450px) {
-    .list-on-tablets .prd_lst_boxouter .imagewrap img {
+@media (max-width:450px) {
+    .basketTable .prdCellwrap .imgWrap img, .list-on-tablets .prd_lst_boxouter .imagewrap img {
         width: 195px !important;
-        height: 195px;
-    }
-
-    .basketTable .prdCellwrap .imgWrap img {
-        width: 195px !important;
-        height: 195px;
+        height: 195px
     }
 }
 
-@media (max-width: 425px) {
+@media (max-width:425px) {
     .cartitem-img {
         width: 100%;
-        text-align: center;
+        text-align: center
     }
 
     .product-bg img {
-        width: 300px !important;
+        width: 300px !important
     }
 
     .sticky {
-        width: 300px;
+        width: 300px
     }
 
     .billandshipsec .checkout-options-wrapper .checkboxwrap label {
-        font-size: 14px;
+        font-size: 14px
     }
 
-    .styled-checkbox .same-billing-address__label:before,
-    .styled-checkbox + label:before {
-        margin-right: 12px;
+    .styled-checkbox .same-billing-address__label:before, .styled-checkbox + label:before {
+        margin-right: 12px
     }
 
     .list-on-tablets .prd_lst_boxouter .imagewrap img {
         width: 182px !important;
-        height: 182px;
+        height: 182px
     }
 
     .feature-product-overflow .inside-container {
-        margin: 0px 63px 0px 62px;
+        margin: 0 63px 0 62px
     }
 }
 
-@media (max-width: 420px) {
+@media (max-width:420px) {
     .basketTable .prdCellwrap .imgWrap img {
         width: 182px !important;
-        height: 182px;
+        height: 182px
     }
 
     .nb_basket_wrap table.basketTable tbody tr td .prdimgsec .prdimg {
         width: auto;
-        margin-bottom: 10px;
+        margin-bottom: 10px
     }
 
     .nb_basket_wrap table.basketTable tbody tr td .prdimgsec .prdname {
-        width: auto;
+        width: auto
     }
 
     .nb_basket_wrap table.basketTable tbody tr td .prdimgsec {
         justify-content: center;
-        flex-direction: column;
+        flex-direction: column
     }
 }
 
-@media(max-width:415px) {
-    .feature-product-overflow .foot .icolist .cart-icon,
-    .feature-product-overflow .foot .icolist .bel-icon {
+@media (max-width:415px) {
+    .feature-product-overflow .foot .icolist .bel-icon, .feature-product-overflow .foot .icolist .cart-icon {
         margin-left: -5px;
-        margin-right: -8px;
+        margin-right: -8px
     }
 }
 
-@media(max-width:410px) {
+@media (max-width:410px) {
     .prd_lst_boxouter .prd_amnt {
         font-size: 10px !important;
         padding: 3px 4px !important;
-        margin-bottom: 6px;
+        margin-bottom: 6px
     }
 
     .prd_lst_boxouter .foot .prd_amnt {
-        min-width: 57px;
+        min-width: 57px
     }
 
     .prd_lst_boxouter .foot .icolist li {
-        margin: unset !important;
+        margin: unset !important
     }
 
-    .list-on-tablets .foot .icolist .cart-icon,
-    .list-on-tablets .foot .icolist .bel-icon {
+    .list-on-tablets .foot .icolist .bel-icon, .list-on-tablets .foot .icolist .cart-icon {
         margin-left: 18px;
-        margin-right: 0px;
+        margin-right: 0
     }
 
     .feature-product-overflow .foot .icolist .bel-icon {
         margin-left: 4px;
-        margin-right: 0px;
+        margin-right: 0
     }
 
     .prd_lst_boxouter .foot .icolist .bel-icon {
-        margin-left: 6px;
+        margin-left: 6px
     }
 
     .feature-product-overflow .foot .icolist .cart-icon {
         margin-left: 6px;
-        margin-right: 6px;
+        margin-right: 6px
     }
 
     .list-on-tablets .prd_lst_boxouter .foot .icolist li a i {
-        font-size: 17px !important;
+        font-size: 17px !important
     }
 }
 
-@media(max-width:390px) {
+@media (max-width:390px) {
     .ui-autocomplete {
-        width: 291px !important;
+        width: 291px !important
     }
 }
 
-@media(max-width:381px) {
+@media (max-width:381px) {
     .prd_lst_boxouter .foot .icolist .bel-icon {
-        margin-left: -1px;
+        margin-left: -1px
     }
 
     .feature-product-overflow .foot .icolist .cart-icon {
         margin-left: 6px;
-        margin-right: 6px;
+        margin-right: 6px
     }
 
     .list-on-tablets .foot .icolist .cart-icon {
         margin-left: 13px;
-        margin-right: 0px;
+        margin-right: 0
     }
 }
 
-@media(max-width:375px) {
-    .list-on-tablets .prd_lst_boxouter .imagewrap img {
+@media (max-width:375px) {
+    .basketTable .prdCellwrap .imgWrap img, .list-on-tablets .prd_lst_boxouter .imagewrap img {
         width: 157px !important;
-        height: 157px;
-    }
-
-    .list-on-tablets .prd_lst_boxouter .imagewrap img {
-        width: 157px !important;
-        height: 157px;
+        height: 157px
     }
 
     .feature-product-overflow .inside-container {
-        margin: 0px 43px 0px 47px;
-    }
-
-    .basketTable .prdCellwrap .imgWrap img {
-        width: 157px !important;
-        height: 157px;
+        margin: 0 43px 0 47px
     }
 }
 
-@media(max-width:360px) {
+@media (max-width:360px) {
     .product-bg img {
-        width: 250px !important;
+        width: 250px !important
     }
 
     .sticky {
-        width: 250px;
+        width: 250px
     }
 
     .feature-product-overflow .inside-container {
-        margin: 0px 36px 0px 39px;
+        margin: 0 36px 0 39px
     }
 
     .ui-autocomplete {
-        left: 15px !important;
+        left: 15px !important
     }
 }
 
-@media(max-width:350px) {
-    .list-on-tablets .prd_lst_boxouter .imagewrap img {
+@media (max-width:350px) {
+    .basketTable .prdCellwrap .imgWrap img, .list-on-tablets .prd_lst_boxouter .imagewrap img {
         width: 130px !important;
-        height: 130px;
+        height: 130px
     }
 
     .prd_lst_boxouter .foot .icolist .bel-icon {
         margin-left: -4px;
-        margin-right: -5px;
+        margin-right: -5px
     }
 
     .feature-product-overflow .foot .icolist .cart-icon {
         margin-left: 5px;
-        margin-right: 6px;
+        margin-right: 6px
     }
 
     .list-on-tablets .foot .icolist .cart-icon {
         margin-left: 3px;
-        margin-right: 7px;
-    }
-
-    .basketTable .prdCellwrap .imgWrap img {
-        width: 130px !important;
-        height: 130px;
+        margin-right: 7px
     }
 
     .feature-product-overflow {
-        overflow: hidden;
+        overflow: hidden
     }
 
     .product-section .footSec button {
-        font-size: 14px !important;
+        font-size: 14px !important
     }
 }
 
-@media(max-width:339px) {
+@media (max-width:339px) {
     .nb_header .nb_headicolst {
-        margin-top: -36px;
+        margin-top: -36px
     }
 }
 
-@media (max-width: 320px) {
+@media (max-width:320px) {
     .feature-product-overflow .inside-container {
-        margin: 0px 16px 0px 19px;
+        margin: 0 16px 0 19px
     }
 }
 
-/*min width queries*/
-
-@media(min-width:900px) {
+@media (min-width:900px) {
     .kit-product .sticky {
-        margin-right: 15px;
+        margin-right: 15px
     }
 }
 
-@media(min-width:769px) {
+@media (min-width:769px) {
     .img_view_area .zoomWrapper {
         width: 100% !important;
-        height: 100% !important;
+        height: 100% !important
     }
 }
 
-@media(min-width:411px) {
+@media (min-width:411px) {
     .prd_lst_boxouter .foot .prd_amnt {
-        min-width: 125px;
+        min-width: 125px
     }
 }
