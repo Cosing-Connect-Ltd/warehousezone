@@ -470,6 +470,7 @@ namespace WarehouseEcommerce.Controllers
             productFiltering.PriceInterval = _tenantWebsiteService.AllPriceListAgainstGroupAndDept(products,CurrentTenantWebsite.SiteID);
             productFiltering.AttributeValues = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(attributedProduct);
             productFiltering.subCategories = _productlookupServices.GetAllValidSubCategoriesByDepartmentAndGroup(products).ToList();
+            productFiltering.WebsiteNavigationCategories = _productlookupServices.GetWebsiteNavigationCategoriesList(category, CurrentTenantWebsite.SiteID).ToList();
             productFiltering.Count = attributedProduct.Count();
             productFiltering.CurrencySymbol = ViewBag.CurrencySymbol;
 

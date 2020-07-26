@@ -6,8 +6,20 @@
     <div class="nb_prd_filterwrap">
         <div class="prod_count_sec">
             <h5 class="count">@(Model.Count+"Products")</h5>
-
         </div>
+        @if (Model.WebsiteNavigationCategories.Count > 0)
+        {
+            <div class="type-content">
+                <div class="nb_filter_body">
+                    <ul class="nb_prd_filter_listouter">
+                        @foreach (var item in Model.WebsiteNavigationCategories)
+                        {
+                            <li class="list-group-item"><a href="@Url.Action("list", "Products", new { category = item})">@item</a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
         <div class="nb_fltr_accrd_wrap">
             <div id="accordion" class="nb_filter_accordion">
 
@@ -31,11 +43,7 @@
 
                                 <li class="list-group-item" style="display: none">
                                     <input type="checkbox" id="priceS" class="checkbox-inline" value="" @(Request.Url.OriginalString.ToLower().Contains("prices") ? "checked" : "")>
-
                                 </li>
-
-
-
                             </ul>
                         </div>
                     </div>
@@ -56,7 +64,6 @@
                                 {
                                     string name = item.Replace(" ", "_").Replace(",", "^");
                                     <li class="list-group-item"><input type="checkbox" id="BrandS" class="checkbox-inline" title="@(item)" value="@(name)" @(Request.Url.OriginalString.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(item)</li>
-
                                 }
                             </ul>
                         </div>
@@ -79,8 +86,6 @@
                                     string name = item.Replace(" ", "_").Replace(",", "^");
                                     <li class="list-group-item" id="type"><input type="checkbox" id="TypeS" class="checkbox-inline" title="@(item)" value="@(name)" @(Request.Url.OriginalString.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(item)</li>
                                 }
-
-
                             </ul>
                         </div>
                     </div>
@@ -198,16 +203,10 @@
                                 }
                             }
                         }
-
                     }
-
                 });
                 location.href = str;
-
-
-
         });
-
     });
 
 //filter collapse Show/Hide start

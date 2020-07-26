@@ -142,8 +142,15 @@ namespace Ganedata.Core.Services
 
             var productcategoriesId = productMasters.Select(u => u.ProductCategoryId).ToList();
             return _currentDbContext.ProductCategories.Where(u => productcategoriesId.Contains(u.ProductCategoryId)).Select(u => u.ProductCategoryName);
+        }
+
+        public IEnumerable<string> GetWebsiteNavigationCategoriesList(string parentCategory, int siteId)
+        {
+            var subCategories = _currentDbContext.WebsiteNavigations.Where(u => u.Parent.Name == parentCategory && u.Type == WebsiteNavigationType.Category && u.IsDeleted != true && u.SiteID == siteId && u.IsActive);
+            return subCategories.Select(c => c.Name);
 
         }
+
         public IEnumerable<ProductAttributeValuesMap> GetAllValidProductAttributeValuesMap()
         {
             return _currentDbContext.ProductAttributeValuesMap.Where(m => m.IsDeleted != true);
