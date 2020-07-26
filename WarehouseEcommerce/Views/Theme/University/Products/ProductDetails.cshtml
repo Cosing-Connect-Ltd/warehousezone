@@ -70,7 +70,7 @@
                         @{ var availableProductCount = Ganedata.Core.Services.Inventory.GetAvailableProductCount(Model.SelectedProduct, ViewBag.SiteId); }
                         @if (availableProductCount > 0)
                         {
-                            @((availableProductCount <= 10 ? "only "+ availableProductCount.ToString("#") + " items left" : "Available"))
+                            @((availableProductCount <= 10 ? "only " + availableProductCount.ToString("#") + " items left" : "Available"))
                         }
                         else
                         {
@@ -164,7 +164,6 @@
         </div>
     </div>
 </section>
-}
 
 @if (Model.RelatedProducts.Count > 0)
 {
