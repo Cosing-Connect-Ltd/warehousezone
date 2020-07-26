@@ -464,14 +464,14 @@ namespace WarehouseEcommerce.Controllers
         {
             ProductFilteringViewModel productFiltering = new ProductFilteringViewModel();
             var products = _tenantWebsiteService.GetAllValidProductWebsiteSearch(CurrentTenantWebsite.SiteID, category, ProductName: productName);
-            var attributedProduct =
-                _tenantWebsiteService.GetAllValidProductForDynamicFilter(CurrentTenantWebsite.SiteID, productIds);
+            var filteredByAttributeProducts = _tenantWebsiteService.GetAllValidProductForDynamicFilter(CurrentTenantWebsite.SiteID, productIds);
+
             productFiltering.Manufacturer = _tenantWebsiteService.GetAllValidProductManufacturerGroupAndDeptByName(products).Select(u => u.Name).ToList();
             productFiltering.PriceInterval = _tenantWebsiteService.AllPriceListAgainstGroupAndDept(products,CurrentTenantWebsite.SiteID);
-            productFiltering.AttributeValues = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(attributedProduct);
+            productFiltering.AttributeValues = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(filteredByAttributeProducts);
             productFiltering.subCategories = _productlookupServices.GetAllValidSubCategoriesByDepartmentAndGroup(products).ToList();
             productFiltering.WebsiteNavigationCategories = _productlookupServices.GetWebsiteNavigationCategoriesList(category, CurrentTenantWebsite.SiteID).ToList();
-            productFiltering.Count = attributedProduct.Count();
+            productFiltering.Count = filteredByAttributeProducts.Count();
             productFiltering.CurrencySymbol = ViewBag.CurrencySymbol;
 
             return PartialView(productFiltering);

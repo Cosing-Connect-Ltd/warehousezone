@@ -982,24 +982,23 @@ namespace Ganedata.Core.Services
 
         }
 
-        public Dictionary<ProductAttributes, List<ProductAttributeValues>> GetAllValidProductAttributeValuesByProductIds(IQueryable<ProductMaster> product)
+        public Dictionary<ProductAttributes, List<ProductAttributeValues>> GetAllValidProductAttributeValuesByProductIds(IQueryable<ProductMaster> products)
         {
-            var productIds = product.Select(u => u.ProductId).ToList();
-            var relatedProducts = _productServices.GetAllProductInKitsByProductIds(productIds, true).Where(k => k.IsActive == true && k.ProductType != ProductKitTypeEnum.ProductByAttribute && k.IsDeleted != true).ToList();
-            var simpleProducts = _productServices.GetAllProductInKitsByProductIds(productIds).ToList();
-            if (simpleProducts.Count > 0)
-            {
-                relatedProducts.AddRange(simpleProducts);
-            }
-            relatedProducts.ForEach(r => r.ProductAttributeValuesMap = r.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).ToList());
+            var allProducts = products.Where(u => u.ProductType != ProductKitTypeEnum.ProductByAttribute).ToList();
 
-            return relatedProducts
-                .SelectMany(a => a.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).Select(k => k.ProductAttributeValues))
-                .GroupBy(a => a.ProductAttributes).Where(u => u.Key.IsDeleted != true).OrderBy(u => u.Key.SortOrder)
-                .ToDictionary(g => g.Key, g => g.OrderBy(av => av.SortOrder)
-                    .GroupBy(av => av.AttributeValueId)
-                    .Select(av => av.First()).OrderBy(u => u.ProductAttributes.SortOrder)
-                    .ToList());
+            products.Where(u => u.ProductType == ProductKitTypeEnum.ProductByAttribute)
+                                          .ForEach(u => {
+                                              allProducts.AddRange(_productServices.GetAllProductByAttributeKitsByProductId(u.ProductId));
+                                          });
+
+            return allProducts.SelectMany(a => a.ProductAttributeValuesMap.Where(p => p.IsDeleted != true)
+                                                                          .Select(k => k.ProductAttributeValues))
+                              .GroupBy(a => a.ProductAttributes).Where(u => u.Key.IsDeleted != true)
+                              .OrderBy(u => u.Key.SortOrder)
+                              .ToDictionary(g => g.Key, g => g.OrderBy(av => av.SortOrder)
+                              .GroupBy(av => av.AttributeValueId)
+                              .Select(av => av.First()).OrderBy(u => u.ProductAttributes.SortOrder)
+                              .ToList());
 
 
         }
