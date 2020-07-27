@@ -680,7 +680,6 @@
     <Content Include="Views\Theme\University\Shared\_SliderPartial.cshtml" />
     <Content Include="Views\Theme\University\Shared\_TopCategoryPartial.cshtml" />
     <Content Include="Views\Theme\University\Shared\_FooterPartialArea.cshtml" />
-    <Content Include="Views\Theme\University\Shared\_FeatureProductPartial.cshtml" />
     <Content Include="Views\Theme\University\Shared\_SpecialProductPartial.cshtml" />
     <Content Include="Views\Theme\University\Shared\_SubscribePartial.cshtml" />
     <Content Include="Views\Theme\University\Shared\_BlogPartial.cshtml" />

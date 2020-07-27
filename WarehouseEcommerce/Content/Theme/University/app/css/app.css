@@ -575,20 +575,24 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
                                     transform: translateY(0)
                                 }
 
-                .nb_footer .nb_footersec_inner .nb_footnav_wrap ul li:last-child a, .nb_header .nb_mainnav > ul > li:last-child {
-                    padding-right: 0
-                }
+.nb_footer {
+    margin-top: 1rem !important;
+}
 
-                .nb_header .nb_mainnav > ul > li.active a:after, .nb_header_style1 h3:after {
-                    content: "";
-                    position: absolute;
-                    bottom: -10px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    width: 100%;
-                    height: 2px;
-                    background-color: #f33655
-                }
+    .nb_footer .nb_footersec_inner .nb_footnav_wrap ul li:last-child a, .nb_header .nb_mainnav > ul > li:last-child {
+        padding-right: 0
+    }
+
+.nb_header .nb_mainnav > ul > li.active a:after, .nb_header_style1 h3:after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 2px;
+    background-color: #f33655
+}
 
 .nb_sec {
     width: 100%;
@@ -820,10 +824,6 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
     padding: 0 0 40px;
     background-size: cover
 }
-
-    .nb_feat_prod_sec .nb_featuredPrdCarrousle div.item {
-        padding: 0 10px
-    }
 
     .nb_feat_prod_sec .nb_featuredPrdCarrousle .owl-nav {
         position: absolute;
@@ -1683,6 +1683,7 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
     .nb_prd_listing_wrap .head, .prd_lst_boxouter .foot .prd_amnt {
         font-family: "primaryfont_Bold";
         font-size: 20px;
+        min-width: 125px;
         text-align: center
     }
 
@@ -1751,7 +1752,6 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
         display: inline-block;
         margin-bottom: 23px;
         box-shadow: 0px 0px 23px 2px #f3eeee;
-        box-shadow: 0 0 23px 2px #d8d8d8
     }
 
     .prd_lst_boxouter .prdName {
@@ -1771,34 +1771,50 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
         justify-content: space-between
     }
 
-        .prd_lst_boxouter .foot .prd_amnt {
-            display: block;
-            background-color: #707070;
-            color: #fff;
-            padding: 10px;
-            letter-spacing: 0
-        }
+.foot .prd_amnt {
+    display: block;
+    background-color: #707070;
+    color: #fff;
+    padding: 10px;
+    letter-spacing: 0
+}
 
-        .prd_lst_boxouter .foot .icolist {
-            list-style: none;
-            margin: 0;
-            padding: 0
-        }
+.imagewrap {
+    margin-bottom: 15px !important
+}
 
-            .prd_lst_boxouter .foot .icolist li {
-                float: left;
-                margin: 0 5px
-            }
+.prdName {
+    min-height: unset;
+    margin-bottom: 12px
+}
 
-                .prd_lst_boxouter .foot .icolist li a i {
-                    font-size: 30px;
-                    color: #111;
-                    transition: all .3s ease
-                }
+.foot .icolist {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
 
-    .nb_prd_viewingsecWrap #zoomViewTrigger:hover, .nb_prd_viewingsecWrap .img_thumb_sliderwrap .nb_imageZoomCarrousle div.item:hover, .prd_lst_boxouter:hover {
-        cursor: pointer
+    .foot .icolist li {
+        float: left;
     }
+
+        .foot .icolist li a i {
+            display: block;
+        }
+
+        .foot .icolist li a i {
+            font-size: 30px;
+            color: #111;
+            transition: all .3s ease;
+            padding: 10px;
+        }
+
+.nb_prd_viewingsecWrap #zoomViewTrigger:hover, .nb_prd_viewingsecWrap .img_thumb_sliderwrap .nb_imageZoomCarrousle div.item:hover, .prd_lst_boxouter:hover {
+    cursor: pointer
+}
 
 .nb_prd_viewingsecWrap {
     position: relative
@@ -2178,7 +2194,7 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    margin-bottom: 70px
+    margin-bottom: 28px
 }
 
     .nb_header_style2 h3 {
@@ -2189,8 +2205,12 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
     }
 
 .nb_umayalso_sec {
-    padding: 73px 0
+    padding: 30px 0
 }
+
+    .nb_umayalso_sec .row {
+        margin-left: 15px;
+    }
 
     .nb_umayalso_sec .prd_amnt {
         background-color: #414343 !important
@@ -6277,44 +6297,12 @@ body.modal-open {
     text-align: center
 }
 
-.prd_lst_boxouter .imagewrap {
-    margin-bottom: 15px !important
-}
-
-.prd_lst_boxouter .prdName {
-    min-height: unset;
-    margin-bottom: 12px
-}
-
-.feature-product-overflow .foot .icolist, .list-on-tablets .foot .icolist {
-    width: 100%;
-    display: flex;
-    justify-content: space-between
-}
-
-    .list-on-tablets .foot .icolist .bel-icon {
-        margin-left: 31px
-    }
-
-    .list-on-tablets .foot .icolist .cart-icon {
-        margin-left: 30px
-    }
-
-    .feature-product-overflow .foot .icolist .bel-icon, .feature-product-overflow .foot .icolist .cart-icon {
-        margin-left: 16px
-    }
-
 .feature-product-overflow .owl-stage {
     width: 2500px !important
 }
 
 .feature-product-overflow .owl-item {
     width: 241px !important
-}
-
-.feature-product-overflow .prd_lst_boxouter .imagewrap img {
-    width: 241px !important;
-    height: 241px
 }
 
 .feature-product-overflow .inside-container {
@@ -6675,10 +6663,6 @@ html {
     padding-bottom: 1px
 }
 
-.nb_featuredPrdCarrousle .prd_amnt {
-    padding: 6px !important
-}
-
 .nb_feat_prod_sec .nb_featuredPrdCarrousle .nb_fp_boxwrap .prd_det_sec {
     padding: 0 5px
 }
@@ -6699,7 +6683,6 @@ html {
     }
 
 .nb_featuredPrdCarrousle .item .imagewrap {
-    box-shadow: 0 0 23px 2px #d8d8d8;
     display: inline-block;
     margin-top: 20px;
     margin-bottom: 30px
@@ -6724,11 +6707,11 @@ html {
     border: 1px solid #fff
 }
 
-.feature-product-overflow .prd_lst_boxouter:hover .imagewrap, .list-on-tablets .prd_lst_boxouter:hover .imagewrap {
+.prd_lst_boxouter:hover .imagewrap {
     border: 1px solid var(--secondary-color)
 }
 
-.feature-product-overflow .prd_lst_boxouter:hover .prd_amnt, .list-on-tablets .prd_lst_boxouter:hover .prd_amnt {
+.prd_lst_boxouter:hover .prd_amnt {
     background-color: var(--secondary-color) !important
 }
 

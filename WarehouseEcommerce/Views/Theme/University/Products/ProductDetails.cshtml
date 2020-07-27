@@ -144,12 +144,12 @@
                         @if (Model.SelectedProduct.WebsiteWishListItems.FirstOrDefault(u => u.IsDeleted != true && !u.IsNotification) == null)
                         {
                             <button id="btnwish_@Model.SelectedProduct.ProductId" onclick="addToWishList(@Model.SelectedProduct.ProductId)" class="addtowishlistbtn">Add to Wishlist</button>
-                            <a href="javascript:;" class="addtowishlist " id="wish_@Model.SelectedProduct.ProductId" onclick="addToWishList(@Model.SelectedProduct.ProductId)"><i class="icon-love list-icon" style="color:black;font-size:28px;margin-left:15px"></i></a>
+                            <a href="javascript:;" class="addtowishlist " id="wish_@Model.SelectedProduct.ProductId" onclick="addToWishList(@Model.SelectedProduct.ProductId)"><i class="icon-love list-icon" style="color:black;"></i></a>
                         }
                         else
                         {
                             <button id="btnwish_@Model.SelectedProduct.ProductId" onclick="redirectToWishListByConfirmation()" class="addtowishlistbtn" style="background-color: red !important">Add to Wishlist</button>
-                            <a href="javascript:;" class="addtowishlist" id="wish_@Model.SelectedProduct.ProductId" onclick="redirectToWishListByConfirmation()"><i class="icon-love list-icon" style="color:red;font-size:28px;margin-left:15px"></i></a>
+                            <a href="javascript:;" class="addtowishlist" id="wish_@Model.SelectedProduct.ProductId" onclick="redirectToWishListByConfirmation()"><i class="icon-love list-icon" style="color:red;"></i></a>
                         }
                     </div>
                 </div>
@@ -192,10 +192,13 @@
                                     </a>
                                 </h3>
                                 <div class="foot">
-                                    <a class="prd_amnt" href="@Url.Action("ProductDetails","Products", new {sku=relatedProduct.SKUCode})">
-                                        @ViewBag.CurrencySymbol@relatedProduct.SellPrice
-                                    </a>
                                     <ul class="icolist">
+                                        <li>
+                                            <a class="prd_amnt" href="@Url.Action("ProductDetails","Products", new {sku=relatedProduct.SKUCode})">
+                                                @ViewBag.CurrencySymbol@relatedProduct.SellPrice
+                                            </a>
+                                        </li>
+
                                         @if (Ganedata.Core.Services.Inventory.IsProductAvailableToSell(relatedProduct, ViewBag.SiteId) && relatedProduct.ProductType != ProductKitTypeEnum.ProductByAttribute)
                                         {
                                             <li>
@@ -227,13 +230,13 @@
                                         @if (!Ganedata.Core.Services.Inventory.IsProductInWishList(relatedProduct, ViewBag.CurrentUserId))
                                         {
                                             <li>
-                                                <a href="javascript:;" id="wish_@relatedProduct.ProductId" onclick="@(relatedProduct.ProductType != ProductKitTypeEnum.ProductByAttribute ? "addToWishList(" + relatedProduct.ProductId + ")" : "showProductByAttributeSelector('" + relatedProduct.SKUCode + "', true)")"><i class="icon-love list-icon" style="color: black;font-size: 28px;"></i></a>
+                                                <a href="javascript:;" id="wish_@relatedProduct.ProductId" onclick="@(relatedProduct.ProductType != ProductKitTypeEnum.ProductByAttribute ? "addToWishList(" + relatedProduct.ProductId + ")" : "showProductByAttributeSelector('" + relatedProduct.SKUCode + "', true)")"><i class="icon-love list-icon" style="color: black;"></i></a>
                                             </li>
                                         }
                                         else
                                         {
                                             <li>
-                                                <a href="javascript:;" id="wish_@relatedProduct.ProductId" onclick="@(relatedProduct.ProductType != ProductKitTypeEnum.ProductByAttribute ? "redirectToWishListByConfirmation()" : "showProductByAttributeSelector('" + relatedProduct.SKUCode + "', true)")"><i class="icon-love list-icon" style="color: red;font-size: 28px;"></i></a>
+                                                <a href="javascript:;" id="wish_@relatedProduct.ProductId" onclick="@(relatedProduct.ProductType != ProductKitTypeEnum.ProductByAttribute ? "redirectToWishListByConfirmation()" : "showProductByAttributeSelector('" + relatedProduct.SKUCode + "', true)")"><i class="icon-love list-icon" style="color: red;"></i></a>
                                             </li>
                                         }
                                     </ul>

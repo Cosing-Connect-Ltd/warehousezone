@@ -47,13 +47,18 @@
                                     </a>
                                 </h3>
                                 <div class="foot">
-                                    <a class="prd_amnt" href="@Url.Action("ProductDetails", "Products", new {sku = item.SKUCode})">
-                                        @ViewBag.CurrencySymbol@item.SellPrice
-                                    </a>
-                                    @if (item.ProductType != ProductKitTypeEnum.Grouped && item.ProductType != ProductKitTypeEnum.Kit)
-                                    {
-                                        <ul class="icolist">
-                                            @if (Ganedata.Core.Services.Inventory.IsProductAvailableToSell(@item, ViewBag.SiteId) && item.ProductType != ProductKitTypeEnum.ProductByAttribute)
+
+
+                                    <ul class="icolist">
+                                        <li>
+                                            <a class="prd_amnt" href="@Url.Action("ProductDetails", "Products", new {sku = item.SKUCode})">
+                                                @ViewBag.CurrencySymbol@item.SellPrice
+                                            </a>
+                                        </li>
+                                        @if (item.ProductType != ProductKitTypeEnum.Grouped && item.ProductType != ProductKitTypeEnum.Kit)
+                                        {
+
+                                            if (Ganedata.Core.Services.Inventory.IsProductAvailableToSell(@item, ViewBag.SiteId) && item.ProductType != ProductKitTypeEnum.ProductByAttribute)
                                             {
                                                 <li>
                                                     <a href="javascript:;" onclick="addToCart(@item.ProductId)"><i class="cart-icon icon-shopping-cart"></i></a>
@@ -88,24 +93,25 @@
 
                                             }
 
-                                            @{
-                                                var isItemInWishList = item.WebsiteWishListItems.Any(u => u.IsDeleted != true && u.UserId == ViewBag.CurrentUserId && !u.IsNotification);
-                                            }
 
-                                            @if (!isItemInWishList)
+                                            var isItemInWishList = item.WebsiteWishListItems.Any(u => u.IsDeleted != true && u.UserId == ViewBag.CurrentUserId && !u.IsNotification);
+
+
+                                            if (!isItemInWishList)
                                             {
                                                 <li>
-                                                    <a href="javascript:;" id="wish_@item.ProductId" onclick="@(item.ProductType != ProductKitTypeEnum.ProductByAttribute ? "addToWishList(" + item.ProductId + ")" : "showProductByAttributeSelector('" + item.SKUCode + "', true)")"><i class="icon-love list-icon" style="color: black;font-size: 28px;"></i></a>
+                                                    <a href="javascript:;" id="wish_@item.ProductId" onclick="@(item.ProductType != ProductKitTypeEnum.ProductByAttribute ? "addToWishList(" + item.ProductId + ")" : "showProductByAttributeSelector('" + item.SKUCode + "', true)")"><i class="icon-love list-icon" style="color: black;"></i></a>
                                                 </li>
                                             }
                                             else
                                             {
                                                 <li>
-                                                    <a href="javascript:;" id="wish_@item.ProductId" onclick="@(item.ProductType != ProductKitTypeEnum.ProductByAttribute ? "redirectToWishListByConfirmation()" : "showProductByAttributeSelector('" + item.SKUCode + "', true)")"><i class="icon-love list-icon" style="color: red;font-size: 28px;"></i></a>
+                                                    <a href="javascript:;" id="wish_@item.ProductId" onclick="@(item.ProductType != ProductKitTypeEnum.ProductByAttribute ? "redirectToWishListByConfirmation()" : "showProductByAttributeSelector('" + item.SKUCode + "', true)")"><i class="icon-love list-icon" style="color: red;"></i></a>
                                                 </li>
                                             }
-                                        </ul>
-                                    }
+                                        }
+                                    </ul>
+
                                 </div>
 
 

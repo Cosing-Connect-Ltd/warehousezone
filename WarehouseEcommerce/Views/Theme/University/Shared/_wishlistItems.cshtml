@@ -1,81 +1,81 @@
 ﻿@using Ganedata.Core.Entities.Enums
 @model List<Ganedata.Core.Entities.Domain.WebsiteWishListItem>
 
-    <div class="row">
-        @if (Model.Count > 0)
-        {
-            <div class="nb_basket_wrap">
-                <table class="basketTable wishlist-table">
-                    <thead>
-                        <tr>
-                            <th class="product-th">Product</th>
-                            <th class="price-th">Price</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
+<div class="row">
+    @if (Model.Count > 0)
+    {
+        <div class="nb_basket_wrap">
+            <table class="basketTable wishlist-table">
+                <thead>
+                    <tr>
+                        <th class="product-th">Product</th>
+                        <th class="price-th">Price</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
 
-                        @foreach (var item in Model)
-                        {
-                            <tr class="cmnRow">
-                                <td class="prd">
-                                    <div class="prdCellwrap ">
-                                        <span class="imgWrap">
-                                            <img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage)? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
-                                        </span>
-                                        <span class="prdname">@(item.ProductMaster?.Name)</span>
-                                    </div>
-                                </td>
-                                <td>@ViewBag.CurrencySymbol@item.ProductMaster.SellPrice</td>
-                                <td>
-                                    <div>
-                                        <div class="custom-control custom-switch">
-                                            @if (!Ganedata.Core.Services.Inventory.IsProductAvailableToSell(@item.ProductMaster, ViewBag.SiteId))
+                    @foreach (var item in Model)
+                    {
+                        <tr class="cmnRow">
+                            <td class="prd">
+                                <div class="prdCellwrap ">
+                                    <span class="imgWrap">
+                                        <img src="@(!string.IsNullOrEmpty(item.ProductMaster.DefaultImage)? ViewBag.BaseFilePath + item.ProductMaster.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
+                                    </span>
+                                    <span class="prdname">@(item.ProductMaster?.Name)</span>
+                                </div>
+                            </td>
+                            <td>@ViewBag.CurrencySymbol@item.ProductMaster.SellPrice</td>
+                            <td>
+                                <div>
+                                    <div class="custom-control custom-switch">
+                                        @if (!Ganedata.Core.Services.Inventory.IsProductAvailableToSell(@item.ProductMaster, ViewBag.SiteId))
+                                        {
+                                            if (!Ganedata.Core.Services.Inventory.IsProductInNotifyList(@item.ProductMaster, ViewBag.CurrentUserId))
                                             {
-                                                if (!Ganedata.Core.Services.Inventory.IsProductInNotifyList(@item.ProductMaster, ViewBag.CurrentUserId))
-                                                {
-                                                    <a href="javascript:;" class="notify-btn wishlist-table-btns" onclick="addToNotifyList(@item.ProductId, undefined, true)" id="notification-bell_@item.ProductId" title="NOTIFY ME WHEN AVAILABLE" style="font-size: 28px; color: black"><i class="fa fa-bell-o list-icon"></i></a>
-                                                }
-                                                else
-                                                {
-                                                    <a href="javascript:;" class="notify-btn wishlist-table-btns" onclick="removeNotifyListItemByConfirmation(@item.ProductId, undefined, true)" id="notification-bell_@item.ProductId" title="NOTIFY ME WHEN AVAILABLE" style="font-size: 28px; color: red;"><i class="fa fa-bell-o list-icon"></i></a>
-                                                }
+                                                <a href="javascript:;" class="notify-btn wishlist-table-btns" onclick="addToNotifyList(@item.ProductId, undefined, true)" id="notification-bell_@item.ProductId" title="NOTIFY ME WHEN AVAILABLE" style="color: black"><i class="fa fa-bell-o list-icon"></i></a>
                                             }
-                                        </div>
+                                            else
+                                            {
+                                                <a href="javascript:;" class="notify-btn wishlist-table-btns" onclick="removeNotifyListItemByConfirmation(@item.ProductId, undefined, true)" id="notification-bell_@item.ProductId" title="NOTIFY ME WHEN AVAILABLE" style="color: red;"><i class="fa fa-bell-o list-icon"></i></a>
+                                            }
+                                        }
                                     </div>
-                                </td>
-                                <td class="wishlist-btn-td">
-                                    @if (Ganedata.Core.Services.Inventory.IsProductAvailableToSell(@item.ProductMaster, ViewBag.SiteId))
-                                    {
-                                        <a href="javascript:;" class="wishlist-table-btns wishlist-basket-btn" onclick="addToCart(@item.ProductId)">Add to Basket</a>
-                                        <br/>
-                                    }
+                                </div>
+                            </td>
+                            <td class="wishlist-btn-td">
+                                @if (Ganedata.Core.Services.Inventory.IsProductAvailableToSell(@item.ProductMaster, ViewBag.SiteId))
+                                {
+                                    <a href="javascript:;" class="wishlist-table-btns wishlist-basket-btn" onclick="addToCart(@item.ProductId)">Add to Basket</a>
+                                    <br />
+                                }
 
-                                    <a href="javascript:;" class="wishlist-table-btns wishlist-remove-btn" onclick="removeWishListItemAndUpdateTheList(@item.ProductId)">Remove</a>
-                                </td>
+                                <a href="javascript:;" class="wishlist-table-btns wishlist-remove-btn" onclick="removeWishListItemAndUpdateTheList(@item.ProductId)">Remove</a>
+                            </td>
 
-                            </tr>
-                        }
-
-
-                    </tbody>
-                </table>
-
-                <div class="coupen_codewrap">
-                </div>
+                        </tr>
+                    }
 
 
+                </tbody>
+            </table>
+
+            <div class="coupen_codewrap">
             </div>
-        }
-        else
-        {
+
+
+        </div>
+    }
+    else
+    {
         <div class="col-lg-12">
             <div class="text-center m-4">Oops, Your Wishlist Is Empty!</div>
             <div class="botomBtnsec">
                 <a class="btmbtn sho" href="@Url.Action("list", "Products")">CONTINUE SHOPPING</a>
             </div>
         </div>
-        }
+    }
 
-    </div>
+</div>

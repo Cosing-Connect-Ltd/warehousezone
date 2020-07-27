@@ -27,12 +27,16 @@
     @Scripts.Render("~/bundles/unobtrusive")
     <script src="~/Scripts/jscolor.js"></script>
 
+    <link href="@Url.Action("AppStyle", "UISettings", new { filePath = "/Content/Theme/Default/ui-settings.css"})" rel="stylesheet" type="text/css" />
+
+    @RenderSection("scripts", required: false)
+
     @{ bool loginStatus = LayoutHelpers.UserLoginStatus(); }
+    @{ bool isSuperUser = LayoutHelpers.IsSuperUser(); }
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
-
 </head>
 <body>
     <div class="content">
