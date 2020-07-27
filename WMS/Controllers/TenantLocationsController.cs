@@ -59,12 +59,12 @@ namespace WMS.Controllers
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ViewBag.TenantLocations = LookupServices.GetAllWarehousesForTenant(CurrentTenantId).Select(m => new SelectListItem() { Value = m.WarehouseId.ToString(), Text = m.WarehouseName });
-
             ViewBag.AllTerminals = _terminalServices.GetAllTerminalsWithoutMobileLocationLinks(CurrentTenantId).Select(m => new SelectListItem() { Value = m.TerminalId.ToString(), Text = m.TerminalName + " " + m.TermainlSerial });
             ViewBag.AllDrivers = _employeeServices.GetAllEmployeesWithoutResourceLinks(CurrentTenantId).Select(m => new SelectListItem() { Value = m.AuthUserId.ToString(), Text = m.SurName + " " + m.FirstName });
-
             ViewBag.CountryId = new SelectList(LookupServices.GetAllGlobalCountries(), "CountryId", "CountryName");
             ViewBag.AllVehicles = _marketServices.GetAllValidMarketVehicles(CurrentTenantId).MarketVehicles.Select(m => new SelectListItem() { Value = m.Id.ToString(), Text = m.Name });
+            ViewBag.PriceGroups = LookupServices.GetAllPriceGroups(CurrentTenantId).Select(m => new SelectListItem() { Value = m.PriceGroupID.ToString(), Text = m.Name });
+
             return View();
         }
 
@@ -77,22 +77,16 @@ namespace WMS.Controllers
 
             if (ModelState.IsValid)
             {
-
-                // get properties of tenant
-                caTenant tenant = caCurrent.CurrentTenant();
-                // get properties of user
-                caUser user = caCurrent.CurrentUser();
-
-                _tenantLocationServices.SaveTenantLocation(tenantwarehouse, user.UserId, tenant.TenantId);
+                _tenantLocationServices.SaveTenantLocation(tenantwarehouse, CurrentUserId, CurrentTenantId);
 
                 return RedirectToAction("Index");
             }
             ViewBag.TenantLocations = LookupServices.GetAllWarehousesForTenant(CurrentTenantId).Select(m => new SelectListItem() { Value = m.WarehouseId.ToString(), Text = m.WarehouseName });
             ViewBag.CountryId = new SelectList(LookupServices.GetAllGlobalCountries(), "CountryId", "CountryName");
             ViewBag.AllVehicles = _marketServices.GetAllValidMarketVehicles(CurrentTenantId).MarketVehicles.Select(m => new SelectListItem() { Value = m.Id.ToString(), Text = m.Name });
-
             ViewBag.AllTerminals = _terminalServices.GetAllTerminalsWithoutMobileLocationLinks(CurrentTenantId).Select(m => new SelectListItem() { Value = m.TerminalId.ToString(), Text = m.TerminalName + " " + m.TermainlSerial });
             ViewBag.AllDrivers = _employeeServices.GetAllEmployeesWithoutResourceLinks(CurrentTenantId).Select(m => new SelectListItem() { Value = m.AuthUserId.ToString(), Text = m.SurName + " " + m.FirstName });
+            ViewBag.PriceGroups = LookupServices.GetAllPriceGroups(CurrentTenantId).Select(m => new SelectListItem() { Value = m.PriceGroupID.ToString(), Text = m.Name });
 
             return View(tenantwarehouse);
         }
@@ -115,10 +109,9 @@ namespace WMS.Controllers
             ViewBag.TenantLocations = LookupServices.GetAllWarehousesForTenant(CurrentTenantId, (int)id).Select(m => new SelectListItem() { Value = m.WarehouseId.ToString(), Text = m.WarehouseName });
             ViewBag.AllVehicles = _marketServices.GetAllValidMarketVehicles(CurrentTenantId).MarketVehicles.Select(m => new SelectListItem() { Value = m.Id.ToString(), Text = m.Name });
             ViewBag.CountryId = new SelectList(LookupServices.GetAllGlobalCountries(), "CountryId", "CountryName", tenantwarehouse.CountryID);
-
             ViewBag.AllTerminals = _terminalServices.GetAllTerminalsWithoutMobileLocationLinks(CurrentTenantId, tenantwarehouse.SalesTerminalId).Select(m => new SelectListItem() { Value = m.TerminalId.ToString(), Text = m.TerminalName + " " + m.TermainlSerial });
             ViewBag.AllDrivers = _employeeServices.GetAllEmployeesWithoutResourceLinks(CurrentTenantId, tenantwarehouse.SalesManUserId).Select(m => new SelectListItem() { Value = m.AuthUserId.ToString(), Text = m.SurName + " " + m.FirstName });
-
+            ViewBag.PriceGroups = LookupServices.GetAllPriceGroups(CurrentTenantId).Select(m => new SelectListItem() { Value = m.PriceGroupID.ToString(), Text = m.Name });
             return View(tenantwarehouse);
         }
 
@@ -140,10 +133,9 @@ namespace WMS.Controllers
 
             }
             ViewBag.TenantLocations = LookupServices.GetAllWarehousesForTenant(CurrentTenantId, (int)tenantwarehouse.TenantId);
-
             ViewBag.AllTerminals = _terminalServices.GetAllTerminalsWithoutMobileLocationLinks(CurrentTenantId, tenantwarehouse.SalesTerminalId).Select(m => new SelectListItem() { Value = m.TerminalId.ToString(), Text = m.TerminalName + " " + m.TermainlSerial });
             ViewBag.AllDrivers = _employeeServices.GetAllEmployeesWithoutResourceLinks(CurrentTenantId, tenantwarehouse.SalesManUserId).Select(m => new SelectListItem() { Value = m.AuthUserId.ToString(), Text = m.SurName + " " + m.FirstName });
-
+            ViewBag.PriceGroups = LookupServices.GetAllPriceGroups(CurrentTenantId).Select(m => new SelectListItem() { Value = m.PriceGroupID.ToString(), Text = m.Name });
             return View(tenantwarehouse);
         }
 

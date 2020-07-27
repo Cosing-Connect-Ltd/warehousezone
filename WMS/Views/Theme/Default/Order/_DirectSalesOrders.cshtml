@@ -121,24 +121,24 @@
             comboSettings.DataSource = Enum.GetValues(typeof(OrderStatusEnum));
         });
 
-      settings.Columns.Add(c =>
-        {
-            c.FieldName = "Currecny";
-            c.Caption = "Currency";
-            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
-        });
+        settings.Columns.Add(c =>
+  {
+      c.FieldName = "Currecny";
+      c.Caption = "Currency";
+      c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+  });
         settings.Columns.Add(c =>
         {
             c.FieldName = "OrderCost";
             c.Caption = "Order Cost";
-              c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
             c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
         });
         settings.Columns.Add(c =>
         {
             c.FieldName = "OrderDiscount";
             c.Caption = "Discount";
-              c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
             c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
         });
         settings.Columns.Add(c =>
@@ -147,6 +147,12 @@
             c.Caption = "Order Total";
             c.ColumnType = MVCxGridViewColumnType.SpinEdit;
             c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ConsignmentType";
+            c.Caption = "Type";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
         });
 
         settings.Columns.Add(column =>

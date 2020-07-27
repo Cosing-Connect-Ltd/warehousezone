@@ -17,7 +17,7 @@ namespace WMS.Controllers
         protected readonly IPropertyService PropertyService;
         protected readonly IAccountServices AccountServices;
         protected readonly ILookupServices LookupServices;
-       
+
 
         public BaseController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices)
         {
@@ -25,7 +25,7 @@ namespace WMS.Controllers
             PropertyService = propertyService;
             AccountServices = accountServices;
             LookupServices = lookupServices;
-         
+
 
         }
 
@@ -304,7 +304,7 @@ namespace WMS.Controllers
                     new SelectListItem() { Text = "Week " + i + placeHolder,  Value = i.ToString()}
                 });
             }
-            
+
             return weeks;
 
         }
@@ -357,6 +357,7 @@ namespace WMS.Controllers
             ViewBag.IsWorksOrdersEnabled = IsWorksOrdersEnabled();
             ViewBag.IsVanSalesEnabled = IsVanSalesEnabled();
             ViewBag.IsEcommerceEnabled = IsEcommerceEnabled();
+            ViewBag.IsFoodDeliveryEnabled = IsFoodDeliveryEnabled();
             var queryString = Request.QueryString["fragment"];
             if (queryString != null && queryString != string.Empty)
             {
@@ -390,7 +391,7 @@ namespace WMS.Controllers
         {
             var tenant = CurrentTenant;
 
-            if (CurrentTenant.TenantModules != null && CurrentTenant.TenantModules.Select(x => x.ModuleId).Contains((int)TenantModuleEnum.WorksOrder))
+            if (CurrentTenant.TenantModules != null && CurrentTenant.TenantModules.Select(x => x.ModuleId).Contains(TenantModuleEnum.WorksOrder))
             {
                 return true;
             }
@@ -404,7 +405,7 @@ namespace WMS.Controllers
         {
             var tenant = CurrentTenant;
 
-            if (CurrentTenant.TenantModules != null && CurrentTenant.TenantModules.Select(x => x.ModuleId).Contains((int)TenantModuleEnum.VanSales))
+            if (CurrentTenant.TenantModules != null && CurrentTenant.TenantModules.Select(x => x.ModuleId).Contains(TenantModuleEnum.VanSales))
             {
                 return true;
             }
@@ -418,7 +419,21 @@ namespace WMS.Controllers
         {
             var tenant = CurrentTenant;
 
-            if (CurrentTenant.TenantModules != null && CurrentTenant.TenantModules.Select(x => x.ModuleId).Contains((int)TenantModuleEnum.Ecommerce))
+            if (CurrentTenant.TenantModules != null && CurrentTenant.TenantModules.Select(x => x.ModuleId).Contains(TenantModuleEnum.Ecommerce))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool IsFoodDeliveryEnabled()
+        {
+            var tenant = CurrentTenant;
+
+            if (CurrentTenant.TenantModules != null && CurrentTenant.TenantModules.Select(x => x.ModuleId).Contains(TenantModuleEnum.FoodDelivery))
             {
                 return true;
             }
@@ -446,7 +461,7 @@ namespace WMS.Controllers
         }
         public void SiteName(int SiteId)
         {
-            var TenantwebsiteService= DependencyResolver.Current.GetService<ITenantWebsiteService>();
+            var TenantwebsiteService = DependencyResolver.Current.GetService<ITenantWebsiteService>();
             ViewBag.SiteName = TenantwebsiteService.GetTenantWebSiteBySiteId(SiteId).SiteName;
         }
 

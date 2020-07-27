@@ -76,7 +76,7 @@ namespace Ganedata.Core.Services
 
         public bool IsModuleEnabled(int tenantId, TenantModuleEnum tenantModule)
         {
-            return _currentDbContext.TenantModules.Any(m => m.ModuleId == (int)tenantModule && m.TenantId == tenantId);
+            return _currentDbContext.TenantModules.Any(m => m.ModuleId == tenantModule && m.TenantId == tenantId);
         }
 
     }

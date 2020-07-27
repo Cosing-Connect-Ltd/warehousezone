@@ -1,4 +1,5 @@
 ﻿using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,8 @@ namespace Ganedata.Core.Services
         int SaveActivity(AuthActivity activity, int userId, int tenantId);
         bool UpdateActivity(AuthActivity activity, int userId, int tenantId);  
         void DeleteActivity(AuthActivity activity, int userId);
-        IQueryable<AuthActivitiesForPermViewModel> GetAuthActivitiesForPermByGroup(AuthUserGroupsForPermViewModel activityGroup, IEnumerable<int> userModules, int TenantId);
-        IQueryable<AuthActivitiesForPermViewModel> GetAuthActivitiesForPermNoGroup(IEnumerable<int> userModules);
+        IQueryable<AuthActivitiesForPermViewModel> GetAuthActivitiesForPermByGroup(AuthUserGroupsForPermViewModel activityGroup, IEnumerable<TenantModuleEnum> userModules, int TenantId);
+        IQueryable<AuthActivitiesForPermViewModel> GetAuthActivitiesForPermNoGroup(IEnumerable<TenantModuleEnum> userModules);
         List<AuthActivity> GetExcludedActivities();
 
 
@@ -24,20 +25,20 @@ namespace Ganedata.Core.Services
         int SaveActivityGroup(AuthActivityGroup activityGroup, int userId, int tenantId);
         void UpdateActivityGroup(AuthActivityGroup activityGroup, int userId, int tenantId);
         void DeleteActivityGroup(AuthActivityGroup activityGroup, int userId);
-        IQueryable<AuthUserGroupsForPermViewModel> GetDistinctActivityGroupsForPerm(IEnumerable<int> userModules);
-        IQueryable<AuthUserGroupsForPermViewModel> GetDistinctActivityGroupsForNavigation(int userId, int warehouseId, IEnumerable<int> userModules);
-        IQueryable<AuthActivitiesForPermViewModel> GetDistinctActivityNonGroupsForNavigation(int userId, int warehouseId, IEnumerable<int> userModules);
+        IQueryable<AuthUserGroupsForPermViewModel> GetDistinctActivityGroupsForPerm(IEnumerable<TenantModuleEnum> userModules);
+        IQueryable<AuthUserGroupsForPermViewModel> GetDistinctActivityGroupsForNavigation(int userId, int warehouseId, IEnumerable<TenantModuleEnum> userModules);
+        IQueryable<AuthActivitiesForPermViewModel> GetDistinctActivityNonGroupsForNavigation(int userId, int warehouseId, IEnumerable<TenantModuleEnum> userModules);
 
         IQueryable<AuthActivitiesForPermViewModel> GetDistinctActivityPermissionsForUserNavigation(int userId,
-            int warehouseId, IEnumerable<int> userModules);
+            int warehouseId, IEnumerable<TenantModuleEnum> userModules);
         IQueryable<AuthUserGroupsForPermViewModel> GetDistinctActivityGroupsForSuperUserNavigation(
-            IEnumerable<int> userModules);
+            IEnumerable<TenantModuleEnum> userModules);
 
         IQueryable<AuthActivitiesForPermViewModel> GetDistinctActivitiesForSuperUserNavigation(
-            IEnumerable<int> userModules);
+            IEnumerable<TenantModuleEnum> userModules);
 
         IQueryable<AuthActivitiesForPermViewModel> GetDistinctActivityNonGroupsForSuperUserNavigation(
-            IEnumerable<int> userModules);
+            IEnumerable<TenantModuleEnum> userModules);
 
         // ******************** Activity Groups Mapping *********************
         AuthActivityGroupMap GetActivityGroupMapById(int activityGroupMapId);

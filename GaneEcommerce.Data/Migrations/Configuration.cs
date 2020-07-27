@@ -46,110 +46,6 @@ namespace Ganedata.Core.Data.Migrations
 
         private void SeedCoreSystem(ApplicationContext context)
         {
-
-            //Add Core Modules
-            context.Modules.AddOrUpdate(m => m.Id, new Module()
-            {
-                Id = 1,
-                ModuleName = "Core"
-            });
-            context.Modules.AddOrUpdate(m => m.Id,
-                new Module()
-                {
-                    Id = 2,
-                    ModuleName = "Sales Order"
-                });
-            context.Modules.AddOrUpdate(m => m.Id,
-               new Module()
-               {
-                   Id = 3,
-                   ModuleName = "Purchase Order"
-               });
-            context.Modules.AddOrUpdate(m => m.Id,
-               new Module()
-               {
-                   Id = 4,
-                   ModuleName = "Works Order"
-               });
-            context.Modules.AddOrUpdate(m => m.Id,
-               new Module()
-               {
-                   Id = 5,
-                   ModuleName = "Warehouse"
-               });
-            context.Modules.AddOrUpdate(m => m.Id,
-               new Module()
-               {
-                   Id = 6,
-                   ModuleName = "Point Of Sale"
-               });
-            context.Modules.AddOrUpdate(m => m.Id,
-               new Module()
-               {
-                   Id = 7,
-                   ModuleName = "Van Sales"
-               });
-            context.Modules.AddOrUpdate(m => m.Id,
-               new Module()
-               {
-                   Id = 8,
-                   ModuleName = "Palleting"
-               });
-            context.Modules.AddOrUpdate(m => m.Id,
-               new Module()
-               {
-                   Id = 9,
-                   ModuleName = "Human Resources"
-               });
-            context.Modules.AddOrUpdate(m => m.Id,
-               new Module()
-               {
-                   Id = 10,
-                   ModuleName = "Time and Attendance"
-               });
-            context.Modules.AddOrUpdate(m => m.Id,
-               new Module()
-               {
-                   Id = 11,
-                   ModuleName = "Asset Tracking"
-               });
-            context.Modules.AddOrUpdate(m => m.Id,
-               new Module()
-               {
-                   Id = 12,
-                   ModuleName = "Accounting"
-               });
-            context.Modules.AddOrUpdate(m => m.Id,
-               new Module()
-               {
-                   Id = 13,
-                   ModuleName = "POD"
-               });
-            context.Modules.AddOrUpdate(m => m.Id,
-               new Module()
-               {
-                   Id = 14,
-                   ModuleName = "Accounts"
-               });
-            context.Modules.AddOrUpdate(m => m.Id,
-               new Module()
-               {
-                   Id = 15,
-                   ModuleName = "Products"
-               });
-            context.Modules.AddOrUpdate(m => m.Id,
-               new Module()
-               {
-                   Id = 16,
-                   ModuleName = "OrdersCore"
-               });
-            context.Modules.AddOrUpdate(m => m.Id,
-               new Module()
-               {
-                   Id = 17,
-                   ModuleName = "Ecommerce"
-               });
-
             //Add AuthActivityGroups
             using (var fs = File.OpenRead(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../Content/Seed/AuthActivityGroups.csv")))
             using (var reader = new StreamReader(fs))
@@ -207,7 +103,7 @@ namespace Ganedata.Core.Data.Migrations
                         ExcludePermission = Convert.ToBoolean(Convert.ToInt16(values[6])),
                         SuperAdmin = Convert.ToBoolean(Convert.ToInt16(values[7])),
                         SortOrder = Convert.ToInt32(values[8]),
-                        ModuleId = Convert.ToInt32(Convert.ToInt16(values[9])),
+                        ModuleId = (TenantModuleEnum)Convert.ToInt16(values[9]),
                         TenantId = Convert.ToInt32(values[10]),
                         DateCreated = DateTime.UtcNow,
                         DateUpdated = DateTime.UtcNow,
@@ -496,19 +392,19 @@ namespace Ganedata.Core.Data.Migrations
             context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
                 new TenantModules()
                 {
-                    ModuleId = 1,
+                    ModuleId = TenantModuleEnum.Core,
                     TenantId = CurrentTenantId
                 });
             context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
                 new TenantModules()
                 {
-                    ModuleId = 9,
+                    ModuleId = TenantModuleEnum.HumanResources,
                     TenantId = CurrentTenantId
                 });
             context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
                 new TenantModules()
                 {
-                    ModuleId = 10,
+                    ModuleId = TenantModuleEnum.TimeAndAttendance,
                     TenantId = CurrentTenantId
                 });
 
@@ -900,19 +796,19 @@ namespace Ganedata.Core.Data.Migrations
             context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
                 new TenantModules()
                 {
-                    ModuleId = 1,
+                    ModuleId = TenantModuleEnum.Core,
                     TenantId = CurrentTenantId
                 });
             context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
                 new TenantModules()
                 {
-                    ModuleId = 9,
+                    ModuleId = TenantModuleEnum.HumanResources,
                     TenantId = CurrentTenantId
                 });
             context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
                 new TenantModules()
                 {
-                    ModuleId = 10,
+                    ModuleId = TenantModuleEnum.TimeAndAttendance,
                     TenantId = CurrentTenantId
                 });
 
@@ -1302,25 +1198,25 @@ namespace Ganedata.Core.Data.Migrations
             context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
                 new TenantModules()
                 {
-                    ModuleId = 1,
+                    ModuleId = TenantModuleEnum.Core,
                     TenantId = CurrentTenantId
                 });
             context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
                 new TenantModules()
                 {
-                    ModuleId = 9,
+                    ModuleId = TenantModuleEnum.HumanResources,
                     TenantId = CurrentTenantId
                 });
             context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
                 new TenantModules()
                 {
-                    ModuleId = 10,
+                    ModuleId = TenantModuleEnum.TimeAndAttendance,
                     TenantId = CurrentTenantId
                 });
             context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
                 new TenantModules()
                 {
-                    ModuleId = 11,
+                    ModuleId = TenantModuleEnum.AssetTracking,
                     TenantId = CurrentTenantId
                 });
 
@@ -1726,25 +1622,25 @@ namespace Ganedata.Core.Data.Migrations
             context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
                 new TenantModules()
                 {
-                    ModuleId = 1,
+                    ModuleId = TenantModuleEnum.Core,
                     TenantId = CurrentTenantId
                 });
             context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
                 new TenantModules()
                 {
-                    ModuleId = 9,
+                    ModuleId = TenantModuleEnum.HumanResources,
                     TenantId = CurrentTenantId
                 });
             context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
                 new TenantModules()
                 {
-                    ModuleId = 10,
+                    ModuleId = TenantModuleEnum.TimeAndAttendance,
                     TenantId = CurrentTenantId
                 });
             context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
                 new TenantModules()
                 {
-                    ModuleId = 11,
+                    ModuleId = TenantModuleEnum.AssetTracking,
                     TenantId = CurrentTenantId
                 });
 
@@ -2150,25 +2046,25 @@ namespace Ganedata.Core.Data.Migrations
             context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
                 new TenantModules()
                 {
-                    ModuleId = 1,
+                    ModuleId = TenantModuleEnum.Core,
                     TenantId = CurrentTenantId
                 });
             context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
                 new TenantModules()
                 {
-                    ModuleId = 9,
+                    ModuleId = TenantModuleEnum.HumanResources,
                     TenantId = CurrentTenantId
                 });
             context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
                 new TenantModules()
                 {
-                    ModuleId = 10,
+                    ModuleId = TenantModuleEnum.TimeAndAttendance,
                     TenantId = CurrentTenantId
                 });
             context.TenantModules.AddOrUpdate(m => new { m.ModuleId, m.TenantId },
                 new TenantModules()
                 {
-                    ModuleId = 11,
+                    ModuleId = TenantModuleEnum.AssetTracking,
                     TenantId = CurrentTenantId
                 });
 

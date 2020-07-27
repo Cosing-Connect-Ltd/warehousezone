@@ -675,6 +675,7 @@ namespace WMS.CustomBindings
             viewModel.Columns.Add("Qty");
             viewModel.Columns.Add("QtyReturned");
             viewModel.Columns.Add("QtyProcessed");
+            viewModel.Columns.Add("ConsignmentType");
 
             viewModel.Pager.PageSize = 10;
             return viewModel;

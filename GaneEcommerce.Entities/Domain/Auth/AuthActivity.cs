@@ -1,3 +1,4 @@
+using Ganedata.Core.Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -36,8 +37,6 @@ namespace Ganedata.Core.Entities.Domain
         public int SortOrder { get; set; }
         public virtual ICollection<AuthActivityGroupMap> AuthActivityGroupMaps { get; set; }
         public virtual ICollection<AuthPermission> AuthPermissions { get; set; }
-        public int? ModuleId { get; set; }
-        [ForeignKey("ModuleId")]
-        public virtual Module Module { get; set; }
+        public TenantModuleEnum? ModuleId { get; set; }
     }
 }

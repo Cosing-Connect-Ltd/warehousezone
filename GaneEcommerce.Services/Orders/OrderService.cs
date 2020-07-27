@@ -1239,7 +1239,8 @@ namespace Ganedata.Core.Services
                     WarehouseId = terminal.WarehouseId,
                     OrderDiscount = item.OrderProcessDiscount,
                     InvoiceNo = item.TerminalInvoiceNumber,
-                    OrderToken = item.OrderToken
+                    OrderToken = item.OrderToken,
+                    ConsignmentTypeId = item.ConsignmentTypeId
                 };
 
                 var orderDetails = item.OrderProcessDetails.Select(m => new OrderDetail()
@@ -3307,7 +3308,8 @@ namespace Ganedata.Core.Services
         {
             Order order = new Order();
             decimal total = 0;
-            if (string.IsNullOrEmpty(order.OrderNumber)){
+            if (string.IsNullOrEmpty(order.OrderNumber))
+            {
                 order.OrderNumber = GenerateNextOrderNumber(InventoryTransactionTypeEnum.SalesOrder, tenantId);
             }
 
@@ -3360,7 +3362,7 @@ namespace Ganedata.Core.Services
                     _currentDbContext.WebsiteCartItems.Where(a => cartIds.Contains(a.Id) && a.IsDeleted != true).ToList();
                 if (cartItemsList.Count > 0)
                 {
-                    cartItemsList.ForEach(u=>u.IsDeleted=true);
+                    cartItemsList.ForEach(u => u.IsDeleted = true);
                 };
                 _currentDbContext.SaveChanges();
                 var accountTransaction = new AccountTransaction()
@@ -3378,7 +3380,7 @@ namespace Ganedata.Core.Services
                     PaymentTransactionId = orderDetails.SagePayPaymentResponse.transactionId
 
                 };
-                
+
                 _currentDbContext.AccountTransactions.Add(accountTransaction);
                 _currentDbContext.SaveChanges();
 

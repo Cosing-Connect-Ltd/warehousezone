@@ -593,6 +593,7 @@ namespace Ganedata.Core.Services
                     OrderTotal = p.OrderTotal,
                     SaleNotes = p.Note,
                     EmailCount = _currentDbContext.TenantEmailNotificationQueues.Count(u => u.OrderId == p.OrderID),
+                    ConsignmentType = p.ConsignmentType.ConsignmentType,
                     OrderNotesList = p.OrderNotes.Where(m => m.IsDeleted != true).Select(s => new OrderNotesViewModel()
                     {
                         OrderNoteId = s.OrderNoteId,

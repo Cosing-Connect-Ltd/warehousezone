@@ -316,7 +316,8 @@ namespace Ganedata.Core.Entities.Enums
         Accounts = 14,
         Products = 15,
         OrdersCore = 16,
-        Ecommerce = 17
+        Ecommerce = 17,
+        FoodDelivery = 18
     }
 
     public enum AccountPaymentModeEnum
@@ -416,7 +417,7 @@ namespace Ganedata.Core.Entities.Enums
         Simple = 4,
         [Display(Name = "Product By Attribute")]
         ProductByAttribute = 5,
-        RelatedProduct=6
+        RelatedProduct = 6
     }
 
     public enum WarehouseThemeEnum

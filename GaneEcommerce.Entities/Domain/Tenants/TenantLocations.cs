@@ -119,10 +119,22 @@ namespace Ganedata.Core.Entities.Domain
         public bool ShowPriceAlertInSalesOrder { get; set; }
         public bool PickByContainer { get; set; }
         public bool MandatoryPickByContainer { get; set; }
+        [Display(Name = "Delivery Charges")]
         public decimal DeliveryCharges { get; set; }
+        [Display(Name = "Collection Charges")]
         public decimal CollectionCharges { get; set; }
+        public decimal EatInCharges { get; set; }
+        [Display(Name = "Delivery RadiusMiles in Miles")]
         public decimal DeliveryRadiusMiles { get; set; }
-
+        public int? DeliveryPriceGroupId { get; set; }
+        public int? CollectionPriceGroupId { get; set; }
+        public int? EatInPriceGroupId { get; set; }
+        [ForeignKey("DeliveryPriceGroupId")]
+        public virtual TenantPriceGroups DeliveryPriceGroup { get; set; }
+        [ForeignKey("CollectionPriceGroupId")]
+        public virtual TenantPriceGroups CollectionPriceGroup { get; set; }
+        [ForeignKey("EatInPriceGroupId")]
+        public virtual TenantPriceGroups EatInPriceGroup { get; set; }
         [ForeignKey("TenantId")]
         public virtual Tenant Tenants { get; set; }
         public virtual Address Address { get; set; }

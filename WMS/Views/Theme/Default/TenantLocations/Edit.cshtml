@@ -68,10 +68,8 @@
             </div>
         </div>
         <div class="input-group h-100 justify-content-center align-items-center">
-            <label class= "col-md-4"> Pallet Tracking Scheme</label>
-        
+            <label class="col-md-4"> Pallet Tracking Scheme</label>
             <div class="col-md-8">
-
                 @Html.EnumDropDownListFor(m => m.PalletTrackingScheme, new { @class = "chosen-select" })
                 @Html.ValidationMessageFor(model => model.PalletTrackingScheme)
             </div>
@@ -104,7 +102,6 @@
                 @Html.ValidationMessageFor(model => model.AllowShipToAccountAddress)
             </div>
         </div>
-
         <div class="input-group h-100 justify-content-center align-items-center">
 
             @Html.LabelFor(model => model.IsMobile, new { @class = "col-md-4" })
@@ -113,7 +110,6 @@
                 @Html.ValidationMessageFor(model => model.IsMobile)
             </div>
         </div>
-
     </div>
     <div class="col-md-6 pull-left">
         <div class="input-group h-100 justify-content-center align-items-center">
@@ -137,7 +133,6 @@
                 @Html.ValidationMessageFor(model => model.PostalCode)
             </div>
         </div>
-
         <div class="input-group h-100 justify-content-center align-items-center">
             @Html.LabelFor(model => model.CountryID, "Country", new { @class = "col-md-4" })
             <div class="col-md-8">
@@ -166,8 +161,6 @@
                 @Html.ValidationMessageFor(model => model.AllowStocktakeEdit)
             </div>
         </div>
-
-
         <div class="input-group h-100 justify-content-center align-items-center">
             @Html.LabelFor(model => model.ShowTaxInBlindShipment, new { @class = "col-md-4" })
             <div class="col-md-8">
@@ -175,8 +168,6 @@
                 @Html.ValidationMessageFor(model => model.ShowTaxInBlindShipment)
             </div>
         </div>
-
-
         <div class="input-group h-100 justify-content-center align-items-center">
             @Html.LabelFor(model => model.ShowPriceInBlindShipment, new { @class = "col-md-4" })
             <div class="col-md-8">
@@ -191,10 +182,6 @@
                 @Html.ValidationMessageFor(model => model.ShowQtyInBlindShipment)
             </div>
         </div>
-
-
-
-
         <div class="input-group h-100 justify-content-center align-items-center">
             @Html.LabelFor(model => model.IsActive, new { @class = "col-md-4" })
             <div class="col-md-8">
@@ -202,11 +189,8 @@
                 @Html.ValidationMessageFor(model => model.IsActive)
             </div>
         </div>
-
     </div>
-  
-
-    <div class="col-md-12 pull-left" id="divMobileLocation" style="visibility: hidden">
+    <div class="col-md-12 pull-left border-wrapper" id="divMobileLocation">
         <div class="col-md-6 pull-left">
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.Label("Choose Vehicle", new { @class = "col-md-4" })
@@ -252,9 +236,68 @@
                     @Html.ValidationMessageFor(model => model.SalesManUserId)
                 </div>
             </div>
-
         </div>
     </div>
+
+    if (ViewBag.IsFoodDeliveryEnabled)
+    {
+        <div class="col-md-12 pull-left border-wrapper">
+            <div class="col-md-6 pull-left">
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.DeliveryCharges, new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.DeliveryCharges)
+                        @Html.ValidationMessageFor(model => model.DeliveryCharges)
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.CollectionCharges, new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.CollectionCharges)
+                        @Html.ValidationMessageFor(model => model.CollectionCharges)
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.EatInCharges, new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.EatInCharges)
+                        @Html.ValidationMessageFor(model => model.EatInCharges)
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.DeliveryRadiusMiles, new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.DeliveryRadiusMiles)
+                        @Html.ValidationMessageFor(model => model.DeliveryRadiusMiles)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 pull-left">
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.DeliveryPriceGroupId, new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(m => m.DeliveryPriceGroupId, new SelectList(ViewBag.PriceGroups, "Value", "Text"), "Select Price Group", new { @class = "chosen-select" })
+                        @Html.ValidationMessageFor(model => model.DeliveryPriceGroupId)
+                    </div>
+                    <div class="input-group h-100 justify-content-center align-items-center">
+                        @Html.LabelFor(model => model.CollectionPriceGroupId, new { @class = "col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(m => m.CollectionPriceGroupId, new SelectList(ViewBag.PriceGroups, "Value", "Text"), "Select Price Group", new { @class = "chosen-select" })
+                            @Html.ValidationMessageFor(model => model.CollectionPriceGroupId)
+                        </div>
+                    </div>
+                    <div class="input-group h-100 justify-content-center align-items-center">
+                        @Html.LabelFor(model => model.EatInPriceGroupId, new { @class = "col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(m => m.EatInPriceGroupId, new SelectList(ViewBag.PriceGroups, "Value", "Text"), "Select Price Group", new { @class = "chosen-select" })
+                            @Html.ValidationMessageFor(model => model.EatInPriceGroupId)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
 
     <div class="col-md-offset-2 col-md-10 bottom-right">
         <input type="submit" value="Save" class="btn btn-primary" />
@@ -265,11 +308,12 @@
 <script>
     $(document).ready(function () {
         function updateMobileLocStatus() {
-            $("#divMobileLocation").removeAttr("style");
+            $("#divMobileLocation").css("visibility", "visible");
+            $("#divMobileLocation").css("height", "auto");
             if ($("#IsMobile").prop("checked")) {
-                $("#divMobileLocation").slideDown();
+                $("#divMobileLocation").show();
             } else {
-                $("#divMobileLocation").slideUp();
+                $("#divMobileLocation").hide();
                 $("#MarketVehicleID").val(null);
             }
         }

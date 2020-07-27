@@ -57,7 +57,7 @@ namespace WMS
             IViewEngine razorEngine = new ThemedRazorViewEngine() { FileExtensions = new string[] { "cshtml" } };
             ViewEngines.Engines.Add(razorEngine);
 
-             AreaRegistration.RegisterAllAreas();
+            AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 
@@ -101,7 +101,7 @@ namespace WMS
                 //    @MiniProfiler.Current.RenderIncludes(position: RenderPosition.Left)
                 // ...then the position would be on the left on that page, and on the right (the application default) for anywhere that doesn't
                 // specified position in the .RenderIncludes() call.
-                PopupRenderPosition = RenderPosition.Right,  // defaults to left
+                PopupRenderPosition = RenderPosition.BottomRight,  // defaults to left
                 PopupMaxTracesToShow = 10,                   // defaults to 15
 
                 // ResultsAuthorize (optional - open to all by default):

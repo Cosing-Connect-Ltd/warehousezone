@@ -1,5 +1,6 @@
 ﻿using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Entities.Helpers;
 using Ganedata.Core.Models;
 using System;
@@ -22,7 +23,7 @@ namespace Ganedata.Core.Services
 
         public IEnumerable<AuthActivity> GetAllActivities(int TenantId)
         {
-            return _currentDbContext.AuthActivities.Where(e => e.IsDeleted != true && e.TenantId==TenantId).ToList();
+            return _currentDbContext.AuthActivities.Where(e => e.IsDeleted != true && e.TenantId == TenantId).ToList();
         }
 
         public AuthActivity GetActivityById(int activityId)
@@ -76,14 +77,14 @@ namespace Ganedata.Core.Services
             _currentDbContext.SaveChanges();
         }
 
-        public IQueryable<AuthActivitiesForPermViewModel> GetAuthActivitiesForPermByGroup(AuthUserGroupsForPermViewModel activityGroup, IEnumerable<int> userModules, int TenantId)
+        public IQueryable<AuthActivitiesForPermViewModel> GetAuthActivitiesForPermByGroup(AuthUserGroupsForPermViewModel activityGroup, IEnumerable<TenantModuleEnum> userModules, int TenantId)
         {
             return (from e in _currentDbContext.AuthActivities
                     join t in _currentDbContext.AuthActivityGroupMaps on e.ActivityId equals t.ActivityId
                     join x in _currentDbContext.AuthActivityGroups on t.ActivityGroupId equals x.ActivityGroupId
                     where t.IsDeleted != true && e.SuperAdmin != true && x.ActivityGroupId == activityGroup.ActivityGroupId && e.IsActive == true
-                    && e.IsDeleted != true && e.ExcludePermission != true && (!e.ModuleId.HasValue || userModules.Contains(e.ModuleId.Value)) 
-                    && e.TenantId==TenantId
+                    && e.IsDeleted != true && e.ExcludePermission != true && (!e.ModuleId.HasValue || userModules.Contains(e.ModuleId.Value))
+                    && e.TenantId == TenantId
 
                     select new AuthActivitiesForPermViewModel
                     {
@@ -95,7 +96,7 @@ namespace Ganedata.Core.Services
                     }).OrderBy(x => x.SortOrder).ThenBy(a => a.ActivityName);
         }
 
-        public IQueryable<AuthActivitiesForPermViewModel> GetAuthActivitiesForPermNoGroup(IEnumerable<int> userModules)
+        public IQueryable<AuthActivitiesForPermViewModel> GetAuthActivitiesForPermNoGroup(IEnumerable<TenantModuleEnum> userModules)
         {
             return (from e in _currentDbContext.AuthActivities
                     where _currentDbContext.AuthActivityGroupMaps.All(x => x.ActivityId != e.ActivityId) && e.IsActive == true
@@ -118,7 +119,7 @@ namespace Ganedata.Core.Services
         // ******************** Activity Groups *********************
         public IEnumerable<AuthActivityGroup> GetAllActivityGroups(int CurrentTenantId)
         {
-            return _currentDbContext.AuthActivityGroups.Where(e => e.IsDeleted != true && e.TenantId==CurrentTenantId).ToList();
+            return _currentDbContext.AuthActivityGroups.Where(e => e.IsDeleted != true && e.TenantId == CurrentTenantId).ToList();
         }
 
         public AuthActivityGroup GetActivityGroupById(int activityGroupId)
@@ -198,7 +199,7 @@ namespace Ganedata.Core.Services
         }
 
 
-        public IQueryable<AuthUserGroupsForPermViewModel> GetDistinctActivityGroupsForPerm(IEnumerable<int> userModules)
+        public IQueryable<AuthUserGroupsForPermViewModel> GetDistinctActivityGroupsForPerm(IEnumerable<TenantModuleEnum> userModules)
         {
             return (from e in _currentDbContext.AuthActivityGroups
                     join t in _currentDbContext.AuthActivityGroupMaps on e.ActivityGroupId equals t.ActivityGroupId
@@ -223,7 +224,7 @@ namespace Ganedata.Core.Services
                     }).Distinct().OrderBy(x => x.SortOrder).ThenBy(a => a.ActivityGroupName);
         }
 
-        public IQueryable<AuthUserGroupsForPermViewModel> GetDistinctActivityGroupsForNavigation(int userId, int warehouseId, IEnumerable<int> userModules)
+        public IQueryable<AuthUserGroupsForPermViewModel> GetDistinctActivityGroupsForNavigation(int userId, int warehouseId, IEnumerable<TenantModuleEnum> userModules)
         {
             return (from ep in _currentDbContext.AuthPermissions
                     join e in _currentDbContext.AuthActivities on ep.ActivityId equals e.ActivityId
@@ -249,7 +250,7 @@ namespace Ganedata.Core.Services
                         GroupIcon = x.GroupIcon
                     }).Distinct().OrderBy(x => x.SortOrder).ThenBy(a => a.ActivityGroupName);
         }
-        public IQueryable<AuthUserGroupsForPermViewModel> GetDistinctActivityGroupsForSuperUserNavigation(IEnumerable<int> userModules)
+        public IQueryable<AuthUserGroupsForPermViewModel> GetDistinctActivityGroupsForSuperUserNavigation(IEnumerable<TenantModuleEnum> userModules)
         {
             return (from e in _currentDbContext.AuthActivityGroups
                     join t in _currentDbContext.AuthActivityGroupMaps on e.ActivityGroupId equals t.ActivityGroupId
@@ -273,7 +274,7 @@ namespace Ganedata.Core.Services
                         GroupIcon = e.GroupIcon
                     }).Distinct().OrderBy(x => x.SortOrder).ThenBy(a => a.ActivityGroupName);
         }
-        public IQueryable<AuthActivitiesForPermViewModel> GetDistinctActivityNonGroupsForSuperUserNavigation(IEnumerable<int> userModules)
+        public IQueryable<AuthActivitiesForPermViewModel> GetDistinctActivityNonGroupsForSuperUserNavigation(IEnumerable<TenantModuleEnum> userModules)
         {
             return (from e in _currentDbContext.AuthActivities
                     where _currentDbContext.AuthActivityGroupMaps.All(x => x.ActivityId != e.ActivityId) && (!e.ModuleId.HasValue || userModules.Contains(e.ModuleId.Value))
@@ -286,7 +287,7 @@ namespace Ganedata.Core.Services
                         SortOrder = e.SortOrder
                     }).OrderBy(x => x.SortOrder).ThenBy(a => a.ActivityName);
         }
-        public IQueryable<AuthActivitiesForPermViewModel> GetDistinctActivitiesForSuperUserNavigation(IEnumerable<int> userModules)
+        public IQueryable<AuthActivitiesForPermViewModel> GetDistinctActivitiesForSuperUserNavigation(IEnumerable<TenantModuleEnum> userModules)
         {
             return (from e in _currentDbContext.AuthActivities
                     join t in _currentDbContext.AuthActivityGroupMaps on e.ActivityId equals t.ActivityId
@@ -303,7 +304,7 @@ namespace Ganedata.Core.Services
                     }).OrderBy(x => x.SortOrder).ThenBy(a => a.ActivityName);
         }
 
-        public IQueryable<AuthActivitiesForPermViewModel> GetDistinctActivityNonGroupsForNavigation(int userId, int warehouseId, IEnumerable<int> userModules)
+        public IQueryable<AuthActivitiesForPermViewModel> GetDistinctActivityNonGroupsForNavigation(int userId, int warehouseId, IEnumerable<TenantModuleEnum> userModules)
         {
             return (from ep in _currentDbContext.AuthPermissions
                     join e in _currentDbContext.AuthActivities on ep.ActivityId equals e.ActivityId
@@ -319,7 +320,7 @@ namespace Ganedata.Core.Services
                     }).OrderBy(x => x.SortOrder).ThenBy(a => a.ActivityName);
         }
 
-        public IQueryable<AuthActivitiesForPermViewModel> GetDistinctActivityPermissionsForUserNavigation(int userId, int warehouseId, IEnumerable<int> userModules)
+        public IQueryable<AuthActivitiesForPermViewModel> GetDistinctActivityPermissionsForUserNavigation(int userId, int warehouseId, IEnumerable<TenantModuleEnum> userModules)
         {
             return (from ep in _currentDbContext.AuthPermissions
                     join e in _currentDbContext.AuthActivities on ep.ActivityId equals e.ActivityId

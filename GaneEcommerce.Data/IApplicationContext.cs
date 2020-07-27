@@ -17,7 +17,6 @@ namespace Ganedata.Core.Data
         DbSet<AuthActivity> AuthActivities { get; set; }
         DbSet<AuthActivityGroup> AuthActivityGroups { get; set; }
         DbSet<AuthActivityGroupMap> AuthActivityGroupMaps { get; set; }
-        DbSet<Module> Modules { get; set; }
         DbSet<GlobalCountry> GlobalCountries { get; set; }
         DbSet<GlobalCurrency> GlobalCurrencies { get; set; }
         DbSet<Tenant> Tenants { get; set; }

@@ -1787,13 +1787,18 @@ input[type=text].serial {
     float: left;
 }
 
-#divMobileLocation {
+.border-wrapper {
     background-color: #f1faff;
     padding: 4px 0px;
     clear: both;
     border-radius: 5px;
     border: 1px solid #005ba0;
-    height: auto;
+    margin-bottom: 6px;
+}
+
+#divMobileLocation {
+    height: 0;
+    visibility: hidden;
 }
 
 .process-textbox-scan {
@@ -2009,8 +2014,6 @@ input[type=text].serial {
 .text-bold {
     font-weight: bolder;
 }
-
-
 /* Media Queries */
 @media only screen and (max-width: 767px) {
     .main-left {
