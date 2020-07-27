@@ -41,43 +41,43 @@
 }
 
 @keyframes dot-spin {
-    0%,to {
-        box-shadow: 0 -18px 0 0 #b0aeb4,12.72984px -12.72984px 0 0 #b0aeb4,18px 0 0 0 #b0aeb4,12.72984px 12.72984px 0 -5px transparent,0 18px 0 -5px transparent,-12.72984px 12.72984px 0 -5px transparent,-18px 0 0 -5px transparent,-12.72984px -12.72984px 0 -5px transparent
+    0%, to {
+        box-shadow: 0 -18px 0 0 #b0aeb4, 12.72984px -12.72984px 0 0 #b0aeb4, 18px 0 0 0 #b0aeb4, 12.72984px 12.72984px 0 -5px transparent, 0 18px 0 -5px transparent, -12.72984px 12.72984px 0 -5px transparent, -18px 0 0 -5px transparent, -12.72984px -12.72984px 0 -5px transparent
     }
 
     12.5% {
-        box-shadow: 0 -18px 0 -5px transparent,12.72984px -12.72984px 0 0 #b0aeb4,18px 0 0 0 #b0aeb4,12.72984px 12.72984px 0 0 #b0aeb4,0 18px 0 -5px transparent,-12.72984px 12.72984px 0 -5px transparent,-18px 0 0 -5px transparent,-12.72984px -12.72984px 0 -5px transparent
+        box-shadow: 0 -18px 0 -5px transparent, 12.72984px -12.72984px 0 0 #b0aeb4, 18px 0 0 0 #b0aeb4, 12.72984px 12.72984px 0 0 #b0aeb4, 0 18px 0 -5px transparent, -12.72984px 12.72984px 0 -5px transparent, -18px 0 0 -5px transparent, -12.72984px -12.72984px 0 -5px transparent
     }
 
     25% {
-        box-shadow: 0 -18px 0 -5px transparent,12.72984px -12.72984px 0 -5px transparent,18px 0 0 0 #b0aeb4,12.72984px 12.72984px 0 0 #b0aeb4,0 18px 0 0 #b0aeb4,-12.72984px 12.72984px 0 -5px transparent,-18px 0 0 -5px transparent,-12.72984px -12.72984px 0 -5px transparent
+        box-shadow: 0 -18px 0 -5px transparent, 12.72984px -12.72984px 0 -5px transparent, 18px 0 0 0 #b0aeb4, 12.72984px 12.72984px 0 0 #b0aeb4, 0 18px 0 0 #b0aeb4, -12.72984px 12.72984px 0 -5px transparent, -18px 0 0 -5px transparent, -12.72984px -12.72984px 0 -5px transparent
     }
 
     37.5% {
-        box-shadow: 0 -18px 0 -5px transparent,12.72984px -12.72984px 0 -5px transparent,18px 0 0 -5px transparent,12.72984px 12.72984px 0 0 #b0aeb4,0 18px 0 0 #b0aeb4,-12.72984px 12.72984px 0 0 #b0aeb4,-18px 0 0 -5px transparent,-12.72984px -12.72984px 0 -5px transparent
+        box-shadow: 0 -18px 0 -5px transparent, 12.72984px -12.72984px 0 -5px transparent, 18px 0 0 -5px transparent, 12.72984px 12.72984px 0 0 #b0aeb4, 0 18px 0 0 #b0aeb4, -12.72984px 12.72984px 0 0 #b0aeb4, -18px 0 0 -5px transparent, -12.72984px -12.72984px 0 -5px transparent
     }
 
     50% {
-        box-shadow: 0 -18px 0 -5px transparent,12.72984px -12.72984px 0 -5px transparent,18px 0 0 -5px transparent,12.72984px 12.72984px 0 -5px transparent,0 18px 0 0 #b0aeb4,-12.72984px 12.72984px 0 0 #b0aeb4,-18px 0 0 0 #b0aeb4,-12.72984px -12.72984px 0 -5px transparent
+        box-shadow: 0 -18px 0 -5px transparent, 12.72984px -12.72984px 0 -5px transparent, 18px 0 0 -5px transparent, 12.72984px 12.72984px 0 -5px transparent, 0 18px 0 0 #b0aeb4, -12.72984px 12.72984px 0 0 #b0aeb4, -18px 0 0 0 #b0aeb4, -12.72984px -12.72984px 0 -5px transparent
     }
 
     62.5% {
-        box-shadow: 0 -18px 0 -5px transparent,12.72984px -12.72984px 0 -5px transparent,18px 0 0 -5px transparent,12.72984px 12.72984px 0 -5px transparent,0 18px 0 -5px transparent,-12.72984px 12.72984px 0 0 #b0aeb4,-18px 0 0 0 #b0aeb4,-12.72984px -12.72984px 0 0 #b0aeb4
+        box-shadow: 0 -18px 0 -5px transparent, 12.72984px -12.72984px 0 -5px transparent, 18px 0 0 -5px transparent, 12.72984px 12.72984px 0 -5px transparent, 0 18px 0 -5px transparent, -12.72984px 12.72984px 0 0 #b0aeb4, -18px 0 0 0 #b0aeb4, -12.72984px -12.72984px 0 0 #b0aeb4
     }
 
     75% {
-        box-shadow: 0 -18px 0 0 #b0aeb4,12.72984px -12.72984px 0 -5px transparent,18px 0 0 -5px transparent,12.72984px 12.72984px 0 -5px transparent,0 18px 0 -5px transparent,-12.72984px 12.72984px 0 -5px transparent,-18px 0 0 0 #b0aeb4,-12.72984px -12.72984px 0 0 #b0aeb4
+        box-shadow: 0 -18px 0 0 #b0aeb4, 12.72984px -12.72984px 0 -5px transparent, 18px 0 0 -5px transparent, 12.72984px 12.72984px 0 -5px transparent, 0 18px 0 -5px transparent, -12.72984px 12.72984px 0 -5px transparent, -18px 0 0 0 #b0aeb4, -12.72984px -12.72984px 0 0 #b0aeb4
     }
 
     87.5% {
-        box-shadow: 0 -18px 0 0 #b0aeb4,12.72984px -12.72984px 0 0 #b0aeb4,18px 0 0 -5px transparent,12.72984px 12.72984px 0 -5px transparent,0 18px 0 -5px transparent,-12.72984px 12.72984px 0 -5px transparent,-18px 0 0 -5px transparent,-12.72984px -12.72984px 0 0 #b0aeb4
+        box-shadow: 0 -18px 0 0 #b0aeb4, 12.72984px -12.72984px 0 0 #b0aeb4, 18px 0 0 -5px transparent, 12.72984px 12.72984px 0 -5px transparent, 0 18px 0 -5px transparent, -12.72984px 12.72984px 0 -5px transparent, -18px 0 0 -5px transparent, -12.72984px -12.72984px 0 0 #b0aeb4
     }
 }
 
 @font-face {
     font-family: "primaryfont_Bold";
     src: url(../fonts/SegoeUI-Bold.eot);
-    src: url(../fonts/SegoeUI-Bold.eot?#iefix) format("embedded-opentype"),url(../fonts/SegoeUI-Bold.woff) format("woff"),url(../fonts/SegoeUI-Bold.ttf) format("truetype"),url(../fonts/SegoeUI-Bold.svg) format("svg");
+    src: url(../fonts/SegoeUI-Bold.eot?#iefix) format("embedded-opentype"), url(../fonts/SegoeUI-Bold.woff) format("woff"), url(../fonts/SegoeUI-Bold.ttf) format("truetype"), url(../fonts/SegoeUI-Bold.svg) format("svg");
     font-weight: 800;
     font-style: normal
 }
@@ -85,7 +85,7 @@
 @font-face {
     font-family: "primaryfont_SemiBold";
     src: url(../fonts/SegoeUI-Semibold.eot);
-    src: url(../fonts/SegoeUI-Semibold.eot?#iefix) format("embedded-opentype"),url(../fonts/SegoeUI-Semibold.woff) format("woff"),url(../fonts/SegoeUI-Semibold.ttf) format("truetype"),url(../fonts/SegoeUI-Semibold.svg) format("svg");
+    src: url(../fonts/SegoeUI-Semibold.eot?#iefix) format("embedded-opentype"), url(../fonts/SegoeUI-Semibold.woff) format("woff"), url(../fonts/SegoeUI-Semibold.ttf) format("truetype"), url(../fonts/SegoeUI-Semibold.svg) format("svg");
     font-weight: 600;
     font-style: normal
 }
@@ -93,19 +93,92 @@
 @font-face {
     font-family: "primaryfont_Normal";
     src: url(../fonts/SegoeUI.eot);
-    src: url(../fonts/SegoeUI.eot?#iefix) format("embedded-opentype"),url(../fonts/SegoeUI.woff) format("woff"),url(../fonts/SegoeUI.ttf) format("truetype"),url(../fonts/SegoeUI.svg) format("svg");
+    src: url(../fonts/SegoeUI.eot?#iefix) format("embedded-opentype"), url(../fonts/SegoeUI.woff) format("woff"), url(../fonts/SegoeUI.ttf) format("truetype"), url(../fonts/SegoeUI.svg) format("svg");
     font-weight: 400;
     font-style: normal
 }
 
-abbr, acronym, address, applet, article, aside, audio, b, big, blockquote, canvas, caption, center, cite, code, dd, del, details, dfn, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, header, hgroup, html, i, iframe, img, ins, kbd, label, legend, mark, menu, nav, object, ol, output, pre, q, ruby, s, samp, section, small, span, strike, strong, sub, summary, sup, table, tbody, td, tfoot, th, thead, time, tr, tt, u, var, video {
+abbr,
+acronym,
+address,
+applet,
+article,
+aside,
+audio,
+b,
+big,
+blockquote,
+canvas,
+caption,
+center,
+cite,
+code,
+dd,
+del,
+details,
+dfn,
+div,
+dl,
+dt,
+em,
+embed,
+fieldset,
+figcaption,
+figure,
+footer,
+form,
+header,
+hgroup,
+html,
+i,
+iframe,
+img,
+ins,
+kbd,
+label,
+legend,
+mark,
+menu,
+nav,
+object,
+ol,
+output,
+pre,
+q,
+ruby,
+s,
+samp,
+section,
+small,
+span,
+strike,
+strong,
+sub,
+summary,
+sup,
+table,
+tbody,
+td,
+tfoot,
+th,
+thead,
+time,
+tr,
+tt,
+u,
+var,
+video {
     margin: 0;
     padding: 0;
     border: 0;
     font-size: 100%
 }
 
-a, body, li, p, ul {
+a,
+body,
+li,
+p,
+ul {
     border: 0;
     font-size: 100%
 }
@@ -115,7 +188,18 @@ p {
     font-size: 14px
 }
 
-.nb_header .nb_headicolst li a, article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+.nb_header .nb_headicolst li a,
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
     display: block
 }
 
@@ -145,17 +229,33 @@ ul {
     list-style-type: none
 }
 
-a, body, h1, h2, h3, h4, h5, h6, li, p, ul {
+a,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+li,
+p,
+ul {
     margin: 0;
     padding: 0
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: "primaryfont_Bold";
     color: #191e24
 }
 
-input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0
 }
@@ -222,7 +322,9 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
             outline: 0
         }
 
-        .nb_sub_sec .nb_sub_wrap .sub_form_wrap .nb_home_sub_form .sf_input_wrap button:focus, .nb_sub_sec .nb_sub_wrap .sub_form_wrap .nb_home_sub_form .sf_input_wrap button:hover, .search_wrap_main .search_input:focus {
+        .nb_sub_sec .nb_sub_wrap .sub_form_wrap .nb_home_sub_form .sf_input_wrap button:focus,
+        .nb_sub_sec .nb_sub_wrap .sub_form_wrap .nb_home_sub_form .sf_input_wrap button:hover,
+        .search_wrap_main .search_input:focus {
             outline: 0
         }
 
@@ -272,7 +374,7 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
         .nb_header .nb_headicolst li {
             float: left;
             padding: 0 25px;
-            border-right: solid 1px rgba(255,255,255,.5);
+            border-right: solid 1px rgba(255, 255, 255, .5);
             position: relative
         }
 
@@ -336,7 +438,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
                         transition: all .3s ease
                     }
 
-                .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap button:hover:after, .nb_header .nb_mainnav > ul > li:hover a:after {
+                .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap button:hover:after,
+                .nb_header .nb_mainnav > ul > li:hover a:after {
                     width: 100%
                 }
 
@@ -363,14 +466,16 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
                         padding: 0
                     }
 
-                        .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList li, .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList li.hav_sub_nav2 ul.nb_s_snList li {
+                        .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList li,
+                        .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList li.hav_sub_nav2 ul.nb_s_snList li {
                             list-style: none;
                             width: 100%;
                             border-bottom: solid 1px #ddd;
                             transition: all .3s ease
                         }
 
-                            .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList li a, .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList li.hav_sub_nav2 ul.nb_s_snList li a {
+                            .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList li a,
+                            .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList li.hav_sub_nav2 ul.nb_s_snList li a {
                                 display: block;
                                 width: 100%;
                                 font-size: 13px;
@@ -380,17 +485,23 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
                                 transition: all .3s ease
                             }
 
-                                .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList li a:hover, .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList li.hav_sub_nav2 ul.nb_s_snList li a:hover {
+                                .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList li a:hover,
+                                .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList li.hav_sub_nav2 ul.nb_s_snList li a:hover {
                                     cursor: pointer;
                                     color: #f33655;
                                     padding-left: 8px
                                 }
 
-                            .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList li.hav_sub_nav2 ul.nb_s_snList li:hover, .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList li:hover {
+                            .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList li.hav_sub_nav2 ul.nb_s_snList li:hover,
+                            .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList li:hover {
                                 background-color: #f1f1f1
                             }
 
-                            .nb_header .nb_headicolst li.cartIcoWrap a, .nb_header .nb_mainnav > ul li.hav_mega_nav, .nb_header .nb_mainnav > ul > li.active a, .nb_header .nb_mainnav > ul > li.hav_sub_nav, .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList li.hav_sub_nav2 {
+                            .nb_header .nb_headicolst li.cartIcoWrap a,
+                            .nb_header .nb_mainnav > ul li.hav_mega_nav,
+                            .nb_header .nb_mainnav > ul > li.active a,
+                            .nb_header .nb_mainnav > ul > li.hav_sub_nav,
+                            .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList li.hav_sub_nav2 {
                                 position: relative
                             }
 
@@ -506,7 +617,7 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
                                                     position: absolute;
                                                     left: 0;
                                                     top: 12px;
-                                                    transform: translate(-50%,-50%);
+                                                    transform: translate(-50%, -50%);
                                                     width: 0;
                                                     height: 0;
                                                     transition: all .3s ease;
@@ -579,11 +690,13 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
     margin-top: 1rem !important;
 }
 
-    .nb_footer .nb_footersec_inner .nb_footnav_wrap ul li:last-child a, .nb_header .nb_mainnav > ul > li:last-child {
+    .nb_footer .nb_footersec_inner .nb_footnav_wrap ul li:last-child a,
+    .nb_header .nb_mainnav > ul > li:last-child {
         padding-right: 0
     }
 
-.nb_header .nb_mainnav > ul > li.active a:after, .nb_header_style1 h3:after {
+.nb_header .nb_mainnav > ul > li.active a:after,
+.nb_header_style1 h3:after {
     content: "";
     position: absolute;
     bottom: -10px;
@@ -604,7 +717,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
     margin-top: -1px
 }
 
-.nb_sec_navwrap, .nb_top_catSection {
+.nb_sec_navwrap,
+.nb_top_catSection {
     width: 100%;
     float: left;
     background-color: #fff
@@ -627,11 +741,19 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
             display: inline-block
         }
 
-            .nb_feat_prod_sec .nb_featuredPrdCarrousle .owl-nav button span:hover, .nb_prd_det_rightsec .availibility span, .nb_prd_det_rightsec .footSec .addtowishlist i:hover, .nb_qcvboxwrap .availibility span, .nb_qcvboxwrap .footSec .addtowishlist i:hover, .nb_sec_navwrap .nb_sec_navlist li a:hover i, .prd_lst_boxouter .foot .icolist li a:hover i, .res_navWrapper .nb_sec_nav_res li a:hover i {
+            .nb_feat_prod_sec .nb_featuredPrdCarrousle .owl-nav button span:hover,
+            .nb_prd_det_rightsec .availibility span,
+            .nb_prd_det_rightsec .footSec .addtowishlist i:hover,
+            .nb_qcvboxwrap .availibility span,
+            .nb_qcvboxwrap .footSec .addtowishlist i:hover,
+            .nb_sec_navwrap .nb_sec_navlist li a:hover i,
+            .prd_lst_boxouter .foot .icolist li a:hover i,
+            .res_navWrapper .nb_sec_nav_res li a:hover i {
                 color: #f33655
             }
 
-            .nb_sec_navwrap .nb_sec_navlist li a i, .res_navWrapper .nb_sec_nav_res li a i {
+            .nb_sec_navwrap .nb_sec_navlist li a i,
+            .res_navWrapper .nb_sec_nav_res li a i {
                 font-size: 22px;
                 vertical-align: middle;
                 margin-right: 16px;
@@ -644,7 +766,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
                 display: inline-block
             }
 
-.nb_bannersec .carousel-item.active .nb_bannerCaptionWrap button, .nb_bannersec .carousel-item.active .nb_bannerCaptionWrap h5 {
+.nb_bannersec .carousel-item.active .nb_bannerCaptionWrap button,
+.nb_bannersec .carousel-item.active .nb_bannerCaptionWrap h5 {
     transform: translateY(0);
     opacity: 1;
     visibility: visible
@@ -700,7 +823,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
             padding: 6px
         }
 
-        .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap a, .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap button {
+        .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap a,
+        .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap button {
             background-color: transparent;
             border: 0;
             position: relative;
@@ -717,7 +841,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
             margin: 10px
         }
 
-            .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap a:after, .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap button:after {
+            .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap a:after,
+            .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap button:after {
                 content: "";
                 font-family: "primaryfont_SemiBold";
                 font-size: 20px;
@@ -750,7 +875,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
             cursor: pointer
         }
 
-            .nb_bannersec .np_bannerContentOuter .nb_bnr_count:hover:before, body {
+            .nb_bannersec .np_bannerContentOuter .nb_bnr_count:hover:before,
+            body {
                 height: 100%
             }
 
@@ -773,7 +899,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
             padding-left: 27px
         }
 
-            .nb_bannersec .np_bannerContentOuter .nb_bnr_count.lft:after, .nb_bannersec .np_bannerContentOuter .nb_bnr_count.lft:before {
+            .nb_bannersec .np_bannerContentOuter .nb_bnr_count.lft:after,
+            .nb_bannersec .np_bannerContentOuter .nb_bnr_count.lft:before {
                 left: 0;
                 top: 0
             }
@@ -882,7 +1009,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
             transition: all .5s ease
         }
 
-            .ftb_sec .nb_ftb_box .nb_fb_img img, .nb_feat_prod_sec .nb_featuredPrdCarrousle .nb_fp_boxwrap .prd_img img {
+            .ftb_sec .nb_ftb_box .nb_fb_img img,
+            .nb_feat_prod_sec .nb_featuredPrdCarrousle .nb_fp_boxwrap .prd_img img {
                 transition: all .5s ease
             }
 
@@ -933,7 +1061,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
                 width: 100%
             }
 
-            .ftb_sec .nb_ftb_box:hover .nb_fb_img img, .nb_feat_prod_sec .nb_featuredPrdCarrousle .nb_fp_boxwrap:hover .prd_img img {
+            .ftb_sec .nb_ftb_box:hover .nb_fb_img img,
+            .nb_feat_prod_sec .nb_featuredPrdCarrousle .nb_fp_boxwrap:hover .prd_img img {
                 transform: scale(1.05)
             }
 
@@ -990,7 +1119,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
                 padding-right: 50px
             }
 
-                .nb_sub_sec .nb_sub_wrap .sub_form_wrap .nb_home_sub_form .sf_input_wrap input[type=email], .nb_sub_sec .nb_sub_wrap .sub_form_wrap .nb_home_sub_form .sf_input_wrap input[type=text] {
+                .nb_sub_sec .nb_sub_wrap .sub_form_wrap .nb_home_sub_form .sf_input_wrap input[type=email],
+                .nb_sub_sec .nb_sub_wrap .sub_form_wrap .nb_home_sub_form .sf_input_wrap input[type=text] {
                     width: 100%;
                     height: 52px;
                     border: 0;
@@ -1021,7 +1151,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
                         transition: all .3s ease
                     }
 
-                    .nb_sub_sec .nb_sub_wrap .sub_form_wrap .nb_home_sub_form .sf_input_wrap button:focus i, .nb_sub_sec .nb_sub_wrap .sub_form_wrap .nb_home_sub_form .sf_input_wrap button:hover i {
+                    .nb_sub_sec .nb_sub_wrap .sub_form_wrap .nb_home_sub_form .sf_input_wrap button:focus i,
+                    .nb_sub_sec .nb_sub_wrap .sub_form_wrap .nb_home_sub_form .sf_input_wrap button:hover i {
                         color: #f33655
                     }
 
@@ -1038,7 +1169,9 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
         transition: all .5s ease
     }
 
-    .ftb_sec .nb_ftb_box, .ftb_sec .nb_ftb_box .nb_fb_con, .nb_footer {
+    .ftb_sec .nb_ftb_box,
+    .ftb_sec .nb_ftb_box .nb_fb_con,
+    .nb_footer {
         width: 100%;
         float: left
     }
@@ -1113,7 +1246,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
                 justify-content: space-around
             }
 
-                .nb_footer .nb_footersec_inner .followUsWrap ul li a, ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
+                .nb_footer .nb_footersec_inner .followUsWrap ul li a,
+                ul.list-inline > li.li-mhp-menu:hover > ul.mhp-menu {
                     display: block
                 }
 
@@ -1317,15 +1451,16 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
     }
 
 .accordion.have2child ul li:first-child {
-    clip-path: polygon(0 0,100% 0,85% 100%,0 100%)
+    clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%)
 }
 
     .accordion.have2child ul li:first-child:hover {
-        clip-path: polygon(0 0,100% 0,88% 100%,0 100%)
+        clip-path: polygon(0 0, 100% 0, 88% 100%, 0 100%)
     }
 
-.accordion.have2child ul li:last-child, .accordion.have2child ul li:last-child:hover {
-    clip-path: polygon(13% 0,100% 0,100% 100%,0 100%)
+.accordion.have2child ul li:last-child,
+.accordion.have2child ul li:last-child:hover {
+    clip-path: polygon(13% 0, 100% 0, 100% 100%, 0 100%)
 }
 
 .accordion.have1child ul li {
@@ -1400,7 +1535,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
             padding: 10px 0
         }
 
-            .res_navWrapper .nb_firstNav_res_lst li a, .res_navWrapper .nb_sec_nav_res li a {
+            .res_navWrapper .nb_firstNav_res_lst li a,
+            .res_navWrapper .nb_sec_nav_res li a {
                 font-family: "primaryfont_SemiBold";
                 font-size: 20px;
                 color: #000;
@@ -1452,13 +1588,15 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
         display: inline-block
     }
 
-        .breadCrumbtopsec .nb_bread_crumbwrap nav ol, .nb_prdlisting_pgsec .breadCrumbtopsec .nb_bread_crumbwrap nav ol {
+        .breadCrumbtopsec .nb_bread_crumbwrap nav ol,
+        .nb_prdlisting_pgsec .breadCrumbtopsec .nb_bread_crumbwrap nav ol {
             background-color: transparent;
             margin: 0;
             padding: 0
         }
 
-            .breadCrumbtopsec .nb_bread_crumbwrap nav ol li, .nb_prdlisting_pgsec .breadCrumbtopsec .nb_bread_crumbwrap nav ol li {
+            .breadCrumbtopsec .nb_bread_crumbwrap nav ol li,
+            .nb_prdlisting_pgsec .breadCrumbtopsec .nb_bread_crumbwrap nav ol li {
                 font-family: "primaryfont_SemiBold";
                 font-size: 13px;
                 color: #111;
@@ -1513,16 +1651,22 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
             padding: 8px 30px 8px 10px
         }
 
-            .nb_prd_det_rightsec .footSec .qty .sortBysec #nb_prdpg_qtysel_box option, .nb_prdlisting_pgsec .breadCrumbtopsec .sortBysec #nb_prdlst_sortDrpdwn option, .nb_qcvboxwrap .footSec .qty .sortBysec #nb_prdpg_qtysel_box option {
+            .nb_prd_det_rightsec .footSec .qty .sortBysec #nb_prdpg_qtysel_box option,
+            .nb_prdlisting_pgsec .breadCrumbtopsec .sortBysec #nb_prdlst_sortDrpdwn option,
+            .nb_qcvboxwrap .footSec .qty .sortBysec #nb_prdpg_qtysel_box option {
                 font-family: "primaryfont_SemiBold";
                 font-size: 13px
             }
 
-            .nb_prd_det_rightsec .footSec .qty .sortBysec #nb_prdpg_qtysel_box:-ms-expand, .nb_prdlisting_pgsec .breadCrumbtopsec .sortBysec #nb_prdlst_sortDrpdwn:-ms-expand, .nb_qcvboxwrap .footSec .qty .sortBysec #nb_prdpg_qtysel_box:-ms-expand {
+            .nb_prd_det_rightsec .footSec .qty .sortBysec #nb_prdpg_qtysel_box:-ms-expand,
+            .nb_prdlisting_pgsec .breadCrumbtopsec .sortBysec #nb_prdlst_sortDrpdwn:-ms-expand,
+            .nb_qcvboxwrap .footSec .qty .sortBysec #nb_prdpg_qtysel_box:-ms-expand {
                 display: none
             }
 
-        .nb_prd_det_rightsec .footSec .qty .sortBysec:after, .nb_prdlisting_pgsec .breadCrumbtopsec .sortBysec:after, .nb_qcvboxwrap .footSec .qty .sortBysec:after {
+        .nb_prd_det_rightsec .footSec .qty .sortBysec:after,
+        .nb_prdlisting_pgsec .breadCrumbtopsec .sortBysec:after,
+        .nb_qcvboxwrap .footSec .qty .sortBysec:after {
             position: absolute;
             right: 10px;
             top: 50%;
@@ -1556,13 +1700,16 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
             margin-bottom: 0
         }
 
-        .nb_prdlisting_pgsec .nb_prd_filterwrap .nb_fltr_accrd_wrap .nb_prd_filter_listouter, .nb_prdlisting_pgsec .nb_prd_filterwrap .prod_count_sec > ul {
+        .nb_prdlisting_pgsec .nb_prd_filterwrap .nb_fltr_accrd_wrap .nb_prd_filter_listouter,
+        .nb_prdlisting_pgsec .nb_prd_filterwrap .prod_count_sec > ul {
             list-style: none;
             margin: 0;
             padding: 0
         }
 
-            .nb_prdlisting_pgsec .nb_prd_filterwrap .nb_fltr_accrd_wrap, .nb_prdlisting_pgsec .nb_prd_filterwrap .nb_fltr_accrd_wrap .nb_prd_filter_listouter li, .nb_prdpg_fg {
+            .nb_prdlisting_pgsec .nb_prd_filterwrap .nb_fltr_accrd_wrap,
+            .nb_prdlisting_pgsec .nb_prd_filterwrap .nb_fltr_accrd_wrap .nb_prd_filter_listouter li,
+            .nb_prdpg_fg {
                 width: 100%;
                 float: left
             }
@@ -1604,7 +1751,7 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
             -webkit-appearance: none;
             background-color: transparent;
             border: 1px solid #707070;
-            box-shadow: 0 1px 2px rgba(0,0,0,.05),inset 0 -15px 10px -12px rgba(0,0,0,.05);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .05), inset 0 -15px 10px -12px rgba(0, 0, 0, .05);
             padding: 6px;
             display: inline-block;
             position: relative;
@@ -1635,7 +1782,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
     width: 100%
 }
 
-    .nb_filter_accordion .nb_filter_head h5 button, .nb_header_style2 h3 {
+    .nb_filter_accordion .nb_filter_head h5 button,
+    .nb_header_style2 h3 {
         font-family: "primaryfont_SemiBold";
         width: 100%;
         text-align: left;
@@ -1675,12 +1823,14 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
     padding-bottom: 10px
 }
 
-.nb_prd_listing_wrap, .prd_lst_boxouter {
+.nb_prd_listing_wrap,
+.prd_lst_boxouter {
     width: 100%;
     float: left
 }
 
-    .nb_prd_listing_wrap .head, .prd_lst_boxouter .foot .prd_amnt {
+    .nb_prd_listing_wrap .head,
+    .prd_lst_boxouter .foot .prd_amnt {
         font-family: "primaryfont_Bold";
         font-size: 20px;
         min-width: 125px;
@@ -1812,7 +1962,9 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
             padding: 10px;
         }
 
-.nb_prd_viewingsecWrap #zoomViewTrigger:hover, .nb_prd_viewingsecWrap .img_thumb_sliderwrap .nb_imageZoomCarrousle div.item:hover, .prd_lst_boxouter:hover {
+.nb_prd_viewingsecWrap #zoomViewTrigger:hover,
+.nb_prd_viewingsecWrap .img_thumb_sliderwrap .nb_imageZoomCarrousle div.item:hover,
+.prd_lst_boxouter:hover {
     cursor: pointer
 }
 
@@ -1836,7 +1988,9 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
         display: none
     }
 
-        .nb_basket_wrap div.coupen_codewrap .coupenSubmitbtn i, .nb_prd_viewingsecWrap #zoomViewTrigger i, .progressBarStep ul#progressList li.active span.count {
+        .nb_basket_wrap div.coupen_codewrap .coupenSubmitbtn i,
+        .nb_prd_viewingsecWrap #zoomViewTrigger i,
+        .progressBarStep ul#progressList li.active span.count {
             color: #fff
         }
 
@@ -1849,12 +2003,19 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
         overflow: hidden
     }
 
-        .blogdetWrap .blgImgMain img, .contact_form_sec .contact_pg_wrap .nb_contact_form .captcha_formGroup .captchaimg img, .nb_cat_selectBx .img_wrap img, .nb_prd_namewamnt_box .img_wrap img, .nb_prd_viewingsecWrap .img_view_area img, .nb_qcvboxwrap .imgwrap img {
+        .blogdetWrap .blgImgMain img,
+        .contact_form_sec .contact_pg_wrap .nb_contact_form .captcha_formGroup .captchaimg img,
+        .nb_cat_selectBx .img_wrap img,
+        .nb_prd_namewamnt_box .img_wrap img,
+        .nb_prd_viewingsecWrap .img_view_area img,
+        .nb_qcvboxwrap .imgwrap img {
             display: block;
             margin: 0 auto
         }
 
-    .nb_prd_det_rightsec, .nb_prd_viewingsecWrap .img_thumb_sliderwrap, .nb_qcvboxwrap {
+    .nb_prd_det_rightsec,
+    .nb_prd_viewingsecWrap .img_thumb_sliderwrap,
+    .nb_qcvboxwrap {
         width: 100%;
         float: left
     }
@@ -1869,7 +2030,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
             width: 100%
         }
 
-        .nb_qcvboxwrap .head, .nb_qcvboxwrap .subContent {
+        .nb_qcvboxwrap .head,
+        .nb_qcvboxwrap .subContent {
             font-family: "primaryfont_Bold";
             color: #000;
             margin-bottom: 8px;
@@ -1916,7 +2078,9 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
                 box-shadow: 0 0 0 2px #060606
             }
 
-        .nb_prd_det_rightsec .footSec .qty > span, .nb_qcvboxwrap .availibility, .nb_qcvboxwrap .footSec .qty > span {
+        .nb_prd_det_rightsec .footSec .qty > span,
+        .nb_qcvboxwrap .availibility,
+        .nb_qcvboxwrap .footSec .qty > span {
             font-family: "primaryfont_SemiBold";
             font-size: 16px;
             color: #000;
@@ -1929,7 +2093,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
             margin-bottom: 31px
         }
 
-            .nb_prd_det_rightsec .sizeWrap p, .nb_qcvboxwrap .sizeWrap p {
+            .nb_prd_det_rightsec .sizeWrap p,
+            .nb_qcvboxwrap .sizeWrap p {
                 display: inline-block;
                 font-size: 16px;
                 font-family: "primaryfont_SemiBold";
@@ -1938,7 +2103,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
                 letter-spacing: 2px
             }
 
-                .nb_prd_det_rightsec .sizeWrap p span, .nb_qcvboxwrap .sizeWrap p span {
+                .nb_prd_det_rightsec .sizeWrap p span,
+                .nb_qcvboxwrap .sizeWrap p span {
                     color: #000;
                     display: inline-block
                 }
@@ -1953,7 +2119,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
                 padding: 0
             }
 
-                .nb_prd_det_rightsec .sizeWrap .size_boxList li, .nb_qcvboxwrap .sizeWrap .size_boxList li {
+                .nb_prd_det_rightsec .sizeWrap .size_boxList li,
+                .nb_qcvboxwrap .sizeWrap .size_boxList li {
                     margin-right: 13px;
                     height: 50px;
                     border: solid 1px #707070
@@ -1964,7 +2131,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
                     border-radius: 5px
                 }
 
-                    .nb_prd_det_rightsec .sizeWrap .size_boxList li a, .nb_qcvboxwrap .sizeWrap .size_boxList li a {
+                    .nb_prd_det_rightsec .sizeWrap .size_boxList li a,
+                    .nb_qcvboxwrap .sizeWrap .size_boxList li a {
                         display: flex;
                         align-items: center;
                         justify-content: center;
@@ -1977,7 +2145,12 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
                         transition: all .3s ease
                     }
 
-                        .bloglistSec .blgpaginationwrap .paginationList li a:hover, .bloglistSec .blgpaginationwrap .paginationList li.active a, .nb_prd_det_rightsec .sizeWrap .size_boxList li a:hover, .nb_prd_det_rightsec .sizeWrap .size_boxList li.active a, .nb_qcvboxwrap .sizeWrap .size_boxList li a:hover, .nb_qcvboxwrap .sizeWrap .size_boxList li.active a {
+                        .bloglistSec .blgpaginationwrap .paginationList li a:hover,
+                        .bloglistSec .blgpaginationwrap .paginationList li.active a,
+                        .nb_prd_det_rightsec .sizeWrap .size_boxList li a:hover,
+                        .nb_prd_det_rightsec .sizeWrap .size_boxList li.active a,
+                        .nb_qcvboxwrap .sizeWrap .size_boxList li a:hover,
+                        .nb_qcvboxwrap .sizeWrap .size_boxList li.active a {
                             background-color: #000;
                             color: #fff
                         }
@@ -1992,7 +2165,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
                 vertical-align: bottom
             }
 
-                .nb_prd_det_rightsec .footSec .qty > span, .nb_qcvboxwrap .footSec .qty > span {
+                .nb_prd_det_rightsec .footSec .qty > span,
+                .nb_qcvboxwrap .footSec .qty > span {
                     letter-spacing: 1px;
                     margin-bottom: 10px;
                     display: block
@@ -2005,7 +2179,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
                     border-radius: 5px
                 }
 
-                    .nb_prd_det_rightsec .footSec .qty .sortBysec #nb_prdpg_qtysel_box, .nb_qcvboxwrap .footSec .qty .sortBysec #nb_prdpg_qtysel_box {
+                    .nb_prd_det_rightsec .footSec .qty .sortBysec #nb_prdpg_qtysel_box,
+                    .nb_qcvboxwrap .footSec .qty .sortBysec #nb_prdpg_qtysel_box {
                         border: 0;
                         outline: 0;
                         appearance: none;
@@ -2019,7 +2194,9 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
                         padding: 14px 30px 14px 10px
                     }
 
-            .nb_prd_det_rightsec .footSec button.addTobasket, .nb_qcvboxwrap .footSec .addtowishlistbtn, .nb_qcvboxwrap .footSec button.addTobasket {
+            .nb_prd_det_rightsec .footSec button.addTobasket,
+            .nb_qcvboxwrap .footSec .addtowishlistbtn,
+            .nb_qcvboxwrap .footSec button.addTobasket {
                 text-transform: uppercase;
                 background-color: #292929;
                 color: #fff;
@@ -2035,7 +2212,9 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
                 transition: all .3s ease
             }
 
-                .nb_prd_det_rightsec .footSec button.addTobasket:hover, .nb_qcvboxwrap .footSec .addtowishlistbtn:hover, .nb_qcvboxwrap .footSec button.addTobasket:hover {
+                .nb_prd_det_rightsec .footSec button.addTobasket:hover,
+                .nb_qcvboxwrap .footSec .addtowishlistbtn:hover,
+                .nb_qcvboxwrap .footSec button.addTobasket:hover {
                     background-color: #f33655
                 }
 
@@ -2048,7 +2227,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
                 vertical-align: super
             }
 
-                .nb_prd_det_rightsec .footSec .addtowishlist i, .nb_qcvboxwrap .footSec .addtowishlist i {
+                .nb_prd_det_rightsec .footSec .addtowishlist i,
+                .nb_qcvboxwrap .footSec .addtowishlist i {
                     font-size: 30px;
                     color: #000;
                     transition: all .3s ease
@@ -2157,7 +2337,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
                 transition: all .3s ease
             }
 
-                .contact_form_sec .contact_pg_wrap .nb_contact_form .form-group .submitBtn:hover, .nb_prd_det_rightsec .footSec .addtowishlistbtn:hover {
+                .contact_form_sec .contact_pg_wrap .nb_contact_form .form-group .submitBtn:hover,
+                .nb_prd_det_rightsec .footSec .addtowishlistbtn:hover {
                     background-color: #f33655
                 }
 
@@ -2304,7 +2485,8 @@ body.ZoomerActive {
         margin-bottom: 47px
     }
 
-        .cat_pg_btmsec .container > .row:last-child, .cat_sel_sec > .row:last-child {
+        .cat_pg_btmsec .container > .row:last-child,
+        .cat_sel_sec > .row:last-child {
             border-bottom: none;
             margin-bottom: none
         }
@@ -2327,7 +2509,8 @@ body.ZoomerActive {
         transition: all .3s ease
     }
 
-    .contact_form_sec .contact_pg_wrap .nb_contact_form .callus_frmgrp p, .nb_cat_selectBx .prdname {
+    .contact_form_sec .contact_pg_wrap .nb_contact_form .callus_frmgrp p,
+    .nb_cat_selectBx .prdname {
         font-family: "primaryfont_Bold";
         font-size: 20px;
         color: #000;
@@ -2403,7 +2586,9 @@ body.ZoomerActive {
         margin-bottom: 35px
     }
 
-    .basketTotalwrap .shipping_radiosec .shippingtyp_list li:hover, .nb_basket_wrap table.basketTable tbody tr td .qtyboxwrap > span:hover, .nb_prd_namewamnt_box:hover {
+    .basketTotalwrap .shipping_radiosec .shippingtyp_list li:hover,
+    .nb_basket_wrap table.basketTable tbody tr td .qtyboxwrap > span:hover,
+    .nb_prd_namewamnt_box:hover {
         cursor: pointer
     }
 
@@ -2439,7 +2624,8 @@ body.ZoomerActive {
         display: inline-block
     }
 
-        .contact_form_sec .contact_pg_wrap .nb_contact_form .form-group label, .contact_form_sec .contact_pg_wrap .nb_contact_form .reqfield_msg {
+        .contact_form_sec .contact_pg_wrap .nb_contact_form .form-group label,
+        .contact_form_sec .contact_pg_wrap .nb_contact_form .reqfield_msg {
             display: inline-block;
             font-family: "primaryfont_SemiBold";
             font-size: 16px;
@@ -2466,7 +2652,11 @@ body.ZoomerActive {
                 align-items: center
             }
 
-                .basketTable tr.cmnRow .subtotalCell .subtotalCellInner b, .checkconfInner .checkconfirm_lftsec .subhead i, .checkconfInner .checkconfirm_rgtsec .subhead i, .contact_form_sec .contact_pg_wrap .nb_contact_form .captcha_formGroup .tib_wrap label, .myAccLeftNavsec .leftsideNavWrap a i {
+                .basketTable tr.cmnRow .subtotalCell .subtotalCellInner b,
+                .checkconfInner .checkconfirm_lftsec .subhead i,
+                .checkconfInner .checkconfirm_rgtsec .subhead i,
+                .contact_form_sec .contact_pg_wrap .nb_contact_form .captcha_formGroup .tib_wrap label,
+                .myAccLeftNavsec .leftsideNavWrap a i {
                     margin-right: 10px
                 }
 
@@ -2490,7 +2680,8 @@ body.ZoomerActive {
                     color: #f33655
                 }
 
-            .contact_form_sec .contact_pg_wrap .nb_contact_form .callus_frmgrp a, .nb_firstNav_res_lst_wrap .hav_mega_nav > a {
+            .contact_form_sec .contact_pg_wrap .nb_contact_form .callus_frmgrp a,
+            .nb_firstNav_res_lst_wrap .hav_mega_nav > a {
                 display: inline-block !important
             }
 
@@ -2502,7 +2693,8 @@ body.ZoomerActive {
                 margin-bottom: 10px
             }
 
-            .contact_form_sec .contact_pg_wrap .nb_contact_form .form-group input[type=email], .contact_form_sec .contact_pg_wrap .nb_contact_form .form-group input[type=text] {
+            .contact_form_sec .contact_pg_wrap .nb_contact_form .form-group input[type=email],
+            .contact_form_sec .contact_pg_wrap .nb_contact_form .form-group input[type=text] {
                 background-color: #f6f6f6;
                 border: solid 1px #707070;
                 text-indent: 5px;
@@ -2525,12 +2717,15 @@ body.ZoomerActive {
                 border-radius: 0
             }
 
-                .contact_form_sec .contact_pg_wrap .nb_contact_form .form-group input[type=email]:focus, .contact_form_sec .contact_pg_wrap .nb_contact_form .form-group input[type=text]:focus, .contact_form_sec .contact_pg_wrap .nb_contact_form .form-group textarea:focus {
+                .contact_form_sec .contact_pg_wrap .nb_contact_form .form-group input[type=email]:focus,
+                .contact_form_sec .contact_pg_wrap .nb_contact_form .form-group input[type=text]:focus,
+                .contact_form_sec .contact_pg_wrap .nb_contact_form .form-group textarea:focus {
                     outline: 0;
                     box-shadow: none
                 }
 
-            .contact_form_sec .contact_pg_wrap .nb_contact_form .form-group input[type=email], .contact_form_sec .contact_pg_wrap .nb_contact_form .form-group input[type=text] {
+            .contact_form_sec .contact_pg_wrap .nb_contact_form .form-group input[type=email],
+            .contact_form_sec .contact_pg_wrap .nb_contact_form .form-group input[type=text] {
                 height: 45px
             }
 
@@ -2569,7 +2764,8 @@ body.ZoomerActive {
             width: 93%
         }
 
-        .nb_basket_wrap table.basketTable tbody tr, .nb_basket_wrap table.basketTable thead {
+        .nb_basket_wrap table.basketTable tbody tr,
+        .nb_basket_wrap table.basketTable thead {
             border-bottom: solid 1px #707070
         }
 
@@ -2581,7 +2777,8 @@ body.ZoomerActive {
                 padding-bottom: 16px
             }
 
-                .nb_basket_wrap table.basketTable tbody tr td:first-child, .nb_basket_wrap table.basketTable thead tr th:first-child {
+                .nb_basket_wrap table.basketTable tbody tr td:first-child,
+                .nb_basket_wrap table.basketTable thead tr th:first-child {
                     text-align: left
                 }
 
@@ -2591,7 +2788,8 @@ body.ZoomerActive {
                 padding: 10px 0
             }
 
-                .nb_basket_wrap div.coupen_codewrap, .nb_basket_wrap table.basketTable tbody tr td .prdimgsec {
+                .nb_basket_wrap div.coupen_codewrap,
+                .nb_basket_wrap table.basketTable tbody tr td .prdimgsec {
                     display: flex;
                     flex-direction: row;
                     align-items: center;
@@ -2694,7 +2892,8 @@ body.ZoomerActive {
             transition: all .3s ease
         }
 
-            .basketTotalwrap .shipping_radiosec .proceed_tocheckout:hover, .nb_basket_wrap div.coupen_codewrap .coupenSubmitbtn:hover {
+            .basketTotalwrap .shipping_radiosec .proceed_tocheckout:hover,
+            .nb_basket_wrap div.coupen_codewrap .coupenSubmitbtn:hover {
                 cursor: pointer;
                 background-color: #f33655
             }
@@ -2707,7 +2906,8 @@ body.ZoomerActive {
     padding: 20px
 }
 
-    .basketTotalwrap .mainhd, .basketTotalwrap .subTotalwrap {
+    .basketTotalwrap .mainhd,
+    .basketTotalwrap .subTotalwrap {
         font-family: "primaryfont_Bold";
         color: #000;
         width: 100%;
@@ -2730,7 +2930,8 @@ body.ZoomerActive {
         letter-spacing: 1px
     }
 
-        .basketTotalwrap .shipping_radiosec .totalAmntsec span:last-child, .basketTotalwrap .subTotalwrap span:last-child {
+        .basketTotalwrap .shipping_radiosec .totalAmntsec span:last-child,
+        .basketTotalwrap .subTotalwrap span:last-child {
             color: #f33655
         }
 
@@ -2767,12 +2968,16 @@ body.ZoomerActive {
                 color: #000
             }
 
-                .basketTotalwrap .shipping_radiosec .shippingtyp_list li [type=radio]:checked, .basketTotalwrap .shipping_radiosec .shippingtyp_list li [type=radio]:not(:checked), .checkconfInner .checkconfirm_lftsec ul.paymentMthdlist li [type=radio]:checked, .checkconfInner .checkconfirm_lftsec ul.paymentMthdlist li [type=radio]:not(:checked) {
+                .basketTotalwrap .shipping_radiosec .shippingtyp_list li [type=radio]:checked,
+                .basketTotalwrap .shipping_radiosec .shippingtyp_list li [type=radio]:not(:checked),
+                .checkconfInner .checkconfirm_lftsec ul.paymentMthdlist li [type=radio]:checked,
+                .checkconfInner .checkconfirm_lftsec ul.paymentMthdlist li [type=radio]:not(:checked) {
                     position: absolute;
                     left: -9999px
                 }
 
-                    .basketTotalwrap .shipping_radiosec .shippingtyp_list li [type=radio]:checked + label, .basketTotalwrap .shipping_radiosec .shippingtyp_list li [type=radio]:not(:checked) + label {
+                    .basketTotalwrap .shipping_radiosec .shippingtyp_list li [type=radio]:checked + label,
+                    .basketTotalwrap .shipping_radiosec .shippingtyp_list li [type=radio]:not(:checked) + label {
                         position: relative;
                         padding-left: 28px;
                         cursor: pointer;
@@ -2781,7 +2986,8 @@ body.ZoomerActive {
                         color: #000
                     }
 
-                        .basketTotalwrap .shipping_radiosec .shippingtyp_list li [type=radio]:checked + label:before, .basketTotalwrap .shipping_radiosec .shippingtyp_list li [type=radio]:not(:checked) + label:before {
+                        .basketTotalwrap .shipping_radiosec .shippingtyp_list li [type=radio]:checked + label:before,
+                        .basketTotalwrap .shipping_radiosec .shippingtyp_list li [type=radio]:not(:checked) + label:before {
                             content: "";
                             position: absolute;
                             left: 0;
@@ -2793,7 +2999,8 @@ body.ZoomerActive {
                             background: #fff
                         }
 
-                        .basketTotalwrap .shipping_radiosec .shippingtyp_list li [type=radio]:checked + label:after, .basketTotalwrap .shipping_radiosec .shippingtyp_list li [type=radio]:not(:checked) + label:after {
+                        .basketTotalwrap .shipping_radiosec .shippingtyp_list li [type=radio]:checked + label:after,
+                        .basketTotalwrap .shipping_radiosec .shippingtyp_list li [type=radio]:not(:checked) + label:after {
                             content: "";
                             width: 12px;
                             height: 12px;
@@ -2827,7 +3034,8 @@ body.ZoomerActive {
                 margin-bottom: 8px
             }
 
-            .basketTotalwrap .shipping_radiosec .estimateWrap a, .basketTotalwrap .shipping_radiosec .estimateWrap span {
+            .basketTotalwrap .shipping_radiosec .estimateWrap a,
+            .basketTotalwrap .shipping_radiosec .estimateWrap span {
                 font-family: "primaryfont_Bold";
                 font-size: 16px;
                 color: #000;
@@ -2887,7 +3095,8 @@ body.ZoomerActive {
     text-align: center
 }
 
-    .cont_shop_btn, .registration_form_sec .ahav_acc span {
+    .cont_shop_btn,
+    .registration_form_sec .ahav_acc span {
         font-family: "primaryfont_Bold";
         transition: all .3s ease
     }
@@ -2897,11 +3106,13 @@ body.ZoomerActive {
             color: #f33655
         }
 
-.login_form_sec.show, .registration_form_sec.show {
+.login_form_sec.show,
+.registration_form_sec.show {
     display: inline-block
 }
 
-.login_form_sec, .registration_form_sec {
+.login_form_sec,
+.registration_form_sec {
     width: 100%;
     display: none
 }
@@ -2910,7 +3121,8 @@ body.ZoomerActive {
     max-width: 536px
 }
 
-    #quickCartPopup .modal-dialog .modal-content, #signupPopup .modal-dialog .modal-content {
+    #quickCartPopup .modal-dialog .modal-content,
+    #signupPopup .modal-dialog .modal-content {
         border-radius: 0;
         padding: 50px 45px
     }
@@ -2950,7 +3162,8 @@ body.ZoomerActive {
                     margin-bottom: 25px
                 }
 
-                    #quickCartPopup .modal-dialog .modal-content .modal-body .loginForm .form-group label, #signupPopup .modal-dialog .modal-content .modal-body .loginForm .form-group label {
+                    #quickCartPopup .modal-dialog .modal-content .modal-body .loginForm .form-group label,
+                    #signupPopup .modal-dialog .modal-content .modal-body .loginForm .form-group label {
                         margin-bottom: 8px;
                         font-family: "primaryfont_SemiBold";
                         font-size: 16px
@@ -2976,7 +3189,8 @@ body.ZoomerActive {
                     transition: all .3s ease
                 }
 
-                    #signupPopup .modal-dialog .modal-content .modal-body .loginForm .loginBtn:hover, #signupPopup .modal-dialog .modal-content .modal-body .registrationSec .regBtn:hover {
+                    #signupPopup .modal-dialog .modal-content .modal-body .loginForm .loginBtn:hover,
+                    #signupPopup .modal-dialog .modal-content .modal-body .registrationSec .regBtn:hover {
                         background-color: #f33655
                     }
 
@@ -3003,7 +3217,8 @@ body.ZoomerActive {
                     margin-bottom: 22px
                 }
 
-                #quickCartPopup .modal-dialog .modal-content .modal-body .registrationSec p, #signupPopup .modal-dialog .modal-content .modal-body .registrationSec p {
+                #quickCartPopup .modal-dialog .modal-content .modal-body .registrationSec p,
+                #signupPopup .modal-dialog .modal-content .modal-body .registrationSec p {
                     margin-bottom: 34px;
                     width: 100%;
                     display: inline-block;
@@ -3100,7 +3315,10 @@ body.ZoomerActive {
                 transition: all .3s ease
             }
 
-                #quickCartPopup .modal-dialog .modal-content .modal-body .loginForm .loginBtn:hover, #quickCartPopup .modal-dialog .modal-content .modal-body .registrationSec .regBtn:hover, #res_filterBox_trigger, .progressBarStep ul#progressList li.active {
+                #quickCartPopup .modal-dialog .modal-content .modal-body .loginForm .loginBtn:hover,
+                #quickCartPopup .modal-dialog .modal-content .modal-body .registrationSec .regBtn:hover,
+                #res_filterBox_trigger,
+                .progressBarStep ul#progressList li.active {
                     background-color: #f33655
                 }
 
@@ -3191,7 +3409,9 @@ body.ZoomerActive {
     cursor: pointer
 }
 
-.nb_firstNav_res_lst_wrap .mega_nav_wrap, .nb_firstNav_res_lst_wrap .mega_nav_wrap_inner .head, ul.mhp-menu {
+.nb_firstNav_res_lst_wrap .mega_nav_wrap,
+.nb_firstNav_res_lst_wrap .mega_nav_wrap_inner .head,
+ul.mhp-menu {
     display: none
 }
 
@@ -3287,7 +3507,8 @@ body.ZoomerActive {
                 left: 0
             }
 
-    .bloglistSec .bloglistSecInner .bloglistBox:hover, .youmayalLikesec .ymalList li:hover {
+    .bloglistSec .bloglistSecInner .bloglistBox:hover,
+    .youmayalLikesec .ymalList li:hover {
         cursor: pointer
     }
 
@@ -3299,7 +3520,8 @@ body.ZoomerActive {
                 transform: scale(1.05)
             }
 
-        .bloglistSec .bloglistSecInner .bloglistBox .nb_fb_con .rdmrBtn:hover, .bloglistSec .bloglistSecInner .bloglistBox:hover .rdmrBtn {
+        .bloglistSec .bloglistSecInner .bloglistBox .nb_fb_con .rdmrBtn:hover,
+        .bloglistSec .bloglistSecInner .bloglistBox:hover .rdmrBtn {
             color: #f33655
         }
 
@@ -3350,7 +3572,8 @@ body.ZoomerActive {
         margin-bottom: 10px
     }
 
-    .blogdetWrap .headsec .blogTimesec, .youmayalLikesec .ymalList li .ymalBox {
+    .blogdetWrap .headsec .blogTimesec,
+    .youmayalLikesec .ymalList li .ymalBox {
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
@@ -3363,11 +3586,13 @@ body.ZoomerActive {
             color: #000
         }
 
-            .blogdetWrap .headsec .blogTimesec span.date, .progressBarStep ul#progressList li.active span.txt {
+            .blogdetWrap .headsec .blogTimesec span.date,
+            .progressBarStep ul#progressList li.active span.txt {
                 font-family: "primaryfont_Bold"
             }
 
-.blogdetWrap, .blogdetWrap .contentSec {
+.blogdetWrap,
+.blogdetWrap .contentSec {
     width: 100%
 }
 
@@ -3474,7 +3699,10 @@ body.ZoomerActive {
                 border-bottom: none
             }
 
-.checkconfInner, .checkconfInner .checkconfirm_lftsec, .checkconfInner .checkconfirm_rgtsec, .myAccLeftNavsec .leftsideNavWrap {
+.checkconfInner,
+.checkconfInner .checkconfirm_lftsec,
+.checkconfInner .checkconfirm_rgtsec,
+.myAccLeftNavsec .leftsideNavWrap {
     width: 100%
 }
 
@@ -3506,7 +3734,8 @@ body.ZoomerActive {
         margin-bottom: 10px
     }
 
-        .checkconfInner .checkconfirm_lftsec ul.paymentMthdlist li [type=radio]:checked + label, .checkconfInner .checkconfirm_lftsec ul.paymentMthdlist li [type=radio]:not(:checked) + label {
+        .checkconfInner .checkconfirm_lftsec ul.paymentMthdlist li [type=radio]:checked + label,
+        .checkconfInner .checkconfirm_lftsec ul.paymentMthdlist li [type=radio]:not(:checked) + label {
             position: relative;
             padding-left: 28px;
             cursor: pointer;
@@ -3517,7 +3746,8 @@ body.ZoomerActive {
             width: 100%
         }
 
-            .checkconfInner .checkconfirm_lftsec ul.paymentMthdlist li [type=radio]:checked + label:before, .checkconfInner .checkconfirm_lftsec ul.paymentMthdlist li [type=radio]:not(:checked) + label:before {
+            .checkconfInner .checkconfirm_lftsec ul.paymentMthdlist li [type=radio]:checked + label:before,
+            .checkconfInner .checkconfirm_lftsec ul.paymentMthdlist li [type=radio]:not(:checked) + label:before {
                 content: "";
                 position: absolute;
                 left: 0;
@@ -3529,7 +3759,8 @@ body.ZoomerActive {
                 background: #fff
             }
 
-            .checkconfInner .checkconfirm_lftsec ul.paymentMthdlist li [type=radio]:checked + label:after, .checkconfInner .checkconfirm_lftsec ul.paymentMthdlist li [type=radio]:not(:checked) + label:after {
+            .checkconfInner .checkconfirm_lftsec ul.paymentMthdlist li [type=radio]:checked + label:after,
+            .checkconfInner .checkconfirm_lftsec ul.paymentMthdlist li [type=radio]:not(:checked) + label:after {
                 content: "";
                 width: 12px;
                 height: 12px;
@@ -3644,7 +3875,8 @@ body.ZoomerActive {
                             padding-left: 10px
                         }
 
-    .checkconfInner .checkconfirm_rgtsec .prodTotal, .progressBarStep ul#progressList {
+    .checkconfInner .checkconfirm_rgtsec .prodTotal,
+    .progressBarStep ul#progressList {
         width: 100%;
         display: flex;
         flex-direction: row;
@@ -3659,7 +3891,8 @@ body.ZoomerActive {
             font-size: 18px
         }
 
-    .checkconfInner .checkconfirm_rgtsec .prctchkoutbtn, .progressBarStep {
+    .checkconfInner .checkconfirm_rgtsec .prctchkoutbtn,
+    .progressBarStep {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -3677,7 +3910,8 @@ body.ZoomerActive {
         transition: all .3s ease
     }
 
-        .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group .findAddrWrap .fadBtn:hover, .checkconfInner .checkconfirm_rgtsec .prctchkoutbtn:hover {
+        .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group .findAddrWrap .fadBtn:hover,
+        .checkconfInner .checkconfirm_rgtsec .prctchkoutbtn:hover {
             background-color: #000
         }
 
@@ -3723,13 +3957,14 @@ body.ZoomerActive {
                 position: absolute;
                 left: 50%;
                 top: 50%;
-                transform: translate(-50%,-50%);
+                transform: translate(-50%, -50%);
                 color: #000;
                 font-family: "primaryfont_Bold";
                 z-index: 10
             }
 
-                .progressBarStep ul#progressList li span.count i, h2 {
+                .progressBarStep ul#progressList li span.count i,
+                h2 {
                     font-size: 25px
                 }
 
@@ -3742,7 +3977,7 @@ body.ZoomerActive {
                 position: absolute;
                 left: 50%;
                 top: 50%;
-                transform: translate(-50%,-50%);
+                transform: translate(-50%, -50%);
                 z-index: 5;
                 border: solid 4px #fff
             }
@@ -3774,14 +4009,15 @@ body.ZoomerActive {
             }
 
             .progressBarStep ul#progressList li:nth-child(even) .HalfCircle {
-                transform: translate(-50%,100%) rotate(180deg)
+                transform: translate(-50%, 100%) rotate(180deg)
             }
 
             .progressBarStep ul#progressList li:nth-child(even):after {
                 border: solid 4px #fff
             }
 
-.myAccLeftNavsec .leftsideNavWrap a, .progressNavBar {
+.myAccLeftNavsec .leftsideNavWrap a,
+.progressNavBar {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -3790,7 +4026,8 @@ body.ZoomerActive {
     margin-bottom: 50px
 }
 
-    .myAccLeftNavsec .tabcontentInner button, .progressNavBar button {
+    .myAccLeftNavsec .tabcontentInner button,
+    .progressNavBar button {
         border: 0;
         background-color: #f33655;
         color: #fff;
@@ -3861,7 +4098,8 @@ body.ZoomerActive {
         margin-bottom: 30px
     }
 
-    .myAccLeftNavsec .tabcontentInner input[type=email], .myAccLeftNavsec .tabcontentInner input[type=text] {
+    .myAccLeftNavsec .tabcontentInner input[type=email],
+    .myAccLeftNavsec .tabcontentInner input[type=text] {
         height: 50px;
         border-radius: 0;
         outline: 0;
@@ -3945,7 +4183,8 @@ body.ZoomerActive {
                             color: #f33655
                         }
 
-                    .myAccLeftNavsec .tabcontentInner .myAccwishlistList > li .myAccwishlistList_inner .cont_left .prod_det .prodDetlist, .myAccLeftNavsec .tabcontentInner .myAccwishlistList > li .myAccwishlistList_inner .cont_right .prd_totLst {
+                    .myAccLeftNavsec .tabcontentInner .myAccwishlistList > li .myAccwishlistList_inner .cont_left .prod_det .prodDetlist,
+                    .myAccLeftNavsec .tabcontentInner .myAccwishlistList > li .myAccwishlistList_inner .cont_right .prd_totLst {
                         list-style: none
                     }
 
@@ -3970,7 +4209,8 @@ body.ZoomerActive {
                                     font-family: "primaryfont_Bold"
                                 }
 
-                                .myAccLeftNavsec .tabcontentInner .myAccwishlistList > li .myAccwishlistList_inner .cont_left .prod_det .prodDetlist li span:last-child, .myAccLeftNavsec .tabcontentInner .myAccwishlistList > li .myAccwishlistList_inner .cont_right .prd_totLst li span:last-child {
+                                .myAccLeftNavsec .tabcontentInner .myAccwishlistList > li .myAccwishlistList_inner .cont_left .prod_det .prodDetlist li span:last-child,
+                                .myAccLeftNavsec .tabcontentInner .myAccwishlistList > li .myAccwishlistList_inner .cont_right .prd_totLst li span:last-child {
                                     font-family: "primaryfont_Bold"
                                 }
 
@@ -4019,7 +4259,8 @@ body.ZoomerActive {
         width: auto !important
     }
 
-.orderDetls, .orderLnk {
+.orderDetls,
+.orderLnk {
     display: flex;
     flex-direction: column
 }
@@ -4032,13 +4273,16 @@ body.ZoomerActive {
         margin-bottom: 5px
     }
 
-    .orderDetls a, .orderDetls h6, .returnDetls button {
+    .orderDetls a,
+    .orderDetls h6,
+    .returnDetls button {
         font-size: 14px;
         font-weight: 500;
         font-family: "primaryfont_Normal"
     }
 
-    .orderDetls a, .returnDetls button {
+    .orderDetls a,
+    .returnDetls button {
         color: #4271bf
     }
 
@@ -4067,7 +4311,8 @@ body.ZoomerActive {
     margin-bottom: 8px
 }
 
-    .returnDetls .dropdown:focus, .returnDetls button:focus {
+    .returnDetls .dropdown:focus,
+    .returnDetls button:focus {
         outline: 0 !important
     }
 
@@ -4090,7 +4335,8 @@ body.ZoomerActive {
         box-shadow: none !important
     }
 
-.items .itemImg, .items .itemImg .prdimg {
+.items .itemImg,
+.items .itemImg .prdimg {
     width: 100%;
     height: 100%;
     display: flex;
@@ -4129,7 +4375,9 @@ body.ZoomerActive {
     margin-bottom: 10px
 }
 
-.orderItems .qty, .orderItems h6, .orderProductStatus li {
+.orderItems .qty,
+.orderItems h6,
+.orderProductStatus li {
     margin-bottom: 10px;
     font-family: "primaryfont_Normal";
     font-size: 14px
@@ -4173,11 +4421,14 @@ body.ZoomerActive {
     margin-left: 0 !important
 }
 
-    .orderItems .estimtDate h5 span, .orderItems .estimtDate p span {
+    .orderItems .estimtDate h5 span,
+    .orderItems .estimtDate p span {
         font-weight: 600 !important
     }
 
-.orderItems .estimtDate h5, .orderItems .estimtDate p, .orderItems h5 {
+.orderItems .estimtDate h5,
+.orderItems .estimtDate p,
+.orderItems h5 {
     font-weight: 500;
     font-family: "primaryfont_Normal"
 }
@@ -4204,7 +4455,8 @@ body.ZoomerActive {
     background-color: #c2e1c2 !important
 }
 
-    .orderItems .deliveryDate h5, .orderItems .deliveryDate p {
+    .orderItems .deliveryDate h5,
+    .orderItems .deliveryDate p {
         color: green !important
     }
 
@@ -4243,7 +4495,8 @@ body.ZoomerActive {
         height: 0
     }
 
-.slider, .slider:before {
+.slider,
+.slider:before {
     position: absolute;
     -webkit-transition: .4s;
     transition: .4s
@@ -4319,7 +4572,8 @@ input:checked + .slider:before {
     margin-right: unset
 }
 
-.uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a:hover, .uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a:hover > .uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a i {
+.uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a:hover,
+.uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a:hover > .uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a i {
     color: var(--secondary-color)
 }
 
@@ -4333,7 +4587,8 @@ input:checked + .slider:before {
     line-height: 1
 }
 
-    .Paymentsec .paymentTabsec .myAccLeftNavsec .leftsideNavWrap a.active i, .pagination > .active > a {
+    .Paymentsec .paymentTabsec .myAccLeftNavsec .leftsideNavWrap a.active i,
+    .pagination > .active > a {
         color: #fff
     }
 
@@ -4342,17 +4597,26 @@ input:checked + .slider:before {
     padding: 10px 0
 }
 
-.pagination > .active > a, .pagination > .active > a:focus, .pagination > .active > a:hover, .pagination > .active > span, .pagination > .active > span:focus, .pagination > .active > span:hover {
+.pagination > .active > a,
+.pagination > .active > a:focus,
+.pagination > .active > a:hover,
+.pagination > .active > span,
+.pagination > .active > span:focus,
+.pagination > .active > span:hover {
     background-color: #707070;
     border-color: #000
 }
 
-.pagination > li > a, .pagination > li > span {
+.pagination > li > a,
+.pagination > li > span {
     color: #000;
     padding: 7px 12px 5px
 }
 
-    .pagination > li > a:focus, .pagination > li > a:hover, .pagination > li > span:focus, .pagination > li > span:hover {
+    .pagination > li > a:focus,
+    .pagination > li > a:hover,
+    .pagination > li > span:focus,
+    .pagination > li > span:hover {
         color: #fff;
         background-color: #000;
         border-color: #000
@@ -4373,7 +4637,9 @@ input:checked + .slider:before {
     transition: .5s
 }
 
-.my-account.login .button-submit button:focus, .my-account.login .button-submit input[type=submit]:focus, .my-account.login .button-submit input[type=submit]:hover {
+.my-account.login .button-submit button:focus,
+.my-account.login .button-submit input[type=submit]:focus,
+.my-account.login .button-submit input[type=submit]:hover {
     -webkit-transition: .5s;
     -moz-transition: .5s
 }
@@ -4382,12 +4648,15 @@ input:checked + .slider:before {
     width: auto
 }
 
-.my-account.login .button-submit button, .my-account.login .button-submit input[type=submit], a.cashbtn {
+.my-account.login .button-submit button,
+.my-account.login .button-submit input[type=submit],
+a.cashbtn {
     -webkit-transition: .5s;
     -moz-transition: .5s
 }
 
-.my-account.login .button-submit button, a.cashbtn {
+.my-account.login .button-submit button,
+a.cashbtn {
     height: 40px;
     background: #1455a6;
     color: #fff;
@@ -4420,7 +4689,8 @@ a.cashbtn {
     font-weight: 700
 }
 
-.mhp-menu li, .ordered-items li {
+.mhp-menu li,
+.ordered-items li {
     list-style: none
 }
 
@@ -4452,7 +4722,7 @@ a.cashbtn {
 .about-cnt td a.remove-btn {
     color: #0066c0;
     font-weight: 200;
-    font-family: "Amazon Ember",Arial,sans-serif;
+    font-family: "Amazon Ember", Arial, sans-serif;
     font-size: 12px
 }
 
@@ -4460,7 +4730,9 @@ a.cashbtn {
     font-weight: 600
 }
 
-.about-cnt p a, .about-cnt td a, .about-list li a {
+.about-cnt p a,
+.about-cnt td a,
+.about-list li a {
     color: #3a99d9
 }
 
@@ -4514,11 +4786,13 @@ a.cashbtn {
     margin-bottom: 45px
 }
 
-.blog_cnt h4, .blog_cnt p {
+.blog_cnt h4,
+.blog_cnt p {
     line-height: 28px
 }
 
-.social-share-alter .facebook, .social-share-alter .twitter {
+.social-share-alter .facebook,
+.social-share-alter .twitter {
     color: #fff;
     border-radius: 30px;
     padding: 7px 25px;
@@ -4548,7 +4822,7 @@ a.cashbtn {
 }
 
 .get-address-page .menu-about li {
-    box-shadow: 1px 4px 4px 0 rgba(0,0,0,.1);
+    box-shadow: 1px 4px 4px 0 rgba(0, 0, 0, .1);
     margin-bottom: 15px
 }
 
@@ -4560,7 +4834,7 @@ a.cashbtn {
     color: #434343;
     position: relative;
     text-transform: uppercase;
-    box-shadow: 1px 4px 4px 0 rgba(0,0,0,.1)
+    box-shadow: 1px 4px 4px 0 rgba(0, 0, 0, .1)
 }
 
 .buttons {
@@ -4589,7 +4863,9 @@ a.cashbtn {
     font-size: 15px
 }
 
-.btn-group > .btn, .btn-group > .dropdown-menu, .btn-group > .popover {
+.btn-group > .btn,
+.btn-group > .dropdown-menu,
+.btn-group > .popover {
     font-size: 12px
 }
 
@@ -4605,29 +4881,72 @@ a.cashbtn {
     font-size: 15px
 }
 
-.btn-default, .btn-primary {
+.btn-default,
+.btn-primary {
     color: #fff;
     background-color: #1455a6;
     border: 0;
     transition: all .3s linear
 }
 
-    .btn-default.active, .btn-default.focus, .btn-default:active, .btn-default:active:hover, .btn-default:focus, .btn-default:hover, .btn-primary.active, .btn-primary.active.focus, .btn-primary.active:focus, .btn-primary.active:hover, .btn-primary.disabled, .btn-primary.disabled.active, .btn-primary.disabled.focus, .btn-primary.disabled:active, .btn-primary.disabled:focus, .btn-primary.disabled:hover, .btn-primary.focus, .btn-primary:active, .btn-primary:active.focus, .btn-primary:active:focus, .btn-primary:active:hover, .btn-primary:focus, .btn-primary:hover, .btn-primary[disabled], .btn-primary[disabled].active, .btn-primary[disabled].focus, .btn-primary[disabled]:active, .btn-primary[disabled]:focus, .btn-primary[disabled]:hover, .open > .dropdown-toggle.btn-default, .open > .dropdown-toggle.btn-primary.focus, .open > .dropdown-toggle.btn-primary:focus, .open > .dropdown-toggle.btn-primary:hover, fieldset[disabled] .btn-primary, fieldset[disabled] .btn-primary.active, fieldset[disabled] .btn-primary.focus, fieldset[disabled] .btn-primary:active, fieldset[disabled] .btn-primary:focus, fieldset[disabled] .btn-primary:hover {
+    .btn-default.active,
+    .btn-default.focus,
+    .btn-default:active,
+    .btn-default:active:hover,
+    .btn-default:focus,
+    .btn-default:hover,
+    .btn-primary.active,
+    .btn-primary.active.focus,
+    .btn-primary.active:focus,
+    .btn-primary.active:hover,
+    .btn-primary.disabled,
+    .btn-primary.disabled.active,
+    .btn-primary.disabled.focus,
+    .btn-primary.disabled:active,
+    .btn-primary.disabled:focus,
+    .btn-primary.disabled:hover,
+    .btn-primary.focus,
+    .btn-primary:active,
+    .btn-primary:active.focus,
+    .btn-primary:active:focus,
+    .btn-primary:active:hover,
+    .btn-primary:focus,
+    .btn-primary:hover,
+    .btn-primary[disabled],
+    .btn-primary[disabled].active,
+    .btn-primary[disabled].focus,
+    .btn-primary[disabled]:active,
+    .btn-primary[disabled]:focus,
+    .btn-primary[disabled]:hover,
+    .open > .dropdown-toggle.btn-default,
+    .open > .dropdown-toggle.btn-primary.focus,
+    .open > .dropdown-toggle.btn-primary:focus,
+    .open > .dropdown-toggle.btn-primary:hover,
+    fieldset[disabled] .btn-primary,
+    fieldset[disabled] .btn-primary.active,
+    fieldset[disabled] .btn-primary.focus,
+    fieldset[disabled] .btn-primary:active,
+    fieldset[disabled] .btn-primary:focus,
+    fieldset[disabled] .btn-primary:hover {
         background-color: #000;
         color: #fff
     }
 
 .btn-warning {
     color: #fff;
-    text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, .25);
     background-color: #faa732;
-    background-image: linear-gradient(to bottom,#fbb450,#f89406);
+    background-image: linear-gradient(to bottom, #fbb450, #f89406);
     background-repeat: repeat-x;
     border-color: #f89406 #f89406 #ad6704
 }
 
-    .btn-warning.active, .btn-warning.disabled, .btn-warning:active, .btn-warning:hover, .btn-warning[disabled] {
-        box-shadow: inset 0 1000px 0 rgba(0,0,0,.1)
+    .btn-warning.active,
+    .btn-warning.disabled,
+    .btn-warning:active,
+    .btn-warning:hover,
+    .btn-warning[disabled] {
+        box-shadow: inset 0 1000px 0 rgba(0, 0, 0, .1)
     }
 
 .btn-danger {
@@ -4637,32 +4956,45 @@ a.cashbtn {
     border: 0
 }
 
-    .btn-danger.active, .btn-danger.disabled, .btn-danger:active, .btn-danger:hover, .btn-danger[disabled] {
+    .btn-danger.active,
+    .btn-danger.disabled,
+    .btn-danger:active,
+    .btn-danger:hover,
+    .btn-danger[disabled] {
         color: #fff;
         background-color: #1455a6;
         border: 0
     }
 
-.btn-info, .btn-success {
+.btn-info,
+.btn-success {
     color: #fff;
-    text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, .25);
     background-color: #5bb75b;
-    background-image: linear-gradient(to bottom,#62c462,#51a351);
+    background-image: linear-gradient(to bottom, #62c462, #51a351);
     background-repeat: repeat-x;
     border-color: #51a351 #51a351 #387038
 }
 
-    .btn-success.active, .btn-success.disabled, .btn-success:active, .btn-success:hover, .btn-success[disabled] {
-        box-shadow: inset 0 1000px 0 rgba(0,0,0,.1)
+    .btn-success.active,
+    .btn-success.disabled,
+    .btn-success:active,
+    .btn-success:hover,
+    .btn-success[disabled] {
+        box-shadow: inset 0 1000px 0 rgba(0, 0, 0, .1)
     }
 
 .btn-info {
     background-color: #df5c39;
-    background-image: linear-gradient(to bottom,#e06342,#dc512c);
+    background-image: linear-gradient(to bottom, #e06342, #dc512c);
     border-color: #dc512c #dc512c #a2371a
 }
 
-    .btn-info.active, .btn-info.disabled, .btn-info:active, .btn-info:hover, .btn-info[disabled] {
+    .btn-info.active,
+    .btn-info.disabled,
+    .btn-info:active,
+    .btn-info:hover,
+    .btn-info[disabled] {
         background-image: none;
         background-color: #df5c39
     }
@@ -4674,7 +5006,12 @@ a.cashbtn {
     border-radius: 0
 }
 
-    .btn-link, .btn-link.focus, .btn-link:active, .btn-link:focus, .btn-link:hover, .btn-link[disabled] {
+    .btn-link,
+    .btn-link.focus,
+    .btn-link:active,
+    .btn-link:focus,
+    .btn-link:hover,
+    .btn-link[disabled] {
         background-color: transparent;
         background-image: none;
         box-shadow: none
@@ -4682,16 +5019,20 @@ a.cashbtn {
 
 .btn-inverse {
     color: #fff;
-    text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, .25);
     background-color: #363636;
-    background-image: linear-gradient(to bottom,#444,#222);
+    background-image: linear-gradient(to bottom, #444, #222);
     background-repeat: repeat-x;
     border-color: #222 #222 #000
 }
 
-    .btn-inverse.active, .btn-inverse.disabled, .btn-inverse:active, .btn-inverse:hover, .btn-inverse[disabled] {
+    .btn-inverse.active,
+    .btn-inverse.disabled,
+    .btn-inverse:active,
+    .btn-inverse:hover,
+    .btn-inverse[disabled] {
         background-color: #222;
-        background-image: linear-gradient(to bottom,#333,var(--primary-color))
+        background-image: linear-gradient(to bottom, #333, var(--primary-color))
     }
 
 .nb_header {
@@ -4770,7 +5111,10 @@ a.cashbtn {
         border-radius: unset
     }
 
-.modal-dialog, .modal-title, .uni-pages-main .nb_prd_filterwrap, .uni-pages-main .nb_prdlisting_pgsec .breadCrumbtopsec {
+.modal-dialog,
+.modal-title,
+.uni-pages-main .nb_prd_filterwrap,
+.uni-pages-main .nb_prdlisting_pgsec .breadCrumbtopsec {
     font-family: "primaryfont_SemiBold"
 }
 
@@ -4806,7 +5150,8 @@ a.cashbtn {
     padding-bottom: 30px
 }
 
-    .menu-about li.active a:before, .menu-about li:hover a:before {
+    .menu-about li.active a:before,
+    .menu-about li:hover a:before {
         position: absolute;
         top: 0;
         left: 0;
@@ -4827,17 +5172,20 @@ a.cashbtn {
         margin-top: 8px
     }
 
-    .deliveryMethod input[type=checkbox], input[type=radio] {
+    .deliveryMethod input[type=checkbox],
+    input[type=radio] {
         margin: 3px 10px 0 !important;
         height: 25px;
         cursor: pointer
     }
 
-.collection-points, .shipping-rules {
+.collection-points,
+.shipping-rules {
     display: flex
 }
 
-.collection-point, .shipping-rule {
+.collection-point,
+.shipping-rule {
     display: block;
     color: #434343;
     position: relative;
@@ -4847,21 +5195,24 @@ a.cashbtn {
     float: left
 }
 
-    .collection-point .form-inline, .shipping-rule .form-inline {
+    .collection-point .form-inline,
+    .shipping-rule .form-inline {
         background: #e7eaed;
         border: 2px solid #e7eaed;
         border-bottom: 2px solid #e7eaed;
-        box-shadow: 1px 4px 4px 0 rgba(0,0,0,.1);
+        box-shadow: 1px 4px 4px 0 rgba(0, 0, 0, .1);
         padding: 10px;
         border-radius: 5px;
         cursor: pointer
     }
 
-    .collection-point .control-label, .shipping-rule .control-label {
+    .collection-point .control-label,
+    .shipping-rule .control-label {
         font-weight: 300 !important
     }
 
-    .collection-point .collection-point-title, .shipping-rule .collection-point-title {
+    .collection-point .collection-point-title,
+    .shipping-rule .collection-point-title {
         font-weight: 700 !important
     }
 
@@ -4874,7 +5225,8 @@ a.cashbtn {
     text-align: right
 }
 
-.collection-point-selected, .shipping-rule-selected {
+.collection-point-selected,
+.shipping-rule-selected {
     border: 1px solid gray !important
 }
 
@@ -4930,13 +5282,15 @@ a.cashbtn {
         border-color: #000 !important
     }
 
-.confirm-order-page .deliveryMethod, .get-address-page .deliveryMethod, .orders-total {
+.confirm-order-page .deliveryMethod,
+.get-address-page .deliveryMethod,
+.orders-total {
     background: #e7eaed;
     border-bottom: 1px solid #e7eaed;
     padding: 20px;
     color: #434343;
     position: relative;
-    box-shadow: 1px 4px 4px 0 rgba(0,0,0,.1)
+    box-shadow: 1px 4px 4px 0 rgba(0, 0, 0, .1)
 }
 
 .orders-total {
@@ -4944,7 +5298,8 @@ a.cashbtn {
     margin-top: 15px
 }
 
-.confirm-order-page .deliveryMethod, .get-address-page .deliveryMethod {
+.confirm-order-page .deliveryMethod,
+.get-address-page .deliveryMethod {
     display: block;
     text-transform: uppercase;
     margin-bottom: 20px
@@ -5086,7 +5441,8 @@ body.modal-open {
     border: solid 1px #d7d7d7
 }
 
-.cartitem-img, .kit-product .product-bg .thumbnails .owl-carousel .owl-item {
+.cartitem-img,
+.kit-product .product-bg .thumbnails .owl-carousel .owl-item {
     margin-right: 15px
 }
 
@@ -5121,11 +5477,13 @@ body.modal-open {
     font-weight: 400
 }
 
-.cartitem-text strong, .nb_header .nb_headicolst li i {
+.cartitem-text strong,
+.nb_header .nb_headicolst li i {
     font-size: 20px
 }
 
-.cartitem-text p, .cartitem-text span {
+.cartitem-text p,
+.cartitem-text span {
     margin-bottom: 5px;
     font-size: 16px;
     line-height: 1.5;
@@ -5196,7 +5554,8 @@ body.modal-open {
     color: #555
 }
 
-.kit-product .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+.kit-product .nav-tabs .nav-link.active,
+.nav-tabs .nav-item.show .nav-link {
     font-weight: 700;
     color: #000;
     font-size: 16px
@@ -5221,7 +5580,8 @@ body.modal-open {
     color: #fff !important
 }
 
-.kit-product .button-submit button, .my-account.login .button-submit input[type=submit] {
+.kit-product .button-submit button,
+.my-account.login .button-submit input[type=submit] {
     height: 40px;
     background: #1455a6;
     color: #fff;
@@ -5232,7 +5592,10 @@ body.modal-open {
     white-space: nowrap
 }
 
-    .kit-product .button-submit button:hover, .my-account.login .button-submit button:focus, .my-account.login .button-submit input[type=submit]:focus, .my-account.login .button-submit input[type=submit]:hover {
+    .kit-product .button-submit button:hover,
+    .my-account.login .button-submit button:focus,
+    .my-account.login .button-submit input[type=submit]:focus,
+    .my-account.login .button-submit input[type=submit]:hover {
         background: #000;
         transition: .5s
     }
@@ -5299,13 +5662,15 @@ body.modal-open {
     opacity: 0
 }
 
-    .same-billing-address__label, .styled-checkbox + label {
+    .same-billing-address__label,
+    .styled-checkbox + label {
         position: relative;
         cursor: pointer;
         padding: 0
     }
 
-        .same-billing-address__label:before, .styled-checkbox + label:before {
+        .same-billing-address__label:before,
+        .styled-checkbox + label:before {
             content: "";
             margin-right: 20px;
             display: inline-block;
@@ -5316,29 +5681,35 @@ body.modal-open {
             background: #ddd
         }
 
-    .styled-checkbox:hover .same-billing-address__label:before, .styled-checkbox:hover + label:before {
+    .styled-checkbox:hover .same-billing-address__label:before,
+    .styled-checkbox:hover + label:before {
         background: #f33655
     }
 
-    .styled-checkbox:focus .same-billing-address__label:before, .styled-checkbox:focus + label:before {
-        box-shadow: 0 0 0 3px rgba(0,0,0,.12)
+    .styled-checkbox:focus .same-billing-address__label:before,
+    .styled-checkbox:focus + label:before {
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, .12)
     }
 
-    .styled-checkbox:checked .same-billing-address__label:before, .styled-checkbox:checked + label:before {
+    .styled-checkbox:checked .same-billing-address__label:before,
+    .styled-checkbox:checked + label:before {
         background: #f33655
     }
 
-    .styled-checkbox:disabled .same-billing-address__label:before, .styled-checkbox:disabled + label {
+    .styled-checkbox:disabled .same-billing-address__label:before,
+    .styled-checkbox:disabled + label {
         color: #b8b8b8;
         cursor: auto
     }
 
-        .styled-checkbox:disabled .same-billing-address__label:before, .styled-checkbox:disabled + label:before {
+        .styled-checkbox:disabled .same-billing-address__label:before,
+        .styled-checkbox:disabled + label:before {
             box-shadow: none;
             background: #ddd
         }
 
-    .styled-checkbox:checked .same-billing-address__label:before, .styled-checkbox:checked + label:after {
+    .styled-checkbox:checked .same-billing-address__label:before,
+    .styled-checkbox:checked + label:after {
         content: "";
         position: absolute;
         left: 10px;
@@ -5346,7 +5717,7 @@ body.modal-open {
         background: #fff;
         width: 2px;
         height: 2px;
-        box-shadow: 2px 0 0 #fff,4px 0 0 #fff,4px -2px 0 #fff,4px -4px 0 #fff,4px -6px 0 #fff,4px -8px 0 #fff;
+        box-shadow: 2px 0 0 #fff, 4px 0 0 #fff, 4px -2px 0 #fff, 4px -4px 0 #fff, 4px -6px 0 #fff, 4px -8px 0 #fff;
         transform: rotate(45deg)
     }
 
@@ -5366,7 +5737,8 @@ body.modal-open {
     position: relative
 }
 
-    .checkoutInnersec .ordConfirmHead:after, .orderConfirmationSection .ordConfirmHead:after {
+    .checkoutInnersec .ordConfirmHead:after,
+    .orderConfirmationSection .ordConfirmHead:after {
         content: "";
         width: 50px;
         height: 3px;
@@ -5393,7 +5765,8 @@ body.modal-open {
         color: #000
     }
 
-    .billandshipsec .address-wrapper .btnWrap, .billandshipsec .checkout-options-wrapper .btnWrap {
+    .billandshipsec .address-wrapper .btnWrap,
+    .billandshipsec .checkout-options-wrapper .btnWrap {
         display: flex;
         flex-direction: row;
         align-items: flex-start;
@@ -5421,11 +5794,14 @@ body.modal-open {
             transition: all .3s ease
         }
 
-            .billandshipsec .address-wrapper .addnwShopAdrrbtn:hover, .billandshipsec .address-wrapper .btnWrap .btmBtn:hover, .billandshipsec .checkout-options-wrapper .addnwShopAdrrbtn:hover {
+            .billandshipsec .address-wrapper .addnwShopAdrrbtn:hover,
+            .billandshipsec .address-wrapper .btnWrap .btmBtn:hover,
+            .billandshipsec .checkout-options-wrapper .addnwShopAdrrbtn:hover {
                 background-color: #f33655
             }
 
-            .basketTable tr.cmnRow .subtotalCell .subtotalCellInner span:last-child, .billandshipsec .address-wrapper .btnWrap .btmBtn:last-child {
+            .basketTable tr.cmnRow .subtotalCell .subtotalCellInner span:last-child,
+            .billandshipsec .address-wrapper .btnWrap .btmBtn:last-child {
                 margin-right: 0
             }
 
@@ -5473,7 +5849,10 @@ body.modal-open {
                 transition: all .3s ease
             }
 
-        .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group input[type=number], .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group input[type=tel], .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group input[type=text], .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group select {
+        .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group input[type=number],
+        .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group input[type=tel],
+        .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group input[type=text],
+        .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group select {
             width: 96%;
             height: 50px;
             border: solid 1px #707070;
@@ -5497,7 +5876,9 @@ body.modal-open {
             font-size: 18px
         }
 
-    .billandshipsec .address-wrapper .addnwShopAdrrbtn, .billandshipsec .checkout-options-wrapper .addnwShopAdrrbtn, .saveAddrWrap .saveAddrBtn {
+    .billandshipsec .address-wrapper .addnwShopAdrrbtn,
+    .billandshipsec .checkout-options-wrapper .addnwShopAdrrbtn,
+    .saveAddrWrap .saveAddrBtn {
         line-height: 50px;
         text-align: center;
         background-color: #000;
@@ -5509,7 +5890,8 @@ body.modal-open {
         transition: all .3s ease
     }
 
-    .billandshipsec .address-wrapper .addnwShopAdrrbtn, .billandshipsec .checkout-options-wrapper .addnwShopAdrrbtn {
+    .billandshipsec .address-wrapper .addnwShopAdrrbtn,
+    .billandshipsec .checkout-options-wrapper .addnwShopAdrrbtn {
         width: 250px;
         margin: 25px 20px 0 0;
         padding: 0
@@ -5530,7 +5912,9 @@ body.modal-open {
         display: inline-block
     }
 
-        .Paymentsec .paymentTabsec .btnCmn:hover, .Paymentsec .paymentTabsec .myAccLeftNavsec .leftsideNavWrap a.active, .saveAddrWrap .saveAddrBtn:hover {
+        .Paymentsec .paymentTabsec .btnCmn:hover,
+        .Paymentsec .paymentTabsec .myAccLeftNavsec .leftsideNavWrap a.active,
+        .saveAddrWrap .saveAddrBtn:hover {
             background-color: #f33655
         }
 
@@ -5553,7 +5937,9 @@ body.modal-open {
             padding-left: 24px
         }
 
-.Paymentsec .paymentTabsec, .basketTable tr.cmnRow .prd .prdCellwrap .inrow .imgWrap img, .orderConfirmationSection {
+.Paymentsec .paymentTabsec,
+.basketTable tr.cmnRow .prd .prdCellwrap .inrow .imgWrap img,
+.orderConfirmationSection {
     width: 100%
 }
 
@@ -5645,11 +6031,14 @@ body.modal-open {
     text-decoration: underline !important
 }
 
-    .Paymentsec .paymentTabsec .cardDetailsWrap .form-group .witTxt:hover, .basketTable tr.cmnRow td.greyBox .greyBoxInner .EnterYourPostTxt:hover {
+    .Paymentsec .paymentTabsec .cardDetailsWrap .form-group .witTxt:hover,
+    .basketTable tr.cmnRow td.greyBox .greyBoxInner .EnterYourPostTxt:hover {
         cursor: pointer
     }
 
-.Paymentsec .paymentTabsec .cardDetailsWrap .form-group, .Paymentsec .paymentTabsec .cardDetailsWrap .form-group .expDatectrlwrap, .basketTable tr.cmnRow .prd .prdCellwrap .inrow {
+.Paymentsec .paymentTabsec .cardDetailsWrap .form-group,
+.Paymentsec .paymentTabsec .cardDetailsWrap .form-group .expDatectrlwrap,
+.basketTable tr.cmnRow .prd .prdCellwrap .inrow {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -5709,7 +6098,8 @@ body.modal-open {
     margin-bottom: 20px
 }
 
-.basketTable tr td .headBoxTop .head, .orderConfirmationSection .subHead {
+.basketTable tr td .headBoxTop .head,
+.orderConfirmationSection .subHead {
     font-family: "primaryfont_Bold";
     font-size: 20px;
     margin-bottom: 10px
@@ -5751,7 +6141,7 @@ body.modal-open {
         }
 
 .collection-address-div {
-    box-shadow: 0 0 0 1px rgba(0,0,0,.12),0 0 1px rgba(0,0,0,.24);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, .12), 0 0 1px rgba(0, 0, 0, .24);
     padding: 10px;
     margin-top: 8px;
     display: flex;
@@ -5761,7 +6151,7 @@ body.modal-open {
 }
 
     .collection-address-div:hover {
-        box-shadow: 0 -10px 30px rgba(0,0,0,.25),0 10px 10px rgba(0,0,0,.22)
+        box-shadow: 0 -10px 30px rgba(0, 0, 0, .25), 0 10px 10px rgba(0, 0, 0, .22)
     }
 
 .basketTable tr td {
@@ -5783,7 +6173,8 @@ body.modal-open {
     width: 60%
 }
 
-.basketTable tr.headRow, .orderConfirmationSection .itemList li {
+.basketTable tr.headRow,
+.orderConfirmationSection .itemList li {
     font-family: "primaryfont_Bold";
     font-size: 16px
 }
@@ -5830,7 +6221,8 @@ body.modal-open {
                     color: green
                 }
 
-                .basketTable tr.cmnRow td.greyBox .greyBoxInner .unavailable, .see-all-li a.see-all:hover {
+                .basketTable tr.cmnRow td.greyBox .greyBoxInner .unavailable,
+                .see-all-li a.see-all:hover {
                     color: #f33655
                 }
 
@@ -5938,7 +6330,8 @@ body.modal-open {
         width: 8%
     }
 
-        .basketTable tr.cmnRow .price .priceWrapinner, .basketTable tr.cmnRow .qty .QtyWrap {
+        .basketTable tr.cmnRow .price .priceWrapinner,
+        .basketTable tr.cmnRow .qty .QtyWrap {
             height: 100px;
             display: flex;
             flex-direction: column;
@@ -6004,11 +6397,11 @@ body.modal-open {
             }
 
                 .basketTable tr.cmnRow .qty .QtyWrapinner span:hover {
-                    background-color: rgba(200,200,200,.5)
+                    background-color: rgba(200, 200, 200, .5)
                 }
 
                 .basketTable tr.cmnRow .qty .QtyWrapinner span:active {
-                    background-color: rgba(200,200,200,.2)
+                    background-color: rgba(200, 200, 200, .2)
                 }
 
                 .basketTable tr.cmnRow .qty .QtyWrapinner span.min {
@@ -6073,7 +6466,8 @@ body.modal-open {
     margin-bottom: 85px
 }
 
-    .botomBtnsec, .gotApromoSec .gotApromoSecInner {
+    .botomBtnsec,
+    .gotApromoSec .gotApromoSecInner {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -6123,7 +6517,9 @@ body.modal-open {
                 background-color: #f33655
             }
 
-        .botomBtnsec .btmbtn, .gotApromoSec .promoCode .applBtn, .gotApromoSec .total {
+        .botomBtnsec .btmbtn,
+        .gotApromoSec .promoCode .applBtn,
+        .gotApromoSec .total {
             font-family: "primaryfont_Bold";
             font-size: 20px
         }
@@ -6150,7 +6546,10 @@ body.modal-open {
     text-transform: uppercase
 }
 
-    .botomBtnsec .btmbtn.previous, .botomBtnsec .btmbtn.pro, .botomBtnsec .btmbtn.submit, .gotApromoSec .promoCode .applBtn {
+    .botomBtnsec .btmbtn.previous,
+    .botomBtnsec .btmbtn.pro,
+    .botomBtnsec .btmbtn.submit,
+    .gotApromoSec .promoCode .applBtn {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -6175,7 +6574,10 @@ body.modal-open {
         border: solid 1px #8bc34a
     }
 
-        .botomBtnsec .btmbtn.previous:hover, .botomBtnsec .btmbtn.pro:hover, .botomBtnsec .btmbtn.sho:hover, .botomBtnsec .btmbtn.submit:hover {
+        .botomBtnsec .btmbtn.previous:hover,
+        .botomBtnsec .btmbtn.pro:hover,
+        .botomBtnsec .btmbtn.sho:hover,
+        .botomBtnsec .btmbtn.submit:hover {
             background-color: #000;
             border: solid 1px #000
         }
@@ -6196,12 +6598,14 @@ body.modal-open {
             color: #fff
         }
 
-.basketTable [type=radio]:checked, .basketTable [type=radio]:not(:checked) {
+.basketTable [type=radio]:checked,
+.basketTable [type=radio]:not(:checked) {
     position: absolute;
     left: -9999px
 }
 
-    .basketTable [type=radio]:checked + label, .basketTable [type=radio]:not(:checked) + label {
+    .basketTable [type=radio]:checked + label,
+    .basketTable [type=radio]:not(:checked) + label {
         position: relative;
         padding-left: 28px;
         cursor: pointer;
@@ -6210,7 +6614,8 @@ body.modal-open {
         color: #666
     }
 
-        .basketTable [type=radio]:checked + label:before, .basketTable [type=radio]:not(:checked) + label:before {
+        .basketTable [type=radio]:checked + label:before,
+        .basketTable [type=radio]:not(:checked) + label:before {
             content: "";
             position: absolute;
             left: 0;
@@ -6220,10 +6625,11 @@ body.modal-open {
             border: 1px solid #ddd;
             border-radius: 100%;
             background: #fff;
-            box-shadow: 0 2px 5px 0 rgba(0,0,0,.16),0 2px 5px 0 rgba(0,0,0,.23)
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 5px 0 rgba(0, 0, 0, .23)
         }
 
-        .basketTable [type=radio]:checked + label:after, .basketTable [type=radio]:not(:checked) + label:after {
+        .basketTable [type=radio]:checked + label:after,
+        .basketTable [type=radio]:not(:checked) + label:after {
             content: "";
             width: 14px;
             height: 14px;
@@ -6249,12 +6655,14 @@ body.modal-open {
             transform: scale(1)
         }
 
-.nb_bannersec .np_bannerContentOuter .nb_bnr_count:after, .nb_bannersec .np_bannerContentOuter .nb_bnr_count:before {
+.nb_bannersec .np_bannerContentOuter .nb_bnr_count:after,
+.nb_bannersec .np_bannerContentOuter .nb_bnr_count:before {
     content: "";
     width: 0
 }
 
-.main-logo, .nb_foot_logo img {
+.main-logo,
+.nb_foot_logo img {
     max-height: 88px
 }
 
@@ -6293,7 +6701,8 @@ body.modal-open {
     text-overflow: ellipsis
 }
 
-.feature-product-overflow .owl-item, .list-on-tablets .prd_lst_boxouter {
+.feature-product-overflow .owl-item,
+.list-on-tablets .prd_lst_boxouter {
     text-align: center
 }
 
@@ -6334,7 +6743,7 @@ body.modal-open {
         padding: 0 5px;
         content: attr(data-title);
         font-size: .75rem;
-        font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+        font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
         color: #fff;
         background-color: #ff1964;
         border-radius: .25rem 0 .25rem 0
@@ -6350,14 +6759,15 @@ body.modal-open {
         overflow: hidden
     }
 
-        .dot-spin, .snipper .stage .dot-spin {
+        .dot-spin,
+        .snipper .stage .dot-spin {
             position: relative;
             width: 10px;
             height: 10px;
             border-radius: 5px;
             background-color: transparent;
             color: transparent;
-            box-shadow: 0 -18px 0 0 #b0aeb4,12.72984px -12.72984px 0 0 #b0aeb4,18px 0 0 0 #b0aeb4,12.72984px 12.72984px 0 0 transparent,0 18px 0 0 transparent,-12.72984px 12.72984px 0 0 transparent,-18px 0 0 0 transparent,-12.72984px -12.72984px 0 0 transparent;
+            box-shadow: 0 -18px 0 0 #b0aeb4, 12.72984px -12.72984px 0 0 #b0aeb4, 18px 0 0 0 #b0aeb4, 12.72984px 12.72984px 0 0 transparent, 0 18px 0 0 transparent, -12.72984px 12.72984px 0 0 transparent, -18px 0 0 0 transparent, -12.72984px -12.72984px 0 0 transparent;
             animation: dot-spin 1.5s infinite linear
         }
 
@@ -6372,11 +6782,13 @@ body.modal-open {
     background-color: #111
 }
 
-.search-item .ui-menu-item-wrapper, .search-item .ui-state-active {
+.search-item .ui-menu-item-wrapper,
+.search-item .ui-state-active {
     padding-left: 2px !important
 }
 
-.search-item p.no-serach-results, .search-item p.no-serach-results:hover {
+.search-item p.no-serach-results,
+.search-item p.no-serach-results:hover {
     padding: 12px !important;
     border: 1px solid #fff
 }
@@ -6387,7 +6799,8 @@ body.modal-open {
         color: #fff
     }
 
-.search-item .ui-menu-item-wrapper img, .search-item .ui-state-active img {
+.search-item .ui-menu-item-wrapper img,
+.search-item .ui-state-active img {
     margin-right: 6px
 }
 
@@ -6427,24 +6840,31 @@ body.modal-open {
     color: #111
 }
 
-.search-item a, .srtby_txt {
+.search-item a,
+.srtby_txt {
     white-space: nowrap
 }
 
-.basketTable, .dropdown-menu li, .tableWrap {
+.basketTable,
+.dropdown-menu li,
+.tableWrap {
     width: 100%
 }
 
-    .basketTable .cmnRow .price, .basketTable .cmnRow .qty, .basketTable .cmnRow .tot {
+    .basketTable .cmnRow .price,
+    .basketTable .cmnRow .qty,
+    .basketTable .cmnRow .tot {
         text-align: center
     }
 
-    .basketTable .priceTotal span, .basketTable .priceWrapinner span {
+    .basketTable .priceTotal span,
+    .basketTable .priceWrapinner span {
         font-weight: 100;
         font-family: "primaryfont_SemiBold"
     }
 
-.basket-modal .basked-heading, .price-b {
+.basket-modal .basked-heading,
+.price-b {
     display: none
 }
 
@@ -6452,7 +6872,8 @@ body.modal-open {
     border-top: unset !important
 }
 
-#mce-error-response, .mce_inline_error {
+#mce-error-response,
+.mce_inline_error {
     text-align: left;
     color: #b40000
 }
@@ -6504,7 +6925,8 @@ body.modal-open {
     text-transform: uppercase
 }
 
-.wishlist-table .wishlist-basket-btn, .wishlist-table .wishlist-remove-btn {
+.wishlist-table .wishlist-basket-btn,
+.wishlist-table .wishlist-remove-btn {
     background-color: transparent;
     color: #707070;
     border: solid 1px #707070;
@@ -6520,7 +6942,8 @@ body.modal-open {
     border: solid 1px #f33655
 }
 
-    .wishlist-table .wishlist-basket-btn:hover, .wishlist-table .wishlist-remove-btn:hover {
+    .wishlist-table .wishlist-basket-btn:hover,
+    .wishlist-table .wishlist-remove-btn:hover {
         background-color: #000;
         border: solid 1px #000;
         color: #fff
@@ -6587,11 +7010,13 @@ html {
     height: 100%
 }
 
-.basket-modal-content .basket-section, .basket-modal-content .modal-body {
+.basket-modal-content .basket-section,
+.basket-modal-content .modal-body {
     padding: unset
 }
 
-    .basket-modal-content .basket-section .basketTable, .basket-modal-content .basket-section .tableWrap {
+    .basket-modal-content .basket-section .basketTable,
+    .basket-modal-content .basket-section .tableWrap {
         margin: unset !important
     }
 
@@ -6604,7 +7029,12 @@ html {
         vertical-align: inherit
     }
 
-    .basket-modal-content .basket-section .prd, .basket-modal-content .basket-section .prdName, .basket-modal-content .basket-section .price, .basket-modal-content .basket-section .qty, .basket-modal-content .basket-section .tot, .basket-modal-content .botomBtnsec {
+    .basket-modal-content .basket-section .prd,
+    .basket-modal-content .basket-section .prdName,
+    .basket-modal-content .basket-section .price,
+    .basket-modal-content .basket-section .qty,
+    .basket-modal-content .basket-section .tot,
+    .basket-modal-content .botomBtnsec {
         padding-top: unset !important;
         padding-bottom: unset !important
     }
@@ -6723,11 +7153,13 @@ html {
     margin-bottom: 30px
 }
 
-.nb_prd_viewingsecWrap .img_thumb_sliderwrap .nb_imageZoomCarrousle div.item, .nb_prd_viewingsecWrap .img_view_area {
+.nb_prd_viewingsecWrap .img_thumb_sliderwrap .nb_imageZoomCarrousle div.item,
+.nb_prd_viewingsecWrap .img_view_area {
     padding: 0
 }
 
-.basket-page-breadcrum, .termandcondition h3 {
+.basket-page-breadcrum,
+.termandcondition h3 {
     margin-bottom: unset !important
 }
 
@@ -6735,7 +7167,8 @@ html {
     margin-top: 15px !important
 }
 
-.btmBtn:disabled, .saveAddrWrap .saveAddrBtn:disabled {
+.btmBtn:disabled,
+.saveAddrWrap .saveAddrBtn:disabled {
     background-color: gray;
     color: #d3d3d3
 }

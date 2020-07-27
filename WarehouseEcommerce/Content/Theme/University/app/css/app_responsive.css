@@ -1,10 +1,13 @@
 @media (max-width:1199px) {
-
     .feature-product-overflow .inside-container {
         margin: 0 11px 0 14px
     }
 
-    .basketTable .cmnRow .delivery, .basketTable .cmnRow .greyBox, .basketTable tr.cmnRow .tot .in-basket-price-total:after, .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner:before, .store-delivery {
+    .basketTable .cmnRow .delivery,
+    .basketTable .cmnRow .greyBox,
+    .basketTable tr.cmnRow .tot .in-basket-price-total:after,
+    .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner:before,
+    .store-delivery {
         display: none
     }
 
@@ -72,11 +75,14 @@
             margin-right: 5px
         }
 
-    .nb_prdlisting_pgsec .nb_prd_filterwrap, .nb_sub_sec .nb_sub_wrap .sub_form_wrap .sub_form_wrap_inner {
+    .nb_prdlisting_pgsec .nb_prd_filterwrap,
+    .nb_sub_sec .nb_sub_wrap .sub_form_wrap .sub_form_wrap_inner {
         padding-right: 0
     }
 
-    .contact_form_sec .contact_pg_wrap, .contact_form_sec .subHead_content, .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner .meganav_firstcatList > li {
+    .contact_form_sec .contact_pg_wrap,
+    .contact_form_sec .subHead_content,
+    .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner .meganav_firstcatList > li {
         padding: 0
     }
 
@@ -103,11 +109,13 @@
             right: auto
         }
 
-            .accordion ul li:nth-child(1):after, .accordion ul li:nth-child(5):after {
+            .accordion ul li:nth-child(1):after,
+            .accordion ul li:nth-child(5):after {
                 display: none
             }
 
-                .accordion ul li:nth-child(1) h2, .accordion ul li:nth-child(5):after h2 {
+                .accordion ul li:nth-child(1) h2,
+                .accordion ul li:nth-child(5):after h2 {
                     padding-right: initial
                 }
 
@@ -119,7 +127,8 @@
             left: auto
         }
 
-            .accordion ul li:last-child:after, .accordion.have2child ul li:last-child:after {
+            .accordion ul li:last-child:after,
+            .accordion.have2child ul li:last-child:after {
                 display: none
             }
 
@@ -176,7 +185,8 @@
         font-size: 24px
     }
 
-    .nb_prd_det_rightsec .footSec .qty, .nb_prd_det_rightsec .footSec button.addTobasket {
+    .nb_prd_det_rightsec .footSec .qty,
+    .nb_prd_det_rightsec .footSec button.addTobasket {
         margin-right: 20px
     }
 }
@@ -186,7 +196,8 @@
         padding-right: 0
     }
 
-    .select-payment-method-btn, .select-shipping-method-btn {
+    .select-payment-method-btn,
+    .select-shipping-method-btn {
         width: 100%;
         height: 33px
     }
@@ -335,7 +346,10 @@
         padding-left: 15px
     }
 
-    .get-address-page .button-submit button, .payment-bottom-btn .button-submit, .payment-bottom-btn .saveAddrBtn, .submitBtnwra #my-tokenisation-trigger {
+    .get-address-page .button-submit button,
+    .payment-bottom-btn .button-submit,
+    .payment-bottom-btn .saveAddrBtn,
+    .submitBtnwra #my-tokenisation-trigger {
         width: 100% !important
     }
 
@@ -355,11 +369,16 @@
         display: table-row
     }
 
-    .basketTable tr.cmnRow .prd, .basketTable tr.cmnRow .price, .basketTable tr.cmnRow .qty, .basketTable tr.cmnRow .tot {
+    .basketTable tr.cmnRow .prd,
+    .basketTable tr.cmnRow .price,
+    .basketTable tr.cmnRow .qty,
+    .basketTable tr.cmnRow .tot {
         width: 100%
     }
 
-        .basketTable tr.cmnRow .price .priceWrapinner, .basketTable tr.cmnRow .qty .QtyWrap, .basketTable tr.cmnRow .tot .priceTotal {
+        .basketTable tr.cmnRow .price .priceWrapinner,
+        .basketTable tr.cmnRow .qty .QtyWrap,
+        .basketTable tr.cmnRow .tot .priceTotal {
             height: 40px
         }
 
@@ -372,7 +391,10 @@
         margin-left: unset
     }
 
-    .basketTable tr.cmnRow .delivery, .basketTable tr.cmnRow .tot .in-basket-price-total:after, .basketTable tr.headRow, .headBoxTop {
+    .basketTable tr.cmnRow .delivery,
+    .basketTable tr.cmnRow .tot .in-basket-price-total:after,
+    .basketTable tr.headRow,
+    .headBoxTop {
         display: none
     }
 
@@ -417,7 +439,9 @@
         max-width: unset
     }
 
-    #nb_res_navTrigger, .nb_header .nb_headicolst li.sir, .price-b {
+    #nb_res_navTrigger,
+    .nb_header .nb_headicolst li.sir,
+    .price-b {
         display: block
     }
 
@@ -431,17 +455,21 @@
         flex-direction: column !important
     }
 
-    .basketTable .priceTotal, .basketTable .priceWrapinner {
+    .basketTable .priceTotal,
+    .basketTable .priceWrapinner {
         flex-direction: row !important
     }
 
-        .basketTable .priceTotal b, .basketTable .priceWrapinner b, .basketTable .subtotalCellInner b {
+        .basketTable .priceTotal b,
+        .basketTable .priceWrapinner b,
+        .basketTable .subtotalCellInner b {
             text-align: right;
             white-space: nowrap;
             margin-right: 10px
         }
 
-    .basketTable, .basketTable .cmnRow {
+    .basketTable,
+    .basketTable .cmnRow {
         display: flex;
         justify-content: center
     }
@@ -450,7 +478,8 @@
             flex-direction: column
         }
 
-            .basketTable .cmnRow .prd, .basketTable .cmnRow .tot {
+            .basketTable .cmnRow .prd,
+            .basketTable .cmnRow .tot {
                 text-align: center !important
             }
 
@@ -458,7 +487,10 @@
                 justify-content: center !important
             }
 
-            .basketTable .cmnRow .qty, .basketTable .prdCellwrap .imgWrap, .basketTable .prdCellwrap .prdName, .wishlist-table tr td .prdname {
+            .basketTable .cmnRow .qty,
+            .basketTable .prdCellwrap .imgWrap,
+            .basketTable .prdCellwrap .prdName,
+            .wishlist-table tr td .prdname {
                 width: 320px !important;
                 height: auto !important
             }
@@ -468,7 +500,10 @@
                     height: 320px
                 }
 
-        .basketTable .prd, .basketTable .price, .basketTable .qty, .basketTable .subtotalCellInner {
+        .basketTable .prd,
+        .basketTable .price,
+        .basketTable .qty,
+        .basketTable .subtotalCellInner {
             padding: unset
         }
 
@@ -476,7 +511,8 @@
         flex-direction: column !important
     }
 
-    .accordion ul, .wishlist-table tr {
+    .accordion ul,
+    .wishlist-table tr {
         align-items: center
     }
 
@@ -495,11 +531,14 @@
         flex-direction: column
     }
 
-    .nb_prd_viewingsecWrap #zoomViewTrigger, .wishlist-table .price-th, .wishlist-table .product-th {
+    .nb_prd_viewingsecWrap #zoomViewTrigger,
+    .wishlist-table .price-th,
+    .wishlist-table .product-th {
         display: none
     }
 
-    .wishlist-table .wishlist-btn-td, .wishlist-table .wishlist-table-btns {
+    .wishlist-table .wishlist-btn-td,
+    .wishlist-table .wishlist-table-btns {
         width: 100%
     }
 
@@ -517,7 +556,8 @@
         height: 130px
     }
 
-    .styled-checkbox .same-billing-address__label:before, .styled-checkbox + label:before {
+    .styled-checkbox .same-billing-address__label:before,
+    .styled-checkbox + label:before {
         min-width: 30px;
         min-height: 30px
     }
@@ -550,7 +590,10 @@
         margin-bottom: 20px
     }
 
-    .checkout-process-breadcrum, .order-review-breadcrum, .paypal-breadcrum, .sagepay-breadcrum {
+    .checkout-process-breadcrum,
+    .order-review-breadcrum,
+    .paypal-breadcrum,
+    .sagepay-breadcrum {
         margin-bottom: unset !important
     }
 
@@ -558,7 +601,9 @@
         pointer-events: none
     }
 
-    .zoomContainer, .zoomLens, .zoomWindow {
+    .zoomContainer,
+    .zoomLens,
+    .zoomWindow {
         display: none !important;
         pointer-events: none
     }
@@ -575,7 +620,9 @@
         margin-bottom: 23px
     }
 
-    .left_beer, .nb_bnr_count, .nb_header .nb_headicolst li {
+    .left_beer,
+    .nb_bnr_count,
+    .nb_header .nb_headicolst li {
         display: none
     }
 
@@ -634,7 +681,10 @@
         display: none
     }
 
-        .nb_firstNav_res_lst .nb_subnavWrap ul, .nb_firstNav_res_lst .nb_subnavWrap ul li, .nb_s_snList, .nb_s_snList li {
+        .nb_firstNav_res_lst .nb_subnavWrap ul,
+        .nb_firstNav_res_lst .nb_subnavWrap ul li,
+        .nb_s_snList,
+        .nb_s_snList li {
             width: 100%;
             float: left
         }
@@ -649,7 +699,8 @@
             float: left
         }
 
-    .hav_sub_nav2:hover .nb_s_snList, .hav_sub_nav:hover .nb_subnavWrap {
+    .hav_sub_nav2:hover .nb_s_snList,
+    .hav_sub_nav:hover .nb_subnavWrap {
         display: block
     }
 
@@ -718,7 +769,9 @@
         display: flex
     }
 
-    .progressBarStep ul#progressList li .HalfCircle, .progressBarStep ul#progressList li span.txt, .search_wrap_main {
+    .progressBarStep ul#progressList li .HalfCircle,
+    .progressBarStep ul#progressList li span.txt,
+    .search_wrap_main {
         display: none
     }
 
@@ -783,7 +836,8 @@
         width: 43%
     }
 
-    .accordion ul:hover li, .accordion ul:hover li:hover {
+    .accordion ul:hover li,
+    .accordion ul:hover li:hover {
         width: 43%
     }
 
@@ -813,7 +867,11 @@
 }
 
 @media (max-width:650px) {
-    .basketTable .cmnRow .qty, .basketTable .prdCellwrap .imgWrap, .basketTable .prdCellwrap .prdName, .list-on-tablets .prd_lst_boxouter .imagewrap img, .wishlist-table tr td .prdname {
+    .basketTable .cmnRow .qty,
+    .basketTable .prdCellwrap .imgWrap,
+    .basketTable .prdCellwrap .prdName,
+    .list-on-tablets .prd_lst_boxouter .imagewrap img,
+    .wishlist-table tr td .prdname {
         width: 295px !important
     }
 
@@ -829,7 +887,11 @@
 }
 
 @media (max-width:600px) {
-    .basketTable .cmnRow .qty, .basketTable .prdCellwrap .imgWrap, .basketTable .prdCellwrap .prdName, .list-on-tablets .prd_lst_boxouter .imagewrap img, .wishlist-table tr td .prdname {
+    .basketTable .cmnRow .qty,
+    .basketTable .prdCellwrap .imgWrap,
+    .basketTable .prdCellwrap .prdName,
+    .list-on-tablets .prd_lst_boxouter .imagewrap img,
+    .wishlist-table tr td .prdname {
         width: 270px !important
     }
 
@@ -862,7 +924,8 @@
         flex-wrap: wrap
     }
 
-    .cartitem-imgtext, .cartitem-price {
+    .cartitem-imgtext,
+    .cartitem-price {
         width: 100%
     }
 
@@ -955,15 +1018,20 @@
         width: 85px !important
     }
 
-    .billandshipsec .address-wrapper .addnwShopAdrrbtn, .billandshipsec .checkout-options-wrapper .addnwShopAdrrbtn, .saveAddrWrap .saveAddrBtn {
+    .billandshipsec .address-wrapper .addnwShopAdrrbtn,
+    .billandshipsec .checkout-options-wrapper .addnwShopAdrrbtn,
+    .saveAddrWrap .saveAddrBtn {
         width: 100% !important
     }
 
-    .billandshipsec .address-wrapper .btnWrap, .billandshipsec .checkout-options-wrapper .btnWrap, .saveAddrWrap {
+    .billandshipsec .address-wrapper .btnWrap,
+    .billandshipsec .checkout-options-wrapper .btnWrap,
+    .saveAddrWrap {
         flex-wrap: wrap
     }
 
-    .basketTable .prdCellwrap .imgWrap img, .list-on-tablets .prd_lst_boxouter .imagewrap img {
+    .basketTable .prdCellwrap .imgWrap img,
+    .list-on-tablets .prd_lst_boxouter .imagewrap img {
         width: 245px !important;
         height: 245px
     }
@@ -972,7 +1040,10 @@
         margin-top: unset !important
     }
 
-    .paypal-form, .paypal-form .button-submit a.saveAddrBtn, .sagepay-form .button-submit a.saveAddrBtn, sagepay-form {
+    .paypal-form,
+    .paypal-form .button-submit a.saveAddrBtn,
+    .sagepay-form .button-submit a.saveAddrBtn,
+    sagepay-form {
         width: 100%
     }
 
@@ -992,7 +1063,8 @@
         margin-top: 8px
     }
 
-    .basketTable .prdCellwrap .imgWrap img, .list-on-tablets .prd_lst_boxouter .imagewrap img {
+    .basketTable .prdCellwrap .imgWrap img,
+    .list-on-tablets .prd_lst_boxouter .imagewrap img {
         width: 220px !important;
         height: 220px
     }
@@ -1007,7 +1079,8 @@
         display: block
     }
 
-    .footSec .addTobasket, .footSec .addtowishlistbtn {
+    .footSec .addTobasket,
+    .footSec .addtowishlistbtn {
         margin-right: unset !important
     }
 
@@ -1047,7 +1120,8 @@
         margin-bottom: 13px
     }
 
-    .nb_basket_wrap table.basketTable thead, .nb_prd_det_rightsec .footSec .addtowishlist {
+    .nb_basket_wrap table.basketTable thead,
+    .nb_prd_det_rightsec .footSec .addtowishlist {
         display: none
     }
 
@@ -1086,7 +1160,9 @@
         justify-content: center
     }
 
-    .nb_basket_wrap table.basketTable, .nb_basket_wrap table.basketTable tbody, .nb_basket_wrap table.basketTable tbody tr {
+    .nb_basket_wrap table.basketTable,
+    .nb_basket_wrap table.basketTable tbody,
+    .nb_basket_wrap table.basketTable tbody tr {
         width: 100%;
         display: block;
         float: left
@@ -1167,7 +1243,8 @@
 }
 
 @media (max-width:450px) {
-    .basketTable .prdCellwrap .imgWrap img, .list-on-tablets .prd_lst_boxouter .imagewrap img {
+    .basketTable .prdCellwrap .imgWrap img,
+    .list-on-tablets .prd_lst_boxouter .imagewrap img {
         width: 195px !important;
         height: 195px
     }
@@ -1191,7 +1268,8 @@
         font-size: 14px
     }
 
-    .styled-checkbox .same-billing-address__label:before, .styled-checkbox + label:before {
+    .styled-checkbox .same-billing-address__label:before,
+    .styled-checkbox + label:before {
         margin-right: 12px
     }
 
@@ -1241,7 +1319,8 @@
 }
 
 @media (max-width:375px) {
-    .basketTable .prdCellwrap .imgWrap img, .list-on-tablets .prd_lst_boxouter .imagewrap img {
+    .basketTable .prdCellwrap .imgWrap img,
+    .list-on-tablets .prd_lst_boxouter .imagewrap img {
         width: 157px !important;
         height: 157px
     }
@@ -1270,7 +1349,8 @@
 }
 
 @media (max-width:350px) {
-    .basketTable .prdCellwrap .imgWrap img, .list-on-tablets .prd_lst_boxouter .imagewrap img {
+    .basketTable .prdCellwrap .imgWrap img,
+    .list-on-tablets .prd_lst_boxouter .imagewrap img {
         width: 130px !important;
         height: 130px
     }
