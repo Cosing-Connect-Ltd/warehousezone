@@ -29,46 +29,19 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            DevExpress.DataAccess.Sql.SelectQuery selectQuery1 = new DevExpress.DataAccess.Sql.SelectQuery();
-            DevExpress.DataAccess.Sql.Column column1 = new DevExpress.DataAccess.Sql.Column();
-            DevExpress.DataAccess.Sql.ColumnExpression columnExpression1 = new DevExpress.DataAccess.Sql.ColumnExpression();
-            DevExpress.DataAccess.Sql.Table table1 = new DevExpress.DataAccess.Sql.Table();
-            DevExpress.DataAccess.Sql.Column column2 = new DevExpress.DataAccess.Sql.Column();
-            DevExpress.DataAccess.Sql.ColumnExpression columnExpression2 = new DevExpress.DataAccess.Sql.ColumnExpression();
-            DevExpress.DataAccess.Sql.Column column3 = new DevExpress.DataAccess.Sql.Column();
-            DevExpress.DataAccess.Sql.ColumnExpression columnExpression3 = new DevExpress.DataAccess.Sql.ColumnExpression();
-            DevExpress.DataAccess.Sql.Column column4 = new DevExpress.DataAccess.Sql.Column();
-            DevExpress.DataAccess.Sql.ColumnExpression columnExpression4 = new DevExpress.DataAccess.Sql.ColumnExpression();
-            DevExpress.DataAccess.Sql.Column column5 = new DevExpress.DataAccess.Sql.Column();
-            DevExpress.DataAccess.Sql.ColumnExpression columnExpression5 = new DevExpress.DataAccess.Sql.ColumnExpression();
-            DevExpress.DataAccess.Sql.Table table2 = new DevExpress.DataAccess.Sql.Table();
-            DevExpress.DataAccess.Sql.Column column6 = new DevExpress.DataAccess.Sql.Column();
-            DevExpress.DataAccess.Sql.ColumnExpression columnExpression6 = new DevExpress.DataAccess.Sql.ColumnExpression();
-            DevExpress.DataAccess.Sql.Column column7 = new DevExpress.DataAccess.Sql.Column();
-            DevExpress.DataAccess.Sql.ColumnExpression columnExpression7 = new DevExpress.DataAccess.Sql.ColumnExpression();
-            DevExpress.DataAccess.Sql.Column column8 = new DevExpress.DataAccess.Sql.Column();
-            DevExpress.DataAccess.Sql.ColumnExpression columnExpression8 = new DevExpress.DataAccess.Sql.ColumnExpression();
-            DevExpress.DataAccess.Sql.Column column9 = new DevExpress.DataAccess.Sql.Column();
-            DevExpress.DataAccess.Sql.ColumnExpression columnExpression9 = new DevExpress.DataAccess.Sql.ColumnExpression();
-            DevExpress.DataAccess.Sql.Column column10 = new DevExpress.DataAccess.Sql.Column();
-            DevExpress.DataAccess.Sql.ColumnExpression columnExpression10 = new DevExpress.DataAccess.Sql.ColumnExpression();
-            DevExpress.DataAccess.Sql.Table table3 = new DevExpress.DataAccess.Sql.Table();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FinancialTransactionReport));
+            DevExpress.DataAccess.Sql.CustomSqlQuery customSqlQuery1 = new DevExpress.DataAccess.Sql.CustomSqlQuery();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter1 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter2 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter3 = new DevExpress.DataAccess.Sql.QueryParameter();
-            DevExpress.DataAccess.Sql.Join join1 = new DevExpress.DataAccess.Sql.Join();
-            DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo1 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
-            DevExpress.DataAccess.Sql.Join join2 = new DevExpress.DataAccess.Sql.Join();
-            DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo2 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
-            DevExpress.DataAccess.Sql.CustomSqlQuery customSqlQuery1 = new DevExpress.DataAccess.Sql.CustomSqlQuery();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FinancialTransactionReport));
+            DevExpress.DataAccess.Sql.CustomSqlQuery customSqlQuery2 = new DevExpress.DataAccess.Sql.CustomSqlQuery();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter4 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter5 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter6 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.MasterDetailInfo masterDetailInfo1 = new DevExpress.DataAccess.Sql.MasterDetailInfo();
-            DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo3 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
+            DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo1 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
             DevExpress.DataAccess.Sql.MasterDetailInfo masterDetailInfo2 = new DevExpress.DataAccess.Sql.MasterDetailInfo();
-            DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo4 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
+            DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo2 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
             DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings1 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
@@ -129,6 +102,7 @@
             this.amountRecored = new DevExpress.XtraReports.UI.CalculatedField();
             this.creditName = new DevExpress.XtraReports.UI.CalculatedField();
             this.debitName = new DevExpress.XtraReports.UI.CalculatedField();
+            this.TransactioTypeName = new DevExpress.XtraReports.UI.CalculatedField();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // TopMargin
@@ -175,10 +149,10 @@
             this.xrLabel18.BackColor = System.Drawing.Color.WhiteSmoke;
             this.xrLabel18.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.xrLabel18.ForeColor = System.Drawing.Color.Black;
-            this.xrLabel18.LocationFloat = new DevExpress.Utils.PointFloat(428.1169F, 0F);
+            this.xrLabel18.LocationFloat = new DevExpress.Utils.PointFloat(414.5752F, 0F);
             this.xrLabel18.Name = "xrLabel18";
             this.xrLabel18.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel18.SizeF = new System.Drawing.SizeF(82.29169F, 23F);
+            this.xrLabel18.SizeF = new System.Drawing.SizeF(95.83334F, 23F);
             this.xrLabel18.StylePriority.UseBackColor = false;
             this.xrLabel18.StylePriority.UseFont = false;
             this.xrLabel18.StylePriority.UseForeColor = false;
@@ -242,7 +216,7 @@
             this.xrLabel36.LocationFloat = new DevExpress.Utils.PointFloat(223.8101F, 0F);
             this.xrLabel36.Name = "xrLabel36";
             this.xrLabel36.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel36.SizeF = new System.Drawing.SizeF(204.3068F, 23F);
+            this.xrLabel36.SizeF = new System.Drawing.SizeF(190.7651F, 23F);
             this.xrLabel36.StylePriority.UseBackColor = false;
             this.xrLabel36.StylePriority.UseFont = false;
             this.xrLabel36.StylePriority.UseForeColor = false;
@@ -676,86 +650,21 @@
             // 
             this.sqlDataSource1.ConnectionName = "ApplicationContext";
             this.sqlDataSource1.Name = "sqlDataSource1";
-            columnExpression1.ColumnName = "Amount";
-            table1.MetaSerializable = "<Meta X=\"60\" Y=\"30\" Width=\"220\" Height=\"457\" />";
-            table1.Name = "AccountTransaction";
-            columnExpression1.Table = table1;
-            column1.Expression = columnExpression1;
-            columnExpression2.ColumnName = "FinalBalance";
-            columnExpression2.Table = table1;
-            column2.Expression = columnExpression2;
-            columnExpression3.ColumnName = "Notes";
-            columnExpression3.Table = table1;
-            column3.Expression = columnExpression3;
-            columnExpression4.ColumnName = "DateCreated";
-            columnExpression4.Table = table1;
-            column4.Expression = columnExpression4;
-            columnExpression5.ColumnName = "Description";
-            table2.MetaSerializable = "<Meta X=\"495\" Y=\"30\" Width=\"125\" Height=\"96\" />";
-            table2.Name = "AccountTransactionTypes";
-            columnExpression5.Table = table2;
-            column5.Expression = columnExpression5;
-            columnExpression6.ColumnName = "AccountId";
-            columnExpression6.Table = table1;
-            column6.Expression = columnExpression6;
-            columnExpression7.ColumnName = "AccountTransactionId";
-            columnExpression7.Table = table1;
-            column7.Expression = columnExpression7;
-            columnExpression8.ColumnName = "IsDeleted";
-            columnExpression8.Table = table1;
-            column8.Expression = columnExpression8;
-            columnExpression9.ColumnName = "AccountTransactionTypeId";
-            columnExpression9.Table = table1;
-            column9.Expression = columnExpression9;
-            column10.Alias = "AccountPaymentModes_Description";
-            columnExpression10.ColumnName = "Description";
-            table3.MetaSerializable = "<Meta X=\"650\" Y=\"30\" Width=\"125\" Height=\"96\" />";
-            table3.Name = "AccountPaymentModes";
-            columnExpression10.Table = table3;
-            column10.Expression = columnExpression10;
-            selectQuery1.Columns.Add(column1);
-            selectQuery1.Columns.Add(column2);
-            selectQuery1.Columns.Add(column3);
-            selectQuery1.Columns.Add(column4);
-            selectQuery1.Columns.Add(column5);
-            selectQuery1.Columns.Add(column6);
-            selectQuery1.Columns.Add(column7);
-            selectQuery1.Columns.Add(column8);
-            selectQuery1.Columns.Add(column9);
-            selectQuery1.Columns.Add(column10);
-            selectQuery1.FilterString = resources.GetString("selectQuery1.FilterString");
-            selectQuery1.GroupFilterString = "";
-            selectQuery1.MetaSerializable = "<Meta X=\"250\" Y=\"20\" Width=\"150\" Height=\"207\" />";
-            selectQuery1.Name = "AccountTransaction";
+            customSqlQuery1.Name = "AccountTransaction";
             queryParameter1.Name = "paramStartDate";
             queryParameter1.Type = typeof(DevExpress.DataAccess.Expression);
             queryParameter1.Value = new DevExpress.DataAccess.Expression("?StartDate", typeof(System.DateTime));
-            queryParameter2.Name = "paramEndDate";
+            queryParameter2.Name = "ParamEndDate";
             queryParameter2.Type = typeof(DevExpress.DataAccess.Expression);
             queryParameter2.Value = new DevExpress.DataAccess.Expression("?EndDate", typeof(System.DateTime));
-            queryParameter3.Name = "paramAccountId";
+            queryParameter3.Name = "ParamAccountId";
             queryParameter3.Type = typeof(DevExpress.DataAccess.Expression);
             queryParameter3.Value = new DevExpress.DataAccess.Expression("?AccountId", typeof(int));
-            selectQuery1.Parameters.Add(queryParameter1);
-            selectQuery1.Parameters.Add(queryParameter2);
-            selectQuery1.Parameters.Add(queryParameter3);
-            relationColumnInfo1.NestedKeyColumn = "AccountTransactionTypeId";
-            relationColumnInfo1.ParentKeyColumn = "AccountTransactionTypeId";
-            join1.KeyColumns.Add(relationColumnInfo1);
-            join1.Nested = table2;
-            join1.Parent = table1;
-            relationColumnInfo2.NestedKeyColumn = "AccountPaymentModeId";
-            relationColumnInfo2.ParentKeyColumn = "AccountPaymentModeId";
-            join2.KeyColumns.Add(relationColumnInfo2);
-            join2.Nested = table3;
-            join2.Parent = table1;
-            join2.Type = DevExpress.Xpo.DB.JoinType.LeftOuter;
-            selectQuery1.Relations.Add(join1);
-            selectQuery1.Relations.Add(join2);
-            selectQuery1.Tables.Add(table1);
-            selectQuery1.Tables.Add(table2);
-            selectQuery1.Tables.Add(table3);
-            customSqlQuery1.Name = "Account";
+            customSqlQuery1.Parameters.Add(queryParameter1);
+            customSqlQuery1.Parameters.Add(queryParameter2);
+            customSqlQuery1.Parameters.Add(queryParameter3);
+            customSqlQuery1.Sql = resources.GetString("customSqlQuery1.Sql");
+            customSqlQuery2.Name = "Account";
             queryParameter4.Name = "paramAccountId";
             queryParameter4.Type = typeof(DevExpress.DataAccess.Expression);
             queryParameter4.Value = new DevExpress.DataAccess.Expression("?AccountId", typeof(int));
@@ -765,22 +674,22 @@
             queryParameter6.Name = "ParamEndDate";
             queryParameter6.Type = typeof(DevExpress.DataAccess.Expression);
             queryParameter6.Value = new DevExpress.DataAccess.Expression("?EndDate", typeof(System.DateTime));
-            customSqlQuery1.Parameters.Add(queryParameter4);
-            customSqlQuery1.Parameters.Add(queryParameter5);
-            customSqlQuery1.Parameters.Add(queryParameter6);
-            customSqlQuery1.Sql = resources.GetString("customSqlQuery1.Sql");
+            customSqlQuery2.Parameters.Add(queryParameter4);
+            customSqlQuery2.Parameters.Add(queryParameter5);
+            customSqlQuery2.Parameters.Add(queryParameter6);
+            customSqlQuery2.Sql = resources.GetString("customSqlQuery2.Sql");
             this.sqlDataSource1.Queries.AddRange(new DevExpress.DataAccess.Sql.SqlQuery[] {
-            selectQuery1,
-            customSqlQuery1});
+            customSqlQuery1,
+            customSqlQuery2});
             masterDetailInfo1.DetailQueryName = "AccountTransaction";
-            relationColumnInfo3.NestedKeyColumn = "AccountId";
-            relationColumnInfo3.ParentKeyColumn = "AccountID";
-            masterDetailInfo1.KeyColumns.Add(relationColumnInfo3);
+            relationColumnInfo1.NestedKeyColumn = "AccountId";
+            relationColumnInfo1.ParentKeyColumn = "AccountID";
+            masterDetailInfo1.KeyColumns.Add(relationColumnInfo1);
             masterDetailInfo1.MasterQueryName = "Account";
             masterDetailInfo2.DetailQueryName = "startringBalance";
-            relationColumnInfo4.NestedKeyColumn = "AccountId";
-            relationColumnInfo4.ParentKeyColumn = "AccountID";
-            masterDetailInfo2.KeyColumns.Add(relationColumnInfo4);
+            relationColumnInfo2.NestedKeyColumn = "AccountId";
+            relationColumnInfo2.ParentKeyColumn = "AccountID";
+            masterDetailInfo2.KeyColumns.Add(relationColumnInfo2);
             masterDetailInfo2.MasterQueryName = "Account";
             this.sqlDataSource1.Relations.AddRange(new DevExpress.DataAccess.Sql.MasterDetailInfo[] {
             masterDetailInfo1,
@@ -848,12 +757,12 @@
             // xrLabel5
             // 
             this.xrLabel5.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[AccountPaymentModes_Description]")});
-            this.xrLabel5.LocationFloat = new DevExpress.Utils.PointFloat(428.1169F, 0F);
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[TransactioTypeName]")});
+            this.xrLabel5.LocationFloat = new DevExpress.Utils.PointFloat(414.5752F, 0F);
             this.xrLabel5.Multiline = true;
             this.xrLabel5.Name = "xrLabel5";
             this.xrLabel5.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel5.SizeF = new System.Drawing.SizeF(82.29169F, 23F);
+            this.xrLabel5.SizeF = new System.Drawing.SizeF(95.83334F, 23F);
             this.xrLabel5.Text = "xrLabel5";
             // 
             // xrLabel20
@@ -877,7 +786,7 @@
             this.xrLabel3.Multiline = true;
             this.xrLabel3.Name = "xrLabel3";
             this.xrLabel3.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel3.SizeF = new System.Drawing.SizeF(204.3068F, 23F);
+            this.xrLabel3.SizeF = new System.Drawing.SizeF(190.7651F, 23F);
             this.xrLabel3.Text = "xrLabel3";
             // 
             // xrLabel2
@@ -978,6 +887,12 @@
     "saction].[Amount] , \'\')";
             this.debitName.Name = "debitName";
             // 
+            // TransactioTypeName
+            // 
+            this.TransactioTypeName.DataMember = "AccountTransaction";
+            this.TransactioTypeName.Expression = resources.GetString("TransactioTypeName.Expression");
+            this.TransactioTypeName.Name = "TransactioTypeName";
+            // 
             // FinancialTransactionReport
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -994,7 +909,8 @@
             this.displaydebit,
             this.amountRecored,
             this.creditName,
-            this.debitName});
+            this.debitName,
+            this.TransactioTypeName});
             this.ComponentStorage.AddRange(new System.ComponentModel.IComponent[] {
             this.sqlDataSource1});
             this.DataMember = "Account";
@@ -1073,5 +989,6 @@
         private DevExpress.XtraReports.UI.XRLabel xrLabel22;
         private DevExpress.XtraReports.UI.XRLabel xrLabel23;
         private DevExpress.XtraReports.UI.XRLabel xrLabel24;
+        private DevExpress.XtraReports.UI.CalculatedField TransactioTypeName;
     }
 }

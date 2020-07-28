@@ -130,8 +130,7 @@
                          Accounts.CountryID AS AccountCountryId, Accounts.CurrencyID AS AccountCurrencyId, Accounts.AccountStatusID, Accounts.PriceGroupID, Accounts.VATNo, Accounts.RegNo, Accounts.AccountEmail AS AcEmail, 
                          Accounts.Telephone AS AcTelephone, Accounts.Mobile AS AcMobile, Accounts.website AS AcWebsite, Accounts.CreditLimit AS AcLimit, Accounts.AccountTypeCustomer, Accounts.AccountTypeSupplier, 
                          Accounts.AccountTypeEndUser, Orders.OrderID, Orders.OrderNumber,Orders.ExternalOrderNumber, Orders.OrderDiscount,  Orders.IssueDate, CAST(Orders.ExpectedDate AS date) AS Expr1, Orders.Note, Orders.ReportTypeChargeId, Orders.InventoryTransactionTypeId, 
-                         Orders.AccountID AS OrderAccountId, Orders.OrderTotal + COALESCE (CAST(Orders.OrderCost AS DECIMAL(9, 2)), 0) AS OrderGrandTotal, InventoryTransactionTypes.InventoryTransactionTypeName, 
-                         InventoryTransactionTypes.OrderType, AccountAddresses.AccountID AS AcAccountID, AccountAddresses.AddressLine1 AS AcAddressLine1, AccountAddresses.AddressLine2 AS AcAddressLine2, 
+                         Orders.AccountID AS OrderAccountId, Orders.OrderTotal + COALESCE (CAST(Orders.OrderCost AS DECIMAL(9, 2)), 0) AS OrderGrandTotal, AccountAddresses.AccountID AS AcAccountID, AccountAddresses.AddressLine1 AS AcAddressLine1, AccountAddresses.AddressLine2 AS AcAddressLine2, 
                          AccountAddresses.AddressLine3 AS AcAddressLine3,AccountAddresses.AddressLine4 AS AcAddressLine4, AccountAddresses.Town AS AcTown, AccountAddresses.CountryID AS AccountAddressCountry, AccountAddresses.AddressID, Tenants.TenantPostalCode, AccountAddresses.PostCode AS AcPostCode, 
                          Orders.OrderTotal,Orders.InvoiceNo, SLAPriorits.Priority, SLAPriorits.Description, Orders.PPropertyId AS Expr2, Orders.ExpectedHours, 
                          TenantLocations.WarehouseId AS TenantWarehouseId, TenantLocations.WarehouseName AS TenantWarehouseName, TenantLocations.AddressLine1 AS TenantWarehouseAddr1, 
@@ -156,7 +155,6 @@ FROM            Orders INNER JOIN
                          Account AS Accounts ON Orders.AccountID = Accounts.AccountID LEFT OUTER JOIN
                          GlobalCountry AS GlobalCountries ON Accounts.CountryID = GlobalCountries.CountryID AND Tenants.CountryID = GlobalCountries.CountryID LEFT OUTER JOIN
                          GlobalCurrency ON Accounts.CurrencyID = GlobalCurrency.CurrencyID LEFT OUTER JOIN
-                         InventoryTransactionTypes ON Orders.InventoryTransactionTypeId = InventoryTransactionTypes.InventoryTransactionTypeId LEFT OUTER JOIN
                          TenantLocations ON TenantLocations.WarehouseId = Orders.WarehouseId LEFT OUTER JOIN
                          TenantLocations AS TenantWarehouse ON Orders.TransferWarehouseId = TenantWarehouse.WarehouseId LEFT OUTER JOIN
                          SLAPriorits ON Orders.SLAPriorityId = SLAPriorits.SLAPriorityId LEFT OUTER JOIN

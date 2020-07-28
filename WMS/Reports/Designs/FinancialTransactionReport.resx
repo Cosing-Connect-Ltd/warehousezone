@@ -120,10 +120,23 @@
   <metadata name="sqlDataSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <data name="selectQuery1.FilterString" xml:space="preserve">
-    <value>[AccountTransaction.AccountId] = ?paramAccountId And [AccountTransaction.DateCreated] &gt;= ?paramStartDate And [AccountTransaction.DateCreated] &lt;= ?paramEndDate And ([AccountTransaction.IsDeleted] Is Null Or [AccountTransaction.IsDeleted] &lt;&gt; True)</value>
-  </data>
   <data name="customSqlQuery1.Sql" xml:space="preserve">
+    <value>select "AccountTransaction"."Amount",
+       "AccountTransaction"."FinalBalance",
+       "AccountTransaction"."Notes",
+       "AccountTransaction"."DateCreated",
+       "AccountTransaction"."AccountId",
+       "AccountTransaction"."AccountTransactionId",
+       "AccountTransaction"."IsDeleted",
+       "AccountTransaction"."AccountTransactionTypeId"
+  from "dbo"."AccountTransaction" "AccountTransaction"
+ where (("AccountTransaction"."AccountId" = @paramAccountId)
+       and ("AccountTransaction"."DateCreated" &gt;= @paramStartDate)
+       and ("AccountTransaction"."DateCreated" &lt;= @paramEndDate)
+       and ("AccountTransaction"."IsDeleted" is null
+       or ("AccountTransaction"."IsDeleted" &lt;&gt; 1)))</value>
+  </data>
+  <data name="customSqlQuery2.Sql" xml:space="preserve">
     <value>select top 1 "Account"."AccountID",
        "Account"."AccountCode",
        "Account"."CompanyName",
@@ -153,6 +166,10 @@
        or ("Account"."IsDeleted" &lt;&gt; 1)))</value>
   </data>
   <data name="sqlDataSource1.ResultSchemaSerializable" xml:space="preserve">
-    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9IkFjY291bnRUcmFuc2FjdGlvbiI+PEZpZWxkIE5hbWU9IkFtb3VudCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iRmluYWxCYWxhbmNlIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJOb3RlcyIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iRGF0ZUNyZWF0ZWQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkRlc2NyaXB0aW9uIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJBY2NvdW50SWQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkFjY291bnRUcmFuc2FjdGlvbklkIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJJc0RlbGV0ZWQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkFjY291bnRUcmFuc2FjdGlvblR5cGVJZCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQWNjb3VudFBheW1lbnRNb2Rlc19EZXNjcmlwdGlvbiIgVHlwZT0iVW5rbm93biIgLz48L1ZpZXc+PFZpZXcgTmFtZT0iQWNjb3VudCI+PEZpZWxkIE5hbWU9IkFjY291bnRJRCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQWNjb3VudENvZGUiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkNvbXBhbnlOYW1lIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJUZWxlcGhvbmUiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IndlYnNpdGUiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkNyZWRpdExpbWl0IiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJUZW5hbnRJZCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQ3JlZGl0VGVybXMiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9Ik5hbWUiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkFkZHJlc3NMaW5lMSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQWRkcmVzc0xpbmUyIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJBZGRyZXNzTGluZTMiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkFjY291bnRBZGRyZXNzZXNfVGVsZXBob25lIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJUb3duIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJDb3VudHkiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IlBvc3RDb2RlIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJBZGRUeXBlQmlsbGluZyIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iU3RhcnRpbmdCYWxhbmNlIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJEdWVCYWxhbmNlIiBUeXBlPSJVbmtub3duIiAvPjwvVmlldz48UmVsYXRpb24gTWFzdGVyPSJBY2NvdW50IiBEZXRhaWw9IkFjY291bnRUcmFuc2FjdGlvbiI+PEtleUNvbHVtbiBNYXN0ZXI9IkFjY291bnRJRCIgRGV0YWlsPSJBY2NvdW50SWQiIC8+PC9SZWxhdGlvbj48L0RhdGFTZXQ+</value>
+    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9IkFjY291bnRUcmFuc2FjdGlvbiI+PEZpZWxkIE5hbWU9IkFtb3VudCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iRmluYWxCYWxhbmNlIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJOb3RlcyIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iRGF0ZUNyZWF0ZWQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkFjY291bnRJZCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQWNjb3VudFRyYW5zYWN0aW9uSWQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IklzRGVsZXRlZCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQWNjb3VudFRyYW5zYWN0aW9uVHlwZUlkIiBUeXBlPSJVbmtub3duIiAvPjwvVmlldz48VmlldyBOYW1lPSJBY2NvdW50Ij48RmllbGQgTmFtZT0iQWNjb3VudElEIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJBY2NvdW50Q29kZSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQ29tcGFueU5hbWUiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IlRlbGVwaG9uZSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0id2Vic2l0ZSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQ3JlZGl0TGltaXQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IlRlbmFudElkIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJDcmVkaXRUZXJtcyIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iTmFtZSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQWRkcmVzc0xpbmUxIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJBZGRyZXNzTGluZTIiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkFkZHJlc3NMaW5lMyIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQWNjb3VudEFkZHJlc3Nlc19UZWxlcGhvbmUiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IlRvd24iIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkNvdW50eSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iUG9zdENvZGUiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkFkZFR5cGVCaWxsaW5nIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJTdGFydGluZ0JhbGFuY2UiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkR1ZUJhbGFuY2UiIFR5cGU9IlVua25vd24iIC8+PC9WaWV3PjxSZWxhdGlvbiBNYXN0ZXI9IkFjY291bnQiIERldGFpbD0iQWNjb3VudFRyYW5zYWN0aW9uIj48S2V5Q29sdW1uIE1hc3Rlcj0iQWNjb3VudElEIiBEZXRhaWw9IkFjY291bnRJZCIgLz48L1JlbGF0aW9uPjwvRGF0YVNldD4=</value>
+  </data>
+  <data name="TransactioTypeName.Expression" xml:space="preserve">
+    <value>Iif([AccountTransactionTypeId]==1,'Invoiced', IIF([AccountTransactionTypeId]==2,'Paid', IIF([AccountTransactionTypeId]==3,
+'Refund', IIF([AccountTransactionTypeId]==4,'Credit Note', IIF([AccountTransactionTypeId]==5,'Discount','')))))</value>
   </data>
 </root>
