@@ -1019,6 +1019,10 @@
     <Compile Include="Migrations\202007262322244_Modiles-Table-Deleted-plus-delivery-collection-price-lists-added-in-tenant-locations.designer.cs">
       <DependentUpon>202007262322244_Modiles-Table-Deleted-plus-delivery-collection-price-lists-added-in-tenant-locations.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007281128311_added-Favicon-column-to-TenantWebsites-table.cs" />
+    <Compile Include="Migrations\202007281128311_added-Favicon-column-to-TenantWebsites-table.designer.cs">
+      <DependentUpon>202007281128311_added-Favicon-column-to-TenantWebsites-table.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2103,6 +2107,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007262322244_Modiles-Table-Deleted-plus-delivery-collection-price-lists-added-in-tenant-locations.resx">
       <DependentUpon>202007262322244_Modiles-Table-Deleted-plus-delivery-collection-price-lists-added-in-tenant-locations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007281128311_added-Favicon-column-to-TenantWebsites-table.resx">
+      <DependentUpon>202007281128311_added-Favicon-column-to-TenantWebsites-table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

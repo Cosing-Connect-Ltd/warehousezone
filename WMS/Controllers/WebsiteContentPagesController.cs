@@ -147,7 +147,7 @@ namespace WMS.Controllers
                 return RedirectToAction("Index",new { SiteId= contentPages.SiteID });
             }
             SiteName(websiteContentPages.SiteID);
-            ViewBag.SiteID = new SelectList(_tenantWebsiteService.GetAllValidTenantWebSite(CurrentTenantId), "SiteID", "SiteName", websiteContentPages.SiteID);
+            ViewBag.SiteID = new SelectList(_tenantWebsiteService.GetAllActiveTenantWebSites(CurrentTenantId), "SiteID", "SiteName", websiteContentPages.SiteID);
             return View(websiteContentPages);
         }
 

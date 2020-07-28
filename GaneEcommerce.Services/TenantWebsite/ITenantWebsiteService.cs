@@ -3,8 +3,6 @@ using Ganedata.Core.Entities.Domain.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Web;
 
 namespace Ganedata.Core.Services
 {
@@ -12,7 +10,8 @@ namespace Ganedata.Core.Services
     {
         // TenantWebsite//
         bool VerifyProductAgainstWebsite(int productId, int siteId);
-        IEnumerable<TenantWebsites> GetAllValidTenantWebSite(int TenantId);
+        IEnumerable<TenantWebsites> GetAllActiveTenantWebSites(int TenantId);
+        IEnumerable<TenantWebsites> GetAllValidTenantWebSites(int tenantId);
         WebsiteLayoutSettings GetWebsiteLayoutSettingsInfoBySiteId(int SiteId);
         TenantWebsites GetTenantWebSiteBySiteId(int SiteId);
         TenantWebsites CreateOrUpdateTenantWebsite(TenantWebsites tenantWebsites, int UserId, int TenantId);

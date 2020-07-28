@@ -7,7 +7,6 @@
     }
 
     if (e.callbackData) {
-
         $("#dvfiles").show();
         var fileData = e.callbackData.split('|');
         var Fileobj = { FileName: fileData };
@@ -19,7 +18,6 @@
         $("#dvfiles").append(result);
         $('.se-pre-con').hide();
     }
-
 }
 
 
@@ -54,11 +52,9 @@ function removeFile(filename) {
                         var result = $("#uploaderDownloadTemplate").tmpl(Fileobj);
                     $("#dvfiles").append(result);
                 });
-
             }
         }
     });
-
 }
 
 function downloadFile(filename) {

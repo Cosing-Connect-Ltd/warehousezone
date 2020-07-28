@@ -312,7 +312,7 @@ namespace WarehouseEcommerce.Controllers
 
             if (university)
             {
-                var data = _tenantWebsiteService.GetAllValidTenantWebSite(CurrentTenantId).FirstOrDefault(u => u.SiteID == CurrentTenantWebsite.SiteID);
+                var data = _tenantWebsiteService.GetAllActiveTenantWebSites(CurrentTenantId).FirstOrDefault(u => u.SiteID == CurrentTenantWebsite.SiteID);
                 return PartialView(data);
             }
 

@@ -19,30 +19,6 @@
 @{
     ViewBag.Title = "Edit Tenant Website";
 }
-<script type="text/javascript">
-    function onFileUploadComplete(s, e) {
-        if (e.callbackData) {
-            $("#dvfiles").show();
-            var fileData = e.callbackData.split('|');
-            var Fileobj = { FileName: fileData };
-            var result = $("#uploaderTenantDept").tmpl(Fileobj);
-            $("#dvfiles").append(result);
-            $('.se-pre-con').hide();
-            $("#FileLength").val('True');
-
-        }
-
-
-    }
-    function onFileUploadStart(s, e) {
-        if ($("#FileLength").val() == 'True') {
-            e.cancel = true;
-            alert("Only one file allow to be select");
-            return;
-        }
-    }
-
-</script>
 
 <h2><span> Tenant Website</span></h2>
 @Html.Hidden("tenantWebsite", true)
@@ -51,7 +27,6 @@
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.SiteID)
-    @Html.Hidden("hdPFiles", (List<string>)ViewBag.Files)
     <div class="col-md-12">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="col-md-6 p-0 pull-left mb-2">
@@ -216,30 +191,14 @@
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.Label("Logo", new { @class = "col-md-4" })
                 <div class="col-md-8">
-                    @Html.Partial("_Uploader")
-                    @Html.Hidden("FileLength", (bool?)ViewBag.FileLength)
-                    <br />
-                    <div id="dvfiles">
+                    @Html.Action("_FileUploader", new { name = "Logo", filePath = Model.Logo })
+                </div>
+            </div>
 
-                        <strong>Uploaded Files</strong>
-                        @foreach (var file in ViewBag.Files)
-                        {
-
-                            <table>
-                                <tr>
-                                    <td id="tdProductfileName">@file</td>
-                                    <td>
-                                        <p>&nbsp;</p>
-                                    </td>
-                                    <td><a class="LRemove" onclick="_RemoveLogoFile('@file')">Remove</a></td>
-                                    <td>
-                                        <p>&nbsp;</p>
-                                    </td>
-
-                                </tr>
-                            </table>
-                        }
-                    </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("Favicon", new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.Action("_FileUploader", new { name = "Favicon", filePath = Model.Favicon })
                 </div>
             </div>
 
@@ -271,14 +230,3 @@
         </div>
     </div>
 }
-
-
-
-<script id="uploaderTenantDept" type="text/x-jquery-tmpl">
-    <tr>
-        <td id="tdfileName">${FileName}</td>
-        <td><p>&nbsp;</p></td>
-        <td><a class="LRemove" onclick="_RemoveLogoFile('${FileName}')">Remove</a></td>
-
-    </tr>
-</script>

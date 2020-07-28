@@ -50,9 +50,14 @@ namespace Ganedata.Core.Services
                 u.ProductId == productId && u.SiteID == siteId && u.IsDeleted != true && u.IsActive);
         }
 
-        public IEnumerable<TenantWebsites> GetAllValidTenantWebSite(int TenantId)
+        public IEnumerable<TenantWebsites> GetAllActiveTenantWebSites(int tenantId)
         {
-            return _currentDbContext.TenantWebsites.Where(u => u.IsDeleted != true && u.TenantId == TenantId && u.IsActive == true);
+            return GetAllValidTenantWebSites(tenantId).Where(u => u.IsActive == true);
+        }
+
+        public IEnumerable<TenantWebsites> GetAllValidTenantWebSites(int tenantId)
+        {
+            return _currentDbContext.TenantWebsites.Where(u => u.IsDeleted != true && u.TenantId == tenantId);
         }
 
         public WebsiteLayoutSettings GetWebsiteLayoutSettingsInfoBySiteId(int SiteId)
@@ -78,7 +83,7 @@ namespace Ganedata.Core.Services
                 tenantWebsites.CreatedBy = website.CreatedBy;
                 tenantWebsites.DateCreated = website.DateCreated;
                 tenantWebsites.UpdateUpdatedInfo(UserId);
-                _currentDbContext.Entry(tenantWebsites).State = System.Data.Entity.EntityState.Modified;
+                _currentDbContext.Entry(tenantWebsites).State = EntityState.Modified;
             }
             _currentDbContext.SaveChanges();
             return tenantWebsites;
@@ -108,7 +113,7 @@ namespace Ganedata.Core.Services
             var website = _currentDbContext.TenantWebsites.Find(siteID);
             website.IsDeleted = true;
             website.UpdateUpdatedInfo(UserId);
-            _currentDbContext.Entry(website).State = System.Data.Entity.EntityState.Modified;
+            _currentDbContext.Entry(website).State = EntityState.Modified;
             _currentDbContext.SaveChanges();
             return true;
 

@@ -657,6 +657,7 @@ footer p {
     z-index: 999;
 }
 
+.dvfiles,
 #dvfiles {
     font-size: small;
     color: green;
@@ -665,6 +666,10 @@ footer p {
     padding-left: 10px;
     display: none;
     padding-top: 5px;
+}
+
+.dvfiles-vidible {
+    display: block;
 }
 
 #dvfilesHover {

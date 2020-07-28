@@ -31,6 +31,7 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Base File Path")]
         public string BaseFilePath { get; set; }
         public string Logo { get; set; }
+        public string Favicon { get; set; }
         [Display(Name = "Facebook Url")]
         [Url]
         public string FacebookUrl { get; set; }

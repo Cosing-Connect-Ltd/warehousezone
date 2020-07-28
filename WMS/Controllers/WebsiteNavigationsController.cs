@@ -392,7 +392,6 @@ namespace WMS.Controllers
 
         private string MoveFile(DevExpress.Web.UploadedFile file, string FileName, int ProductmanuId)
         {
-
             if (!Directory.Exists(Server.MapPath(UploadDirectory + ProductmanuId.ToString())))
                 Directory.CreateDirectory(Server.MapPath(UploadDirectory + ProductmanuId.ToString()));
 
@@ -404,7 +403,6 @@ namespace WMS.Controllers
 
             }
             return (UploadDirectory.Replace("~", "") + ProductmanuId.ToString() + @"/" + FileName);
-
         }
         protected override void Initialize(RequestContext requestContext)
         {

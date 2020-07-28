@@ -48,7 +48,7 @@ namespace WMS.Controllers
 
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
-            ViewBag.TenantWebsites = new SelectList(_tenantWebsiteService.GetAllValidTenantWebSite(CurrentTenantId), "SiteId", "SiteName");
+            ViewBag.TenantWebsites = new SelectList(_tenantWebsiteService.GetAllActiveTenantWebSites(CurrentTenantId), "SiteId", "SiteName");
             ViewBag.TenantLocations = new SelectList(_tenantLocationServices.GetAllTenantLocations(CurrentTenantId), "WarehouseId", "WarehouseName");
 
             var model = new ApiCredentials {
@@ -120,7 +120,7 @@ namespace WMS.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.TenantWebsites = new SelectList(_tenantWebsiteService.GetAllValidTenantWebSite(CurrentTenantId), "SiteId", "SiteName");
+            ViewBag.TenantWebsites = new SelectList(_tenantWebsiteService.GetAllActiveTenantWebSites(CurrentTenantId), "SiteId", "SiteName");
             ViewBag.TenantLocations = new SelectList(_tenantLocationServices.GetAllTenantLocations(CurrentTenantId), "WarehouseId", "WarehouseName");
 
             return View(apiCredential);

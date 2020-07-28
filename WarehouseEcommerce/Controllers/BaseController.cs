@@ -176,6 +176,7 @@ namespace WarehouseEcommerce.Controllers
             {
                 ViewBag.TenantWebsite = website;
                 ViewBag.BaseFilePath = website.BaseFilePath;
+                ViewBag.Favicon = website.BaseFilePath + website.Favicon;
                 ViewBag.BasePath = Request.Url.Scheme + "://" + website.HostName;
             }
             ViewBag.SiteId = CurrentTenantWebsite.SiteID;

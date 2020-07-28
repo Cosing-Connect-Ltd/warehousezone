@@ -19,29 +19,7 @@
 @{
     ViewBag.Title = "Add New Tenant Website";
 }
-<script type="text/javascript">
-    function onFileUploadComplete(s, e) {
-        if (e.callbackData) {
-            $("#dvfiles").show();
-            var fileData = e.callbackData.split('|');
-            var Fileobj = { FileName: fileData };
-            var result = $("#uploaderTenantDept").tmpl(Fileobj);
-            $("#dvfiles").append(result);
-            $('.se-pre-con').hide();
-            $("#FileLength").val('True');
 
-        }
-
-
-    }
-    function onFileUploadStart(s, e) {
-        if ($("#FileLength").val() == 'True') {
-            e.cancel = true;
-            alert("Only one file allow to be select");
-            return;
-        }
-    }
-</script>
 @Html.Hidden("tenantWebsite", true)
 <h2><span> Tenant Website</span></h2>
 @using (Html.BeginForm())
@@ -131,7 +109,7 @@
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.FeaturedTagId, htmlAttributes: new { @class = "control-label col-md-4" })
                 <div class="col-md-8">
-                    @Html.DropDownListFor(model => model.FeaturedTagId, ViewBag.ProductTag as SelectList, "Select Tag", htmlAttributes: new { @class = "form-control chosen-select" })
+                    @Html.DropDownListFor(model => model.FeaturedTagId, ViewBag.ProductTags as SelectList, "Select Tag", htmlAttributes: new { @class = "form-control chosen-select" })
                     @Html.ValidationMessageFor(model => model.FeaturedTagId, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -212,13 +190,14 @@
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.Label("Logo", new { @class = "col-md-4" })
                 <div class="col-md-8">
-                    @Html.Partial("_Uploader")
-                    @Html.Hidden("FileLength", (bool?)ViewBag.FileLength)
-                    <br />
-                    <div id="dvfiles">
+                    @Html.Action("_FileUploader", new { name = "Logo" })
+                </div>
+            </div>
 
-                        <strong>Uploaded Files</strong>
-                    </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("Favicon", new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.Action("_FileUploader", new { name = "Favicon" })
                 </div>
             </div>
 
@@ -250,12 +229,3 @@
         </div>
     </div>
 }
-<script id="uploaderTenantDept" type="text/x-jquery-tmpl">
-    <tr>
-        <td id="tdfileName">${FileName}</td>
-        <td><p>&nbsp;</p></td>
-        <td><a class="LRemove" onclick="_RemoveLogoFile('${FileName}')">Remove</a></td>
-
-    </tr>
-</script>
-

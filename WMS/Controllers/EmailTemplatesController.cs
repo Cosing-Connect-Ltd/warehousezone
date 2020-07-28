@@ -77,7 +77,7 @@ namespace WMS.Controllers
 
             }
 
-            ViewBag.Sites = new SelectList(_tenantWebsiteService.GetAllValidTenantWebSite(CurrentTenantId), "SiteID",
+            ViewBag.Sites = new SelectList(_tenantWebsiteService.GetAllActiveTenantWebSites(CurrentTenantId), "SiteID",
                 "SiteName");
             return View("Create", new TenantEmailTemplates());
         }
@@ -97,7 +97,7 @@ namespace WMS.Controllers
                 return RedirectToAction("Index");
 
             }
-            ViewBag.Sites = new SelectList(_tenantWebsiteService.GetAllValidTenantWebSite(CurrentTenantId), "SiteID",
+            ViewBag.Sites = new SelectList(_tenantWebsiteService.GetAllActiveTenantWebSites(CurrentTenantId), "SiteID",
                 "SiteName");
             return View(template);
 
@@ -121,7 +121,7 @@ namespace WMS.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.Sites = new SelectList(_tenantWebsiteService.GetAllValidTenantWebSite(CurrentTenantId), "SiteID",
+            ViewBag.Sites = new SelectList(_tenantWebsiteService.GetAllActiveTenantWebSites(CurrentTenantId), "SiteID",
                 "SiteName", template.SiteId);
             return View(template);
         }
@@ -142,7 +142,7 @@ namespace WMS.Controllers
 
                 return RedirectToAction("Index");
             }
-            ViewBag.Sites = new SelectList(_tenantWebsiteService.GetAllValidTenantWebSite(CurrentTenantId), "SiteID",
+            ViewBag.Sites = new SelectList(_tenantWebsiteService.GetAllActiveTenantWebSites(CurrentTenantId), "SiteID",
                 "SiteName");
             return View(emailtemp);
         }
