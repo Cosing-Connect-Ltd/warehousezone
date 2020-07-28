@@ -772,6 +772,12 @@ namespace Ganedata.Core.Services
             && (!excludeProforma || m.InventoryTransactionTypeId != InventoryTransactionTypeEnum.Proforma) && (m.IsDeleted != true || includeDeleted == true) && (!reqDate.HasValue || (m.DateUpdated ?? m.DateCreated) >= reqDate));
         }
 
+        public IQueryable<Order> GetAllDirectSalesOrdersByAccount(int tenantId, int accountId, DateTime? reqDate = null, bool includeDeleted = false)
+        {
+            return _currentDbContext.Order.Where(m => m.TenentId == tenantId && m.AccountID == accountId
+            && m.InventoryTransactionTypeId == InventoryTransactionTypeEnum.DirectSales && (m.IsDeleted != true || includeDeleted == true) && (!reqDate.HasValue || (m.DateUpdated ?? m.DateCreated) >= reqDate));
+        }
+
         public IEnumerable<OrderIdsWithStatus> GetAllOrderIdsWithStatus(int tenantId, int warehouseId = 0)
         {
             return _currentDbContext.Order.AsNoTracking().Where(m => m.TenentId == tenantId && (warehouseId == 0 || m.WarehouseId == warehouseId) && m.IsDeleted != true).Select(x => new OrderIdsWithStatus { OrderID = x.OrderID, OrderStatusID = x.OrderStatusID });

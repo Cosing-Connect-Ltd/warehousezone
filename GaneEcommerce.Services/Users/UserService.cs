@@ -37,10 +37,10 @@ namespace Ganedata.Core.Services
                         Email = p.UserEmail,
                         DateUpdated = p.DateUpdated,
                         IsActive = p.IsActive,
-                        Account=_currentDbContext.Account.FirstOrDefault(u=>u.AccountID==p.AccountId).CompanyName??"",
-                        UserGroup=p.AuthUserGroups.Name
+                        Account = _currentDbContext.Account.FirstOrDefault(u => u.AccountID == p.AccountId).CompanyName ?? "",
+                        UserGroup = p.AuthUserGroups.Name
 
-                        
+
 
                     }).ToList();
         }
@@ -176,11 +176,12 @@ namespace Ganedata.Core.Services
             return _currentDbContext.TenantWebsites.FirstOrDefault(u => u.SiteID == SiteId && u.IsDeleted != true).Warehouse;
         }
 
-        public UserLoginStatusResponseViewModel GetUserLoginStatus(UserLoginStatusViewModel loginStatus)
+        public UserLoginStatusResponseViewModel GetUserLoginStatus(UserLoginStatusViewModel loginStatus, bool? webUser = null)
         {
             UserLoginStatusResponseViewModel resp = new UserLoginStatusResponseViewModel();
 
-            var user = _currentDbContext.AuthUsers.AsNoTracking().Where(e => e.UserName.Equals(loginStatus.UserName, StringComparison.CurrentCultureIgnoreCase) && e.UserPassword == loginStatus.Md5Pass.Trim() && e.TenantId == loginStatus.TenantId && e.IsActive && e.IsDeleted != true).FirstOrDefault();
+            var user = _currentDbContext.AuthUsers.AsNoTracking().Where(e => e.UserName.Equals(loginStatus.UserName, StringComparison.CurrentCultureIgnoreCase) && e.UserPassword == loginStatus.Md5Pass.Trim()
+            && (e.WebUser == webUser) && e.TenantId == loginStatus.TenantId && e.IsActive && e.IsDeleted != true).FirstOrDefault();
             if (user != null)
             {
                 resp.UserId = user.UserId;
@@ -190,6 +191,7 @@ namespace Ganedata.Core.Services
 
             return resp;
         }
+
         public IEnumerable<AuthUserGroups> GetAllAuthUserGroups(int TenantId)
         {
             return _currentDbContext.AuthUserGroups.Where(u => u.TenantId == TenantId && u.IsDeleted != true);

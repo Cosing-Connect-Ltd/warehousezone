@@ -18,16 +18,18 @@ namespace WMS.Controllers.WebAPI
         private readonly ILookupServices _lookupService;
         private readonly IPurchaseOrderService _purchaseOrderService;
         private readonly IProductServices _productService;
+        private readonly IAccountServices _accountServices;
         private readonly IMapper _mapper;
 
         public ApiOrdersSyncController(ITerminalServices terminalServices, IPurchaseOrderService purchaseOrderService,
             ITenantLocationServices tenantLocationServices, IOrderService orderService,
-            IProductServices productServices, IUserService userService, ILookupServices lookupService, IProductServices productService, IMapper mapper) :
+            IProductServices productServices, IUserService userService, ILookupServices lookupService, IProductServices productService, IMapper mapper, IAccountServices accountServices) :
             base(terminalServices, tenantLocationServices, orderService, productServices, userService)
         {
             _lookupService = lookupService;
             _purchaseOrderService = purchaseOrderService;
             _productService = productService;
+            _accountServices = accountServices;
             _mapper = mapper;
         }
 
@@ -49,6 +51,40 @@ namespace WMS.Controllers.WebAPI
             var result = new OrdersSyncCollection();
 
             var allOrders = OrderService.GetAllOrders(terminal.TenantId, terminal.WarehouseId, true, reqDate, true).ToList();
+            var warehouses = _lookupService.GetAllWarehousesForTenant(terminal.TenantId);
+            var orders = new List<OrdersSync>();
+
+            foreach (var p in allOrders)
+            {
+                var order = new OrdersSync();
+                var mapped = _mapper.Map(p, order);
+                mapped.TransferWarehouseName = warehouses.FirstOrDefault(x => x.WarehouseId == mapped.TransferWarehouseId)?.WarehouseName;
+                orders.Add(mapped);
+            }
+
+            result.Count = orders.Count;
+            result.TerminalLogId = TerminalServices.CreateTerminalLog(reqDate, terminal.TenantId, orders.Count, terminal.TerminalId, TerminalLogTypeEnum.OrdersSync).TerminalLogId;
+            result.Orders = orders;
+            return Ok(_mapper.Map(result, new OrdersSyncCollection()));
+        }
+
+        // GET http://ganetest.qsrtime.net/api/sync/account-orders/{reqDate}/{serialNo}
+        // GET http://ganetest.qsrtime.net/api/sync/account-orders/2014-11-23/920013c000814
+        public IHttpActionResult GetOrdersByAccount(DateTime reqDate, string serialNo, int accountId)
+        {
+            serialNo = serialNo.Trim().ToLower();
+
+            var terminal = TerminalServices.GetTerminalBySerial(serialNo);
+            var account = _accountServices.GetAccountsById(accountId);
+
+            if (terminal == null) { return Unauthorized(); }
+            if (account == null) { return NotFound(); }
+
+            reqDate = TerminalServices.GetTerminalSyncDate(reqDate, terminal.TenantId);
+
+            var result = new OrdersSyncCollection();
+
+            var allOrders = OrderService.GetAllDirectSalesOrdersByAccount(terminal.TenantId, accountId, reqDate, true);
             var warehouses = _lookupService.GetAllWarehousesForTenant(terminal.TenantId);
             var orders = new List<OrdersSync>();
 

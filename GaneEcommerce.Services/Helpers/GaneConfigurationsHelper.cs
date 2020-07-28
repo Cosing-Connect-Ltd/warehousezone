@@ -32,7 +32,6 @@ namespace Ganedata.Core.Services
         private readonly ITerminalServices _terminalServices;
         private readonly IMapper _mapper;
 
-
         public GaneConfigurationsHelper(IEmailServices emailServices, IAccountServices accountServices, IPropertyService propertyService, ITerminalServices terminalServices,
             IEmployeeServices employeeServices, IOrderService orderService, IStockTakeApiService stockTakeService, ITenantsServices tenantServices, IMapper mapper)
         {
@@ -47,7 +46,6 @@ namespace Ganedata.Core.Services
             _mapper = mapper;
 
         }
-
 
         public Boolean ApiErrorNotification(string body, int tenantId)
         {
@@ -161,8 +159,7 @@ namespace Ganedata.Core.Services
             return recipientEmails;
         }
 
-
-        public async Task<string> DispatchMailNotification(TenantEmailNotificationQueue notification, int tenantId, WorksOrderNotificationTypeEnum worksOrderNotificationType = WorksOrderNotificationTypeEnum.WorksOrderLogTemplate, bool sendImmediately = true, int? accountId = null, int? UserId = null, string userEmail = null, string confrmationLink = null,int?siteId=null)
+        public async Task<string> DispatchMailNotification(TenantEmailNotificationQueue notification, int tenantId, WorksOrderNotificationTypeEnum worksOrderNotificationType = WorksOrderNotificationTypeEnum.WorksOrderLogTemplate, bool sendImmediately = true, int? accountId = null, int? UserId = null, string userEmail = null, string confrmationLink = null, int? siteId = null)
         {
 
             if (!sendImmediately) return "Email notification has been scheduled.";
@@ -175,7 +172,7 @@ namespace Ganedata.Core.Services
 
             try
             {
-                var tenantConfig = _tenantServices.GetTenantConfigById(tenantId,siteId);
+                var tenantConfig = _tenantServices.GetTenantConfigById(tenantId, siteId);
 
                 mailmsg = new MailMessage();
                 mailmsg.ReplyToList.Add(new MailAddress(tenantConfig.DefaultReplyToAddress));
@@ -433,7 +430,6 @@ namespace Ganedata.Core.Services
 
         }
 
-
         public async Task<string> SendStandardMailProductGroup(int tenantId, string subject, int accountId)
         {
             var mailmsg = new MailMessage();
@@ -578,18 +574,18 @@ namespace Ganedata.Core.Services
         {
 
 
-            var emailconfig = _emailServices.GetEmailConfigurationsById(order?.TenentId ?? TenantId,siteId);
+            var emailconfig = _emailServices.GetEmailConfigurationsById(order?.TenentId ?? TenantId, siteId);
             if (emailconfig == null)
             {
                 return "Could not send email, no email configuration found";
             }
 
-            var suitableTemplate = _emailServices.GetSuitableEmailTemplate(worksOrderNotificationType, (order?.TenentId ?? TenantId),siteId);
+            var suitableTemplate = _emailServices.GetSuitableEmailTemplate(worksOrderNotificationType, (order?.TenentId ?? TenantId), siteId);
             if (suitableTemplate == null)
             {
                 return "Could not send email, no suitable template found";
             }
-            
+
 
             var dispatchTime = DateTime.UtcNow.Date;
             int hour = 18;
@@ -607,7 +603,7 @@ namespace Ganedata.Core.Services
                 worksOrderNotificationType, appointment, emailconfig, dispatchTime, suitableTemplate.TemplateId);
             if (accountId.HasValue)
             {
-                var result = await DispatchMailNotification(notificationQueue, (order?.TenentId ?? TenantId), worksOrderNotificationType, sendImmediately, ((accountId.HasValue) ? accountId : null), userId, UserEmail, confirmationLink,siteId);
+                var result = await DispatchMailNotification(notificationQueue, (order?.TenentId ?? TenantId), worksOrderNotificationType, sendImmediately, ((accountId.HasValue) ? accountId : null), userId, UserEmail, confirmationLink, siteId);
                 return result;
             }
             else
@@ -697,7 +693,6 @@ namespace Ganedata.Core.Services
 
             return "Success";
         }
-
 
         public async Task<string> SendRegistrationEmail(int tenantId, WorksOrderNotificationTypeEnum worksOrderNotificationType, string subject, string ConfirmatonLink, string recipients, int? accountId, bool salesRequiresAuthorisation = true, int userID = 0)
         {
@@ -792,8 +787,6 @@ namespace Ganedata.Core.Services
             return "Success";
 
         }
-
-
 
         private string GetTranslatedString(string htmlContent, List<TenantEmailTemplateVariable> templateVariables, TenantEmailNotificationQueue notification, int? accountID, int? userId = null, string confirmationLink = null)
         {
@@ -1117,7 +1110,7 @@ namespace Ganedata.Core.Services
                         variableValue = confirmationLink;
                         break;
                     case MailMergeVariableEnum.TransactionReferenceNumber:
-                        variableValue = _accountServices.GetTransactionNumberByOrderId(order?.OrderID??0);
+                        variableValue = _accountServices.GetTransactionNumberByOrderId(order?.OrderID ?? 0);
                         break;
                     default:
                         variableValue = string.Empty;
@@ -1131,8 +1124,6 @@ namespace Ganedata.Core.Services
             }
             return variableValue;
         }
-
-
 
         public string TranslateEmailTemplateForConfirmationEmail(int tenantId, WorksOrderNotificationTypeEnum worksOrderNotificationType = WorksOrderNotificationTypeEnum.WorksOrderLogTemplate, int? accountId = null, int? UserId = 0)
         {
@@ -1160,7 +1151,6 @@ namespace Ganedata.Core.Services
 
             return string.Empty;
         }
-
 
         // po close overload method for Web Api calls
         public bool IsPOComplete(int? POID, int UserId, int warehouseId)
@@ -1191,7 +1181,6 @@ namespace Ganedata.Core.Services
             return status;
 
         }
-
 
         public bool SendMail(string subject, string body, int tenantId)
         {
@@ -1276,7 +1265,6 @@ namespace Ganedata.Core.Services
             return Status;
         }
 
-
         public string GetStStatusString(int StatusCode)
         {
             string Status = "";
@@ -1302,7 +1290,6 @@ namespace Ganedata.Core.Services
             return Status;
         }
 
-
         public string GetDeviceLastIp(string serial)
         {
             TerminalsLog device = _terminalServices.GetTerminalLogBySerial(serial).OrderByDescending(x => x.DateCreated).FirstOrDefault();
@@ -1326,7 +1313,6 @@ namespace Ganedata.Core.Services
 
             return !(diff > 3);
         }
-
 
         public string GetUserName(int? userid = 0)
         {
@@ -1365,9 +1351,25 @@ namespace Ganedata.Core.Services
             }
         }
 
-
-
-
+        public async Task<bool> SendSmsBroadcast(string user, string password, string to, string from, string reference, string message)
+        {
+            WebClient client = new WebClient();
+            client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            client.QueryString.Add("username", user);
+            client.QueryString.Add("password", password);
+            client.QueryString.Add("to", to);
+            client.QueryString.Add("from", from);
+            client.QueryString.Add("message", message);
+            client.QueryString.Add("ref", reference);
+            client.QueryString.Add("maxsplit", "1");
+            Uri baseurl = new Uri("https://www.smsbroadcast.co.uk/api-adv.php");
+            Stream data = client.OpenRead(baseurl);
+            StreamReader reader = new StreamReader(data);
+            string s = await reader.ReadToEndAsync();
+            data.Close();
+            reader.Close();
+            return true;
+        }
 
     }
 
@@ -1381,7 +1383,6 @@ namespace Ganedata.Core.Services
         public int Width { get; set; } = 690;
         public string HtmlContent { get; set; }
     }
-
 
     public static class LinqHelpers
     {

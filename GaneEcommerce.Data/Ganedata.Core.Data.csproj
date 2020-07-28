@@ -1023,6 +1023,10 @@
     <Compile Include="Migrations\202007281128311_added-Favicon-column-to-TenantWebsites-table.designer.cs">
       <DependentUpon>202007281128311_added-Favicon-column-to-TenantWebsites-table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007282309316_user-verification-properties-added.cs" />
+    <Compile Include="Migrations\202007282309316_user-verification-properties-added.designer.cs">
+      <DependentUpon>202007282309316_user-verification-properties-added.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2110,6 +2114,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007281128311_added-Favicon-column-to-TenantWebsites-table.resx">
       <DependentUpon>202007281128311_added-Favicon-column-to-TenantWebsites-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007282309316_user-verification-properties-added.resx">
+      <DependentUpon>202007282309316_user-verification-properties-added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

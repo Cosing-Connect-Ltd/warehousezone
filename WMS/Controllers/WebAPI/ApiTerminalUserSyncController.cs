@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using Ganedata.Core.Entities.Enums;
+using System.Threading.Tasks;
 
 namespace WMS.Controllers.WebAPI
 {
@@ -15,13 +16,16 @@ namespace WMS.Controllers.WebAPI
         private readonly IActivityServices _activityServices;
         private readonly ITenantLocationServices _tenantLocationServices;
         private readonly IUserService _userService;
+        private readonly IGaneConfigurationsHelper _configurationsHelper;
 
-        public ApiTerminalUserSyncController(ITerminalServices terminalServices, ITenantLocationServices tenantLocationServices, IOrderService orderService, IProductServices productServices, IUserService userService, IActivityServices activityServices)
+        public ApiTerminalUserSyncController(ITerminalServices terminalServices, ITenantLocationServices tenantLocationServices, IOrderService orderService,
+            IProductServices productServices, IUserService userService, IActivityServices activityServices, IGaneConfigurationsHelper configurationsHelper)
             : base(terminalServices, tenantLocationServices, orderService, productServices, userService)
         {
             _activityServices = activityServices;
             _tenantLocationServices = tenantLocationServices;
             _userService = userService;
+            _configurationsHelper = configurationsHelper;
         }
 
         //GET http://localhost:8005/api/sync/users/{reqDate}/{serialNo}
@@ -232,6 +236,27 @@ namespace WMS.Controllers.WebAPI
             {
                 return Unauthorized();
             }
+        }
+
+        [HttpPost]
+        public IHttpActionResult GetWebUserLoginStatus(UserLoginStatusViewModel loginStatus)
+        {
+            var resp = _userService.GetUserLoginStatus(loginStatus, true);
+
+            if (resp.Success == true)
+            {
+                return Ok(resp);
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
+
+        public async Task<IHttpActionResult> SendSmsBroadcastByUser(int userId)
+        {
+            await _configurationsHelper.SendSmsBroadcast("Ganedata01", "92DqXS3tfh", "07455226607", "GANE DATA", "0101", "Testing");
+            return Ok(true);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Ganedata.Core.Services
         IEnumerable<ApiCredentials> GetApiCredentials(int TenantId, int WarehouseId, ApiTypes SiteType);
         Tenant GetTenantBySiteId(int SiteId);
         TenantLocations GetWarehouseBySiteId(int SiteId);
-        UserLoginStatusResponseViewModel GetUserLoginStatus(UserLoginStatusViewModel loginStatus);
+        UserLoginStatusResponseViewModel GetUserLoginStatus(UserLoginStatusViewModel loginStatus, bool? webUser = null);
         bool CreateOrUpdateAuthUserGroup(AuthUserGroups authUserGroups, int UserId, int TenantId);
         AuthUserGroups GetUserGroupsById(int groupId);
         AuthUserGroups RemoveUserGroupsById(int groupId, int UserId);

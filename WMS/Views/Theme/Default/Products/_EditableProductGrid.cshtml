@@ -118,6 +118,7 @@
             {
                 c.FieldName = "TagIds";
                 c.Caption = "Tags";
+                c.Width = System.Web.UI.WebControls.Unit.Percentage(15);
                 c.Settings.AllowAutoFilter = DefaultBoolean.False;
                 c.Settings.AllowSort = DefaultBoolean.False;
                 c.ColumnType = MVCxGridViewColumnType.TokenBox;
@@ -135,8 +136,8 @@
                     tokenBoxSettings.AllowCustomTokens = false;
                     tokenBoxSettings.IncrementalFilteringMode = IncrementalFilteringMode.Contains;
                     tokenBoxSettings.DataSource = ViewBag.Tags;
-                    //tokenBoxSettings.ItemValueType = typeof(Int32);
-                    tokenBoxSettings.Width = 300;
+            //tokenBoxSettings.ItemValueType = typeof(Int32);
+            tokenBoxSettings.Width = 300;
                 }
             });
 
@@ -193,7 +194,7 @@
                 editor.ValidationSettings.Display = Display.None;
             };
 
-            settings.ClientSideEvents.BeginCallback ="function(s,e){ OnBeginEditGridCallback(s, e); }";
+            settings.ClientSideEvents.BeginCallback = "function(s,e){ OnBeginEditGridCallback(s, e); }";
             settings.ClientSideEvents.FocusedCellChanging = "OnEditGridFocusChanged";
             settings.ClientSideEvents.EndCallback = "OnEndEditGridCallback";
             settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";

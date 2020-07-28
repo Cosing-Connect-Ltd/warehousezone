@@ -55,14 +55,12 @@ namespace WMS.Controllers
 
             return Ok(result);
         }
+
         //WEB API URL : api/warehouse-emails/send-notifications
         public async Task<IHttpActionResult> SendOutEmailNotificationsFromQueue(int tenantId)
         {
             await _configurationsHelper.DispatchTenantEmailNotificationQueues(tenantId);
-
             return Ok(true);
         }
-
-
     }
 }

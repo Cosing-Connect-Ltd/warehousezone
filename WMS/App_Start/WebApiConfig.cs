@@ -30,6 +30,7 @@ namespace WMS
             config.Routes.MapHttpRoute("StockTakesSync", "api/sync/stocktakes/{reqDate}/{serialNo}", new { controller = "ApiStockTakeSync", action = "GetStockTakes", reqDate = string.Empty, serialNo = string.Empty });
             config.Routes.MapHttpRoute("StockTakesStatusSync", "api/sync/stocktake-status/{serialNo}/{stocktakeid}/{statusId}", new { controller = "ApiStockTakeSync", action = "UpdateStocktakeStatus", serialNo = string.Empty, stocktakeid = string.Empty, statusId = string.Empty });
             config.Routes.MapHttpRoute("OrdersSync", "api/sync/orders/{reqDate}/{serialNo}", new { controller = "ApiOrdersSync", action = "GetOrders", reqDate = string.Empty, serialNo = string.Empty });
+            config.Routes.MapHttpRoute("AccountOrdersSync", "api/sync/account-orders/{reqDate}/{serialNo}/{accountId}", new { controller = "ApiOrdersSync", action = "GetOrdersByAccount", reqDate = string.Empty, serialNo = string.Empty, accountId = string.Empty });
             config.Routes.MapHttpRoute("OrderStatusSync", "api/sync/order-status/{serialNo}/{orderid}/{statusId}", new { controller = "ApiOrdersSync", action = "UpdateOrderStatus", serialNo = string.Empty, orderid = string.Empty, statusId = string.Empty });
             config.Routes.MapHttpRoute("OrderProcessesSync", "api/sync/order-processes/{reqDate}/{serialNo}", new { controller = "ApiOrderProcessesSync", action = "GetOrderProcesses", reqDate = string.Empty, serialNo = string.Empty });
             config.Routes.MapHttpRoute("OrderProcessesDetailsSync", "api/sync/post-order-processes", new { controller = "ApiOrderProcessesSync", action = "PostOrderProcesses", serialNo = string.Empty, stocktakeid = string.Empty, statusId = string.Empty });
@@ -83,8 +84,10 @@ namespace WMS
             config.Routes.MapHttpRoute("ImportCipherLabProductData", "api/sync/Cipher-Lab-Product-Import/{TenantId}", new { controller = "ApiDataImport", action = "GetCipherLabProductDataImport", TenantId = string.Empty });
             config.Routes.MapHttpRoute("IpmortDPDServices", "api/sync/Get-DPD-Services", new { controller = "ApiDataImport", action = "GetDPDServices" });
             config.Routes.MapHttpRoute("PostUserLoginStatus", "api/sync/get-login-status", new { controller = "ApiTerminalUserSync", action = "GetUserLoginStatus" });
+            config.Routes.MapHttpRoute("PostWebUserLoginStatus", "api/sync/get-web-login-status", new { controller = "ApiTerminalUserSync", action = "GetWebUserLoginStatus" });
             config.Routes.MapHttpRoute("GetPalletDispatchLabel", "api/sync/get-dispatch-for-label", new { controller = "ApiPalletsSync", action = "GetPalletDispatchLabelPrint", tenantId = string.Empty, userId = string.Empty });
             config.Routes.MapHttpRoute("GetPalletDispatchLabelStatus", "api/sync/update-dispatch-for-label", new { controller = "ApiPalletsSync", action = "UpdatePalletDispatchLabelPrintStatus", shipmentId = string.Empty });
+            config.Routes.MapHttpRoute("SendSmsBroadcast", "api/sync/send-sms-broadcast", new { controller = "ApiWarehouseSync", action = "SendSmsBroadcast" });
 
             config.Routes.MapHttpRoute("SendNotificationForAbandonedCarts", "api/Websites/SendNotificationForAbandonedCarts", new { controller = "ApiWebsites", action = "SendNotificationForAbandonedCarts" });
             config.Routes.MapHttpRoute("SendProductAvailabilityNotifications", "api/Websites/SendProductAvailabilityNotifications", new { controller = "ApiWebsites", action = "SendProductAvailabilityNotifications" });

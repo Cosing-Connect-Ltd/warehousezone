@@ -54,8 +54,15 @@ namespace Ganedata.Core.Entities.Domain
 
     public class UserLoginStatusResponseViewModel
     {
-        public bool Success { get; set; }
-        public string UserName { get; set; }
         public int UserId { get; set; }
+        public string UserName { get; set; }
+        public bool VerificationRequired { get; set; }
+        public bool EmailVerified { get; set; }
+        public bool MobileVerified { get; set; }
+        public string UserFirstName { get; set; }
+        public string UserLastName { get; set; }
+        public string UserEmail { get; set; }
+        public string UserMobileNumber { get; set; }
+        public bool Success { get; set; }
     }
 }

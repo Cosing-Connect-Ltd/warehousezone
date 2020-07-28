@@ -26,8 +26,6 @@ namespace WarehouseEcommerce.Controllers
         private readonly IActivityServices _activityServices;
         private readonly ITenantsServices _tenantServices;
         private readonly IProductLookupService _productlookupServices;
-        private readonly ILookupServices _lookupServices;
-        private readonly ICoreOrderService _orderService;
         private readonly IMapper _mapper;
         private readonly IGaneConfigurationsHelper _configurationsHelper;
         private readonly ITenantLocationServices _tenantLocationServices;
@@ -56,8 +54,6 @@ namespace WarehouseEcommerce.Controllers
             _activityServices = activityServices;
             _tenantServices = tenantServices;
             _productlookupServices = productlookupServices;
-            _lookupServices = lookupServices;
-            _orderService = orderService;
             _mapper = mapper;
             _configurationsHelper = configurationsHelper;
             _tenantLocationServices = tenantLocationServices;
@@ -453,7 +449,8 @@ namespace WarehouseEcommerce.Controllers
             model.AccountAddressId = checkoutViewModel.AccountAddressId;
             model.StepsHistory = checkoutViewModel.StepsHistory != null && checkoutViewModel.StepsHistory.Count > 0 ? checkoutViewModel.StepsHistory : model.StepsHistory;
 
-            if (model.DeliveryMethodId != null) {
+            if (model.DeliveryMethodId != null)
+            {
                 model.IsAddressSameForBilling = model.IsAddressSameForBilling ?? model.DeliveryMethodId == (int)DeliveryMethod.ToShipmentAddress;
             }
 

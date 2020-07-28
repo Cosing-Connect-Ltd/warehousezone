@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Web.Mvc;
-using DevExpress.XtraPrinting.Native;
-using Ganedata.Core.Data;
-using WMS.Helpers;
-using Ganedata.Core.Entities.Domain;
-using Ganedata.Core.Services;
-using Ganedata.Core.Entities.Enums;
+﻿using Ganedata.Core.Services;
 using System.Web.Http;
 
 namespace WMS.Controllers

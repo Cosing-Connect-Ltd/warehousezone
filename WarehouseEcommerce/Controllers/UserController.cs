@@ -18,7 +18,6 @@ namespace WarehouseEcommerce.Controllers
         private readonly IUserService _userService;
         private readonly IActivityServices _activityServices;
         private readonly ITenantsServices _tenantServices;
-        private readonly IAccountServices _accountServices;
         private readonly IGaneConfigurationsHelper _configurationsHelper;
         private readonly ITenantWebsiteService _tenantWebsiteService;
         string baseUrl = "";
@@ -28,7 +27,6 @@ namespace WarehouseEcommerce.Controllers
             _userService = userService;
             _activityServices = activityServices;
             _tenantServices = tenantServices;
-            _accountServices = accountServices;
             _configurationsHelper = configurationsHelper;
             _tenantWebsiteService = tenantWebsiteService;
 

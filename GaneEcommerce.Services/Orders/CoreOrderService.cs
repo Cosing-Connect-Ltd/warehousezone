@@ -175,6 +175,11 @@ namespace Ganedata.Core.Services
             return OrderService.GetAllOrders(tenantId, warehouseId, excludeProforma, reqDate, includeDeleted);
         }
 
+        public IQueryable<Order> GetAllDirectSalesOrdersByAccount(int tenantId, int accountId, DateTime? reqDate = null, bool includeDeleted = false)
+        {
+            return OrderService.GetAllDirectSalesOrdersByAccount(tenantId, accountId, reqDate, includeDeleted);
+        }
+
         public IEnumerable<OrderIdsWithStatus> GetAllOrderIdsWithStatus(int tenantId, int warehouseId)
         {
             return OrderService.GetAllOrderIdsWithStatus(tenantId, warehouseId);
