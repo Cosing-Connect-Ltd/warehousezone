@@ -41,44 +41,6 @@ function changeUrlParameterValue(currentStep) {
     window.history.pushState("object or string", "", uriData);
 }
 
-function SearchPostCode() {
-    var searchString = $(".text-search-postcode").val();
-
-    $.ajax({
-        url: basePath + '/Orders/GetApiAddressAsync',
-        method: 'post',
-        data: { postCode: searchString },
-        dataType: 'json',
-        success: function (data) {
-
-            if (data.length > 1) {
-                $('#selectAddresss').show();
-                $('#selectApiAddress').empty();
-                $('#selectApiAddress').append('<option>Select Address</option>');
-                $.each(data, function (i, item) {
-                    $('#selectApiAddress').append($('<option></option>').val(data[i]).html(data[i]));
-                });
-            }
-            else {
-                $.each(data, function (i, item) {
-                    var result = $.parseJSON(data[i]);
-                    if (result !== null) {
-                        $.dialog({
-                            title: '',
-                            content: 'Invalid postcode'
-                        });
-                        
-                    }
-                });
-            }
-        },
-        error: function (err) {
-            
-            alert(err);
-        }
-    });
-}
-
 function findNearCollectionPoints() {
     var searchString = $(".text-target-postcode").val();
 
@@ -88,22 +50,29 @@ function findNearCollectionPoints() {
         data: { postCode: searchString },
         dataType: 'json',
         success: function (data) {
-            $('.collection-points').empty();
+            if (data == "InvalidPostCode") {
+                $.dialog({
+                    title: '',
+                    content: 'Invalid postcode'
+                });
+            } else {
+                $('.collection-points').empty();
 
-            $.each(data, function (i, item) {
-                var element = $('<div class="col-lg-6">' +
-                    '<div class="billigAddrWrap collection-address-div" onclick="selectCollectionPointId(' + item.WarehouseId + ", '" + item.WarehouseName + "', '" + item.PostalCode + "', '" + item.Address + "', " + 'this)">' +
-                    '<p class="address">' +
-                    item.WarehouseName + '<br />' +
-                    item.PostalCode + '<br />' +
-                    item.Address + '<br />' +
-                    item.City + '<br />' +
-                    item.CountryName + '<br />' +
-                    '</p>' +
-                    '<p class="miles">' + item.Distance.Distance.Text + '</p>' +
-                    '</div></div>');
-                $('.collection-points').append(element);
-            });
+                $.each(data, function (i, item) {
+                    var element = $('<div class="col-lg-6">' +
+                        '<div class="billigAddrWrap collection-address-div" onclick="selectCollectionPointId(' + item.WarehouseId + ", '" + item.WarehouseName + "', '" + item.PostalCode + "', '" + item.Address + "', " + 'this)">' +
+                        '<p class="address">' +
+                        item.WarehouseName + '<br />' +
+                        item.PostalCode + '<br />' +
+                        item.Address + '<br />' +
+                        item.City + '<br />' +
+                        item.CountryName + '<br />' +
+                        '</p>' +
+                        '<p class="miles">' + item.Distance.Distance.Text + '</p>' +
+                        '</div></div>');
+                    $('.collection-points').append(element);
+                });
+            }
         },
         error: function (err) {
             alert(err);

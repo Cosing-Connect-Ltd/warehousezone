@@ -631,7 +631,7 @@ namespace Ganedata.Core.Data.Helpers
             }
         }
 
-        private bool IsValidUkPostcode(string postcodeString)
+        public bool IsValidUkPostcode(string postcodeString)
         {
             if (string.IsNullOrEmpty(postcodeString)) return true;
 
@@ -3477,14 +3477,19 @@ namespace Ganedata.Core.Data.Helpers
         private string GetEncodeUserNameBas64(string userName, string Password)
         {
             string singleString = userName + ":" + Password;
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(singleString);
-            return System.Convert.ToBase64String(plainTextBytes);
+            var plainTextBytes = Encoding.UTF8.GetBytes(singleString);
+            return Convert.ToBase64String(plainTextBytes);
         }
 
         public async Task<List<string>> GetAddressByPostCodeAsync(string postCode)
         {
-            HttpResponseMessage response = null;
             List<string> errorString = new List<string>();
+
+            if (!IsValidUkPostcode(postCode))
+            {
+                errorString.Add("Invalid PostCode!");
+                return errorString;
+            }
 
             try
             {
@@ -3502,7 +3507,7 @@ namespace Ganedata.Core.Data.Helpers
                     client.BaseAddress = new Uri(apiUrl);
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-                    response = await client.GetAsync(new Uri(apiUrl));
+                    var response = await client.GetAsync(new Uri(apiUrl));
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
                         model = JsonConvert.DeserializeObject<PostCodeAddressViewModel>(response.Content.ReadAsStringAsync().Result);

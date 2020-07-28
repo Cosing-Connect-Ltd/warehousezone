@@ -184,6 +184,10 @@ namespace WarehouseEcommerce.Controllers
 
             var dataImportFactory = new DataImportFactory();
 
+            if (!dataImportFactory.IsValidUkPostcode(postCode)) {
+                return Json("InvalidPostCode", JsonRequestBehavior.AllowGet);
+            }
+
             var distances = await dataImportFactory.GetDistancesFromPostcode(postCode, warehouses.Select(w => w.PostalCode).ToList());
 
             if (distances.Status != "OK")
@@ -213,6 +217,18 @@ namespace WarehouseEcommerce.Controllers
                                                                 .ToList();
 
             return Json(warehousesByDistance, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetDeliveryAvailabilityStatus(string postCode)
+        {
+            var dataImportFactory = new DataImportFactory();
+
+            if (!dataImportFactory.IsValidUkPostcode(postCode))
+            {
+                return Json("InvalidPostCode", JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(true, JsonRequestBehavior.AllowGet);
         }
 
         public PartialViewResult _PaymentAndShipmentMethods()
@@ -321,12 +337,6 @@ namespace WarehouseEcommerce.Controllers
             return View(checkOutModel);
         }
 
-
-
-
-       
-
-
         public async Task<ActionResult> SagePay()
         {
             SagepayTokenResponse resp = await GetSagePayToken();
@@ -336,7 +346,6 @@ namespace WarehouseEcommerce.Controllers
                 : Session["CheckoutViewModel"] as CheckoutViewModel;
             return View(checkOutModel);
         }
-
 
         public async Task<ActionResult> ConfirmPayment()
         {

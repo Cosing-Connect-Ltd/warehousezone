@@ -45,7 +45,6 @@
 }).GetHtml()
 
 @Html.Hidden(Model.BindingName + "HasUploadedFile", Model.UploadedFiles != null && Model.UploadedFiles.Count > 0)
-<br />
 <div id="dv@(Model.BindingName)Files" class="dvfiles @(Model.UploadedFiles != null && Model.UploadedFiles.Count > 0 ? "dvfiles-vidible" : "")">
     <strong>Uploaded Files</strong>
     <table>
@@ -85,7 +84,7 @@
         <td class="FileRow"><a class="LRemove" onclick="download@(Model.BindingName)File('${FileName}')" download>Download</a></td>
     </tr>
 </script>
-
+<br />
 <script type="text/javascript">
     function on@(Model.BindingName)FileUploadComplete(s, e) {
         if (e.callbackData) {

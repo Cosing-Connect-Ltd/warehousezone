@@ -47,7 +47,10 @@ function SearchPostCode() {
             }
             else {
                 $.each(data, function (i, item) {
-                    alert(data[i]);
+                    $.dialog({
+                        title: '',
+                        content: data[i]
+                    });
                 });
             }
         },
