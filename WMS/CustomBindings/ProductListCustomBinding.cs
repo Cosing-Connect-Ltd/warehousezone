@@ -16,7 +16,7 @@ namespace WMS.CustomBindings
     public class ProductListCustomBinding
     {
 
-        private static IQueryable<object> GetProductDataset(int tenantId, int warehouseId, ProductKitTypeEnum? KitType = null, int? productId = null)
+        private static IQueryable<ProductMasterViewModel> GetProductDataset(int tenantId, int warehouseId, ProductKitTypeEnum? KitType = null, int? productId = null)
         {
             var productServices = DependencyResolver.Current.GetService<IProductServices>();
             var transactions = productServices.GetAllProductMasterDetail(tenantId, warehouseId, KitType, productId);
@@ -57,8 +57,9 @@ namespace WMS.CustomBindings
             transactions = transactions.Skip(e.StartDataRowIndex).Take(e.DataRowCount);
 
 
-
-            e.Data = transactions.ToList();
+            var data = transactions.ToList();
+            data.ForEach(u=>u.TagIds = string.Join(",",u.ProductTagMaps.ToList()));
+            e.Data =data;
         }
 
         public static void ProductGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId, ProductKitTypeEnum? KitType = null, int? productId = null)

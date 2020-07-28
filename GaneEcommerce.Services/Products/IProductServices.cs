@@ -124,7 +124,7 @@ namespace Ganedata.Core.Services
 
         IEnumerable<ProductSerialis> GetAllProductSerialbyOrderProcessDetailId(int orderprocessdetailId, int tenantId, bool? type);
 
-        ProductMaster SaveEditProduct(ProductMaster productMaster, int UserId, int TenantId);
+        ProductMaster SaveEditProduct(ProductMasterViewModel productMaster, int UserId, int TenantId);
         bool GetInventroyTransactionCountbyOrderProcessDetailId(int orderprocessdetailId, int tenantId);
         IEnumerable<ProductMaster> GetAllProductProcessByPallet(int tenantId);
         string CreatePalletTracking(PalletTracking palletTracking, int NoOfLabels);

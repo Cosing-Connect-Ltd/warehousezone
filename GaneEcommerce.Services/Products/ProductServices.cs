@@ -199,7 +199,7 @@ namespace Ganedata.Core.Services
                                   .ToList();
         }
 
-        public IEnumerable<ProductMaster> GetAllProductInKitsByProductIds(List<int> productId,bool kitProducts=false)
+        public IEnumerable<ProductMaster> GetAllProductInKitsByProductIds(List<int> productId, bool kitProducts = false)
         {
             if (!kitProducts)
             {
@@ -1054,27 +1054,87 @@ namespace Ganedata.Core.Services
             return map;
         }
 
-        public ProductMaster SaveEditProduct(ProductMaster productMaster, int UserId, int TenantId)
+        public ProductMaster SaveEditProduct(ProductMasterViewModel productMaster, int userId, int tenantId)
         {
-            if (productMaster.ProductId > 0)
+
+            var product = _currentDbContext.ProductMaster.FirstOrDefault(u => u.ProductId == productMaster.ProductId);
+            if (product != null)
             {
-                var products = _currentDbContext.ProductMaster.FirstOrDefault(u => u.ProductId == productMaster.ProductId);
-                if (products != null)
-                {
-                    products.UpdateUpdatedInfo(UserId);
-                    products.Name = string.IsNullOrEmpty(productMaster.Name) ? products.Name : productMaster.Name;
-                    products.SKUCode = string.IsNullOrEmpty(productMaster.SKUCode) ? products.SKUCode : productMaster.SKUCode;
-                    products.Serialisable = productMaster.Serialisable;
-                    products.ProcessByPallet = productMaster.ProcessByPallet;
+                product.UpdateUpdatedInfo(userId);
+                product.Name = productMaster.Name;
+                product.SKUCode = productMaster.SKUCode;
+                product.Serialisable = productMaster.Serialisable;
+                product.ProcessByPallet = productMaster.ProcessByPallet;
+                product.SellPrice = productMaster.SellPrice;
+                product.BuyPrice = productMaster.BuyPrice;
+                product.LandedCost = productMaster.LandedCost;
+                product.PercentMargin = productMaster.PercentMargin;
 
 
-                }
-                products.TenantId = TenantId;
-                _currentDbContext.Entry(products).State = EntityState.Modified;
-                _currentDbContext.SaveChanges();
             }
 
-            return productMaster;
+            if (!string.IsNullOrEmpty(productMaster.TagIds))
+            {
+                var tagIds= productMaster.TagIds.Split(',').Select(Int32.Parse).ToList();
+                var ToDelete = new List<int>();
+                ToDelete = _currentDbContext.ProductTagMaps
+                    .Where(x => x.ProductId == productMaster.ProductId && x.IsDeleted != true)
+                    .Select(x => x.TagId)
+                    .ToList()
+                    .Except(tagIds)
+                    .ToList();
+                var ToAdd = new List<int>();
+                ToAdd = tagIds
+                    .Except(_currentDbContext.ProductTagMaps
+                        .Where(x => x.ProductId == productMaster.ProductId && x.IsDeleted != true)
+                        .Select(x => x.TagId)
+                        .ToList())
+                    .ToList();
+                foreach (var itemToDelete in ToDelete)
+                {
+                    var itemdelete = _currentDbContext.ProductTagMaps.FirstOrDefault(u =>
+                        u.ProductId == productMaster.ProductId && u.TagId == itemToDelete && u.IsDeleted != true);
+                    if (itemdelete != null)
+                    {
+                        itemdelete.IsDeleted = true;
+                        itemdelete.UpdateUpdatedInfo(userId);
+                        _currentDbContext.Entry(itemdelete).State = EntityState.Modified;
+
+                    }
+                }
+                foreach (var itemToAdd in ToAdd)
+                {
+                    var ProductTagMap = new ProductTagMap
+                    {
+                        ProductId = productMaster.ProductId,
+                        TagId = itemToAdd,
+                        TenantId = tenantId
+                    };
+                    ProductTagMap.UpdateCreatedInfo(userId);
+                    _currentDbContext.ProductTagMaps.Add(ProductTagMap);
+                }
+
+            }
+            else
+            {
+                var producTagMaps = _currentDbContext.ProductTagMaps
+                    .Where(x => x.ProductId == productMaster.ProductId && x.IsDeleted != true);
+                foreach (var itemToDelete in producTagMaps)
+                {
+
+                    itemToDelete.IsDeleted = true;
+                    itemToDelete.UpdateUpdatedInfo(userId);
+                        _currentDbContext.Entry(itemToDelete).State = EntityState.Modified;
+
+                    
+                }
+
+            }
+
+            product.TenantId = tenantId;
+            _currentDbContext.Entry(product).State = EntityState.Modified;
+            _currentDbContext.SaveChanges();
+            return product;
         }
 
 
@@ -1464,6 +1524,9 @@ namespace Ganedata.Core.Services
                     Width = prd.Width,
                     Depth = prd.Depth,
                     Weight = prd.Weight,
+                    BuyPrice = prd.BuyPrice,
+                    SellPrice = prd.SellPrice,
+                    LandedCost = prd.LandedCost,
                     PercentMargin = prd.PercentMargin,
                     LotOptionDescription = prd.ProductLotOptionsCodes.Description,
                     LotOption = prd.LotOption,
@@ -1487,7 +1550,9 @@ namespace Ganedata.Core.Services
                     Qty = prd.ProductKitMap.Where(x => x.KitProductId == prd.ProductId && x.IsDeleted != true && x.TenantId == prd.TenantId && x.ProductKitType == KitType).Select(u => u.Quantity).DefaultIfEmpty(0).Sum(),
                     Id = prd.ProductKitMap.FirstOrDefault(x => x.KitProductId == prd.ProductId && x.IsDeleted != true && x.TenantId == prd.TenantId && x.ProductKitType == KitType).ProductKitTypeId,
                     IsActive = prd.ProductKitMap.FirstOrDefault(x => x.KitProductId == prd.ProductId && x.IsDeleted != true && x.TenantId == prd.TenantId && x.ProductKitType == KitType && (productId == null || x.ProductId == productId)).IsActive,
-                    AttributeValueNames = prd.ProductAttributeValuesMap.Where(m => m.IsDeleted != true).Select(x => x.ProductAttributeValues.ProductAttributes.AttributeName + ": " + x.ProductAttributeValues.Value).ToList()
+                    AttributeValueNames = prd.ProductAttributeValuesMap.Where(m => m.IsDeleted != true).Select(x => x.ProductAttributeValues.ProductAttributes.AttributeName + ": " + x.ProductAttributeValues.Value).ToList(),
+                    ProductTagMaps = prd.ProductTagMaps.Where(u => u.IsDeleted != true).Select(u => u.TagId.ToString()).ToList()
+
                 });
 
             return model;

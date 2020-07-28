@@ -212,6 +212,16 @@ namespace WMS.Controllers
             return productMaster;
         }
 
+        private void FillViewBagForProductTags()
+        {
+            ViewBag.Tags = _productLookupService.GetAllValidProductTag(CurrentTenantId).Select(u => new
+            {
+                u.Id,
+                u.TagName
+            }).ToList();
+
+        }
+
         // GET: Products/Create
         public ActionResult Create(string id = null)
         {
@@ -783,6 +793,7 @@ namespace WMS.Controllers
         }
         public ActionResult _EditableProductGrid(bool? AssociatedItem, string gridName, ProductKitTypeEnum? KitType = null, int? productId = null)
         {
+            if (!AssociatedItem.HasValue) { FillViewBagForProductTags(); }
             ViewBag.AssociatedItem = AssociatedItem;
             ViewBag.KitTypes = KitType;
             ViewBag.ProductId = productId;
@@ -803,6 +814,7 @@ namespace WMS.Controllers
         }
         public ActionResult _ProductEditListPaging(GridViewPagerState pager, string gridName, bool? AssociatedItem, ProductKitTypeEnum? KitType = null, int? productId = null)
         {
+            if (!AssociatedItem.HasValue) { FillViewBagForProductTags(); }
             ViewBag.AssociatedItem = AssociatedItem;
             ViewBag.KitTypes = KitType;
             if (KitType == ProductKitTypeEnum.Grouped)
@@ -815,6 +827,7 @@ namespace WMS.Controllers
         }
         public ActionResult _ProductsEditFiltering(GridViewFilteringState filteringState, string gridName, bool? AssociatedItem, ProductKitTypeEnum? KitType = null, int? productId = null)
         {
+            if (!AssociatedItem.HasValue) { FillViewBagForProductTags(); }
             ViewBag.AssociatedItem = AssociatedItem;
             ViewBag.KitTypes = KitType;
             if (KitType == ProductKitTypeEnum.Grouped)
@@ -827,6 +840,7 @@ namespace WMS.Controllers
         }
         public ActionResult _ProductsEditGetDataSorting(GridViewColumnState column, bool reset, string gridName, bool? AssociatedItem, ProductKitTypeEnum? KitType = null, int? productId = null)
         {
+            if (!AssociatedItem.HasValue) { FillViewBagForProductTags(); }
             ViewBag.AssociatedItem = AssociatedItem;
             ViewBag.KitTypes = KitType;
             if (KitType == ProductKitTypeEnum.Grouped)
@@ -852,17 +866,19 @@ namespace WMS.Controllers
             );
             return PartialView("_EditableProductGrid", gridViewModel);
         }
-        public ActionResult SaveProductEdit(int ProductID, string Name,
-            string SKUCode, bool? Serialisable, bool? ProcessByPallet, bool? TopProduct,
-            bool? BestSellerProduct, bool? SpecialProduct, bool? OnSaleProduct)
-        {
-            var productMaster = _productServices.GetProductMasterById(ProductID);
-            productMaster.Name = string.IsNullOrEmpty(Name) ? productMaster.Name : Name;
-            productMaster.SKUCode = string.IsNullOrEmpty(SKUCode) ? productMaster.SKUCode : SKUCode;
-            productMaster.Serialisable = Serialisable ?? productMaster.Serialisable;
-            productMaster.ProcessByPallet = ProcessByPallet ?? productMaster.ProcessByPallet;
+        public ActionResult SaveProductEdit(int productId, MVCxGridViewBatchUpdateValues<ProductMasterViewModel, int> updateValues)
+            {
+            if (productId > 0)
+            {
+                foreach (var value in updateValues.Update)
+                {
+                    value.ProductId = productId;
+                    var res = _productServices.SaveEditProduct(value, CurrentUserId, CurrentTenantId);
+                    //results.Add(res);
+                }
+            }
 
-            _productServices.SaveEditProduct(productMaster, CurrentUserId, CurrentTenantId);
+
             return _EditableProductGrid(null, null);
         }
         public PartialViewResult _GetAssociatedItems(ProductKitTypeEnum productKitType, int productId)

@@ -77,10 +77,12 @@ namespace Ganedata.Core.Entities.Domain
         public bool ProcessByCase { get; set; }
         [Display(Name = "Process by Pallet")]
         public bool ProcessByPallet { get; set; }
-        public bool TopProduct { get; set; }
-        public bool BestSellerProduct { get; set; }
-        public bool SpecialProduct { get; set; }
-        public bool OnSaleProduct { get; set; }
+        public decimal? BuyPrice { get; set; }
+        [Display(Name = "Landing Cost")]
+        public decimal? LandedCost { get; set; }
+        [Display(Name = "Sell Price")]
+        [DisplayFormat(DataFormatString = "{0:n2}", ApplyFormatInEditMode = true)]
+        public decimal? SellPrice { get; set; }
         public string HoverImage { get; set; }
         public string DefaultImage { get; set; }
 
@@ -90,6 +92,9 @@ namespace Ganedata.Core.Entities.Domain
 
         public bool? IsActive { get; set; }
         public List<string> AttributeValueNames { get; set; }
+
+        public List<string> ProductTagMaps { get; set; }
+        public string TagIds { get; set; }
     }
 
 

@@ -4,7 +4,7 @@
         var gridname = "ProductEditListGridView";
         if (ViewBag.AssociatedItem != null)
         {
-            if(ViewBag.KitTypes != null && ViewBag.KitTypes == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.RelatedProduct)
+            if (ViewBag.KitTypes != null && ViewBag.KitTypes == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.RelatedProduct)
             {
                 gridname = "RelatedProductListGridView";
             }
@@ -34,7 +34,7 @@
 
         settings.CustomBindingRouteValuesCollection.Add(
         GridViewOperationType.Filtering,
-        new { Controller = "Products", Action = "_ProductsEditFiltering", gridName=gridname, AssociatedItem = ViewBag.AssociatedItem, KitType = ViewBag.KitTypes, productId = ViewBag.ProductId }
+        new { Controller = "Products", Action = "_ProductsEditFiltering", gridName = gridname, AssociatedItem = ViewBag.AssociatedItem, KitType = ViewBag.KitTypes, productId = ViewBag.ProductId }
         );
 
         settings.CustomBindingRouteValuesCollection.Add(
@@ -68,7 +68,8 @@
                 c.EditFormSettings.Visible = DefaultBoolean.False;
                 c.EditorProperties().TextBox(p =>
                 {
-                    p.ClientSideEvents.LostFocus = "function(s,e){ OnDetailsChanged(s,e);}";
+                    p.ClientSideEvents.LostFocus = "function(s,e){ OnTagDetailsChanged(s,e);}";
+
                 });
                 c.EditFormSettings.Visible = DefaultBoolean.True;
 
@@ -81,7 +82,8 @@
                 c.EditFormSettings.Visible = DefaultBoolean.False;
                 c.EditorProperties().TextBox(p =>
                 {
-                    p.ClientSideEvents.LostFocus = "function(s,e){ OnDetailsChanged(s,e);}";
+                    p.ClientSideEvents.LostFocus = "function(s,e){ OnTagDetailsChanged(s,e);}";
+
                 });
                 c.EditFormSettings.Visible = DefaultBoolean.True;
             });
@@ -93,40 +95,59 @@
                 c.EditFormSettings.Visible = DefaultBoolean.True;
                 c.EditorProperties().CheckBox(p =>
                 {
-                    p.ClientSideEvents.LostFocus = "function(s,e){ OnDetailsChanged(s,e);}";
+                    p.ClientSideEvents.LostFocus = "function(s,e){ OnTagDetailsChanged(s,e);}";
+
                 });
             });
 
             settings.Columns.Add(c =>
             {
                 c.FieldName = "ProcessByPallet";
+                c.Caption = "Palletable";
                 c.ColumnType = MVCxGridViewColumnType.CheckBox;
                 c.EditFormSettings.Visible = DefaultBoolean.True;
                 c.EditorProperties().CheckBox(p =>
                 {
-                    p.ClientSideEvents.LostFocus = "function(s,e){ OnDetailsChanged(s,e);}";
+                    p.ClientSideEvents.LostFocus = "function(s,e){ OnTagDetailsChanged(s,e);}";
+
                 });
 
             });
 
             settings.Columns.Add(c =>
             {
-                c.FieldName = "TopProduct";
-                c.ColumnType = MVCxGridViewColumnType.CheckBox;
-                c.EditFormSettings.Visible = DefaultBoolean.True;
-                c.EditorProperties().CheckBox(p =>
+                c.FieldName = "TagIds";
+                c.Caption = "Tags";
+                c.Settings.AllowAutoFilter = DefaultBoolean.False;
+                c.Settings.AllowSort = DefaultBoolean.False;
+                c.ColumnType = MVCxGridViewColumnType.TokenBox;
+                c.EditorProperties().TokenBox(p =>
                 {
-                    p.ClientSideEvents.LostFocus = "function(s,e){ OnDetailsChanged(s,e);}";
+                    p.ClientSideEvents.LostFocus = "function(s,e){ OnTagDetailsChanged(s,e);}";
+
                 });
+                var tokenBoxSettings = c.PropertiesEdit as TokenBoxProperties;
+                if (tokenBoxSettings != null)
+                {
+                    tokenBoxSettings.TextField = "TagName";
+                    tokenBoxSettings.ValueField = "Id";
+                    tokenBoxSettings.ShowDropDownOnFocus = ShowDropDownOnFocusMode.Always;
+                    tokenBoxSettings.AllowCustomTokens = false;
+                    tokenBoxSettings.IncrementalFilteringMode = IncrementalFilteringMode.Contains;
+                    tokenBoxSettings.DataSource = ViewBag.Tags;
+                    //tokenBoxSettings.ItemValueType = typeof(Int32);
+                    tokenBoxSettings.Width = 300;
+                }
             });
 
             settings.Columns.Add(c =>
             {
-                c.FieldName = "BestSellerProduct";
-                c.ColumnType = MVCxGridViewColumnType.CheckBox;
-                c.EditorProperties().CheckBox(p =>
+                c.FieldName = "PercentMargin";
+                c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+                c.EditorProperties().SpinEdit(p =>
                 {
-                    p.ClientSideEvents.LostFocus = "function(s,e){ OnDetailsChanged(s,e);}";
+                    p.ClientSideEvents.LostFocus = "function(s,e){ OnTagDetailsChanged(s,e);}";
+
                 });
                 c.EditFormSettings.Visible = DefaultBoolean.True;
 
@@ -134,29 +155,48 @@
 
             settings.Columns.Add(c =>
             {
-                c.FieldName = "SpecialProduct";
-                c.ColumnType = MVCxGridViewColumnType.CheckBox;
-                c.EditorProperties().CheckBox(p =>
+                c.FieldName = "BuyPrice";
+                c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+                c.EditorProperties().SpinEdit(p =>
                 {
-                    p.ClientSideEvents.LostFocus = "function(s,e){ OnDetailsChanged(s,e);}";
+                    p.ClientSideEvents.LostFocus = "function(s,e){ OnTagDetailsChanged(s,e);}";
+
                 });
                 c.EditFormSettings.Visible = DefaultBoolean.True;
             });
 
             settings.Columns.Add(c =>
             {
-                c.FieldName = "OnSaleProduct";
-                c.ColumnType = MVCxGridViewColumnType.CheckBox;
-                c.EditorProperties().CheckBox(p =>
+                c.FieldName = "SellPrice";
+                c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+                c.EditorProperties().SpinEdit(p =>
                 {
-                    p.ClientSideEvents.LostFocus = "function(s,e){ OnDetailsChanged(s,e);}";
+                    p.ClientSideEvents.LostFocus = "function(s,e){ OnTagDetailsChanged(s,e);}";
                 });
                 c.EditFormSettings.Visible = DefaultBoolean.True;
             });
+            settings.Columns.Add(c =>
+            {
+                c.FieldName = "LandedCost";
+                c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+                c.EditorProperties().SpinEdit(p =>
+                {
+                    p.ClientSideEvents.LostFocus = "function(s,e){ OnTagDetailsChanged(s,e);}";
 
-            settings.ClientSideEvents.BeginCallback = "function(s,e){ OnBeginEditGridCallback(s, e); }";
+                });
+                c.EditFormSettings.Visible = DefaultBoolean.True;
+
+            });
+            settings.CellEditorInitialize = (s, e) =>
+            {
+                ASPxEdit editor = (ASPxEdit)e.Editor;
+                editor.ValidationSettings.Display = Display.None;
+            };
+
+            settings.ClientSideEvents.BeginCallback ="function(s,e){ OnBeginEditGridCallback(s, e); }";
             settings.ClientSideEvents.FocusedCellChanging = "OnEditGridFocusChanged";
             settings.ClientSideEvents.EndCallback = "OnEndEditGridCallback";
+            settings.ClientSideEvents.FocusedRowChanged = "OnGridFocusedRowChanged";
         }
         else
         {
