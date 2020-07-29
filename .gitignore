@@ -338,9 +338,5 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
-/GaneData.FansFromHome.Web/UploadedFiles/CutOutImages
-/GaneData.FansFromHome.Web/ModelCache
-/GaneData.FansFromHome.Web/UploadedFiles/CutOutPDF
-/GaneData.FansFromHome.Web/UploadedFiles/Clubs/TempFiles
-/GaneData.FansFromHome.Web/UploadedFiles/Clubs/4
-/GaneData.FansFromHome.Web/UploadedFiles/ClubLogos
+/WMS/UploadedFiles/*
+/WarehouseEcommerce/UploadedFiles/*
