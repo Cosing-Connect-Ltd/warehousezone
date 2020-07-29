@@ -2232,7 +2232,7 @@ input[type=number]::-webkit-outer-spin-button {
             .nb_qcvboxwrap .footSec .addtowishlistbtn,
             .nb_qcvboxwrap .footSec button.addTobasket {
                 text-transform: uppercase;
-                background-color: #292929;
+                background-color: #182f59;
                 color: #fff;
                 font-size: 20px;
                 font-family: "primaryfont_Bold";
@@ -5702,6 +5702,10 @@ body.modal-open {
 
 .nb_prd_det_rightsec div:nth-of-type(3) .sizeWrap ul li {
     min-width: 58px;
+}
+
+.nb_prd_det_rightsec div:nth-of-type(3) .sizeWrap ul li.active a {
+   background-color: #182f59;
 }
 
 .nb_prd_det_rightsec .sizeWrap .size_boxList li a span {
