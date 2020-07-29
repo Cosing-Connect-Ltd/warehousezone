@@ -38,6 +38,11 @@
             </a>
         </div>
         <ul class="nb_headicolst">
+            <li class="sir" id="nb_res_navTrigger">
+                <a href="#">
+                    <i class="ico icon-list-menu"></i>
+                </a>
+            </li>
             <li class="sir">
                 <a href="" id="triggerSearch">
                     <i class="ico icon-search"></i>
@@ -104,11 +109,7 @@
                     <span id="cart-total">@(ViewBag.CartItemCount ?? "")</span>
                 </a>
             </li>
-            <li class="sir" id="nb_res_navTrigger">
-                <a href="#">
-                    <i class="ico icon-list-menu"></i>
-                </a>
-            </li>
+            
         </ul>
         @Html.Action("_HorizontalNavbarPartial", "Home")
     </div>
