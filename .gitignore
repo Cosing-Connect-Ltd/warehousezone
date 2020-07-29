@@ -339,4 +339,6 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 /WMS/UploadedFiles/*
+/WMS/ModelCache/*
 /WarehouseEcommerce/UploadedFiles/*
+/WarehouseEcommerce/ModelCache/*
