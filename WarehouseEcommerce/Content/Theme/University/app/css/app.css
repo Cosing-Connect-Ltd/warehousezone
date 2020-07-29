@@ -1486,7 +1486,7 @@ input[type=number]::-webkit-outer-spin-button {
         transform: skew(12deg) translateX(-15%);
         width: 135%;
         background-repeat: no-repeat;
-        background-position: top center;
+        background-position: center;
         background-size: cover;
     }
 
@@ -2227,7 +2227,7 @@ input[type=number]::-webkit-outer-spin-button {
                         border-radius: 5px;
                         padding: 14px 30px 14px 10px
                     }
-
+            
             .nb_prd_det_rightsec .footSec button.addTobasket,
             .nb_qcvboxwrap .footSec .addtowishlistbtn,
             .nb_qcvboxwrap .footSec button.addTobasket {
@@ -2246,11 +2246,15 @@ input[type=number]::-webkit-outer-spin-button {
                 transition: all .3s ease
             }
 
-                .nb_prd_det_rightsec .footSec button.addTobasket:hover,
-                .nb_qcvboxwrap .footSec .addtowishlistbtn:hover,
-                .nb_qcvboxwrap .footSec button.addTobasket:hover {
-                    background-color: #f33655
-                }
+            .nb_prd_det_rightsec .footSec button.addTobasket:hover,
+            .nb_qcvboxwrap .footSec .addtowishlistbtn:hover,
+            .nb_qcvboxwrap .footSec button.addTobasket:hover {
+                background-color: #f33655;
+            }
+
+            .nb_prd_det_rightsec .footSec button.notify-btn {
+                background-color: #9F9F9F;
+            }
 
             .nb_qcvboxwrap .footSec .addtowishlistbtn {
                 display: none
@@ -2265,7 +2269,8 @@ input[type=number]::-webkit-outer-spin-button {
                 .nb_qcvboxwrap .footSec .addtowishlist i {
                     font-size: 30px;
                     color: #000;
-                    transition: all .3s ease
+                    transition: all .3s ease;
+                    margin:0 30px;
                 }
 
         .nb_prd_det_rightsec .head {
@@ -5676,14 +5681,37 @@ body.modal-open {
     border-radius: 3px
 }
 
-    .nb_prd_det_rightsec .sizeWrap .size_boxList li a span {
-        line-height: 38px;
-        min-width: 80%;
-        text-align: center;
-        overflow: hidden;
-        margin: 1px;
-        border-radius: 2px
-    }
+.nb_prd_det_rightsec div:nth-of-type(2) .sizeWrap ul li {
+    border-radius: 0;
+    min-width: 37px;
+    height: 37px;
+}
+
+.nb_prd_det_rightsec div:nth-of-type(2) .sizeWrap ul li span {
+    line-height: 27px;
+}
+
+
+.nb_prd_det_rightsec div:nth-of-type(2) .sizeWrap ul li.active {
+    border: 2px solid #000;
+}
+
+.nb_prd_det_rightsec div:nth-of-type(2) .sizeWrap ul li.active a {
+    background: none;
+}
+
+.nb_prd_det_rightsec div:nth-of-type(3) .sizeWrap ul li {
+    min-width: 58px;
+}
+
+.nb_prd_det_rightsec .sizeWrap .size_boxList li a span {
+    line-height: 38px;
+    min-width: 80%;
+    text-align: center;
+    overflow: hidden;
+    margin: 1px;
+    border-radius: 2px
+}
 
 .unavailable-attribute {
     border: dashed !important;

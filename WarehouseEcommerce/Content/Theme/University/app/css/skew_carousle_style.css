@@ -31,7 +31,8 @@
             .accordion ul li div {
                 display: block;
                 overflow: hidden;
-                width: 100%
+                width: 100%;
+                background-size: cover;
             }
 
                 .accordion ul li div a {
