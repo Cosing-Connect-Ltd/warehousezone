@@ -2,6 +2,7 @@
 using Ganedata.Core.Entities.Domain;
 using System;
 using Ganedata.Core.Entities.Enums;
+using System.Threading.Tasks;
 
 namespace Ganedata.Core.Services
 {
@@ -10,6 +11,7 @@ namespace Ganedata.Core.Services
         IEnumerable<AuthUser> GetAllAuthUsers(int tenantId);
         List<AuthUserListForGridViewModel> GetAllAuthUsersForGrid(int tenantId);
         AuthUser GetAuthUserById(int userId);
+        AuthUser GetAuthUserByUserName(string userName, int tenantId);
         List<AuthUser> GetAuthUsersByTenantAndDateUpdated(int tenantId, DateTime dateUpdated);
         int SaveAuthUser(AuthUser user, int userId, int tenantId);
         void UpdateAuthUser(AuthUser user, int userId, int tenantId);

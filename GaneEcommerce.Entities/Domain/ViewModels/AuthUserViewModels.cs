@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Ganedata.Core.Entities.Enums;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -47,6 +49,7 @@ namespace Ganedata.Core.Entities.Domain
 
     public class UserLoginStatusViewModel
     {
+        public string SerialNo { get; set; }
         public string UserName { get; set; }
         public string Md5Pass { get; set; }
         public int TenantId { get; set; }
@@ -64,5 +67,31 @@ namespace Ganedata.Core.Entities.Domain
         public string UserEmail { get; set; }
         public string UserMobileNumber { get; set; }
         public bool Success { get; set; }
+        public string ErrorMessage { get; set; }
+    }
+
+    public class UserRegisterRequestViewModel
+    {
+        public string SerialNo { get; set; }
+        [Required]
+        public string UserName { get; set; }
+        [Required]
+        public string UserFirstName { get; set; }
+        public string UserLastName { get; set; }
+        public string UserEmail { get; set; }
+        [Required]
+        public string UserMobileNumber { get; set; }
+        [Required]
+        public string Md5Pass { get; set; }
+        [Required]
+        public int TenantId { get; set; }
+    }
+
+    public class UserVerifyRequestViewModel
+    {
+        public string SerialNo { get; set; }
+        public int UserId { get; set; }
+        public UserVerifyTypes Type { get; set; }
+        public string Code { get; set; }
     }
 }

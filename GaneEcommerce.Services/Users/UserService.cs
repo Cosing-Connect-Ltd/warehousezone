@@ -49,6 +49,12 @@ namespace Ganedata.Core.Services
         {
             return _currentDbContext.AuthUsers.Find(userId);
         }
+
+        public AuthUser GetAuthUserByUserName(string userName, int tenantId)
+        {
+            return _currentDbContext.AuthUsers.Where(x => x.UserName.ToLower() == userName.ToLower() && x.TenantId == tenantId).FirstOrDefault();
+        }
+
         public AuthUser GetAuthUserByName(string userName)
         {
             return _currentDbContext.AuthUsers.FirstOrDefault(m => m.UserName == userName && m.IsDeleted != true);

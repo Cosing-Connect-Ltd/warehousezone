@@ -98,6 +98,7 @@ namespace WMS
                 cfg.CreateMap<AssetLogViewModel, Observation>().ReverseMap();
                 cfg.CreateMap<ProductKitMap, ProductKitMapViewModel>().ReverseMap();
                 cfg.CreateMap<TenantLocations, TenantLocationsSync>().ReverseMap();
+                cfg.CreateMap<AuthUser, UserLoginStatusResponseViewModel>().ReverseMap();
             });
 
             return config;
