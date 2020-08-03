@@ -319,7 +319,7 @@ namespace WMS.Controllers.WebAPI
                 int res = _userService.SaveAuthUser(authuser, 0, user.TenantId);
                 if (res > 0)
                 {
-                    //await _userService.CreateUserVerificationCode(authuser.UserId, terminal.TenantId, UserVerifyTypes.Email);
+                    await _userService.CreateUserVerificationCode(authuser.UserId, terminal.TenantId, UserVerifyTypes.Email);
                     UserLoginStatusResponseViewModel resp = new UserLoginStatusResponseViewModel();
                     _mapper.Map(authuser, resp);
                     resp.Success = true;
@@ -337,10 +337,57 @@ namespace WMS.Controllers.WebAPI
             }
         }
 
-        public async Task<IHttpActionResult> SendSmsBroadcastByUser(int userId)
+        [HttpPost]
+        public async Task<IHttpActionResult> CreateUserVerification(UserVerifyRequestViewModel request)
         {
-            await _configurationsHelper.SendSmsBroadcast("Ganedata01", "92DqXS3tfh", "07455226607", "GANE DATA", "0101", "Testing");
-            return Ok(true);
+            string serialNo = request?.SerialNo?.Trim().ToLower();
+
+            Terminals terminal = TerminalServices.GetTerminalBySerial(serialNo);
+
+            if (terminal == null)
+            {
+                return Unauthorized();
+            }
+
+            var resp = await _userService.CreateUserVerificationCode(request.UserId, terminal.TenantId, request.Type);
+
+            if (resp == true)
+            {
+                return Ok(resp);
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
+
+
+        [HttpPost]
+        public IHttpActionResult VerifyUser(UserVerifyRequestViewModel request)
+        {
+            string serialNo = request?.SerialNo?.Trim().ToLower();
+
+            Terminals terminal = TerminalServices.GetTerminalBySerial(serialNo);
+
+            if (terminal == null)
+            {
+                return Unauthorized();
+            }
+
+            var res = _userService.VerifyUserVerificationCode(request.UserId, terminal.TenantId, request.Code, request.Type);
+
+            if (res == true)
+            {
+                UserLoginStatusResponseViewModel resp = new UserLoginStatusResponseViewModel();
+                var authUser = _userService.GetAuthUserById(request.UserId);
+                _mapper.Map(authUser, resp);
+                resp.Success = true;
+                return Ok(resp);
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
     }
 }

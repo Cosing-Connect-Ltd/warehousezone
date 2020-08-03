@@ -30,5 +30,9 @@ namespace Ganedata.Core.Services
         AuthUserGroups GetUserGroupsById(int groupId);
         AuthUserGroups RemoveUserGroupsById(int groupId, int UserId);
         IEnumerable<AuthUserGroups> GetAllAuthUserGroups(int TenantId);
+        Task<bool> CreateUserVerificationCode(int userId, int tenantId, UserVerifyTypes type);
+        bool VerifyUserVerificationCode(int userId, int tenantId, string code, UserVerifyTypes type);
+        Task<bool> SendSmsBroadcast(string user, string password, string to, string from, string reference, string message);
+        string GenerateVerifyRandomNo();
     }
 }

@@ -214,6 +214,7 @@ namespace Ganedata.Core.Data
         public DbSet<KitProductCartItem> KitProductCartItems { get; set; }
         public DbSet<WebsiteDeliveryNavigation> WebsiteDeliveryNavigations { get; set; }
         public DbSet<ProductAvailabilityNotifyQueue> ProductAvailabilityNotifyQueue { get; set; }
+        public DbSet<AuthUserVerifyCodes> AuthUserVerifyCodes { get; set; }
 
         //#end region
     }

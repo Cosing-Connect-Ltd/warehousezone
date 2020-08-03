@@ -41,6 +41,5 @@ namespace Ganedata.Core.Services
         string GetActionResultHtml(Controller controller, string partialViewName, object model);
         Task<string> SendStandardMailProductGroup(int tenantId, string subject, int accountId);
         Task<string> SendRegistrationEmail(int tenantId, WorksOrderNotificationTypeEnum worksOrderNotificationType, string subject, string ConfirmatonLink, string recipients, int? accountId, bool salesRequiresAuthorisation = true, int userID = 0);
-        Task<bool> SendSmsBroadcast(string user, string password, string to, string from, string reference, string message);
     }
 }

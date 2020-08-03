@@ -1027,6 +1027,10 @@
     <Compile Include="Migrations\202007282309316_user-verification-properties-added.designer.cs">
       <DependentUpon>202007282309316_user-verification-properties-added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008031230225_user-verification-codes-table-added.cs" />
+    <Compile Include="Migrations\202008031230225_user-verification-codes-table-added.designer.cs">
+      <DependentUpon>202008031230225_user-verification-codes-table-added.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2117,6 +2121,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007282309316_user-verification-properties-added.resx">
       <DependentUpon>202007282309316_user-verification-properties-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008031230225_user-verification-codes-table-added.resx">
+      <DependentUpon>202008031230225_user-verification-codes-table-added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
