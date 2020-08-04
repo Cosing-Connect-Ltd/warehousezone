@@ -85,10 +85,11 @@ namespace WMS
             config.Routes.MapHttpRoute("IpmortDPDServices", "api/sync/Get-DPD-Services", new { controller = "ApiDataImport", action = "GetDPDServices" });
             config.Routes.MapHttpRoute("PostUserLoginStatus", "api/sync/get-login-status", new { controller = "ApiTerminalUserSync", action = "GetUserLoginStatus" });
             config.Routes.MapHttpRoute("PostWebUserLoginStatus", "api/sync/get-web-login-status", new { controller = "ApiTerminalUserSync", action = "GetWebUserLoginStatus" });
+            config.Routes.MapHttpRoute("PostWebUserRegister", "api/sync/post-web-user", new { controller = "ApiTerminalUserSync", action = "PostWebUserRegister" });
+            config.Routes.MapHttpRoute("CreateUserVerifiyCode", "api/sync/create-user-verification-code", new { controller = "ApiTerminalUserSync", action = "CreateUserVerification" });
+            config.Routes.MapHttpRoute("VerifyUserCode", "api/sync/verify-user-code", new { controller = "ApiTerminalUserSync", action = "VerifyUser" });
             config.Routes.MapHttpRoute("GetPalletDispatchLabel", "api/sync/get-dispatch-for-label", new { controller = "ApiPalletsSync", action = "GetPalletDispatchLabelPrint", tenantId = string.Empty, userId = string.Empty });
             config.Routes.MapHttpRoute("GetPalletDispatchLabelStatus", "api/sync/update-dispatch-for-label", new { controller = "ApiPalletsSync", action = "UpdatePalletDispatchLabelPrintStatus", shipmentId = string.Empty });
-            config.Routes.MapHttpRoute("SendSmsBroadcast", "api/sync/send-sms-broadcast", new { controller = "ApiWarehouseSync", action = "SendSmsBroadcast" });
-
             config.Routes.MapHttpRoute("SendNotificationForAbandonedCarts", "api/Websites/SendNotificationForAbandonedCarts", new { controller = "ApiWebsites", action = "SendNotificationForAbandonedCarts" });
             config.Routes.MapHttpRoute("SendProductAvailabilityNotifications", "api/Websites/SendProductAvailabilityNotifications", new { controller = "ApiWebsites", action = "SendProductAvailabilityNotifications" });
 

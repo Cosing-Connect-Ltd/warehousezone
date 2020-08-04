@@ -342,3 +342,4 @@ healthchecksdb
 /WMS/ModelCache/*
 /WarehouseEcommerce/UploadedFiles/*
 /WarehouseEcommerce/ModelCache/*
+/GaneEcommerce.Data/binModelCache

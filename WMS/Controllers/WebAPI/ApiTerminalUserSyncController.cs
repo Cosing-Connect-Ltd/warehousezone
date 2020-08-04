@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web.Http;
 using Ganedata.Core.Entities.Enums;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace WMS.Controllers.WebAPI
 {
@@ -17,15 +18,19 @@ namespace WMS.Controllers.WebAPI
         private readonly ITenantLocationServices _tenantLocationServices;
         private readonly IUserService _userService;
         private readonly IGaneConfigurationsHelper _configurationsHelper;
+        private readonly IAccountServices _accountServices;
+        private readonly IMapper _mapper;
 
         public ApiTerminalUserSyncController(ITerminalServices terminalServices, ITenantLocationServices tenantLocationServices, IOrderService orderService,
-            IProductServices productServices, IUserService userService, IActivityServices activityServices, IGaneConfigurationsHelper configurationsHelper)
+            IProductServices productServices, IUserService userService, IActivityServices activityServices, IGaneConfigurationsHelper configurationsHelper, IAccountServices accountServices, IMapper mapper)
             : base(terminalServices, tenantLocationServices, orderService, productServices, userService)
         {
             _activityServices = activityServices;
             _tenantLocationServices = tenantLocationServices;
             _userService = userService;
             _configurationsHelper = configurationsHelper;
+            _accountServices = accountServices;
+            _mapper = mapper;
         }
 
         //GET http://localhost:8005/api/sync/users/{reqDate}/{serialNo}
@@ -226,6 +231,15 @@ namespace WMS.Controllers.WebAPI
         [HttpPost]
         public IHttpActionResult GetUserLoginStatus(UserLoginStatusViewModel loginStatus)
         {
+            string serialNo = loginStatus?.SerialNo?.Trim().ToLower();
+
+            Terminals terminal = TerminalServices.GetTerminalBySerial(serialNo);
+
+            if (terminal == null)
+            {
+                return Unauthorized();
+            }
+
             var resp = _userService.GetUserLoginStatus(loginStatus);
 
             if (resp.Success == true)
@@ -241,6 +255,15 @@ namespace WMS.Controllers.WebAPI
         [HttpPost]
         public IHttpActionResult GetWebUserLoginStatus(UserLoginStatusViewModel loginStatus)
         {
+            string serialNo = loginStatus?.SerialNo?.Trim().ToLower();
+
+            Terminals terminal = TerminalServices.GetTerminalBySerial(serialNo);
+
+            if (terminal == null)
+            {
+                return Unauthorized();
+            }
+
             var resp = _userService.GetUserLoginStatus(loginStatus, true);
 
             if (resp.Success == true)
@@ -253,10 +276,121 @@ namespace WMS.Controllers.WebAPI
             }
         }
 
-        public async Task<IHttpActionResult> SendSmsBroadcastByUser(int userId)
+        [HttpPost]
+        public async Task<IHttpActionResult> PostWebUserRegister(UserRegisterRequestViewModel user)
         {
-            await _configurationsHelper.SendSmsBroadcast("Ganedata01", "92DqXS3tfh", "07455226607", "GANE DATA", "0101", "Testing");
-            return Ok(true);
+            string serialNo = user?.SerialNo?.Trim().ToLower();
+
+            Terminals terminal = TerminalServices.GetTerminalBySerial(serialNo);
+
+            if (terminal == null)
+            {
+                return Unauthorized();
+            }
+
+            if (ModelState.IsValid)
+            {
+                var existingUser = _userService.GetAuthUserByUserName(user.UserName, user.TenantId);
+
+                if (existingUser != null)
+                {
+                    return BadRequest("Username already exist, please choose another one");
+                }
+
+
+                AuthUser authuser = new AuthUser();
+                Account account = new Account();
+                account.AccountCode = user.UserFirstName + GaneStaticAppExtensions.GenerateRandomNo();
+                account.CompanyName = account.AccountCode;
+                account.RegNo = "";
+                account.VATNo = "";
+                account.AccountStatusID = AccountStatusEnum.Active;
+                var accountModel = _accountServices.SaveAccount(account, null, null, 1, 1, 1, 1, null, null, 0, user.TenantId, null);
+
+                authuser.UserEmail = user.UserEmail;
+                authuser.UserFirstName = user.UserFirstName;
+                authuser.UserLastName = user.UserLastName;
+                authuser.UserPassword = user.Md5Pass;
+                authuser.UserName = user.UserName;
+                authuser.UserMobileNumber = user.UserMobileNumber;
+
+                authuser.IsActive = false;
+                authuser.WebUser = true;
+                authuser.AccountId = accountModel.AccountID;
+                int res = _userService.SaveAuthUser(authuser, 0, user.TenantId);
+                if (res > 0)
+                {
+                    await _userService.CreateUserVerificationCode(authuser.UserId, terminal.TenantId, UserVerifyTypes.Mobile);
+                    UserLoginStatusResponseViewModel resp = new UserLoginStatusResponseViewModel();
+                    _mapper.Map(authuser, resp);
+                    resp.Success = true;
+                    return Ok(resp);
+                }
+                else
+                {
+                    return BadRequest("Unable to create user");
+                }
+            }
+            else
+            {
+                UserLoginStatusResponseViewModel resp = new UserLoginStatusResponseViewModel();
+                return BadRequest("Required fields not present");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IHttpActionResult> CreateUserVerification(UserVerifyRequestViewModel request)
+        {
+            string serialNo = request?.SerialNo?.Trim().ToLower();
+
+            Terminals terminal = TerminalServices.GetTerminalBySerial(serialNo);
+
+            if (terminal == null)
+            {
+                return Unauthorized();
+            }
+
+            var resp = await _userService.CreateUserVerificationCode(request.UserId, terminal.TenantId, request.Type);
+
+            if (resp == true)
+            {
+                return Ok(resp);
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
+
+
+        [HttpPost]
+        public IHttpActionResult VerifyUser(UserVerifyRequestViewModel request)
+        {
+            string serialNo = request?.SerialNo?.Trim().ToLower();
+
+            Terminals terminal = TerminalServices.GetTerminalBySerial(serialNo);
+
+            if (terminal == null)
+            {
+                return Unauthorized();
+            }
+
+            var res = _userService.VerifyUserVerificationCode(request.UserId, terminal.TenantId, request.Code, request.Type);
+
+            if (res == true)
+            {
+                UserLoginStatusResponseViewModel resp = new UserLoginStatusResponseViewModel();
+                var authUser = _userService.GetAuthUserById(request.UserId);
+                authUser.MobileNumberVerified = true;
+                _userService.UpdateAuthUser(authUser, 0, terminal.TenantId);
+                _mapper.Map(authUser, resp);
+                resp.Success = true;
+                return Ok(resp);
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
     }
 }
