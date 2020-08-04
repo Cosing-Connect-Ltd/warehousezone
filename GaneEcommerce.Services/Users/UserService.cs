@@ -99,6 +99,7 @@ namespace Ganedata.Core.Services
             entry.Property(e => e.IsActive).IsModified = true;
             entry.Property(e => e.AccountId).IsModified = true;
             entry.Property(e => e.UserGroupId).IsModified = true;
+            entry.Property(e => e.MobileNumberVerified).IsModified = true;
             //dont change password if password field is blank/null
             if (user.UserPassword != null)
             {
@@ -259,7 +260,7 @@ namespace Ganedata.Core.Services
 
             if (type == UserVerifyTypes.Mobile)
             {
-                res = await SendSmsBroadcast("Ganedata01", "92DqXS3tfh", user.UserMobileNumber, "Test", "0101", String.Format("{0} is your verification code", code));
+                res = await SendSmsBroadcast("Ganedata01", "92DqXS3tfh", user.UserMobileNumber, tenant.TenantName, user.UserId.ToString(), String.Format("{0} is your verification code", code));
             }
             else if (type == UserVerifyTypes.Email)
             {
@@ -290,9 +291,9 @@ namespace Ganedata.Core.Services
 
         public bool VerifyUserVerificationCode(int userId, int tenantId, string code, UserVerifyTypes type)
         {
-            var record = _currentDbContext.AuthUserVerifyCodes.Where(x => x.UserId == userId && x.TenantId == tenantId && x.VerifyType == type).OrderByDescending(x => x.Id).FirstOrDefault();
+            var record = _currentDbContext.AuthUserVerifyCodes.AsNoTracking().Where(x => x.UserId == userId && x.TenantId == tenantId && x.VerifyType == type).OrderByDescending(x => x.Id).FirstOrDefault();
 
-            if (record.VerifyCode.Trim() == code.Trim())
+            if (record?.VerifyCode?.Trim() == code.Trim())
             {
                 return true;
             }

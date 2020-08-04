@@ -312,6 +312,7 @@ namespace WMS.Controllers.WebAPI
                 authuser.UserLastName = user.UserLastName;
                 authuser.UserPassword = user.Md5Pass;
                 authuser.UserName = user.UserName;
+                authuser.UserMobileNumber = user.UserMobileNumber;
 
                 authuser.IsActive = false;
                 authuser.WebUser = true;
@@ -319,7 +320,7 @@ namespace WMS.Controllers.WebAPI
                 int res = _userService.SaveAuthUser(authuser, 0, user.TenantId);
                 if (res > 0)
                 {
-                    await _userService.CreateUserVerificationCode(authuser.UserId, terminal.TenantId, UserVerifyTypes.Email);
+                    await _userService.CreateUserVerificationCode(authuser.UserId, terminal.TenantId, UserVerifyTypes.Mobile);
                     UserLoginStatusResponseViewModel resp = new UserLoginStatusResponseViewModel();
                     _mapper.Map(authuser, resp);
                     resp.Success = true;
@@ -380,6 +381,8 @@ namespace WMS.Controllers.WebAPI
             {
                 UserLoginStatusResponseViewModel resp = new UserLoginStatusResponseViewModel();
                 var authUser = _userService.GetAuthUserById(request.UserId);
+                authUser.MobileNumberVerified = true;
+                _userService.UpdateAuthUser(authUser, 0, terminal.TenantId);
                 _mapper.Map(authUser, resp);
                 resp.Success = true;
                 return Ok(resp);
