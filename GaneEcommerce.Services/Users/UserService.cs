@@ -10,6 +10,7 @@ using AutoMapper;
 using System.Threading.Tasks;
 using System.Net;
 using System.IO;
+using System.Configuration;
 
 namespace Ganedata.Core.Services
 {
@@ -18,11 +19,13 @@ namespace Ganedata.Core.Services
 
         private readonly IApplicationContext _currentDbContext;
         private readonly ITenantsServices _tenantServices;
+        private readonly IMapper _mapper;
 
-        public UserService(IApplicationContext currentDbContext, ITenantsServices tenantServices)
+        public UserService(IApplicationContext currentDbContext, ITenantsServices tenantServices, IMapper mapper)
         {
             _currentDbContext = currentDbContext;
             _tenantServices = tenantServices;
+            _mapper = mapper;
         }
 
         public IEnumerable<AuthUser> GetAllAuthUsers(int tenantId)
@@ -100,6 +103,7 @@ namespace Ganedata.Core.Services
             entry.Property(e => e.AccountId).IsModified = true;
             entry.Property(e => e.UserGroupId).IsModified = true;
             entry.Property(e => e.MobileNumberVerified).IsModified = true;
+            entry.Property(e => e.VerificationRequired).IsModified = true;
             //dont change password if password field is blank/null
             if (user.UserPassword != null)
             {
@@ -193,13 +197,13 @@ namespace Ganedata.Core.Services
         {
             UserLoginStatusResponseViewModel resp = new UserLoginStatusResponseViewModel();
 
-            var user = _currentDbContext.AuthUsers.AsNoTracking().Where(e => e.UserName.Equals(loginStatus.UserName, StringComparison.CurrentCultureIgnoreCase) && e.UserPassword == loginStatus.Md5Pass.Trim()
+            var user = _currentDbContext.AuthUsers.AsNoTracking().Where(e => e.UserName.Equals(loginStatus.UserName, StringComparison.CurrentCultureIgnoreCase)
+            && e.UserPassword.Equals(loginStatus.Md5Pass.Trim(), StringComparison.CurrentCultureIgnoreCase)
             && (e.WebUser == webUser) && e.TenantId == loginStatus.TenantId && e.IsActive && e.IsDeleted != true).FirstOrDefault();
             if (user != null)
             {
-                resp.UserId = user.UserId;
+                _mapper.Map(user, resp);
                 resp.Success = true;
-                resp.UserName = user.UserName;
             }
 
             return resp;
@@ -256,11 +260,13 @@ namespace Ganedata.Core.Services
             var res = false;
             var code = GenerateVerifyRandomNo();
             var user = GetAuthUserById(userId);
+            var smsBraodcastUser = ConfigurationManager.AppSettings["SMSBroadcastUser"];
+            var smsBraodcastPassword = ConfigurationManager.AppSettings["SMSBroadcastPassword"];
             var tenant = _tenantServices.GetByClientId(tenantId);
 
             if (type == UserVerifyTypes.Mobile)
             {
-                res = await SendSmsBroadcast("Ganedata01", "92DqXS3tfh", user.UserMobileNumber, tenant.TenantName, user.UserId.ToString(), String.Format("{0} is your verification code", code));
+                res = await SendSmsBroadcast(smsBraodcastUser, smsBraodcastPassword, user.UserMobileNumber, tenant.TenantName, user.UserId.ToString(), String.Format("{0} is your verification code", code));
             }
             else if (type == UserVerifyTypes.Email)
             {
