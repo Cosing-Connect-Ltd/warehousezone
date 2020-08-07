@@ -18,10 +18,9 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Attribute")]
         public int AttributeId { get; set; }
         [Required]
-        [StringLength(20)]
+        [StringLength(256)]
         [Display(Name = "Value")]
         public string Value { get; set; }
-
         [Required]
         [Display(Name = "Sort Value")]
         public int SortOrder { get; set; }

@@ -6,6 +6,11 @@ using System;
 using System.Data.Entity;
 using Ganedata.Core.Entities.Helpers;
 using Ganedata.Core.Entities.Enums;
+using AutoMapper;
+using System.Threading.Tasks;
+using System.Net;
+using System.IO;
+using System.Configuration;
 
 namespace Ganedata.Core.Services
 {
@@ -13,10 +18,14 @@ namespace Ganedata.Core.Services
     {
 
         private readonly IApplicationContext _currentDbContext;
+        private readonly ITenantsServices _tenantServices;
+        private readonly IMapper _mapper;
 
-        public UserService(IApplicationContext currentDbContext)
+        public UserService(IApplicationContext currentDbContext, ITenantsServices tenantServices, IMapper mapper)
         {
             _currentDbContext = currentDbContext;
+            _tenantServices = tenantServices;
+            _mapper = mapper;
         }
 
         public IEnumerable<AuthUser> GetAllAuthUsers(int tenantId)
@@ -49,6 +58,12 @@ namespace Ganedata.Core.Services
         {
             return _currentDbContext.AuthUsers.Find(userId);
         }
+
+        public AuthUser GetAuthUserByUserName(string userName, int tenantId)
+        {
+            return _currentDbContext.AuthUsers.Where(x => x.UserName.ToLower() == userName.ToLower() && x.TenantId == tenantId).FirstOrDefault();
+        }
+
         public AuthUser GetAuthUserByName(string userName)
         {
             return _currentDbContext.AuthUsers.FirstOrDefault(m => m.UserName == userName && m.IsDeleted != true);
@@ -87,6 +102,8 @@ namespace Ganedata.Core.Services
             entry.Property(e => e.IsActive).IsModified = true;
             entry.Property(e => e.AccountId).IsModified = true;
             entry.Property(e => e.UserGroupId).IsModified = true;
+            entry.Property(e => e.MobileNumberVerified).IsModified = true;
+            entry.Property(e => e.VerificationRequired).IsModified = true;
             //dont change password if password field is blank/null
             if (user.UserPassword != null)
             {
@@ -180,13 +197,13 @@ namespace Ganedata.Core.Services
         {
             UserLoginStatusResponseViewModel resp = new UserLoginStatusResponseViewModel();
 
-            var user = _currentDbContext.AuthUsers.AsNoTracking().Where(e => e.UserName.Equals(loginStatus.UserName, StringComparison.CurrentCultureIgnoreCase) && e.UserPassword == loginStatus.Md5Pass.Trim()
+            var user = _currentDbContext.AuthUsers.AsNoTracking().Where(e => e.UserName.Equals(loginStatus.UserName, StringComparison.CurrentCultureIgnoreCase)
+            && e.UserPassword.Equals(loginStatus.Md5Pass.Trim(), StringComparison.CurrentCultureIgnoreCase)
             && (e.WebUser == webUser) && e.TenantId == loginStatus.TenantId && e.IsActive && e.IsDeleted != true).FirstOrDefault();
             if (user != null)
             {
-                resp.UserId = user.UserId;
+                _mapper.Map(user, resp);
                 resp.Success = true;
-                resp.UserName = user.UserName;
             }
 
             return resp;
@@ -236,6 +253,86 @@ namespace Ganedata.Core.Services
                 _currentDbContext.SaveChanges();
             }
             return authUserGroups;
+        }
+
+        public async Task<bool> CreateUserVerificationCode(int userId, int tenantId, UserVerifyTypes type)
+        {
+            var res = false;
+            var code = GenerateVerifyRandomNo();
+            var user = GetAuthUserById(userId);
+            var smsBraodcastUser = ConfigurationManager.AppSettings["SMSBroadcastUser"];
+            var smsBraodcastPassword = ConfigurationManager.AppSettings["SMSBroadcastPassword"];
+            var tenant = _tenantServices.GetByClientId(tenantId);
+
+            if (type == UserVerifyTypes.Mobile)
+            {
+                res = await SendSmsBroadcast(smsBraodcastUser, smsBraodcastPassword, user.UserMobileNumber, tenant.TenantName, user.UserId.ToString(), String.Format("{0} is your verification code", code));
+            }
+            else if (type == UserVerifyTypes.Email)
+            {
+                // TODO: to be implemented 
+            }
+
+            if (res == true)
+            {
+                AuthUserVerifyCodes record = new AuthUserVerifyCodes
+                {
+                    UserId = userId,
+                    VerifyCode = code,
+                    VerifyType = type,
+                    TenantId = tenantId,
+                    DateCreated = DateTime.Now,
+                    Expiry = DateTime.Now
+                };
+
+                _currentDbContext.AuthUserVerifyCodes.Add(record);
+                _currentDbContext.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool VerifyUserVerificationCode(int userId, int tenantId, string code, UserVerifyTypes type)
+        {
+            var record = _currentDbContext.AuthUserVerifyCodes.AsNoTracking().Where(x => x.UserId == userId && x.TenantId == tenantId && x.VerifyType == type).OrderByDescending(x => x.Id).FirstOrDefault();
+
+            if (record?.VerifyCode?.Trim() == code.Trim())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> SendSmsBroadcast(string user, string password, string to, string from, string reference, string message)
+        {
+            WebClient client = new WebClient();
+            client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            client.QueryString.Add("username", user);
+            client.QueryString.Add("password", password);
+            client.QueryString.Add("to", to);
+            client.QueryString.Add("from", from);
+            client.QueryString.Add("message", message);
+            client.QueryString.Add("ref", reference);
+            client.QueryString.Add("maxsplit", "1");
+            Uri baseurl = new Uri("https://www.smsbroadcast.co.uk/api-adv.php");
+            Stream data = client.OpenRead(baseurl);
+            StreamReader reader = new StreamReader(data);
+            string s = await reader.ReadToEndAsync();
+            data.Close();
+            reader.Close();
+            return true;
+        }
+
+        public string GenerateVerifyRandomNo()
+        {
+            Random _random = new Random();
+            return _random.Next(0, 999999).ToString("D6");
         }
     }
 }

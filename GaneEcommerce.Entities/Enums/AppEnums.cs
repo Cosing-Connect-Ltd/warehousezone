@@ -541,4 +541,10 @@ namespace Ganedata.Core.Entities.Enums
         Payment = 5,
         OrderConfirmation = 6
     }
+
+    public enum UserVerifyTypes
+    {
+        Mobile = 1,
+        Email = 2
+    }
 }
