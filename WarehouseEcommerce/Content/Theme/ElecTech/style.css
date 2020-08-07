@@ -1337,7 +1337,7 @@ body {
     }
 
 /* 4. What-we-do-area */
-.What-wedo-area {
+.what-we-do-area {
 }
 
 .section-title {
@@ -1381,7 +1381,6 @@ body {
     }
 
 .single-What-wedo {
-    /*background: #f6f6f6 none repeat scroll 0 0;*/
     padding: 10px;
 }
 
@@ -1425,12 +1424,13 @@ body {
 .service-hover {
     padding-top: 40px;
     padding-bottom: 20px;
+    height: 315px;
 }
 
     .service-hover:hover {
         border: 1px solid rgba(0, 0, 0, 0.4);
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        /* height: 315px; */
+        height: 315px; 
         padding-top: 40px;
         padding-bottom: 20px;
     }
