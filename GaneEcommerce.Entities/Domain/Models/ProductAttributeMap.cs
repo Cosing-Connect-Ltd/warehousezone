@@ -1,4 +1,3 @@
-using Ganedata.Core.Entities.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,7 +7,6 @@ namespace Ganedata.Core.Entities.Domain
     [Serializable]
     public class ProductAttributeMap : PersistableEntity<int>
     {
-
         [Key]
         [Display(Name = "Id")]
         public int Id { get; set; }
@@ -21,9 +19,6 @@ namespace Ganedata.Core.Entities.Domain
         public int AttributeId { get; set; }
         [ForeignKey("AttributeId")]
         public virtual ProductAttributes ProductAttributes { get; set; }
-
-
-
     }
 
 }
