@@ -706,6 +706,13 @@ $(function () {
                 $("#DataImportUploadForm #ImportType").val("Products");
                 $("#data-import-results").html("<li>Choose Products CSV File</li>");
             }
+            else if (selectedTabTitle === "Products Attributes") {
+                $("#DataImportUploadForm #ImportType").val("ProductsAttributes");
+                $("#data-import-results").html("<li>Choose Products Attributes CSV File</li>");
+            } else if (selectedTabTitle === "Products/Categories Associations") {
+                $("#DataImportUploadForm #ImportType").val("ProductsCategoriesAssociations");
+                $("#data-import-results").html("<li>Choose Products/Categories Associations CSV File</li>");
+            }
         }
     });
 

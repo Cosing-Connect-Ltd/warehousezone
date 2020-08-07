@@ -50,6 +50,12 @@ namespace WMS.Controllers
 
                     switch (ImportType)
                     {
+                        case "ProductsCategoriesAssociations":
+                            _importFactory.ImportProductsCategoriesAssociations(importFileName, Path.GetFileNameWithoutExtension(file.FileName), CurrentTenantId, CurrentUserId, null).ForEach(m => importResponse += "<li>" + m + "</li>");
+                            break;
+                        case "ProductsAttributes":
+                            importResponse += "<li>" + _importFactory.ImportProductsAttributes(importFileName, CurrentTenantId, CurrentUserId, null) + "</li>";
+                            break;
                         case "Products":
                             importResponse += "<li>" + _importFactory.ImportProducts(importFileName, Path.GetFileNameWithoutExtension(file.FileName), CurrentTenantId, CurrentWarehouseId) + "</li>";
                             break;
@@ -121,6 +127,12 @@ namespace WMS.Controllers
                     string importResponse = "";
                     switch (ImportType)
                     {
+                        case "ProductsCategoriesAssociations":
+                            _importFactory.ImportProductsCategoriesAssociations(importFileName, Path.GetFileNameWithoutExtension(e.UploadedFile.FileName), CurrentTenantId, CurrentUserId, null).ForEach(m => importResponse += "<li>" + m + "</li>");
+                            break;
+                        case "ProductsAttributes":
+                            _importFactory.ImportProductsAttributes(importFileName, CurrentTenantId, CurrentUserId, null).ForEach(m => importResponse += "<li>" + m + "</li>");
+                            break;
                         case "Products":
                             importResponse += "<li>" + _importFactory.ImportProducts(importFileName, Path.GetFileNameWithoutExtension(e.UploadedFile.FileName), CurrentTenantId, CurrentWarehouseId) + "</li>";
                             break;
