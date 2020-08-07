@@ -59,6 +59,19 @@ namespace WMS.Controllers.WebAPI
                 var order = new OrdersSync();
                 var mapped = _mapper.Map(p, order);
                 mapped.TransferWarehouseName = warehouses.FirstOrDefault(x => x.WarehouseId == mapped.TransferWarehouseId)?.WarehouseName;
+
+                //if user is assocaited to the account
+                if (p.AccountID != null)
+                {
+                    var user = UserService.GetAuthUserByAccountId(p.AccountID);
+                    if (user != null)
+                    {
+                        mapped.FullName = user.DisplayName;
+                        mapped.MobileNumber = user.UserMobileNumber;
+
+                    }
+                }
+
                 orders.Add(mapped);
             }
 
@@ -93,6 +106,19 @@ namespace WMS.Controllers.WebAPI
                 var order = new OrdersSync();
                 var mapped = _mapper.Map(p, order);
                 mapped.TransferWarehouseName = warehouses.FirstOrDefault(x => x.WarehouseId == mapped.TransferWarehouseId)?.WarehouseName;
+
+                //if user is assocaited to the account
+                if (p.AccountID != null)
+                {
+                    var user = UserService.GetAuthUserByAccountId(p.AccountID);
+                    if (user != null)
+                    {
+                        mapped.FullName = user.DisplayName;
+                        mapped.MobileNumber = user.UserMobileNumber;
+
+                    }
+                }
+
                 orders.Add(mapped);
             }
 

@@ -102,7 +102,8 @@ namespace Ganedata.Core.Services
 
         public Terminals GetTerminalBySerial(string serialNo)
         {
-            return _currentDbContext.Terminals.FirstOrDefault(e => e.TermainlSerial.Trim().ToLower() == serialNo && e.IsActive == true && e.IsDeleted != true);
+            return _currentDbContext.Terminals.FirstOrDefault(e => e.TermainlSerial.Trim().ToLower() == serialNo && e.IsActive == true && e.IsDeleted != true
+            && e.TenantWarehous.IsDeleted != true && e.TenantWarehous.IsActive == true);
         }
 
         public bool IsOrderDetailLineExist(string skuCode, int orderId, DateTime dateReceived, int tenantId)

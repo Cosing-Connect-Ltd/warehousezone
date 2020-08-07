@@ -1035,6 +1035,10 @@
     <Compile Include="Migrations\202008051214443_increase_value_field_size_in_ProductAttribiteValues_table.designer.cs">
       <DependentUpon>202008051214443_increase_value_field_size_in_ProductAttribiteValues_table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008071924483_loyalty-fields-in-account.cs" />
+    <Compile Include="Migrations\202008071924483_loyalty-fields-in-account.designer.cs">
+      <DependentUpon>202008071924483_loyalty-fields-in-account.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2131,6 +2135,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008051214443_increase_value_field_size_in_ProductAttribiteValues_table.resx">
       <DependentUpon>202008051214443_increase_value_field_size_in_ProductAttribiteValues_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008071924483_loyalty-fields-in-account.resx">
+      <DependentUpon>202008071924483_loyalty-fields-in-account.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

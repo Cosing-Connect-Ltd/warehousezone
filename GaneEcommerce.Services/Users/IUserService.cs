@@ -11,6 +11,7 @@ namespace Ganedata.Core.Services
         IEnumerable<AuthUser> GetAllAuthUsers(int tenantId);
         List<AuthUserListForGridViewModel> GetAllAuthUsersForGrid(int tenantId);
         AuthUser GetAuthUserById(int userId);
+        AuthUser GetAuthUserByAccountId(int? accountId);
         AuthUser GetAuthUserByUserName(string userName, int tenantId);
         List<AuthUser> GetAuthUsersByTenantAndDateUpdated(int tenantId, DateTime dateUpdated);
         int SaveAuthUser(AuthUser user, int userId, int tenantId);

@@ -88,6 +88,9 @@ namespace Ganedata.Core.Models
         public decimal OrderDiscount { get; set; }
         public Guid? OrderToken { get; set; }
         public int? PickerId { get; set; }
+        public string FullName { get; set; }
+        public string MobileNumber { get; set; }
+        public int? ConsignmentTypeId { get; set; }
     }
 
     public class OrderDetailSync

@@ -217,7 +217,7 @@ namespace Ganedata.Core.Services
             return _currentDbContext.AccountContacts.Find(id);
         }
 
-        public Account SaveAccount(Account model, List<int> accountAddressIds, List<int> accountContactIds, int globalCountryIds, int globalCurrencyIds, int priceGroupId, int ownerUserId, List<AccountAddresses> addresses, List<AccountContacts> contacts, int userId, int tenantId, string stopReason = null,int [] MarketId = null)
+        public Account SaveAccount(Account model, List<int> accountAddressIds, List<int> accountContactIds, int globalCountryIds, int globalCurrencyIds, int priceGroupId, int ownerUserId, List<AccountAddresses> addresses, List<AccountContacts> contacts, int userId, int tenantId, string stopReason = null, int[] MarketId = null)
         {
             var account = _currentDbContext.Account.FirstOrDefault(m => m.AccountID == model.AccountID);
 
@@ -259,7 +259,7 @@ namespace Ganedata.Core.Services
                 }
                 if (MarketId != null && MarketId.Any())
                 {
-                    var toadd=MarketId.Except(_currentDbContext.MarketCustomers
+                    var toadd = MarketId.Except(_currentDbContext.MarketCustomers
                             .Where(x => x.AccountId == model.AccountID && x.IsDeleted != true)
                             .Select(x => x.MarketId).ToList()).ToList();
                     foreach (var item in toadd)
@@ -334,6 +334,8 @@ namespace Ganedata.Core.Services
                 account.CreditTerms = model.CreditTerms;
                 account.OwnerUserId = model.OwnerUserId;
                 account.AcceptedShelfLife = model.AcceptedShelfLife;
+                account.AccountLoyaltyCode = model.AccountLoyaltyCode;
+                account.AccountLoyaltyPoints = model.AccountLoyaltyPoints;
 
 
                 if (accountAddressIds == null)
@@ -530,7 +532,7 @@ namespace Ganedata.Core.Services
         {
             if (customeraddresses.AddressID >= 1)
             {
-                var previousAddress = _currentDbContext.AccountAddresses.FirstOrDefault(u=>u.AddressID==customeraddresses.AddressID);
+                var previousAddress = _currentDbContext.AccountAddresses.FirstOrDefault(u => u.AddressID == customeraddresses.AddressID);
                 previousAddress.IsDeleted = true;
                 previousAddress.DateUpdated = DateTime.UtcNow;
                 previousAddress.UpdatedBy = currentUserId;
@@ -580,9 +582,9 @@ namespace Ganedata.Core.Services
             model.AccountTransactionTypeId = trans.AccountTransactionTypeId;
             return model;
         }
-        public string  GetTransactionNumberByOrderId(int orderId)
+        public string GetTransactionNumberByOrderId(int orderId)
         {
-           return _currentDbContext.AccountTransactions.FirstOrDefault(u=>u.OrderId==orderId && u.IsDeleted != true)?.PaymentTransactionId;
+            return _currentDbContext.AccountTransactions.FirstOrDefault(u => u.OrderId == orderId && u.IsDeleted != true)?.PaymentTransactionId;
 
 
         }
