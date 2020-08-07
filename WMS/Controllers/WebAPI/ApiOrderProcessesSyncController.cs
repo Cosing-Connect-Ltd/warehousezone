@@ -63,6 +63,7 @@ namespace WMS.Controllers.WebAPI
                     var pd = _mapper.Map(p, order);
                     orderProcessDetails.Add(pd);
                 }
+
                 pSync.OrderProcessDetails = orderProcessDetails;
                 orderProcesses.Add(pSync);
             }

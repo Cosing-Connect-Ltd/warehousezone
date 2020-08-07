@@ -51,7 +51,7 @@ namespace Ganedata.Core.Entities.Domain
         public string UserTimeZoneId { get; set; }
         public string DisplayName
         {
-            get { return UserLastName + ", " + UserFirstName; }
+            get { return UserFirstName + " " + UserLastName; }
         }
         public decimal OrderValueLimit { get; set; }
         [Display(Name = "User Group")]
