@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using DevExpress.Web.ASPxHtmlEditor;
 using DevExpress.Web.Mvc;
 using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
@@ -67,6 +68,10 @@ namespace WMS.Controllers
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ViewBag.ControllerName = "WebsiteContentPages";
+            bool isValid = true;
+            websiteContentPages.Content = HtmlEditorExtension.GetHtml("Content", new ASPxHtmlEditorHtmlEditingSettings { AllowIFrames = true, AllowHTML5MediaElements = true }, null, null, (sender, args) => {
+                args.Handled = true;
+            }, out isValid);
             SiteName(websiteContentPages.SiteID);
             if (ModelState.IsValid)
             {
@@ -128,6 +133,10 @@ namespace WMS.Controllers
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ViewBag.ControllerName = "WebsiteContentPages";
+            bool isValid = true;
+            websiteContentPages.Content = HtmlEditorExtension.GetHtml("Content",new ASPxHtmlEditorHtmlEditingSettings{ AllowIFrames=true, AllowHTML5MediaElements = true },null,null, (sender, args) => {
+                args.Handled = true;
+            }, out isValid);
             if (ModelState.IsValid)
             {
                 string filePath = "";

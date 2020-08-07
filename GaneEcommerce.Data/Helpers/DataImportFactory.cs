@@ -1,10 +1,11 @@
 using CsvHelper;
+using Elmah;
 using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Domain.ImportModels;
 using Ganedata.Core.Entities.Domain.ViewModels;
 using Ganedata.Core.Entities.Enums;
 using Microsoft.VisualBasic.FileIO;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -13,20 +14,468 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Xml;
-using Elmah;
-using System.Text;
 using System.Xml.Serialization;
-using System.Net.Http;
 
 namespace Ganedata.Core.Data.Helpers
 {
     public class DataImportFactory
     {
         private static string DefaultContactName { get; set; } = "Helpdesk";
+
+        public List<string> ImportProductsCategoriesAssociations(string importPath, string websiteName, int tenantId, int? userId = null, ApplicationContext dbContext = null)
+        {
+            if (dbContext == null)
+            {
+                dbContext = new ApplicationContext();
+            }
+
+            var website = dbContext.TenantWebsites.FirstOrDefault(w => w.SiteName == websiteName && w.IsDeleted != true && w.TenantId == tenantId);
+
+            if (website == null)
+            {
+                return new List<string> { $"Filename should be a valid website name!" };
+            }
+
+            var adminUserId = dbContext.AuthUsers.First(m => m.UserName.Equals("Admin")).UserId;
+            var headers = new List<string>();
+            List<ProductsCategoriesAssociationsImportModel> associationsData = null;
+
+            try
+            {
+                using (var csv = new CsvReader(File.OpenText(importPath), CultureInfo.InvariantCulture))
+                {
+                    csv.Read();
+                    csv.ReadHeader();
+                    headers = csv.Context.HeaderRecord.ToList(); headers = headers.ConvertAll(d => d.ToLower().Replace(" ", string.Empty));
+                    associationsData = csv.GetRecords<ProductsCategoriesAssociationsImportModel>().ToList();
+                }
+            }
+            catch (Exception)
+            {
+                return new List<string> { $"Incorrect file content!" };
+            }
+
+            if (headers.Count < 2 || !headers.Contains("skucode") || !headers.Contains("parentheading"))
+            {
+                return new List<string> { $"incorrect file columns/headers!" };
+            }
+
+            if (associationsData == null || associationsData.Count() <= 0)
+            {
+                return new List<string> { $"Empty file, no values to import!" };
+            }
+
+            var sortedAssociationsData = SortProductsCategoriesAssociationsData(associationsData);
+
+            var exceptionsList = new List<string>();
+            var newlyAddedCategories = new List<string>();
+            var associatedCount = 0;
+            var previouslyAvailableCount = 0;
+            var websiteCategories = website.WebsiteNavigation.Where(n => n.Type == WebsiteNavigationType.Category && n.IsDeleted != true && n.TenantId == tenantId).ToList();
+            var websiteProducts = website.ProductsWebsitesMap.Where(n => n.IsDeleted != true && n.TenantId == tenantId).Select(p => p.ProductMaster.SKUCode).ToList();
+
+            AssociateProductsByCategory(tenantId,
+                                        userId,
+                                        dbContext,
+                                        website,
+                                        sortedAssociationsData,
+                                        ref exceptionsList,
+                                        ref newlyAddedCategories,
+                                        ref associatedCount,
+                                        ref previouslyAvailableCount,
+                                        websiteCategories,
+                                        websiteProducts);
+
+            var result = new List<string>();
+
+            result.Add($"{associatedCount} Associations imported for \"{website.SiteName}\" website navigastion categories.");
+            if (previouslyAvailableCount > 0)
+            {
+                result.Add($"{previouslyAvailableCount} Associations are already available.");
+            }
+            if (newlyAddedCategories.Count() > 0)
+            {
+                result.Add($"{exceptionsList.Count} New Categories Added, please change the categories visibility settings from webdile categories list.");
+                result.Add($"New categories list :");
+                result.AddRange(newlyAddedCategories);
+                result.Add($"___________________________________________________________________________________________");
+            }
+            if (exceptionsList.Count > 0)
+            {
+                result.Add($"{exceptionsList.Count} Failures in import process :");
+                result.AddRange(exceptionsList);
+            }
+
+            return result;
+        }
+
+        private static List<SortedProductCategoriesAssociationsImportModel> SortProductsCategoriesAssociationsData(List<ProductsCategoriesAssociationsImportModel> associationsData)
+        {
+            return associationsData.Where(a => !string.IsNullOrEmpty(a.ParentHeading?.Trim()) && !string.IsNullOrEmpty(a.SkuCode?.Trim()))
+                                                         .GroupBy(a => a.ParentHeading)
+                                                         .Select(g =>
+                                                         {
+                                                             return new SortedProductCategoriesAssociationsImportModel
+                                                             {
+                                                                 CategoryName = g.Key,
+                                                                 AssociatedSkuCodes = g.Where(gc => (string.IsNullOrEmpty(gc.ChildHeading?.Trim()) || gc.ChildHeading == g.Key) &&
+                                                                                                    (string.IsNullOrEmpty(gc.SubChildHeading?.Trim()) || gc.SubChildHeading == g.Key))
+                                                                                       .Select(gc => gc.SkuCode.Trim()).ToList(),
+                                                                 Childs = g.Where(gc => !string.IsNullOrEmpty(gc.ChildHeading?.Trim()) && gc.ChildHeading?.ToLower()?.Trim() != g.Key?.ToLower()?.Trim())
+                                                                           .GroupBy(a => a.ChildHeading)
+                                                                           .Select(gc =>
+                                                                           {
+                                                                               return new SortedProductCategoriesAssociationsImportModel
+                                                                               {
+                                                                                   CategoryName = gc.Key,
+                                                                                   AssociatedSkuCodes = gc.Where(gsc => (string.IsNullOrEmpty(gsc.SubChildHeading?.Trim()) || gsc.SubChildHeading == gc.Key))
+                                                                                                         .Select(gsc => gsc.SkuCode.Trim()).ToList(),
+                                                                                   Childs = gc.Where(gdc => !string.IsNullOrEmpty(gdc.SubChildHeading?.Trim()) && gdc.SubChildHeading?.ToLower()?.Trim() != gc.Key?.ToLower()?.Trim())
+                                                                                              .GroupBy(a => a.SubChildHeading)
+                                                                                              .Select(gdc =>
+                                                                                              {
+                                                                                                  return new SortedProductCategoriesAssociationsImportModel
+                                                                                                  {
+                                                                                                      CategoryName = gdc.Key,
+                                                                                                      AssociatedSkuCodes = gdc.Select(gsc => gsc.SkuCode.Trim()).ToList()
+                                                                                                  };
+                                                                                              }).ToList()
+                                                                               };
+                                                                           }).ToList()
+                                                             };
+                                                         }).ToList();
+        }
+
+        private static void AssociateProductsByCategory(int tenantId,
+                                                        int? userId,
+                                                        ApplicationContext dbContext,
+                                                        TenantWebsites website,
+                                                        IEnumerable<SortedProductCategoriesAssociationsImportModel> categoriesData,
+                                                        ref List<string> resultList,
+                                                        ref List<string> newlyAddedCategories,
+                                                        ref int associatedCount,
+                                                        ref int previouslyAvailableCount,
+                                                        List<WebsiteNavigation> websiteCategories,
+                                                        List<string> websiteProducts,
+                                                        WebsiteNavigation parentCategory = null)
+        {
+            foreach (var categoryData in categoriesData)
+            {
+                var parentCategoryId = parentCategory?.Id;
+                var category = websiteCategories.FirstOrDefault(c => c.Name.ToLower().Trim() == categoryData.CategoryName.ToLower().Trim() && c.ParentId == parentCategoryId);
+
+                if (category == null)
+                {
+                    newlyAddedCategories.Add($"<span style=\"color: green\">\"{categoryData.CategoryName}\" Category {(!string.IsNullOrEmpty(parentCategory?.Name) ? $"with \"{parentCategory.Name}\" parent category" : string.Empty)}</span>");
+
+                    dbContext.WebsiteNavigations.Add(new WebsiteNavigation {
+                                                                        CreatedBy = userId,
+                                                                        DateCreated = DateTime.Now,
+                                                                        IsActive = true,
+                                                                        Name = categoryData.CategoryName,
+                                                                        ParentId = parentCategoryId,
+                                                                        ShowInNavigation = parentCategory?.ShowInNavigation ?? false,
+                                                                        SiteID = website.SiteID,
+                                                                        TenantId = tenantId,
+                                                                        Type = WebsiteNavigationType.Category,
+                                                                        SortOrder = 0
+                                                                    });
+
+                    dbContext.SaveChanges();
+                    category = dbContext.WebsiteNavigations.FirstOrDefault(c => c.Name == categoryData.CategoryName && c.ParentId == parentCategoryId && c.SiteID == website.SiteID && c.IsActive && c.IsDeleted != true);
+                }
+
+                try
+                {
+                    AssociatProductsAndWebsite(tenantId, userId, dbContext, website.SiteID, websiteProducts, categoryData.AssociatedSkuCodes);
+                }
+                catch (Exception ex)
+                {
+                    resultList.Add($"Unable to associate products related by \"{categoryData.CategoryName}\" category with website. Error message: {ex.Message}");
+                    continue;
+                }
+
+                try
+                {
+                    var newlyAssociatedProductsCount = AssociateProductsAndNavigationCategories(tenantId, userId, dbContext, category, categoryData.AssociatedSkuCodes, website.SiteID);
+                    associatedCount += newlyAssociatedProductsCount;
+                    previouslyAvailableCount = categoryData.AssociatedSkuCodes.Count() - newlyAssociatedProductsCount;
+                }
+                catch (Exception ex)
+                {
+                    resultList.Add($"Unable to associate products by \"{categoryData.CategoryName}\" category. Error message: {ex.Message}");
+                    continue;
+                }
+
+                if (categoryData.Childs != null && categoryData.Childs.Count() > 0)
+                {
+                    AssociateProductsByCategory(tenantId,
+                                                userId,
+                                                dbContext,
+                                                website,
+                                                categoryData.Childs,
+                                                ref resultList,
+                                                ref newlyAddedCategories,
+                                                ref associatedCount,
+                                                ref previouslyAvailableCount,
+                                                websiteCategories,
+                                                websiteProducts,
+                                                category);
+                }
+            }
+        }
+
+        private static int AssociateProductsAndNavigationCategories(int tenantId, int? userId, ApplicationContext dbContext, WebsiteNavigation category, List<string> associatedSkuCodes, int siteId)
+        {
+            if (associatedSkuCodes == null || associatedSkuCodes.Count() <= 0)
+            {
+                return 0;
+            }
+
+            var unassociatedProductsWebsitesMapIds = dbContext.ProductsWebsitesMap.Where(p => associatedSkuCodes.Contains(p.ProductMaster.SKUCode) &&
+                                                                                           p.IsDeleted != true &&
+                                                                                           p.SiteID == siteId &&
+                                                                                           p.TenantId == tenantId)
+                                                                                .Select(p => p.Id)
+                                                                                .ToList()
+                                                                                .Where(id => (category.ProductsNavigationMap?.Any(pa => pa.IsDeleted != true &&
+                                                                                                                                 pa.ProductWebsiteMapId == id &&
+                                                                                                                                 pa.NavigationId == category.Id &&
+                                                                                                                                 pa.TenantId == tenantId) != true))
+                                                                                .ToList();
+
+
+            if (unassociatedProductsWebsitesMapIds != null && unassociatedProductsWebsitesMapIds.Count() > 0)
+            {
+                dbContext.ProductsNavigationMaps.AddRange(unassociatedProductsWebsitesMapIds.ToList()
+                                                                                          .Select(id => new ProductsNavigationMap
+                                                                                                            {
+                                                                                                                CreatedBy = userId,
+                                                                                                                DateCreated = DateTime.Now,
+                                                                                                                IsActive = true,
+                                                                                                                NavigationId = category.Id,
+                                                                                                                ProductWebsiteMapId = id,
+                                                                                                                TenantId = tenantId
+                                                                                                            })
+                                                                                            .ToList());
+
+                dbContext.SaveChanges();
+            }
+
+            return unassociatedProductsWebsitesMapIds.Count();
+        }
+
+        private static void AssociatProductsAndWebsite(int tenantId, int? userId, ApplicationContext dbContext, int siteId, List<string> websiteProducts, List<string> associatedSkuCodes)
+        {
+            if (associatedSkuCodes == null || associatedSkuCodes.Count() <= 0)
+            {
+                return;
+            }
+            var newAssociationSkuCodes = associatedSkuCodes.Where(s => !websiteProducts.Contains(s)).ToList();
+            if (newAssociationSkuCodes != null && newAssociationSkuCodes.Count() > 0)
+            {
+                var newProductsWebsitesMaps = dbContext.ProductMaster.Where(p => newAssociationSkuCodes.Contains(p.SKUCode) && p.IsDeleted != true && p.TenantId == tenantId)
+                                                                     .ToList()
+                                                                     .Select(p => new ProductsWebsitesMap
+                                                                                    {
+                                                                                        IsActive = true,
+                                                                                        ProductId = p.ProductId,
+                                                                                        SiteID = siteId,
+                                                                                        DateCreated = DateTime.Now,
+                                                                                        CreatedBy = userId,
+                                                                                        SortOrder = 0,
+                                                                                        TenantId = tenantId
+                                                                                    })
+                                                                     .ToList();
+                dbContext.ProductsWebsitesMap.AddRange(newProductsWebsitesMaps);
+                dbContext.SaveChanges();
+            }
+        }
+
+        public List<string> ImportProductsAttributes(string importPath, int tenantId, int? userId = null, ApplicationContext dbContext = null)
+        {
+            if (dbContext == null)
+            {
+                dbContext = new ApplicationContext();
+            }
+            var adminUserId = dbContext.AuthUsers.First(m => m.UserName.Equals("Admin")).UserId;
+            var headers = new List<string>();
+            List<ProductAttributeImportModel> productAttributesData = null;
+
+
+            using (var csv = new CsvReader(File.OpenText(importPath), CultureInfo.InvariantCulture))
+            {
+                try
+                {
+                    csv.Read();
+                    csv.ReadHeader();
+                    headers = csv.Context.HeaderRecord.ToList(); headers = headers.ConvertAll(d => d.ToLower().Replace(" ", string.Empty));
+                    productAttributesData = csv.GetRecords<ProductAttributeImportModel>().ToList();
+                }
+                catch (Exception)
+                {
+                    return new List<string> { $"Incorrect file content!" };
+                }
+            }
+
+            if (headers.Count != 3 || !headers.Contains("skucode") || !headers.Contains("attribute") || !headers.Contains("attributevalue"))
+            {
+                return new List<string> { $"incorrect file columns/headers!" };
+            }
+
+            if (productAttributesData == null || productAttributesData.Count() <= 0)
+            {
+                return new List<string> { $"Empty file, no values to import!" };
+            }
+
+            var sortedProductAttributesData = productAttributesData.GroupBy(p => p.Attribute)
+                                                                   .Select(g =>
+                                                                    {
+                                                                        return new
+                                                                        {
+                                                                            Name = g.Key,
+                                                                            AttriButeValues = g.GroupBy(ga => ga.AttributeValue)
+                                                                                               .Where(f => !string.IsNullOrEmpty(f.Key?.Trim()) && g.Any())
+                                                                                               .Select(gad => {
+                                                                                                           return new {
+                                                                                                               Value = gad.Key,
+                                                                                                               ProductSkuCodes = gad.Select(a => a.SkuCode).Distinct().OrderBy(s => s)
+                                                                                                           };
+                                                                                                        })
+                                                                        };
+                                                                    })
+                                                                   .Where(at => !string.IsNullOrEmpty(at.Name?.Trim()) &&
+                                                                                at.AttriButeValues.Any(a => a.ProductSkuCodes.Any()));
+
+            var resultList = new List<string>();
+            var associatedCount = 0;
+            var previouslyAvailableCount = 0;
+
+            foreach (var attributeData in sortedProductAttributesData)
+            {
+                ProductAttributes attribute = null;
+                try
+                {
+                    attribute = GetOrAddAttribute(attributeData.Name, dbContext);
+
+                    foreach (var attributeValueData in attributeData.AttriButeValues)
+                    {
+                        ProductAttributeValues attributeValue = null;
+                        try
+                        {
+                            attributeValue = GetOrAddAttributeValue(attribute, attributeValueData.Value, dbContext, userId, tenantId);
+
+                            foreach (var skuCode in attributeValueData.ProductSkuCodes)
+                            {
+                                if (dbContext.ProductAttributeValuesMap.Any(a => a.AttributeValueId == attributeValue.AttributeValueId && a.ProductMaster.SKUCode == skuCode && a.IsDeleted != true))
+                                {
+                                    previouslyAvailableCount++;
+                                    continue;
+                                }
+
+                                var productQuery = dbContext.ProductMaster.Where(p => p.IsDeleted != true && p.SKUCode == skuCode && p.TenantId == tenantId);
+
+                                if (!productQuery.Any())
+                                {
+                                    resultList.Add($"Related product not found for SkuCode : \"{skuCode}\"");
+                                    continue;
+                                }
+
+                                try
+                                {
+                                    AssociateProductAttribute(attributeValue.AttributeValueId, productQuery.First().ProductId, dbContext, userId, tenantId);
+                                    associatedCount++;
+                                }
+                                catch (Exception ex)
+                                {
+                                    resultList.Add($"Failed to associate attribute value \"{attributeValueData.Value}\" and product : \"{skuCode}\". Exception message : {ex.Message}");
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            resultList.Add($"Failed to get/create attribute value : \"{attributeValueData.Value}\". Exception message : {ex.Message}");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    resultList.Add($"Failed to get/create attribute : \"{attributeData.Name}\". Exception message : {ex.Message}");
+                }
+
+                dbContext.SaveChanges();
+            }
+
+            if (resultList.Count > 0)
+            {
+                resultList.Insert(0, $"{resultList.Count} Products attribute associations failed to import. List of failures :");
+            }
+            if (previouslyAvailableCount > 0)
+            {
+                resultList.Insert(0, $"{previouslyAvailableCount} Products attribute associations are already available.");
+            }
+
+            resultList.Insert(0, $"{associatedCount} Products attributes imported.");
+
+            return resultList;
+        }
+
+        private bool AssociateProductAttribute(int attributeValueId, int productId, ApplicationContext dbContext, int? userId, int tenantId)
+        {
+            dbContext.ProductAttributeValuesMap.Add(new ProductAttributeValuesMap
+            {
+                AttributeValueId = attributeValueId,
+                ProductId = productId,
+                CreatedBy = userId,
+                TenantId = tenantId,
+                DateCreated = DateTime.Now
+            });
+
+            return true;
+        }
+
+        private ProductAttributeValues GetOrAddAttributeValue(ProductAttributes attribute, string value, ApplicationContext dbContext, int? userId, int tenantId)
+        {
+            var attributeValue = dbContext.ProductAttributeValues.FirstOrDefault(a => a.AttributeId == attribute.AttributeId && a.Value == value && a.IsDeleted != true);
+
+            if (attributeValue == null)
+            {
+                attributeValue = dbContext.ProductAttributeValues.Add(new ProductAttributeValues
+                {
+                    SortOrder = 0,
+                    DateCreated = DateTime.Now,
+                    CreatedBy = userId,
+                    AttributeId = attribute.AttributeId,
+                    Color = attribute.IsColorTyped ? value : string.Empty,
+                    Value = value,
+                    TenantId = tenantId
+                });
+                dbContext.SaveChanges();
+            }
+            return attributeValue;
+        }
+
+        private static ProductAttributes GetOrAddAttribute(string name, ApplicationContext dbContext)
+        {
+            var attribute = dbContext.ProductAttributes.FirstOrDefault(a => a.AttributeName == name && a.IsDeleted != true);
+
+            if (attribute == null)
+            {
+                attribute = dbContext.ProductAttributes.Add(new ProductAttributes {
+                                                                    AttributeName = name,
+                                                                    SortOrder = 0,
+                                                                    IsColorTyped = name.ToLower().Contains("colour") || name.ToLower().Contains("color"),
+                                                                });
+                dbContext.SaveChanges();
+            }
+            return attribute;
+        }
 
         public string ImportSupplierAccounts(string importPath, int tenantId, ApplicationContext context = null, int? userId = null, bool withMarketInfo = false)
         {

@@ -81,7 +81,7 @@ namespace Ganedata.Core.Services
                         {
                             if (HttpContext.Current.Session["CurrentWarehouseId"] == null)
                             {
-                                HttpContext.Current.Session["CurrentWarehouseId"] = tenant.TenantLocations.FirstOrDefault().WarehouseId;
+                                HttpContext.Current.Session["CurrentWarehouseId"] = tenant.TenantLocations.Where(x => x.IsDeleted != true && x.IsActive == true).FirstOrDefault().WarehouseId;
                             }
                             Status = true;
                             return Status;
@@ -91,7 +91,8 @@ namespace Ganedata.Core.Services
                         {
                             if (user.AuthPermissions.Any())
                             {
-                                CurrentWarehouseId = user.AuthPermissions.FirstOrDefault().WarehouseId;
+                                CurrentWarehouseId = user.AuthPermissions.Where(x => x.IsDeleted != true && x.IsActive != false && x.TenantLocation.IsDeleted != true
+                                && x.TenantLocation.IsActive != false).FirstOrDefault().WarehouseId;
                             }
                             HttpContext.Current.Session["CurrentWarehouseId"] = CurrentWarehouseId;
 

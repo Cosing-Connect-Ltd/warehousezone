@@ -9,6 +9,7 @@ using System.Web.Http;
 using Ganedata.Core.Entities.Enums;
 using System.Threading.Tasks;
 using AutoMapper;
+using System.Net;
 
 namespace WMS.Controllers.WebAPI
 {
@@ -298,7 +299,7 @@ namespace WMS.Controllers.WebAPI
                 }
 
 
-                AuthUser authuser = new AuthUser();
+                AuthUser authUser = new AuthUser();
                 Account account = new Account();
                 account.AccountCode = user.UserFirstName + GaneStaticAppExtensions.GenerateRandomNo();
                 account.CompanyName = account.AccountCode;
@@ -307,22 +308,23 @@ namespace WMS.Controllers.WebAPI
                 account.AccountStatusID = AccountStatusEnum.Active;
                 var accountModel = _accountServices.SaveAccount(account, null, null, 1, 1, 1, 1, null, null, 0, user.TenantId, null);
 
-                authuser.UserEmail = user.UserEmail;
-                authuser.UserFirstName = user.UserFirstName;
-                authuser.UserLastName = user.UserLastName;
-                authuser.UserPassword = user.Md5Pass;
-                authuser.UserName = user.UserName;
-                authuser.UserMobileNumber = user.UserMobileNumber;
+                authUser.UserEmail = user.UserEmail;
+                authUser.UserFirstName = user.UserFirstName;
+                authUser.UserLastName = user.UserLastName;
+                authUser.UserPassword = user.Md5Pass;
+                authUser.UserName = user.UserName;
+                authUser.UserMobileNumber = user.UserMobileNumber;
 
-                authuser.IsActive = false;
-                authuser.WebUser = true;
-                authuser.AccountId = accountModel.AccountID;
-                int res = _userService.SaveAuthUser(authuser, 0, user.TenantId);
+                authUser.IsActive = true;
+                authUser.WebUser = true;
+                authUser.VerificationRequired = true;
+                authUser.AccountId = accountModel.AccountID;
+                int res = _userService.SaveAuthUser(authUser, 0, user.TenantId);
                 if (res > 0)
                 {
-                    await _userService.CreateUserVerificationCode(authuser.UserId, terminal.TenantId, UserVerifyTypes.Mobile);
+                    await _userService.CreateUserVerificationCode(authUser.UserId, terminal.TenantId, UserVerifyTypes.Mobile);
                     UserLoginStatusResponseViewModel resp = new UserLoginStatusResponseViewModel();
-                    _mapper.Map(authuser, resp);
+                    _mapper.Map(authUser, resp);
                     resp.Success = true;
                     return Ok(resp);
                 }
@@ -382,6 +384,8 @@ namespace WMS.Controllers.WebAPI
                 UserLoginStatusResponseViewModel resp = new UserLoginStatusResponseViewModel();
                 var authUser = _userService.GetAuthUserById(request.UserId);
                 authUser.MobileNumberVerified = true;
+                authUser.VerificationRequired = false;
+                authUser.UserPassword = null;
                 _userService.UpdateAuthUser(authUser, 0, terminal.TenantId);
                 _mapper.Map(authUser, resp);
                 resp.Success = true;
@@ -389,7 +393,7 @@ namespace WMS.Controllers.WebAPI
             }
             else
             {
-                return Unauthorized();
+                return StatusCode(HttpStatusCode.NotAcceptable);
             }
         }
     }
