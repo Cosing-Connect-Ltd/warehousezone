@@ -21,7 +21,7 @@ namespace Ganedata.Core.Entities.Domain
         public bool IsActive { get; set; }
         [ForeignKey("ActivityId")]
         public virtual AuthActivity AuthActivity { get; set; }
-        [ForeignKey("UserId")] 
+        [ForeignKey("UserId")]
         public virtual AuthUser AuthUser { get; set; }
         [ForeignKey("WarehouseId")]
         public virtual TenantLocations TenantLocation { get; set; }

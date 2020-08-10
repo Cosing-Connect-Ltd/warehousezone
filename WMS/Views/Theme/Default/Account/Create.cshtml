@@ -106,29 +106,12 @@
             </div>
         </div>
         <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.TaxID, htmlAttributes: new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.DropDownList("TaxID", null, String.Empty, new { @class = "chosen-select" })
-                @Html.ValidationMessageFor(model => model.TaxID)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
             @Html.LabelFor(model => model.AcceptedShelfLife, htmlAttributes: new { @class = "col-md-4" })
             <div class="col-md-8">
                 @Html.EditorFor(model => model.AcceptedShelfLife)
                 @Html.ValidationMessageFor(model => model.AcceptedShelfLife)
             </div>
         </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            <label class="col-md-4">Select Market</label>
-            <div class="col-md-8">
-                @Html.DropDownList("CustomersMarketIds", ViewBag.MarketDetailId as MultiSelectList, new { Multiple = "multiple", @class = "chosen-select", data_placeholder = "Choose Markets" })
-
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6 pull-left">
-
         <div class="input-group h-100 justify-content-center align-items-center">
             @Html.LabelFor(m => m.CreditLimit, htmlAttributes: new { @class = "col-md-4" })
             <div class="col-md-8">
@@ -162,7 +145,36 @@
                 @Html.ValidationMessageFor(model => model.CreditTerms)
             </div>
         </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.AccountLoyaltyCode, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.AccountLoyaltyCode)
+                @Html.ValidationMessageFor(model => model.AccountLoyaltyCode)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.AccountLoyaltyPoints, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.AccountLoyaltyPoints)
+                @Html.ValidationMessageFor(model => model.AccountLoyaltyPoints)
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 pull-left">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.TaxID, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownList("TaxID", null, String.Empty, new { @class = "chosen-select" })
+                @Html.ValidationMessageFor(model => model.TaxID)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <label class="col-md-4">Select Market</label>
+            <div class="col-md-8">
+                @Html.DropDownList("CustomersMarketIds", ViewBag.MarketDetailId as MultiSelectList, new { Multiple = "multiple", @class = "chosen-select", data_placeholder = "Choose Markets" })
 
+            </div>
+        </div>
         <div class="input-group h-100 justify-content-center align-items-center">
             @Html.Label("Country", htmlAttributes: new { @class = "col-md-4" })
             <div class="col-md-8">

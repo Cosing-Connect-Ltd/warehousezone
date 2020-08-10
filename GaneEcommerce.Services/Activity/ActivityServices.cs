@@ -181,11 +181,12 @@ namespace Ganedata.Core.Services
 
         public List<WarehousePermissionViewModel> GetAllPermittedWarehousesForUser(int userId, int tenantId, bool isSuperAdmin = false, bool includeMobileLocations = false)
         {
-            var allWarehouses = _currentDbContext.TenantWarehouses.Where(x => x.TenantId == tenantId && (includeMobileLocations || x.IsMobile != true)).ToList();
+            var allWarehouses = _currentDbContext.TenantWarehouses.Where(x => x.TenantId == tenantId && x.IsDeleted != true && x.IsActive == true
+            && (includeMobileLocations || x.IsMobile != true)).ToList();
 
             if (!isSuperAdmin)
             {
-                var userWarehouses = _currentDbContext.AuthPermissions.Where(u => u.UserId == userId)
+                var userWarehouses = _currentDbContext.AuthPermissions.Where(u => u.UserId == userId && u.TenantLocation.IsDeleted != true && u.IsActive == true)
                     .Select(m => m.TenantLocation.WarehouseId);
                 allWarehouses.RemoveAll(m => !userWarehouses.Contains(m.WarehouseId));
             }

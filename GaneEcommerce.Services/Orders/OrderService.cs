@@ -1246,7 +1246,9 @@ namespace Ganedata.Core.Services
                     OrderDiscount = item.OrderProcessDiscount,
                     InvoiceNo = item.TerminalInvoiceNumber,
                     OrderToken = item.OrderToken,
-                    ConsignmentTypeId = item.ConsignmentTypeId
+                    ConsignmentTypeId = item.ConsignmentTypeId,
+                    ShipmentAddressLine1 = item.ShipmentAddressLine1,
+                    ShipmentAddressPostcode = item.ShipmentAddressPostcode
                 };
 
                 var orderDetails = item.OrderProcessDetails.Select(m => new OrderDetail()

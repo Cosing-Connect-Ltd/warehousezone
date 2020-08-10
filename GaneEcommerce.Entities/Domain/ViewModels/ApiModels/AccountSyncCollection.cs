@@ -45,6 +45,8 @@ namespace Ganedata.Core.Models
         public int TaxID { get; set; }
         public decimal TaxPercent { get; set; }
         public int? AcceptedShelfLife { get; set; }
+        public string AccountLoyaltyCode { get; set; }
+        public int AccountLoyaltyPoints { get; set; }
     }
 
     public class TenantPriceGroupsSyncCollection

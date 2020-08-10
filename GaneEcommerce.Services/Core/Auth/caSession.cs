@@ -91,8 +91,7 @@ namespace Ganedata.Core.Services
                         {
                             if (user.AuthPermissions.Any())
                             {
-                                CurrentWarehouseId = user.AuthPermissions.Where(x => x.IsDeleted != true && x.IsActive != false && x.TenantLocation.IsDeleted != true
-                                && x.TenantLocation.IsActive != false).FirstOrDefault().WarehouseId;
+                                CurrentWarehouseId = user.AuthPermissions.Where(x => x.IsDeleted != true && x.IsActive != false).FirstOrDefault().WarehouseId;
                             }
                             HttpContext.Current.Session["CurrentWarehouseId"] = CurrentWarehouseId;
 

@@ -62,6 +62,7 @@ namespace Ganedata.Core.Services
 
             var Users = context.AuthUsers.AsNoTracking().Where(e => e.UserName.Equals(uname, StringComparison.CurrentCultureIgnoreCase) && e.UserPassword == upass.Trim() && e.TenantId == TenantId && e.IsActive && e.IsDeleted != true)
                 .Include(x => x.AuthPermissions.Select(y => y.AuthActivity))
+                .Include(x => x.AuthPermissions.Select(y => y.TenantLocation))
                 .ToList();
 
             if (Users.Any() && Users.Count() < 2)
@@ -80,7 +81,7 @@ namespace Ganedata.Core.Services
                 IsActive = user.IsActive;
                 IsDeleted = user.IsDeleted;
                 TenantId = user.TenantId;
-                AuthPermissions = user.AuthPermissions;
+                AuthPermissions = user.AuthPermissions.Where(x => x.IsDeleted != true && x.IsActive == true && x.TenantLocation.IsDeleted != true && x.TenantLocation.IsActive == true).ToList();
                 SuperUser = user.SuperUser;
                 UserCulture = user.UserCulture;
                 UserTimeZoneId = user.UserTimeZoneId;

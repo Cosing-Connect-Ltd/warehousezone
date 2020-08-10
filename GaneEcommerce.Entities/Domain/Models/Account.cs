@@ -158,6 +158,10 @@ namespace Ganedata.Core.Entities.Domain
         public bool CashOnlyAccount { get; set; }
         [Display(Name = "Credit Terms (days)")]
         public short? CreditTerms { get; set; }
+        [Display(Name = "Loyalty Code")]
+        public string AccountLoyaltyCode { get; set; }
+        [Display(Name = "Loyalty Points")]
+        public int AccountLoyaltyPoints { get; set; }
 
     }
 
