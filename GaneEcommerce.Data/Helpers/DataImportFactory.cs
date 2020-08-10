@@ -101,7 +101,7 @@ namespace Ganedata.Core.Data.Helpers
             }
             if (newlyAddedCategories.Count() > 0)
             {
-                result.Add($"{exceptionsList.Count} New Categories Added, please change the categories visibility settings from webdile categories list.");
+                result.Add($"{newlyAddedCategories.Count} New Categories Added, please change the categories visibility settings from webdile categories list.");
                 result.Add($"New categories list :");
                 result.AddRange(newlyAddedCategories);
                 result.Add($"___________________________________________________________________________________________");
