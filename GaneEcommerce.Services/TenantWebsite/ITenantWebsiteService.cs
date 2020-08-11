@@ -95,12 +95,12 @@ namespace Ganedata.Core.Services
 
 
         // WebsiteSearching Realted Queries
-        IQueryable<ProductMaster> GetAllValidProductWebsiteSearch(int siteId, string category = "", string ProductName = "");
+        IQueryable<ProductMaster> GetAllValidProductWebsiteSearch(int siteId, string category = "", string ProductName = "", int? categoryId = null);
         IQueryable<ProductMaster> GetAllValidProductForDynamicFilter(int siteId, List<int> productIds);
-        Dictionary<ProductAttributes, List<ProductAttributeValues>> GetAllValidProductAttributeValuesByProductIds(IQueryable<ProductMaster> product);
-        Tuple<string, string> AllPriceListAgainstGroupAndDept(IQueryable<ProductMaster> productMasters,int siteId);
-        IEnumerable<ProductManufacturer> GetAllValidProductManufacturerGroupAndDeptByName(IQueryable<ProductMaster> productMasters);
-        string CategoryAndSubCategoryBreedCrumb(int siteId, int? productId = null, string Category = "", string SubCategory = "");
+        Dictionary<ProductAttributes, List<ProductAttributeValues>> GetAllValidProductAttributeValuesByProductIds(IQueryable<ProductMaster> products);
+        Tuple<string, string> GetAvailablePricesRange(IQueryable<ProductMaster> products,int siteId);
+        IEnumerable<ProductManufacturer> GetAllValidProductManufacturers(List<int> manufacturerIds);
+        WebsiteNavigation GetProductCategoryByProductId(int siteId, int productId);
 
         // WebsiteCartAndWishlist
 

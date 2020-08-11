@@ -1,5 +1,4 @@
-﻿@using Ganedata.Core.Entities.Domain
-@using Ganedata.Core.Entities.Enums;
+﻿@using Ganedata.Core.Entities.Enums;
 @model List<Ganedata.Core.Entities.Domain.WebsiteNavigation>
 <nav class="nb_mainnav">
     <ul class="nb_mainnav_list">
@@ -170,7 +169,7 @@
                 {
                     <li class="hav_mega_nav">
                         <div class="nav-drop-btn">
-                            <a href="@Url.Action("list", "Products", new { category = item.Name})">
+                            <a href="@Url.Action("list", "Products", new { category = item.Name, categoryId = item.Id})">
                                 @item.Name
                             </a>
                             <span id="@item.Id" onclick="showCategoryContent(event)"></span>
@@ -178,13 +177,13 @@
                         <div class="mega_nav_wrap content_@item.Id">
                             @{ var imagePath = !string.IsNullOrEmpty(item.Image) ? ViewBag.BaseFilePath + item.Image : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif";}
                             <style>
-                                #category-@item.Name:before {
+                                #category-@(item.Name.ToLower().Replace(" ", "-")):before {
                                     background-image:url('@imagePath')
                                 }
                             </style>
-                            <div class="mega_nav_wrap_inner" id="category-@item.Name">
+                            <div class="mega_nav_wrap_inner" id="category-@(item.Name.ToLower().Replace(" ", "-"))">
                                 <h3 class="head">
-                                    <a class="head" href="@Url.Action("list", "Products", new { category = item.Name})">
+                                    <a class="head" href="@Url.Action("list", "Products", new { category = item.Name, categoryId = item.Id})">
                                         @item.Name
                                     </a>
                                 </h3>
@@ -196,7 +195,7 @@
                                         if (i == 1)
                                         {
                                             <li data-image-nav-src="@item.Image">
-                                                <a href="@Url.Action("list", "Products", new { category = item1.Name})">
+                                                <a href="@Url.Action("list", "Products", new { category = item1.Name, categoryId = item1.Id})">
                                                     @item1.Name
                                                 </a>
                                                 @if (level2.Any())
@@ -204,11 +203,7 @@
                                                     <ul class="subList">
                                                         @foreach (var item2 in level2)
                                                         {
-
-                                                            <li><a href="@Url.Action("list", "Products", new { category = item2.Name})">@item2.Name</a></li>
-
-
-
+                                                            <li><a href="@Url.Action("list", "Products", new { category = item2.Name, categoryId = item2.Id})">@item2.Name</a></li>
                                                         }
 
                                                     </ul>
@@ -226,11 +221,7 @@
                                                     <ul class="subList">
                                                         @foreach (var item2 in level2)
                                                         {
-
                                                             <li><a href="@Url.Action("list", "Product")">@item2.Name</a></li>
-
-
-
                                                         }
 
                                                     </ul>
@@ -250,69 +241,12 @@
                 {
 
                     <li>
-                        <a href="@Url.Action("list", "Products", new { category = item.Name})">
+                        <a href="@Url.Action("list", "Products", new { category = item.Name, categoryId = item.Id})">
                             @item.Name
                         </a>
                     </li>
                 }
             }
-
-
-
-            @*<li>
-                    <a href="">
-                        New
-                    </a>
-                </li>
-                <li class="hav_mega_nav">
-                    <a href="listingpage.html">
-                        Clothing
-                    </a>
-                    <div class="mega_nav_wrap">
-                        <div class="mega_nav_wrap_inner">
-                            <h3 class="head">Clothing</h3>
-                            <ul class="meganav_firstcatList">
-                                <li data-image-nav-src="~/Content/Theme/University/app/images/meganavimg_mens.jpg">
-                                    <a href="@Url.Action("list", "Product")">
-                                        Men
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="listingpage.html">
-                                        Women
-                                    </a>
-                                    <ul class="subList">
-                                        <li><a href="#">Jogging Bottom</a></li>
-                                        <li><a href="#">Zip Performance Top</a></li>
-                                        <li><a href="#">Jogging Shorts</a></li>
-                                        <li><a href="#">T-Shirts</a></li>
-                                        <li><a href="#">Leggings </a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="listingpage.html">
-                                        Accessories
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <a href="listingpage.html">
-                        Sportwear
-                    </a>
-                </li>
-                <li>
-                    <a href="listingpage.html">
-                        Merchandise
-                    </a>
-                </li>
-                <li>
-                    <a href="listingpage.html">
-                        Graduation
-                    </a>
-                </li>*@
         }
     </ul>
 </nav>

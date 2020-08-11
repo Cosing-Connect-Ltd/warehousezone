@@ -44,6 +44,16 @@ namespace Ganedata.Core.Services
             _accountServices = accountServices;
         }
 
+        public WebsiteNavigation GetProductCategoryByProductId(int siteId, int productId)
+        {
+            return _currentDbContext.ProductsWebsitesMap.FirstOrDefault(u => u.SiteID == siteId &&
+                                                                             u.ProductId == productId &&
+                                                                             u.IsDeleted != true &&
+                                                                             u.IsActive == true)?
+                                                        .ProductsNavigationMap.FirstOrDefault()?
+                                                        .WebsiteNavigation;
+        }
+
         public bool VerifyProductAgainstWebsite(int productId, int siteId)
         {
             return _currentDbContext.ProductsWebsitesMap.Any(u =>
@@ -242,12 +252,20 @@ namespace Ganedata.Core.Services
         }
         public IQueryable<WebsiteNavigation> GetAllValidWebsiteNavigationCategory(int TenantId, int? SiteId)
         {
-            return _currentDbContext.WebsiteNavigations.Where(u => u.IsDeleted != true && (!SiteId.HasValue || u.SiteID == SiteId) && u.TenantId == TenantId && u.Type == Entities.Enums.WebsiteNavigationType.Category && u.IsActive);
+            return _currentDbContext.WebsiteNavigations.Where(u => u.IsDeleted != true &&
+                                                                   (!SiteId.HasValue || u.SiteID == SiteId) &&
+                                                                   u.TenantId == TenantId &&
+                                                                   u.Type == WebsiteNavigationType.Category &&
+                                                                   u.IsActive);
         }
 
         public IQueryable<WebsiteNavigation> GetAllValidWebsiteNavigationTopCategory(int tenantId, int? siteId)
         {
-            return _currentDbContext.WebsiteNavigations.Where(u => u.IsDeleted != true && (!siteId.HasValue || u.SiteID == siteId) && u.TenantId == tenantId && u.ShowInTopCategory == true && u.IsActive);
+            return _currentDbContext.WebsiteNavigations.Where(u => u.IsDeleted != true &&
+                                                                   (!siteId.HasValue || u.SiteID == siteId) &&
+                                                                   u.TenantId == tenantId &&
+                                                                   u.ShowInTopCategory == true &&
+                                                                   u.IsActive);
         }
 
         public IQueryable<NavigationProductsViewModel> GetAllValidWebsiteNavigations(int tenantId, int siteId, int navigationId)
@@ -953,7 +971,7 @@ namespace Ganedata.Core.Services
             {
                 websiteDiscountItems.IsDeleted = true;
                 websiteDiscountItems.UpdateUpdatedInfo(UserId);
-                _currentDbContext.Entry(websiteDiscountItems).State = System.Data.Entity.EntityState.Modified;
+                _currentDbContext.Entry(websiteDiscountItems).State = EntityState.Modified;
                 _currentDbContext.SaveChanges();
             }
             return websiteDiscountItems;
@@ -968,23 +986,32 @@ namespace Ganedata.Core.Services
             return _currentDbContext.ProductAllowanceGroupMap.Where(u => u.TenantId == TenantId && u.IsDeleted != true && u.AllowanceGroupId == productAllownceGroupId);
         }
         // WebsiteSearching Realted Queries
-        public IQueryable<ProductMaster> GetAllValidProductWebsiteSearch(int siteId, string category = "", string ProductName = "")
+        public IQueryable<ProductMaster> GetAllValidProductWebsiteSearch(int siteId, string category = "", string ProductName = "", int? categoryId = null)
         {
             ProductName = ProductName?.Trim();
-            int? categoryId = _currentDbContext.WebsiteNavigations.FirstOrDefault(u => u.Name == category && u.IsDeleted != true && u.SiteID == siteId && u.IsActive)?.Id;
-            List<int> productIds = _currentDbContext.ProductsNavigationMaps.Where(u => (u.NavigationId == categoryId || string.IsNullOrEmpty(category)) && u.IsDeleted != true && u.IsActive == true).Select(x => x.ProductsWebsitesMap.ProductId).ToList();
-            var products = _currentDbContext.ProductsWebsitesMap.Where(a => a.IsActive == true && a.IsDeleted != true && a.SiteID == siteId).Select(u => u.ProductMaster);
 
-
-            return products.Where(a => productIds.Contains(a.ProductId) &&
-                                       (string.IsNullOrEmpty(ProductName) || (a.Name.Contains(ProductName) || a.SKUCode.Contains(ProductName) || a.Description.Contains(ProductName))));
-
+            return _currentDbContext.ProductsNavigationMaps.Where(u => (u.NavigationId == categoryId || (categoryId == null && u.WebsiteNavigation.Name == category) || (categoryId == null && category == null)) &&
+                                                                        u.IsDeleted != true &&
+                                                                        u.IsActive == true &&
+                                                                        u.ProductsWebsitesMap.ProductMaster.IsActive == true &&
+                                                                        u.ProductsWebsitesMap.ProductMaster.IsDeleted != true &&
+                                                                        u.ProductsWebsitesMap.IsActive == true &&
+                                                                        u.ProductsWebsitesMap.IsDeleted != true &&
+                                                                        u.ProductsWebsitesMap.SiteID == siteId &&
+                                                                        u.WebsiteNavigation.IsActive == true &&
+                                                                        u.WebsiteNavigation.IsDeleted != true &&
+                                                                        u.WebsiteNavigation.SiteID == siteId &&
+                                                                        (string.IsNullOrEmpty(ProductName) ||
+                                                                            (u.ProductsWebsitesMap.ProductMaster.Name.Contains(ProductName) ||
+                                                                            u.ProductsWebsitesMap.ProductMaster.SKUCode.Contains(ProductName) ||
+                                                                            u.ProductsWebsitesMap.ProductMaster.Description.Contains(ProductName)))
+                                                                        )
+                                                            .Select(x => x.ProductsWebsitesMap.ProductMaster);
         }
 
         public IQueryable<ProductMaster> GetAllValidProductForDynamicFilter(int siteId, List<int> productIds)
         {
             return _currentDbContext.ProductsWebsitesMap.Where(a => a.IsActive == true && a.IsDeleted != true && a.SiteID == siteId && productIds.Contains(a.ProductId)).Select(u => u.ProductMaster);
-
         }
 
         public Dictionary<ProductAttributes, List<ProductAttributeValues>> GetAllValidProductAttributeValuesByProductIds(IQueryable<ProductMaster> products)
@@ -1007,33 +1034,16 @@ namespace Ganedata.Core.Services
 
 
         }
-        public Tuple<string, string> AllPriceListAgainstGroupAndDept(IQueryable<ProductMaster> productMasters,int siteId)
+        public Tuple<string, string> GetAvailablePricesRange(IQueryable<ProductMaster> products,int siteId)
         {
-            Tuple<string, string> prices;
-            productMasters.ForEach(u => u.SellPrice = GetPriceForProduct(u.ProductId, siteId));
-            var sellList = productMasters.ToList().Select(u => u.SellPrice);
-            var minValue = sellList.Min();
-            var maxValue = sellList.Max();
-            prices = new Tuple<string, string>(minValue.ToString(), maxValue.ToString());
-            return prices;
-        }
-        public IEnumerable<ProductManufacturer> GetAllValidProductManufacturerGroupAndDeptByName(IQueryable<ProductMaster> productMasters)
-        {
-            var productmanufacturerId = productMasters.Select(u => u.ManufacturerId).ToList();
-            return _currentDbContext.ProductManufacturers.Where(u => productmanufacturerId.Contains(u.Id));
-        }
+            products.ForEach(u => u.SellPrice = GetPriceForProduct(u.ProductId, siteId));
 
-        public string CategoryAndSubCategoryBreedCrumb(int siteId, int? productId = null, string category = "", string subCategory = "")
-        {
-            var navigationMapId = _currentDbContext.ProductsWebsitesMap.FirstOrDefault(u => u.SiteID == siteId && u.ProductId == productId && u.IsDeleted != true && u.IsActive == true)?.Id;
-            if (!string.IsNullOrEmpty(subCategory))
-            {
-                return _currentDbContext.WebsiteNavigations.FirstOrDefault(u => u.Name == subCategory)?.Parent?.Name;
-            }
-            int? navigationId = _currentDbContext.ProductsNavigationMaps.FirstOrDefault(u => u.ProductWebsiteMapId == navigationMapId)?.NavigationId;
-            return _currentDbContext.WebsiteNavigations.FirstOrDefault(u => (u.Id == navigationId || !navigationId.HasValue) && (string.IsNullOrEmpty(category) || u.Name == category))?.Name;
+            return new Tuple<string, string>(products.Min(u => u.SellPrice).ToString(), products.Max(u => u.SellPrice).ToString());
         }
-
+        public IEnumerable<ProductManufacturer> GetAllValidProductManufacturers(List<int> manufacturerIds)
+        {
+            return _currentDbContext.ProductManufacturers.Where(u => manufacturerIds.Contains(u.Id) && u.IsDeleted != true);
+        }
 
         public IEnumerable<WebsiteCartItem> GetAllValidCartItemsList(int siteId, int? UserId, string SessionKey)
         {

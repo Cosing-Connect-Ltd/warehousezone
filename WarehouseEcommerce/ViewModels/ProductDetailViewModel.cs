@@ -14,7 +14,9 @@ namespace WarehouseEcommerce.ViewModels
         public string BaseProductName { get; set; }
         public ProductKitTypeEnum BaseProductType { get; set; }
         public string Category { get; set; }
+        public int CategoryId { get; set; }
         public string SubCategory { get; set; }
+        public int SubCategoryId { get; set; }
         public decimal? Quantity { get; set; }
     }
 }

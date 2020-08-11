@@ -21,7 +21,7 @@
                             <div style="background-image: url('@imagePath')">
                                 @if (item.Type == Ganedata.Core.Entities.Enums.WebsiteNavigationType.Category)
                                 {
-                                    <a href="@Url.Action("list", "Products", new {category = item.Name})">
+                                    <a href="@Url.Action("list", "Products", new {category = item.Name, categoryId = item.Id})">
                                         <h2>@item.Name</h2>
                                     </a>
                                 }

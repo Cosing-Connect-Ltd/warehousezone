@@ -17,12 +17,12 @@
                         <li>></li>
                         @if (Model.Category != null && !string.IsNullOrEmpty(Model.Category))
                         {
-                            <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { category = Model.Category })">@Model.Category</a></li>
+                            <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { category = Model.Category, categoryId = Model.CategoryId })">@Model.Category</a></li>
                             <li>></li>
                         }
                         @if (Model.SubCategory != null && !string.IsNullOrEmpty(Model.SubCategory))
                         {
-                            <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { category = Model.SubCategory })">@Model.SubCategory</a></li>
+                            <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { category = Model.SubCategory, categoryId = Model.SubCategoryId })">@Model.SubCategory</a></li>
                             <li>></li>
                         }
 
