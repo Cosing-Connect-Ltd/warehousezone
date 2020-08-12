@@ -99,27 +99,25 @@
                 {
                     foreach (var item in Model.AttributeValues)
                     {
-                        if (item.Value?.Count > 1)
-                        {
-                            <div class="nb_filter_head" id="filter_@(item.Key.AttributeId + item.Value.Count)">
-                                <h5 class="mb-0">
-                                    <button id="@(item.Key.AttributeId + item.Value.Count)" onclick="showAttribute(event)" class="btn btn-link">
-                                        @item.Value.FirstOrDefault().ProductAttributes.AttributeName
-                                    </button>
-                                </h5>
+
+                        <div class="nb_filter_head" id="filter_@(item.Key.AttributeId + item.Value.Count)">
+                            <h5 class="mb-0">
+                                <button id="@(item.Key.AttributeId + item.Value.Count)" onclick="showAttribute(event)" class="btn btn-link">
+                                    @item.Value.FirstOrDefault().ProductAttributes.AttributeName
+                                </button>
+                            </h5>
+                        </div>
+                        <div class="content_@(item.Key.AttributeId + item.Value.Count)">
+                            <div class="nb_filter_body">
+                                <ul class="nb_prd_filter_listouter">
+                                    @foreach (var items in item.Value)
+                                    {
+                                        string name = items.Value.Replace(" ", "_").Replace(",", "^") + "^" + @items.AttributeValueId;
+                                        <li class="list-group-item"><input type="checkbox" id="@items.ProductAttributes.AttributeName.Replace(" ", "_")" class="checkbox-inline" value="@name" @(Request.Url.OriginalString.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(items.Value)</li>
+                                    }
+                                </ul>
                             </div>
-                            <div class="content_@(item.Key.AttributeId + item.Value.Count)">
-                                <div class="nb_filter_body">
-                                    <ul class="nb_prd_filter_listouter">
-                                        @foreach (var items in item.Value)
-                                        {
-                                            string name = items.Value.Replace(" ", "_").Replace(",", "^") + "^" + @items.AttributeValueId;
-                                            <li class="list-group-item"><input type="checkbox" id="@items.ProductAttributes.AttributeName.Replace(" ", "_")" class="checkbox-inline" value="@name" @(Request.Url.OriginalString.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(items.Value)</li>
-                                        }
-                                    </ul>
-                                </div>
-                            </div>
-                        }
+                        </div>
                     }
                 }
             </div>
