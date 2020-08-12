@@ -57,7 +57,7 @@
             <div class="sortBy_outer">
                 <span class="srtby_txt">Sort By</span>
                 <div class="sortBysec">
-                    @Html.DropDownList("SortedValues", EnumHelper.GetSelectList(typeof(SortProductTypeEnum)), htmlAttributes: new { @class = "form-control", onchange = "searchPoducts();" })
+                    @Html.DropDownList("SortedValues", EnumHelper.GetSelectList(typeof(SortProductTypeEnum), Model.CurrentSort), htmlAttributes: new { @class = "form-control", onchange = "searchPoducts();" })
 
                 </div>
             </div>
@@ -184,10 +184,10 @@
                             }
                         }
 
-                        <input type="text" id="currentsortedvalue" value="@(Model.CurrentSort?.ToString() ?? " ")" style="display:none" />
                         <input type="text" id="currentFiltervalue" value="@(Model.CurrentFilter ?? " ")" style="display:none" />
 
-                        <input type="hidden" id="prod-category" value="@Model.Category" />
+                        <input type="hidden" id="prod-category" value="@Model.CurrentCategoryName" />
+                        <input type="hidden" id="prod-category-id" value="@Model.CategoryId" />
                     </div>
                     @if (Model.Products != null && Model.Products?.TotalItemCount > Model.Products?.PageSize)
                     {
@@ -215,35 +215,3 @@
         </div>
     </div>
 </section>
-
-<script>
-    function GetSortedList(e) {
-        var sortvalue = parseInt(e.currentTarget.value);
-
-        var groupId = $("#ProductGroups").val();
-        if (groupId === "" || groupId === undefined || groupId === null) { groupId = $("#ProductGroupsId").val(); }
-        var pagenumber = $("#pagenumber").val();
-        var departmentId = $("#departmentId").val();
-        var currentFilter = $("#currentFiltervalue").val();
-        var searchstring = $("#searchString").val();
-        var pageSize = $("#input-limit :selected").val();
-        var valuesparam = $("#valuesParameter").val();
-        var subCategory = $("#SubCategoryId").val();
-        window.location.href = basePath + "/Products/ProductCategories?productGroup=" + groupId + "&sortOrder=" + sortvalue + "&currentFilter=" + currentFilter + "&searchString=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&department=" + departmentId + "&SubCategory=" + subCategory + "&values=" + valuesparam;
-    }
-
-    function PageSizeChanges(e) {
-        var pageSize = parseInt(e.currentTarget.value);
-        var sortvalue = $("#SortedValues").val();
-        var groupId = $("#ProductGroups").val();
-        if (groupId === "" || groupId === undefined || groupId === null) { groupId = $("#ProductGroupsId").val(); }
-        var pagenumber = $("#pagenumber").val();
-        var departmentId = $("#departmentId").val();
-        var currentFilter = $("#currentFiltervalue").val();
-        var searchstring = $("#searchString").val();
-        var subCategory = $("#SubCategoryId").val();
-        var valuesparam = $("#valuesParameter").val();
-        window.location.href = basePath + "/Products/ProductCategories?productGroup=" + groupId + "&sortOrder=" + sortvalue + "&currentFilter=" + currentFilter + "&searchString=" + searchstring + "&page=" + pagenumber + "&pagesize=" + pageSize + "&department=" + departmentId + "&SubCategory=" + subCategory + "&values=" + valuesparam;
-    }
-
-</script>

@@ -60,7 +60,7 @@ namespace WarehouseEcommerce.Controllers
         }
         // GET: Products
 
-        public ActionResult list(string category, int? categoryId, int? sort, string filter, string search, int? page, int? pageSize = 12, string values = "")
+        public ActionResult list(string category, int? categoryId, string filter, string search, int? page, int? pageSize = 12, string values = "", SortProductTypeEnum sort = SortProductTypeEnum.NameByAsc)
         {
             try
             {
@@ -100,7 +100,7 @@ namespace WarehouseEcommerce.Controllers
 
                     products = _productlookupServices.FilterProduct(products, values, CurrentTenantWebsite.SiteID);
 
-                    switch ((SortProductTypeEnum)(sort ?? 1))
+                    switch (sort)
                     {
                         case SortProductTypeEnum.PriceByDesc:
                             products = products.OrderByDescending(s => s.SellPrice);
