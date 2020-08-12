@@ -144,11 +144,13 @@ namespace Ganedata.Core.Services
             return _currentDbContext.ProductCategories.Where(u => productcategoriesId.Contains(u.ProductCategoryId)).Select(u => u.ProductCategoryName);
         }
 
-        public IEnumerable<string> GetWebsiteNavigationCategoriesList(string parentCategory, int siteId)
+        public IEnumerable<WebsiteNavigation> GetWebsiteNavigationCategoriesList(int? parentCategoryId, int siteId)
         {
-            var subCategories = _currentDbContext.WebsiteNavigations.Where(u => u.Parent.Name == parentCategory && u.Type == WebsiteNavigationType.Category && u.IsDeleted != true && u.SiteID == siteId && u.IsActive);
-            return subCategories.Select(c => c.Name);
-
+            return _currentDbContext.WebsiteNavigations.Where(u => u.Parent.Id == parentCategoryId &&
+                                                                   u.Type == WebsiteNavigationType.Category &&
+                                                                   u.IsDeleted != true &&
+                                                                   u.SiteID == siteId &&
+                                                                   u.IsActive);
         }
 
         public IEnumerable<ProductAttributeValuesMap> GetAllValidProductAttributeValuesMap()
@@ -186,11 +188,9 @@ namespace Ganedata.Core.Services
                                     filters.Add(filtersData[0], value);
                                 }
                             }
-
-
                         }
-
                     }
+
                     foreach (var item in filters)
                     {
                         if (item.Key.Equals("stockS"))
@@ -202,7 +202,6 @@ namespace Ganedata.Core.Services
                                                                                      u.ProductKitItems.Any(a => a.KitProductMaster.InventoryStocks.Sum(c => c.Available) > 0)) ||
                                                                                     (u.InventoryStocks.Sum(rv => rv.Available) <= 0 ||
                                                                                      u.ProductKitItems.Sum(a => a.KitProductMaster.InventoryStocks.Sum(c => c.Available)) <= 0));
-
                             }
 
                             else if (item.Value.Contains("in_stock"))
@@ -231,7 +230,6 @@ namespace Ganedata.Core.Services
                                         prices.Add(Convert.ToDecimal(range[0]));
                                         prices.Add(Convert.ToDecimal(range[1]));
                                     }
-
                                 }
                             }
                             if (prices.Count > 0)
@@ -240,7 +238,7 @@ namespace Ganedata.Core.Services
                                 decimal? max = prices.Max();
                                 products.ForEach(u =>
                                     u.SellPrice = _tenantWebsiteService.GetPriceForProduct(u.ProductId, siteId));
-                                var productIds= products.ToList().Where(u => u.SellPrice >= min && u.SellPrice <= max).Select(u=>u.ProductId);
+                                var productIds = products.ToList().Where(u => u.SellPrice >= min && u.SellPrice <= max).Select(u => u.ProductId);
                                 products = products.Where(u => productIds.Contains(u.ProductId));
                             }
                         }
@@ -248,15 +246,19 @@ namespace Ganedata.Core.Services
                         {
                             var result = item.Value.Select(s => s.Replace("_", " ").Replace("^", ",")).ToList();
                             products = products.Where(u => result.Contains(u.ProductManufacturer.Name));
-
                         }
                         if (item.Key.Contains("TypeS"))
                         {
                             var result = item.Value.Select(s => s.Replace("_", " ").Replace("^", ",")).ToList();
                             products = products.Where(u => result.Contains(u.ProductCategory.ProductCategoryName));
-
                         }
-                        if (item.Key.Length > 0 && (!item.Key.Equals("BrandS") && !item.Key.Equals("priceS") && !item.Key.Equals("stockS") && !item.Key.Equals("TypeS")))
+                    }
+
+                    var availableAttributeNames = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(products).Select(a => a.Key.AttributeName);
+
+                    foreach (var item in filters)
+                    {
+                        if (item.Key.Length > 0 && (!item.Key.Equals("BrandS") && !item.Key.Equals("priceS") && !item.Key.Equals("stockS") && !item.Key.Equals("TypeS")) && availableAttributeNames.Contains(item.Key))
                         {
                             var result = item.Value.Select(s => s.Replace("_", " ").Replace("??", ",")).ToList();
                             var values = result.Select(u => u.Split('^').LastOrDefault()).ToList();
@@ -274,7 +276,6 @@ namespace Ganedata.Core.Services
                             products = products.Where(u => productids.Contains(u.ProductId) ||
                                                                      productids.Any(a => u.ProductKitItems.Select(c => c.KitProductId).ToList().Contains(a)));
                         }
-
                     }
                 }
             }
@@ -283,7 +284,6 @@ namespace Ganedata.Core.Services
                 ErrorSignal.FromCurrentContext().Raise(ex);
             }
             return products;
-
         }
 
 

@@ -576,9 +576,11 @@ input[type=number]::-webkit-outer-spin-button {
                                         min-width: 564px;
                                         min-height: 250px;
                                         padding: 35px 20px 20px 220px;
-                                        overflow: hidden;
                                         position: relative;
-                                        background-color: #fff
+                                        background-color: #fff;
+                                        box-shadow: -3px -1px 7px 3px rgba(0,0,0,0.05);
+                                        -moz-box-shadow: -3px -1px 7px 3px rgba(0,0,0,0.05);
+                                        -webkit-box-shadow: -3px -1px 7px 3px rgba(0,0,0,0.05)
                                     }
 
                                         .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner .head {
@@ -592,14 +594,19 @@ input[type=number]::-webkit-outer-spin-button {
                                             float: left;
                                             margin: 0;
                                             padding: 0;
-                                            min-width: 90px
+                                            min-width: 90px;
+                                            display: contents;
                                         }
 
                                             .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner .meganav_firstcatList > li {
-                                                margin-bottom: 8px;
                                                 position: relative;
-                                                padding-right: 10px
+                                                padding: 4px 10px;
+                                                cursor: pointer;
                                             }
+
+                                                .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner .meganav_firstcatList > li:hover{
+                                                    background-color: rgba(0, 0, 0, .05);
+                                                }
 
                                                 .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner .meganav_firstcatList > li > a {
                                                     font-family: "primaryfont_Normal";
@@ -608,15 +615,16 @@ input[type=number]::-webkit-outer-spin-button {
                                                     transition: all .3s ease
                                                 }
 
-                                                    .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner .meganav_firstcatList > li > a:hover {
-                                                        font-family: "primaryfont_Bold"
-                                                    }
+                                                .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner .meganav_firstcatList > li:hover > a {
+                                                    font-family: "primaryfont_Bold";
+                                                    padding-left: 5px;
+                                                }
 
                                                 .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner .meganav_firstcatList > li ul.subList:before {
                                                     content: "";
                                                     position: absolute;
-                                                    left: 0;
-                                                    top: 12px;
+                                                    left: -5px;
+                                                    top: 16px;
                                                     transform: translate(-50%, -50%);
                                                     width: 0;
                                                     height: 0;
@@ -636,14 +644,19 @@ input[type=number]::-webkit-outer-spin-button {
                                                 .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner .meganav_firstcatList > li > ul.subList {
                                                     list-style: none;
                                                     position: absolute;
-                                                    padding-left: 20px;
+                                                    padding: 0 20px;
+                                                    white-space: pre-line;
                                                     left: 100%;
                                                     top: 0;
                                                     min-width: 200px;
                                                     transform: translateX(20px);
                                                     opacity: 0;
                                                     pointer-events: none;
-                                                    transition: all .3s ease
+                                                    transition: all .3s ease;
+                                                    background-color: #000000;
+                                                    box-shadow: 1px -1px 7px 3px rgba(0,0,0,0.05);
+                                                    -moz-box-shadow: 1px -1px 7px 3px rgba(0,0,0,0.05);
+                                                    -webkit-box-shadow: 1px -1px 7px 3px rgba(0,0,0,0.05)
                                                 }
 
                                                     .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner .meganav_firstcatList > li > ul.subList li {
@@ -654,13 +667,15 @@ input[type=number]::-webkit-outer-spin-button {
                                                             font-family: "primaryfont_Normal";
                                                             font-size: 14px;
                                                             color: #000;
-                                                            padding-left: 0;
-                                                            transition: all .3s ease
+                                                            transition: all .3s ease;
+                                                            padding: 4px 0px;
+                                                            white-space: nowrap;
                                                         }
 
-                                                            .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner .meganav_firstcatList > li > ul.subList li a:hover {
-                                                                padding-left: 5px
-                                                            }
+                                                        .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner .meganav_firstcatList > li > ul.subList li:hover a {
+                                                            padding-left: 5px;
+                                                            font-family: "primaryfont_Bold"
+                                                        }
 
                                                 .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner .meganav_firstcatList > li:hover > ul.subList {
                                                     transform: translateX(0);
@@ -1481,43 +1496,6 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 15px;
     overflow: hidden;
     }
-@media(min-width: 1199px) {
-    .nb_top_catSection .accordion ul li div {
-        transform: skew(12deg) translateX(-15%);
-        width: 135%;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-    }
-
-        .nb_top_catSection .accordion ul li div a {
-            transform: skew(-12deg);
-        }
-
-    .nb_top_catSection .accordion ul li:nth-child(1) div {
-        transform: skew(0deg);
-        width: 100%;
-    }
-
-        .nb_top_catSection .accordion ul li:nth-child(1) div a {
-            transform: skew(0deg);
-        }
-
-    
-
-    .nb_top_catSection .accordion ul li:last-child div {
-        transform: skew(0deg);
-        width: 100%;
-    }
-
-      .nb_top_catSection .accordion ul li:last-child div a {
-            transform: skew(0deg);
-        }
-
-    .res_navWrapper.show {
-        transform: translateX(0)
-    }
-}
 
 .res_navWrapper {
     position: fixed;
@@ -2227,7 +2205,7 @@ input[type=number]::-webkit-outer-spin-button {
                         border-radius: 5px;
                         padding: 14px 30px 14px 10px
                     }
-            
+
             .nb_prd_det_rightsec .footSec button.addTobasket,
             .nb_qcvboxwrap .footSec .addtowishlistbtn,
             .nb_qcvboxwrap .footSec button.addTobasket {
@@ -4597,14 +4575,20 @@ input:checked + .slider:before {
     font-family: primaryfont_Bold;
     padding-top: 0;
     padding-bottom: 0;
-    padding-left: 0
+    padding-left: 0;
+    display: flex;
+    align-items: center
 }
+    .uni-pages-main .nb_prd_filterwrap .list-group-item > a:hover{
+        font-family: primaryfont_Bold;
+    }
 
     .uni-pages-main .nb_prd_filterwrap .list-group-item input {
         margin-right: 6px;
         margin-top: unset;
         width: 18px;
-        height: 18px
+        height: 18px;
+        cursor: pointer;
     }
 
 .uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a i {
@@ -4660,6 +4644,15 @@ input:checked + .slider:before {
         background-color: #000;
         border-color: #000
     }
+
+.pagination > .disabled > *:hover,
+.pagination > .disabled > *:focus {
+    color: #000 !important;
+    background-color: none !important;
+    border-color: none !important;
+    pointer-events: none !important;
+    cursor: default !important;
+}
 
 .pagi .tot {
     line-height: 34px
@@ -5120,11 +5113,6 @@ a.cashbtn {
     text-overflow: ellipsis;
     white-space: nowrap;
     margin-bottom: unset
-}
-
-.uni-pages-main .nb_prd_filterwrap .list-group-item {
-    display: flex;
-    align-items: center
 }
 
 .uni-pages-main .nb_prdlisting_pgsec .breadCrumbtopsec .nb_bread_crumbwrap nav ol li:before {
@@ -7031,13 +7019,19 @@ body.modal-open {
         background-color: var(--secondary-color)
     }
 
-.filtered-amout div#amount {
-    color: var(--secondary-color);
-    border: 0;
-    font-weight: 600;
-    width: 100%;
-    text-align: center
+.ui-slider .ui-slider-handle {
+    cursor: pointer !important;
+    background-color: darkgray !important;
+    border-color: gray !important;
 }
+
+    .filtered-amout div#amount {
+        color: var(--secondary-color);
+        border: 0;
+        font-weight: 600;
+        width: 100%;
+        text-align: center
+    }
 
 .bg-white {
     margin-top: 5px

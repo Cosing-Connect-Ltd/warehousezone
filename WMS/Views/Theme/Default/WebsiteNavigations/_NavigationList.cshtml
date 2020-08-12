@@ -22,7 +22,7 @@
         settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
         settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
         settings.Columns.Add("TenantWebsites.SiteName").Caption="Site Name";
-        settings.Columns.Add("WebsiteNavigation.Name").Caption="Parent Name";
+        settings.Columns.Add("Parent.Name").Caption="Parent Name";
         settings.Columns.Add("Name");
         settings.Columns.Add("Type");
         settings.Columns.Add(c =>
@@ -40,7 +40,7 @@
                 }
             });
         });
-      
+
         settings.Columns.Add(c =>
         {
             c.FieldName = "HoverImage";
@@ -56,7 +56,7 @@
                 }
             });
         });
-       
+
         var Column = new MVCxGridViewColumn();
         Column.Caption = "Actions";
         Column.SetDataItemTemplateContent(m =>

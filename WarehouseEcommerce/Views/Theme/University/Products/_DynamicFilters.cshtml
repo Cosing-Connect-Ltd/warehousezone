@@ -1,20 +1,22 @@
-﻿@model Ganedata.Core.Entities.Domain.ProductFilteringViewModel
-@using Ganedata.Core.Entities.Domain
+﻿@model Ganedata.Core.Entities.Domain.ProductDynamicFilteringViewModel
 
 
 <div class="col-md-4 col-lg-3">
     <div class="nb_prd_filterwrap">
-        <div class="prod_count_sec">
-            <h5 class="count">@(Model.Count+"Products")</h5>
-        </div>
-        @if (Model.WebsiteNavigationCategories.Count > 0)
+        @if (Model.Count > 0 || Model.WebsiteNavigationCategories.Count() <= 0)
+        {
+            <div class="prod_count_sec">
+                <h5 class="count">@(Model.Count + "Products")</h5>
+            </div>
+        }
+        @if (Model.WebsiteNavigationCategories.Count() > 0)
         {
             <div class="type-content">
                 <div class="nb_filter_body">
                     <ul class="nb_prd_filter_listouter">
                         @foreach (var item in Model.WebsiteNavigationCategories)
                         {
-                            <li class="list-group-item"><a href="@Url.Action("list", "Products", new { category = item})">@item</a></li>
+                            <li class="list-group-item"><a href="@Url.Action("list", "Products", new { category = item.Name, categoryId = item.Id})">@item.Name</a></li>
                         }
                     </ul>
                 </div>
@@ -22,33 +24,35 @@
         }
         <div class="nb_fltr_accrd_wrap">
             <div id="accordion" class="nb_filter_accordion">
-
-                <div class="nb_filter_head price-range-div" id="filter1">
-                    <h5 class="mb-0">
-                        <button id="price_btn" class="btn btn-link">
-                            Price
-                        </button>
-                    </h5>
-                </div>
-                <div class="nb_filter_body price-content">
-                    <div class="filtered-amout">
-                        <div id="amount"></div>
+                @if (!string.IsNullOrEmpty(Model.MinAvailablePrice?.Trim()) && !string.IsNullOrEmpty(Model.MaxAvailablePrice?.Trim()))
+                {
+                    <div class="nb_filter_head price-range-div" id="filter1">
+                        <h5 class="mb-0">
+                            <button id="price_btn" class="btn btn-link">
+                                Price
+                            </button>
+                        </h5>
                     </div>
+                    <div class="nb_filter_body price-content">
+                        <div class="filtered-amout">
+                            <div id="amount"></div>
+                        </div>
 
-                    <div class="price-range-div">
-                        <div class="nb_filter_body pb-0">
-                            <ul class="nb_prd_filter_listouter">
+                        <div class="price-range-div">
+                            <div class="nb_filter_body pb-0">
+                                <ul class="nb_prd_filter_listouter">
 
-                                <div id="slider-range"></div>
+                                    <div id="slider-range"></div>
 
-                                <li class="list-group-item" style="display: none">
-                                    <input type="checkbox" id="priceS" class="checkbox-inline" value="" @(Request.Url.OriginalString.ToLower().Contains("prices") ? "checked" : "")>
-                                </li>
-                            </ul>
+                                    <li class="list-group-item" style="display: none">
+                                        <input type="checkbox" id="priceS" class="checkbox-inline" value="" @(Request.Url.OriginalString.ToLower().Contains("prices") ? "checked" : "")>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
-                @if (Model.Manufacturer.Count > 0)
+                }
+                @if (Model.Manufacturer?.Count > 0)
                 {
                     <div class="nb_filter_head" id="filter2">
                         <h5 class="mb-0">
@@ -69,7 +73,7 @@
                         </div>
                     </div>
                 }
-                @if (Model.subCategories.Count > 0)
+                @if (Model.subCategories?.Count > 0)
                 {
                     <div class="nb_filter_head" id="filter3">
                         <h5 class="mb-0">
@@ -91,53 +95,61 @@
                     </div>
                 }
                 @* Adding dynmic attributes here *@
-                @foreach (var item in Model.AttributeValues)
+                @if (Model.AttributeValues != null)
                 {
+                    foreach (var item in Model.AttributeValues)
+                    {
 
-                    <div class="nb_filter_head" id="filter_@(item.Key.AttributeId+item.Value.Count)">
-                        <h5 class="mb-0">
-                            <button id="@(item.Key.AttributeId+item.Value.Count)" onclick="showAttribute(event)" class="btn btn-link">
-                                @item.Value.FirstOrDefault().ProductAttributes.AttributeName
-                            </button>
-                        </h5>
-                    </div>
-                    <div class="content_@(item.Key.AttributeId+item.Value.Count)">
-                        <div class="nb_filter_body">
-                            <ul class="nb_prd_filter_listouter">
-                                @foreach (var items in item.Value)
-                                {
-                                    string name = items.Value.Replace(" ", "_").Replace(",", "^") + "^" + @items.AttributeValueId;
-                                    <li class="list-group-item"><input type="checkbox" id="@items.ProductAttributes.AttributeName.Replace(" ", "_")" class="checkbox-inline" value="@name" @(Request.Url.OriginalString.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(items.Value)</li>
-                                }
-                            </ul>
+                        <div class="nb_filter_head" id="filter_@(item.Key.AttributeId + item.Value.Count)">
+                            <h5 class="mb-0">
+                                <button id="@(item.Key.AttributeId + item.Value.Count)" onclick="showAttribute(event)" class="btn btn-link">
+                                    @item.Value.FirstOrDefault().ProductAttributes.AttributeName
+                                </button>
+                            </h5>
                         </div>
-                    </div>
+                        <div class="content_@(item.Key.AttributeId + item.Value.Count)">
+                            <div class="nb_filter_body">
+                                <ul class="nb_prd_filter_listouter">
+                                    @foreach (var items in item.Value)
+                                    {
+                                        string name = items.Value.Replace(" ", "_").Replace(",", "^") + "^" + @items.AttributeValueId;
+                                        <li class="list-group-item"><input type="checkbox" id="@items.ProductAttributes.AttributeName.Replace(" ", "_")" class="checkbox-inline" value="@name" @(Request.Url.OriginalString.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(items.Value)</li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    }
                 }
             </div>
         </div>
     </div>
 </div>
 
-
+@if ((!string.IsNullOrEmpty(Model.MinAvailablePrice?.Trim()) && !string.IsNullOrEmpty(Model.MaxAvailablePrice?.Trim())) || Model.AttributeValues != null)
+{
 <script>
     $(function () {
-        var min =Math.floor(@Model.PriceInterval.Item1);
-        var max = Math.ceil(@Model.PriceInterval.Item2);
+
+        var min =Math.floor(@Model.MinAvailablePrice);
+        var max = Math.ceil(@Model.MaxAvailablePrice);
+
         if ((max - min) <= 1 || isNaN(min) || isNaN(max)) {
             $(".price-range-div").hide();
             return;
         }
+
         var prices;
         var parameterValue = getUrlParameter("values");
-        if (parameterValue != null)
-            {
-        var parameterValueList = parameterValue.split("/");
-        jQuery.each(parameterValueList, function(index, item) {
-            if (item.indexOf('priceS-') > -1) {
-                prices = item.replace('priceS-', '');
-            }
-        });
+
+        if (parameterValue != null) {
+            var parameterValueList = parameterValue.split("/");
+            jQuery.each(parameterValueList, function(index, item) {
+                if (item.indexOf('priceS-') > -1) {
+                    prices = item.replace('priceS-', '');
+                }
+            });
         }
+
         if (prices != null) {;
             prices = prices.split("_");
             min = Math.floor(parseFloat(prices[0]));
@@ -145,11 +157,12 @@
             $('#priceS').prop('checked', true);
             $("#priceS").val(prices[0] + "_" +prices[1]);
         }
+
         $("#slider-range").slider({
             range: true,
             step:1,
-            min: Math.floor(@Model.PriceInterval.Item1),
-            max: Math.ceil(@Model.PriceInterval.Item2),
+            min: Math.floor(@Model.MinAvailablePrice),
+            max: Math.ceil(@Model.MaxAvailablePrice),
             values: [min, max],
             slide: function(event, ui) {
                 $("#amount").html('@ViewBag.CurrencySymbol' + Math.floor(ui.values[0]) + " - "+'  @ViewBag.CurrencySymbol' + Math.ceil(ui.values[1]));
@@ -163,9 +176,11 @@
 
             }
         });
+
         $("#amount").html('@ViewBag.CurrencySymbol'+min+
             " -" +
-            '  @ViewBag.CurrencySymbol'+max);
+            '  @ViewBag.CurrencySymbol' + max);
+
         $("input[type=checkbox]").on("change", function (e) {
 
                 var arr = [];
@@ -241,3 +256,4 @@
         }
     };
 </script>
+}

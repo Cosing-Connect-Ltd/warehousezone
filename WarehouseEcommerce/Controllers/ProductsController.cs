@@ -60,85 +60,90 @@ namespace WarehouseEcommerce.Controllers
         }
         // GET: Products
 
-        public ActionResult list(string category, int? sort, string filter, string search, int? page, int? pagesize = 10, string values = "")
+        public ActionResult list(string category, int? categoryId, int? sort, string filter, string search, int? page, int? pageSize = 12, string values = "")
         {
             try
             {
-                //ViewBag.groupId = group;
-                ViewBag.Category = category;
-                ViewBag.CurrentSort = sort;
-                ViewBag.SortedValues = (sort ?? 1);
-                ViewBag.pageList = new SelectList(from d in Enumerable.Range(1, 5) select new SelectListItem { Text = (d * 10).ToString(), Value = (d * 10).ToString() }, "Value", "Text", pagesize);
-                ViewBag.searchString = search;
-                ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
-                var products = _tenantWebsiteService.GetAllValidProductWebsiteSearch(CurrentTenantWebsite.SiteID, category);
-                if (!string.IsNullOrEmpty(category))
-                {
-                    ViewBag.Categories =
-                        _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID,
-                            Category: category);
-                    ViewBag.SubCategory =
-                        _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID,
-                            SubCategory: ViewBag.Category);
-                    if (ViewBag.SubCategory != null && !string.IsNullOrEmpty(ViewBag.SubCategory))
-                    {
-                        var subCategory = ViewBag.SubCategory;
-                        ViewBag.SubCategory = ViewBag.Category;
-                        ViewBag.Categories = subCategory;
-                    }
-                }
+                var model = new ProductListViewModel {
+                    CurrentCategoryName = category,
+                    CategoryId = categoryId,
+                    CurrentSort = sort
+                };
 
-                if (!string.IsNullOrEmpty(search))
+                if (categoryId != null)
                 {
-                    page = 1;
+                    var categoryInfo = _tenantWebsiteService.GetAllValidWebsiteNavigationCategory(CurrentTenantId, CurrentTenantWebsite.SiteID)
+                                                            .FirstOrDefault(c => c.Id == categoryId);
+
+                    model.Category = categoryInfo?.Parent ?? categoryInfo;
+                    model.SubCategory = categoryInfo?.Parent != null ? categoryInfo : null;
+
+                    var products = _tenantWebsiteService.GetAllValidProductWebsiteSearch(CurrentTenantWebsite.SiteID, category, string.Empty, categoryId);
+
+                    if (!string.IsNullOrEmpty(search))
+                    {
+                        page = 1;
+                    }
+                    else
+                    {
+                        search = filter;
+                    }
+
+                    model.DynamicFilters = GetDynamicFiltersModel(products, categoryId);
+
+                    model.CurrentFilter = search;
+
+                    if (!string.IsNullOrEmpty(search))
+                    {
+                        products = products.Where(s => s.SKUCode.Contains(search) || s.Name.Contains(search));
+                    }
+
+                    products = _productlookupServices.FilterProduct(products, values, CurrentTenantWebsite.SiteID);
+
+                    switch ((SortProductTypeEnum)(sort ?? 1))
+                    {
+                        case SortProductTypeEnum.PriceByDesc:
+                            products = products.OrderByDescending(s => s.SellPrice);
+                            break;
+                        case SortProductTypeEnum.NameByDesc:
+                            products = products.OrderByDescending(s => s.Name);
+                            break;
+                        case SortProductTypeEnum.PriceByAsc:
+                            products = products.OrderBy(s => s.SellPrice);
+                            break;
+                        default:  // Name ascending
+                            products = products.OrderBy(s => s.Name);
+                            break;
+                    }
+
+                    pageSize = pageSize ?? 12;
+                    int pageNumber = (page ?? 1);
+                    var productsPagedList = products.ToPagedList(pageNumber, pageSize.Value);
+                    page = pageNumber = pageNumber > productsPagedList.PageCount ? productsPagedList.PageCount : pageNumber;
+                    var pagedProductsList = products.ToPagedList((pageNumber == 0 ? 1 : pageNumber), pageSize.Value);
+                    if (pagedProductsList.Count > 0)
+                    {
+                        pagedProductsList.ToList().ForEach(u => u.SellPrice = (Math.Round((_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID)), 2)));
+                    }
+
+                    model.DynamicFilters.AttributeValues = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(products);
+                    model.Products = pagedProductsList;
                 }
                 else
                 {
-                    search = filter;
+                    model = new ProductListViewModel
+                    {
+                        DynamicFilters = GetDynamicFiltersModel(null, categoryId)
+                    };
                 }
 
-                ViewBag.CurrentFilter = search;
-
-                if (!string.IsNullOrEmpty(search))
-                {
-                    products = products.Where(s => s.SKUCode.Contains(search) || s.Name.Contains(search));
-                }
-
-                products = _productlookupServices.FilterProduct(products, values, CurrentTenantWebsite.SiteID);
-                switch ((SortProductTypeEnum)(sort ?? 1))
-                {
-                    case SortProductTypeEnum.PriceByDesc:
-                        products = products.OrderByDescending(s => s.SellPrice);
-                        break;
-                    case SortProductTypeEnum.NameByDesc:
-                        products = products.OrderByDescending(s => s.Name);
-                        break;
-                    case SortProductTypeEnum.PriceByAsc:
-                        products = products.OrderBy(s => s.SellPrice);
-                        break;
-                    default:  // Name ascending
-                        products = products.OrderBy(s => s.Name);
-                        break;
-                }
-
-                int pageSize = pagesize ?? 10;
-                int pageNumber = (page ?? 1);
-                var productsPagedList = products.ToPagedList(pageNumber, pageSize);
-                page = pageNumber = pageNumber > productsPagedList.PageCount ? productsPagedList.PageCount : pageNumber;
-                var data = products.ToPagedList((pageNumber == 0 ? 1 : pageNumber), pageSize);
-                if (data.Count > 0)
-                {
-                    data.ToList().ForEach(u => u.SellPrice = (Math.Round((_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID)), 2)));
-                }
-
-                return View(data);
+                return View(model);
             }
             catch (Exception ex)
             {
                 return Content("Issue of getting data  " + ex.Message);
 
             }
-
         }
 
         public ActionResult ProductDetails(string sku, int? productId = null)
@@ -188,16 +193,12 @@ namespace WarehouseEcommerce.Controllers
             model.BaseProductType = baseProduct.ProductType;
             model.BaseProductSKUCode = baseProduct.SKUCode;
 
-            model.Category = _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID, baseProduct.ProductId);
-            model.SubCategory = _tenantWebsiteService.CategoryAndSubCategoryBreedCrumb(CurrentTenantWebsite.SiteID, SubCategory: model.Category);
+            var categoryInfo = _tenantWebsiteService.GetProductCategoryByProductId(CurrentTenantWebsite.SiteID, baseProduct.ProductId);
 
-            if (model.SubCategory != null && !string.IsNullOrEmpty(model.SubCategory))
-            {
-                var category = model.SubCategory;
-                model.SubCategory = model.Category;
-                model.Category = category;
-
-            }
+            model.Category = categoryInfo?.Parent?.Name ?? categoryInfo?.Name;
+            model.CategoryId = categoryInfo?.Parent?.Id ?? categoryInfo?.Id ?? 0;
+            model.SubCategory = categoryInfo?.Parent != null ? categoryInfo.Name : null;
+            model.SubCategoryId = categoryInfo?.Parent != null ? categoryInfo.Id : 0;
 
             model.SelectedProduct.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(model.SelectedProduct.ProductId, CurrentTenantWebsite.SiteID), 2);
 
@@ -460,21 +461,23 @@ namespace WarehouseEcommerce.Controllers
             return View();
         }
 
-        public PartialViewResult _DynamicFilters(List<int> productIds, string category, string productName)
+        public ProductDynamicFilteringViewModel GetDynamicFiltersModel(IQueryable<ProductMaster> products, int? categoryId)
         {
-            ProductFilteringViewModel productFiltering = new ProductFilteringViewModel();
-            var products = _tenantWebsiteService.GetAllValidProductWebsiteSearch(CurrentTenantWebsite.SiteID, category, ProductName: productName);
-            var filteredByAttributeProducts = _tenantWebsiteService.GetAllValidProductForDynamicFilter(CurrentTenantWebsite.SiteID, productIds);
+            var productFiltering = new ProductDynamicFilteringViewModel();
 
-            productFiltering.Manufacturer = _tenantWebsiteService.GetAllValidProductManufacturerGroupAndDeptByName(products).Select(u => u.Name).ToList();
-            productFiltering.PriceInterval = _tenantWebsiteService.AllPriceListAgainstGroupAndDept(products,CurrentTenantWebsite.SiteID);
-            productFiltering.AttributeValues = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(filteredByAttributeProducts);
-            productFiltering.subCategories = _productlookupServices.GetAllValidSubCategoriesByDepartmentAndGroup(products).ToList();
-            productFiltering.WebsiteNavigationCategories = _productlookupServices.GetWebsiteNavigationCategoriesList(category, CurrentTenantWebsite.SiteID).ToList();
-            productFiltering.Count = filteredByAttributeProducts.Count();
-            productFiltering.CurrencySymbol = ViewBag.CurrencySymbol;
+            if (products != null && products.Count() > 0)
+            {
+                productFiltering.Manufacturer = _tenantWebsiteService.GetAllValidProductManufacturers(products.Where(u => u.ManufacturerId != null).Select(u => u.ManufacturerId.Value).ToList())
+                                                                     .Select(u => u.Name)
+                                                                     .ToList();
 
-            return PartialView(productFiltering);
+                (productFiltering.MinAvailablePrice, productFiltering.MaxAvailablePrice) = _tenantWebsiteService.GetAvailablePricesRange(products, CurrentTenantWebsite.SiteID);
+                productFiltering.subCategories = _productlookupServices.GetAllValidSubCategoriesByDepartmentAndGroup(products).ToList();
+                productFiltering.Count = products.Count();
+            }
+            productFiltering.WebsiteNavigationCategories = _productlookupServices.GetWebsiteNavigationCategoriesList(categoryId, CurrentTenantWebsite.SiteID).ToList();
+
+            return productFiltering;
         }
 
 
