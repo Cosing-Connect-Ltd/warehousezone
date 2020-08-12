@@ -54,14 +54,17 @@
                     </ol>
                 </nav>
             </div>
-            <div class="sortBy_outer">
-                <span class="srtby_txt">Sort By</span>
-                <div class="sortBysec">
-                    @Html.DropDownList("SortedValues", EnumHelper.GetSelectList(typeof(SortProductTypeEnum), Model.CurrentSort), htmlAttributes: new { @class = "form-control", onchange = "searchPoducts();" })
+            @if (Model.Products != null && Model.Products?.Count() > 0)
+            {
+                <div class="sortBy_outer">
+                    <span class="srtby_txt">Sort By</span>
+                    <div class="sortBysec">
+                        @Html.DropDownList("SortedValues", EnumHelper.GetSelectList(typeof(SortProductTypeEnum), Model.CurrentSort), htmlAttributes: new { @class = "form-control", onchange = "searchPoducts();" })
 
+                    </div>
                 </div>
+            }
             </div>
-        </div>
         <div class="row">
             @Html.Partial("_DynamicFilters", Model.DynamicFilters)
             <div class="col-md-8 col-lg-9 list-on-tablets">
