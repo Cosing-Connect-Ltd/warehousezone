@@ -206,14 +206,12 @@ namespace Ganedata.Core.Services
 
                             else if (item.Value.Contains("in_stock"))
                             {
-                                products = products.Where(u => (u.InventoryStocks.Sum(rv => rv.Available)) > 0 ||
-                                                                                     (u.ProductKitItems.Any(a => a.KitProductMaster.InventoryStocks.Sum(c => c.Available) > 0)));
+                                products = products.Where(u => (u.InventoryStocks.Sum(rv => rv.Available)) > 0 || (u.ProductKitItems.Any(a => a.KitProductMaster.InventoryStocks.Sum(c => c.Available) > 0)));
                                 var test = products.ToList();
                             }
                             else if (item.Value.Contains("out_stock"))
                             {
-                                products = products.Where(u => (u.InventoryStocks.Sum(rv => rv.Available) <= 0) ||
-                                                                                   (u.ProductKitItems.All(a => a.KitProductMaster.InventoryStocks.Sum(c => c.Available) <= 0)));
+                                products = products.Where(u => (u.InventoryStocks.Sum(rv => rv.Available) <= 0) || (u.ProductKitItems.All(a => a.KitProductMaster.InventoryStocks.Sum(c => c.Available) <= 0)));
                             }
 
                         }
@@ -256,26 +254,22 @@ namespace Ganedata.Core.Services
 
                     var availableAttributeNames = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(products).Select(a => a.Key.AttributeName);
 
-                    foreach (var item in filters)
+                    foreach (var item in filters.Where(i => i.Key.Length > 0 && (!i.Key.Equals("BrandS") && !i.Key.Equals("priceS") && !i.Key.Equals("stockS") && !i.Key.Equals("TypeS")) && availableAttributeNames.Contains(i.Key)))
                     {
-                        if (item.Key.Length > 0 && (!item.Key.Equals("BrandS") && !item.Key.Equals("priceS") && !item.Key.Equals("stockS") && !item.Key.Equals("TypeS")) && availableAttributeNames.Contains(item.Key))
-                        {
-                            var result = item.Value.Select(s => s.Replace("_", " ").Replace("??", ",")).ToList();
-                            var values = result.Select(u => u.Split('^').LastOrDefault()).ToList();
-                            var attributeValueIds = _currentDbContext.ProductAttributeValues.Where(u => values.Contains(u.AttributeValueId.ToString()) && u.IsDeleted != true)
-                                                                                            .Select(u => u.AttributeValueId)
-                                                                                            .ToList();
-
-                            var productids = _currentDbContext.ProductAttributeValuesMap.Where(u => attributeValueIds.Contains(u.AttributeValueId) &&
-                                                                                                    u.IsDeleted != true &&
-                                                                                                    u.ProductMaster.IsDeleted != true &&
-                                                                                                    u.ProductMaster.IsActive == true)
-                                                                                        .Select(u => u.ProductId)
+                        var result = item.Value.Select(s => s.Replace("_", " ").Replace("??", ",")).ToList();
+                        var values = result.Select(u => u.Split('^').LastOrDefault()).ToList();
+                        var attributeValueIds = _currentDbContext.ProductAttributeValues.Where(u => values.Contains(u.AttributeValueId.ToString()) && u.IsDeleted != true)
+                                                                                        .Select(u => u.AttributeValueId)
                                                                                         .ToList();
 
-                            products = products.Where(u => productids.Contains(u.ProductId) ||
-                                                                     productids.Any(a => u.ProductKitItems.Select(c => c.KitProductId).ToList().Contains(a)));
-                        }
+                        var productids = _currentDbContext.ProductAttributeValuesMap.Where(u => attributeValueIds.Contains(u.AttributeValueId) &&
+                                                                                                u.IsDeleted != true &&
+                                                                                                u.ProductMaster.IsDeleted != true &&
+                                                                                                u.ProductMaster.IsActive == true)
+                                                                                    .Select(u => u.ProductId)
+                                                                                    .ToList();
+
+                        products = products.Where(u => productids.Contains(u.ProductId) || productids.Any(a => u.ProductKitItems.Select(c => c.KitProductId).ToList().Contains(a)));
                     }
                 }
             }
