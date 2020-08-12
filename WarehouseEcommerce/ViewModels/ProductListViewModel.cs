@@ -1,4 +1,5 @@
 ﻿using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Enums;
 using PagedList;
 
 namespace WarehouseEcommerce.ViewModels
@@ -9,7 +10,7 @@ namespace WarehouseEcommerce.ViewModels
         public ProductDynamicFilteringViewModel DynamicFilters { get; set; }
         public string CurrentCategoryName { get; set; }
         public int? CategoryId { get; set; }
-        public int? CurrentSort { get; set; }
+        public SortProductTypeEnum CurrentSort { get; set; }
         public string CurrentFilter { get; set; }
         public WebsiteNavigation Category { get; set; }
         public WebsiteNavigation SubCategory { get; set; }
