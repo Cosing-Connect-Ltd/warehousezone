@@ -92,6 +92,8 @@ namespace WarehouseEcommerce.Controllers
                         search = filter;
                     }
 
+                    var dynamicFilters = GetDynamicFiltersModel(products, categoryId);
+
                     ViewBag.CurrentFilter = search;
 
                     if (!string.IsNullOrEmpty(search))
@@ -100,6 +102,7 @@ namespace WarehouseEcommerce.Controllers
                     }
 
                     products = _productlookupServices.FilterProduct(products, values, CurrentTenantWebsite.SiteID);
+
                     switch ((SortProductTypeEnum)(sort ?? 1))
                     {
                         case SortProductTypeEnum.PriceByDesc:
@@ -126,17 +129,19 @@ namespace WarehouseEcommerce.Controllers
                         pagedProductsList.ToList().ForEach(u => u.SellPrice = (Math.Round((_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID)), 2)));
                     }
 
+                    dynamicFilters.AttributeValues = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(products);
+
                     model = new ProductListViewModel
                     {
                         Products = pagedProductsList,
-                        ProductFilters = GetDynamicFiltersModel(products, categoryId)
+                        DynamicFilters = dynamicFilters
                     };
                 }
                 else
                 {
                     model = new ProductListViewModel
                     {
-                        ProductFilters = GetDynamicFiltersModel(null, categoryId)
+                        DynamicFilters = GetDynamicFiltersModel(null, categoryId)
                     };
                 }
 
@@ -465,9 +470,9 @@ namespace WarehouseEcommerce.Controllers
             return View();
         }
 
-        public ProductFilteringViewModel GetDynamicFiltersModel(IQueryable<ProductMaster> products, int? categoryId)
+        public ProductDynamicFilteringViewModel GetDynamicFiltersModel(IQueryable<ProductMaster> products, int? categoryId)
         {
-            var productFiltering = new ProductFilteringViewModel();
+            var productFiltering = new ProductDynamicFilteringViewModel();
 
             if (products != null && products.Count() > 0)
             {
@@ -476,7 +481,6 @@ namespace WarehouseEcommerce.Controllers
                                                                      .ToList();
 
                 productFiltering.PriceInterval = _tenantWebsiteService.GetAvailablePricesRange(products, CurrentTenantWebsite.SiteID);
-                productFiltering.AttributeValues = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(products);
                 productFiltering.subCategories = _productlookupServices.GetAllValidSubCategoriesByDepartmentAndGroup(products).ToList();
                 productFiltering.Count = products.Count();
             }

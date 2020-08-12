@@ -6,6 +6,6 @@ namespace WarehouseEcommerce.ViewModels
     public class ProductListViewModel
     {
         public IPagedList<ProductMaster> Products { get; set; }
-        public ProductFilteringViewModel ProductFilters { get; set; }
+        public ProductDynamicFilteringViewModel DynamicFilters { get; set; }
     }
 }
