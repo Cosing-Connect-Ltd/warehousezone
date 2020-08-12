@@ -24,7 +24,7 @@
         }
         <div class="nb_fltr_accrd_wrap">
             <div id="accordion" class="nb_filter_accordion">
-                @if (Model.PriceInterval != null)
+                @if (!string.IsNullOrEmpty(Model.MinAvailablePrice?.Trim()) && !string.IsNullOrEmpty(Model.MaxAvailablePrice?.Trim()))
                 {
                     <div class="nb_filter_head price-range-div" id="filter1">
                         <h5 class="mb-0">
@@ -125,27 +125,31 @@
     </div>
 </div>
 
-@if (Model.PriceInterval != null || Model.AttributeValues != null)
+@if ((!string.IsNullOrEmpty(Model.MinAvailablePrice?.Trim()) && !string.IsNullOrEmpty(Model.MaxAvailablePrice?.Trim())) || Model.AttributeValues != null)
 {
 <script>
     $(function () {
-        var min =Math.floor(@Model.PriceInterval.Item1);
-        var max = Math.ceil(@Model.PriceInterval.Item2);
+
+        var min =Math.floor(@Model.MinAvailablePrice);
+        var max = Math.ceil(@Model.MaxAvailablePrice);
+
         if ((max - min) <= 1 || isNaN(min) || isNaN(max)) {
             $(".price-range-div").hide();
             return;
         }
+
         var prices;
         var parameterValue = getUrlParameter("values");
-        if (parameterValue != null)
-            {
-        var parameterValueList = parameterValue.split("/");
-        jQuery.each(parameterValueList, function(index, item) {
-            if (item.indexOf('priceS-') > -1) {
-                prices = item.replace('priceS-', '');
-            }
-        });
+
+        if (parameterValue != null) {
+            var parameterValueList = parameterValue.split("/");
+            jQuery.each(parameterValueList, function(index, item) {
+                if (item.indexOf('priceS-') > -1) {
+                    prices = item.replace('priceS-', '');
+                }
+            });
         }
+
         if (prices != null) {;
             prices = prices.split("_");
             min = Math.floor(parseFloat(prices[0]));
@@ -153,11 +157,12 @@
             $('#priceS').prop('checked', true);
             $("#priceS").val(prices[0] + "_" +prices[1]);
         }
+
         $("#slider-range").slider({
             range: true,
             step:1,
-            min: Math.floor(@Model.PriceInterval.Item1),
-            max: Math.ceil(@Model.PriceInterval.Item2),
+            min: Math.floor(@Model.MinAvailablePrice),
+            max: Math.ceil(@Model.MaxAvailablePrice),
             values: [min, max],
             slide: function(event, ui) {
                 $("#amount").html('@ViewBag.CurrencySymbol' + Math.floor(ui.values[0]) + " - "+'  @ViewBag.CurrencySymbol' + Math.ceil(ui.values[1]));
@@ -171,9 +176,11 @@
 
             }
         });
+
         $("#amount").html('@ViewBag.CurrencySymbol'+min+
             " -" +
-            '  @ViewBag.CurrencySymbol'+max);
+            '  @ViewBag.CurrencySymbol' + max);
+
         $("input[type=checkbox]").on("change", function (e) {
 
                 var arr = [];

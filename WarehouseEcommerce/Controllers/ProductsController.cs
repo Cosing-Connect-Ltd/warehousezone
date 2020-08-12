@@ -64,22 +64,19 @@ namespace WarehouseEcommerce.Controllers
         {
             try
             {
-                //ViewBag.groupId = group;
-                ViewBag.CurrentCategoryName = category;
-                ViewBag.CategoryId = categoryId;
-                ViewBag.CurrentSort = sort;
-                ViewBag.searchString = search;
-                ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
-
-                ProductListViewModel model;
+                var model = new ProductListViewModel {
+                    CurrentCategoryName = category,
+                    CategoryId = categoryId,
+                    CurrentSort = sort
+                };
 
                 if (categoryId != null)
                 {
                     var categoryInfo = _tenantWebsiteService.GetAllValidWebsiteNavigationCategory(CurrentTenantId, CurrentTenantWebsite.SiteID)
                                                             .FirstOrDefault(c => c.Id == categoryId);
 
-                    ViewBag.Category = categoryInfo?.Parent ?? categoryInfo;
-                    ViewBag.SubCategory = categoryInfo?.Parent != null ? categoryInfo : null;
+                    model.Category = categoryInfo?.Parent ?? categoryInfo;
+                    model.SubCategory = categoryInfo?.Parent != null ? categoryInfo : null;
 
                     var products = _tenantWebsiteService.GetAllValidProductWebsiteSearch(CurrentTenantWebsite.SiteID, category, string.Empty, categoryId);
 
@@ -92,9 +89,9 @@ namespace WarehouseEcommerce.Controllers
                         search = filter;
                     }
 
-                    var dynamicFilters = GetDynamicFiltersModel(products, categoryId);
+                    model.DynamicFilters = GetDynamicFiltersModel(products, categoryId);
 
-                    ViewBag.CurrentFilter = search;
+                    model.CurrentFilter = search;
 
                     if (!string.IsNullOrEmpty(search))
                     {
@@ -129,13 +126,8 @@ namespace WarehouseEcommerce.Controllers
                         pagedProductsList.ToList().ForEach(u => u.SellPrice = (Math.Round((_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID)), 2)));
                     }
 
-                    dynamicFilters.AttributeValues = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(products);
-
-                    model = new ProductListViewModel
-                    {
-                        Products = pagedProductsList,
-                        DynamicFilters = dynamicFilters
-                    };
+                    model.DynamicFilters.AttributeValues = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(products);
+                    model.Products = pagedProductsList;
                 }
                 else
                 {
@@ -152,7 +144,6 @@ namespace WarehouseEcommerce.Controllers
                 return Content("Issue of getting data  " + ex.Message);
 
             }
-
         }
 
         public ActionResult ProductDetails(string sku, int? productId = null)
@@ -480,7 +471,7 @@ namespace WarehouseEcommerce.Controllers
                                                                      .Select(u => u.Name)
                                                                      .ToList();
 
-                productFiltering.PriceInterval = _tenantWebsiteService.GetAvailablePricesRange(products, CurrentTenantWebsite.SiteID);
+                (productFiltering.MinAvailablePrice, productFiltering.MaxAvailablePrice) = _tenantWebsiteService.GetAvailablePricesRange(products, CurrentTenantWebsite.SiteID);
                 productFiltering.subCategories = _productlookupServices.GetAllValidSubCategoriesByDepartmentAndGroup(products).ToList();
                 productFiltering.Count = products.Count();
             }

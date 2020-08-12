@@ -28,28 +28,28 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
 
-                        @if (ViewBag.Category != null)
+                        @if (Model.Category != null)
                         {
                             <li class="breadcrumb-item">
                                 <a href="/">Home</a>
                             </li>
                             <li>></li>
                             <li class="breadcrumb-item">
-                                @if (ViewBag.SubCategory != null)
+                                @if (Model.SubCategory != null)
                                 {
-                                    <a href="@Url.Action("list", "Products", new { category = ViewBag.Category.Name, categoryId = ViewBag.Category.Id })">@ViewBag.Category.Name</a>
+                                    <a href="@Url.Action("list", "Products", new { category = Model.Category.Name, categoryId = Model.Category.Id })">@Model.Category.Name</a>
                                 }
                                 else
                                 {
-                                    @(ViewBag.Category.Name)
+                                    @(Model.Category.Name)
                                 }
                             </li>
                         }
 
-                        @if (ViewBag.SubCategory != null)
+                        @if (Model.SubCategory != null)
                         {
                             <li>></li>
-                            <li class="breadcrumb-item">@ViewBag.SubCategory.Name</li>
+                            <li class="breadcrumb-item">@Model.SubCategory.Name</li>
                         }
                     </ol>
                 </nav>
@@ -184,17 +184,16 @@
                             }
                         }
 
-                        <input type="text" id="currentsortedvalue" value="@(ViewBag.CurrentSort ?? " ")" style="display:none" />
-                        <input type="text" id="currentFiltervalue" value="@(ViewBag.CurrentFilter ?? " ")" style="display:none" />
-                        <input type="text" id="searchString" value="@(ViewBag.searchString ?? " ")" style="display:none" />
+                        <input type="text" id="currentsortedvalue" value="@(Model.CurrentSort?.ToString() ?? " ")" style="display:none" />
+                        <input type="text" id="currentFiltervalue" value="@(Model.CurrentFilter ?? " ")" style="display:none" />
 
-                        <input type="hidden" id="prod-category" value="@ViewBag.Category" />
+                        <input type="hidden" id="prod-category" value="@Model.Category" />
                     </div>
                     @if (Model.Products != null && Model.Products?.TotalItemCount > Model.Products?.PageSize)
                     {
                         <div class="row pagi">
                             <div class="col-sm-8 col-xs-8 text-left pagination">
-                                @Html.PagedListPager(Model.Products, page => Url.Action("list", new { sort = ViewBag.CurrentSort, filter = ViewBag.CurrentFilter, page = page, pagesize = Model.Products.PageSize, category = ViewBag.CurrentCategoryName, categoryId = ViewBag.CategoryId, values = values }),
+                                @Html.PagedListPager(Model.Products, page => Url.Action("list", new { sort = Model.CurrentSort, filter = Model.CurrentFilter, page = page, pagesize = Model.Products.PageSize, category = Model.CurrentCategoryName, categoryId = Model.CategoryId, values = values }),
                                                         options: new PagedListRenderOptions
                                                         {
                                                             MaximumPageNumbersToDisplay = 5,
