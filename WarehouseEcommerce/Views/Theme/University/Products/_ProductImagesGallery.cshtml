@@ -1,0 +1,54 @@
+﻿@model Ganedata.Core.Entities.Domain.ProductMaster
+
+<div class="nb_prd_viewingsecWrap" id="Prod_carr_viewer">
+    <span id="zoomViewTrigger"><i class="icon-search"></i></span>
+    <span class="img_view_area">
+        <img id="zoom_01"
+             src="@(!string.IsNullOrEmpty(Model.DefaultImage?.Trim()) ? ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"
+             data-zoom-image="@(!string.IsNullOrEmpty(Model.DefaultImage?.Trim()) ? ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
+    </span>
+    @if (Model.ProductFiles.Count > 1)
+    {
+        <div class="img_thumb_sliderwrap">
+            <div id="gal01" class="owl-carousel owl-theme nb_imageZoomCarrousle">
+                @foreach (var item in (Model.ProductFiles))
+                {
+                    var extension = Path.GetExtension(item.FilePath);
+                    <div class="item">
+                        <a href="#" data-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"
+                           data-zoom-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"
+                           class="@(Model.DefaultImage == item.FilePath? "active" : "")">
+                            <img id="zoom_01" src="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="" />
+                        </a>
+                    </div>
+                }
+
+            </div>
+        </div>
+    }
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#zoom_01").elevateZoom({
+            gallery: "gal01",
+            cursor: "pointer",
+            galleryActiveClass: "active",
+            imageCrossfade: true,
+            loadingIcon: "",
+            cursor: "crosshair",
+            zoomWindowFadeIn: 500,
+            zoomWindowFadeOut: 500,
+            easing: true,
+            zoomWindowWidth: 400,
+            zoomWindowHeight: 300,
+            responsive: true,
+            borderSize: 1,
+            destroyContainerOnResize: true,
+            zoomWindowOffetx: 50,
+            zoomWindowOffety: -25,
+            zoomType: "window",
+        });
+    });
+</script>

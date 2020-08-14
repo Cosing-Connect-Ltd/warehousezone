@@ -52,15 +52,17 @@ namespace Ganedata.Core.Services
         {
             return _currentDbContext.ProductAttributeValues.Where(m => m.IsDeleted != true);
         }
-        public IEnumerable<ProductAttributeValues> GetAllValidProductAttributeValuesByProductId(int productId)
+        public IEnumerable<ProductAttributeValuesMap> GetAllValidProductAttributeValuesMapsByProductId(int productId)
         {
             return _currentDbContext.ProductAttributeValuesMap
-                .Where(a => a.ProductId == productId && a.IsDeleted != true).Select(a => a.ProductAttributeValues);
+                .Where(a => a.ProductId == productId && a.IsDeleted != true);
         }
 
-        public IEnumerable<ProductKitType> GetProductKitTypes(List<int?> kitIds)
+        public List<ProductKitType> GetProductKitTypes(List<int?> kitIds)
         {
-            return _currentDbContext.ProductKitTypes.Where(u => kitIds.Contains(u.Id)).Distinct().ToList();
+            return _currentDbContext.ProductKitTypes.Where(u => kitIds.Contains(u.Id) && u.IsDeleted != true && u.IsActive == true)
+                                                    .OrderBy(u => u.SortOrder)
+                                                    .ToList();
         }
 
         public IEnumerable<ProductKitType> GetProductKitTypes(int TenantId)
@@ -332,12 +334,12 @@ namespace Ganedata.Core.Services
 
         public ProductAttributeValuesMap GetProductAttributeValueMap(int productId, int attributeValueId)
         {
-            return _currentDbContext.ProductAttributeValuesMap.FirstOrDefault(
-                a => a.ProductId == productId && a.AttributeValueId == attributeValueId);
+            return _currentDbContext.ProductAttributeValuesMap.FirstOrDefault(a => a.ProductId == productId && a.AttributeValueId == attributeValueId);
         }
-
-
-
+        public ProductAttributeValuesMap GetProductAttributeValuesMapById(int id)
+        {
+            return _currentDbContext.ProductAttributeValuesMap.FirstOrDefault(a => a.Id == id && a.IsDeleted != true);
+        }
 
         public ProductAttributes SaveProductAttribute(string attributeName, int sortOrder, bool isColorTyped, int? attributeId = null)
         {
@@ -409,39 +411,55 @@ namespace Ganedata.Core.Services
 
 
 
-        public bool SaveProductAttributeValueMap(int attributeValueId, int attributeId, int userId, int tenantId, int productId)
+        public bool SaveProductAttributeValueMap(int attributeValueId, int userId, int tenantId, int productId, int? productAttributeValueMapId)
         {
-            if (attributeValueId > 0)
+            if (productAttributeValueMapId != null && productAttributeValueMapId > 0 && attributeValueId > 0)
             {
-                var previousAttributeMaps = _currentDbContext.ProductAttributeValuesMap.Where(a => a.ProductId == productId &&
-                                                                                                   a.ProductAttributeValues.AttributeId == attributeId &&
-                                                                                                   a.TenantId == tenantId);
+                var previousAttributeMap = _currentDbContext.ProductAttributeValuesMap.FirstOrDefault(p => p.Id == productAttributeValueMapId &&
+                                                                                                           p.TenantId == tenantId);
 
-                previousAttributeMaps.ForEach(a =>
+                if (previousAttributeMap != null)
                 {
-                    a.IsDeleted = true;
-                    a.UpdatedBy = userId;
-                    a.DateUpdated = DateTime.Now;
-                });
+                    previousAttributeMap.IsDeleted = false;
+                    previousAttributeMap.UpdatedBy = userId;
+                    previousAttributeMap.AttributeValueId = attributeValueId;
+                    previousAttributeMap.DateUpdated = DateTime.Now;
+                }
 
-                var valueMap = new ProductAttributeValuesMap
-                {
-                    AttributeValueId = attributeValueId,
-                    CreatedBy = userId,
-                    TenantId = tenantId,
-                    DateCreated = DateTime.UtcNow,
-                    ProductId = productId,
-                };
-
-                _currentDbContext.ProductAttributeValuesMap.Add(valueMap);
-
-                _currentDbContext.SaveChanges();
             }
+            else if (attributeValueId > 0)
+            {
+                var previousAttributeMap = _currentDbContext.ProductAttributeValuesMap.FirstOrDefault(p => p.ProductId == productId &&
+                                                                                                           p.AttributeValueId == attributeValueId &&
+                                                                                                           p.TenantId == tenantId);
+
+                if (previousAttributeMap != null)
+                {
+                    previousAttributeMap.IsDeleted = false;
+                    previousAttributeMap.UpdatedBy = userId;
+                    previousAttributeMap.DateUpdated = DateTime.Now;
+                }
+                else
+                {
+                    var valueMap = new ProductAttributeValuesMap
+                    {
+                        AttributeValueId = attributeValueId,
+                        CreatedBy = userId,
+                        TenantId = tenantId,
+                        DateCreated = DateTime.UtcNow,
+                        ProductId = productId,
+                    };
+
+                    _currentDbContext.ProductAttributeValuesMap.Add(valueMap);
+                }
+            }
+
+            _currentDbContext.SaveChanges();
 
             return true;
         }
 
-        public void DeleteProductAttributeValue(int productId, int attributeValueId, int userId, int tenantId)
+        public void DeleteProductAttributeValuesMap(int productId, int attributeValueId, int userId, int tenantId)
         {
             var currentm = GetProductAttributeValueMap(productId, attributeValueId);
 
@@ -450,13 +468,6 @@ namespace Ganedata.Core.Services
             currentm.DateUpdated = DateTime.UtcNow;
             _currentDbContext.Entry(currentm).State = EntityState.Modified;
             _currentDbContext.SaveChanges();
-
-            var currentV = _currentDbContext.ProductAttributeValues.Find(attributeValueId);
-            currentV.IsDeleted = true;
-            currentV.UpdateUpdatedInfo(userId);
-            _currentDbContext.Entry(currentV).State = EntityState.Modified;
-            _currentDbContext.SaveChanges();
-
         }
 
 

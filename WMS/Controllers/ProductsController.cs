@@ -485,17 +485,16 @@ namespace WMS.Controllers
         {
             if (Id == null)
             {
-                var productId = (int)Session["pId"];
-                var assignedAttributeIds = _productLookupService.GetAllValidProductAttributeValuesByProductId(productId).Select(p => p.AttributeId);
-                ViewBag.Attributes = _productLookupService.GetAllValidProductAttributes().Where(s => !assignedAttributeIds.Contains(s.AttributeId));
-                ViewBag.AttributeValues = _productLookupService.GetAllValidProductAttributeValues().Where(a => !assignedAttributeIds.Contains(a.AttributeId));
+                ViewBag.Attributes = _productLookupService.GetAllValidProductAttributes();
+                ViewBag.AttributeValues = _productLookupService.GetAllValidProductAttributeValues();
                 return PartialView();
             }
             else
             {
-                var attributeValue = _productLookupService.GetProductAttributeValueById(Id.Value);
-                ViewBag.AttributeValues = _productLookupService.GetAllValidProductAttributeValues().Where(a => a.AttributeId == attributeValue.AttributeId);
-                return PartialView(attributeValue);
+                var productAttributeValuesMap = _productLookupService.GetProductAttributeValuesMapById(Id.Value);
+                ViewBag.AttributeValues = _productLookupService.GetAllValidProductAttributeValues().Where(a => a.AttributeId == productAttributeValuesMap.ProductAttributeValues.AttributeId);
+                ViewBag.ProductAttributeValuesMapId = Id;
+                return PartialView(productAttributeValuesMap.ProductAttributeValues);
             }
         }
 
@@ -1551,20 +1550,21 @@ namespace WMS.Controllers
         public ActionResult _Attributes(int ProductId)
         {
             ViewBag.productId = ProductId;
-            var data = _productLookupService.GetAllValidProductAttributeValuesByProductId(ProductId).Select(attr => new
+            var data = _productLookupService.GetAllValidProductAttributeValuesMapsByProductId(ProductId).Select(attr => new
             {
-                attr.AttributeValueId,
-                attr.ProductAttributes.AttributeName,
-                attr.Value
+                attr.Id,
+                attr.ProductAttributeValues.AttributeValueId,
+                attr.ProductAttributeValues.ProductAttributes.AttributeName,
+                attr.ProductAttributeValues.Value
             }).ToList();
             return PartialView(data);
         }
         [HttpPost]
-        public ActionResult SaveProductAttributeValueMap(ProductAttributeValues model)
+        public ActionResult SaveProductAttributeValueMap(ProductAttributeValues model, int? productAttributeValueMapId)
         {
             var productId = (int)Session["pId"];
 
-            _productLookupService.SaveProductAttributeValueMap(model.AttributeValueId, model.AttributeId, CurrentUserId, CurrentTenantId, productId);
+            _productLookupService.SaveProductAttributeValueMap(model.AttributeValueId, CurrentUserId, CurrentTenantId, productId, productAttributeValueMapId);
 
             return Redirect(Url.Action("Edit", new { id = productId }) + "#product-attributes");
 
@@ -1576,14 +1576,14 @@ namespace WMS.Controllers
         }
         public ActionResult DeleteAttributeValue(int? Id)
         {
-            return View(_productLookupService.GetProductAttributeValueById(Id.Value));
+            return View(_productLookupService.GetProductAttributeValuesMapById(Id.Value).ProductAttributeValues);
         }
         [HttpPost, ActionName("DeleteAttributeValue")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteAttributeValueConfirmed(int id)
+        public ActionResult DeleteAttributeValueConfirmed(int attributeValueId)
         {
             var cpId = (int)Session["pId"];
-            _productLookupService.DeleteProductAttributeValue(cpId, id, CurrentUserId, CurrentTenantId);
+            _productLookupService.DeleteProductAttributeValuesMap(cpId, attributeValueId, CurrentUserId, CurrentTenantId);
 
             return Redirect(Url.Action("Edit", new { id = Session["pId"] }) + "#product-attributes");
         }

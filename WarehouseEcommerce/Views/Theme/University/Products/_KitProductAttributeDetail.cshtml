@@ -5,11 +5,11 @@
             <div class="col-md-12">
                 @Html.Hidden("step-number-tracking")
                 <div class="nb_prd_det_rightsec">
-                    <h2 class="head">@Model.SelectedProduct.Name</h2>
-                    <span class="prd_amnt">@ViewBag.CurrencySymbol@Model.SelectedProduct.SellPrice</span>
+                    <h2 class="head">@Model.Product.Name</h2>
+                    <span class="prd_amnt">@ViewBag.CurrencySymbol@Model.Product.SellPrice</span>
 
                     <div class="availibility">
-                        @{ var availableProductCount = Ganedata.Core.Services.Inventory.GetAvailableProductCount(Model.SelectedProduct, ViewBag.SiteId); }
+                        @{ var availableProductCount = Ganedata.Core.Services.Inventory.GetAvailableProductCount(Model.Product, ViewBag.SiteId); }
                         @if (availableProductCount > 0)
                         {
                             <input type="hidden" class="availablity" value="true">
@@ -25,31 +25,31 @@
                         }
                     </div>
 
-                    @if (Model.BaseProductType != Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
+                    @if (Model.ParentProductType != Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
                     {
-                        foreach (var item in Model.SelectedProduct.ProductAttributeValuesMap.Where(a => a.IsDeleted != true).OrderBy(m => m.ProductAttributeValues.AttributeId))
+                        foreach (var item in Model.Product.ProductAttributeValuesMap.Where(a => a.IsDeleted != true).OrderBy(m => m.ProductAttributeValues.AttributeId))
                         {
                             <div>
                                 <div class="sizeWrap">
-                                    <p>@Html.Raw(item.ProductAttributeValues.ProductAttributes.AttributeName) : <span>@Html.Raw(item.ProductAttributeValues.Value)</span></p>
+                                    <div class="title">@Html.Raw(item.ProductAttributeValues.ProductAttributes.AttributeName) : <span>@Html.Raw(item.ProductAttributeValues.Value)</span></div>
                                 </div>
                             </div>
                         }
                     }
 
-                    @if (Model.BaseProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
+                    @if (Model.ParentProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
                     {
                         foreach (var attribute in Model.AvailableAttributes)
                         {
                             <div>
                                 <div class="sizeWrap">
-                                    <p>@Html.Raw(attribute.Name) : <span>@Html.Raw(attribute.SelectedValue)</span></p>
+                                    <div class="title">@Html.Raw(attribute.Name) : <span>@Html.Raw(attribute.SelectedValue)</span></div>
                                     <ul class="size_boxList">
                                         @{
                                             foreach (var attributeValue in attribute.AttributeValues)
                                             {
                                                 @Html.Raw("<li class=\"col3 " + (attributeValue.IsSelected ? "active" : "") + (attributeValue.IsAvailableWithCurrentSelection ? "\">" : "unavailable-attribute\">") +
-                                                                (attributeValue.IsSelected ? "<a href='javascript:;'id='selected-productids' data-productid=" + Model.SelectedProduct.ProductId + " data-skuCode=" + Model.SelectedProduct.SKUCode + ">" : $"<a href='javascript:;' onclick = 'getSelectedAttributesProduct(event,\"" + Model.BaseProductSKUCode + "\"," + (attributeValue.RelatedProductId) + "," + Model.Quantity + ")'>") +
+                                                                (attributeValue.IsSelected ? "<a href='javascript:;'id='selected-productids' data-productid=" + Model.Product.ProductId + " data-skuCode=" + Model.Product.SKUCode + ">" : $"<a href='javascript:;' onclick = 'getSelectedAttributesProduct(event,\"" + Model.ParentProductSKUCode + "\"," + (attributeValue.RelatedProductId) + "," + Model.Quantity + ")'>") +
                                                                 (attributeValue.IsColorTyped ?
                                                                                 "<span style=\"background-color:" + attributeValue.Color + ";color:" + attributeValue.Color + "\">-</span>" :
                                                                                 "<span style=\"color:" + attributeValue.Color + "\">" + attributeValue.Value + "</span>") +

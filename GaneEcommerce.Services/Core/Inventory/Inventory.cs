@@ -1652,6 +1652,14 @@ namespace Ganedata.Core.Services
 
         }
 
+        public static Dictionary<string, string> GetProductAttributesValueToDisplay(ICollection<ProductAttributeValuesMap> productAttributeValuesMap)
+        {
+            return productAttributeValuesMap.Where(a => a.IsDeleted != true)
+                                            .OrderBy(m => m.ProductAttributeValues.AttributeId)
+                                            .GroupBy(a => a.ProductAttributeValues.ProductAttributes.AttributeName)
+                                            .ToDictionary (a => a.Key, a => string.Join(", ", a.Select(v => v.ProductAttributeValues.Value)));
+        }
+
         public static decimal GetAvailableProductCount(ProductMaster product, int siteId)
         {
             decimal availableProductCount = 0;

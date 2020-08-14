@@ -273,8 +273,10 @@
     <Compile Include="Models\DemoBooking.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AccountDetailViewModel.cs" />
+    <Compile Include="ViewModels\BaseProductViewModel.cs" />
     <Compile Include="ViewModels\ProductDetailAttributeValueViewModel.cs" />
     <Compile Include="ViewModels\ProductDetailAttributeViewModel.cs" />
+    <Compile Include="ViewModels\GroupedProductViewModel.cs" />
     <Compile Include="ViewModels\ProductDetailViewModel.cs" />
     <Compile Include="ViewModels\ProductListViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
@@ -1421,6 +1423,10 @@
     <Content Include="Views\Theme\University\Orders\PayPal.cshtml" />
     <Content Include="Views\Theme\University\Orders\_AddressDetail.cshtml" />
     <Content Include="Views\Theme\University\Shared\_CartItemModal.cshtml" />
+    <Content Include="Views\Theme\University\Products\_RelatedProducts.cshtml" />
+    <Content Include="Views\Theme\University\Products\_ProductDetailActionsButtons.cshtml" />
+    <Content Include="Views\Theme\University\Products\_ProductDetailBreadCrumb.cshtml" />
+    <Content Include="Views\Theme\University\Products\_ProductImagesGallery.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

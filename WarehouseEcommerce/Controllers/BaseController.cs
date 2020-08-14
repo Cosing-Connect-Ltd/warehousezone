@@ -178,6 +178,7 @@ namespace WarehouseEcommerce.Controllers
                 ViewBag.BaseFilePath = website.BaseFilePath;
                 ViewBag.Favicon = website.BaseFilePath + website.Favicon;
                 ViewBag.BasePath = Request.Url.Scheme + "://" + website.HostName;
+                ViewBag.SiteDescription = website.SiteDescription;
             }
             ViewBag.SiteId = CurrentTenantWebsite.SiteID;
             ViewBag.TimeZone = GetCurrentTimeZone();

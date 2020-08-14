@@ -14,7 +14,7 @@ namespace Ganedata.Core.Services
         IEnumerable<Locations> GetAllValidProductLocations(int tenantId, int warehouseId, int filterForProductId = 0);
         IEnumerable<ProductAttributes> GetAllValidProductAttributes();
         IEnumerable<ProductAttributeValues> GetAllValidProductAttributeValues();
-        IEnumerable<ProductAttributeValues> GetAllValidProductAttributeValuesByProductId(int productId);
+        IEnumerable<ProductAttributeValuesMap> GetAllValidProductAttributeValuesMapsByProductId(int productId);
         IEnumerable<ProductAttributeValuesMap> GetAllValidProductAttributeValuesMap();
         IEnumerable<ProductSCCCodes> GetAllProductSccCodesByProductId(int productId, int tenantId);
         IEnumerable<ProductLocations> GetAllProductLocationsByProductId(int productId, int warehouseId);
@@ -32,6 +32,7 @@ namespace Ganedata.Core.Services
         PalletType GetPalletTypeByName(string palletType);
         ProductSCCCodes GetProductSccCodesById(int productSccCodesId);
         ProductAttributeValues GetProductAttributeValueById(int productAttributeValueId);
+        ProductAttributeValuesMap GetProductAttributeValuesMapById(int id);
         ProductAttributeValuesMap GetProductAttributeValueMap(int productId, int attributeValueId);
         PalletType CreatePalletType(PalletType model, int userId, int tenantId);
         PalletType UpdatePalletType(PalletType model, int userId);
@@ -39,8 +40,8 @@ namespace Ganedata.Core.Services
         void DeletePalletType(int palletTypeId, int userId);
         ProductAttributes SaveProductAttribute(string attributeName, int sortOrder, bool isColorTyped, int? attributeId=null);
         ProductAttributeValues SaveProductAttributeValue(int attributeId, string attributeValue, int sortOrder, string color, int userId = 0, int? attributeValueId = null);
-        bool SaveProductAttributeValueMap(int attributeValueId, int attributeId, int userId, int tenantId, int productId);
-        void DeleteProductAttributeValue(int productId, int attributeValueId, int userId, int tenantId);
+        bool SaveProductAttributeValueMap(int attributeValueId, int userId, int tenantId, int productId, int? productAttributeValueMapId);
+        void DeleteProductAttributeValuesMap(int productId, int attributeValueId, int userId, int tenantId);
 
 
         Locations SaveProductLocation(Locations model, int warehouseId, int tenantId, int userId, int productId = 0);
@@ -66,7 +67,7 @@ namespace Ganedata.Core.Services
         ProductKitType GetProductKitTypeByName(string productKitTypeName);
         IQueryable<ProductMaster> FilterProduct(IQueryable<ProductMaster> productMaster, string filterString,int siteId);
 
-        IEnumerable<ProductKitType> GetProductKitTypes(List<int?> kitIds);
+        List<ProductKitType> GetProductKitTypes(List<int?> kitIds);
 
         Dictionary<string, List<ProductAttributeValues>> GetAllValidProductAttributeValuesByProductIds(IQueryable<ProductMaster> product);
 
