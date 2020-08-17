@@ -97,7 +97,7 @@
                 @* Adding dynmic attributes here *@
                 @if (Model.AttributeValues != null)
                 {
-                    foreach (var item in Model.AttributeValues.Where(a => a.Value.Count > 1))
+                    foreach (var item in Model.AttributeValues)
                     {
 
                         <div class="nb_filter_head" id="filter_@(item.Key.AttributeId + item.Value.Count)">
