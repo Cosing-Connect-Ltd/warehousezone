@@ -339,15 +339,19 @@
 }
 
 @media (max-width:850px) {
-    .product-section .footSec button {
+    .product-details-section .footSec button {
         font-size: 16px !important
     }
 }
 
-@media (max-width:768px) {
+@media (max-width:767px) {
     .nb_header .nb_headicolst {
         margin-top: 60px;
         margin-bottom: unset
+    }
+
+    .feature-product-overflow .inside-container {
+        margin: 0 22px 0 24px
     }
 
     .nb_header .nb_logowrap {
@@ -614,18 +618,10 @@
     }
 
     .nb_prd_viewingsecWrap .img_view_area {
-        height: 287px;
-        padding: unset;
-        justify-content: center;
-        display: flex
+        display: none
     }
 
-    .img_view_area .zoomWrapper {
-        height: 287px !important;
-        width: 286.797px !important
-    }
-
-    .product-section .breadCrumbtopsec {
+    .product-details-section .breadCrumbtopsec {
         margin-bottom: 20px
     }
 
@@ -636,18 +632,7 @@
         margin-bottom: unset !important
     }
 
-    .zoomWrapper {
-        pointer-events: none
-    }
-
-    .zoomContainer,
-    .zoomLens,
-    .zoomWindow {
-        display: none !important;
-        pointer-events: none
-    }
-
-    .product-section .notify-btn {
+    .product-details-section .notify-btn {
         margin-right: unset !important
     }
 
@@ -893,12 +878,6 @@
     }
 }
 
-@media (max-width:767px) {
-    .feature-product-overflow .inside-container {
-        margin: 0 22px 0 24px
-    }
-}
-
 @media (max-width:700px) {
     .list-on-tablets .prd_lst_boxouter .imagewrap img {
         width: 320px !important
@@ -1114,7 +1093,7 @@
         display: flex !important
     }
 
-    .product-section .footSec {
+    .product-details-section .footSec {
         display: block
     }
 
@@ -1398,7 +1377,7 @@
         overflow: hidden
     }
 
-    .product-section .footSec button {
+    .product-details-section .footSec button {
         font-size: 14px !important
     }
 }
@@ -1418,12 +1397,5 @@
 @media (min-width:900px) {
     .kit-product .sticky {
         margin-right: 15px
-    }
-}
-
-@media (min-width:769px) {
-    .img_view_area .zoomWrapper {
-        width: 100% !important;
-        height: 100% !important
     }
 }

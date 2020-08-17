@@ -1,0 +1,25 @@
+﻿@model WarehouseEcommerce.ViewModels.BaseProductViewModel
+<div class="breadCrumbtopsec">
+    <div class="nb_bread_crumbwrap">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/">Home</a>
+                </li>
+                <li>></li>
+                @if (Model.Category != null && !string.IsNullOrEmpty(Model.Category))
+                {
+                    <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { category = Model.Category, categoryId = Model.CategoryId })">@Model.Category</a></li>
+                    <li>></li>
+                }
+                @if (Model.SubCategory != null && !string.IsNullOrEmpty(Model.SubCategory))
+                {
+                    <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { category = Model.SubCategory, categoryId = Model.SubCategoryId })">@Model.SubCategory</a></li>
+                    <li>></li>
+                }
+
+                <li class="breadcrumb-item"> <a>@Model.Product.Name</a> </li>
+            </ol>
+        </nav>
+    </div>
+</div>

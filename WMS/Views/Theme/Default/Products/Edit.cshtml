@@ -134,7 +134,7 @@
                 $(".product-attributes").show();
             }
         });
-      
+
         $("#ProductType option[value='6']").remove();
         $("#ProductType").trigger("chosen:updated");
 
@@ -748,18 +748,18 @@
                         </div>
                     </div>
                 </div>
-                @*<div class="input-group h-100 justify-content-center align-items-center simpleDiv" style=@(Model.ProductType!=Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute?"":"display:none")>
-                        @Html.Label("Product Attributes", htmlAttributes: new { @class = "col-md-4" })
-                        <div class="col-md-8">
-                            <div class="col-11 p-0 mt-1 pull-left">
-                                @Html.ListBox("ProductAttributesIds", new MultiSelectList(ViewBag.Attributes, "Id", "Value", "Attribute"), new { @include_group_label_in_selected = "true", @class = "chosen-select", Multiple = "multiple", size = "5", data_placeholder = "Choose Attributes" })
-                            </div>
-                            <div class="col-1 p-0 pull-left">
-                                <input type="button" onclick="javascript: pcModalAttributesValues.Show();" id="ProdAttributeAdd" class="btn btn-primary" value="+">
-                            </div>
-
+                <div class="input-group h-100 justify-content-center align-items-center simpleDiv" style=@(Model.ProductType!=Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute?"":"display:none")>
+                    @Html.Label("Product Attributes", htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        <div class="col-11 p-0 mt-1 pull-left">
+                            @Html.ListBox("ProductAttributesIds", new MultiSelectList(ViewBag.Attributes, "Id", "Value", "Attribute"), new { @include_group_label_in_selected = "true", @class = "chosen-select", Multiple = "multiple", size = "5", data_placeholder = "Choose Attributes" })
                         </div>
-                    </div>*@
+                        <div class="col-1 p-0 pull-left">
+                            <input type="button" onclick="javascript: pcModalAttributesValues.Show();" id="ProdAttributeAdd" class="btn btn-primary" value="+">
+                        </div>
+
+                    </div>
+                </div>
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.Label("Product Accounts", htmlAttributes: new { @class = "col-md-4" })
                     <div class="col-md-8">

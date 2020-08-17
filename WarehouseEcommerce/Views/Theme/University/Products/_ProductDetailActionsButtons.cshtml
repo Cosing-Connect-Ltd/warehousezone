@@ -1,0 +1,43 @@
+﻿@model Ganedata.Core.Entities.Domain.ProductMaster
+
+@{
+    var availableProductCount = ViewBag.AvailableProductCount as decimal?;
+}
+
+<div class="footSec">
+    @if (@Model.SellPrice > 0 && @Model.SellPrice.HasValue && (availableProductCount > 0))
+    {
+        <div class="qty">
+            <span>quantity</span>
+            @Html.DropDownList("product-quantity", Enumerable.Range(1, (int)availableProductCount).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), htmlAttributes: new { @class = "form-control" })
+        </div>
+
+        <button class="addTobasket" onclick="addToCart(@Model.ProductId, document.getElementById('product-quantity').value)">Add to basket</button>
+    }
+    else
+    {
+        var totalwishlistitems = Model.WebsiteWishListItems.FirstOrDefault(u => u.IsDeleted != true && u.UserId == ViewBag.CurrentUserId && u.IsNotification);
+
+        if (totalwishlistitems == null)
+        {
+            <button class="notify-btn addTobasket" id="notification-bell__button_@Model.ProductId" onclick="addToNotifyList(@Model.ProductId)"><i class="fa fa-bell-o list-icon"></i> NOTIFY ME WHEN AVAILABLE</button>
+        }
+        else
+        {
+            <button class="notify-btn addTobasket" id="notification-bell__button_@Model.ProductId" style="background-color: red" onclick="redirectToWishListByConfirmation()"><i class="fa fa-bell-o list-icon"></i> NOTIFY ME WHEN AVAILABLE</button>
+
+        }
+
+    }
+
+    @if (Model.WebsiteWishListItems.FirstOrDefault(u => u.IsDeleted != true && !u.IsNotification) == null)
+    {
+        <button id="btnwish_@Model.ProductId" onclick="addToWishList(@Model.ProductId)" class="addtowishlistbtn">Add to Wishlist</button>
+        <a href="javascript:;" class="addtowishlist " id="wish_@Model.ProductId" onclick="addToWishList(@Model.ProductId)"><i class="icon-love list-icon" style="color:black;"></i></a>
+    }
+    else
+    {
+        <button id="btnwish_@Model.ProductId" onclick="redirectToWishListByConfirmation()" class="addtowishlistbtn" style="background-color: red !important">Add to Wishlist</button>
+        <a href="javascript:;" class="addtowishlist" id="wish_@Model.ProductId" onclick="redirectToWishListByConfirmation()"><i class="icon-love list-icon" style="color: red;"></i></a>
+    }
+</div>

@@ -5,15 +5,15 @@
 <section class="nb_sec nb_prdlisting_pgsec">
     <div class="container">
         <div>
-            <h2 class="head">@Model.SelectedProduct.Name</h2>
+            <h2 class="head">@Model.Product.Name</h2>
         </div>
         <div class="row">
             <div class="col-md-12 col-lg-12">
                 <div class="nb_prd_det_rightsec">
-                    @Html.HiddenFor(model => Model.SelectedProduct.ProductId)
-                    <span class="prd_amnt">@ViewBag.CurrencySymbol@Model.SelectedProduct.SellPrice</span>
+                    @Html.HiddenFor(model => Model.Product.ProductId)
+                    <span class="prd_amnt">@ViewBag.CurrencySymbol@Model.Product.SellPrice</span>
                     <div class="availibility">
-                        @{ var availableProductCount = Ganedata.Core.Services.Inventory.GetAvailableProductCount(Model.SelectedProduct, ViewBag.SiteId); }
+                        @{ var availableProductCount = Ganedata.Core.Services.Inventory.GetAvailableProductCount(Model.Product, ViewBag.SiteId); }
                         @if (availableProductCount > 0)
                         {
                             <input type="hidden" class="availablity" value="true">
@@ -27,31 +27,31 @@
                         }
                     </div>
 
-                    @if (Model.BaseProductType != Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
+                    @if (Model.ParentProductType != Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
                     {
-                        foreach (var item in Model.SelectedProduct.ProductAttributeValuesMap.Where(a => a.IsDeleted != true).OrderBy(m => m.ProductAttributeValues.AttributeId))
+                        foreach (var item in Model.Product.ProductAttributeValuesMap.Where(a => a.IsDeleted != true).OrderBy(m => m.ProductAttributeValues.AttributeId))
                         {
                             <div>
                                 <div class="sizeWrap">
-                                    <p>@Html.Raw(item.ProductAttributeValues.ProductAttributes.AttributeName) : <span>@Html.Raw(item.ProductAttributeValues.Value)</span></p>
+                                    <div class="title">@Html.Raw(item.ProductAttributeValues.ProductAttributes.AttributeName) : <span>@Html.Raw(item.ProductAttributeValues.Value)</span></div>
                                 </div>
                             </div>
                         }
                     }
 
-                    @if (Model.BaseProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
+                    @if (Model.ParentProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
                     {
                         foreach (var attribute in Model.AvailableAttributes)
                         {
                             <div>
                                 <div class="sizeWrap">
-                                    <p>@Html.Raw(attribute.Name) : <span>@Html.Raw(attribute.SelectedValue)</span></p>
+                                    <div class="title">@Html.Raw(attribute.Name) : <span>@Html.Raw(attribute.SelectedValue)</span></div>
                                     <ul class="size_boxList">
                                         @{
                                             foreach (var attributeValue in attribute.AttributeValues)
                                             {
                                                 @Html.Raw("<li class=\"col3 " + (attributeValue.IsSelected ? "active" : "") + (attributeValue.IsAvailableWithCurrentSelection ? "\">" : "unavailable-attribute\">") +
-                                                                (attributeValue.IsSelected ? "<a href='javascript:;'id='selected-productids' data-productid=" + Model.SelectedProduct.ProductId + " data-skuCode=" + Model.SelectedProduct.SKUCode + ">" : $"<a href='javascript:;' onclick = 'getSelectedAttributesProduct(event,\"" + Model.BaseProductSKUCode + "\"," + (attributeValue.RelatedProductId) + "," + Model.Quantity + ")'>") +
+                                                                (attributeValue.IsSelected ? "<a href='javascript:;'id='selected-productids' data-productid=" + Model.Product.ProductId + " data-skuCode=" + Model.Product.SKUCode + ">" : $"<a href='javascript:;' onclick = 'getSelectedAttributesProduct(event,\"" + Model.ParentProductSKUCode + "\"," + (attributeValue.RelatedProductId) + "," + Model.Quantity + ")'>") +
                                                                 (attributeValue.IsColorTyped ?
                                                                                 "<span style=\"background-color:" + attributeValue.Color + ";color:" + attributeValue.Color + "\">-</span>" :
                                                                                 "<span style=\"color:" + attributeValue.Color + "\">" + attributeValue.Value + "</span>") +
@@ -72,32 +72,32 @@
     <button type="button" class="btmbtn sho" data-dismiss="modal">
         Close
     </button>
-    @if (Ganedata.Core.Services.Inventory.IsProductAvailableToSell(Model.SelectedProduct, ViewBag.SiteId))
+    @if (Ganedata.Core.Services.Inventory.IsProductAvailableToSell(Model.Product, ViewBag.SiteId))
     {
-        @Html.Hidden("ProductId", @Model.SelectedProduct.ProductId)
+        @Html.Hidden("ProductId", @Model.Product.ProductId)
         <button type="submit" class="btmbtn pro" style="margin-left: 10px; margin-right: 10px;" onclick="addProductByAttributeToCart()">
             Add To Basket
         </button>
     }
     else
     {
-        if (!Ganedata.Core.Services.Inventory.IsProductInNotifyList(Model.SelectedProduct, ViewBag.CurrentUserId))
+        if (!Ganedata.Core.Services.Inventory.IsProductInNotifyList(Model.Product, ViewBag.CurrentUserId))
         {
-            <button class="btmbtn sho" onclick="addToNotifyList(@Model.SelectedProduct.ProductId, @Model.BaseProductId); hidePopup();" id="notification-bell_@Model.SelectedProduct.ProductId"><i class="bel-icon fa fa-bell-o list-icon"></i></button>
+            <button class="btmbtn sho" onclick="addToNotifyList(@Model.Product.ProductId, @Model.ParentProductId); hidePopup();" id="notification-bell_@Model.Product.ProductId"><i class="bel-icon fa fa-bell-o list-icon"></i></button>
         }
         else
         {
-            <button class="btmbtn sho" onclick="redirectToWishListByConfirmation()" id="notification-bell_@Model.SelectedProduct.ProductId"><i class="bel-icon fa fa-bell-o list-icon" style="color:red;"></i></button>
+            <button class="btmbtn sho" onclick="redirectToWishListByConfirmation()" id="notification-bell_@Model.Product.ProductId"><i class="bel-icon fa fa-bell-o list-icon" style="color:red;"></i></button>
         }
     }
 
-    @if (!Ganedata.Core.Services.Inventory.IsProductInWishList(Model.SelectedProduct, ViewBag.CurrentUserId))
+    @if (!Ganedata.Core.Services.Inventory.IsProductInWishList(Model.Product, ViewBag.CurrentUserId))
     {
-        <button class="btmbtn sho" id="wish_@Model.SelectedProduct.ProductId" onclick="addToWishList(@Model.SelectedProduct.ProductId, @Model.BaseProductId); hidePopup();"><i class="icon-love list-icon"></i></button>
+        <button class="btmbtn sho" id="wish_@Model.Product.ProductId" onclick="addToWishList(@Model.Product.ProductId, @Model.ParentProductId); hidePopup();"><i class="icon-love list-icon"></i></button>
     }
     else
     {
-        <button class="btmbtn sho" id="wish_@Model.SelectedProduct.ProductId" onclick="redirectToWishListByConfirmation()"><i class="icon-love list-icon" style="color: #182f59;"></i></button>
+        <button class="btmbtn sho" id="wish_@Model.Product.ProductId" onclick="redirectToWishListByConfirmation()"><i class="icon-love list-icon" style="color: red;"></i></button>
     }
 </div>
 

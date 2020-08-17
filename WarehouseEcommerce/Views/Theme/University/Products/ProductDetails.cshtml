@@ -2,75 +2,27 @@
 @using Ganedata.Core.Entities.Enums
 @model WarehouseEcommerce.ViewModels.ProductDetailViewModel
 @{
-    ViewBag.Title = Model.SelectedProduct.Name + " | " + ViewBag.SiteDescription;
+    ViewBag.Title = Model.Product.Name + " | " + ViewBag.SiteDescription;
     var Images = ConfigurationManager.AppSettings["ImageFormats"].Split(new char[] { ',' });
 }
-<section class="nb_sec nb_prdlisting_pgsec product-section">
+<section class="nb_sec nb_prdlisting_pgsec product-details-section">
     <div class="container">
-        <div class="breadCrumbtopsec">
-            <div class="nb_bread_crumbwrap">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="/">Home</a>
-                        </li>
-                        <li>></li>
-                        @if (Model.Category != null && !string.IsNullOrEmpty(Model.Category))
-                        {
-                            <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { category = Model.Category, categoryId = Model.CategoryId })">@Model.Category</a></li>
-                            <li>></li>
-                        }
-                        @if (Model.SubCategory != null && !string.IsNullOrEmpty(Model.SubCategory))
-                        {
-                            <li class="breadcrumb-item"><a href="@Url.Action("list", "Products", new { category = Model.SubCategory, categoryId = Model.SubCategoryId })">@Model.SubCategory</a></li>
-                            <li>></li>
-                        }
-
-                        <li class="breadcrumb-item">@Model.BaseProductName</li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
+        @Html.Partial("_ProductDetailBreadCrumb")
         <div class="row">
             <div class="col-md-5 col-lg-5">
-                <div class="nb_prd_viewingsecWrap" id="Prod_carr_viewer">
-                    <span id="zoomViewTrigger"><i class="icon-search"></i></span>
-                    <span class="img_view_area">
-                        <img id="zoom_01"
-                             src="@(!string.IsNullOrEmpty(Model.SelectedProduct.DefaultImage?.Trim()) ? ViewBag.BaseFilePath + Model.SelectedProduct.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"
-                             data-zoom-image="@(!string.IsNullOrEmpty(Model.SelectedProduct.DefaultImage?.Trim()) ? ViewBag.BaseFilePath + Model.SelectedProduct.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
-                    </span>
-                    @if (Model.SelectedProduct.ProductFiles.Count > 1)
-                    {
-                        <div class="img_thumb_sliderwrap">
-                            <div id="gal01" class="owl-carousel owl-theme nb_imageZoomCarrousle">
-                                @foreach (var item in (Model.SelectedProduct.ProductFiles))
-                                {
-                                    var extension = Path.GetExtension(item.FilePath);
-                                    <div class="item">
-                                        <a href="#" data-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"
-                                           data-zoom-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"
-                                           class="@(Model.SelectedProduct.DefaultImage == item.FilePath? "active" : "")">
-                                            <img id="zoom_01" src="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="" />
-                                        </a>
-                                    </div>
-
-                                }
-
-                            </div>
-                        </div>
-                    }
-                </div>
+                @Html.Partial("_ProductImagesGallery", Model.Product)
             </div>
             <div class="col-md-7 col-lg-6 offset-lg-1">
                 <div class="nb_prd_det_rightsec">
-                    <h2 class="head">@Model.SelectedProduct.Name</h2>
-                    <span class="prd_amnt">@ViewBag.CurrencySymbol@Model.SelectedProduct.SellPrice</span>
+                    <h2 class="head">@Model.Product.Name</h2>
+                    <span class="prd_amnt">@ViewBag.CurrencySymbol@Model.Product.SellPrice</span>
                     <div class="availibility">
-                        @{ var availableProductCount = Ganedata.Core.Services.Inventory.GetAvailableProductCount(Model.SelectedProduct, ViewBag.SiteId); }
+                        @{ var availableProductCount = Ganedata.Core.Services.Inventory.GetAvailableProductCount(Model.Product, ViewBag.SiteId);
+                            ViewBag.AvailableProductCount = availableProductCount;
+                        }
                         @if (availableProductCount > 0)
                         {
-                            @((availableProductCount <= 10 ? "only " + availableProductCount.ToString("#") + " items left" : "Available"))
+                            <span>@((availableProductCount <= 10 ? "only " + availableProductCount.ToString("#") + " items left" : "Available"))</span>
                         }
                         else
                         {
@@ -78,31 +30,31 @@
                         }
                     </div>
 
-                    @if (Model.BaseProductType != Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
+                    @Html.Partial("_ProductDetailActionsButtons", Model.Product)
+
+                    @if (Model.ParentProductType != ProductKitTypeEnum.ProductByAttribute)
                     {
-                        foreach (var item in Model.SelectedProduct.ProductAttributeValuesMap.Where(a => a.IsDeleted != true).OrderBy(m => m.ProductAttributeValues.AttributeId))
+                        foreach (var productAttributeItem in Ganedata.Core.Services.Inventory.GetProductAttributesValueToDisplay(Model.Product.ProductAttributeValuesMap))
                         {
-                            <div>
-                                <div class="sizeWrap">
-                                    <p>@Html.Raw(item.ProductAttributeValues.ProductAttributes.AttributeName) : <span>@Html.Raw(item.ProductAttributeValues.Value)</span></p>
-                                </div>
+                            <div class="attribute-value">
+                                <p>@Html.Raw(productAttributeItem.Key) : <span>@Html.Raw(productAttributeItem.Value)</span></p>
                             </div>
                         }
                     }
 
-                    @if (Model.BaseProductType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.ProductByAttribute)
+                    @if (Model.ParentProductType == ProductKitTypeEnum.ProductByAttribute)
                     {
                         foreach (var attribute in Model.AvailableAttributes)
                         {
                             <div>
                                 <div class="sizeWrap">
-                                    <p>@Html.Raw(attribute.Name) : <span>@Html.Raw(attribute.SelectedValue)</span></p>
+                                    <div class="title">@Html.Raw(attribute.Name) : <span>@Html.Raw(attribute.SelectedValue)</span></div>
                                     <ul class="size_boxList">
                                         @{
                                             foreach (var attributeValue in attribute.AttributeValues)
                                             {
                                                 @Html.Raw("<li class=\"col3 " + (attributeValue.IsSelected ? "active" : "") + (attributeValue.IsAvailableWithCurrentSelection ? "\">" : "unavailable-attribute\">") +
-                                                          (attributeValue.IsSelected ? "<a>" : $"<a href=\"ProductDetails?sku={Model.BaseProductSKUCode}&productId={attributeValue.RelatedProductId}\">") +
+                                                          (attributeValue.IsSelected ? "<a>" : $"<a href=\"ProductDetails?sku={Model.ParentProductSKUCode}&productId={attributeValue.RelatedProductId}\">") +
                                                           (attributeValue.IsColorTyped ?
                                                               "<span style=\"background-color:" + attributeValue.Color + ";color:" + attributeValue.Color + "\">-</span>" :
                                                               "<span style=\"color:" + attributeValue.Color + "\">" + attributeValue.Value + "</span>") +
@@ -114,50 +66,12 @@
                             </div>
                         }
                     }
-
-                    <div class="footSec">
-                        @if (@Model.SelectedProduct.SellPrice > 0 && @Model.SelectedProduct.SellPrice.HasValue && (availableProductCount > 0))
-                        {
-                            <div class="qty">
-                                <span>quantity</span>
-                                @Html.DropDownList("product-quantity", Enumerable.Range(1, (int)availableProductCount).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), htmlAttributes: new { @class = "form-control" })
-                            </div>
-
-                            <button class="addTobasket" onclick="addToCart(@Model.SelectedProduct.ProductId, document.getElementById('product-quantity').value)">Add to basket</button>
-                        }
-                        else
-                        {
-                            var totalwishlistitems = Model.SelectedProduct.WebsiteWishListItems.FirstOrDefault(u => u.IsDeleted != true && u.UserId == ViewBag.CurrentUserId && u.IsNotification);
-
-                            if (totalwishlistitems == null)
-                            {
-                                <button class="notify-btn addTobasket" id="notification-bell__button_@Model.SelectedProduct.ProductId" onclick="addToNotifyList(@Model.SelectedProduct.ProductId)"><i class="fa fa-bell-o list-icon"></i> NOTIFY ME WHEN AVAILABLE</button>
-                            }
-                            else
-                            {
-                                <button class="notify-btn addTobasket" id="notification-bell__button_@Model.SelectedProduct.ProductId" style="background-color: red" onclick="redirectToWishListByConfirmation()"><i class="fa fa-bell-o list-icon"></i> NOTIFY ME WHEN AVAILABLE</button>
-
-                            }
-
-                        }
-
-                        @if (Model.SelectedProduct.WebsiteWishListItems.FirstOrDefault(u => u.IsDeleted != true && !u.IsNotification) == null)
-                        {
-                            <button id="btnwish_@Model.SelectedProduct.ProductId" onclick="addToWishList(@Model.SelectedProduct.ProductId)" class="addtowishlistbtn">Add to Wishlist</button>
-                            <a href="javascript:;" class="addtowishlist " id="wish_@Model.SelectedProduct.ProductId" onclick="addToWishList(@Model.SelectedProduct.ProductId)"><i class="icon-love list-icon" style="color:black;"></i></a>
-                        }
-                        else
-                        {
-                            <button id="btnwish_@Model.SelectedProduct.ProductId" onclick="redirectToWishListByConfirmation()" class="addtowishlistbtn" style="background-color: red !important">Add to Wishlist</button>
-                            <a href="javascript:;" class="addtowishlist" id="wish_@Model.SelectedProduct.ProductId" onclick="redirectToWishListByConfirmation()"><i class="icon-love list-icon" style="color: #182f59;"></i></a>
-                        }
-                    </div>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="nb_prod_bottomdes">
                     <p class="content">
-                        @Html.Raw(Model.SelectedProduct.Description)
+                        @Html.Raw(Model.Product.Description)
                     </p>
                 </div>
             </div>
@@ -165,110 +79,4 @@
     </div>
 </section>
 
-@if (Model.RelatedProducts.Count > 0)
-{
-    @Html.Partial("_ProductByAttributeSelectorModal")
-    <section class="nb_sec nb_feat_prod_sec nb_umayalso_sec">
-        <div class="container">
-            <div class="nb_header_style2">
-                <h3>You may also like</h3>
-            </div>
-            <div class="row">
-                <div class="owl-carousel owl-theme nb_featuredPrdCarrousle">
-                    @foreach (var relatedProduct in Model.RelatedProducts)
-                    {
-
-
-                        <div class="item">
-                            <div class="prd_lst_boxouter">
-                                <span class="imagewrap">
-                                    <a href="@Url.Action("ProductDetails", "Products", new {sku = relatedProduct.SKUCode})">
-                                        <img src="@(!string.IsNullOrEmpty(relatedProduct.DefaultImage) ? ViewBag.BaseFilePath + relatedProduct.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
-                                    </a>
-                                </span>
-                                <h3 class="prdName">
-                                    <a class="prdName" href="@Url.Action("ProductDetails","Products", new {sku=relatedProduct.SKUCode})">
-                                        @relatedProduct.Name
-                                    </a>
-                                </h3>
-                                <div class="foot">
-                                    <ul class="icolist">
-                                        <li>
-                                            <a class="prd_amnt" href="@Url.Action("ProductDetails","Products", new {sku=relatedProduct.SKUCode})">
-                                                @ViewBag.CurrencySymbol@relatedProduct.SellPrice
-                                            </a>
-                                        </li>
-
-                                        @if (Ganedata.Core.Services.Inventory.IsProductAvailableToSell(relatedProduct, ViewBag.SiteId) && relatedProduct.ProductType != ProductKitTypeEnum.ProductByAttribute)
-                                        {
-                                            <li>
-                                                <a href="javascript:;" onclick="addToCart(@relatedProduct.ProductId)"><i class="cart-icon icon-shopping-cart"></i></a>
-                                            </li>
-                                        }
-                                        else if (Ganedata.Core.Services.Inventory.IsProductAvailableToSell(relatedProduct, ViewBag.SiteId) && relatedProduct.ProductType == ProductKitTypeEnum.ProductByAttribute)
-                                        {
-                                            <li>
-                                                <a href="javascript:;" onclick="showProductByAttributeSelector('@relatedProduct.SKUCode')"><i class="cart-icon icon-shopping-cart"></i></a>
-                                            </li>
-                                        }
-                                        else
-                                        {
-                                            if (!Ganedata.Core.Services.Inventory.IsProductInNotifyList(relatedProduct, ViewBag.CurrentUserId))
-                                            {
-                                                <li>
-                                                    <a href="javascript:;" onclick="@(relatedProduct.ProductType != ProductKitTypeEnum.ProductByAttribute ? "addToNotifyList(" + relatedProduct.ProductId + ")" : "showProductByAttributeSelector('" + relatedProduct.SKUCode + "', true)")" id="notification-bell_@relatedProduct.ProductId"><i class="bel-icon fa fa-bell-o list-icon" style="color:black"></i></a>
-                                                </li>
-                                            }
-                                            else
-                                            {
-                                                <li>
-                                                    <a href="javascript:;" onclick="@(relatedProduct.ProductType != ProductKitTypeEnum.ProductByAttribute ? "redirectToWishListByConfirmation()" : "showProductByAttributeSelector('" + relatedProduct.SKUCode + "', true)")" id="notification-bell_@relatedProduct.ProductId"><i class="bel-icon fa fa-bell-o list-icon" style="color:red"></i></a>
-                                                </li>
-                                            }
-                                        }
-
-                                        @if (!Ganedata.Core.Services.Inventory.IsProductInWishList(relatedProduct, ViewBag.CurrentUserId))
-                                        {
-                                            <li>
-                                                <a href="javascript:;" id="wish_@relatedProduct.ProductId" onclick="@(relatedProduct.ProductType != ProductKitTypeEnum.ProductByAttribute ? "addToWishList(" + relatedProduct.ProductId + ")" : "showProductByAttributeSelector('" + relatedProduct.SKUCode + "', true)")"><i class="icon-love list-icon" style="color: black;"></i></a>
-                                            </li>
-                                        }
-                                        else
-                                        {
-                                            <li>
-                                                <a href="javascript:;" id="wish_@relatedProduct.ProductId" onclick="@(relatedProduct.ProductType != ProductKitTypeEnum.ProductByAttribute ? "redirectToWishListByConfirmation()" : "showProductByAttributeSelector('" + relatedProduct.SKUCode + "', true)")"><i class="icon-love list-icon" style="color: #182f59;"></i></a>
-                                            </li>
-                                        }
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-    </section>
-}
-<script>
-    $(document).ready(function () {
-        $("#zoom_01").elevateZoom({
-            gallery: "gal01",
-            cursor: "pointer",
-            galleryActiveClass: "active",
-            imageCrossfade: true,
-            loadingIcon: "",
-            cursor: "crosshair",
-            zoomWindowFadeIn: 500,
-            zoomWindowFadeOut: 500,
-            easing: true,
-            zoomWindowWidth: 600,
-            zoomWindowHeight: 500,
-            responsive: true,
-            borderSize: 1,
-            destroyContainerOnResize: true,
-            zoomWindowOffetx: 50,
-            zoomWindowOffety: -25,
-            zoomType: "window",
-        });
-    });
-</script>
+@Html.Partial("_RelatedProducts", Model.RelatedProducts)

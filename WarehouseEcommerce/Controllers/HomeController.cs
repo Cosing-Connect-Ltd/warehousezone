@@ -48,7 +48,6 @@ namespace WarehouseEcommerce.Controllers
             {
                 return RedirectToAction("Index", "Error");
             }
-            ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
             ViewBag.ProductGroups = new SelectList(_lookupServices.GetAllValidProductGroups((CurrentTenantId), 12), "ProductGroupId", "ProductGroup", ViewBag.groupId);
             Session["CheckoutViewModel"] = null;
             return View();
@@ -56,7 +55,6 @@ namespace WarehouseEcommerce.Controllers
 
         public ActionResult page(string pageUrl, string blogDetail = null)
         {
-            ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
             ViewBag.BlogDetail = blogDetail;
             var content = _tenantWebsiteService.GetWebsiteContentByUrl(CurrentTenantWebsite.SiteID, pageUrl);
             if (string.IsNullOrEmpty(pageUrl) || content == null) { RedirectToAction("Index"); }

@@ -148,7 +148,6 @@ namespace WarehouseEcommerce.Controllers
 
         public ActionResult ProductDetails(string sku, int? productId = null)
         {
-            ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
             var baseProduct = _productServices.GetProductMasterByProductCode(sku, CurrentTenantId);
 
             if (baseProduct.ProductType == ProductKitTypeEnum.Grouped)
@@ -164,11 +163,11 @@ namespace WarehouseEcommerce.Controllers
 
             if (baseProduct?.ProductType == ProductKitTypeEnum.ProductByAttribute)
             {
-                model = GetSelectedProductByAttribute(productId, baseProduct);
+                model = GetSelectedChildProduct(productId, baseProduct);
             }
             else
             {
-                model.SelectedProduct = baseProduct;
+                model.Product = baseProduct;
             }
 
             if (model == null)
@@ -178,47 +177,68 @@ namespace WarehouseEcommerce.Controllers
 
 
 
-            model.SelectedProduct.ProductFiles = model.SelectedProduct.ProductFiles.Where(p => p.IsDeleted != true).ToList();
+            model.Product.ProductFiles = model.Product.ProductFiles.Where(p => p.IsDeleted != true).ToList();
 
-            if (baseProduct?.ProductType == ProductKitTypeEnum.ProductByAttribute && baseProduct.ProductId != model.SelectedProduct.ProductId) {
-                baseProduct.ProductFiles.Where(p => p.IsDeleted != true && !model.SelectedProduct.ProductFiles.Select(f => Path.GetFileNameWithoutExtension(f.FilePath)).Contains(Path.GetFileNameWithoutExtension(p.FilePath))).ForEach(p => {
-                    model.SelectedProduct.ProductFiles.Add(p);
+            if (baseProduct?.ProductType == ProductKitTypeEnum.ProductByAttribute && baseProduct.ProductId != model.Product.ProductId)
+            {
+                baseProduct.ProductFiles.Where(p => p.IsDeleted != true && !model.Product.ProductFiles.Select(f => Path.GetFileNameWithoutExtension(f.FilePath)).Contains(Path.GetFileNameWithoutExtension(p.FilePath))).ForEach(p =>
+                {
+                    model.Product.ProductFiles.Add(p);
                 });
 
-                model.SelectedProduct.Description = string.IsNullOrEmpty(model.SelectedProduct.Description?.Trim()) ? baseProduct.Description : model.SelectedProduct.Description;
+                model.Product.Description = string.IsNullOrEmpty(model.Product.Description?.Trim()) ? baseProduct.Description : model.Product.Description;
             }
 
-            model.BaseProductId = baseProduct.ProductId;
-            model.BaseProductName = baseProduct.Name;
-            model.BaseProductType = baseProduct.ProductType;
-            model.BaseProductSKUCode = baseProduct.SKUCode;
+            model.ParentProductId = baseProduct.ProductId;
+            model.ParentProductName = baseProduct.Name;
+            model.ParentProductType = baseProduct.ProductType;
+            model.ParentProductSKUCode = baseProduct.SKUCode;
 
-            var categoryInfo = _tenantWebsiteService.GetProductCategoryByProductId(CurrentTenantWebsite.SiteID, baseProduct.ProductId);
+            SetProductViewModelCategoryInfo(baseProduct, model);
+
+            model.Product.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(model.Product.ProductId, CurrentTenantWebsite.SiteID), 2);
+
+            model.RelatedProducts = _productServices.GetRelatedProductsByProductId(model.Product.ProductId, CurrentTenantId, CurrentTenantWebsite.SiteID, baseProduct.ProductId);
+
+            return View(model);
+        }
+
+        private void SetProductViewModelCategoryInfo(ProductMaster product, BaseProductViewModel model)
+        {
+            var categoryInfo = _tenantWebsiteService.GetProductCategoryByProductId(CurrentTenantWebsite.SiteID, product.ProductId);
 
             model.Category = categoryInfo?.Parent?.Name ?? categoryInfo?.Name;
             model.CategoryId = categoryInfo?.Parent?.Id ?? categoryInfo?.Id ?? 0;
             model.SubCategory = categoryInfo?.Parent != null ? categoryInfo.Name : null;
             model.SubCategoryId = categoryInfo?.Parent != null ? categoryInfo.Id : 0;
-
-            model.SelectedProduct.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(model.SelectedProduct.ProductId, CurrentTenantWebsite.SiteID), 2);
-
-            model.RelatedProducts = _productServices.GetRelatedProductsByProductId(model.SelectedProduct.ProductId, CurrentTenantId, CurrentTenantWebsite.SiteID, baseProduct.ProductId);
-
-            return View(model);
         }
 
         public ActionResult GroupedProductDetail(string sku)
         {
-            ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
-            var product = _productServices.GetProductMasterByProductCode(sku, CurrentTenantId);
-            product.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(product.ProductId, CurrentTenantWebsite.SiteID), 2);
-            var productTabs = product.ProductKitItems.Where(u => u.ProductKitType == ProductKitTypeEnum.Grouped && u.IsActive == true).Select(u => u.ProductKitTypeId).ToList();
-            ViewBag.GroupedTabs = _productlookupServices.GetProductKitTypes(productTabs);
-            return View(product);
+            var model = new GroupedProductViewModel();
+
+            model.Product = _productServices.GetProductMasterByProductCode(sku, CurrentTenantId);
+            var productTabs = model.Product.ProductKitItems.Where(u => u.ProductKitType == ProductKitTypeEnum.Grouped && u.IsActive == true).Select(u => u.ProductKitTypeId).ToList();
+            model.GroupedTabs = _productlookupServices.GetProductKitTypes(productTabs);
+
+            if (!model.GroupedTabs.Any())
+            {
+                model.GroupedTabs.Add(new ProductKitType {
+                    Name = "Options"
+                });
+            }
+
+            SetProductViewModelCategoryInfo(model.Product, model);
+
+            model.Product.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(model.Product.ProductId, CurrentTenantWebsite.SiteID), 2);
+
+            model.RelatedProducts = _productServices.GetRelatedProductsByProductId(model.Product.ProductId, CurrentTenantId, CurrentTenantWebsite.SiteID);
+
+            return View(model);
         }
+
         public ActionResult KitProductDetail(string sku)
         {
-            ViewBag.SiteDescription = caCurrent.CurrentTenantWebSite().SiteDescription;
             var product = _productServices.GetProductMasterByProductCode(sku, CurrentTenantId);
             product.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(product.ProductId, CurrentTenantWebsite.SiteID), 2);
             return View(product);
@@ -513,21 +533,21 @@ namespace WarehouseEcommerce.Controllers
             var model = new ProductDetailViewModel();
             if (baseProduct.ProductType == ProductKitTypeEnum.ProductByAttribute)
             {
-                model = GetSelectedProductByAttribute(productId, baseProduct);
+                model = GetSelectedChildProduct(productId, baseProduct);
             }
             else
             {
-                model.SelectedProduct = baseProduct;
+                model.Product = baseProduct;
             }
 
-            model.BaseProductType = baseProduct.ProductType;
-            model.BaseProductSKUCode = baseProduct.SKUCode;
+            model.ParentProductType = baseProduct.ProductType;
+            model.ParentProductSKUCode = baseProduct.SKUCode;
             model.Quantity = quantity;
 
             return PartialView(model);
         }
 
-        private ProductDetailViewModel GetSelectedProductByAttribute(int? productId, ProductMaster product)
+        private ProductDetailViewModel GetSelectedChildProduct(int? productId, ProductMaster product)
         {
             var relatedProducts = _productServices.GetAllProductByAttributeKitsByProductId(product.ProductId);
 
@@ -540,7 +560,7 @@ namespace WarehouseEcommerce.Controllers
 
             var productDetailViewModel = new ProductDetailViewModel
             {
-                SelectedProduct = selectedProduct ?? product,
+                Product = selectedProduct ?? product,
                 AvailableAttributes = GetProductAttributes(relatedProducts, selectedProduct ?? product)
             };
 
@@ -638,16 +658,16 @@ namespace WarehouseEcommerce.Controllers
 
             if (baseProduct.ProductType == ProductKitTypeEnum.ProductByAttribute)
             {
-                model = GetSelectedProductByAttribute(productId, baseProduct);
+                model = GetSelectedChildProduct(productId, baseProduct);
             }
             else
             {
-                model.SelectedProduct = baseProduct;
+                model.Product = baseProduct;
             }
 
-            model.BaseProductId = baseProduct.ProductId;
-            model.BaseProductType = baseProduct.ProductType;
-            model.BaseProductSKUCode = baseProduct.SKUCode;
+            model.ParentProductId = baseProduct.ProductId;
+            model.ParentProductType = baseProduct.ProductType;
+            model.ParentProductSKUCode = baseProduct.SKUCode;
             model.Quantity = quantity;
 
             return PartialView(model);

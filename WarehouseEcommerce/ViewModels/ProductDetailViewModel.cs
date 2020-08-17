@@ -1,22 +1,14 @@
-﻿using Ganedata.Core.Entities.Domain;
-using Ganedata.Core.Entities.Enums;
+﻿using Ganedata.Core.Entities.Enums;
 using System.Collections.Generic;
 
 namespace WarehouseEcommerce.ViewModels
 {
-    public class ProductDetailViewModel
+    public class ProductDetailViewModel: BaseProductViewModel
     {
-        public ProductMaster SelectedProduct { get; set; }
         public List<ProductDetailAttributeViewModel> AvailableAttributes { get; set; }
-        public List<ProductMaster> RelatedProducts { get; set; }
-        public int BaseProductId { get; set; }
-        public string BaseProductSKUCode { get; set; }
-        public string BaseProductName { get; set; }
-        public ProductKitTypeEnum BaseProductType { get; set; }
-        public string Category { get; set; }
-        public int CategoryId { get; set; }
-        public string SubCategory { get; set; }
-        public int SubCategoryId { get; set; }
-        public decimal? Quantity { get; set; }
+        public int ParentProductId { get; set; }
+        public string ParentProductSKUCode { get; set; }
+        public string ParentProductName { get; set; }
+        public ProductKitTypeEnum ParentProductType { get; set; }
     }
 }
