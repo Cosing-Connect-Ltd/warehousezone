@@ -7306,7 +7306,6 @@ html {
 
 .owl-carousel .owl-item img {
     height: 239px;
-    min-width: 235px;
     object-fit: scale-down
 }
 
