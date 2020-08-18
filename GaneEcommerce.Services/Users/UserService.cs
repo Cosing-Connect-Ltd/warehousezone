@@ -210,6 +210,7 @@ namespace Ganedata.Core.Services
             if (user != null)
             {
                 _mapper.Map(user, resp);
+
                 resp.Success = true;
             }
 
