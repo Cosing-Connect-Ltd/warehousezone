@@ -92,12 +92,27 @@ namespace Ganedata.Core.Data.Helpers
                                         websiteCategories,
                                         websiteProducts);
 
+            var websiteAssociationProducts = GetWebsiteAssociationChildProducts(associationsData);
+
+            try
+            {
+                AssociatProductsAndWebsite(tenantId, userId, dbContext, website.SiteID, websiteProducts, GetWebsiteAssociationChildProducts(associationsData));
+            }
+            catch (Exception ex)
+            {
+                exceptionsList.Add($"Unable to associate child products with website. Error message: {ex.Message}");
+            }
+
             var result = new List<string>();
 
             result.Add($"{associatedCount} Associations imported for \"{website.SiteName}\" website navigastion categories.");
             if (previouslyAvailableCount > 0)
             {
                 result.Add($"{previouslyAvailableCount} Associations are already available.");
+            }
+            if (websiteAssociationProducts.Count() > 0)
+            {
+                result.Add($"{websiteAssociationProducts.Count()} Child products associatiated to \"{website.SiteName}\" website.");
             }
             if (newlyAddedCategories.Count() > 0)
             {
@@ -113,6 +128,13 @@ namespace Ganedata.Core.Data.Helpers
             }
 
             return result;
+        }
+
+        private List<string> GetWebsiteAssociationChildProducts(List<ProductsCategoriesAssociationsImportModel> associationsData)
+        {
+            return associationsData.Where(a => string.IsNullOrEmpty(a.ParentHeading?.Trim()) && string.IsNullOrEmpty(a.ChildHeading?.Trim()) && !string.IsNullOrEmpty(a.SkuCode?.Trim()))
+                    .Select(a => a.SkuCode)
+                    .ToList();
         }
 
         private static List<SortedProductCategoriesAssociationsImportModel> SortProductsCategoriesAssociationsData(List<ProductsCategoriesAssociationsImportModel> associationsData)
@@ -157,7 +179,7 @@ namespace Ganedata.Core.Data.Helpers
                                                         ApplicationContext dbContext,
                                                         TenantWebsites website,
                                                         IEnumerable<SortedProductCategoriesAssociationsImportModel> categoriesData,
-                                                        ref List<string> resultList,
+                                                        ref List<string> exceptionsList,
                                                         ref List<string> newlyAddedCategories,
                                                         ref int associatedCount,
                                                         ref int previouslyAvailableCount,
@@ -198,7 +220,7 @@ namespace Ganedata.Core.Data.Helpers
                 }
                 catch (Exception ex)
                 {
-                    resultList.Add($"Unable to associate products related by \"{categoryData.CategoryName}\" category with website. Error message: {ex.Message}");
+                    exceptionsList.Add($"Unable to associate products related by \"{categoryData.CategoryName}\" category with website. Error message: {ex.Message}");
                     continue;
                 }
 
@@ -210,7 +232,7 @@ namespace Ganedata.Core.Data.Helpers
                 }
                 catch (Exception ex)
                 {
-                    resultList.Add($"Unable to associate products by \"{categoryData.CategoryName}\" category. Error message: {ex.Message}");
+                    exceptionsList.Add($"Unable to associate products by \"{categoryData.CategoryName}\" category. Error message: {ex.Message}");
                     continue;
                 }
 
@@ -221,7 +243,7 @@ namespace Ganedata.Core.Data.Helpers
                                                 dbContext,
                                                 website,
                                                 categoryData.Childs,
-                                                ref resultList,
+                                                ref exceptionsList,
                                                 ref newlyAddedCategories,
                                                 ref associatedCount,
                                                 ref previouslyAvailableCount,
