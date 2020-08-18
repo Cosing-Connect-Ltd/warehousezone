@@ -56,6 +56,7 @@ namespace Ganedata.Core.Entities.Domain
     {
         public int UserId { get; set; }
         public string UserName { get; set; }
+        public int? AccountId { get; set; }
         public bool VerificationRequired { get; set; }
         public bool EmailVerified { get; set; }
         public bool MobileNumberVerified { get; set; }

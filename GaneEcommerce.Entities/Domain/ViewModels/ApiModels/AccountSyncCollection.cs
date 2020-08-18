@@ -10,6 +10,14 @@ namespace Ganedata.Core.Models
         public int Count { get; set; }
         public List<AccountSync> Accounts { get; set; }
     }
+
+    public class UserAccountSyncCollection
+    {
+        public Guid TerminalLogId { get; set; }
+        public int Count { get; set; }
+        public AccountSync Account { get; set; }
+    }
+
     public class AccountSync
     {
         public int AccountID { get; set; }

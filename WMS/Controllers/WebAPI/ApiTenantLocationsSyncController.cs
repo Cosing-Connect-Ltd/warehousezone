@@ -44,7 +44,7 @@ namespace WMS.Controllers.WebAPI
             result.Count = result.TenantLocationSync?.Count() ?? 0;
             result.TerminalLogId = TerminalServices
                 .CreateTerminalLog(reqDate, terminal.TenantId, result.Count, terminal.TerminalId,
-                    TerminalLogTypeEnum.TenantLOcationsSyncLog).TerminalLogId;
+                    TerminalLogTypeEnum.TenantLocationsSyncLog).TerminalLogId;
             return Ok(result);
         }
     }
