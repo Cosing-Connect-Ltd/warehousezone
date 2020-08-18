@@ -986,12 +986,35 @@ namespace Ganedata.Core.Services
             return _currentDbContext.ProductAllowanceGroupMap.Where(u => u.TenantId == TenantId && u.IsDeleted != true && u.AllowanceGroupId == productAllownceGroupId);
         }
         // WebsiteSearching Realted Queries
-        public IQueryable<ProductMaster> GetAllValidProductWebsiteSearch(int siteId, string category = "", string ProductName = "", int? categoryId = null)
+        public IQueryable<ProductMaster> GetWebsiteProducts(int siteId, string category = "", string ProductName = "", int? categoryId = null)
+        {
+            return GetProductsNavigationMapsSearch(siteId, ProductName)
+                    .Where(u => (u.NavigationId == categoryId || (categoryId == null && u.WebsiteNavigation.Name == category) || (categoryId == null && category == null)))
+                    .Select(x => x.ProductsWebsitesMap.ProductMaster);
+        }
+
+        public List<ProductSearchResultViewModel> SearchWebsiteProducts(int siteId, int resultCount, string productName = "")
+        {
+            return GetProductsNavigationMapsSearch(siteId, productName)
+                            .Select(x =>
+                                        new ProductSearchResultViewModel
+                                        {
+                                            Id = x.ProductsWebsitesMap.ProductMaster.ProductId,
+                                            Name = x.ProductsWebsitesMap.ProductMaster.Name,
+                                            DefaultImage = x.ProductsWebsitesMap.ProductMaster.ProductFiles.OrderByDescending(f => f.DefaultImage).FirstOrDefault(a => a.IsDeleted != true).FilePath,
+                                            SkuCode = x.ProductsWebsitesMap.ProductMaster.SKUCode,
+                                            SearchKey = productName
+                                        })
+                            .OrderBy(u => u.Id)
+                            .Take(resultCount)
+                            .ToList();
+        }
+
+        private IQueryable<ProductsNavigationMap> GetProductsNavigationMapsSearch(int siteId, string ProductName = "")
         {
             ProductName = ProductName?.Trim();
 
-            return _currentDbContext.ProductsNavigationMaps.Where(u => (u.NavigationId == categoryId || (categoryId == null && u.WebsiteNavigation.Name == category) || (categoryId == null && category == null)) &&
-                                                                        u.IsDeleted != true &&
+            return _currentDbContext.ProductsNavigationMaps.Where(u =>  u.IsDeleted != true &&
                                                                         u.IsActive == true &&
                                                                         u.ProductsWebsitesMap.ProductMaster.IsActive == true &&
                                                                         u.ProductsWebsitesMap.ProductMaster.IsDeleted != true &&
@@ -1005,8 +1028,7 @@ namespace Ganedata.Core.Services
                                                                             (u.ProductsWebsitesMap.ProductMaster.Name.Contains(ProductName) ||
                                                                             u.ProductsWebsitesMap.ProductMaster.SKUCode.Contains(ProductName) ||
                                                                             u.ProductsWebsitesMap.ProductMaster.Description.Contains(ProductName)))
-                                                                        )
-                                                            .Select(x => x.ProductsWebsitesMap.ProductMaster);
+                                                                        );
         }
 
         public IQueryable<ProductMaster> GetAllValidProductForDynamicFilter(int siteId, List<int> productIds)
