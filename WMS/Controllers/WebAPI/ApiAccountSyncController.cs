@@ -63,6 +63,46 @@ namespace WMS.Controllers.WebAPI
             return Ok(result);
         }
 
+        // GET http://localhost:8005/api/sync/account/{accountId}/{serialNo}
+        // GET http://localhost:8005/api/sync/account/2/920013c000814
+        [ValidateInput(false)]
+        public IHttpActionResult GetAccount(int accountId, string serialNo)
+        {
+            serialNo = serialNo.Trim().ToLower();
+
+            var terminal = TerminalServices.GetTerminalBySerial(serialNo);
+
+            if (terminal == null)
+            {
+                return Unauthorized();
+            }
+
+            var acc = _accountServices.GetAccountsById(accountId);
+
+            if (acc != null)
+            {
+                var result = new UserAccountSyncCollection();
+                var account = new AccountSync();
+                var mappedAccount = _mapper.Map(acc, account);
+                mappedAccount.CountryName = acc.GlobalCountry.CountryName;
+                mappedAccount.CurrencyName = acc.GlobalCurrency.CurrencyName;
+                mappedAccount.PriceGroupName = acc.TenantPriceGroups.Name;
+                mappedAccount.PriceGroupID = acc.PriceGroupID;
+                mappedAccount.FullAddress = acc.FullAddress;
+                mappedAccount.TaxPercent = acc.GlobalTax.PercentageOfAmount;
+                result.Account = mappedAccount;
+
+                result.TerminalLogId = TerminalServices.CreateTerminalLog(DateTime.UtcNow, terminal.TenantId, 1, terminal.TerminalId, TerminalLogTypeEnum.UserAccountsSync).TerminalLogId;
+                return Ok(result);
+
+            }
+            else
+            {
+                return NotFound();
+            }
+
+        }
+
 
         public IHttpActionResult GetTenantPriceGroups(DateTime reqDate, string serialNo)
         {

@@ -174,18 +174,19 @@ namespace Ganedata.Core.Data.Helpers
                 {
                     newlyAddedCategories.Add($"<span style=\"color: green\">\"{categoryData.CategoryName}\" Category {(!string.IsNullOrEmpty(parentCategory?.Name) ? $"with \"{parentCategory.Name}\" parent category" : string.Empty)}</span>");
 
-                    dbContext.WebsiteNavigations.Add(new WebsiteNavigation {
-                                                                        CreatedBy = userId,
-                                                                        DateCreated = DateTime.Now,
-                                                                        IsActive = true,
-                                                                        Name = categoryData.CategoryName,
-                                                                        ParentId = parentCategoryId,
-                                                                        ShowInNavigation = parentCategory?.ShowInNavigation ?? false,
-                                                                        SiteID = website.SiteID,
-                                                                        TenantId = tenantId,
-                                                                        Type = WebsiteNavigationType.Category,
-                                                                        SortOrder = 0
-                                                                    });
+                    dbContext.WebsiteNavigations.Add(new WebsiteNavigation
+                    {
+                        CreatedBy = userId,
+                        DateCreated = DateTime.Now,
+                        IsActive = true,
+                        Name = categoryData.CategoryName,
+                        ParentId = parentCategoryId,
+                        ShowInNavigation = parentCategory?.ShowInNavigation ?? false,
+                        SiteID = website.SiteID,
+                        TenantId = tenantId,
+                        Type = WebsiteNavigationType.Category,
+                        SortOrder = 0
+                    });
 
                     dbContext.SaveChanges();
                     category = dbContext.WebsiteNavigations.FirstOrDefault(c => c.Name == categoryData.CategoryName && c.ParentId == parentCategoryId && c.SiteID == website.SiteID && c.IsActive && c.IsDeleted != true);
@@ -255,14 +256,14 @@ namespace Ganedata.Core.Data.Helpers
             {
                 dbContext.ProductsNavigationMaps.AddRange(unassociatedProductsWebsitesMapIds.ToList()
                                                                                           .Select(id => new ProductsNavigationMap
-                                                                                                            {
-                                                                                                                CreatedBy = userId,
-                                                                                                                DateCreated = DateTime.Now,
-                                                                                                                IsActive = true,
-                                                                                                                NavigationId = category.Id,
-                                                                                                                ProductWebsiteMapId = id,
-                                                                                                                TenantId = tenantId
-                                                                                                            })
+                                                                                          {
+                                                                                              CreatedBy = userId,
+                                                                                              DateCreated = DateTime.Now,
+                                                                                              IsActive = true,
+                                                                                              NavigationId = category.Id,
+                                                                                              ProductWebsiteMapId = id,
+                                                                                              TenantId = tenantId
+                                                                                          })
                                                                                             .ToList());
 
                 dbContext.SaveChanges();
@@ -283,15 +284,15 @@ namespace Ganedata.Core.Data.Helpers
                 var newProductsWebsitesMaps = dbContext.ProductMaster.Where(p => newAssociationSkuCodes.Contains(p.SKUCode) && p.IsDeleted != true && p.TenantId == tenantId)
                                                                      .ToList()
                                                                      .Select(p => new ProductsWebsitesMap
-                                                                                    {
-                                                                                        IsActive = true,
-                                                                                        ProductId = p.ProductId,
-                                                                                        SiteID = siteId,
-                                                                                        DateCreated = DateTime.Now,
-                                                                                        CreatedBy = userId,
-                                                                                        SortOrder = 0,
-                                                                                        TenantId = tenantId
-                                                                                    })
+                                                                     {
+                                                                         IsActive = true,
+                                                                         ProductId = p.ProductId,
+                                                                         SiteID = siteId,
+                                                                         DateCreated = DateTime.Now,
+                                                                         CreatedBy = userId,
+                                                                         SortOrder = 0,
+                                                                         TenantId = tenantId
+                                                                     })
                                                                      .ToList();
                 dbContext.ProductsWebsitesMap.AddRange(newProductsWebsitesMaps);
                 dbContext.SaveChanges();
@@ -342,12 +343,14 @@ namespace Ganedata.Core.Data.Helpers
                                                                             Name = g.Key,
                                                                             AttriButeValues = g.GroupBy(ga => ga.AttributeValue)
                                                                                                .Where(f => !string.IsNullOrEmpty(f.Key?.Trim()) && g.Any())
-                                                                                               .Select(gad => {
-                                                                                                           return new {
-                                                                                                               Value = gad.Key,
-                                                                                                               ProductSkuCodes = gad.Select(a => a.SkuCode).Distinct().OrderBy(s => s)
-                                                                                                           };
-                                                                                                        })
+                                                                                               .Select(gad =>
+                                                                                               {
+                                                                                                   return new
+                                                                                                   {
+                                                                                                       Value = gad.Key,
+                                                                                                       ProductSkuCodes = gad.Select(a => a.SkuCode).Distinct().OrderBy(s => s)
+                                                                                                   };
+                                                                                               })
                                                                         };
                                                                     })
                                                                    .Where(at => !string.IsNullOrEmpty(at.Name?.Trim()) &&
@@ -467,11 +470,12 @@ namespace Ganedata.Core.Data.Helpers
 
             if (attribute == null)
             {
-                attribute = dbContext.ProductAttributes.Add(new ProductAttributes {
-                                                                    AttributeName = name,
-                                                                    SortOrder = 0,
-                                                                    IsColorTyped = name.ToLower().Contains("colour") || name.ToLower().Contains("color"),
-                                                                });
+                attribute = dbContext.ProductAttributes.Add(new ProductAttributes
+                {
+                    AttributeName = name,
+                    SortOrder = 0,
+                    IsColorTyped = name.ToLower().Contains("colour") || name.ToLower().Contains("color"),
+                });
                 dbContext.SaveChanges();
             }
             return attribute;
@@ -2051,9 +2055,46 @@ namespace Ganedata.Core.Data.Helpers
                             {
                                 existingProduct.SellPrice = string.IsNullOrEmpty(values[7]) ? (decimal?)null : decimal.Parse(values[7]);
                             }
-                            if (8 < values.Length)
+                            if (8 < values.Length && !string.IsNullOrEmpty(values[8]))
                             {
-                                existingProduct.PreferredSupplier = string.IsNullOrEmpty(values[8]) ? (int?)null : Int32.Parse(values[8]);
+                                int number;
+                                bool success = int.TryParse(values[8], out number);
+
+                                if (success)
+                                {
+                                    var existingAccount = context.Account.Find(number);
+                                    if (existingAccount != null)
+                                    {
+                                        existingProduct.PreferredSupplier = number;
+                                    }
+                                }
+                                else
+                                {
+                                    var companyName = values[8];
+                                    var existingAccount = context.Account.Where(x => x.CompanyName == companyName).FirstOrDefault();
+
+                                    if (existingAccount != null)
+                                    {
+                                        existingProduct.PreferredSupplier = existingAccount.AccountID;
+                                    }
+                                    else
+                                    {
+                                        var supplier = new Account();
+                                        supplier.CompanyName = values[8];
+                                        supplier.AccountCode = "acc-" + lineNumber;
+                                        supplier.AccountTypeSupplier = true;
+                                        supplier.CreatedBy = 1;
+                                        supplier.TenantId = tenantId;
+                                        supplier.DateCreated = DateTime.UtcNow;
+                                        supplier.CountryID = 1;
+                                        supplier.CurrencyID = 1;
+                                        supplier.OwnerUserId = 1;
+                                        supplier.PriceGroupID = 1;
+                                        supplier.TaxID = (supplier.TaxID == 0 ? 1 : supplier.TaxID);
+                                        context.Account.Add(supplier);
+                                        context.SaveChanges();
+                                    }
+                                }
                             }
                             if (9 < values.Length)
                             {
