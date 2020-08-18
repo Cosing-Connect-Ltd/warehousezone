@@ -712,6 +712,9 @@ $(function () {
             } else if (selectedTabTitle === "Products/Categories Associations") {
                 $("#DataImportUploadForm #ImportType").val("ProductsCategoriesAssociations");
                 $("#data-import-results").html("<li>Choose Products/Categories Associations CSV File</li>");
+            } else if (selectedTabTitle === "Products Parent/Child Associations") {
+                $("#DataImportUploadForm #ImportType").val("ProductsParentChildAssociations");
+                $("#data-import-results").html("<li>Choose Products Parent/Child Associations CSV File</li>");
             }
         }
     });

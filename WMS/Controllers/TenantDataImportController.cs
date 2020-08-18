@@ -54,7 +54,10 @@ namespace WMS.Controllers
                             _importFactory.ImportProductsCategoriesAssociations(importFileName, Path.GetFileNameWithoutExtension(file.FileName), CurrentTenantId, CurrentUserId, null).ForEach(m => importResponse += "<li>" + m + "</li>");
                             break;
                         case "ProductsAttributes":
-                            importResponse += "<li>" + _importFactory.ImportProductsAttributes(importFileName, CurrentTenantId, CurrentUserId, null) + "</li>";
+                            _importFactory.ImportProductsAttributes(importFileName, CurrentTenantId, CurrentUserId, null).ForEach(m => importResponse += "<li>" + m + "</li>");
+                            break;
+                        case "ProductsParentChildAssociations":
+                            _importFactory.ImportParentChildProductsAssociations(importFileName, CurrentTenantId, CurrentUserId, null).ForEach(m => importResponse += "<li>" + m + "</li>");
                             break;
                         case "Products":
                             importResponse += "<li>" + _importFactory.ImportProducts(importFileName, Path.GetFileNameWithoutExtension(file.FileName), CurrentTenantId, CurrentWarehouseId) + "</li>";
@@ -132,6 +135,9 @@ namespace WMS.Controllers
                             break;
                         case "ProductsAttributes":
                             _importFactory.ImportProductsAttributes(importFileName, CurrentTenantId, CurrentUserId, null).ForEach(m => importResponse += "<li>" + m + "</li>");
+                            break;
+                        case "ProductsParentChildAssociations":
+                            _importFactory.ImportParentChildProductsAssociations(importFileName, CurrentTenantId, CurrentUserId, null).ForEach(m => importResponse += "<li>" + m + "</li>");
                             break;
                         case "Products":
                             importResponse += "<li>" + _importFactory.ImportProducts(importFileName, Path.GetFileNameWithoutExtension(e.UploadedFile.FileName), CurrentTenantId, CurrentWarehouseId) + "</li>";

@@ -195,6 +195,7 @@
     <Compile Include="Domain\Auth\AuthUserLoginActivity.cs" />
     <Compile Include="Domain\Auth\AuthUserprofile.cs" />
     <Compile Include="Domain\Auth\Module.cs" />
+    <Compile Include="Domain\ImportModels\ParentChildProductsAssociationsImportModel.cs" />
     <Compile Include="Domain\ImportModels\SortedProductCategoriesAssociationsImportModel.cs" />
     <Compile Include="Domain\ImportModels\ProductsCategoriesAssociationsImportModel.cs" />
     <Compile Include="Domain\ImportModels\ProductAttributeImportModel.cs" />
