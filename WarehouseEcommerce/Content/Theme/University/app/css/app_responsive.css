@@ -352,16 +352,11 @@
 
 @media (max-width:767px) {
     .nb_header .nb_headicolst {
-        margin-top: 60px;
         margin-bottom: unset
     }
 
     .feature-product-overflow .inside-container {
         margin: 0 22px 0 24px
-    }
-
-    .nb_header .nb_logowrap {
-        width: unset !important
     }
 
     .nb_prdlisting_pgsec .nb_prd_filterwrap {
@@ -408,10 +403,6 @@
 
     .nb_header {
         padding: 18px 10px
-    }
-
-    .main-logo {
-        max-height: 88px
     }
 
     .basketTable tr td {
@@ -699,10 +690,6 @@
 
     .nb_mainnav {
         display: none
-    }
-
-    .nb_header .nb_logowrap {
-        padding: 29px
     }
 
     .nb_firstNav_res_lst .nb_subnavWrap {
@@ -1124,7 +1111,6 @@
 
     .nb_header .nb_logowrap {
         padding: 0 10px 10px;
-        width: 150px
     }
 
     .nb_header .nb_headicolst li i {
@@ -1386,12 +1372,6 @@
 
     .product-details-section .footSec button {
         font-size: 14px !important
-    }
-}
-
-@media (max-width:339px) {
-    .nb_header .nb_headicolst {
-        margin-top: -36px
     }
 }
 
