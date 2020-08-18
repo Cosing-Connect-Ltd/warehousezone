@@ -953,7 +953,7 @@ input[type=number]::-webkit-outer-spin-button {
         position: relative;
         padding-bottom: 17.5px;
         color: #000;
-        letter-spacing: 5px
+        letter-spacing: 3px
     }
 
         .nb_header_style1 h3:after {
@@ -1398,6 +1398,10 @@ input[type=number]::-webkit-outer-spin-button {
                 letter-spacing: 1.7px
             }
 
+.accordion {
+    max-width: 1440px !important;
+}
+
 .accordion ul li div a h2 {
     font-family: @fontb;
     font-size: 15px;
@@ -1797,7 +1801,7 @@ input[type=number]::-webkit-outer-spin-button {
     .nb_filter_accordion .nb_filter_head h5 button,
     .nb_header_style2 h3 {
         font-family: "primaryfont_SemiBold";
-        width: 100%;
+        width: calc(100% - 5px);
         text-align: left;
         position: relative;
         color: #000
@@ -1819,7 +1823,7 @@ input[type=number]::-webkit-outer-spin-button {
             content: "\e912";
             font-family: "icomoon" !important;
             position: absolute;
-            right: 1px;
+            right: -4px;
             top: 50%;
             transform: translateY(-50%);
             font-weight: 100
@@ -2111,8 +2115,7 @@ input[type=number]::-webkit-outer-spin-button {
                 font-size: 16px;
                 font-family: "primaryfont_SemiBold";
                 color: #707070;
-                margin-bottom: 20px;
-                letter-spacing: 2px
+                letter-spacing: 1px
             }
 
                 .nb_prd_det_rightsec .sizeWrap .title span,
@@ -2133,8 +2136,8 @@ input[type=number]::-webkit-outer-spin-button {
 
                 .nb_prd_det_rightsec .sizeWrap .size_boxList li,
                 .nb_qcvboxwrap .sizeWrap .size_boxList li {
-                    margin: 5px;
-                    height: 50px;
+                    margin: 3px;
+                    height: 40px;
                     border: solid 1px #707070
                 }
 
@@ -2308,7 +2311,7 @@ input[type=number]::-webkit-outer-spin-button {
 
         .nb_prd_det_rightsec .sizeWrap {
             display: inline-block;
-            margin-bottom: 15px
+            margin-bottom: 5px
         }
 
             .nb_prd_det_rightsec .sizeWrap .size_boxList {
@@ -2399,7 +2402,7 @@ input[type=number]::-webkit-outer-spin-button {
         font-size: 30px;
         padding-bottom: 17.5px;
         letter-spacing: 2px;
-        border-bottom: solid 1px #707070
+        border-bottom: solid 1px #eaeaea
     }
 
 .nb_umayalso_sec {
@@ -5699,12 +5702,12 @@ body.modal-open {
     overflow: hidden;
     float: left;
     width: auto;
-    min-width: 50px;
+    min-width: 40px;
     border-radius: 3px
 }
 
 .nb_prd_det_rightsec .sizeWrap .size_boxList li a span {
-    line-height: 38px;
+    line-height: 28px;
     min-width: 80%;
     text-align: center;
     overflow: hidden;
@@ -6769,10 +6772,6 @@ body.modal-open {
     text-align: center
 }
 
-.feature-product-overflow .owl-stage {
-    width: 2500px !important
-}
-
 .feature-product-overflow .owl-item {
     width: 241px !important
 }
@@ -7193,14 +7192,19 @@ html {
 }
 
 .list-on-tablets .imagewrap {
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    width: 100%;
     overflow: hidden;
-    border: 1px solid #fff
+    border: 1px solid #fff;
 }
 
     .list-on-tablets .imagewrap img {
         display: block;
-        transition: transform .4s
+        transition: transform .4s;
+        height: 239px;
+        width: 266px;
+        object-fit: scale-down;
     }
 
 .feature-product-overflow .imagewrap {
@@ -7293,4 +7297,11 @@ html {
 
 .grouped-product-tab-items .product-details-block .associated-product-description {
     white-space: normal;
+    padding-top: 15px;
+}
+
+.owl-carousel .owl-item img {
+    height: 239px;
+    min-width: 235px;
+    object-fit: scale-down
 }

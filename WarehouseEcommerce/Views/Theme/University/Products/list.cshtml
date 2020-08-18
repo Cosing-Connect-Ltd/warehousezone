@@ -67,14 +67,14 @@
             </div>
         <div class="row">
             @Html.Partial("_DynamicFilters", Model.DynamicFilters)
-            <div class="col-md-8 col-lg-9 list-on-tablets">
+            <div class="col-md-8 col-lg-10 list-on-tablets">
                 <div class="nb_prd_listing_wrap">
                     <div class="row list-product-row">
                         @if (Model.Products == null || Model.Products?.Count() <= 0)
                         {
                             foreach (var item in Model.DynamicFilters.WebsiteNavigationCategories)
                             {
-                                <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-4 list-product-col">
+                                <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-3 list-product-col">
                                     <div class="prd_lst_boxouter">
                                         <span class="imagewrap">
                                             <a href="@Url.Action("List", "Products", new { category = item.Name, categoryId = item.Id })">
@@ -97,7 +97,7 @@
                             foreach (var item in Model.Products)
                             {
                                 item.ProductTagMaps = item.ProductTagMaps.Where(u => u.IsDeleted != true).Where(u => u.ProductTag.IsDeleted != true && !string.IsNullOrEmpty(u.ProductTag.IconImage)).OrderBy(x => x.ProductTag.SortOrder).ToList();
-                                <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-4 list-product-col">
+                                <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-3 list-product-col">
                                     <div class="prd_lst_boxouter">
                                         @for (int i = 0; i < item.ProductTagMaps.Count; i++)
                                         {

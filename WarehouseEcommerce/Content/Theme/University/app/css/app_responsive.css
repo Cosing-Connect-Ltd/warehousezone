@@ -1,3 +1,9 @@
+@media (min-width: 1500px) {
+    .container {
+        max-width: 1440px;
+    }
+}
+
 @media(min-width: 1199px) {
     .nb_top_catSection .accordion ul li div {
         transform: skew(12deg) translateX(-15%);
@@ -678,6 +684,7 @@
         padding: 30px 0
     }
 
+    .nb_header_style2 h3,
     .nb_header_style1 h3 {
         font-size: 20px
     }

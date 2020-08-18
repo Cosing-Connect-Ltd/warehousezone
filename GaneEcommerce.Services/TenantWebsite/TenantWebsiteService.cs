@@ -990,6 +990,7 @@ namespace Ganedata.Core.Services
         {
             return GetProductsNavigationMapsSearch(siteId, ProductName)
                     .Where(u => (u.NavigationId == categoryId || (categoryId == null && u.WebsiteNavigation.Name == category) || (categoryId == null && category == null)))
+                    .OrderBy(n => n.SortOrder)
                     .Select(x => x.ProductsWebsitesMap.ProductMaster);
         }
 
