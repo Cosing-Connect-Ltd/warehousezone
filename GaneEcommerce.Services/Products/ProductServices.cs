@@ -1447,10 +1447,17 @@ namespace Ganedata.Core.Services
 
         public ProductMaster GetProductMasterByProductCode(string productCode, int tenantId)
         {
-            return _currentDbContext.ProductMaster
+            var product = _currentDbContext.ProductMaster
                 .Include(p => p.ProductKitMap.Select(k => k.ProductMaster.ProductAttributeValuesMap.Select(a => a.ProductAttributeValues)))
-                .FirstOrDefault(e => e.TenantId == tenantId && e.IsDeleted != true && (e.SKUCode.Equals(productCode, StringComparison.CurrentCultureIgnoreCase)
-            || e.BarCode.Equals(productCode, StringComparison.CurrentCultureIgnoreCase) || e.ManufacturerPartNo.Equals(productCode, StringComparison.CurrentCultureIgnoreCase)));
+                .FirstOrDefault(e => e.TenantId == tenantId &&
+                                     e.IsDeleted != true &&
+                                     (e.SKUCode.Equals(productCode, StringComparison.CurrentCultureIgnoreCase) ||
+                                      e.BarCode.Equals(productCode, StringComparison.CurrentCultureIgnoreCase) ||
+                                      e.ManufacturerPartNo.Equals(productCode, StringComparison.CurrentCultureIgnoreCase)));
+
+            product.ProductKitItems = product.ProductKitItems.Where(k => _currentDbContext.ProductsWebsitesMap.Any(m => m.ProductId == k.KitProductId && m.IsActive && m.IsDeleted != true)).ToList();
+
+            return product;
         }
         public ProductMaster GetProductMasterByOuterBarcode(string outerBarcode, int tenantId)
         {
