@@ -95,7 +95,8 @@ namespace Ganedata.Core.Services
 
 
         // WebsiteSearching Realted Queries
-        IQueryable<ProductMaster> GetAllValidProductWebsiteSearch(int siteId, string category = "", string ProductName = "", int? categoryId = null);
+        List<ProductSearchResultViewModel> SearchWebsiteProducts(int siteId, int resultCount, string productName = "");
+        IQueryable<ProductMaster> GetWebsiteProducts(int siteId, string category = "", string ProductName = "", int? categoryId = null);
         IQueryable<ProductMaster> GetAllValidProductForDynamicFilter(int siteId, List<int> productIds);
         Dictionary<ProductAttributes, List<ProductAttributeValues>> GetAllValidProductAttributeValuesByProductIds(IQueryable<ProductMaster> products);
         Tuple<string, string> GetAvailablePricesRange(IQueryable<ProductMaster> products,int siteId);

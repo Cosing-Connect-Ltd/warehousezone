@@ -156,22 +156,22 @@ function SearchProductCategory() {
 
 
 //$('.text-search').on('input', function() {}
-var searchvalues;
-var seeall = true;
+var searchValues;
+var seeAll = true;
 $(function () {
     $(".text-search").autocomplete({
         minLength: 2,
         source: function (request, response) {
-            searchvalues = request.term;
+            searchValues = request.term;
             $.ajax({
                 url: basePath + '/Products/searchProduct',
                 method: 'post',
                 data: { searchkey: request.term },
                 dataType: 'json',
                 success: function (data) {
-                    seeall = true;
+                    seeAll = true;
                     if (!data.length) {
-                        seeall = false;
+                        seeAll = false;
                         data = [
                             {
                                 Name: 'No Search Results, please try another search ',
@@ -188,10 +188,10 @@ $(function () {
             });
         },
         open: function (data) {
-            if (seeall) {
+            if (seeAll) {
                 var $li = $('<li class="see-all-li">');
                 var $link = $("<a>", {
-                    href: basePath + "/Products/list?search=" + searchvalues.replace(" ", "_"),
+                    href: basePath + "/Products/list?search=" + encodeURI(searchValues),
                     class: "see-all"
                 }).html("See All Results").appendTo($li);
                 $li.appendTo($('.ui-autocomplete'));
@@ -200,9 +200,9 @@ $(function () {
         focus: updateTextBox,
         select: updateTextBox
     }).autocomplete('instance')._renderItem = function (ul, item) {
-        if (seeall) {
+        if (seeAll) {
             return $('<li class="search-item">').append("")
-                .append("<a href=" + basePath + "/Products/list?search=" + item.Name + "><img style='width: 46px; height:46px;' src=" + encodeURI(item.DefaultImage) + " alt=" + item.Name + "/>" + item.Name + "</a>").appendTo(ul);
+                .append("<a href=" + basePath + "/Products/ProductDetails?sku=" + item.SkuCode + "><img style='width: 46px; height:46px;' src=" + encodeURI(item.DefaultImage) + " alt=" + item.Name + "/>" + item.Name + "</a>").appendTo(ul);
         }
         else {
             return $('<li class="search-item">').append("")
@@ -220,7 +220,7 @@ $(function () {
 });
 
 function updateTextBox(event, ui) {
-    $(this).val(ui.item.Name);
+    seeAll && $(this).val(ui.item.Name);
     return false;
 }
 function getTopCategoryProducts(ProductnavigationId) {

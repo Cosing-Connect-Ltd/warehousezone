@@ -195,6 +195,7 @@
     <Compile Include="Domain\Auth\AuthUserLoginActivity.cs" />
     <Compile Include="Domain\Auth\AuthUserprofile.cs" />
     <Compile Include="Domain\Auth\Module.cs" />
+    <Compile Include="Domain\ImportModels\ParentChildProductsAssociationsImportModel.cs" />
     <Compile Include="Domain\ImportModels\SortedProductCategoriesAssociationsImportModel.cs" />
     <Compile Include="Domain\ImportModels\ProductsCategoriesAssociationsImportModel.cs" />
     <Compile Include="Domain\ImportModels\ProductAttributeImportModel.cs" />
@@ -231,6 +232,7 @@
     <Compile Include="Domain\Models\ProductManufacturer.cs" />
     <Compile Include="Domain\Models\UISettingItem.cs" />
     <Compile Include="Domain\Models\UISetting.cs" />
+    <Compile Include="Domain\ViewModels\ProductSearchResultViewModel.cs" />
     <Compile Include="Domain\ViewModels\ApiCredentialsViewModel.cs" />
     <Compile Include="Domain\ViewModels\ApiModels\TenantLocationsSync.cs" />
     <Compile Include="Domain\ViewModels\FileUploaderViewModel.cs" />

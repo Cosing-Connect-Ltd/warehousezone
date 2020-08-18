@@ -70,7 +70,7 @@ namespace WarehouseEcommerce.Controllers
                     CurrentSort = sort
                 };
 
-                if (categoryId != null)
+                if (categoryId != null || !string.IsNullOrEmpty(search))
                 {
                     var categoryInfo = _tenantWebsiteService.GetAllValidWebsiteNavigationCategory(CurrentTenantId, CurrentTenantWebsite.SiteID)
                                                             .FirstOrDefault(c => c.Id == categoryId);
@@ -78,7 +78,7 @@ namespace WarehouseEcommerce.Controllers
                     model.Category = categoryInfo?.Parent ?? categoryInfo;
                     model.SubCategory = categoryInfo?.Parent != null ? categoryInfo : null;
 
-                    var products = _tenantWebsiteService.GetAllValidProductWebsiteSearch(CurrentTenantWebsite.SiteID, category, string.Empty, categoryId);
+                    var products = _tenantWebsiteService.GetWebsiteProducts(CurrentTenantWebsite.SiteID, category, string.Empty, categoryId);
 
                     if (!string.IsNullOrEmpty(search))
                     {
@@ -89,7 +89,10 @@ namespace WarehouseEcommerce.Controllers
                         search = filter;
                     }
 
-                    model.DynamicFilters = GetDynamicFiltersModel(products, categoryId);
+                    if (categoryId != null)
+                    {
+                        model.DynamicFilters = GetDynamicFiltersModel(products, categoryId);
+                    }
 
                     model.CurrentFilter = search;
 
@@ -124,6 +127,11 @@ namespace WarehouseEcommerce.Controllers
                     if (pagedProductsList.Count > 0)
                     {
                         pagedProductsList.ToList().ForEach(u => u.SellPrice = (Math.Round((_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID)), 2)));
+                    }
+
+                    if (categoryId == null)
+                    {
+                        model.DynamicFilters = GetDynamicFiltersModel(products, categoryId);
                     }
 
                     model.DynamicFilters.AttributeValues = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(products);
@@ -263,21 +271,9 @@ namespace WarehouseEcommerce.Controllers
 
         public JsonResult searchProduct(string searchkey)
         {
-            var model = (from product in _tenantWebsiteService.GetAllValidProductWebsiteSearch(CurrentTenantWebsite.SiteID, ProductName: searchkey)
-                         select new ProductSearchResult
-                         {
-                             Id = product.ProductId,
-                             Name = product.Name,
-                             Path = product.ProductFiles.Where(x => x.IsDeleted != true).Select(x => x.FilePath).ToList(),
-                             SKUCode = product.SKUCode,
-                             SearchKey = searchkey
-                         }).OrderBy(u => u.Id).Take(10).ToList();
+            var model = _tenantWebsiteService.SearchWebsiteProducts(CurrentTenantWebsite.SiteID, 10, searchkey);
 
-
-            model.ForEach(x => x.Path.Any(y => Images.Contains(Path.GetExtension(y))));
-
-            model.ForEach(x => x.DefaultImage = CurrentTenantWebsite.BaseFilePath + (string.IsNullOrEmpty(x.Path.FirstOrDefault()) ? "/UploadedFiles/Products/no_image.gif" : x.Path.FirstOrDefault()));
-
+            model.ForEach(x => x.DefaultImage = CurrentTenantWebsite.BaseFilePath + (string.IsNullOrEmpty(x.DefaultImage) ? "/UploadedFiles/Products/no_image.gif" : x.DefaultImage));
 
             return Json(model, JsonRequestBehavior.AllowGet);
         }
@@ -736,16 +732,5 @@ namespace WarehouseEcommerce.Controllers
             var cartItemProductId = _tenantWebsiteService.AddOrUpdateCartItem(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, Session.SessionID, productId, 1, kitProductCartItems);
             return Json(cartItemProductId, JsonRequestBehavior.AllowGet);
         }
-    }
-
-    public class ProductSearchResult
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public List<string> Path { get; set; }
-        public string DefaultImage { get; set; }
-        public string Category { get; set; }
-        public string SKUCode { get; set; }
-        public string SearchKey { get; set; }
     }
 }

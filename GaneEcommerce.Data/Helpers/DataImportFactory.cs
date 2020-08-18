@@ -92,12 +92,27 @@ namespace Ganedata.Core.Data.Helpers
                                         websiteCategories,
                                         websiteProducts);
 
+            var websiteAssociationProducts = GetWebsiteAssociationChildProducts(associationsData);
+
+            try
+            {
+                AssociatProductsAndWebsite(tenantId, userId, dbContext, website.SiteID, websiteProducts, GetWebsiteAssociationChildProducts(associationsData));
+            }
+            catch (Exception ex)
+            {
+                exceptionsList.Add($"Unable to associate child products with website. Error message: {ex.Message}");
+            }
+
             var result = new List<string>();
 
             result.Add($"{associatedCount} Associations imported for \"{website.SiteName}\" website navigastion categories.");
             if (previouslyAvailableCount > 0)
             {
                 result.Add($"{previouslyAvailableCount} Associations are already available.");
+            }
+            if (websiteAssociationProducts.Count() > 0)
+            {
+                result.Add($"{websiteAssociationProducts.Count()} Child products associatiated to \"{website.SiteName}\" website.");
             }
             if (newlyAddedCategories.Count() > 0)
             {
@@ -113,6 +128,13 @@ namespace Ganedata.Core.Data.Helpers
             }
 
             return result;
+        }
+
+        private List<string> GetWebsiteAssociationChildProducts(List<ProductsCategoriesAssociationsImportModel> associationsData)
+        {
+            return associationsData.Where(a => string.IsNullOrEmpty(a.ParentHeading?.Trim()) && string.IsNullOrEmpty(a.ChildHeading?.Trim()) && !string.IsNullOrEmpty(a.SkuCode?.Trim()))
+                    .Select(a => a.SkuCode)
+                    .ToList();
         }
 
         private static List<SortedProductCategoriesAssociationsImportModel> SortProductsCategoriesAssociationsData(List<ProductsCategoriesAssociationsImportModel> associationsData)
@@ -157,7 +179,7 @@ namespace Ganedata.Core.Data.Helpers
                                                         ApplicationContext dbContext,
                                                         TenantWebsites website,
                                                         IEnumerable<SortedProductCategoriesAssociationsImportModel> categoriesData,
-                                                        ref List<string> resultList,
+                                                        ref List<string> exceptionsList,
                                                         ref List<string> newlyAddedCategories,
                                                         ref int associatedCount,
                                                         ref int previouslyAvailableCount,
@@ -198,7 +220,7 @@ namespace Ganedata.Core.Data.Helpers
                 }
                 catch (Exception ex)
                 {
-                    resultList.Add($"Unable to associate products related by \"{categoryData.CategoryName}\" category with website. Error message: {ex.Message}");
+                    exceptionsList.Add($"Unable to associate products related by \"{categoryData.CategoryName}\" category with website. Error message: {ex.Message}");
                     continue;
                 }
 
@@ -210,7 +232,7 @@ namespace Ganedata.Core.Data.Helpers
                 }
                 catch (Exception ex)
                 {
-                    resultList.Add($"Unable to associate products by \"{categoryData.CategoryName}\" category. Error message: {ex.Message}");
+                    exceptionsList.Add($"Unable to associate products by \"{categoryData.CategoryName}\" category. Error message: {ex.Message}");
                     continue;
                 }
 
@@ -221,7 +243,7 @@ namespace Ganedata.Core.Data.Helpers
                                                 dbContext,
                                                 website,
                                                 categoryData.Childs,
-                                                ref resultList,
+                                                ref exceptionsList,
                                                 ref newlyAddedCategories,
                                                 ref associatedCount,
                                                 ref previouslyAvailableCount,
@@ -297,6 +319,184 @@ namespace Ganedata.Core.Data.Helpers
                 dbContext.ProductsWebsitesMap.AddRange(newProductsWebsitesMaps);
                 dbContext.SaveChanges();
             }
+        }
+
+        public List<string> ImportParentChildProductsAssociations(string importPath, int tenantId, int? userId = null, ApplicationContext dbContext = null)
+        {
+            if (dbContext == null)
+            {
+                dbContext = new ApplicationContext();
+            }
+            var adminUserId = dbContext.AuthUsers.First(m => m.UserName.Equals("Admin")).UserId;
+            var headers = new List<string>();
+            List<ParentChildProductsAssociationsImportModel> parentChildProductsAssociationsData = null;
+
+
+            using (var csv = new CsvReader(File.OpenText(importPath), CultureInfo.InvariantCulture))
+            {
+                try
+                {
+                    csv.Read();
+                    csv.ReadHeader();
+                    headers = csv.Context.HeaderRecord.ToList(); headers = headers.ConvertAll(d => d.ToLower().Replace(" ", string.Empty));
+                    parentChildProductsAssociationsData = csv.GetRecords<ParentChildProductsAssociationsImportModel>().ToList();
+                }
+                catch (Exception)
+                {
+                    return new List<string> { $"Incorrect file content!" };
+                }
+            }
+
+            if (headers.Count != 3 || !headers.Contains("parentskucode") || !headers.Contains("childskucode") || !headers.Contains("associationtype"))
+            {
+                return new List<string> { $"incorrect file columns/headers!" };
+            }
+
+            if (parentChildProductsAssociationsData == null || parentChildProductsAssociationsData.Count() <= 0)
+            {
+                return new List<string> { $"Empty file, no values to import!" };
+            }
+
+            var groupedParentChildProductsAssociationsData = parentChildProductsAssociationsData.Where(p => !string.IsNullOrEmpty(p.ParentSkuCode) && !string.IsNullOrEmpty(p.ChildSkuCode) && !string.IsNullOrEmpty(p.ParentSkuCode))
+                                                                                                .GroupBy(p => p.AssociationType)
+                                                                                                .Select(pg => {
+                                                                                                    return new {
+                                                                                                        Name = pg.Key,
+                                                                                                        Products = pg.GroupBy(p => p.ParentSkuCode)
+                                                                                                                     .Select(pc => new { SkuCode = pc.Key, ChildSkuCodes = pc.Select(pcd => pcd.ChildSkuCode).ToList()})
+                                                                                                    };
+                                                                                                });
+
+            var resultList = new List<string>();
+            var associatedCount = 0;
+            var previouslyAvailableCount = 0;
+
+            foreach (var productKitTypeData in groupedParentChildProductsAssociationsData)
+            {
+                try
+                {
+                    var productKitTypeId = GetOrAddProductKitType(productKitTypeData.Name, dbContext, userId, tenantId);
+
+                    foreach (var parentProductData in productKitTypeData.Products)
+                    {
+                        try
+                        {
+                            var parentProduct = dbContext.ProductMaster.FirstOrDefault(p => p.SKUCode == parentProductData.SkuCode && p.IsDeleted != true);
+
+                            if(parentProduct == null)
+                            {
+                                resultList.Add($"Parent product does not exist with SkuCode : \"{parentProductData.SkuCode}\"");
+                                continue;
+                            }
+
+                            foreach (var childSkuCode in parentProductData.ChildSkuCodes)
+                            {
+
+                                var childProductId = dbContext.ProductMaster.FirstOrDefault(p => p.SKUCode == childSkuCode && p.IsDeleted != true)?.ProductId;
+
+                                if (childProductId == null)
+                                {
+                                    resultList.Add($"Child product does not exist with SkuCode : \"{childSkuCode}\"");
+                                    continue;
+                                }
+
+                                if (dbContext.ProductKitMaps.Any(a => a.ProductId == parentProduct.ProductId &&
+                                                                      a.KitProductId == childProductId &&
+                                                                      a.ProductKitTypeId == productKitTypeId &&
+                                                                      a.IsDeleted != true &&
+                                                                      a.IsActive &&
+                                                                      a.ProductKitType == parentProduct.ProductType))
+                                {
+                                    previouslyAvailableCount++;
+                                    continue;
+                                }
+
+                                try
+                                {
+                                    AddProductKitMap(parentProduct.ProductId, childProductId.Value, parentProduct.ProductType, productKitTypeId, dbContext, userId, tenantId);
+                                    associatedCount++;
+                                }
+                                catch (Exception ex)
+                                {
+                                    resultList.Add($"Failed to associate parent product \"{parentProductData.SkuCode}\" and child product \"{childSkuCode}\". Exception message : {ex.Message}");
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            resultList.Add($"Failed to get products details, SkuCode: \"{parentProductData.SkuCode}\". Exception message : {ex.Message}");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    resultList.Add($"Failed to get/create ProductKitType : \"{productKitTypeData.Name}\". Exception message : {ex.Message}");
+                }
+
+                dbContext.SaveChanges();
+            }
+
+            if (resultList.Count > 0)
+            {
+                resultList.Insert(0, $"{resultList.Count} Product/Child associations failed to import. List of failures :");
+            }
+            if (previouslyAvailableCount > 0)
+            {
+                resultList.Insert(0, $"{previouslyAvailableCount} Product/Child associations are already available.");
+            }
+
+            resultList.Insert(0, $"{associatedCount} Product/Child Associations imported.");
+
+            return resultList;
+        }
+
+        private bool AddProductKitMap(int productId, int childProductId, ProductKitTypeEnum productType, int productKitTypeId, ApplicationContext dbContext, int? userId, int tenantId)
+        {
+            var productKitMap = dbContext.ProductKitMaps.FirstOrDefault(a => a.ProductId == productId && a.KitProductId == childProductId && a.ProductKitTypeId == productKitTypeId && a.IsDeleted != true);
+            if (productKitMap != null)
+            {
+                productKitMap.IsActive = true;
+                productKitMap.ProductKitType = productType;
+            }
+            else
+            {
+                dbContext.ProductKitMaps.Add(new ProductKitMap
+                {
+                    IsActive = true,
+                    ProductId = productId,
+                    KitProductId = childProductId,
+                    ProductKitType = productType,
+                    ProductKitTypeId = productKitTypeId,
+                    CreatedBy = userId,
+                    TenantId = tenantId,
+                    DateCreated = DateTime.Now
+                });
+            }
+
+            return true;
+        }
+
+        private int GetOrAddProductKitType(string associationType, ApplicationContext dbContext, int? userId, int tenantId)
+        {
+            var productKitType = dbContext.ProductKitTypes.FirstOrDefault(a => a.Name.Equals(associationType, StringComparison.InvariantCultureIgnoreCase) && a.IsDeleted != true);
+
+            if (productKitType == null)
+            {
+                productKitType = dbContext.ProductKitTypes.Add(new ProductKitType()
+                {
+                    CreatedBy = userId ?? 0,
+                    DateCreated = DateTime.UtcNow,
+                    DateUpdated = DateTime.UtcNow,
+                    Name = associationType,
+                    TenentId = tenantId,
+                    UpdatedBy = userId,
+                    IsActive = true,
+                    SortOrder = dbContext.ProductKitTypes.Count() + 1
+                });
+                dbContext.SaveChanges();
+            }
+
+            return productKitType.Id;
         }
 
         public List<string> ImportProductsAttributes(string importPath, int tenantId, int? userId = null, ApplicationContext dbContext = null)
@@ -1287,23 +1487,23 @@ namespace Ganedata.Core.Data.Helpers
                             Manufacturer = readText[3];
                         }
 
-                        var existingProduct = context.ProductMaster.FirstOrDefault(m => m.SKUCode == scanSourceItemNumber);
-                        var addRecord = false;
-                        if (existingProduct == null)
+                        var actionTime = DateTime.Now;
+                        var product = context.ProductMaster.FirstOrDefault(m => m.SKUCode == scanSourceItemNumber);
+                        var isNewProduct = product == null;
+
+                        if (isNewProduct)
                         {
-                            addRecord = true;
                             addedProducts++;
-                            existingProduct = new ProductMaster();
-                            existingProduct.DateCreated = DateTime.UtcNow;
-                            existingProduct.CreatedBy = userId;
-                            existingProduct.ProdStartDate = DateTime.UtcNow;
+                            product = new ProductMaster();
+                            product.ProdStartDate = actionTime;
+                            product.DateCreated = actionTime;
+                            product.CreatedBy = userId;
                         }
                         else
                         {
                             updatedProducts++;
-                            existingProduct.DateUpdated = DateTime.UtcNow;
-                            existingProduct.ProdStartDate = DateTime.UtcNow;
-                            existingProduct.UpdatedBy = userId;
+                            product.DateUpdated = actionTime;
+                            product.UpdatedBy = userId;
                         }
 
                         var manufacturer = context.ProductManufacturers.AsNoTracking().FirstOrDefault(m => m.Name.Equals(Manufacturer));
@@ -1314,7 +1514,7 @@ namespace Ganedata.Core.Data.Helpers
                                 Name = string.IsNullOrEmpty(Manufacturer) ? "Scan Source" : Manufacturer,
                                 MFGCode = string.IsNullOrEmpty(MFGCode) ? "Scan Source" : MFGCode,
                                 CreatedBy = 1,
-                                DateCreated = DateTime.UtcNow,
+                                DateCreated = actionTime,
                                 TenantId = tenantId,
                             };
                             context.ProductManufacturers.Add(manufacturer);
@@ -1323,31 +1523,31 @@ namespace Ganedata.Core.Data.Helpers
 
                         if (readText.Length >= 6)
                         {
-                            existingProduct.ManufacturerPartNo = readText[5];
+                            product.ManufacturerPartNo = readText[5];
                         }
                         if (readText.Length >= 9)
                         {
-                            existingProduct.BuyPrice = Decimal.Parse(string.IsNullOrEmpty(readText[8]) ? "0" : readText[8]);
+                            product.BuyPrice = Decimal.Parse(string.IsNullOrEmpty(readText[8]) ? "0" : readText[8]);
                         }
                         if (readText.Length >= 11)
                         {
-                            existingProduct.SellPrice = Decimal.Parse(string.IsNullOrEmpty(readText[10]) ? "0" : readText[10]);
+                            product.SellPrice = Decimal.Parse(string.IsNullOrEmpty(readText[10]) ? "0" : readText[10]);
                         }
                         if (readText.Length >= 17)
                         {
-                            existingProduct.Serialisable = bool.Parse(readText[16]);
+                            product.Serialisable = bool.Parse(readText[16]);
                         }
                         if (readText.Length >= 21)
                         {
-                            existingProduct.CountryOfOrigion = readText[20];
+                            product.CountryOfOrigion = readText[20];
                         }
                         if (readText.Length >= 24)
                         {
-                            existingProduct.Width = Double.Parse(string.IsNullOrEmpty(readText[23]) ? "0" : readText[23]);
+                            product.Width = Double.Parse(string.IsNullOrEmpty(readText[23]) ? "0" : readText[23]);
                         }
                         if (readText.Length >= 26)
                         {
-                            existingProduct.Height = Double.Parse(string.IsNullOrEmpty(readText[25]) ? "0" : readText[25]);
+                            product.Height = Double.Parse(string.IsNullOrEmpty(readText[25]) ? "0" : readText[25]);
                         }
                         if (readText.Length >= 42)
                         {
@@ -1361,17 +1561,17 @@ namespace Ganedata.Core.Data.Helpers
                         {
                             if (readText[12] != null && decimal.Parse(readText[12]) > 0)
                             {
-                                if (addRecord)
+                                if (isNewProduct)
                                 {
-                                    existingProduct.InventoryTransactions.Add(new InventoryTransaction()
+                                    product.InventoryTransactions.Add(new InventoryTransaction()
                                     {
                                         WarehouseId = warehouseId,
                                         TenentId = tenantId,
-                                        DateCreated = DateTime.UtcNow,
+                                        DateCreated = actionTime,
                                         IsActive = true,
                                         CreatedBy = userId ?? adminUserId,
                                         Quantity = decimal.Parse(readText[12]),
-                                        LastQty = context.InventoryStocks.FirstOrDefault(x => x.ProductId == existingProduct.ProductId && x.TenantId == tenantId && x.WarehouseId == warehouseId)?.InStock ?? 0,
+                                        LastQty = context.InventoryStocks.FirstOrDefault(x => x.ProductId == product.ProductId && x.TenantId == tenantId && x.WarehouseId == warehouseId)?.InStock ?? 0,
                                         IsCurrentLocation = true,
                                         InventoryTransactionTypeId = InventoryTransactionTypeEnum.AdjustmentIn
                                     });
@@ -1379,104 +1579,105 @@ namespace Ganedata.Core.Data.Helpers
                             }
                         }
 
-                        existingProduct.SKUCode = scanSourceItemNumber;
-                        existingProduct.Depth = 1;
-                        existingProduct.UOMId = 1;
-                        existingProduct.ProductType = ProductKitTypeEnum.Simple;
-                        existingProduct.TaxID = TaxID;
-                        existingProduct.UOMId = UOMId;
-                        existingProduct.IsActive = true;
-                        existingProduct.IsDeleted = false;
-                        existingProduct.PercentMargin = 0;
-                        existingProduct.TenantId = tenantId;
-                        existingProduct.DimensionUOMId = UOMId;
-                        existingProduct.WeightGroupId = weightGroupId;
-                        existingProduct.CreatedBy = userId ?? adminUserId;
-                        existingProduct.BarCode = existingProduct.SKUCode;
-                        existingProduct.LotOptionCodeId = productLotOptionId;
-                        existingProduct.ManufacturerId = manufacturer.Id;
-                        existingProduct.LotProcessTypeCodeId = productLotProcessId;
-                        existingProduct.BarCode = (string.IsNullOrEmpty(scanSourceItemNumber) ? "0" : scanSourceItemNumber);
+                        product.SKUCode = scanSourceItemNumber;
+                        product.Depth = 1;
+                        product.UOMId = 1;
+                        product.ProductType = ProductKitTypeEnum.Simple;
+                        product.TaxID = TaxID;
+                        product.UOMId = UOMId;
+                        product.IsActive = true;
+                        product.IsDeleted = false;
+                        product.PercentMargin = 0;
+                        product.TenantId = tenantId;
+                        product.DimensionUOMId = UOMId;
+                        product.WeightGroupId = weightGroupId;
+                        product.CreatedBy = userId ?? adminUserId;
+                        product.BarCode = product.SKUCode;
+                        product.LotOptionCodeId = productLotOptionId;
+                        product.ManufacturerId = manufacturer.Id;
+                        product.LotProcessTypeCodeId = productLotProcessId;
+                        product.BarCode = (string.IsNullOrEmpty(scanSourceItemNumber) ? "0" : scanSourceItemNumber);
 
-                        if (addRecord)
+                        if (readText.Length >= 45)
                         {
-                            var department = context.TenantDepartments.AsNoTracking().FirstOrDefault(u => u.DepartmentName == productHierarchy1);
-                            if (department == null)
+                            product.Description = readText[45];
+                        }
+                        if (readText.Length >= 14)
+                        {
+                            product.Name = readText[13];
+                        }
+
+                        var department = context.TenantDepartments.AsNoTracking().FirstOrDefault(u => u.DepartmentName == productHierarchy1);
+                        if (department == null)
+                        {
+                            department = new TenantDepartments()
                             {
-                                department = new TenantDepartments()
-                                {
-                                    DepartmentName = string.IsNullOrEmpty(productHierarchy1) ? "testDepartment" : productHierarchy1,
-                                    DateCreated = DateTime.UtcNow,
-                                    TenantId = tenantId
+                                DepartmentName = string.IsNullOrEmpty(productHierarchy1) ? "testDepartment" : productHierarchy1,
+                                DateCreated = actionTime,
+                                TenantId = tenantId
 
-                                };
-                                context.TenantDepartments.Add(department);
-                                context.SaveChanges();
-                            }
+                            };
+                            context.TenantDepartments.Add(department);
+                            context.SaveChanges();
+                        }
 
-                            var group = context.ProductGroups.AsNoTracking().FirstOrDefault(m => m.ProductGroup.Equals(productHierarchy2));
-                            if (group == null)
+                        var group = context.ProductGroups.AsNoTracking().FirstOrDefault(m => m.ProductGroup.Equals(productHierarchy2));
+                        if (group == null)
+                        {
+                            group = new ProductGroups()
                             {
-                                group = new ProductGroups()
-                                {
-                                    ProductGroup = string.IsNullOrEmpty(productHierarchy2) ? "testGroup" : productHierarchy2,
-                                    DepartmentId = department.DepartmentId,
-                                    CreatedBy = 1,
-                                    DateCreated = DateTime.UtcNow,
-                                    IsActive = true,
-                                    TenentId = tenantId
-                                };
-                                context.ProductGroups.Add(group);
-                                context.SaveChanges();
-                            }
+                                ProductGroup = string.IsNullOrEmpty(productHierarchy2) ? "testGroup" : productHierarchy2,
+                                DepartmentId = department.DepartmentId,
+                                CreatedBy = 1,
+                                DateCreated = actionTime,
+                                IsActive = true,
+                                TenentId = tenantId
+                            };
+                            context.ProductGroups.Add(group);
+                            context.SaveChanges();
+                        }
 
-                            var category = context.ProductCategories.AsNoTracking().FirstOrDefault(m => m.ProductCategoryName.Equals(productHierarchy3));
-                            if (category == null)
+                        var category = context.ProductCategories.AsNoTracking().FirstOrDefault(m => m.ProductCategoryName.Equals(productHierarchy3));
+                        if (category == null)
+                        {
+                            category = new ProductCategory()
                             {
-                                category = new ProductCategory()
-                                {
-                                    ProductCategoryName = string.IsNullOrEmpty(productHierarchy3) ? "testCategory" : productHierarchy3,
-                                    ProductGroupId = group.ProductGroupId,
-                                    CreatedBy = 1,
-                                    DateCreated = DateTime.UtcNow,
-                                    TenantId = tenantId,
-                                };
-                                context.ProductCategories.Add(category);
-                                context.SaveChanges();
-                            }
+                                ProductCategoryName = string.IsNullOrEmpty(productHierarchy3) ? "testCategory" : productHierarchy3,
+                                ProductGroupId = group.ProductGroupId,
+                                CreatedBy = 1,
+                                DateCreated = actionTime,
+                                TenantId = tenantId,
+                            };
+                            context.ProductCategories.Add(category);
+                            context.SaveChanges();
+                        }
 
+                        product.ProductCategoryId = category.ProductCategoryId;
+                        product.ProductGroupId = group.ProductGroupId;
+                        product.DepartmentId = department.DepartmentId;
+
+                        if (isNewProduct)
+                        {
                             List<string> path1 = DownloadImage(ProductFamilyImage, scanSourceItemNumber, tenantId, userId ?? adminUserId, ItemImage);
-                            existingProduct.ProductFiles = new List<ProductFiles>();
+                            product.ProductFiles = new List<ProductFiles>();
                             foreach (var filepath in path1)
                             {
-                                existingProduct.ProductFiles.Add(new ProductFiles
+                                product.ProductFiles.Add(new ProductFiles
                                 {
-                                    ProductId = existingProduct.ProductId,
+                                    ProductId = product.ProductId,
                                     FilePath = filepath,
                                     TenantId = tenantId,
                                     CreatedBy = userId ?? adminUserId,
-                                    DateCreated = DateTime.UtcNow
+                                    DateCreated = actionTime
                                 });
                             }
 
-                            if (readText.Length >= 45)
-                            {
-                                existingProduct.Description = readText[45];
-                            }
-                            if (readText.Length >= 14)
-                            {
-                                existingProduct.Name = readText[13];
-                            }
-
-                            existingProduct.ProductCategoryId = category.ProductCategoryId;
-                            existingProduct.ProductGroupId = group.ProductGroupId;
-                            existingProduct.DepartmentId = department.DepartmentId;
-                            context.ProductMaster.Add(existingProduct);
-                            context.Entry(existingProduct).State = EntityState.Added;
+                            context.ProductMaster.Add(product);
+                            context.Entry(product).State = EntityState.Added;
                         }
                         else
                         {
-                            context.Entry(existingProduct).State = EntityState.Modified;
+                            context.Entry(product).State = EntityState.Modified;
                         }
 
                         counter++;
@@ -1998,40 +2199,39 @@ namespace Ganedata.Core.Data.Helpers
                             var productCode = values[0];
                             var sellPrice = values[7];
                             decimal inventoryLevel = 0;
-                            var existingProduct = context.ProductMaster.FirstOrDefault(m => m.SKUCode == productCode);
-                            var addRecord = false;
-                            if (existingProduct == null)
+                            var product = context.ProductMaster.FirstOrDefault(m => m.SKUCode == productCode);
+                            var isNewProduct = product == null;
+                            if (isNewProduct)
                             {
-                                addRecord = true;
                                 addedProducts++;
-                                existingProduct = new ProductMaster();
+                                product = new ProductMaster();
                             }
                             else
                             {
                                 updatedProducts++;
                             }
 
-                            existingProduct.SKUCode = productCode;
+                            product.SKUCode = productCode;
 
                             if (1 < values.Length)
                             {
-                                existingProduct.ManufacturerPartNo = values[1];
+                                product.ManufacturerPartNo = values[1];
                             }
-                            if (2 < values.Length && addRecord)
+                            if (2 < values.Length && isNewProduct)
                             {
-                                existingProduct.Name = values[2];
+                                product.Name = values[2];
                             }
-                            if (3 < values.Length && addRecord)
+                            if (3 < values.Length && isNewProduct)
                             {
-                                existingProduct.Description = values[3];
+                                product.Description = values[3];
                             }
                             if (4 < values.Length)
                             {
                                 Decimal.TryParse(values[4], out inventoryLevel);
 
-                                if (addRecord && inventoryLevel > 0)
+                                if (isNewProduct && inventoryLevel > 0)
                                 {
-                                    existingProduct.InventoryTransactions.Add(new InventoryTransaction()
+                                    product.InventoryTransactions.Add(new InventoryTransaction()
                                     {
                                         WarehouseId = warehouseId,
                                         TenentId = tenantId,
@@ -2039,7 +2239,7 @@ namespace Ganedata.Core.Data.Helpers
                                         IsActive = true,
                                         CreatedBy = userId ?? adminUserId,
                                         Quantity = decimal.Parse(values[11]),
-                                        LastQty = context.InventoryStocks.FirstOrDefault(x => x.ProductId == existingProduct.ProductId && x.TenantId == tenantId && x.WarehouseId == warehouseId)?.InStock ?? 0,
+                                        LastQty = context.InventoryStocks.FirstOrDefault(x => x.ProductId == product.ProductId && x.TenantId == tenantId && x.WarehouseId == warehouseId)?.InStock ?? 0,
                                         IsCurrentLocation = true,
                                         InventoryTransactionTypeId = InventoryTransactionTypeEnum.AdjustmentIn
                                     });
@@ -2048,11 +2248,11 @@ namespace Ganedata.Core.Data.Helpers
                             }
                             if (6 < values.Length)
                             {
-                                existingProduct.BuyPrice = string.IsNullOrEmpty(values[6]) ? (decimal?)null : decimal.Parse(values[6]);
+                                product.BuyPrice = string.IsNullOrEmpty(values[6]) ? (decimal?)null : decimal.Parse(values[6]);
                             }
                             if (7 < values.Length)
                             {
-                                existingProduct.SellPrice = string.IsNullOrEmpty(values[7]) ? (decimal?)null : decimal.Parse(values[7]);
+                                product.SellPrice = string.IsNullOrEmpty(values[7]) ? (decimal?)null : decimal.Parse(values[7]);
                             }
                             if (8 < values.Length && !string.IsNullOrEmpty(values[8]))
                             {
@@ -2064,7 +2264,7 @@ namespace Ganedata.Core.Data.Helpers
                                     var existingAccount = context.Account.Find(number);
                                     if (existingAccount != null)
                                     {
-                                        existingProduct.PreferredSupplier = number;
+                                        product.PreferredSupplier = number;
                                     }
                                 }
                                 else
@@ -2074,7 +2274,7 @@ namespace Ganedata.Core.Data.Helpers
 
                                     if (existingAccount != null)
                                     {
-                                        existingProduct.PreferredSupplier = existingAccount.AccountID;
+                                        product.PreferredSupplier = existingAccount.AccountID;
                                     }
                                     else
                                     {
@@ -2097,33 +2297,38 @@ namespace Ganedata.Core.Data.Helpers
                             }
                             if (9 < values.Length)
                             {
-                                existingProduct.BarCode = string.IsNullOrEmpty(values[9]) ? " " : values[9];
+                                product.BarCode = string.IsNullOrEmpty(values[9]) ? " " : values[9];
                             }
                             if (10 < values.Length)
                             {
-                                existingProduct.BarCode2 = values[10];
+                                product.BarCode2 = values[10];
                             }
                             if (11 < values.Length)
                             {
                                 bool serialisedCheckResult = false;
                                 Boolean.TryParse(values[11], out serialisedCheckResult);
-                                existingProduct.Serialisable = serialisedCheckResult;
+                                product.Serialisable = serialisedCheckResult;
+                            }
+
+                            if (values.Length > 12)
+                            {
+                                product.ProductType = (ProductKitTypeEnum)(values[11] != null ? Enum.Parse(typeof(ProductKitTypeEnum), values[12]) : null);
                             }
 
 
-                            existingProduct.DateCreated = DateTime.UtcNow;
-                            existingProduct.IsActive = true;
-                            existingProduct.TenantId = tenantId;
-                            existingProduct.IsDeleted = false;
-                            existingProduct.CreatedBy = userId ?? adminUserId;
-                            existingProduct.UOMId = context.GlobalUOM.FirstOrDefault()?.UOMId ?? 1;
-                            existingProduct.DimensionUOMId = context.GlobalUOM.FirstOrDefault()?.UOMId ?? 1;
-                            existingProduct.ProductGroupId = groupId;
-                            existingProduct.DepartmentId = departmentId;
-                            existingProduct.TaxID = context.GlobalTax.FirstOrDefault().TaxID;
-                            existingProduct.LotOptionCodeId = productLotOptionId;
-                            existingProduct.LotProcessTypeCodeId = productLotProcessId;
-                            existingProduct.WeightGroupId = weightGroupId;
+                            product.DateCreated = DateTime.UtcNow;
+                            product.IsActive = true;
+                            product.TenantId = tenantId;
+                            product.IsDeleted = false;
+                            product.CreatedBy = userId ?? adminUserId;
+                            product.UOMId = context.GlobalUOM.FirstOrDefault()?.UOMId ?? 1;
+                            product.DimensionUOMId = context.GlobalUOM.FirstOrDefault()?.UOMId ?? 1;
+                            product.ProductGroupId = groupId;
+                            product.DepartmentId = departmentId;
+                            product.TaxID = context.GlobalTax.FirstOrDefault().TaxID;
+                            product.LotOptionCodeId = productLotOptionId;
+                            product.LotProcessTypeCodeId = productLotProcessId;
+                            product.WeightGroupId = weightGroupId;
 
                             Locations currentLocation = null;
 
@@ -2150,15 +2355,15 @@ namespace Ganedata.Core.Data.Helpers
                                         LocationGroupId = context.LocationGroups.First().LocationGroupId,
                                         UOMId = context.GlobalUOM.FirstOrDefault()?.UOMId ?? 1,
                                         DimensionUOMId = context.GlobalUOM.FirstOrDefault()?.UOMId ?? 1,
-                                        LocationName = existingProduct.SKUCode,
+                                        LocationName = product.SKUCode,
                                         LocationTypeId = context.LocationTypes.FirstOrDefault()?.LocationTypeId ?? 1,
                                     };
 
                                 }
                                 currentLocation = productLocation;
-                                existingProduct.ProductLocationsMap.Add(new ProductLocations()
+                                product.ProductLocationsMap.Add(new ProductLocations()
                                 {
-                                    ProductMaster = existingProduct,
+                                    ProductMaster = product,
                                     CreatedBy = userId ?? adminUserId,
                                     DateCreated = DateTime.UtcNow,
                                     IsActive = true,
@@ -2167,14 +2372,14 @@ namespace Ganedata.Core.Data.Helpers
                                 });
                             }
 
-                            if (addRecord)
+                            if (isNewProduct)
                             {
-                                existingProduct.ProdStartDate = DateTime.UtcNow;
-                                context.ProductMaster.Add(existingProduct);
+                                product.ProdStartDate = DateTime.UtcNow;
+                                context.ProductMaster.Add(product);
                             }
                             else
                             {
-                                context.Entry(existingProduct).State = EntityState.Modified;
+                                context.Entry(product).State = EntityState.Modified;
                             }
 
                             if (lineNumber % 200 == 0)
