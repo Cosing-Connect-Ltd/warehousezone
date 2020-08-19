@@ -5611,7 +5611,6 @@ body.modal-open {
 
 .nav-tabs .nav-link .active-tab-bar {
     position: absolute;
-    z-index: 10;
     bottom: -3px;
     height: 3px;
     background: #458CFF;
