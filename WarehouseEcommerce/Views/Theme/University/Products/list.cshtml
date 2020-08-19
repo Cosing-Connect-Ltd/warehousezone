@@ -1,25 +1,8 @@
 ﻿@model WarehouseEcommerce.ViewModels.ProductListViewModel
 @using Ganedata.Core.Entities.Enums
 @using PagedList.Mvc;
-@{
-    var UrlQuery = Request.Url.OriginalString;
-    string values = "";
-    string SubCategory = "";
-    string Manufacturer = "";
-    if (UrlQuery.Contains("values="))
-    {
-        var startindex = UrlQuery.IndexOf("values=");
-        var lastindex = UrlQuery.Length - startindex;
-        values = UrlQuery.Substring(startindex, lastindex).Replace("values=", "");
-        var breadcumbstring = values.Split('/');
-        SubCategory = breadcumbstring.FirstOrDefault(u => u.Contains("TypeS-"));
-        Manufacturer = breadcumbstring.FirstOrDefault(u => u.Contains("BrandS-"));
-
-    }
-}
 
 @Html.Partial("_ProductByAttributeSelectorModal")
-@Html.Hidden("valuesParameter", (string)values)
 <section class="nb_sec nb_prdlisting_pgsec">
     <span id="res_filterBox_trigger"><i class="icon-filter"></i></span>
     <div class="container">
@@ -187,16 +170,16 @@
                             }
                         }
 
-                        <input type="text" id="currentFiltervalue" value="@(Model.CurrentFilter ?? " ")" style="display:none" />
-
-                        <input type="hidden" id="prod-category" value="@Model.CurrentCategoryName" />
-                        <input type="hidden" id="prod-category-id" value="@Model.CategoryId" />
+                        @Html.Hidden("valuesParameter", Model.CurrentFilterValues)
+                        @Html.Hidden("currentSearchValue", Model.CurrentSearch)
+                        @Html.Hidden("prod-category", Model.CurrentCategoryName)
+                        @Html.Hidden("prod-category-id", Model.CategoryId)
                     </div>
                     @if (Model.Products != null && Model.Products?.TotalItemCount > Model.Products?.PageSize)
                     {
                         <div class="row pagi">
                             <div class="col-sm-8 col-xs-8 text-left pagination">
-                                @Html.PagedListPager(Model.Products, page => Url.Action("list", new { sort = Model.CurrentSort, filter = Model.CurrentFilter, page = page, pagesize = Model.Products.PageSize, category = Model.CurrentCategoryName, categoryId = Model.CategoryId, values = values }),
+                                @Html.PagedListPager(Model.Products, page => Url.Action("list", new { sort = Model.CurrentSort, previousSearch = Model.CurrentSearch, page = page, pagesize = Model.Products.PageSize, category = Model.CurrentCategoryName, categoryId = Model.CategoryId, values = Model.CurrentFilterValues }),
                                                         options: new PagedListRenderOptions
                                                         {
                                                             MaximumPageNumbersToDisplay = 5,

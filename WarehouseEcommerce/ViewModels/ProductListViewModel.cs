@@ -11,7 +11,8 @@ namespace WarehouseEcommerce.ViewModels
         public string CurrentCategoryName { get; set; }
         public int? CategoryId { get; set; }
         public SortProductTypeEnum CurrentSort { get; set; }
-        public string CurrentFilter { get; set; }
+        public string CurrentSearch { get; set; }
+        public string CurrentFilterValues { get; set; }
         public WebsiteNavigation Category { get; set; }
         public WebsiteNavigation SubCategory { get; set; }
     }
