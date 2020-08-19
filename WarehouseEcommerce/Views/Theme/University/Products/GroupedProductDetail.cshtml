@@ -50,21 +50,26 @@
                                     <div role="tabpanel" class="tab-pane @(isFirstTab ? "active" : "")" id="@item.Name.Replace(" ", "-")">
 
                                         @{
-                                            var products = Model.Product.ProductKitItems.Where(u => (u.ProductKitTypeId == item.Id || ((u.ProductKitTypeId == null || u.ProductKitTypeId == 0) && isFirstTab)) &&
+                                            var productKitMaps = Model.Product.ProductKitItems.Where(u => (u.ProductKitTypeId == item.Id || ((u.ProductKitTypeId == null || u.ProductKitTypeId == 0) && isFirstTab)) &&
                                                                                                     u.ProductKitType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Grouped &&
                                                                                                     u.IsDeleted != true)
+                                                                                        .Select(p => new {
+                                                                                                            Product = p.KitProductMaster,
+                                                                                                            AvailableProductCount = Ganedata.Core.Services.Inventory.GetAvailableProductCount(p.KitProductMaster, ViewBag.SiteId)
+                                                                                                         })
+                                                                                        .OrderByDescending(p => p.AvailableProductCount > 0)
                                                                                         .ToList();
                                         }
-                                        @foreach (var productKitMap in products)
+                                        @foreach (var productKitMap in productKitMaps)
                                         {
                                             <div class="nb_prd_det_rightsec product-details-block">
-                                                <h2 class="head">@productKitMap.KitProductMaster.Name</h2>
+                                                <h2 class="head">@productKitMap.Product.Name</h2>
                                                 <div class="row">
                                                     <div class="col-md-12 col-lg-12 col-xl-4">
-                                                        <span class="prd_amnt">@ViewBag.CurrencySymbol@productKitMap.KitProductMaster.SellPrice</span>
+                                                        <span class="prd_amnt">@ViewBag.CurrencySymbol@productKitMap.Product.SellPrice</span>
                                                         <div class="availibility">
                                                             @{
-                                                                var availableProductCount = Ganedata.Core.Services.Inventory.GetAvailableProductCount(productKitMap.KitProductMaster, ViewBag.SiteId);
+                                                                var availableProductCount = Ganedata.Core.Services.Inventory.GetAvailableProductCount(productKitMap.Product, ViewBag.SiteId);
                                                                 ViewBag.AvailableProductCount = availableProductCount;
                                                             }
 
@@ -79,15 +84,15 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12 col-lg-12 col-xl-8">
-                                                        @Html.Partial("_ProductDetailActionsButtons", productKitMap.KitProductMaster)
+                                                        @Html.Partial("_ProductDetailActionsButtons", productKitMap.Product)
                                                     </div>
                                                 </div>
                                                 <div class="attribute-value">
-                                                    <span>@Ganedata.Core.Services.Inventory.GetProductAttributesValueToDisplay(productKitMap.KitProductMaster.ProductAttributeValuesMap)</span>
+                                                    <span>@Ganedata.Core.Services.Inventory.GetProductAttributesValueToDisplay(productKitMap.Product.ProductAttributeValuesMap)</span>
                                                 </div>
 
                                                 <div class="associated-product-description">
-                                                    @Html.Raw(@productKitMap.KitProductMaster.Description)
+                                                    @Html.Raw(@productKitMap.Product.Description)
                                                 </div>
                                             </div>
                                         }

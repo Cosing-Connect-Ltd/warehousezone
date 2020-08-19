@@ -354,6 +354,10 @@
         bottom: 5px;
     }
 
+    .product-details-section .footSec{
+        max-width: 370px;
+    }
+
     .feature-product-overflow .inside-container {
         margin: 0 22px 0 24px
     }
