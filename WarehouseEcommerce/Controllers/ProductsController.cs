@@ -60,7 +60,7 @@ namespace WarehouseEcommerce.Controllers
         }
         // GET: Products
 
-        public ActionResult list(string category, int? categoryId, string filter, string search, int? page, int? pageSize = 12, string values = "", SortProductTypeEnum sort = SortProductTypeEnum.NameByAsc)
+        public ActionResult list(string category, int? categoryId, string filter, string search, int? page, int? pageSize = 12, string values = "", SortProductTypeEnum sort = SortProductTypeEnum.Recommended)
         {
             try
             {
@@ -114,7 +114,7 @@ namespace WarehouseEcommerce.Controllers
                         case SortProductTypeEnum.PriceByAsc:
                             products = products.OrderBy(s => s.SellPrice);
                             break;
-                        default:  // Name ascending
+                        case SortProductTypeEnum.NameByAsc:
                             products = products.OrderBy(s => s.Name);
                             break;
                     }

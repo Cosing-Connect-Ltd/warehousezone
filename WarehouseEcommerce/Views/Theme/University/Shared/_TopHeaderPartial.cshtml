@@ -4,10 +4,6 @@
 }
 <header class="nb_header">
     <div class="res_navWrapper">
-        <span class="nb_res_nav_closeTrigger">X</span>
-        <span class="nb_logowrap_res">
-            <img src="@ViewBag.BaseFilePath@siteProperties.Logo" title="@siteProperties.SiteName" alt="@siteProperties.SiteName" />
-        </span>
         <div class="nb_firstNav_res_lst_wrap"></div>
         @if (!WarehouseEcommerce.Helpers.LayoutHelpers.UserLoginStatus())
         {
@@ -37,12 +33,12 @@
                 @*<img src="~/Content/Theme/University/app/images/logo.png" title="static logo" alt="static logo" />*@
             </a>
         </div>
+        <div class="sir" id="nb_res_navTrigger">
+            <a href="#">
+                <i class="ico icon-list-menu"></i>
+            </a>
+        </div>
         <ul class="nb_headicolst">
-            <li class="sir" id="nb_res_navTrigger">
-                <a href="#">
-                    <i class="ico icon-list-menu"></i>
-                </a>
-            </li>
             <li class="sir">
                 <a href="" id="triggerSearch">
                     <i class="ico icon-search"></i>
@@ -109,7 +105,7 @@
                     <span id="cart-total">@(ViewBag.CartItemCount ?? "")</span>
                 </a>
             </li>
-            
+
         </ul>
         @Html.Action("_HorizontalNavbarPartial", "Home")
     </div>

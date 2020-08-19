@@ -9,37 +9,39 @@
     <div class="container">
         @Html.Partial("_ProductDetailBreadCrumb")
         <div class="row">
-            <div class="col-md-5 col-lg-5">
+            <div class="col-md-5 col-lg-4">
                 @Html.Partial("_ProductImagesGallery", Model.Product)
             </div>
-            <div class="col-md-7 col-lg-6 offset-lg-1">
+            <div class="col-md-7 col-lg-8">
                 <div class="nb_prd_det_rightsec">
                     <h2 class="head">@Model.Product.Name</h2>
-                    <span class="prd_amnt">@ViewBag.CurrencySymbol@Model.Product.SellPrice</span>
-                    <div class="availibility">
-                        @{ var availableProductCount = Ganedata.Core.Services.Inventory.GetAvailableProductCount(Model.Product, ViewBag.SiteId);
-                            ViewBag.AvailableProductCount = availableProductCount;
-                        }
-                        @if (availableProductCount > 0)
-                        {
-                            <span>@((availableProductCount <= 10 ? "only " + availableProductCount.ToString("#") + " items left" : "Available"))</span>
-                        }
-                        else
-                        {
-                            <span>Currently unavailable.</span>
-                        }
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12 col-xl-4">
+                            <span class="prd_amnt">@ViewBag.CurrencySymbol@Model.Product.SellPrice</span>
+                            <div class="availibility">
+                                @{ var availableProductCount = Ganedata.Core.Services.Inventory.GetAvailableProductCount(Model.Product, ViewBag.SiteId);
+                                    ViewBag.AvailableProductCount = availableProductCount;
+                                }
+                                @if (availableProductCount > 0)
+                                {
+                                    <span>@((availableProductCount <= 10 ? "only " + availableProductCount.ToString("#") + " items left" : "Available"))</span>
+                                }
+                                else
+                                {
+                                    <span>Currently unavailable.</span>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-xl-8">
+                            @Html.Partial("_ProductDetailActionsButtons", Model.Product)
+                        </div>
                     </div>
-
-                    @Html.Partial("_ProductDetailActionsButtons", Model.Product)
 
                     @if (Model.ParentProductType != ProductKitTypeEnum.ProductByAttribute)
                     {
-                        foreach (var productAttributeItem in Ganedata.Core.Services.Inventory.GetProductAttributesValueToDisplay(Model.Product.ProductAttributeValuesMap))
-                        {
-                            <div class="attribute-value">
-                                <p>@Html.Raw(productAttributeItem.Key) : <span>@Html.Raw(productAttributeItem.Value)</span></p>
-                            </div>
-                        }
+                        <div class="attribute-value">
+                            <span>@Ganedata.Core.Services.Inventory.GetProductAttributesValueToDisplay(Model.Product.ProductAttributeValuesMap)</span>
+                        </div>
                     }
 
                     @if (Model.ParentProductType == ProductKitTypeEnum.ProductByAttribute)

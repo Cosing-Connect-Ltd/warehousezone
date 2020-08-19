@@ -7,25 +7,22 @@
              src="@(!string.IsNullOrEmpty(Model.DefaultImage?.Trim()) ? ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"
              data-zoom-image="@(!string.IsNullOrEmpty(Model.DefaultImage?.Trim()) ? ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
     </span>
-    @if (Model.ProductFiles.Count > 1)
-    {
-        <div class="img_thumb_sliderwrap">
-            <div id="gal01" class="owl-carousel owl-theme nb_imageZoomCarrousle">
-                @foreach (var item in (Model.ProductFiles))
-                {
-                    var extension = Path.GetExtension(item.FilePath);
-                    <div class="item">
-                        <a href="#" data-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"
-                           data-zoom-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"
-                           class="@(Model.DefaultImage == item.FilePath? "active" : "")">
-                            <img id="zoom_01" src="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="" />
-                        </a>
-                    </div>
-                }
+    <div class="img_thumb_sliderwrap" style="@(Model.ProductFiles.Count > 1 ? "" : "display:none")">
+        <div id="gal01" class="owl-carousel owl-theme nb_imageZoomCarrousle">
+            @foreach (var item in (Model.ProductFiles))
+            {
+                var extension = Path.GetExtension(item.FilePath);
+                <div class="item">
+                    <a href="#" data-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"
+                        data-zoom-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"
+                        class="@(Model.DefaultImage == item.FilePath? "active" : "")">
+                        <img id="zoom_01" src="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="" />
+                    </a>
+                </div>
+            }
 
-            </div>
         </div>
-    }
+    </div>
 </div>
 
 

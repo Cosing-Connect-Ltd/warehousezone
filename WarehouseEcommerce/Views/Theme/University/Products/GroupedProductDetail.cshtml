@@ -12,7 +12,7 @@
             <div id="content" class="col-md-12 col-sm-12">
                 @Html.Partial("_ProductDetailBreadCrumb")
                 <div class="row">
-                    <div class="col-md-5 col-lg-5">
+                    <div class="col-md-5 col-lg-4">
                         @Html.Partial("_ProductImagesGallery", Model.Product)
                         <div class="nb_prod_bottomdes">
                             <p class="content">
@@ -20,10 +20,10 @@
                             </p>
                         </div>
                     </div>
-                    <div class="col-md-7 col-lg-6 offset-lg-1">
+                    <div class="col-md-7 col-lg-8">
                         @*<div class="tab-group rates-page-tabs">*@
                         <!-- Nav tabs -->
-                        <ul class="nav nav-tabs responsive" role="tablist">
+                        <ul class="nav nav-tabs" role="tablist">
                             @{
                                 var isFirstTab = true;
                             }
@@ -41,7 +41,7 @@
                         </ul>
 
                         <!-- Tab panes -->
-                        <div class="tab-content responsive grouped-product-tab-items">
+                        <div class="tab-content grouped-product-tab-items">
                             @{
 
                                 isFirstTab = true;
@@ -50,44 +50,50 @@
                                     <div role="tabpanel" class="tab-pane @(isFirstTab ? "active" : "")" id="@item.Name.Replace(" ", "-")">
 
                                         @{
-                                            var products = Model.Product.ProductKitItems.Where(u => (u.ProductKitTypeId == item.Id || ((u.ProductKitTypeId == null || u.ProductKitTypeId == 0) && isFirstTab)) &&
+                                            var productKitMaps = Model.Product.ProductKitItems.Where(u => (u.ProductKitTypeId == item.Id || ((u.ProductKitTypeId == null || u.ProductKitTypeId == 0) && isFirstTab)) &&
                                                                                                     u.ProductKitType == Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Grouped &&
                                                                                                     u.IsDeleted != true)
+                                                                                        .Select(p => new {
+                                                                                                            Product = p.KitProductMaster,
+                                                                                                            AvailableProductCount = Ganedata.Core.Services.Inventory.GetAvailableProductCount(p.KitProductMaster, ViewBag.SiteId)
+                                                                                                         })
+                                                                                        .OrderByDescending(p => p.AvailableProductCount > 0)
                                                                                         .ToList();
                                         }
-                                        @foreach (var productKitMap in products)
+                                        @foreach (var productKitMap in productKitMaps)
                                         {
                                             <div class="nb_prd_det_rightsec product-details-block">
-                                                <h2 class="head">@productKitMap.KitProductMaster.Name</h2>
-                                                <span class="prd_amnt">@ViewBag.CurrencySymbol@productKitMap.KitProductMaster.SellPrice</span>
-                                                <div class="availibility">
-                                                    @{
-                                                        var availableProductCount = Ganedata.Core.Services.Inventory.GetAvailableProductCount(productKitMap.KitProductMaster, ViewBag.SiteId);
-                                                        ViewBag.AvailableProductCount = availableProductCount;
-                                                    }
+                                                <h2 class="head">@productKitMap.Product.Name</h2>
+                                                <div class="row">
+                                                    <div class="col-md-12 col-lg-12 col-xl-4">
+                                                        <span class="prd_amnt">@ViewBag.CurrencySymbol@productKitMap.Product.SellPrice</span>
+                                                        <div class="availibility">
+                                                            @{
+                                                                var availableProductCount = Ganedata.Core.Services.Inventory.GetAvailableProductCount(productKitMap.Product, ViewBag.SiteId);
+                                                                ViewBag.AvailableProductCount = availableProductCount;
+                                                            }
 
-                                                    @if (availableProductCount > 0)
-                                                    {
-                                                        <span>@((availableProductCount <= 10 ? "only " + availableProductCount.ToString("#") + " items left" : "Available"))</span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span>Currently unavailable.</span>
-                                                    }
+                                                            @if (availableProductCount > 0)
+                                                            {
+                                                                <span>@((availableProductCount <= 10 ? "only " + availableProductCount.ToString("#") + " items left" : "Available"))</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>Currently unavailable.</span>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 col-lg-12 col-xl-8">
+                                                        @Html.Partial("_ProductDetailActionsButtons", productKitMap.Product)
+                                                    </div>
                                                 </div>
-
-                                                @Html.Partial("_ProductDetailActionsButtons", productKitMap.KitProductMaster)
+                                                <div class="attribute-value">
+                                                    <span>@Ganedata.Core.Services.Inventory.GetProductAttributesValueToDisplay(productKitMap.Product.ProductAttributeValuesMap)</span>
+                                                </div>
 
                                                 <div class="associated-product-description">
-                                                    @Html.Raw(@productKitMap.KitProductMaster.Description)
+                                                    @Html.Raw(@productKitMap.Product.Description)
                                                 </div>
-
-                                                @foreach (var productAttributeItem in Ganedata.Core.Services.Inventory.GetProductAttributesValueToDisplay(productKitMap.KitProductMaster.ProductAttributeValuesMap))
-                                                {
-                                                    <div class="attribute-value">
-                                                        <p>@Html.Raw(productAttributeItem.Key) : <span>@Html.Raw(productAttributeItem.Value)</span></p>
-                                                    </div>
-                                                }
                                             </div>
                                         }
 
