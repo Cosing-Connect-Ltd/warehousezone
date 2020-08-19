@@ -23,7 +23,7 @@
                     <div class="col-md-7 col-lg-8">
                         @*<div class="tab-group rates-page-tabs">*@
                         <!-- Nav tabs -->
-                        <ul class="nav nav-tabs responsive" role="tablist">
+                        <ul class="nav nav-tabs" role="tablist">
                             @{
                                 var isFirstTab = true;
                             }
@@ -41,7 +41,7 @@
                         </ul>
 
                         <!-- Tab panes -->
-                        <div class="tab-content responsive grouped-product-tab-items">
+                        <div class="tab-content grouped-product-tab-items">
                             @{
 
                                 isFirstTab = true;
@@ -57,26 +57,31 @@
                                         }
                                         @foreach (var productKitMap in products)
                                         {
-                                        <div class="nb_prd_det_rightsec product-details-block">
-                                            <h2 class="head">@productKitMap.KitProductMaster.Name</h2>
-                                            <span class="prd_amnt">@ViewBag.CurrencySymbol@productKitMap.KitProductMaster.SellPrice</span>
-                                            <div class="availibility">
-                                                @{
-                                                    var availableProductCount = Ganedata.Core.Services.Inventory.GetAvailableProductCount(productKitMap.KitProductMaster, ViewBag.SiteId);
-                                                    ViewBag.AvailableProductCount = availableProductCount;
-                                                }
+                                            <div class="nb_prd_det_rightsec product-details-block">
+                                                <h2 class="head">@productKitMap.KitProductMaster.Name</h2>
+                                                <div class="row">
+                                                    <div class="col-md-12 col-lg-12 col-xl-4">
+                                                        <span class="prd_amnt">@ViewBag.CurrencySymbol@productKitMap.KitProductMaster.SellPrice</span>
+                                                        <div class="availibility">
+                                                            @{
+                                                                var availableProductCount = Ganedata.Core.Services.Inventory.GetAvailableProductCount(productKitMap.KitProductMaster, ViewBag.SiteId);
+                                                                ViewBag.AvailableProductCount = availableProductCount;
+                                                            }
 
-                                                @if (availableProductCount > 0)
-                                                {
-                                                    <span>@((availableProductCount <= 10 ? "only " + availableProductCount.ToString("#") + " items left" : "Available"))</span>
-                                                }
-                                                else
-                                                {
-                                                    <span>Currently unavailable.</span>
-                                                }
-                                            </div>
-
-                                            @Html.Partial("_ProductDetailActionsButtons", productKitMap.KitProductMaster)
+                                                            @if (availableProductCount > 0)
+                                                            {
+                                                                <span>@((availableProductCount <= 10 ? "only " + availableProductCount.ToString("#") + " items left" : "Available"))</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>Currently unavailable.</span>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 col-lg-12 col-xl-8">
+                                                        @Html.Partial("_ProductDetailActionsButtons", productKitMap.KitProductMaster)
+                                                    </div>
+                                                </div>
                                                 <div class="attribute-value">
                                                     <span>@Ganedata.Core.Services.Inventory.GetProductAttributesValueToDisplay(productKitMap.KitProductMaster.ProductAttributeValuesMap)</span>
                                                 </div>

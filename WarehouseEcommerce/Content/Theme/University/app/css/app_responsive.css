@@ -304,10 +304,6 @@
         margin-left: 5px
     }
 
-    .nb_header .nb_logowrap {
-        width: 180px
-    }
-
     .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap {
         left: 110px
     }
@@ -352,7 +348,10 @@
 
 @media (max-width:767px) {
     .nb_header .nb_headicolst {
-        margin-bottom: unset
+        margin-bottom: unset;
+        position: absolute;
+        right: 15px;
+        bottom: 5px;
     }
 
     .feature-product-overflow .inside-container {
@@ -575,6 +574,10 @@
     .wishlist-table .price-th,
     .wishlist-table .product-th {
         display: none
+    }
+
+    #Prod_carr_viewer .img_thumb_sliderwrap {
+        display: block !important;
     }
 
     .wishlist-table .wishlist-btn-td,
@@ -1111,10 +1114,6 @@
 
     .nb_header .nb_logowrap {
         padding: 0 10px 10px;
-    }
-
-    .nb_header .nb_headicolst li i {
-        font-size: 20px
     }
 
     .nb_header .nb_headicolst li {

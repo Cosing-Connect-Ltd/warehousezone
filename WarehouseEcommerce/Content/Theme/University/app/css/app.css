@@ -275,7 +275,10 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 #nb_res_navTrigger {
-    display: none
+    display: none;
+    position: absolute;
+    bottom: 5px;
+    left: 15px;
 }
 
 .search_wrap_main.show {
@@ -378,9 +381,10 @@ input[type=number]::-webkit-outer-spin-button {
             position: relative
         }
 
-            .nb_header .nb_headicolst li i {
-                color: #fff
-            }
+        #nb_res_navTrigger i,
+        .nb_header .nb_headicolst li i {
+            color: #fff
+        }
 
             .nb_header .nb_headicolst li:last-child {
                 padding-right: 0;
@@ -3430,6 +3434,7 @@ body.ZoomerActive {
     font-weight: 100 !important;
     right: 0;
     top: 25px;
+    font-size: 12px;
     cursor: pointer
 }
 
@@ -5512,6 +5517,7 @@ body.modal-open {
 }
 
 .cartitem-text strong,
+#nb_res_navTrigger i,
 .nb_header .nb_headicolst li i {
     font-size: 20px
 }
@@ -6733,7 +6739,8 @@ body.modal-open {
 
 .main-logo,
 .nb_foot_logo img {
-    max-height: 75px
+    max-height: 75px;
+    padding-bottom: 5px;
 }
 
 .nb_logowrap {
@@ -7119,6 +7126,9 @@ html {
     display: flex;
     align-items: flex-end;
     margin-bottom: 15px;
+    max-width: 460px;
+    float: right;
+    position: relative;
 }
 
     .product-details-section .footSec .addTobasket {
@@ -7312,4 +7322,12 @@ html {
 .img_thumb_sliderwrap .owl-carousel .owl-item img {
     height: 100%;
     min-width: 100%;
+}
+
+.res_navWrapper {
+    margin-top: 125px;
+}
+
+.tab-content > .tab-pane {
+    width: 100%
 }
