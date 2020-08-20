@@ -5,8 +5,8 @@ using System.Web.Http;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Models;
 using Ganedata.Core.Services;
-using System.Web.Mvc;
 using AutoMapper;
+using Ganedata.Core.Entities.Domain;
 
 namespace WMS.Controllers.WebAPI
 {
@@ -26,7 +26,6 @@ namespace WMS.Controllers.WebAPI
         }
         // GET http://localhost:8005/api/sync/accounts/{reqDate}/{serialNo}
         // GET http://localhost:8005/api/sync/accounts/2014-11-23/920013c000814
-        [ValidateInput(false)]
         public IHttpActionResult GetAccounts(DateTime reqDate, string serialNo)
         {
             serialNo = serialNo.Trim().ToLower();
@@ -65,7 +64,6 @@ namespace WMS.Controllers.WebAPI
 
         // GET http://localhost:8005/api/sync/account/{accountId}/{serialNo}
         // GET http://localhost:8005/api/sync/account/2/920013c000814
-        [ValidateInput(false)]
         public IHttpActionResult GetAccount(int accountId, string serialNo)
         {
             serialNo = serialNo.Trim().ToLower();
@@ -101,6 +99,75 @@ namespace WMS.Controllers.WebAPI
                 return NotFound();
             }
 
+        }
+
+
+        public IHttpActionResult GetAccountAddresses(DateTime reqDate, string serialNo, int accountId)
+        {
+            serialNo = serialNo.Trim().ToLower();
+
+            var terminal = TerminalServices.GetTerminalBySerial(serialNo);
+
+            if (terminal == null)
+            {
+                return Unauthorized();
+            }
+
+            var acc = _accountServices.GetAccountsById(accountId);
+
+            if (acc != null)
+            {
+
+                var allAddresses = _accountServices.GetAllValidAccountAddressesByAccountId(accountId, reqDate, true);
+                var result = new AccountAddressesSyncCollection();
+                var addresses = new List<AccountAddressSync>();
+
+                foreach (var item in allAddresses)
+                {
+                    var address = new AccountAddressSync();
+                    var mappedAddress = _mapper.Map(item, address);
+                    addresses.Add(mappedAddress);
+                }
+
+                result.Count = allAddresses.Count();
+                result.Addresses = addresses;
+                result.TerminalLogId = TerminalServices.CreateTerminalLog(DateTime.UtcNow, terminal.TenantId, 1, terminal.TerminalId, TerminalLogTypeEnum.AccountAddressesSync).TerminalLogId;
+                return Ok(result);
+
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+        public IHttpActionResult PostAccountAddress(AccountAddressSync address)
+        {
+            string serialNo = address.SerialNo.Trim().ToLower();
+
+            Terminals terminal = TerminalServices.GetTerminalBySerial(serialNo);
+
+            if (terminal == null)
+            {
+                return Unauthorized();
+            }
+
+            AccountAddresses newAddress = new AccountAddresses();
+            _mapper.Map(address, newAddress);
+
+            var res = _accountServices.SaveAccountAddress(newAddress, 0);
+
+            if (res.AddressID > 0)
+            {
+                var savedAddress = new AccountAddressSync();
+                _mapper.Map(res, savedAddress);
+                return Ok(savedAddress);
+            }
+            else
+            {
+                return BadRequest("Unable to save records");
+            }
         }
 
 

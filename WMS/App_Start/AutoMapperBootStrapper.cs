@@ -99,6 +99,7 @@ namespace WMS
                 cfg.CreateMap<ProductKitMap, ProductKitMapViewModel>().ReverseMap();
                 cfg.CreateMap<TenantLocations, TenantLocationsSync>().ReverseMap();
                 cfg.CreateMap<AuthUser, UserLoginStatusResponseViewModel>().ReverseMap();
+                cfg.CreateMap<AccountAddresses, AccountAddressSync>().ReverseMap();
             });
 
             return config;
