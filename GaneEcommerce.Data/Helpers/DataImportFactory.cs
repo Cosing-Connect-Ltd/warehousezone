@@ -72,26 +72,22 @@ namespace Ganedata.Core.Data.Helpers
             var newlyAddedCategories = new List<string>();
             var associatedCount = 0;
             var previouslyAvailableCount = 0;
-            var websiteCategories = website.WebsiteNavigation.Where(n => n.Type == WebsiteNavigationType.Category && n.IsDeleted != true && n.TenantId == tenantId).ToList();
-            var websiteProducts = website.ProductsWebsitesMap.Where(n => n.IsDeleted != true && n.TenantId == tenantId).Select(p => p.ProductMaster.SKUCode).ToList();
 
             AssociateProductsByCategory(tenantId,
                                         userId,
                                         dbContext,
-                                        website,
+                                        website.SiteID,
                                         sortedAssociationsData,
                                         ref exceptionsList,
                                         ref newlyAddedCategories,
                                         ref associatedCount,
-                                        ref previouslyAvailableCount,
-                                        websiteCategories,
-                                        websiteProducts);
+                                        ref previouslyAvailableCount);
 
             var websiteAssociationProducts = GetWebsiteAssociationChildProducts(associationsData);
 
             try
             {
-                AssociatProductsAndWebsite(tenantId, userId, dbContext, website.SiteID, websiteProducts, GetWebsiteAssociationChildProducts(associationsData));
+                AssociatProductsAndWebsite(tenantId, userId, website.SiteID, dbContext, websiteAssociationProducts);
             }
             catch (Exception ex)
             {
@@ -127,7 +123,10 @@ namespace Ganedata.Core.Data.Helpers
 
         private List<string> GetWebsiteAssociationChildProducts(List<ProductsCategoriesAssociationsImportModel> associationsData)
         {
-            return associationsData.Where(a => string.IsNullOrEmpty(a.ParentHeading?.Trim()) && string.IsNullOrEmpty(a.ChildHeading?.Trim()) && !string.IsNullOrEmpty(a.SkuCode?.Trim()))
+            return associationsData.Where(a => string.IsNullOrEmpty(a.ParentHeading?.Trim()) &&
+                                               string.IsNullOrEmpty(a.ChildHeading?.Trim()) &&
+                                               string.IsNullOrEmpty(a.SubChildHeading?.Trim()) &&
+                                               !string.IsNullOrEmpty(a.SkuCode?.Trim()))
                     .Select(a => a.SkuCode)
                     .ToList();
         }
@@ -172,16 +171,17 @@ namespace Ganedata.Core.Data.Helpers
         private static void AssociateProductsByCategory(int tenantId,
                                                         int? userId,
                                                         ApplicationContext dbContext,
-                                                        TenantWebsites website,
+                                                        int siteId,
                                                         IEnumerable<SortedProductCategoriesAssociationsImportModel> categoriesData,
                                                         ref List<string> exceptionsList,
                                                         ref List<string> newlyAddedCategories,
                                                         ref int associatedCount,
                                                         ref int previouslyAvailableCount,
-                                                        List<WebsiteNavigation> websiteCategories,
-                                                        List<string> websiteProducts,
                                                         WebsiteNavigation parentCategory = null)
         {
+            var websiteCategories = dbContext.WebsiteNavigations.Where(n => n.Type == WebsiteNavigationType.Category && n.IsDeleted != true && n.TenantId == tenantId && n.SiteID == siteId).ToList();
+            var websiteProducts = dbContext.ProductsWebsitesMap.Where(n => n.IsDeleted != true && n.TenantId == tenantId && n.SiteID == siteId).Select(p => p.ProductMaster.SKUCode).ToList();
+
             foreach (var categoryData in categoriesData)
             {
                 var parentCategoryId = parentCategory?.Id;
@@ -199,19 +199,19 @@ namespace Ganedata.Core.Data.Helpers
                         Name = categoryData.CategoryName,
                         ParentId = parentCategoryId,
                         ShowInNavigation = parentCategory?.ShowInNavigation ?? false,
-                        SiteID = website.SiteID,
+                        SiteID = siteId,
                         TenantId = tenantId,
                         Type = WebsiteNavigationType.Category,
                         SortOrder = 0
                     });
 
                     dbContext.SaveChanges();
-                    category = dbContext.WebsiteNavigations.FirstOrDefault(c => c.Name == categoryData.CategoryName && c.ParentId == parentCategoryId && c.SiteID == website.SiteID && c.IsActive && c.IsDeleted != true);
+                    category = dbContext.WebsiteNavigations.FirstOrDefault(c => c.Name == categoryData.CategoryName && c.ParentId == parentCategoryId && c.SiteID == siteId && c.IsActive && c.IsDeleted != true);
                 }
 
                 try
                 {
-                    AssociatProductsAndWebsite(tenantId, userId, dbContext, website.SiteID, websiteProducts, categoryData.AssociatedSkuCodes);
+                    AssociatProductsAndWebsite(tenantId, userId, siteId, dbContext, categoryData.AssociatedSkuCodes);
                 }
                 catch (Exception ex)
                 {
@@ -221,7 +221,7 @@ namespace Ganedata.Core.Data.Helpers
 
                 try
                 {
-                    var newlyAssociatedProductsCount = AssociateProductsAndNavigationCategories(tenantId, userId, dbContext, category, categoryData.AssociatedSkuCodes, website.SiteID);
+                    var newlyAssociatedProductsCount = AssociateProductsAndNavigationCategories(tenantId, userId, dbContext, category, categoryData.AssociatedSkuCodes, siteId);
                     associatedCount += newlyAssociatedProductsCount;
                     previouslyAvailableCount = categoryData.AssociatedSkuCodes.Count() - newlyAssociatedProductsCount;
                 }
@@ -236,14 +236,12 @@ namespace Ganedata.Core.Data.Helpers
                     AssociateProductsByCategory(tenantId,
                                                 userId,
                                                 dbContext,
-                                                website,
+                                                siteId,
                                                 categoryData.Childs,
                                                 ref exceptionsList,
                                                 ref newlyAddedCategories,
                                                 ref associatedCount,
                                                 ref previouslyAvailableCount,
-                                                websiteCategories,
-                                                websiteProducts,
                                                 category);
                 }
             }
@@ -289,12 +287,14 @@ namespace Ganedata.Core.Data.Helpers
             return unassociatedProductsWebsitesMapIds.Count();
         }
 
-        private static void AssociatProductsAndWebsite(int tenantId, int? userId, ApplicationContext dbContext, int siteId, List<string> websiteProducts, List<string> associatedSkuCodes)
+        private static void AssociatProductsAndWebsite(int tenantId, int? userId, int siteId, ApplicationContext dbContext, List<string> associatedSkuCodes)
         {
             if (associatedSkuCodes == null || associatedSkuCodes.Count() <= 0)
             {
                 return;
             }
+
+            var websiteProducts = dbContext.ProductsWebsitesMap.Where(n => n.IsDeleted != true && n.TenantId == tenantId && n.SiteID == siteId).Select(p => p.ProductMaster.SKUCode).ToList();
             var newAssociationSkuCodes = associatedSkuCodes.Where(s => !websiteProducts.Contains(s)).ToList();
             if (newAssociationSkuCodes != null && newAssociationSkuCodes.Count() > 0)
             {
