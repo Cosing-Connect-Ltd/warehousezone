@@ -1984,7 +1984,7 @@ namespace Ganedata.Core.Data.Helpers
                 return "Import Failed : " + e.Message + "Occurred in line :@ " + currentLine;
             }
         }
-        public List<string> ImportProducts(string importPath, string groupName, int tenantId, int warehouseId, ApplicationContext context = null, int? userId = null)
+        public List<string> ImportProducts(string importPath, int tenantId, int warehouseId, ApplicationContext context = null, int? userId = null)
         {
             if (context == null)
             {
@@ -1992,52 +1992,16 @@ namespace Ganedata.Core.Data.Helpers
             }
 
             var adminUserId = context.AuthUsers.First(m => m.UserName.Equals("Admin")).UserId;
-
             var resultsList = new List<string>();
             var addedProducts = 0;
             var updatedProducts = 0;
-            int departmentId = 0;
-            int groupId = 0;
+            var lineNumber = 0;
+
             int productLotOptionId = 0;
             int productLotProcessId = 0;
-            int weightGroupId = 0;
 
             try
             {
-                // department on
-                var department = context.TenantDepartments.FirstOrDefault();
-                if (department == null)
-                {
-                    department = new TenantDepartments()
-                    {
-                        DepartmentName = department.DepartmentName,
-                        DateCreated = DateTime.UtcNow,
-                        TenantId = tenantId
-
-                    };
-                    context.TenantDepartments.Add(department);
-                    context.SaveChanges();
-                }
-
-                departmentId = department.DepartmentId;
-
-                var group = context.ProductGroups.FirstOrDefault(m => m.ProductGroup.Equals(groupName));
-                if (group == null)
-                {
-                    group = new ProductGroups()
-                    {
-                        ProductGroup = groupName,
-                        CreatedBy = 1,
-                        DateCreated = DateTime.UtcNow,
-                        IsActive = true,
-                        TenentId = tenantId
-                    };
-                    context.ProductGroups.Add(group);
-                    context.SaveChanges();
-                }
-
-                groupId = group.ProductGroupId;
-
                 var productLotOption = context.ProductLotOptionsCodes.FirstOrDefault();
                 if (productLotOption == null)
                 {
@@ -2066,21 +2030,6 @@ namespace Ganedata.Core.Data.Helpers
 
                 productLotProcessId = productLotProcess.LotProcessTypeCodeId;
 
-                var weightGroup = context.GlobalWeightGroups.FirstOrDefault();
-                if (weightGroup == null)
-                {
-                    weightGroup = new GlobalWeightGroups()
-                    {
-                        WeightGroupId = 1,
-                        Weight = 0,
-                        Description = "Imported Weight Group"
-                    };
-                    context.GlobalWeightGroups.Add(weightGroup);
-                    context.SaveChanges();
-                }
-
-                weightGroupId = weightGroup.WeightGroupId;
-
                 var headers = new List<string>();
                 var allDataRecords = new List<ProductImportModel>();
                 using (var csv = new CsvReader(File.OpenText(importPath), CultureInfo.InvariantCulture))
@@ -2103,8 +2052,12 @@ namespace Ganedata.Core.Data.Helpers
                     return new List<string> { $"Empty file, no values to import!" };
                 }
 
-                var lineNumber = 0;
-                foreach(var productData in allDataRecords) {
+                var departments = GetProductsImportDepartments(tenantId, context, allDataRecords);
+                var groups = GetProductsImportGroups(tenantId, context, allDataRecords, userId ?? 0);
+                var weightGroups = GetProductsImportWeightGroups(context, allDataRecords);
+
+                foreach (var productData in allDataRecords)
+                {
                     try
                     {
                         lineNumber++;
@@ -2128,17 +2081,19 @@ namespace Ganedata.Core.Data.Helpers
                                 resultsList.Add($"Product import failed. Product Name: { productData.Name }, Line number : {lineNumber}, Exception: product SkuCode is empty");
                                 continue;
                             }
-                        }
 
-                        product.ManufacturerPartNo = !string.IsNullOrEmpty(productData.ManufacturerPartNo?.Trim()) ? productData.ManufacturerPartNo?.Trim() : product.ManufacturerPartNo;
-                        product.Name = !string.IsNullOrEmpty(productData.Name?.Trim()) ? productData.Name?.Trim() : product.Name;
-                        product.Description = !string.IsNullOrEmpty(productData.Description?.Trim()) ? productData.Description?.Trim() : product.Description;
-                        product.BarCode = !string.IsNullOrEmpty(productData.BarCode?.Trim()) ? productData.BarCode?.Trim() : product.BarCode;
-                        product.BarCode2 = !string.IsNullOrEmpty(productData.OuterBarCode?.Trim()) ? productData.OuterBarCode?.Trim() : product.BarCode2;
-                        product.BuyPrice = productData.BuyPrice > 0 ? productData.BuyPrice : product.BuyPrice;
-                        product.SellPrice = productData.SellPrice > 0 ? productData.SellPrice : product.SellPrice;
-                        product.Serialisable = productData.Serialisable ?? product.Serialisable;
-                        product.ProductType = productData.ProductType ?? product.ProductType;
+                            if (departments[productData.Department] == null)
+                            {
+                                resultsList.Add($"Product import failed. SkuCode: { productData.SkuCode }, Exception: product Department is empty");
+                                continue;
+                            }
+
+                            if (groups[productData.Group] == null)
+                            {
+                                resultsList.Add($"Product import failed. SkuCode: { productData.SkuCode }, Exception: product Group is empty");
+                                continue;
+                            }
+                        }
 
                         if (isNewProduct && productData.InventoryLevel != null && productData.InventoryLevel > 0)
                         {
@@ -2156,64 +2111,32 @@ namespace Ganedata.Core.Data.Helpers
                             });
                         }
 
-                        if (!string.IsNullOrEmpty(productData.PreferredSupplier?.Trim()))
-                        {
+                        var UnitOfMeasurementId = context.GlobalUOM.FirstOrDefault(u => (u.UOMId == productData.UnitOfMeasurementId || productData.UnitOfMeasurementId == null))?.UOMId ?? 1;
+                        var taxId = context.GlobalTax.FirstOrDefault(t => (t.TaxID == productData.TaxId || productData.TaxId == null)).TaxID;
 
-                            if (int.TryParse(productData.PreferredSupplier, out int preferredSupplierId))
-                            {
-                                var account = context.Account.Find(preferredSupplierId);
-                                if (account != null)
-                                {
-                                    product.PreferredSupplier = preferredSupplierId;
-                                }
-                            }
-                            else
-                            {
-                                var account = context.Account.Where(x => x.CompanyName == productData.PreferredSupplier).FirstOrDefault();
-
-                                if (account != null)
-                                {
-                                    product.PreferredSupplier = account.AccountID;
-                                }
-                                else
-                                {
-                                    var supplier = context.Account.Add(new Account
-                                    {
-                                        CompanyName = productData.PreferredSupplier,
-                                        AccountTypeSupplier = true,
-                                        CreatedBy = 1,
-                                        TenantId = tenantId,
-                                        DateCreated = DateTime.UtcNow,
-                                        CountryID = 1,
-                                        CurrencyID = 1,
-                                        OwnerUserId = 1,
-                                        PriceGroupID = 1,
-                                        TaxID = 1
-                                    });
-
-                                    supplier.AccountCode = "acc-" + supplier.AccountID;
-
-                                    context.SaveChanges();
-
-                                    product.PreferredSupplier = supplier.AccountID;
-                                }
-                            }
-                        }
-
-
+                        product.PreferredSupplier = !string.IsNullOrEmpty(productData.PreferredSupplier?.Trim()) ? GetPreferredSupplier(tenantId, context, productData, taxId) : product.PreferredSupplier;
+                        product.ManufacturerPartNo = !string.IsNullOrEmpty(productData.ManufacturerPartNo?.Trim()) ? productData.ManufacturerPartNo?.Trim() : product.ManufacturerPartNo;
+                        product.Name = !string.IsNullOrEmpty(productData.Name?.Trim()) ? productData.Name?.Trim() : product.Name;
+                        product.Description = !string.IsNullOrEmpty(productData.Description?.Trim()) ? productData.Description?.Trim() : product.Description;
+                        product.BarCode = !string.IsNullOrEmpty(productData.BarCode?.Trim()) ? productData.BarCode?.Trim() : product.BarCode;
+                        product.BarCode2 = !string.IsNullOrEmpty(productData.OuterBarCode?.Trim()) ? productData.OuterBarCode?.Trim() : product.BarCode2;
+                        product.BuyPrice = productData.BuyPrice > 0 ? productData.BuyPrice : product.BuyPrice;
+                        product.SellPrice = productData.SellPrice > 0 ? productData.SellPrice : product.SellPrice;
+                        product.Serialisable = productData.Serialisable ?? product.Serialisable;
+                        product.ProductType = productData.ProductType ?? product.ProductType;
                         product.DateCreated = DateTime.UtcNow;
                         product.IsActive = true;
                         product.TenantId = tenantId;
                         product.IsDeleted = false;
                         product.CreatedBy = userId ?? adminUserId;
-                        product.UOMId = context.GlobalUOM.FirstOrDefault()?.UOMId ?? 1;
-                        product.DimensionUOMId = context.GlobalUOM.FirstOrDefault()?.UOMId ?? 1;
-                        product.ProductGroupId = groupId;
-                        product.DepartmentId = departmentId;
-                        product.TaxID = context.GlobalTax.FirstOrDefault().TaxID;
+                        product.UOMId = UnitOfMeasurementId;
+                        product.DimensionUOMId = UnitOfMeasurementId;
+                        product.ProductGroupId = groups[productData.Group] ?? product.ProductGroupId;
+                        product.DepartmentId = departments[productData.Department] ?? product.DepartmentId;
+                        product.TaxID = taxId;
+                        product.WeightGroupId = !string.IsNullOrEmpty(productData.WeightGroup?.Trim()) || isNewProduct ? weightGroups[productData.WeightGroup] : product.WeightGroupId;
                         product.LotOptionCodeId = productLotOptionId;
                         product.LotProcessTypeCodeId = productLotProcessId;
-                        product.WeightGroupId = weightGroupId;
 
                         if (isNewProduct)
                         {
@@ -2234,7 +2157,7 @@ namespace Ganedata.Core.Data.Helpers
                             context = new ApplicationContext();
                         }
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         resultsList.Add($"Product import failed, Line number : {lineNumber}, Exception: {ex.Message}");
                         continue;
@@ -2261,6 +2184,146 @@ namespace Ganedata.Core.Data.Helpers
 
             return resultsList;
         }
+
+        private static int? GetPreferredSupplier(int tenantId, ApplicationContext context, ProductImportModel productData, int taxId)
+        {
+            if (int.TryParse(productData.PreferredSupplier, out int supplierId))
+            {
+                return context.Account.Find(supplierId)?.AccountID;
+            }
+            else
+            {
+                var account = context.Account.Where(x => x.CompanyName == productData.PreferredSupplier).FirstOrDefault();
+
+                if (account != null)
+                {
+                    return account.AccountID;
+                }
+                else
+                {
+                    var supplier = context.Account.Add(new Account
+                    {
+                        CompanyName = productData.PreferredSupplier,
+                        AccountTypeSupplier = true,
+                        CreatedBy = 1,
+                        TenantId = tenantId,
+                        DateCreated = DateTime.UtcNow,
+                        CountryID = 1,
+                        CurrencyID = 1,
+                        OwnerUserId = 1,
+                        PriceGroupID = 1,
+                        TaxID = taxId
+                    });
+
+                    supplier.AccountCode = "acc-" + supplier.AccountID;
+
+                    context.SaveChanges();
+
+                    return supplier.AccountID;
+                }
+            }
+        }
+
+        private static Dictionary<string, int?> GetProductsImportDepartments(int tenantId, ApplicationContext context, List<ProductImportModel> allDataRecords)
+        {
+            return allDataRecords.Select(p => p.Department).Distinct().ToDictionary(p => p, p =>
+            {
+                if (int.TryParse(p, out int departmentId))
+                {
+                    return context.TenantDepartments.Any(d => d.DepartmentId == departmentId && d.IsDeleted != true) ? departmentId : (int?)null;
+                }
+
+                var department = context.TenantDepartments.FirstOrDefault(x => x.DepartmentName.Equals(p));
+
+                if (department == null)
+                {
+                    department = new TenantDepartments()
+                    {
+                        DepartmentName = p,
+                        DateCreated = DateTime.UtcNow,
+                        TenantId = tenantId
+
+                    };
+                    context.TenantDepartments.Add(department);
+                    context.SaveChanges();
+                }
+
+                return department.DepartmentId;
+            });
+        }
+
+        private static Dictionary<string, int?> GetProductsImportGroups(int tenantId, ApplicationContext context, List<ProductImportModel> allDataRecords, int userId)
+        {
+            return allDataRecords.Select(p => p.Group).Distinct().ToDictionary(p => p, p =>
+            {
+                if (int.TryParse(p, out int groupId))
+                {
+                    return context.ProductGroups.Any(d => d.ProductGroupId == groupId && d.IsDeleted != true) ? groupId : (int?)null;
+                }
+
+                var group = context.ProductGroups.FirstOrDefault(x => x.ProductGroup.Equals(p));
+
+                if (group == null)
+                {
+                    group = new ProductGroups()
+                    {
+                        ProductGroup = p,
+                        CreatedBy = userId,
+                        DateCreated = DateTime.UtcNow,
+                        IsActive = true,
+                        TenentId = tenantId
+                    };
+                    context.ProductGroups.Add(group);
+                    context.SaveChanges();
+                }
+
+                return group.ProductGroupId;
+            });
+        }
+
+        private static Dictionary<string, int> GetProductsImportWeightGroups(ApplicationContext context, List<ProductImportModel> allDataRecords)
+        {
+            return allDataRecords.Select(p => p.WeightGroup).Distinct().ToDictionary(p => p, p =>
+            {
+                GlobalWeightGroups weightGroup = null;
+
+                if (int.TryParse(p, out int weightGroupId))
+                {
+                    weightGroup = context.GlobalWeightGroups.Find(weightGroupId);
+
+                    if(weightGroup == null)
+                    {
+                        weightGroup = new GlobalWeightGroups()
+                        {
+                            WeightGroupId = 1,
+                            Weight = 0,
+                            Description = "Imported Weight Group"
+                        };
+                        context.GlobalWeightGroups.Add(weightGroup);
+                        context.SaveChanges();
+                    }
+                }
+                else
+                {
+                    weightGroup = context.GlobalWeightGroups.FirstOrDefault(x => x.Description.Equals(p));
+
+                    if (weightGroup == null)
+                    {
+                        weightGroup = new GlobalWeightGroups()
+                        {
+                            WeightGroupId = 1,
+                            Weight = 0,
+                            Description = p
+
+                        };
+                        context.GlobalWeightGroups.Add(weightGroup);
+                        context.SaveChanges();
+                    }
+                }
+                return weightGroup.WeightGroupId;
+            });
+        }
+
         public string ImportProductsPrice(string importPath, int tenantId, int warehouseId, ApplicationContext context = null, int? userId = null, int pricegroupId = 0, int actiondetail = 1)
         {
             if (context == null)

@@ -60,7 +60,7 @@ namespace WMS.Controllers
                             _importFactory.ImportParentChildProductsAssociations(importFileName, CurrentTenantId, CurrentUserId, null).ForEach(m => importResponse += "<li>" + m + "</li>");
                             break;
                         case "Products":
-                            _importFactory.ImportProducts(importFileName, Path.GetFileNameWithoutExtension(file.FileName), CurrentTenantId, CurrentWarehouseId).ForEach(m => importResponse += "<li>" + m + "</li>");
+                            _importFactory.ImportProducts(importFileName, CurrentTenantId, CurrentWarehouseId).ForEach(m => importResponse += "<li>" + m + "</li>");
                             break;
                         case "Accounts":
                             importResponse += "<li>" + _importFactory.ImportSupplierAccounts(importFileName, CurrentTenantId, null, CurrentUserId) + "</li>";
@@ -140,7 +140,7 @@ namespace WMS.Controllers
                             _importFactory.ImportParentChildProductsAssociations(importFileName, CurrentTenantId, CurrentUserId, null).ForEach(m => importResponse += "<li>" + m + "</li>");
                             break;
                         case "Products":
-                            _importFactory.ImportProducts(importFileName, Path.GetFileNameWithoutExtension(e.UploadedFile.FileName), CurrentTenantId, CurrentWarehouseId).ForEach(m => importResponse += "<li>" + m + "</li>");
+                            _importFactory.ImportProducts(importFileName, CurrentTenantId, CurrentWarehouseId).ForEach(m => importResponse += "<li>" + m + "</li>");
                             break;
                         case "Accounts":
                             importResponse += "<li>" + _importFactory.ImportSupplierAccounts(importFileName, CurrentTenantId, null, CurrentUserId) + "</li>";

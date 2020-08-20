@@ -16,6 +16,11 @@ namespace Ganedata.Core.Entities.Domain.ImportModels
         public string BarCode { get; set; }
         public string OuterBarCode { get; set; }
         public bool? Serialisable { get; set; }
+        public int? TaxId { get; set; }
+        public int? UnitOfMeasurementId { get; set; }
+        public string Department { get; set; }
+        public string Group { get; set; }
+        public string WeightGroup { get; set; }
         public ProductKitTypeEnum? ProductType { get; set; }
     }
 }
