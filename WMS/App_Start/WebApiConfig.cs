@@ -27,11 +27,6 @@ namespace WMS
             config.Routes.MapHttpRoute("UserAccountSync", "api/sync/user-account/{accountId}/{serialNo}", new { controller = "ApiAccountSync", action = "GetAccount", accountId = string.Empty, serialNo = string.Empty });
             config.Routes.MapHttpRoute("AccountAddressesSync", "api/sync/account-addresses/{reqDate}/{serialNo}/{accountId}", new { controller = "ApiAccountSync", action = "GetAccountAddresses", reqDate = string.Empty, serialNo = string.Empty, accountId = string.Empty });
             config.Routes.MapHttpRoute("PostAccountAddress", "api/sync/post-account-address", new { controller = "ApiAccountSync", action = "PostAccountAddress" });
-
-
-
-
-
             config.Routes.MapHttpRoute("ProductsSync", "api/sync/products/{reqDate}/{serialNo}", new { controller = "ApiProductSync", action = "GetProducts", reqDate = string.Empty, serialNo = string.Empty });
             config.Routes.MapHttpRoute("ProductSerialsSync", "api/sync/product-serials/{reqDate}/{serialNo}", new { controller = "ApiProductSerialSync", action = "GetSerials", reqDate = string.Empty, serialNo = string.Empty });
             config.Routes.MapHttpRoute("InventoryStocksSync", "api/sync/inventory-stocks/{reqDate}/{serialNo}", new { controller = "ApiInventoryStockSync", action = "GetInventorystocks", reqDate = string.Empty, serialNo = string.Empty });
