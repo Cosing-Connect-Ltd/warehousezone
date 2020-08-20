@@ -57,6 +57,30 @@ namespace Ganedata.Core.Models
         public int AccountLoyaltyPoints { get; set; }
     }
 
+
+    public class AccountAddressesSyncCollection
+    {
+        public Guid TerminalLogId { get; set; }
+        public int Count { get; set; }
+        public List<AccountAddressSync> Addresses { get; set; }
+    }
+
+    public class AccountAddressSync
+    {
+        public int AddressID { get; set; }
+        public string AddressLine1 { get; set; }
+        public string AddressLine2 { get; set; }
+        public string Town { get; set; }
+        public string County { get; set; }
+        public string PostCode { get; set; }
+        public int CountryID { get; set; }
+        public int AccountID { get; set; }
+        public bool IsActive { get; set; }
+        public bool? IsDeleted { get; set; }
+        public string SerialNo { get; set; }
+    }
+
+
     public class TenantPriceGroupsSyncCollection
     {
         public Guid TerminalLogId { get; set; }

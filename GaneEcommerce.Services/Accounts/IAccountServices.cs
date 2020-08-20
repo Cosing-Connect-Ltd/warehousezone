@@ -24,7 +24,7 @@ namespace Ganedata.Core.Services
 
         IEnumerable<AccountContacts> GetAllTopAccountContactsByTenantId(int tenantId);
         IEnumerable<AccountContacts> GetAllValidAccountContactsByAccountId(int accountId, int tenantId);
-        IEnumerable<AccountAddresses> GetAllValidAccountAddressesByAccountId(int accountId);
+        IEnumerable<AccountAddresses> GetAllValidAccountAddressesByAccountId(int accountId, DateTime? lastUpdated = null, bool includeDeleted = false);
 
         AccountAddresses SaveAccountAddress(AccountAddresses customeraddresses, int currentUserId);
         void SetAddressType(int addressId, bool isShippingType, bool isBillingType, int currentUserId);
