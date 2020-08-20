@@ -1441,7 +1441,7 @@ namespace Ganedata.Core.Data.Helpers
                     var headerLine = sr.ReadLine().Split(delimiter);
                     var context = new ApplicationContext();
 
-                    while ((readText = sr.ReadLine().Split(delimiter)) != null)
+                    while ((readText = sr.ReadLine()?.Split(delimiter)) != null)
                     {
 
                         readText = readText.Select(x => x.Replace("\"", "")).ToArray();
