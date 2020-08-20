@@ -141,9 +141,10 @@ namespace Ganedata.Core.Services
             return _currentDbContext.AccountContacts.Where(a => a.IsDeleted != true && a.AccountID == accountId && a.Account.TenantId == tenantId);
         }
 
-        public IEnumerable<AccountAddresses> GetAllValidAccountAddressesByAccountId(int accountId)
+        public IEnumerable<AccountAddresses> GetAllValidAccountAddressesByAccountId(int accountId, DateTime? lastUpdated = null, bool includeDeleted = false)
         {
-            return _currentDbContext.AccountAddresses.Where(c => c.AccountID == accountId && c.IsDeleted != true);
+            return _currentDbContext.AccountAddresses.Where(c => c.AccountID == accountId && (includeDeleted == true || c.IsDeleted != true)
+            && (lastUpdated == null || (c.DateUpdated ?? c.DateCreated) >= lastUpdated));
         }
 
         public AccountAddresses GetAccountAddressById(int id)
@@ -542,7 +543,8 @@ namespace Ganedata.Core.Services
                 entry2.Property(e => e.IsDeleted).IsModified = true;
             }
 
-            customeraddresses.Name = customeraddresses.Name.Trim();
+            customeraddresses.Name = customeraddresses?.Name?.Trim();
+            if (customeraddresses.Name == null) { customeraddresses.Name = "No Name"; }
 
             customeraddresses.DateCreated = DateTime.UtcNow;
             customeraddresses.DateUpdated = DateTime.UtcNow;
