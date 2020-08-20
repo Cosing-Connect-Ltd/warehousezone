@@ -136,6 +136,7 @@ namespace WarehouseEcommerce.Controllers
                     }
 
                     model.DynamicFilters.AttributeValues = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(products);
+                    model.DynamicFilters.FilteredCount = products.Count();
                     model.Products = pagedProductsList;
                 }
                 else
@@ -489,8 +490,8 @@ namespace WarehouseEcommerce.Controllers
                                                                      .ToList();
 
                 (productFiltering.MinAvailablePrice, productFiltering.MaxAvailablePrice) = _tenantWebsiteService.GetAvailablePricesRange(products, CurrentTenantWebsite.SiteID);
-                productFiltering.subCategories = _productlookupServices.GetAllValidSubCategoriesByDepartmentAndGroup(products).ToList();
-                productFiltering.Count = products.Count();
+                productFiltering.SubCategories = _productlookupServices.GetAllValidSubCategoriesByDepartmentAndGroup(products).ToList();
+                productFiltering.TotalCount = products.Count();
             }
             productFiltering.WebsiteNavigationCategories = _productlookupServices.GetWebsiteNavigationCategoriesList(categoryId, CurrentTenantWebsite.SiteID).ToList();
 

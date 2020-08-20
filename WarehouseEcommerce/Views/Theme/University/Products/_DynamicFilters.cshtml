@@ -3,10 +3,10 @@
 
 <div class="col-md-4 col-lg-3 col-xl-2">
     <div class="nb_prd_filterwrap">
-        @if (Model.Count > 0 || Model.WebsiteNavigationCategories.Count() <= 0)
+        @if (Model.TotalCount > 0 || Model.WebsiteNavigationCategories.Count() <= 0)
         {
             <div class="prod_count_sec">
-                <h5 class="count">@(Model.Count + "Products")</h5>
+                <h5 class="count">@(Model.FilteredCount + "Products")</h5>
             </div>
         }
         @if (Model.WebsiteNavigationCategories.Count() > 0)
@@ -52,7 +52,7 @@
                         </div>
                     </div>
                 }
-                @if (Model.Manufacturer?.Count > 1)
+                @if (Model.Manufacturer?.Count > 1 || (Model.Manufacturer?.Count == 1 && Request.Url.OriginalString.ToLower().Contains(Model.Manufacturer.First().ToLower())))
                 {
                     <div class="nb_filter_head" id="filter2">
                         <h5 class="mb-0">
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                 }
-                @if (Model.subCategories?.Count > 1)
+                @if (Model.SubCategories?.Count > 1 || (Model.SubCategories?.Count == 1 && Request.Url.OriginalString.ToLower().Contains(Model.SubCategories.First().ToLower())))
                 {
                     <div class="nb_filter_head" id="filter3">
                         <h5 class="mb-0">
@@ -85,7 +85,7 @@
                     <div class="type-content">
                         <div class="nb_filter_body">
                             <ul class="nb_prd_filter_listouter">
-                                @foreach (var item in Model.subCategories)
+                                @foreach (var item in Model.SubCategories)
                                 {
                                     string name = item.Replace(" ", "_").Replace(",", "^");
                                     <li class="list-group-item" id="type"><input type="checkbox" id="TypeS" class="checkbox-inline" title="@(item)" value="@(name)" @(Request.Url.OriginalString.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(item)</li>
