@@ -1041,10 +1041,8 @@ namespace Ganedata.Core.Services
         {
             var allProducts = products.Where(u => u.ProductType != ProductKitTypeEnum.ProductByAttribute).ToList();
 
-            products.Where(u => u.ProductType == ProductKitTypeEnum.ProductByAttribute)
-                                          .ForEach(u => {
-                                              allProducts.AddRange(_productServices.GetAllProductByAttributeKitsByProductId(u.ProductId));
-                                          });
+
+            allProducts.AddRange(_productServices.GetAllProductInKitsByProductIds(products.Select(p => p.ProductId).ToList()));
 
             return allProducts.SelectMany(a => a.ProductAttributeValuesMap.Where(p => p.IsDeleted != true)
                                                                           .Select(k => k.ProductAttributeValues))
@@ -1061,7 +1059,7 @@ namespace Ganedata.Core.Services
         {
             products.ForEach(u => u.SellPrice = GetPriceForProduct(u.ProductId, siteId));
 
-            return new Tuple<string, string>(products.Min(u => u.SellPrice).ToString(), products.Max(u => u.SellPrice).ToString());
+            return new Tuple<string, string>((products.Min(u => u.SellPrice) ?? 0).ToString(), (products.Max(u => u.SellPrice) ?? 0).ToString());
         }
         public IEnumerable<ProductManufacturer> GetAllValidProductManufacturers(List<int> manufacturerIds)
         {

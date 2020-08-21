@@ -99,25 +99,27 @@
                 {
                     foreach (var item in Model.AttributeValues)
                     {
-
-                        <div class="nb_filter_head" id="filter_@(item.Key.AttributeId + item.Value.Count)">
-                            <h5 class="mb-0">
-                                <button id="@(item.Key.AttributeId + item.Value.Count)" onclick="showAttribute(event)" class="btn btn-link">
-                                    @item.Value.FirstOrDefault().ProductAttributes.AttributeName
-                                </button>
-                            </h5>
-                        </div>
-                        <div class="content_@(item.Key.AttributeId + item.Value.Count)">
-                            <div class="nb_filter_body">
-                                <ul class="nb_prd_filter_listouter">
-                                    @foreach (var items in item.Value)
-                                    {
-                                        string name = items.Value.Replace(" ", "_").Replace(",", "^") + "^" + @items.AttributeValueId;
-                                        <li class="list-group-item"><input type="checkbox" id="@items.ProductAttributes.AttributeName.Replace(" ", "_")" class="checkbox-inline" value="@name" @(Request.Url.OriginalString.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(items.Value)</li>
-                                    }
-                                </ul>
+                        if (item.Value?.Count > 1 || (item.Value?.Count == 1 && Request.Url.OriginalString.ToLower().Contains(item.Value.First().Value.ToLower())))
+                        {
+                            <div class="nb_filter_head" id="filter_@(item.Key.AttributeId + item.Value.Count)">
+                                <h5 class="mb-0">
+                                    <button id="@(item.Key.AttributeId + item.Value.Count)" onclick="showAttribute(event)" class="btn btn-link">
+                                        @item.Value.FirstOrDefault().ProductAttributes.AttributeName
+                                    </button>
+                                </h5>
                             </div>
-                        </div>
+                            <div class="content_@(item.Key.AttributeId + item.Value.Count)">
+                                <div class="nb_filter_body">
+                                    <ul class="nb_prd_filter_listouter">
+                                        @foreach (var items in item.Value)
+                                        {
+                                            string name = items.Value.Replace(" ", "_").Replace(",", "^") + "^" + @items.AttributeValueId;
+                                            <li class="list-group-item"><input type="checkbox" id="@items.ProductAttributes.AttributeName.Replace(" ", "_")" class="checkbox-inline" value="@name" @(Request.Url.OriginalString.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(items.Value)</li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        }
                     }
                 }
             </div>
@@ -125,9 +127,9 @@
     </div>
 </div>
 
-@if ((!string.IsNullOrEmpty(Model.MinAvailablePrice?.Trim()) && !string.IsNullOrEmpty(Model.MaxAvailablePrice?.Trim())) || Model.AttributeValues != null)
+@if ((!string.IsNullOrEmpty(Model.MinAvailablePrice?.Trim()) && !string.IsNullOrEmpty(Model.MaxAvailablePrice?.Trim())))
 {
-<script>
+    <script>
     $(function () {
 
         var min =Math.floor(@Model.MinAvailablePrice);
@@ -180,7 +182,15 @@
         $("#amount").html('@ViewBag.CurrencySymbol'+min+
             " -" +
             '  @ViewBag.CurrencySymbol' + max);
+    });
+    </script>
+}
 
+
+@if (Model.AttributeValues != null)
+{
+    <script>
+    $(function () {
         $("input[type=checkbox]").on("change", function (e) {
 
                 var arr = [];
@@ -196,35 +206,38 @@
                  parameter = "&values=";
             }
 
-                str = str + parameter;
-                $(":checkbox").each(function () {
+            str = str + parameter;
+            $(":checkbox").each(function () {
 
-                    if (this.checked) {
-                        if (str.indexOf($(this).val()) < 0) {
-                            arr.push($(this).val());
-                            data = this.id;
-                            if (str.indexOf(data) < 0) {
-                                var indexof = str.lastIndexOf("=");
-                                var checkpreviousString = str.substr(indexof - 6, 6);
-                                var found = str.charAt(indexof + 1);
-                                if (checkpreviousString === "values" && found === "") {
-                                    str = str + data + "-" + $(this).val();
-                                } else {
-                                    str = str + "/" + data + "-" + $(this).val();
-                                }
+                if (this.checked) {
+                    if (str.indexOf($(this).val()) < 0) {
+                        arr.push($(this).val());
+                        data = this.id;
+                        if (str.indexOf(data) < 0) {
+                            var indexof = str.lastIndexOf("=");
+                            var checkpreviousString = str.substr(indexof - 6, 6);
+                            var found = str.charAt(indexof + 1);
+                            if (checkpreviousString === "values" && found === "") {
+                                str = str + data + "-" + $(this).val();
                             } else {
-                                if (str.indexOf($(this).val()) < 0) {
-                                    str = str + "," + $(this).val();
-                                }
+                                str = str + "/" + data + "-" + $(this).val();
+                            }
+                        } else {
+                            if (str.indexOf($(this).val()) < 0) {
+                                str = str + "," + $(this).val();
                             }
                         }
                     }
-                });
-                location.href = str;
+                }
+            });
+            location.href = str;
         });
     });
+    </script>
+}
 
-//filter collapse Show/Hide start
+<script>
+    //filter collapse Show/Hide start
     $(document).ready(function () {
         $('#price_btn').click(function () {
             $('.price-content').slideToggle("fast");;
@@ -240,7 +253,7 @@
         var id = event.target.id
         $('.content_' + id).slideToggle("fast");
     };
-//filter collapse Show/Hide end
+    //filter collapse Show/Hide end
     var getUrlParameter = function getUrlParameter(sParam) {
         var sPageURL = window.location.search.substring(1),
             sURLVariables = sPageURL.split('&'),
@@ -256,4 +269,3 @@
         }
     };
 </script>
-}
