@@ -1047,10 +1047,10 @@ namespace Ganedata.Core.Services
             return allProducts.SelectMany(a => a.ProductAttributeValuesMap.Where(p => p.IsDeleted != true)
                                                                           .Select(k => k.ProductAttributeValues))
                               .GroupBy(a => a.ProductAttributes).Where(u => u.Key.IsDeleted != true)
-                              .OrderBy(u => u.Key.SortOrder)
-                              .ToDictionary(g => g.Key, g => g.OrderBy(av => av.SortOrder)
+                              .OrderBy(u => u.Key.SortOrder).ThenBy(a => a.Key.AttributeName)
+                              .ToDictionary(g => g.Key, g => g.OrderBy(av => av.SortOrder).ThenBy(a => a.Value)
                               .GroupBy(av => av.AttributeValueId)
-                              .Select(av => av.First()).OrderBy(u => u.ProductAttributes.SortOrder)
+                              .Select(av => av.First()).OrderBy(u => u.ProductAttributes.SortOrder).ThenBy(a => a.Value)
                               .ToList());
 
 

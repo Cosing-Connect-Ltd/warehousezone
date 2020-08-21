@@ -486,10 +486,10 @@ namespace WarehouseEcommerce.Controllers
             if (products != null && products.Count() > 0)
             {
                 var productIds = products.Select(u => u.ProductId).ToList();
-                productFiltering.Manufacturer = _tenantWebsiteService.GetAllValidProductManufacturers(productIds);
+                productFiltering.Manufacturer = _tenantWebsiteService.GetAllValidProductManufacturers(productIds).OrderBy(m => m).ToList();
 
                 (productFiltering.MinAvailablePrice, productFiltering.MaxAvailablePrice) = _tenantWebsiteService.GetAvailablePricesRange(products, CurrentTenantWebsite.SiteID);
-                productFiltering.SubCategories = _productlookupServices.GetAllValidSubCategoriesByDepartmentAndGroup(productIds).ToList();
+                productFiltering.SubCategories = _productlookupServices.GetAllValidSubCategoriesByDepartmentAndGroup(productIds).OrderBy(m => m).ToList();
                 productFiltering.TotalCount = products.Count();
             }
             productFiltering.WebsiteNavigationCategories = _productlookupServices.GetWebsiteNavigationCategoriesList(categoryId, CurrentTenantWebsite.SiteID).ToList();
