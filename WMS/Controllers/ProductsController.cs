@@ -344,7 +344,9 @@ namespace WMS.Controllers
                 }
             }
 
-            ViewBag.Kits = _productServices.GetAllProductInKitsByProductId(id.Value).Any() ? _productServices.GetAllProductInKitsByProductId(id.Value) : null /*(bool?)true :*/;
+            var kits = _productServices.GetAllProductInKitsByProductId(id.Value);
+
+            ViewBag.Kits = kits.Any() ? kits : null /*(bool?)true :*/;
 
             return View(productMaster);
         }
@@ -1253,7 +1255,7 @@ namespace WMS.Controllers
 
         private ProductMasterViewModel GetKitProductModelById(int productId, ProductKitTypeEnum productKitType)
         {
-            var product = _productServices.GetAllProductInKitsByProductId(productId, productKitType).ToList();
+            var product = _productServices.GetAllProductKitMapsByProductId(productId, productKitType).ToList();
             var productModel = new ProductMasterViewModel();
             productModel.AllSelectedSubItems = product.
                 Select(r => new ProductRecipeItemViewModel
@@ -1762,7 +1764,7 @@ namespace WMS.Controllers
         #endregion
         public ActionResult _ProductKitCombobox(int? ProductId)
         {
-            ViewBag.ProductgroupIds = string.Join(",", _productServices.GetAllProductInKitsByProductId(ProductId ?? 0, ProductKitTypeEnum.Grouped).Select(a => a.KitProductId).Distinct().ToList());
+            ViewBag.ProductgroupIds = string.Join(",", _productServices.GetAllProductKitMapsByProductId(ProductId ?? 0, ProductKitTypeEnum.Grouped).Select(a => a.KitProductId).Distinct().ToList());
 
             return PartialView();
         }

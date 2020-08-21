@@ -136,7 +136,7 @@ namespace Ganedata.Core.Services
             return product;
         }
 
-        public IEnumerable<ProductKitMap> GetAllProductInKitsByProductId(int productId, ProductKitTypeEnum productKitType)
+        public IEnumerable<ProductKitMap> GetAllProductKitMapsByProductId(int productId, ProductKitTypeEnum productKitType)
         {
             return _currentDbContext.ProductKitMaps.Where(a => a.ProductId == productId && a.IsActive == true && a.ProductKitType == productKitType).Include(u => u.ProductKitTypes)
                 .Distinct().ToList();
@@ -149,13 +149,23 @@ namespace Ganedata.Core.Services
 
         public IEnumerable<ProductMaster> GetAllProductInKitsByProductId(int productId)
         {
-            var disProdIds = _currentDbContext.ProductKitMaps.Where(a => a.ProductId == productId && a.IsDeleted != true && a.IsActive)
-                .Select(a => a.KitProductMaster.ProductId).Distinct().ToList();
+            return GetAllProductInKitsByProductIds(new List<int> { productId });
+        }
 
-            if (disProdIds.Count > 0)
-                return _currentDbContext.ProductMaster.Where(a => disProdIds.Contains(a.ProductId)).ToList();
+        public IEnumerable<ProductMaster> GetAllProductInKitsByProductIds(List<int> productIds)
+        {
+            var kitProductIds = _currentDbContext.ProductKitMaps.Where(a => productIds.Contains(a.ProductId) &&
+                                                                a.IsDeleted != true &&
+                                                                a.IsActive)
+                                                 .Select(a => a.KitProductMaster.ProductId)
+                                                 .Distinct()
+                                                 .ToList();
 
-            return new List<ProductMaster>();
+            var kitProducts = _currentDbContext.ProductMaster.Where(a => kitProductIds.Contains(a.ProductId)).ToList();
+
+            kitProducts.ForEach(r => r.ProductAttributeValuesMap = r.ProductAttributeValuesMap.Where(p => p.IsDeleted != true).ToList());
+
+            return kitProducts;
         }
 
         public IEnumerable<ProductMaster> GetAllProductByAttributeKitsByProductId(int productId)
@@ -199,25 +209,6 @@ namespace Ganedata.Core.Services
                                   .ToList();
         }
 
-        public IEnumerable<ProductMaster> GetAllProductInKitsByProductIds(List<int> productId, bool kitProducts = false)
-        {
-            if (!kitProducts)
-            {
-                return _currentDbContext.ProductMaster.Where(a => productId.Contains(a.ProductId) &&
-                                                                             a.IsDeleted != true &&
-                                                                             a.IsActive &&
-                                                                             a.ProductType != ProductKitTypeEnum.ProductByAttribute)
-                                                       .ToList();
-            }
-
-            var disProdIds = _currentDbContext.ProductKitMaps.Where(a => productId.Contains(a.ProductId) && a.IsDeleted != true && a.IsActive)
-                .Select(a => a.KitProductMaster.ProductId).Distinct().ToList();
-
-            if (disProdIds.Count > 0)
-                return _currentDbContext.ProductMaster.Where(a => disProdIds.Contains(a.ProductId)).ToList();
-
-            return new List<ProductMaster>();
-        }
         public IEnumerable<ProductMaster> GetAllProductInKitsByKitProductId(int kitProductId)
         {
             var disProdIds = _currentDbContext.ProductKitMaps.Where(a => a.KitProductId == kitProductId && a.IsDeleted != true && a.IsActive)

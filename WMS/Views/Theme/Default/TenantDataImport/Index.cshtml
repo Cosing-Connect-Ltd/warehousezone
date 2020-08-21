@@ -89,13 +89,11 @@
 
             <div class='panel-product-uploads'>
                 <h3>Product Imports by Department</h3>
-                <span class="clearfix">The file should be of <i style="color:red">*</i>.csv format. The file should not exceed the maximum size of 1GB. The filename should be in the name of the department</span>
-                <span class="clearfix">For example, all products belonging to specific product department, should be in a csv file named <b>Products.csv</b></span>
+                <span class="clearfix">The file should be of <i style="color:red">*</i>.csv format. The file should not exceed the maximum size of 1GB.</span>
                 <span class="clearfix" , style="text-align:justify">
-                    This should have the columns in the order of Product Code<i style="color:red">*</i>,Manufacturer Code, Description<i style="color:red">*</i>, Description 2,
-                    Inventory (values should be like 3.0), Base Unit of Measure (values should be like 4.0),
-                    Buy Price (values should be like 5.0), Sell Price, Preferred Vendor No (Vendor Id or Name), Barcode, Outer Barcode, Serialised
-
+                    This should have the columns in the order of SkuCode<i style="color:red">*</i>,ManufacturerPartNo, Name<i style="color:red">*</i>, Description,
+                    InventoryLevel(decimal), BuyPrice(decimal), SellPrice(decimal), PreferredSupplier(Vendor Id or Name), BarCode, OuterBarCode, Serialisable(boolean), TaxId(int?), UnitOfMeasurementId(int?), ProductType,
+                    Department, Group, WeightGroup
                 </span>
                 <span class="clearfix"><i style="color:red">*</i> These are the mandatory fields </span>
             </div>
@@ -118,9 +116,10 @@
                 <span class="clearfix">The file should be of <i style="color:red">*</i>.csv format. The file should not exceed the maximum size of 1GB. The filename should be in the name of the website</span>
                 <span class="clearfix">For example, all accociations belonging to specific website products and categories, should be in a csv file named <b>WebsiteName.csv</b></span>
                 <span class="clearfix" , style="text-align:justify">
-                    This should have the columns in the order of ParentHeading<i style="color:red">*</i>, ChildHeading, SubChildHeading, SkuCode<i style="color:red">*</i>
+                    This should have the columns in the order of ParentHeading, ChildHeading, SubChildHeading, SkuCode<i style="color:red">*</i>
                 </span>
                 <span class="clearfix"><i style="color:red">*</i> These are the mandatory fields </span>
+                <span class="clearfix">The rows with the empty value for "ParentHeading", "ChildHeading" and "SubChildHeading", will be just associated by website and not any categories.</span>
             </div>
         </div>
 

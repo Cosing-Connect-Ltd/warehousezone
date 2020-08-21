@@ -19,11 +19,11 @@ namespace Ganedata.Core.Services
         ProductMaster GetProductMasterById(int productId);
 
         PalletTracking GetPalletbyPalletId(int palletTrackingId);
-        IEnumerable<ProductKitMap> GetAllProductInKitsByProductId(int productId, ProductKitTypeEnum productKitType);
-        IEnumerable<ProductMaster> GetAllProductInKitsByProductId(int productId);
+        IEnumerable<ProductKitMap> GetAllProductKitMapsByProductId(int productId, ProductKitTypeEnum productKitType);
         IEnumerable<ProductMaster> GetAllProductByAttributeKitsByProductId(int productId);
         List<ProductMaster> GetRelatedProductsByProductId(int productId, int tenantId, int siteId, int? parentProductId = null);
-        IEnumerable<ProductMaster> GetAllProductInKitsByProductIds(List<int> productId, bool kitProducts=false);
+        IEnumerable<ProductMaster> GetAllProductInKitsByProductIds(List<int> productIds);
+        IEnumerable<ProductMaster> GetAllProductInKitsByProductId(int productId);
         IEnumerable<ProductMaster> GetParentProductsByKitProductId(int kitProductId);
         IEnumerable<ProductMaster> GetAllProductInKitsByKitProductId(int productId);
 

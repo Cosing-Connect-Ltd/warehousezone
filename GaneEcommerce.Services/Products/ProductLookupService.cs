@@ -139,11 +139,19 @@ namespace Ganedata.Core.Services
             return Prices;
         }
 
-        public IEnumerable<string> GetAllValidSubCategoriesByDepartmentAndGroup(IQueryable<ProductMaster> productMasters)
+        public IEnumerable<string> GetAllValidSubCategoriesByDepartmentAndGroup(List<int> productIds)
         {
+            var productsCategoryNames = _currentDbContext.ProductMaster.Where(p => productIds.Contains(p.ProductId) && p.ProductCategory != null)
+                                                                     .Select(u => u.ProductCategory.ProductCategoryName).ToList();
 
-            var productcategoriesId = productMasters.Select(u => u.ProductCategoryId).ToList();
-            return _currentDbContext.ProductCategories.Where(u => productcategoriesId.Contains(u.ProductCategoryId)).Select(u => u.ProductCategoryName);
+            productsCategoryNames.AddRange(_currentDbContext.ProductKitMaps.Where(a => productIds.Contains(a.ProductId) &&
+                                                                a.IsDeleted != true &&
+                                                                a.IsActive &&
+                                                                a.KitProductMaster.ProductCategory != null)
+                                                 .Select(a => a.KitProductMaster.ProductCategory.ProductCategoryName)
+                                                 .ToList());
+
+            return productsCategoryNames.Distinct().ToList();
         }
 
         public IEnumerable<WebsiteNavigation> GetWebsiteNavigationCategoriesList(int? parentCategoryId, int siteId)
@@ -245,12 +253,12 @@ namespace Ganedata.Core.Services
                         if (item.Key.Contains("BrandS"))
                         {
                             var result = item.Value.Select(s => s.Replace("_", " ").Replace("^", ",")).ToList();
-                            products = products.Where(u => result.Contains(u.ProductManufacturer.Name));
+                            products = products.Where(u => result.Contains(u.ProductManufacturer.Name) || u.ProductKitItems.Any(k => result.Contains(k.KitProductMaster.ProductManufacturer.Name)));
                         }
                         if (item.Key.Contains("TypeS"))
                         {
                             var result = item.Value.Select(s => s.Replace("_", " ").Replace("^", ",")).ToList();
-                            products = products.Where(u => result.Contains(u.ProductCategory.ProductCategoryName));
+                            products = products.Where(u => result.Contains(u.ProductCategory.ProductCategoryName) || u.ProductKitItems.Any(k => result.Contains(k.KitProductMaster.ProductCategory.ProductCategoryName)));
                         }
                     }
 

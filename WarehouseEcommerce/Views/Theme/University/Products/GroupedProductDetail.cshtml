@@ -66,7 +66,10 @@
                                                 <h2 class="head">@productKitMap.Product.Name</h2>
                                                 <div class="row">
                                                     <div class="col-md-12 col-lg-12 col-xl-4">
+                                                        @if (productKitMap.Product.SellPrice != null && productKitMap.Product.SellPrice > 0)
+                                                        {
                                                         <span class="prd_amnt">@ViewBag.CurrencySymbol@productKitMap.Product.SellPrice</span>
+                                                        }
                                                         <div class="availibility">
                                                             @{
                                                                 var availableProductCount = Ganedata.Core.Services.Inventory.GetAvailableProductCount(productKitMap.Product, ViewBag.SiteId);

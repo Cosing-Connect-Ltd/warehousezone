@@ -100,7 +100,7 @@ namespace Ganedata.Core.Services
         IQueryable<ProductMaster> GetAllValidProductForDynamicFilter(int siteId, List<int> productIds);
         Dictionary<ProductAttributes, List<ProductAttributeValues>> GetAllValidProductAttributeValuesByProductIds(IQueryable<ProductMaster> products);
         Tuple<string, string> GetAvailablePricesRange(IQueryable<ProductMaster> products,int siteId);
-        IEnumerable<ProductManufacturer> GetAllValidProductManufacturers(List<int> manufacturerIds);
+        List<string> GetAllValidProductManufacturers(List<int> productIds);
         WebsiteNavigation GetProductCategoryByProductId(int siteId, int productId);
 
         // WebsiteCartAndWishlist

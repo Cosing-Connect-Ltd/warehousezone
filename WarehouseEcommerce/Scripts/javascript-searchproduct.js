@@ -20,9 +20,9 @@ function searchPoducts() {
     var sortvalue = $("#SortedValues").val();
     var category = $("#prod-category").val();
     var categoryId = $("#prod-category-id").val();
-    var currentFilter = $("#currentFiltervalue").val();
+    var currentSearch = $("#currentSearchValue").val();
     var valuesparam = $("#valuesParameter").val() == undefined ? "" : $("#valuesParameter").val();
-    window.location.href = basePath + "/Products/list?category=" + category + "&categoryId=" + categoryId + "&sort=" + sortvalue + "&filter=" + currentFilter + "&values=" + valuesparam;
+    window.location.href = basePath + "/Products/list?category=" + category + "&categoryId=" + categoryId + "&sort=" + sortvalue + "&previousSearch=" + currentSearch + "&values=" + valuesparam;
 }
 
 function SearchPostCode() {
