@@ -1050,7 +1050,7 @@ namespace Ganedata.Core.Services
                               .OrderBy(u => u.Key.SortOrder).ThenBy(a => a.Key.AttributeName)
                               .ToDictionary(g => g.Key, g => g.OrderBy(av => av.SortOrder).ThenBy(a => a.Value)
                               .GroupBy(av => av.AttributeValueId)
-                              .Select(av => av.First()).OrderBy(u => u.ProductAttributes.SortOrder).ThenBy(a => a.Value)
+                              .Select(av => av.First())
                               .ToList());
 
 
