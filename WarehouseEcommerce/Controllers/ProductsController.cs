@@ -485,19 +485,17 @@ namespace WarehouseEcommerce.Controllers
 
             if (products != null && products.Count() > 0)
             {
-                productFiltering.Manufacturer = _tenantWebsiteService.GetAllValidProductManufacturers(products.Where(u => u.ManufacturerId != null).Select(u => u.ManufacturerId.Value).ToList())
-                                                                     .Select(u => u.Name)
-                                                                     .ToList();
+                var productIds = products.Select(u => u.ProductId).ToList();
+                productFiltering.Manufacturer = _tenantWebsiteService.GetAllValidProductManufacturers(productIds);
 
                 (productFiltering.MinAvailablePrice, productFiltering.MaxAvailablePrice) = _tenantWebsiteService.GetAvailablePricesRange(products, CurrentTenantWebsite.SiteID);
-                productFiltering.SubCategories = _productlookupServices.GetAllValidSubCategoriesByDepartmentAndGroup(products).ToList();
+                productFiltering.SubCategories = _productlookupServices.GetAllValidSubCategoriesByDepartmentAndGroup(productIds).ToList();
                 productFiltering.TotalCount = products.Count();
             }
             productFiltering.WebsiteNavigationCategories = _productlookupServices.GetWebsiteNavigationCategoriesList(categoryId, CurrentTenantWebsite.SiteID).ToList();
 
             return productFiltering;
         }
-
 
         public JsonResult RemoveWishListItem(int ProductId)
         {

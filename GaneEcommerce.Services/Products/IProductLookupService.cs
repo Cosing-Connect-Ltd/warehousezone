@@ -24,7 +24,7 @@ namespace Ganedata.Core.Services
         IQueryable<ProductMaster> GetAllValidProductGroupById(int? productGroupId, int? departmentId = null);
         IQueryable<ProductMaster> GetAllValidProductGroupAndDeptByName(int siteId, string category = "", string manufacturerName = "", string ProductName = "");
         IEnumerable<ProductManufacturer> GetAllValidProductManufacturerGroupAndDeptByName(IQueryable<ProductMaster> productMasters);
-        IEnumerable<string> GetAllValidSubCategoriesByDepartmentAndGroup(IQueryable<ProductMaster> productMasters);
+        IEnumerable<string> GetAllValidSubCategoriesByDepartmentAndGroup(List<int> productIds);
         IEnumerable<WebsiteNavigation> GetWebsiteNavigationCategoriesList(int? parentCategoryId, int siteId);
         List<Tuple<string, string>> AllPriceListAgainstGroupAndDept(IQueryable<ProductMaster> productMasters);
 

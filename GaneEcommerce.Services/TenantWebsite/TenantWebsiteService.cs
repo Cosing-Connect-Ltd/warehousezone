@@ -1061,9 +1061,21 @@ namespace Ganedata.Core.Services
 
             return new Tuple<string, string>((products.Min(u => u.SellPrice) ?? 0).ToString(), (products.Max(u => u.SellPrice) ?? 0).ToString());
         }
-        public IEnumerable<ProductManufacturer> GetAllValidProductManufacturers(List<int> manufacturerIds)
+        public List<string> GetAllValidProductManufacturers(List<int> productIds)
         {
-            return _currentDbContext.ProductManufacturers.Where(u => manufacturerIds.Contains(u.Id) && u.IsDeleted != true);
+            var manufatcurers = _currentDbContext.ProductKitMaps.Where(a => productIds.Contains(a.ProductId) &&
+                                                                a.IsDeleted != true &&
+                                                                a.IsActive &&
+                                                                a.KitProductMaster.ProductManufacturer != null)
+                                                 .Select(a => a.KitProductMaster.ProductManufacturer.Name)
+                                                 .ToList();
+
+            manufatcurers.AddRange(_currentDbContext.ProductMaster.Where(u => productIds.Contains(u.ProductId) &&
+                                                                              u.IsDeleted != true &&
+                                                                              u.ProductManufacturer != null)
+                                                    .Select(p => p.ProductManufacturer.Name));
+
+            return manufatcurers.Distinct().ToList();
         }
 
         public IEnumerable<WebsiteCartItem> GetAllValidCartItemsList(int siteId, int? UserId, string SessionKey)
