@@ -138,6 +138,8 @@ SUM(CASE WHEN OP.INVENTORYTRANSACTIONTYPEID=2 OR OP.INVENTORYTRANSACTIONTYPEID=1
 INNER JOIN  ORDERPROCESSES OP ON  OPD.ORDERPROCESSID=OP.ORDERPROCESSID
 LEFT JOIN  ORDERS ORD ON  ORD.OrderID=OP.OrderID
 LEFT JOIN ACCOUNT ACCT ON ORD.AccountID= ACCT.AccountID
+LEFT JOIN MarketCustomers MRKTCUST ON ACCT.AccountID= MRKTCUST.AccountID
+LEFT JOIN Markets MRKT ON MRKTCUST.MarketId= MRKT.Id
 LEFT JOIN AuthUsers AU ON ACCT.OwnerUserId=AU.UserId
 LEFT JOIN ORDERDETAILS OD ON OPD.ORDERDETAILID=OD.ORDERDETAILID
 INNER JOIN PRODUCTMASTER PM ON OPD.PRODUCTID=PM.PRODUCTID
@@ -152,6 +154,7 @@ AND((@sqlProductDept='' or @sqlProductDept is null) or PM.DepartmentId In (SELEC
 FROM dbo.SplitString(@sqlProductDept)))
 AND ((@sqlAccountId='' or @sqlAccountId is null) or (ACCT.AccountID in (@sqlAccountId)))
 AND ((@sqlOwnerId='' or @sqlOwnerId is null) or (ACCT.OwnerUserId in (@sqlOwnerId)))
+AND ((@sqlMarketId='' or @sqlMarketId is null) or (MRKT.Id in (@sqlMarketId)))
 GROUP BY PM.PRODUCTID,PM.Name, SKUCODE, PM.ProductGroupId,PM.DepartmentId 
 Order by SKUCODE</value>
   </data>

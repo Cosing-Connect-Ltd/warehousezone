@@ -30,10 +30,11 @@ namespace Ganedata.Core.Services
         private readonly IStockTakeApiService _stockTakeService;
         private readonly ITenantsServices _tenantServices;
         private readonly ITerminalServices _terminalServices;
+        private readonly IAppointmentsService _appointmentServices;
         private readonly IMapper _mapper;
 
         public GaneConfigurationsHelper(IEmailServices emailServices, IAccountServices accountServices, IPropertyService propertyService, ITerminalServices terminalServices,
-            IEmployeeServices employeeServices, IOrderService orderService, IStockTakeApiService stockTakeService, ITenantsServices tenantServices, IMapper mapper)
+            IEmployeeServices employeeServices, IOrderService orderService, IStockTakeApiService stockTakeService, ITenantsServices tenantServices, IAppointmentsService appointmentServices, IMapper mapper)
         {
             _emailServices = emailServices;
             _accountServices = accountServices;
@@ -43,6 +44,7 @@ namespace Ganedata.Core.Services
             _stockTakeService = stockTakeService;
             _tenantServices = tenantServices;
             _terminalServices = terminalServices;
+            _appointmentServices = appointmentServices;
             _mapper = mapper;
 
         }
@@ -996,6 +998,7 @@ namespace Ganedata.Core.Services
                         var billingContact = account?.AccountContacts?.FirstOrDefault(m => m.ConTypeInvoices);
                         variableValue = billingContact != null ? billingContact.ContactName : GetMailMergeVariableValueFromOrder(order, account, MailMergeVariableEnum.CompanyName, notificationItem);
                         break;
+
                     case MailMergeVariableEnum.AccountMarketingContactName:
                         var marketingContact = account?.AccountContacts?.FirstOrDefault(m => m.ConTypeMarketing);
                         variableValue = marketingContact != null ? marketingContact.ContactName : string.Empty;
@@ -1004,73 +1007,91 @@ namespace Ganedata.Core.Services
                     case MailMergeVariableEnum.OrderId:
                         variableValue = order?.OrderID.ToString();
                         break;
+
                     case MailMergeVariableEnum.OrderNumber:
                         variableValue = order?.OrderNumber;
                         break;
+
                     case MailMergeVariableEnum.OrderStatus:
                         variableValue = order?.OrderStatusID.ToString();
                         break;
+
                     case MailMergeVariableEnum.BillingAccountToEmail:
                         var billingEmailContact = account?.AccountContacts?.FirstOrDefault(m => m.ConTypeInvoices);
                         variableValue = billingEmailContact != null
                             ? billingEmailContact.ContactEmail
                             : account.AccountEmail;
                         break;
+
                     case MailMergeVariableEnum.WorksOrderResourceName:
                         if (notificationItem != null)
                         {
-                            variableValue = notificationItem.WorksOrderResourceName;
+                            if (notificationItem.AppointmentId != null && notificationItem.AppointmentId > 0)
+                            {
+                                var appointment = _appointmentServices.GetAppointmentById(notificationItem.AppointmentId ?? 0);
+                                if (appointment != null)
+                                {
+                                    variableValue = appointment.AppointmentResources.Name;
+                                }
+                            }
                         }
                         break;
+
                     case MailMergeVariableEnum.WorksOrderTimeslot:
                         if (notificationItem != null)
                         {
-                            if (notificationItem.WorkOrderStartTime.HasValue)
+                            if (notificationItem.AppointmentId != null && notificationItem.AppointmentId > 0)
                             {
-                                if (config.WorksOrderScheduleByAmPm == true || config.WorksOrderScheduleByMarginHours == null || config.WarehouseScheduleEndTime == null)
+                                var appointment = _appointmentServices.GetAppointmentById(notificationItem.AppointmentId ?? 0);
+                                if (appointment != null)
                                 {
-                                    variableValue = $" for {notificationItem.WorkOrderStartTime:dd/MM/yyyy} " + ((notificationItem.WorkOrderStartTime.Value.Hour < 13) ? "AM" : "PM");
-                                }
-                                else
-                                {
-                                    var dayStartArray = config.WarehouseScheduleStartTime.Split(':');
-                                    var dayStart =
-                                        notificationItem.WorkOrderStartTime.Value.Date
-                                            .AddHours(int.Parse(dayStartArray[0]));
-                                    dayStart = dayStart.AddMinutes(int.Parse(dayStartArray[1]));
-
-                                    var dayEndArray = config.WarehouseScheduleEndTime.Split(':');
-                                    var dayEnd =
-                                        notificationItem.WorkOrderStartTime.Value.Date.AddHours(int.Parse(dayEndArray[0]));
-                                    dayEnd = dayEnd.AddMinutes(int.Parse(dayEndArray[1]));
-
-                                    var resourceArrivalStart =
-                                        notificationItem.WorkOrderStartTime.Value.AddHours(-config.WorksOrderScheduleByMarginHours.Value);
-                                    if (resourceArrivalStart < dayStart)
+                                    if (config.WorksOrderScheduleByAmPm == true || config.WorksOrderScheduleByMarginHours == null || config.WarehouseScheduleEndTime == null)
                                     {
-                                        resourceArrivalStart = dayStart;
+                                        variableValue = $" for {appointment.StartTime:dd/MM/yyyy} " + ((appointment.StartTime.Hour < 13) ? "AM" : "PM");
                                     }
-                                    var resourceArrivalEnd =
-                                        notificationItem.WorkOrderStartTime.Value.AddHours(config.WorksOrderScheduleByMarginHours.Value);
-
-                                    if (resourceArrivalEnd > dayEnd)
+                                    else
                                     {
-                                        resourceArrivalEnd = dayEnd;
+                                        var dayStartArray = config.WarehouseScheduleStartTime.Split(':');
+                                        var dayStart = appointment.StartTime.Date.AddHours(int.Parse(dayStartArray[0]));
+                                        dayStart = dayStart.AddMinutes(int.Parse(dayStartArray[1]));
+
+                                        var dayEndArray = config.WarehouseScheduleEndTime.Split(':');
+                                        var dayEnd = appointment.StartTime.Date.AddHours(int.Parse(dayEndArray[0]));
+                                        dayEnd = dayEnd.AddMinutes(int.Parse(dayEndArray[1]));
+
+                                        var resourceArrivalStart = appointment.StartTime.AddHours(-config.WorksOrderScheduleByMarginHours.Value);
+                                        if (resourceArrivalStart < dayStart)
+                                        {
+                                            resourceArrivalStart = dayStart;
+                                        }
+
+                                        var resourceArrivalEnd = appointment.StartTime.AddHours(config.WorksOrderScheduleByMarginHours.Value);
+                                        if (resourceArrivalEnd > dayEnd)
+                                        {
+                                            resourceArrivalEnd = dayEnd;
+                                        }
+
+                                        variableValue = $" between {resourceArrivalStart:dd/MM/yyyy HH:mm} and {resourceArrivalEnd:dd/MM/yyyy HH:mm}";
                                     }
-                                    variableValue = $" between {resourceArrivalStart:dd/MM/yyyy HH:mm} and {resourceArrivalEnd:dd/MM/yyyy HH:mm}";
                                 }
                             }
                         }
                         break;
+
                     case MailMergeVariableEnum.ScheduledDate:
                         if (notificationItem != null)
                         {
-                            if (notificationItem.WorkOrderStartTime.HasValue)
+                            if (notificationItem.AppointmentId != null && notificationItem.AppointmentId > 0)
                             {
-                                variableValue = notificationItem.WorkOrderStartTime.Value.ToString("dd/MMMM/yyy");
+                                var appointment = _appointmentServices.GetAppointmentById(notificationItem.AppointmentId ?? 0);
+                                if (appointment != null)
+                                {
+                                    variableValue = appointment.StartTime.ToString("dd/MMMM/yyy");
+                                }
                             }
                         }
                         break;
+
                     case MailMergeVariableEnum.WorksTenantName:
                         var recipients = _emailServices.GetAllPropertyTenantRecipients(order?.OrderID ?? 0);
                         var headRecipient = recipients.FirstOrDefault(m => m.PTenant != null && m.PTenant.IsHeadTenant);
@@ -1082,36 +1103,46 @@ namespace Ganedata.Core.Services
                         }
                         variableValue = tenantName;
                         break;
+
                     case MailMergeVariableEnum.WorkPropertyAddress:
                         variableValue = _propertyService.GetPropertyById(order?.PPropertyId ?? 0)?.FullAddress;
                         break;
+
                     case MailMergeVariableEnum.WorksJobTypeDescription:
                         variableValue = order?.JobType?.Name;
                         break;
+
                     case MailMergeVariableEnum.WorksJobSubTypeDescription:
                         variableValue = order?.JobSubType?.Name;
                         break;
+
                     case MailMergeVariableEnum.WorksSlaJobPriorityName:
                         variableValue = order?.SLAPriority?.Priority;
                         break;
+
                     case MailMergeVariableEnum.WorksPropertyContactNumber:
                         var recipientContacts = _emailServices.GetAllPropertyTenantRecipients(order?.OrderID ?? 0);
                         variableValue = string.Join(";", recipientContacts.Select(m => m?.PTenant?.MobileNumber));
                         break;
+
                     case MailMergeVariableEnum.AccountPurchasingContactName:
                         var PurchasingContact = account?.AccountContacts?.FirstOrDefault(m => m.ConTypePurchasing);
                         variableValue = PurchasingContact != null ? PurchasingContact.ContactName : GetMailMergeVariableValueFromOrder(order, account, MailMergeVariableEnum.CompanyName, notificationItem);
                         break;
+
                     case MailMergeVariableEnum.UserName:
                         var username = GetUserName(UserId);
                         variableValue = username;
                         break;
+
                     case MailMergeVariableEnum.ConfirmationLink:
                         variableValue = confirmationLink;
                         break;
+
                     case MailMergeVariableEnum.TransactionReferenceNumber:
                         variableValue = _accountServices.GetTransactionNumberByOrderId(order?.OrderID ?? 0);
                         break;
+
                     default:
                         variableValue = string.Empty;
                         break;

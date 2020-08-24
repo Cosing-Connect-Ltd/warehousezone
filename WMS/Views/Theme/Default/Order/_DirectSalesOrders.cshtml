@@ -53,7 +53,8 @@
         {
             c.FieldName = "OrderID";
             c.Caption = "Order Id";
-            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.ColumnType = MVCxGridViewColumnType.SpinEdit;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
         });
         settings.Columns.Add(c =>
         {

@@ -20,14 +20,13 @@
                 }
                 else
                 {
-
                     <div class="col-md-4">
                         @Html.DropDownList("PurchaseOrderStatus",
                              new List<SelectListItem>
                                  {
                             new SelectListItem{ Text = "ALL", Value = "0"},
                             //new SelectListItem{ Text = "Active", Value = "1"},
-                            new SelectListItem{ Text = "Complete", Value = "2",Selected=true},
+                            new SelectListItem{ Text = "Complete", Value = "2",Selected = true},
                             new SelectListItem{ Text = "Posted To Account", Value = "13"}
                                  }, new { @class = "chosen-select", onchange = "UASelectedValueChanged(this);" })
                     </div>
@@ -36,4 +35,3 @@
         </div>
     </div>
 </div>
-

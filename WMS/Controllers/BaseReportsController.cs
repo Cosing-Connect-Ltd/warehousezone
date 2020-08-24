@@ -70,7 +70,7 @@ namespace WMS.Controllers
             picture.ImageUrl = ReportLogoPath("po-logo.png");
         }
 
-        public SalesOrderPrint CreateSalesOrderPrint(int id = 0,bool directSales=false, bool returns = false)
+        public SalesOrderPrint CreateSalesOrderPrint(int id = 0, bool directSales = false, bool returns = false)
         {
             TenantConfig config = _tenantServices.GetTenantConfigById(CurrentTenantId);
 
@@ -83,10 +83,14 @@ namespace WMS.Controllers
             if (directSales)
             {
                 report.lblheading.Text = "INVOICE";
+                report.lblheading.WidthF = 750;
+                report.xrLabel70.Visible = false;
             }
             else if (returns)
             {
                 report.lblheading.Text = "RETURN INVOICE";
+                report.lblheading.WidthF = 750;
+                report.xrLabel70.Visible = false;
             }
             else
             {
@@ -185,7 +189,7 @@ namespace WMS.Controllers
             };
         }
 
-        public DeliveryNotePrint CreateDeliveryNotePrint(int id = 0, int [] OrderprocessId=null)
+        public DeliveryNotePrint CreateDeliveryNotePrint(int id = 0, int[] OrderprocessId = null)
         {
             //creta and extra report instence 
             var report = new DeliveryNotePrint();
@@ -197,7 +201,7 @@ namespace WMS.Controllers
             }
             else
             {
-                int[] orderprocessID = new int[] {id};
+                int[] orderprocessID = new int[] { id };
                 report.paramOrderProcessId.Value = orderprocessID;
             }
             // requesting the parameter value from end-users.
@@ -295,7 +299,7 @@ namespace WMS.Controllers
             return report;
         }
 
-        public FinancialTransactionReport CreateFinancialTransactionReport(int? accountId=null, DateTime?startDate=null,DateTime? endDate=null)
+        public FinancialTransactionReport CreateFinancialTransactionReport(int? accountId = null, DateTime? startDate = null, DateTime? endDate = null)
         {
             FinancialTransactionReport financialreport = new FinancialTransactionReport();
             if (accountId.HasValue && startDate.HasValue && endDate.HasValue)
@@ -303,7 +307,6 @@ namespace WMS.Controllers
                 financialreport.AccountId.Value = accountId.Value;
                 financialreport.StartDate.Value = startDate.Value;
                 var enddate = endDate.Value;
-                enddate=enddate.AddHours(24);
                 financialreport.EndDate.Value = enddate;
             }
             else
@@ -339,7 +342,7 @@ namespace WMS.Controllers
             return returnPath;
         }
 
-        public InvoicePrint CreateInvoicePrint(int id = 0, int [] InvoiceIds=null)
+        public InvoicePrint CreateInvoicePrint(int id = 0, int[] InvoiceIds = null)
         {
             var report = new InvoicePrint();
             report.xrPictureBox1.BeforePrint += InvoicePrintPictureBox_BeforePrint;
@@ -354,7 +357,8 @@ namespace WMS.Controllers
                 int[] ids = new int[] { id };
                 report.invoiceMasterId.Value = ids;
             }
-            else {
+            else
+            {
                 report.invoiceMasterId.Value = InvoiceIds;
             }
 
