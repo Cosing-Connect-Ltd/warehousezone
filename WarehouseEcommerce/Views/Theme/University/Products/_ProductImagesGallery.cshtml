@@ -3,20 +3,19 @@
 <div class="nb_prd_viewingsecWrap" id="Prod_carr_viewer">
     <span id="zoomViewTrigger"><i class="icon-search"></i></span>
     <span class="img_view_area">
-        <img id="zoom_01"
+        <img id="selected-image"
              src="@(!string.IsNullOrEmpty(Model.DefaultImage?.Trim()) ? ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"
              data-zoom-image="@(!string.IsNullOrEmpty(Model.DefaultImage?.Trim()) ? ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
     </span>
     <div class="img_thumb_sliderwrap" style="@(Model.ProductFiles.Count > 1 ? "" : "display:none")">
-        <div id="gal01" class="owl-carousel owl-theme nb_imageZoomCarrousle">
-            @foreach (var item in (Model.ProductFiles))
+        <div id="images-gallery__carousel" class="owl-carousel owl-theme nb_imageZoomCarrousle">
+            @foreach (var item in Model.ProductFiles.Where(f => !string.IsNullOrEmpty(f.FilePath?.Trim())))
             {
-                var extension = Path.GetExtension(item.FilePath);
                 <div class="item">
-                    <a href="#" data-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"
-                        data-zoom-image="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"
-                        class="@(Model.DefaultImage == item.FilePath? "active" : "")">
-                        <img id="zoom_01" src="@(!string.IsNullOrEmpty(item.FilePath) ? ViewBag.BaseFilePath + item.FilePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" alt="" />
+                    <a href="#" data-image="@(ViewBag.BaseFilePath + item.FilePath)"
+                       data-zoom-image="@(ViewBag.BaseFilePath + item.FilePath)"
+                       class="@(Model.DefaultImage == item.FilePath? "active" : "")">
+                        <img id="selected-image" src="@(ViewBag.BaseFilePath + item.FilePath)" alt="" />
                     </a>
                 </div>
             }
@@ -25,11 +24,12 @@
     </div>
 </div>
 
-
+@if (!string.IsNullOrEmpty(Model.DefaultImage?.Trim()))
+{
 <script>
     $(document).ready(function () {
-        $("#zoom_01").elevateZoom({
-            gallery: "gal01",
+        $("#selected-image").elevateZoom({
+            gallery: "images-gallery__carousel",
             cursor: "pointer",
             galleryActiveClass: "active",
             imageCrossfade: true,
@@ -38,14 +38,15 @@
             zoomWindowFadeIn: 500,
             zoomWindowFadeOut: 500,
             easing: true,
-            zoomWindowWidth: 400,
-            zoomWindowHeight: 300,
+            zoomWindowWidth: 500,
+            zoomWindowHeight: 400,
             responsive: true,
             borderSize: 1,
             destroyContainerOnResize: true,
-            zoomWindowOffetx: 50,
-            zoomWindowOffety: -25,
+            zoomWindowOffetx: 20,
+            zoomWindowOffety: 0,
             zoomType: "window",
         });
     });
 </script>
+}
