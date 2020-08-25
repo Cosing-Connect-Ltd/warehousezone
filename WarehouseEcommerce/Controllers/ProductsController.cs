@@ -71,7 +71,7 @@ namespace WarehouseEcommerce.Controllers
                     CurrentFilterValues = values
                 };
 
-                if (categoryId != null || !string.IsNullOrEmpty(search) || !string.IsNullOrEmpty(previousSearch))
+                if (categoryId != null || !string.IsNullOrEmpty(search) || !string.IsNullOrEmpty(previousSearch) || !string.IsNullOrEmpty(values))
                 {
                     var categoryInfo = _tenantWebsiteService.GetAllValidWebsiteNavigationCategory(CurrentTenantId, CurrentTenantWebsite.SiteID)
                                                             .FirstOrDefault(c => c.Id == categoryId);
@@ -148,6 +148,21 @@ namespace WarehouseEcommerce.Controllers
                 }
 
                 return View(model);
+            }
+            catch (Exception ex)
+            {
+                return Content("Issue of getting data  " + ex.Message);
+
+            }
+        }
+
+        public ActionResult brands()
+        {
+            try
+            {
+                var manufactuters = _tenantWebsiteService.GetWebsiteProductManufacturers(CurrentTenantWebsite.SiteID, CurrentTenantId);
+
+                return View(manufactuters);
             }
             catch (Exception ex)
             {

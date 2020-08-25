@@ -217,7 +217,6 @@ namespace Ganedata.Core.Services
                             else if (item.Value.Contains("in_stock"))
                             {
                                 products = products.Where(u => (u.InventoryStocks.Sum(rv => rv.Available)) > 0 || (u.ProductKitItems.Any(a => a.KitProductMaster.InventoryStocks.Sum(c => c.Available) > 0)));
-                                var test = products.ToList();
                             }
                             else if (item.Value.Contains("out_stock"))
                             {
@@ -844,7 +843,6 @@ namespace Ganedata.Core.Services
                     productTag.UpdatedBy = productTags.UpdatedBy;
                     _currentDbContext.Entry(productTag).State = System.Data.Entity.EntityState.Modified;
                     _currentDbContext.SaveChanges();
-
                 }
 
             }
@@ -860,7 +858,6 @@ namespace Ganedata.Core.Services
                 productTags.UpdatedBy = productTags.UpdatedBy;
                 _currentDbContext.Entry(productTags).State = System.Data.Entity.EntityState.Modified;
                 _currentDbContext.SaveChanges();
-
             }
             return productTags;
         }
@@ -875,7 +872,6 @@ namespace Ganedata.Core.Services
                 productAttributeValues.UpdatedBy = userId;
                 _currentDbContext.Entry(productAttributeValues).State = System.Data.Entity.EntityState.Modified;
                 _currentDbContext.SaveChanges();
-
             }
             return true;
 
@@ -890,12 +886,8 @@ namespace Ganedata.Core.Services
                 productAttributeValues.IsDeleted = true;
                 _currentDbContext.Entry(productAttributeValues).State = System.Data.Entity.EntityState.Modified;
                 _currentDbContext.SaveChanges();
-
             }
             return true;
-
-
-
         }
 
         public ProductTag GetProductTagById(int Id)
@@ -956,10 +948,6 @@ namespace Ganedata.Core.Services
                 var stockProduct = productMasters.Where(u => u.InventoryStocks.Sum(c => c.Available) > 0);
 
                 var childProductAvailablity = productMasters.Select(u => u.ProductKitItems.Where(c=>c.IsDeleted != true)).ToList();
-                var test = productMasters.Select(u =>
-                    u.ProductKitItems.Select(c =>
-                            c.KitProductMaster.InventoryStocks.Select((g => g.Available)).DefaultIfEmpty(0).Sum())
-                        ).ToList();
             }
 
             return productMasters;

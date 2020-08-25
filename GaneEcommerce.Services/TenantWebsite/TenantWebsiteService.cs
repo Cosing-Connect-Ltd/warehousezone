@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Ganedata.Core.Data;
-using Ganedata.Core.Data.Migrations;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Domain.ViewModels;
 using Ganedata.Core.Entities.Enums;
@@ -988,10 +987,46 @@ namespace Ganedata.Core.Services
         // WebsiteSearching Realted Queries
         public IQueryable<ProductMaster> GetWebsiteProducts(int siteId, string category = "", string ProductName = "", int? categoryId = null)
         {
-            return GetProductsNavigationMapsSearch(siteId, ProductName)
-                    .Where(u => (u.NavigationId == categoryId || (categoryId == null && u.WebsiteNavigation.Name == category) || (categoryId == null && category == null)))
-                    .OrderBy(n => n.SortOrder)
-                    .Select(x => x.ProductsWebsitesMap.ProductMaster);
+            if (categoryId == null && category == null)
+            {
+                var productIds = GetProductsNavigationMapsSearch(siteId, ProductName)
+                        .OrderBy(n => n.SortOrder)
+                        .Select(x => x.ProductsWebsitesMap.ProductMaster.ProductId)
+                        .Distinct()
+                        .ToList();
+
+                return _currentDbContext.ProductMaster.Where(p => p.IsActive && p.IsDeleted != true && productIds.Contains(p.ProductId)).OrderBy(p => p.ProductId);
+            }
+            else
+            {
+                return GetProductsNavigationMapsSearch(siteId, ProductName)
+                        .Where(u => (u.NavigationId == categoryId || (categoryId == null && u.WebsiteNavigation.Name == category) || (categoryId == null && category == null)))
+                        .OrderBy(n => n.SortOrder)
+                        .Select(x => x.ProductsWebsitesMap.ProductMaster);
+            }
+        }
+
+        public List<ProductManufacturer> GetWebsiteProductManufacturers(int siteId, int tenantId)
+        {
+            var websiteNavigations = GetProductsNavigationMapsSearch(siteId)
+                                    .Select(n => n.ProductsWebsitesMap.ProductMaster)
+                                    .ToList();
+
+            var manufacturersIds = _currentDbContext.ProductKitMaps.Where(k => k.IsActive &&
+                                                                                k.IsDeleted != true &&
+                                                                                k.KitProductMaster.IsActive &&
+                                                                                k.KitProductMaster.IsDeleted != true &&
+                                                                                k.ProductKitType != ProductKitTypeEnum.RelatedProduct &&
+                                                                                k.KitProductMaster.ManufacturerId != null)
+                                                                    .Select(k => k.KitProductMaster.ManufacturerId)
+                                                                    .Distinct()
+                                                                    .ToList();
+
+            manufacturersIds.AddRange(websiteNavigations.Where(k => k.ManufacturerId != null).Select(w => w.ManufacturerId).Distinct());
+
+            var manufacturers = _currentDbContext.ProductManufacturers.Where(p => manufacturersIds.Contains(p.Id) && p.IsDeleted != true).ToList();
+
+            return manufacturers;
         }
 
         public List<ProductSearchResultViewModel> SearchWebsiteProducts(int siteId, int resultCount, string productName = "")

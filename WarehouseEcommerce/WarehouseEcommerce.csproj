@@ -1427,6 +1427,7 @@
     <Content Include="Views\Theme\University\Products\_ProductDetailActionsButtons.cshtml" />
     <Content Include="Views\Theme\University\Products\_ProductDetailBreadCrumb.cshtml" />
     <Content Include="Views\Theme\University\Products\_ProductImagesGallery.cshtml" />
+    <Content Include="Views\Theme\University\Products\brands.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
