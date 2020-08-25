@@ -1006,7 +1006,7 @@ namespace Ganedata.Core.Services
             }
         }
 
-        public List<ProductManufacturer> GetWebsiteProductManufacturers(int siteId, int tenantId)
+        public List<ProductManufacturer> GetWebsiteProductManufacturers(int siteId)
         {
             var websiteNavigations = GetProductsNavigationMapsSearch(siteId)
                                     .Select(n => n.ProductsWebsitesMap.ProductMaster)

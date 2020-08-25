@@ -160,7 +160,7 @@ namespace WarehouseEcommerce.Controllers
         {
             try
             {
-                var manufactuters = _tenantWebsiteService.GetWebsiteProductManufacturers(CurrentTenantWebsite.SiteID, CurrentTenantId);
+                var manufactuters = _tenantWebsiteService.GetWebsiteProductManufacturers(CurrentTenantWebsite.SiteID);
 
                 return View(manufactuters);
             }

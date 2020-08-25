@@ -178,6 +178,21 @@ namespace WarehouseEcommerce.Controllers
             return PartialView(specialProduct);
 
         }
+
+        public PartialViewResult _OurBrands()
+        {
+            var tenantWebsite = ViewBag.TenantWebsite as TenantWebsites;
+            var specialProduct = new OurBrandsViewModel
+            {
+                Manufacturers = _tenantWebsiteService.GetWebsiteProductManufacturers(CurrentTenantWebsite.SiteID).Where(o => o.ShowInOurBrands).ToList()
+
+            };
+
+            specialProduct.OurBrandsText = tenantWebsite?.HomeOurBrandsText;
+
+            return PartialView(specialProduct);
+
+        }
         public PartialViewResult _TopProductPartial()
         {
 

@@ -1,0 +1,31 @@
+﻿@model WarehouseEcommerce.ViewModels.OurBrandsViewModel
+@if (Model.Manufacturers.Count > 0)
+{
+    @Html.Partial("_ProductByAttributeSelectorModal")
+    <section class="nb_sec nb_feat_prod_sec feature-product-overflow">
+        <div class="container">
+            <div class="inside-container">
+                @if (!string.IsNullOrEmpty(Model.OurBrandsText))
+                {
+                    <div class="nb_header_style1">
+                        <h3>@Model.OurBrandsText</h3>
+                    </div>
+                }
+                <div class="row feature-list">
+                    <div class="owl-carousel owl-theme nb_featuredPrdCarrousle nb_prd_listing_wrap">
+                        @foreach (var item in Model.Manufacturers)
+                        {
+                            <div class="item prd_lst_boxouter">
+                                <span class="imagewrap our-brands-item">
+                                    <a href="@Url.Action("List", "Products", new { values = "BrandS-" + item.Name.Replace(" ", "_") })">
+                                        <img src="@(!string.IsNullOrEmpty(item.ImagePath) ? ViewBag.BaseFilePath + item.ImagePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
+                                    </a>
+                                </span>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}

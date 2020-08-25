@@ -948,7 +948,7 @@ input[type=number]::-webkit-outer-spin-button {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    margin-bottom: 70px
+    margin-bottom: 40px
 }
 
     .nb_header_style1 h3 {
@@ -7348,4 +7348,15 @@ input[type="checkbox"] {
 .zoomContainer .zoomLens {
     max-height: 100%;
     max-width: 100%;
+}
+
+.our-brands-item {
+    width: 200px;
+    height: 130px;
+    display: flex !important;
+    align-items: center;
+}
+
+.our-brands-item a {
+    margin: 5px;
 }

@@ -33,6 +33,7 @@ namespace Ganedata.Core.Services
         public string WebsiteContactEmail { get; set; }
         public string HomeTopCategoryText { get; set; }
         public string HomeFeaturedProductText { get; set; }
+        public string HomeOurBrandsText { get; set; }
         public int? FeaturedTagId { get; set; }
     }
 }

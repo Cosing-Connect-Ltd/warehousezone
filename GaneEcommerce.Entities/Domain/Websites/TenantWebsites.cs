@@ -69,6 +69,9 @@ namespace Ganedata.Core.Entities.Domain
         public string HomeFeaturedProductText { get; set; }
         [Display(Name = "Featured Product Tag")]
         public int? FeaturedTagId { get; set; }
+        [Display(Name = "Home Our Brands Text")]
+        public string HomeOurBrandsText { get; set; }
+
 
         [ForeignKey("DefaultWarehouseId")]
         public virtual TenantLocations Warehouse { get; set; }
