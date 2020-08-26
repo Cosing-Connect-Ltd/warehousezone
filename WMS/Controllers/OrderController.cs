@@ -143,26 +143,14 @@ namespace WMS.Controllers
 
         public JsonResult IsOrderNumberAvailable(string OrderNumber, int OrderID = 0)
         {
-
-            if (OrderID == 0)
-            {
-                var result = OrderService.IsOrderNumberAvailable(OrderNumber);
-                return Json(result, JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                return Json(true, JsonRequestBehavior.AllowGet);
-            }
-
+            var result = OrderService.IsOrderNumberAvailable(OrderNumber, OrderID);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult POHistory()
         {
-
-            /// Authorization Check
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             return View();
-
         }
 
         public async Task<ActionResult> OrderNotification(string id)

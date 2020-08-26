@@ -23,23 +23,19 @@
 </style>
 <script>
     function SendEmail(s, e) {
-      
-            var orderID = $("#OrderIds").val(); 
-        if (orderID !== null)
-            {
-                CustomEmailReports(0, 0, 0  , orderID);
-            }
-            
+        var orderID = $("#OrderIds").val();
+        if (orderID !== null) {
+            CustomEmailReports(0, 0, 0, orderID);
+        }
     }
- 
-
 </script>
+
 <h2><span>@ViewBag.Title</span></h2>
-@Html.Hidden("OrderIds",(int)ViewBag.OrderId)
+@Html.Hidden("OrderIds", (int)ViewBag.OrderId)
 @Html.DevExpress().WebDocumentViewer(settings =>
 {
     settings.Name = "SalesOrderPrintDocumentViewer";
-    if (ViewBag.DirectSalesOrder != null && ((bool)ViewBag.DirectSalesOrder==true))
+    if (ViewBag.DirectSalesOrder != null && ((bool)ViewBag.DirectSalesOrder == true))
     {
         settings.MenuItems.Add(new DevExpress.XtraReports.Web.WebDocumentViewer.WebDocumentViewerMenuItem
         {
@@ -47,8 +43,6 @@
             ImageClassName = "Email",
             JSClickAction = "SendEmail"
         });
-
-
     }
 
 }).Bind(Model).GetHtml()

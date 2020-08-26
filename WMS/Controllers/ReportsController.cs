@@ -978,7 +978,6 @@ namespace WMS.Controllers
 
         #endregion
 
-
         #region PriceGroup
         public ActionResult PriceGroupReport(int PriceGroupId)
         {
@@ -996,11 +995,6 @@ namespace WMS.Controllers
         }
 
         #endregion 
-
-
-
-
-
 
         #region OrderReport
 
@@ -1407,6 +1401,10 @@ namespace WMS.Controllers
             productSoldBySkuPrint.lbldate.Text = DateTime.UtcNow.ToShortDateString();
             productSoldBySkuPrint.TenantId.Value = CurrentTenantId;
             productSoldBySkuPrint.WarehouseId.Value = CurrentWarehouseId;
+            var markets = _marketServices.GetAllValidMarkets(CurrentTenantId);
+            StaticListLookUpSettings marketSettings = (StaticListLookUpSettings)productSoldBySkuPrint.MarketId.LookUpSettings;
+            marketSettings.LookUpValues.AddRange(markets.Markets.Select(m => new LookUpValue(m.Id, m.Name)));
+
             var accounts = _accountServices.GetAllValidAccounts(CurrentTenantId).ToList();
             StaticListLookUpSettings accountSettings = (StaticListLookUpSettings)productSoldBySkuPrint.AccountId.LookUpSettings;
             accountSettings.LookUpValues.AddRange(accounts.Select(m => new LookUpValue(m.AccountID, m.CompanyName)));

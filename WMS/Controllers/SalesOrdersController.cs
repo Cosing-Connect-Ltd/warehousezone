@@ -949,11 +949,12 @@ namespace WMS.Controllers
                 if (shipmentAndRecipientInfo.orderId.HasValue)
                 {
                     var orders = OrderService.GetOrderById(shipmentAndRecipientInfo.orderId ?? 0);
-                    var report = CreateSalesOrderPrint((shipmentAndRecipientInfo.orderId ?? 0), true);
+                    var report = CreateSalesOrderPrint((shipmentAndRecipientInfo.orderId ?? 0), orders.InventoryTransactionTypeId == InventoryTransactionTypeEnum.DirectSales ? true : false,
+                      (orders.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Returns || orders.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WastedReturn) ? true : false);
                     PrepareDirectory("~/UploadedFiles/reports/dso/");
                     var reportPath = "~/UploadedFiles/reports/dso/" + orders.OrderNumber + ".pdf";
                     report.ExportToPdf(Server.MapPath(reportPath));
-                    var result = await GaneConfigurationsHelper.CreateTenantEmailNotificationQueue($"#{orders.OrderNumber} - Direct Sales Order Report", _mapper.Map(orders, new OrderViewModel()), reportPath, shipmentAndRecipientInfo: shipmentAndRecipientInfo,
+                    var result = await GaneConfigurationsHelper.CreateTenantEmailNotificationQueue($"#{orders.OrderNumber} - Order Report", _mapper.Map(orders, new OrderViewModel()), reportPath, shipmentAndRecipientInfo: shipmentAndRecipientInfo,
                          worksOrderNotificationType: WorksOrderNotificationTypeEnum.DirectSalesOrderReportTemplate);
                     return Json(result, JsonRequestBehavior.AllowGet);
                 }

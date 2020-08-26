@@ -48,6 +48,7 @@ namespace Ganedata.Core.Services
                      ProductId = (int)prd1.ProductId,
                      IsSerializable = prd1.ProductMaster.Serialisable ? "YES" : "NO"
                  });
+
             return data.ToList();
         }
 
@@ -182,29 +183,21 @@ namespace Ganedata.Core.Services
                         {
                             model.TaxName.PercentageOfAmount = 0;
                         }
-
                     }
-
-
-
                 }
+
                 model.TotalAmount = Math.Round((model.Price * model.Qty), 2) + model.TaxAmount + model.WarrantyAmount;
-
-
-
             }
 
             return model;
         }
         public int GetQuantityInLocation(InventoryTransaction transaction)
         {
-
             int quantity = (int)_currentDbContext.InventoryTransactions
                 .Where(a => a.LocationId == transaction.LocationId &&
                             a.ProductId == transaction.ProductId && a.IsDeleted != true
                             && a.IsCurrentLocation && a.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder).Sum(a => a.Quantity);
             return quantity;
         }
-
     }
 }

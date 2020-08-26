@@ -62,9 +62,9 @@ namespace Ganedata.Core.Services
             return OrderService.GetOrderById(orderId);
         }
 
-        public bool IsOrderNumberAvailable(string orderNumber)
+        public bool IsOrderNumberAvailable(string orderNumber, int orderId)
         {
-            return OrderService.IsOrderNumberAvailable(orderNumber);
+            return OrderService.IsOrderNumberAvailable(orderNumber, orderId);
         }
 
         public Order CompleteOrder(int orderId, int userId)

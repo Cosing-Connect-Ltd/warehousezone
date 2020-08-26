@@ -23,7 +23,7 @@ namespace Ganedata.Core.Entities.Domain
 
         public int OrderID { get; set; }
 
-        [Remote("IsOrderNumberAvailable", "Order", AdditionalFields = "OrderID", ErrorMessage = "Order Number has been taken, Please regenerate")]
+        [Remote("IsOrderNumberAvailable", "Order", AdditionalFields = "OrderID", ErrorMessage = "Order No already taken, please regenerate")]
         //[Required]
         //[RegularExpression("^.{3}[0-9]{8}$", ErrorMessage = "Order No must be 11 characters long and last eight digits should be numeric")]
         // order number sent from customer

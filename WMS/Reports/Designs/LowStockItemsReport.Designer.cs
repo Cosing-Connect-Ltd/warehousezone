@@ -351,10 +351,10 @@
             selectQuery1.Name = "ProductLocationStockLevel_1";
             queryParameter1.Name = "sqlParamTenantId";
             queryParameter1.Type = typeof(DevExpress.DataAccess.Expression);
-            queryParameter1.Value = new DevExpress.DataAccess.Expression("[Parameters.TenantIdParam]", typeof(int));
+            queryParameter1.Value = new DevExpress.DataAccess.Expression("?TenantIdParam", typeof(int));
             queryParameter2.Name = "sqlParamWarehouseId";
             queryParameter2.Type = typeof(DevExpress.DataAccess.Expression);
-            queryParameter2.Value = new DevExpress.DataAccess.Expression("[Parameters.WarehouseParam]", typeof(int));
+            queryParameter2.Value = new DevExpress.DataAccess.Expression("?WarehouseParam", typeof(int));
             selectQuery1.Parameters.Add(queryParameter1);
             selectQuery1.Parameters.Add(queryParameter2);
             relationColumnInfo1.NestedKeyColumn = "ProductId";

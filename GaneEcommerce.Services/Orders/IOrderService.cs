@@ -18,9 +18,7 @@ namespace Ganedata.Core.Services
         IEnumerable<OrderConsignmentTypes> GetAllValidConsignmentTypes(int tenantId);
         IQueryable<Order> GetValidSalesOrderByOrderNumber(string orderNumber, int tenantId, int? warehouseId = null);
         Order GetOrderById(int orderId);
-
-        bool IsOrderNumberAvailable(string orderNumber);
-
+        bool IsOrderNumberAvailable(string orderNumber, int orderId);
         Order CompleteOrder(int orderId, int userId);
         Order FinishinghOrder(int orderId, int userId, int wareHouseId);
 

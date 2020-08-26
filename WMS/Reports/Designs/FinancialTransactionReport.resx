@@ -120,56 +120,32 @@
   <metadata name="sqlDataSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <data name="customSqlQuery1.Sql" xml:space="preserve">
-    <value>select "AccountTransaction"."Amount",
-       "AccountTransaction"."FinalBalance",
-       "AccountTransaction"."Notes",
-       "AccountTransaction"."DateCreated",
-       "AccountTransaction"."AccountId",
-       "AccountTransaction"."AccountTransactionId",
-       "AccountTransaction"."IsDeleted",
-       "AccountTransaction"."AccountTransactionTypeId"
-  from "dbo"."AccountTransaction" "AccountTransaction"
- where (("AccountTransaction"."AccountId" = @paramAccountId)
-       and ("AccountTransaction"."DateCreated" &gt;= @paramStartDate)
-       and ("AccountTransaction"."DateCreated" &lt;= @paramEndDate)
-       and ("AccountTransaction"."IsDeleted" is null
-       or ("AccountTransaction"."IsDeleted" &lt;&gt; 1)))</value>
+  <data name="selectQuery1.FilterString" xml:space="preserve">
+    <value>[AccountTransaction.AccountId] = ?paramAccountId And [AccountTransaction.DateCreated] &gt;= ?paramStartDate And [AccountTransaction.DateCreated] &lt;= ?paramEndDate And ([AccountTransaction.IsDeleted] Is Null Or [AccountTransaction.IsDeleted] &lt;&gt; True)</value>
   </data>
-  <data name="customSqlQuery2.Sql" xml:space="preserve">
-    <value>select top 1 "Account"."AccountID",
-       "Account"."AccountCode",
-       "Account"."CompanyName",
-       "Account"."Telephone", "Account"."website",
-       "Account"."CreditLimit",
-       "Account"."TenantId",
-       "Account"."CreditTerms",
-       "AccountAddresses"."Name",
-       "AccountAddresses"."AddressLine1",
-       "AccountAddresses"."AddressLine2",
-       "AccountAddresses"."AddressLine3",
-       "AccountAddresses"."Telephone" as "AccountAddresses_Telephone",
-       "AccountAddresses"."Town",
-       "AccountAddresses"."County",
-       "AccountAddresses"."PostCode",
-       "AccountAddresses"."AddTypeBilling",
+  <data name="customSqlQuery1.Sql" xml:space="preserve">
+    <value>select top 1 "Account"."AccountID","Account"."AccountCode","Account"."CompanyName","Account"."Telephone", "Account"."website","Account"."CreditLimit","Account"."TenantId","Account"."CreditTerms","AccountAddresses"."Name",
+       "AccountAddresses"."AddressLine1","AccountAddresses"."AddressLine2","AccountAddresses"."AddressLine3","AccountAddresses"."Telephone" as "AccountAddresses_Telephone","AccountAddresses"."Town","AccountAddresses"."County",
+       "AccountAddresses"."PostCode","AccountAddresses"."AddTypeBilling",Tenants.TenantName, Tenants.TenantNo, Tenants.TenantVatNo, Tenants.TenantAccountReference, Tenants.TenantWebsite, Tenants.TenantDayPhone, Tenants.TenantEveningPhone, 
+       Tenants.TenantMobilePhone, Tenants.TenantFax, Tenants.TenantEmail, Tenants.TenantAddress1, Tenants.TenantAddress2, Tenants.TenantAddress3, Tenants.TenantAddress4, Tenants.TenantCity, Tenants.TenantStateCounty, Tenants.CurrencyID, Tenants.CountryID,
        (select top 1 "AccountTransaction"."FinalBalance" from "dbo"."AccountTransaction" where (("AccountTransaction"."AccountId" = @paramAccountId) and 
-       ("AccountTransaction"."DateCreated" &lt; @ParamStartDate)) order by "AccountTransaction"."DateCreated" desc) as StartingBalance,
+       ("AccountTransaction"."DateCreated" &gt;= @ParamStartDate)) order by "AccountTransaction"."AccountTransactionId" ASC) as StartingBalance,
        (select top 1 "AccountTransaction"."FinalBalance" from "dbo"."AccountTransaction" where (("AccountTransaction"."AccountId" = @paramAccountId) and 
-       ("AccountTransaction"."DateCreated" &lt; @ParamEndDate)) order by "AccountTransaction"."DateCreated" desc) as DueBalance
+       ("AccountTransaction"."DateCreated" &lt;= @ParamEndDate)) order by "AccountTransaction"."AccountTransactionId" DESC) as DueBalance
   from ("dbo"."Account" "Account"
   inner join "dbo"."AccountAddresses"
        "AccountAddresses"
-       on ("AccountAddresses"."AccountID" = "Account"."AccountID"))
+       on ("AccountAddresses"."AccountID" = "Account"."AccountID" and ("AccountAddresses".IsDeleted &lt;&gt; 1 or "AccountAddresses".IsDeleted is null))
+	     inner join 
+  Tenants ON "Account".TenantId = Tenants.TenantId)
  where (("Account"."AccountID" = @paramAccountId)
        and ("Account"."IsDeleted" is null
        or ("Account"."IsDeleted" &lt;&gt; 1)))</value>
   </data>
   <data name="sqlDataSource1.ResultSchemaSerializable" xml:space="preserve">
-    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9IkFjY291bnRUcmFuc2FjdGlvbiI+PEZpZWxkIE5hbWU9IkFtb3VudCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iRmluYWxCYWxhbmNlIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJOb3RlcyIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iRGF0ZUNyZWF0ZWQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkFjY291bnRJZCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQWNjb3VudFRyYW5zYWN0aW9uSWQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IklzRGVsZXRlZCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQWNjb3VudFRyYW5zYWN0aW9uVHlwZUlkIiBUeXBlPSJVbmtub3duIiAvPjwvVmlldz48VmlldyBOYW1lPSJBY2NvdW50Ij48RmllbGQgTmFtZT0iQWNjb3VudElEIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJBY2NvdW50Q29kZSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQ29tcGFueU5hbWUiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IlRlbGVwaG9uZSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0id2Vic2l0ZSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQ3JlZGl0TGltaXQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IlRlbmFudElkIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJDcmVkaXRUZXJtcyIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iTmFtZSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQWRkcmVzc0xpbmUxIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJBZGRyZXNzTGluZTIiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkFkZHJlc3NMaW5lMyIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQWNjb3VudEFkZHJlc3Nlc19UZWxlcGhvbmUiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IlRvd24iIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkNvdW50eSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iUG9zdENvZGUiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkFkZFR5cGVCaWxsaW5nIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJTdGFydGluZ0JhbGFuY2UiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkR1ZUJhbGFuY2UiIFR5cGU9IlVua25vd24iIC8+PC9WaWV3PjxSZWxhdGlvbiBNYXN0ZXI9IkFjY291bnQiIERldGFpbD0iQWNjb3VudFRyYW5zYWN0aW9uIj48S2V5Q29sdW1uIE1hc3Rlcj0iQWNjb3VudElEIiBEZXRhaWw9IkFjY291bnRJZCIgLz48L1JlbGF0aW9uPjwvRGF0YVNldD4=</value>
+    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9IkFjY291bnRUcmFuc2FjdGlvbiI+PEZpZWxkIE5hbWU9IkFtb3VudCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iRmluYWxCYWxhbmNlIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJOb3RlcyIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iRGF0ZUNyZWF0ZWQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkFjY291bnRJZCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQWNjb3VudFRyYW5zYWN0aW9uSWQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IklzRGVsZXRlZCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQWNjb3VudFRyYW5zYWN0aW9uVHlwZUlkIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJBY2NvdW50UGF5bWVudE1vZGVJZCIgVHlwZT0iSW50MzIiIC8+PC9WaWV3PjxWaWV3IE5hbWU9IkFjY291bnQiPjxGaWVsZCBOYW1lPSJBY2NvdW50SUQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkFjY291bnRDb2RlIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJDb21wYW55TmFtZSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iVGVsZXBob25lIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJ3ZWJzaXRlIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJDcmVkaXRMaW1pdCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iVGVuYW50SWQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkNyZWRpdFRlcm1zIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJOYW1lIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJBZGRyZXNzTGluZTEiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkFkZHJlc3NMaW5lMiIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQWRkcmVzc0xpbmUzIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJBY2NvdW50QWRkcmVzc2VzX1RlbGVwaG9uZSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iVG93biIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQ291bnR5IiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJQb3N0Q29kZSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQWRkVHlwZUJpbGxpbmciIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IlRlbmFudE5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVGVuYW50Tm8iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVGVuYW50VmF0Tm8iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVGVuYW50QWNjb3VudFJlZmVyZW5jZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJUZW5hbnRXZWJzaXRlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlRlbmFudERheVBob25lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlRlbmFudEV2ZW5pbmdQaG9uZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJUZW5hbnRNb2JpbGVQaG9uZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJUZW5hbnRGYXgiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVGVuYW50RW1haWwiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVGVuYW50QWRkcmVzczEiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVGVuYW50QWRkcmVzczIiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVGVuYW50QWRkcmVzczMiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVGVuYW50QWRkcmVzczQiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVGVuYW50Q2l0eSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJUZW5hbnRTdGF0ZUNvdW50eSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDdXJyZW5jeUlEIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iQ291bnRyeUlEIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iU3RhcnRpbmdCYWxhbmNlIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJEdWVCYWxhbmNlIiBUeXBlPSJVbmtub3duIiAvPjwvVmlldz48UmVsYXRpb24gTWFzdGVyPSJBY2NvdW50IiBEZXRhaWw9IkFjY291bnRUcmFuc2FjdGlvbiI+PEtleUNvbHVtbiBNYXN0ZXI9IkFjY291bnRJRCIgRGV0YWlsPSJBY2NvdW50SWQiIC8+PC9SZWxhdGlvbj48L0RhdGFTZXQ+</value>
   </data>
-  <data name="TransactioTypeName.Expression" xml:space="preserve">
-    <value>Iif([AccountTransactionTypeId]==1,'Invoiced', IIF([AccountTransactionTypeId]==2,'Paid', IIF([AccountTransactionTypeId]==3,
-'Refund', IIF([AccountTransactionTypeId]==4,'Credit Note', IIF([AccountTransactionTypeId]==5,'Discount','')))))</value>
+  <data name="xrLabel5.ExpressionBindings" xml:space="preserve">
+    <value>Iif([AccountPaymentModeId] =1,'Cash',IIF([AccountPaymentModeId] =2,'Card',Iif([AccountPaymentModeId] = 3,'Online Transfer',Iif([AccountPaymentModeId] = 4,'Bank Deposit' , Iif([AccountPaymentModeId] = 5,'Cheque' ,'' ))) ))</value>
   </data>
 </root>

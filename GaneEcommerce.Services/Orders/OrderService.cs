@@ -171,10 +171,10 @@ namespace Ganedata.Core.Services
             return _currentDbContext.Order.Where(u => u.CreatedBy == UserId && u.SiteID == SiteId && u.IsDeleted != true);
         }
 
-        public bool IsOrderNumberAvailable(string orderNumber)
+        public bool IsOrderNumberAvailable(string orderNumber, int orderId)
         {
-            var order = _currentDbContext.Order.FirstOrDefault(m => m.OrderNumber == orderNumber && m.IsDeleted != true);
-            return order == null;
+            var order = _currentDbContext.Order.FirstOrDefault(m => m.OrderNumber == orderNumber);
+            return order == null || order?.OrderID == orderId;
         }
 
         public Order CompleteOrder(int orderId, int userId)

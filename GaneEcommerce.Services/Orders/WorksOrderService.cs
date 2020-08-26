@@ -489,7 +489,6 @@ namespace Ganedata.Core.Services
         }
         public IQueryable<WorksOrderViewModel> GetAllPendingWorksOrdersIq(int tenantId, Guid? groupToken = null, int? propertyId = null)
         {
-
             var result = _currentDbContext.Order
                 .Where(o => o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder && (o.OrderStatusID == OrderStatusEnum.Active || o.OrderStatusID == OrderStatusEnum.NotScheduled
                 || o.OrderStatusID == OrderStatusEnum.Scheduled || o.OrderStatusID == OrderStatusEnum.ReAllocationRequired || o.OrderStatusID == OrderStatusEnum.Hold)
