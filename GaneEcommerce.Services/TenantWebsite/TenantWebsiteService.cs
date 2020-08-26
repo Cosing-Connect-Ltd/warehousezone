@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Ganedata.Core.Data;
-using Ganedata.Core.Data.Migrations;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Domain.ViewModels;
 using Ganedata.Core.Entities.Enums;
@@ -988,10 +987,46 @@ namespace Ganedata.Core.Services
         // WebsiteSearching Realted Queries
         public IQueryable<ProductMaster> GetWebsiteProducts(int siteId, string category = "", string ProductName = "", int? categoryId = null)
         {
-            return GetProductsNavigationMapsSearch(siteId, ProductName)
-                    .Where(u => (u.NavigationId == categoryId || (categoryId == null && u.WebsiteNavigation.Name == category) || (categoryId == null && category == null)))
-                    .OrderBy(n => n.SortOrder)
-                    .Select(x => x.ProductsWebsitesMap.ProductMaster);
+            if (categoryId == null && category == null)
+            {
+                var productIds = GetProductsNavigationMapsSearch(siteId, ProductName)
+                        .OrderBy(n => n.SortOrder)
+                        .Select(x => x.ProductsWebsitesMap.ProductMaster.ProductId)
+                        .Distinct()
+                        .ToList();
+
+                return _currentDbContext.ProductMaster.Where(p => p.IsActive && p.IsDeleted != true && productIds.Contains(p.ProductId)).OrderBy(p => p.ProductId);
+            }
+            else
+            {
+                return GetProductsNavigationMapsSearch(siteId, ProductName)
+                        .Where(u => (u.NavigationId == categoryId || (categoryId == null && u.WebsiteNavigation.Name == category) || (categoryId == null && category == null)))
+                        .OrderBy(n => n.SortOrder)
+                        .Select(x => x.ProductsWebsitesMap.ProductMaster);
+            }
+        }
+
+        public List<ProductManufacturer> GetWebsiteProductManufacturers(int siteId)
+        {
+            var websiteNavigations = GetProductsNavigationMapsSearch(siteId)
+                                    .Select(n => n.ProductsWebsitesMap.ProductMaster)
+                                    .ToList();
+
+            var manufacturersIds = _currentDbContext.ProductKitMaps.Where(k => k.IsActive &&
+                                                                                k.IsDeleted != true &&
+                                                                                k.KitProductMaster.IsActive &&
+                                                                                k.KitProductMaster.IsDeleted != true &&
+                                                                                k.ProductKitType != ProductKitTypeEnum.RelatedProduct &&
+                                                                                k.KitProductMaster.ManufacturerId != null)
+                                                                    .Select(k => k.KitProductMaster.ManufacturerId)
+                                                                    .Distinct()
+                                                                    .ToList();
+
+            manufacturersIds.AddRange(websiteNavigations.Where(k => k.ManufacturerId != null).Select(w => w.ManufacturerId).Distinct());
+
+            var manufacturers = _currentDbContext.ProductManufacturers.Where(p => manufacturersIds.Contains(p.Id) && p.IsDeleted != true).ToList();
+
+            return manufacturers;
         }
 
         public List<ProductSearchResultViewModel> SearchWebsiteProducts(int siteId, int resultCount, string productName = "")
@@ -1057,9 +1092,12 @@ namespace Ganedata.Core.Services
         }
         public Tuple<string, string> GetAvailablePricesRange(IQueryable<ProductMaster> products,int siteId)
         {
-            products.ForEach(u => u.SellPrice = GetPriceForProduct(u.ProductId, siteId));
+            var productsPrices = products.Select(p => p.ProductId)
+                                         .ToList()
+                                         .Select(u => GetPriceForProduct(u, siteId))
+                                         .ToList();
 
-            return new Tuple<string, string>((products.Min(u => u.SellPrice) ?? 0).ToString(), (products.Max(u => u.SellPrice) ?? 0).ToString());
+            return new Tuple<string, string>(productsPrices.Min(u => u).ToString(), productsPrices.Max(u => u).ToString());
         }
         public List<string> GetAllValidProductManufacturers(List<int> productIds)
         {
@@ -1670,12 +1708,23 @@ namespace Ganedata.Core.Services
 
         public decimal GetPriceForProduct(int productId, int siteId)
         {
+            var product = _currentDbContext.ProductMaster.AsNoTracking().FirstOrDefault(u => u.ProductId == productId);
+
+            if ((product.SellPrice == null || product.SellPrice <= 0) && (product.ProductType == ProductKitTypeEnum.ProductByAttribute || product.ProductType == ProductKitTypeEnum.Grouped))
+            {
+                product = _currentDbContext.ProductKitMaps.Where(p => p.ProductId == productId &&
+                                                                      p.IsActive &&
+                                                                      p.IsDeleted != true &&
+                                                                      p.KitProductMaster.SellPrice > 0)
+                                                          .OrderBy(p => p.ProductKitTypes.SortOrder)
+                                                          .ThenBy(p => p.KitProductMaster.SellPrice)
+                                                          .FirstOrDefault()?.KitProductMaster ?? product;
+            }
+
             var calculateTax = GetTenantWebSiteBySiteId(siteId).ShowPricesIncludingTax;
-            var sellPrice = _productPriceService.GetProductPriceThresholdByAccountId(productId, null).SellPrice;
+            var sellPrice = _productPriceService.GetProductPriceThresholdByAccountId(product.ProductId, null).SellPrice;
             if (calculateTax)
             {
-                var product = _currentDbContext.ProductMaster.AsNoTracking().FirstOrDefault(u => u.ProductId == productId);
-
                 if (product != null && product.TaxID > 0 && product.EnableTax == true)
                 {
                     var taxPercentage = _currentDbContext.GlobalTax.AsNoTracking().FirstOrDefault(a => a.TaxID == product.TaxID)?.PercentageOfAmount;
@@ -1687,12 +1736,43 @@ namespace Ganedata.Core.Services
                         sellPrice = sellPrice + taxAmount;
                     }
                 }
-
-
             }
 
             return sellPrice;
         }
+
+        public List<ProductPriceViewModel> GetPricesForProducts(List<int> productIds, int siteId)
+        {
+            return productIds.Select(productId =>
+            {
+                var calculateTax = GetTenantWebSiteBySiteId(siteId).ShowPricesIncludingTax;
+                var productPrice = new ProductPriceViewModel
+                {
+                    FinalSellPrice = _productPriceService.GetProductPriceThresholdByAccountId(productId, null).SellPrice,
+                    ProductId = productId
+                };
+                if (calculateTax)
+                {
+                    var product = _currentDbContext.ProductMaster.AsNoTracking().FirstOrDefault(u => u.ProductId == productId);
+
+                    if (product != null && product.TaxID > 0 && product.EnableTax == true)
+                    {
+                        var taxPercentage = _currentDbContext.GlobalTax.AsNoTracking().FirstOrDefault(a => a.TaxID == product.TaxID)?.PercentageOfAmount;
+                        if (taxPercentage.HasValue && taxPercentage > 0)
+                        {
+                            var taxAmount = product.SellPrice.HasValue
+                                ? Math.Round(d: ((product.SellPrice.Value) / 100) * (taxPercentage.Value), 2)
+                                : 0;
+                            productPrice.TaxAmount = taxAmount;
+                            productPrice.TaxPercentage = taxPercentage.Value;
+                        }
+                    }
+                }
+
+                return productPrice;
+            }).ToList();
+        }
+
 
         public decimal GetProductByAttributeAvailableCount(int productId, List<int> warehouseIds)
         {

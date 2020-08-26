@@ -364,7 +364,7 @@ namespace Ganedata.Core.Entities.Enums
     }
     public enum SortProductTypeEnum
     {
-        [Display(Name = "Recommended Products")]
+        [Display(Name = "Recommended")]
         Recommended = 0,
         [Display(Name = "Name (A-Z)")]
         NameByAsc = 1,

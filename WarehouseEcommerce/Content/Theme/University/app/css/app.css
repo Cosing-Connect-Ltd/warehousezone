@@ -948,7 +948,7 @@ input[type=number]::-webkit-outer-spin-button {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    margin-bottom: 70px
+    margin-bottom: 40px
 }
 
     .nb_header_style1 h3 {
@@ -2225,7 +2225,7 @@ input[type=number]::-webkit-outer-spin-button {
                 font-size: 20px;
                 font-family: "primaryfont_Bold";
                 text-align: center;
-                padding: 10px 26px;
+                padding: 10px 15px;
                 display: inline-block;
                 margin-right: 34px;
                 border: 0;
@@ -2278,13 +2278,33 @@ input[type=number]::-webkit-outer-spin-button {
             margin-bottom: 20px
         }
 
+        .nb_prd_det_rightsec .prd_amnt_RRP,
+        .nb_prd_det_rightsec .prd_amnt_excl_VAT,
         .nb_prd_det_rightsec .prd_amnt {
-            font-size: 30px;
-            font-family: "primaryfont_Bold";
-            color: #f33655;
-            margin-bottom: 6px;
-            display: block
+            display: block;
+            text-align: right;
         }
+
+
+        .nb_prd_det_rightsec .prd_amnt {
+            font-family: "primaryfont_Bold";
+            font-size: 24px;
+            color: #f33655;
+        }
+        .nb_prd_det_rightsec .prd_amnt_excl_VAT {
+            font-size: 16px;
+            color: gray;
+        }
+
+        .nb_prd_det_rightsec .prd_amnt_RRP {
+            font-size: 20px;
+        }
+
+            .nb_prd_det_rightsec .prd_amnt_RRP > span,
+            .nb_prd_det_rightsec .prd_amnt_excl_VAT > span,
+            .nb_prd_det_rightsec .prd_amnt > span {
+                font-size: 14px;
+            }
 
         .nb_prd_det_rightsec .col_Sec {
             display: inline-block;
@@ -2312,7 +2332,8 @@ input[type=number]::-webkit-outer-spin-button {
             font-family: "primaryfont_SemiBold";
             font-size: 16px;
             color: #000;
-            margin-bottom: 20px;
+            margin-top: 20px;
+            margin-bottom: 0px;
             text-transform: uppercase
         }
 
@@ -2337,7 +2358,7 @@ input[type=number]::-webkit-outer-spin-button {
 
             .nb_prd_det_rightsec .footSec .qty {
                 display: inline-block;
-                margin-right: 47px;
+                margin: 0 50px 0 20px;
                 vertical-align: bottom
             }
 
@@ -2504,7 +2525,10 @@ body.ZoomerActive {
 
 .img_view_area img {
     width: 100% !important;
-    max-width: calc(100% - 1vw)
+    max-width: calc(100% - 1vw);
+    max-height: calc(100% - 1vw);
+    height: 100% !important;
+    object-fit: contain;
 }
 
 .img_view_area .zoomWrapper {
@@ -7133,7 +7157,7 @@ html {
     display: flex;
     align-items: flex-end;
     margin: 15px 0;
-    max-width: 440px;
+    max-width: 430px;
     float: right;
     position: relative;
 }
@@ -7322,13 +7346,11 @@ html {
 }
 
 .owl-carousel .owl-item img {
-    height: 239px;
     object-fit: scale-down
 }
 
 .img_thumb_sliderwrap .owl-carousel .owl-item img {
-    height: 100%;
-    min-width: 100%;
+    height: 100px;
 }
 
 .res_navWrapper {
@@ -7342,4 +7364,25 @@ html {
 input[type="checkbox"] {
     min-width: 18px;
     min-height: 18px;
+}
+
+.zoomContainer .zoomLens {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.our-brands-item {
+    width: 100%;
+    height: 130px;
+    display: flex !important;
+    align-items: center;
+}
+
+.our-brands-item a {
+    margin: 5px;
+    width: 100%;
+}
+
+.price-from__text {
+    font-size: 14px;
 }

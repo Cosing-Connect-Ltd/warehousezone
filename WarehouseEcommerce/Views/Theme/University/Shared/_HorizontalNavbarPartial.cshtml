@@ -34,11 +34,7 @@
                                                     <ul class="subList">
                                                         @foreach (var item2 in level2)
                                                         {
-
                                                             <li><a href="javascript:;">@item2.Name</a></li>
-
-
-
                                                         }
 
                                                     </ul>
@@ -53,7 +49,6 @@
                                                 </a>
                                             </li>
                                         }
-
                                     }
 
                                     <li>
@@ -111,11 +106,7 @@
                                                     <ul class="subList">
                                                         @foreach (var item2 in level2)
                                                         {
-
                                                             <li><a href="@Url.Action("page", "Home", new { pageUrl = item2.WebsiteContentPages?.pageUrl })">@item2.Name</a></li>
-
-
-
                                                         }
 
                                                     </ul>
@@ -133,11 +124,7 @@
                                                     <ul class="subList">
                                                         @foreach (var item2 in level2)
                                                         {
-
                                                             <li><a href="@Url.Action("list", "Product")">@item2.Name</a></li>
-
-
-
                                                         }
 
                                                     </ul>
@@ -155,7 +142,6 @@
                 }
                 else
                 {
-
                     <li>
                         <a href="@Url.Action("page", "Home", new { pageUrl = item.WebsiteContentPages?.pageUrl })">
                             @item.Name
@@ -231,7 +217,6 @@
 
                                     }
 
-
                                 </ul>
                             </div>
                         </div>
@@ -239,13 +224,20 @@
                 }
                 else
                 {
-
                     <li>
                         <a href="@Url.Action("list", "Products", new { category = item.Name, categoryId = item.Id})">
                             @item.Name
                         </a>
                     </li>
                 }
+            }
+            else if (item.Type == WebsiteNavigationType.Link)
+            {
+                <li>
+                    <a href="@item.LinkPageUrl">
+                        @item.Name
+                    </a>
+                </li>
             }
         }
     </ul>

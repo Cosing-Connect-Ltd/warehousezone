@@ -5,6 +5,16 @@
 }
 
 <div class="footSec">
+    @if (Model.WebsiteWishListItems.FirstOrDefault(u => u.IsDeleted != true && !u.IsNotification) == null)
+    {
+        <button id="btnwish_@Model.ProductId" onclick="addToWishList(@Model.ProductId)" class="addtowishlistbtn">Add to Wishlist</button>
+        <a href="javascript:;" class="addtowishlist " id="wish_@Model.ProductId" onclick="addToWishList(@Model.ProductId)"><i class="icon-love list-icon" style="color:black;"></i></a>
+    }
+    else
+    {
+        <button id="btnwish_@Model.ProductId" onclick="redirectToWishListByConfirmation()" class="addtowishlistbtn" style="background-color: red !important">Add to Wishlist</button>
+        <a href="javascript:;" class="addtowishlist" id="wish_@Model.ProductId" onclick="redirectToWishListByConfirmation()"><i class="icon-love list-icon" style="color: red;"></i></a>
+    }
     @if (@Model.SellPrice > 0 && @Model.SellPrice.HasValue && (availableProductCount > 0))
     {
         <div class="qty">
@@ -28,16 +38,5 @@
 
         }
 
-    }
-
-    @if (Model.WebsiteWishListItems.FirstOrDefault(u => u.IsDeleted != true && !u.IsNotification) == null)
-    {
-        <button id="btnwish_@Model.ProductId" onclick="addToWishList(@Model.ProductId)" class="addtowishlistbtn">Add to Wishlist</button>
-        <a href="javascript:;" class="addtowishlist " id="wish_@Model.ProductId" onclick="addToWishList(@Model.ProductId)"><i class="icon-love list-icon" style="color:black;"></i></a>
-    }
-    else
-    {
-        <button id="btnwish_@Model.ProductId" onclick="redirectToWishListByConfirmation()" class="addtowishlistbtn" style="background-color: red !important">Add to Wishlist</button>
-        <a href="javascript:;" class="addtowishlist" id="wish_@Model.ProductId" onclick="redirectToWishListByConfirmation()"><i class="icon-love list-icon" style="color: red;"></i></a>
     }
 </div>

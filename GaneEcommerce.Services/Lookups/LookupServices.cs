@@ -613,27 +613,29 @@ namespace Ganedata.Core.Services
             return true;
         }
 
-        public ProductManufacturer SaveAndUpdateProductManufacturer(ProductManufacturer productManufacturer, int userId)
+        public ProductManufacturer SaveAndUpdateProductManufacturer(ProductManufacturer productManufacturerData, int userId)
         {
-            var productmanufactrer = _currentDbContext.ProductManufacturers.FirstOrDefault(u => u.Id == productManufacturer.Id);
-            if (productmanufactrer == null)
+            var productManufactrer = _currentDbContext.ProductManufacturers.FirstOrDefault(u => u.Id == productManufacturerData.Id);
+            if (productManufactrer == null)
             {
-                productmanufactrer = new ProductManufacturer();
-                productmanufactrer.UpdateCreatedInfo(userId);
+                productManufactrer = new ProductManufacturer();
+                productManufactrer.UpdateCreatedInfo(userId);
 
             }
             else
             {
-                productmanufactrer.UpdateUpdatedInfo(userId);
+                productManufactrer.UpdateUpdatedInfo(userId);
             }
-            productmanufactrer.Name = productManufacturer.Name;
-            productmanufactrer.Note = productManufacturer.Note;
-            productmanufactrer.TenantId = productManufacturer.TenantId;
-            productmanufactrer.ImagePath = productManufacturer.ImagePath;
-            productmanufactrer.TenantId = productManufacturer.TenantId;
-            _currentDbContext.Entry(productmanufactrer).State = productManufacturer.Id > 0 ? EntityState.Modified : EntityState.Added;
+            productManufactrer.Name = productManufacturerData.Name;
+            productManufactrer.Note = productManufacturerData.Note;
+            productManufactrer.ShowInOurBrands = productManufacturerData.ShowInOurBrands;
+            productManufactrer.SortOrder = productManufacturerData.SortOrder;
+            productManufactrer.TenantId = productManufacturerData.TenantId;
+            productManufactrer.ImagePath = productManufacturerData.ImagePath;
+            productManufactrer.TenantId = productManufacturerData.TenantId;
+            _currentDbContext.Entry(productManufactrer).State = productManufacturerData.Id > 0 ? EntityState.Modified : EntityState.Added;
             _currentDbContext.SaveChanges();
-            return productmanufactrer;
+            return productManufactrer;
         }
 
         public bool UpdateStockMovement(StockMovementCollectionViewModel data)

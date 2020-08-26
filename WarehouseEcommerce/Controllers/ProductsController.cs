@@ -71,7 +71,7 @@ namespace WarehouseEcommerce.Controllers
                     CurrentFilterValues = values
                 };
 
-                if (categoryId != null || !string.IsNullOrEmpty(search) || !string.IsNullOrEmpty(previousSearch))
+                if (categoryId != null || !string.IsNullOrEmpty(search) || !string.IsNullOrEmpty(previousSearch) || !string.IsNullOrEmpty(values))
                 {
                     var categoryInfo = _tenantWebsiteService.GetAllValidWebsiteNavigationCategory(CurrentTenantId, CurrentTenantWebsite.SiteID)
                                                             .FirstOrDefault(c => c.Id == categoryId);
@@ -127,7 +127,7 @@ namespace WarehouseEcommerce.Controllers
                     var pagedProductsList = products.ToPagedList((pageNumber == 0 ? 1 : pageNumber), pageSize.Value);
                     if (pagedProductsList.Count > 0)
                     {
-                        pagedProductsList.ToList().ForEach(u => u.SellPrice = (Math.Round((_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID)), 2)));
+                        pagedProductsList.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID), 2));
                     }
 
                     if (categoryId == null)
@@ -148,6 +148,21 @@ namespace WarehouseEcommerce.Controllers
                 }
 
                 return View(model);
+            }
+            catch (Exception ex)
+            {
+                return Content("Issue of getting data  " + ex.Message);
+
+            }
+        }
+
+        public ActionResult brands()
+        {
+            try
+            {
+                var manufactuters = _tenantWebsiteService.GetWebsiteProductManufacturers(CurrentTenantWebsite.SiteID);
+
+                return View(manufactuters);
             }
             catch (Exception ex)
             {
@@ -206,7 +221,7 @@ namespace WarehouseEcommerce.Controllers
 
             SetProductViewModelCategoryInfo(baseProduct, model);
 
-            model.Product.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(model.Product.ProductId, CurrentTenantWebsite.SiteID), 2);
+            model.Prices = _tenantWebsiteService.GetPricesForProducts(new List<int> { model.Product.ProductId }, CurrentTenantWebsite.SiteID).FirstOrDefault();
 
             model.RelatedProducts = _productServices.GetRelatedProductsByProductId(model.Product.ProductId, CurrentTenantId, CurrentTenantWebsite.SiteID, baseProduct.ProductId);
 
@@ -229,18 +244,48 @@ namespace WarehouseEcommerce.Controllers
 
             model.Product = _productServices.GetProductMasterByProductCode(sku, CurrentTenantId);
             var productTabs = model.Product.ProductKitItems.Where(u => u.ProductKitType == ProductKitTypeEnum.Grouped && u.IsActive == true).Select(u => u.ProductKitTypeId).ToList();
-            model.GroupedTabs = _productlookupServices.GetProductKitTypes(productTabs);
+            var isFirstTab = true;
+            model.GroupedTabs = _productlookupServices.GetProductKitTypes(productTabs)
+                .Select(ProductKitType =>
+                {
+                    var kitProducts = model.Product.ProductKitItems.Where(u => (u.ProductKitTypeId == ProductKitType.Id || ((u.ProductKitTypeId == null || u.ProductKitTypeId == 0) && isFirstTab)) &&
+                                                                           u.ProductKitType == ProductKitTypeEnum.Grouped &&
+                                                                           u.IsDeleted != true)
+                                                                   .GroupBy(m => m.KitProductMaster)
+                                                                   .Select(m => m.Key)
+                                                                   .ToList()
+                                                                   .Select(p => new
+                                                                   {
+                                                                       Product = p,
+                                                                       AvailableProductCount = Inventory.GetAvailableProductCount(p, CurrentTenantWebsite.SiteID),
+                                                                   })
+                                                                   .OrderByDescending(p => p.AvailableProductCount > 0);
+                    isFirstTab = false;
+
+                    return new ChildProductsViewModel
+                    {
+                        Products = kitProducts.Select(p => p.Product).ToList(),
+                        ProductsAvailableCounts = kitProducts.ToDictionary(p => p.Product.ProductId, p => p.AvailableProductCount),
+                        Prices = _tenantWebsiteService.GetPricesForProducts(kitProducts.Select(p => p.Product.ProductId).ToList(), CurrentTenantWebsite.SiteID)
+                                                      .GroupBy(p => p.ProductId)
+                                                      .ToDictionary(p => p.Key, p => p.First()),
+                        ProductKitType = ProductKitType
+                    };
+                })
+            .ToList();
 
             if (!model.GroupedTabs.Any())
             {
-                model.GroupedTabs.Add(new ProductKitType {
-                    Name = "Options"
+                model.GroupedTabs.Add(new ChildProductsViewModel
+                {
+                    ProductKitType = new ProductKitType
+                    {
+                        Name = "Options"
+                    }
                 });
             }
 
             SetProductViewModelCategoryInfo(model.Product, model);
-
-            model.Product.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(model.Product.ProductId, CurrentTenantWebsite.SiteID), 2);
 
             model.RelatedProducts = _productServices.GetRelatedProductsByProductId(model.Product.ProductId, CurrentTenantId, CurrentTenantWebsite.SiteID);
 

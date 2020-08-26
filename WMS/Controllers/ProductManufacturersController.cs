@@ -66,13 +66,13 @@ namespace WMS.Controllers
         }
 
         // POST: ProductManufacturers/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Note")] ProductManufacturer productManufacturer, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
+        public ActionResult Create(ProductManufacturer productManufacturer, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
         {
-           
+
             ViewBag.ControllerName = "ProductManufacturers";
             var filesName = Session["UploadProductManufacturerImage"] as List<string>;
             string filePath = "";
@@ -120,17 +120,17 @@ namespace WMS.Controllers
                 files.Add(dInfo.Name);
                 Session["UploadProductManufacturerImage"] = files;
                 ViewBag.Files = files;
-               
+
             }
             return View(productManufacturer);
         }
 
         // POST: ProductManufacturers/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Note")] ProductManufacturer productManufacturer, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
+        public ActionResult Edit(ProductManufacturer productManufacturer, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
         {
             ViewBag.ControllerName = "ProductManufacturers";
             string filePath = "";
@@ -190,7 +190,7 @@ namespace WMS.Controllers
             {
                 SaveFile(file);
                 files.Add(file.FileName);
-                
+
             }
             Session["UploadProductManufacturerImage"] = files;
 

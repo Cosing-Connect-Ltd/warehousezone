@@ -232,7 +232,7 @@
 
     .nb_prd_det_rightsec .footSec .qty,
     .nb_prd_det_rightsec .footSec button.addTobasket {
-        margin-right: 20px
+        margin: 0 35px 0 0px
     }
 }
 
@@ -999,6 +999,10 @@
             width: 100% !important;
             margin-top: 15px !important
         }
+
+    .product-details-section .footSec {
+        margin-right: 20px;
+    }
 }
 
 @media screen and (min-width:568px) and (max-width:767px) {
@@ -1125,13 +1129,15 @@
     }
 
     .nb_prd_det_rightsec .footSec .qty {
-        margin-right: 0;
-        margin-bottom: 20px
+        margin-right: 10px;
     }
 
     .nb_prd_det_rightsec .footSec button.addTobasket {
-        width: 100%;
-        margin-bottom: 13px
+        width: calc(100% - 98px)
+    }
+
+    .nb_prd_det_rightsec .footSec .notify-btn {
+        width: 100% !important
     }
 
     .nb_basket_wrap table.basketTable thead,
@@ -1142,7 +1148,8 @@
     .nb_prd_det_rightsec .footSec .addtowishlistbtn {
         display: inline-block;
         width: 100%;
-        background-color: #f33655
+        background-color: #f33655;
+        margin-bottom: 13px
     }
 
         .nb_prd_det_rightsec .footSec .addtowishlistbtn:hover {
@@ -1316,7 +1323,7 @@
     }
 
     .prd_lst_boxouter .prd_amnt {
-        font-size: 10px !important;
+        font-size: 14px !important;
         padding: 4px 4px !important;
         margin-bottom: 6px
     }

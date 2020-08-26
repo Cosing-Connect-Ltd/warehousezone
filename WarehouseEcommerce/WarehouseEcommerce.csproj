@@ -279,11 +279,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AccountDetailViewModel.cs" />
     <Compile Include="ViewModels\BaseProductViewModel.cs" />
+    <Compile Include="ViewModels\ChildProductsViewModel.cs" />
     <Compile Include="ViewModels\ProductDetailAttributeValueViewModel.cs" />
     <Compile Include="ViewModels\ProductDetailAttributeViewModel.cs" />
     <Compile Include="ViewModels\GroupedProductViewModel.cs" />
     <Compile Include="ViewModels\ProductDetailViewModel.cs" />
     <Compile Include="ViewModels\ProductListViewModel.cs" />
+    <Compile Include="ViewModels\OurBrandsViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModel.cs" />
   </ItemGroup>
@@ -1430,6 +1432,8 @@
     <Content Include="Views\Theme\University\Products\_ProductDetailActionsButtons.cshtml" />
     <Content Include="Views\Theme\University\Products\_ProductDetailBreadCrumb.cshtml" />
     <Content Include="Views\Theme\University\Products\_ProductImagesGallery.cshtml" />
+    <Content Include="Views\Theme\University\Products\brands.cshtml" />
+    <Content Include="Views\Theme\University\Shared\_OurBrands.cshtml" />
     <Content Include="Scripts\jquery-3.5.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.5.1.min.map" />
   </ItemGroup>

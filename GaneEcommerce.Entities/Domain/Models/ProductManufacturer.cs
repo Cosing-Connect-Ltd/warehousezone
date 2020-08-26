@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
 namespace Ganedata.Core.Entities.Domain
 {
@@ -21,7 +18,11 @@ namespace Ganedata.Core.Entities.Domain
         public string Note { get; set; }
         [Display(Name = "Manufacturer Code")]
         public string MFGCode { get; set; }
+        [Display(Name = "Sort Order")]
+        public int SortOrder { get; set; }
         [ForeignKey("TenantId")]
         public virtual Tenant Tenant { get; set; }
+        [Display(Name = "Show In Our Brands List")]
+        public bool ShowInOurBrands { get; set; }
     }
 }

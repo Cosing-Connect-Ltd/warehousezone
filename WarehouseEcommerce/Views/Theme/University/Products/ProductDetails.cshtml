@@ -17,14 +17,22 @@
                     <h2 class="head">@Model.Product.Name</h2>
                     <div class="row">
                         <div class="col-md-12 col-lg-12 col-xl-4">
-                            <span class="prd_amnt">@ViewBag.CurrencySymbol@Model.Product.SellPrice</span>
+                            <div>SKU: @Model.Product.SKUCode</div>
+                            @if (Model.Product.ProductManufacturer != null)
+                            {
+                            <div>Brand: <a href="@Url.Action("List", "Products", new { values = "BrandS-" +  @Model.Product.ProductManufacturer.Name.Replace(" ", "_") })">@Model.Product.ProductManufacturer.Name</a></div>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.Product.ManufacturerPartNo?.Trim()))
+                            {
+                            <div>MFP No: @Model.Product.ManufacturerPartNo</div>
+                            }
                             <div class="availibility">
                                 @{ var availableProductCount = Ganedata.Core.Services.Inventory.GetAvailableProductCount(Model.Product, ViewBag.SiteId);
                                     ViewBag.AvailableProductCount = availableProductCount;
                                 }
                                 @if (availableProductCount > 0)
                                 {
-                                    <span>@((availableProductCount <= 10 ? "only " + availableProductCount.ToString("#") + " items left" : "Available"))</span>
+                                    <span>@((int)availableProductCount) In Stock</span>
                                 }
                                 else
                                 {
@@ -33,6 +41,15 @@
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-12 col-xl-8">
+                            @if (Model.Product.SellPrice != null && Model.Product.SellPrice > 0)
+                            {
+                                <div class="prd_amnt">@ViewBag.CurrencySymbol@(Model.Prices.FinalSellPrice + Model.Prices.TaxAmount)<span> inc VAT</span></div>
+                                <div class="prd_amnt_excl_VAT">(@ViewBag.CurrencySymbol@Model.Prices.FinalSellPrice<span> excl VAT</span>)</div>
+                                if (Model.Product.SellPrice != Model.Prices.FinalSellPrice)
+                                {
+                                    <div class="prd_amnt_RRP">RRP @ViewBag.CurrencySymbol@Model.Product.SellPrice<span> excl VAT</span></div>
+                                }
+                            }
                             @Html.Partial("_ProductDetailActionsButtons", Model.Product)
                         </div>
                     </div>

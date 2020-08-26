@@ -1,0 +1,64 @@
+﻿@model List<Ganedata.Core.Entities.Domain.ProductManufacturer>
+
+<section class="nb_sec nb_prdlisting_pgsec">
+    <span id="res_filterBox_trigger"><i class="icon-filter"></i></span>
+    <div class="container">
+        <div class="breadCrumbtopsec">
+            <div class="nb_bread_crumbwrap">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/">Home</a>
+                        </li>
+                        <li>></li>
+                        <li class="breadcrumb-item">
+                            Shop By Brands
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-lg-3 col-xl-2">
+                <div class="nb_prd_filterwrap">
+                    @if (Model.Count() > 0)
+                    {
+                        <div class="type-content">
+                            <div class="nb_filter_body">
+                                <ul class="nb_prd_filter_listouter">
+                                    @foreach (var item in Model)
+                                    {
+                                        <li class="list-group-item"><a href="@Url.Action("List", "Products", new { values = "BrandS-" + item.Name.Replace(" ", "_") })">@item.Name</a></li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="col-md-8 col-lg-9 col-xl-10 list-on-tablets">
+                <div class="nb_prd_listing_wrap">
+                    <div class="row list-product-row">
+                        @foreach (var item in Model)
+                        {
+                            <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-4  col-xl-3 list-product-col">
+                                <div class="prd_lst_boxouter">
+                                    <span class="imagewrap">
+                                        <a href="@Url.Action("List", "Products", new { values = "BrandS-" + item.Name.Replace(" ", "_") })">
+                                            <img src="@(!string.IsNullOrEmpty(item.ImagePath) ? ViewBag.BaseFilePath + item.ImagePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
+                                        </a>
+                                    </span>
+                                    <h3 class="prdName">
+                                        <a class="prdName" href="@Url.Action("List", "Products", new { values = "BrandS-" + item.Name.Replace(" ", "_") })">
+                                            @item.Name
+                                        </a>
+                                    </h3>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
