@@ -1043,6 +1043,10 @@
     <Compile Include="Migrations\202008251204539_added_our_brands_relates_flags.designer.cs">
       <DependentUpon>202008251204539_added_our_brands_relates_flags.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008261303239_added_sort_order_to_ProductManufacturers_table.cs" />
+    <Compile Include="Migrations\202008261303239_added_sort_order_to_ProductManufacturers_table.designer.cs">
+      <DependentUpon>202008261303239_added_sort_order_to_ProductManufacturers_table.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2145,6 +2149,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008251204539_added_our_brands_relates_flags.resx">
       <DependentUpon>202008251204539_added_our_brands_relates_flags.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008261303239_added_sort_order_to_ProductManufacturers_table.resx">
+      <DependentUpon>202008261303239_added_sort_order_to_ProductManufacturers_table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -184,8 +184,7 @@ namespace WarehouseEcommerce.Controllers
             var tenantWebsite = ViewBag.TenantWebsite as TenantWebsites;
             var specialProduct = new OurBrandsViewModel
             {
-                Manufacturers = _tenantWebsiteService.GetWebsiteProductManufacturers(CurrentTenantWebsite.SiteID).Where(o => o.ShowInOurBrands).ToList()
-
+                Manufacturers = _tenantWebsiteService.GetWebsiteProductManufacturers(CurrentTenantWebsite.SiteID).Where(o => o.ShowInOurBrands).OrderBy(b => b.SortOrder).ToList()
             };
 
             specialProduct.OurBrandsText = tenantWebsite?.HomeOurBrandsText;

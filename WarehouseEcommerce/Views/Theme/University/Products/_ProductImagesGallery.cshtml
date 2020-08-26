@@ -9,7 +9,7 @@
     </span>
     <div class="img_thumb_sliderwrap" style="@(Model.ProductFiles.Count > 1 ? "" : "display:none")">
         <div id="images-gallery__carousel" class="owl-carousel owl-theme nb_imageZoomCarrousle">
-            @foreach (var item in Model.ProductFiles.Where(f => !string.IsNullOrEmpty(f.FilePath?.Trim())))
+            @foreach (var item in Model.ProductFiles.Where(f => !string.IsNullOrEmpty(f.FilePath?.Trim()) && f.IsDeleted != null).OrderBy(f => f.SortOrder))
             {
                 <div class="item">
                     <a href="#" data-image="@(ViewBag.BaseFilePath + item.FilePath)"

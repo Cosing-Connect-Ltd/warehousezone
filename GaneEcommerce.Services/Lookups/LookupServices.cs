@@ -629,6 +629,7 @@ namespace Ganedata.Core.Services
             productManufactrer.Name = productManufacturerData.Name;
             productManufactrer.Note = productManufacturerData.Note;
             productManufactrer.ShowInOurBrands = productManufacturerData.ShowInOurBrands;
+            productManufactrer.SortOrder = productManufacturerData.SortOrder;
             productManufactrer.TenantId = productManufacturerData.TenantId;
             productManufactrer.ImagePath = productManufacturerData.ImagePath;
             productManufactrer.TenantId = productManufacturerData.TenantId;

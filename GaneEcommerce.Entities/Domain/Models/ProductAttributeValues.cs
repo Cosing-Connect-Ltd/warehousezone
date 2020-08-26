@@ -21,8 +21,7 @@ namespace Ganedata.Core.Entities.Domain
         [StringLength(256)]
         [Display(Name = "Value")]
         public string Value { get; set; }
-        [Required]
-        [Display(Name = "Sort Value")]
+        [Display(Name = "Sort Order")]
         public int SortOrder { get; set; }
         [Display(Name = "Color")]
         public string Color { get; set; }
