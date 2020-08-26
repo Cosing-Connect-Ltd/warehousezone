@@ -1722,12 +1722,43 @@ namespace Ganedata.Core.Services
                         sellPrice = sellPrice + taxAmount;
                     }
                 }
-
-
             }
 
             return sellPrice;
         }
+
+        public List<ProductPriceViewModel> GetPricesForProducts(List<int> productIds, int siteId)
+        {
+            return productIds.Select(productId =>
+            {
+                var calculateTax = GetTenantWebSiteBySiteId(siteId).ShowPricesIncludingTax;
+                var productPrice = new ProductPriceViewModel
+                {
+                    FinalSellPrice = _productPriceService.GetProductPriceThresholdByAccountId(productId, null).SellPrice,
+                    ProductId = productId
+                };
+                if (calculateTax)
+                {
+                    var product = _currentDbContext.ProductMaster.AsNoTracking().FirstOrDefault(u => u.ProductId == productId);
+
+                    if (product != null && product.TaxID > 0 && product.EnableTax == true)
+                    {
+                        var taxPercentage = _currentDbContext.GlobalTax.AsNoTracking().FirstOrDefault(a => a.TaxID == product.TaxID)?.PercentageOfAmount;
+                        if (taxPercentage.HasValue && taxPercentage > 0)
+                        {
+                            var taxAmount = product.SellPrice.HasValue
+                                ? Math.Round(d: ((product.SellPrice.Value) / 100) * (taxPercentage.Value), 2)
+                                : 0;
+                            productPrice.TaxAmount = taxAmount;
+                            productPrice.TaxPercentage = taxPercentage.Value;
+                        }
+                    }
+                }
+
+                return productPrice;
+            }).ToList();
+        }
+
 
         public decimal GetProductByAttributeAvailableCount(int productId, List<int> warehouseIds)
         {

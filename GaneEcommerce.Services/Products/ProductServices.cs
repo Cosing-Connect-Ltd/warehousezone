@@ -1440,6 +1440,8 @@ namespace Ganedata.Core.Services
         {
             var product = _currentDbContext.ProductMaster
                 .Include(p => p.ProductKitMap.Select(k => k.ProductMaster.ProductAttributeValuesMap.Select(a => a.ProductAttributeValues)))
+                .Include(p => p.ProductManufacturer)
+                .Include(p => p.ProductKitItems.Select(k => k.KitProductMaster.ProductManufacturer))
                 .FirstOrDefault(e => e.TenantId == tenantId &&
                                      e.IsDeleted != true &&
                                      (e.SKUCode.Equals(productCode, StringComparison.CurrentCultureIgnoreCase) ||

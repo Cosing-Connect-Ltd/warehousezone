@@ -274,6 +274,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AccountDetailViewModel.cs" />
     <Compile Include="ViewModels\BaseProductViewModel.cs" />
+    <Compile Include="ViewModels\ChildProductsViewModel.cs" />
     <Compile Include="ViewModels\ProductDetailAttributeValueViewModel.cs" />
     <Compile Include="ViewModels\ProductDetailAttributeViewModel.cs" />
     <Compile Include="ViewModels\GroupedProductViewModel.cs" />

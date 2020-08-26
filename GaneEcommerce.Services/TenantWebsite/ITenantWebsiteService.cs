@@ -141,6 +141,8 @@ namespace Ganedata.Core.Services
 
         decimal GetPriceForProduct(int productId, int siteId);
 
+        List<ProductPriceViewModel> GetPricesForProducts(List<int> productIds, int siteId);
+
         decimal GetProductByAttributeAvailableCount(int productId, List<int> warehouseIds);
         List<ProductManufacturer> GetWebsiteProductManufacturers(int siteId);
 

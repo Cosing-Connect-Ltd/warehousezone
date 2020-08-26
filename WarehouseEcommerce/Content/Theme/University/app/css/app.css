@@ -2225,7 +2225,7 @@ input[type=number]::-webkit-outer-spin-button {
                 font-size: 20px;
                 font-family: "primaryfont_Bold";
                 text-align: center;
-                padding: 10px 26px;
+                padding: 10px 15px;
                 display: inline-block;
                 margin-right: 34px;
                 border: 0;
@@ -2278,13 +2278,33 @@ input[type=number]::-webkit-outer-spin-button {
             margin-bottom: 20px
         }
 
+        .nb_prd_det_rightsec .prd_amnt_RRP,
+        .nb_prd_det_rightsec .prd_amnt_excl_VAT,
         .nb_prd_det_rightsec .prd_amnt {
-            font-size: 30px;
-            font-family: "primaryfont_Bold";
-            color: #f33655;
-            margin-bottom: 6px;
-            display: block
+            display: block;
+            text-align: right;
         }
+
+
+        .nb_prd_det_rightsec .prd_amnt {
+            font-family: "primaryfont_Bold";
+            font-size: 24px;
+            color: #f33655;
+        }
+        .nb_prd_det_rightsec .prd_amnt_excl_VAT {
+            font-size: 16px;
+            color: gray;
+        }
+
+        .nb_prd_det_rightsec .prd_amnt_RRP {
+            font-size: 20px;
+        }
+
+            .nb_prd_det_rightsec .prd_amnt_RRP > span,
+            .nb_prd_det_rightsec .prd_amnt_excl_VAT > span,
+            .nb_prd_det_rightsec .prd_amnt > span {
+                font-size: 14px;
+            }
 
         .nb_prd_det_rightsec .col_Sec {
             display: inline-block;
@@ -2312,7 +2332,8 @@ input[type=number]::-webkit-outer-spin-button {
             font-family: "primaryfont_SemiBold";
             font-size: 16px;
             color: #000;
-            margin-bottom: 20px;
+            margin-top: 20px;
+            margin-bottom: 0px;
             text-transform: uppercase
         }
 
@@ -2337,7 +2358,7 @@ input[type=number]::-webkit-outer-spin-button {
 
             .nb_prd_det_rightsec .footSec .qty {
                 display: inline-block;
-                margin-right: 47px;
+                margin: 0 50px 0 20px;
                 vertical-align: bottom
             }
 
@@ -7136,7 +7157,7 @@ html {
     display: flex;
     align-items: flex-end;
     margin: 15px 0;
-    max-width: 440px;
+    max-width: 430px;
     float: right;
     position: relative;
 }
@@ -7351,7 +7372,7 @@ input[type="checkbox"] {
 }
 
 .our-brands-item {
-    width: 200px;
+    width: 100%;
     height: 130px;
     display: flex !important;
     align-items: center;
@@ -7359,4 +7380,5 @@ input[type="checkbox"] {
 
 .our-brands-item a {
     margin: 5px;
+    width: 100%;
 }

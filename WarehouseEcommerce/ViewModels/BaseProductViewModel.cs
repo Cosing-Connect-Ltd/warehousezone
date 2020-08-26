@@ -6,8 +6,9 @@ namespace WarehouseEcommerce.ViewModels
     public class BaseProductViewModel
     {
         public ProductMaster Product { get; set; }
+        public ProductPriceViewModel Prices { get; set; }
         public List<ProductMaster> RelatedProducts { get; set; }
-        public List<ProductKitType> GroupedTabs { get; set; }
+        public List<ChildProductsViewModel> GroupedTabs { get; set; }
         public string Category { get; set; }
         public int CategoryId { get; set; }
         public string SubCategory { get; set; }
