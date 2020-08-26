@@ -299,6 +299,12 @@ namespace WMS.Controllers
             return report;
         }
 
+        private void MrpPictureBox_BeforePrint(object sender, System.Drawing.Printing.PrintEventArgs e)
+        {
+            var picture = (XRPictureBox)sender;
+            picture.ImageUrl = ReportLogoPath("mrp-logo.png");
+        }
+
         public FinancialTransactionReport CreateFinancialTransactionReport(int? accountId = null, DateTime? startDate = null, DateTime? endDate = null)
         {
             FinancialTransactionReport financialreport = new FinancialTransactionReport();
@@ -315,15 +321,17 @@ namespace WMS.Controllers
                 financialreport.EndDate.Value = DateTime.Today;
                 StaticListLookUpSettings accountsSettings = (StaticListLookUpSettings)financialreport.AccountId.LookUpSettings;
                 var accounts = _accountServices.GetAllValidAccounts(CurrentTenantId).ToList();
-                accountsSettings.LookUpValues.AddRange(accounts.Select(m => new LookUpValue(m.AccountID, m.CompanyName)));
+                accountsSettings.LookUpValues.AddRange(accounts.Select(m => new LookUpValue(m.AccountID, (m.AccountCode + " - " + m.CompanyName))));
             }
+
+            financialreport.FrPictureBox.BeforePrint += FrPictureBox_BeforePrint;
             return financialreport;
         }
 
-        private void MrpPictureBox_BeforePrint(object sender, System.Drawing.Printing.PrintEventArgs e)
+        private void FrPictureBox_BeforePrint(object sender, System.Drawing.Printing.PrintEventArgs e)
         {
             var picture = (XRPictureBox)sender;
-            picture.ImageUrl = ReportLogoPath("mrp-logo.png");
+            picture.ImageUrl = ReportLogoPath("fr-logo.png");
         }
 
         protected string ReportLogoPath(string logoPath)

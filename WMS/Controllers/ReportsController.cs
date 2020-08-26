@@ -978,7 +978,6 @@ namespace WMS.Controllers
 
         #endregion
 
-
         #region PriceGroup
         public ActionResult PriceGroupReport(int PriceGroupId)
         {
@@ -996,11 +995,6 @@ namespace WMS.Controllers
         }
 
         #endregion 
-
-
-
-
-
 
         #region OrderReport
 

@@ -120,10 +120,7 @@
   <metadata name="sqlDataSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <data name="selectQuery1.FilterString" xml:space="preserve">
-    <value>[Markets.Id] = ?SqlMarketId And [Orders.InventoryTransactionTypeId] = ?InventoryTransTypeId And [Orders.IssueDate] &gt;= ?sqlDateFrom And [Orders.IssueDate] &lt; ?sqlDateto And [Markets.TenantId] = ?TenantId And ([Markets.IsDeleted] Is Null Or [Markets.IsDeleted] = False)</value>
-  </data>
   <data name="sqlDataSource1.ResultSchemaSerializable" xml:space="preserve">
-    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9Ik1hcmtldHMiPjxGaWVsZCBOYW1lPSJPcmRlck51bWJlciIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJc3N1ZURhdGUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJUZW5lbnRJZCIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9Ik9yZGVyRGlzY291bnQiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9Ik9yZGVyVG90YWwiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IkNvbXBhbnlOYW1lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkFjY291bnRJRCIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9IklkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iTmFtZSIgVHlwZT0iU3RyaW5nIiAvPjwvVmlldz48L0RhdGFTZXQ+</value>
+    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9Ik1hcmtldHMiPjxGaWVsZCBOYW1lPSJPcmRlck51bWJlciIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJc3N1ZURhdGUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJUZW5lbnRJZCIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9Ik9yZGVyRGlzY291bnQiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9Ik9yZGVyVG90YWwiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IkNvbXBhbnlOYW1lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkFjY291bnRJRCIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9IklkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iTmFtZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJNYXJrZXRzX0lkIiBUeXBlPSJJbnQzMiIgLz48L1ZpZXc+PC9EYXRhU2V0Pg==</value>
   </data>
 </root>
