@@ -251,7 +251,8 @@ namespace WarehouseEcommerce.Controllers
                     var kitProducts = model.Product.ProductKitItems.Where(u => (u.ProductKitTypeId == ProductKitType.Id || ((u.ProductKitTypeId == null || u.ProductKitTypeId == 0) && isFirstTab)) &&
                                                                            u.ProductKitType == ProductKitTypeEnum.Grouped &&
                                                                            u.IsDeleted != true)
-                                                                   .Select(m => m.KitProductMaster)
+                                                                   .GroupBy(m => m.KitProductMaster)
+                                                                   .Select(m => m.Key)
                                                                    .ToList()
                                                                    .Select(p => new
                                                                    {
@@ -266,7 +267,8 @@ namespace WarehouseEcommerce.Controllers
                         Products = kitProducts.Select(p => p.Product).ToList(),
                         ProductsAvailableCounts = kitProducts.ToDictionary(p => p.Product.ProductId, p => p.AvailableProductCount),
                         Prices = _tenantWebsiteService.GetPricesForProducts(kitProducts.Select(p => p.Product.ProductId).ToList(), CurrentTenantWebsite.SiteID)
-                                                      .ToDictionary(p => p.ProductId, p => p),
+                                                      .GroupBy(p => p.ProductId)
+                                                      .ToDictionary(p => p.Key, p => p.First()),
                         ProductKitType = ProductKitType
                     };
                 })
