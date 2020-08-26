@@ -142,12 +142,12 @@ namespace Ganedata.Core.Services
                 origAppointment.Label = appointment.Label;
                 origAppointment.Status = appointment.Status;
                 origAppointment.ResourceIDs = appointment.ResourceIDs;
+                origAppointment.ResourceId = appointment.ResourceId;
 
                 if (appointment.ResourceId != null)
                 {
                     origAppointment.ResourceId = appointment.ResourceId;
                 }
-
 
                 _currentDbContext.Appointments.Attach(origAppointment);
                 var entry = _currentDbContext.Entry<Appointments>(origAppointment);

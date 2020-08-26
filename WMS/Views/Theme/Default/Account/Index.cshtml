@@ -16,14 +16,14 @@
     ViewBag.Title = "Accounts";
 }
 
-<h2><span>Accounts</span></h2>
+<h2><span>@ViewBag.Title</span></h2>
 
 <script type="text/javascript">
     function OnGridFocusedRowChanged(s, e) {
         var name = s.name;
         if (name.indexOf("accountsGridView") >= 0) {
             $('.selkey').val(s.cpAccountID[s.GetFocusedRowIndex()]);
-            
+
         }
     }
     function OnAccountListBeginCallback(s, e) {
@@ -45,24 +45,24 @@
 
 
 @if (ViewBag.IsVanSalesEnabled)
-    {
-<div class="col-md-12 report-date-header">
-    <div class="input-group h-100 justify-content-center align-items-center">
-        @Html.Label("Select Market", htmlAttributes: new { @class = "col-md-2" })
-        <div class="col-md-4 text-center pull-left">
-            @Html.DropDownList("MarketId", ViewBag.MarketDetailId as SelectList,"ALL", new { @class = "form-control chosen-select" })
+{
+    <div class="col-md-12 report-date-header">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.Label("Select Market", htmlAttributes: new { @class = "col-md-2" })
+            <div class="col-md-4 text-center pull-left">
+                @Html.DropDownList("MarketId", ViewBag.MarketDetailId as SelectList, "ALL", new { @class = "form-control chosen-select" })
+            </div>
         </div>
+
     </div>
 
-</div>
-
- }
+}
 
 
 
 
 <div class="col-md-12 p-0 View">
-    @Html.Action("AccountList",new {Mid= ViewBag.marketId})
+    @Html.Action("AccountList", new { Mid = ViewBag.marketId })
 
 </div>
 

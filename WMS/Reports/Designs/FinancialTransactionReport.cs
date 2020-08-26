@@ -19,16 +19,10 @@ namespace WMS.Reports.Designs
             DateTime endDate = (DateTime)report.Parameters["EndDate"].Value;
             endDate = endDate.AddHours(24);
             report.Parameters["EndDate"].Value = endDate;
-            
-
-
-
         }
 
         private void FinancialTransactionReport_AfterPrint(object sender, EventArgs e)
         {
-
-
         }
     }
 }

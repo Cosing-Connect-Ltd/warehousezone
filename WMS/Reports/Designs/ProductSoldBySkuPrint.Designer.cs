@@ -39,12 +39,14 @@
             DevExpress.DataAccess.Sql.QueryParameter queryParameter7 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter8 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter9 = new DevExpress.DataAccess.Sql.QueryParameter();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter10 = new DevExpress.DataAccess.Sql.QueryParameter();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProductSoldBySkuPrint));
             DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings1 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
             DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings2 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
             DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings3 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
             DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings4 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
             DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings5 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
+            DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings6 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
@@ -83,6 +85,7 @@
             this.paramProductDepartment = new DevExpress.XtraReports.Parameters.Parameter();
             this.paramOwnerID = new DevExpress.XtraReports.Parameters.Parameter();
             this.AccountId = new DevExpress.XtraReports.Parameters.Parameter();
+            this.MarketId = new DevExpress.XtraReports.Parameters.Parameter();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // TopMargin
@@ -470,6 +473,9 @@
             queryParameter9.Name = "sqlOwnerId";
             queryParameter9.Type = typeof(DevExpress.DataAccess.Expression);
             queryParameter9.Value = new DevExpress.DataAccess.Expression("?paramOwnerID", typeof(int));
+            queryParameter10.Name = "sqlMarketId";
+            queryParameter10.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter10.Value = new DevExpress.DataAccess.Expression("?MarketId", typeof(int));
             customSqlQuery1.Parameters.Add(queryParameter1);
             customSqlQuery1.Parameters.Add(queryParameter2);
             customSqlQuery1.Parameters.Add(queryParameter3);
@@ -479,6 +485,7 @@
             customSqlQuery1.Parameters.Add(queryParameter7);
             customSqlQuery1.Parameters.Add(queryParameter8);
             customSqlQuery1.Parameters.Add(queryParameter9);
+            customSqlQuery1.Parameters.Add(queryParameter10);
             customSqlQuery1.Sql = resources.GetString("customSqlQuery1.Sql");
             this.sqlDataSource1.Queries.AddRange(new DevExpress.DataAccess.Sql.SqlQuery[] {
             customSqlQuery1});
@@ -569,6 +576,15 @@
             this.AccountId.Type = typeof(int);
             this.AccountId.ValueSourceSettings = staticListLookUpSettings5;
             // 
+            // MarketId
+            // 
+            this.MarketId.AllowNull = true;
+            this.MarketId.Description = "MarketId";
+            this.MarketId.Name = "MarketId";
+            this.MarketId.Type = typeof(int);
+            this.MarketId.ValueInfo = "0";
+            this.MarketId.ValueSourceSettings = staticListLookUpSettings6;
+            // 
             // ProductSoldBySkuPrint
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -595,7 +611,8 @@
             this.WarehouseId,
             this.paramProductDepartment,
             this.AccountId,
-            this.paramOwnerID});
+            this.paramOwnerID,
+            this.MarketId});
             this.Version = "19.2";
             this.DataSourceDemanded += new System.EventHandler<System.EventArgs>(this.ProductSoldBySkuPrint_DataSourceDemanded);
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
@@ -642,5 +659,6 @@
         public DevExpress.XtraReports.UI.XRLabel ComanyName;
         public DevExpress.XtraReports.UI.XRLabel lblOwner;
         public DevExpress.XtraReports.UI.XRLabel lblAcount;
+        public DevExpress.XtraReports.Parameters.Parameter MarketId;
     }
 }

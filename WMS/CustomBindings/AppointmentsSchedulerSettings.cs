@@ -133,8 +133,6 @@ namespace WMS.CustomBindings
 
                 if (!appointment.ResourceIDs.Contains("<ResourceIds>"))
                 {
-
-
                     int ResId = Convert.ToInt32(appointment.ResourceIDs);
                     if (ResId > 0)
                     {
@@ -164,7 +162,6 @@ namespace WMS.CustomBindings
 
                 appointmentServices.UpdateAppointment(appointment);
             }
-
         }
 
         private static void DeleteAppointments(SchedulerDataObject dataObject)
