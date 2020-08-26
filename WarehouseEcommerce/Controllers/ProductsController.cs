@@ -127,7 +127,7 @@ namespace WarehouseEcommerce.Controllers
                     var pagedProductsList = products.ToPagedList((pageNumber == 0 ? 1 : pageNumber), pageSize.Value);
                     if (pagedProductsList.Count > 0)
                     {
-                        pagedProductsList.ToList().ForEach(u => u.SellPrice = (Math.Round((_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID)), 2)));
+                        pagedProductsList.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID), 2));
                     }
 
                     if (categoryId == null)

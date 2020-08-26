@@ -7,9 +7,12 @@
              src="@(!string.IsNullOrEmpty(Model.DefaultImage?.Trim()) ? ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"
              data-zoom-image="@(!string.IsNullOrEmpty(Model.DefaultImage?.Trim()) ? ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
     </span>
-    <div class="img_thumb_sliderwrap" style="@(Model.ProductFiles.Count > 1 ? "" : "display:none")">
+    @{
+        var productImages = Model.ProductFiles.Where(f => !string.IsNullOrEmpty(f.FilePath?.Trim()) && f.IsDeleted != true).OrderBy(f => f.SortOrder);
+    }
+    <div class="img_thumb_sliderwrap" style="@(productImages.Count() > 1 ? "" : "display:none")">
         <div id="images-gallery__carousel" class="owl-carousel owl-theme nb_imageZoomCarrousle">
-            @foreach (var item in Model.ProductFiles.Where(f => !string.IsNullOrEmpty(f.FilePath?.Trim()) && f.IsDeleted != null).OrderBy(f => f.SortOrder))
+            @foreach (var item in productImages)
             {
                 <div class="item">
                     <a href="#" data-image="@(ViewBag.BaseFilePath + item.FilePath)"

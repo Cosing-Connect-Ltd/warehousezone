@@ -1092,9 +1092,12 @@ namespace Ganedata.Core.Services
         }
         public Tuple<string, string> GetAvailablePricesRange(IQueryable<ProductMaster> products,int siteId)
         {
-            products.ForEach(u => u.SellPrice = GetPriceForProduct(u.ProductId, siteId));
+            var productsPrices = products.Select(p => p.ProductId)
+                                         .ToList()
+                                         .Select(u => GetPriceForProduct(u, siteId))
+                                         .ToList();
 
-            return new Tuple<string, string>((products.Min(u => u.SellPrice) ?? 0).ToString(), (products.Max(u => u.SellPrice) ?? 0).ToString());
+            return new Tuple<string, string>(productsPrices.Min(u => u).ToString(), productsPrices.Max(u => u).ToString());
         }
         public List<string> GetAllValidProductManufacturers(List<int> productIds)
         {
@@ -1705,12 +1708,23 @@ namespace Ganedata.Core.Services
 
         public decimal GetPriceForProduct(int productId, int siteId)
         {
+            var product = _currentDbContext.ProductMaster.AsNoTracking().FirstOrDefault(u => u.ProductId == productId);
+
+            if ((product.SellPrice == null || product.SellPrice <= 0) && (product.ProductType == ProductKitTypeEnum.ProductByAttribute || product.ProductType == ProductKitTypeEnum.Grouped))
+            {
+                product = _currentDbContext.ProductKitMaps.Where(p => p.ProductId == productId &&
+                                                                      p.IsActive &&
+                                                                      p.IsDeleted != true &&
+                                                                      p.KitProductMaster.SellPrice > 0)
+                                                          .OrderBy(p => p.ProductKitTypes.SortOrder)
+                                                          .ThenBy(p => p.KitProductMaster.SellPrice)
+                                                          .FirstOrDefault()?.KitProductMaster ?? product;
+            }
+
             var calculateTax = GetTenantWebSiteBySiteId(siteId).ShowPricesIncludingTax;
-            var sellPrice = _productPriceService.GetProductPriceThresholdByAccountId(productId, null).SellPrice;
+            var sellPrice = _productPriceService.GetProductPriceThresholdByAccountId(product.ProductId, null).SellPrice;
             if (calculateTax)
             {
-                var product = _currentDbContext.ProductMaster.AsNoTracking().FirstOrDefault(u => u.ProductId == productId);
-
                 if (product != null && product.TaxID > 0 && product.EnableTax == true)
                 {
                     var taxPercentage = _currentDbContext.GlobalTax.AsNoTracking().FirstOrDefault(a => a.TaxID == product.TaxID)?.PercentageOfAmount;
