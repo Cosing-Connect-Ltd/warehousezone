@@ -1,0 +1,116 @@
+﻿@model Ganedata.Core.Entities.Domain.ProductMaster
+@using System.Configuration
+@{
+    var imageFormats = ConfigurationManager.AppSettings["ImageFormats"].Split(new char[] { ',' });
+    var videoFormats = ConfigurationManager.AppSettings["VideoFormats"].Split(new char[] { ',' });
+    var documentFormats = ConfigurationManager.AppSettings["DocumentFormats"].Split(new char[] { ',' });
+    var productFiles = Model.ProductFiles.Where(f => !string.IsNullOrEmpty(f.FilePath?.Trim()) && f.IsDeleted != true).OrderBy(f => f.SortOrder);
+    var productImages = productFiles.Where(f => imageFormats.Contains(Path.GetExtension(f.FilePath)));
+    var productVideos = productFiles.Where(f => videoFormats.Contains(Path.GetExtension(f.FilePath)));
+    var productDocuments = productFiles.Where(f => documentFormats.Contains(Path.GetExtension(f.FilePath)));
+}
+
+<div class="nb_prd_viewingsecWrap" id="Prod_carr_viewer">
+    <span id="zoomViewTrigger"><i class="icon-search"></i></span>
+    <span class="img_view_area">
+        <img id="selected-image"
+             src="@(!string.IsNullOrEmpty(Model.DefaultImage?.Trim()) ? ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")"
+             data-zoom-image="@(!string.IsNullOrEmpty(Model.DefaultImage?.Trim()) ? ViewBag.BaseFilePath + Model.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
+    </span>
+    <div class="img_thumb_sliderwrap" style="@(productImages.Count() > 1 ? "" : "display:none")">
+        <div id="images-gallery__carousel" class="owl-carousel owl-theme nb_imageZoomCarrousle">
+            @foreach (var item in productImages)
+            {
+                <div class="item">
+                    <a href="#" data-image="@(ViewBag.BaseFilePath + item.FilePath)"
+                       data-zoom-image="@(ViewBag.BaseFilePath + item.FilePath)"
+                       class="@(Model.DefaultImage == item.FilePath? "active" : "")">
+                        <img id="selected-image" src="@(ViewBag.BaseFilePath + item.FilePath)" alt="" />
+                    </a>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+@if (productDocuments.Count() > 0 || productVideos.Count() > 0)
+{
+<div class="row">
+    <!-- tabs -->
+    <ul class="nav nav-tabs col-md-12" role="tablist">
+        @if (productDocuments.Count() > 0)
+        {
+            <li role="presentation" nav-item">
+                <a href="#documents" aria-controls="documents" role="tab" data-toggle="tab" class="nav-link active">
+                    Documents
+                    <span class="active-tab-bar"></span>
+                </a>
+            </li>
+        }
+
+        @if (productVideos.Count() > 0)
+        {
+            <li role="presentation" nav-item">
+                <a href="#videos" aria-controls="videos" role="tab" data-toggle="tab" class="nav-link">
+                    Videos
+                    <span class="active-tab-bar"></span>
+                </a>
+            </li>
+        }
+        </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content grouped-product-tab-items col-md-12 m-md-1">
+        @if (productDocuments.Count() > 0)
+        {
+            <div role="tabpanel" class="tab-pane active" id="documents">
+                @foreach (var file in productDocuments)
+                {
+                <div>
+                    <a target="_blank" href="@(ViewBag.BaseFilePath + file.FilePath)" download><b>@Path.GetFileName(file.FilePath).ToUpper()</b></a>
+                </div>
+                }
+            </div>
+        }
+        @if (productVideos.Count() > 0)
+        {
+            <div role="tabpanel" class="tab-pane" id="videos">
+                @foreach (var video in productVideos)
+                {
+                <div>
+                    <video style="width: 100%" controls id='video_@(video.Id)'><source src="@(ViewBag.BaseFilePath + video.FilePath.ToString())"></video>
+                </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+}
+
+@if (!string.IsNullOrEmpty(Model.DefaultImage?.Trim()))
+{
+    <script>
+        $(document).ready(function () {
+            $("#selected-image").elevateZoom({
+                gallery: "images-gallery__carousel",
+                cursor: "pointer",
+                galleryActiveClass: "active",
+                imageCrossfade: true,
+                loadingIcon: "",
+                cursor: "crosshair",
+                zoomWindowFadeIn: 500,
+                zoomWindowFadeOut: 500,
+                easing: true,
+                zoomWindowWidth: 500,
+                zoomWindowHeight: 400,
+                responsive: true,
+                borderSize: 1,
+                destroyContainerOnResize: true,
+                zoomWindowOffetx: 20,
+                zoomWindowOffety: 0,
+                zoomType: "window",
+            });
+        });
+    </script>
+}

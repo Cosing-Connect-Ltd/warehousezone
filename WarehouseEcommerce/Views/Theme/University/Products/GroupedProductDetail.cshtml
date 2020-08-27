@@ -3,6 +3,8 @@
 @{
     ViewBag.Title = Model.Product?.Name + " | " + ViewBag.SiteDescription ?? "";
     var Images = ConfigurationManager.AppSettings["ImageFormats"].Split(new char[] { ',' });
+    var Videos = ConfigurationManager.AppSettings["VideoFormats"].Split(new char[] { ',' });
+    var Files = ConfigurationManager.AppSettings["DocumentFormats"].Split(new char[] { ',' });
 
 
 }
@@ -13,7 +15,7 @@
                 @Html.Partial("_ProductDetailBreadCrumb")
                 <div class="row">
                     <div class="col-md-5 col-lg-4">
-                        @Html.Partial("_ProductImagesGallery", Model.Product)
+                        @Html.Partial("_ProductFilesGallery", Model.Product)
                         <div class="nb_prod_bottomdes">
                             <p class="content">
                                 @Html.Raw(Model.Product.Description)
@@ -21,8 +23,7 @@
                         </div>
                     </div>
                     <div class="col-md-7 col-lg-8">
-                        @*<div class="tab-group rates-page-tabs">*@
-                        <!-- Nav tabs -->
+                        <!-- tabs -->
                         <ul class="nav nav-tabs" role="tablist">
                             @{
                                 var isFirstTab = true;

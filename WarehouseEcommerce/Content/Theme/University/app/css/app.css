@@ -360,7 +360,7 @@ input[type=number]::-webkit-outer-spin-button {
     float: left;
     background-color: #111;
     padding: 20px 0;
-    height: 125px
+    max-height: 153px
 }
 
     .nb_header .nb_logowrap {
@@ -5139,7 +5139,7 @@ a.cashbtn {
 }
 
 .uni-pages-pt {
-    padding-top: 125px !important;
+    padding-top: 138px;
     min-height: calc(100% - 340px)
 }
 
@@ -7385,4 +7385,13 @@ input[type="checkbox"] {
 
 .price-from__text {
     font-size: 14px;
+}
+
+.nb_sec_navwrap .nb_sec_navlist li {
+    min-width: unset;
+    padding: 0 20px;
+}
+
+.uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a {
+    white-space: nowrap;
 }
