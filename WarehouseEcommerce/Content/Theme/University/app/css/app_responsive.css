@@ -1111,7 +1111,9 @@
     }
 
     .product-details-section .footSec {
-        display: block
+        display: block;
+        max-width: unset;
+        margin-right: 0px;
     }
 
     .footSec .addTobasket,
