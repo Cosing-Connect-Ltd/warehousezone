@@ -7,7 +7,7 @@ namespace WarehouseEcommerce.ViewModels
     {
         public ProductKitType ProductKitType { get; set; }
         public List<ProductMaster> Products { get; set; }
-        public Dictionary<int, decimal> ProductsAvailableCounts { get; set; }
+        public Dictionary<int, decimal?> ProductsAvailableCounts { get; set; }
         public Dictionary<int, ProductPriceViewModel> Prices { get; set; }
     }
 }

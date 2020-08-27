@@ -165,6 +165,12 @@ namespace Ganedata.Core.Entities.Domain
         public bool? EnableTax { get; set; }
         [Display(Name = "Don't Monitor Stock")]
         public bool? DontMonitorStock { get; set; }
+        [Display(Name = "Is Preorder Accepted")]
+        public bool? IsPreOrderAccepted { get; set; }
+        [Display(Name = "Min Dispatch Days")]
+        public int? MinDispatchDays { get; set; }
+        [Display(Name = "Max Dispatch Days")]
+        public int? MaxDispatchDays { get; set; }
         [Display(Name = "Country Of Origion")]
         public string CountryOfOrigion { get; set; }
         [Display(Name = "Allow Modify Price")]

@@ -125,6 +125,13 @@
                         @Html.ValidationMessageFor(model => model.DontMonitorStock)
                     </div>
                 </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.IsPreOrderAccepted, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(m => m.IsPreOrderAccepted, new { @class = "checkbox" })
+                        @Html.ValidationMessageFor(model => model.IsPreOrderAccepted)
+                    </div>
+                </div>
 
 
             </div>

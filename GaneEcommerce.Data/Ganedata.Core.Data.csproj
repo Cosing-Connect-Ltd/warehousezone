@@ -1047,6 +1047,10 @@
     <Compile Include="Migrations\202008261303239_added_sort_order_to_ProductManufacturers_table.designer.cs">
       <DependentUpon>202008261303239_added_sort_order_to_ProductManufacturers_table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008271330560_added_preorder_feature_to_products.cs" />
+    <Compile Include="Migrations\202008271330560_added_preorder_feature_to_products.designer.cs">
+      <DependentUpon>202008271330560_added_preorder_feature_to_products.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2152,6 +2156,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008261303239_added_sort_order_to_ProductManufacturers_table.resx">
       <DependentUpon>202008261303239_added_sort_order_to_ProductManufacturers_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008271330560_added_preorder_feature_to_products.resx">
+      <DependentUpon>202008271330560_added_preorder_feature_to_products.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

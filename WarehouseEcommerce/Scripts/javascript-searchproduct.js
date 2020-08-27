@@ -1,12 +1,4 @@
-﻿
-
-
-
-
-
-
-
-function SetProductGroupId(event) {
+﻿function SetProductGroupId(event) {
     $("#ProductGroupId").val(event.currentTarget.value);
 }
 function ValidEmail(email) {
