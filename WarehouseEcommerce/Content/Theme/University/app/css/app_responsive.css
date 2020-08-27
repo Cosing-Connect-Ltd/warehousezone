@@ -354,7 +354,19 @@
         bottom: 5px;
     }
 
-    .product-details-section .footSec{
+    .uni-pages-pt {
+        padding-top: 125px;
+    }
+
+    .nb_header {
+        height: 125px;
+    }
+
+    .img_thumb_sliderwrap .owl-carousel .owl-item img {
+        height: unset;
+    }
+
+    .product-details-section .footSec {
         max-width: 350px;
     }
 
@@ -1099,7 +1111,9 @@
     }
 
     .product-details-section .footSec {
-        display: block
+        display: block;
+        max-width: unset;
+        margin-right: 0px;
     }
 
     .footSec .addTobasket,
