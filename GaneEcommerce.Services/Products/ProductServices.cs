@@ -1559,7 +1559,7 @@ namespace Ganedata.Core.Services
                     Id = prd.ProductKitMap.FirstOrDefault(x => x.KitProductId == prd.ProductId && x.IsDeleted != true && x.TenantId == prd.TenantId && x.ProductKitType == KitType).ProductKitTypeId,
                     IsActive = prd.ProductKitMap.FirstOrDefault(x => x.KitProductId == prd.ProductId && x.IsDeleted != true && x.TenantId == prd.TenantId && x.ProductKitType == KitType && (productId == null || x.ProductId == productId)).IsActive,
                     AttributeValueNames = prd.ProductAttributeValuesMap.Where(m => m.IsDeleted != true).Select(x => x.ProductAttributeValues.ProductAttributes.AttributeName + ": " + x.ProductAttributeValues.Value).ToList(),
-                    ProductTagMaps = prd.ProductTagMaps.Where(u => u.IsDeleted != true).Select(u => u.TagId.ToString()).ToList()
+                    ProductTagMap = prd.ProductTagMaps.Where(u => u.IsDeleted != true).Select(u => u.TagId.ToString()).ToList()
 
                 });
 

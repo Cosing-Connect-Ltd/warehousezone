@@ -41,15 +41,16 @@ namespace WMS
                 cfg.CreateMap<VehicleInspection, VehicleInspectionViewModel>().ReverseMap();
                 cfg.CreateMap<MarketRoute, MarketRouteViewModel>().ReverseMap();
                 cfg.CreateMap<OrderDetail, OrderDetailSessionViewModel>().ReverseMap();
+                cfg.CreateMap<OrderDetail, WebsiteCartItem>().ReverseMap();
                 cfg.CreateMap<ProductMaster, ProductMasterViewModel>().ReverseMap();
                 cfg.CreateMap<ProductAccountCodes, ProductAccountCodesViewModel>().ReverseMap();
-                cfg.CreateMap<Tooltip, TooltipViewModel>()
-                .ForMember(s => s.TenantName, c => c.MapFrom(m => m.Tenant.TenantName)).ReverseMap();
                 cfg.CreateMap<UISetting, UISettingViewModel>().ReverseMap();
                 cfg.CreateMap<UISettingItem, UISettingItemViewModel>().ReverseMap();
                 cfg.CreateMap<ApiCredentials, ApiCredentialsViewModel>()
                 .ForMember(s => s.SiteName, c => c.MapFrom(m => m.TenantWebsites.SiteName))
                 .ForMember(s => s.Location, c => c.MapFrom(m => m.Warehouse.WarehouseName)).ReverseMap();
+                cfg.CreateMap<Tooltip, TooltipViewModel>()
+                .ForMember(s => s.TenantName, c => c.MapFrom(m => m.Tenant.TenantName)).ReverseMap();
 
                 //APIs
                 cfg.CreateMap<ProductMaster, ProductMasterSync>().ReverseMap();
@@ -94,12 +95,16 @@ namespace WMS
                 cfg.CreateMap<OrderProofOfDelivery, OrderProofOfDeliverySync>().ReverseMap();
                 cfg.CreateMap<AssetLog, AssetLogViewModel>().ReverseMap();
                 cfg.CreateMap<GlobalTax, GlobalTaxViewModel>().ReverseMap();
+                cfg.CreateMap<ProductKitMap, ProductKitMapViewModel>().ReverseMap();
                 cfg.CreateMap<PalletProductsSync, PalletProductAddViewModel>().ReverseMap();
                 cfg.CreateMap<AssetLogViewModel, Observation>().ReverseMap();
-                cfg.CreateMap<ProductKitMap, ProductKitMapViewModel>().ReverseMap();
                 cfg.CreateMap<TenantLocations, TenantLocationsSync>().ReverseMap();
                 cfg.CreateMap<AuthUser, UserLoginStatusResponseViewModel>().ReverseMap();
                 cfg.CreateMap<AccountAddresses, AccountAddressSync>().ReverseMap();
+                cfg.CreateMap<WebsiteShippingRules, WebsiteShippingRulesViewModel>().ReverseMap();
+                cfg.CreateMap<AccountAddresses, AddressViewModel>().ReverseMap();
+                cfg.CreateMap<GlobalCountry, CountryViewModel>().ReverseMap();
+                cfg.CreateMap<TenantLocations, CollectionPointViewModel>().ReverseMap();
             });
 
             return config;

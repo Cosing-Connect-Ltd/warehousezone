@@ -23,7 +23,7 @@
 
 <div>
     <h2><span>@ViewBag.Title</span></h2>
-    <form class="form-horizontal" action="/Markets/SaveVehicle" method="post" id="frmSaveMarketVehicle">
+    <form class="form-horizontal" action="/MarketsVehicle/SaveVehicle" method="post" id="frmSaveMarketVehicle">
         @Html.AntiForgeryToken()
         @Html.HiddenFor(c => c.Id)
         @Html.ValidationSummary()
@@ -56,7 +56,7 @@
 
         <div class="col-md-offset-2 col-md-10 bottom-right">
             <input type="submit" class="btn btn-primary" id="saveBtn_MarketVehicles" value="Save" />
-            <a class="btn btn-default" href="/markets/vehicles">Cancel</a>
+            <a class="btn btn-default" href="/MarketsVehicle/Index">Cancel</a>
         </div>
 
     </form>

@@ -96,7 +96,7 @@ namespace Ganedata.Core.Entities.Domain
         public bool? IsActive { get; set; }
         public List<string> AttributeValueNames { get; set; }
 
-        public List<string> ProductTagMaps { get; set; }
+        public List<string> ProductTagMap { get; set; }
         public string TagIds { get; set; }
     }
 

@@ -21,8 +21,8 @@
         settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
         settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = false;
         settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
-        settings.Columns.Add("TenantWebsites.SiteName").Caption="Site Name";
-        settings.Columns.Add("Parent.Name").Caption="Parent Name";
+        settings.Columns.Add("TenantWebsites.SiteName").Caption = "Site Name";
+        settings.Columns.Add("Parent.Name").Caption = "Parent Name";
         settings.Columns.Add("Name");
         settings.Columns.Add("Type");
         settings.Columns.Add(c =>
@@ -61,13 +61,13 @@
         Column.Caption = "Actions";
         Column.SetDataItemTemplateContent(m =>
         {
-            var TypeId=(WebsiteNavigationType?)DataBinder.Eval(m.DataItem, "Type");
+            var TypeId = (WebsiteNavigationType?)DataBinder.Eval(m.DataItem, "Type");
             if (TypeId == WebsiteNavigationType.Category)
             {
                 var SiteId = DataBinder.Eval(m.DataItem, "SiteID");
                 var NavigationId = DataBinder.Eval(m.DataItem, "Id");
                 var functon = string.Format("AddProductToNavigation({0},{1})", SiteId, NavigationId);
-                ViewContext.Writer.Write("<a href="+Url.Action("CreateProductNavigation", "WebsiteNavigations", new { SiteId = SiteId, NavigationId = NavigationId })+"><i class='btn fa fa-list' title='Add Product Website Map'></i></a>");
+                ViewContext.Writer.Write("<a href=" + Url.Action("CreateProductNavigation", "WebsiteNavigations", new { SiteId = SiteId, NavigationId = NavigationId }) + "><i class='btn fa fa-list' title='Add Product Website Map'></i></a>");
 
 
             }

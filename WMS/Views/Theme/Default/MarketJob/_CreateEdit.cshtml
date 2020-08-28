@@ -20,7 +20,7 @@
 
 <h2><span>@ViewBag.Title</span></h2>
 <div class="col-md-10">
-    <form class="form-horizontal" action="@Url.Action("SaveMarketJob","Markets")" method="post" id="frmSaveMarketJob">
+    <form class="form-horizontal" action="@Url.Action("SaveMarketJob","MarketJob")" method="post" id="frmSaveMarketJob">
         @Html.AntiForgeryToken()
         @Html.HiddenFor(c => c.Id)
         <div class="input-group h-100 justify-content-center align-items-center">
