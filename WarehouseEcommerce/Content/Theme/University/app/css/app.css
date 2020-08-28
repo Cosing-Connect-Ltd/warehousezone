@@ -2033,7 +2033,7 @@ input[type=number]::-webkit-outer-spin-button {
         display: block;
         width: 100%;
         height: 445px;
-        box-shadow: 0 0 20px 1px #e3e3e3;
+        border: solid lightgray 1px;
         margin-bottom: 20px;
         overflow: hidden;
         border-radius: 3px;
@@ -2057,7 +2057,7 @@ input[type=number]::-webkit-outer-spin-button {
     }
 
         .nb_prd_viewingsecWrap .img_thumb_sliderwrap .nb_imageZoomCarrousle div.item {
-            box-shadow: 0 0 8px -1px #e3e3e3;
+            border: solid #EEEEEE 0.5px;
             margin: 3px
         }
 
@@ -7451,3 +7451,7 @@ input[type="checkbox"] {
         cursor: pointer;
         z-index: 2;
     }
+
+.wishlist-table .list-icon {
+    font-size: 24px;
+}
