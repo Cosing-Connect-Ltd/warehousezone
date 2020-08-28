@@ -882,3 +882,48 @@ $(".notification-switch").change(function (e) {
 
 
 });
+
+function initializeExpandableContentContainer() {
+    $(".expandable-content-container").each(function (index) {
+        var container = $(this);
+        var content = container.find(".expandable-content-container-body");
+        var readToggleElement = container.find(".read-more");
+
+        if (readToggleElement[0] != undefined) {
+            return;
+        }
+
+        if (content.height() > container.height()) {
+            container.prepend('<span class="read-more" onClick="toggleExpandableContentContainer(this, ' + container.height() + ')"><i class="fa fa-angle-double-down"></i> Show more</span>');
+            content.addClass('long-text');
+        }
+    });
+}
+
+function toggleExpandableContentContainer(element, initialHeight) {
+    var container = $(element).parent();
+    var content = container.find(".expandable-content-container-body");
+
+    if (content.height() > container.height()) {
+        container.css('max-height', (content.height() + 25) + 'px');
+        content.removeClass('long-text');
+        element.innerHTML = '<i class="fa fa-angle-double-up"></i>  Show less'
+    } else {
+        container.css('max-height', initialHeight + 'px');
+        content.addClass('long-text');
+        element.innerHTML = '<i class="fa fa-angle-double-down"></i>  Show more'
+    }
+}
+
+var resizeId;
+$(window).on('resize', function () {
+    $(".expandable-content-container").each(function () {
+        $(this).find(".read-more").remove();
+        $(this).find(".expandable-content-container-body").removeClass("long-text")
+    });
+
+    clearTimeout(resizeId);
+    resizeId = setTimeout(initializeExpandableContentContainer(), 500);
+});
+
+initializeExpandableContentContainer();

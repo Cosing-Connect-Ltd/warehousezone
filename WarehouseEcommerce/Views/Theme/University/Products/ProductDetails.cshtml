@@ -84,10 +84,14 @@
                 </div>
             </div>
             <div class="col-md-12">
-                <div class="nb_prod_bottomdes">
-                    <p class="content">
-                        @Html.Raw(Model.Product.Description)
-                    </p>
+                <div class="expandable-content-container parent-product-content-container">
+                    <div class="expandable-content-container-body">
+                        <div class="nb_prod_bottomdes">
+                            <p class="content">
+                                @Html.Raw(Model.Product.Description)
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -16,10 +16,14 @@
                 <div class="row">
                     <div class="col-md-5 col-lg-4">
                         @Html.Partial("_ProductFilesGallery", Model.Product)
-                        <div class="nb_prod_bottomdes">
-                            <p class="content">
-                                @Html.Raw(Model.Product.Description)
-                            </p>
+                        <div class="expandable-content-container parent-product-content-container">
+                            <div class="expandable-content-container-body">
+                                <div class="nb_prod_bottomdes">
+                                    <p class="content">
+                                        @Html.Raw(Model.Product.Description)
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-7 col-lg-8">
@@ -89,12 +93,19 @@
                                                     @Html.Partial("_ProductDetailActionsButtons", kitProductMaster)
                                                 </div>
                                             </div>
-                                            <div class="attribute-value">
-                                                <span>@Ganedata.Core.Services.Inventory.GetProductAttributesValueToDisplay(kitProductMaster.ProductAttributeValuesMap)</span>
-                                            </div>
-
-                                            <div class="associated-product-description">
-                                                @Html.Raw(kitProductMaster.Description)
+                                            <div class="expandable-content-container child-product-content-container">
+                                                <div class="expandable-content-container-body">
+                                                    @{ var attributesText = Ganedata.Core.Services.Inventory.GetProductAttributesValueToDisplay(kitProductMaster.ProductAttributeValuesMap);}
+                                                    @if (!string.IsNullOrEmpty(attributesText?.Trim()))
+                                                    {
+                                                        <div class="attribute-value">
+                                                            <span>@attributesText</span>
+                                                        </div>
+                                                    }
+                                                    <div class="associated-product-description">
+                                                        @Html.Raw(kitProductMaster.Description)
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         }
@@ -118,5 +129,9 @@
         if (userStatus === "Login") {
             $(".get-trade-price__link").show();
         }
+    });
+
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        initializeExpandableContentContainer();
     });
 </script>

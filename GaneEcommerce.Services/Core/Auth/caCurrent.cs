@@ -66,6 +66,7 @@ namespace Ganedata.Core.Services
                     tenantWebsite.SiteDescription = tenantWeb.SiteDescription;
                     tenantWebsite.Theme = tenantWeb.Theme;
                     tenantWebsite.Logo = tenantWeb.Logo;
+                    tenantWebsite.SmallLogo = tenantWeb.SmallLogo;
                     tenantWebsite.WebsiteContactAddress = tenantWeb.WebsiteContactAddress;
                     tenantWebsite.WebsiteContactEmail = tenantWeb.WebsiteContactEmail;
                     tenantWebsite.WebsiteContactPhone = tenantWeb.WebsiteContactPhone;

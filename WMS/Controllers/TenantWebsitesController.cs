@@ -1,4 +1,5 @@
-﻿using DevExpress.Web.Mvc;
+﻿using DevExpress.Web;
+using DevExpress.Web.Mvc;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Domain.ViewModels;
 using Ganedata.Core.Services;
@@ -35,6 +36,8 @@ namespace WMS.Controllers
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
             Session["UploadTenantWebsiteLogo"] = null;
+            Session["UploadTenantWebsiteSmallLogo"] = null;
+            Session["UploadTenantWebsiteFavicon"] = null;
             return View();
         }
 
@@ -70,6 +73,7 @@ namespace WMS.Controllers
 
             ViewBag.ProductTags = new SelectList(_productLookupService.GetAllValidProductTag(CurrentTenantId),"Id","TagName");
             Session["UploadTenantWebsiteLogo"] = null;
+            Session["UploadTenantWebsiteSmallLogo"] = null;
             Session["UploadTenantWebsiteFavicon"] = null;
             return View();
         }
@@ -90,6 +94,9 @@ namespace WMS.Controllers
                 var logoFilesName = Session["UploadTenantWebsiteLogo"] as string;
                 TenantWebsite.Logo = logoFilesName != null ? MoveFile(logoFilesName, TenantWebsite.SiteID) : null;
 
+                var smallLogoFilesName = Session["UploadTenantWebsiteSmallLogo"] as string;
+                TenantWebsite.SmallLogo = smallLogoFilesName != null ? MoveFile(smallLogoFilesName, TenantWebsite.SiteID) : null;
+
                 var faviconFilesName = Session["UploadTenantWebsiteFavicon"] as string;
                 TenantWebsite.Favicon = faviconFilesName != null ? MoveFile(faviconFilesName, TenantWebsite.SiteID) : null;
 
@@ -100,6 +107,7 @@ namespace WMS.Controllers
 
                 Session["UploadTenantWebsiteFavicon"] = null;
                 Session["UploadTenantWebsiteLogo"] = null;
+                Session["UploadTenantWebsiteSmallLogo"] = null;
                 return RedirectToAction("Index");
             }
 
@@ -123,6 +131,8 @@ namespace WMS.Controllers
 
             Session["UploadTenantWebsiteLogo"] = !string.IsNullOrEmpty(tenantWebsites.Logo) ? new DirectoryInfo(tenantWebsites.Logo).Name : null;
 
+            Session["UploadTenantWebsiteSmallLogo"] = !string.IsNullOrEmpty(tenantWebsites.SmallLogo) ? new DirectoryInfo(tenantWebsites.SmallLogo).Name : null;
+
             Session["UploadTenantWebsiteFavicon"] = !string.IsNullOrEmpty(tenantWebsites.Favicon) ? new DirectoryInfo(tenantWebsites.Favicon).Name : null;
 
             ViewBag.ProductTag = new SelectList(_productLookupService.GetAllValidProductTag(CurrentTenantId), "Id", "TagName");
@@ -135,7 +145,10 @@ namespace WMS.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit( TenantWebsites tenantWebsites, IEnumerable<DevExpress.Web.UploadedFile> LogoUploadControl, IEnumerable<DevExpress.Web.UploadedFile> FaviconUploadControl)
+        public ActionResult Edit( TenantWebsites tenantWebsites,
+                                  IEnumerable<UploadedFile> LogoUploadControl,
+                                  IEnumerable<UploadedFile> SmallLogoUploadControl,
+                                  IEnumerable<UploadedFile> FaviconUploadControl)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             tenantWebsites.DefaultWarehouseId = CurrentWarehouseId;
@@ -148,6 +161,16 @@ namespace WMS.Controllers
                     if (LogoUploadControl != null && LogoUploadControl.Count() > 0)
                     {
                         tenantWebsites.Logo = MoveFile(logoFileName, tenantWebsites.SiteID);
+                    }
+                }
+
+                var smallLogoFileName = Session["UploadTenantWebsiteSmallLogo"] as string;
+                if (string.IsNullOrEmpty(smallLogoFileName)) { tenantWebsites.SmallLogo = ""; }
+                else
+                {
+                    if (SmallLogoUploadControl != null && SmallLogoUploadControl.Count() > 0)
+                    {
+                        tenantWebsites.SmallLogo = MoveFile(smallLogoFileName, tenantWebsites.SiteID);
                     }
                 }
 
@@ -164,6 +187,7 @@ namespace WMS.Controllers
                 _tenantWebsiteService.CreateOrUpdateTenantWebsite(tenantWebsites, CurrentUserId, CurrentTenantId);
                 Session["UploadTenantWebsiteFavicon"] = null;
                 Session["UploadTenantWebsiteLogo"] = null;
+                Session["UploadTenantWebsiteSmallLogo"] = null;
                 return RedirectToAction("Index");
             }
 
@@ -189,7 +213,7 @@ namespace WMS.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditLayoutSettings(WebsiteLayoutSettings layoutSettings, IEnumerable<DevExpress.Web.UploadedFile> SubscriptionPanelImageUploadControl)
+        public ActionResult EditLayoutSettings(WebsiteLayoutSettings layoutSettings, IEnumerable<UploadedFile> SubscriptionPanelImageUploadControl)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             if (ModelState.IsValid)
@@ -233,22 +257,27 @@ namespace WMS.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult UploadSubscriptionPanelImageFile(IEnumerable<DevExpress.Web.UploadedFile> SubscriptionPanelImageUploadControl)
+        public ActionResult UploadSubscriptionPanelImageFile(IEnumerable<UploadedFile> SubscriptionPanelImageUploadControl)
         {
             return UploadFile(SubscriptionPanelImageUploadControl, "SubscriptionPanelImage");
         }
 
-        public ActionResult UploadFaviconFile(IEnumerable<DevExpress.Web.UploadedFile> FaviconUploadControl)
+        public ActionResult UploadFaviconFile(IEnumerable<UploadedFile> FaviconUploadControl)
         {
             return UploadFile(FaviconUploadControl, "Favicon");
         }
 
-        public ActionResult UploadLogoFile(IEnumerable<DevExpress.Web.UploadedFile> LogoUploadControl)
+        public ActionResult UploadLogoFile(IEnumerable<UploadedFile> LogoUploadControl)
         {
             return UploadFile(LogoUploadControl, "Logo");
         }
 
-        public ActionResult UploadFile(IEnumerable<DevExpress.Web.UploadedFile> UploadControl, string bindingName)
+        public ActionResult UploadSmallLogoFile(IEnumerable<UploadedFile> SmallLogoUploadControl)
+        {
+            return UploadFile(SmallLogoUploadControl, "SmallLogo");
+        }
+
+        public ActionResult UploadFile(IEnumerable<UploadedFile> UploadControl, string bindingName)
         {
             foreach (var file in UploadControl)
             {
@@ -259,7 +288,7 @@ namespace WMS.Controllers
             return Content("true");
         }
 
-        private void SaveFile(DevExpress.Web.UploadedFile file)
+        private void SaveFile(UploadedFile file)
         {
             if (!Directory.Exists(Server.MapPath(UploadTempDirectory)))
                 Directory.CreateDirectory(Server.MapPath(UploadTempDirectory));
