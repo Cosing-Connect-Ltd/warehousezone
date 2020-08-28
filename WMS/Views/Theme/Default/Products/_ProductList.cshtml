@@ -131,6 +131,15 @@
         settings.Columns.Add(c =>
         {
 
+            c.FieldName = "IsPreOrderAccepted";
+            c.ColumnType = MVCxGridViewColumnType.CheckBox;
+            (c.PropertiesEdit as CheckBoxProperties).DisplayTextChecked = "True";
+            (c.PropertiesEdit as CheckBoxProperties).DisplayTextUnchecked = "False";
+
+        });
+        settings.Columns.Add(c =>
+        {
+
             c.FieldName = "IsRawMaterial";
             c.ColumnType = MVCxGridViewColumnType.CheckBox;
             (c.PropertiesEdit as CheckBoxProperties).DisplayTextChecked = "True";

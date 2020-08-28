@@ -1436,6 +1436,7 @@
     <Content Include="Views\Theme\University\Shared\_OurBrands.cshtml" />
     <Content Include="Scripts\jquery-3.5.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.5.1.min.map" />
+    <Content Include="Views\Theme\University\Products\_ProductAvailability.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

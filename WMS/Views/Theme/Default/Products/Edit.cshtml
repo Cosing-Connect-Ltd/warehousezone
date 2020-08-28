@@ -125,13 +125,13 @@
             }
         });
 
-        $("#ProductType").change(function () {
-            var kit = $('#ProductType :selected').val();
-            if (kit == "5") {
-                $(".product-attributes").hide();
-            }
-            else {
-                $(".product-attributes").show();
+        $("#IsPreOrderAccepted").change(function (e) {
+            if (e.currentTarget.checked) {
+                $("#min-dispatch-days").show();
+                $("#max-dispatch-days").show();
+            } else {
+                $("#min-dispatch-days").hide();
+                $("#max-dispatch-days").hide();
             }
         });
 
@@ -261,6 +261,44 @@
                             @Html.EditorFor(m => m.DontMonitorStock)
 
                             @Html.ValidationMessageFor(model => model.DontMonitorStock)
+                        </div>
+                    </div>
+                    <div class="input-group h-100 justify-content-center align-items-center">
+                        @Html.LabelFor(model => model.IsPreOrderAccepted, htmlAttributes: new { @class = "col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(m => m.IsPreOrderAccepted)
+
+                            @Html.ValidationMessageFor(model => model.IsPreOrderAccepted)
+                        </div>
+                    </div>
+                    <div class="input-group h-100 justify-content-center align-items-center" id="min-dispatch-days" style=@(Model.IsPreOrderAccepted == true?"":"display:none")>
+                        @Html.LabelFor(m => m.MinDispatchDays, htmlAttributes: new { @class = "col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DevExpress().SpinEditFor(m => m.MinDispatchDays,
+                            settings =>
+                            {
+                                settings.Name = "MinDispatchDays";
+                                settings.ClientVisible = true;
+                                settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                                settings.ControlStyle.CssClass = "form-control";
+                            }
+                            ).GetHtml()
+                            @Html.ValidationMessageFor(model => model.MinDispatchDays)
+                        </div>
+                    </div>
+                    <div class="input-group h-100 justify-content-center align-items-center" id="max-dispatch-days" style=@(Model.IsPreOrderAccepted == true?"":"display:none")>
+                        @Html.LabelFor(m => m.MaxDispatchDays, htmlAttributes: new { @class = "col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DevExpress().SpinEditFor(m => m.MaxDispatchDays,
+                            settings =>
+                            {
+                                settings.Name = "MaxDispatchDays";
+                                settings.ClientVisible = true;
+                                settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                                settings.ControlStyle.CssClass = "form-control";
+                            }
+                            ).GetHtml()
+                            @Html.ValidationMessageFor(model => model.MaxDispatchDays)
                         </div>
                     </div>
                 </div>

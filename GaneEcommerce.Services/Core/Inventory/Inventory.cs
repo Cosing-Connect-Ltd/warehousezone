@@ -1660,20 +1660,19 @@ namespace Ganedata.Core.Services
                                             .Select(a => a.ProductAttributeValues.Value));
         }
 
-        public static decimal GetAvailableProductCount(ProductMaster product, int siteId)
+        public static decimal? GetAvailableProductCount(ProductMaster product, int siteId)
         {
-            decimal availableProductCount = 0;
+            decimal? availableProductCount = 0;
             var tenantWebsiteService = DependencyResolver.Current.GetService<ITenantWebsiteService>();
-            //if (!tenantWebsiteService.VerifyProductAgainstWebsite(productId, siteId)) { return 0; }
 
             var tenantWebsite = tenantWebsiteService.GetTenantWebSiteBySiteId(siteId);
             var warehouseIds = tenantWebsiteService.GetAllValidWebsiteWarehouses(tenantWebsite.TenantId, siteId).Select(u => u.Id).ToList();
 
             if (product != null)
             {
-                if (product.DontMonitorStock == true && product.IsStockItem == true)
+                if ((product.DontMonitorStock == true && product.IsStockItem == true))
                 {
-                    return 20;
+                    return null;
                 }
 
                 switch (product.ProductType)
@@ -1694,12 +1693,12 @@ namespace Ganedata.Core.Services
 
                 }
             }
-            return availableProductCount;
+            return availableProductCount > 0 ? availableProductCount : (product.IsPreOrderAccepted == true ? (decimal?)null : 0);
         }
 
         public static bool IsProductAvailableToSell(ProductMaster product, int siteId)
         {
-            return product.SellPrice > 0 && product.SellPrice.HasValue && GetAvailableProductCount(product, siteId) > 0;
+            return product.SellPrice > 0 && product.SellPrice.HasValue && (GetAvailableProductCount(product, siteId) ?? 20) > 0;
         }
 
         public static bool IsProductInWishList(ProductMaster product, int userId)

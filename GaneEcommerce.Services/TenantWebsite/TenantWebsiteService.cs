@@ -1774,9 +1774,8 @@ namespace Ganedata.Core.Services
         }
 
 
-        public decimal GetProductByAttributeAvailableCount(int productId, List<int> warehouseIds)
+        public decimal? GetProductByAttributeAvailableCount(int productId, List<int> warehouseIds)
         {
-            decimal totalStock = 0;
             var product = _productServices.GetProductMasterById(productId);
             var kitProductMaster = product.ProductKitItems.Where(u => u.IsDeleted != true && u.IsActive)
                 .Select(a => a.KitProductMaster.ProductId).Distinct().ToList();
@@ -1786,19 +1785,21 @@ namespace Ganedata.Core.Services
                 var stock = childProduct?.InventoryStocks?.Where(u => warehouseIds.Contains(u.WarehouseId)).ToList();
                 if (childProduct != null)
                 {
-                    if (childProduct.IsStockItem == true && childProduct.DontMonitorStock == true)
+                    if ((childProduct.IsStockItem == true && childProduct.DontMonitorStock == true))
                     {
-                        return 20;
+                        return null;
                     }
 
                     if (stock != null && stock.Count > 0)
                     {
-                        totalStock += stock.Select(q => q.Available).DefaultIfEmpty(0).Sum(); ;
+                        var stockCount = stock.Select(q => q.Available).DefaultIfEmpty(0).Sum();
+                        if (stockCount > 0) return stockCount;
+                        if (childProduct.IsPreOrderAccepted == true) return null;
                     }
                 }
             }
 
-            return totalStock;
+            return 0;
         }
 
     }

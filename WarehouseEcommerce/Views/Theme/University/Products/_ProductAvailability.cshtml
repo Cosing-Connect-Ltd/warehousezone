@@ -1,0 +1,36 @@
+﻿@model Ganedata.Core.Entities.Domain.ProductMaster
+
+@{
+    var availableProductCount = ViewBag.AvailableProductCount as decimal?;
+}
+
+<div class="availibility">
+    @if (availableProductCount != null && availableProductCount > 0)
+    {
+        <span>@(availableProductCount.Value.ToString("#")) In Stock</span>
+    }
+    else if (availableProductCount == null)
+    {
+        var availabilityText = "Available" + (Model.MinDispatchDays > 0 || Model.MaxDispatchDays > 0 ? " Within " : "");
+
+        if (Model.MinDispatchDays > 0)
+        {
+            availabilityText += Model.MinDispatchDays.Value.ToString();
+        }
+
+        if (Model.MaxDispatchDays > 0 && Model.MaxDispatchDays != Model.MinDispatchDays)
+        {
+            availabilityText += Model.MinDispatchDays > 0 ? " - " : "";
+
+            availabilityText += Model.MaxDispatchDays.Value.ToString();
+        }
+
+        availabilityText += (Model.MinDispatchDays > 0 || Model.MaxDispatchDays > 0 ? " Working Days." : "");
+
+        <span>@availabilityText</span>
+    }
+    else
+    {
+        <span class="product-unavailable-text">Currently unavailable.</span>
+    }
+</div>

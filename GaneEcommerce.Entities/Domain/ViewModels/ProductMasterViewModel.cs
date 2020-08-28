@@ -73,6 +73,9 @@ namespace Ganedata.Core.Entities.Domain
         public bool EnableWarranty { get; set; }
         public bool EnableTax { get; set; }
         public bool? DontMonitorStock { get; set; }
+        public bool? IsPreOrderAccepted { get; set; }
+        public int? MinDispatchDays { get; set; }
+        public int? MaxDispatchDays { get; set; }
         [Display(Name = "Process by Case")]
         public bool ProcessByCase { get; set; }
         [Display(Name = "Process by Pallet")]

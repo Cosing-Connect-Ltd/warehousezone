@@ -15,11 +15,11 @@
         <button id="btnwish_@Model.ProductId" onclick="redirectToWishListByConfirmation()" class="addtowishlistbtn" style="background-color: red !important">Add to Wishlist</button>
         <a href="javascript:;" class="addtowishlist" id="wish_@Model.ProductId" onclick="redirectToWishListByConfirmation()"><i class="icon-love list-icon" style="color: red;"></i></a>
     }
-    @if (@Model.SellPrice > 0 && @Model.SellPrice.HasValue && (availableProductCount > 0))
+    @if (@Model.SellPrice > 0 && @Model.SellPrice.HasValue && (availableProductCount == null || availableProductCount > 0))
     {
         <div class="qty">
             <span>quantity</span>
-            @Html.DropDownList("product-quantity", Enumerable.Range(1, (int)availableProductCount).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), htmlAttributes: new { @class = "form-control" })
+            @Html.DropDownList("product-quantity", Enumerable.Range(1, (int)(availableProductCount ?? 20)).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), htmlAttributes: new { @class = "form-control" })
         </div>
 
         <button class="addTobasket" onclick="addToCart(@Model.ProductId, document.getElementById('product-quantity').value)">Add to basket</button>

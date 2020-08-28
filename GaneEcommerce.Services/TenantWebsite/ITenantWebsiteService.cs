@@ -143,7 +143,7 @@ namespace Ganedata.Core.Services
 
         List<ProductPriceViewModel> GetPricesForProducts(List<int> productIds, int siteId);
 
-        decimal GetProductByAttributeAvailableCount(int productId, List<int> warehouseIds);
+        decimal? GetProductByAttributeAvailableCount(int productId, List<int> warehouseIds);
         List<ProductManufacturer> GetWebsiteProductManufacturers(int siteId);
 
     }

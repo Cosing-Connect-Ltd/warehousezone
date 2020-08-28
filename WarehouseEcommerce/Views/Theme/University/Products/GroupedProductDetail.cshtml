@@ -60,26 +60,20 @@
                                                     <div>SKU: @kitProductMaster.SKUCode</div>
                                                     @if (kitProductMaster.ProductManufacturer != null)
                                                     {
-                                                    <div>Brand: <a href="@Url.Action("List", "Products", new { values = "BrandS-" + kitProductMaster.ProductManufacturer.Name.Replace(" ", "_") })">@kitProductMaster.ProductManufacturer.Name</a></div>
+                                                        <div>Brand: <a href="@Url.Action("List", "Products", new { values = "BrandS-" + kitProductMaster.ProductManufacturer.Name.Replace(" ", "_") })">@kitProductMaster.ProductManufacturer.Name</a></div>
                                                     }
                                                     @if (!string.IsNullOrEmpty(kitProductMaster.ManufacturerPartNo?.Trim()))
                                                     {
-                                                    <div>MFP No: @kitProductMaster.ManufacturerPartNo</div>
+                                                        <div>MFP No: @kitProductMaster.ManufacturerPartNo</div>
                                                     }
-                                                    <div class="availibility">
-                                                        @{
-                                                            var availableProductCount = item.ProductsAvailableCounts[kitProductMaster.ProductId];
-                                                            ViewBag.AvailableProductCount = availableProductCount;
-                                                        }
-
-                                                        @if (availableProductCount > 0)
-                                                        {
-                                                            <span>@(availableProductCount.ToString("#")) In Stock</span>
-                                                        }
-                                                        else
-                                                        {
-                                                            <span>Currently unavailable.</span>
-                                                        }
+                                                    @{
+                                                        ViewBag.AvailableProductCount = item.ProductsAvailableCounts[kitProductMaster.ProductId];
+                                                    }
+                                                    @Html.Partial("_ProductAvailability", kitProductMaster)
+                                                    <div class="get-trade-price__link" style="display: none;">
+                                                        <a href="javascript:;" onclick="GetLoggedIn(false,true)">
+                                                            Get Trade Price
+                                                        </a>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-lg-12 col-xl-8">
@@ -89,7 +83,7 @@
                                                         <div class="prd_amnt_excl_VAT">(@ViewBag.CurrencySymbol@prices.FinalSellPrice<span> excl VAT</span>)</div>
                                                         if (kitProductMaster.SellPrice != prices.FinalSellPrice)
                                                         {
-                                                        <div class="prd_amnt_RRP">RRP @ViewBag.CurrencySymbol@kitProductMaster.SellPrice<span> excl VAT</span></div>
+                                                            <div class="prd_amnt_RRP">RRP @ViewBag.CurrencySymbol@kitProductMaster.SellPrice<span> excl VAT</span></div>
                                                         }
                                                     }
                                                     @Html.Partial("_ProductDetailActionsButtons", kitProductMaster)
@@ -118,3 +112,11 @@
 </section>
 
 @Html.Partial("_RelatedProducts", Model.RelatedProducts)
+
+<script>
+    $(function () {
+        if (userStatus === "Login") {
+            $(".get-trade-price__link").show();
+        }
+    });
+</script>

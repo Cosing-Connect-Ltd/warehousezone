@@ -200,8 +200,6 @@ namespace WarehouseEcommerce.Controllers
                 return RedirectToAction("List", "Products", new { sku = sku });
             }
 
-
-
             model.Product.ProductFiles = model.Product.ProductFiles.Where(p => p.IsDeleted != true).ToList();
 
             if (baseProduct?.ProductType == ProductKitTypeEnum.ProductByAttribute && baseProduct.ProductId != model.Product.ProductId)
@@ -222,6 +220,8 @@ namespace WarehouseEcommerce.Controllers
             SetProductViewModelCategoryInfo(baseProduct, model);
 
             model.Prices = _tenantWebsiteService.GetPricesForProducts(new List<int> { model.Product.ProductId }, CurrentTenantWebsite.SiteID).FirstOrDefault();
+
+            model.AvailableProductCount = Inventory.GetAvailableProductCount(model.Product, CurrentTenantWebsite.SiteID);
 
             model.RelatedProducts = _productServices.GetRelatedProductsByProductId(model.Product.ProductId, CurrentTenantId, CurrentTenantWebsite.SiteID, baseProduct.ProductId);
 
