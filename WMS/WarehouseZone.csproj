@@ -528,6 +528,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AuthUserGroupsController.cs" />
     <Compile Include="Controllers\ApiCredentialsController.cs" />
+    <Compile Include="Controllers\MarketJobController.cs" />
+    <Compile Include="Controllers\MarketsVehicleController.cs" />
     <Compile Include="Controllers\ProductAttributeValuesController.cs" />
     <Compile Include="Controllers\WebAPI\ApiTenantLocationsSyncController.cs" />
     <Compile Include="Controllers\WebAPI\ApiWebsitesController.cs" />

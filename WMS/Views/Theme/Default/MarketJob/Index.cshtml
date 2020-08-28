@@ -38,7 +38,7 @@
     function UpdateJobAllocation() {
         var data = $("#frmAllocateMarketJob").serialize();
 
-        var url = '@Url.Action("AllocateMarketJob","Markets")';
+        var url = '@Url.Action("AllocateMarketJob","MarketJob")';
         var callback = function () {
             for (var i = 1; i <= 6; i++) {
                 var dx = GetDevexControlByName('MarketJobsGrid');
@@ -102,8 +102,8 @@
         </div>
 
     </div>
-    @Html.Action("MarketJobsListPartial", "Markets")
+    @Html.Action("MarketJobsListPartial", "Marketjob")
     <div class="col-md-offset-2 col-md-10 bottom-right">
-        <a class="btn btn-primary" href="/markets/MarketJobEdit"></b>Create Job</a>
+        <a class="btn btn-primary" href="/MarketJob/Edit">Create Job</a>
     </div>
 </div>

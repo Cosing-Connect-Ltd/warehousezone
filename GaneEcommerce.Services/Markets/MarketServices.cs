@@ -285,9 +285,9 @@ namespace Ganedata.Core.Services
             }
         }
 
-        public List<int> GetMarketCustomerByAccountId(int accountId,int TenantId)
+        public List<int> GetMarketCustomerByAccountId(int accountId, int TenantId)
         {
-            return _currentDbContext.MarketCustomers.Where(u => u.AccountId == accountId && u.TenantId == TenantId && u.IsDeleted != true).Select(u=>u.MarketId).ToList();
+            return _currentDbContext.MarketCustomers.Where(u => u.AccountId == accountId && u.TenantId == TenantId && u.IsDeleted != true).Select(u => u.MarketId).ToList();
         }
 
 
@@ -449,7 +449,7 @@ namespace Ganedata.Core.Services
 
         public IQueryable<MarketJob> GetAllValidMarketJobs(int tenantId, MarketJobStatusEnum? statusEnum = null)
         {
-            var marketJobs = _currentDbContext.MarketJobs.Where(m => m.TenantId == tenantId && m.IsDeleted != true && (statusEnum == null || m.LatestJobStatusId == statusEnum));
+            var marketJobs = _currentDbContext.MarketJobs.Where(m => m.TenantId == tenantId && m.IsDeleted != true && (statusEnum == null || statusEnum == 0 || m.LatestJobStatusId == statusEnum));
             return marketJobs;
         }
         public MarketJobViewModel GetMarketJobById(int marketJobId)
@@ -466,6 +466,7 @@ namespace Ganedata.Core.Services
                 {
                     model.ResourceID = jobAllocation.ResourceId;
                     model.ResourceName = jobAllocation.Resource.Name;
+                    model.MarketJobStatusId = (int?)jobAllocation.MarketJobStatusId;
                 }
                 if (item.MarketRoute != null)
                 {
@@ -479,7 +480,9 @@ namespace Ganedata.Core.Services
 
         private MarketJobAllocation GetLatestAllocationForJob(int jobId)
         {
-            return _currentDbContext.MarketJobAllocations.OrderByDescending(x => x.DateCreated)
+            return _currentDbContext.MarketJobAllocations
+                .Include(x => x.Resource)
+                .OrderByDescending(x => x.DateCreated)
                    .FirstOrDefault(x => x.MarketJobId == jobId &&
                                         (x.MarketJobStatusId != MarketJobStatusEnum.Declined || x.MarketJobStatusId != MarketJobStatusEnum.Cancelled ||
                                          x.MarketJobStatusId != MarketJobStatusEnum.Completed));

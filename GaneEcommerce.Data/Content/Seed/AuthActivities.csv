@@ -115,12 +115,12 @@ ActivityId,ActivityName,ActivityController,ActivityAction,IsActive,RightNav,Excl
 114,Wastage,inventorytransaction,WastageIndex,1,1,0,0,2,5,1,2019-03-26 03:49:08.423,2019-03-26 03:49:08.423,1,1,0
 115,Handheld Direct Sales Perm,Handheld,DirectSalesPerm,1,0,0,0,0,6,1,2019-03-26 03:49:08.427,2019-03-26 03:49:08.427,2,2,0
 116,Markets,Markets,Index,1,1,0,0,3,7,1,2019-03-26 03:49:08.430,2019-03-26 03:49:08.430,1,1,0
-117,Vehicles,Markets,Vehicles,1,1,0,0,1,7,1,2019-03-26 03:49:08.433,2019-03-26 03:49:08.433,1,1,0
+117,Vehicles,MarketsVehicle,Index,1,1,0,0,1,7,1,2019-03-26 03:49:08.433,2019-03-26 03:49:08.433,1,1,0
 118,Vehicle Inspections,VehicleInspection,Index,1,1,0,0,2,7,1,2019-03-26 03:49:08.437,2019-03-26 03:49:08.437,1,1,0
 119,Route Scheduler,MarketRouteSchedules,Index,1,1,0,0,5,7,1,2019-03-26 03:49:08.437,2019-03-26 03:49:08.437,1,1,0
-120,MarketJob,Markets,MarketJobs,1,0,0,0,0,7,1,2019-03-26 03:49:08.440,2019-03-26 03:49:08.440,2,2,0
-121,MarketJobs Edit,MarketJobs,MarketJobsEdit,1,0,0,0,0,7,1,2019-03-26 03:49:08.443,2019-03-26 03:49:08.443,2,2,0
-122,Random Jobs,Markets,MarketJobs,1,1,0,0,6,7,1,2019-03-26 03:49:08.447,2019-03-26 03:49:08.447,2,2,0
+120,MarketJob,MarketJob,Index,1,0,0,0,0,7,1,2019-03-26 03:49:08.440,2019-03-26 03:49:08.440,2,2,0
+121,MarketJobs Edit,MarketJob,Edit,1,0,0,0,0,7,1,2019-03-26 03:49:08.443,2019-03-26 03:49:08.443,2,2,0
+122,Random Jobs,MarketJob,Index,1,1,0,0,6,7,1,2019-03-26 03:49:08.447,2019-03-26 03:49:08.447,2,2,0
 123,Handheld Market Route Permission,Handheld,MarketRoutesPerm,1,0,0,0,0,7,1,2019-03-26 03:49:08.450,2019-03-26 03:49:08.450,2,2,0
 124,Handheld Random Jobs Permission,Handheld,RandomJobsPerm,1,0,0,0,0,7,1,2019-03-26 03:49:08.453,2019-03-26 03:49:08.453,2,2,0
 125,Handheld End of Day Permission,Handheld,EndOfDayPerm,1,0,0,0,0,7,1,2019-03-26 03:49:08.457,2019-03-26 03:49:08.457,2,2,0

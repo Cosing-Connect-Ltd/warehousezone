@@ -68,7 +68,7 @@ $(document).on('click', '#modalDialog .modal-footer #deleteConfirm', function (e
                 if (controllerAction == "DeleteSelectedKitItem") {
                     ProductKitSelectedItemsGrid.Refresh();
                 }
-                if (controllerAction == "DeleteMarketJob") {
+                if (controllerAction == "Delete") {
                     MarketJobsGrid1.Refresh();
                     MarketJobsGrid6.Refresh();
                 }
