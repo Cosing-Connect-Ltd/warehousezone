@@ -349,11 +349,13 @@ namespace Ganedata.Core.Data.Helpers
 
             var groupedParentChildProductsAssociationsData = parentChildProductsAssociationsData.Where(p => !string.IsNullOrEmpty(p.ParentSkuCode) && !string.IsNullOrEmpty(p.ChildSkuCode) && !string.IsNullOrEmpty(p.ParentSkuCode))
                                                                                                 .GroupBy(p => p.AssociationType)
-                                                                                                .Select(pg => {
-                                                                                                    return new {
+                                                                                                .Select(pg =>
+                                                                                                {
+                                                                                                    return new
+                                                                                                    {
                                                                                                         Name = pg.Key,
                                                                                                         Products = pg.GroupBy(p => p.ParentSkuCode)
-                                                                                                                     .Select(pc => new { SkuCode = pc.Key, ChildSkuCodes = pc.Select(pcd => pcd.ChildSkuCode).ToList()})
+                                                                                                                     .Select(pc => new { SkuCode = pc.Key, ChildSkuCodes = pc.Select(pcd => pcd.ChildSkuCode).ToList() })
                                                                                                     };
                                                                                                 });
 
@@ -373,7 +375,7 @@ namespace Ganedata.Core.Data.Helpers
                         {
                             var parentProduct = dbContext.ProductMaster.FirstOrDefault(p => p.SKUCode == parentProductData.SkuCode && p.IsDeleted != true);
 
-                            if(parentProduct == null)
+                            if (parentProduct == null)
                             {
                                 resultList.Add($"Parent product does not exist with SkuCode : \"{parentProductData.SkuCode}\"");
                                 continue;
@@ -1444,7 +1446,8 @@ namespace Ganedata.Core.Data.Helpers
 
                     while ((readText = sr.ReadLine()?.Split(delimiter)) != null)
                     {
-                        try {
+                        try
+                        {
 
                             readText = readText.Select(x => x.Replace("\"", "")).ToArray();
 
@@ -2300,7 +2303,7 @@ namespace Ganedata.Core.Data.Helpers
                 {
                     weightGroup = context.GlobalWeightGroups.Find(weightGroupId);
 
-                    if(weightGroup == null)
+                    if (weightGroup == null)
                     {
                         weightGroup = new GlobalWeightGroups()
                         {
@@ -3174,7 +3177,7 @@ namespace Ganedata.Core.Data.Helpers
                         };
                         if (currentAddress.CountryID <= 0)
                         {
-                            currentAddress.CountryID = GetPrestaShopCountry(item.Id_country.Text, PrestashopUrl, PrestashopUrl).FirstOrDefault();
+                            currentAddress.CountryID = GetPrestaShopCountry(item.Id_country.Text, PrestashopUrl, PrestashopKey).FirstOrDefault();
                         }
                     }
                     else

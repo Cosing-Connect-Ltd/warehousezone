@@ -58,7 +58,7 @@ namespace WMS.CustomBindings
 
 
             var data = transactions.ToList();
-            data.ForEach(u=>u.TagIds = string.Join(",",u.ProductTagMaps.ToList()));
+            data.ForEach(u=>u.TagIds = string.Join(",",u.ProductTagMap.ToList()));
             e.Data =data;
         }
 

@@ -4,21 +4,21 @@
     settings =>
     {
         settings.Name = "MarketJobsGrid";
-        settings.CallbackRouteValues = new { Controller = "Markets", Action = "MarketJobsListPartial" };
+        settings.CallbackRouteValues = new { Controller = "MarketJob", Action = "MarketJobsListPartial" };
         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
         settings.CustomBindingRouteValuesCollection.Add(
             GridViewOperationType.Paging,
-            new { Controller = "Markets", Action = "_MarketGridViewsPaging" }
+            new { Controller = "MarketJob", Action = "_MarketGridViewsPaging" }
         );
 
         settings.CustomBindingRouteValuesCollection.Add(
         GridViewOperationType.Filtering,
-        new { Controller = "Markets", Action = "_MarketGridViewFiltering" }
+        new { Controller = "MarketJob", Action = "_MarketGridViewFiltering" }
         );
 
         settings.CustomBindingRouteValuesCollection.Add(
         GridViewOperationType.Sorting,
-        new { Controller = "Markets", Action = "_MarketGridViewDataSorting" }
+        new { Controller = "MarketJob", Action = "_MarketGridViewDataSorting" }
         );
 
         settings.Settings.ShowHeaderFilterButton = false;
@@ -89,8 +89,8 @@
                 if (ViewBag.MarketJobStatus == (int)MarketJobStatusEnum.UnAllocated || ViewBag.MarketJobStatus == (int)MarketJobStatusEnum.Allocated || ViewBag.MarketJobStatus == (int)MarketJobStatusEnum.Accepted)
                 {
                     var id = (int)DataBinder.Eval(m.DataItem, "Id");
-                    ViewContext.Writer.Write("<form class='form-horizontal' id='_deleteMarketJob'>" + Html.AntiForgeryToken() + "<a title='Edit Job' class='btn fa fa-pencil' href='/markets/MarketJobEdit/" + id + "' role='button'></a>" +
-                                             "<a class='btn  fa fa-trash' role='button' data-valueid='" + id + "' title='Cancel Job' data-action='DeleteMarketJob' data-controller='Markets' id='deleteBtn' data-title='Cancel Market Job' data-message='Are you sure you want to cancel this Job?' data-toggle='modal' data-target='#confirm-delete'></a></form>");
+                    ViewContext.Writer.Write("<form class='form-horizontal' id='_deleteMarketJob'>" + Html.AntiForgeryToken() + "<a title='Edit Job' class='btn fa fa-pencil' href='/MarketJob/Edit/" + id + "' role='button'></a>" +
+                                             "<a class='btn  fa fa-trash' role='button' data-valueid='" + id + "' title='Cancel Job' data-action='Delete' data-controller='MarketJob' id='deleteBtn' data-title='Cancel Market Job' data-message='Are you sure you want to cancel this Job?' data-toggle='modal' data-target='#confirm-delete'></a></form>");
                 }
             });
         });

@@ -33,7 +33,7 @@ namespace WMS
             routes.MapRoute(
                 name: "VehicleCreate",
                 url: "Markets/Vehicles/Create",
-                defaults: new { action = "VehiclesEdit", controller = "Markets", id = UrlParameter.Optional }
+                defaults: new { action = "Edit", controller = "MarketsVehicle", id = UrlParameter.Optional }
             );
 
             routes.MapRoute(

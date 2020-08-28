@@ -1,4 +1,5 @@
 using DevExpress.Web.Mvc;
+using DevExpress.XtraReports.Security;
 using Elmah.Contrib.WebApi;
 using Ganedata.Core.Entities.Helpers;
 using Newtonsoft.Json;
@@ -31,6 +32,7 @@ namespace WMS
             DevExtremeBundleConfig.RegisterBundles(BundleTable.Bundles);
             DevExpress.Data.Helpers.ServerModeCore.DefaultForceCaseInsensitiveForAnySource = true;
             DevExpress.XtraReports.Web.ASPxReportDesigner.StaticInitialize();
+            ScriptPermissionManager.GlobalInstance = new ScriptPermissionManager(ExecutionMode.Unrestricted);
 
             //Elmah for Web API errors logging
             GlobalConfiguration.Configuration.Filters.Add(new ElmahHandleErrorApiAttribute());
