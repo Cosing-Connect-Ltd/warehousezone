@@ -61,5 +61,6 @@ namespace Ganedata.Core.Entities.Domain
         public int? SiteId { get; set; }
         [ForeignKey("SiteId")]
         public virtual TenantWebsites TenantWebsites { get; set; }
+        public bool MandatoryLocationScan { get; set; }
     }
 }

@@ -1,16 +1,10 @@
 ﻿using AutoMapper;
 using Ganedata.Core.Data;
 using Ganedata.Core.Data.Helpers;
-using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Services;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web.Configuration;
 using System.Web.Http;
 
 namespace WMS.Controllers.WebAPI
@@ -51,7 +45,7 @@ namespace WMS.Controllers.WebAPI
             string result = "";
             foreach (var item in sites)
             {
-                result = dataImportFactory.GetPrestaShopOrdersSync(item.TenantId, item.DefaultWarehouseId, item.ApiUrl, item.ApiKey, item.SiteID ?? 0).Result;
+                result = dataImportFactory.GetPrestaShopOrdersSync(item.TenantId, item.DefaultWarehouseId, item.ApiUrl, item.ApiKey, item.Id).Result;
 
             }
             return Ok(!string.IsNullOrEmpty(result) ? result : "All orders are syncroized properly");
@@ -64,11 +58,12 @@ namespace WMS.Controllers.WebAPI
             string result = "";
             foreach (var item in sites)
             {
-                result = dataImportFactory.PrestaShopStockSync(item.TenantId, item.DefaultWarehouseId, item.ApiUrl, item.ApiKey, item.SiteID ?? 0).Result;
+                result = await dataImportFactory.PrestaShopStockSync(item.TenantId, item.DefaultWarehouseId, item.ApiUrl, item.ApiKey, item.Id);
 
             }
             return Ok(result);
         }
+
         [HttpGet]
         //Post http://localhost:8005/api/sync/Get-PrestaShop-country/?TenatId=1&WarehouseId=1
         public async Task<IHttpActionResult> GetPrestaShopCountry(int TenatId, int WarehouseId)
@@ -77,7 +72,7 @@ namespace WMS.Controllers.WebAPI
             string result = "";
             foreach (var item in sites)
             {
-                var data = dataImportFactory.GetPrestaShopCountry(null, item.ApiUrl, item.ApiKey);
+                var data = await dataImportFactory.GetPrestaShopCountry(null, item.ApiUrl, item.ApiKey);
                 if (data.Count > 0)
                     result = "Countries Imported";
                 break;
