@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ganedata.Core.Entities.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -62,5 +63,12 @@ namespace Ganedata.Core.Entities.Domain
 
         public bool? StockIssue { get; set; }
 
+    }
+
+    public class InventoryCalculationViewModel
+    {
+        public decimal Quantity { get; set; }
+        public InventoryTransactionTypeEnum Type { get; set; }
+        public Order Order { get; set; }
     }
 }

@@ -3254,7 +3254,7 @@ namespace Ganedata.Core.Data.Helpers
                     if (account == null)
                     {
                         account = new Account();
-                        account.CompanyName = string.IsNullOrEmpty(item.Company) ? "P" : item.Company;
+                        account.CompanyName = string.IsNullOrEmpty(item.Company) ? item.Firstname + " " + item.Lastname : item.Company;
                         account.AccountCode = item.Secure_key;
                         account.website = item.Website;
                         account.AccountStatusID = AccountStatusEnum.Active;
@@ -3273,7 +3273,7 @@ namespace Ganedata.Core.Data.Helpers
                     }
                     else
                     {
-                        account.CompanyName = string.IsNullOrEmpty(item.Company) ? "P" : item.Company;
+                        account.CompanyName = string.IsNullOrEmpty(item.Company) ? item.Firstname + " " + item.Lastname : item.Company;
                         account.AccountCode = item.Secure_key;
                         account.website = item.Website;
                         account.DateUpdated = DateTime.UtcNow;

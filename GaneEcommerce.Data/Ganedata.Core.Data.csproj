@@ -1059,6 +1059,10 @@
     <Compile Include="Migrations\202008301541450_mandatory-location-scan-flag-in-tenant-config.designer.cs">
       <DependentUpon>202008301541450_mandatory-location-scan-flag-in-tenant-config.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008311717341_inventory-stocks-from-persistable-entity.cs" />
+    <Compile Include="Migrations\202008311717341_inventory-stocks-from-persistable-entity.designer.cs">
+      <DependentUpon>202008311717341_inventory-stocks-from-persistable-entity.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2173,6 +2177,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008301541450_mandatory-location-scan-flag-in-tenant-config.resx">
       <DependentUpon>202008301541450_mandatory-location-scan-flag-in-tenant-config.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008311717341_inventory-stocks-from-persistable-entity.resx">
+      <DependentUpon>202008311717341_inventory-stocks-from-persistable-entity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

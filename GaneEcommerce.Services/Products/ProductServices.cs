@@ -379,6 +379,7 @@ namespace Ganedata.Core.Services
 
         public bool MoveStockBetweenLocations(int transactionId, int? locationId, decimal moveQuantity, int tenantId, int warehouseId, int userId)
         {
+            //TODO: check new location calculation implementation here
             bool status = false;
             var cTransaction = _currentDbContext.InventoryTransactions.Find(transactionId);
 
