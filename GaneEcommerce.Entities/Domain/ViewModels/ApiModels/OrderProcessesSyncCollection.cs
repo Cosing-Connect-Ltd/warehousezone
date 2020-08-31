@@ -99,6 +99,7 @@ namespace Ganedata.Core.Models
         public DateTime? ExpiryDate { get; set; }
         public List<PalleTrackingProcess> PalleTrackingProcess { get; set; }
         public List<ProductKitMapViewModel> ProductKitMapViewModel { get; set; }
+        public string LocationCode { get; set; }
     }
 
     public class AccountTransactionInfoSync

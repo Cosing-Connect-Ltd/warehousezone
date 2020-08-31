@@ -42,6 +42,7 @@ namespace WarehouseDpdLabelPrint
         private void button1_Click(object sender, EventArgs e)
         {
             int tenantId = Convert.ToInt32(ConfigurationManager.AppSettings["TenantId"]);
+            string serial = ConfigurationManager.AppSettings["AccessSerial"];
             string siteUrl = ConfigurationManager.AppSettings["SiteUrl"];
             // Get shipments id from warehouse system
 
@@ -49,6 +50,7 @@ namespace WarehouseDpdLabelPrint
             userModel.UserName = textBox1.Text;
             userModel.Md5Pass = GetMd5(textBox2.Text);
             userModel.TenantId = tenantId;
+            userModel.SerialNo = serial;
             try
             {
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(siteUrl + "api/sync/get-login-status");
@@ -208,6 +210,7 @@ namespace WarehouseDpdLabelPrint
 
         public class UserLoginStatusViewModel
         {
+            public string SerialNo { get; set; }
             public string UserName { get; set; }
             public string Md5Pass { get; set; }
             public int TenantId { get; set; }

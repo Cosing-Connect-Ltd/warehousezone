@@ -855,13 +855,10 @@ namespace Ganedata.Core.Services
 
             context.InventoryTransactions.Add(transaction);
 
-            // save changes in database
             if (context.SaveChanges() > 0)
             {
-
                 StockRecalculate(productId, warehouseId, tenantId, userId);
                 AdjustRecipeItemsInventory(transaction);
-
             }
 
             return transaction;
@@ -889,7 +886,7 @@ namespace Ganedata.Core.Services
 
                 if (serial != null)
                 {
-                    serial.CurrentStatus = (InventoryTransactionTypeEnum)typeId;
+                    serial.CurrentStatus = typeId;
                     serial.DateUpdated = DateTime.UtcNow;
                     serial.SoldWarrantyStartDate = null;
                     serial.SoldWarrentyEndDate = null;
@@ -926,15 +923,65 @@ namespace Ganedata.Core.Services
             return lstTemp;
         }
 
-        /// <summary>
-        /// recalculate stock of a single product and store it in InventoryStocks table.
-        /// </summary>
-        /// <param name="ProductId"></param>
-        /// <param name="WarehouseId"></param>
-        /// <param name="TenantId"></param>
-        /// <param name="UserId"></param>
-        /// <returns>true / false</returns>
-        public static Boolean StockRecalculate(int ProductId, int WarehouseId, int TenantId, int UserId,
+
+        public static decimal GetTotalInStock(IQueryable<InventoryCalculationViewModel> query, bool stockByLocation = false)
+        {
+            decimal totalIn;
+            decimal totalOut;
+            decimal inStock;
+            decimal adjustmentIn;
+            decimal adjustmentOut;
+            decimal totalReturns;
+            decimal transferIn;
+            decimal transferOut;
+            decimal worksOut;
+            decimal samples;
+            decimal directSales;
+            decimal exchnageOut;
+            decimal wastages;
+            decimal movementIn = 0m;
+            decimal movementOut = 0m;
+
+            totalIn = query.Where(e => e.Type == InventoryTransactionTypeEnum.PurchaseOrder).Select(I => I.Quantity)
+                .DefaultIfEmpty(0).Sum();
+            totalOut = query.Where(e => e.Type == InventoryTransactionTypeEnum.SalesOrder).Select(I => I.Quantity)
+                .DefaultIfEmpty(0).Sum();
+            totalReturns = query.Where(e => e.Type == InventoryTransactionTypeEnum.Returns).Select(I => I.Quantity)
+                .DefaultIfEmpty(0).Sum();
+            adjustmentIn = query.Where(e => e.Type == InventoryTransactionTypeEnum.AdjustmentIn)
+                .Select(I => I.Quantity).DefaultIfEmpty(0).Sum();
+            adjustmentOut = query.Where(e => e.Type == InventoryTransactionTypeEnum.AdjustmentOut)
+                .Select(I => I.Quantity).DefaultIfEmpty(0).Sum();
+            transferIn = query.Where(e => e.Type == InventoryTransactionTypeEnum.TransferIn).Select(I => I.Quantity)
+                .DefaultIfEmpty(0).Sum();
+            transferOut = query.Where(e => e.Type == InventoryTransactionTypeEnum.TransferOut).Select(I => I.Quantity)
+                .DefaultIfEmpty(0).Sum();
+            worksOut = query.Where(e => e.Type == InventoryTransactionTypeEnum.WorksOrder).Select(I => I.Quantity)
+                .DefaultIfEmpty(0).Sum();
+            samples = query.Where(e => e.Type == InventoryTransactionTypeEnum.Samples).Select(I => I.Quantity)
+                .DefaultIfEmpty(0).Sum();
+            directSales = query.Where(e => e.Type == InventoryTransactionTypeEnum.DirectSales).Select(I => I.Quantity)
+                .DefaultIfEmpty(0).Sum();
+            exchnageOut = query.Where(e => e.Type == InventoryTransactionTypeEnum.Exchange).Select(I => I.Quantity)
+                .DefaultIfEmpty(0).Sum();
+            wastages = query.Where(e => e.Type == InventoryTransactionTypeEnum.Wastage).Select(I => I.Quantity)
+                .DefaultIfEmpty(0).Sum();
+
+            if (stockByLocation == true)
+            {
+                movementIn = query.Where(e => e.Type == InventoryTransactionTypeEnum.MovementIn).Select(I => I.Quantity)
+               .DefaultIfEmpty(0).Sum();
+                movementOut = query.Where(e => e.Type == InventoryTransactionTypeEnum.MovementOut).Select(I => I.Quantity)
+               .DefaultIfEmpty(0).Sum();
+            }
+
+            inStock = (totalIn + totalReturns + adjustmentIn + transferIn + movementIn) - adjustmentOut - totalOut - transferOut -
+                      worksOut - samples - directSales - exchnageOut - wastages - movementOut;
+
+            return inStock;
+        }
+
+        public static bool StockRecalculate(int ProductId, int WarehouseId, int TenantId, int UserId,
             bool saveContext = true, IApplicationContext context = null)
         {
             if (context == null)
@@ -942,62 +989,22 @@ namespace Ganedata.Core.Services
                 context = DependencyResolver.Current.GetService<IApplicationContext>();
             }
 
-            Boolean status = false;
-            decimal TotalIn;
-            decimal TotalOut;
-            decimal InStock;
+            bool status = false;
             decimal available;
-            decimal AdjustmentIn;
-            decimal AdjustmentOut;
-            decimal TotalReturns;
-            decimal TransferIn;
-            decimal TransferOut;
-            decimal WorksOut;
-            decimal samples;
-            decimal directSales;
-            decimal ExchnageOut;
-            decimal wastages;
+            decimal inStock;
 
-            // get all products in specific warehouse
-            var Totals = (from e in context.InventoryTransactions
+            var totals = (from e in context.InventoryTransactions
                           where e.ProductId == ProductId && e.WarehouseId == WarehouseId &&
                                 e.TenentId == TenantId && e.DontMonitorStock != true && e.IsDeleted != true
 
-                          select new
+                          select new InventoryCalculationViewModel
                           {
                               Quantity = e.Quantity,
                               Type = e.InventoryTransactionTypeId,
                               Order = e.Order
                           });
 
-            //get the sum of each transaction type
-            TotalIn = Totals.Where(e => e.Type == InventoryTransactionTypeEnum.PurchaseOrder).Select(I => I.Quantity)
-                .DefaultIfEmpty(0).Sum();
-            TotalOut = Totals.Where(e => e.Type == InventoryTransactionTypeEnum.SalesOrder).Select(I => I.Quantity)
-                .DefaultIfEmpty(0).Sum();
-            TotalReturns = Totals.Where(e => e.Type == InventoryTransactionTypeEnum.Returns).Select(I => I.Quantity)
-                .DefaultIfEmpty(0).Sum();
-            AdjustmentIn = Totals.Where(e => e.Type == InventoryTransactionTypeEnum.AdjustmentIn)
-                .Select(I => I.Quantity).DefaultIfEmpty(0).Sum();
-            AdjustmentOut = Totals.Where(e => e.Type == InventoryTransactionTypeEnum.AdjustmentOut)
-                .Select(I => I.Quantity).DefaultIfEmpty(0).Sum();
-            TransferIn = Totals.Where(e => e.Type == InventoryTransactionTypeEnum.TransferIn).Select(I => I.Quantity)
-                .DefaultIfEmpty(0).Sum();
-            TransferOut = Totals.Where(e => e.Type == InventoryTransactionTypeEnum.TransferOut).Select(I => I.Quantity)
-                .DefaultIfEmpty(0).Sum();
-            WorksOut = Totals.Where(e => e.Type == InventoryTransactionTypeEnum.WorksOrder).Select(I => I.Quantity)
-                .DefaultIfEmpty(0).Sum();
-            samples = Totals.Where(e => e.Type == InventoryTransactionTypeEnum.Samples).Select(I => I.Quantity)
-                .DefaultIfEmpty(0).Sum();
-            directSales = Totals.Where(e => e.Type == InventoryTransactionTypeEnum.DirectSales).Select(I => I.Quantity)
-                .DefaultIfEmpty(0).Sum();
-            ExchnageOut = Totals.Where(e => e.Type == InventoryTransactionTypeEnum.Exchange).Select(I => I.Quantity)
-                .DefaultIfEmpty(0).Sum();
-            wastages = Totals.Where(e => e.Type == InventoryTransactionTypeEnum.Wastage).Select(I => I.Quantity)
-                .DefaultIfEmpty(0).Sum();
-            //total in stock
-            InStock = (TotalIn + TotalReturns + AdjustmentIn + TransferIn) - AdjustmentOut - TotalOut - TransferOut -
-                      WorksOut - samples - directSales - ExchnageOut - wastages;
+            inStock = GetTotalInStock(totals);
 
             //On Order
             var itemsOrdered = context.Order
@@ -1028,6 +1035,7 @@ namespace Ganedata.Core.Services
                         p.ProductId == ProductId && p.IsDeleted != true &&
                         p.OrderDetail.DontMonitorStock != true).Select(q => q.QtyProcessed).DefaultIfEmpty(0)
                     .Sum()).DefaultIfEmpty(0).Sum()).DefaultIfEmpty(0).Sum();
+
             var itemsOnOrder = itemsOrdered - itemsReceived;
             if (itemsOnOrder < 1)
             {
@@ -1089,33 +1097,32 @@ namespace Ganedata.Core.Services
                 itemsAllocated = 0;
             }
 
-            available = InStock - itemsAllocated;
+            available = inStock - itemsAllocated;
 
-            // check if product id is available against tenant and warehouse then update existing values if not the insert values
-            InventoryStock OldStock = context.InventoryStocks.Where(e =>
+            InventoryStock oldStock = context.InventoryStocks.Where(e =>
                 e.ProductId == ProductId && e.WarehouseId == WarehouseId && e.TenantId == TenantId &&
                 e.IsDeleted != true).FirstOrDefault();
 
-            if (OldStock != null)
+            if (oldStock != null)
             {
-                if (OldStock.Available <= 0 && available > 0)
+                if (oldStock.Available <= 0 && available > 0)
                 {
                     AddProductToNotifyQueue(ProductId, TenantId, WarehouseId, context);
                 }
 
-                if (available <= 0 && OldStock.Available > 0)
+                if (available <= 0 && oldStock.Available > 0)
                 {
                     RemoveProductFromNotifyQueue(ProductId, TenantId, WarehouseId, context);
                 }
 
-                OldStock.InStock = InStock;
-                OldStock.Allocated = itemsAllocated;
-                OldStock.OnOrder = itemsOnOrder;
-                OldStock.Available = available;
-                OldStock.DateUpdated = DateTime.UtcNow;
-                OldStock.UpdatedBy = UserId;
-                OldStock.IsActive = true;
-                context.Entry(OldStock).State = EntityState.Modified;
+                oldStock.InStock = inStock;
+                oldStock.Allocated = itemsAllocated;
+                oldStock.OnOrder = itemsOnOrder;
+                oldStock.Available = available;
+                oldStock.DateUpdated = DateTime.UtcNow;
+                oldStock.UpdatedBy = UserId;
+                oldStock.IsActive = true;
+                context.Entry(oldStock).State = EntityState.Modified;
 
                 if (saveContext)
                 {
@@ -1127,13 +1134,12 @@ namespace Ganedata.Core.Services
             }
             else
             {
-                //create a new entry for InventoryStock
-                InventoryStock NewStock = new InventoryStock()
+                InventoryStock newStock = new InventoryStock()
                 {
                     ProductId = ProductId,
                     WarehouseId = WarehouseId,
                     TenantId = TenantId,
-                    InStock = InStock,
+                    InStock = inStock,
                     Allocated = itemsAllocated,
                     OnOrder = itemsOnOrder,
                     Available = available,
@@ -1142,14 +1148,10 @@ namespace Ganedata.Core.Services
                     UpdatedBy = UserId,
                     CreatedBy = UserId,
                     IsActive = true
-
                 };
 
-
                 AddProductToNotifyQueue(ProductId, TenantId, WarehouseId, context);
-
-                // add adition into database context
-                context.InventoryStocks.Add(NewStock);
+                context.InventoryStocks.Add(newStock);
                 if (saveContext)
                 {
                     context.SaveChanges();
@@ -1189,14 +1191,6 @@ namespace Ganedata.Core.Services
             }
         }
 
-        /// <summary>
-        /// recalculate stock of all products and update it in InventoryStocks.
-        /// This operation can take a while depending upon number of products in database.
-        /// </summary>
-        /// <param name="WarehouseId"></param>
-        /// <param name="TenantId"></param>
-        /// <param name="UserId"></param>
-        /// <returns>true / false</returns>
         public static Boolean StockRecalculateAll(int WarehouseId, int TenantId, int UserId)
         {
             var context = DependencyResolver.Current.GetService<IApplicationContext>();
@@ -1239,7 +1233,7 @@ namespace Ganedata.Core.Services
             return true;
         }
 
-        public static Boolean ValidateProduct(int productId)
+        public static bool ValidateProduct(int productId)
         {
             var context = DependencyResolver.Current.GetService<IApplicationContext>();
 
@@ -1369,9 +1363,7 @@ namespace Ganedata.Core.Services
             return status;
         }
 
-
         // correct pallet remaining cases
-
         public static void AdjustPalletRemainingCases(int palletTrackingId, int WarehouseId, int TenantId, int UserId,
             bool saveContext = true, IApplicationContext context = null)
         {
@@ -1383,66 +1375,22 @@ namespace Ganedata.Core.Services
             var pallet = context.PalletTracking.Find(palletTrackingId);
 
             int transactionsCount = 0;
-            decimal TotalIn;
-            decimal TotalOut;
-            decimal InStock;
-            decimal AdjustmentIn;
-            decimal AdjustmentOut;
-            decimal TotalReturns;
-            decimal TransferIn;
-            decimal TransferOut;
-            decimal WorksOut;
-            decimal samples;
-            decimal directSales;
-            decimal ExchnageOut;
-            decimal WastedReturns;
+            decimal inStock;
 
-            // get all products in specific warehouse
-            var Totals = (from e in context.InventoryTransactions
+            var totals = (from e in context.InventoryTransactions
                           where e.ProductId == pallet.ProductId && e.WarehouseId == WarehouseId &&
                                 e.PalletTrackingId == palletTrackingId &&
                                 e.TenentId == TenantId && e.DontMonitorStock != true
-                          select new
+                          select new InventoryCalculationViewModel
                           {
                               Quantity = e.Quantity,
                               Type = e.InventoryTransactionTypeId,
                               Order = e.Order
                           });
 
-            //get total transactions
-            transactionsCount = Totals.Count();
-
-            //get the sum of each transaction type
-            TotalIn = Totals.Where(e => e.Type == InventoryTransactionTypeEnum.PurchaseOrder).Select(I => I.Quantity)
-                .DefaultIfEmpty(0).Sum();
-            TotalOut = Totals.Where(e => e.Type == InventoryTransactionTypeEnum.SalesOrder).Select(I => I.Quantity)
-                .DefaultIfEmpty(0).Sum();
-            TotalReturns = Totals.Where(e => e.Type == InventoryTransactionTypeEnum.Returns).Select(I => I.Quantity)
-                .DefaultIfEmpty(0).Sum();
-            AdjustmentIn = Totals.Where(e => e.Type == InventoryTransactionTypeEnum.AdjustmentIn)
-                .Select(I => I.Quantity).DefaultIfEmpty(0).Sum();
-            AdjustmentOut = Totals.Where(e => e.Type == InventoryTransactionTypeEnum.AdjustmentOut)
-                .Select(I => I.Quantity).DefaultIfEmpty(0).Sum();
-            TransferIn = Totals.Where(e => e.Type == InventoryTransactionTypeEnum.TransferIn).Select(I => I.Quantity)
-                .DefaultIfEmpty(0).Sum();
-            TransferOut = Totals.Where(e => e.Type == InventoryTransactionTypeEnum.TransferOut).Select(I => I.Quantity)
-                .DefaultIfEmpty(0).Sum();
-            WorksOut = Totals.Where(e => e.Type == InventoryTransactionTypeEnum.WorksOrder).Select(I => I.Quantity)
-                .DefaultIfEmpty(0).Sum();
-            samples = Totals.Where(e => e.Type == InventoryTransactionTypeEnum.Samples).Select(I => I.Quantity)
-                .DefaultIfEmpty(0).Sum();
-            directSales = Totals.Where(e => e.Type == InventoryTransactionTypeEnum.DirectSales).Select(I => I.Quantity)
-                .DefaultIfEmpty(0).Sum();
-            ExchnageOut = Totals.Where(e => e.Type == InventoryTransactionTypeEnum.Exchange).Select(I => I.Quantity)
-                .DefaultIfEmpty(0).Sum();
-            WastedReturns = Totals.Where(e => e.Type == InventoryTransactionTypeEnum.WastedReturn)
-                .Select(I => I.Quantity).DefaultIfEmpty(0).Sum();
-
-            //total in stock
-            InStock = (TotalIn + TotalReturns + AdjustmentIn + TransferIn) - AdjustmentOut - TotalOut - TransferOut -
-                      WorksOut - samples - directSales - ExchnageOut - WastedReturns;
-
-            var InStockCases = InStock / pallet.ProductMaster.ProductsPerCase ?? 1;
+            transactionsCount = totals.Count();
+            inStock = GetTotalInStock(totals);
+            var inStockCases = inStock / pallet.ProductMaster.ProductsPerCase ?? 1;
 
             pallet.DateUpdated = DateTime.UtcNow;
 
@@ -1451,7 +1399,7 @@ namespace Ganedata.Core.Services
                 pallet.Status = PalletTrackingStatusEnum.Created;
                 pallet.RemainingCases = pallet.TotalCases;
             }
-            else if (transactionsCount > 0 && InStock == 0)
+            else if (transactionsCount > 0 && inStock == 0)
             {
                 pallet.Status = PalletTrackingStatusEnum.Completed;
                 pallet.RemainingCases = 0;
@@ -1459,7 +1407,7 @@ namespace Ganedata.Core.Services
             else
             {
                 pallet.Status = PalletTrackingStatusEnum.Active;
-                pallet.RemainingCases = InStockCases;
+                pallet.RemainingCases = inStockCases;
             }
 
             if (saveContext)
@@ -1504,17 +1452,13 @@ namespace Ganedata.Core.Services
                         transaction.OrderProcessDetailId = orderProcessDetailId;
                         context.InventoryTransactions.Attach(transaction);
                         context.Entry(transaction).State = EntityState.Modified;
-
                     }
                 }
 
                 context.SaveChanges();
 
             }
-
-
         }
-
 
         public static decimal CalculatePalletQuantity(int palletTrackingId)
         {
@@ -1593,10 +1537,8 @@ namespace Ganedata.Core.Services
                         qtyMoved = qtyMoved - item.Quantity;
                         InventoryTransactionForStockMovement(item, stockMovement.UserId, stockMovement.TenentId,
                             stockMovement.WarehouseId, ProductMovementId, CurrentLocationstatus: false);
-
                     }
                 }
-
             }
 
             return status;
@@ -1631,22 +1573,19 @@ namespace Ganedata.Core.Services
                     ProductId = inventoryTransaction.ProductId,
                     CreatedBy = UserId,
                     DateCreated = DateTime.UtcNow,
-                    InventoryTransactionTypeId = InventoryTransactionTypeEnum.StockMovement,
+                    InventoryTransactionTypeId = InventoryTransactionTypeEnum.MovementIn,
                     Quantity = Qty,
                     TenentId = Tenantid,
                     WarehouseId = WarehouseId,
                     StockMovementId = StocktMovementId,
                     IsCurrentLocation = true,
                     LastQty = CalculateLastQty(inventoryTransaction.ProductId, Tenantid,
-                        inventoryTransaction.WarehouseId, Qty, InventoryTransactionTypeEnum.StockMovement,
+                        inventoryTransaction.WarehouseId, Qty, InventoryTransactionTypeEnum.MovementIn,
                         (inventoryTransaction.DontMonitorStock ?? false))
                 };
 
                 context.InventoryTransactions.Add(tans);
-
                 context.SaveChanges();
-
-
             }
 
 
@@ -1654,7 +1593,7 @@ namespace Ganedata.Core.Services
 
         public static string GetProductAttributesValueToDisplay(ICollection<ProductAttributeValuesMap> productAttributeValuesMap)
         {
-            return string.Join(", ",  productAttributeValuesMap.Where(a => a.IsDeleted != true)
+            return string.Join(", ", productAttributeValuesMap.Where(a => a.IsDeleted != true)
                                             .OrderBy(m => m.ProductAttributeValues.ProductAttributes.SortOrder)
                                             .ThenBy(m => m.ProductAttributeValues.SortOrder)
                                             .Select(a => a.ProductAttributeValues.Value));
@@ -1683,7 +1622,7 @@ namespace Ganedata.Core.Services
                     case ProductKitTypeEnum.Simple:
                         if (product.InventoryStocks != null && product.InventoryStocks.Count > 0)
                         {
-                            availableProductCount += product.InventoryStocks.Where(u=> warehouseIds.Contains(u.WarehouseId)).Select(q => q.Available).DefaultIfEmpty(0).Sum(); ;
+                            availableProductCount += product.InventoryStocks.Where(u => warehouseIds.Contains(u.WarehouseId)).Select(q => q.Available).DefaultIfEmpty(0).Sum(); ;
                         }
                         break;
 
@@ -1693,6 +1632,7 @@ namespace Ganedata.Core.Services
 
                 }
             }
+
             return availableProductCount > 0 ? availableProductCount : (product.IsPreOrderAccepted == true ? (decimal?)null : 0);
         }
 

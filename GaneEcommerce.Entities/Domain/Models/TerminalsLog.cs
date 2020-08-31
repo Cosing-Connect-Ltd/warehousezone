@@ -32,12 +32,11 @@ namespace Ganedata.Core.Entities.Domain
         public DateTime DateCreated { get; set; }
         [Display(Name = "Client")]
         public int TenantId { get; set; }
-
-        public int? SiteID { get; set; }
+        public int? ApiId { get; set; }
         public DateTime? DateUpdated { get; set; }
         [ForeignKey("TerminalId")]
         public virtual Terminals Terminals { get; set; }
-        [ForeignKey("SiteID")]
-        public virtual TenantWebsites TenantWebsites { get; set; }
+        [ForeignKey("ApiId")]
+        public virtual ApiCredentials ApiCredentials { get; set; }
     }
 }

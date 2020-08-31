@@ -126,7 +126,8 @@ namespace WMS.Controllers.WebAPI
                 ShowCasePrices = terminal.ShowCasePrices,
                 ScanVehicleLicensePlate = terminal.ScanVehicleLicensePlate,
                 PickByContainer = terminal.TenantWarehous.PickByContainer,
-                MandatoryPickByContainer = terminal.TenantWarehous.MandatoryPickByContainer
+                MandatoryPickByContainer = terminal.TenantWarehous.MandatoryPickByContainer,
+                MandatoryLocationScan = config.MandatoryLocationScan
             };
 
             var mobileLocation = TerminalServices.GetMobileLocationByTerminalId(terminal.TerminalId);

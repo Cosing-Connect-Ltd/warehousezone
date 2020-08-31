@@ -2,11 +2,32 @@
 <hgroup>
     <h3><span>@Html.ValidationSummary("", new { @id = "vldLocations" })</span></h3>
 </hgroup>
-<div class="col-md-6 pull-left">
-    @using (Html.BeginForm("Edit", "Locations", FormMethod.Post, new { @id = "frmlocations" }))
-    {
-        @Html.AntiForgeryToken()
-        @Html.HiddenFor(m => m.LocationId)
+
+@using (Html.BeginForm("Edit", "Locations", FormMethod.Post, new { @id = "frmlocations" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.LocationId)
+    <div class="col-md-6 pull-left">
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <label class="col-md-4">Location Code<span style="color:red"> *</span></label>
+            <div class="col-md-8">
+                @Html.EditorFor(m => m.LocationCode)
+                @Html.ValidationMessageFor(model => model.LocationCode)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            <label class="col-md-4">Location Name<span style="color:red"> *</span></label>
+            <div class="col-md-8">
+                @Html.EditorFor(m => m.LocationName)
+                @Html.ValidationMessageFor(model => model.LocationName)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(m => m.Description)
+            </div>
+        </div>
         <div class="input-group h-100 justify-content-center align-items-center">
             @Html.LabelFor(model => model.LocationGroupId, htmlAttributes: new { @class = "col-md-4" })
             <div class="col-md-8">
@@ -20,15 +41,16 @@
                 @Html.ValidationMessageFor(model => model.LocationTypeId)
             </div>
         </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.Label("Location Products", htmlAttributes: new { @class = "col-md-4" })
-            <div class="col-md-8">
+        @if (!Request.Url.AbsolutePath.ToLower().Contains("/products/"))
+        {
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.Label("Location Products", htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
                     @Html.Action("_ProductKitCombobox", "Products")
                     @Html.Hidden("ProductKit")
                 </div>
             </div>
-        </div>
+        }
         <div class="input-group h-100 justify-content-center align-items-center">
             @Html.LabelFor(model => model.DimensionUOMId, htmlAttributes: new { @class = "col-md-4" })
             <div class="col-md-8">
@@ -42,25 +64,41 @@
             </div>
         </div>
         <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.AllowPick, htmlAttributes: new { @class = "col-md-4" })
+            @Html.LabelFor(model => model.LocationWeight, htmlAttributes: new { @class = "col-md-4" })
             <div class="col-md-8">
-                @Html.CheckBoxFor(model => model.AllowPick)
+                @Html.DevExpress().SpinEditFor(m => m.LocationWeight,
+                     settings =>
+                     {
+                         settings.Name = "LocationWeight";
+                         settings.Properties.MinValue = 1;
+                         settings.Properties.MaxValue = 10;
+                         settings.Properties.NullText = "From 1 to 10...";
+                         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                         settings.ControlStyle.CssClass = "form-control";
 
+                     }
+                 ).GetHtml()
             </div>
         </div>
         <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.AllowPutAway, htmlAttributes: new { @class = "col-md-4" })
+            @Html.LabelFor(model => model.LocationWidth, htmlAttributes: new { @class = "col-md-4" })
             <div class="col-md-8">
-                @Html.CheckBoxFor(model => model.AllowPutAway)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.AllowReplenish, htmlAttributes: new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.CheckBoxFor(model => model.AllowReplenish)
+                @Html.DevExpress().SpinEditFor(m => m.LocationWidth,
+                     settings =>
+                     {
+                         settings.Name = "LocationWidth";
+                         settings.Properties.MinValue = 1;
+                         settings.Properties.MaxValue = 10;
+                         settings.Properties.NullText = "From 1 to 10...";
+                         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                         settings.ControlStyle.CssClass = "form-control";
 
+                     }
+                 ).GetHtml()
             </div>
         </div>
+    </div>
+    <div class="col-md-6 pull-left">
         <div class="input-group h-100 justify-content-center align-items-center">
             @Html.LabelFor(model => model.LocationDepth, htmlAttributes: new { @class = "col-md-4" })
             <div class="col-md-8">
@@ -79,12 +117,6 @@
             </div>
         </div>
         <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(m => m.Description)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
             @Html.LabelFor(model => model.LocationHeight, htmlAttributes: new { @class = "col-md-4" })
             <div class="col-md-8">
                 @Html.DevExpress().SpinEditFor(m => m.LocationHeight,
@@ -99,28 +131,6 @@
 
                      }
                  ).GetHtml()
-            </div>
-        </div>
-
-        <div class="input-group h-100 justify-content-center align-items-center">
-            <label class="col-md-4">Location Code<span style="color:red"> *</span></label>
-            <div class="col-md-8">
-                @Html.EditorFor(m => m.LocationCode)
-                @Html.ValidationMessageFor(model => model.LocationCode)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            <label class="col-md-4">Location Name<span style="color:red"> *</span></label>
-            <div class="col-md-8">
-                @Html.EditorFor(m => m.LocationName)
-                @Html.ValidationMessageFor(model => model.LocationName)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.MixContainer, htmlAttributes: new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.CheckBoxFor(m => m.MixContainer)
-
             </div>
         </div>
         <div class="input-group h-100 justify-content-center align-items-center">
@@ -174,51 +184,43 @@
             </div>
         </div>
         <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.AllowPick, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.CheckBoxFor(model => model.AllowPick, new { @class = "form-control" })
+
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.AllowPutAway, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.CheckBoxFor(model => model.AllowPutAway, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.AllowReplenish, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.CheckBoxFor(model => model.AllowReplenish, new { @class = "form-control" })
+
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.MixContainer, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.CheckBoxFor(m => m.MixContainer, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
             @Html.LabelFor(model => model.StagingLocation, htmlAttributes: new { @class = "col-md-4" })
             <div class="col-md-8">
-                @Html.CheckBoxFor(m => m.StagingLocation)
+                @Html.CheckBoxFor(m => m.StagingLocation, new { @class = "form-control" })
 
             </div>
         </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.LocationWeight, htmlAttributes: new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.DevExpress().SpinEditFor(m => m.LocationWeight,
-                     settings =>
-                     {
-                         settings.Name = "LocationWeight";
-                         settings.Properties.MinValue = 1;
-                         settings.Properties.MaxValue = 10;
-                         settings.Properties.NullText = "From 1 to 10...";
-                         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
-                         settings.ControlStyle.CssClass = "form-control";
-
-                     }
-                 ).GetHtml()
-            </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        <div class="col-md-offset-2 col-md-12 bottom-right">
+            <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="btn btn-default"> @Html.ActionLink("Cancel", "Index")</div>
         </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.LocationWidth, htmlAttributes: new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.DevExpress().SpinEditFor(m => m.LocationWidth,
-                     settings =>
-                     {
-                         settings.Name = "LocationWidth";
-                         settings.Properties.MinValue = 1;
-                         settings.Properties.MaxValue = 10;
-                         settings.Properties.NullText = "From 1 to 10...";
-                         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
-                         settings.ControlStyle.CssClass = "form-control";
-
-                     }
-                 ).GetHtml()
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            <div class="col-md-offset-2 col-md-12 bottom-right">
-                <input type="submit" value="Save" class="btn btn-default" />
-                <div class="btn btn-default"> @Html.ActionLink("Cancel", "Index")</div>
-            </div>
-        </div>
-    }
-</div>
+    </div>
+}

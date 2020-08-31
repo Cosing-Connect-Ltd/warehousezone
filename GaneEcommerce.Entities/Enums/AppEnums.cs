@@ -126,7 +126,8 @@ namespace Ganedata.Core.Entities.Enums
         DirectSales = 15,
         Exchange = 16,
         WastedReturn = 17,
-        StockMovement = 18
+        MovementIn = 18,
+        MovementOut = 19
     }
 
     public enum OrderStatusEnum

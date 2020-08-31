@@ -253,14 +253,14 @@ else if (Request.Url.AbsolutePath.ToLower().Contains("/locations/create"))
     if (Request.Url.AbsolutePath.ToLower().Contains("/products/_locationcreate"))
     {
         <div class="col-md-offset-2 col-md-12 bottom-right-popup">
-            <input type="button" onclick="SubmitLocation()" value="Save" class="btn btn-primary" />
+            <input type="button" onclick="SubmitLocation()" value="Save" class="btn btn-default" />
             <input type="button" value="Cancel" onclick="javascript: pcModalLocations.Hide();" class="btn btn-default" />
         </div>
     }
     else if (Request.Url.AbsolutePath.ToLower().Contains("/products/savelocation"))
     {
         <div class="col-md-offset-2 col-md-12 bottom-right-popup">
-            <input type="submit" value="Save" class="btn btn-primary" />
+            <input type="submit" value="Save" class="btn btn-default" />
             <div class="btn btn-default"> @Html.ActionLink("Cancel", "Edit", null, null, null, "product-locations", new { @id = Session["pId"] }, null)</div>
         </div>
 

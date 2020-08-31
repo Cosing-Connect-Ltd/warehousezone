@@ -1051,6 +1051,18 @@
     <Compile Include="Migrations\202008271330560_added_preorder_feature_to_products.designer.cs">
       <DependentUpon>202008271330560_added_preorder_feature_to_products.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008292031322_ApiId-relation-added-in-terminal-logs.cs" />
+    <Compile Include="Migrations\202008292031322_ApiId-relation-added-in-terminal-logs.designer.cs">
+      <DependentUpon>202008292031322_ApiId-relation-added-in-terminal-logs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008301541450_mandatory-location-scan-flag-in-tenant-config.cs" />
+    <Compile Include="Migrations\202008301541450_mandatory-location-scan-flag-in-tenant-config.designer.cs">
+      <DependentUpon>202008301541450_mandatory-location-scan-flag-in-tenant-config.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008311717341_inventory-stocks-from-persistable-entity.cs" />
+    <Compile Include="Migrations\202008311717341_inventory-stocks-from-persistable-entity.designer.cs">
+      <DependentUpon>202008311717341_inventory-stocks-from-persistable-entity.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2159,6 +2171,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008271330560_added_preorder_feature_to_products.resx">
       <DependentUpon>202008271330560_added_preorder_feature_to_products.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008292031322_ApiId-relation-added-in-terminal-logs.resx">
+      <DependentUpon>202008292031322_ApiId-relation-added-in-terminal-logs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008301541450_mandatory-location-scan-flag-in-tenant-config.resx">
+      <DependentUpon>202008301541450_mandatory-location-scan-flag-in-tenant-config.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008311717341_inventory-stocks-from-persistable-entity.resx">
+      <DependentUpon>202008311717341_inventory-stocks-from-persistable-entity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
