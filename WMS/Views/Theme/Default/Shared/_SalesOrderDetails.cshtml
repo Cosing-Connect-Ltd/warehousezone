@@ -84,7 +84,7 @@
                             }
                             var qty = DataBinder.Eval(container.DataItem, "Qty").ToString();
                             var rec_qty = DataBinder.Eval(container.DataItem, "QtyProcessed");
-                            var type = DataBinder.Eval(container.DataItem, "TransType");
+                            var type =(int) InventoryTransactionTypeEnum.SalesOrder;// DataBinder.Eval(container.DataItem, "TransType");
 
                             var scannableCodes = DataBinder.Eval(container.DataItem, "IdentifiersText").ToString();
                             var directPostAllow = ((bool)DataBinder.Eval(container.DataItem, "DirectPostAllowed") && !(decimal.Parse(rec_qty.ToString()) >= decimal.Parse(qty))).ToString();

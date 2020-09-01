@@ -603,18 +603,33 @@
 
 
                 <div class="input-group h-100 justify-content-center align-items-center">
-                    @Html.LabelFor(m => m.NominalCode, htmlAttributes: new { @class = "col-md-4" })
+                    @Html.LabelFor(m => m.PurchaseNominalCode, htmlAttributes: new { @class = "col-md-4" })
                     <div class="col-md-8">
-                        @Html.DevExpress().SpinEditFor(m => m.NominalCode,
+                        @Html.DevExpress().SpinEditFor(m => m.PurchaseNominalCode,
                         settings =>
                         {
-                            settings.Name = "NominalCode";
+                            settings.Name = "PurchaseNominalCode";
                             settings.ClientVisible = true;
                             settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
                             settings.ControlStyle.CssClass = "form-control";
                         }
                         ).GetHtml()
-                        @Html.ValidationMessageFor(model => model.NominalCode)
+                        @Html.ValidationMessageFor(model => model.PurchaseNominalCode)
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(m => m.SaleNominalCode, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DevExpress().SpinEditFor(m => m.SaleNominalCode,
+                        settings =>
+                        {
+                            settings.Name = "SaleNominalCode";
+                            settings.ClientVisible = true;
+                            settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                            settings.ControlStyle.CssClass = "form-control";
+                        }
+                        ).GetHtml()
+                        @Html.ValidationMessageFor(model => model.SaleNominalCode)
                     </div>
                 </div>
 

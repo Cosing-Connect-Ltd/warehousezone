@@ -1063,6 +1063,10 @@
     <Compile Include="Migrations\202008311717341_inventory-stocks-from-persistable-entity.designer.cs">
       <DependentUpon>202008311717341_inventory-stocks-from-persistable-entity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008312342061_sales-and-purchase-nominalcode-added-in-TenantConfigAndProductmaster.cs" />
+    <Compile Include="Migrations\202008312342061_sales-and-purchase-nominalcode-added-in-TenantConfigAndProductmaster.designer.cs">
+      <DependentUpon>202008312342061_sales-and-purchase-nominalcode-added-in-TenantConfigAndProductmaster.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2180,6 +2184,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008311717341_inventory-stocks-from-persistable-entity.resx">
       <DependentUpon>202008311717341_inventory-stocks-from-persistable-entity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008312342061_sales-and-purchase-nominalcode-added-in-TenantConfigAndProductmaster.resx">
+      <DependentUpon>202008312342061_sales-and-purchase-nominalcode-added-in-TenantConfigAndProductmaster.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

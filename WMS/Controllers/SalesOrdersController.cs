@@ -1071,7 +1071,7 @@ namespace WMS.Controllers
         {
             ViewBag.OrderIds = OrderId;
             var UserId = OrderService.GetOrderById(OrderId).PickerId;
-            ViewBag.Picker = new SelectList(_userService.GetAllAuthUsers(CurrentTenantId), "UserId", "DisplayName", UserId);
+            ViewBag.Picker = new SelectList(_userService.GetUsersAgainstPermission(CurrentTenantId,CurrentWarehouseId, "SalesOrderPerm"), "UserId", "DisplayName", UserId);
             return View();
         }
 
