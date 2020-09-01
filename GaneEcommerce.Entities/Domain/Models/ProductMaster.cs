@@ -175,8 +175,11 @@ namespace Ganedata.Core.Entities.Domain
         public string CountryOfOrigion { get; set; }
         [Display(Name = "Allow Modify Price")]
         public bool AllowModifyPrice { get; set; }
-        [Display(Name = "Nominal Code")]
-        public int? NominalCode { get; set; }
+        [Display(Name = "Sales Nominal Code")]
+        public int? SaleNominalCode { get; set; }
+        [Display(Name = "Purchases Nominal Code")]
+        public int? PurchaseNominalCode { get; set; }
+
         [Display(Name = "Is Stock Item")]
         public bool IsStockItem { get; set; }
         public int? ManufacturerId { get; set; }
