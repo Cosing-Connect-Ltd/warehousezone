@@ -3125,7 +3125,7 @@ namespace Ganedata.Core.Data.Helpers
 
         }
 
-        public List<string> GetPrestaShopAddress(int? id_customer, DateTime? date, int tenantId, int UserId, int accountId, int DeliveryAddressId, int InvoiceAdressId, string PrestashopUrl, string PrestashopKey)
+        public async Task<List<string>> GetPrestaShopAddress(int? id_customer, DateTime? date, int tenantId, int UserId, int accountId, int DeliveryAddressId, int InvoiceAdressId, string PrestashopUrl, string PrestashopKey)
         {
             var context = new ApplicationContext();
             List<string> accountaddress = new List<string>();
@@ -3142,7 +3142,7 @@ namespace Ganedata.Core.Data.Helpers
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                 httpWebRequest.Credentials = new NetworkCredential(PrestashopKey, "");
                 httpWebRequest.Method = "GET";
-                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync().ConfigureAwait(false);
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var serializer = new XmlSerializer(typeof(PrestashopAddress));
@@ -3177,7 +3177,8 @@ namespace Ganedata.Core.Data.Helpers
                         };
                         if (currentAddress.CountryID <= 0)
                         {
-                            currentAddress.CountryID = GetPrestaShopCountry(item.Id_country.Text, PrestashopUrl, PrestashopKey).FirstOrDefault();
+                            var country = await GetPrestaShopCountry(item.Id_country.Text, PrestashopUrl, PrestashopKey);
+                            currentAddress.CountryID = country.FirstOrDefault();
                         }
                     }
                     else
@@ -3222,7 +3223,7 @@ namespace Ganedata.Core.Data.Helpers
             return accountaddress;
 
         }
-        public List<int> GetPrestaShopAccount(int? Id, DateTime? date, int tenantId, int UserId, int DeliveryAddressId, int InvoiceAdressId, string PrestashopUrl, string PrestashopKey)
+        public async Task<List<int>> GetPrestaShopAccount(int? Id, DateTime? date, int tenantId, int UserId, int DeliveryAddressId, int InvoiceAdressId, string PrestashopUrl, string PrestashopKey)
         {
             List<int> AccountIds = new List<int>();
             var context = new ApplicationContext();
@@ -3239,7 +3240,7 @@ namespace Ganedata.Core.Data.Helpers
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                 httpWebRequest.Credentials = new NetworkCredential(PrestashopKey, "");
                 httpWebRequest.Method = "GET";
-                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync().ConfigureAwait(false);
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var serializer = new XmlSerializer(typeof(PrestashopAccounts));
@@ -3253,7 +3254,7 @@ namespace Ganedata.Core.Data.Helpers
                     if (account == null)
                     {
                         account = new Account();
-                        account.CompanyName = string.IsNullOrEmpty(item.Company) ? "P" : item.Company;
+                        account.CompanyName = string.IsNullOrEmpty(item.Company) ? item.Firstname + " " + item.Lastname : item.Company;
                         account.AccountCode = item.Secure_key;
                         account.website = item.Website;
                         account.AccountStatusID = AccountStatusEnum.Active;
@@ -3272,7 +3273,7 @@ namespace Ganedata.Core.Data.Helpers
                     }
                     else
                     {
-                        account.CompanyName = string.IsNullOrEmpty(item.Company) ? "P" : item.Company;
+                        account.CompanyName = string.IsNullOrEmpty(item.Company) ? item.Firstname + " " + item.Lastname : item.Company;
                         account.AccountCode = item.Secure_key;
                         account.website = item.Website;
                         account.DateUpdated = DateTime.UtcNow;
@@ -3281,7 +3282,7 @@ namespace Ganedata.Core.Data.Helpers
                         context.SaveChanges();
                     }
 
-                    var accountadress = GetPrestaShopAddress(item.Id, null, tenantId, UserId, account.AccountID, DeliveryAddressId, InvoiceAdressId, PrestashopUrl, PrestashopKey);
+                    var accountadress = await GetPrestaShopAddress(item.Id, null, tenantId, UserId, account.AccountID, DeliveryAddressId, InvoiceAdressId, PrestashopUrl, PrestashopKey);
                     if (accountadress.Count > 0)
                     {
                         var updateaccount = context.Account.FirstOrDefault(u => u.AccountID == account.AccountID);
@@ -3332,7 +3333,7 @@ namespace Ganedata.Core.Data.Helpers
                 throw ex;
             }
         }
-        public async Task<string> GetPrestaShopOrdersSync(int tenantId, int warehouseId, string PrestashopUrl, string PrestashopKey, int SiteId)
+        public async Task<string> GetPrestaShopOrdersSync(int tenantId, int warehouseId, string PrestashopUrl, string PrestashopKey, int ApiId)
         {
             DateTime requestTime = new DateTime(2000, 01, 01);
             var dates = requestTime.ToString("yyyy-MM-dd-HH:mm:ss");
@@ -3342,7 +3343,7 @@ namespace Ganedata.Core.Data.Helpers
             try
             {
                 var _currentDbContext = new ApplicationContext();
-                var GetSyncRecored = _currentDbContext.TerminalsLog.Where(u => u.Ack != false && u.SiteID == SiteId).OrderByDescending(u => u.DateCreated).FirstOrDefault();
+                var GetSyncRecored = _currentDbContext.TerminalsLog.Where(u => u.Ack != false && u.ApiId == ApiId).OrderByDescending(u => u.DateCreated).FirstOrDefault();
                 if (GetSyncRecored != null)
                 {
                     requestTime = GetSyncRecored.DateCreated;
@@ -3355,25 +3356,25 @@ namespace Ganedata.Core.Data.Helpers
                 httpWebRequest.Credentials = new NetworkCredential(PrestashopKey, "");
                 httpWebRequest.Method = "GET";
                 httpWebRequest.ContentType = "application/json";
-                httpResponse = httpWebRequest.GetResponse();
+                httpResponse = await httpWebRequest.GetResponseAsync().ConfigureAwait(false);
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var serializer = new XmlSerializer(typeof(PrestashopOrders));
                     orderSearch = serializer.Deserialize(streamReader) as PrestashopOrders;
                     if (orderSearch?.Orders?.Order.Count > 0)
                     {
-                        CreateWebSiteSyncLog(requestTime, "OK", true, orderSearch.Orders.Order.Count, requestSentTime, SiteId, tenantId);
+                        CreateWebSiteSyncLog(requestTime, "OK", true, orderSearch.Orders.Order.Count, requestSentTime, ApiId, tenantId);
                     }
                     else
                     {
-
-                        CreateWebSiteSyncLog(requestTime, "OK", true, orderSearch.Orders.Order.Count, requestSentTime, SiteId, tenantId);
+                        CreateWebSiteSyncLog(requestTime, "OK", true, orderSearch.Orders.Order.Count, requestSentTime, ApiId, tenantId);
                         return "No Orders found";
                     }
                 }
+
                 foreach (var item in orderSearch.Orders.Order)
                 {
-                    var order = _currentDbContext.Order.FirstOrDefault(u => u.PrestaShopOrderId == item.Id && u.SiteID == SiteId && u.IsDeleted != true);
+                    var order = _currentDbContext.Order.FirstOrDefault(u => u.PrestaShopOrderId == item.Id && u.SiteID == ApiId && u.IsDeleted != true);
                     if (order == null)
                     {
                         order = new Order();
@@ -3392,7 +3393,7 @@ namespace Ganedata.Core.Data.Helpers
                         order.CreatedBy = 1;
                         order.UpdatedBy = 1;
                         order.WarehouseId = warehouseId;
-                        var accounts = GetPrestaShopAccount(item.Id_customer.Text, null, tenantId, 1, item.Id_address_delivery.Text, item.Id_address_invoice.Text, PrestashopUrl, PrestashopKey);
+                        var accounts = await GetPrestaShopAccount(item.Id_customer.Text, null, tenantId, 1, item.Id_address_delivery.Text, item.Id_address_invoice.Text, PrestashopUrl, PrestashopKey);
                         var accountID = accounts?.FirstOrDefault() ?? 1;
                         if (accountID > 0)
                         {
@@ -3400,7 +3401,6 @@ namespace Ganedata.Core.Data.Helpers
                             if (account != null)
                             {
                                 order.AccountCurrencyID = account.CurrencyID;
-
                             }
                             order.AccountID = accountID;
                             var accountAddress = GetAccountAddressesByPrestaShopAddressId(item.Id_address_delivery.Text);
@@ -3411,17 +3411,13 @@ namespace Ganedata.Core.Data.Helpers
                                 order.ShipmentAddressLine2 = accountAddress.AddressLine2;
                                 order.ShipmentAddressLine3 = accountAddress.Town;
                                 order.ShipmentAddressPostcode = accountAddress.PostCode;
-
                             }
-
-
-
                         }
                         order.OrderStatusID = OrderStatusEnum.Active;
                     }
                     else
                     {
-                        var accounts = GetPrestaShopAccount(item.Id_customer.Text, null, tenantId, 1, item.Id_address_delivery.Text, item.Id_address_invoice.Text, PrestashopUrl, PrestashopKey);
+                        var accounts = await GetPrestaShopAccount(item.Id_customer.Text, null, tenantId, 1, item.Id_address_delivery.Text, item.Id_address_invoice.Text, PrestashopUrl, PrestashopKey);
                         var accountID = accounts?.FirstOrDefault() ?? 1;
                         if (accountID > 0)
                         {
@@ -3440,17 +3436,12 @@ namespace Ganedata.Core.Data.Helpers
                                 order.ShipmentAddressLine2 = accountAddress.AddressLine2;
                                 order.ShipmentAddressLine3 = accountAddress.Town;
                                 order.ShipmentAddressPostcode = accountAddress.PostCode;
-
                             }
-
-
-
                         }
                         order.DateUpdated = DateTime.UtcNow;
                         order.TenentId = tenantId;
                         order.UpdatedBy = 1;
                         order.WarehouseId = warehouseId;
-
                     }
 
                     order.InventoryTransactionTypeId = InventoryTransactionTypeEnum.SalesOrder;
@@ -3474,14 +3465,11 @@ namespace Ganedata.Core.Data.Helpers
                             orderDetail.CreatedBy = 1;
                             var Product = GetPrestaShopProducts(order_row.Product_id, null, order_row.Product_reference, tenantId, 1, PrestashopUrl, PrestashopKey);
                             orderDetail.ProductId = Product?.FirstOrDefault() ?? 1;
-
                         }
                         else
                         {
                             orderDetail.DateUpdated = DateTime.UtcNow;
                             orderDetail.UpdatedBy = 1;
-
-
                         }
 
                         orderDetail.OrderID = order.OrderID;
@@ -3509,32 +3497,29 @@ namespace Ganedata.Core.Data.Helpers
                     order.OrderTotal = (decimal)ordTotal;
                     order.OrderCost = (decimal)ordTotal;
                     order.PrestaShopOrderId = item.Id;
-                    order.SiteID = SiteId;
+                    order.SiteID = ApiId;
                     _currentDbContext.SaveChanges();
-
                 }
-
-
             }
             catch (Exception ex)
             {
-                CreateWebSiteSyncLog(requestTime, "Error", false, 0, requestSentTime, SiteId, tenantId);
+                CreateWebSiteSyncLog(requestTime, "Error", false, 0, requestSentTime, ApiId, tenantId);
                 return ex.Message;
             }
             return "All data sync properly";
         }
+
         public AccountAddresses GetAccountAddressesByPrestaShopAddressId(int id)
         {
             var _currentdbContext = new ApplicationContext();
 
             return _currentdbContext.AccountAddresses.FirstOrDefault(u => u.PrestaShopAddressId == id);
         }
-        public List<int> GetPrestaShopCountry(int? Id, string PrestashopUrl, string PrestashopKey)
+        public async Task<List<int>> GetPrestaShopCountry(int? Id, string PrestashopUrl, string PrestashopKey)
         {
             var context = new ApplicationContext();
             try
             {
-
                 List<int> countIds = new List<int>();
                 #region ApiCall
                 string url = PrestashopUrl + "countries?filter[active]=[1]&display=full";
@@ -3546,7 +3531,7 @@ namespace Ganedata.Core.Data.Helpers
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                 httpWebRequest.Credentials = new NetworkCredential(PrestashopKey, "");
                 httpWebRequest.Method = "GET";
-                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var serializer = new XmlSerializer(typeof(PrestaShopCountry));
@@ -3555,8 +3540,6 @@ namespace Ganedata.Core.Data.Helpers
                     {
                         return default;
                     }
-
-
                 }
                 #endregion
                 if (countries.Countries.Country.Count > 0)
@@ -3570,20 +3553,15 @@ namespace Ganedata.Core.Data.Helpers
                             country.PrestaShopCountryId = item.Id;
                             country.CountryName = item.Name.Language.Text;
                             country.CountryCode = item.Iso_code;
-
                         }
                         else
                         {
                             country.PrestaShopCountryId = item.Id;
-
                         }
                         context.Entry(country).State = country.CountryID > 0 ? EntityState.Modified : EntityState.Added;
                         context.SaveChanges();
                         countIds.Add(country.CountryID);
                     }
-
-
-
                 }
                 return countIds;
             }
@@ -3594,9 +3572,6 @@ namespace Ganedata.Core.Data.Helpers
             }
 
         }
-
-
-
 
         public async Task<string> PrestaShopStockSync(int tenantId, int warehouseId, string PrestashopUrl, string PrestashopKey, int SiteId)
         {
@@ -3617,7 +3592,7 @@ namespace Ganedata.Core.Data.Helpers
                 httpWebRequest.Method = "GET";
                 httpWebRequest.ContentType = "application/json";
                 requestSentTime = DateTime.UtcNow;
-                httpResponse = httpWebRequest.GetResponse();
+                httpResponse = await httpWebRequest.GetResponseAsync().ConfigureAwait(false);
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var serializer = new XmlSerializer(typeof(PrestashopProduct));
@@ -3843,7 +3818,7 @@ namespace Ganedata.Core.Data.Helpers
             newDeviceLog.DateCreated = RequestedTime;
             newDeviceLog.TenantId = TenantId;
             newDeviceLog.DateRequest = RequestTime;
-            newDeviceLog.SiteID = SiteId;
+            newDeviceLog.ApiId = SiteId;
             newDeviceLog.RecievedCount = resultCount;
             newDeviceLog.Ack = synced;
             dbcontext.TerminalsLog.Add(newDeviceLog);

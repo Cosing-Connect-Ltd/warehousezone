@@ -54,6 +54,7 @@ namespace Ganedata.Core.Models
         public bool ScanVehicleLicensePlate { get; set; }
         public bool PickByContainer { get; set; }
         public bool MandatoryPickByContainer { get; set; }
+        public bool MandatoryLocationScan { get; set; }
     }
 
 

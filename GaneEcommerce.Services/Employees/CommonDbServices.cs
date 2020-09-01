@@ -19,6 +19,7 @@ namespace Ganedata.Core.Services
         }
         public List<ProductLocationsDetailResponse> ProductsByLocationDetails(int locationId)
         {
+            //TODO: check new location calculation implementation here
             var data = (from prd in _currentDbContext.InventoryTransactions.Where(a => a.LocationId == locationId &&
                                                                                        a.ProductSerial == null &&
                                                                                        a.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder && a
@@ -193,6 +194,7 @@ namespace Ganedata.Core.Services
         }
         public int GetQuantityInLocation(InventoryTransaction transaction)
         {
+            //TODO: check new location calculation implementation here
             int quantity = (int)_currentDbContext.InventoryTransactions
                 .Where(a => a.LocationId == transaction.LocationId &&
                             a.ProductId == transaction.ProductId && a.IsDeleted != true
