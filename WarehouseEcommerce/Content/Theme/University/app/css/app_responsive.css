@@ -32,6 +32,11 @@
         .nb_top_catSection .accordion ul li:last-child div a {
             transform: skew(0deg)
         }
+
+    .feature-product-overflow .prd_lst_boxouter .imagewrap img {
+        width: 224px !important;
+        height: 224px
+    }
 }
 
 @media (max-width:1199px) {
