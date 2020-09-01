@@ -277,8 +277,20 @@ input[type=number]::-webkit-outer-spin-button {
 #nb_res_navTrigger {
     display: none;
     position: absolute;
-    bottom: 5px;
+    bottom: 8px;
     left: 15px;
+}
+
+#website-small-logo{
+    display: none;
+    position: absolute;
+    bottom: 5px;
+    left: 55px;
+}
+
+#website-small-logo a img {
+    max-height: 35px;
+    padding: 0;
 }
 
 .search_wrap_main.show {
@@ -1513,7 +1525,7 @@ input[type=number]::-webkit-outer-spin-button {
     left: 0;
     top: 0;
     z-index: 100;
-    padding: 36px;
+    padding: 20px;
     transform: translateX(-320px);
     transition: all .3s ease
 }
@@ -1563,7 +1575,7 @@ input[type=number]::-webkit-outer-spin-button {
             }
 
     .res_navWrapper .nb_lgn_btn_res {
-        width: 224px;
+        width: 100%;
         background-color: #414343;
         text-align: center;
         padding: 11px 0;
@@ -2021,7 +2033,7 @@ input[type=number]::-webkit-outer-spin-button {
         display: block;
         width: 100%;
         height: 445px;
-        box-shadow: 0 0 20px 1px #e3e3e3;
+        border: solid lightgray 1px;
         margin-bottom: 20px;
         overflow: hidden;
         border-radius: 3px;
@@ -2045,7 +2057,7 @@ input[type=number]::-webkit-outer-spin-button {
     }
 
         .nb_prd_viewingsecWrap .img_thumb_sliderwrap .nb_imageZoomCarrousle div.item {
-            box-shadow: 0 0 8px -1px #e3e3e3;
+            border: solid #EEEEEE 0.5px;
             margin: 3px
         }
 
@@ -2332,7 +2344,7 @@ input[type=number]::-webkit-outer-spin-button {
             font-family: "primaryfont_SemiBold";
             font-size: 16px;
             color: #000;
-            margin-top: 20px;
+            margin-top: 10px;
             margin-bottom: 0px;
             text-transform: uppercase;
             white-space: nowrap
@@ -7332,22 +7344,29 @@ html {
     width: 100%;
 }
 
-    .product-details-section .attribute-value p {
-        display: inline-block;
-        font-size: 16px;
-        font-family: "primaryfont_SemiBold";
-        color: #707070;
-        margin-bottom: 20px;
-        letter-spacing: 2px
-    }
+.product-details-section .attribute-value p,
+.product-details-section .attribute-value p {
+    display: inline-block;
+    font-size: 16px;
+    font-family: "primaryfont_SemiBold";
+    color: #707070;
+    margin-bottom: 20px;
+    letter-spacing: 2px
+}
 
-    .product-details-section .attribute-value p span{
-        color: #000000
-    }
+.product-details-section .attribute-value p span,
+.product-details-section .attribute-value p span {
+    color: #000000
+}
 
 .grouped-product-tab-items .product-details-block .associated-product-description {
     white-space: normal;
-    padding-top: 15px;
+}
+
+.product-details-section .attribute-value {
+    padding: 5px;
+    background: rgba(0, 0, 0, .03);
+    border-radius: 3px;
 }
 
 .owl-carousel .owl-item img {
@@ -7399,4 +7418,40 @@ input[type="checkbox"] {
 
 .uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a {
     white-space: nowrap;
+}
+
+.expandable-content-container {
+    overflow: hidden;
+    position: relative;
+    transition: max-height ease-out .5s
+}
+
+.child-product-content-container {
+    max-height: 75px;
+}
+
+    .expandable-content-container > .long-text:before {
+        content: "";
+        position: absolute;
+        z-index: 1;
+        bottom: 0;
+        left: 0;
+        pointer-events: none;
+        background-image: linear-gradient(to bottom, rgba(255,255,255, 0), rgba(255,255,255, 1) 90%);
+        width: 100%;
+        height: 3em;
+    }
+    .expandable-content-container .read-more {
+        position: absolute;
+        right: 0;
+        bottom: -9px;
+        background: #ffffff;
+        padding: 3px 0 6px 10px;
+        color: #007bff;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+.wishlist-table .list-icon {
+    font-size: 24px;
 }

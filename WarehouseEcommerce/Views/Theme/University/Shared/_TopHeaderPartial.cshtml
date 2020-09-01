@@ -30,12 +30,16 @@
         <div class="nb_logowrap">
             <a href="@Url.Action("Index","Home")">
                 <img src="@ViewBag.BaseFilePath@siteProperties.Logo" title="@siteProperties.SiteName" alt="@siteProperties.SiteName" class="main-logo" />
-                @*<img src="~/Content/Theme/University/app/images/logo.png" title="static logo" alt="static logo" />*@
             </a>
         </div>
         <div class="sir" id="nb_res_navTrigger">
             <a href="#">
                 <i class="ico icon-list-menu"></i>
+            </a>
+        </div>
+        <div class="sir" id="website-small-logo">
+            <a href="@Url.Action("Index","Home")">
+                <img src="@ViewBag.BaseFilePath@(!string.IsNullOrEmpty(siteProperties.SmallLogo?.Trim()) ? siteProperties.SmallLogo : siteProperties.Logo)" title="@siteProperties.SiteName" alt="@siteProperties.SiteName" class="main-logo" />
             </a>
         </div>
         <ul class="nb_headicolst">

@@ -18,6 +18,7 @@ namespace Ganedata.Core.Services
         public string HostName { get; set; }
         public string BaseFilePath { get; set; }
         public string Logo { get; set; }
+        public string SmallLogo { get; set; }
         public string FacebookUrl { get; set; }
         public string TwitterUrl { get; set; }
         public string LinkedInUrl { get; set; }
