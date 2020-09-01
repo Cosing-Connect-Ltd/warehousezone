@@ -35,6 +35,6 @@ namespace Ganedata.Core.Services
         bool VerifyUserVerificationCode(int userId, int tenantId, string code, UserVerifyTypes type);
         Task<bool> SendSmsBroadcast(string user, string password, string to, string from, string reference, string message);
         string GenerateVerifyRandomNo();
-        IEnumerable<AuthUser> GetUsersAgainstPermission(int tenantId, int warehouseId, string premissionName);
+        IEnumerable<AuthUser> GetUsersAgainstPermission(int tenantId, int warehouseId,string controller, string action);
     }
 }

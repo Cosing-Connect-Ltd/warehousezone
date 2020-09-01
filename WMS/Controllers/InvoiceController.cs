@@ -586,7 +586,7 @@ namespace WMS.Controllers
         public JsonResult Export(string orderProcessId, string InvoiceIds)
         {
             var context = DependencyResolver.Current.GetService<IApplicationContext>();
-            var tenantconfig = _tenantServices.GetTenantConfigById(CurrentTenantId);
+            var tenantConfig = _tenantServices.GetTenantConfigById(CurrentTenantId);
             string fileName = "";
             DataTable dt = ReportDataTableDesign();
             if (!string.IsNullOrEmpty(orderProcessId))
@@ -622,20 +622,20 @@ namespace WMS.Controllers
                                     fileName += "PI";
                                 }
                             }
-                            int? ProductNominalCode = null;
+                            int? productNominalCode = null;
                             var purchaseNominalCode = orderprocesses.OrderProcessDetail.Select(u => u.ProductMaster.PurchaseNominalCode).ToList();
                             var duplicates = purchaseNominalCode.GroupBy(i => i).OrderByDescending(grp => grp.Count()).Select(grp => grp.Key).First();
                             if (duplicates != null)
                             {
-                                ProductNominalCode = duplicates;
+                                productNominalCode = duplicates;
                             }
                             else
                             {
-                                ProductNominalCode = purchaseNominalCode.FirstOrDefault(u => u != null);
+                                productNominalCode = purchaseNominalCode.FirstOrDefault(u => u != null);
                             }
 
                             dt.Rows.Add("PI", orderprocesses?.Order?.Account.AccountCode, orderprocesses?.Order?.InvoiceNo,
-                                (ProductNominalCode.HasValue ? ProductNominalCode : tenantconfig.PurchaseNominalCode), "", orderprocesses.InvoiceDate ?? DateTime.UtcNow, "", InvoiceReport.NetAmount.ToString("#.##"), "T1",
+                                (productNominalCode.HasValue ? productNominalCode : tenantConfig.DefaultPurchaseNominalCode), "", orderprocesses.InvoiceDate ?? DateTime.UtcNow, "", InvoiceReport.NetAmount.ToString("#.##"), "T1",
                                 InvoiceReport.TaxAmount.ToString("#.##"), "1.0000", orderprocesses?.Order?.OrderNumber, caCurrent.CurrentUser().UserName, "", "");
 
                         }
@@ -682,18 +682,18 @@ namespace WMS.Controllers
                             fileName += "SI";
                         }
 
-                        int? ProductNominalCode = null;
+                        int? productNominalCode = null;
                         var salesNominalCode = InvoiceReport.InvoiceDetails.Select(u => u.Product.SaleNominalCode).ToList();
                         var duplicates = salesNominalCode.GroupBy(i => i).OrderByDescending(grp => grp.Count()).Select(grp => grp.Key).First();
                         if (duplicates != null)
                         {
-                            ProductNominalCode = duplicates;
+                            productNominalCode = duplicates;
                         }
                         else
                         {
-                            ProductNominalCode = salesNominalCode.FirstOrDefault(u => u != null);
+                            productNominalCode = salesNominalCode.FirstOrDefault(u => u != null);
                         }
-                        dt.Rows.Add("SI", InvoiceReport.Account.AccountCode, InvoiceReport.InvoiceNumber, (ProductNominalCode.HasValue ? ProductNominalCode : tenantconfig.SaleNominalCode), "", InvoiceReport.InvoiceDate, "", InvoiceReport.NetAmount, "T1", InvoiceReport.TaxAmount,
+                        dt.Rows.Add("SI", InvoiceReport.Account.AccountCode, InvoiceReport.InvoiceNumber, (productNominalCode.HasValue ? productNominalCode : tenantConfig.DefaultSaleNominalCode), "", InvoiceReport.InvoiceDate, "", InvoiceReport.NetAmount, "T1", InvoiceReport.TaxAmount,
                             "1.0000", orderprocess?.Order?.OrderNumber, caCurrent.CurrentUser().UserName, "", "");
                     }
                 }

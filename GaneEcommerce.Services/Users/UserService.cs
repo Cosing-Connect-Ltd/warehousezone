@@ -33,10 +33,10 @@ namespace Ganedata.Core.Services
             return _currentDbContext.AuthUsers.Where(m => m.TenantId == tenantId && m.IsDeleted != true).OrderBy(m => m.UserName);
         }
 
-        public IEnumerable<AuthUser> GetUsersAgainstPermission(int tenantId, int warehouseId, string premissionName)
+        public IEnumerable<AuthUser> GetUsersAgainstPermission(int tenantId, int warehouseId,string controller, string action)
         {
             AuthActivity Activity = _currentDbContext.AuthActivities
-                .Where(e => e.ActivityAction == premissionName && e.IsActive == true && e.IsDeleted != true)?.FirstOrDefault();
+                .Where(e => e.ActivityController==controller && e.ActivityAction == action && e.IsActive == true && e.IsDeleted != true)?.FirstOrDefault();
 
             return _currentDbContext.AuthUsers.Where(u => u.TenantId == tenantId &&
                                                           u.AuthPermissions.Any(c => c.ActivityId == Activity.ActivityId && c.IsActive && c.IsDeleted !=true)

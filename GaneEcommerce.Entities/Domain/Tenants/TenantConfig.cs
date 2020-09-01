@@ -63,9 +63,9 @@ namespace Ganedata.Core.Entities.Domain
         public virtual TenantWebsites TenantWebsites { get; set; }
         public bool MandatoryLocationScan { get; set; }
 
-        [Display(Name = "Sales Nominal Code")]
-        public int? SaleNominalCode { get; set; }
-        [Display(Name = "Purchases Nominal Code")]
-        public int? PurchaseNominalCode { get; set; }
+        [Display(Name = "Default Sales Nominal Code")]
+        public int? DefaultSaleNominalCode { get; set; }
+        [Display(Name = "Default Purchases Nominal Code")]
+        public int? DefaultPurchaseNominalCode { get; set; }
     }
 }
