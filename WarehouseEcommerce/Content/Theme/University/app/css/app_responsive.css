@@ -366,7 +366,8 @@
     }
 
     .parent-product-content-container {
-        max-height: 250px
+        max-height: 250px;
+        float: left;
     }
 
     .img_thumb_sliderwrap .owl-carousel .owl-item img {
