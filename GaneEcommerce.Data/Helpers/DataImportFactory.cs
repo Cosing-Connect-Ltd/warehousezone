@@ -3506,7 +3506,7 @@ namespace Ganedata.Core.Data.Helpers
                 CreateWebSiteSyncLog(requestTime, "Error", false, 0, requestSentTime, ApiId, tenantId);
                 return ex.Message;
             }
-            return "All data sync properly";
+            return "All data synced successfully";
         }
 
         public AccountAddresses GetAccountAddressesByPrestaShopAddressId(int id)
@@ -3658,14 +3658,14 @@ namespace Ganedata.Core.Data.Helpers
 
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                CreateWebSiteSyncLog(requestTime, "Error", true, 0, requestSentTime, SiteId, tenantId);
+                CreateWebSiteSyncLog(requestTime, e.Message, true, 0, requestSentTime, SiteId, tenantId);
 
-                return "Stock is not posted correctly";
+                return "Stock levels update failed";
             }
 
-            return "Stock posted correctly";
+            return "Stock levels updated successfully";
 
 
         }
