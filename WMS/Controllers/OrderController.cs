@@ -1172,7 +1172,8 @@ namespace WMS.Controllers
 
             try
             {
-                int type = Convert.ToInt32(Request.Params["InventoryTransactionTypeId"]);
+                int type = (int)model.InventoryTransactionTypeId;
+                 
                 int? cons_type = null;
                 if (Request.UrlReferrer.AbsolutePath.Contains("PurchaseOrders")) { }
                 else if (Request.UrlReferrer.AbsolutePath.Contains("SalesOrders"))
