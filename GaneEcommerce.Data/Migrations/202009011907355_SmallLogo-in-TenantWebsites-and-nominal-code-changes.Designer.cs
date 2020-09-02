@@ -7,13 +7,13 @@ namespace Ganedata.Core.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class salesandpurchasenominalcodeaddedinTenantConfigAndProductmaster : IMigrationMetadata
+    public sealed partial class SmallLogoinTenantWebsitesandnominalcodechanges : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(salesandpurchasenominalcodeaddedinTenantConfigAndProductmaster));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(SmallLogoinTenantWebsitesandnominalcodechanges));
         
         string IMigrationMetadata.Id
         {
-            get { return "202008312342061_sales-and-purchase-nominalcode-added-in-TenantConfigAndProductmaster"; }
+            get { return "202009011907355_SmallLogo-in-TenantWebsites-and-nominal-code-changes"; }
         }
         
         string IMigrationMetadata.Source

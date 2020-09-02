@@ -35,7 +35,7 @@ namespace Ganedata.Core.Models
         public decimal? SellPrice { get; set; }
         public decimal? MinThresholdPrice { get; set; }
         public decimal PercentMargin { get; set; }
-        public bool Kit { get; set; }
+        public ProductKitTypeEnum ProductType { get; set; }
         public bool IsActive { get; set; }
         public DateTime ProdStartDate { get; set; }
         public bool Discontinued { get; set; }

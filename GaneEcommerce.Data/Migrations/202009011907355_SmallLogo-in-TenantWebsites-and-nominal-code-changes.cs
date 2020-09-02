@@ -3,10 +3,11 @@
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class salesandpurchasenominalcodeaddedinTenantConfigAndProductmaster : DbMigration
+    public partial class SmallLogoinTenantWebsitesandnominalcodechanges : DbMigration
     {
         public override void Up()
         {
+            AddColumn("dbo.TenantWebsites", "SmallLogo", c => c.String());
             AddColumn("dbo.ProductMaster", "SaleNominalCode", c => c.Int());
             AddColumn("dbo.ProductMaster", "PurchaseNominalCode", c => c.Int());
             AddColumn("dbo.TenantConfigs", "DefaultSaleNominalCode", c => c.Int());
@@ -21,6 +22,7 @@
             DropColumn("dbo.TenantConfigs", "DefaultSaleNominalCode");
             DropColumn("dbo.ProductMaster", "PurchaseNominalCode");
             DropColumn("dbo.ProductMaster", "SaleNominalCode");
+            DropColumn("dbo.TenantWebsites", "SmallLogo");
         }
     }
 }

@@ -1051,10 +1051,6 @@
     <Compile Include="Migrations\202008271330560_added_preorder_feature_to_products.designer.cs">
       <DependentUpon>202008271330560_added_preorder_feature_to_products.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202008280849405_added_SmallLogo_to_TenantsWebsites_table.cs" />
-    <Compile Include="Migrations\202008280849405_added_SmallLogo_to_TenantsWebsites_table.designer.cs">
-      <DependentUpon>202008280849405_added_SmallLogo_to_TenantsWebsites_table.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\202008292031322_ApiId-relation-added-in-terminal-logs.cs" />
     <Compile Include="Migrations\202008292031322_ApiId-relation-added-in-terminal-logs.designer.cs">
       <DependentUpon>202008292031322_ApiId-relation-added-in-terminal-logs.cs</DependentUpon>
@@ -1067,9 +1063,9 @@
     <Compile Include="Migrations\202008311717341_inventory-stocks-from-persistable-entity.designer.cs">
       <DependentUpon>202008311717341_inventory-stocks-from-persistable-entity.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202008312342061_sales-and-purchase-nominalcode-added-in-TenantConfigAndProductmaster.cs" />
-    <Compile Include="Migrations\202008312342061_sales-and-purchase-nominalcode-added-in-TenantConfigAndProductmaster.designer.cs">
-      <DependentUpon>202008312342061_sales-and-purchase-nominalcode-added-in-TenantConfigAndProductmaster.cs</DependentUpon>
+    <Compile Include="Migrations\202009011907355_SmallLogo-in-TenantWebsites-and-nominal-code-changes.cs" />
+    <Compile Include="Migrations\202009011907355_SmallLogo-in-TenantWebsites-and-nominal-code-changes.designer.cs">
+      <DependentUpon>202009011907355_SmallLogo-in-TenantWebsites-and-nominal-code-changes.cs</DependentUpon>
     </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
@@ -2180,9 +2176,6 @@
     <EmbeddedResource Include="Migrations\202008271330560_added_preorder_feature_to_products.resx">
       <DependentUpon>202008271330560_added_preorder_feature_to_products.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008280849405_added_SmallLogo_to_TenantsWebsites_table.resx">
-      <DependentUpon>202008280849405_added_SmallLogo_to_TenantsWebsites_table.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008292031322_ApiId-relation-added-in-terminal-logs.resx">
       <DependentUpon>202008292031322_ApiId-relation-added-in-terminal-logs.cs</DependentUpon>
     </EmbeddedResource>
@@ -2192,8 +2185,8 @@
     <EmbeddedResource Include="Migrations\202008311717341_inventory-stocks-from-persistable-entity.resx">
       <DependentUpon>202008311717341_inventory-stocks-from-persistable-entity.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008312342061_sales-and-purchase-nominalcode-added-in-TenantConfigAndProductmaster.resx">
-      <DependentUpon>202008312342061_sales-and-purchase-nominalcode-added-in-TenantConfigAndProductmaster.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202009011907355_SmallLogo-in-TenantWebsites-and-nominal-code-changes.resx">
+      <DependentUpon>202009011907355_SmallLogo-in-TenantWebsites-and-nominal-code-changes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

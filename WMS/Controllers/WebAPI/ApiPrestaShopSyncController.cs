@@ -48,7 +48,7 @@ namespace WMS.Controllers.WebAPI
                 result = dataImportFactory.GetPrestaShopOrdersSync(item.TenantId, item.DefaultWarehouseId, item.ApiUrl, item.ApiKey, item.Id).Result;
 
             }
-            return Ok(!string.IsNullOrEmpty(result) ? result : "All orders are syncroized properly");
+            return Ok(!string.IsNullOrEmpty(result) ? result : "Orders synced successfully");
         }
         [HttpGet]
         //Post http://localhost:8005/api/sync/Post-PrestaShop-ProductStock/?TenatId=1&WarehouseId=1
