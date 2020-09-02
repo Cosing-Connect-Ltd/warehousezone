@@ -350,11 +350,9 @@ namespace Ganedata.Core.Entities.Domain
         public string OrderNumber { get; set; }
         public string CompanyName { get; set; }
         public OrderProcessStatusEnum? Status { get; set; }
-
         public OrderStatusEnum? orderstatus { get; set; }
-
         public int? EmailCount { get; set; }
-
+        public string PickContainerCode { get; set; }
 
     }
 

@@ -46,7 +46,7 @@ namespace WMS.Controllers.WebAPI
                 mappedProduct.ProductGroupName = p?.ProductGroup?.ProductGroup;
                 mappedProduct.DepartmentName = p?.TenantDepartment?.DepartmentName;
                 mappedProduct.TaxPercent = p.GlobalTax.PercentageOfAmount;
-                mappedProduct.ProductKitMapViewModelList = _mapper.Map(p.ProductKitItems.ToList(), mappedProduct.ProductKitMapViewModelList);
+                mappedProduct.ProductKitMapViewModelList = _mapper.Map(p.ProductKitItems.Where(x => x.IsActive == true && x.IsDeleted != true).ToList(), mappedProduct.ProductKitMapViewModelList);
                 mappedProduct.ProductTags = p.ProductTagMaps.Where(x => x.IsDeleted != true && x.ProductTag.IsDeleted != true).Select(x => x.ProductTag.TagName).ToList();
 
                 var baseUrl = new Uri(ConfigurationManager.AppSettings["WarehouseStoreBaseUri"]);

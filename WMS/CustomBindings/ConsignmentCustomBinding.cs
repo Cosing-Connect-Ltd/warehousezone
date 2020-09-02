@@ -31,8 +31,7 @@ namespace WMS.CustomBindings
                             CompanyName = ops.Order.Account.CompanyName,
                             Status = ops.OrderProcessStatusId,
                             orderstatus = ops.Order.OrderStatusID,
-
-
+                            PickContainerCode = ops.PickContainerCode
                         });
 
             return transactions;
@@ -114,6 +113,8 @@ namespace WMS.CustomBindings
             var viewModel = new GridViewModel();
             viewModel.KeyFieldName = "OrderProcessID";
 
+
+            viewModel.Columns.Add("PickContainerCode");
             viewModel.Columns.Add("DeliveryNO");
             viewModel.Columns.Add("OrderNumber");
             viewModel.Columns.Add("CompanyName");

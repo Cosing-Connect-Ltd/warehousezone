@@ -46,6 +46,13 @@
 
         settings.Columns.Add(c =>
         {
+            c.FieldName = "PickContainerCode";
+            c.Caption = "Pick Container Code";
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(c =>
+        {
             c.FieldName = "DeliveryNO";
             c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
         });
