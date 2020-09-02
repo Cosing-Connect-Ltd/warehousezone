@@ -52,9 +52,13 @@
 
                     @if (Model.ParentProductType != ProductKitTypeEnum.ProductByAttribute)
                     {
-                        <div class="attribute-value">
-                            <span>@Ganedata.Core.Services.Inventory.GetProductAttributesValueToDisplay(Model.Product.ProductAttributeValuesMap)</span>
-                        </div>
+                        var attributesText = Ganedata.Core.Services.Inventory.GetProductAttributesValueToDisplay(Model.Product.ProductAttributeValuesMap);
+                        if (!string.IsNullOrEmpty(attributesText?.Trim()))
+                        {
+                            <div class="attribute-value">
+                                <span>@attributesText</span>
+                            </div>
+                        }
                     }
 
                     @if (Model.ParentProductType == ProductKitTypeEnum.ProductByAttribute)

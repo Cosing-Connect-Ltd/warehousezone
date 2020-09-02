@@ -5,12 +5,12 @@ namespace Ganedata.Core.Entities.Domain
 {
     public class ProductDynamicFilteringViewModel
     {
-        public List<string> Manufacturer { get; set; }
-        public string MinAvailablePrice { get; set; }
-        public string MaxAvailablePrice { get; set; }
-        public Dictionary<ProductAttributes,List<ProductAttributeValues>> AttributeValues { get; set; }
-        public List<string> SubCategories  { get; set; }
-        public List<WebsiteNavigation> WebsiteNavigationCategories { get; set; }
+        public Dictionary<int, string> Brands { get; set; }
+        public string MinPrice { get; set; }
+        public string MaxPrice { get; set; }
+        public Dictionary<ProductAttributes,List<ProductAttributeValues>> Attributes { get; set; }
+        public Dictionary<int, string> Types  { get; set; }
+        public List<WebsiteNavigation> Categories { get; set; }
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
     }

@@ -9,12 +9,16 @@
 
 }
 <section class="nb_sec nb_prdlisting_pgsec product-details-section">
+    <span id="res_filterBox_trigger"><i class="icon-filter"></i></span>
     <div class="container">
         <div class="row">
             <div id="content" class="col-md-12 col-sm-12">
                 @Html.Partial("_ProductDetailBreadCrumb")
                 <div class="row">
-                    <div class="col-md-5 col-lg-4">
+                    <div class="col-lg-0 col-xl-2">
+                        @Html.Partial("_DynamicFilters", Model.DynamicFilters)
+                    </div>
+                    <div class="col-md-5 col-lg-6 col-xl-4">
                         @Html.Partial("_ProductFilesGallery", Model.Product)
                         <div class="expandable-content-container parent-product-content-container">
                             <div class="expandable-content-container-body">
@@ -26,92 +30,89 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-7 col-lg-8">
+                    <div class="col-md-7 col-lg-6 col-xl-6">
                         <!-- tabs -->
                         <ul class="nav nav-tabs" role="tablist">
                             @{
-                                var isFirstTab = true;
+                                var activeTabId = Model.GroupedTabs.FirstOrDefault(g => g.Products?.Count() > 0)?.ProductKitType?.Id;
                             }
 
                             @foreach (var item in Model.GroupedTabs)
                             {
                                 <li role="presentation" nav-item">
-                                    <a href="#@item.ProductKitType.Name.Replace(" ", "-")" aria-controls="@item.ProductKitType.Name.Replace(" ", "-")" role="tab" data-toggle="tab" class="nav-link @(isFirstTab ? "active" : "")">
+                                    <a href="#@item.ProductKitType.Name.Replace(" ", "-")" aria-controls="@item.ProductKitType.Name.Replace(" ", "-")" role="tab" data-toggle="tab" class="nav-link @(item.ProductKitType.Id == activeTabId ? "active" : "")">
                                         @item.ProductKitType.Name
                                         <span class="active-tab-bar"></span>
                                     </a>
                                 </li>
-                                isFirstTab = false;
                             }
                         </ul>
 
                         <!-- Tab panes -->
                         <div class="tab-content grouped-product-tab-items">
                             @{
-
-                                isFirstTab = true;
                                 foreach (var item in Model.GroupedTabs)
                                 {
-                                    if (item?.Products != null) {
-                                    <div role="tabpanel" class="tab-pane @(isFirstTab ? "active" : "")" id="@item.ProductKitType.Name.Replace(" ", "-")">
-                                        @foreach (var kitProductMaster in item?.Products)
+                                    <div role="tabpanel" class="tab-pane @(item.ProductKitType.Id == activeTabId ? "active" : "")" id="@item.ProductKitType.Name.Replace(" ", "-")">
+                                        @if (item?.Products != null)
                                         {
-                                        var prices = item.Prices[kitProductMaster.ProductId];
-                                        <div class="nb_prd_det_rightsec product-details-block">
-                                            <h2 class="head">@kitProductMaster.Name</h2>
-                                            <div class="row">
-                                                <div class="col-md-12 col-lg-12 col-xl-4">
-                                                    <div>SKU: @kitProductMaster.SKUCode</div>
-                                                    @if (kitProductMaster.ProductManufacturer != null)
-                                                    {
-                                                        <div>Brand: <a href="@Url.Action("List", "Products", new { values = "BrandS-" + kitProductMaster.ProductManufacturer.Name.Replace(" ", "_") })">@kitProductMaster.ProductManufacturer.Name</a></div>
-                                                    }
-                                                    @if (!string.IsNullOrEmpty(kitProductMaster.ManufacturerPartNo?.Trim()))
-                                                    {
-                                                        <div>MFP No: @kitProductMaster.ManufacturerPartNo</div>
-                                                    }
-                                                    @{
-                                                        ViewBag.AvailableProductCount = item.ProductsAvailableCounts[kitProductMaster.ProductId];
-                                                    }
-                                                    @Html.Partial("_ProductAvailability", kitProductMaster)
-                                                    <div class="get-trade-price__link" style="display: none;">
-                                                        <a href="javascript:;" onclick="GetLoggedIn(false,true)">
-                                                            Get Trade Price
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12 col-lg-12 col-xl-8">
-                                                    @if (kitProductMaster.SellPrice != null && kitProductMaster.SellPrice > 0)
-                                                    {
-                                                        <div class="prd_amnt">@ViewBag.CurrencySymbol@(prices.FinalSellPrice + prices.TaxAmount)<span> inc VAT</span></div>
-                                                        <div class="prd_amnt_excl_VAT">(@ViewBag.CurrencySymbol@prices.FinalSellPrice<span> excl VAT</span>)</div>
-                                                        if (kitProductMaster.SellPrice != prices.FinalSellPrice)
-                                                        {
-                                                            <div class="prd_amnt_RRP">RRP @ViewBag.CurrencySymbol@kitProductMaster.SellPrice<span> excl VAT</span></div>
-                                                        }
-                                                    }
-                                                    @Html.Partial("_ProductDetailActionsButtons", kitProductMaster)
-                                                </div>
-                                            </div>
-                                            <div class="expandable-content-container child-product-content-container">
-                                                <div class="expandable-content-container-body">
-                                                    @{ var attributesText = Ganedata.Core.Services.Inventory.GetProductAttributesValueToDisplay(kitProductMaster.ProductAttributeValuesMap);}
-                                                    @if (!string.IsNullOrEmpty(attributesText?.Trim()))
-                                                    {
-                                                        <div class="attribute-value">
-                                                            <span>@attributesText</span>
+                                            foreach (var kitProductMaster in item?.Products)
+                                            {
+                                                var prices = item.Prices[kitProductMaster.ProductId];
+                                                <div class="nb_prd_det_rightsec product-details-block">
+                                                    <h2 class="head">@kitProductMaster.Name</h2>
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-lg-12 col-xl-4">
+                                                            <div>SKU: @kitProductMaster.SKUCode</div>
+                                                            @if (kitProductMaster.ProductManufacturer != null)
+                                                            {
+                                                                <div>Brand: <a href="@Url.Action("List", "Products", new { values = "BrandS-" + kitProductMaster.ProductManufacturer.Name.Replace(" ", "_") })">@kitProductMaster.ProductManufacturer.Name</a></div>
+                                                            }
+                                                            @if (!string.IsNullOrEmpty(kitProductMaster.ManufacturerPartNo?.Trim()))
+                                                            {
+                                                                <div>MFP No: @kitProductMaster.ManufacturerPartNo</div>
+                                                            }
+                                                            @{
+                                                                ViewBag.AvailableProductCount = item.ProductsAvailableCounts[kitProductMaster.ProductId];
+                                                            }
+                                                            @Html.Partial("_ProductAvailability", kitProductMaster)
+                                                            <div class="get-trade-price__link" style="display: none;">
+                                                                <a href="javascript:;" onclick="GetLoggedIn(false,true)">
+                                                                    Get Trade Price
+                                                                </a>
+                                                            </div>
                                                         </div>
-                                                    }
-                                                    <div class="associated-product-description">
-                                                        @Html.Raw(kitProductMaster.Description)
+                                                        <div class="col-md-12 col-lg-12 col-xl-8">
+                                                            @if (kitProductMaster.SellPrice != null && kitProductMaster.SellPrice > 0)
+                                                            {
+                                                                <div class="prd_amnt">@ViewBag.CurrencySymbol@(prices.FinalSellPrice + prices.TaxAmount)<span> inc VAT</span></div>
+                                                                <div class="prd_amnt_excl_VAT">(@ViewBag.CurrencySymbol@prices.FinalSellPrice<span> excl VAT</span>)</div>
+                                                                if (kitProductMaster.SellPrice != prices.FinalSellPrice)
+                                                                {
+                                                                    <div class="prd_amnt_RRP">RRP @ViewBag.CurrencySymbol@kitProductMaster.SellPrice<span> excl VAT</span></div>
+                                                                }
+                                                            }
+                                                            @Html.Partial("_ProductDetailActionsButtons", kitProductMaster)
+                                                        </div>
+                                                    </div>
+                                                    <div class="expandable-content-container child-product-content-container">
+                                                        <div class="expandable-content-container-body">
+                                                            @{ var attributesText = Ganedata.Core.Services.Inventory.GetProductAttributesValueToDisplay(kitProductMaster.ProductAttributeValuesMap);}
+                                                            @if (!string.IsNullOrEmpty(attributesText?.Trim()))
+                                                            {
+                                                                <div class="attribute-value">
+                                                                    <span>@attributesText</span>
+                                                                </div>
+                                                            }
+                                                            <div class="associated-product-description">
+                                                                @Html.Raw(kitProductMaster.Description)
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
+                                            }
                                         }
                                     </div>
-                                    isFirstTab = false;
-                                    }
                                 }
                             }
                         </div>

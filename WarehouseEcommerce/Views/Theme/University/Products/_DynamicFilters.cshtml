@@ -1,139 +1,139 @@
 ﻿@model Ganedata.Core.Entities.Domain.ProductDynamicFilteringViewModel
 
-
-<div class="col-md-4 col-lg-3 col-xl-2">
-    <div class="nb_prd_filterwrap">
-        @if (Model.TotalCount > 0 || Model.WebsiteNavigationCategories.Count() <= 0)
-        {
-            <div class="prod_count_sec">
-                <h5 class="count">@(Model.FilteredCount + "Products")</h5>
+@{
+    var requestQuery = Request.QueryString["filters"] ?? String.Empty;
+}
+<div class="nb_prd_filterwrap">
+    @if (Model.TotalCount > 0 || Model.Categories.Count() <= 0)
+    {
+        <div class="prod_count_sec">
+            <h5 class="count">@(Model.FilteredCount + "Products")</h5>
+        </div>
+    }
+    @if (Model.Categories.Count() > 0)
+    {
+        <div class="type-content">
+            <div class="nb_filter_body">
+                <ul class="nb_prd_filter_listouter">
+                    @foreach (var item in Model.Categories)
+                    {
+                        <li class="list-group-item"><a href="@Url.Action("list", "Products", new { category = item.Name, categoryId = item.Id})">@item.Name</a></li>
+                    }
+                </ul>
             </div>
-        }
-        @if (Model.WebsiteNavigationCategories.Count() > 0)
-        {
-            <div class="type-content">
-                <div class="nb_filter_body">
-                    <ul class="nb_prd_filter_listouter">
-                        @foreach (var item in Model.WebsiteNavigationCategories)
-                        {
-                            <li class="list-group-item"><a href="@Url.Action("list", "Products", new { category = item.Name, categoryId = item.Id})">@item.Name</a></li>
-                        }
-                    </ul>
+        </div>
+    }
+    <div class="nb_fltr_accrd_wrap">
+        <div id="accordion" class="nb_filter_accordion">
+            @if (!string.IsNullOrEmpty(Model.MinPrice?.Trim()) && !string.IsNullOrEmpty(Model.MaxPrice?.Trim()))
+            {
+                <div class="nb_filter_head price-range-div" id="filter1">
+                    <h5 class="mb-0">
+                        <button id="price_btn" class="btn btn-link">
+                            Price
+                        </button>
+                    </h5>
                 </div>
-            </div>
-        }
-        <div class="nb_fltr_accrd_wrap">
-            <div id="accordion" class="nb_filter_accordion">
-                @if (!string.IsNullOrEmpty(Model.MinAvailablePrice?.Trim()) && !string.IsNullOrEmpty(Model.MaxAvailablePrice?.Trim()))
-                {
-                    <div class="nb_filter_head price-range-div" id="filter1">
-                        <h5 class="mb-0">
-                            <button id="price_btn" class="btn btn-link">
-                                Price
-                            </button>
-                        </h5>
+                <div class="nb_filter_body price-content">
+                    <div class="filtered-amout">
+                        <div id="amount"></div>
                     </div>
-                    <div class="nb_filter_body price-content">
-                        <div class="filtered-amout">
-                            <div id="amount"></div>
+
+                    <div class="price-range-div">
+                        <div class="nb_filter_body pb-0">
+                            <ul class="nb_prd_filter_listouter">
+
+                                <div id="slider-range"></div>
+
+                                <li class="list-group-item" style="display: none">
+                                    <input type="checkbox" id="prices" class="checkbox-inline" value="" @(requestQuery.Contains("prices>") ? "checked" : "")>
+                                </li>
+                            </ul>
                         </div>
-
-                        <div class="price-range-div">
-                            <div class="nb_filter_body pb-0">
+                    </div>
+                </div>
+            }
+            @if (Model.Brands?.Count > 1 || (Model.Brands?.Count == 1 && requestQuery.Contains((Model.Brands.First().Value + ":" + Model.Brands.First().Key.ToString()))))
+            {
+                <div class="nb_filter_head" id="filter2">
+                    <h5 class="mb-0">
+                        <button id="brand_btn" class="btn btn-link">
+                            Brand
+                        </button>
+                    </h5>
+                </div>
+                <div class="brand-content">
+                    <div class="nb_filter_body">
+                        <ul class="nb_prd_filter_listouter">
+                            @foreach (var item in Model.Brands)
+                            {
+                                string name = item.Value.Replace(" ", "_").Replace(",", "^") + ":" + item.Key.ToString();
+                                <li class="list-group-item"><input type="checkbox" id="brands" class="checkbox-inline" title="@(item.Value)" value="@(name)" @(requestQuery.Contains(name) ? "checked" : "")>@(item.Value)</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+            @if (Model.Types?.Count > 1 || (Model.Types?.Count == 1 && requestQuery.Contains((Model.Types.First().Value + ":" + Model.Types.First().Key.ToString()))))
+            {
+                <div class="nb_filter_head" id="filter3">
+                    <h5 class="mb-0">
+                        <button id="type_btn" class="btn btn-link">
+                            By Type
+                        </button>
+                    </h5>
+                </div>
+                <div class="type-content">
+                    <div class="nb_filter_body">
+                        <ul class="nb_prd_filter_listouter">
+                            @foreach (var item in Model.Types)
+                            {
+                                string name = item.Value.Replace(" ", "_").Replace(",", "^") + ":" + item.Key.ToString();
+                                <li class="list-group-item" id="type"><input type="checkbox" id="types" class="checkbox-inline" title="@(item.Value)" value="@(name)" @(requestQuery.Contains(name) ? "checked" : "")>@(item.Value)</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+            @* Adding dynmic attributes here *@
+            @if (Model.Attributes != null)
+            {
+                foreach (var attribute in Model.Attributes)
+                {
+                    if (attribute.Value?.Count > 1 || (attribute.Value?.Count == 1 && requestQuery.Contains(attribute.Value.First().Value)))
+                    {
+                        <div class="nb_filter_head" id="filter_@(attribute.Key.AttributeId + attribute.Value.Count)">
+                            <h5 class="mb-0">
+                                <button id="@(attribute.Key.AttributeId + attribute.Value.Count)" onclick="showAttribute(event)" class="btn btn-link">
+                                    @attribute.Value.FirstOrDefault().ProductAttributes.AttributeName
+                                </button>
+                            </h5>
+                        </div>
+                        <div class="content_@(attribute.Key.AttributeId + attribute.Value.Count)">
+                            <div class="nb_filter_body">
                                 <ul class="nb_prd_filter_listouter">
-
-                                    <div id="slider-range"></div>
-
-                                    <li class="list-group-item" style="display: none">
-                                        <input type="checkbox" id="priceS" class="checkbox-inline" value="" @(Request.Url.OriginalString.ToLower().Contains("prices") ? "checked" : "")>
-                                    </li>
+                                    @foreach (var attributeValue in attribute.Value)
+                                    {
+                                        string name = attributeValue.Value.Replace(" ", "_").Replace(",", "^") + ":" + @attributeValue.AttributeValueId;
+                                        <li class="list-group-item"><input type="checkbox" id="@(attributeValue.ProductAttributes.AttributeName.Replace(" ", "_") + ":" + attributeValue.ProductAttributes.AttributeId)" class="checkbox-inline" value="@name" @(requestQuery.Contains(name) ? "checked" : "")>@(attributeValue.Value)</li>
+                                    }
                                 </ul>
                             </div>
                         </div>
-                    </div>
-                }
-                @if (Model.Manufacturer?.Count > 1 || (Model.Manufacturer?.Count == 1 && Request.Url.OriginalString.ToLower().Contains(Model.Manufacturer.First().ToLower())))
-                {
-                    <div class="nb_filter_head" id="filter2">
-                        <h5 class="mb-0">
-                            <button id="brand_btn" class="btn btn-link">
-                                Brand
-                            </button>
-                        </h5>
-                    </div>
-                    <div class="brand-content">
-                        <div class="nb_filter_body">
-                            <ul class="nb_prd_filter_listouter">
-                                @foreach (var item in Model.Manufacturer)
-                                {
-                                    string name = item.Replace(" ", "_").Replace(",", "^");
-                                    <li class="list-group-item"><input type="checkbox" id="BrandS" class="checkbox-inline" title="@(item)" value="@(name)" @(Request.Url.OriginalString.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(item)</li>
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                }
-                @if (Model.SubCategories?.Count > 1 || (Model.SubCategories?.Count == 1 && Request.Url.OriginalString.ToLower().Contains(Model.SubCategories.First().ToLower())))
-                {
-                    <div class="nb_filter_head" id="filter3">
-                        <h5 class="mb-0">
-                            <button id="type_btn" class="btn btn-link">
-                                By Type
-                            </button>
-                        </h5>
-                    </div>
-                    <div class="type-content">
-                        <div class="nb_filter_body">
-                            <ul class="nb_prd_filter_listouter">
-                                @foreach (var item in Model.SubCategories)
-                                {
-                                    string name = item.Replace(" ", "_").Replace(",", "^");
-                                    <li class="list-group-item" id="type"><input type="checkbox" id="TypeS" class="checkbox-inline" title="@(item)" value="@(name)" @(Request.Url.OriginalString.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(item)</li>
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                }
-                @* Adding dynmic attributes here *@
-                @if (Model.AttributeValues != null)
-                {
-                    foreach (var item in Model.AttributeValues)
-                    {
-                        if (item.Value?.Count > 1 || (item.Value?.Count == 1 && Request.Url.OriginalString.ToLower().Contains(item.Value.First().Value.ToLower())))
-                        {
-                            <div class="nb_filter_head" id="filter_@(item.Key.AttributeId + item.Value.Count)">
-                                <h5 class="mb-0">
-                                    <button id="@(item.Key.AttributeId + item.Value.Count)" onclick="showAttribute(event)" class="btn btn-link">
-                                        @item.Value.FirstOrDefault().ProductAttributes.AttributeName
-                                    </button>
-                                </h5>
-                            </div>
-                            <div class="content_@(item.Key.AttributeId + item.Value.Count)">
-                                <div class="nb_filter_body">
-                                    <ul class="nb_prd_filter_listouter">
-                                        @foreach (var items in item.Value)
-                                        {
-                                            string name = items.Value.Replace(" ", "_").Replace(",", "^") + "^" + @items.AttributeValueId;
-                                            <li class="list-group-item"><input type="checkbox" id="@items.ProductAttributes.AttributeName.Replace(" ", "_")" class="checkbox-inline" value="@name" @(Request.Url.OriginalString.ToLower().Contains(name.ToLower()) ? "checked" : "")>@(items.Value)</li>
-                                        }
-                                    </ul>
-                                </div>
-                            </div>
-                        }
                     }
                 }
-            </div>
+            }
         </div>
     </div>
 </div>
 
-@if ((!string.IsNullOrEmpty(Model.MinAvailablePrice?.Trim()) && !string.IsNullOrEmpty(Model.MaxAvailablePrice?.Trim())))
+@if ((!string.IsNullOrEmpty(Model.MinPrice?.Trim()) && !string.IsNullOrEmpty(Model.MaxPrice?.Trim())))
 {
     <script>
     $(function () {
 
-        var min =Math.floor(@Model.MinAvailablePrice);
-        var max = Math.ceil(@Model.MaxAvailablePrice);
+        var min =Math.floor(@Model.MinPrice);
+        var max = Math.ceil(@Model.MaxPrice);
 
         if ((max - min) <= 1 || isNaN(min) || isNaN(max)) {
             $(".price-range-div").hide();
@@ -141,30 +141,30 @@
         }
 
         var prices;
-        var parameterValue = getUrlParameter("values");
+        var parameterValue = getUrlParameter("filters");
 
         if (parameterValue != null) {
-            var parameterValueList = parameterValue.split("/");
+            var parameterValueList = parameterValue.split("|");
             jQuery.each(parameterValueList, function(index, item) {
-                if (item.indexOf('priceS-') > -1) {
-                    prices = item.replace('priceS-', '');
+                if (item.indexOf('prices>') > -1) {
+                    prices = item.replace('prices>', '');
                 }
             });
         }
 
         if (prices != null) {;
-            prices = prices.split("_");
+            prices = prices.split("-");
             min = Math.floor(parseFloat(prices[0]));
             max = Math.ceil(parseFloat(prices[1]));
-            $('#priceS').prop('checked', true);
-            $("#priceS").val(prices[0] + "_" +prices[1]);
+            $('#prices').prop('checked', true);
+            $("#prices").val(prices[0] + "-" +prices[1]);
         }
 
         $("#slider-range").slider({
             range: true,
             step:1,
-            min: Math.floor(@Model.MinAvailablePrice),
-            max: Math.ceil(@Model.MaxAvailablePrice),
+            min: Math.floor(@Model.MinPrice),
+            max: Math.ceil(@Model.MaxPrice),
             values: [min, max],
             slide: function(event, ui) {
                 $("#amount").html('@ViewBag.CurrencySymbol' + Math.floor(ui.values[0]) + " - "+'  @ViewBag.CurrencySymbol' + Math.ceil(ui.values[1]));
@@ -172,8 +172,8 @@
             },
             stop: function (event, ui) {
 
-                $("#priceS").val(ui.values[0] + "_" + ui.values[1]);
-                $("#priceS").click();
+                $("#prices").val(ui.values[0] + "-" + ui.values[1]);
+                $("#prices").click();
 
 
             }
@@ -187,7 +187,7 @@
 }
 
 
-@if (Model.AttributeValues != null)
+@if (Model.Attributes != null || Model.Brands != null || Model.Types != null)
 {
     <script>
     $(function () {
@@ -195,15 +195,15 @@
 
                 var arr = [];
                 var data = "";
-                $('#priceS').prop('checked', true);
+                $('#prices').prop('checked', true);
                 var str = $(location).attr('href');
                 var pagerep = new RegExp("&page=\\d+");
                 str = str.replace(pagerep, '');
                 str = removeURLParameter(str, "page");
-            str = removeURLParameter(str, "values");
-            var parameter = "?values=";
+            str = removeURLParameter(str, "filters");
+            var parameter = "?filters=";
             if (window.location.href.indexOf('?') !== -1) {
-                 parameter = "&values=";
+                parameter = "&filters=";
             }
 
             str = str + parameter;
@@ -215,12 +215,12 @@
                         data = this.id;
                         if (str.indexOf(data) < 0) {
                             var indexof = str.lastIndexOf("=");
-                            var checkpreviousString = str.substr(indexof - 6, 6);
+                            var checkPreviousString = str.substr(indexof - 6, 6);
                             var found = str.charAt(indexof + 1);
-                            if (checkpreviousString === "values" && found === "") {
-                                str = str + data + "-" + $(this).val();
+                            if (checkPreviousString === "filters" && found === "") {
+                                str = str + data + ">" + $(this).val();
                             } else {
-                                str = str + "/" + data + "-" + $(this).val();
+                                str = str + "|" + data + ">" + $(this).val();
                             }
                         } else {
                             if (str.indexOf($(this).val()) < 0) {
@@ -237,7 +237,6 @@
 }
 
 <script>
-    //filter collapse Show/Hide start
     $(document).ready(function () {
         $('#price_btn').click(function () {
             $('.price-content').slideToggle("fast");;
@@ -249,11 +248,12 @@
             $('.type-content').slideToggle("fast");;
         });
     });
+
     function showAttribute(event) {
         var id = event.target.id
         $('.content_' + id).slideToggle("fast");
     };
-    //filter collapse Show/Hide end
+
     var getUrlParameter = function getUrlParameter(sParam) {
         var sPageURL = window.location.search.substring(1),
             sURLVariables = sPageURL.split('&'),
