@@ -112,7 +112,7 @@ namespace WMS.Controllers
             {
                 var paymentModes = from AccountPaymentModeEnum d in Enum.GetValues(typeof(AccountPaymentModeEnum))
                                    select new { ID = (int)d, Name = d.ToString() };
-                model.AllPaymentModes = new SelectList(paymentModes, "Value", "Text", paymentModes.FirstOrDefault()).ToList();
+                model.AllPaymentModes = new SelectList(paymentModes, "ID", "Name", paymentModes.FirstOrDefault()).ToList();
 
             }
 
