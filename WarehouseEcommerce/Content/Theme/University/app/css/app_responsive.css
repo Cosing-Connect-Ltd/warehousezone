@@ -879,7 +879,8 @@
     }
 
     .accordion ul li div {
-        overflow: visible !important
+        overflow: visible !important;
+        background-position: center;
     }
 
         .accordion ul li div a {
