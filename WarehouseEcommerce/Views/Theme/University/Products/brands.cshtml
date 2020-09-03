@@ -28,7 +28,7 @@
                                 <ul class="nb_prd_filter_listouter">
                                     @foreach (var item in Model)
                                     {
-                                        <li class="list-group-item"><a href="@Url.Action("List", "Products", new { values = "BrandS-" + item.Name.Replace(" ", "_") })">@item.Name</a></li>
+                                        <li class="list-group-item"><a href="@Url.Action("List", "Products", new { filters = "brands>" + item.Name.Replace(" ", "_") })">@item.Name</a></li>
                                     }
                                 </ul>
                             </div>
@@ -44,12 +44,12 @@
                             <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-4  col-xl-3 list-product-col">
                                 <div class="prd_lst_boxouter">
                                     <span class="imagewrap">
-                                        <a href="@Url.Action("List", "Products", new { values = "BrandS-" + item.Name.Replace(" ", "_") })">
+                                        <a href="@Url.Action("List", "Products", new { filters = "brands>" + item.Name.Replace(" ", "_") })">
                                             <img src="@(!string.IsNullOrEmpty(item.ImagePath) ? ViewBag.BaseFilePath + item.ImagePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
                                         </a>
                                     </span>
                                     <h3 class="prdName">
-                                        <a class="prdName" href="@Url.Action("List", "Products", new { values = "BrandS-" + item.Name.Replace(" ", "_") })">
+                                        <a class="prdName" href="@Url.Action("List", "Products", new { filters = "brands>" + item.Name.Replace(" ", "_") })">
                                             @item.Name
                                         </a>
                                     </h3>

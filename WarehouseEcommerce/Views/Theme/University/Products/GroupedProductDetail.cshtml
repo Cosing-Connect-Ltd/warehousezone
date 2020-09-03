@@ -66,7 +66,7 @@
                                                             <div>SKU: @kitProductMaster.SKUCode</div>
                                                             @if (kitProductMaster.ProductManufacturer != null)
                                                             {
-                                                                <div>Brand: <a href="@Url.Action("List", "Products", new { values = "BrandS-" + kitProductMaster.ProductManufacturer.Name.Replace(" ", "_") })">@kitProductMaster.ProductManufacturer.Name</a></div>
+                                                                <div>Brand: <a href="@Url.Action("List", "Products", new { filters = "brands>" + kitProductMaster.ProductManufacturer.Name.Replace(" ", "_") })">@kitProductMaster.ProductManufacturer.Name</a></div>
                                                             }
                                                             @if (!string.IsNullOrEmpty(kitProductMaster.ManufacturerPartNo?.Trim()))
                                                             {
