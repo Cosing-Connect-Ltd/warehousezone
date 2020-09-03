@@ -108,10 +108,6 @@
         padding: 0 26px
     }
 
-    .nb_bannersec .np_bannerContentOuter {
-        width: 90%
-    }
-
         .nb_bannersec .np_bannerContentOuter .nb_bnr_count {
             font-size: 18px
         }
@@ -336,10 +332,6 @@
 
     .nb_header .nb_mainnav > ul > li.hav_sub_nav > a:before {
         margin-left: 5px
-    }
-
-    .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap {
-        left: 110px
     }
 
     .nb_feat_prod_sec .nb_fp_boxwrap .prd_det_sec .prd_amnt {
@@ -688,10 +680,6 @@
     .nb_sub_sec .nb_sub_wrap {
         padding: 0 20px;
         text-align: center
-    }
-
-    .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap {
-        left: 20px
     }
 
         .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap h5 {
