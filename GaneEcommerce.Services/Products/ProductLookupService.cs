@@ -196,11 +196,9 @@ namespace Ganedata.Core.Services
                                             })
                                             .GroupBy(a => a.Key)
                                             .ToDictionary(a => a.Key, a => a.SelectMany(b => b.Values).GroupBy(d => d).Select(d => d.Key).ToList());
-
-                    var prices = filters["prices"]?.FirstOrDefault()?.Split('-').Select(p => Convert.ToDecimal(p)).ToList();
-
-                    if (prices != null)
+                    if (filters.TryGetValue("prices", out List<string> pricesData))
                     {
+                        var prices = pricesData.FirstOrDefault()?.Split('-').Select(p => Convert.ToDecimal(p)).ToList();
                         if (prices.Count() > 0)
                         {
                             var selectedProductIds = products.Select(p => new { p.ProductId, p.SellPrice })
@@ -217,10 +215,9 @@ namespace Ganedata.Core.Services
                         }
                     }
 
-                    var selectedBrands = filters["brands"]?.Select(v => Convert.ToInt32(v)).Where(i => i > 0).ToList();
-
-                    if (selectedBrands != null)
+                    if (filters.TryGetValue("brands", out List<string> brandsData))
                     {
+                        var selectedBrands = brandsData.Select(v => Convert.ToInt32(v)).Where(i => i > 0).ToList();
                         var selectedProductIds = products.Select(p => new {
                                                                             p.ProductId,
                                                                             p.ManufacturerId,
@@ -235,10 +232,9 @@ namespace Ganedata.Core.Services
                         products = products.Where(u => selectedProductIds.Contains(u.ProductId));
                     }
 
-                    var selectedTypes = filters["types"]?.Select(v => Convert.ToInt32(v)).Where(i => i > 0).ToList();
-
-                    if (selectedTypes != null)
+                    if (filters.TryGetValue("types", out List<string> typessData))
                     {
+                        var selectedTypes = typessData.Select(v => Convert.ToInt32(v)).Where(i => i > 0).ToList();
                         var selectedProductIds = products.Select(p => new {
                                                                             p.ProductId,
                                                                             p.ProductCategoryId,
@@ -258,7 +254,7 @@ namespace Ganedata.Core.Services
                         foreach (var item in filters.Where(i => i.Key.Length > 0 && !i.Key.Equals("brands") && !i.Key.Equals("prices") && !i.Key.Equals("types")))
                         {
                             var selectedItemsIds = item.Value.Select(v => Convert.ToInt32(v)).Where(i => i > 0).ToList();
-                            var productIds = _currentDbContext.ProductAttributeValuesMap.Where(u => selectedItemsIds.Contains(u.AttributeValueId) &&
+                            var filteredProductIds = _currentDbContext.ProductAttributeValuesMap.Where(u => selectedItemsIds.Contains(u.AttributeValueId) &&
                                                                                                     item.Key.Contains(u.ProductAttributeValues.ProductAttributes.AttributeName + ":" + u.ProductAttributeValues.AttributeId.ToString()) &&
                                                                                                     u.IsDeleted != true &&
                                                                                                     u.ProductMaster.IsDeleted != true &&
@@ -266,10 +262,12 @@ namespace Ganedata.Core.Services
                                                                                         .Select(u => u.ProductId)
                                                                                         .ToList();
 
-                            products = products.Where(u => productIds.Contains(u.ProductId) ||
-                                                            ((u.ProductType == ProductKitTypeEnum.ProductByAttribute || u.ProductType == ProductKitTypeEnum.ProductByAttribute) ?
-                                                            productIds.Any(a => u.ProductKitItems.Select(c => c.KitProductId).ToList().Contains(a)) :
-                                                            false));
+                            var filteredProductsIds = products.Where(u => filteredProductIds.Contains(u.ProductId) || filteredProductIds.Any(a => u.ProductKitItems.Select(c => c.KitProductId).ToList().Contains(a))).Select(p => p.ProductId).ToList();
+
+                            if (filteredProductIds != null & filteredProductsIds.Count > 0)
+                            {
+                                products = products.Where(u => filteredProductIds.Contains(u.ProductId) || filteredProductIds.Any(a => u.ProductKitItems.Select(c => c.KitProductId).ToList().Contains(a)));
+                            }
                         }
                     }
                 }

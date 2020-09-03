@@ -193,44 +193,42 @@
     $(function () {
         $("input[type=checkbox]").on("change", function (e) {
 
-                var arr = [];
-                var data = "";
-                $('#prices').prop('checked', true);
-                var str = $(location).attr('href');
-                var pagerep = new RegExp("&page=\\d+");
-                str = str.replace(pagerep, '');
-                str = removeURLParameter(str, "page");
-            str = removeURLParameter(str, "filters");
-            var parameter = "?filters=";
-            if (window.location.href.indexOf('?') !== -1) {
-                parameter = "&filters=";
-            }
+            var arr = [];
+            var data = "";
+            $('#prices').prop('checked', true);
+            var urlString = $(location).attr('href');
+            var pagerep = new RegExp("&page=\\d+");
+            urlString = urlString.replace(pagerep, '');
+            urlString = removeURLParameter(urlString, "page");
+            urlString = removeURLParameter(urlString, "filters");
+            var filtersPrefix = ((window.location.href.indexOf('?') !== -1) ? "&" : "?") + "filters=";
 
-            str = str + parameter;
+            urlString += filtersPrefix;
             $(":checkbox").each(function () {
 
                 if (this.checked) {
-                    if (str.indexOf($(this).val()) < 0) {
+                    if (urlString.indexOf($(this).val()) < 0) {
                         arr.push($(this).val());
                         data = this.id;
-                        if (str.indexOf(data) < 0) {
-                            var indexof = str.lastIndexOf("=");
-                            var checkPreviousString = str.substr(indexof - 6, 6);
-                            var found = str.charAt(indexof + 1);
+                        if (urlString.indexOf(data) < 0) {
+                            var indexof = urlString.lastIndexOf("=");
+                            var checkPreviousString = urlString.substr(indexof - 7, 7);
+                            var found = urlString.charAt(indexof + 1);
                             if (checkPreviousString === "filters" && found === "") {
-                                str = str + data + ">" + $(this).val();
+                                urlString = urlString + data + ">" + $(this).val();
                             } else {
-                                str = str + "|" + data + ">" + $(this).val();
+                                urlString = urlString + "|" + data + ">" + $(this).val();
                             }
                         } else {
-                            if (str.indexOf($(this).val()) < 0) {
-                                str = str + "," + $(this).val();
+                            if (urlString.indexOf($(this).val()) < 0) {
+                                urlString = urlString + "," + $(this).val();
                             }
                         }
                     }
                 }
             });
-            location.href = str;
+            startLoading();
+            location.href = urlString;
         });
     });
     </script>
