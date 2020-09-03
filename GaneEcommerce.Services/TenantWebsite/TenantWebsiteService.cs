@@ -1090,30 +1090,34 @@ namespace Ganedata.Core.Services
 
 
         }
-        public Tuple<string, string> GetAvailablePricesRange(IQueryable<ProductMaster> products,int siteId)
+        public Tuple<string, string> GetAvailablePricesRange(List<int> productIds, int siteId)
         {
-            var productsPrices = products.Select(p => p.ProductId)
-                                         .ToList()
-                                         .Select(u => GetPriceForProduct(u, siteId))
-                                         .ToList();
+            var productsPrices = productIds.Select(u => GetPriceForProduct(u, siteId)).ToList();
 
             return new Tuple<string, string>(productsPrices.Min(u => u).ToString(), productsPrices.Max(u => u).ToString());
         }
-        public List<string> GetAllValidProductManufacturers(List<int> productIds)
+        public Dictionary<int, string> GetAllValidProductManufacturers(List<int> productIds)
         {
             var manufatcurers = _currentDbContext.ProductKitMaps.Where(a => productIds.Contains(a.ProductId) &&
                                                                 a.IsDeleted != true &&
                                                                 a.IsActive &&
                                                                 a.KitProductMaster.ProductManufacturer != null)
-                                                 .Select(a => a.KitProductMaster.ProductManufacturer.Name)
+                                                 .GroupBy(a => a.KitProductMaster.ProductManufacturer)
+                                                 .Select(a => a.Key)
                                                  .ToList();
 
             manufatcurers.AddRange(_currentDbContext.ProductMaster.Where(u => productIds.Contains(u.ProductId) &&
                                                                               u.IsDeleted != true &&
                                                                               u.ProductManufacturer != null)
-                                                    .Select(p => p.ProductManufacturer.Name));
+                                                                  .GroupBy(a => a.ProductManufacturer)
+                                                                  .Select(a => a.Key)
+                                                                  .ToList());
 
-            return manufatcurers.Distinct().ToList();
+            return manufatcurers
+                    .GroupBy(m => m)
+                    .Select(m => m.Key)
+                    .OrderBy(m => m.Name)
+                    .ToDictionary(m => m.Id, m => m.Name);
         }
 
         public IEnumerable<WebsiteCartItem> GetAllValidCartItemsList(int siteId, int? UserId, string SessionKey)

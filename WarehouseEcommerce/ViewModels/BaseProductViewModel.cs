@@ -6,6 +6,7 @@ namespace WarehouseEcommerce.ViewModels
     public class BaseProductViewModel
     {
         public ProductMaster Product { get; set; }
+        public ProductDynamicFilteringViewModel DynamicFilters { get; set; }
         public ProductPriceViewModel Prices { get; set; }
         public List<ProductMaster> RelatedProducts { get; set; }
         public List<ChildProductsViewModel> GroupedTabs { get; set; }

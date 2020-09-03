@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using Elmah;
+using Elmah.ContentSyndication;
 using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
@@ -139,19 +140,14 @@ namespace Ganedata.Core.Services
             return Prices;
         }
 
-        public IEnumerable<string> GetAllValidSubCategoriesByDepartmentAndGroup(List<int> productIds)
+        public Dictionary<int, string> GetAllValidSubCategoriesByDepartmentAndGroup(List<int> productIds)
         {
-            var productsCategoryNames = _currentDbContext.ProductMaster.Where(p => productIds.Contains(p.ProductId) && p.ProductCategory != null)
-                                                                     .Select(u => u.ProductCategory.ProductCategoryName).ToList();
-
-            productsCategoryNames.AddRange(_currentDbContext.ProductKitMaps.Where(a => productIds.Contains(a.ProductId) &&
-                                                                a.IsDeleted != true &&
-                                                                a.IsActive &&
-                                                                a.KitProductMaster.ProductCategory != null)
-                                                 .Select(a => a.KitProductMaster.ProductCategory.ProductCategoryName)
-                                                 .ToList());
-
-            return productsCategoryNames.Distinct().ToList();
+            return _currentDbContext.ProductMaster.Where(p => productIds.Contains(p.ProductId) && p.ProductCategory != null)
+                    .Select(u => u.ProductCategory)
+                    .GroupBy(c => c)
+                    .Select(c => c.Key)
+                    .OrderBy(c => c.ProductCategoryName)
+                    .ToDictionary(c => c.ProductCategoryId, c => c.ProductCategoryName);
         }
 
         public IEnumerable<WebsiteNavigation> GetWebsiteNavigationCategoriesList(int? parentCategoryId, int siteId)
@@ -178,107 +174,101 @@ namespace Ganedata.Core.Services
         }
         public IQueryable<ProductMaster> FilterProduct(IQueryable<ProductMaster> products, string filterString, int siteId)
         {
-            Dictionary<string, List<string>> filters = new Dictionary<string, List<string>>();
             try
             {
                 if (!string.IsNullOrEmpty(filterString))
                 {
-                    var data = filterString.Split('/');
-                    foreach (var item in data)
+                    var filters = filterString.Split('|')
+                                            .Where(i => !string.IsNullOrEmpty(i))
+                                            .Select(a => {
+                                                var filterData = a.Split('>').Where(s => !string.IsNullOrEmpty(s?.Trim())).ToList();
+
+                                                return filterData != null && filterData.Count() == 2 ?
+                                                        new {
+                                                                Key = filterData.First().Replace("_", " ").Replace("^", ","),
+                                                                Values = filterData.Last().Split(',')
+                                                                                            .Select(s => s.Replace("_", " ").Replace("^", ",").Split(':').LastOrDefault())
+                                                                                            .Where(v => !string.IsNullOrEmpty(v?.Trim()))
+                                                                                            .Distinct()
+                                                                                            .ToList()
+                                                        } :
+                                                        null;
+                                            })
+                                            .GroupBy(a => a.Key)
+                                            .ToDictionary(a => a.Key, a => a.SelectMany(b => b.Values).GroupBy(d => d).Select(d => d.Key).ToList());
+                    if (filters.TryGetValue("prices", out List<string> pricesData))
                     {
-                        if (!string.IsNullOrEmpty(item))
+                        var prices = pricesData.FirstOrDefault()?.Split('-').Select(p => Convert.ToDecimal(p)).ToList();
+                        if (prices.Count() > 0)
                         {
-                            var filtersData = item.Split('-');
-                            List<string> value = new List<string>();
-                            if (filtersData.Length >= 2)
-                            {
-                                value = filtersData[1].Split(',').Select(i => i.ToLower()).ToList();
-                                if (!filters.Keys.Contains(filtersData[0]))
-                                {
-                                    filters.Add(filtersData[0], value);
-                                }
-                            }
+                            var selectedProductIds = products.Select(p => new { p.ProductId, p.SellPrice })
+                                                             .ToList()
+                                                             .Select(u => {
+                                                                 var sellPrice = _tenantWebsiteService.GetPriceForProduct(u.ProductId, siteId);
+                                                                 return (sellPrice >= prices.Min() && sellPrice <= prices.Max()) ? u.ProductId : (int?)null;
+                                                             })
+                                                             .Where(p => p != null)
+                                                             .Distinct()
+                                                             .ToList();
+
+                            products = products.Where(u => selectedProductIds.Contains(u.ProductId));
                         }
                     }
 
-                    foreach (var item in filters)
+                    if (filters.TryGetValue("brands", out List<string> brandsData))
                     {
-                        if (item.Key.Equals("stockS"))
-                        {
-                            FilterStockItemsProduct(products, true);
-                            if (item.Value.Count > 1)
-                            {
-                                products = products.Where(u => ((u.InventoryStocks.Sum(rv => rv.Available)) > 0 ||
-                                                                                     u.ProductKitItems.Any(a => a.KitProductMaster.InventoryStocks.Sum(c => c.Available) > 0)) ||
-                                                                                    (u.InventoryStocks.Sum(rv => rv.Available) <= 0 ||
-                                                                                     u.ProductKitItems.Sum(a => a.KitProductMaster.InventoryStocks.Sum(c => c.Available)) <= 0));
-                            }
+                        var selectedBrands = brandsData.Select(v => Convert.ToInt32(v)).Where(i => i > 0).ToList();
+                        var selectedProductIds = products.Select(p => new {
+                                                                            p.ProductId,
+                                                                            p.ManufacturerId,
+                                                                            p.ProductType,
+                                                                            KitProductsManufacturersIds = p.ProductKitItems.Select(k => k.KitProductMaster.ManufacturerId) })
+                                                        .ToList()
+                                                        .Where(u => selectedBrands.Contains(u.ManufacturerId ?? 0) || u.KitProductsManufacturersIds.Any(k => selectedBrands.Contains(k ?? 0)))
+                                                        .Select(p => p.ProductId)
+                                                        .Distinct()
+                                                        .ToList();
 
-                            else if (item.Value.Contains("in_stock"))
-                            {
-                                products = products.Where(u => (u.InventoryStocks.Sum(rv => rv.Available)) > 0 || (u.ProductKitItems.Any(a => a.KitProductMaster.InventoryStocks.Sum(c => c.Available) > 0)));
-                            }
-                            else if (item.Value.Contains("out_stock"))
-                            {
-                                products = products.Where(u => (u.InventoryStocks.Sum(rv => rv.Available) <= 0) || (u.ProductKitItems.All(a => a.KitProductMaster.InventoryStocks.Sum(c => c.Available) <= 0)));
-                            }
-
-                        }
-                        if (item.Key.Equals("priceS"))
-                        {
-                            List<decimal> prices = new List<decimal>();
-                            if (item.Value.Count > 0)
-                            {
-                                foreach (var price in item.Value)
-                                {
-                                    var range = price.Split('_');
-                                    if (range.Length >= 2)
-                                    {
-                                        prices.Add(Convert.ToDecimal(range[0]));
-                                        prices.Add(Convert.ToDecimal(range[1]));
-                                    }
-                                }
-                            }
-                            if (prices.Count > 0)
-                            {
-                                decimal? min = prices.Min();
-                                decimal? max = prices.Max();
-                                products.ForEach(u =>
-                                    u.SellPrice = _tenantWebsiteService.GetPriceForProduct(u.ProductId, siteId));
-                                var productIds = products.ToList().Where(u => u.SellPrice >= min && u.SellPrice <= max).Select(u => u.ProductId);
-                                products = products.Where(u => productIds.Contains(u.ProductId));
-                            }
-                        }
-                        if (item.Key.Contains("BrandS"))
-                        {
-                            var result = item.Value.Select(s => s.Replace("_", " ").Replace("^", ",")).ToList();
-                            products = products.Where(u => result.Contains(u.ProductManufacturer.Name) || u.ProductKitItems.Any(k => result.Contains(k.KitProductMaster.ProductManufacturer.Name)));
-                        }
-                        if (item.Key.Contains("TypeS"))
-                        {
-                            var result = item.Value.Select(s => s.Replace("_", " ").Replace("^", ",")).ToList();
-                            products = products.Where(u => result.Contains(u.ProductCategory.ProductCategoryName) || u.ProductKitItems.Any(k => result.Contains(k.KitProductMaster.ProductCategory.ProductCategoryName)));
-                        }
+                        products = products.Where(u => selectedProductIds.Contains(u.ProductId));
                     }
 
-                    var availableAttributeNames = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(products).Select(a => a.Key.AttributeName);
-
-                    foreach (var item in filters.Where(i => i.Key.Length > 0 && (!i.Key.Equals("BrandS") && !i.Key.Equals("priceS") && !i.Key.Equals("stockS") && !i.Key.Equals("TypeS")) && availableAttributeNames.Contains(i.Key)))
+                    if (filters.TryGetValue("types", out List<string> typessData))
                     {
-                        var result = item.Value.Select(s => s.Replace("_", " ").Replace("??", ",")).ToList();
-                        var values = result.Select(u => u.Split('^').LastOrDefault()).ToList();
-                        var attributeValueIds = _currentDbContext.ProductAttributeValues.Where(u => values.Contains(u.AttributeValueId.ToString()) && u.IsDeleted != true)
-                                                                                        .Select(u => u.AttributeValueId)
+                        var selectedTypes = typessData.Select(v => Convert.ToInt32(v)).Where(i => i > 0).ToList();
+                        var selectedProductIds = products.Select(p => new {
+                                                                            p.ProductId,
+                                                                            p.ProductCategoryId,
+                                                                            p.ProductType,
+                                                                            KitProductCategoryIds = p.ProductKitItems.Select(k => k.KitProductMaster.ProductCategoryId) })
+                                                             .ToList()
+                                                             .Where(u => selectedTypes.Contains(u.ProductCategoryId ?? 0) || u.KitProductCategoryIds.Any(k => selectedTypes.Contains(k ?? 0)))
+                                                             .Select(p => p.ProductId)
+                                                             .Distinct()
+                                                             .ToList();
+
+                        products = products.Where(u => selectedProductIds.Contains(u.ProductId));
+                    }
+
+                    if (products?.Count() > 0)
+                    {
+                        foreach (var item in filters.Where(i => i.Key.Length > 0 && !i.Key.Equals("brands") && !i.Key.Equals("prices") && !i.Key.Equals("types")))
+                        {
+                            var selectedItemsIds = item.Value.Select(v => Convert.ToInt32(v)).Where(i => i > 0).ToList();
+                            var filteredProductIds = _currentDbContext.ProductAttributeValuesMap.Where(u => selectedItemsIds.Contains(u.AttributeValueId) &&
+                                                                                                    item.Key.Contains(u.ProductAttributeValues.ProductAttributes.AttributeName + ":" + u.ProductAttributeValues.AttributeId.ToString()) &&
+                                                                                                    u.IsDeleted != true &&
+                                                                                                    u.ProductMaster.IsDeleted != true &&
+                                                                                                    u.ProductMaster.IsActive == true)
+                                                                                        .Select(u => u.ProductId)
                                                                                         .ToList();
 
-                        var productids = _currentDbContext.ProductAttributeValuesMap.Where(u => attributeValueIds.Contains(u.AttributeValueId) &&
-                                                                                                u.IsDeleted != true &&
-                                                                                                u.ProductMaster.IsDeleted != true &&
-                                                                                                u.ProductMaster.IsActive == true)
-                                                                                    .Select(u => u.ProductId)
-                                                                                    .ToList();
+                            var filteredProductsIds = products.Where(u => filteredProductIds.Contains(u.ProductId) || filteredProductIds.Any(a => u.ProductKitItems.Select(c => c.KitProductId).ToList().Contains(a))).Select(p => p.ProductId).ToList();
 
-                        products = products.Where(u => productids.Contains(u.ProductId) || productids.Any(a => u.ProductKitItems.Select(c => c.KitProductId).ToList().Contains(a)));
+                            if (filteredProductIds != null & filteredProductsIds.Count > 0)
+                            {
+                                products = products.Where(u => filteredProductIds.Contains(u.ProductId) || filteredProductIds.Any(a => u.ProductKitItems.Select(c => c.KitProductId).ToList().Contains(a)));
+                            }
+                        }
                     }
                 }
             }
@@ -286,6 +276,7 @@ namespace Ganedata.Core.Services
             {
                 ErrorSignal.FromCurrentContext().Raise(ex);
             }
+
             return products;
         }
 

@@ -894,7 +894,7 @@ function initializeExpandableContentContainer() {
         }
 
         if (content.height() > container.height()) {
-            container.prepend('<span class="read-more" onClick="toggleExpandableContentContainer(this, ' + container.height() + ')"><i class="fa fa-angle-double-down"></i> Show more</span>');
+            container.append('<span class="read-more" onClick="toggleExpandableContentContainer(this, ' + container.height() + ')"><i class="fa fa-angle-double-down"></i> Show more</span>');
             content.addClass('long-text');
         }
     });
@@ -919,7 +919,7 @@ var resizeId;
 $(window).on('resize', function () {
     $(".expandable-content-container").each(function () {
         $(this).find(".read-more").remove();
-        $(this).find(".expandable-content-container-body").removeClass("long-text")
+        $(this).find(".expandable-content-container-body").removeClass("long-text");
     });
 
     clearTimeout(resizeId);

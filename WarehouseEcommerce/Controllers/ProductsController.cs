@@ -60,7 +60,7 @@ namespace WarehouseEcommerce.Controllers
         }
         // GET: Products
 
-        public ActionResult list(string category, int? categoryId, string previousSearch, string search, int? page, int? pageSize = 12, string values = "", SortProductTypeEnum sort = SortProductTypeEnum.Recommended)
+        public ActionResult list(string category, int? categoryId, string previousSearch, string search, int? page, int? pageSize = 12, string filters = "", SortProductTypeEnum sort = SortProductTypeEnum.Recommended)
         {
             try
             {
@@ -68,10 +68,10 @@ namespace WarehouseEcommerce.Controllers
                     CurrentCategoryName = category,
                     CategoryId = categoryId,
                     CurrentSort = sort,
-                    CurrentFilterValues = values
+                    CurrentFilterValues = filters
                 };
 
-                if (categoryId != null || !string.IsNullOrEmpty(search) || !string.IsNullOrEmpty(previousSearch) || !string.IsNullOrEmpty(values))
+                if (categoryId != null || !string.IsNullOrEmpty(search) || !string.IsNullOrEmpty(previousSearch) || !string.IsNullOrEmpty(filters))
                 {
                     var categoryInfo = _tenantWebsiteService.GetAllValidWebsiteNavigationCategory(CurrentTenantId, CurrentTenantWebsite.SiteID)
                                                             .FirstOrDefault(c => c.Id == categoryId);
@@ -92,7 +92,7 @@ namespace WarehouseEcommerce.Controllers
 
                     if (categoryId != null)
                     {
-                        model.DynamicFilters = GetDynamicFiltersModel(products, categoryId);
+                        model.DynamicFilters = GetDynamicFiltersModel(products.Select(p => p.ProductId).ToList(), categoryId);
                     }
 
                     model.CurrentSearch = search;
@@ -102,7 +102,7 @@ namespace WarehouseEcommerce.Controllers
                         products = products.Where(s => s.SKUCode.Contains(search) || s.Name.Contains(search));
                     }
 
-                    products = _productlookupServices.FilterProduct(products, values, CurrentTenantWebsite.SiteID);
+                    products = _productlookupServices.FilterProduct(products, filters, CurrentTenantWebsite.SiteID);
 
                     switch (sort)
                     {
@@ -132,10 +132,10 @@ namespace WarehouseEcommerce.Controllers
 
                     if (categoryId == null)
                     {
-                        model.DynamicFilters = GetDynamicFiltersModel(products, categoryId);
+                        model.DynamicFilters = GetDynamicFiltersModel(products.Select(p => p.ProductId).ToList(), categoryId);
                     }
 
-                    model.DynamicFilters.AttributeValues = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(products);
+                    model.DynamicFilters.Attributes = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(products);
                     model.DynamicFilters.FilteredCount = products.Count();
                     model.Products = pagedProductsList;
                 }
@@ -171,13 +171,13 @@ namespace WarehouseEcommerce.Controllers
             }
         }
 
-        public ActionResult ProductDetails(string sku, int? productId = null)
+        public ActionResult ProductDetails(string sku, int? productId = null, string filters = "")
         {
             var baseProduct = _productServices.GetProductMasterByProductCode(sku, CurrentTenantId);
 
             if (baseProduct.ProductType == ProductKitTypeEnum.Grouped)
             {
-                return RedirectToAction("GroupedProductDetail", "Products", new { sku = sku });
+                return RedirectToAction("GroupedProductDetail", "Products", new { sku = sku, filters = filters });
             }
             else if (baseProduct.ProductType == ProductKitTypeEnum.Kit)
             {
@@ -238,28 +238,36 @@ namespace WarehouseEcommerce.Controllers
             model.SubCategoryId = categoryInfo?.Parent != null ? categoryInfo.Id : 0;
         }
 
-        public ActionResult GroupedProductDetail(string sku)
+        public ActionResult GroupedProductDetail(string sku, string filters = "")
         {
             var model = new GroupedProductViewModel();
 
             model.Product = _productServices.GetProductMasterByProductCode(sku, CurrentTenantId);
             var productTabs = model.Product.ProductKitItems.Where(u => u.ProductKitType == ProductKitTypeEnum.Grouped && u.IsActive == true).Select(u => u.ProductKitTypeId).ToList();
+
+            var allKitProducts = model.Product.ProductKitItems.Where(u => u.ProductKitType == ProductKitTypeEnum.Grouped &&
+                                                                           u.KitProductMaster.IsDeleted != true &&
+                                                                           u.ProductMaster.IsDeleted != true &&
+                                                                           u.IsDeleted != true);
+
+            model.DynamicFilters = GetDynamicFiltersModel(allKitProducts.Select(p => p.KitProductMaster.ProductId).ToList(), null, true);
+
             var isFirstTab = true;
             model.GroupedTabs = _productlookupServices.GetProductKitTypes(productTabs)
                 .Select(ProductKitType =>
                 {
-                    var kitProducts = model.Product.ProductKitItems.Where(u => (u.ProductKitTypeId == ProductKitType.Id || ((u.ProductKitTypeId == null || u.ProductKitTypeId == 0) && isFirstTab)) &&
-                                                                           u.ProductKitType == ProductKitTypeEnum.Grouped &&
-                                                                           u.IsDeleted != true)
+                    var kitProducts = _productlookupServices.FilterProduct(allKitProducts.Where(u => (u.ProductKitTypeId == ProductKitType.Id || ((u.ProductKitTypeId == null || u.ProductKitTypeId == 0) && isFirstTab)))
                                                                    .GroupBy(m => m.KitProductMaster)
                                                                    .Select(m => m.Key)
-                                                                   .ToList()
-                                                                   .Select(p => new
-                                                                   {
-                                                                       Product = p,
-                                                                       AvailableProductCount = Inventory.GetAvailableProductCount(p, CurrentTenantWebsite.SiteID),
-                                                                   })
-                                                                   .OrderByDescending(p => p.AvailableProductCount > 0);
+                                                                   .AsQueryable(), filters, CurrentTenantWebsite.SiteID)
+                                                            .ToList()
+                                                            .Select(p => new
+                                                            {
+                                                                Product = p,
+                                                                AvailableProductCount = Inventory.GetAvailableProductCount(p, CurrentTenantWebsite.SiteID),
+                                                            })
+                                                            .OrderByDescending(p => p.AvailableProductCount > 0);
+
                     isFirstTab = false;
 
                     return new ChildProductsViewModel
@@ -283,6 +291,14 @@ namespace WarehouseEcommerce.Controllers
                         Name = "Options"
                     }
                 });
+            }
+
+            var filteredProducts = model.GroupedTabs.SelectMany(g => g.Products);
+
+            if (filteredProducts != null && filteredProducts.Count() > 0)
+            {
+                model.DynamicFilters.Attributes = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(model.GroupedTabs.SelectMany(g => g.Products).AsQueryable());
+                model.DynamicFilters.FilteredCount = filteredProducts.Count();
             }
 
             SetProductViewModelCategoryInfo(model.Product, model);
@@ -524,20 +540,23 @@ namespace WarehouseEcommerce.Controllers
             return View();
         }
 
-        public ProductDynamicFilteringViewModel GetDynamicFiltersModel(IQueryable<ProductMaster> products, int? categoryId)
+        public ProductDynamicFilteringViewModel GetDynamicFiltersModel(List<int> productIds, int? categoryId, bool isProductChildsFilter = false)
         {
             var productFiltering = new ProductDynamicFilteringViewModel();
 
-            if (products != null && products.Count() > 0)
+            if (productIds != null && productIds.Count() > 0)
             {
-                var productIds = products.Select(u => u.ProductId).ToList();
-                productFiltering.Manufacturer = _tenantWebsiteService.GetAllValidProductManufacturers(productIds).OrderBy(m => m).ToList();
+                productFiltering.Brands = _tenantWebsiteService.GetAllValidProductManufacturers(productIds);
+                productFiltering.Types = _productlookupServices.GetAllValidSubCategoriesByDepartmentAndGroup(productIds);
+                (productFiltering.MinPrice, productFiltering.MaxPrice) = _tenantWebsiteService.GetAvailablePricesRange(productIds, CurrentTenantWebsite.SiteID);
 
-                (productFiltering.MinAvailablePrice, productFiltering.MaxAvailablePrice) = _tenantWebsiteService.GetAvailablePricesRange(products, CurrentTenantWebsite.SiteID);
-                productFiltering.SubCategories = _productlookupServices.GetAllValidSubCategoriesByDepartmentAndGroup(productIds).OrderBy(m => m).ToList();
-                productFiltering.TotalCount = products.Count();
+
+                productFiltering.TotalCount = !isProductChildsFilter ? productIds.Count() : 0;
             }
-            productFiltering.WebsiteNavigationCategories = _productlookupServices.GetWebsiteNavigationCategoriesList(categoryId, CurrentTenantWebsite.SiteID).ToList();
+
+            productFiltering.Categories = !isProductChildsFilter ?
+                                           _productlookupServices.GetWebsiteNavigationCategoriesList(categoryId, CurrentTenantWebsite.SiteID).ToList() :
+                                           new List<WebsiteNavigation>();
 
             return productFiltering;
         }

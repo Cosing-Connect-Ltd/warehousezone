@@ -52,6 +52,10 @@
                                     <ul class="icolist">
                                         <li>
                                             <a class="prd_amnt" href="@Url.Action("ProductDetails", "Products", new {sku = item.SKUCode})">
+                                                @if (item.ProductType == ProductKitTypeEnum.Grouped)
+                                                {
+                                                    <span class="price-from__text">from </span>
+                                                }
                                                 @ViewBag.CurrencySymbol@item.SellPrice
                                             </a>
                                         </li>
