@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Ganedata.Core.Entities.Domain
@@ -18,9 +15,10 @@ namespace Ganedata.Core.Entities.Domain
         [StringLength(50)]
         [Display(Name = "Kit Type")]
         public string Name { get; set; }
-      
         [Display(Name = "Sort")]
         public int SortOrder { get; set; }
+        [Display(Name = "Use In Parent Calculations")]
+        public bool? UseInParentCalculations { get; set; }
         [Display(Name = "Date Created")]
         public DateTime DateCreated { get; set; }
         [Display(Name = "Date Updated")]

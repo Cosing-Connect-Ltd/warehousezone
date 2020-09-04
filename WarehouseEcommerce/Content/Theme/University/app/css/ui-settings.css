@@ -130,6 +130,7 @@ h6,
 .nb_filter_accordion .nb_filter_head h5 button,
 .nb_prd_listing_wrap .tagList li a,
 .prd_lst_boxouter .prdName,
+.prd_lst_boxouter .brand-name,
 .nb_qcvboxwrap .col_Sec .col_lbl,
 .nb_qcvboxwrap .availibility,
 .nb_qcvboxwrap .sizeWrap .title,
@@ -449,7 +450,8 @@ nb_prdpg_fg label,
 .nb_sec_navwrap,
 .search_wrap_main .search_btn i,
 .nb_header .nb_mainnav > ul li.hav_mega_nav .mega_nav_wrap .mega_nav_wrap_inner .head,
-.prd_lst_boxouter .prdName {
+.prd_lst_boxouter .prdName,
+.prd_lst_boxouter .brand-name {
     color: var(--dark-font-color);
 }
 

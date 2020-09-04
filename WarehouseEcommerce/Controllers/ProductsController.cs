@@ -66,9 +66,9 @@ namespace WarehouseEcommerce.Controllers
             {
                 var model = new ProductListViewModel {
                     CurrentCategoryName = category,
-                    CategoryId = categoryId,
+                    CurrentCategoryId = categoryId,
                     CurrentSort = sort,
-                    CurrentFilterValues = filters
+                    CurrentFilters = filters
                 };
 
                 if (categoryId != null || !string.IsNullOrEmpty(search) || !string.IsNullOrEmpty(previousSearch) || !string.IsNullOrEmpty(filters))
@@ -127,7 +127,7 @@ namespace WarehouseEcommerce.Controllers
                     var pagedProductsList = products.ToPagedList((pageNumber == 0 ? 1 : pageNumber), pageSize.Value);
                     if (pagedProductsList.Count > 0)
                     {
-                        pagedProductsList.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID), 2));
+                        pagedProductsList.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID) ?? 0, 2));
                     }
 
                     if (categoryId == null)
@@ -225,6 +225,8 @@ namespace WarehouseEcommerce.Controllers
 
             model.RelatedProducts = _productServices.GetRelatedProductsByProductId(model.Product.ProductId, CurrentTenantId, CurrentTenantWebsite.SiteID, baseProduct.ProductId);
 
+            model.RelatedProducts.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID) ?? 0, 2));
+
             return View(model);
         }
 
@@ -250,7 +252,11 @@ namespace WarehouseEcommerce.Controllers
                                                                            u.ProductMaster.IsDeleted != true &&
                                                                            u.IsDeleted != true);
 
-            model.DynamicFilters = GetDynamicFiltersModel(allKitProducts.Select(p => p.KitProductMaster.ProductId).ToList(), null, true);
+            model.DynamicFilters = GetDynamicFiltersModel(allKitProducts.Where(k => k.ProductKitTypes.UseInParentCalculations == true)
+                                                                        .Select(p => p.KitProductMaster.ProductId)
+                                                                        .ToList(),
+                                                          null,
+                                                          true);
 
             var isFirstTab = true;
             model.GroupedTabs = _productlookupServices.GetProductKitTypes(productTabs)
@@ -259,14 +265,14 @@ namespace WarehouseEcommerce.Controllers
                     var kitProducts = _productlookupServices.FilterProduct(allKitProducts.Where(u => (u.ProductKitTypeId == ProductKitType.Id || ((u.ProductKitTypeId == null || u.ProductKitTypeId == 0) && isFirstTab)))
                                                                    .GroupBy(m => m.KitProductMaster)
                                                                    .Select(m => m.Key)
-                                                                   .AsQueryable(), filters, CurrentTenantWebsite.SiteID)
+                                                                   .AsQueryable(), (isFirstTab ? filters : string.Empty), CurrentTenantWebsite.SiteID)
                                                             .ToList()
                                                             .Select(p => new
                                                             {
                                                                 Product = p,
                                                                 AvailableProductCount = Inventory.GetAvailableProductCount(p, CurrentTenantWebsite.SiteID),
                                                             })
-                                                            .OrderByDescending(p => p.AvailableProductCount > 0);
+                                                            .OrderByDescending(p => p.AvailableProductCount!= null && p.AvailableProductCount > 0);
 
                     isFirstTab = false;
 
@@ -293,17 +299,15 @@ namespace WarehouseEcommerce.Controllers
                 });
             }
 
-            var filteredProducts = model.GroupedTabs.SelectMany(g => g.Products);
-
-            if (filteredProducts != null && filteredProducts.Count() > 0)
-            {
-                model.DynamicFilters.Attributes = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(model.GroupedTabs.SelectMany(g => g.Products).AsQueryable());
-                model.DynamicFilters.FilteredCount = filteredProducts.Count();
-            }
+            var calculatableProducts = model.GroupedTabs.Where(g => g.ProductKitType.UseInParentCalculations == true).SelectMany(a => a.Products);
+            model.DynamicFilters.FilteredCount = calculatableProducts.Count();
+            model.DynamicFilters.Attributes = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(calculatableProducts.AsQueryable());
 
             SetProductViewModelCategoryInfo(model.Product, model);
 
             model.RelatedProducts = _productServices.GetRelatedProductsByProductId(model.Product.ProductId, CurrentTenantId, CurrentTenantWebsite.SiteID);
+
+            model.RelatedProducts.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID) ?? 0, 2));
 
             return View(model);
         }
@@ -311,7 +315,7 @@ namespace WarehouseEcommerce.Controllers
         public ActionResult KitProductDetail(string sku)
         {
             var product = _productServices.GetProductMasterByProductCode(sku, CurrentTenantId);
-            product.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(product.ProductId, CurrentTenantWebsite.SiteID), 2);
+            product.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(product.ProductId, CurrentTenantWebsite.SiteID) ?? 0, 2);
             return View(product);
         }
 

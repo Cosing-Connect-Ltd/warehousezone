@@ -9,10 +9,10 @@ namespace WarehouseEcommerce.ViewModels
         public IPagedList<ProductMaster> Products { get; set; }
         public ProductDynamicFilteringViewModel DynamicFilters { get; set; }
         public string CurrentCategoryName { get; set; }
-        public int? CategoryId { get; set; }
+        public int? CurrentCategoryId { get; set; }
         public SortProductTypeEnum CurrentSort { get; set; }
         public string CurrentSearch { get; set; }
-        public string CurrentFilterValues { get; set; }
+        public string CurrentFilters { get; set; }
         public WebsiteNavigation Category { get; set; }
         public WebsiteNavigation SubCategory { get; set; }
     }

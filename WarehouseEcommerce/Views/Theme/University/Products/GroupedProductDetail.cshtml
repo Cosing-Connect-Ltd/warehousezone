@@ -18,7 +18,7 @@
                     <div class="col-lg-0 col-xl-2">
                         @Html.Partial("_DynamicFilters", Model.DynamicFilters)
                     </div>
-                    <div class="col-md-5 col-lg-6 col-xl-5">
+                    <div class="col-md-5 col-lg-6 col-xl-4">
                         @Html.Partial("_ProductFilesGallery", Model.Product)
                         <div class="expandable-content-container parent-product-content-container">
                             <div class="expandable-content-container-body">
@@ -30,7 +30,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-7 col-lg-6 col-xl-5">
+                    <div class="col-md-7 col-lg-6 col-xl-6">
                         <!-- tabs -->
                         <ul class="nav nav-tabs" role="tablist">
                             @{
@@ -62,7 +62,7 @@
                                                 <div class="nb_prd_det_rightsec product-details-block">
                                                     <h2 class="head">@kitProductMaster.Name</h2>
                                                     <div class="row">
-                                                        <div class="col-md-12 col-lg-12 col-xl-4">
+                                                        <div class="col-md-12 col-lg-12 col-xl-3 product-extra-detail">
                                                             <div>SKU: @kitProductMaster.SKUCode</div>
                                                             @if (kitProductMaster.ProductManufacturer != null)
                                                             {
@@ -82,7 +82,7 @@
                                                                 </a>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-12 col-lg-12 col-xl-8">
+                                                        <div class="col-md-12 col-lg-12 col-xl-9">
                                                             @if (kitProductMaster.SellPrice != null && kitProductMaster.SellPrice > 0)
                                                             {
                                                                 <div class="prd_amnt">@ViewBag.CurrencySymbol@(prices.FinalSellPrice + prices.TaxAmount)<span> inc VAT</span></div>

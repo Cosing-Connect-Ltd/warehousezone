@@ -1092,13 +1092,14 @@ namespace Ganedata.Core.Services
         }
         public Tuple<string, string> GetAvailablePricesRange(List<int> productIds, int siteId)
         {
-            var productsPrices = productIds.Select(u => GetPriceForProduct(u, siteId)).ToList();
+            var productsPrices = productIds.Select(u => GetPriceForProduct(u, siteId)).Where(p => p != null).ToList();
 
             return new Tuple<string, string>(productsPrices.Min(u => u).ToString(), productsPrices.Max(u => u).ToString());
         }
         public Dictionary<int, string> GetAllValidProductManufacturers(List<int> productIds)
         {
             var manufatcurers = _currentDbContext.ProductKitMaps.Where(a => productIds.Contains(a.ProductId) &&
+                                                                a.ProductKitTypes.UseInParentCalculations == true &&
                                                                 a.IsDeleted != true &&
                                                                 a.IsActive &&
                                                                 a.KitProductMaster.ProductManufacturer != null)
@@ -1228,7 +1229,7 @@ namespace Ganedata.Core.Services
                 cartProduct = new WebsiteCartItem();
                 cartProduct.ProductId = productId;
                 cartProduct.Quantity = quantity;
-                cartProduct.UnitPrice = Math.Round(GetPriceForProduct(productId, siteId), 2);
+                cartProduct.UnitPrice = Math.Round(GetPriceForProduct(productId, siteId) ?? 0, 2);
                 cartProduct.UserId = userId == 0 ? null : userId;
                 cartProduct.TenantId = tenantId;
                 cartProduct.SiteID = siteId;
@@ -1710,13 +1711,14 @@ namespace Ganedata.Core.Services
         }
 
 
-        public decimal GetPriceForProduct(int productId, int siteId)
+        public decimal? GetPriceForProduct(int productId, int siteId)
         {
             var product = _currentDbContext.ProductMaster.AsNoTracking().FirstOrDefault(u => u.ProductId == productId);
 
             if ((product.SellPrice == null || product.SellPrice <= 0) && (product.ProductType == ProductKitTypeEnum.ProductByAttribute || product.ProductType == ProductKitTypeEnum.Grouped))
             {
                 product = _currentDbContext.ProductKitMaps.Where(p => p.ProductId == productId &&
+                                                                      p.ProductKitTypes.UseInParentCalculations == true &&
                                                                       p.IsActive &&
                                                                       p.IsDeleted != true &&
                                                                       p.KitProductMaster.SellPrice > 0)
@@ -1724,6 +1726,9 @@ namespace Ganedata.Core.Services
                                                           .ThenBy(p => p.KitProductMaster.SellPrice)
                                                           .FirstOrDefault()?.KitProductMaster ?? product;
             }
+
+            if (product.SellPrice == null)
+                return (decimal?)null;
 
             var calculateTax = GetTenantWebSiteBySiteId(siteId).ShowPricesIncludingTax;
             var sellPrice = _productPriceService.GetProductPriceThresholdByAccountId(product.ProductId, null).SellPrice;

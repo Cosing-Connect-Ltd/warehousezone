@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Services;
+using System;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using Ganedata.Core.Data;
-using Ganedata.Core.Entities.Domain;
-using Ganedata.Core.Services;
 
 namespace WMS.Controllers
 {
@@ -49,7 +44,7 @@ namespace WMS.Controllers
         }
 
         // POST: ProductKitTypes/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -88,7 +83,7 @@ namespace WMS.Controllers
         }
 
         // POST: ProductKitTypes/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
