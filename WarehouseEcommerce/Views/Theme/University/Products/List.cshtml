@@ -2,7 +2,6 @@
 @using Ganedata.Core.Entities.Enums
 @using PagedList.Mvc;
 
-@Html.Partial("_ProductByAttributeSelectorModal")
 <section class="nb_sec nb_prdlisting_pgsec">
     <span id="res_filterBox_trigger"><i class="icon-filter"></i></span>
     <div class="container">
@@ -57,18 +56,18 @@
                     <div class="row list-product-row">
                         @if (Model.Products == null || Model.Products?.Count() <= 0)
                         {
-                            foreach (var item in Model.DynamicFilters.Categories)
+                            foreach (var category in Model.DynamicFilters.Categories)
                             {
                                 <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-4  col-xl-3 list-product-col">
                                     <div class="prd_lst_boxouter">
                                         <span class="imagewrap">
-                                            <a href="@Url.Action("List", "Products", new { category = item.Name, categoryId = item.Id })">
-                                                <img src="@(!string.IsNullOrEmpty(item.Image) ? ViewBag.BaseFilePath + item.Image : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
+                                            <a href="@Url.Action("List", "Products", new { category = category.Name, categoryId = category.Id })">
+                                                <img src="@(!string.IsNullOrEmpty(category.Image) ? ViewBag.BaseFilePath + category.Image : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
                                             </a>
                                         </span>
                                         <h3 class="prdName">
-                                            <a class="prdName" href="@Url.Action("List", "Products", new { category = item.Name, categoryId = item.Id })">
-                                                @item.Name
+                                            <a class="prdName" href="@Url.Action("List", "Products", new { category = category.Name, categoryId = category.Id })">
+                                                @category.Name
                                             </a>
                                         </h3>
 
@@ -79,17 +78,17 @@
                         else
                         {
 
-                            foreach (var item in Model.Products)
+                            foreach (var product in Model.Products)
                             {
-                                item.ProductTagMaps = item.ProductTagMaps.Where(u => u.IsDeleted != true).Where(u => u.ProductTag.IsDeleted != true && !string.IsNullOrEmpty(u.ProductTag.IconImage)).OrderBy(x => x.ProductTag.SortOrder).ToList();
+                                product.ProductTagMaps = product.ProductTagMaps.Where(u => u.IsDeleted != true).Where(u => u.ProductTag.IsDeleted != true && !string.IsNullOrEmpty(u.ProductTag.IconImage)).OrderBy(x => x.ProductTag.SortOrder).ToList();
                                 <div class="col-6 col-xs-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 list-product-col">
                                     <div class="prd_lst_boxouter">
-                                        @for (int i = 0; i < item.ProductTagMaps.Count; i++)
+                                        @for (int i = 0; i < product.ProductTagMaps.Count; i++)
                                         {
 
                                             if (i < 3)
                                             {
-                                                var imageIcon = item.ProductTagMaps.ToList()[i].ProductTag.IconImage;
+                                                var imageIcon = product.ProductTagMaps.ToList()[i].ProductTag.IconImage;
 
                                                 <span class="badge badge-@i">
                                                     <img src="@(ViewBag.BaseFilePath + imageIcon)" alt="" />
@@ -100,74 +99,27 @@
                                         }
 
                                         <span class="imagewrap">
-                                            <a href="@Url.Action("ProductDetails", "Products", new { sku = item.SKUCode, filters = Model.CurrentFilters })">
-                                                <img src="@(!string.IsNullOrEmpty(item.DefaultImage) ? ViewBag.BaseFilePath + item.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
+                                            <a href="@Url.Action("ProductDetails", "Products", new { sku = product.SKUCode, filters = Model.CurrentFilters })">
+                                                <img src="@(!string.IsNullOrEmpty(product.DefaultImage) ? ViewBag.BaseFilePath + product.DefaultImage : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
                                             </a>
                                         </span>
                                         <h3 class="prdName">
-                                            <a class="prdName" href="@Url.Action("ProductDetails", "Products", new { sku = item.SKUCode, filters = Model.CurrentFilters })">
-                                                @item.Name
+                                            <a class="prdName" href="@Url.Action("ProductDetails", "Products", new { sku = product.SKUCode, filters = Model.CurrentFilters })">
+                                                @product.Name
                                             </a>
                                         </h3>
                                         <div class="foot">
                                             <ul class="icolist">
                                                 <li>
-                                                    <a class="prd_amnt" href="@Url.Action("ProductDetails", "Products", new { sku = item.SKUCode, filters = Model.CurrentFilters })">
-                                                        @if (item.ProductType == ProductKitTypeEnum.Grouped)
+                                                    <a class="prd_amnt" href="@Url.Action("ProductDetails", "Products", new { sku = product.SKUCode, filters = Model.CurrentFilters })">
+                                                        @if (product.ProductType == ProductKitTypeEnum.Grouped)
                                                         {
                                                             <span class="price-from__text">from </span>
                                                         }
-                                                        @ViewBag.CurrencySymbol@item.SellPrice
+                                                        @ViewBag.CurrencySymbol@product.SellPrice
                                                     </a>
                                                 </li>
-                                                @if (item.ProductType != ProductKitTypeEnum.Grouped && item.ProductType != ProductKitTypeEnum.Kit)
-                                                {
-                                                    if (Ganedata.Core.Services.Inventory.IsProductAvailableToSell(@item, ViewBag.SiteId) && item.ProductType != ProductKitTypeEnum.ProductByAttribute)
-                                                    {
-                                                        <li>
-                                                            <a href="javascript:;" onclick="addToCart(@item.ProductId)"><i class="cart-icon icon-shopping-cart"></i></a>
-                                                        </li>
-
-
-                                                    }
-                                                    else if (Ganedata.Core.Services.Inventory.IsProductAvailableToSell(@item, ViewBag.SiteId) && item.ProductType == ProductKitTypeEnum.ProductByAttribute)
-                                                    {
-                                                        <li>
-                                                            <a href="javascript:;" onclick="showProductByAttributeSelector('@item.SKUCode')"><i class="cart-icon icon-shopping-cart"></i></a>
-                                                        </li>
-                                                    }
-                                                    else
-                                                    {
-                                                        if (!Ganedata.Core.Services.Inventory.IsProductInNotifyList(@item, ViewBag.CurrentUserId))
-                                                        {
-                                                            <li>
-                                                                <a href="javascript:;" onclick="@(item.ProductType != ProductKitTypeEnum.ProductByAttribute ? "addToNotifyList(" + item.ProductId + ")" : "showProductByAttributeSelector('" + item.SKUCode + "', true)")" id="notification-bell_@item.ProductId"><i class="bel-icon fa fa-bell-o list-icon" style="color:black"></i></a>
-                                                            </li>
-                                                        }
-                                                        else
-                                                        {
-                                                            <li>
-                                                                <a href="javascript:;" onclick="@(item.ProductType != ProductKitTypeEnum.ProductByAttribute ? "redirectToWishListByConfirmation()" : "showProductByAttributeSelector('" + item.SKUCode + "', true)")" id="notification-bell_@item.ProductId"><i class="bel-icon fa fa-bell-o list-icon" style="color:red"></i></a>
-                                                            </li>
-
-                                                        }
-
-
-                                                    }
-
-                                                    if (!Ganedata.Core.Services.Inventory.IsProductInWishList(@item, ViewBag.CurrentUserId))
-                                                    {
-                                                        <li>
-                                                            <a href="javascript:;" id="wish_@item.ProductId" onclick="@(item.ProductType != ProductKitTypeEnum.ProductByAttribute ? "addToWishList(" + item.ProductId + ")" : "showProductByAttributeSelector('" + item.SKUCode + "', true)")"><i class="icon-love list-icon" style="color: black;"></i></a>
-                                                        </li>
-                                                    }
-                                                    else
-                                                    {
-                                                        <li>
-                                                            <a href="javascript:;" id="wish_@item.ProductId" onclick="@(item.ProductType != ProductKitTypeEnum.ProductByAttribute ? "redirectToWishListByConfirmation()" : "showProductByAttributeSelector('" + item.SKUCode + "', true)")"><i class="icon-love list-icon" style="color: red;"></i></a>
-                                                        </li>
-                                                    }
-                                                }
+                                                @Html.Partial("_ProductListItemActionsButtons", product)
                                             </ul>
 
                                         </div>
