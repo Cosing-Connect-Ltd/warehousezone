@@ -29,7 +29,7 @@ function BSsubmitProduct() {
     var PEFC = $(".prodPEFC").val();
     var FscPercent = $(".prodFscPercent").val();
     var ProductGroupId = $("#drpPG :selected").val();
-    var ProductCategoryId = $("#drpPC : selected").val();
+    var ProductCategoryId = $("#drpPC :selected").val();
     LoadingPanel.Show();
     var value = $('#delivery').val();
     var type = 13;
