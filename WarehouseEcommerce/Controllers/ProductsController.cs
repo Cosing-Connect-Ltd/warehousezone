@@ -66,9 +66,9 @@ namespace WarehouseEcommerce.Controllers
             {
                 var model = new ProductListViewModel {
                     CurrentCategoryName = category,
-                    CategoryId = categoryId,
+                    CurrentCategoryId = categoryId,
                     CurrentSort = sort,
-                    CurrentFilterValues = filters
+                    CurrentFilters = filters
                 };
 
                 if (categoryId != null || !string.IsNullOrEmpty(search) || !string.IsNullOrEmpty(previousSearch) || !string.IsNullOrEmpty(filters))

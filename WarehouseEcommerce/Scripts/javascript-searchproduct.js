@@ -9,12 +9,29 @@ function ValidEmail(email) {
 }
 function searchPoducts() {
 
-    var sortvalue = $("#SortedValues").val();
-    var category = $("#prod-category").val();
-    var categoryId = $("#prod-category-id").val();
-    var currentSearch = $("#currentSearchValue").val();
-    var valuesparam = $("#valuesParameter").val() == undefined ? "" : $("#valuesParameter").val();
-    window.location.href = basePath + "/Products/list?category=" + category + "&categoryId=" + categoryId + "&sort=" + sortvalue + "&previousSearch=" + currentSearch + "&values=" + valuesparam;
+    var currentSort = $("#current-sort").val();
+    var currentCategory = $("#current-category").val();
+    var currentCategoryId = $("#current-category-id").val();
+    var currentSearch = $("#current-search").val();
+    var currentFilters = $("#current-filters").val() == undefined ? "" : $("#current-filters").val();
+    var urlString = basePath + "/Products/list?"
+    if (!!currentCategory) {
+        urlString += "category=" + currentCategory + "&";
+    }
+    if (!!currentCategoryId) {
+        urlString += "categoryId=" + currentCategoryId + "&";
+    }
+    if (!!currentSort) {
+        urlString += "sort=" + currentSort + "&";
+    }
+    if (!!currentSearch) {
+        urlString += "previousSearch=" + currentSearch + "&";
+    }
+    if (!!currentFilters) {
+        urlString += "filters=" + currentFilters + "&";
+    }
+
+    window.location.href  = urlString.substr(0, urlString.length - 2);
 }
 
 function SearchPostCode() {
@@ -138,10 +155,20 @@ function OnchangeDropdownAddress() {
 
 function SearchProductCategory() {
 
-    var searchstring = $(".text-search").val();
-    var valuesparam = $("#valuesParameter").val() == undefined ? "" : $("#valuesParameter").val();
-    var path = basePath + "/Products/list?search=" + searchstring + "&values=" + valuesparam;
-    window.location.href = path;
+    var searchString = $(".text-search").val();
+    var currentSort = $("#current-sort").val();
+    var currentFilters = $("#current-filters").val() == undefined ? "" : $("#current-filters").val();
+    var urlString = basePath + "/Products/list?search=" + searchString + "&";
+
+    if (!!currentSort) {
+        urlString += + "sort=" + currentSort + "&";
+    }
+
+    if (!!currentFilters) {
+        urlString += + "filters=" + currentFilters + "&";
+    }
+
+    window.location.href = urlString.substr(0, urlString.length - 2);
 }
 
 
