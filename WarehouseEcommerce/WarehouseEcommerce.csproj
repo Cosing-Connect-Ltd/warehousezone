@@ -712,7 +712,7 @@
     <Content Include="Views\Theme\University\Products\_DynamicFilters.cshtml" />
     <Content Include="Views\Theme\University\Products\GroupedProductDetail.cshtml" />
     <Content Include="Views\Theme\University\Products\KitProductDetail.cshtml" />
-    <Content Include="Views\Theme\University\Products\List1.cshtml" />
+    <Content Include="Views\Theme\University\Products\List.cshtml" />
     <Content Include="Views\Theme\University\Products\ProductDetails.cshtml" />
     <Content Include="Views\Theme\University\Home\About.cshtml" />
     <Content Include="Views\Theme\University\Home\Contact.cshtml" />
@@ -1432,7 +1432,7 @@
     <Content Include="Views\Theme\University\Products\_ProductDetailActionsButtons.cshtml" />
     <Content Include="Views\Theme\University\Products\_ProductDetailBreadCrumb.cshtml" />
     <Content Include="Views\Theme\University\Products\_ProductFilesGallery.cshtml" />
-    <Content Include="Views\Theme\University\Products\Brands1.cshtml" />
+    <Content Include="Views\Theme\University\Products\Brands.cshtml" />
     <Content Include="Views\Theme\University\Shared\_OurBrands.cshtml" />
     <Content Include="Scripts\jquery-3.5.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.5.1.min.map" />
