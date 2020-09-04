@@ -72,15 +72,15 @@
                                                             {
                                                                 <div>MFP No: @kitProductMaster.ManufacturerPartNo</div>
                                                             }
-                                                            @{
-                                                                ViewBag.AvailableProductCount = item.ProductsAvailableCounts[kitProductMaster.ProductId];
-                                                            }
-                                                            @Html.Partial("_ProductAvailability", kitProductMaster)
                                                             <div class="get-trade-price__link" style="display: none;">
                                                                 <a href="javascript:;" onclick="GetLoggedIn(false,true)">
                                                                     Get Trade Price
                                                                 </a>
                                                             </div>
+                                                            @{
+                                                                ViewBag.AvailableProductCount = item.ProductsAvailableCounts[kitProductMaster.ProductId];
+                                                            }
+                                                            @Html.Partial("_ProductAvailability", kitProductMaster)
                                                         </div>
                                                         <div class="col-md-12 col-lg-12 col-xl-8">
                                                             @if (kitProductMaster.SellPrice != null && kitProductMaster.SellPrice > 0)
