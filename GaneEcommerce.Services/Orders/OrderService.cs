@@ -694,7 +694,7 @@ namespace Ganedata.Core.Services
                       Status = p.OrderStatusID.ToString(),
                       Account = _currentDbContext.Account.Where(s => s.AccountID == p.AccountID)
                           .Select(s => s.CompanyName).FirstOrDefault(),
-                      OrderType = nameof(p.InventoryTransactionTypeId),
+                      OrderType = ((InventoryTransactionTypeEnum)(p.InventoryTransactionTypeId)).ToString(),
                       TransType = p.InventoryTransactionTypeId
                   });
 
@@ -717,7 +717,7 @@ namespace Ganedata.Core.Services
                     EmailCount = _currentDbContext.TenantEmailNotificationQueues.Count(u => u.OrderId == p.OrderID),
                     Status = p.OrderStatusID.ToString(),
                     Account = _currentDbContext.Account.Where(s => s.AccountID == p.AccountID).Select(s => s.CompanyName).FirstOrDefault(),
-                    OrderType = nameof(p.InventoryTransactionTypeId),
+                    OrderType = ((InventoryTransactionTypeEnum)(p.InventoryTransactionTypeId)).ToString(),
                     TransType = p.InventoryTransactionTypeId
                 });
 

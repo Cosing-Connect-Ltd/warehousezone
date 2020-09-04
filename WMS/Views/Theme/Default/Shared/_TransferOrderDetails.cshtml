@@ -70,7 +70,7 @@
                     }
                     var qty = DataBinder.Eval(container.DataItem, "Qty").ToString();
                     var rec_qty = DataBinder.Eval(container.DataItem, "QtyProcessed");
-                    var type = DataBinder.Eval(container.DataItem, "TransType");
+                    var type =(int) DataBinder.Eval(container.DataItem, "TransType");
                     var function = string.Format("addSerial({0},{1},{2},{3},{4},{5},{6})", keyValue, orderid, productid, processOrderType, qty, rec_qty, type);
 
                     var scannableCodes = DataBinder.Eval(container.DataItem, "IdentifiersText").ToString();
