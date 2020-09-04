@@ -142,12 +142,23 @@ namespace Ganedata.Core.Services
 
         public Dictionary<int, string> GetAllValidSubCategoriesByDepartmentAndGroup(List<int> productIds)
         {
-            return _currentDbContext.ProductMaster.Where(p => productIds.Contains(p.ProductId) && p.ProductCategory != null)
-                    .Select(u => u.ProductCategory)
+            var productsCategorys = _currentDbContext.ProductMaster.Where(p => productIds.Contains(p.ProductId) && p.ProductCategory != null)
+                                                                   .Select(u => u.ProductCategory)
+                                                                   .ToList();
+
+            productsCategorys.AddRange(_currentDbContext.ProductKitMaps.Where(a => productIds.Contains(a.ProductId) &&
+                                                                a.IsDeleted != true &&
+                                                                a.ProductKitTypes.UseInParentCalculations == true &&
+                                                                a.IsActive &&
+                                                                a.KitProductMaster.ProductCategory != null)
+                                                 .Select(a => a.KitProductMaster.ProductCategory)
+                                                 .ToList());
+
+            return productsCategorys
                     .GroupBy(c => c)
                     .Select(c => c.Key)
                     .OrderBy(c => c.ProductCategoryName)
-                    .ToDictionary(c => c.ProductCategoryId, c => c.ProductCategoryName);
+                    .ToDictionary(c => c.ProductCategoryId, c => c.ProductCategoryName); ;
         }
 
         public IEnumerable<WebsiteNavigation> GetWebsiteNavigationCategoriesList(int? parentCategoryId, int siteId)
@@ -205,7 +216,7 @@ namespace Ganedata.Core.Services
                                                              .ToList()
                                                              .Select(u => {
                                                                  var sellPrice = _tenantWebsiteService.GetPriceForProduct(u.ProductId, siteId);
-                                                                 return (sellPrice >= prices.Min() && sellPrice <= prices.Max()) ? u.ProductId : (int?)null;
+                                                                 return (sellPrice == null || (sellPrice >= prices.Min() && sellPrice <= prices.Max())) ? u.ProductId : (int?)null;
                                                              })
                                                              .Where(p => p != null)
                                                              .Distinct()
@@ -709,7 +720,10 @@ namespace Ganedata.Core.Services
                 DateUpdated = DateTime.UtcNow,
                 Name = model.Name,
                 TenentId = tenantId,
-                UpdatedBy = userId
+                UpdatedBy = userId,
+                UseInParentCalculations = model.UseInParentCalculations,
+                SortOrder = model.SortOrder,
+                IsActive = model.IsActive
             };
             _currentDbContext.ProductKitTypes.Add(pKitType);
             _currentDbContext.SaveChanges();
@@ -724,6 +738,8 @@ namespace Ganedata.Core.Services
                 productKitType.Name = model.Name.Trim();
                 productKitType.TenentId = model.TenentId;
                 productKitType.SortOrder = model.SortOrder;
+                productKitType.IsActive = model.IsActive;
+                productKitType.UseInParentCalculations = model.UseInParentCalculations;
                 productKitType.DateUpdated = DateTime.UtcNow;
                 productKitType.UpdatedBy = userId;
                 _currentDbContext.ProductKitTypes.Attach(productKitType);

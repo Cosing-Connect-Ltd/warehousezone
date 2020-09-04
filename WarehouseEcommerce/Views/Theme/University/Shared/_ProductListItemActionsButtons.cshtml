@@ -1,0 +1,58 @@
+﻿@model Ganedata.Core.Entities.Domain.ProductMaster
+@using Ganedata.Core.Entities.Enums
+
+@if (Model.ProductType != ProductKitTypeEnum.Grouped && Model.ProductType != ProductKitTypeEnum.Kit)
+{
+
+    if (Ganedata.Core.Services.Inventory.IsProductAvailableToSell(@Model, ViewBag.SiteId) && Model.ProductType != ProductKitTypeEnum.ProductByAttribute)
+    {
+        <li>
+            <a href="javascript:;" onclick="addToCart(@Model.ProductId)"><i class="cart-icon icon-shopping-cart"></i></a>
+        </li>
+
+
+    }
+    else if (Ganedata.Core.Services.Inventory.IsProductAvailableToSell(@Model, ViewBag.SiteId) && Model.ProductType == ProductKitTypeEnum.ProductByAttribute)
+    {
+        <li>
+            <a href="javascript:;" onclick="showProductByAttributeSelector('@Model.SKUCode')"><i class="cart-icon icon-shopping-cart"></i></a>
+        </li>
+    }
+    else
+    {
+        var isItemInNotifyList = Model.WebsiteWishListItems.Any(u => u.IsDeleted != true && u.UserId == ViewBag.CurrentUserId && u.IsNotification);
+
+        if (!isItemInNotifyList)
+        {
+            <li>
+                <a href="javascript:;" onclick="@(Model.ProductType != ProductKitTypeEnum.ProductByAttribute ? "addToNotifyList(" + Model.ProductId + ")" : "showProductByAttributeSelector('" + Model.SKUCode + "', true)")" id="notification-bell_@Model.ProductId"><i class="bel-icon fa fa-bell-o list-icon" style="color:black"></i></a>
+            </li>
+        }
+        else
+        {
+            <li>
+                <a href="javascript:;" onclick="@(Model.ProductType != ProductKitTypeEnum.ProductByAttribute ? "redirectToWishListByConfirmation()" : "showProductByAttributeSelector('" + Model.SKUCode + "', true)")" id="notification-bell_@Model.ProductId"><i class="bel-icon fa fa-bell-o list-icon" style="color:red"></i></a>
+            </li>
+
+        }
+
+
+    }
+
+
+    var isItemInWishList = Model.WebsiteWishListItems.Any(u => u.IsDeleted != true && u.UserId == ViewBag.CurrentUserId && !u.IsNotification);
+
+
+    if (!isItemInWishList)
+    {
+        <li>
+            <a href="javascript:;" id="wish_@Model.ProductId" onclick="@(Model.ProductType != ProductKitTypeEnum.ProductByAttribute ? "addToWishList(" + Model.ProductId + ")" : "showProductByAttributeSelector('" + Model.SKUCode + "', true)")"><i class="icon-love list-icon" style="color: black;"></i></a>
+        </li>
+    }
+    else
+    {
+        <li>
+            <a href="javascript:;" id="wish_@Model.ProductId" onclick="@(Model.ProductType != ProductKitTypeEnum.ProductByAttribute ? "redirectToWishListByConfirmation()" : "showProductByAttributeSelector('" + Model.SKUCode + "', true)")"><i class="icon-love list-icon" style="color: red;"></i></a>
+        </li>
+    }
+}

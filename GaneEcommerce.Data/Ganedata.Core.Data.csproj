@@ -1067,6 +1067,10 @@
     <Compile Include="Migrations\202009011907355_SmallLogo-in-TenantWebsites-and-nominal-code-changes.designer.cs">
       <DependentUpon>202009011907355_SmallLogo-in-TenantWebsites-and-nominal-code-changes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202009040900489_added_UseInParentCalculations_field_to_ProductKitTypes_table.cs" />
+    <Compile Include="Migrations\202009040900489_added_UseInParentCalculations_field_to_ProductKitTypes_table.designer.cs">
+      <DependentUpon>202009040900489_added_UseInParentCalculations_field_to_ProductKitTypes_table.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2187,6 +2191,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202009011907355_SmallLogo-in-TenantWebsites-and-nominal-code-changes.resx">
       <DependentUpon>202009011907355_SmallLogo-in-TenantWebsites-and-nominal-code-changes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009040900489_added_UseInParentCalculations_field_to_ProductKitTypes_table.resx">
+      <DependentUpon>202009040900489_added_UseInParentCalculations_field_to_ProductKitTypes_table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

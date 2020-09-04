@@ -7443,6 +7443,10 @@ input[type="checkbox"] {
     max-height: 60px;
 }
 
+.parent-product-content-container {
+    max-height: calc(100% - 600px);
+}
+
     .expandable-content-container > .long-text:before {
         content: "";
         position: absolute;

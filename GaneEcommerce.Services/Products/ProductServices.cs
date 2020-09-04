@@ -155,6 +155,7 @@ namespace Ganedata.Core.Services
         public IEnumerable<ProductMaster> GetAllProductInKitsByProductIds(List<int> productIds)
         {
             var kitProductIds = _currentDbContext.ProductKitMaps.Where(a => productIds.Contains(a.ProductId) &&
+                                                                a.ProductKitTypes.UseInParentCalculations == true &&
                                                                 a.IsDeleted != true &&
                                                                 a.IsActive)
                                                  .Select(a => a.KitProductMaster.ProductId)
@@ -1443,6 +1444,7 @@ namespace Ganedata.Core.Services
                 .Include(p => p.ProductKitMap.Select(k => k.ProductMaster.ProductAttributeValuesMap.Select(a => a.ProductAttributeValues)))
                 .Include(p => p.ProductManufacturer)
                 .Include(p => p.ProductKitItems.Select(k => k.KitProductMaster.ProductManufacturer))
+                .Include(p => p.ProductKitItems.Select(k => k.ProductKitTypes))
                 .FirstOrDefault(e => e.TenantId == tenantId &&
                                      e.IsDeleted != true &&
                                      (e.SKUCode.Equals(productCode, StringComparison.CurrentCultureIgnoreCase) ||
