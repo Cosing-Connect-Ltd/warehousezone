@@ -7467,3 +7467,6 @@ input[type="checkbox"] {
     font-size: 24px;
 }
 
+.product-extra-detail > * {
+    white-space: nowrap
+}
