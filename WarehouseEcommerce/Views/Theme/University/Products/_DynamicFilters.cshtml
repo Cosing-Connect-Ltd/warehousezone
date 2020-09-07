@@ -115,7 +115,7 @@
                                     @foreach (var attributeValue in attribute.Value)
                                     {
                                         string name = attributeValue.Value.Replace(" ", "_").Replace(",", "^") + ":" + @attributeValue.AttributeValueId;
-                                        <li class="list-group-item"><input type="checkbox" id="@(attributeValue.ProductAttributes.AttributeName.Replace(" ", "_") + ":" + attributeValue.ProductAttributes.AttributeId)" class="checkbox-inline" value="@name" @(requestQuery.Contains(name) ? "checked" : "")>@(attributeValue.Value)</li>
+                                        <li class="list-group-item"><input type="checkbox" id="@(attribute.Key.AttributeName.Replace(" ", "_").Replace(",", "^") + ":" + attribute.Key.AttributeId)" class="checkbox-inline" value="@name" @(requestQuery.Contains(name) ? "checked" : "")>@(attributeValue.Value)</li>
                                     }
                                 </ul>
                             </div>
@@ -215,18 +215,21 @@
                             var checkPreviousString = urlString.substr(indexof - 7, 7);
                             var found = urlString.charAt(indexof + 1);
                             if (checkPreviousString === "filters" && found === "") {
-                                urlString = urlString + data + ">" + $(this).val();
+                                urlString += encodeURIComponent(data + ">" + $(this).val());
                             } else {
-                                urlString = urlString + "|" + data + ">" + $(this).val();
+                                urlString += encodeURIComponent("|" + data + ">" + $(this).val());
                             }
                         } else {
                             if (urlString.indexOf($(this).val()) < 0) {
-                                urlString = urlString + "," + $(this).val();
+                                urlString += encodeURIComponent("," + $(this).val());
                             }
                         }
                     }
                 }
             });
+            if (urlString.endsWith("filters=")) {
+                urlString = urlString.substring(0, urlString.length - 9);
+            }
             startLoading();
             location.href = urlString;
         });
