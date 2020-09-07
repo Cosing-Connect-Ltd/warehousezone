@@ -102,7 +102,11 @@ namespace WarehouseEcommerce.Controllers
                         products = products.Where(s => s.SKUCode.Contains(search) || s.Name.Contains(search));
                     }
 
-                    products = _productlookupServices.FilterProduct(products, filters, CurrentTenantWebsite.SiteID);
+                    products = _productlookupServices.ApplyFixedFilters(products, filters, CurrentTenantWebsite.SiteID);
+
+                    model.DynamicFilters.Attributes = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(products);
+
+                    products = _productlookupServices.ApplyAttributeFilters(products, filters, CurrentTenantWebsite.SiteID);
 
                     switch (sort)
                     {
@@ -135,7 +139,6 @@ namespace WarehouseEcommerce.Controllers
                         model.DynamicFilters = GetDynamicFiltersModel(products.Select(p => p.ProductId).ToList(), categoryId);
                     }
 
-                    model.DynamicFilters.Attributes = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(products);
                     model.DynamicFilters.FilteredCount = products.Count();
                     model.Products = pagedProductsList;
                 }
@@ -252,22 +255,38 @@ namespace WarehouseEcommerce.Controllers
                                                                            u.ProductMaster.IsDeleted != true &&
                                                                            u.IsDeleted != true);
 
-            model.DynamicFilters = GetDynamicFiltersModel(allKitProducts.Where(k => k.ProductKitTypes.UseInParentCalculations == true)
-                                                                        .Select(p => p.KitProductMaster.ProductId)
-                                                                        .ToList(),
-                                                          null,
-                                                          true);
+            var allCalculatableProducts = allKitProducts.Where(k => k.ProductKitTypes.UseInParentCalculations == true)
+                                                                        .Select(p => p.KitProductMaster)
+                                                                        .ToList();
+
+            model.DynamicFilters = GetDynamicFiltersModel(allCalculatableProducts.Select(p => p.ProductId).ToList(), null, true);
 
             var isFirstTab = true;
             model.GroupedTabs = _productlookupServices.GetProductKitTypes(productTabs)
                 .Select(ProductKitType =>
                 {
-                    var kitProducts = _productlookupServices.FilterProduct(allKitProducts.Where(u => (u.ProductKitTypeId == ProductKitType.Id || ((u.ProductKitTypeId == null || u.ProductKitTypeId == 0) && isFirstTab)))
+                    var kitProducts = allKitProducts.Where(u => (u.ProductKitTypeId == ProductKitType.Id || ((u.ProductKitTypeId == null || u.ProductKitTypeId == 0) && isFirstTab)))
                                                                    .GroupBy(m => m.KitProductMaster)
-                                                                   .Select(m => m.Key)
-                                                                   .AsQueryable(), (isFirstTab ? filters : string.Empty), CurrentTenantWebsite.SiteID)
-                                                            .ToList()
-                                                            .Select(p => new
+                                                                   .Select(m => m.Key);
+
+                    List<ProductMaster> kitProductsList;
+
+                    if (isFirstTab)
+                    {
+                        var filteredKitProducts = _productlookupServices.ApplyFixedFilters(kitProducts.AsQueryable(), filters, CurrentTenantWebsite.SiteID);
+
+                        model.DynamicFilters.Attributes = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(filteredKitProducts);
+
+                        filteredKitProducts = _productlookupServices.ApplyAttributeFilters(filteredKitProducts, filters, CurrentTenantWebsite.SiteID);
+
+                        kitProductsList = filteredKitProducts.ToList();
+                    }
+                    else
+                    {
+                        kitProductsList = kitProducts.ToList();
+                    }
+
+                    var finalKitProducts = kitProductsList.Select(p => new
                                                             {
                                                                 Product = p,
                                                                 AvailableProductCount = Inventory.GetAvailableProductCount(p, CurrentTenantWebsite.SiteID),
@@ -278,9 +297,9 @@ namespace WarehouseEcommerce.Controllers
 
                     return new ChildProductsViewModel
                     {
-                        Products = kitProducts.Select(p => p.Product).ToList(),
-                        ProductsAvailableCounts = kitProducts.ToDictionary(p => p.Product.ProductId, p => p.AvailableProductCount),
-                        Prices = _tenantWebsiteService.GetPricesForProducts(kitProducts.Select(p => p.Product.ProductId).ToList(), CurrentTenantWebsite.SiteID)
+                        Products = finalKitProducts.Select(p => p.Product).ToList(),
+                        ProductsAvailableCounts = finalKitProducts.ToDictionary(p => p.Product.ProductId, p => p.AvailableProductCount),
+                        Prices = _tenantWebsiteService.GetPricesForProducts(finalKitProducts.Select(p => p.Product.ProductId).ToList(), CurrentTenantWebsite.SiteID)
                                                       .GroupBy(p => p.ProductId)
                                                       .ToDictionary(p => p.Key, p => p.First()),
                         ProductKitType = ProductKitType
@@ -288,20 +307,7 @@ namespace WarehouseEcommerce.Controllers
                 })
             .ToList();
 
-            if (!model.GroupedTabs.Any())
-            {
-                model.GroupedTabs.Add(new ChildProductsViewModel
-                {
-                    ProductKitType = new ProductKitType
-                    {
-                        Name = "Options"
-                    }
-                });
-            }
-
-            var calculatableProducts = model.GroupedTabs.Where(g => g.ProductKitType.UseInParentCalculations == true).SelectMany(a => a.Products);
-            model.DynamicFilters.FilteredCount = calculatableProducts.Count();
-            model.DynamicFilters.Attributes = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(calculatableProducts.AsQueryable());
+            model.DynamicFilters.FilteredCount = model.GroupedTabs?.Where(g => g.ProductKitType.UseInParentCalculations == true).Sum(a => a.Products.Count()) ?? 0;
 
             SetProductViewModelCategoryInfo(model.Product, model);
 
