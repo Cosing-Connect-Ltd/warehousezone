@@ -183,104 +183,154 @@ namespace Ganedata.Core.Services
             return _currentDbContext.ProductLocationsMap.Where(
                 a => a.Locations.IsDeleted != true && a.IsDeleted != true && a.ProductId == productId);
         }
-        public IQueryable<ProductMaster> FilterProduct(IQueryable<ProductMaster> products, string filterString, int siteId)
+        public IQueryable<ProductMaster> ApplyFixedFilters(IQueryable<ProductMaster> products, string filterString, int siteId)
         {
             try
             {
-                if (!string.IsNullOrEmpty(filterString))
+                var filters = ReadFiltersString(filterString);
+
+                if (filters == null || filters.Count <= 0)
                 {
-                    var filters = filterString.Split('|')
-                                            .Where(i => !string.IsNullOrEmpty(i))
-                                            .Select(a => {
-                                                var filterData = a.Split('>').Where(s => !string.IsNullOrEmpty(s?.Trim())).ToList();
+                    return products;
+                }
 
-                                                return filterData != null && filterData.Count() == 2 ?
-                                                        new {
-                                                                Key = filterData.First().Replace("_", " ").Replace("^", ","),
-                                                                Values = filterData.Last().Split(',')
-                                                                                            .Select(s => s.Replace("_", " ").Replace("^", ",").Split(':').LastOrDefault())
-                                                                                            .Where(v => !string.IsNullOrEmpty(v?.Trim()))
-                                                                                            .Distinct()
-                                                                                            .ToList()
-                                                        } :
-                                                        null;
-                                            })
-                                            .GroupBy(a => a.Key)
-                                            .ToDictionary(a => a.Key, a => a.SelectMany(b => b.Values).GroupBy(d => d).Select(d => d.Key).ToList());
-                    if (filters.TryGetValue("prices", out List<string> pricesData))
+                var selectedProducts = products.Select(p => new
+                {
+                    p.ProductId,
+                    p.SellPrice,
+                    p.ManufacturerId,
+                    KitProducts = p.ProductKitItems.Select(k => new
                     {
-                        var prices = pricesData.FirstOrDefault()?.Split('-').Select(p => Convert.ToDecimal(p)).ToList();
-                        if (prices.Count() > 0)
+                        k.ProductKitTypes.UseInParentCalculations,
+                        k.KitProductMaster.ProductId,
+                        k.KitProductMaster.ManufacturerId,
+                        CategoryId = k.KitProductMaster.ProductCategoryId
+                    }),
+                    p.ProductCategoryId
+                }).ToList();
+
+                if (filters.TryGetValue("prices", out List<string> pricesData))
+                {
+                    var prices = pricesData.FirstOrDefault()?.Split('-').Select(p => Convert.ToDecimal(p)).ToList();
+                    if (prices.Count() > 0)
+                    {
+                        var filteredProductsIds = selectedProducts
+                                                            .Select(u =>
+                                                            {
+                                                                var sellPrice = _tenantWebsiteService.GetPriceForProduct(u.ProductId, siteId);
+                                                                return (sellPrice == null || (sellPrice >= prices.Min() && sellPrice <= prices.Max())) ? u.ProductId : (int?)null;
+                                                            })
+                                                            .Where(p => p != null)
+                                                            .Distinct()
+                                                            .ToList();
+                        selectedProducts = selectedProducts.Where(p => filteredProductsIds.Contains(p.ProductId)).ToList();
+                    }
+                }
+
+                if (filters.TryGetValue("brands", out List<string> brandsData))
+                {
+                    var selectedBrands = brandsData.Select(v => Convert.ToInt32(v)).Where(i => i > 0).ToList();
+                    var filteredProductsIds = selectedProducts
+                                                    .Where(u => selectedBrands.Contains(u.ManufacturerId ?? 0) || u.KitProducts.Any(k => k.UseInParentCalculations == true && selectedBrands.Contains(k.ManufacturerId ?? 0)))
+                                                    .Select(p => p.ProductId)
+                                                    .Distinct()
+                                                    .ToList();
+
+                    selectedProducts = selectedProducts.Where(p => filteredProductsIds.Contains(p.ProductId)).ToList();
+                }
+
+                if (filters.TryGetValue("types", out List<string> typessData))
+                {
+                    var selectedTypes = typessData.Select(v => Convert.ToInt32(v)).Where(i => i > 0).ToList();
+                    var filteredProductsIds = selectedProducts
+                                                    .Where(u => selectedTypes.Contains(u.ProductCategoryId ?? 0) || u.KitProducts.Any(k => k.UseInParentCalculations == true && selectedTypes.Contains(k.CategoryId ?? 0)))
+                                                    .Select(p => p.ProductId)
+                                                    .Distinct()
+                                                    .ToList();
+
+                    selectedProducts = selectedProducts.Where(p => filteredProductsIds.Contains(p.ProductId)).ToList();
+                }
+
+                var selectedProductsIds = selectedProducts.Select(p => p.ProductId).ToList();
+
+                products = products.Where(u => selectedProductsIds.Contains(u.ProductId));
+            }
+            catch (Exception ex)
+            {
+                ErrorSignal.FromCurrentContext().Raise(ex);
+            }
+
+            return products;
+        }
+
+        public IQueryable<ProductMaster> ApplyAttributeFilters(IQueryable<ProductMaster> products, string filterString, int siteId)
+        {
+            try
+            {
+                var filters = ReadFiltersString(filterString);
+
+                if (filters == null || filters.Count <= 0)
+                {
+                    return products;
+                }
+
+                var attributesFilters = filters.Where(i => i.Key.Length > 0 && !i.Key.Equals("brands") && !i.Key.Equals("prices") && !i.Key.Equals("types"));
+
+                if (products?.Count() > 0 && attributesFilters.Count() > 0)
+                {
+                    var selectedProducts = products.Select(p => new
+                    {
+                        p.ProductId,
+                        p.ProductType,
+                        KitProducts = p.ProductKitItems.Select(k => new
                         {
-                            var selectedProductIds = products.Select(p => new { p.ProductId, p.SellPrice })
-                                                             .ToList()
-                                                             .Select(u => {
-                                                                 var sellPrice = _tenantWebsiteService.GetPriceForProduct(u.ProductId, siteId);
-                                                                 return (sellPrice == null || (sellPrice >= prices.Min() && sellPrice <= prices.Max())) ? u.ProductId : (int?)null;
-                                                             })
-                                                             .Where(p => p != null)
-                                                             .Distinct()
-                                                             .ToList();
+                            k.ProductKitTypes.UseInParentCalculations,
+                            k.KitProductMaster.ProductId
+                        })
+                    }).ToList();
 
-                            products = products.Where(u => selectedProductIds.Contains(u.ProductId));
-                        }
-                    }
+                    var allChildAndParentProductsIds = selectedProducts.Where(p => p.ProductType == ProductKitTypeEnum.Grouped || p.ProductType == ProductKitTypeEnum.ProductByAttribute)
+                                                                        .SelectMany(p => p.KitProducts)
+                                                                        .Where(k => k.UseInParentCalculations == true)
+                                                                        .Select(k => k.ProductId)
+                                                                        .ToList();
 
-                    if (filters.TryGetValue("brands", out List<string> brandsData))
+                    allChildAndParentProductsIds.AddRange(selectedProducts.Select(k => k.ProductId));
+
+                    allChildAndParentProductsIds = allChildAndParentProductsIds.Distinct().ToList();
+
+                    var kitProductsAttributes = _currentDbContext.ProductMaster.Where(p => allChildAndParentProductsIds.Contains(p.ProductId))
+                                                                                .Select(p => new
+                                                                                {
+                                                                                    p.ProductId,
+                                                                                    ProductAttributeValuesMaps = p.ProductAttributeValuesMap.Select(a => new
+                                                                                    {
+                                                                                        a.AttributeValueId,
+                                                                                        a.ProductAttributeValues.AttributeId,
+                                                                                        a.IsDeleted
+                                                                                    })
+                                                                                })
+                                                                                .ToList();
+
+                    foreach (var item in attributesFilters)
                     {
-                        var selectedBrands = brandsData.Select(v => Convert.ToInt32(v)).Where(i => i > 0).ToList();
-                        var selectedProductIds = products.Select(p => new {
-                                                                            p.ProductId,
-                                                                            p.ManufacturerId,
-                                                                            p.ProductType,
-                                                                            KitProductsManufacturersIds = p.ProductKitItems.Select(k => k.KitProductMaster.ManufacturerId) })
-                                                        .ToList()
-                                                        .Where(u => selectedBrands.Contains(u.ManufacturerId ?? 0) || u.KitProductsManufacturersIds.Any(k => selectedBrands.Contains(k ?? 0)))
-                                                        .Select(p => p.ProductId)
-                                                        .Distinct()
-                                                        .ToList();
-
-                        products = products.Where(u => selectedProductIds.Contains(u.ProductId));
-                    }
-
-                    if (filters.TryGetValue("types", out List<string> typessData))
-                    {
-                        var selectedTypes = typessData.Select(v => Convert.ToInt32(v)).Where(i => i > 0).ToList();
-                        var selectedProductIds = products.Select(p => new {
-                                                                            p.ProductId,
-                                                                            p.ProductCategoryId,
-                                                                            p.ProductType,
-                                                                            KitProductCategoryIds = p.ProductKitItems.Select(k => k.KitProductMaster.ProductCategoryId) })
-                                                             .ToList()
-                                                             .Where(u => selectedTypes.Contains(u.ProductCategoryId ?? 0) || u.KitProductCategoryIds.Any(k => selectedTypes.Contains(k ?? 0)))
-                                                             .Select(p => p.ProductId)
-                                                             .Distinct()
-                                                             .ToList();
-
-                        products = products.Where(u => selectedProductIds.Contains(u.ProductId));
-                    }
-
-                    if (products?.Count() > 0)
-                    {
-                        foreach (var item in filters.Where(i => i.Key.Length > 0 && !i.Key.Equals("brands") && !i.Key.Equals("prices") && !i.Key.Equals("types")))
+                        if (int.TryParse(item.Key, out int attributeId))
                         {
                             var selectedItemsIds = item.Value.Select(v => Convert.ToInt32(v)).Where(i => i > 0).ToList();
-                            var filteredProductIds = _currentDbContext.ProductAttributeValuesMap.Where(u => selectedItemsIds.Contains(u.AttributeValueId) &&
-                                                                                                    item.Key.Contains(u.ProductAttributeValues.ProductAttributes.AttributeName + ":" + u.ProductAttributeValues.AttributeId.ToString()) &&
-                                                                                                    u.IsDeleted != true &&
-                                                                                                    u.ProductMaster.IsDeleted != true &&
-                                                                                                    u.ProductMaster.IsActive == true)
-                                                                                        .Select(u => u.ProductId)
-                                                                                        .ToList();
+                            var filteredProductsIds = kitProductsAttributes.Where(p => p.ProductAttributeValuesMaps.Any(u => selectedItemsIds.Contains(u.AttributeValueId) &&
+                                                                                                                                attributeId == u.AttributeId &&
+                                                                                                                                u.IsDeleted != true))
+                                                                        .Select(p => p.ProductId)
+                                                                        .ToList();
 
-                            var filteredProductsIds = products.Where(u => filteredProductIds.Contains(u.ProductId) || filteredProductIds.Any(a => u.ProductKitItems.Select(c => c.KitProductId).ToList().Contains(a))).Select(p => p.ProductId).ToList();
-
-                            if (filteredProductIds != null & filteredProductsIds.Count > 0)
-                            {
-                                products = products.Where(u => filteredProductIds.Contains(u.ProductId) || filteredProductIds.Any(a => u.ProductKitItems.Select(c => c.KitProductId).ToList().Contains(a)));
-                            }
+                            kitProductsAttributes = kitProductsAttributes.Where(p => filteredProductsIds.Contains(p.ProductId)).ToList();
+                            selectedProducts = selectedProducts.Where(p => filteredProductsIds.Contains(p.ProductId) || p.KitProducts.Any(k => k.UseInParentCalculations == true && filteredProductsIds.Contains(k.ProductId))).ToList();
                         }
                     }
+
+                    var selectedProductsIds = selectedProducts.Select(p => p.ProductId).ToList();
+
+                    products = products.Where(u => selectedProductsIds.Contains(u.ProductId));
                 }
             }
             catch (Exception ex)
@@ -291,6 +341,34 @@ namespace Ganedata.Core.Services
             return products;
         }
 
+        private static Dictionary<string, List<string>> ReadFiltersString(string filterString)
+        {
+            if (string.IsNullOrEmpty(filterString))
+            {
+                return null;
+            }
+
+            return filterString.Split('|')
+                                    .Where(i => !string.IsNullOrEmpty(i))
+                                    .Select(a =>
+                                    {
+                                        var filterData = a.Split('>').Where(s => !string.IsNullOrEmpty(s?.Trim())).ToList();
+
+                                        return filterData != null && filterData.Count() == 2 ?
+                                                new
+                                                {
+                                                    Key = filterData.First().Replace("_", " ").Replace("^", ",").Split(':').Last(),
+                                                    Values = filterData.Last().Split(',')
+                                                                                    .Select(s => s.Replace("_", " ").Replace("^", ",").Split(':').LastOrDefault())
+                                                                                    .Where(v => !string.IsNullOrEmpty(v?.Trim()))
+                                                                                    .Distinct()
+                                                                                    .ToList()
+                                                } :
+                                                null;
+                                    })
+                                    .GroupBy(a => a.Key)
+                                    .ToDictionary(a => a.Key, a => a.SelectMany(b => b.Values).GroupBy(d => d).Select(d => d.Key).ToList());
+        }
 
         public Locations GetLocationById(int locationId)
         {

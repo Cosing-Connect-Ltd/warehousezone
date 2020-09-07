@@ -9,7 +9,6 @@
             <div class="nb_bread_crumbwrap">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-
                         @if (Model.Category != null)
                         {
                             <li class="breadcrumb-item">
@@ -54,7 +53,7 @@
             <div class="col-md-8 col-lg-9 col-xl-10 list-on-tablets">
                 <div class="nb_prd_listing_wrap">
                     <div class="row list-product-row">
-                        @if (Model.Products == null || Model.Products?.Count() <= 0)
+                        @if (Model.DynamicFilters.TotalCount <= 0)
                         {
                             foreach (var category in Model.DynamicFilters.Categories)
                             {
@@ -77,7 +76,6 @@
                         }
                         else
                         {
-
                             foreach (var product in Model.Products)
                             {
                                 product.ProductTagMaps = product.ProductTagMaps.Where(u => u.IsDeleted != true).Where(u => u.ProductTag.IsDeleted != true && !string.IsNullOrEmpty(u.ProductTag.IconImage)).OrderBy(x => x.ProductTag.SortOrder).ToList();
@@ -93,9 +91,7 @@
                                                 <span class="badge badge-@i">
                                                     <img src="@(ViewBag.BaseFilePath + imageIcon)" alt="" />
                                                 </span>
-
                                             }
-
                                         }
 
                                         <span class="imagewrap">
