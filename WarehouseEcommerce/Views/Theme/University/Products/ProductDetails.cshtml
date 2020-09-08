@@ -20,7 +20,7 @@
                             <div>SKU: @Model.Product.SKUCode</div>
                             @if (Model.Product.ProductManufacturer != null)
                             {
-                                <div>Brand: <a href="@Url.Action("List", "Products", new { filters = "brands>" +  @Model.Product.ProductManufacturer.Name.Replace(" ", "_") })">@Model.Product.ProductManufacturer.Name</a></div>
+                                <div>Brand: <a href="@Url.Action("List", "Products", new { filters = "brands>" +  Model.Product.ProductManufacturer.Name.Replace(" ", "_") + ":" + Model.Product.ManufacturerId })">@Model.Product.ProductManufacturer.Name</a></div>
                             }
                             @if (!string.IsNullOrEmpty(Model.Product.ManufacturerPartNo?.Trim()))
                             {
