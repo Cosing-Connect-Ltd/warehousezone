@@ -1031,6 +1031,7 @@ namespace Ganedata.Core.Services
                                                                                 k.IsDeleted != true &&
                                                                                 k.KitProductMaster.IsActive &&
                                                                                 k.KitProductMaster.IsDeleted != true &&
+                                                                                k.ProductKitTypes.UseInParentCalculations == true &&
                                                                                 k.ProductKitType != ProductKitTypeEnum.RelatedProduct &&
                                                                                 k.KitProductMaster.ManufacturerId != null)
                                                                     .Select(k => k.KitProductMaster.ManufacturerId)
