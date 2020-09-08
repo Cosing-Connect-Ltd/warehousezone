@@ -502,7 +502,17 @@ namespace Ganedata.Core.Services
 
         }
 
-        public List<WebsiteShippingRulesViewModel> GetShippingRulesByShippingAddress(int tenantId, int siteId, int shippingAddressId, double parcelWeightInGrams)
+        public List<WebsiteShippingRulesViewModel> GetShippingRulesByPostCode(int tenantId, int siteId, string postCode, double parcelWeightInGrams)
+        {
+            if (string.IsNullOrEmpty(postCode?.Trim()))
+            {
+                return null;
+            }
+
+            return GetShippingRulesByShippingAddress(tenantId, siteId, new AccountAddresses { PostCode = postCode }, parcelWeightInGrams);
+        }
+
+        public List<WebsiteShippingRulesViewModel> GetShippingRulesByShippingAddressId(int tenantId, int siteId, int shippingAddressId, double parcelWeightInGrams)
         {
             var address = _currentDbContext.AccountAddresses.Find(shippingAddressId);
 
@@ -511,11 +521,16 @@ namespace Ganedata.Core.Services
                 return null;
             }
 
+            return GetShippingRulesByShippingAddress(tenantId, siteId, address,parcelWeightInGrams);
+        }
+
+        private List<WebsiteShippingRulesViewModel> GetShippingRulesByShippingAddress(int tenantId, int siteId, AccountAddresses address, double parcelWeightInGrams)
+        {
             var getTenantCurrency = _tenantsCurrencyRateServices.GetTenantCurrencies(tenantId).FirstOrDefault();
             var currencyRate = _tenantsCurrencyRateServices.GetCurrencyRateByTenantid(getTenantCurrency?.TenantCurrencyID ?? 0);
 
             var allRules = GetAllValidWebsiteShippingRules(tenantId, siteId)
-                .Where(r => r.IsActive == true && r.CountryId == address.CountryID && r.WeightinGrams >= parcelWeightInGrams);
+                .Where(r => r.IsActive == true && (r.CountryId == address.CountryID || address.CountryID == 0) && r.WeightinGrams >= parcelWeightInGrams);
 
             var rules = allRules.Where(r => address.PostCode.StartsWith(r.PostalArea) ||
                                             (!address.PostCode.StartsWith(r.PostalArea) &&
@@ -1147,6 +1162,7 @@ namespace Ganedata.Core.Services
                                                                {
                                                                    Id = u.Id,
                                                                    ProductMaster = productMaster,
+                                                                   Weight = (u.ProductMaster.Weight + u.ProductMaster.ProductKitItems.Where(p => p.ProductKitType == ProductKitTypeEnum.Kit).Sum(k => k.ProductMaster.Weight)) * (double)u.Quantity,
                                                                    Price = u.UnitPrice,
                                                                    Quantity = u.Quantity,
                                                                    ProductId = u.ProductId,
