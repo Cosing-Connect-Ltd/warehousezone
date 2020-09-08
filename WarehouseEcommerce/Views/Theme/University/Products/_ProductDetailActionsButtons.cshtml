@@ -19,10 +19,10 @@
     {
         <div class="qty">
             <span>quantity</span>
-            @Html.DropDownList("product-quantity", Enumerable.Range(1, (int)(availableProductCount ?? 20)).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), htmlAttributes: new { @class = "form-control" })
+            @Html.DropDownList("product-quantity" + @Model.ProductId, Enumerable.Range(1, (int)(availableProductCount ?? 20)).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), htmlAttributes: new { @class = "form-control" })
         </div>
 
-        <button class="addTobasket" onclick="addToCart(@Model.ProductId, document.getElementById('product-quantity').value)">Add to basket</button>
+        <button class="addTobasket" onclick="addToCart(@Model.ProductId, document.getElementById('product-quantity' + @Model.ProductId).value)">Add to basket</button>
     }
     else
     {
