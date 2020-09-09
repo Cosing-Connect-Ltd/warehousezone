@@ -467,6 +467,7 @@ namespace WarehouseEcommerce.Controllers
                     model.Addresses = _mapper.Map(_accountServices.GetAllValidAccountAddressesByAccountId(model.AccountId ?? 0).Where(u => (model.IsAddressSameForBilling == true || !model.BillingAddressId.HasValue || u.AddressID == model.BillingAddressId) && u.AddTypeBilling == true).ToList(), new List<AddressViewModel>());
                     model.AccountAddress = model.Addresses.FirstOrDefault();
                     model.BillingAddressId = model.AccountAddress?.AddressID;
+                    model.PaymentMethodId = (int)PaymentMethodEnum.PayPal;
                     break;
                 case CheckoutStep.ShippingAddress:
                     model.ShippingAddressId = null;
