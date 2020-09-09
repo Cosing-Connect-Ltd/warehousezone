@@ -328,7 +328,6 @@ input[type=number]::-webkit-outer-spin-button {
         font-family: "primaryfont_Bold";
         color: #000;
         font-size: 30px;
-        letter-spacing: 2px;
         outline: 0;
         box-shadow: none
     }
@@ -855,7 +854,6 @@ input[type=number]::-webkit-outer-spin-button {
             line-height: 40px;
             margin: 10px;
             padding: 6px;
-            letter-spacing: 4px;
             transform: translateY(-20px);
             opacity: 0;
             visibility: hidden;
@@ -911,7 +909,6 @@ input[type=number]::-webkit-outer-spin-button {
         padding-top: 6px;
         padding-bottom: 6px;
         color: #fff;
-        letter-spacing: 6px;
         transition: all .3s ease
     }
 
@@ -983,7 +980,6 @@ input[type=number]::-webkit-outer-spin-button {
         position: relative;
         padding-bottom: 17.5px;
         color: #000;
-        letter-spacing: 3px
     }
 
         .nb_header_style1 h3:after {
@@ -1069,7 +1065,6 @@ input[type=number]::-webkit-outer-spin-button {
                 color: #000;
                 margin-bottom: 27px;
                 text-align: center;
-                letter-spacing: 4px;
                 min-height: 50px
             }
 
@@ -1083,7 +1078,6 @@ input[type=number]::-webkit-outer-spin-button {
                 padding: 10px;
                 position: relative;
                 z-index: 1;
-                letter-spacing: 4px
             }
 
                 .nb_feat_prod_sec .nb_featuredPrdCarrousle .nb_fp_boxwrap .prd_det_sec .prd_amnt:before {
@@ -1225,7 +1219,6 @@ input[type=number]::-webkit-outer-spin-button {
             font-family: "primaryfont_SemiBold";
             font-size: 16px;
             color: #000;
-            letter-spacing: 3px;
             margin-bottom: 14px
         }
 
@@ -1233,7 +1226,6 @@ input[type=number]::-webkit-outer-spin-button {
             font-family: "primaryfont_Bold";
             font-size: 20px;
             color: #000;
-            letter-spacing: 2px;
             margin-bottom: 20px
         }
 
@@ -1244,7 +1236,6 @@ input[type=number]::-webkit-outer-spin-button {
             font-family: "primaryfont_Normal";
             font-size: 16px;
             color: #000;
-            letter-spacing: 1px;
             line-height: 20px
         }
 
@@ -1346,7 +1337,6 @@ input[type=number]::-webkit-outer-spin-button {
                 font-family: "primaryfont_SemiBold";
                 padding: 0 15px;
                 position: relative;
-                letter-spacing: 1px;
                 white-space: nowrap
             }
 
@@ -1424,7 +1414,6 @@ input[type=number]::-webkit-outer-spin-button {
                 font-family: "primaryfont_Normal";
                 font-size: 13px;
                 line-height: 20px;
-                letter-spacing: 1.7px
             }
 
 .accordion {
@@ -1741,7 +1730,6 @@ input[type=number]::-webkit-outer-spin-button {
             font-family: "primaryfont_Bold";
             font-size: 20px;
             color: #000;
-            letter-spacing: 5px;
             margin-bottom: 0
         }
 
@@ -1786,9 +1774,8 @@ input[type=number]::-webkit-outer-spin-button {
         position: relative;
         cursor: pointer;
         font-family: "primaryfont_SemiBold";
-        font-size: 15;
+        font-size: 15px;
         color: #111;
-        letter-spacing: 2px
     }
 
         .nb_prdpg_fg label:before {
@@ -1840,7 +1827,6 @@ input[type=number]::-webkit-outer-spin-button {
         outline: 0;
         text-decoration: none;
         text-transform: uppercase;
-        letter-spacing: 4px;
         font-size: 15px;
         border-top: solid 1px #000;
         padding: 0 0 5px;
@@ -1928,7 +1914,6 @@ input[type=number]::-webkit-outer-spin-button {
                 padding: 6px 16px;
                 border: solid 1px #000;
                 border-radius: 20px;
-                letter-spacing: 3px;
                 transition: all .3s ease
             }
 
@@ -1977,7 +1962,6 @@ input[type=number]::-webkit-outer-spin-button {
     background-color: #707070;
     color: #fff;
     padding: 10px;
-    letter-spacing: 0
 }
 
 .imagewrap {
@@ -2089,14 +2073,12 @@ input[type=number]::-webkit-outer-spin-button {
             color: #000;
             margin-bottom: 8px;
             display: inline-block;
-            letter-spacing: 2px;
             font-size: 25px
         }
 
         .nb_qcvboxwrap .subContent {
             font-family: "primaryfont_Normal";
             font-size: 16px;
-            letter-spacing: 1px;
             margin-bottom: 20px
         }
 
@@ -2151,7 +2133,6 @@ input[type=number]::-webkit-outer-spin-button {
                 font-size: 16px;
                 font-family: "primaryfont_SemiBold";
                 color: #707070;
-                letter-spacing: 1px
             }
 
                 .nb_prd_det_rightsec .sizeWrap .title span,
@@ -2218,7 +2199,6 @@ input[type=number]::-webkit-outer-spin-button {
 
                 .nb_prd_det_rightsec .footSec .qty > span,
                 .nb_qcvboxwrap .footSec .qty > span {
-                    letter-spacing: 1px;
                     margin-bottom: 10px;
                     display: block
                 }
@@ -2251,7 +2231,7 @@ input[type=number]::-webkit-outer-spin-button {
                 text-transform: uppercase;
                 background-color: #182f59;
                 color: #fff;
-                font-size: 20px;
+                font-size: 16px;
                 font-family: "primaryfont_Bold";
                 text-align: center;
                 padding: 10px 15px;
@@ -2295,13 +2275,11 @@ input[type=number]::-webkit-outer-spin-button {
             color: #000;
             margin-bottom: 8px;
             display: inline-block;
-            letter-spacing: 2px
         }
 
         .nb_prd_det_rightsec .subContent {
             font-family: "primaryfont_Normal";
             font-size: 16px;
-            letter-spacing: 1px;
             color: #000;
             display: inline-block;
             margin-bottom: 20px
@@ -2392,7 +2370,7 @@ input[type=number]::-webkit-outer-spin-button {
 
             .nb_prd_det_rightsec .footSec .qty {
                 display: inline-block;
-                margin: 0 50px 0 20px;
+                margin: 0 30px 0 10px;
                 vertical-align: bottom
             }
 
@@ -2448,7 +2426,6 @@ input[type=number]::-webkit-outer-spin-button {
         font-family: "primaryfont_Normal";
         font-size: 16px;
         line-height: 24px;
-        letter-spacing: 2px;
         text-align: justify
     }
 
@@ -2463,7 +2440,6 @@ input[type=number]::-webkit-outer-spin-button {
     .nb_header_style2 h3 {
         font-size: 30px;
         padding-bottom: 17.5px;
-        letter-spacing: 2px;
         border-bottom: solid 1px #eaeaea
     }
 
@@ -2668,7 +2644,6 @@ body.ZoomerActive {
         color: #000;
         font-size: 20px;
         width: 100%;
-        letter-spacing: 1px;
         margin-bottom: 28px;
         padding: 0 40px
     }
@@ -2679,7 +2654,6 @@ body.ZoomerActive {
         color: #fff;
         font-family: "primaryfont_Bold";
         padding: 10px 35px;
-        letter-spacing: 3px;
         font-size: 20px;
         text-transform: uppercase;
         margin-bottom: 35px
@@ -2707,7 +2681,6 @@ body.ZoomerActive {
     font-size: 16px;
     color: #000;
     line-height: 24px;
-    letter-spacing: 2px;
     padding: 0 20%;
     margin-bottom: 30px
 }
@@ -2770,7 +2743,6 @@ body.ZoomerActive {
         }
 
             .contact_form_sec .contact_pg_wrap .nb_contact_form .callus_frmgrp p {
-                letter-spacing: 2px;
                 margin-bottom: 10px
             }
 
@@ -2882,7 +2854,6 @@ body.ZoomerActive {
                 }
 
             .nb_basket_wrap table.basketTable tbody tr td {
-                letter-spacing: 1px;
                 text-align: center;
                 padding: 10px 0
             }
@@ -2976,7 +2947,6 @@ body.ZoomerActive {
             text-indent: 10px;
             font-family: "primaryfont_Bold";
             color: #000;
-            letter-spacing: 1px;
             font-size: 15px
         }
 
@@ -3026,7 +2996,6 @@ body.ZoomerActive {
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        letter-spacing: 1px
     }
 
         .basketTotalwrap .shipping_radiosec .totalAmntsec span:last-child,
@@ -3333,7 +3302,6 @@ body.ZoomerActive {
                     font-family: "primaryfont_Normal";
                     font-size: 16px;
                     line-height: 22px;
-                    letter-spacing: 1px
                 }
 
                 #signupPopup .modal-dialog .modal-content .modal-body .registrationSec .regBtn {
@@ -3553,7 +3521,6 @@ ul.mhp-menu {
             font-family: "primaryfont_SemiBold";
             font-size: 16px;
             color: #000;
-            letter-spacing: 3px;
             margin-bottom: 14px
         }
 
@@ -3561,7 +3528,6 @@ ul.mhp-menu {
             font-family: "primaryfont_Bold";
             font-size: 20px;
             color: #000;
-            letter-spacing: 2px;
             margin-bottom: 20px
         }
 
@@ -3572,7 +3538,6 @@ ul.mhp-menu {
             font-family: "primaryfont_Normal";
             font-size: 16px;
             color: #000;
-            letter-spacing: 1px;
             line-height: 20px;
             margin-bottom: 15px
         }
@@ -3581,7 +3546,6 @@ ul.mhp-menu {
             display: inline-block;
             font-family: "primaryfont_Bold";
             font-size: 16px;
-            letter-spacing: 1.5px;
             color: #000;
             transition: all .3s ease;
             position: relative
@@ -4060,7 +4024,7 @@ ul.mhp-menu {
 
                 .progressBarStep ul#progressList li span.count i,
                 h2 {
-                    font-size: 25px
+                    font-size: 18px
                 }
 
             .progressBarStep ul#progressList li:after {
@@ -5430,7 +5394,6 @@ a.cashbtn {
     padding: 3px 8px 0;
     min-width: 100px;
     transition: .3s ease;
-    letter-spacing: .8px;
     margin-left: unset !important;
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important
@@ -5872,7 +5835,6 @@ body.modal-open {
 .checkoutInnersec .ordConfirmHead {
     font-size: 20px;
     font-family: "primaryfont_Bold";
-    letter-spacing: 2px;
     padding-bottom: 20px;
     position: relative
 }
@@ -6232,7 +6194,6 @@ body.modal-open {
 .orderConfirmationSection .ordConfirmHead {
     font-size: 20px;
     font-family: "primaryfont_Bold";
-    letter-spacing: 2px;
     padding-bottom: 20px;
     position: relative;
     margin-bottom: 20px
@@ -7181,7 +7142,7 @@ html {
     display: flex;
     align-items: flex-end;
     margin: 15px 0;
-    max-width: 430px;
+    max-width: 370px;
     float: right;
     position: relative;
 }
@@ -7325,7 +7286,6 @@ html {
 }
 
 .nb_bannersec .np_bannerContentOuter .nb_bannerCaptionWrap a {
-    letter-spacing: 2px;
     padding: 9px
 }
 
@@ -7358,7 +7318,6 @@ html {
     font-family: "primaryfont_SemiBold";
     color: #707070;
     margin-bottom: 20px;
-    letter-spacing: 2px
 }
 
 .product-details-section .attribute-value p span,
