@@ -104,6 +104,11 @@ namespace WarehouseEcommerce.Controllers
 
                     products = _productlookupServices.ApplyFixedFilters(products, filters, CurrentTenantWebsite.SiteID);
 
+                    if (categoryId == null)
+                    {
+                        model.DynamicFilters = GetDynamicFiltersModel(products.Select(p => p.ProductId).ToList(), categoryId);
+                    }
+
                     model.DynamicFilters.Attributes = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(products);
 
                     products = _productlookupServices.ApplyAttributeFilters(products, filters, CurrentTenantWebsite.SiteID);
@@ -132,11 +137,6 @@ namespace WarehouseEcommerce.Controllers
                     if (pagedProductsList.Count > 0)
                     {
                         pagedProductsList.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID) ?? 0, 2));
-                    }
-
-                    if (categoryId == null)
-                    {
-                        model.DynamicFilters = GetDynamicFiltersModel(products.Select(p => p.ProductId).ToList(), categoryId);
                     }
 
                     model.DynamicFilters.FilteredCount = products.Count();
@@ -408,7 +408,7 @@ namespace WarehouseEcommerce.Controllers
             {
                 model.WebsiteCartItems.ForEach(c =>
                 {
-                    c.IsAvailableForDelivery = GetDeliveryAvailabilityStatus(c.ProductId, c.Quantity, postCode);
+                    c.IsAvailableForDelivery = GetDeliveryAvailabilityStatus(c.ProductId, ((double)c.Quantity * c.KitProductCartItems?.Sum(ki => (ki.SimpleProductMaster?.Weight ?? 0)) ?? (c.ProductMaster?.Weight ?? 0)), postCode);
                 });
             }
         }
@@ -438,10 +438,10 @@ namespace WarehouseEcommerce.Controllers
                                                                    i.Available >= quantity);
         }
 
-        private bool? GetDeliveryAvailabilityStatus(int productId, decimal quantity, string postCode)
+        private bool? GetDeliveryAvailabilityStatus(int productId, double parcelWeightInGrams, string postCode)
         {
-            // TODO: Complete the Delivery availability status
-            return string.IsNullOrEmpty(postCode?.Trim()) ? (bool?)null : true;
+            var availableShipmentRules = _tenantWebsiteService.GetShippingRulesByPostCode(CurrentTenantId, CurrentTenantWebsite.SiteID, postCode, parcelWeightInGrams);
+            return string.IsNullOrEmpty(postCode?.Trim()) ? (bool?)null : availableShipmentRules.Count > 0;
         }
 
         public JsonResult AddWishListItem(int productId)
@@ -794,7 +794,7 @@ namespace WarehouseEcommerce.Controllers
                 return new
                 {
                     Id = c.Id.ToString(),
-                    IsAvailable = GetDeliveryAvailabilityStatus(c.ProductId, c.Quantity, postCode)
+                    IsAvailable = GetDeliveryAvailabilityStatus(c.ProductId, c.Weight, postCode)
                 };
             });
 

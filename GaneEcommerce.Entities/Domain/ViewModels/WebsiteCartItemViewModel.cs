@@ -11,6 +11,7 @@ namespace Ganedata.Core.Entities.Domain
         public int Id { get; set; }
         public int ProductId { get; set; }
         public decimal Quantity { get; set; }
+        public double Weight { get; set; }
         public decimal Price { get; set; }
         public virtual ProductMasterViewModel ProductMaster { get; set; }
         public List<KitProductCartSession> KitProductCartItems { get; set; }

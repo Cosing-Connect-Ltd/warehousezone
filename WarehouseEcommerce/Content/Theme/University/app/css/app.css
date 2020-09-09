@@ -2431,8 +2431,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .nb_prod_bottomdes {
     width: 100%;
-    display: inline-block;
-    padding-top: 30px
+    display: inline-block
 }
 
     .nb_prod_bottomdes .head {
@@ -2449,7 +2448,8 @@ input[type=number]::-webkit-outer-spin-button {
         font-family: "primaryfont_Normal";
         font-size: 16px;
         line-height: 24px;
-        letter-spacing: 2px
+        letter-spacing: 2px;
+        text-align: justify
     }
 
 .nb_header_style2 {
@@ -5467,7 +5467,6 @@ a.cashbtn {
     width: 100%;
     height: 40px;
     border: 1px solid #ced4da;
-    border-radius: .25rem
 }
 
 .blogdetWrapsec {
@@ -6684,7 +6683,8 @@ body.modal-open {
     height: 50px;
     transition: all .3s ease;
     font-size: 16px;
-    text-transform: uppercase
+    text-transform: uppercase;
+    cursor: pointer
 }
 
     .botomBtnsec .btmbtn.previous,
@@ -6969,10 +6969,6 @@ body.modal-open {
         -ms-transition: unset !important;
         outline: 0 !important
     }
-
-.nb_prod_bottomdes .content {
-    white-space: pre-line
-}
 
 .search-item a,
 .srtby_txt {

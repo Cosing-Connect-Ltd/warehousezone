@@ -17,7 +17,7 @@
                         {
                             <div class="item prd_lst_boxouter">
                                 <span class="imagewrap our-brands-item">
-                                    <a href="@Url.Action("List", "Products", new { filters = "brands>" + item.Name.Replace(" ", "_") })">
+                                    <a href="@Url.Action("List", "Products", new { filters = "brands>" + item.Name.Replace(" ", "_") + ":" + item.Id })">
                                         <img src="@(!string.IsNullOrEmpty(item.ImagePath) ? ViewBag.BaseFilePath + item.ImagePath : ViewBag.BaseFilePath + "/UploadedFiles/Products/no_image.gif")" />
                                     </a>
                                 </span>

@@ -55,7 +55,7 @@
                     for (var i = 0; i < data.length; i++) {
                         var elementId = "#collection_status_" + data[i].Id;
 
-                        sethAvailabilityStatus(data[i].IsAvailable, elementId);
+                        setAvailabilityStatus(data[i].IsAvailable, elementId);
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -104,20 +104,23 @@
 
         function setSelectedShippingAddress() {
             $("#shipping-address-postcode")[0].innerText = $("#shippingAddressPostCode")[0].value;
+            var shippingAddressId = $("#shippingAddressId")[0].value;
+            var postCode = $("#shippingAddressPostCode")[0].value;
 
             $.ajax({
                 type: "GET",
                 url: basePath + "/Products/GetCartItemsDeliveryAvailability/",
-                data: { id: $("#shippingAddressId")[0].value, postCode: $("#shippingAddressPostCode")[0].value },
+                data: { id: shippingAddressId, postCode: postCode },
                 dataType: 'json',
                 success: function (data) {
                     for (var i = 0; i < data.length; i++) {
                         var elementId = "#delivery_status_" + data[i].Id;
 
-                        sethAvailabilityStatus(data[i].IsAvailable, elementId);
+                        setAvailabilityStatus(data[i].IsAvailable, elementId);
                     }
 
                     $("#ChooseShippingAddressModal").modal('hide');
+                    $("#choose-delivery-destination__button").text(((!!shippingAddressId || !!postCode) ? "Change" : "Select") + " Address");
                 },
 
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -161,7 +164,7 @@
                                             <td>
                                                 <div class="headBoxTop">
                                                     <h3 class="head">Home Delivery</h3>
-                                                    <p>@(!string.IsNullOrEmpty(Model.ShippingAddressPostCode?.Trim()) ? "Selected Postcode: " : string.Empty)<span id="shipping-address-postcode">@Model.ShippingAddressPostCode</span></p>
+                                                    <p>To Postcode: <span id="shipping-address-postcode">@Model.ShippingAddressPostCode</span></p>
                                                 </div>
                                             </td>
                                         }
@@ -178,13 +181,13 @@
                                         if (Model.IsCollectionAvailable)
                                         {
                                             <td class="delivery">
-                                                <a href="" data-toggle="modal" data-target="#ChooseStoreModal" class="chsLnk">Choose Store</a>
+                                                <a href="" data-toggle="modal" data-target="#ChooseStoreModal" class="chsLnk">Select Store</a>
                                             </td>
                                         }
                                         if (Model.IsDeliveryAvailable)
                                         {
                                             <td class="delivery">
-                                                <a href="" data-toggle="modal" data-target="#ChooseShippingAddressModal" class="chsLnk">Choose Delivery Destination</a>
+                                                <a href="" data-toggle="modal" data-target="#ChooseShippingAddressModal" id="choose-delivery-destination__button" class="chsLnk">@(!string.IsNullOrEmpty(Model.ShippingAddressPostCode?.Trim()) ? "Change Address" : "Select Address")</a>
                                             </td>
                                         }
                                     }
@@ -215,16 +218,6 @@
 
                                                     </span>
                                                 </div>
-                                                @if (Model.ShowCartPopUp != true)
-                                                {
-                                                    @*<div class="inrow btm">
-                                                        <span class="imgWrap"> </span>
-                                                        <span class="prdName">
-                                                            <i class="icon-love"></i>
-                                                            Add to wishlist
-                                                        </span>
-                                                    </div>*@
-                                                }
                                             </div>
                                         </td>
                                         <td class="price">
@@ -270,7 +263,7 @@
                                                     <div class="greyBoxInner">
                                                         <p class="orderNowTxt" id="delivery_status_@item.Id">
                                                             <span class="available" @( item.IsAvailableForDelivery ==  true ? "" : "hidden")><i class="fa fa-check-circle-o" aria-hidden="true"></i> Available for Delivery</span>
-                                                            <span class="unavailable" @(item.IsAvailableForDelivery == false ? "" : "hidden")><i class="fa fa-ban" aria-hidden="true"></i> Unavailable For Delivery!</span>
+                                                            <span class="unavailable" @(item.IsAvailableForDelivery == false ? "" : "hidden")><i class="fa fa-ban" aria-hidden="true"></i> Unable To Delivery To Selected Address!</span>
                                                             <span class="unselected" @(item.IsAvailableForDelivery == null && string.IsNullOrEmpty(Model.ShippingAddressPostCode?.Trim()) ? "" : "hidden")><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Choose A Delivery Destination!</span>
                                                         </p>
                                                     </div>
@@ -355,12 +348,12 @@
     @if (Model.IsCollectionAvailable || Model.IsDeliveryAvailable)
     {
         <script>
-            function sethAvailabilityStatus(isAvailable, elementId) {
-                if (isAvailable === true) {
+            function setAvailabilityStatus(isAvailable, elementId) {
+                if (isAvailable === true || isAvailable ) {
                     $(elementId + " .unavailable").attr("hidden", "");
                     $(elementId + " .available").removeAttr("hidden");
                     $(elementId + " .unselected").attr("hidden", "");
-                } else if (isAvailable === false) {
+                } else if (isAvailable === false || isAvailable == null) {
                     $(elementId + " .unavailable").removeAttr("hidden");
                     $(elementId + " .available").attr("hidden", "");
                     $(elementId + " .unselected").attr("hidden", "");

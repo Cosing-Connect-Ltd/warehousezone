@@ -131,6 +131,8 @@ function onAddressDropdownChange() {
         $(".AddressLine2").val(addressLine2);
         $(".AddressLine3").val(addressLine3);
         $(".PostCode").val(PostCode);
+
+        validateAddressForm();
     }
 }
 
