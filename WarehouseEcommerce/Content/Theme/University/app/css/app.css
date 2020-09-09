@@ -6683,7 +6683,8 @@ body.modal-open {
     height: 50px;
     transition: all .3s ease;
     font-size: 16px;
-    text-transform: uppercase
+    text-transform: uppercase;
+    cursor: pointer
 }
 
     .botomBtnsec .btmbtn.previous,
