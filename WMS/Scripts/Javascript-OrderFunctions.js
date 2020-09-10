@@ -92,7 +92,7 @@ function addDetail(action) {
 
         if (Qty === null || Qty === "" || Qty <= 0) { return alert("Please enter quantity"); }
         if (price === null || price === "") { return alert("Please enter price"); }
-        if (type === "2") {
+        if (type === "SalesOrder") {
             if (availableProduct < Qty && confirmedAck) {
                 alert("Quantity added is more than available in stock");
             }
@@ -402,7 +402,7 @@ function endOrderDetailCallback() {
                 $("#BuyPrice").val(perMargin);
                 Price.SetValue(prices);
                 var inventoryTypes = $('#inventoryType').val();
-                if (inventoryTypes != "1") {
+                if (inventoryTypes != "PurchaseOrder") {
                     // price analysis
                     PriceAnalysis();
                 }
@@ -1314,7 +1314,7 @@ function loadOrderDetailCommonEvents() {
             var warehouseId = $("#TransferWarehouseId :selected").val();
             var transfertype = $("#inventoryType").val();
 
-            if (transfertype === "3" || transfertype === "4") {
+            if (transfertype === "TransferIn" || transfertype === "TransferOut") {
                 if (warehouseId === "" || warehouseId === null || warehouseId == undefined) {
                     return alert("Please select Warehouse first!");
                 }
@@ -1701,7 +1701,7 @@ function OnchangeDropdown(s, e) {
                 ModelBS.Show();
             }
         }
- 
+
         else if ($("#ProductAllowance").val() == "True") {
             $("#ProductId").val(prdid.GetValue());
         }
@@ -1817,10 +1817,9 @@ $(document).ready(function () {
 });
 
 function LoadSOAccountAddresses() {
-
     var blindshipment = $("#blindshipment").val();
     var type = $('#inventoryType').val();
-    if (type !== "1") {
+    if (type !== "PurchaseOrder") {
         if (blindshipment !== 'True' || blindshipment === "") {
             if ($("input[name='SOShipmentDestination']").length < 1) return;
         }
@@ -1828,7 +1827,7 @@ function LoadSOAccountAddresses() {
 
     var id = $("#AccountID option:selected").val();
     if (id == null || id == "" || id == 0) { return; }
-    if (type === "1") {
+    if (type === "PurchaseOrder") {
         $.get("/PurchaseOrders/GetAccountAddressByAccountId/" + $("#AccountID").val(), function (s, e) {
             $('#ShipmentAccountAddressId').empty();
             if (s.length > 0) {
@@ -3148,7 +3147,7 @@ function IsAllowZeroSale() {
     }
     var inventoryTypes = $('#inventoryType').val();
 
-    if (inventoryTypes !== "1") {
+    if (inventoryTypes !== "PurchaseOrder") {
 
         LoadingPanel.Show();
         $.ajax({
@@ -3179,7 +3178,7 @@ function IsAllowZeroSale() {
 
     }
 
-    if (inventoryTypes !== "1") {
+    if (inventoryTypes !== "PurchaseOrder") {
         if (!allowZPrice || PriceValue > 0) {
             if ((buyPrice > PriceValue) && pricealert) {
 
@@ -3189,7 +3188,7 @@ function IsAllowZeroSale() {
         }
     }
 
-    if (inventoryTypes != "1") {
+    if (inventoryTypes != "PurchaseOrder") {
         // price analysis
         PriceAnalysis();
     }

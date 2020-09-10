@@ -872,7 +872,7 @@ namespace WMS.Controllers
 
             }
 
-            return PartialView("EmailRecipientsPartial");
+            return PartialView();
 
         }
 
@@ -1071,7 +1071,7 @@ namespace WMS.Controllers
         {
             ViewBag.OrderIds = OrderId;
             var UserId = OrderService.GetOrderById(OrderId).PickerId;
-            ViewBag.Picker = new SelectList(_userService.GetUsersAgainstPermission(CurrentTenantId,CurrentWarehouseId, "Handheld", "SalesOrderPerm"), "UserId", "DisplayName", UserId);
+            ViewBag.Picker = new SelectList(_userService.GetUsersAgainstPermission(CurrentTenantId, CurrentWarehouseId, "Handheld", "SalesOrderPerm"), "UserId", "DisplayName", UserId);
             return View();
         }
 
