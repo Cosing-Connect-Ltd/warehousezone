@@ -510,48 +510,81 @@ namespace WMS.Controllers
             ViewBag.orderid = Id;
             return PartialView("_WorksOrderDetails", OrderService.GetWorksOrderDetails(Id, CurrentTenantId));
         }
-        public ActionResult _SalesOrders(int? type)
+        public ActionResult _SalesOrders(int? type, int? pickerId)
         {
-
-            ViewBag.Type = type;
-
-            if (type == 2)
-            {
-
-                ViewBag.name = "_SalesOrderListGridView_Completed";
-                ViewBag.type = type;
-                var viewModel = GridViewExtension.GetViewModel("_SalesOrderListGridView_Completed");
-
-                if (viewModel == null)
-                    viewModel = OrdersCustomBinding.CreateSalesOrdersGridViewModel();
-
-                return _SalesOrdersCompletedGridActionCore(viewModel, type);
-            }
-            else if (type == 1)
-            {
-                ViewBag.name = "_SalesOrderListGridView_Active";
-                ViewBag.type = type;
-                var viewModel = GridViewExtension.GetViewModel("_SalesOrderListGridView_Active");
-
-                if (viewModel == null)
-                    viewModel = OrdersCustomBinding.CreateSalesOrdersGridViewModel();
-
-                return _SalesOrdersActiveGridActionCore(viewModel, type);
-            }
-            else
-            {
-                var viewModel = GridViewExtension.GetViewModel("_SalesOrderListGridView_Awaiting");
-
-                if (viewModel == null)
-                    viewModel = OrdersCustomBinding.CreateSalesOrdersGridViewModel();
-
-                return _SalesOrdersAwaitingGridActionCore(viewModel, type);
-            }
-
+            var viewModel = GetSalesOrdersListViewModel(type);
+            return PrepareSalesOrdersListActionResult(viewModel, type, pickerId ?? 0);
         }
+
+        public ActionResult _SalesOrdersPaging(GridViewPagerState pager, int? type, int? pickerId)
+        {
+            var viewModel = GetSalesOrdersListViewModel(type);
+            viewModel.Pager.Assign(pager);
+            return PrepareSalesOrdersListActionResult(viewModel, type, pickerId ?? 0);
+        }
+        public ActionResult _SalesOrdersFiltering(GridViewFilteringState filteringState, int? type, int? pickerId)
+        {
+            var viewModel = GetSalesOrdersListViewModel(type);
+            viewModel.ApplyFilteringState(filteringState);
+            return PrepareSalesOrdersListActionResult(viewModel, type, pickerId ?? 0);
+        }
+
+        public ActionResult _SalesOrdersSorting(GridViewColumnState column, bool reset, int? type, int? pickerId)
+        {
+            var viewModel = GetSalesOrdersListViewModel(type);
+            viewModel.ApplySortingState(column, reset);
+            return PrepareSalesOrdersListActionResult(viewModel, type, pickerId ?? 0);
+        }
+
+        private GridViewModel GetSalesOrdersListViewModel(int? type)
+        {
+            var gridControlName = "_SalesOrderListGridView_Awaiting";
+            switch (type)
+            {
+                case 1:
+                    gridControlName = "_SalesOrderListGridView_Active";
+                    break;
+                case 2:
+                    gridControlName = "_SalesOrderListGridView_Completed";
+                    break;
+                case 3:
+                    gridControlName = "_SalesOrderListGridView_PickerAssigned";
+                    break;
+                case 4:
+                    gridControlName = "_SalesOrderListGridView_PickerUnassigned";
+                    break;
+            }
+
+            ViewBag.Name = gridControlName;
+            var viewModel = GridViewExtension.GetViewModel(gridControlName);
+
+            if (viewModel == null)
+                viewModel = OrdersCustomBinding.CreateSalesOrdersGridViewModel();
+            return viewModel;
+        }
+
+        private ActionResult PrepareSalesOrdersListActionResult(GridViewModel viewModel, int? type, int? pickerId)
+        {
+            ViewBag.Type = type;
+            ViewBag.PickerId = pickerId;
+
+            switch (type)
+            {
+                case 1:
+                    return _SalesOrdersActiveGridActionCore(viewModel, type);
+                case 2:
+                    return _SalesOrdersCompletedGridActionCore(viewModel, type);
+                case 3:
+                    return _SalesOrdersPickerAssignedGridActionCore(viewModel, pickerId ?? 0);
+                case 4:
+                    return _SalesOrdersPickerUnassignedGridActionCore(viewModel, pickerId ?? 0);
+                default:
+                    return _SalesOrdersAwaitingGridActionCore(viewModel, type);
+            }
+        }
+
         public ActionResult _SalesOrdersCompletedGridActionCore(GridViewModel gridViewModel, int? type)
         {
-
             gridViewModel.ProcessCustomBinding(
                 new GridViewCustomBindingGetDataRowCountHandler(args =>
                 {
@@ -563,91 +596,39 @@ namespace WMS.Controllers
                         OrdersCustomBinding.SalesOrderCompletedGetData(args, CurrentTenantId, CurrentWarehouseId);
                     })
             );
-            ViewBag.Type = type;
             return PartialView("_SalesOrders", gridViewModel);
         }
 
-        public ActionResult _SalesOrdersPaging(GridViewPagerState pager, int? type)
+        public ActionResult _SalesOrdersPickerAssignedGridActionCore(GridViewModel gridViewModel, int pickerId)
         {
-            if (type == 1)
-            {
-                ViewBag.name = "_SalesOrderListGridView_Active";
-                ViewBag.type = type;
-                var viewModel = GridViewExtension.GetViewModel("_SalesOrderListGridView_Active");
-                viewModel.Pager.Assign(pager);
-                return _SalesOrdersActiveGridActionCore(viewModel, type);
-            }
-            else if (type == 2)
-            {
-                ViewBag.name = "_SalesOrderListGridView_Completed";
-                ViewBag.type = type;
-                var viewModel = GridViewExtension.GetViewModel("_SalesOrderListGridView_Completed");
-                viewModel.Pager.Assign(pager);
-                return _SalesOrdersCompletedGridActionCore(viewModel, type);
-            }
-            else
-            {
-                var viewModel = GridViewExtension.GetViewModel("_SalesOrderListGridView_Awaiting");
-                viewModel.Pager.Assign(pager);
-                return _SalesOrdersAwaitingGridActionCore(viewModel, type);
-            }
-        }
-        public ActionResult _SalesOrdersFiltering(GridViewFilteringState filteringState, int? type)
-        {
-            if (type == 2)
-            {
+            gridViewModel.ProcessCustomBinding(
+                new GridViewCustomBindingGetDataRowCountHandler(args =>
+                {
+                    OrdersCustomBinding.SalesOrderPickerAssignedGetDataRowCount(args, CurrentTenantId, CurrentWarehouseId, pickerId);
+                }),
 
-                //this.someQuery = this.someQuery.Where(field.ToLower().Contains(strValue.ToLower()));
-
-                ViewBag.name = "_SalesOrderListGridView_Completed";
-                ViewBag.type = type;
-                var viewModel = GridViewExtension.GetViewModel("_SalesOrderListGridView_Completed");
-
-                viewModel.ApplyFilteringState(filteringState);
-
-                return _SalesOrdersCompletedGridActionCore(viewModel, type);
-            }
-            else if (type == 1)
-            {
-                ViewBag.name = "_SalesOrderListGridView_Active";
-                ViewBag.type = type;
-                var viewModel = GridViewExtension.GetViewModel("_SalesOrderListGridView_Active");
-                viewModel.ApplyFilteringState(filteringState);
-                return _SalesOrdersActiveGridActionCore(viewModel, type);
-            }
-            else
-            {
-                var viewModel = GridViewExtension.GetViewModel("_SalesOrderListGridView_Awaiting");
-                viewModel.ApplyFilteringState(filteringState);
-                return _SalesOrdersCompletedGridActionCore(viewModel, type);
-            }
+                    new GridViewCustomBindingGetDataHandler(args =>
+                    {
+                        OrdersCustomBinding.SalesOrderPickerAssignedGetData(args, CurrentTenantId, CurrentWarehouseId, pickerId);
+                    })
+            );
+            return PartialView("_SalesOrders", gridViewModel);
         }
 
-        public ActionResult _SalesOrdersSorting(GridViewColumnState column, bool reset, int? type)
+        public ActionResult _SalesOrdersPickerUnassignedGridActionCore(GridViewModel gridViewModel, int pickerId)
         {
-            if (type == 2)
-            {
-                ViewBag.name = "_SalesOrderListGridView_Completed";
-                ViewBag.type = type;
-                var viewModel = GridViewExtension.GetViewModel("_SalesOrderListGridView_Completed");
-                viewModel.ApplySortingState(column, reset);
-                return _SalesOrdersCompletedGridActionCore(viewModel, type);
-            }
-            else if (type == 1)
-            {
-                ViewBag.name = "_SalesOrderListGridView_Active";
-                ViewBag.type = type;
-                var viewModel = GridViewExtension.GetViewModel("_SalesOrderListGridView_Active");
-                viewModel.ApplySortingState(column, reset);
-                return _SalesOrdersActiveGridActionCore(viewModel, type);
+            gridViewModel.ProcessCustomBinding(
+                new GridViewCustomBindingGetDataRowCountHandler(args =>
+                {
+                    OrdersCustomBinding.SalesOrderPickerUnassignedGetDataRowCount(args, CurrentTenantId, CurrentWarehouseId, pickerId);
+                }),
 
-            }
-            else
-            {
-                var viewModel = GridViewExtension.GetViewModel("_SalesOrderListGridView_Awaiting");
-                viewModel.ApplySortingState(column, reset);
-                return _SalesOrdersCompletedGridActionCore(viewModel, type);
-            }
+                    new GridViewCustomBindingGetDataHandler(args =>
+                    {
+                        OrdersCustomBinding.SalesOrderPickerUnassignedGetData(args, CurrentTenantId, CurrentWarehouseId, pickerId);
+                    })
+            );
+            return PartialView("_SalesOrders", gridViewModel);
         }
 
         public ActionResult _SalesOrdersAwaitingGridActionCore(GridViewModel gridViewModel, int? type)
@@ -663,8 +644,6 @@ namespace WMS.Controllers
                         OrdersCustomBinding.SalesOrderAwaitingGetData(args, CurrentTenantId, CurrentWarehouseId);
                     })
             );
-            ViewBag.Type = type;
-
             return PartialView("_SalesOrders", gridViewModel);
         }
 
@@ -681,8 +660,6 @@ namespace WMS.Controllers
                         OrdersCustomBinding.SalesOrderActiveGetData(args, CurrentTenantId, CurrentWarehouseId);
                     })
             );
-            ViewBag.Type = type;
-
             return PartialView("_SalesOrders", gridViewModel);
         }
         public async Task<ActionResult> AuthoriseOrder(AuthoriseSalesOrderModel model)
@@ -1173,7 +1150,7 @@ namespace WMS.Controllers
             try
             {
                 int type = (int)model.InventoryTransactionTypeId;
-                 
+
                 int? cons_type = null;
                 if (Request.UrlReferrer.AbsolutePath.Contains("PurchaseOrders")) { }
                 else if (Request.UrlReferrer.AbsolutePath.Contains("SalesOrders"))

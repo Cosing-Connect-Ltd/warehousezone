@@ -250,11 +250,18 @@ namespace WMS.CustomBindings
 
             return transactions;
         }
+
         public static void SalesOrderCompletedGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId)
         {
 
             var transactions = GetSalesOrderCompletedDataset(tenantId, warehouseId);
 
+            SortFilterAndSetDataCount(e, transactions);
+
+        }
+
+        private static void SortFilterAndSetDataCount(GridViewCustomBindingGetDataRowCountArgs e, IQueryable<SalesOrderViewModel> transactions)
+        {
             if (e.State.SortedColumns.Count() > 0)
             {
 
@@ -279,13 +286,84 @@ namespace WMS.CustomBindings
             }
 
             e.DataRowCount = transactions.Count();
-
         }
+
         public static void SalesOrderCompletedGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId)
         {
 
             var transactions = GetSalesOrderCompletedDataset(tenantId, warehouseId);
 
+            SortFilterAndSetData(e, transactions);
+        }
+
+        public static void SalesOrderPickerAssignedGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId, int pickerId)
+        {
+
+            var transactions = GetSalesOrderPickerAssignedDataset(tenantId, warehouseId, pickerId);
+
+            SortFilterAndSetDataCount(e, transactions);
+
+        }
+
+        public static void SalesOrderPickerAssignedGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId, int pickerId)
+        {
+
+            var transactions = GetSalesOrderPickerAssignedDataset(tenantId, warehouseId, pickerId);
+
+            SortFilterAndSetData(e, transactions);
+        }
+
+        private static IQueryable<SalesOrderViewModel> GetSalesOrderPickerAssignedDataset(int CurrentTenantId, int CurrentWarehouseId, int pickerId)
+        {
+            OrderStatusEnum? type = OrderStatusEnum.Active;
+            if (HttpContext.Current.Request.Params.AllKeys.Contains("selectedPickerId"))
+            {
+                if (!string.IsNullOrEmpty(HttpContext.Current.Request.Params["selectedPickerId"].ToString()))
+                {
+                    pickerId = int.Parse(HttpContext.Current.Request.Params["selectedPickerId"].ToString());
+                }
+            }
+            var orderServices = DependencyResolver.Current.GetService<ISalesOrderService>();
+            var transactions = orderServices.GetAllPickerAssignedSalesOrders(CurrentTenantId, CurrentWarehouseId, pickerId, type);
+
+            return transactions;
+        }
+
+        private static IQueryable<SalesOrderViewModel> GetSalesOrderPickerUnassignedDataset(int CurrentTenantId, int CurrentWarehouseId, int pickerId)
+        {
+            OrderStatusEnum? type = OrderStatusEnum.Active;
+            if (HttpContext.Current.Request.Params.AllKeys.Contains("selectedPickerId"))
+            {
+                if (!string.IsNullOrEmpty(HttpContext.Current.Request.Params["selectedPickerId"].ToString()))
+                {
+                    pickerId = int.Parse(HttpContext.Current.Request.Params["selectedPickerId"].ToString());
+                }
+            }
+            var orderServices = DependencyResolver.Current.GetService<ISalesOrderService>();
+            var transactions = orderServices.GetAllPickerUnassignedSalesOrders(CurrentTenantId, CurrentWarehouseId, pickerId, type);
+
+            return transactions;
+        }
+
+        public static void SalesOrderPickerUnassignedGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId, int pickerId)
+        {
+
+            var transactions = GetSalesOrderPickerUnassignedDataset(tenantId, warehouseId, pickerId);
+
+            SortFilterAndSetDataCount(e, transactions);
+
+        }
+
+        public static void SalesOrderPickerUnassignedGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId, int pickerId)
+        {
+
+            var transactions = GetSalesOrderPickerUnassignedDataset(tenantId, warehouseId, pickerId);
+
+            SortFilterAndSetData(e, transactions);
+        }
+
+        private static void SortFilterAndSetData(GridViewCustomBindingGetDataArgs e, IQueryable<SalesOrderViewModel> transactions)
+        {
             if (e.State.SortedColumns.Count() > 0)
             {
 
@@ -325,6 +403,7 @@ namespace WMS.CustomBindings
 
             e.Data = sodata;
         }
+
         private static IQueryable<SalesOrderViewModel> GetSalesOrderAwaitingDataset(int CurrentTenantId, int CurrentWarehouseId)
         {
             var orderServices = DependencyResolver.Current.GetService<ISalesOrderService>();
@@ -337,30 +416,7 @@ namespace WMS.CustomBindings
 
             var transactions = GetSalesOrderAwaitingDataset(tenantId, warehouseId);
 
-            if (e.State.SortedColumns.Count() > 0)
-            {
-
-                string sortString = "";
-
-                foreach (var column in e.State.SortedColumns)
-                {
-                    sortString += column.FieldName + " " + column.SortOrder;
-                }
-
-                transactions = transactions.OrderBy(sortString);
-            }
-            else
-            {
-                transactions = transactions.OrderBy("OrderID Descending");
-            }
-            if (e.FilterExpression != string.Empty)
-            {
-                CriteriaOperator op = CriteriaOperator.Parse(e.FilterExpression);
-                string filterString = CriteriaToWhereClauseHelper.GetDynamicLinqWhere(op);
-                transactions = transactions.Where(filterString);
-            }
-
-            e.DataRowCount = transactions.Count();
+            SortFilterAndSetDataCount(e, transactions);
 
         }
         public static void SalesOrderAwaitingGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId)
@@ -409,78 +465,16 @@ namespace WMS.CustomBindings
 
             var transactions = GetSalesOrderActiveDataset(tenantId, warehouseId);
 
-            if (e.State.SortedColumns.Count() > 0)
-            {
-
-                string sortString = "";
-
-                foreach (var column in e.State.SortedColumns)
-                {
-                    sortString += column.FieldName + " " + column.SortOrder;
-                }
-
-                transactions = transactions.OrderBy(sortString);
-            }
-            else
-            {
-                transactions = transactions.OrderBy("OrderID Descending");
-            }
-            if (e.FilterExpression != string.Empty)
-            {
-                CriteriaOperator op = CriteriaOperator.Parse(e.FilterExpression);
-                string filterString = CriteriaToWhereClauseHelper.GetDynamicLinqWhere(op);
-                transactions = transactions.Where(filterString);
-            }
-
-            e.DataRowCount = transactions.Count();
+            SortFilterAndSetDataCount(e, transactions);
 
         }
+
         public static void SalesOrderActiveGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId)
         {
 
             var transactions = GetSalesOrderActiveDataset(tenantId, warehouseId);
 
-            if (e.State.SortedColumns.Count() > 0)
-            {
-
-                string sortString = "";
-
-                foreach (var column in e.State.SortedColumns)
-                {
-                    sortString += column.FieldName + " " + column.SortOrder;
-                }
-                transactions = transactions.OrderBy(sortString);
-            }
-            else
-            {
-                transactions = transactions.OrderBy("OrderID Descending");
-            }
-
-
-            if (e.FilterExpression != string.Empty)
-            {
-                CriteriaOperator op = CriteriaOperator.Parse(e.FilterExpression);
-
-                string filterString = CriteriaToWhereClauseHelper.GetDynamicLinqWhere(op);
-
-                transactions = transactions.Where(filterString);
-
-            }
-
-            transactions = transactions.Skip(e.StartDataRowIndex).Take(e.DataRowCount);
-            var context = DependencyResolver.Current.GetService<IApplicationContext>();
-            var sodata = transactions.ToList();
-            sodata.ForEach(u => u.Qty = context.OrderDetail.Where(o => o.OrderID == u.OrderID).Select(q => (decimal?)q.Qty).Sum() ?? 0);
-
-            sodata.ForEach(u =>
-               u.ProcessedQty = context.OrderProcess.Where(d => d.OrderID == u.OrderID && d.IsDeleted != true && d.InventoryTransactionTypeId != InventoryTransactionTypeEnum.Returns && d.InventoryTransactionTypeId != InventoryTransactionTypeEnum.Wastage
-                && d.InventoryTransactionTypeId != InventoryTransactionTypeEnum.WastedReturn)?.SelectMany(h => h.OrderProcessDetail)?.Where(d => d.IsDeleted != true).Select(c => c.QtyProcessed).DefaultIfEmpty(0).Sum());
-
-            sodata.ForEach(u =>
-                u.ReturnQty = context.OrderProcess.Where(d => d.OrderID == u.OrderID && d.IsDeleted != true && (d.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Returns || d.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Wastage
-                || d.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WastedReturn))?.SelectMany(m => m.OrderProcessDetail).Where(d => d.IsDeleted != true).Select(c => c.QtyProcessed).DefaultIfEmpty(0).Sum());
-
-            e.Data = sodata;
+            SortFilterAndSetData(e, transactions);
         }
         private static IQueryable<object> GetDirectSalesOrderDataset(int CurrentTenantId, int CurrentWarehouseId)
         {

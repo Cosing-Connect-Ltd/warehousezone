@@ -502,6 +502,16 @@ namespace Ganedata.Core.Services
             return SalesOrderService.GetAllCompletedSalesOrdersIq(tenantId, warehouseId, type);
         }
 
+        public IQueryable<SalesOrderViewModel> GetAllPickerAssignedSalesOrders(int tenantId, int warehouseId, int pickerId, OrderStatusEnum? status = null)
+        {
+            return SalesOrderService.GetAllPickerAssignedSalesOrders(tenantId, warehouseId, pickerId, status);
+        }
+
+        public IQueryable<SalesOrderViewModel> GetAllPickerUnassignedSalesOrders(int tenantId, int warehouseId, int pickerId, OrderStatusEnum? status = null)
+        {
+            return SalesOrderService.GetAllPickerUnassignedSalesOrders(tenantId, warehouseId, pickerId, status);
+        }
+
         public IQueryable<SalesOrderViewModel> GetAllDirectSalesOrdersIq(int tenantId, int warehouseId, OrderStatusEnum? statusId = null)
         {
             return SalesOrderService.GetAllDirectSalesOrdersIq(tenantId, warehouseId, statusId);
@@ -652,6 +662,11 @@ namespace Ganedata.Core.Services
         public bool UpdatePickerId(int OrderId, int? pickerId, int userId)
         {
             return OrderService.UpdatePickerId(OrderId, pickerId, userId);
+        }
+
+        public bool UpdateOrdersPicker(int[] orderIds, int? pickerId, int userId)
+        {
+            return OrderService.UpdateOrdersPicker(orderIds, pickerId, userId);
         }
     }
 }

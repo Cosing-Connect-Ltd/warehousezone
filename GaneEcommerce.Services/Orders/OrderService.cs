@@ -3410,7 +3410,25 @@ namespace Ganedata.Core.Services
                 return true;
             }
             return false;
+        }
 
+        public bool UpdateOrdersPicker(int[] orderIds, int? pickerId, int userId)
+        {
+            foreach (var orderId in orderIds)
+            {
+                var order = _currentDbContext.Order.FirstOrDefault(u => u.OrderID == orderId);
+                if (order != null)
+                {
+                    order.PickerId = pickerId;
+                    order.UpdatedBy = userId;
+                    order.DateUpdated = DateTime.UtcNow;
+                    _currentDbContext.Entry(order).State = EntityState.Modified;
+                }
+            }
+
+            _currentDbContext.SaveChanges();
+
+            return true;
         }
     }
 }
