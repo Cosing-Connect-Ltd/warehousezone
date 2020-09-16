@@ -770,6 +770,9 @@
     <Compile Include="Reports\Designs\MarketRoutePrint.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reports\Designs\PickersOrdersReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reports\Designs\OrdersReport.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -2745,6 +2748,7 @@
     <Content Include="Scripts\jquery-3.5.1.min.map" />
     <Content Include="Views\Theme\Default\SalesOrders\BatchPickersAssignment.cshtml" />
     <Content Include="Views\Theme\Default\Order\_SalesOrdersBatchAssignment.cshtml" />
+    <Content Include="Views\Theme\Default\Reports\PickersOrdersReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -2791,6 +2795,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\Designs\MarketRoutePrint.resx">
       <DependentUpon>MarketRoutePrint.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Designs\PickersOrdersReport.resx">
+      <DependentUpon>PickersOrdersReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\Designs\OrdersReport.resx">
       <DependentUpon>OrdersReport.cs</DependentUpon>
