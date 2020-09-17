@@ -105,12 +105,14 @@
         @Html.Action("_SalesOrders", "Order", new { pickerId = ViewBag.PickerId, type = 4 })
         <div class="col-md-offset-2 col-md-10 bottom-right">
             <a type="button" class="btn btn-primary" href="javascript:assigneOrders()"><b class="fa fa-chain"></b>Assign Orders</a>
+            <a type="button" class="btn btn-primary" href="~/Reports/PickersOrdersReport"><b class="fa fa-chain"></b>Print Assigned Orders</a>
         </div>
     </div>
     <div id="SOC">
         @Html.Action("_SalesOrders", "Order", new { pickerId = ViewBag.PickerId, type = 3 })
         <div class="col-md-offset-2 col-md-10 bottom-right">
             <a type="button" class="btn btn-primary" href="javascript:unassignOrders()"><b class="fa fa-chain-broken"></b>UnAssign Orders</a>
+            <a type="button" class="btn btn-primary" href="~/Reports/PickersOrdersReport"><b class="fa fa-chain"></b>Print Assigned Orders</a>
         </div>
     </div>
 </div>
