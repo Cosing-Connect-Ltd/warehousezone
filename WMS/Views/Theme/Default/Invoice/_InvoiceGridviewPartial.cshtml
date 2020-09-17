@@ -24,6 +24,7 @@
         settings.CommandColumn.ShowSelectCheckbox = true;
         settings.CommandColumn.SelectAllCheckboxMode = GridViewSelectAllCheckBoxMode.AllPages;
         settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
         settings.Settings.ShowFilterRow = true;
         settings.SettingsBehavior.AllowFocusedRow = true;
         settings.Styles.Header.CssClass="";
@@ -89,7 +90,7 @@
             u.ColumnType = MVCxGridViewColumnType.DateEdit;
         });
 
-        
+
         settings.Columns.Add("Emails").Width = System.Web.UI.WebControls.Unit.Percentage(5);
         settings.Columns.Add(column =>
         {

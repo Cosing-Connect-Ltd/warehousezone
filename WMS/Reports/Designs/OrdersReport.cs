@@ -794,7 +794,7 @@ public class OrdersReport : DevExpress.XtraReports.UI.XtraReport
             this.paramAccountIds,
             this.paramTransactionTypes,
             this.paramProperty});
-            this.Version = "19.2";
+            this.Version = "20.1";
             this.DataSourceDemanded += new System.EventHandler<System.EventArgs>(this.OrdersReport_DataSourceDemanded);
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 

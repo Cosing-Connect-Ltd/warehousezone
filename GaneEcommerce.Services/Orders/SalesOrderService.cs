@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Ganedata.Core.Services
 {
@@ -334,7 +335,7 @@ namespace Ganedata.Core.Services
             var obj = _currentDbContext.Order.Find(order.OrderID);
             if (obj != null)
             {
-                _currentDbContext.Entry(obj).State = System.Data.Entity.EntityState.Detached;
+                _currentDbContext.Entry(obj).State = EntityState.Detached;
                 order.CreatedBy = obj.CreatedBy;
                 order.DateCreated = obj.DateCreated;
                 order.TenentId = obj.TenentId;
@@ -491,35 +492,7 @@ namespace Ganedata.Core.Services
                             || o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Proforma || o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Quotation ||
                             o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Samples || o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Loan) && o.IsDeleted != true)
                 .OrderBy(u => u.SLAPriorityId).ThenByDescending(x => x.DateCreated)
-                .Select(p => new SalesOrderViewModel()
-                {
-                    OrderID = p.OrderID,
-                    OrderNumber = p.OrderNumber,
-                    IssueDate = p.IssueDate,
-                    DateUpdated = p.DateUpdated,
-                    DateCreated = p.DateCreated,
-                    POStatus = p.OrderStatusID.ToString(),
-                    OrderStatusID = p.OrderStatusID,
-                    Account = p.Account.AccountCode,
-                    InvoiceNo = p.InvoiceNo,
-                    InvoiceDetails = p.InvoiceDetails,
-                    OrderCost = p.OrderCost,
-                    OrderTypeId = p.InventoryTransactionTypeId,
-                    OrderType = p.InventoryTransactionTypeId,
-                    AccountName = p.Account.CompanyName,
-                    Currecny = p.AccountCurrency.CurrencyName,
-                    OrderTotal = p.OrderTotal,
-                    SLAPriorityId = p.SLAPriorityId,
-                    PickerName = p.Picker == null ? "" : p.Picker.UserLastName + ", " + p.Picker.UserFirstName,
-                    EmailCount = _currentDbContext.TenantEmailNotificationQueues.Count(u => u.OrderId == p.OrderID),
-                    OrderNotesList = p.OrderNotes.Where(m => m.IsDeleted != true).Select(s => new OrderNotesViewModel()
-                    {
-                        OrderNoteId = s.OrderNoteId,
-                        Notes = s.Notes,
-                        NotesByName = p.Tenant.AuthUsers.FirstOrDefault(x => x.UserId == s.CreatedBy).UserName,
-                        NotesDate = s.DateCreated
-                    }).ToList()
-                });
+                .Select(ToSalesOrderViewModel());
 
             return result;
         }
@@ -533,36 +506,60 @@ namespace Ganedata.Core.Services
                             || o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Proforma || o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Quotation ||
                             o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Samples || o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Loan) && o.IsDeleted != true)
                 .OrderByDescending(x => x.DateCreated)
-                .Select(p => new SalesOrderViewModel()
-                {
-                    OrderID = p.OrderID,
-                    OrderNumber = p.OrderNumber,
-                    IssueDate = p.IssueDate,
-                    DateUpdated = p.DateUpdated,
-                    DateCreated = p.DateCreated,
-                    POStatus = p.OrderStatusID.ToString(),
-                    OrderStatusID = p.OrderStatusID,
-                    Account = p.Account.AccountCode,
-                    InvoiceNo = p.InvoiceNo,
-                    InvoiceDetails = p.InvoiceDetails,
-                    OrderCost = p.OrderCost,
-                    OrderTypeId = p.InventoryTransactionTypeId,
-                    OrderType = p.InventoryTransactionTypeId,
-                    AccountName = p.Account.CompanyName,
-                    Currecny = p.AccountCurrency.CurrencyName,
-                    OrderTotal = p.OrderTotal,
-                    PickerName = p.Picker == null ? "" : p.Picker.UserLastName + ", " + p.Picker.UserFirstName,
-                    EmailCount = _currentDbContext.TenantEmailNotificationQueues.Count(u => u.OrderId == p.OrderID),
-                    OrderNotesList = p.OrderNotes.Where(m => m.IsDeleted != true).Select(s => new OrderNotesViewModel()
-                    {
-                        OrderNoteId = s.OrderNoteId,
-                        Notes = s.Notes,
-                        NotesByName = p.Tenant.AuthUsers.FirstOrDefault(x => x.UserId == s.CreatedBy).UserName,
-                        NotesDate = s.DateCreated
-                    }).ToList()
-                });
+                .Select(ToSalesOrderViewModel());
 
             return result;
+        }
+
+        private Expression<Func<Order, SalesOrderViewModel>> ToSalesOrderViewModel()
+        {
+            return p => new SalesOrderViewModel()
+            {
+                OrderID = p.OrderID,
+                OrderNumber = p.OrderNumber,
+                IssueDate = p.IssueDate,
+                DateUpdated = p.DateUpdated,
+                DateCreated = p.DateCreated,
+                POStatus = p.OrderStatusID.ToString(),
+                OrderStatusID = p.OrderStatusID,
+                Account = p.Account.AccountCode,
+                InvoiceNo = p.InvoiceNo,
+                InvoiceDetails = p.InvoiceDetails,
+                OrderCost = p.OrderCost,
+                OrderTypeId = p.InventoryTransactionTypeId,
+                OrderType = p.InventoryTransactionTypeId,
+                AccountName = p.Account.CompanyName,
+                Currecny = p.AccountCurrency.CurrencyName,
+                OrderTotal = p.OrderTotal,
+                PickerId = p.PickerId,
+                PickerName = p.Picker == null ? "" : p.Picker.UserLastName + ", " + p.Picker.UserFirstName,
+                EmailCount = _currentDbContext.TenantEmailNotificationQueues.Count(u => u.OrderId == p.OrderID),
+                OrderNotesList = p.OrderNotes.Where(m => m.IsDeleted != true).Select(s => new OrderNotesViewModel()
+                {
+                    OrderNoteId = s.OrderNoteId,
+                    Notes = s.Notes,
+                    NotesByName = p.Tenant.AuthUsers.FirstOrDefault(x => x.UserId == s.CreatedBy).UserName,
+                    NotesDate = s.DateCreated
+                }).ToList()
+            };
+        }
+
+        public IQueryable<SalesOrderViewModel> GetAllPickerAssignedSalesOrders(int tenantId, int warehouseId, int pickerId, OrderStatusEnum? status = null)
+        {
+            return GetAllActiveSalesOrdersIq(tenantId, warehouseId, status).Where(o => o.PickerId == pickerId &&
+                                                                                       (o.OrderStatusID == OrderStatusEnum.BeingPicked ||
+                                                                                        o.OrderStatusID == OrderStatusEnum.Hold ||
+                                                                                        o.OrderStatusID == OrderStatusEnum.Active ||
+                                                                                        o.OrderStatusID == OrderStatusEnum.Pending));
+        }
+
+        public IQueryable<SalesOrderViewModel> GetAllPickerUnassignedSalesOrders(int tenantId, int warehouseId, int pickerId, OrderStatusEnum? status = null)
+        {
+            return GetAllActiveSalesOrdersIq(tenantId, warehouseId, status).Where(o => o.PickerId != pickerId &&
+                                                                                       (o.OrderStatusID == OrderStatusEnum.BeingPicked ||
+                                                                                        o.OrderStatusID == OrderStatusEnum.Hold ||
+                                                                                        o.OrderStatusID == OrderStatusEnum.Active ||
+                                                                                        o.OrderStatusID == OrderStatusEnum.Pending));
         }
 
         public IQueryable<SalesOrderViewModel> GetAllDirectSalesOrdersIq(int tenantId, int warehouseId, OrderStatusEnum? statusId = null)
@@ -570,39 +567,13 @@ namespace Ganedata.Core.Services
 
             IQueryable<TenantLocations> childWarehouseIds = _currentDbContext.TenantWarehouses.Where(x => x.ParentWarehouseId == warehouseId);
 
-            var result = _currentDbContext.Order.AsNoTracking().Where(o =>
-                     o.TenentId == tenantId && (o.WarehouseId == warehouseId || childWarehouseIds.Any(x => x.ParentWarehouseId == warehouseId)) && (!statusId.HasValue || o.OrderStatusID == statusId.Value) && (o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.DirectSales) && o.IsDeleted != true)
+            var result = _currentDbContext.Order.AsNoTracking().Where(o => o.TenentId == tenantId &&
+                                                                           (o.WarehouseId == warehouseId || childWarehouseIds.Any(x => x.ParentWarehouseId == warehouseId)) &&
+                                                                           (!statusId.HasValue || o.OrderStatusID == statusId.Value) &&
+                                                                           (o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.DirectSales) &&
+                                                                           o.IsDeleted != true)
                 .OrderByDescending(x => x.DateCreated)
-                .Select(p => new SalesOrderViewModel()
-                {
-                    OrderID = p.OrderID,
-                    OrderNumber = p.OrderNumber,
-                    IssueDate = p.IssueDate,
-                    DateUpdated = p.DateUpdated,
-                    DateCreated = p.DateCreated,
-                    POStatus = p.OrderStatusID.ToString(),
-                    Account = p.Account != null ? p.Account.AccountCode : "",
-                    InvoiceNo = p.InvoiceNo,
-                    InvoiceDetails = p.InvoiceDetails,
-                    OrderCost = p.OrderCost,
-                    OrderDiscount = p.OrderDiscount,
-                    OrderTypeId = p.InventoryTransactionTypeId,
-                    OrderType = p.InventoryTransactionTypeId,
-                    AccountName = p.Account != null ? p.Account.CompanyName : p.Note,
-                    Currecny = p.AccountCurrency != null ? p.AccountCurrency.CurrencyName : "",
-                    OrderTotal = p.OrderTotal,
-                    SaleNotes = p.Note,
-                    EmailCount = _currentDbContext.TenantEmailNotificationQueues.Count(u => u.OrderId == p.OrderID),
-                    ConsignmentType = p.ConsignmentType.ConsignmentType,
-                    OrderNotesList = p.OrderNotes.Where(m => m.IsDeleted != true).Select(s => new OrderNotesViewModel()
-                    {
-                        OrderNoteId = s.OrderNoteId,
-                        Notes = s.Notes,
-                        NotesByName = p.Tenant.AuthUsers.FirstOrDefault(x => x.UserId == s.CreatedBy).UserName,
-                        NotesDate = s.DateCreated
-                    }).ToList()
-
-                });
+                .Select(ToSalesOrderViewModel());
 
             return result;
 
@@ -617,35 +588,7 @@ namespace Ganedata.Core.Services
                      || o.OrderStatusID == statusId.Value) && (o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Returns
                      || o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WastedReturn) && o.IsDeleted != true)
                 .OrderByDescending(x => x.DateCreated)
-                .Select(p => new SalesOrderViewModel()
-                {
-                    OrderID = p.OrderID,
-                    OrderNumber = p.OrderNumber,
-                    IssueDate = p.IssueDate,
-                    DateUpdated = p.DateUpdated,
-                    DateCreated = p.DateCreated,
-                    POStatus = p.OrderStatusID.ToString(),
-                    Account = p.Account != null ? p.Account.AccountCode : "",
-                    InvoiceNo = p.InvoiceNo,
-                    InvoiceDetails = p.InvoiceDetails,
-                    OrderCost = p.OrderCost,
-                    OrderDiscount = p.OrderDiscount,
-                    OrderTypeId = p.InventoryTransactionTypeId,
-                    OrderType = p.InventoryTransactionTypeId,
-                    AccountName = p.Account != null ? p.Account.CompanyName : p.Note,
-                    Currecny = p.AccountCurrency != null ? p.AccountCurrency.CurrencyName : "",
-                    OrderTotal = p.OrderTotal,
-                    SaleNotes = p.Note,
-                    EmailCount = _currentDbContext.TenantEmailNotificationQueues.Count(u => u.OrderId == p.OrderID),
-                    OrderNotesList = p.OrderNotes.Where(m => m.IsDeleted != true).Select(s => new OrderNotesViewModel()
-                    {
-                        OrderNoteId = s.OrderNoteId,
-                        Notes = s.Notes,
-                        NotesByName = p.Tenant.AuthUsers.FirstOrDefault(x => x.UserId == s.CreatedBy).UserName,
-                        NotesDate = s.DateCreated
-                    }).ToList()
-
-                });
+                .Select(ToSalesOrderViewModel());
 
             return result;
 

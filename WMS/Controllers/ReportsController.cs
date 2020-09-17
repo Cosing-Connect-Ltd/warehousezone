@@ -30,10 +30,11 @@ namespace WMS.Controllers
         private readonly IPalletingService _palletingService;
         readonly IInvoiceService _invoiceService;
         private readonly ILookupServices _lookupService;
+        private readonly IUserService _userService;
 
         public ReportsController(ITenantLocationServices tenantLocationsServices, IShiftsServices shiftsServices, IEmployeeShiftsServices employeeShiftsServices, IEmployeeServices employeeServices, ICoreOrderService orderService,
             IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IAppointmentsService appointmentsService, IGaneConfigurationsHelper ganeConfigurationsHelper, IEmailServices emailServices, IInvoiceService invoiceService,
-            ITenantLocationServices tenantLocationservices, IProductServices productServices, ITenantsServices tenantsServices, IPalletingService palleteServices, IMarketServices marketServices)
+            ITenantLocationServices tenantLocationservices, IProductServices productServices, ITenantsServices tenantsServices, IPalletingService palleteServices, IMarketServices marketServices, IUserService userService)
             : base(orderService, propertyService, accountServices, lookupServices, appointmentsService, ganeConfigurationsHelper, emailServices, tenantLocationservices, tenantsServices)
         {
             _tenantLocationsServices = tenantLocationsServices;
@@ -46,6 +47,7 @@ namespace WMS.Controllers
             _marketServices = marketServices;
             _invoiceService = invoiceService;
             _lookupService = lookupServices;
+            _userService = userService;
         }
 
         public float JobProgressOutSum = 0;
@@ -395,7 +397,7 @@ namespace WMS.Controllers
 
             var chargeTypes = LookupServices.GetAllReportTypes(CurrentTenantId).Where(x => x.AllowChargeTo == true);
 
-            // add static lookup values in paramter 
+            // add static lookup values in paramter
             LookUpValue item = new LookUpValue();
             item.Description = "Select Charge Type";
             item.Value = 0;
@@ -590,7 +592,7 @@ namespace WMS.Controllers
 
 
 
-                        if (stampFirstIn.Value.Equals(stampLastOut)) //not equal               
+                        if (stampFirstIn.Value.Equals(stampLastOut)) //not equal
                         {
                             stampLastOut = null;
                         }
@@ -994,7 +996,7 @@ namespace WMS.Controllers
             return PriceGroupReport;
         }
 
-        #endregion 
+        #endregion
 
         #region OrderReport
 
@@ -1052,6 +1054,45 @@ namespace WMS.Controllers
             {
                 report.FilterString = "[PProperty Id] In (?paramProperty)";
             }
+        }
+
+        #endregion
+
+        #region PickersOrdersReport
+        public ActionResult PickersOrdersReport()
+        {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+            var report = CreatePickersOrdersReport();
+            return View(report);
+        }
+
+        public PickersOrdersReport CreatePickersOrdersReport()
+        {
+            var pickersOrdersReport = new PickersOrdersReport();
+            pickersOrdersReport.paramStartDate.Value = DateTime.Today.AddMonths(-1);
+            pickersOrdersReport.paramEndDate.Value = DateTime.Today;
+            pickersOrdersReport.paramTenantId.Value = CurrentTenantId;
+
+            var pickersSettings = (StaticListLookUpSettings)pickersOrdersReport.paramPickerIds.LookUpSettings;
+            var propertiesSettings = (StaticListLookUpSettings)pickersOrdersReport.paramProperty.LookUpSettings;
+            var accountsSettings = (StaticListLookUpSettings)pickersOrdersReport.paramAccountIds.LookUpSettings;
+
+            var users = _userService.GetUsersAgainstPermission(CurrentTenantId, CurrentWarehouseId, "Handheld", "SalesOrderPerm").Where(u => !string.IsNullOrEmpty(u.DisplayName?.Trim()));
+
+            pickersSettings.LookUpValues.AddRange(users.Select(m => new LookUpValue(m.UserId, m.UserFirstName)));
+
+            var accounts = _accountServices.GetAllValidAccounts(CurrentTenantId).ToList();
+            accountsSettings.LookUpValues.AddRange(accounts.Select(m => new LookUpValue(m.AccountID, m.CompanyName)));
+
+            var properties = PropertyService.GetAllValidProperties().ToList();
+            propertiesSettings.LookUpValues.AddRange(properties.Select(m => new LookUpValue(m.PPropertyId, m.AddressLine1)));
+            TenantConfig config = _tenantServices.GetTenantConfigById(CurrentTenantId);
+            if (!config.ShowDecimalPoint)
+            {
+                pickersOrdersReport.lblQuantity.TextFormatString = "{0:0.##}";
+            }
+
+            return pickersOrdersReport;
         }
 
         #endregion

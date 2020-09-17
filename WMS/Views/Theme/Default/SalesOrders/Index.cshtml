@@ -34,22 +34,15 @@
         else {
             $('.selkey').val(s.GetRowKey(s.GetFocusedRowIndex()));
         }
-
     }
 
     function OnBeginCallbackSO(s, e) {
         e.customArgs['selectedStatus'] = $('#SalesOrderStatus :selected').val();
     }
+
     function UASelectedValueChanged(e) {
-
-
-
         _SalesOrderListGridView_Completed.Refresh();
     }
-
-
-
-
 </script>
 
 @Html.Hidden("selkey", null, new { @class = "selkey" })
@@ -88,6 +81,10 @@
             @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Order", "DeleteOrder"))
             {
                 <a class='btn btn-primary lnkDelete' data-type='SO' data-target='#selkeySalesOrderList'>Delete</a>
+            }
+            @if (WMS.Helpers.LayoutHelpers.ActivityValidator("SalesOrders", "BatchAssignment"))
+            {
+                @Html.ActionLink("Batch Assignment", "BatchPickersAssignment", "SalesOrders", null, new { @class = "btn btn-primary" })
             }
             @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Reports", "SalesOrderPrint"))
             {

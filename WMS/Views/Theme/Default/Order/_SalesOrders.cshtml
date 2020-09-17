@@ -5,22 +5,23 @@
 @{
     var grid = Html.DevExpress().GridView(settings =>
     {
-        settings.Name = ViewBag.name;
-        settings.CallbackRouteValues = new { Controller = "Order", Action = "_SalesOrders", type = ViewBag.Type };
+        var type = (int?)ViewBag.Type;
+        settings.Name = ViewBag.Name;
+        settings.CallbackRouteValues = new { Controller = "Order", Action = "_SalesOrders", type = type, pickerId = ViewBag.PickerId };
         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
         settings.CustomBindingRouteValuesCollection.Add(
             GridViewOperationType.Paging,
-            new { Controller = "Order", Action = "_SalesOrdersPaging", @type = ViewBag.type }
+            new { Controller = "Order", Action = "_SalesOrdersPaging", @type = type, pickerId = ViewBag.PickerId }
             );
 
         settings.CustomBindingRouteValuesCollection.Add(
             GridViewOperationType.Filtering,
-            new { Controller = "Order", Action = "_SalesOrdersFiltering", @type = ViewBag.type }
+            new { Controller = "Order", Action = "_SalesOrdersFiltering", @type = type, pickerId = ViewBag.PickerId }
             );
 
         settings.CustomBindingRouteValuesCollection.Add(
             GridViewOperationType.Sorting,
-            new { Controller = "Order", Action = "_SalesOrdersSorting", @type = ViewBag.type }
+            new { Controller = "Order", Action = "_SalesOrdersSorting", @type = type, pickerId = ViewBag.PickerId }
             );
 
         settings.Settings.ShowHeaderFilterButton = true;
@@ -28,6 +29,13 @@
         settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
         settings.KeyFieldName = "OrderID";
         settings.SettingsPager.Visible = true;
+        if (type == 3 || type == 4)
+        {
+            settings.ClientSideEvents.SelectionChanged = "SelectionChanged";
+            settings.CommandColumn.Visible = true;
+            settings.CommandColumn.ShowSelectCheckbox = true;
+            settings.CommandColumn.SelectAllCheckboxMode = GridViewSelectAllCheckBoxMode.AllPages;
+        }
 
 
         settings.Settings.ShowGroupPanel = false;
@@ -136,8 +144,8 @@
             c.FieldName = "PickerName";
             c.Caption = "Picker Name";
             c.Width = Unit.Percentage(20);
-            c.Settings.AllowAutoFilter = DefaultBoolean.False;
-            c.Settings.AllowSort = DefaultBoolean.False;
+            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+            c.Settings.AllowSort = DefaultBoolean.True;
         });
 
         settings.Columns.Add(c =>
@@ -150,111 +158,114 @@
             c.Settings.AllowSort = DefaultBoolean.False;
         });
 
-        settings.Columns.Add(c =>
+        if (type != 3 && type != 4)
         {
-            c.FieldName = "InvoiceNo";
-            c.Caption = "Invoice";
-            c.SetDataItemTemplateContent(m =>
+            settings.Columns.Add(c =>
             {
-                var invoiceNumber = DataBinder.Eval(m.DataItem, "InvoiceNo") ?? "";
-                var invoiceDetails = DataBinder.Eval(m.DataItem, "InvoiceDetails") ?? "";
-                var invoiceCost = ((decimal?)DataBinder.Eval(m.DataItem, "OrderCost") ?? 0);
-                if (!string.IsNullOrEmpty(invoiceNumber.ToString()))
+                c.FieldName = "InvoiceNo";
+                c.Caption = "Invoice";
+                c.SetDataItemTemplateContent(m =>
                 {
-                    ViewContext.Writer.Write("<div>Invoice Number : <b>" + invoiceNumber + "</b></div>");
-                }
-                if (!string.IsNullOrEmpty(invoiceDetails.ToString()))
-                {
-                    ViewContext.Writer.Write("<div>Invoice Details : <b>" + invoiceDetails + "</b></div>");
-                }
-                if (invoiceCost > 0)
-                {
-                    ViewContext.Writer.Write("<div>Invoice Cost : <b>" + invoiceCost + "</b></div>");
-                }
+                    var invoiceNumber = DataBinder.Eval(m.DataItem, "InvoiceNo") ?? "";
+                    var invoiceDetails = DataBinder.Eval(m.DataItem, "InvoiceDetails") ?? "";
+                    var invoiceCost = ((decimal?)DataBinder.Eval(m.DataItem, "OrderCost") ?? 0);
+                    if (!string.IsNullOrEmpty(invoiceNumber.ToString()))
+                    {
+                        ViewContext.Writer.Write("<div>Invoice Number : <b>" + invoiceNumber + "</b></div>");
+                    }
+                    if (!string.IsNullOrEmpty(invoiceDetails.ToString()))
+                    {
+                        ViewContext.Writer.Write("<div>Invoice Details : <b>" + invoiceDetails + "</b></div>");
+                    }
+                    if (invoiceCost > 0)
+                    {
+                        ViewContext.Writer.Write("<div>Invoice Cost : <b>" + invoiceCost + "</b></div>");
+                    }
+                });
             });
-        });
 
-        settings.Columns.Add(column =>
-        {
-            column.Width = System.Web.UI.WebControls.Unit.Percentage(15);
-            column.Caption = "Actions";
-            column.SetDataItemTemplateContent(m =>
+            settings.Columns.Add(column =>
             {
-                var orderId = (int)DataBinder.Eval(m.DataItem, "OrderID");
-                var statusId = (int)DataBinder.Eval(m.DataItem, "OrderStatusID");
-                var functon = string.Format("CustomEmails({0},{1})", orderId, 8);
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(15);
+                column.Caption = "Actions";
+                column.SetDataItemTemplateContent(m =>
+                {
+                    var orderId = (int)DataBinder.Eval(m.DataItem, "OrderID");
+                    var statusId = (int)DataBinder.Eval(m.DataItem, "OrderStatusID");
+                    var functon = string.Format("CustomEmails({0},{1})", orderId, 8);
 
-                if (statusId == (int)OrderStatusEnum.AwaitingAuthorisation)
-                {
-                    var function = string.Format("ApproveOrder({0})", orderId);
-                    ViewContext.Writer.Write("<a target='_blank' alt='Authorize Order' title='Authorize Order' class='btn fa fa-check' onclick=" + function + "></a>");
+                    if (statusId == (int)OrderStatusEnum.AwaitingAuthorisation)
+                    {
+                        var function = string.Format("ApproveOrder({0})", orderId);
+                        ViewContext.Writer.Write("<a target='_blank' alt='Authorize Order' title='Authorize Order' class='btn fa fa-check' onclick=" + function + "></a>");
 
-                }
-                if (statusId == (int)OrderStatusEnum.Hold)
-                {
-                    ViewContext.Writer.Write("<a target='_blank' data-orderid=" + orderId + " data-statusid = '1' data-type = 'SO' alt='Make Order Active' class='make-order-active btn fa fa-arrow-left'></a>");
-                }
-                if (statusId == (int)OrderStatusEnum.BeingPicked)
-                {
-                    ViewContext.Writer.Write("<a target='_blank' data-orderid=" + orderId + " data-statusid = '1' data-type = 'SO' alt='Unlock order for picking' class='unlock-order btn fa fa-unlock'></a>");
-                }
-                if (statusId == (int)OrderStatusEnum.Complete)
-                {
-                    ViewContext.Writer.Write("<a target='_blank' data-orderid=" + orderId + " data-statusid = '1' data-type = 'SO' alt='Make Order Active' class='make-order-active btn fa fa-arrow-left'></a>");
-                }
-                if (statusId == (int)OrderStatusEnum.BeingPicked || statusId == (int)OrderStatusEnum.Hold || statusId == (int)OrderStatusEnum.Active || statusId == (int)OrderStatusEnum.Pending)
-                {
-                    var assignPicker = string.Format("AssignPicker({0})", orderId);
-                    ViewContext.Writer.Write("<a target='_blank' alt='Assign Picker' title='Assign Picker' class='btn fa fa-user' onclick=" + assignPicker + "></a>");
-                }
-               
+                    }
+                    if (statusId == (int)OrderStatusEnum.Hold)
+                    {
+                        ViewContext.Writer.Write("<a target='_blank' data-orderid=" + orderId + " data-statusid = '1' data-type = 'SO' alt='Make Order Active' class='make-order-active btn fa fa-arrow-left'></a>");
+                    }
+                    if (statusId == (int)OrderStatusEnum.BeingPicked)
+                    {
+                        ViewContext.Writer.Write("<a target='_blank' data-orderid=" + orderId + " data-statusid = '1' data-type = 'SO' alt='Unlock order for picking' class='unlock-order btn fa fa-unlock'></a>");
+                    }
+                    if (statusId == (int)OrderStatusEnum.Complete)
+                    {
+                        ViewContext.Writer.Write("<a target='_blank' data-orderid=" + orderId + " data-statusid = '1' data-type = 'SO' alt='Make Order Active' class='make-order-active btn fa fa-arrow-left'></a>");
+                    }
+                    if (statusId == (int)OrderStatusEnum.BeingPicked || statusId == (int)OrderStatusEnum.Hold || statusId == (int)OrderStatusEnum.Active || statusId == (int)OrderStatusEnum.Pending)
+                    {
+                        var assignPicker = string.Format("AssignPicker({0})", orderId);
+                        ViewContext.Writer.Write("<a target='_blank' alt='Assign Picker' title='Assign Picker' class='btn fa fa-user' onclick=" + assignPicker + "></a>");
+                    }
 
 
+
+                });
             });
-        });
 
-        settings.Columns.Add(c =>
-        {
-            c.Caption = "Progress";
-            c.SetDataItemTemplateContent(m =>
+            settings.Columns.Add(c =>
             {
-                var statusId = (int)DataBinder.Eval(m.DataItem, "OrderStatusID");
-                var processQty = (decimal)DataBinder.Eval(m.DataItem, "ProcessedQty");
-                var returnQty = (decimal)DataBinder.Eval(m.DataItem, "ReturnQty");
-                var Qty = (decimal)DataBinder.Eval(m.DataItem, "Qty");
-                var value = 0m;
-                if (Qty > 0) { value = (processQty - returnQty) / Qty; }
-                var values = (Convert.ToDouble(value) * 100);
-
-                Html.DevExpress().ProgressBar(pb =>
+                c.Caption = "Progress";
+                c.SetDataItemTemplateContent(m =>
                 {
-                    pb.Name = "pb" + (int)DataBinder.Eval(m.DataItem, "OrderID");
-                    pb.ToolTip = Qty + "/" + (processQty - returnQty) + " processed";
-                    pb.Properties.IndicatorStyle.BackColor = System.Drawing.Color.DarkRed;
-                    pb.EnableTheming = false;
-                }).Bind(values > 100 ? 100 : values).Render();
+                    var statusId = (int)DataBinder.Eval(m.DataItem, "OrderStatusID");
+                    var processQty = (decimal)DataBinder.Eval(m.DataItem, "ProcessedQty");
+                    var returnQty = (decimal)DataBinder.Eval(m.DataItem, "ReturnQty");
+                    var Qty = (decimal)DataBinder.Eval(m.DataItem, "Qty");
+                    var value = 0m;
+                    if (Qty > 0) { value = (processQty - returnQty) / Qty; }
+                    var values = (Convert.ToDouble(value) * 100);
+
+                    Html.DevExpress().ProgressBar(pb =>
+                    {
+                        pb.Name = "pb" + (int)DataBinder.Eval(m.DataItem, "OrderID");
+                        pb.ToolTip = Qty + "/" + (processQty - returnQty) + " processed";
+                        pb.Properties.IndicatorStyle.BackColor = System.Drawing.Color.DarkRed;
+                        pb.EnableTheming = false;
+                    }).Bind(values > 100 ? 100 : values).Render();
+                });
             });
-        });
 
 
 
-        settings.Columns.Add(column =>
-        {
-            column.Width = System.Web.UI.WebControls.Unit.Percentage(2);
-            column.Caption = "Notifs";
-            column.SetDataItemTemplateContent(m =>
+            settings.Columns.Add(column =>
             {
-                var orderId = (int)DataBinder.Eval(m.DataItem, "OrderID");
-                var emailcount = (int?)DataBinder.Eval(m.DataItem, "EmailCount");
-
-                var functon = string.Format("showEmails({0})", orderId);
-                if (emailcount.HasValue && emailcount > 0)
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(2);
+                column.Caption = "Notifs";
+                column.SetDataItemTemplateContent(m =>
                 {
-                    ViewContext.Writer.Write("<a target='javascript:;' alt='Show Emails' class='fa fa-send-o' onclick=" + functon + ">     <b>" + emailcount + "</b></a>");
-                }
+                    var orderId = (int)DataBinder.Eval(m.DataItem, "OrderID");
+                    var emailcount = (int?)DataBinder.Eval(m.DataItem, "EmailCount");
 
+                    var functon = string.Format("showEmails({0})", orderId);
+                    if (emailcount.HasValue && emailcount > 0)
+                    {
+                        ViewContext.Writer.Write("<a target='javascript:;' alt='Show Emails' class='fa fa-send-o' onclick=" + functon + ">     <b>" + emailcount + "</b></a>");
+                    }
+
+                });
             });
-        });
+        }
 
         settings.HtmlRowPrepared = (s, e) =>
         {

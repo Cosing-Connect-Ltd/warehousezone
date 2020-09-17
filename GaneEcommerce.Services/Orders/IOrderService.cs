@@ -118,6 +118,7 @@ namespace Ganedata.Core.Services
 
         Order CreateShopOrder(CheckoutViewModel orderDetail, int tenantId, int UserId, int warehouseId, int SiteId);
         bool UpdatePickerId(int OrderId, int? pickerId, int userId);
+        bool UpdateOrdersPicker(int[] orderIds, int? pickerId, int userId);
 
     }
 }

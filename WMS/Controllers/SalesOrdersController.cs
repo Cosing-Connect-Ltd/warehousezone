@@ -42,6 +42,17 @@ namespace WMS.Controllers
             ViewBag.Error = TempData["Error"];
             return View();
         }
+
+        public ActionResult BatchPickersAssignment(int? id)
+        {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+            ViewBag.Error = TempData["Error"];
+            var users = _userService.GetUsersAgainstPermission(CurrentTenantId, CurrentWarehouseId, "Handheld", "SalesOrderPerm").Where(u => !string.IsNullOrEmpty(u.DisplayName?.Trim()));
+            ViewBag.PickerId = users.FirstOrDefault(t => t.UserId == id)?.UserId ?? users.FirstOrDefault()?.UserId;
+            ViewBag.Pickers = new SelectList(users, "UserId", "DisplayName", ViewBag.PickerId);
+            return View();
+        }
+
         public ActionResult _SalesOrderDetails(int Id)
         {
             //setname and routevalues are required to reuse order detail list.
@@ -1078,6 +1089,13 @@ namespace WMS.Controllers
         public JsonResult SaveAssignPicker(int OrderId, int? PickerId)
         {
             var status = OrderService.UpdatePickerId(OrderId, PickerId, CurrentUserId);
+            return Json(status, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult UpdateOrdersPicker(int[] orderIds, int? PickerId)
+        {
+            var status = OrderService.UpdateOrdersPicker(orderIds, PickerId, CurrentUserId);
             return Json(status, JsonRequestBehavior.AllowGet);
         }
 
