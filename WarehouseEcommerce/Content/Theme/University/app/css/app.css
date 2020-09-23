@@ -5954,7 +5954,11 @@ body.modal-open {
         .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group input[type=number],
         .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group input[type=tel],
         .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group input[type=text],
-        .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group select {
+        .billandshipsec .addNewAddrWrap .addNwAdrrFormWrap .form-group select,
+        .orderConfirmationSection #email-address__input,
+        .orderConfirmationSection #user-first-name__input,
+        .orderConfirmationSection #user-last-name__input,
+        .orderConfirmationSection #user-password__input {
             width: 96%;
             height: 50px;
             border: solid 1px #707070;
@@ -5963,6 +5967,10 @@ body.modal-open {
             font-family: "primaryfont_Normal";
             font-size: 14px
         }
+
+.orderConfirmationSection .checkout-options-wrapper {
+    padding-bottom: 15px;
+}
 
 .billandshipsec .checkout-options-wrapper {
     margin-bottom: 20px

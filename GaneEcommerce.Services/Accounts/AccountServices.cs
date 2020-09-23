@@ -141,9 +141,16 @@ namespace Ganedata.Core.Services
             return _currentDbContext.AccountContacts.Where(a => a.IsDeleted != true && a.AccountID == accountId && a.Account.TenantId == tenantId);
         }
 
+        public IEnumerable<AccountAddresses> GetAllValidAccountAddressesByAccountIdOrSessionKey(int accountId, string sessionId, DateTime? lastUpdated = null, bool includeDeleted = false)
+        {
+            return _currentDbContext.AccountAddresses.Where(c => (c.AccountID == accountId || c.SessionId == sessionId) && (includeDeleted == true || c.IsDeleted != true)
+            && (lastUpdated == null || (c.DateUpdated ?? c.DateCreated) >= lastUpdated));
+        }
+
+
         public IEnumerable<AccountAddresses> GetAllValidAccountAddressesByAccountId(int accountId, DateTime? lastUpdated = null, bool includeDeleted = false)
         {
-            return _currentDbContext.AccountAddresses.Where(c => c.AccountID == accountId && (includeDeleted == true || c.IsDeleted != true)
+            return _currentDbContext.AccountAddresses.Where(c => (c.AccountID == accountId) && (includeDeleted == true || c.IsDeleted != true)
             && (lastUpdated == null || (c.DateUpdated ?? c.DateCreated) >= lastUpdated));
         }
 
@@ -216,6 +223,20 @@ namespace Ganedata.Core.Services
         public AccountContacts GetAccountContactById(int id)
         {
             return _currentDbContext.AccountContacts.Find(id);
+        }
+
+        public int CreateNewAccountForEcommerceUser(string accountCode, int currentUserId, int tenantId)
+        {
+            var account = new Account
+            {
+                AccountCode = accountCode,
+                CompanyName = accountCode,
+                RegNo = "",
+                VATNo = "",
+                AccountStatusID = AccountStatusEnum.Active,
+            };
+            var accountModel = SaveAccount(account, null, null, 1, 1, 1, 1, null, null, currentUserId, tenantId, null);
+            return accountModel.AccountID;
         }
 
         public Account SaveAccount(Account model, List<int> accountAddressIds, List<int> accountContactIds, int globalCountryIds, int globalCurrencyIds, int priceGroupId, int ownerUserId, List<AccountAddresses> addresses, List<AccountContacts> contacts, int userId, int tenantId, string stopReason = null, int[] MarketId = null)
@@ -553,13 +574,17 @@ namespace Ganedata.Core.Services
             customeraddresses.IsDeleted = false;
 
             _currentDbContext.AccountAddresses.Add(customeraddresses);
-            var customer = _currentDbContext.Account.FirstOrDefault(m => m.AccountID == customeraddresses.AccountID);
-            customer.DateUpdated = DateTime.UtcNow;
-            customer.UpdatedBy = currentUserId;
-            _currentDbContext.Account.Attach(customer);
-            var entry1 = _currentDbContext.Entry(customer);
-            entry1.Property(e => e.DateUpdated).IsModified = true;
-            entry1.Property(e => e.UpdatedBy).IsModified = true;
+
+            if (customeraddresses.AccountID > 0)
+            {
+                var customer = _currentDbContext.Account.FirstOrDefault(m => m.AccountID == customeraddresses.AccountID);
+                customer.DateUpdated = DateTime.UtcNow;
+                customer.UpdatedBy = currentUserId;
+                _currentDbContext.Account.Attach(customer);
+                var entry1 = _currentDbContext.Entry(customer);
+                entry1.Property(e => e.DateUpdated).IsModified = true;
+                entry1.Property(e => e.UpdatedBy).IsModified = true;
+            }
 
             _currentDbContext.SaveChanges();
 

@@ -19,6 +19,7 @@ namespace Ganedata.Core.Services
 
         private readonly IApplicationContext _currentDbContext;
         private readonly ITenantsServices _tenantServices;
+        //private readonly IGaneConfigurationsHelper _configurationsHelper;
         private readonly IMapper _mapper;
 
         public UserService(IApplicationContext currentDbContext, ITenantsServices tenantServices, IMapper mapper)
@@ -104,6 +105,25 @@ namespace Ganedata.Core.Services
             _currentDbContext.Entry(user).State = EntityState.Added;
             _currentDbContext.SaveChanges();
             return user.UserId;
+        }
+
+        public int CreateNewEcommerceUser(string email, string firstName, string lastName, string password, int accountId, int siteId, int tenantId, int currentUserId)
+        {
+            var authUser = new AuthUser
+            {
+                UserPassword = GaneStaticAppExtensions.GetMd5(password),
+                UserEmail = email,
+                UserFirstName = firstName,
+                UserLastName = lastName,
+                UserName = email,
+                SiteId = siteId,
+                IsActive = false,
+                AccountId = accountId,
+            };
+
+            SaveAuthUser(authUser, currentUserId, tenantId);
+
+            return authUser.UserId;
         }
 
         public void UpdateAuthUser(AuthUser user, int userId, int tenantId)
@@ -290,7 +310,7 @@ namespace Ganedata.Core.Services
             }
             else if (type == UserVerifyTypes.Email)
             {
-                // TODO: to be implemented 
+                // TODO: to be implemented
             }
 
             if (res == true)

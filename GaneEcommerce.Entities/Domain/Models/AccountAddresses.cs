@@ -41,7 +41,8 @@ namespace Ganedata.Core.Entities.Domain
         [Required]
         public int CountryID { get; set; }
         [Display(Name = "Account")]
-        public int AccountID { get; set; }
+        public int? AccountID { get; set; }
+        public string SessionId { get; set; }
         [Display(Name = "Dafault")]
         public bool? AddTypeDefault { get; set; }
         [Display(Name = "Shipping")]

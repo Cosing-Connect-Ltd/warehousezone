@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Ganedata.Core.Data.Migrations;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Entities.Helpers;
@@ -8,7 +7,6 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using WarehouseEcommerce.Helpers;
 using WarehouseEcommerce.ViewModels;
 
 namespace WarehouseEcommerce.Controllers
@@ -126,39 +124,24 @@ namespace WarehouseEcommerce.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult CreateUser(UsersViewModel user, bool? PlaceOrder)
         {
-            baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
-
             if (ModelState.IsValid)
             {
-                AuthUser authuser = new AuthUser();
-                Account account = new Account();
-                account.AccountCode = user.FirstName + GaneStaticAppExtensions.GenerateRandomNo();
-                account.CompanyName = account.AccountCode;
-                account.RegNo = "";
-                account.VATNo = "";
-                account.AccountStatusID = AccountStatusEnum.Active;
-                var accountModel = _accountServices.SaveAccount(account, null, null, 1, 1, 1, 1, null, null, CurrentUserId, CurrentTenantId, null);
-                authuser.UserPassword = GaneStaticAppExtensions.GetMd5(user.Password);
-
-                authuser.UserEmail = user.Email;
-                authuser.UserFirstName = user.FirstName;
-                authuser.UserLastName = user.LastName;
-                authuser.UserPassword = GaneStaticAppExtensions.GetMd5(user.Password);
-                authuser.UserName = user.Email;
-                authuser.SiteId = CurrentTenantWebsite.SiteID;
-
-                authuser.IsActive = false;
-                authuser.AccountId = accountModel.AccountID;
-                _userService.SaveAuthUser(authuser, CurrentUserId, CurrentTenantId);
-                string confirmationLink = Url.Action("ConfirmUsers", "User", new { confirmationValue = GaneStaticAppExtensions.HashPassword(authuser.UserId.ToString()) + "_" + authuser.UserId.ToString(), placeOrder = GaneStaticAppExtensions.HashPassword(PlaceOrder.HasValue ? PlaceOrder.HasValue.ToString() : "") });
-                confirmationLink = baseUrl + confirmationLink;
-                confirmationLink = "<a href='" + confirmationLink + "' class=btn btn-primary>Activate Account</a>";
-                _configurationsHelper.CreateTenantEmailNotificationQueue("Activate your account", null, sendImmediately: true, worksOrderNotificationType: WorksOrderNotificationTypeEnum.EmailConfirmation, TenantId: CurrentTenantId, accountId: accountModel.AccountID, UserEmail: authuser.UserEmail, confirmationLink: confirmationLink, userId: authuser.UserId, siteId: CurrentTenantWebsite.SiteID);
+                var accountId = _accountServices.CreateNewAccountForEcommerceUser(user.FirstName + GaneStaticAppExtensions.GenerateRandomNo(), CurrentUserId, CurrentTenantId);
+                var userId = _userService.CreateNewEcommerceUser(user.Email, user.FirstName, user.LastName, user.Password, accountId, CurrentTenantWebsite.SiteID, CurrentTenantId, CurrentUserId);
+                SendUserRegistrationNotification(PlaceOrder, userId, user.Email, accountId);
                 return Json(true, JsonRequestBehavior.AllowGet);
-
             }
 
             return Json(false, JsonRequestBehavior.AllowGet);
+        }
+
+        private void SendUserRegistrationNotification(bool? PlaceOrder, int userId, string userEmail, int accountId)
+        {
+            baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
+            string confirmationLink = Url.Action("ConfirmUsers", "User", new { confirmationValue = GaneStaticAppExtensions.HashPassword(userId.ToString()) + "_" + userId.ToString(), placeOrder = GaneStaticAppExtensions.HashPassword(PlaceOrder.HasValue ? PlaceOrder.HasValue.ToString() : "") });
+            confirmationLink = baseUrl + confirmationLink;
+            confirmationLink = "<a href='" + confirmationLink + "' class=btn btn-primary>Activate Account</a>";
+            _configurationsHelper.CreateTenantEmailNotificationQueue("Activate your account", null, sendImmediately: true, worksOrderNotificationType: WorksOrderNotificationTypeEnum.EmailConfirmation, TenantId: CurrentTenantId, accountId: accountId, UserEmail: userEmail, confirmationLink: confirmationLink, userId: userId, siteId: CurrentTenantWebsite.SiteID);
         }
 
         public ActionResult ConfirmUser(string confirmationValue, string placeOrder)

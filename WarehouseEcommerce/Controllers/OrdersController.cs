@@ -3,6 +3,7 @@ using Ganedata.Core.Data.Helpers;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Domain.ViewModels;
 using Ganedata.Core.Entities.Enums;
+using Ganedata.Core.Entities.Helpers;
 using Ganedata.Core.Models;
 using Ganedata.Core.Services;
 using Newtonsoft.Json;
@@ -88,11 +89,6 @@ namespace WarehouseEcommerce.Controllers
 
         public ActionResult Checkout(CheckoutStep? step)
         {
-            if (CurrentUser?.UserId <= 0)
-            {
-                return RedirectToAction("Login", "User", new { PlaceOrder = true });
-            }
-
             var checkoutViewModel = (CheckoutViewModel)Session["CheckoutViewModel"];
 
             if (checkoutViewModel == null || checkoutViewModel.CurrentStep == null || (!CurrentTenantWebsite.IsCollectionAvailable && !CurrentTenantWebsite.IsDeliveryAvailable))
@@ -240,6 +236,10 @@ namespace WarehouseEcommerce.Controllers
             {
                 accountAddresses.AccountID = caCurrent.CurrentWebsiteUser().AccountId ?? 0;
             }
+            else
+            {
+                accountAddresses.SessionId = HttpContext.Session.SessionID;
+            }
 
             accountAddresses = _accountServices.SaveAccountAddress(accountAddresses, CurrentUserId == 0 ? 1 : CurrentUserId);
 
@@ -289,8 +289,63 @@ namespace WarehouseEcommerce.Controllers
             ViewBag.cart = true;
             ViewBag.CartModal = true;
             ViewBag.paymentMethod = model.PaymentMethodId;
-            Session["AllCheckoutData"] = model;
             return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult ConfirmOrder(CheckoutViewModel data)
+        {
+            var model = Session["CheckoutViewModel"] as CheckoutViewModel;
+            model = _tenantWebsiteService.SetCheckOutProcessModel(model, CurrentTenantWebsite.SiteID, CurrentTenantId, CurrentUserId, Session.SessionID);
+
+            if (CurrentUser?.AccountId == null)
+            {
+                model.Email = data.Email;
+
+                if (data.CreateAccount == true)
+                {
+                    CreateNewUserAccount(data, model);
+                }
+            }
+
+            Session["CheckoutViewModel"] = model;
+
+            switch (model.PaymentMethodId)
+            {
+                case (int)PaymentMethodEnum.PayPal:
+                    return RedirectToAction("PayPal");
+                case (int)PaymentMethodEnum.SagePay:
+                    return RedirectToAction("SagePay");
+                default:
+                    return null;
+            }
+        }
+
+        private void CreateNewUserAccount(CheckoutViewModel data, CheckoutViewModel model)
+        {
+            var user = _userService.GetAuthUserByUserName(data.Email, CurrentTenantId);
+            if (user != null)
+            {
+                model.AccountId = user.AccountId;
+                return;
+            }
+
+            model.UserFirstName = data.UserFirstName;
+            model.UserLastName = data.UserLastName;
+            var accountId = _accountServices.CreateNewAccountForEcommerceUser(data.UserFirstName + GaneStaticAppExtensions.GenerateRandomNo(), CurrentUserId, CurrentTenantId);
+            var userId = _userService.CreateNewEcommerceUser(data.Email, data.UserFirstName, data.UserLastName, data.UserPassword, accountId, CurrentTenantWebsite.SiteID, CurrentTenantId, CurrentUserId);
+            SendUserRegistrationNotification(userId, data.Email, accountId);
+
+            model.AccountId = accountId;
+        }
+
+        private void SendUserRegistrationNotification(int userId, string userEmail, int accountId)
+        {
+            var baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
+            string confirmationLink = Url.Action("ConfirmUsers", "User", new { confirmationValue = GaneStaticAppExtensions.HashPassword(userId.ToString()) + "_" + userId.ToString(), placeOrder = "" });
+            confirmationLink = baseUrl + confirmationLink;
+            confirmationLink = "<a href='" + confirmationLink + "' class=btn btn-primary>Activate Account</a>";
+            _configurationsHelper.CreateTenantEmailNotificationQueue("Activate your account", null, sendImmediately: true, worksOrderNotificationType: WorksOrderNotificationTypeEnum.EmailConfirmation, TenantId: CurrentTenantId, accountId: accountId, UserEmail: userEmail, confirmationLink: confirmationLink, userId: userId, siteId: CurrentTenantWebsite.SiteID);
         }
 
         public JsonResult SetPaymentDetails(int paymentMethodId, bool isAddressSameForBilling)
@@ -326,9 +381,7 @@ namespace WarehouseEcommerce.Controllers
             var checkOutModel = Session["CheckoutViewModel"] == null
                 ? new CheckoutViewModel()
                 : Session["CheckoutViewModel"] as CheckoutViewModel;
-            checkOutModel.UserFirstName = CurrentUser.UserFirstName;
-            checkOutModel.UserLastName = CurrentUser.UserLastName;
-            checkOutModel.Email = CurrentUser.UserEmail;
+
             checkOutModel.PaypalClientId = _paypalClientId;
             return View(checkOutModel);
         }
@@ -438,6 +491,9 @@ namespace WarehouseEcommerce.Controllers
                 model = Session["CheckoutViewModel"] as CheckoutViewModel;
             }
 
+            model.UserFirstName = CurrentUser?.UserFirstName;
+            model.UserLastName = CurrentUser?.UserLastName;
+            model.Email = CurrentUser?.UserEmail;
             model.CurrentStep = checkoutViewModel.CurrentStep ?? model.CurrentStep;
             model.AccountId = checkoutViewModel.AccountId ?? (model.AccountId ?? CurrentUser.AccountId);
             model.ShippingAddressId = checkoutViewModel.ShippingAddressId <= 0 ? null : (model.ShippingAddressId ?? checkoutViewModel.ShippingAddressId);
@@ -464,14 +520,14 @@ namespace WarehouseEcommerce.Controllers
             switch (model.CurrentStep)
             {
                 case CheckoutStep.PaymentDetails:
-                    model.Addresses = _mapper.Map(_accountServices.GetAllValidAccountAddressesByAccountId(model.AccountId ?? 0).Where(u => (model.IsAddressSameForBilling == true || !model.BillingAddressId.HasValue || u.AddressID == model.BillingAddressId) && u.AddTypeBilling == true).ToList(), new List<AddressViewModel>());
+                    model.Addresses = _mapper.Map(_accountServices.GetAllValidAccountAddressesByAccountIdOrSessionKey(model.AccountId ?? 0, Session.SessionID).Where(u => (model.IsAddressSameForBilling == true || !model.BillingAddressId.HasValue || u.AddressID == model.BillingAddressId) && u.AddTypeBilling == true).ToList(), new List<AddressViewModel>());
                     model.AccountAddress = model.Addresses.FirstOrDefault();
                     model.BillingAddressId = model.AccountAddress?.AddressID;
                     model.PaymentMethodId = (int)PaymentMethodEnum.PayPal;
                     break;
                 case CheckoutStep.ShippingAddress:
                     model.ShippingAddressId = null;
-                    model.Addresses = _mapper.Map(_accountServices.GetAllValidAccountAddressesByAccountId(model.AccountId ?? 0).Where(u => (!model.ShippingAddressId.HasValue || u.AddressID == model.ShippingAddressId) && u.AddTypeShipping == true && u.IsDeleted != true).ToList(), new List<AddressViewModel>());
+                    model.Addresses = _mapper.Map(_accountServices.GetAllValidAccountAddressesByAccountIdOrSessionKey(model.AccountId ?? 0, Session.SessionID).Where(u => (!model.ShippingAddressId.HasValue || u.AddressID == model.ShippingAddressId) && u.AddTypeShipping == true && u.IsDeleted != true).ToList(), new List<AddressViewModel>());
                     break;
                 case CheckoutStep.AddOrEditAddress:
                     model.AccountAddress = _mapper.Map(_accountServices.GetAccountAddressById(model.AccountAddressId ?? 0), new AddressViewModel());
