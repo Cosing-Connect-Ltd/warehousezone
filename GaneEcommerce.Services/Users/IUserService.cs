@@ -15,6 +15,7 @@ namespace Ganedata.Core.Services
         AuthUser GetAuthUserByUserName(string userName, int tenantId);
         List<AuthUser> GetAuthUsersByTenantAndDateUpdated(int tenantId, DateTime dateUpdated);
         int SaveAuthUser(AuthUser user, int userId, int tenantId);
+        int CreateNewEcommerceUser(string email, string firstName, string lastName, string password, int accountId, int siteId, int tenantId, int currentUserId);
         void UpdateAuthUser(AuthUser user, int userId, int tenantId);
         void DeleteAuthUser(AuthUser user, int userId);
         int SaveAuthUserLogin(AuthUserLogin userLogin, int userId, int tenantId);

@@ -1071,6 +1071,10 @@
     <Compile Include="Migrations\202009040900489_added_UseInParentCalculations_field_to_ProductKitTypes_table.designer.cs">
       <DependentUpon>202009040900489_added_UseInParentCalculations_field_to_ProductKitTypes_table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202009221131399_added_SessionId_to_AccountAddresses_table.cs" />
+    <Compile Include="Migrations\202009221131399_added_SessionId_to_AccountAddresses_table.designer.cs">
+      <DependentUpon>202009221131399_added_SessionId_to_AccountAddresses_table.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2194,6 +2198,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202009040900489_added_UseInParentCalculations_field_to_ProductKitTypes_table.resx">
       <DependentUpon>202009040900489_added_UseInParentCalculations_field_to_ProductKitTypes_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009221131399_added_SessionId_to_AccountAddresses_table.resx">
+      <DependentUpon>202009221131399_added_SessionId_to_AccountAddresses_table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

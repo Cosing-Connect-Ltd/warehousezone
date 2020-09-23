@@ -1,15 +1,14 @@
-﻿using Ganedata.Core.Entities.Domain;
+﻿using DevExpress.Web.Mvc;
+using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Web.Mvc;
-using Ganedata.Core.Models;
-using DevExpress.Web.Mvc;
-using WMS.CustomBindings;
 using System.Web;
-using Ganedata.Core.Entities.Enums;
+using System.Web.Mvc;
+using WMS.CustomBindings;
 
 namespace WMS.Controllers
 {
@@ -82,7 +81,7 @@ namespace WMS.Controllers
         }
 
         // POST: /Customer/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -140,7 +139,7 @@ namespace WMS.Controllers
         }
 
         // POST: /Customer/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
 
         [HttpPost]
         [ValidateAntiForgeryToken]

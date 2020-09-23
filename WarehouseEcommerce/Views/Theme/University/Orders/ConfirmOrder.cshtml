@@ -8,154 +8,202 @@
 
 }
 
-<section class="nb_sec nb_prdlisting_pgsec">
-    <div class="container">
-        <div class="breadCrumbtopsec order-review-breadcrum">
-            <div class="nb_bread_crumbwrap">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li>></li>
-                        <li class="breadcrumb-item">
-                            <a href="#">Checkout review</a>
-                        </li>
-                    </ol>
-                </nav>
+@using (Html.BeginForm())
+{
+    <section class="nb_sec nb_prdlisting_pgsec">
+        <div class="container">
+            <div class="breadCrumbtopsec order-review-breadcrum">
+                <div class="nb_bread_crumbwrap">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li>></li>
+                            <li class="breadcrumb-item">
+                                <a href="#">Checkout review</a>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
             </div>
-        </div>
-        <div class="nb_sec checkconfirmSec">
-            @Html.Partial("_OrderProgressBar", OrderProgressStep.ReviewItems)
+            <div class="nb_sec checkconfirmSec">
+                @Html.Partial("_OrderProgressBar", OrderProgressStep.ReviewItems)
 
-            <div class="orderConfirmationSection">
-                <h3 style="background: red">@TempData["Error"]</h3>
-                <h4 class="ordConfirmHead">Order Review</h4>
-                <div class="row">
-                    <div class="col-lg-6">
-                        @if (addresses != null && Model.IsAddressSameForBilling != true)
-                        {
-                            <h4 class="subHead">
-                                Billing Address
-                            </h4>
-                            var billingaddress = addresses.FirstOrDefault(u => u.AddTypeBilling == true);
-                            if (billingaddress != null)
+                <div class="orderConfirmationSection">
+                    <h3 style="background: red">@TempData["Error"]</h3>
+                    <h4 class="ordConfirmHead">Order Review</h4>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            @if (addresses != null && Model.IsAddressSameForBilling != true)
                             {
+                                <h4 class="subHead">
+                                    Billing Address
+                                </h4>
+                                var billingaddress = addresses.FirstOrDefault(u => u.AddTypeBilling == true);
+                                if (billingaddress != null)
+                                {
+                                    <p class="content">
+                                        @billingaddress.AddressLine1@(!string.IsNullOrEmpty(billingaddress.AddressLine2) ? $", {billingaddress.AddressLine2}" : "")@(!string.IsNullOrEmpty(billingaddress.AddressLine3) ? $", {billingaddress.AddressLine3}" : "") <br />
+                                        @billingaddress.PostCode@(!string.IsNullOrEmpty(billingaddress.GlobalCountry?.CountryName) ? $", {billingaddress.GlobalCountry.CountryName}" : ""), Phone: @billingaddress.Telephone
+                                    </p>
+                                }
+
+                            }
+
+                            @if (addresses != null)
+                            {
+
+                                if ((DeliveryMethod?)Model.DeliveryMethodId == DeliveryMethod.ToShipmentAddress)
+                                {
+                                    <h4 class="subHead">
+                                        @(Model.IsAddressSameForBilling == true ? "Billing / " : "") Shipment Address
+                                    </h4>
+                                    var shipppingAddress = addresses.FirstOrDefault(u => u.AddTypeShipping == true);
+                                    if (shipppingAddress != null)
+                                    {
+                                        <p class="content">
+                                            @shipppingAddress.AddressLine1@(!string.IsNullOrEmpty(shipppingAddress.AddressLine2) ? $", {shipppingAddress.AddressLine2}" : "")@(!string.IsNullOrEmpty(shipppingAddress.AddressLine3) ? $", {shipppingAddress.AddressLine3}" : "") <br />
+                                            @shipppingAddress.PostCode@(!string.IsNullOrEmpty(shipppingAddress.GlobalCountry?.CountryName) ? $", {shipppingAddress.GlobalCountry.CountryName}" : ""), Phone: @shipppingAddress.Telephone
+                                        </p>
+                                    }
+                                }
+                            }
+
+                            @if ((DeliveryMethod?)Model.DeliveryMethodId == DeliveryMethod.ToPickupPoint && Model.CollectionPoint != null)
+                            {
+                                <h4 class="subHead">
+                                    Collection Point
+                                </h4>
                                 <p class="content">
-                                    @billingaddress.AddressLine1@(!string.IsNullOrEmpty(billingaddress.AddressLine2) ? $", {billingaddress.AddressLine2}" : "")@(!string.IsNullOrEmpty(billingaddress.AddressLine3) ? $", {billingaddress.AddressLine3}" : "") <br />
-                                    @billingaddress.PostCode@(!string.IsNullOrEmpty(billingaddress.GlobalCountry?.CountryName) ? $", {billingaddress.GlobalCountry.CountryName}" : ""), Phone: @billingaddress.Telephone
+                                    @if (Model.CollectionPoint != null)
+                                    {
+                                        <b>@(Model.CollectionPoint.WarehouseName) </b>
+                                        <br />
+                                        @Model.CollectionPoint.AddressLine1@(!string.IsNullOrEmpty(Model.CollectionPoint.AddressLine2) ? $", {Model.CollectionPoint.AddressLine2}" : "")
+                                        @(!string.IsNullOrEmpty(Model.CollectionPoint.AddressLine3) ? $", {Model.CollectionPoint.AddressLine3}" : "")
+                                        <br />
+                                        @Model.CollectionPoint.PostalCode@(!string.IsNullOrEmpty(Model.CollectionPoint.City) ? $", {Model.CollectionPoint.City}" : "")@(!string.IsNullOrEmpty(Model.CollectionPoint.GlobalCountry?.CountryName) ? $", {Model.CollectionPoint.GlobalCountry.CountryName}" : "")
+                                    }
                                 </p>
                             }
 
-                        }
-
-                        @if (addresses != null)
-                        {
-
-                            if ((DeliveryMethod?)Model.DeliveryMethodId == DeliveryMethod.ToShipmentAddress)
-                            {
-                                <h4 class="subHead">
-                                    @(Model.IsAddressSameForBilling == true ? "Billing / " : "") Shipment Address
-                                </h4>
-                                var shipppingAddress = addresses.FirstOrDefault(u => u.AddTypeShipping == true);
-                                if (shipppingAddress != null)
-                                {
-                                    <p class="content">
-                                        @shipppingAddress.AddressLine1@(!string.IsNullOrEmpty(shipppingAddress.AddressLine2) ? $", {shipppingAddress.AddressLine2}" : "")@(!string.IsNullOrEmpty(shipppingAddress.AddressLine3) ? $", {shipppingAddress.AddressLine3}" : "") <br />
-                                        @shipppingAddress.PostCode@(!string.IsNullOrEmpty(shipppingAddress.GlobalCountry?.CountryName) ? $", {shipppingAddress.GlobalCountry.CountryName}" : ""), Phone: @shipppingAddress.Telephone
-                                    </p>
-                                }
-                            }
-                        }
-
-                        @if ((DeliveryMethod?)Model.DeliveryMethodId == DeliveryMethod.ToPickupPoint && Model.CollectionPoint != null)
-                        {
                             <h4 class="subHead">
-                                Collection Point
+                                Delivery Method
+                            </h4>
+                            @if ((DeliveryMethod?)Model.DeliveryMethodId == DeliveryMethod.ToPickupPoint)
+                            {
+                                <p class="content">Pick up (from collection point) - Free</p>
+                            }
+                            else
+                            {
+                                <p class="content">@ViewBag.CurrencySymbol@Model.ShippingRule.Price - By @Model.ShippingRule.Courier @(!string.IsNullOrEmpty(Model.ShippingRule.Description?.Trim()) ? $" - {Model.ShippingRule.Description}" : "")</p>
+                            }
+
+                            <h4 class="subHead">
+                                Payment Method
                             </h4>
                             <p class="content">
-                                @if (Model.CollectionPoint != null)
-                                {
-                                    <b>@(Model.CollectionPoint.WarehouseName) </b>
-                                    <br />
-                                    @Model.CollectionPoint.AddressLine1@(!string.IsNullOrEmpty(Model.CollectionPoint.AddressLine2) ? $", {Model.CollectionPoint.AddressLine2}" : "")
-                                    @(!string.IsNullOrEmpty(Model.CollectionPoint.AddressLine3) ? $", {Model.CollectionPoint.AddressLine3}" : "")
-                                    <br />
-                                    @Model.CollectionPoint.PostalCode@(!string.IsNullOrEmpty(Model.CollectionPoint.City) ? $", {Model.CollectionPoint.City}" : "")@(!string.IsNullOrEmpty(Model.CollectionPoint.GlobalCountry?.CountryName) ? $", {Model.CollectionPoint.GlobalCountry.CountryName}" : "")
-                                }
+                                @((PaymentMethodEnum?)Model.PaymentMethodId == PaymentMethodEnum.SagePay ? "Sage Pay" : ((PaymentMethodEnum?)Model.PaymentMethodId).ToString())
                             </p>
-                        }
+                        </div>
+                        <div class="offset-lg-1 col-lg-5">
+                            <h4 class="subHead">
+                                Product Details
+                            </h4>
+                            <ul class="itemList">
+                                @foreach (var item in Model.CartItems)
+                                {
+                                    <li>
+                                        @(item.ProductMaster?.Name)<br />
+                                        @ViewBag.CurrencySymbol@item.Price, Qty: @Convert.ToInt32(item.Quantity)
+                                    </li>
+                                }
+                            </ul>
+                            <h4 class="subHead">Total Amount</h4>
+                            <h4 class="subHead">@ViewBag.CurrencySymbol@(Model?.TotalOrderAmount ?? 0)</h4>
 
-                        <h4 class="subHead">
-                            Delivery Method
-                        </h4>
-                        @if ((DeliveryMethod?)Model.DeliveryMethodId == DeliveryMethod.ToPickupPoint)
+                        </div>
+                        @if (Model.AccountId == null)
                         {
-                            <p class="content">Pick up (from collection point) - Free</p>
-                        }
-                        else
-                        {
-                            <p class="content">@ViewBag.CurrencySymbol@Model.ShippingRule.Price - By @Model.ShippingRule.Courier @(!string.IsNullOrEmpty(Model.ShippingRule.Description?.Trim()) ? $" - {Model.ShippingRule.Description}" : "")</p>
-                        }
-
-                        <h4 class="subHead">
-                            Payment Method
-                        </h4>
-                        <p class="content">
-                            @((PaymentMethodEnum?)Model.PaymentMethodId == PaymentMethodEnum.SagePay ? "Sage Pay" : ((PaymentMethodEnum?)Model.PaymentMethodId).ToString())
-                        </p>
-                    </div>
-                    <div class="offset-lg-1 col-lg-3">
-                        <h4 class="subHead">
-                            Product Details
-                        </h4>
-                        <ul class="itemList">
-                            @foreach (var item in Model.CartItems)
-                            {
-                                <li>
-                                    @(item.ProductMaster?.Name)<br />
-                                    @ViewBag.CurrencySymbol@item.Price, Qty: @Convert.ToInt32(item.Quantity)
-                                </li>
-                            }
-                        </ul>
-                        <h4 class="subHead">Total Amount</h4>
-                        <h4 class="subHead">@ViewBag.CurrencySymbol@(Model?.TotalOrderAmount ?? 0)</h4>
-
-                    </div>
-                    <div class="saveAddrWrap mt-3 ml-3 mr-3 payment-bottom-btn">
-                        @if ((PaymentMethodEnum?)Model.PaymentMethodId == PaymentMethodEnum.PayPal)
-                        {
-
-
-                            <div class="button-submit">
-                                <button type="button" name="submitNewsletter" class="saveAddrBtn" onclick="window.location.href='@Url.Action("PayPal","orders")'">Proceed To Payment</button>
-                                <a href="@Url.Action("checkout", "orders", new {checkoutStep = CheckoutStep.PaymentDetails})" class="saveAddrBtn mt-3">Back</a>
-                                @*<a href="@Url.Action("Index","Test")" class="btn btn-block cash-btn cashbtn" name="submitNewsletter"> Proceed To Payment</a>*@
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    @Html.EditorFor(model => model.Email, new { htmlattributes = new { @placeholder = "Enter Email Address", @id = "email-address__input" } })
+                                    <span class="text-danger">@Html.ValidationMessageFor(model => model.Email)</span>
+                                </div>
                             </div>
 
-
-                        }
-                        else if ((PaymentMethodEnum?)Model.PaymentMethodId == PaymentMethodEnum.SagePay)
-                        {
-                            using (Html.BeginForm("SagePay", "Orders", FormMethod.Post))
-                            {
-                                <div class="row">
-                                    <fieldset>
-
-                                        <input type="hidden" NAME="currency_code" value="GBP">
-                                        @*<input type="hidden" name="OrderId" value="@ViewBag.OrdersId" />*@
-                                        <input type="hidden" name="TotalPrice" value="@(Model?.TotalOrderAmount ?? 0)" />
-
-                                    </fieldset>
+                            <div class="checkout-options-wrapper col-lg-12">
+                                <div class="checkboxwrap">
+                                    <input class="styled-checkbox"
+                                           id="CreateAccount"
+                                           type="checkbox"
+                                           name="CreateAccount"
+                                           value="@(Model.CreateAccount.ToString())"
+                                           checked="@Model.CreateAccount" />
+                                    <label for="CreateAccount" class="create-account__label" onclick="toggleCreateAccountCheckBox()">Use Email Address To Create Account</label>
                                 </div>
-                                <div class="button-submit">
-                                    <button type="Submit" name="submitNewsletter" class="saveAddrBtn">PROCEED TO PAYMENT</button>
-                                    <a href="@Url.Action("checkout","orders",new{ step = (int)CheckoutStep.PaymentDetails})" class="saveAddrBtn mt-3">BACK</a>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <div class="row" id="user-registration__details-box" style="display:@(Model.CreateAccount != true ? "none" : "block")">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            @Html.EditorFor(model => model.UserFirstName, new { htmlattributes = new { @placeholder = "Enter First Name", @id = "user-first-name__input" } })
+                                            <span id="required-asterisk" style="color:red"> *</span>
+                                            <span class="text-danger">@Html.ValidationMessageFor(model => model.UserFirstName)</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            @Html.EditorFor(model => model.UserFirstName, new { htmlattributes = new { @placeholder = "Enter Last Name", @id = "user-last-name__input" } })
+                                            <span id="required-asterisk" style="color:red"> *</span>
+                                            <span class="text-danger">@Html.ValidationMessageFor(model => model.UserLastName)</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            @Html.EditorFor(model => model.UserPassword, new { htmlattributes = new { @placeholder = "Enter Password", @id = "user-password__input" } })
+                                            <span id="required-asterisk" style="color:red"> *</span>
+                                            <span class="text-danger">@Html.ValidationMessageFor(model => model.UserPassword)</span>
+                                        </div>
+                                    </div>
                                 </div>
-                            }
+                            </div>
                         }
+                        <div class="saveAddrWrap mt-3 ml-3 mr-3 payment-bottom-btn">
+                            <div class="button-submit">
+                                <button type="Submit" name="submitNewsletter" class="saveAddrBtn">PROCEED TO PAYMENT</button>
+                                <a href="@Url.Action("checkout", "orders", new { step = (int)CheckoutStep.PaymentDetails })" class="saveAddrBtn mt-3">BACK</a>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+    <script>
+        function toggleCreateAccountCheckBox() {
+            var e = $("#CreateAccount");
+            if (e.val().toLowerCase() == "true") {
+                e.val("False");
+
+                $("#email-address__input").removeAttr("required")
+                $("#user-first-name__input").removeAttr("required")
+                $("#user-last-name__input").removeAttr("required")
+                $("#user-password__input").removeAttr("required")
+                $("#required-asterisk").remove();
+                $("#user-registration__details-box").hide();
+            }
+            else {
+                e.val("True");
+
+                $("#email-address__input").attr("required", "Required")
+                $("#user-first-name__input").attr("required", "Required")
+                $("#user-last-name__input").attr("required", "Required")
+                $("#user-password__input").attr("required", "Required")
+                $("#email-address__input").after('<span id="required-asterisk" style="color:red"> *</span>');
+                $("#user-registration__details-box").show();
+            }
+        }
+    </script>
+}

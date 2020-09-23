@@ -1,11 +1,10 @@
 ﻿using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Enums;
+using Ganedata.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Web.Mvc;
-using Ganedata.Core.Entities.Enums;
-using Ganedata.Core.Models;
 
 namespace Ganedata.Core.Services
 {
@@ -25,13 +24,14 @@ namespace Ganedata.Core.Services
         IEnumerable<AccountContacts> GetAllTopAccountContactsByTenantId(int tenantId);
         IEnumerable<AccountContacts> GetAllValidAccountContactsByAccountId(int accountId, int tenantId);
         IEnumerable<AccountAddresses> GetAllValidAccountAddressesByAccountId(int accountId, DateTime? lastUpdated = null, bool includeDeleted = false);
+        IEnumerable<AccountAddresses> GetAllValidAccountAddressesByAccountIdOrSessionKey(int accountId, string sessionId = null, DateTime? lastUpdated = null, bool includeDeleted = false);
 
         AccountAddresses SaveAccountAddress(AccountAddresses customeraddresses, int currentUserId);
         void SetAddressType(int addressId, bool isShippingType, bool isBillingType, int currentUserId);
         AccountAddresses GetAccountAddressById(int id);
         IEnumerable<AccountAddresses> GetAccountAddress();
         AccountAddresses DeleteAccountAddress(int addressId, int currentUserId);
-
+        int CreateNewAccountForEcommerceUser(string accountCode, int currentUserId, int tenantId);
         Account SaveAccount(Account model, List<int> accountAddressIds, List<int> accountContactIds,
             int globalCountryIds, int globalCurrencyIds, int priceGroupId, int ownerUserId,
             List<AccountAddresses> addresses, List<AccountContacts> contacts, int userId, int tenantId, string stopReason = null, int[] MarketId = null);

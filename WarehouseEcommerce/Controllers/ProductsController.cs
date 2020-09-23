@@ -375,7 +375,7 @@ namespace WarehouseEcommerce.Controllers
         {
             var model = new WebsiteCartItemsViewModel { WebsiteCartItems = _tenantWebsiteService.GetAllValidCartItems(CurrentTenantWebsite.SiteID, CurrentUserId, CurrentTenantId, HttpContext.Session.SessionID, cartId).ToList() };
 
-            model.ShippmentAddresses = _mapper.Map(_accountServices.GetAllValidAccountAddressesByAccountId(CurrentUser.AccountId ?? 0).Where(u => u.AddTypeShipping == true && u.IsDeleted != true).ToList(), new List<AddressViewModel>());
+            model.ShippmentAddresses = _mapper.Map(_accountServices.GetAllValidAccountAddressesByAccountIdOrSessionKey(CurrentUser.AccountId ?? 0, Session.SessionID).Where(u => u.AddTypeShipping == true && u.IsDeleted != true).ToList(), new List<AddressViewModel>());
 
             model.ShowCartPopUp = cartId.HasValue;
             model.ShowLoginPopUp = CurrentUserId == 0;

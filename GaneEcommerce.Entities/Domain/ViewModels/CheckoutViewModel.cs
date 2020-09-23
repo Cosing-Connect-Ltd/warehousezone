@@ -26,6 +26,7 @@ namespace Ganedata.Core.Entities.Domain
         }
         public int? AccountId { get; set; }
         public int? AccountAddressId { get; set; }
+        public bool? CreateAccount { get; set; }
         public List<CountryViewModel> Countries { get; set; }
         public int? ShippingAddressId { get; set; }
         public int? BillingAddressId { get; set; }
@@ -41,6 +42,7 @@ namespace Ganedata.Core.Entities.Domain
 
         public string UserFirstName { get; set; }
         public string UserLastName { get; set; }
+        public string UserPassword { get; set; }
         public string Email { get; set; }
 
         public string PaypalClientId { get; set; }
