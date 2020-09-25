@@ -57,41 +57,45 @@
 
 @using (Html.BeginForm("Edit", "Locations", FormMethod.Post, new { @id = "frmProcessOrder" }))
 {
-    <div class="col-md-6 pull-left">
+<div class="col-md-6 pull-left">
 
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.OrderNumber, htmlAttributes: new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.DisplayFor(m => m.OrderNumber)
-                @Html.ValidationMessageFor(model => model.OrderNumber)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.Account.AccountCode, htmlAttributes: new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.DisplayFor(m => m.Account.AccountCode)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.Account.AccountNameCode, htmlAttributes: new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.DisplayFor(m => m.Account.AccountNameCode)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(m => m.ConsignmentTypeId, htmlAttributes: new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.DropDownListFor(m => m.ConsignmentTypeId, ViewBag.Consignments as SelectList, "Select Consignment Type", new { @class = "chosen-select form-control" })
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(m => m.DeliveryNumber, htmlAttributes: new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.TextBoxFor(m => m.DeliveryNumber, new { placeholder = "Delivery Number", @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.DeliveryNumber)
-            </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.OrderNumber, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.DisplayFor(m => m.OrderNumber)
+            @Html.ValidationMessageFor(model => model.OrderNumber)
         </div>
     </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.Account.AccountCode, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.DisplayFor(m => m.Account.AccountCode)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.Account.AccountNameCode, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.DisplayFor(m => m.Account.AccountNameCode)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(m => m.DeliveryMethod, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.DropDownListFor(m => m.DeliveryMethod, EnumHelper.GetSelectList(typeof(DeliveryMethods)), "Select Delivery Method", new { @class = "chosen-select form-control" })
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center" style="@(Model.DeliveryMethod != DeliveryMethods.DPD ?"display:none":"")">
+        @Html.LabelFor(model => model.TenantDeliveryServiceId, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8 pull-left" id="divserviceDriver">@Html.DropDownListFor(m => m.TenantDeliveryServiceId, ViewBag.TenantsDeliveryServices as SelectList, "Select Service", new { @class = "chosen-select" })</div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(m => m.DeliveryNumber, htmlAttributes: new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.TextBoxFor(m => m.DeliveryNumber, new { placeholder = "Delivery Number", @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.DeliveryNumber)
+        </div>
+    </div>
+</div>
     <div class="col-md-6 pull-left">
         <div class="input-group h-100 justify-content-center align-items-center">
             @Html.LabelFor(m => m.ShipmentAddressLine1, htmlAttributes: new { @class = "col-md-4" })

@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Ganedata.Core.Entities.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
-using Ganedata.Core.Entities.Domain;
+using System.Web.Mvc;
 
 namespace Ganedata.Core.Entities.Domain
 {
@@ -19,8 +18,10 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Location")]
         public int? LocationId { get; set; }
         [Required]
-        [Display(Name = "Delivery Type")]
-        public int ConsignmentTypeId { get; set; }
+        [Display(Name = "Delivery Method")]
+        public DeliveryMethods DeliveryMethod { get; set; }
+        [Display(Name = "Delivery Service")]
+        public int? TenantDeliveryServiceId { get; set; }
         public virtual Account Account { get; set; }
 
         public int AccountID { get; set; }
@@ -53,7 +54,7 @@ namespace Ganedata.Core.Entities.Domain
         public DateTime? CreatedDate { get; set; }
         public string  DeliveryNo { get; set; }
         public int? UserId { get; set; }
-        
+
 
     }
 
@@ -69,7 +70,7 @@ namespace Ganedata.Core.Entities.Domain
         public string ProductName { get; set; }
         public int? TaxId { get; set; }
 
-        public decimal? Price { get; set; } 
+        public decimal? Price { get; set; }
         public decimal? Quantity { get; set; }
         public int? LocationId { get; set; }
         public string LocationName { get; set; }

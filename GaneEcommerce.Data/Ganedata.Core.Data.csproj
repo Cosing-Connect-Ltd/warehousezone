@@ -1075,6 +1075,14 @@
     <Compile Include="Migrations\202009221131399_added_SessionId_to_AccountAddresses_table.designer.cs">
       <DependentUpon>202009221131399_added_SessionId_to_AccountAddresses_table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202009241435358_replace_ConsignmentType_with_DeliveryMethod_everywhere.cs" />
+    <Compile Include="Migrations\202009241435358_replace_ConsignmentType_with_DeliveryMethod_everywhere.designer.cs">
+      <DependentUpon>202009241435358_replace_ConsignmentType_with_DeliveryMethod_everywhere.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009241539597_add_TenantDeliveryServiceId_to_orders_table.cs" />
+    <Compile Include="Migrations\202009241539597_add_TenantDeliveryServiceId_to_orders_table.designer.cs">
+      <DependentUpon>202009241539597_add_TenantDeliveryServiceId_to_orders_table.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2201,6 +2209,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202009221131399_added_SessionId_to_AccountAddresses_table.resx">
       <DependentUpon>202009221131399_added_SessionId_to_AccountAddresses_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009241435358_replace_ConsignmentType_with_DeliveryMethod_everywhere.resx">
+      <DependentUpon>202009241435358_replace_ConsignmentType_with_DeliveryMethod_everywhere.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009241539597_add_TenantDeliveryServiceId_to_orders_table.resx">
+      <DependentUpon>202009241539597_add_TenantDeliveryServiceId_to_orders_table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

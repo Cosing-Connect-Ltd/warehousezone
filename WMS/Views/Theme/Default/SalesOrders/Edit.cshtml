@@ -199,10 +199,14 @@
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.Label("Consignment Type", htmlAttributes: new { @class = "col-md-4" })
+                @Html.Label("Delivery Method", htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
-                    @Html.DropDownList("ConsignmentTypeId", ViewBag.ConsignmentTypes as SelectList, "Select", new { @class = "chosen-select" })
+                    @Html.DropDownList("DeliveryMethod", EnumHelper.GetSelectList(typeof(DeliveryMethods)), "Select", new { @class = "chosen-select" })
                 </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center" id="delivery-service__selector" style="@(Model.DeliveryMethod != DeliveryMethods.DPD ?"display:none":"")">
+                @Html.LabelFor(model => model.TenantDeliveryServiceId, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8 pull-left" id="divserviceDriver">@Html.DropDownListFor(m => m.TenantDeliveryServiceId, ViewBag.TenantsDeliveryServices as SelectList, "Select Service", new { @class = "chosen-select" })</div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.DirectShip, htmlAttributes: new { @class = "col-md-4" })

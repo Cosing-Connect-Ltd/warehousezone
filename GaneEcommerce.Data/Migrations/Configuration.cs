@@ -601,42 +601,12 @@ namespace Ganedata.Core.Data.Migrations
                 new VehicleInspectionCheckList() { Name = "Tyre & Wheel Fixings", VehicleInspectionTypeId = 2, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow }
                 );
 
-            //add consignment types
-            context.ConsignmentTypes.AddOrUpdate(m => new { m.ConsignmentType, m.TenantId },
-                new OrderConsignmentTypes
-                {
-                    ConsignmentType = "Standard",
-                    TenantId = CurrentTenantId,
-                    DateCreated = DateTime.UtcNow
-                });
-            context.ConsignmentTypes.AddOrUpdate(m => new { m.ConsignmentType, m.TenantId },
-                new OrderConsignmentTypes
-                {
-                    ConsignmentType = "Priority",
-                    TenantId = CurrentTenantId,
-                    DateCreated = DateTime.UtcNow
-                });
-            context.ConsignmentTypes.AddOrUpdate(m => new { m.ConsignmentType, m.TenantId },
-                new OrderConsignmentTypes
-                {
-                    ConsignmentType = "Pre Ten",
-                    TenantId = CurrentTenantId,
-                    DateCreated = DateTime.UtcNow
-                });
-            context.ConsignmentTypes.AddOrUpdate(m => new { m.ConsignmentType, m.TenantId },
-                new OrderConsignmentTypes
-                {
-                    ConsignmentType = "Collection",
-                    TenantId = CurrentTenantId,
-                    DateCreated = DateTime.UtcNow
-                });
-
             // Add Common Warranty types
             context.TenantWarranty.AddOrUpdate(m => new { m.WarrantyName, m.TenantId },
                 new TenantWarranty
                 {
                     WarrantyName = "None",
-                    PostageTypeId = 1,
+                    DeliveryMethod = DeliveryMethods.DPD,
                     PercentageOfPrice = 0,
                     FixedPrice = 0,
                     IsPercent = false,
@@ -649,7 +619,7 @@ namespace Ganedata.Core.Data.Migrations
                 new TenantWarranty
                 {
                     WarrantyName = "Standard",
-                    PostageTypeId = 1,
+                    DeliveryMethod = DeliveryMethods.DPD,
                     PercentageOfPrice = 5,
                     FixedPrice = 0,
                     IsPercent = true,
@@ -661,7 +631,7 @@ namespace Ganedata.Core.Data.Migrations
                 new TenantWarranty
                 {
                     WarrantyName = "Extended",
-                    PostageTypeId = 1,
+                    DeliveryMethod = DeliveryMethods.DPD,
                     PercentageOfPrice = 2,
                     FixedPrice = 0,
                     IsPercent = true,
@@ -673,7 +643,7 @@ namespace Ganedata.Core.Data.Migrations
                 new TenantWarranty
                 {
                     WarrantyName = "Extended Two Years",
-                    PostageTypeId = 1,
+                    DeliveryMethod = DeliveryMethods.DPD,
                     PercentageOfPrice = 0,
                     FixedPrice = 10,
                     IsPercent = false,
@@ -1005,42 +975,12 @@ namespace Ganedata.Core.Data.Migrations
                 new VehicleInspectionCheckList() { Name = "Tyre & Wheel Fixings", VehicleInspectionTypeId = 2, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow }
                 );
 
-            //add consignment types
-            context.ConsignmentTypes.AddOrUpdate(m => new { m.ConsignmentType, m.TenantId },
-                new OrderConsignmentTypes
-                {
-                    ConsignmentType = "DPD",
-                    TenantId = CurrentTenantId,
-                    DateCreated = DateTime.UtcNow
-                });
-            context.ConsignmentTypes.AddOrUpdate(m => new { m.ConsignmentType, m.TenantId },
-                new OrderConsignmentTypes
-                {
-                    ConsignmentType = "DPD Priority",
-                    TenantId = CurrentTenantId,
-                    DateCreated = DateTime.UtcNow
-                });
-            context.ConsignmentTypes.AddOrUpdate(m => new { m.ConsignmentType, m.TenantId },
-                new OrderConsignmentTypes
-                {
-                    ConsignmentType = "DPD Pre Ten",
-                    TenantId = CurrentTenantId,
-                    DateCreated = DateTime.UtcNow
-                });
-            context.ConsignmentTypes.AddOrUpdate(m => new { m.ConsignmentType, m.TenantId },
-                new OrderConsignmentTypes
-                {
-                    ConsignmentType = "Collection",
-                    TenantId = CurrentTenantId,
-                    DateCreated = DateTime.UtcNow
-                });
-
             // Add Common Warranty types
             context.TenantWarranty.AddOrUpdate(m => new { m.WarrantyName, m.TenantId },
                 new TenantWarranty
                 {
                     WarrantyName = "None",
-                    PostageTypeId = 1,
+                    DeliveryMethod = DeliveryMethods.DPD,
                     PercentageOfPrice = 0,
                     FixedPrice = 0,
                     IsPercent = false,
@@ -1053,7 +993,7 @@ namespace Ganedata.Core.Data.Migrations
                 new TenantWarranty
                 {
                     WarrantyName = "Standard",
-                    PostageTypeId = 1,
+                    DeliveryMethod = DeliveryMethods.DPD,
                     PercentageOfPrice = 5,
                     FixedPrice = 0,
                     IsPercent = true,
@@ -1065,7 +1005,7 @@ namespace Ganedata.Core.Data.Migrations
                 new TenantWarranty
                 {
                     WarrantyName = "Extended",
-                    PostageTypeId = 1,
+                    DeliveryMethod = DeliveryMethods.DPD,
                     PercentageOfPrice = 2,
                     FixedPrice = 0,
                     IsPercent = true,
@@ -1077,7 +1017,7 @@ namespace Ganedata.Core.Data.Migrations
                 new TenantWarranty
                 {
                     WarrantyName = "Extended Two Years",
-                    PostageTypeId = 1,
+                    DeliveryMethod = DeliveryMethods.DPD,
                     PercentageOfPrice = 0,
                     FixedPrice = 10,
                     IsPercent = false,
@@ -1429,42 +1369,12 @@ namespace Ganedata.Core.Data.Migrations
                 new VehicleInspectionCheckList() { Name = "Tyre & Wheel Fixings", VehicleInspectionTypeId = 2, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow }
                 );
 
-            //add consignment types
-            context.ConsignmentTypes.AddOrUpdate(m => new { m.ConsignmentType, m.TenantId },
-                new OrderConsignmentTypes
-                {
-                    ConsignmentType = "DPD",
-                    TenantId = CurrentTenantId,
-                    DateCreated = DateTime.UtcNow
-                });
-            context.ConsignmentTypes.AddOrUpdate(m => new { m.ConsignmentType, m.TenantId },
-                new OrderConsignmentTypes
-                {
-                    ConsignmentType = "DPD Priority",
-                    TenantId = CurrentTenantId,
-                    DateCreated = DateTime.UtcNow
-                });
-            context.ConsignmentTypes.AddOrUpdate(m => new { m.ConsignmentType, m.TenantId },
-                new OrderConsignmentTypes
-                {
-                    ConsignmentType = "DPD Pre Ten",
-                    TenantId = CurrentTenantId,
-                    DateCreated = DateTime.UtcNow
-                });
-            context.ConsignmentTypes.AddOrUpdate(m => new { m.ConsignmentType, m.TenantId },
-                new OrderConsignmentTypes
-                {
-                    ConsignmentType = "Collection",
-                    TenantId = CurrentTenantId,
-                    DateCreated = DateTime.UtcNow
-                });
-
             // Add Common Warranty types
             context.TenantWarranty.AddOrUpdate(m => new { m.WarrantyName, m.TenantId },
                 new TenantWarranty
                 {
                     WarrantyName = "None",
-                    PostageTypeId = 1,
+                    DeliveryMethod = DeliveryMethods.DPD,
                     PercentageOfPrice = 0,
                     FixedPrice = 0,
                     IsPercent = false,
@@ -1477,7 +1387,7 @@ namespace Ganedata.Core.Data.Migrations
                 new TenantWarranty
                 {
                     WarrantyName = "Standard",
-                    PostageTypeId = 1,
+                    DeliveryMethod = DeliveryMethods.DPD,
                     PercentageOfPrice = 5,
                     FixedPrice = 0,
                     IsPercent = true,
@@ -1489,7 +1399,7 @@ namespace Ganedata.Core.Data.Migrations
                 new TenantWarranty
                 {
                     WarrantyName = "Extended",
-                    PostageTypeId = 1,
+                    DeliveryMethod = DeliveryMethods.DPD,
                     PercentageOfPrice = 2,
                     FixedPrice = 0,
                     IsPercent = true,
@@ -1501,7 +1411,7 @@ namespace Ganedata.Core.Data.Migrations
                 new TenantWarranty
                 {
                     WarrantyName = "Extended Two Years",
-                    PostageTypeId = 1,
+                    DeliveryMethod = DeliveryMethods.DPD,
                     PercentageOfPrice = 0,
                     FixedPrice = 10,
                     IsPercent = false,
@@ -1853,42 +1763,12 @@ namespace Ganedata.Core.Data.Migrations
                 new VehicleInspectionCheckList() { Name = "Tyre & Wheel Fixings", VehicleInspectionTypeId = 2, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow }
                 );
 
-            //add consignment types
-            context.ConsignmentTypes.AddOrUpdate(m => new { m.ConsignmentType, m.TenantId },
-                new OrderConsignmentTypes
-                {
-                    ConsignmentType = "DPD",
-                    TenantId = CurrentTenantId,
-                    DateCreated = DateTime.UtcNow
-                });
-            context.ConsignmentTypes.AddOrUpdate(m => new { m.ConsignmentType, m.TenantId },
-                new OrderConsignmentTypes
-                {
-                    ConsignmentType = "DPD Priority",
-                    TenantId = CurrentTenantId,
-                    DateCreated = DateTime.UtcNow
-                });
-            context.ConsignmentTypes.AddOrUpdate(m => new { m.ConsignmentType, m.TenantId },
-                new OrderConsignmentTypes
-                {
-                    ConsignmentType = "DPD Pre Ten",
-                    TenantId = CurrentTenantId,
-                    DateCreated = DateTime.UtcNow
-                });
-            context.ConsignmentTypes.AddOrUpdate(m => new { m.ConsignmentType, m.TenantId },
-                new OrderConsignmentTypes
-                {
-                    ConsignmentType = "Collection",
-                    TenantId = CurrentTenantId,
-                    DateCreated = DateTime.UtcNow
-                });
-
             // Add Common Warranty types
             context.TenantWarranty.AddOrUpdate(m => new { m.WarrantyName, m.TenantId },
                 new TenantWarranty
                 {
                     WarrantyName = "None",
-                    PostageTypeId = 1,
+                    DeliveryMethod = DeliveryMethods.DPD,
                     PercentageOfPrice = 0,
                     FixedPrice = 0,
                     IsPercent = false,
@@ -1901,7 +1781,7 @@ namespace Ganedata.Core.Data.Migrations
                 new TenantWarranty
                 {
                     WarrantyName = "Standard",
-                    PostageTypeId = 1,
+                    DeliveryMethod = DeliveryMethods.DPD,
                     PercentageOfPrice = 5,
                     FixedPrice = 0,
                     IsPercent = true,
@@ -1913,7 +1793,7 @@ namespace Ganedata.Core.Data.Migrations
                 new TenantWarranty
                 {
                     WarrantyName = "Extended",
-                    PostageTypeId = 1,
+                    DeliveryMethod = DeliveryMethods.DPD,
                     PercentageOfPrice = 2,
                     FixedPrice = 0,
                     IsPercent = true,
@@ -1925,7 +1805,7 @@ namespace Ganedata.Core.Data.Migrations
                 new TenantWarranty
                 {
                     WarrantyName = "Extended Two Years",
-                    PostageTypeId = 1,
+                    DeliveryMethod = DeliveryMethods.DPD,
                     PercentageOfPrice = 0,
                     FixedPrice = 10,
                     IsPercent = false,
@@ -2283,42 +2163,12 @@ namespace Ganedata.Core.Data.Migrations
                 new VehicleInspectionCheckList() { Name = "Tyre & Wheel Fixings", VehicleInspectionTypeId = 2, TenantId = CurrentTenantId, DateCreated = DateTime.UtcNow }
                 );
 
-            //add consignment types
-            context.ConsignmentTypes.AddOrUpdate(m => new { m.ConsignmentType, m.TenantId },
-                new OrderConsignmentTypes
-                {
-                    ConsignmentType = "DPD",
-                    TenantId = CurrentTenantId,
-                    DateCreated = DateTime.UtcNow
-                });
-            context.ConsignmentTypes.AddOrUpdate(m => new { m.ConsignmentType, m.TenantId },
-                new OrderConsignmentTypes
-                {
-                    ConsignmentType = "DPD Priority",
-                    TenantId = CurrentTenantId,
-                    DateCreated = DateTime.UtcNow
-                });
-            context.ConsignmentTypes.AddOrUpdate(m => new { m.ConsignmentType, m.TenantId },
-                new OrderConsignmentTypes
-                {
-                    ConsignmentType = "DPD Pre Ten",
-                    TenantId = CurrentTenantId,
-                    DateCreated = DateTime.UtcNow
-                });
-            context.ConsignmentTypes.AddOrUpdate(m => new { m.ConsignmentType, m.TenantId },
-                new OrderConsignmentTypes
-                {
-                    ConsignmentType = "Collection",
-                    TenantId = CurrentTenantId,
-                    DateCreated = DateTime.UtcNow
-                });
-
             // Add Common Warranty types
             context.TenantWarranty.AddOrUpdate(m => new { m.WarrantyName, m.TenantId },
                 new TenantWarranty
                 {
                     WarrantyName = "None",
-                    PostageTypeId = 1,
+                    DeliveryMethod = DeliveryMethods.DPD,
                     PercentageOfPrice = 0,
                     FixedPrice = 0,
                     IsPercent = false,
@@ -2331,7 +2181,7 @@ namespace Ganedata.Core.Data.Migrations
                 new TenantWarranty
                 {
                     WarrantyName = "Standard",
-                    PostageTypeId = 1,
+                    DeliveryMethod = DeliveryMethods.DPD,
                     PercentageOfPrice = 5,
                     FixedPrice = 0,
                     IsPercent = true,
@@ -2343,7 +2193,7 @@ namespace Ganedata.Core.Data.Migrations
                 new TenantWarranty
                 {
                     WarrantyName = "Extended",
-                    PostageTypeId = 1,
+                    DeliveryMethod = DeliveryMethods.DPD,
                     PercentageOfPrice = 2,
                     FixedPrice = 0,
                     IsPercent = true,
@@ -2355,7 +2205,7 @@ namespace Ganedata.Core.Data.Migrations
                 new TenantWarranty
                 {
                     WarrantyName = "Extended Two Years",
-                    PostageTypeId = 1,
+                    DeliveryMethod = DeliveryMethods.DPD,
                     PercentageOfPrice = 0,
                     FixedPrice = 10,
                     IsPercent = false,

@@ -208,12 +208,11 @@ namespace Ganedata.Core.Services
                     {
                         serial.SoldWarrantyStartDate = DateTime.UtcNow;
                         serial.SoldWarrentyEndDate = DateTime.UtcNow.AddDays(warrantyInfo.WarrantyDays);
-                        serial.PostageTypeId = warrantyInfo.OrderConsignmentTypes.ConsignmentTypeId;
+                        serial.DeliveryMethod = warrantyInfo.DeliveryMethod;
                         serial.SoldWarrantyIsPercent = warrantyInfo.IsPercent;
                         serial.SoldWarrantyName = warrantyInfo.WarrantyName;
                         serial.SoldWarrantyPercentage = warrantyInfo.PercentageOfPrice;
                         serial.SoldWarrantyFixedPrice = warrantyInfo.FixedPrice;
-                        serial.PostageTypeId = warrantyInfo.PostageTypeId;
                     }
 
                     if (context.Entry(serial).State == EntityState.Detached)
@@ -421,7 +420,7 @@ namespace Ganedata.Core.Services
 
                     TenentId = user.TenantId,
                     WarehouseId = caCurrent.CurrentWarehouse().WarehouseId,
-                    ConsignmentTypeId = cons_type > 0 ? cons_type : null,
+                    DeliveryMethod = cons_type > 0 ? (DeliveryMethods)cons_type : (DeliveryMethods?)null,
                     InventoryTransactionTypeId = type
                 };
 
@@ -486,7 +485,7 @@ namespace Ganedata.Core.Services
                             TenentId = user.TenantId,
 
                             WarehouseId = altOrder.WarehouseId ?? 0,
-                            ConsignmentTypeId = cons_type > 0 ? cons_type : null,
+                            DeliveryMethod = cons_type > 0 ? (DeliveryMethods)cons_type : (DeliveryMethods?)null,
                             InventoryTransactionTypeId = altOrder.InventoryTransactionTypeId,
                             ShipmentAddressLine1 = altOrder.ShipmentAddressLine1,
                             ShipmentAddressLine2 = altOrder.ShipmentAddressLine2,
@@ -645,7 +644,7 @@ namespace Ganedata.Core.Services
                                 OrderID = altOrder?.OrderID,
                                 TenentId = user.TenantId,
                                 WarehouseId = altOrder.WarehouseId ?? 0,
-                                ConsignmentTypeId = cons_type > 0 ? cons_type : null,
+                                DeliveryMethod = cons_type > 0 ? (DeliveryMethods)cons_type : (DeliveryMethods?)null,
                                 InventoryTransactionTypeId = altOrder.InventoryTransactionTypeId,
                                 ShipmentAddressLine1 = altOrder.ShipmentAddressLine1,
                                 ShipmentAddressLine2 = altOrder.ShipmentAddressLine2,

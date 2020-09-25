@@ -248,6 +248,29 @@ namespace WMS.Controllers
             return Json(item.PalletProductID, JsonRequestBehavior.AllowGet);
         }
 
+
+        [HttpPost]
+        public ActionResult AddAllProcessedProductsToPallet(int orderProcessId, int? palletId)
+        {
+            Pallet pallet = null;
+            if (palletId == null || palletId == 0)
+            {
+                pallet = _palletingService.CreateNewPallet(orderProcessId, CurrentUserId);
+                var model = new PalletGenerateViewModel
+                {
+                    AllCurrentPallets = _palletingService.GetAllPallets(5, orderProcessId: orderProcessId).Select(m => new SelectListItem() { Text = m.PalletNumber, Value = m.PalletID.ToString() }).ToList(),
+                    NextPalletNumber = pallet.PalletNumber,
+                    SelectedPalletID = pallet.PalletID
+                };
+
+                palletId = pallet.PalletID;
+            }
+
+            _palletingService.AddFulFillmentPalletAllOrderProducts(orderProcessId, palletId.Value, CurrentUserId);
+
+            return pallet != null ? Json(pallet, JsonRequestBehavior.AllowGet) : Json(true, JsonRequestBehavior.AllowGet);
+        }
+
         public string ExportPalletItemsList(PalletOrderProductsCollection model)
         {
             return "<html><body><form id='frmPrintPallets'>" + _helper.GetActionResultHtml(this, "_PalletItemsPrintList", model) + "</form></body></html>";
@@ -525,7 +548,7 @@ namespace WMS.Controllers
                 }
                 var cfiles = files.Select(a => a).ToList();
                 return Json(new { files = cfiles.Count == 0 ? null : cfiles });
-                
+
             }
             else
             {

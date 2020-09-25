@@ -438,11 +438,6 @@ namespace Ganedata.Core.Services
             return GenerateNextOrderNumber(InventoryTransactionTypeEnum.WorksOrder, tenantId);
         }
 
-        public IEnumerable<OrderConsignmentTypes> GetAllValidConsignmentTypes(int tenantId)
-        {
-            return _currentDbContext.ConsignmentTypes.Where(a => a.IsDeleted != true && a.TenantId == tenantId);
-        }
-
         public Order CreateOrderByOrderNumber(string orderNumber, int productId, int tenantId, int warehouseId, InventoryTransactionTypeEnum transType, int userId, decimal quantity)
         {
             var context = DependencyResolver.Current.GetService<IApplicationContext>();
@@ -1246,7 +1241,7 @@ namespace Ganedata.Core.Services
                     OrderDiscount = item.OrderProcessDiscount,
                     InvoiceNo = item.TerminalInvoiceNumber,
                     OrderToken = item.OrderToken,
-                    ConsignmentTypeId = item.ConsignmentTypeId,
+                    DeliveryMethod = item.DeliveryMethod,
                     ShipmentAddressLine1 = item.ShipmentAddressLine1,
                     ShipmentAddressPostcode = item.ShipmentAddressPostcode
                 };
@@ -2016,12 +2011,11 @@ namespace Ganedata.Core.Services
                 {
                     serial.SoldWarrantyStartDate = DateTime.UtcNow;
                     serial.SoldWarrentyEndDate = DateTime.UtcNow.AddDays(warrantyInfo.WarrantyDays);
-                    serial.PostageTypeId = warrantyInfo.OrderConsignmentTypes.ConsignmentTypeId;
                     serial.SoldWarrantyIsPercent = warrantyInfo.IsPercent;
                     serial.SoldWarrantyName = warrantyInfo.WarrantyName;
                     serial.SoldWarrantyPercentage = warrantyInfo.PercentageOfPrice;
                     serial.SoldWarrantyFixedPrice = warrantyInfo.FixedPrice;
-                    serial.PostageTypeId = warrantyInfo.PostageTypeId;
+                    serial.DeliveryMethod = warrantyInfo.DeliveryMethod;
                 }
 
                 if (_currentDbContext.Entry(serial).State == EntityState.Detached)

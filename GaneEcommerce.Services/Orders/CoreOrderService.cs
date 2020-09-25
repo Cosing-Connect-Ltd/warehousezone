@@ -362,11 +362,6 @@ namespace Ganedata.Core.Services
             return PurchaseOrderService.GetOrderProcessDetailByOrderProcessId(orderProcessId);
         }
 
-        public IEnumerable<OrderConsignmentTypes> GetAllValidConsignmentTypes(int tenantId)
-        {
-            return OrderService.GetAllValidConsignmentTypes(tenantId);
-        }
-
         public Order CreateBlindShipmentOrder(List<BSDto> bsList, int accountId, string deliveryNumber, string poNumber, int tenantId,
             int warehouseId, int userId, InventoryTransactionTypeEnum transType, AccountShipmentInfo accountShipmentInfo = null)
         {

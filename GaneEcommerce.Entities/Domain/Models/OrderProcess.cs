@@ -22,8 +22,8 @@ namespace Ganedata.Core.Entities.Domain
         public int OrderProcessID { get; set; }
         [Display(Name = "Delivery Number")]
         public string DeliveryNO { get; set; }
-        [Display(Name = "Consignment Type")]
-        public int? ConsignmentTypeId { get; set; }
+        [Display(Name = "Delivery Method")]
+        public DeliveryMethods? DeliveryMethod { get; set; }
         [Required]
         [Display(Name = "Order Id")]
         public int? OrderID { get; set; }
@@ -51,7 +51,6 @@ namespace Ganedata.Core.Entities.Domain
 
         public OrderProcessStatusEnum? OrderProcessStatusId { get; set; }
         public virtual Order Order { get; set; }
-        public virtual OrderConsignmentTypes ConsignmentType { get; set; }
         public virtual ICollection<OrderProcessDetail> OrderProcessDetail { get; set; }
         public virtual ICollection<OrderProofOfDelivery> OrderProofOfDelivery { get; set; }
         [Display(Name = "Shipment Address Line1")]

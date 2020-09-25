@@ -1,5 +1,6 @@
 namespace Ganedata.Core.Entities.Domain
 {
+    using Ganedata.Core.Entities.Enums;
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
@@ -27,16 +28,13 @@ namespace Ganedata.Core.Entities.Domain
 
         public int WarrantyDays { get; set; }
 
-        [Display(Name = "Postage Type")]
-        public int PostageTypeId { get; set; }
+        [Display(Name = "Delivery Method")]
+        public DeliveryMethods DeliveryMethod { get; set; }
 
         // 0 = No hot swap, 1 = Hot swap agreed
         [Required]
         [Display(Name = "Hot Swap")]
         public bool HotSwap { get; set; }
-
-        [ForeignKey("PostageTypeId")]
-        public virtual OrderConsignmentTypes OrderConsignmentTypes { get; set; }
         [ForeignKey("TenantId")]
         public virtual Tenant Tenant { get; set; }
     }

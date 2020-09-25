@@ -694,7 +694,7 @@ namespace Ganedata.Core.Services
                             if (warrantyInfo != null)
                             {
                                 serial.SoldWarrentyEndDate = DateTime.UtcNow.AddDays(warrantyInfo.WarrantyDays);
-                                serial.PostageTypeId = warrantyInfo.OrderConsignmentTypes.ConsignmentTypeId;
+                                serial.DeliveryMethod = warrantyInfo.DeliveryMethod;
                                 serial.SoldWarrantyIsPercent = warrantyInfo.IsPercent;
                                 serial.SoldWarrantyName = warrantyInfo.WarrantyName;
                                 serial.SoldWarrantyPercentage = warrantyInfo.PercentageOfPrice;

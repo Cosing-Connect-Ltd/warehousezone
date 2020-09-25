@@ -14,8 +14,6 @@ namespace Ganedata.Core.Entities.Domain
             AllCurrentPallets = new List<SelectListItem>();
         }
         public bool PalletsEnabled { get; set; }
-
-
         public string NextPalletNumber { get; set; }
         public bool IsNewPallet { get; set; }
         public bool IsCompleted { get; set; }
@@ -34,7 +32,6 @@ namespace Ganedata.Core.Entities.Domain
 
     public class PalletDispatchViewModel
     {
-
         public PalletDispatchViewModel()
         {
             AllSentMethods = new List<SelectListItem>();
@@ -166,7 +163,6 @@ namespace Ganedata.Core.Entities.Domain
         public DateTime DateCreated { get; set; }
         public int CreatedBy { get; set; }
     }
-
 
 
     public class PalletOrderProductsCollection

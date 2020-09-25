@@ -213,11 +213,11 @@ namespace Ganedata.Core.Entities.Domain
         public int? ShipmentAccountAddressId { get; set; }
         [ForeignKey("ShipmentAccountAddressId")]
         public virtual AccountAddresses ShipmentAccountAddress { get; set; }
-
-        public int? ConsignmentTypeId { get; set; }
-        [ForeignKey("ConsignmentTypeId")]
-        public virtual OrderConsignmentTypes ConsignmentType { get; set; }
-
+        public DeliveryMethods? DeliveryMethod { get; set; }
+        [Display(Name = "Delivery Service")]
+        public int? TenantDeliveryServiceId { get; set; }
+        [ForeignKey("TenantDeliveryServiceId")]
+        public virtual TenantDeliveryService TenantDeliveryService { get; set; }
         public decimal? AmountPaidByAccount { get; set; }
         public decimal? AccountBalanceBeforePayment { get; set; }
         public decimal? AccountBalanceOnPayment { get; set; }
