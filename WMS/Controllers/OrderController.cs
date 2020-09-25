@@ -1436,7 +1436,7 @@ namespace WMS.Controllers
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
-            var result = OrderService.UpdateOrderStatus(orderId, statusId, CurrentTenantId);
+            var result = OrderService.UpdateOrderStatus(orderId, statusId, CurrentUserId);
 
             if (result != null && result.OrderStatusID == statusId)
             {

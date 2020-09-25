@@ -147,7 +147,11 @@ namespace Ganedata.Core.Entities.Enums
         Approved = 12,
         [Display(Name = "Posted To Accounts")]
         PostedToAccounts = 13,
-        Invoiced = 14
+        Invoiced = 14,
+        Preparing = 15,
+        QualityChecks = 16,
+        OutForDelivery = 17,
+        Delivered = 18
     }
 
     public enum PalletStatusEnum

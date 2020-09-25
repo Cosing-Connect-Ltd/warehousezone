@@ -480,7 +480,7 @@ namespace WMS.CustomBindings
         {
 
             var orderServices = DependencyResolver.Current.GetService<ICoreOrderService>();
-            var transactions = orderServices.GetAllDirectSalesOrdersIq(CurrentTenantId, CurrentWarehouseId, OrderStatusEnum.Complete);
+            var transactions = orderServices.GetAllPaidDirectSalesOrdersIq(CurrentTenantId, CurrentWarehouseId);
 
             return transactions;
         }

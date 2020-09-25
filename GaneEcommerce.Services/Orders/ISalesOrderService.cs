@@ -23,7 +23,7 @@ namespace Ganedata.Core.Services
         IQueryable<SalesOrderViewModel> GetAllPickerAssignedSalesOrders(int tenantId, int warehouseId, int pickerId, OrderStatusEnum? status = null);
         IQueryable<SalesOrderViewModel> GetAllPickerUnassignedSalesOrders(int tenantId, int warehouseId, int pickerId, OrderStatusEnum? status = null);
 
-        IQueryable<SalesOrderViewModel> GetAllDirectSalesOrdersIq(int tenantId, int warehouseId, OrderStatusEnum? statusId = null);
+        IQueryable<SalesOrderViewModel> GetAllPaidDirectSalesOrdersIq(int tenantId, int warehouseId, OrderStatusEnum? statusId = null);
         IQueryable<SalesOrderViewModel> GetAllReturnOrders(int tenantId, int warehouseId, OrderStatusEnum? statusId = null);
 
         bool AuthoriseSalesOrder(int orderId, int userId, string notes, bool unauthorize = false);
