@@ -51,7 +51,7 @@ namespace WMS.Controllers.WebAPI
 
                 var baseUrl = new Uri(ConfigurationManager.AppSettings["WarehouseStoreBaseUri"]);
                 string[] imageFormats = ConfigurationManager.AppSettings["ImageFormats"].Split(new char[] { ',' });
-                var filePath = p.ProductFiles.Where(a => imageFormats.Contains(new DirectoryInfo(a.FilePath).Extension, StringComparer.CurrentCultureIgnoreCase))
+                var filePath = p.ProductFiles.Where(a => imageFormats.Contains(new DirectoryInfo(a.FilePath).Extension, StringComparer.CurrentCultureIgnoreCase) && a.IsDeleted != true)
                     .OrderBy(a => a.SortOrder).FirstOrDefault()?.FilePath;
                 mappedProduct.MainImage = filePath == null ? "" : baseUrl + filePath;
                 products.Add(mappedProduct);
