@@ -562,16 +562,15 @@ namespace Ganedata.Core.Services
                                                                                         o.OrderStatusID == OrderStatusEnum.Pending));
         }
 
-        public IQueryable<SalesOrderViewModel> GetAllDirectSalesOrdersIq(int tenantId, int warehouseId, OrderStatusEnum? statusId = null)
+        public IQueryable<SalesOrderViewModel> GetAllPaidDirectSalesOrdersIq(int tenantId, int warehouseId, OrderStatusEnum? statusId = null)
         {
 
             IQueryable<TenantLocations> childWarehouseIds = _currentDbContext.TenantWarehouses.Where(x => x.ParentWarehouseId == warehouseId);
 
             var result = _currentDbContext.Order.AsNoTracking().Where(o => o.TenentId == tenantId &&
                                                                            (o.WarehouseId == warehouseId || childWarehouseIds.Any(x => x.ParentWarehouseId == warehouseId)) &&
-                                                                           (!statusId.HasValue || o.OrderStatusID == statusId.Value) &&
-                                                                           (o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.DirectSales) &&
-                                                                           o.IsDeleted != true)
+                                                                           (!statusId.HasValue || o.OrderStatusID == statusId.Value) && o.OrderStatusID != OrderStatusEnum.AwaitingAuthorisation
+                                                                           && o.OrderStatusID != OrderStatusEnum.Approved && (o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.DirectSales) && o.IsDeleted != true)
                 .OrderByDescending(x => x.DateCreated)
                 .Select(ToSalesOrderViewModel());
 

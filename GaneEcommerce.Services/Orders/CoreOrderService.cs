@@ -512,9 +512,9 @@ namespace Ganedata.Core.Services
             return SalesOrderService.GetAllPickerUnassignedSalesOrders(tenantId, warehouseId, pickerId, status);
         }
 
-        public IQueryable<SalesOrderViewModel> GetAllDirectSalesOrdersIq(int tenantId, int warehouseId, OrderStatusEnum? statusId = null)
+        public IQueryable<SalesOrderViewModel> GetAllPaidDirectSalesOrdersIq(int tenantId, int warehouseId, OrderStatusEnum? statusId = null)
         {
-            return SalesOrderService.GetAllDirectSalesOrdersIq(tenantId, warehouseId, statusId);
+            return SalesOrderService.GetAllPaidDirectSalesOrdersIq(tenantId, warehouseId, statusId);
         }
         public IQueryable<SalesOrderViewModel> GetAllReturnOrders(int tenantId, int warehouseId, OrderStatusEnum? statusId = null)
         {

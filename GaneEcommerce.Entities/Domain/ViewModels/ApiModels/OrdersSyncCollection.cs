@@ -131,4 +131,12 @@ namespace Ganedata.Core.Models
         public List<string> RejectedSerials { get; set; }
     }
 
+    public class UpdateOrderStatusViewModel
+    {
+        public string SerialNo { get; set; }
+        public int OrderId { get; set; }
+        public OrderStatusEnum StatusId { get; set; }
+        public int UserId { get; set; }
+    }
+
 }
