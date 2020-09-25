@@ -968,7 +968,7 @@ function CollectSerials() {
         LoadingPanel.Show();
 
         data = {
-            serialList: serialArray, lineid: $('#line_id').val(), product: prid, delivery: delivery, order: ordid, cons_Type: $("#ConsignmentTypeId option:selected").val(), location: $("#Locations option:selected").val(), type: parseInt(type), shipmentInfo: shippingInfo, groupToken: groupToken
+            serialList: serialArray, lineid: $('#line_id').val(), product: prid, delivery: delivery, order: ordid, cons_Type: $("#DeliveryMethod option:selected").val(), location: $("#Locations option:selected").val(), type: parseInt(type), shipmentInfo: shippingInfo, groupToken: groupToken
         };
         $.post(url, data, function (result) {
             if (type === "12" || type === "14" || type === "17") {
@@ -1032,7 +1032,7 @@ function beginAddSeriesCallBack(s, e) {
     e.customArgs["delivery"] = $('#delivery').val();
     e.customArgs["order"] = $('#order').val();
     e.customArgs["qty"] = $('#qty').val();
-    e.customArgs["consignmenttype"] = $("#ConsignmentTypeId option:selected").val();
+    e.customArgs["consignmenttype"] = $("#DeliveryMethod option:selected").val();
     e.customArgs["type"] = $('#type').val();
     e.customArgs["line_id"] = $('#line_id').val();
     e.customArgs["rec_qty"] = $('#rec_qty').val();
@@ -1064,7 +1064,7 @@ function beginAddSeriesCallBackPalletes(s, e) {
         e.customArgs["delivery"] = $('#delivery').val();
         e.customArgs["order"] = $('#order').val();
         e.customArgs["qty"] = $('#qty').val();
-        e.customArgs["consignmenttype"] = $("#ConsignmentTypeId option:selected").val();
+        e.customArgs["consignmenttype"] = $("#DeliveryMethod option:selected").val();
         e.customArgs["type"] = $('#type').val();
         e.customArgs["line_id"] = $('#line_id').val();
         e.customArgs["rec_qty"] = $('#rec_qty').val();
@@ -1872,7 +1872,7 @@ var updateSOShipmentInfo = function () {
     if (blindshipment !== 'True' || blindshipment === "") {
         $("#divDisplayAccountAddresses").css("visibility", "visible");
         $("#so-shipment-info").css("visibility", "visible");
-        if ($("#ConsignmentTypeId").val() === '4' || $("#ConsignmentTypeId").val() === '') {
+        if ($("#DeliveryMethod").val() === '2' || $("#DeliveryMethod").val() === '') { /*DeliveryMethods.Collection = 2*/
             $("#so-shipment-info").slideUp();
         } else {
             $("#so-shipment-info").slideDown();
@@ -1916,8 +1916,15 @@ function InitialiseSalesOrderShipmentEvents() {
 
 
 
-    $("#ConsignmentTypeId").on("change", function () {
+    $("#DeliveryMethod").on("change", function () {
         updateSOShipmentInfo();
+
+        if ($("#DeliveryMethod").val() === '3') {
+            $("#delivery-service__selector").show();
+        }
+        else {
+            $("#delivery-service__selector").hide();
+        }
     });
 
     $("#ShipmentAccountAddressId").on("change", function () {
@@ -2688,7 +2695,7 @@ function returnnon_ser_Product() {
                 if (data.error) {
                     if (data.errorcode === 1) {
                         if (confirm("Product " + sku + " was not sold against order " + ordernumber + ", do you still want to proceed with Return ?")) {
-                            //Proceed with return 
+                            //Proceed with return
                             {
                                 addNonSerProduct_Inventory($('#grorderid').val(), pid, qty);
                             }
@@ -2700,7 +2707,7 @@ function returnnon_ser_Product() {
                     else if (data.errorcode === 2) {
 
                         if (confirm("Quantity exceeds with shipped quantity for order " + ordernumber + "for product " + sku + ", do you still want to proceed with Return ?")) {
-                            //Proceed with return 
+                            //Proceed with return
                             addNonSerProduct_Inventory($('#grorderid').val(), pid, qty);
                         }
                         else {
@@ -2710,7 +2717,7 @@ function returnnon_ser_Product() {
                 }
                 else {
                     addNonSerProduct_Inventory($('#grorderid').val(), pid, qty);
-                    //Proceed with return 
+                    //Proceed with return
                     LoadingPanel.Hide();
                 }
             },

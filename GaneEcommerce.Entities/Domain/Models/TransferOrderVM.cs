@@ -1,9 +1,6 @@
 ﻿using Ganedata.Core.Entities.Enums;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace WMS.VModels
 {
@@ -18,7 +15,7 @@ namespace WMS.VModels
         public string Warehouse { get; set; }
         [Display(Name = "Delivery Number")]
         public string DeliveryNumber { get; set; }
-        public int ConsignmentTypeId { get; set; }
+        public DeliveryMethod DeliveryMethod { get; set; }
         public InventoryTransactionTypeEnum InventoryTransactionTypeId { get; set; }
     }
 }

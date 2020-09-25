@@ -17,21 +17,21 @@
         <div class="clearfix"></div>
     </div>
 
-   
+
     <div class="input-group pallet-holder">
         <div class="col-md-6 p-0">
 
             @Html.Action("_PalletOrderDetails", "Pallets", new { id = Model.SelectedOrderProcessId })
-            
+
         </div>
-      
+
             <div class="col-md-6 p-0">
                 @Html.Action("_PalletItemsList", new { palletId = Model.SelectedPalletID })
             </div>
- 
+
             <div class="clearfix"></div>
         </div>
-  
+
        @* <h2 class="bg-danger">No processed sales orders found for palleting.</h2>*@
- 
+
 </div>

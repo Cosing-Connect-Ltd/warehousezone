@@ -28,7 +28,7 @@ namespace Ganedata.Core.Models
         public Guid? OrderToken { get; set; }
         public int OrderProcessID { get; set; }
         public string DeliveryNo { get; set; }
-        public int? ConsignmentTypeId { get; set; }
+        public DeliveryMethods? DeliveryMethod { get; set; }
         public int? OrderID { get; set; }
         public int WarehouseId { get; set; }
         public DateTime DateCreated { get; set; }

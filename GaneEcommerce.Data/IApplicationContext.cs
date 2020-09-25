@@ -42,8 +42,6 @@ namespace Ganedata.Core.Data
         DbSet<ResourceShifts> ResourceShifts { get; set; }
         DbSet<Appointments> Appointments { get; set; }
         DbSet<MarketRouteSchedule> MarketRouteSchedules { get; set; }
-        DbSet<OrderConsignmentTypes> ConsignmentTypes { get; set; }
-
         DbSet<GlobalUOM> GlobalUOM { get; set; }
         DbSet<GlobalUOMTypes> GlobalUOMTypes { get; set; }
         DbSet<GlobalWeightGroups> GlobalWeightGroups { get; set; }

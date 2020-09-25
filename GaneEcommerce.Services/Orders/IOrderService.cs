@@ -15,7 +15,6 @@ namespace Ganedata.Core.Services
         IEnumerable<AuthUser> GetAllAuthorisedUsers(int tenantId, bool includeSuperUser = false);
         IEnumerable<JobType> GetAllValidJobTypes(int tenantId);
         IEnumerable<JobSubType> GetAllValidJobSubTypes(int tenantId);
-        IEnumerable<OrderConsignmentTypes> GetAllValidConsignmentTypes(int tenantId);
         IQueryable<Order> GetValidSalesOrderByOrderNumber(string orderNumber, int tenantId, int? warehouseId = null);
         Order GetOrderById(int orderId);
         bool IsOrderNumberAvailable(string orderNumber, int orderId);

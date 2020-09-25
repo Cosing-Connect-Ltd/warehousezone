@@ -31,7 +31,7 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Buy Price")]
         public decimal BuyPrice { get; set; }
 
-        
+
         [Display(Name = "Warranty Type")]
         public int? WarrantyID { get; set; }
         public int SoldWarrantyDays { get; set; }
@@ -44,7 +44,7 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Warranty End Date")]
         public DateTime? SoldWarrentyEndDate { get; set; }
         public string SoldWarrantyName { get; set; }
-        public int? PostageTypeId { get; set; }
+        public DeliveryMethods? DeliveryMethod { get; set; }
         [Display(Name = "Expiry Date")]
         public DateTime? ExpiryDate { get; set; }
         [Display(Name = "Date Created")]
@@ -65,6 +65,6 @@ namespace Ganedata.Core.Entities.Domain
         public virtual TenantLocations TenentWarehouse { get; set; }
         public virtual Locations Location { get; set; }
 
-        
+
     }
 }

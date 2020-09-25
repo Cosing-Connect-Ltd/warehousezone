@@ -10,6 +10,7 @@ namespace Ganedata.Core.Services
     public interface IPalletingService
     {
         PalletProduct AddFulFillmentPalletProduct(PalletProductAddViewModel model);
+        void AddFulFillmentPalletAllOrderProducts(int orderProcessId, int palletId, int currentUserId);
         Pallet CreateNewPallet(int orderProcessId, int userId);
         List<PalletProduct> GetFulFillmentPalletProductsForPallet(int palletId);
         List<PalletProductsSync> GetAllPalletProductsForSync(DateTime? afterDate);

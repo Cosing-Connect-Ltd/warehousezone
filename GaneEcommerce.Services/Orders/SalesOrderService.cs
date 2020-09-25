@@ -133,9 +133,9 @@ namespace Ganedata.Core.Services
                 order.ShipmentAccountAddressId = (int?)null;
             }
 
-            if (order.ConsignmentTypeId == 4)
+            if (order.DeliveryMethod == DeliveryMethods.Collection)
             {
-                order.ShipmentAddressLine1 = _currentDbContext.ConsignmentTypes.FirstOrDefault(u => u.ConsignmentTypeId == 4)?.ConsignmentType;
+                order.ShipmentAddressLine1 = DeliveryMethods.Collection.ToString();
                 order.ShipmentAddressLine2 = null;
                 order.ShipmentAddressLine3 = null;
                 order.ShipmentAddressLine4 = null;
@@ -349,9 +349,9 @@ namespace Ganedata.Core.Services
                 obj.DateUpdated = DateTime.UtcNow;
                 obj.UpdatedBy = userId;
                 obj.WarehouseId = warehouseId;
-                if (order.ConsignmentTypeId == 4)
+                if (order.DeliveryMethod == DeliveryMethods.Collection)
                 {
-                    order.ShipmentAddressLine1 = _currentDbContext.ConsignmentTypes.FirstOrDefault(u => u.ConsignmentTypeId == 4)?.ConsignmentType;
+                    order.ShipmentAddressLine1 = DeliveryMethods.Collection.ToString();
                     order.ShipmentAddressLine2 = null;
                     order.ShipmentAddressLine3 = null;
                     order.ShipmentAddressLine4 = null;

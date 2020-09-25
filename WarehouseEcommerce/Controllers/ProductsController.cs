@@ -23,7 +23,6 @@ namespace WarehouseEcommerce.Controllers
         private readonly IActivityServices _activityServices;
         private readonly ITenantsCurrencyRateServices _tenantServices;
         private readonly IProductLookupService _productlookupServices;
-        private readonly ILookupServices _lookupServices;
         private readonly IProductServices _productServices;
         private readonly ICommonDbServices _commonDbServices;
         private readonly IMapper _mapper;
@@ -51,7 +50,6 @@ namespace WarehouseEcommerce.Controllers
             _activityServices = activityServices;
             _tenantServices = tenantsCurrencyRateServices;
             _productlookupServices = productlookupServices;
-            _lookupServices = lookupServices;
             _productServices = productServices;
             _commonDbServices = commonDbServices;
             _mapper = mapper;

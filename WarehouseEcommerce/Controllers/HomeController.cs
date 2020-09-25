@@ -2,12 +2,10 @@
 using Ganedata.Core.Services;
 using System;
 using System.Configuration;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Web.Mvc;
-using WarehouseEcommerce.Helpers;
 using WarehouseEcommerce.Models;
 using WarehouseEcommerce.ViewModels;
 using Ganedata.Core.Entities.Enums;
@@ -20,7 +18,6 @@ namespace WarehouseEcommerce.Controllers
         private readonly IUserService _userService;
         private readonly IActivityServices _activityServices;
         private readonly ITenantsServices _tenantServices;
-        private readonly ILookupServices _lookupServices;
         private readonly IProductServices _productServices;
         private readonly IProductLookupService _productlookupServices;
         private readonly ITenantWebsiteService _tenantWebsiteService;
@@ -30,7 +27,6 @@ namespace WarehouseEcommerce.Controllers
             ITenantsServices tenantServices, ITenantWebsiteService tenantWebsiteService, IProductPriceService productPriceService)
             : base(orderService, propertyService, accountServices, lookupServices, tenantsCurrencyRateServices, tenantWebsiteService)
         {
-            _lookupServices = lookupServices;
             _userService = userService;
             _activityServices = activityServices;
             _tenantServices = tenantServices;

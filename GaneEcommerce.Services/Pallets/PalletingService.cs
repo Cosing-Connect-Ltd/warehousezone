@@ -51,6 +51,34 @@ namespace Ganedata.Core.Services
             return fulfillmentProduct;
         }
 
+        public void AddFulFillmentPalletAllOrderProducts(int orderProcessId, int palletId, int currentUserId)
+        {
+            var orderProcessDetails = _currentDbContext.OrderProcessDetail.Where(m => m.OrderProcessId == orderProcessId);
+
+            var previousAssignedProductsToPallets = _currentDbContext.PalletProducts.Where(i => orderProcessDetails.Select(p => p.ProductId).Contains(i.ProductID)).ToList();
+
+            previousAssignedProductsToPallets.ForEach(i => {
+                i.IsDeleted = true;
+            });
+
+            foreach (var orderDetail in orderProcessDetails)
+            {
+                var fulfillmentProduct = new PalletProduct()
+                {
+                    OrderID = orderDetail.OrderDetail.OrderID,
+                    OrderProcessDetailID = orderDetail.OrderProcessDetailID,
+                    PalletID = palletId,
+                    ProductID = orderDetail.ProductId,
+                    Quantity = orderDetail.QtyProcessed,
+                    CreatedBy = currentUserId,
+                    DateCreated = DateTime.Now
+                };
+
+                _currentDbContext.PalletProducts.Add(fulfillmentProduct);
+            }
+            _currentDbContext.SaveChanges();
+        }
+
         public List<PalletProduct> GetFulFillmentPalletProductsForPallet(int palletId)
         {
             return _currentDbContext.PalletProducts.Where(m => m.PalletID == palletId && m.IsDeleted != true).ToList();

@@ -96,7 +96,7 @@ else
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.Label("Consignments", htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
-                    @Html.DropDownListFor(m => m.ConsignmentTypeId, ViewBag.Consignments as SelectList, new { @class = "chosen-select" })
+                    @Html.DropDownListFor(m => m.DeliveryMethod, EnumHelper.GetSelectList(typeof(DeliveryMethods)), new { @class = "chosen-select" })
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">

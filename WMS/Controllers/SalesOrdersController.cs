@@ -23,10 +23,11 @@ namespace WMS.Controllers
         private readonly IAccountServices _accountServices;
         private readonly IProductServices _productServices;
         private readonly IUserService _userService;
+        private readonly IPalletingService _palletingService;
         private readonly IMapper _mapper;
 
         public SalesOrdersController(IProductServices productServices, ISalesOrderService salesOrderService, ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices,
-            IAppointmentsService appointmentsService, IGaneConfigurationsHelper configurationsHelper, IEmailServices emailServices, ITenantLocationServices tenantLocationservices, IUserService userService, ITenantsServices tenantsServices, IMapper mapper)
+            IAppointmentsService appointmentsService, IGaneConfigurationsHelper configurationsHelper, IEmailServices emailServices, ITenantLocationServices tenantLocationservices, IUserService userService, IPalletingService palletingService, ITenantsServices tenantsServices, IMapper mapper)
             : base(orderService, propertyService, accountServices, lookupServices, appointmentsService, configurationsHelper, emailServices, tenantLocationservices, tenantsServices)
         {
             _salesServices = orderService;
@@ -34,6 +35,7 @@ namespace WMS.Controllers
             _productServices = productServices;
             _mapper = mapper;
             _userService = userService;
+            _palletingService = palletingService;
         }
         // GET: SalesOrders
         public ActionResult Index()
@@ -166,7 +168,7 @@ namespace WMS.Controllers
                 ViewBag.AccountAddresses = new List<SelectListItem>() { new SelectListItem() { Text = "Select", Value = "0" } };
                 ViewBag.ShipmentAccountAddressId = 0;
                 ViewBag.IsShipmentToCustomAddress = false;
-                ViewBag.ConsignmentTypes = new SelectList(OrderService.GetAllValidConsignmentTypes(CurrentTenantId), "ConsignmentTypeId", "ConsignmentType");
+                ViewBag.TenantsDeliveryServices = new SelectList(_palletingService.GetAllDpdServices(), "Id", "NetworkDescription");
 
 
                 if (string.IsNullOrEmpty(pageToken))
@@ -258,7 +260,6 @@ namespace WMS.Controllers
                 ViewBag.ShipmentAccountAddressId = 0;
                 ViewBag.IsShipmentToCustomAddress = false;
 
-                ViewBag.ConsignmentTypes = new SelectList(OrderService.GetAllValidConsignmentTypes(CurrentTenantId), "ConsignmentTypeId", "ConsignmentType");
                 ViewBag.SupplierID = new SelectList(AccountServices.GetAllValidAccounts(CurrentTenantId, EnumAccountType.Supplier), "AccountID", "CompanyName", Order.AccountID);
                 return View(Order);
             }
@@ -288,7 +289,6 @@ namespace WMS.Controllers
 
                 ViewBag.ForceRegeneratePageToken = "True";
                 ViewBag.ForceRegeneratedPageToken = shipmentAndRecipientInfo.PageSessionToken ?? Guid.NewGuid().ToString();
-                ViewBag.ConsignmentTypes = new SelectList(OrderService.GetAllValidConsignmentTypes(CurrentTenantId), "ConsignmentTypeId", "ConsignmentType");
                 ViewBag.SupplierID = new SelectList(AccountServices.GetAllValidAccounts(CurrentTenantId, EnumAccountType.Supplier), "AccountID", "CompanyName", Order.AccountID);
                 return View(Order);
             }
@@ -327,6 +327,8 @@ namespace WMS.Controllers
 
             GaneOrderDetailsSessionHelper.SetOrderDetailSessions(ViewBag.ForceRegeneratedPageToken, _mapper.Map(odList, new List<OrderDetailSessionViewModel>()));
 
+            ViewBag.TenantsDeliveryServices = new SelectList(_palletingService.GetAllDpdServices(), "Id", "NetworkDescription", Order.TenantDeliveryServiceId);
+
             SetViewBagItems(tenant, EnumAccountType.Customer, Order);
 
             int ids = 0;
@@ -349,7 +351,7 @@ namespace WMS.Controllers
                     ViewBag.Warning = "No account address found";
                 }
 
-                if (Order.ConsignmentTypeId.HasValue && Order.ConsignmentTypeId.Value != (int)ConsignmentTypeEnum.Collection && Order.ShipmentAccountAddressId > 0)
+                if (Order.DeliveryMethod.HasValue && Order.DeliveryMethod != DeliveryMethods.Collection && Order.ShipmentAccountAddressId > 0)
                 {
                     ViewBag.ShipmentAccountAddressId = Order.ShipmentAccountAddressId;
                     ViewBag.IsShipmentToAccountAddress = true;
@@ -363,7 +365,6 @@ namespace WMS.Controllers
                 }
             }
 
-            ViewBag.ConsignmentTypes = new SelectList(OrderService.GetAllValidConsignmentTypes(CurrentTenantId), "ConsignmentTypeId", "ConsignmentType", Order.ConsignmentTypeId);
 
             return View(Order);
         }
@@ -442,7 +443,7 @@ namespace WMS.Controllers
             {
                 var account = AccountServices.GetAccountsById(Order.AccountID.Value);
                 ViewBag.AccountAddresses = new SelectList(account.AccountAddresses, "AddressID", "FullAddressValue", Order.ShipmentAccountAddressId);
-                if (Order.ConsignmentTypeId.HasValue && Order.ConsignmentTypeId.Value != (int)ConsignmentTypeEnum.Collection && Order.ShipmentAccountAddressId > 0)
+                if (Order.DeliveryMethod.HasValue && Order.DeliveryMethod != DeliveryMethods.Collection && Order.ShipmentAccountAddressId > 0)
                 {
                     ViewBag.ShipmentAccountAddressId = Order.ShipmentAccountAddressId;
                     ViewBag.IsShipmentToAccountAddress = true;
@@ -456,7 +457,6 @@ namespace WMS.Controllers
                 }
             }
 
-            ViewBag.ConsignmentTypes = new SelectList(OrderService.GetAllValidConsignmentTypes(CurrentTenantId), "ConsignmentTypeId", "ConsignmentType", Order.ConsignmentTypeId);
 
             return View(Order);
         }
@@ -513,13 +513,14 @@ namespace WMS.Controllers
                 return HttpNotFound();
             }
 
+            ViewBag.TenantsDeliveryServices = new SelectList(_palletingService.GetAllDpdServices(), "Id", "NetworkDescription", Order.TenantDeliveryServiceId);
+
             VerifyOrderAccountStatus(Order);
 
             var orderDto = _mapper.Map<ReceivePOVM>(Order);
             orderDto.DeliveryNumber = GaneStaticAppExtensions.GenerateDateRandomNo();
             orderDto.InventoryTransactionTypeId = (int)InventoryTransactionTypeEnum.SalesOrder;
             orderDto.AccountID = Order.AccountID ?? 0;
-            ViewBag.Consignments = new SelectList(OrderService.GetAllValidConsignmentTypes(CurrentTenantId), "ConsignmentTypeId", "ConsignmentType", Order.ConsignmentTypeId);
 
             //get http refferer
 

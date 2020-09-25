@@ -152,7 +152,6 @@ namespace WMS.Controllers
                 return HttpNotFound();
             }
             VerifyOrderStatus(Order.OrderID);
-            ViewBag.Consignments = new SelectList(OrderService.GetAllValidConsignmentTypes(CurrentTenantId), "ConsignmentTypeId", "ConsignmentType");
             var orderDto = new VModels.TransferOrderVM
             {
                 OrderID = Order.OrderID,
