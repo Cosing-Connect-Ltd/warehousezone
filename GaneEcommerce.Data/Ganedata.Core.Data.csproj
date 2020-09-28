@@ -1083,6 +1083,10 @@
     <Compile Include="Migrations\202009241539597_add_TenantDeliveryServiceId_to_orders_table.designer.cs">
       <DependentUpon>202009241539597_add_TenantDeliveryServiceId_to_orders_table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202009281303400_rebate-percentage-added-in-ProductAccountCodes.cs" />
+    <Compile Include="Migrations\202009281303400_rebate-percentage-added-in-ProductAccountCodes.designer.cs">
+      <DependentUpon>202009281303400_rebate-percentage-added-in-ProductAccountCodes.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2215,6 +2219,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202009241539597_add_TenantDeliveryServiceId_to_orders_table.resx">
       <DependentUpon>202009241539597_add_TenantDeliveryServiceId_to_orders_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009281303400_rebate-percentage-added-in-ProductAccountCodes.resx">
+      <DependentUpon>202009281303400_rebate-percentage-added-in-ProductAccountCodes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
