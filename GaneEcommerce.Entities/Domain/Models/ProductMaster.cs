@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -220,22 +221,29 @@ namespace Ganedata.Core.Entities.Domain
         {
             get
             {
-                var file = ProductFiles.Where(x => x != null).FirstOrDefault(x => x.HoverImage == true && x.IsDeleted != true);
+                var file = ProductFiles.Where(x => x != null && IsImage(x)).FirstOrDefault(x => x.HoverImage == true && x.IsDeleted != true);
                 if (file == null)
                 {
-                    file = ProductFiles.Where(x => x != null).FirstOrDefault(x => x.IsDeleted != true);
+                    file = ProductFiles.Where(x => x != null && IsImage(x)).FirstOrDefault(x => x.IsDeleted != true);
                 }
                 return file?.FilePath;
             }
         }
+
+        private bool IsImage(ProductFiles x)
+        {
+            var ImageFormats = ".jpeg,.png,.gif,.bmp,.jpg";
+            return ImageFormats.Contains(Path.GetExtension(x.FilePath));
+        }
+
         public string DefaultImage
         {
             get
             {
-                var file = ProductFiles.Where(x => x != null).FirstOrDefault(x => x.DefaultImage == true && x.IsDeleted != true);
+                var file = ProductFiles.Where(x => x != null && IsImage(x)).FirstOrDefault(x => x.DefaultImage == true && x.IsDeleted != true);
                 if (file == null)
                 {
-                    file = ProductFiles.Where(x => x != null).FirstOrDefault(x => x.IsDeleted != true);
+                    file = ProductFiles.Where(x => x != null && IsImage(x)).FirstOrDefault(x => x.IsDeleted != true);
                 }
                 return file?.FilePath;
             }
