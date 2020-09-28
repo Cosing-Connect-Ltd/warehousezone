@@ -15,11 +15,13 @@ namespace Ganedata.Core.Services
     {
         private readonly IApplicationContext _currentDbContext;
         private readonly IMapper _mapper;
+        private readonly IProductPriceService _productPriceService;
 
-        public InvoiceService(IApplicationContext currentDbContext, IMapper mapper)
+        public InvoiceService(IApplicationContext currentDbContext, IMapper mapper, IProductPriceService productPriceService)
         {
             _currentDbContext = currentDbContext;
             _mapper = mapper;
+            _productPriceService = productPriceService;
         }
 
         public IQueryable<InvoiceMaster> GetAllInvoiceMasters(int TenantId)
@@ -475,16 +477,14 @@ namespace Ganedata.Core.Services
 
             foreach (var item in InvocieDetaildata)
             {
-                var itemBuyPrice = _currentDbContext.OrderDetail.Where(u => u.DateCreated < item.DateCreated && u.ProductId == item.ProductId && u.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder && u.IsDeleted != true).OrderByDescending(u => u.OrderDetailID).FirstOrDefault();
-                var buyPrice = itemBuyPrice?.Price;
-                if (buyPrice == null || buyPrice == 0) buyPrice = item.Product.BuyPrice;
-                buyPrice = buyPrice + (item.Product?.LandedCost ?? 0);
-                // order details where ordertype is purcahse order and sku matches and date is less then  item.datecreated first or default order by descending
-                var amount = (decimal?)(item.Quantity * (buyPrice ?? item.Product.BuyPrice));
+                var buyPrice = _productPriceService.GetPurchasePrice(item.ProductId, item.DateCreated);
+                var amount = (decimal?)(item.Quantity * buyPrice);
 
                 NetAmtB += amount ?? 0;
             }
+
             return NetAmtB;
+
         }
 
         public decimal GetNetAmtSelling(int InvoiceMasterId)
