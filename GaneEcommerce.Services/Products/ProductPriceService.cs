@@ -410,5 +410,25 @@ namespace Ganedata.Core.Services
         {
             return _context.ProductSpecialPrices.Where(x => x.TenantId == tenantId && (includeIsDeleted || x.IsDeleted != true));
         }
+
+        public decimal GetPurchasePrice(int productId, DateTime? invoiceDetailCreatedData = null)
+        {
+            var product = _context.ProductMaster.FirstOrDefault(u => u.ProductId == productId && u.IsDeleted != true);
+            var itemBuyPrice = _context.OrderDetail.Where(u => u.DateCreated < invoiceDetailCreatedData && u.ProductId == productId && u.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder && u.IsDeleted != true).OrderByDescending(u => u.OrderDetailID).FirstOrDefault();
+            var rebatePercentage = _context.ProductAccountCodes.FirstOrDefault(u => u.AccountID == itemBuyPrice.Order.AccountID && u.RebatePercentage > 0 && u.ProductId == productId && u.IsDeleted != true)?.RebatePercentage;
+
+            var buyPrice = itemBuyPrice?.Price;
+            if (buyPrice == null || buyPrice == 0)
+            {
+                buyPrice = product?.BuyPrice;
+            }
+            if (rebatePercentage.HasValue && rebatePercentage > 0)
+            {
+                buyPrice = buyPrice - Math.Round(d: (buyPrice.Value / 100) * (rebatePercentage.Value), 2);
+            }
+            buyPrice = buyPrice + (product.LandedCost ?? 0);
+            return (buyPrice ?? 0);
+
+        }
     }
 }

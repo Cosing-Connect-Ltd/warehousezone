@@ -169,10 +169,13 @@ function productaccountSave() {
     $("#vldPrAccountCode").addClass("validation-summary-valid");
 
     if (IsValidForm('#frmproductaccountcode')) {
+
         var value;
         var code;
         var deliveryType;
         var orderingNotes;
+        var rebatePercentage;
+
         $.each($('#frmproductaccountcode').serializeArray(), function (i, field) {
 
             if (field.name == 'AccountID') {
@@ -180,34 +183,28 @@ function productaccountSave() {
             }
             else if (field.name == 'ProdAccCode') {
                 code = field.value;
-
-
             }
             else if (field.name == 'ProdDeliveryType') {
                 deliveryType = field.value;
-
-
             }
             else if (field.name == 'ProdOrderingNotes') {
                 orderingNotes = field.value;
-
-
             }
 
-            else {
-
-
-
-
+            else if (field.name == 'RebatePercentage') {
+                rebatePercentage = field.value;
             }
         });
+
         var dataRec =
         {
             "AccountID": value,
             "ProdAccCode": code,
             "ProdDeliveryType": deliveryType,
-            "ProdOrderingNotes": orderingNotes
+            "ProdOrderingNotes": orderingNotes,
+            "RebatePercentage": rebatePercentage
         };
+
         $.ajax({
             url: "/Products/_CreateProductAccount",
             data: dataRec,
@@ -219,23 +216,16 @@ function productaccountSave() {
             }
         });
 
-
-
-
         LoadingPanel.Hide();
         pcModalproductaccount.Hide();
 
     }
-    else {
-
-
-    }
 }
+
 function cancelproductaccount() {
     pcModalproductaccount.Hide();
-
-
 }
+
 function productCategoryPost() {
     $("#vldProductCategory").removeClass("validation-summary-errors");
     $("#vldProductCategory").addClass("validation-summary-valid");
@@ -276,7 +266,6 @@ function productCategoryPost() {
             LoadingPanel.Hide();
         });
     }
-
 }
 
 function cancelproductCategoryadd() {
@@ -286,14 +275,12 @@ function cancelproductCategoryadd() {
 
 function cancelproductgroupadd() {
     pcModalproductgroup.Hide();
-
 }
 
 function productGroupPost() {
 
     $("#vldProductGroup").removeClass("validation-summary-errors");
     $("#vldProductGroup").addClass("validation-summary-valid");
-
 
     if (IsValidForm('#frmprgroup')) {
 
@@ -319,7 +306,6 @@ function productGroupPost() {
                     $("#drpPG").trigger("chosen:updated");
                 }
 
-
                 LoadingPanel.Hide();
                 pcModalproductgroup.Hide();
             }
@@ -342,21 +328,16 @@ function productGroupPost() {
             LoadingPanel.Hide();
         })
     }
-    else {
-
-
-    }
 }
+
 function showproductgrouppopup() {
-
     pcModalproductgroup.Show();
-
 }
+
 function showlocationpopup() {
-
     pcModalLocations.Show();
-
 }
+
 function attributeValueSave() {
     $("#vldAttributeValue").removeClass("validation-summary-errors");
     $("#vldAttributeValue").addClass("validation-summary-valid");
@@ -371,12 +352,8 @@ function attributeValueSave() {
         LoadingPanel.Hide();
         pcModalAttributesValues.Hide();
         $("#ProductAttributesIds").trigger("chosen:updated");
-
-
     }
-
 }
-
 
 function attributeSave() {
     $("#vldAttribute").removeClass("validation-summary-errors");
@@ -414,14 +391,13 @@ function attributeSave() {
             ul.append("<li> " + result.errormessage + "</li>");
             LoadingPanel.Hide();
         })
-
     }
-
 }
-function pcModalAttributesValues_EndCallback(s, e) {
 
+function pcModalAttributesValues_EndCallback(s, e) {
     GetAttributeValuesById($("#drpattribute option:selected").val());
 }
+
 function GetAttributeValuesById(attributeId) {
     if (attributeId !== undefined || attributeId !== "" || attributeId !== null) {
         $.post("/Products/GetAttributeValuesById/" + attributeId, function (result) {
@@ -432,16 +408,12 @@ function GetAttributeValuesById(attributeId) {
                     $.each(result.data, function (i, item) {
                         $('#AttributeValueId').append($('<option></option>').val(item.AttributeValueId).html(item.Value));
                     });
-
                 }
 
                 $("#AttributeValueId").trigger("chosen:updated");
             }
         });
     }
-
-
-
 }
 
 function attributesvalueSave() {
@@ -489,22 +461,23 @@ function attributesvalueSave() {
 }
 function cancellocationadd() {
     pcModalLocations.Hide();
-
 }
+
 function cancelattributevalueadd() {
     pcModalAttributesValues.Hide();
-
 }
+
 function cancelattributeadd() {
     pcModalAttributes.Hide();
-
 }
+
 function IsValidForm(form) {
     InitializeValidationRulesForForm(form);
     var validator = $.data($(form)[0], 'validator');
     if (validator == null) return true;
     return validator.form();
 }
+
 function InitializeValidationRulesForForm(form) {
     var form = $(form);
     if (form.attr("executed"))
@@ -548,12 +521,9 @@ function SubmitLocation() {
             ul.append("<li>" + result.errormessage + "</li>");
             $("#drp").focus();
         })
-
     }
-
 }
 function opengrouppopup(s, e) {
-
 
     var group = Productgroup.GetValue();
     if (group == null) return;
@@ -567,18 +537,18 @@ function opengrouppopup(s, e) {
     });
 
 }
+
 function openlocationpopup(s, e) {
     var location = Productlocation.GetValue();
     if (location == null) return;
     else
         alert(location);
 }
+
 function ModalBC_StockMove(s, e) {
-
     e.customArgs["Id"] = $('#selkeyMoveStock').val();
-
-
 }
+
 function moveStockSubmit() {
     $("#vldOrdDet").removeClass("validation-summary-errors");
     $("#vldOrdDet").addClass("validation-summary-valid");
@@ -591,56 +561,40 @@ function moveStockSubmit() {
             _stockListgv.Refresh();
             ModalStockMove.Hide();
             LoadingPanel.Hide();
-
-
-
-
         })
     }
-
 }
+
 function ShowPHistoryModal(e) {
     var productid = prdid.GetValue();
-
     if (productid == null || productid == "") { return alert("Please select product"); }
-
-
     ModelPriceHistory.Show();
     return false;
-
 }
+
 function movestockshow() {
     var id = $('#selkeyMoveStock').val();
     if (id == undefined || id == '') {
         $("#infoMsg").html("There is no product(s) under this location").show();
         $('#infoMsg').delay(3000).fadeOut();
-
     }
     else
         ModalStockMove.Show();
-
 }
 //////////////////////////////////////////////////////
 ////                Product Kit and Recipe FUNCTIONS   //////////////
 /////////////////////////////////////////////////////
 function ProductKitChanges(s, e) {
-
     var comboproductIds = comboBox.GetValue();
     $("#ProductKit").val(comboproductIds);
-
 }
 
 function AttributeChange() {
     GetAttributeValuesById($("#drpattribute option:selected").val());
-
-
 }
 
 /////////////////////////////////////////////////////
 
-
 $(document).ready(function () {
     loadKitProductGridItemEvents();
-
-
 });

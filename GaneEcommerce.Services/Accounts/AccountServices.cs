@@ -117,6 +117,7 @@ namespace Ganedata.Core.Services
                 entry.Property(e => e.ProdAccCode).IsModified = true;
                 entry.Property(e => e.ProdDeliveryType).IsModified = true;
                 entry.Property(e => e.ProdOrderingNotes).IsModified = true;
+                entry.Property(e => e.RebatePercentage).IsModified = true;
             }
             _currentDbContext.SaveChanges();
             return model;
