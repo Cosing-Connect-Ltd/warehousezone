@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
@@ -232,7 +233,7 @@ namespace Ganedata.Core.Entities.Domain
 
         private bool IsImage(ProductFiles x)
         {
-            var ImageFormats = ".jpeg,.png,.gif,.bmp,.jpg";
+            var ImageFormats = ConfigurationManager.AppSettings["ImageFormats"].Split(new char[] { ',' });
             return ImageFormats.Contains(Path.GetExtension(x.FilePath));
         }
 
