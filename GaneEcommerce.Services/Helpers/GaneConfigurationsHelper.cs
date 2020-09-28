@@ -179,7 +179,7 @@ namespace Ganedata.Core.Services
                 mailmsg = new MailMessage();
                 mailmsg.ReplyToList.Add(new MailAddress(tenantConfig.DefaultReplyToAddress));
                 var notificationItem = _emailServices.GetTenantEmailNotificationQueueById(notification.TenantEmailNotificationQueueId);
-                mailmsg.AlternateViews.Add(CreateAlternateView(notificationItem.EmailSubject + "<br/>" + TranslateEmailTemplateForOrder(notificationItem, tenantId, worksOrderNotificationType, accountId, UserId, confrmationLink)));
+                mailmsg.AlternateViews.Add(CreateAlternateView(TranslateEmailTemplateForOrder(notificationItem, tenantId, worksOrderNotificationType, accountId, UserId, confrmationLink)));
 
                 if (notificationItem.OrderId > 0 && notificationItem.Order == null)
                 {
