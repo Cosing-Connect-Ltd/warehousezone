@@ -497,14 +497,14 @@ namespace Ganedata.Core.Services
             return SalesOrderService.GetAllCompletedSalesOrdersIq(tenantId, warehouseId, type);
         }
 
-        public IQueryable<SalesOrderViewModel> GetAllPickerAssignedSalesOrders(int tenantId, int warehouseId, int pickerId, OrderStatusEnum? status = null)
+        public IQueryable<SalesOrderViewModel> GetAllPickerAssignedSalesOrders(int tenantId, int warehouseId, OrderStatusEnum? status = null)
         {
-            return SalesOrderService.GetAllPickerAssignedSalesOrders(tenantId, warehouseId, pickerId, status);
+            return SalesOrderService.GetAllPickerAssignedSalesOrders(tenantId, warehouseId, status);
         }
 
-        public IQueryable<SalesOrderViewModel> GetAllPickerUnassignedSalesOrders(int tenantId, int warehouseId, int pickerId, OrderStatusEnum? status = null)
+        public IQueryable<SalesOrderViewModel> GetAllPickerUnassignedSalesOrders(int tenantId, int warehouseId, OrderStatusEnum? status = null)
         {
-            return SalesOrderService.GetAllPickerUnassignedSalesOrders(tenantId, warehouseId, pickerId, status);
+            return SalesOrderService.GetAllPickerUnassignedSalesOrders(tenantId, warehouseId, status);
         }
 
         public IQueryable<SalesOrderViewModel> GetAllPaidDirectSalesOrdersIq(int tenantId, int warehouseId, OrderStatusEnum? statusId = null)

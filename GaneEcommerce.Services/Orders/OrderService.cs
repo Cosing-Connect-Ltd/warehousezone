@@ -3397,6 +3397,7 @@ namespace Ganedata.Core.Services
             if (order != null)
             {
                 order.PickerId = pickerId;
+                order.ExpectedDate = DateTime.Today;
                 order.UpdatedBy = userId;
                 order.DateUpdated = DateTime.UtcNow;
                 _currentDbContext.Entry(order).State = EntityState.Modified;
@@ -3414,6 +3415,7 @@ namespace Ganedata.Core.Services
                 if (order != null)
                 {
                     order.PickerId = pickerId;
+                    order.ExpectedDate = DateTime.Today;
                     order.UpdatedBy = userId;
                     order.DateUpdated = DateTime.UtcNow;
                     _currentDbContext.Entry(order).State = EntityState.Modified;

@@ -510,30 +510,30 @@ namespace WMS.Controllers
             ViewBag.orderid = Id;
             return PartialView("_WorksOrderDetails", OrderService.GetWorksOrderDetails(Id, CurrentTenantId));
         }
-        public ActionResult _SalesOrders(int? type, int? pickerId)
+        public ActionResult _SalesOrders(int? type)
         {
             var viewModel = GetSalesOrdersListViewModel(type);
-            return PrepareSalesOrdersListActionResult(viewModel, type, pickerId ?? 0);
+            return PrepareSalesOrdersListActionResult(viewModel, type);
         }
 
-        public ActionResult _SalesOrdersPaging(GridViewPagerState pager, int? type, int? pickerId)
+        public ActionResult _SalesOrdersPaging(GridViewPagerState pager, int? type)
         {
             var viewModel = GetSalesOrdersListViewModel(type);
             viewModel.Pager.Assign(pager);
-            return PrepareSalesOrdersListActionResult(viewModel, type, pickerId ?? 0);
+            return PrepareSalesOrdersListActionResult(viewModel, type);
         }
-        public ActionResult _SalesOrdersFiltering(GridViewFilteringState filteringState, int? type, int? pickerId)
+        public ActionResult _SalesOrdersFiltering(GridViewFilteringState filteringState, int? type)
         {
             var viewModel = GetSalesOrdersListViewModel(type);
             viewModel.ApplyFilteringState(filteringState);
-            return PrepareSalesOrdersListActionResult(viewModel, type, pickerId ?? 0);
+            return PrepareSalesOrdersListActionResult(viewModel, type);
         }
 
-        public ActionResult _SalesOrdersSorting(GridViewColumnState column, bool reset, int? type, int? pickerId)
+        public ActionResult _SalesOrdersSorting(GridViewColumnState column, bool reset, int? type)
         {
             var viewModel = GetSalesOrdersListViewModel(type);
             viewModel.ApplySortingState(column, reset);
-            return PrepareSalesOrdersListActionResult(viewModel, type, pickerId ?? 0);
+            return PrepareSalesOrdersListActionResult(viewModel, type);
         }
 
         private GridViewModel GetSalesOrdersListViewModel(int? type)
@@ -563,10 +563,9 @@ namespace WMS.Controllers
             return viewModel;
         }
 
-        private ActionResult PrepareSalesOrdersListActionResult(GridViewModel viewModel, int? type, int? pickerId)
+        private ActionResult PrepareSalesOrdersListActionResult(GridViewModel viewModel, int? type)
         {
             ViewBag.Type = type;
-            ViewBag.PickerId = pickerId;
 
             switch (type)
             {
@@ -575,9 +574,9 @@ namespace WMS.Controllers
                 case 2:
                     return _SalesOrdersCompletedGridActionCore(viewModel, type);
                 case 3:
-                    return _SalesOrdersPickerAssignedGridActionCore(viewModel, pickerId ?? 0);
+                    return _SalesOrdersPickerAssignedGridActionCore(viewModel);
                 case 4:
-                    return _SalesOrdersPickerUnassignedGridActionCore(viewModel, pickerId ?? 0);
+                    return _SalesOrdersPickerUnassignedGridActionCore(viewModel);
                 default:
                     return _SalesOrdersAwaitingGridActionCore(viewModel, type);
             }
@@ -599,33 +598,33 @@ namespace WMS.Controllers
             return PartialView("_SalesOrders", gridViewModel);
         }
 
-        public ActionResult _SalesOrdersPickerAssignedGridActionCore(GridViewModel gridViewModel, int pickerId)
+        public ActionResult _SalesOrdersPickerAssignedGridActionCore(GridViewModel gridViewModel)
         {
             gridViewModel.ProcessCustomBinding(
                 new GridViewCustomBindingGetDataRowCountHandler(args =>
                 {
-                    OrdersCustomBinding.SalesOrderPickerAssignedGetDataRowCount(args, CurrentTenantId, CurrentWarehouseId, pickerId);
+                    OrdersCustomBinding.SalesOrderPickerAssignedGetDataRowCount(args, CurrentTenantId, CurrentWarehouseId);
                 }),
 
                     new GridViewCustomBindingGetDataHandler(args =>
                     {
-                        OrdersCustomBinding.SalesOrderPickerAssignedGetData(args, CurrentTenantId, CurrentWarehouseId, pickerId);
+                        OrdersCustomBinding.SalesOrderPickerAssignedGetData(args, CurrentTenantId, CurrentWarehouseId);
                     })
             );
             return PartialView("_SalesOrders", gridViewModel);
         }
 
-        public ActionResult _SalesOrdersPickerUnassignedGridActionCore(GridViewModel gridViewModel, int pickerId)
+        public ActionResult _SalesOrdersPickerUnassignedGridActionCore(GridViewModel gridViewModel)
         {
             gridViewModel.ProcessCustomBinding(
                 new GridViewCustomBindingGetDataRowCountHandler(args =>
                 {
-                    OrdersCustomBinding.SalesOrderPickerUnassignedGetDataRowCount(args, CurrentTenantId, CurrentWarehouseId, pickerId);
+                    OrdersCustomBinding.SalesOrderPickerUnassignedGetDataRowCount(args, CurrentTenantId, CurrentWarehouseId);
                 }),
 
                     new GridViewCustomBindingGetDataHandler(args =>
                     {
-                        OrdersCustomBinding.SalesOrderPickerUnassignedGetData(args, CurrentTenantId, CurrentWarehouseId, pickerId);
+                        OrdersCustomBinding.SalesOrderPickerUnassignedGetData(args, CurrentTenantId, CurrentWarehouseId);
                     })
             );
             return PartialView("_SalesOrders", gridViewModel);

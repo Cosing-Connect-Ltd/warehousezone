@@ -1069,8 +1069,7 @@ namespace WMS.Controllers
         public PickersOrdersReport CreatePickersOrdersReport()
         {
             var pickersOrdersReport = new PickersOrdersReport();
-            pickersOrdersReport.paramStartDate.Value = DateTime.Today.AddMonths(-1);
-            pickersOrdersReport.paramEndDate.Value = DateTime.Today;
+            pickersOrdersReport.paramDate.Value = DateTime.Today;
             pickersOrdersReport.paramTenantId.Value = CurrentTenantId;
 
             var pickersSettings = (StaticListLookUpSettings)pickersOrdersReport.paramPickerIds.LookUpSettings;
