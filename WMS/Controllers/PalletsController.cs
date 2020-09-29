@@ -256,19 +256,22 @@ namespace WMS.Controllers
             if (palletId == null || palletId == 0)
             {
                 pallet = _palletingService.CreateNewPallet(orderProcessId, CurrentUserId);
-                var model = new PalletGenerateViewModel
-                {
-                    AllCurrentPallets = _palletingService.GetAllPallets(5, orderProcessId: orderProcessId).Select(m => new SelectListItem() { Text = m.PalletNumber, Value = m.PalletID.ToString() }).ToList(),
-                    NextPalletNumber = pallet.PalletNumber,
-                    SelectedPalletID = pallet.PalletID
-                };
 
                 palletId = pallet.PalletID;
             }
 
             _palletingService.AddFulFillmentPalletAllOrderProducts(orderProcessId, palletId.Value, CurrentUserId);
 
-            return pallet != null ? Json(pallet, JsonRequestBehavior.AllowGet) : Json(true, JsonRequestBehavior.AllowGet);
+            var allCurrentPallets = _palletingService.GetAllPallets(5, orderProcessId: orderProcessId);
+
+            var model = new PalletGenerateViewModel
+            {
+                AllCurrentPallets = allCurrentPallets.Select(m => new SelectListItem() { Text = m.PalletNumber, Value = m.PalletID.ToString() }).ToList(),
+                NextPalletNumber = allCurrentPallets.FirstOrDefault(a => a.PalletID == palletId)?.PalletNumber ?? pallet?.PalletNumber,
+                SelectedPalletID = palletId ?? pallet.PalletID
+            };
+
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
 
         public string ExportPalletItemsList(PalletOrderProductsCollection model)
