@@ -96,12 +96,13 @@ var TotalCount = 0;
 
 
         var quickDispatch = function () {
+            $("#btnQuickDispatchPallets").attr("disabled", true);
             LoadingPanel.Show();
             var data = { palletId: $("#SelectedPalletID").val(), orderProcessId: $("#orderprocessId").val() };
             $.post('/Pallets/AddAllProcessedProductsToPallet',
                 data,
                 function (result) {
-                    if (result != true) {
+                    if (result != null) {
                         $(".pallet-number").html("<label>Pallet Number :" + result.NextPalletNumber + "</label>");
                         Gane.Helpers.LoadListItemsToDropdown('SelectedPalletID', result.AllCurrentPallets);
                         $("#SelectedPalletID").val(result.SelectedPalletID);
@@ -131,11 +132,13 @@ var TotalCount = 0;
                     }
                     else {
                         LoadingPanel.Hide();
+                        $("#btnQuickDispatchPallets").attr("disabled", false);
                         openDispatchPopup();
                     }
                 }).fail(function (xhr, status, error) {
                     updatePalletGenerator();
                     LoadingPanel.Hide();
+                    $("#btnQuickDispatchPallets").attr("disabled", false);
                 });
         };
 
