@@ -139,14 +139,17 @@
             c.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
         });
 
-        settings.Columns.Add(c =>
+        if (type != 4)
         {
-            c.FieldName = "PickerName";
-            c.Caption = "Picker Name";
-            c.Width = Unit.Percentage(20);
-            c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
-            c.Settings.AllowSort = DefaultBoolean.True;
-        });
+            settings.Columns.Add(c =>
+            {
+                c.FieldName = "PickerName";
+                c.Caption = "Picker Name";
+                c.Width = Unit.Percentage(20);
+                c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+                c.Settings.AllowSort = DefaultBoolean.True;
+            });
+        }
 
         settings.Columns.Add(c =>
         {

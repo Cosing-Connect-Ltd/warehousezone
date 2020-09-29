@@ -544,18 +544,18 @@ namespace Ganedata.Core.Services
             };
         }
 
-        public IQueryable<SalesOrderViewModel> GetAllPickerAssignedSalesOrders(int tenantId, int warehouseId, int pickerId, OrderStatusEnum? status = null)
+        public IQueryable<SalesOrderViewModel> GetAllPickerAssignedSalesOrders(int tenantId, int warehouseId, OrderStatusEnum? status = null)
         {
-            return GetAllActiveSalesOrdersIq(tenantId, warehouseId, status).Where(o => o.PickerId == pickerId &&
+            return GetAllActiveSalesOrdersIq(tenantId, warehouseId, status).Where(o => o.PickerId != null && o.PickerId > 0 &&
                                                                                        (o.OrderStatusID == OrderStatusEnum.BeingPicked ||
                                                                                         o.OrderStatusID == OrderStatusEnum.Hold ||
                                                                                         o.OrderStatusID == OrderStatusEnum.Active ||
                                                                                         o.OrderStatusID == OrderStatusEnum.Pending));
         }
 
-        public IQueryable<SalesOrderViewModel> GetAllPickerUnassignedSalesOrders(int tenantId, int warehouseId, int pickerId, OrderStatusEnum? status = null)
+        public IQueryable<SalesOrderViewModel> GetAllPickerUnassignedSalesOrders(int tenantId, int warehouseId, OrderStatusEnum? status = null)
         {
-            return GetAllActiveSalesOrdersIq(tenantId, warehouseId, status).Where(o => o.PickerId != pickerId &&
+            return GetAllActiveSalesOrdersIq(tenantId, warehouseId, status).Where(o => (o.PickerId == null || o.PickerId <= 0) &&
                                                                                        (o.OrderStatusID == OrderStatusEnum.BeingPicked ||
                                                                                         o.OrderStatusID == OrderStatusEnum.Hold ||
                                                                                         o.OrderStatusID == OrderStatusEnum.Active ||

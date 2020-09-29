@@ -45,13 +45,13 @@ namespace WMS.Controllers
             return View();
         }
 
-        public ActionResult BatchPickersAssignment(int? id)
+        public ActionResult BatchPickersAssignment()
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ViewBag.Error = TempData["Error"];
             var users = _userService.GetUsersAgainstPermission(CurrentTenantId, CurrentWarehouseId, "Handheld", "SalesOrderPerm").Where(u => !string.IsNullOrEmpty(u.DisplayName?.Trim()));
-            ViewBag.PickerId = users.FirstOrDefault(t => t.UserId == id)?.UserId ?? users.FirstOrDefault()?.UserId;
-            ViewBag.Pickers = new SelectList(users, "UserId", "DisplayName", ViewBag.PickerId);
+
+            ViewBag.Pickers = new SelectList(users, "UserId", "DisplayName");
             return View();
         }
 

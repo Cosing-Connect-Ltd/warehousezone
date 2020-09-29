@@ -296,68 +296,55 @@ namespace WMS.CustomBindings
             SortFilterAndSetData(e, transactions);
         }
 
-        public static void SalesOrderPickerAssignedGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId, int pickerId)
+        public static void SalesOrderPickerAssignedGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId)
         {
 
-            var transactions = GetSalesOrderPickerAssignedDataset(tenantId, warehouseId, pickerId);
+            var transactions = GetSalesOrderPickerAssignedDataset(tenantId, warehouseId);
 
             SortFilterAndSetDataCount(e, transactions);
 
         }
 
-        public static void SalesOrderPickerAssignedGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId, int pickerId)
+        public static void SalesOrderPickerAssignedGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId)
         {
 
-            var transactions = GetSalesOrderPickerAssignedDataset(tenantId, warehouseId, pickerId);
+            var transactions = GetSalesOrderPickerAssignedDataset(tenantId, warehouseId);
 
             SortFilterAndSetData(e, transactions);
         }
 
-        private static IQueryable<SalesOrderViewModel> GetSalesOrderPickerAssignedDataset(int CurrentTenantId, int CurrentWarehouseId, int pickerId)
+        private static IQueryable<SalesOrderViewModel> GetSalesOrderPickerAssignedDataset(int CurrentTenantId, int CurrentWarehouseId)
         {
             OrderStatusEnum? type = OrderStatusEnum.Active;
-            if (HttpContext.Current.Request.Params.AllKeys.Contains("selectedPickerId"))
-            {
-                if (!string.IsNullOrEmpty(HttpContext.Current.Request.Params["selectedPickerId"].ToString()))
-                {
-                    pickerId = int.Parse(HttpContext.Current.Request.Params["selectedPickerId"].ToString());
-                }
-            }
+
             var orderServices = DependencyResolver.Current.GetService<ISalesOrderService>();
-            var transactions = orderServices.GetAllPickerAssignedSalesOrders(CurrentTenantId, CurrentWarehouseId, pickerId, type);
+            var transactions = orderServices.GetAllPickerAssignedSalesOrders(CurrentTenantId, CurrentWarehouseId, type);
 
             return transactions;
         }
 
-        private static IQueryable<SalesOrderViewModel> GetSalesOrderPickerUnassignedDataset(int CurrentTenantId, int CurrentWarehouseId, int pickerId)
+        private static IQueryable<SalesOrderViewModel> GetSalesOrderPickerUnassignedDataset(int CurrentTenantId, int CurrentWarehouseId)
         {
             OrderStatusEnum? type = OrderStatusEnum.Active;
-            if (HttpContext.Current.Request.Params.AllKeys.Contains("selectedPickerId"))
-            {
-                if (!string.IsNullOrEmpty(HttpContext.Current.Request.Params["selectedPickerId"].ToString()))
-                {
-                    pickerId = int.Parse(HttpContext.Current.Request.Params["selectedPickerId"].ToString());
-                }
-            }
             var orderServices = DependencyResolver.Current.GetService<ISalesOrderService>();
-            var transactions = orderServices.GetAllPickerUnassignedSalesOrders(CurrentTenantId, CurrentWarehouseId, pickerId, type);
+            var transactions = orderServices.GetAllPickerUnassignedSalesOrders(CurrentTenantId, CurrentWarehouseId, type);
 
             return transactions;
         }
 
-        public static void SalesOrderPickerUnassignedGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId, int pickerId)
+        public static void SalesOrderPickerUnassignedGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId)
         {
 
-            var transactions = GetSalesOrderPickerUnassignedDataset(tenantId, warehouseId, pickerId);
+            var transactions = GetSalesOrderPickerUnassignedDataset(tenantId, warehouseId);
 
             SortFilterAndSetDataCount(e, transactions);
 
         }
 
-        public static void SalesOrderPickerUnassignedGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId, int pickerId)
+        public static void SalesOrderPickerUnassignedGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId)
         {
 
-            var transactions = GetSalesOrderPickerUnassignedDataset(tenantId, warehouseId, pickerId);
+            var transactions = GetSalesOrderPickerUnassignedDataset(tenantId, warehouseId);
 
             SortFilterAndSetData(e, transactions);
         }

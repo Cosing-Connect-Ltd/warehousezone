@@ -19,13 +19,9 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
     private XRPanel xrPanel2;
     private XRLabel xrLabel10;
     private XRLabel xrLabel11;
-    private XRLabel xrLabel12;
-    private XRLabel xrLabel13;
     private XRLabel xrLabel21;
-    private XRLabel xrLabel31;
     private XRLabel xrLabel33;
     private XRLabel xrLabel29;
-    private XRLabel xrLabel42;
     private XRLabel xrLabel43;
     private GroupHeaderBand GroupHeader1;
     private XRLabel xrLabel30;
@@ -49,8 +45,7 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
     private XRLabel xrLabel7;
     private GroupFooterBand GroupFooter1;
     private XRLine xrLine2;
-    public DevExpress.XtraReports.Parameters.Parameter paramStartDate;
-    public DevExpress.XtraReports.Parameters.Parameter paramEndDate;
+    public DevExpress.XtraReports.Parameters.Parameter paramDate;
     public DevExpress.XtraReports.Parameters.Parameter paramTenantId;
     public DevExpress.XtraReports.Parameters.Parameter paramAccountIds;
     public DevExpress.XtraReports.Parameters.Parameter paramProperty;
@@ -103,12 +98,10 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             DevExpress.DataAccess.Sql.Column column1 = new DevExpress.DataAccess.Sql.Column();
             DevExpress.DataAccess.Sql.ColumnExpression columnExpression1 = new DevExpress.DataAccess.Sql.ColumnExpression();
             DevExpress.DataAccess.Sql.Table table4 = new DevExpress.DataAccess.Sql.Table();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PickersOrdersReport));
             DevExpress.DataAccess.Sql.QueryParameter queryParameter1 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter2 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter3 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter4 = new DevExpress.DataAccess.Sql.QueryParameter();
-            DevExpress.DataAccess.Sql.QueryParameter queryParameter5 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.Join join1 = new DevExpress.DataAccess.Sql.Join();
             DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo1 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
             DevExpress.DataAccess.Sql.Join join2 = new DevExpress.DataAccess.Sql.Join();
@@ -116,6 +109,7 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             DevExpress.DataAccess.Sql.Join join3 = new DevExpress.DataAccess.Sql.Join();
             DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo3 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
             DevExpress.DataAccess.Sql.CustomSqlQuery customSqlQuery1 = new DevExpress.DataAccess.Sql.CustomSqlQuery();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PickersOrdersReport));
             DevExpress.DataAccess.Sql.MasterDetailInfo masterDetailInfo1 = new DevExpress.DataAccess.Sql.MasterDetailInfo();
             DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo4 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
             DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings1 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
@@ -125,12 +119,10 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel2 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel7 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel21 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel31 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel33 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel3 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel29 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel42 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel43 = new DevExpress.XtraReports.UI.XRLabel();
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
@@ -157,10 +149,7 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             this.xrPanel2 = new DevExpress.XtraReports.UI.XRPanel();
             this.xrLabel10 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel11 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel12 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel13 = new DevExpress.XtraReports.UI.XRLabel();
-            this.paramStartDate = new DevExpress.XtraReports.Parameters.Parameter();
-            this.paramEndDate = new DevExpress.XtraReports.Parameters.Parameter();
+            this.paramDate = new DevExpress.XtraReports.Parameters.Parameter();
             this.PageFooter = new DevExpress.XtraReports.UI.PageFooterBand();
             this.xrLabel4 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel6 = new DevExpress.XtraReports.UI.XRLabel();
@@ -169,9 +158,9 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             this.paramProperty = new DevExpress.XtraReports.Parameters.Parameter();
             this.paramPickerIds = new DevExpress.XtraReports.Parameters.Parameter();
             this.GroupHeader2 = new DevExpress.XtraReports.UI.GroupHeaderBand();
-            this.xrControlStyle1 = new DevExpress.XtraReports.UI.XRControlStyle();
-            this.xrLabel8 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel9 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel8 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrControlStyle1 = new DevExpress.XtraReports.UI.XRControlStyle();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // Detail
@@ -180,7 +169,6 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel2,
             this.xrLabel7,
             this.xrLabel21,
-            this.xrLabel31,
             this.xrLabel33});
             this.Detail.HeightF = 20.03206F;
             this.Detail.Name = "Detail";
@@ -192,10 +180,10 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel2.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[AddressLine1]")});
             this.xrLabel2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel2.LocationFloat = new DevExpress.Utils.PointFloat(237.1747F, 0F);
+            this.xrLabel2.LocationFloat = new DevExpress.Utils.PointFloat(101.0132F, 0F);
             this.xrLabel2.Name = "xrLabel2";
             this.xrLabel2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel2.SizeF = new System.Drawing.SizeF(213.5963F, 20.03206F);
+            this.xrLabel2.SizeF = new System.Drawing.SizeF(349.7578F, 20.03206F);
             this.xrLabel2.StylePriority.UseFont = false;
             this.xrLabel2.StylePriority.UseTextAlignment = false;
             this.xrLabel2.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
@@ -226,20 +214,6 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel21.StylePriority.UseTextAlignment = false;
             this.xrLabel21.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
             // 
-            // xrLabel31
-            // 
-            this.xrLabel31.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[IssueDate]")});
-            this.xrLabel31.Font = new System.Drawing.Font("Verdana", 8.25F);
-            this.xrLabel31.LocationFloat = new DevExpress.Utils.PointFloat(101.0132F, 0F);
-            this.xrLabel31.Name = "xrLabel31";
-            this.xrLabel31.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel31.SizeF = new System.Drawing.SizeF(135.7428F, 20.03206F);
-            this.xrLabel31.StylePriority.UseFont = false;
-            this.xrLabel31.StylePriority.UseTextAlignment = false;
-            this.xrLabel31.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
-            this.xrLabel31.TextFormatString = "{0:dd/MM/yyyy}";
-            // 
             // xrLabel33
             // 
             this.xrLabel33.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
@@ -257,10 +231,10 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             // 
             this.xrLabel1.BackColor = System.Drawing.Color.Gainsboro;
             this.xrLabel1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel1.LocationFloat = new DevExpress.Utils.PointFloat(236.7559F, 58.65065F);
+            this.xrLabel1.LocationFloat = new DevExpress.Utils.PointFloat(101.0132F, 58.65065F);
             this.xrLabel1.Name = "xrLabel1";
             this.xrLabel1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel1.SizeF = new System.Drawing.SizeF(214.015F, 21.47757F);
+            this.xrLabel1.SizeF = new System.Drawing.SizeF(349.7577F, 21.47757F);
             this.xrLabel1.StylePriority.UseBackColor = false;
             this.xrLabel1.StylePriority.UseFont = false;
             this.xrLabel1.StylePriority.UseTextAlignment = false;
@@ -294,20 +268,6 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel29.StylePriority.UseTextAlignment = false;
             this.xrLabel29.Text = "ORDER NO:";
             this.xrLabel29.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
-            // xrLabel42
-            // 
-            this.xrLabel42.BackColor = System.Drawing.Color.Gainsboro;
-            this.xrLabel42.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel42.LocationFloat = new DevExpress.Utils.PointFloat(101.0129F, 58.65065F);
-            this.xrLabel42.Name = "xrLabel42";
-            this.xrLabel42.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel42.SizeF = new System.Drawing.SizeF(135.7428F, 21.47757F);
-            this.xrLabel42.StylePriority.UseBackColor = false;
-            this.xrLabel42.StylePriority.UseFont = false;
-            this.xrLabel42.StylePriority.UseTextAlignment = false;
-            this.xrLabel42.Text = "DATE:";
-            this.xrLabel42.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
             // xrLabel43
             // 
@@ -345,7 +305,6 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             this.GroupFooter1});
             this.DetailReport.DataMember = "OrderHeader.OrderHeaderOrderDetail";
             this.DetailReport.DataSource = this.sqlDataSource1;
-            this.DetailReport.Expanded = false;
             this.DetailReport.Level = 0;
             this.DetailReport.Name = "DetailReport";
             // 
@@ -529,17 +488,17 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             // 
             this.sqlDataSource1.ConnectionName = "ApplicationContext";
             this.sqlDataSource1.Name = "sqlDataSource1";
-            table1.MetaSerializable = "<Meta X=\"30\" Y=\"30\" Width=\"125\" Height=\"1463\" />";
+            table1.MetaSerializable = "<Meta X=\"30\" Y=\"30\" Width=\"125\" Height=\"1487\" />";
             table1.Name = "Orders";
             allColumns1.Table = table1;
-            table2.MetaSerializable = "<Meta X=\"185\" Y=\"30\" Width=\"125\" Height=\"603\" />";
+            table2.MetaSerializable = "<Meta X=\"185\" Y=\"30\" Width=\"125\" Height=\"607\" />";
             table2.Name = "PProperties";
             allColumns2.Table = table2;
-            table3.MetaSerializable = "<Meta X=\"340\" Y=\"30\" Width=\"125\" Height=\"743\" />";
+            table3.MetaSerializable = "<Meta X=\"340\" Y=\"30\" Width=\"125\" Height=\"747\" />";
             table3.Name = "Account";
             allColumns3.Table = table3;
             columnExpression1.ColumnName = "UserFirstName";
-            table4.MetaSerializable = "<Meta X=\"495\" Y=\"30\" Width=\"125\" Height=\"563\" />";
+            table4.MetaSerializable = "<Meta X=\"495\" Y=\"30\" Width=\"125\" Height=\"567\" />";
             table4.Name = "AuthUsers";
             columnExpression1.Table = table4;
             column1.Expression = columnExpression1;
@@ -547,30 +506,28 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             selectQuery1.Columns.Add(allColumns2);
             selectQuery1.Columns.Add(allColumns3);
             selectQuery1.Columns.Add(column1);
-            selectQuery1.FilterString = resources.GetString("selectQuery1.FilterString");
+            selectQuery1.FilterString = "[Orders.ExpectedDate] = ?SqlParamDate And [Orders.TenentId] = ?SqlParamTenantId A" +
+    "nd [Orders.PickerId] In (?SqlParamPickerIds) And ([Orders.IsDeleted] = False OR " +
+    "[Orders.IsDeleted] IS NULL)";
             selectQuery1.GroupFilterString = "";
             selectQuery1.MetaSerializable = "<Meta X=\"20\" Y=\"20\" Width=\"290\" Height=\"1414\" />";
             selectQuery1.Name = "OrderHeader";
-            queryParameter1.Name = "SqlParamStartDate";
+            queryParameter1.Name = "SqlParamDate";
             queryParameter1.Type = typeof(DevExpress.DataAccess.Expression);
-            queryParameter1.Value = new DevExpress.DataAccess.Expression("[Parameters.paramStartDate]", typeof(System.DateTime));
-            queryParameter2.Name = "SqlParamEndDate";
+            queryParameter1.Value = new DevExpress.DataAccess.Expression("[Parameters.paramDate]", typeof(System.DateTime));
+            queryParameter2.Name = "SqlParamTenantId";
             queryParameter2.Type = typeof(DevExpress.DataAccess.Expression);
-            queryParameter2.Value = new DevExpress.DataAccess.Expression("[Parameters.paramEndDate]", typeof(System.DateTime));
-            queryParameter3.Name = "SqlParamTenantId";
+            queryParameter2.Value = new DevExpress.DataAccess.Expression("[Parameters.paramTenantId]", typeof(int));
+            queryParameter3.Name = "SqlParamTransactionTypes";
             queryParameter3.Type = typeof(DevExpress.DataAccess.Expression);
-            queryParameter3.Value = new DevExpress.DataAccess.Expression("[Parameters.paramTenantId]", typeof(int));
-            queryParameter4.Name = "SqlParamTransactionTypes";
+            queryParameter3.Value = new DevExpress.DataAccess.Expression("[Parameters.paramTransactionTypes]", typeof(int));
+            queryParameter4.Name = "SqlParamPickerIds";
             queryParameter4.Type = typeof(DevExpress.DataAccess.Expression);
-            queryParameter4.Value = new DevExpress.DataAccess.Expression("[Parameters.paramTransactionTypes]", typeof(int));
-            queryParameter5.Name = "SqlParamPickerIds";
-            queryParameter5.Type = typeof(DevExpress.DataAccess.Expression);
-            queryParameter5.Value = new DevExpress.DataAccess.Expression("[Parameters.paramPickerIds]", typeof(int));
+            queryParameter4.Value = new DevExpress.DataAccess.Expression("[Parameters.paramPickerIds]", typeof(int));
             selectQuery1.Parameters.Add(queryParameter1);
             selectQuery1.Parameters.Add(queryParameter2);
             selectQuery1.Parameters.Add(queryParameter3);
             selectQuery1.Parameters.Add(queryParameter4);
-            selectQuery1.Parameters.Add(queryParameter5);
             relationColumnInfo1.NestedKeyColumn = "PPropertyId";
             relationColumnInfo1.ParentKeyColumn = "ShipmentPropertyId";
             join1.KeyColumns.Add(relationColumnInfo1);
@@ -616,7 +573,6 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel43,
             this.xrLabel3,
             this.xrLabel29,
-            this.xrLabel42,
             this.xrLabel1,
             this.xrLabel5,
             this.xrPanel2});
@@ -645,9 +601,7 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             this.xrPanel2.BorderColor = System.Drawing.Color.Black;
             this.xrPanel2.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrLabel10,
-            this.xrLabel11,
-            this.xrLabel12,
-            this.xrLabel13});
+            this.xrLabel11});
             this.xrPanel2.LocationFloat = new DevExpress.Utils.PointFloat(3.999964F, 30.62502F);
             this.xrPanel2.Name = "xrPanel2";
             this.xrPanel2.SizeF = new System.Drawing.SizeF(743.0002F, 22.85416F);
@@ -659,7 +613,7 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel10.BackColor = System.Drawing.Color.Transparent;
             this.xrLabel10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.xrLabel10.ForeColor = System.Drawing.Color.Black;
-            this.xrLabel10.LocationFloat = new DevExpress.Utils.PointFloat(135.4353F, 0F);
+            this.xrLabel10.LocationFloat = new DevExpress.Utils.PointFloat(232.6575F, 5.722046E-06F);
             this.xrLabel10.Name = "xrLabel10";
             this.xrLabel10.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel10.SizeF = new System.Drawing.SizeF(107.973F, 18.83335F);
@@ -667,17 +621,17 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel10.StylePriority.UseFont = false;
             this.xrLabel10.StylePriority.UseForeColor = false;
             this.xrLabel10.StylePriority.UseTextAlignment = false;
-            this.xrLabel10.Text = "Report Period :";
+            this.xrLabel10.Text = "Report Date :";
             this.xrLabel10.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
             // xrLabel11
             // 
             this.xrLabel11.BackColor = System.Drawing.Color.Transparent;
             this.xrLabel11.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[Parameters.paramStartDate]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[Parameters.paramDate]")});
             this.xrLabel11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.xrLabel11.ForeColor = System.Drawing.Color.Black;
-            this.xrLabel11.LocationFloat = new DevExpress.Utils.PointFloat(243.4083F, 0F);
+            this.xrLabel11.LocationFloat = new DevExpress.Utils.PointFloat(340.6305F, 0F);
             this.xrLabel11.Name = "xrLabel11";
             this.xrLabel11.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel11.SizeF = new System.Drawing.SizeF(156.7502F, 18.83335F);
@@ -688,60 +642,18 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel11.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             this.xrLabel11.TextFormatString = "{0:dd/MM/yyyy}";
             // 
-            // xrLabel12
+            // paramDate
             // 
-            this.xrLabel12.BackColor = System.Drawing.Color.Transparent;
-            this.xrLabel12.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel12.ForeColor = System.Drawing.Color.Black;
-            this.xrLabel12.LocationFloat = new DevExpress.Utils.PointFloat(400.1585F, 0F);
-            this.xrLabel12.Name = "xrLabel12";
-            this.xrLabel12.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel12.SizeF = new System.Drawing.SizeF(23.95834F, 18.83335F);
-            this.xrLabel12.StylePriority.UseBackColor = false;
-            this.xrLabel12.StylePriority.UseFont = false;
-            this.xrLabel12.StylePriority.UseForeColor = false;
-            this.xrLabel12.StylePriority.UseTextAlignment = false;
-            this.xrLabel12.Text = "-";
-            this.xrLabel12.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            // 
-            // xrLabel13
-            // 
-            this.xrLabel13.BackColor = System.Drawing.Color.Transparent;
-            this.xrLabel13.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "AddSeconds([Parameters.paramEndDate],-1)")});
-            this.xrLabel13.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel13.ForeColor = System.Drawing.Color.Black;
-            this.xrLabel13.LocationFloat = new DevExpress.Utils.PointFloat(424.1169F, 0F);
-            this.xrLabel13.Name = "xrLabel13";
-            this.xrLabel13.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel13.SizeF = new System.Drawing.SizeF(158.3333F, 18.83334F);
-            this.xrLabel13.StylePriority.UseBackColor = false;
-            this.xrLabel13.StylePriority.UseFont = false;
-            this.xrLabel13.StylePriority.UseForeColor = false;
-            this.xrLabel13.StylePriority.UseTextAlignment = false;
-            this.xrLabel13.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            this.xrLabel13.TextFormatString = "{0:dd/MM/yyyy}";
-            // 
-            // paramStartDate
-            // 
-            this.paramStartDate.Description = "Start Date";
-            this.paramStartDate.Name = "paramStartDate";
-            this.paramStartDate.Type = typeof(System.DateTime);
-            this.paramStartDate.ValueInfo = "2019-07-01";
-            // 
-            // paramEndDate
-            // 
-            this.paramEndDate.Description = "End Date";
-            this.paramEndDate.Name = "paramEndDate";
-            this.paramEndDate.Type = typeof(System.DateTime);
-            this.paramEndDate.ValueInfo = "2019-08-02";
+            this.paramDate.Description = "Date";
+            this.paramDate.Name = "paramDate";
+            this.paramDate.Type = typeof(System.DateTime);
+            this.paramDate.ValueInfo = "2020-09-29";
             // 
             // PageFooter
             // 
             this.PageFooter.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrLabel4,
             this.xrLabel6});
-            this.PageFooter.Expanded = false;
             this.PageFooter.HeightF = 35.41667F;
             this.PageFooter.Name = "PageFooter";
             // 
@@ -823,30 +735,6 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             this.GroupHeader2.StylePriority.UseFont = false;
             this.GroupHeader2.StylePriority.UsePadding = false;
             // 
-            // xrControlStyle1
-            // 
-            this.xrControlStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.xrControlStyle1.BorderColor = System.Drawing.Color.Silver;
-            this.xrControlStyle1.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
-            | DevExpress.XtraPrinting.BorderSide.Right) 
-            | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.xrControlStyle1.BorderWidth = 1F;
-            this.xrControlStyle1.Name = "xrControlStyle1";
-            // 
-            // xrLabel8
-            // 
-            this.xrLabel8.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[UserFirstName]")});
-            this.xrLabel8.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel8.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
-            this.xrLabel8.Name = "xrLabel8";
-            this.xrLabel8.Padding = new DevExpress.XtraPrinting.PaddingInfo(100, 2, 0, 0, 100F);
-            this.xrLabel8.SizeF = new System.Drawing.SizeF(746.9997F, 23.65694F);
-            this.xrLabel8.StylePriority.UseFont = false;
-            this.xrLabel8.StylePriority.UsePadding = false;
-            this.xrLabel8.StylePriority.UseTextAlignment = false;
-            this.xrLabel8.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
             // xrLabel9
             // 
             this.xrLabel9.BackColor = System.Drawing.Color.Transparent;
@@ -865,6 +753,30 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel9.Text = "Picker Name:";
             this.xrLabel9.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
+            // xrLabel8
+            // 
+            this.xrLabel8.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[UserFirstName]")});
+            this.xrLabel8.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrLabel8.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
+            this.xrLabel8.Name = "xrLabel8";
+            this.xrLabel8.Padding = new DevExpress.XtraPrinting.PaddingInfo(100, 2, 0, 0, 100F);
+            this.xrLabel8.SizeF = new System.Drawing.SizeF(746.9997F, 23.65694F);
+            this.xrLabel8.StylePriority.UseFont = false;
+            this.xrLabel8.StylePriority.UsePadding = false;
+            this.xrLabel8.StylePriority.UseTextAlignment = false;
+            this.xrLabel8.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            // 
+            // xrControlStyle1
+            // 
+            this.xrControlStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.xrControlStyle1.BorderColor = System.Drawing.Color.Silver;
+            this.xrControlStyle1.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
+            | DevExpress.XtraPrinting.BorderSide.Right) 
+            | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.xrControlStyle1.BorderWidth = 1F;
+            this.xrControlStyle1.Name = "xrControlStyle1";
+            // 
             // PickersOrdersReport
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -881,8 +793,7 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             this.DataSource = this.sqlDataSource1;
             this.Margins = new System.Drawing.Printing.Margins(51, 52, 22, 12);
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
-            this.paramStartDate,
-            this.paramEndDate,
+            this.paramDate,
             this.paramTenantId,
             this.paramAccountIds,
             this.paramProperty,
@@ -899,10 +810,9 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
 
     private void PickersOrdersReport_DataSourceDemanded(object sender, EventArgs e)
     {
-        PickersOrdersReport report = (PickersOrdersReport)sender;
-        DateTime endDate = (DateTime)report.Parameters["paramEndDate"].Value;
-        endDate = endDate.AddHours(24);
-        report.Parameters["paramEndDate"].Value = endDate;
+        var report = (PickersOrdersReport)sender;
+        var date = (DateTime)report.Parameters["paramDate"].Value;
+        report.Parameters["paramDate"].Value = date.Date;
 
     }
 }
