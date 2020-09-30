@@ -25,15 +25,14 @@
     ViewBag.Title = "Pallets - Loading Orders in to pallets";
 }
 
-@using (Html.BeginForm("AddProcessedProductsToPallet", "Pallets", FormMethod.Post, new { id = "frmPalletsEditor" }))
+@using (Html.BeginForm("SubmitPaletEditor", "Pallets", FormMethod.Post, new { id = "frmPalletsEditor", @enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     @Html.Hidden("selkey", 10000)
-    @Html.Hidden("orderprocessId", Model.SelectedOrderProcessId)
+    @Html.HiddenFor(model => model.SelectedOrderProcessId)
     @Html.Hidden("dispatchId", (int?)Model.dispatchId)
-    @Html.Hidden("DeliveryRefrenceNumber", (Model.OrderProcesses == null ? "" : Model.OrderProcesses.DeliveryNO))
-    @Html.Hidden("OrderDeliveryMethod", (Model.OrderProcesses == null ? (int?)null : (int?)Model.OrderProcesses.Order.DeliveryMethod))
-    @Html.Hidden("OrderDeliveryNetworkCode", (Model.OrderProcesses == null || Model.OrderProcesses.Order.TenantDeliveryService == null ? "" : Model.OrderProcesses.Order.TenantDeliveryService.NetworkCode))
+    @Html.Hidden("orderDeliveryMethod", (Model.OrderProcesses == null ? (int?)null : (int?)Model.OrderProcesses.Order.DeliveryMethod))
+    @Html.Hidden("orderDeliveryNetworkCode", (Model.OrderProcesses == null || Model.OrderProcesses.Order.TenantDeliveryService == null ? "" : Model.OrderProcesses.Order.TenantDeliveryService.NetworkCode))
     <div class="col-md-12 p-0 pull-left report-date-header mb-1">
         <div class="col-md-4 mt-1 pull-left">
             <div class="input-group h-100 justify-content-center align-items-center">
@@ -81,7 +80,7 @@
 <script>
     $(function () {
         Gane.Pallets.PalletEditorInit();
-        if ($("#orderprocessId").val() > 0) {
+        if ($("#SelectedOrderProcessId").val() > 0) {
             Gane.Pallets.UpdatePalletGenerator();
         }
     });

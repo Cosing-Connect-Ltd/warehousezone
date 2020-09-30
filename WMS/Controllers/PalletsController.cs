@@ -21,6 +21,7 @@ namespace WMS.Controllers
         private readonly IEmployeeServices _employeeServices;
         private readonly IGaneConfigurationsHelper _helper;
         private readonly ITenantsServices _tenantServices;
+        private readonly ICoreOrderService _orderService;
         private string _uploadDirectory = "~/UploadedFiles/Pallets/";
         string UploadProductManufacturerDirectory = "~/UploadedFiles/ProductManufacturers/";
         string UploadTenantDepartmentDirectory = "~/UploadedFiles/TenantDepartment/";
@@ -32,6 +33,7 @@ namespace WMS.Controllers
             _employeeServices = employeeServices;
             _helper = helper;
             _tenantServices = tenantsServices;
+            _orderService = orderService;
         }
 
         public ActionResult Index()
@@ -248,6 +250,34 @@ namespace WMS.Controllers
             return Json(item.PalletProductID, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult SubmitPaletEditor(PalletGenerateViewModel model)
+        {
+            var orderProcess = _orderService.GetOrderProcessByOrderProcessId(model.SelectedOrderProcessId);
+
+            if (model.SelectedPalletID == 0)
+            {
+                var pallet = _palletingService.CreateNewPallet(model.SelectedOrderProcessId, CurrentUserId);
+
+                model.SelectedPalletID = pallet.PalletID;
+            }
+
+            _palletingService.AddFulFillmentPalletAllOrderProducts(model.SelectedOrderProcessId, model.SelectedPalletID, CurrentUserId);
+
+            var dispatchModel = new PalletDispatchViewModel {
+                DeliveryMethod = orderProcess.Order.DeliveryMethod,
+                NetworkCode = orderProcess.Order.TenantDeliveryService?.NetworkCode,
+                DispatchRefrenceNumber = GaneStaticAppExtensions.GenerateDateRandomNo(),
+                OrderProcessId = model.SelectedOrderProcessId
+            };
+
+            var result = _palletingService.DispatchPallets(dispatchModel, CurrentUserId);
+            if (!string.IsNullOrEmpty(result))
+            {
+                TempData["Error"] = result;
+            }
+
+            return RedirectToAction("Index", "Pallets");
+        }
 
         [HttpPost]
         public ActionResult AddAllProcessedProductsToPallet(int orderProcessId, int? palletId)
@@ -341,6 +371,7 @@ namespace WMS.Controllers
             }
             return RedirectToAction("Index", "Pallets");
         }
+
         public ActionResult EditDispatchPallets(int PalletsDispatchID)
         {
             PalletDispatchViewModel model = new PalletDispatchViewModel();

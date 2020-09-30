@@ -30,7 +30,7 @@ var TotalCount = 0;
             $("#divPalletGenerator").slideDown();
             LoadingPanel.Show();
 
-            var data = { SelectedPalletID: $("#SelectedPalletID").val(), SelectedOrderProcessId: $("#orderprocessId").val() };
+            var data = { SelectedPalletID: $("#SelectedPalletID").val(), SelectedOrderProcessId: $("#SelectedOrderProcessId").val() };
             $.post('/Pallets/_GetPalletDetails',
                 data,
                 function (result) {
@@ -97,49 +97,37 @@ var TotalCount = 0;
 
         var quickDispatch = function () {
             $("#btnQuickDispatchPallets").attr("disabled", true);
+            var deliveryMethod = $('#orderDeliveryMethod').val();
+            var networkCode = $('#orderDeliveryNetworkCode').val();
             LoadingPanel.Show();
-            var data = { palletId: $("#SelectedPalletID").val(), orderProcessId: $("#orderprocessId").val() };
-            $.post('/Pallets/AddAllProcessedProductsToPallet',
-                data,
-                function (result) {
-                    if (result != null) {
-                        $(".pallet-number").html("<label>Pallet Number :" + result.NextPalletNumber + "</label>");
-                        Gane.Helpers.LoadListItemsToDropdown('SelectedPalletID', result.AllCurrentPallets);
-                        $("#SelectedPalletID").val(result.SelectedPalletID);
-                        $("#SelectedPalletID").trigger("chosen:updated");
-                    }
 
-                    updatePalletGenerator();
+                if (!!deliveryMethod && (deliveryMethod !== '3' || (deliveryMethod === '3' && !!networkCode))) {
                     LoadingPanel.Show();
-
-                    var deliveryMethod = $('#OrderDeliveryMethod').val();
-                    var networkCode = $('#OrderDeliveryNetworkCode').val();
-
-                    if (!!deliveryMethod && (deliveryMethod !== '3' || (deliveryMethod === '3' && !!networkCode))) {
-                        var selectedPallets = $("#orderprocessId").val();
-                        var dispatchRefrenceNumber = $('#DeliveryRefrenceNumber').val();
-                        var deliveryMethod = $('#OrderDeliveryMethod').val();
-                        var networkCode = $('#OrderDeliveryNetworkCode').val();
-                        var data = { DispatchRefrenceNumber: dispatchRefrenceNumber, DispatchSelectedPalletIds: selectedPallets, DeliveryMethod: deliveryMethod, networkCode: networkCode };
-                        $.post('/Pallets/SavePalletsDispatch',
-                            data,
-                            function (dispatchResult) {
-                                window.location.href = window.location.origin + "/Pallets/Index";
-                            }).fail(function (xhr, status, error) {
-                                LoadingPanel.Hide();
-                                alert(error);
-                            });
-                    }
-                    else {
-                        LoadingPanel.Hide();
-                        $("#btnQuickDispatchPallets").attr("disabled", false);
-                        openDispatchPopup();
-                    }
-                }).fail(function (xhr, status, error) {
-                    updatePalletGenerator();
+                    $("#frmPalletsEditor").submit();
+                }
+                else {
                     LoadingPanel.Hide();
                     $("#btnQuickDispatchPallets").attr("disabled", false);
-                });
+                    LoadingPanel.Show();
+                    var data = { palletId: $("#SelectedPalletID").val(), orderProcessId: $("#SelectedOrderProcessId").val() };
+                    $.post('/Pallets/AddAllProcessedProductsToPallet',
+                        data,
+                        function (result) {
+                            if (result != null) {
+                                $(".pallet-number").html("<label>Pallet Number :" + result.NextPalletNumber + "</label>");
+                                Gane.Helpers.LoadListItemsToDropdown('SelectedPalletID', result.AllCurrentPallets);
+                                $("#SelectedPalletID").val(result.SelectedPalletID);
+                                $("#SelectedPalletID").trigger("chosen:updated");
+                            }
+
+                            updatePalletGenerator();
+                            openDispatchPopup();
+                    }).fail(function (xhr, status, error) {
+                            updatePalletGenerator();
+                            LoadingPanel.Hide();
+                            $("#btnQuickDispatchPallets").attr("disabled", false);
+                    });
+                }
         };
 
 
@@ -153,7 +141,7 @@ var TotalCount = 0;
 
             $("#btnNewPallet").unbind("click").on("click", function () {
                 LoadingPanel.Show();
-                var data = { SelectedOrderProcessId: $("#orderprocessId").val() };
+                var data = { SelectedOrderProcessId: $("#SelectedOrderProcessId").val() };
                 $.post('/Pallets/_GetNewPallet',
                     data,
                     function (result) {
@@ -215,7 +203,7 @@ function OnPalletOrderDetailsCallback(s, e) {
 
 function ShowPalletDispatchButton(s, e) {
     LoadingPanel.Show();
-    var data = { OrderProcessId: $("#orderprocessId").val() };
+    var data = { OrderProcessId: $("#SelectedOrderProcessId").val() };
     $.post('/Pallets/PalletDispatchCheck', data, function (result) {
         LoadingPanel.Hide();
         if (result) {
@@ -292,14 +280,13 @@ function openDispatchPopup() {
     var dispatchId = $("#dispatchId").val();
     if (dispatchId > 0 && dispatchId !== null && dispatchId !== undefined && dispatchId !== "") {
         EditPalletDispatch(dispatchId);
-
     }
     else {
-        var selectedPallets = $("#orderprocessId").val();
-        var deliveryNumber = $('#DeliveryRefrenceNumber').val();
-        var deliveryMethod = $('#OrderDeliveryMethod').val();
-        var networkCode = $('#OrderDeliveryNetworkCode').val();
-        var data = { SelectedPallets: selectedPallets, DeliveryMethod: deliveryMethod, networkCode: networkCode };
+        var orderProcessId = $("#SelectedOrderProcessId").val();
+        var deliveryNumber = $('#deliveryRefrenceNumber').val();
+        var deliveryMethod = $('#orderDeliveryMethod').val();
+        var networkCode = $('#orderDeliveryNetworkCode').val();
+        var data = { OrderProcessId: orderProcessId, DeliveryMethod: deliveryMethod, networkCode: networkCode };
         LoadingPanel.Show();
         $.post('/Pallets/DispatchPallets',
             data,
@@ -307,7 +294,6 @@ function openDispatchPopup() {
                 LoadingPanel.Hide();
                 Gane.Helpers.ShowPopupMessage('Dispatch Pallets', '<div class="pallet-number"><b>DELIVERY REFERENCE NUMBER : </b>' + deliveryNumber + "</div><br/>" + result, PopupTypes.Warning);
                 MVCxClientUtils.FinalizeCallback();
-                $("#DispatchSelectedPalletIds").val($("#orderprocessId").val());
             }).fail(function (xhr, status, error) {
                 LoadingPanel.Hide();
                 Gane.Helpers.ShowPopupMessage('Dispatch Pallets Error', xhr.responseText, PopupTypes.Warning);
