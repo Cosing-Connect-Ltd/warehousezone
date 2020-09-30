@@ -57,7 +57,10 @@
             data: { orderIds: selectedOrderIds.split(','), pickerId: selectedPickerId },
             dataType: 'json',
             success: function (data) {
-                refreshGrids()
+                refreshGrids();
+                $("#SelectedOrderIds").val('');
+                _SalesOrderListGridView_PickerUnassigned.UnselectRows();
+                _SalesOrderListGridView_PickerAssigned.UnselectRows();
 
                 LoadingPanel.Hide();
             },
@@ -82,7 +85,7 @@
     <div class="input-group col-lg-6 col-md-12 justify-content-start align-items-start">
         @Html.Label("Selected Picker:", htmlAttributes: new { @class = "col-md-3 pt-2" })
         <div class="col-md-9">
-            @Html.DropDownList("SelectedPicker", ViewBag.Pickers as SelectList, "Select Picker", new { @class = "chosen-select form-control", onchange = "refreshGrids();" })
+            @Html.DropDownList("SelectedPicker", ViewBag.Pickers as SelectList, "Select Picker", new { @class = "chosen-select form-control" })
         </div>
     </div>
 </div>
