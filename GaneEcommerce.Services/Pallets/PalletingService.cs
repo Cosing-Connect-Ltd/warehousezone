@@ -216,16 +216,16 @@ namespace Ganedata.Core.Services
                     CreatedBy = userId,
                     NetworkCode = dispatch.DeliveryMethod == DeliveryMethods.DPD ? dispatch.NetworkCode : "",
                     DateCreated = DateTime.UtcNow,
-                    OrderProcessID = int.Parse(!string.IsNullOrEmpty(dispatch.DispatchSelectedPalletIds) ? dispatch.DispatchSelectedPalletIds : "0"),
+                    OrderProcessID = dispatch.OrderProcessId,
                     TrackingReference = dispatch.TrackingReference,
                     DeliveryMethod = dispatch.DeliveryMethod,
                     DateCompleted = DateTime.UtcNow,
                     DispatchStatus = PalletDispatchStatusEnum.Created
                 };
                 _currentDbContext.PalletsDispatches.Add(item);
-                if (!string.IsNullOrEmpty(dispatch.DispatchSelectedPalletIds))
+                if (dispatch.OrderProcessId > 0)
                 {
-                    int OrderProcessId = int.Parse(dispatch.DispatchSelectedPalletIds);
+                    int OrderProcessId = dispatch.OrderProcessId;
                     var PalletList = _currentDbContext.Pallets.Where(u => u.OrderProcessID == OrderProcessId).ToList();
                     var orderProcess = _currentDbContext.OrderProcess.FirstOrDefault(u => u.OrderProcessID == OrderProcessId);
 

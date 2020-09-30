@@ -46,7 +46,7 @@ namespace Ganedata.Core.Entities.Domain
         public string CustomVehicleModel { get; set; }
         public string CustomDriverDetails { get; set; }
         public string ProofOfDeliveryImageFilenames { get; set; }
-        public string DispatchSelectedPalletIds { get; set; }
+        public int OrderProcessId { get; set; }
         public string DispatchNotes { get; set; }
         public string DispatchRefrenceNumber { get; set; }
 
