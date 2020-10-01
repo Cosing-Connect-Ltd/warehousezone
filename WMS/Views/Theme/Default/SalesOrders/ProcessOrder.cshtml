@@ -132,6 +132,12 @@
                 @Html.ValidationMessageFor(model => model.ShipmentAddressPostcode)
             </div>
         </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(m => m.ShipmentCountryId, htmlAttributes: new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(m => m.ShipmentCountryId, ViewBag.Countries as SelectList, new { @class = "chosen-select form-control" })
+            </div>
+        </div>
     </div>
     <div class="col-md-12 process-textbox-scan">
         @if (ViewBag.PreventProcessing != true && Request.Url.AbsolutePath.ToLower().Contains("salesorders/processorder/") || (Request.Url.AbsolutePath.ToLower().Contains("salesorders/_salesorderdetails/") && Request.UrlReferrer.AbsolutePath.ToLower().Contains("salesorders/processorder/")))

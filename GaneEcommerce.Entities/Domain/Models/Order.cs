@@ -165,6 +165,9 @@ namespace Ganedata.Core.Entities.Domain
         public string ShipmentAddressLine3 { get; set; }
         public string ShipmentAddressLine4 { get; set; }
         public string ShipmentAddressPostcode { get; set; }
+        public int? ShipmentCountryId { get; set; }
+        [ForeignKey("ShipmentCountryId")]
+        public virtual GlobalCountry ShipmentCountry { get; set; }
 
         [Display(Name = "Property")]
         public int? PPropertyId { get; set; }

@@ -431,6 +431,7 @@ namespace Ganedata.Core.Services
                     opr.ShipmentAddressLine3 = shipmentInfo.ShipmentAddressLine3;
                     opr.ShipmentAddressLine4 = shipmentInfo.ShipmentAddressLine4;
                     opr.ShipmentAddressPostcode = shipmentInfo.ShipmentAddressPostcode;
+                    opr.ShipmentCountryId = shipmentInfo.ShipmentCountryId;
                 }
                 else
                 {
@@ -439,6 +440,7 @@ namespace Ganedata.Core.Services
                     opr.ShipmentAddressLine3 = order.ShipmentAddressLine3;
                     opr.ShipmentAddressLine4 = order.ShipmentAddressLine4;
                     opr.ShipmentAddressPostcode = order.ShipmentAddressPostcode;
+                    opr.ShipmentCountryId = order.ShipmentCountryId;
                 }
 
                 var orderDetail =
@@ -491,7 +493,8 @@ namespace Ganedata.Core.Services
                             ShipmentAddressLine2 = altOrder.ShipmentAddressLine2,
                             ShipmentAddressLine3 = altOrder.ShipmentAddressLine3,
                             ShipmentAddressLine4 = altOrder.ShipmentAddressLine4,
-                            ShipmentAddressPostcode = altOrder.ShipmentAddressPostcode
+                            ShipmentAddressPostcode = altOrder.ShipmentAddressPostcode,
+                            ShipmentCountryId = altOrder.ShipmentCountryId
                         };
 
                         var orderprocessdet = new OrderProcessDetail
@@ -611,6 +614,7 @@ namespace Ganedata.Core.Services
                         oprocess.ShipmentAddressLine3 = shipmentInfo.ShipmentAddressLine3 ?? "";
                         oprocess.ShipmentAddressLine4 = shipmentInfo.ShipmentAddressLine4 ?? "";
                         oprocess.ShipmentAddressPostcode = shipmentInfo.ShipmentAddressPostcode ?? "";
+                        oprocess.ShipmentCountryId = shipmentInfo.ShipmentCountryId;
                     }
                 }
 
@@ -650,7 +654,8 @@ namespace Ganedata.Core.Services
                                 ShipmentAddressLine2 = altOrder.ShipmentAddressLine2,
                                 ShipmentAddressLine3 = altOrder.ShipmentAddressLine3,
                                 ShipmentAddressLine4 = altOrder.ShipmentAddressLine4,
-                                ShipmentAddressPostcode = altOrder.ShipmentAddressPostcode
+                                ShipmentAddressPostcode = altOrder.ShipmentAddressPostcode,
+                                ShipmentCountryId = altOrder.ShipmentCountryId
                             };
 
                             var orderProcessDet = new OrderProcessDetail

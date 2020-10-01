@@ -676,7 +676,9 @@ namespace Ganedata.Core.Services
                 contactDetails2.telephone = palletDispatch.OrderProcess?.Order?.Account?.AccountContacts.FirstOrDefault()?.TenantContactPhone;
                 deliveryDetails.contactDetails = contactDetails2;
                 Address2 address2 = new Address2();
-                address2.countryCode = palletDispatch.OrderProcess?.Order?.Account?.AccountAddresses.FirstOrDefault(u=>u.AddTypeShipping==true)?.GlobalCountry?.CountryCode;
+                address2.countryCode = palletDispatch.OrderProcess.ShipmentCountry?.CountryCode ??
+                                       palletDispatch.OrderProcess?.Order?.ShipmentCountry?.CountryCode ??
+                                       palletDispatch.OrderProcess?.Order?.Account?.AccountAddresses.FirstOrDefault(u => u.AddTypeShipping == true)?.GlobalCountry?.CountryCode;
                 address2.postcode = palletDispatch.OrderProcess?.Order?.ShipmentAddressPostcode;
                 address2.street = palletDispatch.OrderProcess?.Order?.ShipmentAddressLine1;
                 address2.town = string.IsNullOrEmpty(palletDispatch.OrderProcess?.Order?.ShipmentAddressLine3) ? palletDispatch.OrderProcess?.Order?.ShipmentAddressLine2 : palletDispatch.OrderProcess?.Order?.ShipmentAddressLine3;
