@@ -155,6 +155,9 @@ namespace WMS.Controllers
                 int ids = 0;
                 var accountaddress = _accountServices.GetAllValidAccountContactsByAccountId(ids, CurrentTenantId);
                 ViewBag.AccountContactes = new SelectList(accountaddress, "AccountContactId", "ContactEmail", accountaddress.Select(x => x.AccountID).FirstOrDefault());
+
+                ViewBag.Countries = new SelectList(LookupServices.GetAllGlobalCountries(), "CountryID", "CountryName");
+
                 Order NewOrder = new Order();
                 NewOrder.OrderNumber = GeneratePO();
                 NewOrder.IssueDate = DateTime.Today;
@@ -334,6 +337,7 @@ namespace WMS.Controllers
             int ids = 0;
             var accountaddress = _accountServices.GetAllValidAccountContactsByAccountId(ids, CurrentTenantId);
             ViewBag.AccountContactes = new SelectList(accountaddress, "AccountContactId", "ContactEmail", accountaddress.Select(x => x.AccountID).FirstOrDefault());
+            ViewBag.Countries = new SelectList(LookupServices.GetAllGlobalCountries(), "CountryID", "CountryName");
             var odNotes = Order.OrderNotes.Where(a => a.IsDeleted != true).ToList();
 
             GaneOrderNotesSessionHelper.SetOrderNotesSessions(ViewBag.ForceRegeneratedPageToken, odNotes);
@@ -514,7 +518,7 @@ namespace WMS.Controllers
             }
 
             ViewBag.TenantsDeliveryServices = new SelectList(_palletingService.GetAllDpdServices(), "Id", "NetworkDescription", Order.TenantDeliveryServiceId);
-
+            ViewBag.Countries = new SelectList(LookupServices.GetAllGlobalCountries(), "CountryID", "CountryName");
             VerifyOrderAccountStatus(Order);
 
             var orderDto = _mapper.Map<ReceivePOVM>(Order);
@@ -547,6 +551,7 @@ namespace WMS.Controllers
                 orderDto.ShipmentAddressLine3 = latestOrderProcess.ShipmentAddressLine3;
                 orderDto.ShipmentAddressLine4 = latestOrderProcess.ShipmentAddressLine4;
                 orderDto.ShipmentAddressPostcode = latestOrderProcess.ShipmentAddressPostcode;
+                orderDto.ShipmentCountryId = latestOrderProcess.ShipmentCountryId;
             }
             else if (Order.Account != null)
             {
@@ -558,13 +563,14 @@ namespace WMS.Controllers
                     {
                         address = shippingAddress;
                     }
-                    if (address != null)
+                    else if (address != null)
                     {
                         orderDto.ShipmentAddressLine1 = address.AddressLine1;
                         orderDto.ShipmentAddressLine2 = address.AddressLine2;
                         orderDto.ShipmentAddressLine3 = address.AddressLine3;
                         orderDto.ShipmentAddressLine4 = address.AddressLine4;
-                        orderDto.ShipmentAddressPostcode = address.PostCode + ", " + address.GlobalCountry.CountryName;
+                        orderDto.ShipmentAddressPostcode = address.PostCode;
+                        orderDto.ShipmentCountryId = address.CountryID;
                     }
                 }
             }
@@ -682,8 +688,7 @@ namespace WMS.Controllers
                             opd.ShipmentAddressLine3,
                             opd.ShipmentAddressLine4,
                             opd.ShipmentAddressPostcode,
-
-
+                            opd.ShipmentCountryId
                         }).ToList();
 
             return PartialView(data);

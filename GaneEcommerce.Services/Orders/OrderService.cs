@@ -229,7 +229,8 @@ namespace Ganedata.Core.Services
                     ShipmentAddressLine2 = order.ShipmentAddressLine2,
                     ShipmentAddressLine3 = order.ShipmentAddressLine3,
                     ShipmentAddressLine4 = order.ShipmentAddressLine4,
-                    ShipmentAddressPostcode = order.ShipmentAddressPostcode
+                    ShipmentAddressPostcode = order.ShipmentAddressPostcode,
+                    ShipmentCountryId = order.ShipmentCountryId
                 };
 
                 _currentDbContext.Entry(orderProcess).State = EntityState.Added;
@@ -983,6 +984,7 @@ namespace Ganedata.Core.Services
                     ShipmentAddressLine3 = order.ShipmentAddressLine3,
                     ShipmentAddressLine4 = order.ShipmentAddressLine4,
                     ShipmentAddressPostcode = order.ShipmentAddressPostcode,
+                    ShipmentCountryId = order.ShipmentCountryId
                 };
                 if (shipmentInfo != null)
                 {
@@ -991,6 +993,7 @@ namespace Ganedata.Core.Services
                     receivepo.ShipmentAddressLine3 = shipmentInfo.ShipmentAddressLine3;
                     receivepo.ShipmentAddressLine4 = shipmentInfo.ShipmentAddressLine4;
                     receivepo.ShipmentAddressPostcode = shipmentInfo.ShipmentAddressPostcode;
+                    receivepo.ShipmentCountryId = shipmentInfo.ShipmentCountryId;
                     receivepo.FSC = shipmentInfo.FSC;
                     receivepo.PEFC = shipmentInfo.PEFC;
                 }
@@ -1036,7 +1039,8 @@ namespace Ganedata.Core.Services
                         ShipmentAddressLine2 = po.ShipmentAddressLine2,
                         ShipmentAddressLine3 = po.ShipmentAddressLine3,
                         ShipmentAddressLine4 = po.ShipmentAddressLine4,
-                        ShipmentAddressPostcode = po.ShipmentAddressPostcode
+                        ShipmentAddressPostcode = po.ShipmentAddressPostcode,
+                        ShipmentCountryId = po.ShipmentCountryId
 
                     };
                     _currentDbContext.OrderProcess.Add(receivepo);
@@ -1286,6 +1290,7 @@ namespace Ganedata.Core.Services
                         ShipmentAddressLine3 = order.ShipmentAddressLine3,
                         ShipmentAddressLine4 = order.ShipmentAddressLine4,
                         ShipmentAddressPostcode = order.ShipmentAddressPostcode,
+                        ShipmentCountryId = order.ShipmentCountryId,
                         CreatedBy = item.CreatedBy
                     };
 
@@ -2965,6 +2970,7 @@ namespace Ganedata.Core.Services
                 orderprocess.ShipmentAddressLine3 = string.IsNullOrEmpty(accountShipmentInfo.ShipmentAddressLine3) ? orderprocess.ShipmentAddressLine3 : accountShipmentInfo.ShipmentAddressLine3;
                 orderprocess.ShipmentAddressLine4 = string.IsNullOrEmpty(accountShipmentInfo.ShipmentAddressLine4) ? orderprocess.ShipmentAddressLine4 : accountShipmentInfo.ShipmentAddressLine4;
                 orderprocess.ShipmentAddressPostcode = string.IsNullOrEmpty(accountShipmentInfo.ShipmentAddressPostcode) ? orderprocess.ShipmentAddressPostcode : accountShipmentInfo.ShipmentAddressPostcode;
+                orderprocess.ShipmentCountryId = accountShipmentInfo.ShipmentCountryId ?? orderprocess.ShipmentCountryId;
                 orderprocess.DateCreated = accountShipmentInfo.CreatedDate.HasValue ? accountShipmentInfo.CreatedDate.Value : orderprocess.DateCreated;
                 orderprocess.DeliveryNO = string.IsNullOrEmpty(accountShipmentInfo.DeliveryNo) ? orderprocess.DeliveryNO : accountShipmentInfo.DeliveryNo;
                 orderprocess.DateUpdated = DateTime.UtcNow;

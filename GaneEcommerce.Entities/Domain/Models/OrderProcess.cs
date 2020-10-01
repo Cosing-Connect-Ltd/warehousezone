@@ -63,6 +63,10 @@ namespace Ganedata.Core.Entities.Domain
         public string ShipmentAddressLine4 { get; set; }
         [Display(Name = "Shipment Address Postcode")]
         public string ShipmentAddressPostcode { get; set; }
+        [Display(Name = "Shipment Country")]
+        public int? ShipmentCountryId { get; set; }
+        [ForeignKey("ShipmentCountryId")]
+        public virtual GlobalCountry ShipmentCountry { get; set; }
 
         [Display(Name = "Invoice Date")]
         public DateTime? InvoiceDate { get; set; }
