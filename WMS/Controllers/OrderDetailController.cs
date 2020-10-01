@@ -35,7 +35,7 @@ namespace WMS.Controllers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="id">POID</param>
         /// <returns></returns>
@@ -265,7 +265,7 @@ namespace WMS.Controllers
             if (!string.IsNullOrEmpty(Request.Params["account"]))
             {
                  accountId = int.Parse(Request.Params["account"]);
-               
+
                 var data =
                 (from pac in AccountServices.GetAllProductAccountCodesByAccount(accountId??0)
                  select new
@@ -324,7 +324,7 @@ namespace WMS.Controllers
                         ViewBag.caseProcess = (cObject.Qty / (product?.ProductsPerCase == null ? 1 : product.ProductsPerCase));
                     }
                     var cOrderSessionViewModel = _mapper.Map(cObject, new OrderDetailSessionViewModel());
-                    
+
                     return PartialView("Create", cOrderSessionViewModel);
                 }
 
@@ -371,7 +371,7 @@ namespace WMS.Controllers
                     products.ProductsPerCase,
                     products.AllowModifyPrice,
                     products.AllowZeroSale,
-                    products.BuyPrice,
+                    BuyPrice = _productPriceService.GetPurchasePrice(prodId, DateTime.Now),
                     products.EnableWarranty,
                     percentageMargin = products.PercentMargin,
                     //Converting LandedCost into percentage and adding it into PercentMargin
@@ -406,7 +406,7 @@ namespace WMS.Controllers
                 product.AllowModifyPrice,
                 product.AllowZeroSale,
                 ProductsPerPallet = product.CasesPerPallet * product.ProductsPerCase,
-                product.BuyPrice,
+                BuyPrice = _productPriceService.GetPurchasePrice(productId, DateTime.Now),
                 product.EnableWarranty,
                 percentageMargin = product.PercentMargin,
                 //Converting LandedCost into percentage and adding it into PercentMargin

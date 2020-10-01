@@ -351,7 +351,7 @@ namespace Ganedata.Core.Services
                 trans.DateUpdated = DateTime.UtcNow;
                 trans.UpdatedBy = userId;
                 // AMOUNT CANNOT BE UPDATED AT ALL
-                //trans.Amount = amount;  
+                //trans.Amount = amount;
                 //trans.AccountTransactionTypeId = accountTransaction.AccountTransactionTypeId;
                 //trans.FinalBalance = accountBalance;
             }
@@ -471,7 +471,7 @@ namespace Ganedata.Core.Services
 
         public decimal GetNetAmtBuying(int InvoiceMasterId)
         {
-            decimal NetAmtB = 0;
+            decimal netAmountBuying = 0;
 
             var InvocieDetaildata = _currentDbContext.InvoiceDetails.Where(u => u.InvoiceMasterId == InvoiceMasterId && u.IsDeleted != true).ToList();
 
@@ -480,24 +480,24 @@ namespace Ganedata.Core.Services
                 var buyPrice = _productPriceService.GetPurchasePrice(item.ProductId, item.DateCreated);
                 var amount = (decimal?)(item.Quantity * buyPrice);
 
-                NetAmtB += amount ?? 0;
+                netAmountBuying += amount ?? 0;
             }
 
-            return NetAmtB;
+            return netAmountBuying;
 
         }
 
         public decimal GetNetAmtSelling(int InvoiceMasterId)
         {
-            decimal NetAmtS = 0;
+            decimal netAmountSelling = 0;
 
             var InvocieDetaildata = _currentDbContext.InvoiceDetails.Where(u => u.InvoiceMasterId == InvoiceMasterId && u.IsDeleted != true).ToList();
             foreach (var item in InvocieDetaildata)
             {
                 var amount = (decimal?)(item.Quantity * item.Price);
-                NetAmtS += amount ?? 0;
+                netAmountSelling += amount ?? 0;
             }
-            return NetAmtS;
+            return netAmountSelling;
         }
     }
 }

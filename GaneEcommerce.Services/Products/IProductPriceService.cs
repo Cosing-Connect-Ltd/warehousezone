@@ -41,7 +41,7 @@ namespace Ganedata.Core.Services
         TenantPriceGroups GetTenantPriceGroupById(int priceGroupId);
         IQueryable<TenantPriceGroups> GetAllTenantPriceGroups(int tenantId, bool includeIsDeleted = false);
         IQueryable<TenantPriceGroupDetail> GetAllTenantPriceGroupDetails(int tenantId, bool includeIsDeleted = false);
-        decimal GetPurchasePrice(int productId, DateTime? invoiceDetailCreatedData = null);
+        decimal GetPurchasePrice(int productId, DateTime? invoiceDetailDateCreated = null);
 
     }
 }

@@ -1534,21 +1534,23 @@ namespace WMS.Controllers
             DateTime startDate = (DateTime)report.Parameters["paramStartDate"].Value;
             DateTime endDate = (DateTime)report.Parameters["paramEndDate"].Value;
             endDate = endDate.AddHours(24);
-            int? AccountId = (int?)report.Parameters["paramAccountId"].Value;
-            var InvoiceMaster = _invoiceService.GetAllInvoiceMastersWithAllStatus(CurrentTenantId, AccountId).Where(x => x.InvoiceDate >= startDate && x.InvoiceDate < endDate).ToList();
+            var accountId = (int?)report.Parameters["paramAccountId"].Value;
+            var invoices = _invoiceService.GetAllInvoiceMastersWithAllStatus(CurrentTenantId, accountId).Where(x => x.InvoiceDate >= startDate && x.InvoiceDate < endDate).ToList();
 
             var dataSource = new List<InvoiceProfitReportViewModel>();
-            foreach (var type in InvoiceMaster)
+            foreach (var invoice in invoices)
             {
-                var NetAmtB = _invoiceService.GetNetAmtBuying(type.InvoiceMasterId);
-                var NetAmtS = _invoiceService.GetNetAmtSelling(type.InvoiceMasterId);
-                var sourceItem = new InvoiceProfitReportViewModel();
-                sourceItem.InvoiceNumber = type.InvoiceNumber;
-                sourceItem.CompanyName = type.Account?.CompanyName ?? "";
-                sourceItem.Date = type.DateCreated; ;
-                sourceItem.NetAmtB = NetAmtB;
-                sourceItem.NetAmtS = NetAmtS;
-                sourceItem.Profit = (NetAmtS - NetAmtB);
+                var netAmountBuying = _invoiceService.GetNetAmtBuying(invoice.InvoiceMasterId);
+                var netAmountSelling = _invoiceService.GetNetAmtSelling(invoice.InvoiceMasterId);
+                var sourceItem = new InvoiceProfitReportViewModel
+                {
+                    InvoiceNumber = invoice.InvoiceNumber,
+                    CompanyName = invoice.Account?.CompanyName ?? "",
+                    Date = invoice.DateCreated,
+                    NetAmtB = netAmountBuying,
+                    NetAmtS = netAmountSelling,
+                    Profit = (netAmountSelling - netAmountBuying)
+                };
                 dataSource.Add(sourceItem);
             }
 
