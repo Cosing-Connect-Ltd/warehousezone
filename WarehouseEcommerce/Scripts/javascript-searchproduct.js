@@ -31,7 +31,7 @@ function searchPoducts() {
         urlString += "filters=" + currentFilters + "&";
     }
 
-    window.location.href  = urlString.substr(0, urlString.length - 2);
+    window.location.href  = urlString.substr(0, urlString.length - 1);
 }
 
 function SearchPostCode() {
