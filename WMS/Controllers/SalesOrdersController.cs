@@ -549,7 +549,7 @@ namespace WMS.Controllers
                 orderDto.ShipmentAddressLine1 = latestOrderProcess.ShipmentAddressLine1;
                 orderDto.ShipmentAddressLine2 = latestOrderProcess.ShipmentAddressLine2;
                 orderDto.ShipmentAddressLine3 = latestOrderProcess.ShipmentAddressLine3;
-                orderDto.ShipmentAddressLine4 = latestOrderProcess.ShipmentAddressLine4;
+                orderDto.ShipmentAddressTown = latestOrderProcess.ShipmentAddressTown;
                 orderDto.ShipmentAddressPostcode = latestOrderProcess.ShipmentAddressPostcode;
                 orderDto.ShipmentCountryId = latestOrderProcess.ShipmentCountryId;
             }
@@ -568,7 +568,7 @@ namespace WMS.Controllers
                         orderDto.ShipmentAddressLine1 = address.AddressLine1;
                         orderDto.ShipmentAddressLine2 = address.AddressLine2;
                         orderDto.ShipmentAddressLine3 = address.AddressLine3;
-                        orderDto.ShipmentAddressLine4 = address.AddressLine4;
+                        orderDto.ShipmentAddressTown = address.Town;
                         orderDto.ShipmentAddressPostcode = address.PostCode;
                         orderDto.ShipmentCountryId = address.CountryID;
                     }
@@ -686,7 +686,7 @@ namespace WMS.Controllers
                             opd.ShipmentAddressLine1,
                             opd.ShipmentAddressLine2,
                             opd.ShipmentAddressLine3,
-                            opd.ShipmentAddressLine4,
+                            opd.ShipmentAddressTown,
                             opd.ShipmentAddressPostcode,
                             opd.ShipmentCountryId
                         }).ToList();

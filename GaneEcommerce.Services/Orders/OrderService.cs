@@ -228,7 +228,7 @@ namespace Ganedata.Core.Services
                     ShipmentAddressLine1 = order.ShipmentAddressLine1,
                     ShipmentAddressLine2 = order.ShipmentAddressLine2,
                     ShipmentAddressLine3 = order.ShipmentAddressLine3,
-                    ShipmentAddressLine4 = order.ShipmentAddressLine4,
+                    ShipmentAddressTown = order.ShipmentAddressTown,
                     ShipmentAddressPostcode = order.ShipmentAddressPostcode,
                     ShipmentCountryId = order.ShipmentCountryId
                 };
@@ -982,7 +982,7 @@ namespace Ganedata.Core.Services
                     ShipmentAddressLine1 = order.ShipmentAddressLine1,
                     ShipmentAddressLine2 = order.ShipmentAddressLine2,
                     ShipmentAddressLine3 = order.ShipmentAddressLine3,
-                    ShipmentAddressLine4 = order.ShipmentAddressLine4,
+                    ShipmentAddressTown = order.ShipmentAddressTown,
                     ShipmentAddressPostcode = order.ShipmentAddressPostcode,
                     ShipmentCountryId = order.ShipmentCountryId
                 };
@@ -991,7 +991,7 @@ namespace Ganedata.Core.Services
                     receivepo.ShipmentAddressLine1 = shipmentInfo.ShipmentAddressLine1;
                     receivepo.ShipmentAddressLine2 = shipmentInfo.ShipmentAddressLine2;
                     receivepo.ShipmentAddressLine3 = shipmentInfo.ShipmentAddressLine3;
-                    receivepo.ShipmentAddressLine4 = shipmentInfo.ShipmentAddressLine4;
+                    receivepo.ShipmentAddressTown = shipmentInfo.ShipmentAddressTown;
                     receivepo.ShipmentAddressPostcode = shipmentInfo.ShipmentAddressPostcode;
                     receivepo.ShipmentCountryId = shipmentInfo.ShipmentCountryId;
                     receivepo.FSC = shipmentInfo.FSC;
@@ -1038,7 +1038,7 @@ namespace Ganedata.Core.Services
                         ShipmentAddressLine1 = po.ShipmentAddressLine1,
                         ShipmentAddressLine2 = po.ShipmentAddressLine2,
                         ShipmentAddressLine3 = po.ShipmentAddressLine3,
-                        ShipmentAddressLine4 = po.ShipmentAddressLine4,
+                        ShipmentAddressTown = po.ShipmentAddressTown,
                         ShipmentAddressPostcode = po.ShipmentAddressPostcode,
                         ShipmentCountryId = po.ShipmentCountryId
 
@@ -1288,7 +1288,7 @@ namespace Ganedata.Core.Services
                         ShipmentAddressLine1 = order.ShipmentAddressLine1,
                         ShipmentAddressLine2 = order.ShipmentAddressLine2,
                         ShipmentAddressLine3 = order.ShipmentAddressLine3,
-                        ShipmentAddressLine4 = order.ShipmentAddressLine4,
+                        ShipmentAddressTown = order.ShipmentAddressTown,
                         ShipmentAddressPostcode = order.ShipmentAddressPostcode,
                         ShipmentCountryId = order.ShipmentCountryId,
                         CreatedBy = item.CreatedBy
@@ -2968,7 +2968,7 @@ namespace Ganedata.Core.Services
                 orderprocess.ShipmentAddressLine1 = string.IsNullOrEmpty(accountShipmentInfo.ShipmentAddressLine1) ? orderprocess.ShipmentAddressLine1 : accountShipmentInfo.ShipmentAddressLine1;
                 orderprocess.ShipmentAddressLine2 = string.IsNullOrEmpty(accountShipmentInfo.ShipmentAddressLine2) ? orderprocess.ShipmentAddressLine2 : accountShipmentInfo.ShipmentAddressLine2;
                 orderprocess.ShipmentAddressLine3 = string.IsNullOrEmpty(accountShipmentInfo.ShipmentAddressLine3) ? orderprocess.ShipmentAddressLine3 : accountShipmentInfo.ShipmentAddressLine3;
-                orderprocess.ShipmentAddressLine4 = string.IsNullOrEmpty(accountShipmentInfo.ShipmentAddressLine4) ? orderprocess.ShipmentAddressLine4 : accountShipmentInfo.ShipmentAddressLine4;
+                orderprocess.ShipmentAddressTown = string.IsNullOrEmpty(accountShipmentInfo.ShipmentAddressTown) ? orderprocess.ShipmentAddressTown : accountShipmentInfo.ShipmentAddressTown;
                 orderprocess.ShipmentAddressPostcode = string.IsNullOrEmpty(accountShipmentInfo.ShipmentAddressPostcode) ? orderprocess.ShipmentAddressPostcode : accountShipmentInfo.ShipmentAddressPostcode;
                 orderprocess.ShipmentCountryId = accountShipmentInfo.ShipmentCountryId ?? orderprocess.ShipmentCountryId;
                 orderprocess.DateCreated = accountShipmentInfo.CreatedDate.HasValue ? accountShipmentInfo.CreatedDate.Value : orderprocess.DateCreated;

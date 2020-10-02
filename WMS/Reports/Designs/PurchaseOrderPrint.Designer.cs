@@ -915,7 +915,7 @@ namespace WMS.Reports
             this.xrLabel21.CanShrink = true;
             this.xrLabel21.Dpi = 96F;
             this.xrLabel21.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[ShipmentAddressLine4]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[ShipmentAddressTown]")});
             this.xrLabel21.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.xrLabel21.LocationFloat = new DevExpress.Utils.PointFloat(10F, 89.08005F);
             this.xrLabel21.Name = "xrLabel21";

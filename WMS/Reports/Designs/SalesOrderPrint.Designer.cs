@@ -950,7 +950,7 @@
             this.xrLabel49.CanShrink = true;
             this.xrLabel49.Dpi = 96F;
             this.xrLabel49.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[ShipmentAddressLine4]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[ShipmentAddressTown]")});
             this.xrLabel49.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.xrLabel49.LocationFloat = new DevExpress.Utils.PointFloat(3.051758E-05F, 98.39999F);
             this.xrLabel49.Name = "xrLabel49";

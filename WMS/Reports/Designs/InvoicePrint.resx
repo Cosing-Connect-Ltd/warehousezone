@@ -156,7 +156,7 @@ order by "ProductMaster".SKUCode</value>
        "OrderProcesses"."ShipmentAddressLine1",
        "OrderProcesses"."ShipmentAddressLine2",
        "OrderProcesses"."ShipmentAddressLine3",
-       "OrderProcesses"."ShipmentAddressLine4",
+       "OrderProcesses"."ShipmentAddressTown",
        "OrderProcesses"."ShipmentAddressPostcode",
        "Account"."CreditTerms", "TenantConfigs"."IvReportFooterMsg1",
        "InvoiceMaster"."InvoiceTotal","InvoiceMaster"."WarrantyAmount", "OrderProcesses"."DeliveryNO",

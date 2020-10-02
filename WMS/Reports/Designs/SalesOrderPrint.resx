@@ -138,7 +138,7 @@
                          TenantLocations.PostalCode AS TenantWarehousePostcode, TenantWarehouse.WarehouseId AS ToWarehouseId, TenantWarehouse.WarehouseName AS ToWarehouseName, 
                          TenantWarehouse.AddressLine1 AS ToWarehouseAddr1, TenantWarehouse.AddressLine2 AS ToWarehouseAddr2, TenantWarehouse.AddressLine3 AS ToWarehouseAddr3, 
                          TenantWarehouse.CountyState AS ToWarehouseCounty, TenantWarehouse.PostalCode AS ToWarehousePostcode, ISNULL(Orders.ShipmentAddressLine1, '') AS ShipmentAddressLine1, ISNULL(Orders.ShipmentAddressLine2, 
-                         '') AS ShipmentAddressLine2, ISNULL(Orders.ShipmentAddressLine3, '') AS ShipmentAddressLine3, ISNULL(Orders.ShipmentAddressLine4, '') AS ShipmentAddressLine4, ISNULL(Orders.ShipmentAddressPostcode, '') 
+                         '') AS ShipmentAddressLine2, ISNULL(Orders.ShipmentAddressLine3, '') AS ShipmentAddressLine3, ISNULL(Orders.ShipmentAddressTown, '') AS ShipmentAddressTown, ISNULL(Orders.ShipmentAddressPostcode, '') 
                          AS ShipmentAddressPostcode, Orders.ShipmentAccountAddressId, Orders.DeliveryMethod, ISNULL(JobTypes.Name, '') + ': ' + ISNULL(JobSubTypes.Name, '') AS JobDescription, 
                          PProperties.AddressLine1 AS WorksPropertyAddress1, PProperties.AddressLine2 AS WorksPropertyAddress2, PProperties.AddressLine3 AS WorksPropertyAddress3, PProperties.AddressPostcode AS WorksPropertyPostcode, 
                          PTenants.TenantFullName AS WorksTenantFullName, PTenants.MobileNumber AS WorksTenantMobileNumber, PTenants.HomeTelephone AS WorksTenantHomePhone, PTenants.WorkTelephone1 AS WorksTenantWorkphone, 

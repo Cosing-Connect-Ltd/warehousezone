@@ -26,9 +26,6 @@
         new { Controller = "Account", Action = "_AccountSorting" }
         );
 
-        settings.Settings.ShowHeaderFilterButton = true;
-        settings.SettingsPopup.HeaderFilter.Height = 200;
-
         settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
 
         settings.KeyFieldName = "AccountID";
@@ -97,7 +94,8 @@
             c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
         });
 
-        settings.Columns.Add(c => {
+        settings.Columns.Add(c =>
+        {
 
             c.FieldName = "OwnerName";
             c.Caption = "Acc Owner";
@@ -112,7 +110,7 @@
                 c.Caption = "Market";
                 c.SetDataItemTemplateContent(m =>
                 {
-                    var market=Html.Action("_Market", new { AccountID = DataBinder.Eval(m.DataItem, "AccountID"), MarketId= DataBinder.Eval(m.DataItem, "MarketId") });
+                    var market = Html.Action("_Market", new { AccountID = DataBinder.Eval(m.DataItem, "AccountID"), MarketId = DataBinder.Eval(m.DataItem, "MarketId") });
                     ViewContext.Writer.Write(market);
                 });
             });
@@ -154,8 +152,8 @@
             c.ColumnType = MVCxGridViewColumnType.ComboBox;
             var comboSettings = (ComboBoxProperties)c.PropertiesEdit;
             comboSettings.DataSource = Enum.GetValues(typeof(AccountStatusEnum));
-            //c.Settings.AllowAutoFilter = DefaultBoolean.False;
-        });
+    //c.Settings.AllowAutoFilter = DefaultBoolean.False;
+});
 
         settings.SettingsDetail.ShowDetailRow = true;
         settings.SetDetailRowTemplateContent(c =>

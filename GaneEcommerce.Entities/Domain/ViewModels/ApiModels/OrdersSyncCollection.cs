@@ -62,7 +62,7 @@ namespace Ganedata.Core.Models
         public string ShipmentAddressLine1 { get; set; }
         public string ShipmentAddressLine2 { get; set; }
         public string ShipmentAddressLine3 { get; set; }
-        public string ShipmentAddressLine4 { get; set; }
+        public string ShipmentAddressTown { get; set; }
         public string ShipmentAddressPostcode { get; set; }
         public int? PPropertyId { get; set; }
         public int? ShipmentPropertyId { get; set; }

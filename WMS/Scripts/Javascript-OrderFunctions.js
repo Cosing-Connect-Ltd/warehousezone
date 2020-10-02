@@ -842,7 +842,7 @@ function submitProduct() {
         data.push({ name: 'ShipmentAddressLine1', value: $('#ShipmentAddressLine1').val() });
         data.push({ name: 'ShipmentAddressLine2', value: $('#ShipmentAddressLine2').val() });
         data.push({ name: 'ShipmentAddressLine3', value: $('#ShipmentAddressLine3').val() });
-        data.push({ name: 'ShipmentAddressLine4', value: $('#ShipmentAddressLine4').val() });
+        data.push({ name: 'ShipmentAddressTown', value: $('#ShipmentAddressTown').val() });
         data.push({ name: 'ShipmentAddressPostcode', value: $('#ShipmentAddressPostcode').val() });
 
         $.post("/Order/_SubmitRecProduct",
@@ -960,7 +960,7 @@ function CollectSerials() {
         ShipmentAddressLine1: $('#ShipmentAddressLine1').val(),
         ShipmentAddressLine2: $('#ShipmentAddressLine2').val(),
         ShipmentAddressLine3: $('#ShipmentAddressLine3').val(),
-        ShipmentAddressLine4: $('#ShipmentAddressLine4').val(),
+        ShipmentAddressTown: $('#ShipmentAddressTown').val(),
         ShipmentAddressPostcode: $('#ShipmentAddressPostcode').val()
     };
 
@@ -1042,7 +1042,7 @@ function beginAddSeriesCallBack(s, e) {
     e.customArgs["ShipmentAddressLine1"] = $('#ShipmentAddressLine1').val();
     e.customArgs["ShipmentAddressLine2"] = $('#ShipmentAddressLine2').val();
     e.customArgs["ShipmentAddressLine3"] = $('#ShipmentAddressLine3').val();
-    e.customArgs["ShipmentAddressLine4"] = $('#ShipmentAddressLine4').val();
+    e.customArgs["ShipmentAddressTown"] = $('#ShipmentAddressTown').val();
     e.customArgs["ShipmentAddressPostcode"] = $('#ShipmentAddressPostcode').val();
 
     serialArray = [];
@@ -1409,7 +1409,7 @@ function submitProductProcessing(productId, orderDetailId, iscaseQty) {
         ShipmentAddressLine1: $("#ShipmentAddressLine1").val(),
         ShipmentAddressLine2: $("#ShipmentAddressLine2").val(),
         ShipmentAddressLine3: $("#ShipmentAddressLine3").val(),
-        ShipmentAddressLine4: $("#ShipmentAddressLine4").val(),
+        ShipmentAddressTown: $("#ShipmentAddressTown").val(),
         ShipmentAddressPostcode: $("#ShipmentAddressPostcode").val()
     };
     $.post('/Order/_SubmitProcessedItems',
@@ -1892,7 +1892,7 @@ var updateSOShipmentInfo = function () {
         $("#ShipmentAddressLine1").val(addressParts[0] === undefined ? '' : addressParts[0].trim());
         $("#ShipmentAddressLine2").val(addressParts[1] === undefined ? '' : addressParts[1].trim());
         $("#ShipmentAddressLine3").val(addressParts[2] === undefined ? '' : addressParts[2].trim());
-        $("#ShipmentAddressLine4").val(addressParts[3] === undefined ? '' : addressParts[3].trim());
+        $("#ShipmentAddressTown").val(addressParts[3] === undefined ? '' : addressParts[3].trim());
         $("#ShipmentAddressPostcode").val(addressParts[4] === undefined ? '' : addressParts[4].trim());
     }
 };
@@ -2082,7 +2082,7 @@ var populateShipmentAddress = function (selectedAddress) {
     if (addressLines.length < 4) return;
     $("#ShipmentAddressLine3").val(addressLines[2].trim());
     if (addressLines.length < 5) return;
-    $("#ShipmentAddressLine4").val(addressLines[3].trim());
+    $("#ShipmentAddressTown").val(addressLines[3].trim());
 
 };
 

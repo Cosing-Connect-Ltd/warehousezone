@@ -763,7 +763,7 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             // 
             this.xrLabel19.CanShrink = true;
             this.xrLabel19.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[ShipmentAddressLine4]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[ShipmentAddressTown]")});
             this.xrLabel19.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.xrLabel19.LocationFloat = new DevExpress.Utils.PointFloat(2.083496F, 81.20688F);
             this.xrLabel19.Name = "xrLabel19";

@@ -429,7 +429,7 @@ namespace Ganedata.Core.Services
                     opr.ShipmentAddressLine1 = shipmentInfo.ShipmentAddressLine1;
                     opr.ShipmentAddressLine2 = shipmentInfo.ShipmentAddressLine2;
                     opr.ShipmentAddressLine3 = shipmentInfo.ShipmentAddressLine3;
-                    opr.ShipmentAddressLine4 = shipmentInfo.ShipmentAddressLine4;
+                    opr.ShipmentAddressTown = shipmentInfo.ShipmentAddressTown;
                     opr.ShipmentAddressPostcode = shipmentInfo.ShipmentAddressPostcode;
                     opr.ShipmentCountryId = shipmentInfo.ShipmentCountryId;
                 }
@@ -438,7 +438,7 @@ namespace Ganedata.Core.Services
                     opr.ShipmentAddressLine1 = order.ShipmentAddressLine1;
                     opr.ShipmentAddressLine2 = order.ShipmentAddressLine2;
                     opr.ShipmentAddressLine3 = order.ShipmentAddressLine3;
-                    opr.ShipmentAddressLine4 = order.ShipmentAddressLine4;
+                    opr.ShipmentAddressTown = order.ShipmentAddressTown;
                     opr.ShipmentAddressPostcode = order.ShipmentAddressPostcode;
                     opr.ShipmentCountryId = order.ShipmentCountryId;
                 }
@@ -492,7 +492,7 @@ namespace Ganedata.Core.Services
                             ShipmentAddressLine1 = altOrder.ShipmentAddressLine1,
                             ShipmentAddressLine2 = altOrder.ShipmentAddressLine2,
                             ShipmentAddressLine3 = altOrder.ShipmentAddressLine3,
-                            ShipmentAddressLine4 = altOrder.ShipmentAddressLine4,
+                            ShipmentAddressTown = altOrder.ShipmentAddressTown,
                             ShipmentAddressPostcode = altOrder.ShipmentAddressPostcode,
                             ShipmentCountryId = altOrder.ShipmentCountryId
                         };
@@ -612,7 +612,7 @@ namespace Ganedata.Core.Services
                         oprocess.ShipmentAddressLine1 = shipmentInfo.ShipmentAddressLine1 ?? "";
                         oprocess.ShipmentAddressLine2 = shipmentInfo.ShipmentAddressLine2 ?? "";
                         oprocess.ShipmentAddressLine3 = shipmentInfo.ShipmentAddressLine3 ?? "";
-                        oprocess.ShipmentAddressLine4 = shipmentInfo.ShipmentAddressLine4 ?? "";
+                        oprocess.ShipmentAddressTown = shipmentInfo.ShipmentAddressTown ?? "";
                         oprocess.ShipmentAddressPostcode = shipmentInfo.ShipmentAddressPostcode ?? "";
                         oprocess.ShipmentCountryId = shipmentInfo.ShipmentCountryId;
                     }
@@ -653,7 +653,7 @@ namespace Ganedata.Core.Services
                                 ShipmentAddressLine1 = altOrder.ShipmentAddressLine1,
                                 ShipmentAddressLine2 = altOrder.ShipmentAddressLine2,
                                 ShipmentAddressLine3 = altOrder.ShipmentAddressLine3,
-                                ShipmentAddressLine4 = altOrder.ShipmentAddressLine4,
+                                ShipmentAddressTown = altOrder.ShipmentAddressTown,
                                 ShipmentAddressPostcode = altOrder.ShipmentAddressPostcode,
                                 ShipmentCountryId = altOrder.ShipmentCountryId
                             };

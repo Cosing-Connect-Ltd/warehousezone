@@ -21,7 +21,6 @@ namespace WMS.Controllers.WebAPI
         private readonly IUserService _userService;
         private DataImportFactory dataImportFactory = new DataImportFactory();
 
-
         public ApiPrestaShopSyncController(ITerminalServices terminalServices, IPurchaseOrderService purchaseOrderService,
             ITenantLocationServices tenantLocationServices, IOrderService orderService,
             IProductServices productServices, IUserService userService, ILookupServices lookupService, IProductServices productService, IMapper mapper, IApplicationContext contexts) :
@@ -46,10 +45,11 @@ namespace WMS.Controllers.WebAPI
             foreach (var item in sites)
             {
                 result = dataImportFactory.GetPrestaShopOrdersSync(item.TenantId, item.DefaultWarehouseId, item.ApiUrl, item.ApiKey, item.Id).Result;
-
             }
+
             return Ok(!string.IsNullOrEmpty(result) ? result : "Orders synced successfully");
         }
+
         [HttpGet]
         //Post http://localhost:8005/api/sync/Post-PrestaShop-ProductStock/?TenatId=1&WarehouseId=1
         public async Task<IHttpActionResult> PrestaShopStockSync(int TenatId, int WarehouseId)
@@ -59,8 +59,8 @@ namespace WMS.Controllers.WebAPI
             foreach (var item in sites)
             {
                 result = await dataImportFactory.PrestaShopStockSync(item.TenantId, item.DefaultWarehouseId, item.ApiUrl, item.ApiKey, item.Id);
-
             }
+
             return Ok(result);
         }
 
@@ -70,6 +70,7 @@ namespace WMS.Controllers.WebAPI
         {
             var sites = _userService.GetApiCredentials(TenatId, WarehouseId, ApiTypes.PrestaShop);
             string result = "";
+
             foreach (var item in sites)
             {
                 var data = await dataImportFactory.GetPrestaShopCountry(null, item.ApiUrl, item.ApiKey);
@@ -77,10 +78,8 @@ namespace WMS.Controllers.WebAPI
                     result = "Countries Imported";
                 break;
             }
+
             return Ok(result);
         }
-
-
-
     }
 }
