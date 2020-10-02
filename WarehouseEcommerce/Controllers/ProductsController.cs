@@ -171,7 +171,7 @@ namespace WarehouseEcommerce.Controllers
 
         public ActionResult Brands()
         {
-            ViewBag.Title = CurrentTenantWebsite.SiteName + " Shop By Brand";
+            ViewBag.Title = CurrentTenantWebsite.SiteName + " Brands";
             try
             {
                 var manufactuters = _tenantWebsiteService.GetWebsiteProductManufacturers(CurrentTenantWebsite.SiteID);
