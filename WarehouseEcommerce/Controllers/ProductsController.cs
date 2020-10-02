@@ -62,6 +62,8 @@ namespace WarehouseEcommerce.Controllers
         {
             try
             {
+                ViewBag.Title = CurrentTenantWebsite.SiteName;
+
                 var model = new ProductListViewModel {
                     CurrentCategoryName = category,
                     CurrentCategoryId = categoryId,
@@ -76,6 +78,16 @@ namespace WarehouseEcommerce.Controllers
 
                     model.Category = categoryInfo?.Parent ?? categoryInfo;
                     model.SubCategory = categoryInfo?.Parent != null ? categoryInfo : null;
+
+                    if (model.Category != null)
+                    {
+                        ViewBag.Title += $": {model.Category.Name}";
+                    }
+
+                    if (model.SubCategory != null)
+                    {
+                        ViewBag.Title += $": {model.SubCategory.Name}";
+                    }
 
                     var products = _tenantWebsiteService.GetWebsiteProducts(CurrentTenantWebsite.SiteID, category, string.Empty, categoryId);
 
@@ -157,8 +169,9 @@ namespace WarehouseEcommerce.Controllers
             }
         }
 
-        public ActionResult brands()
+        public ActionResult Brands()
         {
+            ViewBag.Title = CurrentTenantWebsite.SiteName + " Shop By Brand";
             try
             {
                 var manufactuters = _tenantWebsiteService.GetWebsiteProductManufacturers(CurrentTenantWebsite.SiteID);
@@ -352,6 +365,7 @@ namespace WarehouseEcommerce.Controllers
 
         public ActionResult AddToCart()
         {
+            ViewBag.Title = CurrentTenantWebsite.SiteName + " Shopping Basket";
             ViewBag.cart = true;
             Session["CheckoutViewModel"] = null;
             return View();
@@ -470,6 +484,7 @@ namespace WarehouseEcommerce.Controllers
 
         public ActionResult WishList()
         {
+            ViewBag.Title = CurrentTenantWebsite.SiteName + " WishList";
             if (CurrentUserId > 0)
             {
                 var model = _tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).ToList();
@@ -733,6 +748,7 @@ namespace WarehouseEcommerce.Controllers
                 model.Product = baseProduct;
             }
 
+            model.Prices = _tenantWebsiteService.GetPricesForProducts(new List<int> { model.Product.ProductId }, CurrentTenantWebsite.SiteID).FirstOrDefault();
             model.ParentProductId = baseProduct.ProductId;
             model.ParentProductType = baseProduct.ProductType;
             model.ParentProductSKUCode = baseProduct.SKUCode;

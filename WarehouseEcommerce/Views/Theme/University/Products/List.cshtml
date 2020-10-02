@@ -2,6 +2,7 @@
 @using Ganedata.Core.Entities.Enums
 @using PagedList.Mvc;
 
+@Html.Partial("_ProductByAttributeSelectorModal")
 <section class="nb_sec nb_prdlisting_pgsec">
     <span id="res_filterBox_trigger"><i class="icon-filter"></i></span>
     <div class="container">
@@ -45,7 +46,7 @@
                     </div>
                 </div>
             }
-            </div>
+        </div>
         <div class="row">
             <div class="col-md-4 col-lg-3 col-xl-2">
                 @Html.Partial("_DynamicFilters", Model.DynamicFilters)

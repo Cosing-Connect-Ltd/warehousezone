@@ -294,7 +294,7 @@ h6,
 .myAccLeftNavsec .tabcontentInner .myAccwishlistList > li .myAccwishlistList_inner .cont_left .prod_det .stkStatus.out,
 .nb_header .nb_mainnav > ul > li.hav_sub_nav .nb_subnavWrap > ul.nb_f_snList li a:hover,
 .uni-pages-main .nb_sec_navwrap .nb_sec_navlist li a:hover {
-    color: var(--secondary-color);
+    color: var(--secondary-color) !important;
 }
 
 .nb_prd_listing_wrap .tagList li a:hover,

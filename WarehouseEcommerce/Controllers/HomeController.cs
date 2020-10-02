@@ -44,6 +44,9 @@ namespace WarehouseEcommerce.Controllers
             {
                 return RedirectToAction("Index", "Error");
             }
+
+            ViewBag.Title = CurrentTenantWebsite.SiteName;
+
             ViewBag.ProductGroups = new SelectList(_lookupServices.GetAllValidProductGroups((CurrentTenantId), 12), "ProductGroupId", "ProductGroup", ViewBag.groupId);
             Session["CheckoutViewModel"] = null;
             return View();

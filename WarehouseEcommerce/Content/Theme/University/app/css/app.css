@@ -1879,7 +1879,9 @@ input[type=number]::-webkit-outer-spin-button {
         margin-bottom: 40px;
         position: relative;
         margin-left: auto;
-        margin-right: auto
+        margin-right: auto;
+        width: 100%;
+
     }
 
         .nb_prd_listing_wrap .head:after {
@@ -1992,10 +1994,10 @@ input[type=number]::-webkit-outer-spin-button {
         }
 
         .foot .icolist li a i {
-            font-size: 30px;
+            font-size: 25px;
             color: #111;
             transition: all .3s ease;
-            padding: 10px;
+            padding: 6px;
         }
 
 .nb_prd_viewingsecWrap #zoomViewTrigger:hover,
@@ -6813,6 +6815,10 @@ body.modal-open {
 .feature-product-overflow .owl-item,
 .list-on-tablets .prd_lst_boxouter {
     text-align: center
+}
+
+.wishlist-table .prd .prdCellwrap .imgWrap{
+    max-width: 120px;
 }
 
 .feature-product-overflow .owl-item {

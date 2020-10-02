@@ -105,6 +105,8 @@ namespace WarehouseEcommerce.Controllers
                 checkoutViewModel.noTrackStep = true;
             }
 
+            ViewBag.Title = $"{CurrentTenantWebsite.SiteName} Checkout";
+
             return View(checkoutViewModel);
         }
 
