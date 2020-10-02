@@ -289,11 +289,16 @@ namespace Ganedata.Core.Services
                         })
                     }).ToList();
 
-                    var allChildAndParentProductsIds = selectedProducts.Where(p => p.ProductType == ProductKitTypeEnum.Grouped || p.ProductType == ProductKitTypeEnum.ProductByAttribute)
+                    var allChildAndParentProductsIds = selectedProducts.Where(p => p.ProductType == ProductKitTypeEnum.Grouped)
                                                                         .SelectMany(p => p.KitProducts)
                                                                         .Where(k => k.UseInParentCalculations == true)
                                                                         .Select(k => k.ProductId)
                                                                         .ToList();
+
+                    allChildAndParentProductsIds.AddRange(selectedProducts.Where(p => p.ProductType == ProductKitTypeEnum.ProductByAttribute)
+                                                                          .SelectMany(p => p.KitProducts)
+                                                                          .Select(k => k.ProductId)
+                                                                          .ToList());
 
                     allChildAndParentProductsIds.AddRange(selectedProducts.Select(k => k.ProductId));
 
@@ -324,7 +329,10 @@ namespace Ganedata.Core.Services
                                                                         .ToList();
 
                             kitProductsAttributes = kitProductsAttributes.Where(p => filteredProductsIds.Contains(p.ProductId)).ToList();
-                            selectedProducts = selectedProducts.Where(p => filteredProductsIds.Contains(p.ProductId) || p.KitProducts.Any(k => k.UseInParentCalculations == true && filteredProductsIds.Contains(k.ProductId))).ToList();
+                            selectedProducts = selectedProducts.Where(p => filteredProductsIds.Contains(p.ProductId) ||
+                                                                           p.KitProducts.Any(k => (k.UseInParentCalculations == true || p.ProductType == ProductKitTypeEnum.ProductByAttribute) &&
+                                                                                                   filteredProductsIds.Contains(k.ProductId)))
+                                                               .ToList();
                         }
                     }
 

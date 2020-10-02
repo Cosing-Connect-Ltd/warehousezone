@@ -718,8 +718,6 @@
     <Content Include="Views\Theme\University\Home\Contact.cshtml" />
     <Content Include="Views\Theme\University\Shared\_CartItemsPartial.cshtml" />
     <Content Include="Views\Theme\University\Products\AddToCart.cshtml" />
-    <Content Include="Views\Theme\University\Products\Category.cshtml" />
-    <Content Include="Views\Theme\University\Products\CategoryDetail.cshtml" />
     <Content Include="fonts\gotham\Gotham-Book.eot">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1381,8 +1379,6 @@
     <Content Include="Views\Theme\University\User\Create.cshtml" />
     <Content Include="Views\Theme\University\User\Login.cshtml" />
     <Content Include="Views\Theme\University\User\logout.cshtml" />
-    <Content Include="Views\Theme\University\User\OrderHistory.cshtml" />
-    <Content Include="Views\Theme\University\User\WishList.cshtml" />
     <Content Include="Views\Theme\University\Home\Blog.cshtml" />
     <Content Include="Views\Theme\ElecTech\Error\Index.cshtml" />
     <Content Include="Views\Theme\Smart\Error\Index.cshtml" />

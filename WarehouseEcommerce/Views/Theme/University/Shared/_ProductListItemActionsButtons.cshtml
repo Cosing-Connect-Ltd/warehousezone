@@ -1,9 +1,6 @@
 ﻿@model Ganedata.Core.Entities.Domain.ProductMaster
 @using Ganedata.Core.Entities.Enums
 
-
-@Html.Partial("_ProductByAttributeSelectorModal")
-
 @if (Model.ProductType != ProductKitTypeEnum.Grouped && Model.ProductType != ProductKitTypeEnum.Kit)
 {
     <li>
