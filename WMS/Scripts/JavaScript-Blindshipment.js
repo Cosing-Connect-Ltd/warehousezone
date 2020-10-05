@@ -184,7 +184,7 @@ function BSConfirm() {
         ShipmentAddressLine1: $('#ShipmentAddressLine1').val(),
         ShipmentAddressLine2: $('#ShipmentAddressLine2').val(),
         ShipmentAddressLine3: $('#ShipmentAddressLine3').val(),
-        ShipmentAddressLine4: $('#ShipmentAddressLine4').val(),
+        ShipmentAddressTown: $('#ShipmentAddressTown').val(),
         ShipmentAddressPostcode: $('#ShipmentAddressPostcode').val(),
         FSC: FSC,
         PEFC: PEFC
@@ -285,7 +285,7 @@ function BlindShipmentAccount() {
             $("#ShipmentAddressLine1").val(addressParts[0] === undefined ? '' : addressParts[0].trim());
             $("#ShipmentAddressLine2").val(addressParts[1] === undefined ? '' : addressParts[1].trim());
             $("#ShipmentAddressLine3").val(addressParts[2] === undefined ? '' : addressParts[2].trim());
-            $("#ShipmentAddressLine4").val(addressParts[3] === undefined ? '' : addressParts[3].trim());
+            $("#ShipmentAddressTown").val(addressParts[3] === undefined ? '' : addressParts[3].trim());
             $("#ShipmentAddressPostcode").val(addressParts[4] === undefined ? '' : addressParts[4].trim());
         }
     }

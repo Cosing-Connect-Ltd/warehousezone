@@ -32,8 +32,8 @@ namespace Ganedata.Core.Entities.Domain
         public string ShipmentAddressLine2 { get; set; }
         [Display(Name = "Shipment Address Line3")]
         public string ShipmentAddressLine3 { get; set; }
-        [Display(Name = "Shipment Address Line4")]
-        public string ShipmentAddressLine4 { get; set; }
+        [Display(Name = "Shipment Address Town")]
+        public string ShipmentAddressTown { get; set; }
         [Display(Name = "Shipment Address Postcode")]
         public string ShipmentAddressPostcode { get; set; }
         [Display(Name = "Shipment Country")]
@@ -48,14 +48,14 @@ namespace Ganedata.Core.Entities.Domain
         public string ShipmentAddressLine1 { get; set; }
         public string ShipmentAddressLine2 { get; set; }
         public string ShipmentAddressLine3 { get; set; }
-        public string ShipmentAddressLine4 { get; set; }
+        public string ShipmentAddressTown { get; set; }
         public string ShipmentAddressPostcode { get; set; }
         public int? ShipmentCountryId { get; set; }
         public int? OrderProcessId { get; set; }
         public string FSC { get; set; }
         public string PEFC { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public string  DeliveryNo { get; set; }
+        public string DeliveryNo { get; set; }
         public int? UserId { get; set; }
 
 

@@ -52,6 +52,7 @@ namespace Ganedata.Core.Services
                     AccountCredit = account.CreditLimit;
                 }
             }
+
             if (!caCurrent.CurrentWarehouse().AutoAllowProcess)
             {
                 order.OrderStatusID = OrderStatusEnum.Hold;
@@ -61,8 +62,8 @@ namespace Ganedata.Core.Services
             {
                 order.OrderStatusID = OrderStatusEnum.Active;
             }
-            _currentDbContext.Order.Add(order);
 
+            _currentDbContext.Order.Add(order);
 
             if (orderDetails != null)
             {
@@ -117,7 +118,7 @@ namespace Ganedata.Core.Services
                     AddressLine1 = shipmentAndRecipientInfo.ShipmentAddressLine1,
                     AddressLine2 = shipmentAndRecipientInfo.ShipmentAddressLine2,
                     AddressLine3 = shipmentAndRecipientInfo.ShipmentAddressLine3,
-                    Town = shipmentAndRecipientInfo.ShipmentAddressLine4,
+                    Town = shipmentAndRecipientInfo.ShipmentAddressTown,
                     PostCode = shipmentAndRecipientInfo.ShipmentAddressPostcode,
                     AddTypeShipping = true,
                     CountryID = account.CountryID,
@@ -138,7 +139,7 @@ namespace Ganedata.Core.Services
                 order.ShipmentAddressLine1 = DeliveryMethods.Collection.ToString();
                 order.ShipmentAddressLine2 = null;
                 order.ShipmentAddressLine3 = null;
-                order.ShipmentAddressLine4 = null;
+                order.ShipmentAddressTown = null;
                 order.ShipmentAddressPostcode = null;
                 order.ShipmentAccountAddressId = (int?)null;
 
@@ -321,7 +322,7 @@ namespace Ganedata.Core.Services
                     AddressLine1 = shipmentAndRecipientInfo.ShipmentAddressLine1,
                     AddressLine2 = shipmentAndRecipientInfo.ShipmentAddressLine2,
                     AddressLine3 = shipmentAndRecipientInfo.ShipmentAddressLine3,
-                    Town = shipmentAndRecipientInfo.ShipmentAddressLine4,
+                    Town = shipmentAndRecipientInfo.ShipmentAddressTown,
                     PostCode = shipmentAndRecipientInfo.ShipmentAddressPostcode,
                     AddTypeShipping = true,
                     CountryID = account.CountryID,
@@ -354,7 +355,7 @@ namespace Ganedata.Core.Services
                     order.ShipmentAddressLine1 = DeliveryMethods.Collection.ToString();
                     order.ShipmentAddressLine2 = null;
                     order.ShipmentAddressLine3 = null;
-                    order.ShipmentAddressLine4 = null;
+                    order.ShipmentAddressTown = null;
                     order.ShipmentAddressPostcode = null;
                     order.ShipmentAccountAddressId = null;
 

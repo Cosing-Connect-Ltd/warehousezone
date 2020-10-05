@@ -21,9 +21,6 @@ namespace Ganedata.Core.Entities.Domain
         public string AddressLine2 { get; set; }
         [Display(Name = "Address Line 3")]
         public string AddressLine3 { get; set; }
-        [MaxLength(200)]
-        [Display(Name = "Address Line 4")]
-        public string AddressLine4 { get; set; }
         [DataType(DataType.PhoneNumber)]
         [Display(Name = "Phone")]
         public string Telephone { get; set; }

@@ -30,6 +30,7 @@
         //s.GetSelectedFieldValues("PalletNumber", GetSelectedFieldValuesCallback);
 
     }
+
     function OnPalletSelected(s, e) {
 
         var selectedPallets = PalletsListGridView1.GetSelectedKeysOnPage();
@@ -42,17 +43,17 @@
 
         //s.GetSelectedFieldValues("PalletNumber", GetSelectedFieldValuesCallback);
 
-    };
+    }
+
     function OnGridFocusedRowChanged(s, e) {
-       
         var Id = s.GetRowKey(s.GetFocusedRowIndex());
         $('#DeliveryGridFocusedRowValue').val(Id);
-
+        $("#consignmentgridview_DXFREditorcol1_I").focus();
     }
 
 </script>
 <h2><span>Pallets</span></h2>
-<input type="text" class="res" hidden/>
+<input type="text" class="res" hidden />
 @Html.Hidden("PalletGridFocusedRowValue")
 @Html.Hidden("PalletGridFocusedRowCompletedValue")
 @Html.Hidden("GridSelectedPallets")

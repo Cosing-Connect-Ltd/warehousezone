@@ -1091,6 +1091,10 @@
     <Compile Include="Migrations\202010011224279_added_ShippmentCountry_to_Orders_and_OrdersProcesses_tables.designer.cs">
       <DependentUpon>202010011224279_added_ShippmentCountry_to_Orders_and_OrdersProcesses_tables.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202010021724490_address-line-4-changed-into-Town.cs" />
+    <Compile Include="Migrations\202010021724490_address-line-4-changed-into-Town.designer.cs">
+      <DependentUpon>202010021724490_address-line-4-changed-into-Town.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2229,6 +2233,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202010011224279_added_ShippmentCountry_to_Orders_and_OrdersProcesses_tables.resx">
       <DependentUpon>202010011224279_added_ShippmentCountry_to_Orders_and_OrdersProcesses_tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010021724490_address-line-4-changed-into-Town.resx">
+      <DependentUpon>202010021724490_address-line-4-changed-into-Town.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -921,7 +921,7 @@ namespace WMS.Controllers
             {
                 return null;
             }
-            return Json(new { AddressLine1 = accountAdress.AddressLine1, AddressLine2 = accountAdress.AddressLine2, AddressLine3 = accountAdress.AddressLine3, AddressLine4 = accountAdress.AddressLine4, ShipmentAddressPostcode = accountAdress.PostCode }, JsonRequestBehavior.AllowGet);
+            return Json(new { AddressLine1 = accountAdress.AddressLine1, AddressLine2 = accountAdress.AddressLine2, AddressLine3 = accountAdress.AddressLine3, AddressLine4 = accountAdress.Town, ShipmentAddressPostcode = accountAdress.PostCode }, JsonRequestBehavior.AllowGet);
 
         }
 

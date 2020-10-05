@@ -612,7 +612,7 @@
             columnExpression22.ColumnName = "ShipmentAddressLine3";
             columnExpression22.Table = table6;
             column22.Expression = columnExpression22;
-            columnExpression23.ColumnName = "ShipmentAddressLine4";
+            columnExpression23.ColumnName = "ShipmentAddressTown";
             columnExpression23.Table = table6;
             column23.Expression = columnExpression23;
             columnExpression24.ColumnName = "ShipmentAddressPostcode";

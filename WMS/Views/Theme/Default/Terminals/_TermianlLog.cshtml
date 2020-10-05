@@ -19,15 +19,20 @@
         GridViewOperationType.Sorting,
         new { Controller = "Terminals", Action = "_TerminalLogListSorting" }
         );
+
         settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "50" };
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
 
 
         settings.KeyFieldName = "TerminalLogId";
 
         settings.SettingsPager.Visible = true;
-        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowGroupPanel = false;
         settings.Settings.ShowFilterRow = true;
-        settings.SettingsBehavior.AllowSelectByRowClick = true;
+        settings.Settings.ShowHeaderFilterButton = false;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.SettingsPager.PageSize = 10;
 
         settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
         settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;

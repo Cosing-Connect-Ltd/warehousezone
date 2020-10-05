@@ -248,7 +248,7 @@ function UpdateDeliveryAddress() {
     var ShipmentAddressLine1 = $("#ShipmentAddressLine1").val();
     var ShipmentAddressLine2 = $("#ShipmentAddressLine2").val();
     var ShipmentAddressLine3 = $("#ShipmentAddressLine3").val();
-    var ShipmentAddressLine4 = $("#ShipmentAddressLine4").val();
+    var ShipmentAddressTown = $("#ShipmentAddressTown").val();
     var ShipmentAddressPostcode = $("#ShipmentAddressPostcode").val();
     var OrderProcessId = $("#OrderProcessID").val();
 
@@ -257,7 +257,7 @@ function UpdateDeliveryAddress() {
         deliveryNo = $("#DeliveryNO").val();
     }
 
-    data = { ShipmentAddressLine1: ShipmentAddressLine1, ShipmentAddressLine2: ShipmentAddressLine2, ShipmentAddressLine3: ShipmentAddressLine3, ShipmentAddressLine4: ShipmentAddressLine4, ShipmentAddressPostcode: ShipmentAddressPostcode, OrderProcessId: OrderProcessId, CreatedDate: CreatedDate, DeliveryNo: deliveryNo };
+    data = { ShipmentAddressLine1: ShipmentAddressLine1, ShipmentAddressLine2: ShipmentAddressLine2, ShipmentAddressLine3: ShipmentAddressLine3, ShipmentAddressTown: ShipmentAddressTown, ShipmentAddressPostcode: ShipmentAddressPostcode, OrderProcessId: OrderProcessId, CreatedDate: CreatedDate, DeliveryNo: deliveryNo };
     $.post("/SalesOrders/UpdateDeliveryAddress",
         data,
         function (result) {

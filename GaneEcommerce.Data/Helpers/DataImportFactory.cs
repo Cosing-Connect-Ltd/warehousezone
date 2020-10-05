@@ -2990,7 +2990,6 @@ namespace Ganedata.Core.Data.Helpers
         {
             try
             {
-
                 if (_currentDbContext == null)
                 {
                     _currentDbContext = new ApplicationContext();
@@ -3003,15 +3002,12 @@ namespace Ganedata.Core.Data.Helpers
                 productFiles.DateCreated = DateTime.UtcNow;
                 _currentDbContext.ProductFiles.Add(productFiles);
                 _currentDbContext.SaveChanges();
-
-
             }
             catch (Exception)
             {
 
                 throw;
             }
-
         }
 
         public List<int> GetPrestaShopProducts(int? Id, DateTime? date, string skuCode, int TenantId, int UserId, string PrestashopUrl, string PrestashopKey)
@@ -3041,7 +3037,6 @@ namespace Ganedata.Core.Data.Helpers
                         return default;
                     }
 
-
                 }
                 #endregion
                 if (productSearch.Products.Product.Count > 0)
@@ -3055,20 +3050,15 @@ namespace Ganedata.Core.Data.Helpers
                             productMaster.DateCreated = DateTime.UtcNow;
                             productMaster.CreatedBy = UserId;
                             productMaster.SKUCode = string.IsNullOrEmpty(item.Reference) ? "SkuPresta" : item.Reference.Trim();
-                            //productMaster.ManufacturerPartNo = item.Manufacturer_name.NotFilterable;
-
                             productMaster.TaxID = 1;
                             productMaster.Name = string.IsNullOrEmpty(item?.Name?.Language?.Text) ? "PrestaShopProduct" : item.Name.Language.Text;
-                            //productMaster.CommodityCode = item.CommodityImportCodeNumber;
                             productMaster.Description = GetPlainTextFromHtml(item.Description.Language.Text);
                             productMaster.UOMId = 1;
                             productMaster.Serialisable = false;
-
                             productMaster.LotOption = false;
                             productMaster.LotOptionCodeId = 1;
                             productMaster.LotProcessTypeCodeId = 1;
                             productMaster.BarCode = string.IsNullOrEmpty(item.Reference) ? "SkuPresta" : item.Reference.Trim(); ;
-                            //productMaster.PackSize = 0;
                             productMaster.Height = item.Height ?? 0;
                             productMaster.Width = item.Width ?? 0;
                             productMaster.Depth = item.Depth ?? 0;
@@ -3086,35 +3076,19 @@ namespace Ganedata.Core.Data.Helpers
                             productMaster.IsStockItem = false;
                             productMaster.ProductType = ProductKitTypeEnum.Simple;
                             productMaster.TenantId = TenantId;
-
                             productMaster.ProductGroupId = 1;
                             productMaster.BuyPrice = item.Price;
-                            //productMaster.CountryOfOrigion = productDetail.CountryofOrigin;
                             context.Entry(productMaster).State = EntityState.Added;
                             context.SaveChanges();
                             ProductIds.Add(productMaster.ProductId);
-
                         }
                         else
                         {
                             ProductIds.Add(productMaster.ProductId);
-                            //productMaster.DateUpdated = DateTime.UtcNow;
-                            //productMaster.UpdatedBy = UserId;
-                            //productMaster.SKUCode = item.manufacturer_name;
-                            //productMaster.Name = item.name?.FirstOrDefault()?.value;
-                            //productMaster.Description = GetPlainTextFromHtml(item.description?.FirstOrDefault()?.value);
-                            //productMaster.Height = item.height ?? 0;
-                            //productMaster.Width = item.width ?? 0;
-                            //productMaster.Depth = item.depth ?? 0;
-                            //productMaster.Weight = item.weight ?? 0;
-                            //productMaster.PrestaShopProductId = item.id;
                         }
-
-
-
-
                     }
                 }
+
                 return ProductIds;
             }
 
@@ -3122,13 +3096,12 @@ namespace Ganedata.Core.Data.Helpers
             {
                 throw ex;
             }
-
         }
 
-        public async Task<List<string>> GetPrestaShopAddress(int? id_customer, DateTime? date, int tenantId, int UserId, int accountId, int DeliveryAddressId, int InvoiceAdressId, string PrestashopUrl, string PrestashopKey)
+        public async Task<bool> GetPrestaShopAddress(int? id_customer, DateTime? date, int tenantId, int UserId, int accountId, int DeliveryAddressId, int InvoiceAdressId, string PrestashopUrl, string PrestashopKey)
         {
             var context = new ApplicationContext();
-            List<string> accountaddress = new List<string>();
+            bool result = false;
             try
             {
                 #region ApiCall
@@ -3153,13 +3126,22 @@ namespace Ganedata.Core.Data.Helpers
 
                 foreach (var item in accountAddressSearch.Addresses.Address)
                 {
+                    result = true;
+                    int countryId = 0;
 
-                    accountaddress.Add(item.Company);
+                    if (item.Id_country?.Text > 0)
+                    {
+                        var country = await GetPrestaShopCountry(item.Id_country.Text, PrestashopUrl, PrestashopKey);
+                        if (country != null)
+                        {
+                            countryId = country.FirstOrDefault();
+                        }
+                    }
+
                     int? mainId = Convert.ToInt32(item.Id);
-                    var currentAddress = context.AccountAddresses.FirstOrDefault(u => u.PrestaShopAddressId == mainId && u.IsDeleted != true);
+                    var currentAddress = context.AccountAddresses.FirstOrDefault(u => u.PrestaShopAddressId == mainId && u.AccountID == accountId && u.IsDeleted != true);
                     if (currentAddress == null)
                     {
-
                         currentAddress = new AccountAddresses()
                         {
                             Name = item.Firstname + " " + item.Lastname,
@@ -3169,17 +3151,11 @@ namespace Ganedata.Core.Data.Helpers
                             AddressLine2 = item.Address2,
                             DateCreated = DateTime.UtcNow,
                             IsActive = true,
-                            CountryID = context.GlobalCountries.FirstOrDefault(m => m.PrestaShopCountryId == item.Id_country.Text)?.CountryID ?? 0,
+                            CountryID = countryId,
                             AccountID = accountId,
                             CreatedBy = UserId,
                             PrestaShopAddressId = mainId,
-
                         };
-                        if (currentAddress.CountryID <= 0)
-                        {
-                            var country = await GetPrestaShopCountry(item.Id_country.Text, PrestashopUrl, PrestashopKey);
-                            currentAddress.CountryID = country.FirstOrDefault();
-                        }
                     }
                     else
                     {
@@ -3190,9 +3166,9 @@ namespace Ganedata.Core.Data.Helpers
                         currentAddress.Town = item.City;
                         currentAddress.DateUpdated = DateTime.UtcNow;
                         currentAddress.UpdatedBy = UserId;
-
-
+                        currentAddress.CountryID = countryId;
                     }
+
                     if ((mainId == DeliveryAddressId || mainId == InvoiceAdressId) && DeliveryAddressId == InvoiceAdressId)
                     {
                         currentAddress.AddTypeShipping = true;
@@ -3210,19 +3186,18 @@ namespace Ganedata.Core.Data.Helpers
                     context.Entry(currentAddress).State = currentAddress.AddressID > 0 ? EntityState.Modified : EntityState.Added;
                     context.SaveChanges();
 
-
                 }
             }
-
 
             catch (Exception ex)
             {
                 ErrorSignal.FromCurrentContext().Raise(ex);
-
             }
-            return accountaddress;
+
+            return result;
 
         }
+
         public async Task<List<int>> GetPrestaShopAccount(int? Id, DateTime? date, int tenantId, int UserId, int DeliveryAddressId, int InvoiceAdressId, string PrestashopUrl, string PrestashopKey)
         {
             List<int> AccountIds = new List<int>();
@@ -3248,6 +3223,7 @@ namespace Ganedata.Core.Data.Helpers
 
                 }
                 #endregion
+
                 foreach (var item in accountSearch.Customers.Customer)
                 {
                     var account = context.Account.FirstOrDefault(u => u.AccountCode.Equals(item.Secure_key, StringComparison.CurrentCultureIgnoreCase) && u.IsDeleted != true);
@@ -3282,17 +3258,6 @@ namespace Ganedata.Core.Data.Helpers
                         context.SaveChanges();
                     }
 
-                    var accountadress = await GetPrestaShopAddress(item.Id, null, tenantId, UserId, account.AccountID, DeliveryAddressId, InvoiceAdressId, PrestashopUrl, PrestashopKey);
-                    if (accountadress.Count > 0)
-                    {
-                        var updateaccount = context.Account.FirstOrDefault(u => u.AccountID == account.AccountID);
-                        if (updateaccount != null)
-                        {
-                            updateaccount.CompanyName = string.IsNullOrEmpty(accountadress.FirstOrDefault()) ? "P" : accountadress.FirstOrDefault();
-                            context.Entry(updateaccount).State = EntityState.Modified;
-                        }
-
-                    }
                     var currentContact = context.AccountContacts.FirstOrDefault(u => u.AccountID == account.AccountID && u.IsDeleted != true);
                     if (currentContact == null)
                     {
@@ -3301,13 +3266,12 @@ namespace Ganedata.Core.Data.Helpers
                             ContactName = item.Firstname + " " + item.Lastname,
                             ConTypeInvoices = true,
                             ContactEmail = item.Email,
-                            //TenantContactPhone = item.x,
                             DateCreated = DateTime.UtcNow,
                             CreatedBy = UserId,
                             IsActive = true,
                             AccountID = account.AccountID
-
                         };
+
                         context.AccountContacts.Add(currentContact);
                         context.SaveChanges();
 
@@ -3322,17 +3286,23 @@ namespace Ganedata.Core.Data.Helpers
                         context.SaveChanges();
                     }
 
+                    var result = await GetPrestaShopAddress(item.Id, null, tenantId, UserId, account.AccountID, DeliveryAddressId, InvoiceAdressId, PrestashopUrl, PrestashopKey);
+
+                    account.DateUpdated = DateTime.Now;
+                    context.Entry(account).State = EntityState.Modified;
+                    context.SaveChanges();
                     AccountIds.Add(account.AccountID);
+
                 }
 
                 return AccountIds;
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
         }
+
         public async Task<string> GetPrestaShopOrdersSync(int tenantId, int warehouseId, string PrestashopUrl, string PrestashopKey, int ApiId)
         {
             DateTime requestTime = new DateTime(2000, 01, 01);
@@ -3378,21 +3348,32 @@ namespace Ganedata.Core.Data.Helpers
                     if (order == null)
                     {
                         order = new Order();
-                        order.OrderNumber = GenerateNextOrderNumber(InventoryTransactionTypeEnum.SalesOrder, tenantId);
+                        order.OrderNumber = item.Reference;
                         var duplicateOrder = _currentDbContext.Order.FirstOrDefault(m => m.OrderNumber.Equals(order.OrderNumber, StringComparison.CurrentCultureIgnoreCase) && m.IsDeleted != true);
                         if (duplicateOrder != null)
                         {
                             throw new Exception($"Order Number {order.OrderNumber} already associated with another Order. Please regenerate order number.", new Exception("Duplicate Order Number"));
                         }
 
-                        order.IssueDate = DateTime.UtcNow;
-                        order.OrderStatusID = OrderStatusEnum.Active;
-                        order.DateCreated = DateTime.UtcNow;
+                        order.IssueDate = Convert.ToDateTime(item.Date_add);
+                        order.DateCreated = Convert.ToDateTime(item.Date_add);
                         order.DateUpdated = DateTime.UtcNow;
                         order.TenentId = tenantId;
                         order.CreatedBy = 1;
                         order.UpdatedBy = 1;
                         order.WarehouseId = warehouseId;
+
+                        var warehouse = _currentDbContext.TenantWarehouses.FirstOrDefault(w => w.WarehouseId == warehouseId && w.IsDeleted != true && w.TenantId == tenantId);
+
+                        if (!warehouse.AutoAllowProcess)
+                        {
+                            order.OrderStatusID = OrderStatusEnum.Hold;
+                        }
+                        else
+                        {
+                            order.OrderStatusID = OrderStatusEnum.Active;
+                        }
+
                         var accounts = await GetPrestaShopAccount(item.Id_customer.Text, null, tenantId, 1, item.Id_address_delivery.Text, item.Id_address_invoice.Text, PrestashopUrl, PrestashopKey);
                         var accountID = accounts?.FirstOrDefault() ?? 1;
                         if (accountID > 0)
@@ -3411,9 +3392,9 @@ namespace Ganedata.Core.Data.Helpers
                                 order.ShipmentAddressLine2 = accountAddress.AddressLine2;
                                 order.ShipmentAddressLine3 = accountAddress.Town;
                                 order.ShipmentAddressPostcode = accountAddress.PostCode;
+                                order.ShipmentCountryId = accountAddress.CountryID;
                             }
                         }
-                        order.OrderStatusID = OrderStatusEnum.Active;
                     }
                     else
                     {
@@ -3436,6 +3417,7 @@ namespace Ganedata.Core.Data.Helpers
                                 order.ShipmentAddressLine2 = accountAddress.AddressLine2;
                                 order.ShipmentAddressLine3 = accountAddress.Town;
                                 order.ShipmentAddressPostcode = accountAddress.PostCode;
+                                order.ShipmentCountryId = accountAddress.CountryID;
                             }
                         }
                         order.DateUpdated = DateTime.UtcNow;

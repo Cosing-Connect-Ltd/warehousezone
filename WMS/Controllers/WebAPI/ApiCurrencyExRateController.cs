@@ -1,20 +1,17 @@
 ﻿using Ganedata.Core.Entities.Domain;
-using Ganedata.Core.Entities.Helpers;
-using Ganedata.Core.Models;
+using Ganedata.Core.Entities.Domain.Models;
 using Ganedata.Core.Services;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
-using Ganedata.Core.Entities.Enums;
-using System.Net.Http;
-using System.Net;
-using Newtonsoft.Json;
-using Ganedata.Core.Entities.Domain.Models;
-using System.Web.Mvc;
-using System.Diagnostics;
-using System.Threading.Tasks;
 using System.Configuration;
+using System.Diagnostics;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web.Http;
+using System.Web.Mvc;
 
 namespace WMS.Controllers.WebAPI
 {
@@ -39,6 +36,7 @@ namespace WMS.Controllers.WebAPI
                 {
                     return BadRequest("Tenant id cannot be 0");
                 }
+
                 var tenantBaseCurrency = _tenantCurrencyRateServices.GetTenantCurrencyById(tenantId);
                 var model = _tenantCurrencyRateServices.GetTenantCurrencies(tenantId).ToList();
                 CurrenciesRates currenciesRates = new CurrenciesRates();
@@ -76,6 +74,7 @@ namespace WMS.Controllers.WebAPI
                             }
                         }
                     }
+
                     return Ok("Currency rate saved");
                 }
             }
@@ -86,6 +85,7 @@ namespace WMS.Controllers.WebAPI
                     _tenantCurrencyRateServices.LogAPI(Exp.InnerException.ToString(), HttpStatusCode.Ambiguous, typeof(ApiCurrencyExRateController));
                     Debug.WriteLine(Exp.InnerException);
                 }
+
                 return BadRequest();
             }
         }
@@ -95,8 +95,8 @@ namespace WMS.Controllers.WebAPI
             HttpResponseMessage response = null;
             try
             {
-                var apiToken = ConfigurationManager.AppSettings["CurrencyLayerKey"];
-                var apiLink = ConfigurationManager.AppSettings["ApiUrl"];
+                var apiToken = ConfigurationManager.AppSettings["CurrencyLayerApiKey"];
+                var apiLink = ConfigurationManager.AppSettings["CurrencyLayerApiUrl"];
 
                 int tenantid = 0;
                 CurrenciesRates model = new CurrenciesRates();
@@ -149,13 +149,12 @@ namespace WMS.Controllers.WebAPI
                 return null;
             }
         }
-        public void SaveTenantCurrencyRate([Bind(Include = "ExchnageRateID,TenantCurrencyID,DiffFactor,ActualRate,Rate,DateUpdated,Tenant_TenantId")]  TenantCurrenciesExRates tenantCurrenciesExRates)
+        public void SaveTenantCurrencyRate([Bind(Include = "ExchnageRateID,TenantCurrencyID,DiffFactor,ActualRate,Rate,DateUpdated,Tenant_TenantId")] TenantCurrenciesExRates tenantCurrenciesExRates)
         {
             if (ModelState.IsValid)
             {
                 _tenantCurrencyRateServices.Insert(tenantCurrenciesExRates);
             }
         }
-
     }
 }

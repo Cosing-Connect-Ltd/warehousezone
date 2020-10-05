@@ -521,7 +521,7 @@ namespace Ganedata.Core.Services
                 return null;
             }
 
-            return GetShippingRulesByShippingAddress(tenantId, siteId, address,parcelWeightInGrams);
+            return GetShippingRulesByShippingAddress(tenantId, siteId, address, parcelWeightInGrams);
         }
 
         private List<WebsiteShippingRulesViewModel> GetShippingRulesByShippingAddress(int tenantId, int siteId, AccountAddresses address, double parcelWeightInGrams)
@@ -538,8 +538,7 @@ namespace Ganedata.Core.Services
                                             address.AddressLine1.Contains(r.Region) ||
                                             address.AddressLine2.Contains(r.Region) ||
                                             address.AddressLine3.Contains(r.Region) ||
-                                            address.AddressLine3.Contains(r.Region) ||
-                                            address.AddressLine4.Contains(r.Region))));
+                                            address.AddressLine3.Contains(r.Region))));
 
             if (!rules.Any())
             {
@@ -1068,7 +1067,7 @@ namespace Ganedata.Core.Services
         {
             ProductName = ProductName?.Trim();
 
-            return _currentDbContext.ProductsNavigationMaps.Where(u =>  u.IsDeleted != true &&
+            return _currentDbContext.ProductsNavigationMaps.Where(u => u.IsDeleted != true &&
                                                                         u.IsActive == true &&
                                                                         u.ProductsWebsitesMap.ProductMaster.IsActive == true &&
                                                                         u.ProductsWebsitesMap.ProductMaster.IsDeleted != true &&
@@ -1210,8 +1209,9 @@ namespace Ganedata.Core.Services
                                                 .Include(w => w.ProductMaster)
                                                 .Where(u => u.SiteID == siteId && u.UserId == UserId && u.IsDeleted != true && !u.IsNotification);
 
-            wishlistItems.ForEach(w => {
-                if(w.ProductMaster != null && w.ProductMaster?.ProductType == ProductKitTypeEnum.Simple && w.ProductMaster?.DefaultImage == null)
+            wishlistItems.ForEach(w =>
+            {
+                if (w.ProductMaster != null && w.ProductMaster?.ProductType == ProductKitTypeEnum.Simple && w.ProductMaster?.DefaultImage == null)
                 {
                     var parentProduct = _productServices.GetParentProductsByKitProductId(w.ProductId)
                                                         .FirstOrDefault(k => k.IsActive == true &&
