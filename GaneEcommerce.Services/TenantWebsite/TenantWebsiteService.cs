@@ -1006,28 +1006,28 @@ namespace Ganedata.Core.Services
             {
                 var productIds = GetProductsNavigationMapsSearch(siteId, ProductName)
                         .OrderBy(n => n.SortOrder)
-                        .Select(x => x.ProductsWebsitesMap.ProductMaster.ProductId)
+                        .Select(x => x.ProductsWebsitesMap.ProductId)
                         .Distinct()
                         .ToList();
 
                 return _currentDbContext.ProductMaster.Where(p => p.IsActive && p.IsDeleted != true && productIds.Contains(p.ProductId)).OrderBy(p => p.ProductId);
             }
-            else
-            {
-                return GetProductsNavigationMapsSearch(siteId, ProductName)
-                        .Where(u => (u.NavigationId == categoryId || (categoryId == null && u.WebsiteNavigation.Name == category) || (categoryId == null && category == null)))
-                        .OrderBy(n => n.SortOrder)
-                        .Select(x => x.ProductsWebsitesMap.ProductMaster);
-            }
+
+            return GetProductsNavigationMapsSearch(siteId, ProductName)
+                    .Where(u => (u.NavigationId == categoryId || (categoryId == null && u.WebsiteNavigation.Name == category) || (categoryId == null && category == null)))
+                    .OrderBy(n => n.SortOrder)
+                    .Select(x => x.ProductsWebsitesMap.ProductMaster);
         }
 
         public List<ProductManufacturer> GetWebsiteProductManufacturers(int siteId)
         {
-            var websiteNavigations = GetProductsNavigationMapsSearch(siteId)
-                                    .Select(n => n.ProductsWebsitesMap.ProductMaster)
+            var manufacturersIds = GetProductsNavigationMapsSearch(siteId)
+                                    .Where(n => n.ProductsWebsitesMap.ProductMaster.ManufacturerId != null)
+                                    .Select(n => n.ProductsWebsitesMap.ProductMaster.ManufacturerId)
+                                    .Distinct()
                                     .ToList();
 
-            var manufacturersIds = _currentDbContext.ProductKitMaps.Where(k => k.IsActive &&
+            manufacturersIds.AddRange(_currentDbContext.ProductKitMaps.Where(k => k.IsActive &&
                                                                                 k.IsDeleted != true &&
                                                                                 k.KitProductMaster.IsActive &&
                                                                                 k.KitProductMaster.IsDeleted != true &&
@@ -1036,9 +1036,7 @@ namespace Ganedata.Core.Services
                                                                                 k.KitProductMaster.ManufacturerId != null)
                                                                     .Select(k => k.KitProductMaster.ManufacturerId)
                                                                     .Distinct()
-                                                                    .ToList();
-
-            manufacturersIds.AddRange(websiteNavigations.Where(k => k.ManufacturerId != null).Select(w => w.ManufacturerId).Distinct());
+                                                                    .ToList());
 
             var manufacturers = _currentDbContext.ProductManufacturers.Where(p => manufacturersIds.Contains(p.Id) && p.IsDeleted != true).ToList();
 
@@ -1047,18 +1045,22 @@ namespace Ganedata.Core.Services
 
         public List<ProductSearchResultViewModel> SearchWebsiteProducts(int siteId, int resultCount, string productName = "")
         {
-            return GetProductsNavigationMapsSearch(siteId, productName)
+
+            var productIds = GetProductsNavigationMapsSearch(siteId, productName).Select(p => p.ProductsWebsitesMap.ProductId)
+                                                                                 .Distinct()
+                                                                                 .Take(resultCount);
+            return _currentDbContext.ProductMaster
+                            .Where(p => productIds.Contains(p.ProductId))
                             .Select(x =>
                                         new ProductSearchResultViewModel
                                         {
-                                            Id = x.ProductsWebsitesMap.ProductMaster.ProductId,
-                                            Name = x.ProductsWebsitesMap.ProductMaster.Name,
-                                            DefaultImage = x.ProductsWebsitesMap.ProductMaster.ProductFiles.OrderByDescending(f => f.DefaultImage).FirstOrDefault(a => a.IsDeleted != true).FilePath,
-                                            SkuCode = x.ProductsWebsitesMap.ProductMaster.SKUCode,
+                                            Id = x.ProductId,
+                                            Name = x.Name,
+                                            DefaultImage = x.ProductFiles.OrderByDescending(f => f.DefaultImage).FirstOrDefault(a => a.IsDeleted != true).FilePath,
+                                            SkuCode = x.SKUCode,
                                             SearchKey = productName
                                         })
                             .OrderBy(u => u.Id)
-                            .Take(resultCount)
                             .ToList();
         }
 
