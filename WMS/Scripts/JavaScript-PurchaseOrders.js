@@ -299,10 +299,6 @@ $(document).ready(function () {
         else { $(".search-box").show(); }
     }
 
-    function OrderAuthCallBack(s, e) {
-
-
-    }
     function addOrderId() {
         var orderId = OrderAuth.GetValue();
         var palletTrackingId = palletId;
