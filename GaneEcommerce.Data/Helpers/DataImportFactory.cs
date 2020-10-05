@@ -3395,7 +3395,6 @@ namespace Ganedata.Core.Data.Helpers
                                 order.ShipmentCountryId = accountAddress.CountryID;
                             }
                         }
-                        order.OrderStatusID = OrderStatusEnum.Active;
                     }
                     else
                     {
