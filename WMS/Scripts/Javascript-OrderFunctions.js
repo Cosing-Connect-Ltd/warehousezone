@@ -391,6 +391,7 @@ function endOrderDetailCallback() {
             if (prices <= 0) {
 
                 Price.SetValue("");
+                $(".financialAnalysisMainDiv").hide();
             }
             else if (result.BuyPrice > prices && !result.purchaseOrder && pricealert) {
                 alert("Selling price is less than buying price and should not be less than : " + (perMargin));
@@ -3103,7 +3104,7 @@ function PriceAnalysis() {
         profitPercentage = +profitPercentage + +percentageValue;
     }
 
-    if (profitMargin == "NaN" || profitPercentage == "NaN" || PriceValue == null || profitPercentage == null) {
+    if (profitMargin == "NaN" || profitPercentage == "NaN" || PriceValue == null || profitPercentage == null || buyPrice == null) {
         $(".financialAnalysisMainDiv").hide();
         return;
     }

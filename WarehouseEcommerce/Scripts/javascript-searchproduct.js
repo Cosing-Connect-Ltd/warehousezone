@@ -2,13 +2,10 @@
     $("#ProductGroupId").val(event.currentTarget.value);
 }
 function ValidEmail(email) {
-
     var regExp = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/i;
     return regExp.test(email);
-
 }
 function searchPoducts() {
-
     var currentSort = $("#current-sort").val();
     var currentCategory = $("#current-category").val();
     var currentCategoryId = $("#current-category-id").val();
@@ -31,7 +28,7 @@ function searchPoducts() {
         urlString += "filters=" + currentFilters + "&";
     }
 
-    window.location.href  = urlString.substr(0, urlString.length - 1);
+    window.location.href = urlString.substr(0, urlString.length - 1);
 }
 
 function SearchPostCode() {
@@ -43,7 +40,6 @@ function SearchPostCode() {
         data: { postCode: searchString },
         dataType: 'json',
         success: function (data) {
-
             if (data.length > 1) {
                 $('#selectAddresss').show();
                 $('#selectApiAddress').empty();
@@ -154,7 +150,6 @@ function OnchangeDropdownAddress() {
 }
 
 function SearchProductCategory() {
-
     var searchString = $(".text-search").val();
     var currentSort = $("#current-sort").val();
     var currentFilters = $("#current-filters").val() == undefined ? "" : $("#current-filters").val();
@@ -170,9 +165,6 @@ function SearchProductCategory() {
 
     window.location.href = urlString.substr(0, urlString.length - 2);
 }
-
-
-
 
 //$('.text-search').on('input', function() {}
 var searchValues;
@@ -227,15 +219,12 @@ $(function () {
             return $('<li class="search-item">').append("")
                 .append('<p class="no-serach-results">' + item.Name + "</p>").appendTo(ul);
         }
-
     };
     $(".text-search").bind('keypress', function (e) {
         if (e.keyCode === 13) {
             $('#serchBtnico').trigger('click');
         }
     });
-
-
 });
 
 function updateTextBox(event, ui) {
@@ -262,7 +251,6 @@ function getTopCategoryProducts(ProductnavigationId) {
 
 //--------add update remove cartitem----------------
 function addToCart(ProductId, quantity) {
-
     if (!quantity) {
         quantity = 1;
     }
@@ -325,7 +313,6 @@ function updateCartItem(id, quantity) {
             success: function (data) {
                 stopLoading();
                 getCartitems(null);
-
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 stopLoading();
@@ -352,7 +339,6 @@ function getCartitems(cartId) {
             else {
                 $('#updateCart').html("");
                 $('#updateCart').html(data);
-
             }
         },
         error: function (xmlHttpRequest, textStatus, errorThrown) {
@@ -363,8 +349,6 @@ function getCartitems(cartId) {
 }
 
 //-----------------------------------------------------------
-
-
 
 function CartItemCount() {
     $.ajax({
@@ -384,7 +368,6 @@ function CartItemCount() {
 }
 
 $(document).ready(function () {
-
     $(".cash-btn").hide();
     $('#PayPal').prop('checked', true);
     $("#selectAddresss").hide();
@@ -394,7 +377,6 @@ $(document).ready(function () {
 });
 
 function onCurrencyChange(event) {
-
     var currencyId = event.currentTarget.id;
     var cartview = $("#cartView").val();
     if (cartview) {
@@ -436,11 +418,9 @@ function removeURLParameter(url, parameter) {
     //prefer to use l.search if you have a location/link object
     var urlparts = url.split('?');
     if (urlparts.length >= 2) {
-
         var prefix = encodeURIComponent(parameter) + '=';
         var pars = urlparts[1].split(/[&;]/g);
         for (var i = pars.length; i-- > 0;) {
-
             if (pars[i].lastIndexOf(prefix, 0) !== -1) {
                 pars.splice(i, 1);
             }
@@ -453,14 +433,12 @@ function removeURLParameter(url, parameter) {
     }
 }
 function GetLoggedIn(placeholder, topheader) {
-
     $.ajax({
         type: "GET",
         url: basePath + "/User/Login/",
         data: { PlaceOrder: placeholder },
         dataType: 'Html',
         success: function (data) {
-
             $(".login-model-body").html("");
             $(".login-model-body").html(data);
             if (placeholder !== "") {
@@ -478,7 +456,6 @@ function GetLoggedIn(placeholder, topheader) {
     if (!topheader) {
         $('#top-header').load(basePath + "/Home/_TopHeaderPartial");
     }
-
 };
 function LoggedIn() {
     var UserName = $("#UserName").val();
@@ -490,16 +467,13 @@ function LoggedIn() {
         return;
     }
     else {
-
         if (!ValidEmail(UserName)) {
-
             $('#UserName').after('<span class="error">Enter a valid email</span>');
 
             return;
         }
     }
     if (UserPassword.length < 1) {
-
         $('#UserPassword').after('<span class="error">This field is required</span>');
 
         return;
@@ -513,9 +487,7 @@ function LoggedIn() {
         success: function (data) {
             stopLoading();
             if (!data.status) {
-
                 $(".alert-message-login").html("User name or password is not correct").show().delay(2000).fadeOut();
-
             }
             else if (placecheck == "true") {
                 $('#signupPopup').modal('hide');
@@ -534,7 +506,6 @@ function LoggedIn() {
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             stopLoading();
             $(".alert-message-login").html('Error' + textStatus + "/" + errorThrown).show().delay(5000).fadeOut();
-
         }
     });
 }
@@ -592,9 +563,7 @@ function addToWishList(productId, parentProductId) {
             alert('Error' + textStatus + "/" + errorThrown);
         }
     });
-
 }
-
 
 function addToNotifyList(productId, parentProductId, addRemoveAction) {
     if (userStatus === "Login") {
@@ -613,7 +582,6 @@ function addToNotifyList(productId, parentProductId, addRemoveAction) {
         data: { ProductId: productId },
         dataType: 'json',
         success: function (data) {
-
             $(currentClass).find(".list-icon").css({ "color": "red" });
             $(currentClass).removeAttr("onclick", null);
             $(currentClass).attr("onclick", addRemoveAction ? "removeNotifyListItemByConfirmation(" + productId + "," + parentProductId + ")" : "redirectToWishListByConfirmation()");
@@ -633,7 +601,6 @@ function addToNotifyList(productId, parentProductId, addRemoveAction) {
 }
 
 function SetWishListElementsStyle(productId, parentProductId) {
-
     var currentWishId = $("#wish_" + productId);
     var wishListBtnId = $("#btnwish_" + productId);
 
@@ -674,9 +641,8 @@ function removeWishListItemAndUpdateTheList(productId) {
                     data: { ProductId: productId },
                     dataType: 'html',
                     success: function (data) {
-
                         var cardItemsValue = parseInt($("#WishList-total").text());
-                        $("#WishList-total").text((cardItemsValue-1));
+                        $("#WishList-total").text((cardItemsValue - 1));
                         $('#UpdateWishList').empty();
                         $('#UpdateWishList').html(data);
                     },
@@ -686,7 +652,6 @@ function removeWishListItemAndUpdateTheList(productId) {
                 });
             },
             No: function () {
-
             }
         }
     });
@@ -706,7 +671,6 @@ function redirectToWishListByConfirmation() {
                 window.location.href = basePath + "/Products/WishList"
             },
             No: function () {
-
             }
         }
     });
@@ -768,7 +732,6 @@ function removeNotifyListItemByConfirmation(productId, parentProductId, addRemov
                 removeNotifyListItem(productId, parentProductId, addRemoveAction);
             },
             No: function () {
-
             }
         }
     });
@@ -783,12 +746,10 @@ function Logout() {
                 window.location.href = basePath + "/User/logout";
             },
             No: function () {
-
             }
         }
     });
 }
-
 
 function UpdateUser() {
     var userId = $("#AuthUser_UserId").val();
@@ -809,17 +770,14 @@ function UpdateUser() {
         data: { UserId: userId, FirstName: firstName, LastName: lastName },
         dataType: 'json',
         success: function (data) {
-
             if (data) {
                 $(".alert-message").html("Contact information updated").show().delay(5000).fadeOut();
             }
-
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert('Error' + textStatus + "/" + errorThrown);
         }
     });
-
 }
 function OnEnter(e) {
     if (e.keyCode === 13) {
@@ -827,20 +785,17 @@ function OnEnter(e) {
     }
 }
 function ChangeWishListStatus(productId, notification) {
-
     $.ajax({
         type: "GET",
         url: basePath + "/Products/ChangeWishListStatus/",
         data: { productId: productId, notification: notification },
         dataType: 'json',
         success: function (data) {
-
             $.ajax({
                 type: "GET",
                 url: basePath + "/Products/_wishlistItems/",
                 dataType: 'html',
                 success: function (data) {
-
                     var cardItemsValue = parseInt($("#WishList-total").text());
                     $("#WishList-total").text((cardItemsValue - 1));
                     $('#UpdateWishList').empty();
@@ -855,10 +810,7 @@ function ChangeWishListStatus(productId, notification) {
             alert('Error' + textStatus + "/" + errorThrown);
         }
     });
-
-
 }
-
 
 $("#showRegForm").click(function () {
     var placeholder = false;
@@ -874,13 +826,11 @@ $("#showRegForm").click(function () {
             $(".login_form_sec").removeClass("show");
             $(".error").remove();
             $.validator.unobtrusive.parse("#userRegister");
-
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert('Error' + textStatus + "/" + errorThrown);
         }
     });
-
 });
 $("#showLoginForm").click(function () {
     placeholder = false;
@@ -900,14 +850,11 @@ $("#showLoginForm").click(function () {
             alert('Error' + textStatus + "/" + errorThrown);
         }
     });
-
 });
 $(".notification-switch").change(function (e) {
     var productId = $(this).val();
     var notification = $(this).is(":checked");
     ChangeWishListStatus(productId, notification);
-
-
 });
 
 function initializeExpandableContentContainer() {

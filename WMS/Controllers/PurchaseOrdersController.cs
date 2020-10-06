@@ -42,7 +42,7 @@ namespace WMS.Controllers
             _commonDbServices = commonDbServices;
             _mapper = mapper;
         }
-        // GET: PurchaseOrders  
+        // GET: PurchaseOrders
         public ActionResult Index()
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
@@ -221,6 +221,8 @@ namespace WMS.Controllers
             var accountaddress = _accountServices.GetAllValidAccountContactsByAccountId(ids, CurrentTenantId);
             ViewBag.AccountContactes = new SelectList(accountaddress, "AccountContactId", "ContactEmail");
             ViewBag.AllowAccountAddress = caCurrent.CurrentWarehouse().AllowShipToAccountAddress;
+            var directsales = _salesServices.GetDirectSaleOrders(null);
+            ViewBag.DirectOrderList = new SelectList(directsales, "OrderID", "OrderNumber");
 
             SetViewBagItems(Order, EnumAccountType.Supplier);
             if (string.IsNullOrEmpty(pageSessionToken))
@@ -394,7 +396,7 @@ namespace WMS.Controllers
         #endregion
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "OrderID,OrderNumber,DirectShip,ExpectedDate,Note,AccountID,OrderTypeID,LoanID,OrderStatusID,AccountContactId,Posted,PPropertyId,DepartmentId,InvoiceNo,InvoiceDetails,OrderCost,IsCollectionFromCustomerSide,ShipmentAccountAddressId")] Order Order, OrderRecipientInfo shipmentAndRecipientInfo, string orderSaveAndProcess, int EmailTemplate)
+        public async Task<ActionResult> Edit([Bind(Include = "OrderID,OrderNumber,DirectShip,ExpectedDate,Note,AccountID,OrderTypeID,LoanID,OrderStatusID,AccountContactId,Posted,PPropertyId,DepartmentId,InvoiceNo,InvoiceDetails,OrderCost,IsCollectionFromCustomerSide,ShipmentAccountAddressId,BaseOrderId")] Order Order, OrderRecipientInfo shipmentAndRecipientInfo, string orderSaveAndProcess, int EmailTemplate)
         {
 
             if (ModelState.IsValid)
@@ -430,6 +432,8 @@ namespace WMS.Controllers
                 return AnchoredOrderIndex("PurchaseOrders", "Index", ViewBag.Fragment as string);
             }
             ViewBag.AllowAccountAddress = caCurrent.CurrentWarehouse()?.AllowShipToAccountAddress;
+            var directsales = _salesServices.GetDirectSaleOrders(null);
+            ViewBag.DirectOrderList = new SelectList(directsales, "OrderID", "OrderNumber");
             ViewBag.ForceRegeneratePageToken = "True";
             ViewBag.ForceRegeneratedPageToken = shipmentAndRecipientInfo.PageSessionToken ?? Guid.NewGuid().ToString();
 

@@ -236,7 +236,10 @@ namespace Ganedata.Core.Entities.Domain
 
         public Guid? OrderToken { get; set; }
 
-
+        public int? BaseOrderID { get; set; }
+        [ForeignKey("BaseOrderID")]
+        public virtual Order BaseOrder { get; set; }
+        public virtual IEnumerable<Order> RelatedOrders { get; set; }
 
     }
 

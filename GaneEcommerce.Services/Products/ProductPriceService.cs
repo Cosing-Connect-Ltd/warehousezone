@@ -411,25 +411,67 @@ namespace Ganedata.Core.Services
             return _context.ProductSpecialPrices.Where(x => x.TenantId == tenantId && (includeIsDeleted || x.IsDeleted != true));
         }
 
-        public decimal GetPurchasePrice(int productId, DateTime? invoiceDetailDateCreated = null)
+        public decimal? GetPurchasePrice(int productId, InvoiceDetail invoiceDetail = null)
         {
             var product = _context.ProductMaster.FirstOrDefault(u => u.ProductId == productId && u.IsDeleted != true);
 
-            var itemBuyPrice = _context.OrderDetail.Where(u => (u.DateCreated < invoiceDetailDateCreated || invoiceDetailDateCreated == null) &&
-                                                                u.ProductId == productId &&
-                                                                u.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder &&
-                                                                u.IsDeleted != true)
-                                                   .OrderByDescending(u => u.OrderDetailID)
-                                                   .FirstOrDefault();
 
-            var rebatePercentage = _context.ProductAccountCodes.FirstOrDefault(u => u.AccountID == itemBuyPrice.Order.AccountID &&
-                                                                                    u.RebatePercentage > 0 &&
-                                                                                    u.ProductId == productId &&
-                                                                                    u.IsDeleted != true)?.RebatePercentage ?? 0;
 
-            var buyPrice = itemBuyPrice?.Price ?? product?.BuyPrice ?? 0;
+            var targetDate = invoiceDetail?.DateCreated;
+            var targetOrderId = invoiceDetail?.OrderDetail?.OrderID;
 
-            buyPrice -= Math.Round((buyPrice / 100) * (rebatePercentage), 2);
+            var targetOrderDetailQuery = _context.OrderDetail.Where(u => (u.DateCreated < targetDate || targetDate == null) &&
+                                                                    u.ProductId == productId &&
+                                                                    u.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder &&
+                                                                    u.Order.OrderStatusID == OrderStatusEnum.Complete &&
+                                                                    u.Order.IsDeleted != true &&
+                                                                    u.IsDeleted != true);
+
+            OrderDetail targetOrderDetail = null;
+
+            if (targetOrderDetailQuery.Any(u => u.Order.BaseOrderID == targetOrderId && targetOrderId != null)){
+                targetOrderDetailQuery = targetOrderDetailQuery.Where(u => u.Order.BaseOrderID == targetOrderId && targetOrderId != null);
+            }
+            else
+            {
+                var palletTrackingId = _context.InventoryTransactions.FirstOrDefault(p => p.OrderID == targetOrderId && p.ProductId == productId)?.PalletTrackingId;
+
+                if (palletTrackingId != null)
+                {
+                    var relatedPurchaseOrder = _context.InventoryTransactions.FirstOrDefault(p => p.PalletTrackingId == palletTrackingId &&
+                                                                                                        p.ProductId == productId &&
+                                                                                                        p.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder)?.Order;
+
+                    if (relatedPurchaseOrder != null)
+                    {
+                        targetOrderDetail = relatedPurchaseOrder.OrderDetails
+                                                                .Where(u => u.ProductId == productId && u.IsDeleted != true)
+                                                                .OrderByDescending(u => u.OrderDetailID)
+                                                                .FirstOrDefault();
+                    }
+                }
+            }
+
+            if (targetOrderDetail == null)
+            {
+                targetOrderDetail = targetOrderDetailQuery
+                                        .OrderByDescending(u => u.OrderDetailID)
+                                        .FirstOrDefault();
+            }
+
+            var rebatePercentage = targetOrderDetail != null ? (_context.ProductAccountCodes.FirstOrDefault(u => u.AccountID == targetOrderDetail.Order.AccountID &&
+                                                                                    (u.RebatePercentage ?? 0) > 0 &&
+                                                                                    (u.ProductId ?? 0) == productId &&
+                                                                                    u.IsDeleted != true)?.RebatePercentage ?? 0) : 0;
+
+            var buyPrice = targetOrderDetail?.Price ?? product?.BuyPrice;
+
+            if (buyPrice == null)
+            {
+                return null;
+            }
+
+            buyPrice -= Math.Round((buyPrice.Value / 100) * (rebatePercentage), 2);
 
             buyPrice += (product.LandedCost ?? 0);
 

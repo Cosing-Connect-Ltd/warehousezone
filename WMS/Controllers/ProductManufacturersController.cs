@@ -1,17 +1,12 @@
-﻿using System;
+﻿using DevExpress.Web.Mvc;
+using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Services;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using DevExpress.Web.Mvc;
-using Ganedata.Core.Data;
-using Ganedata.Core.Entities.Domain;
-using Ganedata.Core.Services;
 
 namespace WMS.Controllers
 {
@@ -19,8 +14,9 @@ namespace WMS.Controllers
     {
         private readonly IProductLookupService _productLookupService;
         private readonly ILookupServices _LookupService;
-        string UploadDirectory = "~/UploadedFiles/ProductManufacturers/";
-        string UploadTempDirectory = "~/UploadedFiles/ProductManufacturers/TempFiles/";
+        private string UploadDirectory = "~/UploadedFiles/ProductManufacturers/";
+        private string UploadTempDirectory = "~/UploadedFiles/ProductManufacturers/TempFiles/";
+
         public ProductManufacturersController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IProductLookupService productLookupService)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
@@ -42,7 +38,6 @@ namespace WMS.Controllers
             return PartialView("_ProductManufacturerList", model);
         }
 
-
         // GET: ProductManufacturers/Details/5
         public ActionResult Details(int? id)
         {
@@ -57,6 +52,7 @@ namespace WMS.Controllers
             }
             return View(productManufacturer);
         }
+
         // GET: ProductManufacturers/Create
         public ActionResult Create()
         {
@@ -72,7 +68,6 @@ namespace WMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(ProductManufacturer productManufacturer, IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
         {
-
             ViewBag.ControllerName = "ProductManufacturers";
             var filesName = Session["UploadProductManufacturerImage"] as List<string>;
             string filePath = "";
@@ -86,9 +81,6 @@ namespace WMS.Controllers
                     manufacturer.ImagePath = filePath;
                     manufacturer.TenantId = CurrentTenantId;
                     _LookupService.SaveAndUpdateProductManufacturer(manufacturer, CurrentUserId);
-
-
-
                 }
                 return RedirectToAction("Index");
             }
@@ -99,7 +91,6 @@ namespace WMS.Controllers
         // GET: ProductManufacturers/Edit/5
         public ActionResult Edit(int? id)
         {
-
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ViewBag.ControllerName = "ProductManufacturers";
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
@@ -120,7 +111,6 @@ namespace WMS.Controllers
                 files.Add(dInfo.Name);
                 Session["UploadProductManufacturerImage"] = files;
                 ViewBag.Files = files;
-
             }
             return View(productManufacturer);
         }
@@ -145,7 +135,6 @@ namespace WMS.Controllers
                         filePath = MoveFile(UploadControl.FirstOrDefault(), filesName.FirstOrDefault(), productManufacturer.Id);
                         productManufacturer.ImagePath = filePath;
                     }
-
                 }
                 productManufacturer.TenantId = CurrentTenantId;
                 _LookupService.SaveAndUpdateProductManufacturer(productManufacturer, CurrentUserId);
@@ -174,10 +163,10 @@ namespace WMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-
             _LookupService.RemoveProductManufacturer(id);
             return RedirectToAction("Index");
         }
+
         public ActionResult UploadFile(IEnumerable<DevExpress.Web.UploadedFile> UploadControl)
         {
             if (Session["UploadProductManufacturerImage"] == null)
@@ -190,12 +179,12 @@ namespace WMS.Controllers
             {
                 SaveFile(file);
                 files.Add(file.FileName);
-
             }
             Session["UploadProductManufacturerImage"] = files;
 
             return Content("true");
         }
+
         private void SaveFile(DevExpress.Web.UploadedFile file)
         {
             if (!Directory.Exists(Server.MapPath(UploadTempDirectory)))
@@ -203,6 +192,7 @@ namespace WMS.Controllers
             string resFileName = Server.MapPath(UploadTempDirectory + @"/" + file.FileName);
             file.SaveAs(resFileName);
         }
+
         private string MoveFile(DevExpress.Web.UploadedFile file, string FileName, int ProductmanuId)
         {
             Session["UploadProductManufacturerImage"] = null;
@@ -210,13 +200,14 @@ namespace WMS.Controllers
                 Directory.CreateDirectory(Server.MapPath(UploadDirectory + ProductmanuId.ToString()));
 
             string sourceFile = Server.MapPath(UploadTempDirectory + @"/" + FileName);
-            string destFile = Server.MapPath(UploadDirectory + ProductmanuId.ToString() + @"/" +FileName);
+            string destFile = Server.MapPath(UploadDirectory + ProductmanuId.ToString() + @"/" + FileName);
             if (!System.IO.File.Exists(destFile))
             {
                 System.IO.File.Move(sourceFile, destFile);
             }
             return (UploadDirectory.Replace("~", "") + ProductmanuId.ToString() + @"/" + FileName);
         }
+
         protected override void Initialize(RequestContext requestContext)
         {
             var binder = (DevExpressEditorsBinder)ModelBinders.Binders.DefaultBinder;

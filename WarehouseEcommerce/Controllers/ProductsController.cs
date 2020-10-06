@@ -18,7 +18,6 @@ namespace WarehouseEcommerce.Controllers
 {
     public class ProductsController : BaseController
     {
-
         private readonly IUserService _userService;
         private readonly IActivityServices _activityServices;
         private readonly ITenantsCurrencyRateServices _tenantServices;
@@ -56,6 +55,7 @@ namespace WarehouseEcommerce.Controllers
             _productPriceService = productPriceService;
             _tenantWebsiteService = tenantWebsiteService;
         }
+
         // GET: Products
 
         public ActionResult list(string category, int? categoryId, string previousSearch, string search, int? page, int? pageSize = 12, string filters = "", SortProductTypeEnum sort = SortProductTypeEnum.Recommended)
@@ -64,7 +64,8 @@ namespace WarehouseEcommerce.Controllers
             {
                 ViewBag.Title = CurrentTenantWebsite.SiteName;
 
-                var model = new ProductListViewModel {
+                var model = new ProductListViewModel
+                {
                     CurrentCategoryName = category,
                     CurrentCategoryId = categoryId,
                     CurrentSort = sort,
@@ -128,12 +129,15 @@ namespace WarehouseEcommerce.Controllers
                         case SortProductTypeEnum.PriceByDesc:
                             products = products.OrderByDescending(s => s.SellPrice);
                             break;
+
                         case SortProductTypeEnum.NameByDesc:
                             products = products.OrderByDescending(s => s.Name);
                             break;
+
                         case SortProductTypeEnum.PriceByAsc:
                             products = products.OrderBy(s => s.SellPrice);
                             break;
+
                         case SortProductTypeEnum.NameByAsc:
                             products = products.OrderBy(s => s.Name);
                             break;
@@ -165,7 +169,6 @@ namespace WarehouseEcommerce.Controllers
             catch (Exception ex)
             {
                 return Content("Issue of getting data  " + ex.Message);
-
             }
         }
 
@@ -181,7 +184,6 @@ namespace WarehouseEcommerce.Controllers
             catch (Exception ex)
             {
                 return Content("Issue of getting data  " + ex.Message);
-
             }
         }
 
@@ -298,11 +300,11 @@ namespace WarehouseEcommerce.Controllers
                     }
 
                     var finalKitProducts = kitProductsList.Select(p => new
-                                                            {
-                                                                Product = p,
-                                                                AvailableProductCount = Inventory.GetAvailableProductCount(p, CurrentTenantWebsite.SiteID),
-                                                            })
-                                                            .OrderByDescending(p => p.AvailableProductCount!= null && p.AvailableProductCount > 0);
+                    {
+                        Product = p,
+                        AvailableProductCount = Inventory.GetAvailableProductCount(p, CurrentTenantWebsite.SiteID),
+                    })
+                                                            .OrderByDescending(p => p.AvailableProductCount != null && p.AvailableProductCount > 0);
 
                     isFirstTab = false;
 
@@ -338,7 +340,6 @@ namespace WarehouseEcommerce.Controllers
 
         public JsonResult GetProductCategories()
         {
-
             var productCategories = _lookupServices.GetAllValidProductGroups((CurrentTenantId), 12);
             if (productCategories.Count() <= 0 || productCategories == null) return Json(false, JsonRequestBehavior.AllowGet);
 
@@ -349,8 +350,6 @@ namespace WarehouseEcommerce.Controllers
                             pac.ProductGroup
                         });
             return Json(data.ToList(), JsonRequestBehavior.AllowGet);
-
-
         }
 
         public JsonResult searchProduct(string searchkey)
@@ -361,7 +360,6 @@ namespace WarehouseEcommerce.Controllers
 
             return Json(model, JsonRequestBehavior.AllowGet);
         }
-
 
         public ActionResult AddToCart()
         {
@@ -377,6 +375,7 @@ namespace WarehouseEcommerce.Controllers
 
             return View();
         }
+
         public ActionResult CategoryDetail()
         {
             ViewBag.cart = true;
@@ -493,7 +492,6 @@ namespace WarehouseEcommerce.Controllers
             var data = GaneWishListItemsSessionHelper.GetWishListItemsSession().ToList().Select(u => new WebsiteWishListItem()
             {
                 ProductMaster = _productServices.GetProductMasterById(u.ProductId),
-
             });
             return View(data.ToList());
         }
@@ -504,33 +502,26 @@ namespace WarehouseEcommerce.Controllers
             {
                 var count = _tenantWebsiteService.RemoveWishListItem((productId ?? 0), CurrentTenantWebsite.SiteID, CurrentUserId);
                 return PartialView(_tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).ToList());
-
             }
             else
             {
                 var model = _tenantWebsiteService.GetAllValidWishListItemsList(CurrentTenantWebsite.SiteID, CurrentUserId).ToList();
                 return PartialView(model);
-
-
             }
-
         }
 
         public JsonResult GetWishlistNotificationStatus(int productId)
         {
-
             return Json(
                 _tenantWebsiteService.GetWishlistNotificationStatus(productId, CurrentTenantWebsite.SiteID,
                     CurrentUserId), JsonRequestBehavior.AllowGet);
-
         }
+
         public JsonResult ChangeWishListStatus(int productId, bool notification)
         {
-
             return Json(
                 _tenantWebsiteService.ChangeWishListStatus(productId, notification, CurrentTenantWebsite.SiteID,
                     CurrentUserId), JsonRequestBehavior.AllowGet);
-
         }
 
         public void CurrencyChanged(int? currencyId)
@@ -539,11 +530,9 @@ namespace WarehouseEcommerce.Controllers
             {
                 var detail = _lookupServices.GetAllGlobalCurrencies().Where(c => (!currencyId.HasValue || c.CurrencyID == currencyId)).Select(u => new caCurrencyDetail
                 {
-
                     Symbol = u.Symbol,
                     Id = u.CurrencyID,
                     CurrencyName = u.CurrencyName
-
                 }).ToList();
                 var getTenantCurrencies = _tenantServices.GetTenantCurrencies(CurrentTenantId).FirstOrDefault(u => u.CurrencyID == detail.FirstOrDefault()?.Id);
                 detail.ForEach(c =>
@@ -555,7 +544,7 @@ namespace WarehouseEcommerce.Controllers
 
         public int CartItemsCount()
         {
-            return _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID,CurrentUserId, Session.SessionID).Count();
+            return _tenantWebsiteService.GetAllValidCartItemsList(CurrentTenantWebsite.SiteID, CurrentUserId, Session.SessionID).Count();
         }
 
         public ActionResult PaymentInfo()
@@ -572,7 +561,6 @@ namespace WarehouseEcommerce.Controllers
                 productFiltering.Brands = _tenantWebsiteService.GetAllValidProductManufacturers(productIds);
                 productFiltering.Types = _productlookupServices.GetAllValidSubCategoriesByDepartmentAndGroup(productIds);
                 (productFiltering.MinPrice, productFiltering.MaxPrice) = _tenantWebsiteService.GetAvailablePricesRange(productIds, CurrentTenantWebsite.SiteID);
-
 
                 productFiltering.TotalCount = !isProductChildsFilter ? productIds.Count() : 0;
             }
@@ -605,10 +593,10 @@ namespace WarehouseEcommerce.Controllers
 
             IEnumerable<SelectListItem> squares = Enumerable.Range(1, (quantity.HasValue ? Convert.ToInt32(quantity) : 1))
                                                             .Select(u => new SelectListItem
-                                                                        {
-                                                                            Text = u.ToString(),
-                                                                            Value = u.ToString()
-                                                                        })
+                                                            {
+                                                                Text = u.ToString(),
+                                                                Value = u.ToString()
+                                                            })
                                                             .ToList();
 
             ViewBag.QuantityList = new SelectList(squares, "Text", "Value");
@@ -725,7 +713,6 @@ namespace WarehouseEcommerce.Controllers
                         Color = !string.IsNullOrEmpty(attributeValue.Color?.Trim()) ? attributeValue.Color : attributeValue.Value,
                         IsColorTyped = attribute.IsColorTyped
                     });
-
                 }
 
                 processedProductAttributes.Add(attributeViewModel);

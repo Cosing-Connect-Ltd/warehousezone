@@ -855,7 +855,7 @@ namespace Ganedata.Core.Services
                     decimal qtyrec = _currentDbContext.OrderProcessDetail.Where(x => x.OrderProcessDetailID == item.OrderDetailID && x.IsDeleted != true).Sum(x => (decimal?)x.QtyProcessed) ?? 0;
 
                     if (item.Qty > qtyrec)  //////update POLines
-                    {   //////////////  
+                    {   //////////////
                         item.DateUpdated = DateTime.UtcNow;
                         item.UpdatedBy = userId;
 

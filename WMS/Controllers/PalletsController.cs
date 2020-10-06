@@ -3,7 +3,6 @@ using DevExpress.Web.Mvc;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Entities.Helpers;
-using Ganedata.Core.Models;
 using Ganedata.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -23,9 +22,10 @@ namespace WMS.Controllers
         private readonly ITenantsServices _tenantServices;
         private readonly ICoreOrderService _orderService;
         private string _uploadDirectory = "~/UploadedFiles/Pallets/";
-        string UploadProductManufacturerDirectory = "~/UploadedFiles/ProductManufacturers/";
-        string UploadTenantDepartmentDirectory = "~/UploadedFiles/TenantDepartment/";
-        string UploadProductGroupsDirectory = "~/UploadedFiles/ProductGroups/";
+        private string UploadProductManufacturerDirectory = "~/UploadedFiles/ProductManufacturers/";
+        private string UploadTenantDepartmentDirectory = "~/UploadedFiles/TenantDepartment/";
+        private string UploadProductGroupsDirectory = "~/UploadedFiles/ProductGroups/";
+
         public PalletsController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, ITenantsServices tenantsServices, IPalletingService palletingService, IMarketServices marketServices, IEmployeeServices employeeServices, IGaneConfigurationsHelper helper) : base(orderService, propertyService, accountServices, lookupServices)
         {
             _palletingService = palletingService;
@@ -52,8 +52,8 @@ namespace WMS.Controllers
                 viewModel = PalletsCustomBinding.CreatePalletGridViewModel();
 
             return _PalletsGridActionCore(viewModel, type, false, PalletsDispatchID);
-
         }
+
         public ActionResult _PalletsGridActionCore(GridViewModel gridViewModel, int? type, bool status = false, int? PalletsDispatchID = null)
         {
             gridViewModel.ProcessCustomBinding(
@@ -87,6 +87,7 @@ namespace WMS.Controllers
             viewModel.ApplyFilteringState(filteringState);
             return _PalletsGridActionCore(viewModel, type, status, PalletsDispatchID);
         }
+
         public ActionResult _PalletsGridViewDataSorting(GridViewColumnState column, bool reset, int? type, bool status = false, int? PalletsDispatchID = null)
         {
             ViewBag.Type = type;
@@ -96,10 +97,8 @@ namespace WMS.Controllers
             return _PalletsGridActionCore(viewModel, type, status, PalletsDispatchID);
         }
 
-
         public ActionResult _PalletItemsList(int palletId)
         {
-
             //setname and routevalues are required to reuse order detail list.
             ViewBag.PalletId = palletId;
             ViewBag.setName = palletId;
@@ -108,7 +107,6 @@ namespace WMS.Controllers
             return PartialView("_PalletItemsList", model);
         }
 
-
         public ActionResult _PalletsDispatch(int? type, int? ProcessId)
         {
             ViewBag.ProcessId = ProcessId;
@@ -116,8 +114,6 @@ namespace WMS.Controllers
 
             return PartialView("_PalletsDispatch", dispatchPallets);
         }
-
-
 
         public ActionResult _PalletDetails(int? PalletsDispatchID)
         {
@@ -153,6 +149,7 @@ namespace WMS.Controllers
             else { ViewBag.RowColor = false; }
             return PartialView("_PalletDispatchInfo", model);
         }
+
         public ActionResult _PalletDispatchInfoImages(int palletId)
         {
             var model = GetPalletModel(palletId);
@@ -178,7 +175,6 @@ namespace WMS.Controllers
                 AllCurrentPallets = _palletingService.GetAllPallets(2, PalletStatusEnum.Active, orderProcessId: OrderProcessId).Select(m => new SelectListItem() { Text = m.PalletNumber, Value = m.PalletID.ToString() }).ToList(),
                 SelectedOrderProcessId = OrderProcessId ?? 0,
                 SelectedPalletID = palletId,
-
             };
             model.OrderProcesses = OrderService.GetOrderProcessByOrderProcessId(OrderProcessId ?? 0);
             model.dispatchId = DispatchId;
@@ -187,7 +183,6 @@ namespace WMS.Controllers
 
         public ActionResult _GetNewPallet(PalletGenerateViewModel data)
         {
-
             var pallet = _palletingService.CreateNewPallet(data.SelectedOrderProcessId, CurrentUserId);
 
             var model = new PalletGenerateViewModel
@@ -218,6 +213,7 @@ namespace WMS.Controllers
 
             return PartialView("_PalletDetails", model);
         }
+
         public ActionResult _PalletOrderDetails(int Id, int? orderProcessId)
         {
             //setname and routevalues are required to reuse order detail list.
@@ -263,7 +259,8 @@ namespace WMS.Controllers
 
             _palletingService.AddFulFillmentPalletAllOrderProducts(model.SelectedOrderProcessId, model.SelectedPalletID, CurrentUserId);
 
-            var dispatchModel = new PalletDispatchViewModel {
+            var dispatchModel = new PalletDispatchViewModel
+            {
                 DeliveryMethod = orderProcess.Order.DeliveryMethod,
                 NetworkCode = orderProcess.Order.TenantDeliveryService?.NetworkCode,
                 DispatchRefrenceNumber = GaneStaticAppExtensions.GenerateDateRandomNo(),
@@ -329,6 +326,7 @@ namespace WMS.Controllers
 
             return null;
         }
+
         private void SaveFile(DevExpress.Web.UploadedFile file, string fileName)
         {
             if (!Directory.Exists(Server.MapPath(_uploadDirectory)))
@@ -352,6 +350,7 @@ namespace WMS.Controllers
             Session["UploadedPalletEvidences"] = null;
             return PartialView("_PalletDisptachDetail", model);
         }
+
         public ActionResult SavePalletsDispatch(PalletDispatchViewModel model)
         {
             ViewBag.ControllerName = "Pallets";
@@ -399,7 +398,6 @@ namespace WMS.Controllers
             ViewBag.ControllerName = "Pallets";
             if (!string.IsNullOrEmpty(PalletDispatch.ProofOfDeliveryImageFilenames))
             {
-
                 var filePaths = PalletDispatch.ProofOfDeliveryImageFilenames.Split(',').ToList();
                 if (filePaths.Count() > 0)
                 {
@@ -414,12 +412,9 @@ namespace WMS.Controllers
                 }
             }
 
-
-
-
-
             return PartialView("_PalletDisptachDetail", model);
         }
+
         public JsonResult DeletePallet(int palletId)
         {
             var status = _palletingService.DeletePallet(palletId);
@@ -462,7 +457,6 @@ namespace WMS.Controllers
 
         public JsonResult DeletePalletProduct(int PalletProductId)
         {
-
             int result = _palletingService.DeletePalletProduct(PalletProductId, CurrentUserId);
             if (result > 0)
             {
@@ -473,7 +467,6 @@ namespace WMS.Controllers
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
         }
-
 
         public JsonResult PalletDispatchCheck(int OrderProcessId)
         {
@@ -492,21 +485,17 @@ namespace WMS.Controllers
                     }
                     status = true;
                 }
-
             }
             return Json(status, JsonRequestBehavior.AllowGet);
-
         }
 
         public JsonResult MarkedOrderProcessAsDispatch(int OrderProcessId)
         {
-
             bool status = _palletingService.MarkedOrderProcessAsDispatch(OrderProcessId);
             return Json(status, JsonRequestBehavior.AllowGet);
-
         }
 
-        public JsonResult _RemoveProofOfDeliveryFile(string filename, bool tenantDepartment = false, bool TenantGroup = false, bool Maufacturer=false,int?Id=null)
+        public JsonResult _RemoveProofOfDeliveryFile(string filename, bool tenantDepartment = false, bool TenantGroup = false, bool Maufacturer = false, int? Id = null)
         {
             if (tenantDepartment)
             {
@@ -582,7 +571,6 @@ namespace WMS.Controllers
                 }
                 var cfiles = files.Select(a => a).ToList();
                 return Json(new { files = cfiles.Count == 0 ? null : cfiles });
-
             }
             else
             {

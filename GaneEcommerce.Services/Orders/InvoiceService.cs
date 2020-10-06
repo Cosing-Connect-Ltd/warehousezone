@@ -473,14 +473,14 @@ namespace Ganedata.Core.Services
         {
             decimal netAmountBuying = 0;
 
-            var InvocieDetaildata = _currentDbContext.InvoiceDetails.Where(u => u.InvoiceMasterId == InvoiceMasterId && u.IsDeleted != true).ToList();
+            var InvocieDetaildata = _currentDbContext.InvoiceDetails.Include(i => i.OrderDetail)
+                                                                    .Where(u => u.InvoiceMasterId == InvoiceMasterId && u.IsDeleted != true)
+                                                                    .ToList();
 
             foreach (var item in InvocieDetaildata)
             {
-                var buyPrice = _productPriceService.GetPurchasePrice(item.ProductId, item.DateCreated);
-                var amount = (decimal?)(item.Quantity * buyPrice);
-
-                netAmountBuying += amount ?? 0;
+                var buyPrice = _productPriceService.GetPurchasePrice(item.ProductId, item);
+                netAmountBuying += buyPrice != null ? (item.Quantity * buyPrice.Value) : 0;
             }
 
             return netAmountBuying;
