@@ -176,7 +176,7 @@
                     <div>
                         <div class="col-11 p-0 mt-1 pull-left">
 
-                            @Html.DropDownList("DirectShipOrders", ViewBag.DirectOrderList as SelectList, "Select Orders", new { @class = "chosen-select" })
+                            @Html.DropDownListFor(model => model.BaseOrderID, ViewBag.DirectOrderList as SelectList, "Select Orders", new { @class = "chosen-select" })
 
                         </div>
                         <div class="col-1 p-0 pull-left">

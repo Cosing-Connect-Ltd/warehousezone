@@ -65,7 +65,7 @@ $(document).ready(function () {
                         //} var id = $("#AccountContactId :selected").val();
                         //else {
                         //    $("#emailWithaccount").val($("#emailWithaccount option:first").val());
-                        //    
+                        //
                         //}
 
                     });
@@ -358,7 +358,7 @@ $(document).ready(function () {
                 url: "/PurchaseOrders/_GetOrderDetail",
                 data: { "OrderId": orderId, "accounId": accounId, "PageSession": sessionStorage["PageSessionToken"] },
                 success: function (e) {
-                    gridViewOrdDet.Refresh();
+                    orderDetailGrid.Refresh();
                     // _PalletTrackingListGridView.Refresh();
 
                     LoadingPanel.Hide();

@@ -1,13 +1,13 @@
-﻿using Ganedata.Core.Entities.Domain;
+﻿using AutoMapper;
+using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Enums;
+using Ganedata.Core.Entities.Helpers;
 using Ganedata.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Ganedata.Core.Entities.Enums;
-using Ganedata.Core.Entities.Helpers;
 using WMS.Helpers;
-using AutoMapper;
 
 namespace WMS.Controllers
 {
@@ -41,7 +41,6 @@ namespace WMS.Controllers
         /// <returns></returns>
         public ActionResult Create()
         {
-
             /// Authorization Check
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
@@ -60,11 +59,9 @@ namespace WMS.Controllers
                          {
                              TaxId = gtax.TaxID,
                              TaxName = gtax.TaxName + " - " + gtax.PercentageOfAmount + " %"
-
                          }).ToList();
             ViewBag.GlobalTaxes = new SelectList(taxes, "TaxId", "TaxName");
             return View();
-
         }
 
         [HttpPost]
@@ -114,14 +111,12 @@ namespace WMS.Controllers
                 OrderService.SaveOrderDetail(podetail, CurrentTenantId, CurrentUserId);
             }
             return RedirectToAction("Create", "PODetail", new { id = podetail.OrderID });
-
         }
 
         public ActionResult RemoveProduct(int PODetailID, int POID)
         {
             OrderService.RemoveOrderDetail(PODetailID, CurrentTenantId, CurrentUserId);
             return RedirectToAction("Create", new { id = POID });
-
         }
 
         public JsonResult jsonpricehistory(int pid)
@@ -171,7 +166,6 @@ namespace WMS.Controllers
                     }
                     GaneOrderDetailsSessionHelper.SetOrderDetailSessions(pageSessionToken, sessionODList);
                     ViewBag.CurrencySymbol = order?.AccountCurrency?.Symbol;
-
                 }
             }
 
@@ -184,6 +178,7 @@ namespace WMS.Controllers
             Session["dId"] = Id;
             return Json(string.Empty);
         }
+
         [HttpPost]
         public JsonResult _SaveDetail(OrderDetail model, ProductDetailRequest productRequest)
         {
@@ -239,7 +234,6 @@ namespace WMS.Controllers
             }
         }
 
-
         public PartialViewResult _OrderDetail(int? Id, string pageSessionToken)
         {
             ViewBag.cases = false;
@@ -264,10 +258,10 @@ namespace WMS.Controllers
 
             if (!string.IsNullOrEmpty(Request.Params["account"]))
             {
-                 accountId = int.Parse(Request.Params["account"]);
+                accountId = int.Parse(Request.Params["account"]);
 
                 var data =
-                (from pac in AccountServices.GetAllProductAccountCodesByAccount(accountId??0)
+                (from pac in AccountServices.GetAllProductAccountCodesByAccount(accountId ?? 0)
                  select new
                  {
                      pac.ProdAccCodeID,
@@ -293,7 +287,6 @@ namespace WMS.Controllers
                          {
                              TaxId = gtax.TaxID,
                              TaxName = gtax.TaxName + " - " + gtax.PercentageOfAmount + " %"
-
                          }).ToList();
 
             ViewBag.GlobalTaxes = new SelectList(taxes, "TaxId", "TaxName");
@@ -341,7 +334,7 @@ namespace WMS.Controllers
                     {
                         ViewBag.caseProcess = (model.Qty / (product?.ProductsPerCase == null ? 1 : product.ProductsPerCase));
                     }
-                    ViewBag.BuyingPrice =Math.Round((_productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, accountId ?? 0).MinimumSellPrice??0),2);
+                    ViewBag.BuyingPrice = Math.Round((_productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, accountId ?? 0).MinimumSellPrice ?? 0), 2);
                     ViewBag.percentageMargin = product.PercentMargin;
                 }
                 if (model == null)
@@ -371,7 +364,7 @@ namespace WMS.Controllers
                     products.ProductsPerCase,
                     products.AllowModifyPrice,
                     products.AllowZeroSale,
-                    BuyPrice = _productPriceService.GetPurchasePrice(prodId, DateTime.Now),
+                    BuyPrice = _productPriceService.GetPurchasePrice(prodId),
                     products.EnableWarranty,
                     percentageMargin = products.PercentMargin,
                     //Converting LandedCost into percentage and adding it into PercentMargin
@@ -379,7 +372,6 @@ namespace WMS.Controllers
                     ProductsPerPallet = products.CasesPerPallet * products.ProductsPerCase,
                     ShowPriceAlert = CurrentWarehouse.ShowPriceAlertInSalesOrder
                 };
-
 
                 return Json(prices, JsonRequestBehavior.AllowGet);
             }
@@ -406,11 +398,11 @@ namespace WMS.Controllers
                 product.AllowModifyPrice,
                 product.AllowZeroSale,
                 ProductsPerPallet = product.CasesPerPallet * product.ProductsPerCase,
-                BuyPrice = _productPriceService.GetPurchasePrice(productId, DateTime.Now),
+                BuyPrice = _productPriceService.GetPurchasePrice(productId),
                 product.EnableWarranty,
                 percentageMargin = product.PercentMargin,
                 //Converting LandedCost into percentage and adding it into PercentMargin
-                PercentMargin = Math.Round((_productPriceService.GetProductPriceThresholdByAccountId(productId, accountId).MinimumSellPrice??0),2),
+                PercentMargin = Math.Round((_productPriceService.GetProductPriceThresholdByAccountId(productId, accountId).MinimumSellPrice ?? 0), 2),
                 purchaseOrder = Request.UrlReferrer.AbsoluteUri.Contains("PurchaseOrder") ? true : false,
                 ShowPriceAlert = CurrentWarehouse.ShowPriceAlertInSalesOrder
             };
@@ -446,14 +438,10 @@ namespace WMS.Controllers
                             pac.ProdAccCode
                         });
             return Json(data.ToList(), JsonRequestBehavior.AllowGet);
-
         }
-
 
         public JsonResult IsQunatityProcessed(decimal Qty, int OrderDetailId = 0, bool isdeleted = false)
         {
-
-
             var Qunatity = _orderService.QunatityForOrderDetail(OrderDetailId);
 
             if (Qty >= Qunatity)
@@ -476,15 +464,12 @@ namespace WMS.Controllers
         public JsonResult IsAllowZeroSale(int productid)
         {
             var ZeroPriceCheck = _productServices.GetProductMasterById(productid)?.AllowZeroSale;
-            return Json(new{ zeroprice=ZeroPriceCheck ?? false,ShowPriceAlert=CurrentWarehouse.ShowPriceAlertInSalesOrder}, JsonRequestBehavior.AllowGet);
-
+            return Json(new { zeroprice = ZeroPriceCheck ?? false, ShowPriceAlert = CurrentWarehouse.ShowPriceAlertInSalesOrder }, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult EditProductLargeCombobox(int ProductId)
         {
-
             return ProductLargeDataComboBoxPartial(ProductId);
         }
-
-
     }
 }
