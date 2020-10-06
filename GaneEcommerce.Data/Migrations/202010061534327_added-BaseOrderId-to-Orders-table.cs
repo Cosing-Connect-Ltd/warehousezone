@@ -3,7 +3,7 @@
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class added_BaseOrderId_to_Orders_table : DbMigration
+    public partial class addedBaseOrderIdtoOrderstable : DbMigration
     {
         public override void Up()
         {

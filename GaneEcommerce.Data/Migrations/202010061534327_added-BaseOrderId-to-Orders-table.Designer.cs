@@ -7,13 +7,13 @@ namespace Ganedata.Core.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class added_BaseOrderId_to_Orders_table : IMigrationMetadata
+    public sealed partial class addedBaseOrderIdtoOrderstable : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(added_BaseOrderId_to_Orders_table));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(addedBaseOrderIdtoOrderstable));
         
         string IMigrationMetadata.Id
         {
-            get { return "202010051210067_added_BaseOrderId_to_Orders_table"; }
+            get { return "202010061534327_added-BaseOrderId-to-Orders-table"; }
         }
         
         string IMigrationMetadata.Source
