@@ -60,6 +60,8 @@
             this.xrLabel7 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel8 = new DevExpress.XtraReports.UI.XRLabel();
             this.TenantID = new DevExpress.XtraReports.Parameters.Parameter();
+            this.PageFooter = new DevExpress.XtraReports.UI.PageFooterBand();
+            this.xrPageInfo1 = new DevExpress.XtraReports.UI.XRPageInfo();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // TopMargin
@@ -69,7 +71,7 @@
             // 
             // BottomMargin
             // 
-            this.BottomMargin.HeightF = 82.27825F;
+            this.BottomMargin.HeightF = 0F;
             this.BottomMargin.Name = "BottomMargin";
             // 
             // Detail
@@ -378,6 +380,25 @@
             this.TenantID.ValueInfo = "0";
             this.TenantID.Visible = false;
             // 
+            // PageFooter
+            // 
+            this.PageFooter.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrPageInfo1});
+            this.PageFooter.HeightF = 30.98666F;
+            this.PageFooter.Name = "PageFooter";
+            // 
+            // xrPageInfo1
+            // 
+            this.xrPageInfo1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrPageInfo1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
+            this.xrPageInfo1.Name = "xrPageInfo1";
+            this.xrPageInfo1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrPageInfo1.SizeF = new System.Drawing.SizeF(771.9999F, 23F);
+            this.xrPageInfo1.StylePriority.UseFont = false;
+            this.xrPageInfo1.StylePriority.UseTextAlignment = false;
+            this.xrPageInfo1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.xrPageInfo1.TextFormatString = "Page {0} of {1}";
+            // 
             // MarketCustomerReport
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -385,16 +406,17 @@
             this.BottomMargin,
             this.Detail,
             this.DetailReport,
-            this.DetailReport1});
+            this.DetailReport1,
+            this.PageFooter});
             this.ComponentStorage.AddRange(new System.ComponentModel.IComponent[] {
             this.sqlDataSource1});
             this.DataSource = this.sqlDataSource1;
             this.Font = new System.Drawing.Font("Arial", 9.75F);
-            this.Margins = new System.Drawing.Printing.Margins(31, 47, 7, 82);
+            this.Margins = new System.Drawing.Printing.Margins(31, 47, 7, 0);
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
             this.MarketId,
             this.TenantID});
-            this.Version = "19.1";
+            this.Version = "20.1";
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
         }
@@ -428,5 +450,7 @@
         private DevExpress.XtraReports.UI.XRLabel xrLabel3;
         private DevExpress.XtraReports.UI.XRLabel xrLabel12;
         public DevExpress.XtraReports.Parameters.Parameter TenantID;
+        private DevExpress.XtraReports.UI.PageFooterBand PageFooter;
+        private DevExpress.XtraReports.UI.XRPageInfo xrPageInfo1;
     }
 }

@@ -158,7 +158,7 @@ namespace WMS.Reports
             // TopMargin
             // 
             this.TopMargin.Dpi = 96F;
-            this.TopMargin.HeightF = 20F;
+            this.TopMargin.HeightF = 9F;
             this.TopMargin.Name = "TopMargin";
             this.TopMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 96F);
             this.TopMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
@@ -1651,7 +1651,7 @@ namespace WMS.Reports
             this.DataSource = this.sqlDataSource1;
             this.Dpi = 96F;
             this.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margins = new System.Drawing.Printing.Margins(29, 35, 20, 10);
+            this.Margins = new System.Drawing.Printing.Margins(29, 35, 9, 10);
             this.PageHeight = 1056;
             this.PageWidth = 816;
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
@@ -1660,7 +1660,7 @@ namespace WMS.Reports
             this.ScriptsSource = "\r\nprivate void prodDelType_GetValue(object sender, DevExpress.XtraReports.UI.GetV" +
     "alueEventArgs e) {\r\n\r\n}\r\n";
             this.SnapGridSize = 12.5F;
-            this.Version = "19.2";
+            this.Version = "20.1";
             this.BeforePrint += new System.Drawing.Printing.PrintEventHandler(this.PurchaseOrderPrint_BeforePrint);
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();

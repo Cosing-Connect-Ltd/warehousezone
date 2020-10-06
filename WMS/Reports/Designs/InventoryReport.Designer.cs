@@ -11,7 +11,6 @@ namespace WMS.Reports
         private DevExpress.XtraReports.UI.TopMarginBand TopMargin;
         private DevExpress.XtraReports.UI.BottomMarginBand BottomMargin;
         private XRLabel xrLabel1;
-        private XRLabel xrLabel2;
         public XRLabel xrLabel6;
         private XRLabel xrLabel5;
         private XRLabel xrLabel13;
@@ -90,7 +89,6 @@ namespace WMS.Reports
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
-            this.xrLabel2 = new DevExpress.XtraReports.UI.XRLabel();
             this.paramTenantId = new DevExpress.XtraReports.Parameters.Parameter();
             this.paramWarehouseId = new DevExpress.XtraReports.Parameters.Parameter();
             this.paramProductId = new DevExpress.XtraReports.Parameters.Parameter();
@@ -98,6 +96,7 @@ namespace WMS.Reports
             this.xrLabel16 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel3 = new DevExpress.XtraReports.UI.XRLabel();
             this.ReportFooter = new DevExpress.XtraReports.UI.ReportFooterBand();
+            this.xrPageInfo1 = new DevExpress.XtraReports.UI.XRPageInfo();
             this.xrLine1 = new DevExpress.XtraReports.UI.XRLine();
             this.sqlDataSource1 = new DevExpress.DataAccess.Sql.SqlDataSource(this.components);
             this.xrLabel4 = new DevExpress.XtraReports.UI.XRLabel();
@@ -233,7 +232,7 @@ namespace WMS.Reports
             // 
             // TopMargin
             // 
-            this.TopMargin.HeightF = 21.70833F;
+            this.TopMargin.HeightF = 5.041663F;
             this.TopMargin.Name = "TopMargin";
             this.TopMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.TopMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
@@ -258,30 +257,10 @@ namespace WMS.Reports
             // 
             // BottomMargin
             // 
-            this.BottomMargin.HeightF = 4.961542F;
+            this.BottomMargin.HeightF = 6.381098F;
             this.BottomMargin.Name = "BottomMargin";
             this.BottomMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.BottomMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
-            // 
-            // xrLabel2
-            // 
-            this.xrLabel2.BackColor = System.Drawing.Color.Transparent;
-            this.xrLabel2.Borders = DevExpress.XtraPrinting.BorderSide.None;
-            this.xrLabel2.BorderWidth = 0F;
-            this.xrLabel2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel2.LocationFloat = new DevExpress.Utils.PointFloat(0F, 13.62503F);
-            this.xrLabel2.Multiline = true;
-            this.xrLabel2.Name = "xrLabel2";
-            this.xrLabel2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel2.SizeF = new System.Drawing.SizeF(801.0001F, 20.83333F);
-            this.xrLabel2.StylePriority.UseBackColor = false;
-            this.xrLabel2.StylePriority.UseBorderColor = false;
-            this.xrLabel2.StylePriority.UseBorders = false;
-            this.xrLabel2.StylePriority.UseBorderWidth = false;
-            this.xrLabel2.StylePriority.UseFont = false;
-            this.xrLabel2.StylePriority.UseTextAlignment = false;
-            this.xrLabel2.Text = "©WarehouseZone\r\n";
-            this.xrLabel2.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
             // paramTenantId
             // 
@@ -302,10 +281,10 @@ namespace WMS.Reports
             // paramProductId
             // 
             this.paramProductId.Description = "Product";
-            this.paramProductId.LookUpSettings = staticListLookUpSettings1;
             this.paramProductId.MultiValue = true;
             this.paramProductId.Name = "paramProductId";
             this.paramProductId.Type = typeof(int);
+            this.paramProductId.ValueSourceSettings = staticListLookUpSettings1;
             // 
             // ReportHeader
             // 
@@ -313,7 +292,7 @@ namespace WMS.Reports
             this.xrLabel16,
             this.xrLabel3,
             this.xrLabel1});
-            this.ReportHeader.HeightF = 61.40386F;
+            this.ReportHeader.HeightF = 57.40387F;
             this.ReportHeader.Name = "ReportHeader";
             // 
             // xrLabel16
@@ -343,11 +322,23 @@ namespace WMS.Reports
             // ReportFooter
             // 
             this.ReportFooter.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.xrLabel2,
+            this.xrPageInfo1,
             this.xrLine1});
             this.ReportFooter.HeightF = 37.5F;
             this.ReportFooter.KeepTogether = true;
             this.ReportFooter.Name = "ReportFooter";
+            // 
+            // xrPageInfo1
+            // 
+            this.xrPageInfo1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrPageInfo1.LocationFloat = new DevExpress.Utils.PointFloat(0.5208333F, 13.62502F);
+            this.xrPageInfo1.Name = "xrPageInfo1";
+            this.xrPageInfo1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrPageInfo1.SizeF = new System.Drawing.SizeF(800.4791F, 23.87498F);
+            this.xrPageInfo1.StylePriority.UseFont = false;
+            this.xrPageInfo1.StylePriority.UseTextAlignment = false;
+            this.xrPageInfo1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.xrPageInfo1.TextFormatString = "Page {0} of {1}";
             // 
             // xrLine1
             // 
@@ -509,12 +500,12 @@ namespace WMS.Reports
             this.DataMember = "queryInventoryStocks";
             this.DataSource = this.sqlDataSource1;
             this.FilterString = "[TenantId] = ?paramTenantId And [ProductId] In (?paramProductId)";
-            this.Margins = new System.Drawing.Printing.Margins(25, 24, 22, 5);
+            this.Margins = new System.Drawing.Printing.Margins(25, 24, 5, 6);
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
             this.paramProductId,
             this.paramTenantId,
             this.paramWarehouseId});
-            this.Version = "19.1";
+            this.Version = "20.1";
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
         }
@@ -536,5 +527,6 @@ namespace WMS.Reports
         private PageHeaderBand PageHeader;
         private XRLabel xrLabel16;
         private XRLabel xrLabel3;
+        private XRPageInfo xrPageInfo1;
     }
 }

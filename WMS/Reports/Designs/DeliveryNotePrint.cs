@@ -207,7 +207,7 @@ public class DeliveryNotePrint : DevExpress.XtraReports.UI.XtraReport
             // 
             // BottomMargin
             // 
-            this.BottomMargin.HeightF = 30F;
+            this.BottomMargin.HeightF = 10.1628F;
             this.BottomMargin.Name = "BottomMargin";
             this.BottomMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.BottomMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
@@ -1206,10 +1206,10 @@ public class DeliveryNotePrint : DevExpress.XtraReports.UI.XtraReport
             this.DataMember = "OrderProcesses_1";
             this.DataSource = this.sqlDataSource1;
             this.FilterString = "[OrderProcessID] In (?paramOrderProcessId)";
-            this.Margins = new System.Drawing.Printing.Margins(38, 50, 0, 30);
+            this.Margins = new System.Drawing.Printing.Margins(38, 50, 0, 10);
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
             this.paramOrderProcessId});
-            this.Version = "19.2";
+            this.Version = "20.1";
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
     }

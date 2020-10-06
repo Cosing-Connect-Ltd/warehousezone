@@ -215,7 +215,7 @@ public class GoodsReceiveNotePrint : DevExpress.XtraReports.UI.XtraReport
             // 
             // BottomMargin
             // 
-            this.BottomMargin.HeightF = 12F;
+            this.BottomMargin.HeightF = 3.666687F;
             this.BottomMargin.Name = "BottomMargin";
             this.BottomMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.BottomMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
@@ -937,10 +937,10 @@ public class GoodsReceiveNotePrint : DevExpress.XtraReports.UI.XtraReport
             this.sqlDataSource1});
             this.DataMember = "OrderReceiveCounts_1";
             this.DataSource = this.sqlDataSource1;
-            this.Margins = new System.Drawing.Printing.Margins(23, 54, 16, 12);
+            this.Margins = new System.Drawing.Printing.Margins(23, 54, 16, 4);
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
             this.paramGoodsReceiveId});
-            this.Version = "19.2";
+            this.Version = "20.1";
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
     }

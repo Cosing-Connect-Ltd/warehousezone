@@ -30,34 +30,17 @@
         {
             this.components = new System.ComponentModel.Container();
             DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings1 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
-            DevExpress.DataAccess.Sql.SelectQuery selectQuery1 = new DevExpress.DataAccess.Sql.SelectQuery();
-            DevExpress.DataAccess.Sql.Column column1 = new DevExpress.DataAccess.Sql.Column();
-            DevExpress.DataAccess.Sql.ColumnExpression columnExpression1 = new DevExpress.DataAccess.Sql.ColumnExpression();
-            DevExpress.DataAccess.Sql.Table table1 = new DevExpress.DataAccess.Sql.Table();
-            DevExpress.DataAccess.Sql.Column column2 = new DevExpress.DataAccess.Sql.Column();
-            DevExpress.DataAccess.Sql.ColumnExpression columnExpression2 = new DevExpress.DataAccess.Sql.ColumnExpression();
-            DevExpress.DataAccess.Sql.Column column3 = new DevExpress.DataAccess.Sql.Column();
-            DevExpress.DataAccess.Sql.ColumnExpression columnExpression3 = new DevExpress.DataAccess.Sql.ColumnExpression();
-            DevExpress.DataAccess.Sql.Table table2 = new DevExpress.DataAccess.Sql.Table();
-            DevExpress.DataAccess.Sql.Column column4 = new DevExpress.DataAccess.Sql.Column();
-            DevExpress.DataAccess.Sql.ColumnExpression columnExpression4 = new DevExpress.DataAccess.Sql.ColumnExpression();
-            DevExpress.DataAccess.Sql.Column column5 = new DevExpress.DataAccess.Sql.Column();
-            DevExpress.DataAccess.Sql.ColumnExpression columnExpression5 = new DevExpress.DataAccess.Sql.ColumnExpression();
-            DevExpress.DataAccess.Sql.Table table3 = new DevExpress.DataAccess.Sql.Table();
-            DevExpress.DataAccess.Sql.Column column6 = new DevExpress.DataAccess.Sql.Column();
-            DevExpress.DataAccess.Sql.ColumnExpression columnExpression6 = new DevExpress.DataAccess.Sql.ColumnExpression();
-            DevExpress.DataAccess.Sql.Column column7 = new DevExpress.DataAccess.Sql.Column();
-            DevExpress.DataAccess.Sql.ColumnExpression columnExpression7 = new DevExpress.DataAccess.Sql.ColumnExpression();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LowStockItemsReport));
+            DevExpress.DataAccess.Sql.CustomSqlQuery customSqlQuery1 = new DevExpress.DataAccess.Sql.CustomSqlQuery();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter1 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter2 = new DevExpress.DataAccess.Sql.QueryParameter();
-            DevExpress.DataAccess.Sql.Join join1 = new DevExpress.DataAccess.Sql.Join();
-            DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo1 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
-            DevExpress.DataAccess.Sql.Join join2 = new DevExpress.DataAccess.Sql.Join();
-            DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo2 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
-            DevExpress.DataAccess.Sql.Join join3 = new DevExpress.DataAccess.Sql.Join();
-            DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo3 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter3 = new DevExpress.DataAccess.Sql.QueryParameter();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter4 = new DevExpress.DataAccess.Sql.QueryParameter();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LowStockItemsReport));
+            DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings2 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
+            DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings3 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
+            this.xrLabel9 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel10 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel8 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel3 = new DevExpress.XtraReports.UI.XRLabel();
             this.lblQuantity = new DevExpress.XtraReports.UI.XRLabel();
@@ -65,34 +48,73 @@
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.WarehouseParam = new DevExpress.XtraReports.Parameters.Parameter();
-            this.ReportHeader = new DevExpress.XtraReports.UI.ReportHeaderBand();
-            this.xrLabel5 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLine2 = new DevExpress.XtraReports.UI.XRLine();
             this.SKU = new DevExpress.XtraReports.UI.XRLabel();
             this.InStock = new DevExpress.XtraReports.UI.XRLabel();
             this.ReOrder = new DevExpress.XtraReports.UI.XRLabel();
             this.PageFooter = new DevExpress.XtraReports.UI.PageFooterBand();
-            this.xrLabel6 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLine1 = new DevExpress.XtraReports.UI.XRLine();
             this.PageHeader = new DevExpress.XtraReports.UI.PageHeaderBand();
+            this.xrLine2 = new DevExpress.XtraReports.UI.XRLine();
+            this.xrLabel22 = new DevExpress.XtraReports.UI.XRLabel();
+            this.lblDate = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel11 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel12 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel5 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel14 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel13 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel2 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel4 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel7 = new DevExpress.XtraReports.UI.XRLabel();
             this.TenantIdParam = new DevExpress.XtraReports.Parameters.Parameter();
             this.sqlDataSource1 = new DevExpress.DataAccess.Sql.SqlDataSource(this.components);
+            this.paramProductGroupId = new DevExpress.XtraReports.Parameters.Parameter();
+            this.paramdepartmentId = new DevExpress.XtraReports.Parameters.Parameter();
+            this.xrPageInfo1 = new DevExpress.XtraReports.UI.XRPageInfo();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // Detail
             // 
             this.Detail.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrLabel9,
+            this.xrLabel10,
             this.xrLabel8,
             this.xrLabel3,
             this.lblQuantity,
             this.xrLabel1});
             this.Detail.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Detail.HeightF = 30.20833F;
+            this.Detail.HeightF = 26.04167F;
             this.Detail.Name = "Detail";
             this.Detail.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.Detail.StylePriority.UseFont = false;
             this.Detail.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
+            // 
+            // xrLabel9
+            // 
+            this.xrLabel9.BorderWidth = 0F;
+            this.xrLabel9.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InStock]")});
+            this.xrLabel9.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrLabel9.LocationFloat = new DevExpress.Utils.PointFloat(800.9999F, 0F);
+            this.xrLabel9.Name = "xrLabel9";
+            this.xrLabel9.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel9.SizeF = new System.Drawing.SizeF(131.6669F, 23F);
+            this.xrLabel9.StylePriority.UseBorderWidth = false;
+            this.xrLabel9.StylePriority.UseFont = false;
+            this.xrLabel9.Text = "xrLabel3";
+            // 
+            // xrLabel10
+            // 
+            this.xrLabel10.BorderWidth = 0F;
+            this.xrLabel10.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[OnOrder]")});
+            this.xrLabel10.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrLabel10.LocationFloat = new DevExpress.Utils.PointFloat(932.6668F, 0F);
+            this.xrLabel10.Name = "xrLabel10";
+            this.xrLabel10.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel10.SizeF = new System.Drawing.SizeF(118.3332F, 23F);
+            this.xrLabel10.StylePriority.UseBorderWidth = false;
+            this.xrLabel10.StylePriority.UseFont = false;
+            this.xrLabel10.Text = "xrLabel3";
             // 
             // xrLabel8
             // 
@@ -150,14 +172,14 @@
             // 
             // TopMargin
             // 
-            this.TopMargin.HeightF = 20.66666F;
+            this.TopMargin.HeightF = 7.124996F;
             this.TopMargin.Name = "TopMargin";
             this.TopMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.TopMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
             // 
             // BottomMargin
             // 
-            this.BottomMargin.HeightF = 4F;
+            this.BottomMargin.HeightF = 7.817745F;
             this.BottomMargin.Name = "BottomMargin";
             this.BottomMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.BottomMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
@@ -170,49 +192,11 @@
             this.WarehouseParam.ValueInfo = "0";
             this.WarehouseParam.ValueSourceSettings = staticListLookUpSettings1;
             // 
-            // ReportHeader
-            // 
-            this.ReportHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.ReportHeader.BorderColor = System.Drawing.Color.Black;
-            this.ReportHeader.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.xrLabel5,
-            this.xrLine2});
-            this.ReportHeader.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ReportHeader.HeightF = 47.29169F;
-            this.ReportHeader.Name = "ReportHeader";
-            this.ReportHeader.StylePriority.UseBackColor = false;
-            this.ReportHeader.StylePriority.UseBorderColor = false;
-            this.ReportHeader.StylePriority.UseFont = false;
-            this.ReportHeader.StylePriority.UseTextAlignment = false;
-            this.ReportHeader.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            // 
-            // xrLabel5
-            // 
-            this.xrLabel5.BackColor = System.Drawing.Color.Transparent;
-            this.xrLabel5.Borders = DevExpress.XtraPrinting.BorderSide.None;
-            this.xrLabel5.BorderWidth = 0F;
-            this.xrLabel5.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
-            this.xrLabel5.Name = "xrLabel5";
-            this.xrLabel5.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel5.SizeF = new System.Drawing.SizeF(800.9999F, 30.62501F);
-            this.xrLabel5.StylePriority.UseBackColor = false;
-            this.xrLabel5.StylePriority.UseBorders = false;
-            this.xrLabel5.StylePriority.UseBorderWidth = false;
-            this.xrLabel5.Text = "Low Stock Items";
-            // 
-            // xrLine2
-            // 
-            this.xrLine2.BackColor = System.Drawing.Color.White;
-            this.xrLine2.LocationFloat = new DevExpress.Utils.PointFloat(0F, 30.62501F);
-            this.xrLine2.Name = "xrLine2";
-            this.xrLine2.SizeF = new System.Drawing.SizeF(801.0001F, 13.62502F);
-            this.xrLine2.StylePriority.UseBackColor = false;
-            // 
             // SKU
             // 
             this.SKU.BorderWidth = 0F;
             this.SKU.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SKU.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
+            this.SKU.LocationFloat = new DevExpress.Utils.PointFloat(0F, 70.12507F);
             this.SKU.Name = "SKU";
             this.SKU.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.SKU.SizeF = new System.Drawing.SizeF(151.0417F, 23F);
@@ -224,7 +208,7 @@
             // 
             this.InStock.BorderWidth = 0F;
             this.InStock.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.InStock.LocationFloat = new DevExpress.Utils.PointFloat(682.6667F, 0F);
+            this.InStock.LocationFloat = new DevExpress.Utils.PointFloat(682.6667F, 70.12507F);
             this.InStock.Name = "InStock";
             this.InStock.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.InStock.SizeF = new System.Drawing.SizeF(118.3332F, 23F);
@@ -236,7 +220,7 @@
             // 
             this.ReOrder.BorderWidth = 0F;
             this.ReOrder.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ReOrder.LocationFloat = new DevExpress.Utils.PointFloat(553.167F, 0F);
+            this.ReOrder.LocationFloat = new DevExpress.Utils.PointFloat(553.167F, 70.12507F);
             this.ReOrder.Multiline = true;
             this.ReOrder.Name = "ReOrder";
             this.ReOrder.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
@@ -248,52 +232,189 @@
             // PageFooter
             // 
             this.PageFooter.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.xrLabel6,
+            this.xrPageInfo1,
             this.xrLine1});
-            this.PageFooter.HeightF = 39.76981F;
+            this.PageFooter.HeightF = 40.93673F;
             this.PageFooter.Name = "PageFooter";
-            // 
-            // xrLabel6
-            // 
-            this.xrLabel6.BackColor = System.Drawing.Color.Transparent;
-            this.xrLabel6.Borders = DevExpress.XtraPrinting.BorderSide.None;
-            this.xrLabel6.BorderWidth = 0F;
-            this.xrLabel6.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel6.LocationFloat = new DevExpress.Utils.PointFloat(0F, 13.62502F);
-            this.xrLabel6.Multiline = true;
-            this.xrLabel6.Name = "xrLabel6";
-            this.xrLabel6.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel6.SizeF = new System.Drawing.SizeF(800.9999F, 23.33333F);
-            this.xrLabel6.StylePriority.UseBackColor = false;
-            this.xrLabel6.StylePriority.UseBorders = false;
-            this.xrLabel6.StylePriority.UseBorderWidth = false;
-            this.xrLabel6.StylePriority.UseFont = false;
-            this.xrLabel6.StylePriority.UseTextAlignment = false;
-            this.xrLabel6.Text = "©WarehouseZone\r\n\r\n";
-            this.xrLabel6.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
             // xrLine1
             // 
             this.xrLine1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
             this.xrLine1.Name = "xrLine1";
-            this.xrLine1.SizeF = new System.Drawing.SizeF(801.0001F, 13.62502F);
+            this.xrLine1.SizeF = new System.Drawing.SizeF(1051F, 13.62502F);
             // 
             // PageHeader
             // 
             this.PageHeader.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrLine2,
+            this.xrLabel22,
+            this.lblDate,
+            this.xrLabel11,
+            this.xrLabel12,
+            this.xrLabel5,
+            this.xrLabel14,
+            this.xrLabel13,
+            this.xrLabel2,
+            this.xrLabel4,
             this.xrLabel7,
             this.ReOrder,
             this.SKU,
             this.InStock});
             this.PageHeader.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PageHeader.HeightF = 32.29167F;
+            this.PageHeader.HeightF = 96.45822F;
             this.PageHeader.Name = "PageHeader";
             this.PageHeader.StylePriority.UseFont = false;
+            // 
+            // xrLine2
+            // 
+            this.xrLine2.BackColor = System.Drawing.Color.White;
+            this.xrLine2.LocationFloat = new DevExpress.Utils.PointFloat(0F, 56.50005F);
+            this.xrLine2.Name = "xrLine2";
+            this.xrLine2.SizeF = new System.Drawing.SizeF(1051F, 13.62502F);
+            this.xrLine2.StylePriority.UseBackColor = false;
+            // 
+            // xrLabel22
+            // 
+            this.xrLabel22.BackColor = System.Drawing.Color.Transparent;
+            this.xrLabel22.Borders = DevExpress.XtraPrinting.BorderSide.None;
+            this.xrLabel22.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrLabel22.LocationFloat = new DevExpress.Utils.PointFloat(265.625F, 0F);
+            this.xrLabel22.Name = "xrLabel22";
+            this.xrLabel22.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel22.SizeF = new System.Drawing.SizeF(785.375F, 56.50005F);
+            this.xrLabel22.StylePriority.UseBackColor = false;
+            this.xrLabel22.StylePriority.UseBorders = false;
+            this.xrLabel22.StylePriority.UseFont = false;
+            this.xrLabel22.StylePriority.UseTextAlignment = false;
+            this.xrLabel22.Text = "Low Stock Report";
+            this.xrLabel22.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            // 
+            // lblDate
+            // 
+            this.lblDate.BackColor = System.Drawing.Color.Transparent;
+            this.lblDate.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Now()")});
+            this.lblDate.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDate.ForeColor = System.Drawing.Color.Black;
+            this.lblDate.LocationFloat = new DevExpress.Utils.PointFloat(87.5F, 0F);
+            this.lblDate.Name = "lblDate";
+            this.lblDate.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.lblDate.SizeF = new System.Drawing.SizeF(174.4998F, 18.83335F);
+            this.lblDate.StylePriority.UseBackColor = false;
+            this.lblDate.StylePriority.UseFont = false;
+            this.lblDate.StylePriority.UseForeColor = false;
+            this.lblDate.StylePriority.UseTextAlignment = false;
+            this.lblDate.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            this.lblDate.TextFormatString = "{0:dd/MM/yy HH:mm}";
+            // 
+            // xrLabel11
+            // 
+            this.xrLabel11.BackColor = System.Drawing.Color.Transparent;
+            this.xrLabel11.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrLabel11.ForeColor = System.Drawing.Color.Black;
+            this.xrLabel11.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
+            this.xrLabel11.Name = "xrLabel11";
+            this.xrLabel11.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel11.SizeF = new System.Drawing.SizeF(87.5F, 18.83335F);
+            this.xrLabel11.StylePriority.UseBackColor = false;
+            this.xrLabel11.StylePriority.UseFont = false;
+            this.xrLabel11.StylePriority.UseForeColor = false;
+            this.xrLabel11.StylePriority.UseTextAlignment = false;
+            this.xrLabel11.Text = "Date:";
+            this.xrLabel11.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            // 
+            // xrLabel12
+            // 
+            this.xrLabel12.BackColor = System.Drawing.Color.Transparent;
+            this.xrLabel12.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrLabel12.ForeColor = System.Drawing.Color.Black;
+            this.xrLabel12.LocationFloat = new DevExpress.Utils.PointFloat(87.5F, 18.83335F);
+            this.xrLabel12.Name = "xrLabel12";
+            this.xrLabel12.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel12.SizeF = new System.Drawing.SizeF(174.4998F, 18.83335F);
+            this.xrLabel12.StylePriority.UseBackColor = false;
+            this.xrLabel12.StylePriority.UseFont = false;
+            this.xrLabel12.StylePriority.UseForeColor = false;
+            this.xrLabel12.StylePriority.UseTextAlignment = false;
+            this.xrLabel12.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            this.xrLabel12.BeforePrint += new System.Drawing.Printing.PrintEventHandler(this.xrLabel12_BeforePrint);
+            // 
+            // xrLabel5
+            // 
+            this.xrLabel5.BackColor = System.Drawing.Color.Transparent;
+            this.xrLabel5.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrLabel5.ForeColor = System.Drawing.Color.Black;
+            this.xrLabel5.LocationFloat = new DevExpress.Utils.PointFloat(0F, 18.83335F);
+            this.xrLabel5.Name = "xrLabel5";
+            this.xrLabel5.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel5.SizeF = new System.Drawing.SizeF(87.5F, 18.83335F);
+            this.xrLabel5.StylePriority.UseBackColor = false;
+            this.xrLabel5.StylePriority.UseFont = false;
+            this.xrLabel5.StylePriority.UseForeColor = false;
+            this.xrLabel5.StylePriority.UseTextAlignment = false;
+            this.xrLabel5.Text = "Group:";
+            this.xrLabel5.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            // 
+            // xrLabel14
+            // 
+            this.xrLabel14.BackColor = System.Drawing.Color.Transparent;
+            this.xrLabel14.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrLabel14.ForeColor = System.Drawing.Color.Black;
+            this.xrLabel14.LocationFloat = new DevExpress.Utils.PointFloat(87.5F, 37.6667F);
+            this.xrLabel14.Name = "xrLabel14";
+            this.xrLabel14.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel14.SizeF = new System.Drawing.SizeF(174.4998F, 18.83335F);
+            this.xrLabel14.StylePriority.UseBackColor = false;
+            this.xrLabel14.StylePriority.UseFont = false;
+            this.xrLabel14.StylePriority.UseForeColor = false;
+            this.xrLabel14.StylePriority.UseTextAlignment = false;
+            this.xrLabel14.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            this.xrLabel14.BeforePrint += new System.Drawing.Printing.PrintEventHandler(this.xrLabel14_BeforePrint);
+            // 
+            // xrLabel13
+            // 
+            this.xrLabel13.BackColor = System.Drawing.Color.Transparent;
+            this.xrLabel13.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrLabel13.ForeColor = System.Drawing.Color.Black;
+            this.xrLabel13.LocationFloat = new DevExpress.Utils.PointFloat(0F, 37.6667F);
+            this.xrLabel13.Name = "xrLabel13";
+            this.xrLabel13.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel13.SizeF = new System.Drawing.SizeF(87.5F, 18.83335F);
+            this.xrLabel13.StylePriority.UseBackColor = false;
+            this.xrLabel13.StylePriority.UseFont = false;
+            this.xrLabel13.StylePriority.UseForeColor = false;
+            this.xrLabel13.StylePriority.UseTextAlignment = false;
+            this.xrLabel13.Text = "Department:";
+            this.xrLabel13.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            // 
+            // xrLabel2
+            // 
+            this.xrLabel2.BorderWidth = 0F;
+            this.xrLabel2.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrLabel2.LocationFloat = new DevExpress.Utils.PointFloat(800.9999F, 70.12507F);
+            this.xrLabel2.Name = "xrLabel2";
+            this.xrLabel2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel2.SizeF = new System.Drawing.SizeF(131.6669F, 23F);
+            this.xrLabel2.StylePriority.UseBorderWidth = false;
+            this.xrLabel2.StylePriority.UseFont = false;
+            this.xrLabel2.Text = "In Stock";
+            // 
+            // xrLabel4
+            // 
+            this.xrLabel4.BorderWidth = 0F;
+            this.xrLabel4.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrLabel4.LocationFloat = new DevExpress.Utils.PointFloat(932.6668F, 70.12507F);
+            this.xrLabel4.Name = "xrLabel4";
+            this.xrLabel4.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel4.SizeF = new System.Drawing.SizeF(118.3332F, 23F);
+            this.xrLabel4.StylePriority.UseBorderWidth = false;
+            this.xrLabel4.StylePriority.UseFont = false;
+            this.xrLabel4.Text = "On Order";
             // 
             // xrLabel7
             // 
             this.xrLabel7.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel7.LocationFloat = new DevExpress.Utils.PointFloat(151.0417F, 0F);
+            this.xrLabel7.LocationFloat = new DevExpress.Utils.PointFloat(151.0417F, 70.12507F);
             this.xrLabel7.Name = "xrLabel7";
             this.xrLabel7.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel7.SizeF = new System.Drawing.SizeF(402.1252F, 23F);
@@ -312,75 +433,55 @@
             // 
             this.sqlDataSource1.ConnectionName = "ApplicationContext";
             this.sqlDataSource1.Name = "sqlDataSource1";
-            columnExpression1.ColumnName = "MinStockQuantity";
-            table1.MetaSerializable = "<Meta X=\"30\" Y=\"30\" Width=\"210\" Height=\"248\" />";
-            table1.Name = "ProductLocationStockLevel";
-            columnExpression1.Table = table1;
-            column1.Expression = columnExpression1;
-            columnExpression2.ColumnName = "TenantLocationID";
-            columnExpression2.Table = table1;
-            column2.Expression = columnExpression2;
-            columnExpression3.ColumnName = "SKUCode";
-            table2.MetaSerializable = "<Meta X=\"270\" Y=\"30\" Width=\"125\" Height=\"1312\" />";
-            table2.Name = "ProductMaster";
-            columnExpression3.Table = table2;
-            column3.Expression = columnExpression3;
-            columnExpression4.ColumnName = "Name";
-            columnExpression4.Table = table2;
-            column4.Expression = columnExpression4;
-            columnExpression5.ColumnName = "Available";
-            table3.MetaSerializable = "<Meta X=\"425\" Y=\"30\" Width=\"125\" Height=\"324\" />";
-            table3.Name = "InventoryStocks";
-            columnExpression5.Table = table3;
-            column5.Expression = columnExpression5;
-            columnExpression6.ColumnName = "TenantId";
-            columnExpression6.Table = table1;
-            column6.Expression = columnExpression6;
-            columnExpression7.ColumnName = "ProductMasterID";
-            columnExpression7.Table = table1;
-            column7.Expression = columnExpression7;
-            selectQuery1.Columns.Add(column1);
-            selectQuery1.Columns.Add(column2);
-            selectQuery1.Columns.Add(column3);
-            selectQuery1.Columns.Add(column4);
-            selectQuery1.Columns.Add(column5);
-            selectQuery1.Columns.Add(column6);
-            selectQuery1.Columns.Add(column7);
-            selectQuery1.FilterString = resources.GetString("selectQuery1.FilterString");
-            selectQuery1.GroupFilterString = "";
-            selectQuery1.Name = "ProductLocationStockLevel_1";
+            customSqlQuery1.Name = "ProductLocationStockLevel_1";
             queryParameter1.Name = "sqlParamTenantId";
             queryParameter1.Type = typeof(DevExpress.DataAccess.Expression);
             queryParameter1.Value = new DevExpress.DataAccess.Expression("?TenantIdParam", typeof(int));
             queryParameter2.Name = "sqlParamWarehouseId";
             queryParameter2.Type = typeof(DevExpress.DataAccess.Expression);
             queryParameter2.Value = new DevExpress.DataAccess.Expression("?WarehouseParam", typeof(int));
-            selectQuery1.Parameters.Add(queryParameter1);
-            selectQuery1.Parameters.Add(queryParameter2);
-            relationColumnInfo1.NestedKeyColumn = "ProductId";
-            relationColumnInfo1.ParentKeyColumn = "ProductMasterID";
-            join1.KeyColumns.Add(relationColumnInfo1);
-            join1.Nested = table2;
-            join1.Parent = table1;
-            relationColumnInfo2.NestedKeyColumn = "ProductId";
-            relationColumnInfo2.ParentKeyColumn = "ProductId";
-            join2.KeyColumns.Add(relationColumnInfo2);
-            join2.Nested = table3;
-            join2.Parent = table2;
-            relationColumnInfo3.NestedKeyColumn = "WarehouseId";
-            relationColumnInfo3.ParentKeyColumn = "TenantLocationID";
-            join3.KeyColumns.Add(relationColumnInfo3);
-            join3.Nested = table3;
-            join3.Parent = table1;
-            selectQuery1.Relations.Add(join1);
-            selectQuery1.Relations.Add(join2);
-            selectQuery1.Relations.Add(join3);
-            selectQuery1.Tables.Add(table1);
-            selectQuery1.Tables.Add(table2);
-            selectQuery1.Tables.Add(table3);
+            queryParameter3.Name = "sqlParamdepartmentId";
+            queryParameter3.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter3.Value = new DevExpress.DataAccess.Expression("?paramdepartmentId", typeof(int));
+            queryParameter4.Name = "SqlParamGroupId";
+            queryParameter4.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter4.Value = new DevExpress.DataAccess.Expression("?paramProductGroupId", typeof(int));
+            customSqlQuery1.Parameters.Add(queryParameter1);
+            customSqlQuery1.Parameters.Add(queryParameter2);
+            customSqlQuery1.Parameters.Add(queryParameter3);
+            customSqlQuery1.Parameters.Add(queryParameter4);
+            customSqlQuery1.Sql = resources.GetString("customSqlQuery1.Sql");
             this.sqlDataSource1.Queries.AddRange(new DevExpress.DataAccess.Sql.SqlQuery[] {
-            selectQuery1});
+            customSqlQuery1});
             this.sqlDataSource1.ResultSchemaSerializable = resources.GetString("sqlDataSource1.ResultSchemaSerializable");
+            // 
+            // paramProductGroupId
+            // 
+            this.paramProductGroupId.AllowNull = true;
+            this.paramProductGroupId.Description = "Product Group";
+            this.paramProductGroupId.Name = "paramProductGroupId";
+            this.paramProductGroupId.Type = typeof(int);
+            this.paramProductGroupId.ValueSourceSettings = staticListLookUpSettings2;
+            // 
+            // paramdepartmentId
+            // 
+            this.paramdepartmentId.AllowNull = true;
+            this.paramdepartmentId.Description = "Product Department";
+            this.paramdepartmentId.Name = "paramdepartmentId";
+            this.paramdepartmentId.Type = typeof(int);
+            this.paramdepartmentId.ValueSourceSettings = staticListLookUpSettings3;
+            // 
+            // xrPageInfo1
+            // 
+            this.xrPageInfo1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrPageInfo1.LocationFloat = new DevExpress.Utils.PointFloat(2.083333F, 13.62502F);
+            this.xrPageInfo1.Name = "xrPageInfo1";
+            this.xrPageInfo1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrPageInfo1.SizeF = new System.Drawing.SizeF(1048.917F, 23F);
+            this.xrPageInfo1.StylePriority.UseFont = false;
+            this.xrPageInfo1.StylePriority.UseTextAlignment = false;
+            this.xrPageInfo1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.xrPageInfo1.TextFormatString = "Page {0} of {1}";
             // 
             // LowStockItemsReport
             // 
@@ -388,7 +489,6 @@
             this.Detail,
             this.TopMargin,
             this.BottomMargin,
-            this.ReportHeader,
             this.PageFooter,
             this.PageHeader});
             this.ComponentStorage.AddRange(new System.ComponentModel.IComponent[] {
@@ -397,11 +497,16 @@
             this.DataSource = this.sqlDataSource1;
             this.FilterString = "[TenantId] = ?TenantIdParam";
             this.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margins = new System.Drawing.Printing.Margins(25, 24, 21, 4);
+            this.Landscape = true;
+            this.Margins = new System.Drawing.Printing.Margins(25, 24, 7, 8);
+            this.PageHeight = 850;
+            this.PageWidth = 1100;
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
             this.WarehouseParam,
-            this.TenantIdParam});
-            this.Version = "19.2";
+            this.TenantIdParam,
+            this.paramProductGroupId,
+            this.paramdepartmentId});
+            this.Version = "20.1";
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
         }
@@ -414,20 +519,31 @@
         private DevExpress.XtraReports.UI.XRLabel xrLabel3;
         private DevExpress.XtraReports.UI.XRLabel xrLabel1;
         public DevExpress.XtraReports.Parameters.Parameter WarehouseParam;
-        private DevExpress.XtraReports.UI.ReportHeaderBand ReportHeader;
-        private DevExpress.XtraReports.UI.XRLabel xrLabel5;
         private DevExpress.XtraReports.UI.XRLabel SKU;
         private DevExpress.XtraReports.UI.XRLabel InStock;
         private DevExpress.XtraReports.UI.XRLabel ReOrder;
         private DevExpress.XtraReports.UI.PageFooterBand PageFooter;
-        private DevExpress.XtraReports.UI.XRLabel xrLabel6;
         private DevExpress.XtraReports.UI.PageHeaderBand PageHeader;
         public DevExpress.XtraReports.Parameters.Parameter TenantIdParam;
         private DevExpress.XtraReports.UI.XRLabel xrLabel8;
         private DevExpress.XtraReports.UI.XRLabel xrLabel7;
         private DevExpress.DataAccess.Sql.SqlDataSource sqlDataSource1;
-        private DevExpress.XtraReports.UI.XRLine xrLine2;
         private DevExpress.XtraReports.UI.XRLine xrLine1;
         public DevExpress.XtraReports.UI.XRLabel lblQuantity;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel9;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel10;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel2;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel4;
+        public DevExpress.XtraReports.Parameters.Parameter paramProductGroupId;
+        public DevExpress.XtraReports.Parameters.Parameter paramdepartmentId;
+        private DevExpress.XtraReports.UI.XRLine xrLine2;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel22;
+        public DevExpress.XtraReports.UI.XRLabel lblDate;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel11;
+        public DevExpress.XtraReports.UI.XRLabel xrLabel12;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel5;
+        public DevExpress.XtraReports.UI.XRLabel xrLabel14;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel13;
+        private DevExpress.XtraReports.UI.XRPageInfo xrPageInfo1;
     }
 }

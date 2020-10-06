@@ -107,6 +107,7 @@
             this.sqlDataSource1 = new DevExpress.DataAccess.Sql.SqlDataSource(this.components);
             this.paramOrderId = new DevExpress.XtraReports.Parameters.Parameter();
             this.NetAmt = new DevExpress.XtraReports.UI.CalculatedField();
+            this.xrPageInfo1 = new DevExpress.XtraReports.UI.XRPageInfo();
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
@@ -244,7 +245,7 @@
             // TopMargin
             // 
             this.TopMargin.Dpi = 96F;
-            this.TopMargin.HeightF = 23F;
+            this.TopMargin.HeightF = 11F;
             this.TopMargin.Name = "TopMargin";
             this.TopMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 96F);
             this.TopMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
@@ -252,7 +253,7 @@
             // BottomMargin
             // 
             this.BottomMargin.Dpi = 96F;
-            this.BottomMargin.HeightF = 41F;
+            this.BottomMargin.HeightF = 9.455444F;
             this.BottomMargin.Name = "BottomMargin";
             this.BottomMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 96F);
             this.BottomMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
@@ -853,13 +854,14 @@
             // ReportFooter
             // 
             this.ReportFooter.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrPageInfo1,
             this.xrLabel44,
             this.xrLabel43,
             this.FooterMsg1,
             this.FooterMsg2,
             this.xrLine2});
             this.ReportFooter.Dpi = 96F;
-            this.ReportFooter.HeightF = 104.16F;
+            this.ReportFooter.HeightF = 128.9291F;
             this.ReportFooter.KeepTogether = true;
             this.ReportFooter.Name = "ReportFooter";
             this.ReportFooter.PrintAtBottom = true;
@@ -911,7 +913,7 @@
             this.FooterMsg1.LocationFloat = new DevExpress.Utils.PointFloat(1F, 55F);
             this.FooterMsg1.Name = "FooterMsg1";
             this.FooterMsg1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
-            this.FooterMsg1.SizeF = new System.Drawing.SizeF(751F, 22.08F);
+            this.FooterMsg1.SizeF = new System.Drawing.SizeF(753F, 22.08F);
             this.FooterMsg1.StylePriority.UseBorderColor = false;
             this.FooterMsg1.StylePriority.UseBorders = false;
             this.FooterMsg1.StylePriority.UseBorderWidth = false;
@@ -929,7 +931,7 @@
             this.FooterMsg2.LocationFloat = new DevExpress.Utils.PointFloat(1F, 77.08002F);
             this.FooterMsg2.Name = "FooterMsg2";
             this.FooterMsg2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
-            this.FooterMsg2.SizeF = new System.Drawing.SizeF(751F, 22.08F);
+            this.FooterMsg2.SizeF = new System.Drawing.SizeF(752.5F, 22.08F);
             this.FooterMsg2.StylePriority.UseBorderColor = false;
             this.FooterMsg2.StylePriority.UseBorders = false;
             this.FooterMsg2.StylePriority.UseBorderWidth = false;
@@ -1102,6 +1104,19 @@
             this.NetAmt.Expression = "[Price] * [Qty]";
             this.NetAmt.Name = "NetAmt";
             // 
+            // xrPageInfo1
+            // 
+            this.xrPageInfo1.Dpi = 96F;
+            this.xrPageInfo1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrPageInfo1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 100.4645F);
+            this.xrPageInfo1.Name = "xrPageInfo1";
+            this.xrPageInfo1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
+            this.xrPageInfo1.SizeF = new System.Drawing.SizeF(753.5F, 22.08F);
+            this.xrPageInfo1.StylePriority.UseFont = false;
+            this.xrPageInfo1.StylePriority.UseTextAlignment = false;
+            this.xrPageInfo1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.xrPageInfo1.TextFormatString = "Page {0} of {1}";
+            // 
             // TransferOrderPrint
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -1119,14 +1134,14 @@
             this.DataSource = this.sqlDataSource1;
             this.Dpi = 96F;
             this.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margins = new System.Drawing.Printing.Margins(31, 30, 23, 41);
+            this.Margins = new System.Drawing.Printing.Margins(31, 30, 11, 9);
             this.PageHeight = 1056;
             this.PageWidth = 816;
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
             this.paramOrderId});
             this.ReportUnit = DevExpress.XtraReports.UI.ReportUnit.Pixels;
             this.SnapGridSize = 12.5F;
-            this.Version = "19.2";
+            this.Version = "20.1";
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
@@ -1205,5 +1220,6 @@
         private DevExpress.XtraReports.UI.XRLabel xrLabel4;
         private DevExpress.XtraReports.UI.XRRichText xrRichText2;
         public DevExpress.XtraReports.UI.XRLabel lblQuantity;
+        private DevExpress.XtraReports.UI.XRPageInfo xrPageInfo1;
     }
 }

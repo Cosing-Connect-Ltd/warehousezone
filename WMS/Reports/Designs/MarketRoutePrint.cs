@@ -39,6 +39,8 @@ public class MarketRoutePrint : DevExpress.XtraReports.UI.XtraReport
     private XRLabel xrLabel12;
     private XRLabel xrLabel17;
     private XRLabel xrLabel18;
+    private PageFooterBand PageFooter;
+    private XRPageInfo xrPageInfo1;
 
     /// <summary>
     /// Required designer variable.
@@ -135,6 +137,8 @@ public class MarketRoutePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel7 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel8 = new DevExpress.XtraReports.UI.XRLabel();
             this.paramRouteId = new DevExpress.XtraReports.Parameters.Parameter();
+            this.PageFooter = new DevExpress.XtraReports.UI.PageFooterBand();
+            this.xrPageInfo1 = new DevExpress.XtraReports.UI.XRPageInfo();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // sqlDataSource1
@@ -233,11 +237,12 @@ public class MarketRoutePrint : DevExpress.XtraReports.UI.XtraReport
             // 
             // TopMargin
             // 
-            this.TopMargin.HeightF = 18F;
+            this.TopMargin.HeightF = 7.583332F;
             this.TopMargin.Name = "TopMargin";
             // 
             // BottomMargin
             // 
+            this.BottomMargin.HeightF = 7.082621F;
             this.BottomMargin.Name = "BottomMargin";
             // 
             // Detail
@@ -579,22 +584,42 @@ public class MarketRoutePrint : DevExpress.XtraReports.UI.XtraReport
             this.paramRouteId.Type = typeof(int);
             this.paramRouteId.ValueInfo = "0";
             // 
+            // PageFooter
+            // 
+            this.PageFooter.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrPageInfo1});
+            this.PageFooter.HeightF = 26.87432F;
+            this.PageFooter.Name = "PageFooter";
+            // 
+            // xrPageInfo1
+            // 
+            this.xrPageInfo1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrPageInfo1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
+            this.xrPageInfo1.Name = "xrPageInfo1";
+            this.xrPageInfo1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrPageInfo1.SizeF = new System.Drawing.SizeF(787.0001F, 23F);
+            this.xrPageInfo1.StylePriority.UseFont = false;
+            this.xrPageInfo1.StylePriority.UseTextAlignment = false;
+            this.xrPageInfo1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.xrPageInfo1.TextFormatString = "Page {0} of {1}";
+            // 
             // MarketRoutePrint
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
             this.TopMargin,
             this.BottomMargin,
             this.Detail,
-            this.DetailReport});
+            this.DetailReport,
+            this.PageFooter});
             this.ComponentStorage.AddRange(new System.ComponentModel.IComponent[] {
             this.sqlDataSource1});
             this.DataMember = "MarketRoutes";
             this.DataSource = this.sqlDataSource1;
             this.Font = new System.Drawing.Font("Arial", 9.75F);
-            this.Margins = new System.Drawing.Printing.Margins(21, 42, 18, 100);
+            this.Margins = new System.Drawing.Printing.Margins(21, 42, 8, 7);
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
             this.paramRouteId});
-            this.Version = "19.2";
+            this.Version = "20.1";
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
     }

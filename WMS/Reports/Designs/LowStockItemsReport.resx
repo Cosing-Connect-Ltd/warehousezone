@@ -120,10 +120,35 @@
   <metadata name="sqlDataSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 173</value>
   </metadata>
-  <data name="selectQuery1.FilterString" xml:space="preserve">
-    <value>[InventoryStocks.Available] &lt;= [ProductLocationStockLevel.MinStockQuantity] And [ProductLocationStockLevel.TenantId] = ?sqlParamTenantId And [ProductLocationStockLevel.TenantLocationID] = ?sqlParamWarehouseId And ([ProductLocationStockLevel.IsDeleted] = False Or [ProductLocationStockLevel.IsDeleted] Is Null)</value>
+  <data name="customSqlQuery1.Sql" xml:space="preserve">
+    <value>select "ProductLocationStockLevel"."MinStockQuantity",
+       "ProductLocationStockLevel"."TenantLocationID",
+       "ProductMaster"."SKUCode",
+       "ProductMaster"."Name",
+       "InventoryStocks"."Available",
+       "ProductLocationStockLevel"."TenantId",
+       "ProductLocationStockLevel"."ProductMasterID",
+       "InventoryStocks"."OnOrder",
+       "InventoryStocks"."InStock"
+  from (("dbo"."ProductLocationStockLevel"
+       "ProductLocationStockLevel"
+  inner join "dbo"."ProductMaster" "ProductMaster"
+       on ("ProductMaster"."ProductId" = "ProductLocationStockLevel"."ProductMasterID"))
+  inner join "dbo"."InventoryStocks"
+       "InventoryStocks"
+       on (("InventoryStocks"."ProductId" = "ProductMaster"."ProductId")
+       and ("InventoryStocks"."WarehouseId" = "ProductLocationStockLevel"."TenantLocationID")))
+ where
+       (("InventoryStocks"."Available" &lt;= "ProductLocationStockLevel"."MinStockQuantity")
+       and ("ProductLocationStockLevel"."TenantId" = @sqlParamTenantId)
+       and ("ProductLocationStockLevel"."TenantLocationID" = @sqlParamWarehouseId)
+       and (("ProductLocationStockLevel"."IsDeleted" = 0)
+       or "ProductLocationStockLevel"."IsDeleted"
+       is null)
+       and (@sqlParamdepartmentId is null or "ProductMaster"."DepartmentId" = @sqlParamdepartmentId)
+       and (@SqlParamGroupId is null or "ProductMaster"."ProductGroupId" = @SqlParamGroupId))</value>
   </data>
   <data name="sqlDataSource1.ResultSchemaSerializable" xml:space="preserve">
-    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9IlByb2R1Y3RMb2NhdGlvblN0b2NrTGV2ZWxfMSI+PEZpZWxkIE5hbWU9Ik1pblN0b2NrUXVhbnRpdHkiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IlRlbmFudExvY2F0aW9uSUQiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJTS1VDb2RlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQXZhaWxhYmxlIiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJUZW5hbnRJZCIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9IlByb2R1Y3RNYXN0ZXJJRCIgVHlwZT0iSW50MzIiIC8+PC9WaWV3PjwvRGF0YVNldD4=</value>
+    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9IlByb2R1Y3RMb2NhdGlvblN0b2NrTGV2ZWxfMSI+PEZpZWxkIE5hbWU9Ik1pblN0b2NrUXVhbnRpdHkiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IlRlbmFudExvY2F0aW9uSUQiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJTS1VDb2RlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQXZhaWxhYmxlIiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJUZW5hbnRJZCIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9IlByb2R1Y3RNYXN0ZXJJRCIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9Ik9uT3JkZXIiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IkluU3RvY2siIFR5cGU9IkRlY2ltYWwiIC8+PC9WaWV3PjwvRGF0YVNldD4=</value>
   </data>
 </root>

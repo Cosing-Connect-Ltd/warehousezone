@@ -76,7 +76,6 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
     private XRLabel xrLabel37;
     private XRLabel xrLabel38;
     private PageFooterBand PageFooter;
-    private XRPageInfo xrPageInfo1;
     private XRLabel xrLabel18;
     private XRLabel xrLabel45;
     private XRLabel xrLabel48;
@@ -101,6 +100,7 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
     private XRLabel xrLabel64;
     private XRLabel xrLabel65;
     private XRLabel xrLabel66;
+    private XRPageInfo xrPageInfo1;
 
     /// <summary>
     /// Required designer variable.
@@ -157,7 +157,6 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel10 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel8 = new DevExpress.XtraReports.UI.XRLabel();
             this.GroupFooter1 = new DevExpress.XtraReports.UI.GroupFooterBand();
-            this.xrPageInfo1 = new DevExpress.XtraReports.UI.XRPageInfo();
             this.xrPanel4 = new DevExpress.XtraReports.UI.XRPanel();
             this.xrLabel64 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel65 = new DevExpress.XtraReports.UI.XRLabel();
@@ -236,6 +235,7 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.PageFooter = new DevExpress.XtraReports.UI.PageFooterBand();
             this.calculatedField1 = new DevExpress.XtraReports.UI.CalculatedField();
             this.calculatedField2 = new DevExpress.XtraReports.UI.CalculatedField();
+            this.xrPageInfo1 = new DevExpress.XtraReports.UI.XRPageInfo();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // Detail
@@ -254,7 +254,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             // 
             // BottomMargin
             // 
-            this.BottomMargin.HeightF = 12F;
+            this.BottomMargin.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrPageInfo1});
+            this.BottomMargin.HeightF = 26.71661F;
             this.BottomMargin.Name = "BottomMargin";
             this.BottomMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.BottomMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
@@ -392,7 +394,6 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             // GroupFooter1
             // 
             this.GroupFooter1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.xrPageInfo1,
             this.xrPanel4,
             this.FooterMsg1,
             this.xrPanel3,
@@ -405,19 +406,6 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.GroupFooter1.Name = "GroupFooter1";
             this.GroupFooter1.PageBreak = DevExpress.XtraReports.UI.PageBreak.AfterBand;
             this.GroupFooter1.PrintAtBottom = true;
-            // 
-            // xrPageInfo1
-            // 
-            this.xrPageInfo1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrPageInfo1.LocationFloat = new DevExpress.Utils.PointFloat(0.5208334F, 239.0921F);
-            this.xrPageInfo1.Name = "xrPageInfo1";
-            this.xrPageInfo1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrPageInfo1.RunningBand = this.DetailReport;
-            this.xrPageInfo1.SizeF = new System.Drawing.SizeF(784.3033F, 23F);
-            this.xrPageInfo1.StylePriority.UseFont = false;
-            this.xrPageInfo1.StylePriority.UseTextAlignment = false;
-            this.xrPageInfo1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            this.xrPageInfo1.TextFormatString = "Page {0} of {1}";
             // 
             // xrPanel4
             // 
@@ -1610,6 +1598,19 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.calculatedField2.Expression = "Iif([EnableTax],[Rate],0)";
             this.calculatedField2.Name = "calculatedField2";
             // 
+            // xrPageInfo1
+            // 
+            this.xrPageInfo1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrPageInfo1.LocationFloat = new DevExpress.Utils.PointFloat(0.5208334F, 0F);
+            this.xrPageInfo1.Name = "xrPageInfo1";
+            this.xrPageInfo1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrPageInfo1.RunningBand = this.DetailReport;
+            this.xrPageInfo1.SizeF = new System.Drawing.SizeF(784.3033F, 23F);
+            this.xrPageInfo1.StylePriority.UseFont = false;
+            this.xrPageInfo1.StylePriority.UseTextAlignment = false;
+            this.xrPageInfo1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.xrPageInfo1.TextFormatString = "Page {0} of {1}";
+            // 
             // InvoicePrint
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -1630,10 +1631,10 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.sqlDataSource1});
             this.DataMember = "InvoiceHeader";
             this.DataSource = this.sqlDataSource1;
-            this.Margins = new System.Drawing.Printing.Margins(29, 35, 20, 12);
+            this.Margins = new System.Drawing.Printing.Margins(29, 35, 20, 27);
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
             this.invoiceMasterId});
-            this.Version = "19.2";
+            this.Version = "20.1";
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
     }

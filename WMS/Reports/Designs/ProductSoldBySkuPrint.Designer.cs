@@ -77,7 +77,6 @@
             this.EndDate = new DevExpress.XtraReports.Parameters.Parameter();
             this.sqlDataSource1 = new DevExpress.DataAccess.Sql.SqlDataSource(this.components);
             this.ReportFooter = new DevExpress.XtraReports.UI.ReportFooterBand();
-            this.xrLabel12 = new DevExpress.XtraReports.UI.XRLabel();
             this.ProductsIds = new DevExpress.XtraReports.Parameters.Parameter();
             this.paramProductGroups = new DevExpress.XtraReports.Parameters.Parameter();
             this.TenantId = new DevExpress.XtraReports.Parameters.Parameter();
@@ -86,6 +85,7 @@
             this.paramOwnerID = new DevExpress.XtraReports.Parameters.Parameter();
             this.AccountId = new DevExpress.XtraReports.Parameters.Parameter();
             this.MarketId = new DevExpress.XtraReports.Parameters.Parameter();
+            this.xrPageInfo1 = new DevExpress.XtraReports.UI.XRPageInfo();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // TopMargin
@@ -494,28 +494,9 @@
             // ReportFooter
             // 
             this.ReportFooter.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.xrLabel12});
+            this.xrPageInfo1});
             this.ReportFooter.HeightF = 26.04167F;
             this.ReportFooter.Name = "ReportFooter";
-            // 
-            // xrLabel12
-            // 
-            this.xrLabel12.BackColor = System.Drawing.Color.Transparent;
-            this.xrLabel12.Borders = DevExpress.XtraPrinting.BorderSide.None;
-            this.xrLabel12.BorderWidth = 0F;
-            this.xrLabel12.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel12.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
-            this.xrLabel12.Multiline = true;
-            this.xrLabel12.Name = "xrLabel12";
-            this.xrLabel12.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel12.SizeF = new System.Drawing.SizeF(800.9999F, 23.33333F);
-            this.xrLabel12.StylePriority.UseBackColor = false;
-            this.xrLabel12.StylePriority.UseBorders = false;
-            this.xrLabel12.StylePriority.UseBorderWidth = false;
-            this.xrLabel12.StylePriority.UseFont = false;
-            this.xrLabel12.StylePriority.UseTextAlignment = false;
-            this.xrLabel12.Text = "©WarehouseZone\r\n\r\n";
-            this.xrLabel12.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
             // ProductsIds
             // 
@@ -585,6 +566,18 @@
             this.MarketId.ValueInfo = "0";
             this.MarketId.ValueSourceSettings = staticListLookUpSettings6;
             // 
+            // xrPageInfo1
+            // 
+            this.xrPageInfo1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrPageInfo1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 3.041649F);
+            this.xrPageInfo1.Name = "xrPageInfo1";
+            this.xrPageInfo1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrPageInfo1.SizeF = new System.Drawing.SizeF(800.9998F, 23F);
+            this.xrPageInfo1.StylePriority.UseFont = false;
+            this.xrPageInfo1.StylePriority.UseTextAlignment = false;
+            this.xrPageInfo1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.xrPageInfo1.TextFormatString = "Page {0} of {1}";
+            // 
             // ProductSoldBySkuPrint
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -613,7 +606,7 @@
             this.AccountId,
             this.paramOwnerID,
             this.MarketId});
-            this.Version = "19.2";
+            this.Version = "20.1";
             this.DataSourceDemanded += new System.EventHandler<System.EventArgs>(this.ProductSoldBySkuPrint_DataSourceDemanded);
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
@@ -638,7 +631,6 @@
         private DevExpress.XtraReports.UI.XRLabel xrLabel10;
         private DevExpress.XtraReports.UI.XRLabel xrLabel11;
         private DevExpress.XtraReports.UI.ReportFooterBand ReportFooter;
-        private DevExpress.XtraReports.UI.XRLabel xrLabel12;
         public DevExpress.XtraReports.Parameters.Parameter EndDate;
         private DevExpress.XtraReports.UI.XRLabel xrLabel5;
         public DevExpress.XtraReports.UI.XRLabel lbldate;
@@ -660,5 +652,6 @@
         public DevExpress.XtraReports.UI.XRLabel lblOwner;
         public DevExpress.XtraReports.UI.XRLabel lblAcount;
         public DevExpress.XtraReports.Parameters.Parameter MarketId;
+        private DevExpress.XtraReports.UI.XRPageInfo xrPageInfo1;
     }
 }

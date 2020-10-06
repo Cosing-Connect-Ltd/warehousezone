@@ -124,7 +124,7 @@
             // 
             // BottomMargin
             // 
-            this.BottomMargin.HeightF = 13F;
+            this.BottomMargin.HeightF = 7.983907F;
             this.BottomMargin.Name = "BottomMargin";
             // 
             // Detail
@@ -758,7 +758,7 @@
             this.xrPageInfo1.LocationFloat = new DevExpress.Utils.PointFloat(0.5208333F, 0F);
             this.xrPageInfo1.Name = "xrPageInfo1";
             this.xrPageInfo1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrPageInfo1.SizeF = new System.Drawing.SizeF(782.8125F, 23F);
+            this.xrPageInfo1.SizeF = new System.Drawing.SizeF(811.4792F, 23F);
             this.xrPageInfo1.StylePriority.UseFont = false;
             this.xrPageInfo1.StylePriority.UseTextAlignment = false;
             this.xrPageInfo1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
@@ -780,10 +780,10 @@
             this.DataMember = "MainQuerywithFilters";
             this.DataSource = this.sqlDataSource1;
             this.Font = new System.Drawing.Font("Arial", 9.75F);
-            this.Margins = new System.Drawing.Printing.Margins(24, 14, 0, 13);
+            this.Margins = new System.Drawing.Printing.Margins(24, 14, 0, 8);
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
             this.OrderNumber});
-            this.Version = "19.2";
+            this.Version = "20.1";
             ((System.ComponentModel.ISupportInitialize)(this.xrTable1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();

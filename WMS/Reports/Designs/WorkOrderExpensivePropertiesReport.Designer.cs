@@ -204,10 +204,10 @@
             this.xrLabel13 = new DevExpress.XtraReports.UI.XRLabel();
             this.paramStartDate = new DevExpress.XtraReports.Parameters.Parameter();
             this.PageFooter = new DevExpress.XtraReports.UI.PageFooterBand();
-            this.xrLabel6 = new DevExpress.XtraReports.UI.XRLabel();
             this.paramTenantId = new DevExpress.XtraReports.Parameters.Parameter();
             this.PageHeader = new DevExpress.XtraReports.UI.PageHeaderBand();
             this.paramPPropertyId = new DevExpress.XtraReports.Parameters.Parameter();
+            this.xrPageInfo1 = new DevExpress.XtraReports.UI.XRPageInfo();
             DetailReport = new DevExpress.XtraReports.UI.DetailReportBand();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
@@ -1145,7 +1145,7 @@
             // TopMargin
             // 
             this.TopMargin.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TopMargin.HeightF = 22.54167F;
+            this.TopMargin.HeightF = 7.958333F;
             this.TopMargin.Name = "TopMargin";
             this.TopMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.TopMargin.StylePriority.UseFont = false;
@@ -1153,7 +1153,7 @@
             // 
             // BottomMargin
             // 
-            this.BottomMargin.HeightF = 10F;
+            this.BottomMargin.HeightF = 5.219269F;
             this.BottomMargin.Name = "BottomMargin";
             this.BottomMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.BottomMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
@@ -1272,24 +1272,9 @@
             // PageFooter
             // 
             this.PageFooter.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.xrLabel6});
-            this.PageFooter.HeightF = 37.07237F;
+            this.xrPageInfo1});
+            this.PageFooter.HeightF = 27.86922F;
             this.PageFooter.Name = "PageFooter";
-            // 
-            // xrLabel6
-            // 
-            this.xrLabel6.BackColor = System.Drawing.Color.Transparent;
-            this.xrLabel6.Borders = DevExpress.XtraPrinting.BorderSide.Top;
-            this.xrLabel6.LocationFloat = new DevExpress.Utils.PointFloat(0.0002543131F, 8.94735F);
-            this.xrLabel6.Multiline = true;
-            this.xrLabel6.Name = "xrLabel6";
-            this.xrLabel6.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel6.SizeF = new System.Drawing.SizeF(796.9996F, 23.33333F);
-            this.xrLabel6.StylePriority.UseBackColor = false;
-            this.xrLabel6.StylePriority.UseBorders = false;
-            this.xrLabel6.StylePriority.UseTextAlignment = false;
-            this.xrLabel6.Text = "©WarehouseZone\r\n\r\n";
-            this.xrLabel6.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
             // paramTenantId
             // 
@@ -1316,6 +1301,18 @@
             this.paramPPropertyId.ValueInfo = "0";
             this.paramPPropertyId.ValueSourceSettings = staticListLookUpSettings1;
             // 
+            // xrPageInfo1
+            // 
+            this.xrPageInfo1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrPageInfo1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
+            this.xrPageInfo1.Name = "xrPageInfo1";
+            this.xrPageInfo1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrPageInfo1.SizeF = new System.Drawing.SizeF(796.9999F, 23F);
+            this.xrPageInfo1.StylePriority.UseFont = false;
+            this.xrPageInfo1.StylePriority.UseTextAlignment = false;
+            this.xrPageInfo1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.xrPageInfo1.TextFormatString = "Page {0} of {1}";
+            // 
             // WorkOrderExpensivePropertiesReport
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -1331,13 +1328,13 @@
             this.DataMember = "PropertySummary";
             this.DataSource = this.sqlDataSource1;
             this.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margins = new System.Drawing.Printing.Margins(31, 22, 23, 10);
+            this.Margins = new System.Drawing.Printing.Margins(31, 22, 8, 5);
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
             this.paramTenantId,
             this.paramPPropertyId,
             this.paramStartDate,
             this.paramEndDate});
-            this.Version = "19.2";
+            this.Version = "20.1";
             this.DataSourceDemanded += new System.EventHandler<System.EventArgs>(this.WorkOrderExpensivePropertiesReport_DataSourceDemanded);
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
@@ -1364,7 +1361,6 @@
         private DevExpress.XtraReports.UI.XRLabel xrLabel2;
         private DevExpress.XtraReports.UI.XRLabel xrLabel18;
         private DevExpress.XtraReports.UI.PageFooterBand PageFooter;
-        private DevExpress.XtraReports.UI.XRLabel xrLabel6;
         private DevExpress.XtraReports.UI.XRLabel xrLabel21;
         private DevExpress.XtraReports.UI.DetailReportBand DetailReport1;
         private DevExpress.XtraReports.UI.DetailBand Detail2;
@@ -1410,5 +1406,6 @@
         private DevExpress.XtraReports.UI.XRLabel xrLabel4;
         public DevExpress.XtraReports.Parameters.Parameter paramPPropertyId;
         public DevExpress.XtraReports.UI.XRLabel lblQuantity;
+        private DevExpress.XtraReports.UI.XRPageInfo xrPageInfo1;
     }
 }

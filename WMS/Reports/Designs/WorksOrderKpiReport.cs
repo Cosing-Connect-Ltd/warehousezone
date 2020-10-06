@@ -45,6 +45,8 @@ public class WorksOrderKpiReport : DevExpress.XtraReports.UI.XtraReport
     public XRLabel Logged;
     private XRLine xrLine1;
     private XRLabel xrLabel13;
+    private PageFooterBand PageFooter;
+    private XRPageInfo xrPageInfo1;
 
     /// <summary>
     /// Required designer variable.
@@ -113,6 +115,8 @@ public class WorksOrderKpiReport : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel8 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel4 = new DevExpress.XtraReports.UI.XRLabel();
             this.paramTenantId = new DevExpress.XtraReports.Parameters.Parameter();
+            this.PageFooter = new DevExpress.XtraReports.UI.PageFooterBand();
+            this.xrPageInfo1 = new DevExpress.XtraReports.UI.XRPageInfo();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // Detail
@@ -204,7 +208,7 @@ public class WorksOrderKpiReport : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel20,
             this.xrLabel21,
             this.xrLine1});
-            this.TopMargin.HeightF = 93.54167F;
+            this.TopMargin.HeightF = 77.91667F;
             this.TopMargin.Name = "TopMargin";
             this.TopMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.TopMargin.StylePriority.UseBorders = false;
@@ -212,7 +216,7 @@ public class WorksOrderKpiReport : DevExpress.XtraReports.UI.XtraReport
             // 
             // xrLabel13
             // 
-            this.xrLabel13.LocationFloat = new DevExpress.Utils.PointFloat(417.792F, 61.70833F);
+            this.xrLabel13.LocationFloat = new DevExpress.Utils.PointFloat(417.792F, 40.625F);
             this.xrLabel13.Name = "xrLabel13";
             this.xrLabel13.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel13.SizeF = new System.Drawing.SizeF(23.95834F, 18.83333F);
@@ -225,7 +229,7 @@ public class WorksOrderKpiReport : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel22.BackColor = System.Drawing.Color.Transparent;
             this.xrLabel22.Borders = DevExpress.XtraPrinting.BorderSide.None;
             this.xrLabel22.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel22.LocationFloat = new DevExpress.Utils.PointFloat(0F, 31.08333F);
+            this.xrLabel22.LocationFloat = new DevExpress.Utils.PointFloat(0F, 10F);
             this.xrLabel22.Name = "xrLabel22";
             this.xrLabel22.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel22.SizeF = new System.Drawing.SizeF(745.0001F, 30.62501F);
@@ -241,7 +245,7 @@ public class WorksOrderKpiReport : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel19.BackColor = System.Drawing.Color.Transparent;
             this.xrLabel19.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.xrLabel19.ForeColor = System.Drawing.Color.Black;
-            this.xrLabel19.LocationFloat = new DevExpress.Utils.PointFloat(137.5838F, 61.70833F);
+            this.xrLabel19.LocationFloat = new DevExpress.Utils.PointFloat(137.5838F, 40.625F);
             this.xrLabel19.Name = "xrLabel19";
             this.xrLabel19.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel19.SizeF = new System.Drawing.SizeF(123.458F, 18.83335F);
@@ -259,7 +263,7 @@ public class WorksOrderKpiReport : DevExpress.XtraReports.UI.XtraReport
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[Parameters.paramStartDate]")});
             this.xrLabel20.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.xrLabel20.ForeColor = System.Drawing.Color.Black;
-            this.xrLabel20.LocationFloat = new DevExpress.Utils.PointFloat(261.0418F, 61.70833F);
+            this.xrLabel20.LocationFloat = new DevExpress.Utils.PointFloat(261.0418F, 40.625F);
             this.xrLabel20.Name = "xrLabel20";
             this.xrLabel20.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel20.SizeF = new System.Drawing.SizeF(156.7502F, 18.83335F);
@@ -277,7 +281,7 @@ public class WorksOrderKpiReport : DevExpress.XtraReports.UI.XtraReport
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[Parameters.paramEndDate]")});
             this.xrLabel21.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.xrLabel21.ForeColor = System.Drawing.Color.Black;
-            this.xrLabel21.LocationFloat = new DevExpress.Utils.PointFloat(441.7503F, 61.70833F);
+            this.xrLabel21.LocationFloat = new DevExpress.Utils.PointFloat(441.7503F, 40.625F);
             this.xrLabel21.Name = "xrLabel21";
             this.xrLabel21.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel21.SizeF = new System.Drawing.SizeF(158.3333F, 18.83334F);
@@ -290,7 +294,7 @@ public class WorksOrderKpiReport : DevExpress.XtraReports.UI.XtraReport
             // 
             // xrLine1
             // 
-            this.xrLine1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 80.54168F);
+            this.xrLine1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 59.45835F);
             this.xrLine1.Name = "xrLine1";
             this.xrLine1.SizeF = new System.Drawing.SizeF(745.0001F, 12.99999F);
             // 
@@ -306,7 +310,7 @@ public class WorksOrderKpiReport : DevExpress.XtraReports.UI.XtraReport
             // 
             // BottomMargin
             // 
-            this.BottomMargin.HeightF = 45.04166F;
+            this.BottomMargin.HeightF = 0F;
             this.BottomMargin.Name = "BottomMargin";
             this.BottomMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.BottomMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
@@ -503,6 +507,25 @@ public class WorksOrderKpiReport : DevExpress.XtraReports.UI.XtraReport
             this.paramTenantId.ValueInfo = "0";
             this.paramTenantId.Visible = false;
             // 
+            // PageFooter
+            // 
+            this.PageFooter.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrPageInfo1});
+            this.PageFooter.HeightF = 27.50002F;
+            this.PageFooter.Name = "PageFooter";
+            // 
+            // xrPageInfo1
+            // 
+            this.xrPageInfo1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrPageInfo1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
+            this.xrPageInfo1.Name = "xrPageInfo1";
+            this.xrPageInfo1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrPageInfo1.SizeF = new System.Drawing.SizeF(745.0001F, 23F);
+            this.xrPageInfo1.StylePriority.UseFont = false;
+            this.xrPageInfo1.StylePriority.UseTextAlignment = false;
+            this.xrPageInfo1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.xrPageInfo1.TextFormatString = "Page {0} of {1}";
+            // 
             // WorksOrderKpiReport
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -510,14 +533,15 @@ public class WorksOrderKpiReport : DevExpress.XtraReports.UI.XtraReport
             this.TopMargin,
             this.BottomMargin,
             this.ReportHeader,
-            this.GroupHeader1});
+            this.GroupHeader1,
+            this.PageFooter});
             this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margins = new System.Drawing.Printing.Margins(42, 63, 94, 45);
+            this.Margins = new System.Drawing.Printing.Margins(42, 63, 78, 0);
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
             this.paramStartDate,
             this.paramEndDate,
             this.paramTenantId});
-            this.Version = "18.1";
+            this.Version = "20.1";
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
     }

@@ -172,6 +172,28 @@ namespace WMS.Controllers
             StaticListLookUpSettings setting = (StaticListLookUpSettings)report.WarehouseParam.LookUpSettings;
             caTenant tenant = caCurrent.CurrentTenant();
             report.TenantIdParam.Value = tenant.TenantId;
+
+            IEnumerable<ProductGroups> groups = LookupServices.GetAllValidProductGroups(CurrentTenantId).ToList();
+            StaticListLookUpSettings groupSettings = (StaticListLookUpSettings)report.paramProductGroupId.LookUpSettings;
+
+            foreach (var grp in groups)
+            {
+                LookUpValue group = new LookUpValue();
+                group.Description = grp.ProductGroup;
+                group.Value = grp.ProductGroupId;
+                groupSettings.LookUpValues.Add(group);
+            }
+            IEnumerable<TenantDepartments> tenantDepartments = LookupServices.GetAllValidTenantDepartments(CurrentTenantId).ToList();
+            StaticListLookUpSettings tenantDepartmentsSettings = (StaticListLookUpSettings)report.paramdepartmentId.LookUpSettings;
+
+            foreach (var dep in tenantDepartments)
+            {
+                LookUpValue group = new LookUpValue();
+                group.Description = dep.DepartmentName;
+                group.Value = dep.DepartmentId;
+                tenantDepartmentsSettings.LookUpValues.Add(group);
+            }
+
             TenantConfig config = _tenantServices.GetTenantConfigById(CurrentTenantId);
             if (!config.ShowDecimalPoint)
             {

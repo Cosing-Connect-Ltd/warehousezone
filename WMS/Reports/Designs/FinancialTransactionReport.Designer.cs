@@ -143,6 +143,7 @@
             this.xrLabel9 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel18 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel23 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrPageInfo1 = new DevExpress.XtraReports.UI.XRPageInfo();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // TopMargin
@@ -152,7 +153,9 @@
             // 
             // BottomMargin
             // 
-            this.BottomMargin.HeightF = 0F;
+            this.BottomMargin.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrPageInfo1});
+            this.BottomMargin.HeightF = 26.13881F;
             this.BottomMargin.Name = "BottomMargin";
             // 
             // Detail
@@ -1242,6 +1245,18 @@
             this.xrLabel23.Text = "Balance";
             this.xrLabel23.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
+            // xrPageInfo1
+            // 
+            this.xrPageInfo1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrPageInfo1.LocationFloat = new DevExpress.Utils.PointFloat(0.5208333F, 0F);
+            this.xrPageInfo1.Name = "xrPageInfo1";
+            this.xrPageInfo1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrPageInfo1.SizeF = new System.Drawing.SizeF(806.4789F, 23F);
+            this.xrPageInfo1.StylePriority.UseFont = false;
+            this.xrPageInfo1.StylePriority.UseTextAlignment = false;
+            this.xrPageInfo1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.xrPageInfo1.TextFormatString = "Page {0} of {1}";
+            // 
             // FinancialTransactionReport
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -1265,12 +1280,12 @@
             this.DataMember = "Account";
             this.DataSource = this.sqlDataSource1;
             this.Font = new System.Drawing.Font("Arial", 9.75F);
-            this.Margins = new System.Drawing.Printing.Margins(24, 18, 8, 0);
+            this.Margins = new System.Drawing.Printing.Margins(24, 18, 8, 26);
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
             this.StartDate,
             this.EndDate,
             this.AccountId});
-            this.Version = "19.2";
+            this.Version = "20.1";
             this.DataSourceDemanded += new System.EventHandler<System.EventArgs>(this.FinancialTransactionReport_DataSourceDemanded);
             this.AfterPrint += new System.EventHandler(this.FinancialTransactionReport_AfterPrint);
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
@@ -1357,5 +1372,6 @@
         private DevExpress.XtraReports.UI.XRLabel xrLabel21;
         private DevExpress.XtraReports.UI.XRLabel xrLabel25;
         private DevExpress.XtraReports.UI.XRLabel xrLabel39;
+        private DevExpress.XtraReports.UI.XRPageInfo xrPageInfo1;
     }
 }
