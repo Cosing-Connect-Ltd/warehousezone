@@ -231,9 +231,9 @@
             this.xrLabel50,
             this.xrLabel49,
             this.xrLabel48});
-            this.xrPanel2.LocationFloat = new DevExpress.Utils.PointFloat(457.2501F, 80.18651F);
+            this.xrPanel2.LocationFloat = new DevExpress.Utils.PointFloat(439.0418F, 80.18651F);
             this.xrPanel2.Name = "xrPanel2";
-            this.xrPanel2.SizeF = new System.Drawing.SizeF(318.75F, 160.5668F);
+            this.xrPanel2.SizeF = new System.Drawing.SizeF(336.9583F, 160.5668F);
             // 
             // xrLabel32
             // 
@@ -597,11 +597,11 @@
             this.xrBarCode1.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[OrderProcessID]")});
             this.xrBarCode1.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrBarCode1.LocationFloat = new DevExpress.Utils.PointFloat(439.0419F, 10F);
+            this.xrBarCode1.LocationFloat = new DevExpress.Utils.PointFloat(439.0418F, 10.00001F);
             this.xrBarCode1.Module = 1.354167F;
             this.xrBarCode1.Name = "xrBarCode1";
             this.xrBarCode1.Padding = new DevExpress.XtraPrinting.PaddingInfo(10, 10, 0, 0, 100F);
-            this.xrBarCode1.SizeF = new System.Drawing.SizeF(324.4789F, 61.55186F);
+            this.xrBarCode1.SizeF = new System.Drawing.SizeF(335.9583F, 61.55186F);
             this.xrBarCode1.StylePriority.UseFont = false;
             this.xrBarCode1.StylePriority.UseTextAlignment = false;
             this.xrBarCode1.Symbology = code128Generator1;
@@ -1087,7 +1087,7 @@
             this.Margins = new System.Drawing.Printing.Margins(34, 40, 474, 9);
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
             this.OrderProcessId});
-            this.Version = "19.1";
+            this.Version = "20.1";
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
         }

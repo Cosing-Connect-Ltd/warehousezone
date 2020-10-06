@@ -377,13 +377,13 @@
             this.TotalNetAmtS,
             this.TotalNetAmtB,
             this.xrLabel5});
-            this.ReportFooter.HeightF = 37.58338F;
+            this.ReportFooter.HeightF = 31.29168F;
             this.ReportFooter.Name = "ReportFooter";
             // 
             // TotalProfit
             // 
             this.TotalProfit.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TotalProfit.LocationFloat = new DevExpress.Utils.PointFloat(714.4581F, 2.300008F);
+            this.TotalProfit.LocationFloat = new DevExpress.Utils.PointFloat(714.4581F, 1.916695F);
             this.TotalProfit.Name = "TotalProfit";
             this.TotalProfit.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.TotalProfit.SizeF = new System.Drawing.SizeF(87.54181F, 23F);
@@ -460,7 +460,7 @@
             this.paramStartDate,
             this.paramEndDate,
             this.paramAccountId});
-            this.Version = "19.2";
+            this.Version = "20.1";
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
         }

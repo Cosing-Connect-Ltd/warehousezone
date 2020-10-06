@@ -38,7 +38,6 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
     private XRLabel xrLabel41;
     private PageFooterBand PageFooter;
     private XRLabel xrLabel4;
-    private XRLabel xrLabel6;
     private XRLabel xrLabel1;
     private XRLabel xrLabel2;
     private XRLabel xrLabel3;
@@ -55,6 +54,7 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
     private XRControlStyle xrControlStyle1;
     private XRLabel xrLabel8;
     private XRLabel xrLabel9;
+    private XRPageInfo xrPageInfo1;
 
     /// <summary>
     /// Required designer variable.
@@ -152,7 +152,6 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             this.paramDate = new DevExpress.XtraReports.Parameters.Parameter();
             this.PageFooter = new DevExpress.XtraReports.UI.PageFooterBand();
             this.xrLabel4 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel6 = new DevExpress.XtraReports.UI.XRLabel();
             this.paramTenantId = new DevExpress.XtraReports.Parameters.Parameter();
             this.paramAccountIds = new DevExpress.XtraReports.Parameters.Parameter();
             this.paramProperty = new DevExpress.XtraReports.Parameters.Parameter();
@@ -161,6 +160,7 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel9 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel8 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrControlStyle1 = new DevExpress.XtraReports.UI.XRControlStyle();
+            this.xrPageInfo1 = new DevExpress.XtraReports.UI.XRPageInfo();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // Detail
@@ -285,14 +285,14 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             // 
             // TopMargin
             // 
-            this.TopMargin.HeightF = 21.5F;
+            this.TopMargin.HeightF = 8.999999F;
             this.TopMargin.Name = "TopMargin";
             this.TopMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.TopMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
             // 
             // BottomMargin
             // 
-            this.BottomMargin.HeightF = 12F;
+            this.BottomMargin.HeightF = 7.480303F;
             this.BottomMargin.Name = "BottomMargin";
             this.BottomMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.BottomMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
@@ -652,8 +652,8 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             // PageFooter
             // 
             this.PageFooter.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.xrLabel4,
-            this.xrLabel6});
+            this.xrPageInfo1,
+            this.xrLabel4});
             this.PageFooter.HeightF = 35.41667F;
             this.PageFooter.Name = "PageFooter";
             // 
@@ -670,21 +670,6 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel4.StylePriority.UseBorders = false;
             this.xrLabel4.StylePriority.UseTextAlignment = false;
             this.xrLabel4.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            // 
-            // xrLabel6
-            // 
-            this.xrLabel6.BackColor = System.Drawing.Color.Transparent;
-            this.xrLabel6.Borders = DevExpress.XtraPrinting.BorderSide.Top;
-            this.xrLabel6.LocationFloat = new DevExpress.Utils.PointFloat(2.706041F, 10F);
-            this.xrLabel6.Multiline = true;
-            this.xrLabel6.Name = "xrLabel6";
-            this.xrLabel6.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel6.SizeF = new System.Drawing.SizeF(744.2939F, 23.33333F);
-            this.xrLabel6.StylePriority.UseBackColor = false;
-            this.xrLabel6.StylePriority.UseBorders = false;
-            this.xrLabel6.StylePriority.UseTextAlignment = false;
-            this.xrLabel6.Text = "©WarehouseZone\r\n\r\n";
-            this.xrLabel6.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
             // paramTenantId
             // 
@@ -777,6 +762,18 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             this.xrControlStyle1.BorderWidth = 1F;
             this.xrControlStyle1.Name = "xrControlStyle1";
             // 
+            // xrPageInfo1
+            // 
+            this.xrPageInfo1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrPageInfo1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 10.00004F);
+            this.xrPageInfo1.Name = "xrPageInfo1";
+            this.xrPageInfo1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrPageInfo1.SizeF = new System.Drawing.SizeF(746.9996F, 23F);
+            this.xrPageInfo1.StylePriority.UseFont = false;
+            this.xrPageInfo1.StylePriority.UseTextAlignment = false;
+            this.xrPageInfo1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.xrPageInfo1.TextFormatString = "Page {0} of {1}";
+            // 
             // PickersOrdersReport
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -791,7 +788,7 @@ public class PickersOrdersReport : DevExpress.XtraReports.UI.XtraReport
             this.sqlDataSource1});
             this.DataMember = "OrderHeader";
             this.DataSource = this.sqlDataSource1;
-            this.Margins = new System.Drawing.Printing.Margins(51, 52, 22, 12);
+            this.Margins = new System.Drawing.Printing.Margins(51, 52, 9, 7);
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
             this.paramDate,
             this.paramTenantId,

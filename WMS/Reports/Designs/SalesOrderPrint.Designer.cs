@@ -75,6 +75,7 @@
             this.calculatedField1 = new DevExpress.XtraReports.UI.CalculatedField();
             this.calculatedField2 = new DevExpress.XtraReports.UI.CalculatedField();
             this.PageHeader = new DevExpress.XtraReports.UI.PageHeaderBand();
+            this.xrLabel70 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrPanel4 = new DevExpress.XtraReports.UI.XRPanel();
             this.xrLabel69 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel48 = new DevExpress.XtraReports.UI.XRLabel();
@@ -138,7 +139,6 @@
             this.PageFooter = new DevExpress.XtraReports.UI.PageFooterBand();
             this.xrPageInfo1 = new DevExpress.XtraReports.UI.XRPageInfo();
             this.WarrAmt = new DevExpress.XtraReports.UI.CalculatedField();
-            this.xrLabel70 = new DevExpress.XtraReports.UI.XRLabel();
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
@@ -160,7 +160,7 @@
             // TopMargin
             // 
             this.TopMargin.Dpi = 96F;
-            this.TopMargin.HeightF = 18.64029F;
+            this.TopMargin.HeightF = 8.640289F;
             this.TopMargin.Name = "TopMargin";
             this.TopMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 96F);
             this.TopMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
@@ -168,7 +168,7 @@
             // BottomMargin
             // 
             this.BottomMargin.Dpi = 96F;
-            this.BottomMargin.HeightF = 15.31763F;
+            this.BottomMargin.HeightF = 6.728638F;
             this.BottomMargin.Name = "BottomMargin";
             this.BottomMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 96F);
             this.BottomMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
@@ -727,6 +727,27 @@
             this.PageHeader.Dpi = 96F;
             this.PageHeader.HeightF = 557.9124F;
             this.PageHeader.Name = "PageHeader";
+            // 
+            // xrLabel70
+            // 
+            this.xrLabel70.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Top | DevExpress.XtraPrinting.BorderSide.Bottom)));
+            this.xrLabel70.BorderWidth = 2F;
+            this.xrLabel70.CanShrink = true;
+            this.xrLabel70.Dpi = 96F;
+            this.xrLabel70.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrLabel70.ForeColor = System.Drawing.Color.Red;
+            this.xrLabel70.LocationFloat = new DevExpress.Utils.PointFloat(162F, 329.6819F);
+            this.xrLabel70.Name = "xrLabel70";
+            this.xrLabel70.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
+            this.xrLabel70.ProcessNullValues = DevExpress.XtraReports.UI.ValueSuppressType.SuppressAndShrink;
+            this.xrLabel70.SizeF = new System.Drawing.SizeF(592.0001F, 32.07999F);
+            this.xrLabel70.StylePriority.UseBorders = false;
+            this.xrLabel70.StylePriority.UseBorderWidth = false;
+            this.xrLabel70.StylePriority.UseFont = false;
+            this.xrLabel70.StylePriority.UseForeColor = false;
+            this.xrLabel70.StylePriority.UseTextAlignment = false;
+            this.xrLabel70.Text = "(THIS IS COPY OF YOUR REQUESTED ORDER NOT AN INVOICE)";
+            this.xrLabel70.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
             // xrPanel4
             // 
@@ -1463,7 +1484,7 @@
             this.xrBarCode1.Module = 1.3F;
             this.xrBarCode1.Name = "xrBarCode1";
             this.xrBarCode1.Padding = new DevExpress.XtraPrinting.PaddingInfo(10, 10, 0, 0, 96F);
-            this.xrBarCode1.SizeF = new System.Drawing.SizeF(316.5F, 59.08978F);
+            this.xrBarCode1.SizeF = new System.Drawing.SizeF(326F, 59.08978F);
             this.xrBarCode1.StylePriority.UseTextAlignment = false;
             this.xrBarCode1.Symbology = code128Generator1;
             this.xrBarCode1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.BottomCenter;
@@ -1660,27 +1681,6 @@
             this.WarrAmt.Expression = "Sum([WarrantyAmount])";
             this.WarrAmt.Name = "WarrAmt";
             // 
-            // xrLabel70
-            // 
-            this.xrLabel70.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Top | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.xrLabel70.BorderWidth = 2F;
-            this.xrLabel70.CanShrink = true;
-            this.xrLabel70.Dpi = 96F;
-            this.xrLabel70.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel70.ForeColor = System.Drawing.Color.Red;
-            this.xrLabel70.LocationFloat = new DevExpress.Utils.PointFloat(162F, 329.6819F);
-            this.xrLabel70.Name = "xrLabel70";
-            this.xrLabel70.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
-            this.xrLabel70.ProcessNullValues = DevExpress.XtraReports.UI.ValueSuppressType.SuppressAndShrink;
-            this.xrLabel70.SizeF = new System.Drawing.SizeF(592.0001F, 32.07999F);
-            this.xrLabel70.StylePriority.UseBorders = false;
-            this.xrLabel70.StylePriority.UseBorderWidth = false;
-            this.xrLabel70.StylePriority.UseFont = false;
-            this.xrLabel70.StylePriority.UseForeColor = false;
-            this.xrLabel70.StylePriority.UseTextAlignment = false;
-            this.xrLabel70.Text = "(THIS IS COPY OF YOUR REQUESTED ORDER NOT AN INVOICE)";
-            this.xrLabel70.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
             // SalesOrderPrint
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -1703,14 +1703,14 @@
             this.DataSource = this.sqlDataSource1;
             this.Dpi = 96F;
             this.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margins = new System.Drawing.Printing.Margins(33, 29, 19, 15);
+            this.Margins = new System.Drawing.Printing.Margins(33, 29, 9, 7);
             this.PageHeight = 1056;
             this.PageWidth = 816;
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
             this.paramOrderId});
             this.ReportUnit = DevExpress.XtraReports.UI.ReportUnit.Pixels;
             this.SnapGridSize = 12.5F;
-            this.Version = "19.2";
+            this.Version = "20.1";
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();

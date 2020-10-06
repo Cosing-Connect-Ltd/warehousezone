@@ -1094,10 +1094,10 @@
     <Compile Include="Migrations\202010021724490_address-line-4-changed-into-Town.cs" />
     <Compile Include="Migrations\202010021724490_address-line-4-changed-into-Town.designer.cs">
       <DependentUpon>202010021724490_address-line-4-changed-into-Town.cs</DependentUpon>
-  </Compile>
-    <Compile Include="Migrations\202010051210067_added_BaseOrderId_to_Orders_table.cs" />
-    <Compile Include="Migrations\202010051210067_added_BaseOrderId_to_Orders_table.designer.cs">
-      <DependentUpon>202010051210067_added_BaseOrderId_to_Orders_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010061534327_added-BaseOrderId-to-Orders-table.cs" />
+    <Compile Include="Migrations\202010061534327_added-BaseOrderId-to-Orders-table.designer.cs">
+      <DependentUpon>202010061534327_added-BaseOrderId-to-Orders-table.cs</DependentUpon>
     </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
@@ -2241,8 +2241,8 @@
     <EmbeddedResource Include="Migrations\202010021724490_address-line-4-changed-into-Town.resx">
       <DependentUpon>202010021724490_address-line-4-changed-into-Town.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202010051210067_added_BaseOrderId_to_Orders_table.resx">
-      <DependentUpon>202010051210067_added_BaseOrderId_to_Orders_table.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202010061534327_added-BaseOrderId-to-Orders-table.resx">
+      <DependentUpon>202010061534327_added-BaseOrderId-to-Orders-table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
