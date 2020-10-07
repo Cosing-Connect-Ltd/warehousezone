@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Ganedata.Core.Entities.Domain;
-using Ganedata.Core.Entities.Enums;
 
 namespace Ganedata.Core.Services
 {
@@ -10,8 +10,8 @@ namespace Ganedata.Core.Services
     {
         ProductSaleQueryResponse GetProductSalePriceById(int productId);
 
-
         decimal GetPercentageMarginPrice(decimal? price, decimal customMarginPercent);
+
         ProductSaleQueryResponse GetProductPriceThresholdByAccountId(int productId, int? accountId = null);
 
         ProductSaleQueryResponse CanTheProductBeSoldAtPriceToAccount(int productId, int accountId, decimal sellingPrice);
@@ -21,7 +21,9 @@ namespace Ganedata.Core.Services
         List<ProductPriceHistoryModel> GetProductPriceHistoryForAccount(int productId, int accountid);
 
         decimal GetLastProductPriceForAccount(int productId, int accountId, InventoryTransactionTypeEnum transactionType);
+
         decimal GetLastSoldProductPriceForAccount(int productId, int accountId);
+
         decimal GetLastPurchaseProductPriceForAccount(int productId, int accountId);
 
         decimal GetTaxAmountProductPriceForAccount(int productId, int accountId);
@@ -39,9 +41,11 @@ namespace Ganedata.Core.Services
         bool DeleteProductGroupById(int priceGroupId, int userId);
 
         TenantPriceGroups GetTenantPriceGroupById(int priceGroupId);
-        IQueryable<TenantPriceGroups> GetAllTenantPriceGroups(int tenantId, bool includeIsDeleted = false);
-        IQueryable<TenantPriceGroupDetail> GetAllTenantPriceGroupDetails(int tenantId, bool includeIsDeleted = false);
-        decimal? GetPurchasePrice(int productId, InvoiceDetail invoiceDetail = null);
 
+        IQueryable<TenantPriceGroups> GetAllTenantPriceGroups(int tenantId, bool includeIsDeleted = false);
+
+        IQueryable<TenantPriceGroupDetail> GetAllTenantPriceGroupDetails(int tenantId, bool includeIsDeleted = false);
+
+        decimal? GetPurchasePrice(int productId, InvoiceDetail invoiceDetail = null);
     }
 }

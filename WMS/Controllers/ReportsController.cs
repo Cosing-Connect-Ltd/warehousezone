@@ -20,15 +20,15 @@ namespace WMS.Controllers
 {
     public class ReportsController : BaseReportsController
     {
-        readonly ITenantLocationServices _tenantLocationsServices;
-        readonly IShiftsServices _shiftsServices;
-        readonly IEmployeeShiftsServices _employeeShiftsServices;
-        readonly IEmployeeServices _employeeServices;
-        readonly IProductServices _productServices;
-        readonly IAccountServices _accountServices;
-        readonly IMarketServices _marketServices;
+        private readonly ITenantLocationServices _tenantLocationsServices;
+        private readonly IShiftsServices _shiftsServices;
+        private readonly IEmployeeShiftsServices _employeeShiftsServices;
+        private readonly IEmployeeServices _employeeServices;
+        private readonly IProductServices _productServices;
+        private readonly IAccountServices _accountServices;
+        private readonly IMarketServices _marketServices;
         private readonly IPalletingService _palletingService;
-        readonly IInvoiceService _invoiceService;
+        private readonly IInvoiceService _invoiceService;
         private readonly ILookupServices _lookupService;
         private readonly IUserService _userService;
 
@@ -52,7 +52,7 @@ namespace WMS.Controllers
 
         public float JobProgressOutSum = 0;
         public float JobProgressReturnSum = 0;
-        List<ExpensivePropertiseTotalsViewModel> ExpensivePropertyDetailTotals = new List<ExpensivePropertiseTotalsViewModel>();
+        private List<ExpensivePropertiseTotalsViewModel> ExpensivePropertyDetailTotals = new List<ExpensivePropertiseTotalsViewModel>();
 
         #region Inventory
 
@@ -91,7 +91,7 @@ namespace WMS.Controllers
             return InventoryReport;
         }
 
-        #endregion
+        #endregion Inventory
 
         #region StockValueReport
 
@@ -102,7 +102,6 @@ namespace WMS.Controllers
             //report.xrLabel18.BeforePrint += XrLabel18_BeforePrint;
             return View(report);
         }
-
 
         public StockValueReport CreateStockValueReport()
         {
@@ -124,7 +123,7 @@ namespace WMS.Controllers
             return StockValueReport;
         }
 
-        #endregion
+        #endregion StockValueReport
 
         #region MarketTotalReport
 
@@ -135,7 +134,6 @@ namespace WMS.Controllers
             //report.xrLabel18.BeforePrint += XrLabel18_BeforePrint;
             return View(report);
         }
-
 
         public MarketTotal CreateMarketTotalReport()
         {
@@ -155,12 +153,10 @@ namespace WMS.Controllers
             StaticListLookUpSettings invtrans = (StaticListLookUpSettings)marketTotal.InventoryTransType.LookUpSettings;
             invtrans.LookUpValues.AddRange(transactionTypes.Select(u => new LookUpValue(u.InventoryTransactionTypeId, u.InventoryTransactionTypeName)));
 
-
-
             return marketTotal;
         }
 
-        #endregion
+        #endregion MarketTotalReport
 
         #region LowStockItems
 
@@ -217,9 +213,10 @@ namespace WMS.Controllers
             return View(report);
         }
 
-        #endregion
+        #endregion LowStockItems
 
         #region PurchaseOrder
+
         public ActionResult PurchaseOrderPrint(int id = 0)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
@@ -231,8 +228,8 @@ namespace WMS.Controllers
 
             PurchaseOrderPrint report = CreatePurchaseOrderPrint(id);
             return View(report);
-
         }
+
         public ActionResult PurchaseOrderNotePrint(int id = 0)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
@@ -246,10 +243,9 @@ namespace WMS.Controllers
 
             POCollectionNotePrint report = CreatePurchaseOrderPrints(id);
             return View(report);
-
         }
 
-        #endregion
+        #endregion PurchaseOrder
 
         #region SalesOrder
 
@@ -266,12 +262,10 @@ namespace WMS.Controllers
             ViewBag.DirectSalesOrder = directsales;
             ViewBag.OrderId = id;
 
-
             return View(report);
         }
 
-
-        #endregion
+        #endregion SalesOrder
 
         #region TransferOrder
 
@@ -288,7 +282,7 @@ namespace WMS.Controllers
             return View(report);
         }
 
-        #endregion
+        #endregion TransferOrder
 
         #region WorksOrderPrint
 
@@ -306,7 +300,7 @@ namespace WMS.Controllers
             return View(report);
         }
 
-        #endregion
+        #endregion WorksOrderPrint
 
         #region WorksOrderDayPrint
 
@@ -324,7 +318,7 @@ namespace WMS.Controllers
             return View(report);
         }
 
-        #endregion
+        #endregion WorksOrderDayPrint
 
         #region SlaWorksOrder
 
@@ -354,7 +348,7 @@ namespace WMS.Controllers
             return report;
         }
 
-        #endregion
+        #endregion SlaWorksOrder
 
         #region WorksOrderExpensiveProperties
 
@@ -383,7 +377,6 @@ namespace WMS.Controllers
             expensivePropertiesReport.paramStartDate.Value = DateTime.Today.AddMonths(-1);
             expensivePropertiesReport.paramEndDate.Value = DateTime.Today;
             expensivePropertiesReport.ParametersRequestBeforeShow += expensivePropertiesReport_ParametersRequestBeforeShow;
-
         }
 
         private void expensivePropertiesReport_ParametersRequestBeforeShow(object sender, ParametersRequestEventArgs e)
@@ -400,7 +393,7 @@ namespace WMS.Controllers
             e.ParametersInformation[1].Parameter.Value = propertyIds;
         }
 
-        #endregion
+        #endregion WorksOrderExpensiveProperties
 
         #region ChargeReports
 
@@ -412,6 +405,7 @@ namespace WMS.Controllers
 
             return View(report);
         }
+
         private WorksOrdersChargesReport GetWorksOrdersChargesReport()
         {
             WorksOrdersChargesReport chargesReport = new Reports.WorksOrdersChargesReport();
@@ -450,7 +444,7 @@ namespace WMS.Controllers
             }
         }
 
-        #endregion
+        #endregion ChargeReports
 
         #region TAReports
 
@@ -612,8 +606,6 @@ namespace WMS.Controllers
                         DateTime? stampFirstIn = employeeShifts.FirstOrDefault()?.TimeStamp;
                         DateTime? stampLastOut = employeeShifts.LastOrDefault()?.TimeStamp;
 
-
-
                         if (stampFirstIn.Value.Equals(stampLastOut)) //not equal
                         {
                             stampLastOut = null;
@@ -638,6 +630,7 @@ namespace WMS.Controllers
                                         };
 
                                         break;
+
                                     case 2:
                                         if ((timeStamp - startTime).TotalMinutes >= 30) //30 minutes passed
                                         {
@@ -646,6 +639,7 @@ namespace WMS.Controllers
                                         }
 
                                         break;
+
                                     case 3:
                                         if ((timeStamp - startTime).TotalHours >= 1) //1 hour passed
                                         {
@@ -672,7 +666,6 @@ namespace WMS.Controllers
 
         public List<ReportViewModel> OnSite(int locationId, DateTime fromDate, DateTime toDate, int tenantId)
         {
-
             List<ReportViewModel> model = new List<ReportViewModel>();
 
             //get all employees at the location
@@ -683,7 +676,6 @@ namespace WMS.Controllers
             //foreach employeeId
             foreach (var employee in employeeList)
             {
-
                 int id = 1;
                 //get EmployeeShifts by EmployeeId and Date
                 var employeeShifts = _employeeShiftsServices.SearchByEmployeeIdAndDate(employee.ResourceId, fromDate, CurrentTenantId);
@@ -722,7 +714,6 @@ namespace WMS.Controllers
             //foreach employeeId
             foreach (var employee in employeeList)
             {
-
                 int id = 1;
                 //get EmployeeShifts by EmployeeId and Date
                 var employeeShifts = _employeeShiftsServices.SearchByEmployeeIdAndDate(employee.ResourceId, fromDate, CurrentTenantId);
@@ -777,7 +768,7 @@ namespace WMS.Controllers
             return model;
         }
 
-        ReportViewModel ReportTypeModel(int id, DateTime? timeStamp, DateTime? stampFirstIn, DateTime? stampLastOut, Shifts itemShift)
+        private ReportViewModel ReportTypeModel(int id, DateTime? timeStamp, DateTime? stampFirstIn, DateTime? stampLastOut, Shifts itemShift)
         {
             return new ReportViewModel()
             {
@@ -792,7 +783,7 @@ namespace WMS.Controllers
             };
         }
 
-        ReportViewModel ReportTypeModel(int id, DateTime? timeStamp, DateTime? stampFirstIn, DateTime? stampLastOut, ResourceShifts shift)
+        private ReportViewModel ReportTypeModel(int id, DateTime? timeStamp, DateTime? stampFirstIn, DateTime? stampLastOut, ResourceShifts shift)
         {
             return new ReportViewModel()
             {
@@ -806,13 +797,12 @@ namespace WMS.Controllers
             };
         }
 
-        #endregion
+        #endregion TAReports
 
         #region DevExpress Report
 
         private void PageHeader(XtraReport report)
         {
-
             // ---------Add a header to the listing report---------------
             XRTable tableHeader = new XRTable();
             tableHeader.BeginInit();
@@ -920,7 +910,6 @@ namespace WMS.Controllers
             // Adjust the table width.
             tableDetail.BeforePrint += tableDetail_BeforePrint;
             tableDetail.EndInit();
-
         }
 
         private void AdjustTableWidth(XRTable table)
@@ -929,12 +918,12 @@ namespace WMS.Controllers
             table.WidthF = report.PageWidth - report.Margins.Left - report.Margins.Right;
         }
 
-        void tableHeader_BeforePrint(object sender, System.Drawing.Printing.PrintEventArgs e)
+        private void tableHeader_BeforePrint(object sender, System.Drawing.Printing.PrintEventArgs e)
         {
             AdjustTableWidth(sender as XRTable);
         }
 
-        void tableDetail_BeforePrint(object sender, System.Drawing.Printing.PrintEventArgs e)
+        private void tableDetail_BeforePrint(object sender, System.Drawing.Printing.PrintEventArgs e)
         {
             AdjustTableWidth(sender as XRTable);
         }
@@ -951,6 +940,7 @@ namespace WMS.Controllers
                 e.Value = formattedDate;
             }
         }
+
         private void DateTime2Formatting_EvaluateBinding(object sender, BindingEventArgs e)
         {
             XRTableCell cell = (sender as XRTableCell);
@@ -963,6 +953,7 @@ namespace WMS.Controllers
                 e.Value = formattedDate;
             }
         }
+
         private void StringFormatting_EvaluateBinding(object sender, BindingEventArgs e)
         {
             XRTableCell cell = (sender as XRTableCell);
@@ -974,16 +965,17 @@ namespace WMS.Controllers
                 e.Value = formattedDate;
             }
         }
-        #endregion
+
+        #endregion DevExpress Report
 
         #region InvoiceReport
+
         public ActionResult InvoiceDetails(int? id, string InvoiceMasterIds)
         {
             if (!caSession.AuthoriseSession())
             { return Redirect((string)Session["ErrorUrl"]); }
             if (!string.IsNullOrEmpty(InvoiceMasterIds))
             {
-
                 int[] masterIds = Array.ConvertAll(InvoiceMasterIds.Split(','), Int32.Parse);
                 var reports = CreateInvoicePrint(0, masterIds);
 
@@ -996,13 +988,12 @@ namespace WMS.Controllers
             }
             var report = CreateInvoicePrint(id ?? 0);
             return View(report);
-
         }
 
-
-        #endregion
+        #endregion InvoiceReport
 
         #region PriceGroup
+
         public ActionResult PriceGroupReport(int PriceGroupId)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
@@ -1018,7 +1009,7 @@ namespace WMS.Controllers
             return PriceGroupReport;
         }
 
-        #endregion
+        #endregion PriceGroup
 
         #region OrderReport
 
@@ -1078,9 +1069,10 @@ namespace WMS.Controllers
             }
         }
 
-        #endregion
+        #endregion OrderReport
 
         #region PickersOrdersReport
+
         public ActionResult PickersOrdersReport()
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
@@ -1116,7 +1108,7 @@ namespace WMS.Controllers
             return pickersOrdersReport;
         }
 
-        #endregion
+        #endregion PickersOrdersReport
 
         #region OrdersTotal
 
@@ -1143,8 +1135,7 @@ namespace WMS.Controllers
             return OrderTotal;
         }
 
-
-        #endregion
+        #endregion OrdersTotal
 
         #region WorksOrderKpiReport
 
@@ -1215,7 +1206,6 @@ namespace WMS.Controllers
                     sourceItem.Unallocated = unallocated;
                     sourceItem.OldestJob = oldestJob;
                     dataSource.Add(sourceItem);
-
                 }
             }
 
@@ -1224,9 +1214,10 @@ namespace WMS.Controllers
             report.DataSource = dataSource;
         }
 
-        #endregion
+        #endregion WorksOrderKpiReport
 
         #region DeliveryNote
+
         public ActionResult DeliveryNotePrint(int id = 0)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
@@ -1237,8 +1228,6 @@ namespace WMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-
 
             var groupstatus = _tenantServices.GetAllTenantConfig(CurrentTenantId)?.FirstOrDefault(u => u.EnableTimberProperties)?.EnableTimberProperties;
             if (groupstatus == true)
@@ -1255,12 +1244,12 @@ namespace WMS.Controllers
                 report.FooterMsg2.Text = config.DnReportFooterMsg2;
                 return View(report);
             }
-
         }
 
-        #endregion
+        #endregion DeliveryNote
 
         #region PalleteReport
+
         public ActionResult PalleteReportPrint(int dispatchId = 0)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
@@ -1275,9 +1264,7 @@ namespace WMS.Controllers
             PalleteDispatchesReport report = CreatePalleteReport(dispatchId);
             report.PoPictureBox.BeforePrint += PRPictureBox_BeforePrint;
 
-
             return View(report);
-
         }
 
         private void PRPictureBox_BeforePrint(object sender, System.Drawing.Printing.PrintEventArgs e)
@@ -1286,10 +1273,10 @@ namespace WMS.Controllers
             picture.ImageUrl = ReportLogoPath("dn-logo.png");
         }
 
-
-        #endregion
+        #endregion PalleteReport
 
         #region GoodsBookInNote
+
         public ActionResult GoodsBookInNotePrint(int id = 0)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
@@ -1304,12 +1291,12 @@ namespace WMS.Controllers
             report.xrLabel16.Text = "Goods Book In Note";
             report.xrLabel26.Text = "";
             return View(report);
-
         }
 
-        #endregion
+        #endregion GoodsBookInNote
 
         #region GoodsReceiveNotePrint
+
         public ActionResult GoodsReceiveNotePrint(Guid id)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
@@ -1321,12 +1308,12 @@ namespace WMS.Controllers
 
             GoodsReceiveNotePrint report = CreateGoodsReceiveNotePrint(id);
             return View(report);
-
         }
 
-        #endregion
+        #endregion GoodsReceiveNotePrint
 
         #region MarketRoutePrint
+
         public ActionResult MarketRoutePrint(int id)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
@@ -1338,12 +1325,12 @@ namespace WMS.Controllers
 
             MarketRoutePrint report = CreateMarketRoutePrint(id);
             return View(report);
-
         }
 
-        #endregion
+        #endregion MarketRoutePrint
 
         #region MarketCustomerPrint
+
         public ActionResult MarketCustomerPrint(int id)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
@@ -1355,10 +1342,9 @@ namespace WMS.Controllers
 
             MarketCustomerReport report = CreateMarketCustomerPrint(id);
             return View(report);
-
         }
 
-        #endregion
+        #endregion MarketCustomerPrint
 
         #region FinancialTransactionReport
 
@@ -1370,12 +1356,10 @@ namespace WMS.Controllers
             return View(report);
         }
 
-
-
-        #endregion
-
+        #endregion FinancialTransactionReport
 
         #region ProductMovementReport
+
         public ActionResult ProductMovementReport()
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
@@ -1383,6 +1367,7 @@ namespace WMS.Controllers
             //report.xrLabel18.BeforePrint += XrLabel18_BeforePrint;
             return View(report);
         }
+
         public ProductMovementPrint CreateProductMovementPrint()
         {
             ProductMovementPrint productMovement = new ProductMovementPrint();
@@ -1414,8 +1399,8 @@ namespace WMS.Controllers
             }
             return productMovement;
         }
-        #endregion
 
+        #endregion ProductMovementReport
 
         #region ProductSalesReportbyAccount
 
@@ -1426,7 +1411,6 @@ namespace WMS.Controllers
             //report.xrLabel18.BeforePrint += XrLabel18_BeforePrint;
             return View(report);
         }
-
 
         public ProductSoldReport CreateProductsalePrint()
         {
@@ -1441,8 +1425,7 @@ namespace WMS.Controllers
             return productMovement;
         }
 
-
-        #endregion
+        #endregion ProductSalesReportbyAccount
 
         #region ProductSalesReportbySKU
 
@@ -1453,7 +1436,6 @@ namespace WMS.Controllers
             //report.xrLabel18.BeforePrint += XrLabel18_BeforePrint;
             return View(report);
         }
-
 
         public ProductSoldBySkuPrint CreateProductSoldBySkuPrint()
         {
@@ -1507,8 +1489,7 @@ namespace WMS.Controllers
             return productSoldBySkuPrint;
         }
 
-
-        #endregion
+        #endregion ProductSalesReportbySKU
 
         #region InvoiceProfitReport
 
@@ -1546,7 +1527,6 @@ namespace WMS.Controllers
             report.Profit.DataBindings.AddRange(new XRBinding[] {
                 new XRBinding("Text", report.DataSource, ".Profit")});
 
-
             return View(report);
         }
 
@@ -1583,7 +1563,7 @@ namespace WMS.Controllers
             report.DataSource = dataSource;
         }
 
-        #endregion
+        #endregion InvoiceProfitReport
 
         #region InvoiceByProduct
 
@@ -1593,7 +1573,6 @@ namespace WMS.Controllers
             InvoiceByProductReport report = InvoiceByProductReportPrint();
             return View(report);
         }
-
 
         public InvoiceByProductReport InvoiceByProductReportPrint()
         {
@@ -1626,8 +1605,7 @@ namespace WMS.Controllers
             return InvoiceByProductReport;
         }
 
-
-        #endregion
+        #endregion InvoiceByProduct
 
         #region PalletTrackingLabelReport
 
@@ -1637,20 +1615,15 @@ namespace WMS.Controllers
             { return Redirect((string)Session["ErrorUrl"]); }
             if (!string.IsNullOrEmpty(PalletTrackingIds))
             {
-
                 int[] palletIds = Array.ConvertAll(PalletTrackingIds.Split(','), Int32.Parse);
                 var reports = CreateLabelPrint(palletIds);
                 return View(reports);
             }
-
             else
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-
         }
-
 
         public PalletTrackingLabelPrint CreateLabelPrint(int[] PalletTrackingIds)
         {
@@ -1660,9 +1633,7 @@ namespace WMS.Controllers
             return PrintLabel;
         }
 
-
-        #endregion
-
+        #endregion PalletTrackingLabelReport
 
         #region HolidayReportsPrint
 
@@ -1674,7 +1645,6 @@ namespace WMS.Controllers
             caTenant tenant = caCurrent.CurrentTenant();
             HolidayReportPrint report = new HolidayReportPrint();
             report.DataSourceDemanded += HolidayReport_DataSourceDemanded;
-
 
             report.UserName.DataBindings.AddRange(new XRBinding[] {
                 new XRBinding("Text", report.DataSource, ".UserName")});
@@ -1694,8 +1664,6 @@ namespace WMS.Controllers
 
             report.FifthYear.DataBindings.AddRange(new XRBinding[] {
                 new XRBinding("Text", report.DataSource, ".FifthYear")});
-
-
 
             return View(report);
         }
@@ -1736,8 +1704,7 @@ namespace WMS.Controllers
             }
         }
 
-        #endregion
-
+        #endregion HolidayReportsPrint
 
         #region DailySaleZReport
 
@@ -1749,7 +1716,6 @@ namespace WMS.Controllers
             return View(report);
         }
 
-
         public DailySalesZReport CreateDailySaleZReport(int VanSaleCashId)
         {
             DailySalesZReport dailySalesZReport = new DailySalesZReport();
@@ -1758,8 +1724,7 @@ namespace WMS.Controllers
             return dailySalesZReport;
         }
 
-
-        #endregion
+        #endregion DailySaleZReport
 
         #region PurchaseOrderAuditReport
 
@@ -1771,7 +1736,6 @@ namespace WMS.Controllers
             return View(report);
         }
 
-
         public PurchaseOrderAuditReport CreatePurchaseOrderAuditReport()
         {
             PurchaseOrderAuditReport PurchaseOrderAuditReport = new PurchaseOrderAuditReport();
@@ -1780,8 +1744,7 @@ namespace WMS.Controllers
             return PurchaseOrderAuditReport;
         }
 
-
-        #endregion
+        #endregion PurchaseOrderAuditReport
 
         #region ProductSaleReportByPalletType
 
@@ -1792,7 +1755,6 @@ namespace WMS.Controllers
             //report.xrLabel18.BeforePrint += XrLabel18_BeforePrint;
             return View(report);
         }
-
 
         public ProductSoldByPalletType CreateProductSoldByPalletType()
         {
@@ -1817,9 +1779,6 @@ namespace WMS.Controllers
             return productSoldByPalletType;
         }
 
-
-        #endregion
-
-
+        #endregion ProductSaleReportByPalletType
     }
 }

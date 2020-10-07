@@ -25,7 +25,6 @@
         )
 }
 
-
 @{
     ViewBag.Title = "Create";
 }
@@ -132,8 +131,13 @@
                         @Html.ValidationMessageFor(model => model.IsPreOrderAccepted)
                     </div>
                 </div>
-
-
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.IsAutoShipment, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(m => m.IsAutoShipment, new { @class = "checkbox" })
+                        @Html.ValidationMessageFor(model => model.IsAutoShipment)
+                    </div>
+                </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.IsStockItem, htmlAttributes: new { @class = "col-md-4" })
@@ -162,7 +166,6 @@
                 @Html.Label("Product Attribute", htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
                     @Html.ListBox("AttributeIds", new MultiSelectList(ViewBag.AttributeGroups, "AttributeId", "AttributeName"), new { Multiple = "multiple", @class = "chosen-select", data_placeholder = "Choose Atttribute" })
-
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">
@@ -183,14 +186,12 @@
                 @Html.LabelFor(model => model.ShelfLifeDays, htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
                     @Html.EditorFor(model => model.ShelfLifeDays)
-
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.ReorderQty, htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
                     @Html.EditorFor(model => model.ReorderQty)
-
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">
@@ -268,8 +269,6 @@
                 <div class="col-md-8">
                     @Html.DropDownListFor(u => u.SiteId, new SelectList(ViewBag.WebsiteIds, "SiteID", "SiteName"), "Select Site", new { @class = "chosen-select" })
                     @Html.ValidationMessageFor(model => model.SiteId)
-
-
                 </div>
             </div>
 
@@ -277,7 +276,6 @@
                 @Html.Label("Choose Tags", htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
                     @Html.ListBox("SiteIds", new MultiSelectList(ViewBag.ProductTag, "Id", "TagName"), new { Multiple = "multiple", @class = "chosen-select", data_placeholder = "Choose Tags" })
-
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">
@@ -294,10 +292,8 @@
                     @Html.ValidationMessageFor(model => model.ManufacturerPartNo)
                 </div>
             </div>
-
         </div>
         <div class="col-md-6 pull-left">
-
 
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.EnableTax, htmlAttributes: new { @class = "col-md-4" })
@@ -464,7 +460,7 @@
                     @Html.ValidationMessageFor(model => model.PurchaseNominalCode)
                 </div>
             </div>
-               <div class="input-group h-100 justify-content-center align-items-center">
+            <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(m => m.SaleNominalCode, htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
                     @Html.DevExpress().SpinEditFor(m => m.SaleNominalCode,
@@ -569,7 +565,6 @@
                     <div class="col-12 p-0 mt-1 pull-left">
                         @Html.DropDownListFor(m => m.PalletTypeId, ViewBag.PalletType as SelectList, "Select Pallet Type", new { @class = "chosen-select" })
                     </div>
-
                 </div>
             </div>
 
@@ -623,7 +618,6 @@
                     <div class="col-1 p-0 pull-left">
                         <input type="button" onclick="javascript: pcModalAttributesValues.Show();" id="ProdAttributeAdd" class="btn btn-primary" value="+">
                     </div>
-
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">
@@ -650,12 +644,7 @@
                     }
                 </div>
             </div>
-
-
         </div>
-
-
-
     </div>
 }
 <script>

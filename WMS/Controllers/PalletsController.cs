@@ -344,7 +344,7 @@ namespace WMS.Controllers
             model.AllSentMethods = _palletingService.GetAllSentMethods()
                 .Select(m => new SelectListItem() { Text = m.ToString(), Value = ((int)m).ToString() });
             model.DispatchRefrenceNumber = GaneStaticAppExtensions.GenerateDateRandomNo();
-            model.AllDpdServices = _palletingService.GetAllDpdServices().
+            model.AllDpdServices = _palletingService.GetAllTenantDeliveryServices(CurrentTenantId, DeliveryMethods.DPD).
                 Select(m => new SelectListItem() { Text = m.NetworkDescription.ToString(), Value = m.NetworkCode.ToString() });
             ViewBag.ControllerName = "Pallets";
             Session["UploadedPalletEvidences"] = null;
@@ -392,7 +392,7 @@ namespace WMS.Controllers
             model.AllSentMethods = _palletingService.GetAllSentMethods()
                 .Select(m => new SelectListItem() { Text = m.ToString(), Value = ((int)m).ToString() });
             model.DispatchRefrenceNumber = PalletDispatch.DispatchReference;
-            model.AllDpdServices = _palletingService.GetAllDpdServices().
+            model.AllDpdServices = _palletingService.GetAllTenantDeliveryServices(CurrentTenantId, model.DeliveryMethod).
                 Select(m => new SelectListItem() { Text = m.NetworkDescription.ToString(), Value = m.NetworkCode.ToString() });
             Session["UploadedPalletEvidences"] = null;
             ViewBag.ControllerName = "Pallets";

@@ -1,6 +1,5 @@
 ﻿//// function Fires when DOM is parsed, equlaent to document.ready ///////
 $(function () {
-
     $(document).bind('keydown', 'shift+c', function () {
         $(".profiler-results").remove();
     });
@@ -284,7 +283,6 @@ $(function () {
             value = $('#selkeyWorksOrderListGridView').val();
         }
         else if (id === "lnkjobTypeEdit") {
-
             value = $('#selkeyJobTypeList').val();
         }
 
@@ -322,10 +320,8 @@ $(function () {
             //do nothing
         }
         else if (value > 0 || value !== null) {
-
             $(this).attr('href',
                 function () {
-
                     var res = this.href.split("/");
                     var lastindex = res.pop();
 
@@ -402,7 +398,6 @@ $(function () {
         e.preventDefault();
     });
 
-
     $("#LocsearchForm").submit(function () {
         var a = $('#Warehouse').val();
         var pid = $('#ProductId').val();
@@ -425,7 +420,6 @@ $(function () {
     });
 
     /////////////////////////////////////////////////Product Attributes
-
 
     $('#SearchValue').click(function (e) {
         var a = $('#Attributes').val();
@@ -461,7 +455,6 @@ $(function () {
             }
         });
     });
-
 
     //////////////////////////////////////////////////////////product categories
 
@@ -611,7 +604,6 @@ $(function () {
 
     ////////////////// Ajax function to get Product categories /////////////////
     function Get_PCat(p, q) {
-
         $.ajax({
             type: "GET",
             url: '/ProductCGMap/JsongetPCategories',
@@ -626,12 +618,10 @@ $(function () {
                 alert('Error' + textStatus + "/" + errorThrown);
             }
         });
-
     } //  END OF  Get_PCat(p,q)
 
     ////////////////// Ajax function to get Product groups /////////////////
     function Get_PGroups(p, q) {
-
         $.ajax({
             type: "GET",
             url: '/ProductCGMap/JsongetPG',
@@ -640,19 +630,13 @@ $(function () {
             success: function (data) {
                 var result = $("#pgsearchTemplate").tmpl(data);
                 $("#pglist").empty().append(result);
-
-
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 // alert(xhr.status);
                 alert('Error' + textStatus + "/" + errorThrown);
-
             }
         });
-
-
     } //  END OF  Get_PGroups(p,q)
-
 
     function updatesorter() {
         $(".tsort").tablesorter();
@@ -663,7 +647,6 @@ $(function () {
         var msg = xhr.responseText;
         alert(msg.Message);
     }
-
 
     ////////// Function to disable submit buttons after submit /////////////////
     $(document).on('novalidate', 'form', function () {
@@ -694,7 +677,6 @@ $(function () {
     $(window).on('beforeunload', function () {
         $('.se-pre-con').show();
     });
-
 
     /////////////////////// jquery ui tabs ////////////////////////////////////
 
@@ -759,10 +741,7 @@ $(function () {
         $("#dvdisc").hide();
     }
 
-
-
     $('#chkdis').change(function () {
-
         if ($(this).is(":checked")) {
             $("#dvdisc").show();
         }
@@ -771,11 +750,8 @@ $(function () {
         }
     });
 
-
-
     $('#LRemove').click(function (e) {
     });
-
 
     $('.loc').click(function (e) {
         var id = e.target.id;
@@ -791,11 +767,9 @@ $(function () {
         }
     });
     $('#TaxID').change(function (e) {
-
     });
     $('.serial').bind("keypress", function (e) {
         if (e.keyCode === 13) {
-
             // Cancel the default action on keypress event
             e.preventDefault();
             alert("Enter Pressed");
@@ -803,22 +777,15 @@ $(function () {
     });
 
     $('.oAction').click(function (e) {
-
         var Req_url = window.location.href;
         if (Req_url.indexOf("PurchaseOrders/Create") !== -1 || Req_url.indexOf("PurchaseOrders/Edit") !== -1) {
-
             var value = $('#radioShipToWarehouse').prop("checked");
             if (!value) {
-
                 var res = confirm("Are you sure to deilvery other than warehouse address?");
                 if (!res) {
-
                     e.preventDefault();
                     return;
-
                 }
-
-
             }
         }
 
@@ -829,7 +796,6 @@ $(function () {
             e.preventDefault();
         }
     });
-
 
     function GetTodayDate() {
         var tdate = new Date();
@@ -879,7 +845,6 @@ $(function () {
             url: "/Order/_GetAccountContacts/",
             data: { Id: id },
 
-
             success: function (data) {
                 LoadSOAccountAddresses();
                 $.each(data, function (i, item) {
@@ -895,11 +860,48 @@ $(function () {
                 // alert(xhr.status);
                 LoadingPanel.Hide();
                 alert('Error' + textStatus + "/" + errorThrown);
-
             }
-
         });
     });
+
+    $('.order-delivery-method').change(function (e) {
+        prepareTenantDeliveryServicesDropDown();
+    });
+
+    function prepareTenantDeliveryServicesDropDown() {
+        var deliveryMethod = $("#DeliveryMethod option:selected").val();
+        if (deliveryMethod === null || deliveryMethod === "" || deliveryMethod === 0) { return; }
+        LoadingPanel.Show();
+
+        //var pid = $("#prdid option:selected").val();
+        $('#TenantDeliveryServiceId').empty();
+        $("#TenantDeliveryServiceId").trigger("chosen:updated");
+        $.ajax({
+            type: "GET",
+            url: "/Order/_GetTenantDeliveryServices/",
+            data: { deliveryMethod: deliveryMethod },
+            success: function (data) {
+                if (!!data && data.length > 0) {
+                    $("#delivery-service__selector").show();
+                    $.each(data, function (i, item) {
+                        $('#TenantDeliveryServiceId').append($('<option></option>').val(item.Id).html(item.NetworkDescription));
+                    });
+                    $("#TenantDeliveryServiceId").trigger("chosen:updated");
+                }
+                else {
+                    $("#delivery-service__selector").hide();
+                }
+
+                $("#TenantDeliveryServiceId").trigger("chosen:updated");
+                LoadingPanel.Hide();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                // alert(xhr.status);
+                LoadingPanel.Hide();
+                alert('Error' + textStatus + "/" + errorThrown);
+            }
+        });
+    }
 
     function fillAccountAddress(accountId) {
         $('#emailWithaccount').empty();
@@ -914,17 +916,12 @@ $(function () {
                 var selectedId = [];
                 $.each(data, function (i, item) {
                     if (item.Selected) {
-
                         $('#emailWithaccount').append('<option value=' + item.Value + ' selected>' + item.Text + '</option>');
                         selectedId.push(item.Value);
-
                     }
                     else {
                         $('#emailWithaccount').append('<option value=' + item.Value + '>' + item.Text + '</option>');
-
                     }
-
-
                 });
                 $("#emailWithaccount").trigger("chosen:updated");
                 //for (var i = 0; i < selectedId.length; i++) {
@@ -936,33 +933,25 @@ $(function () {
                 // alert(xhr.status);
                 LoadingPanel.Hide();
                 alert('Error' + textStatus + "/" + errorThrown);
-
             }
-
         });
-
     }
 
     $('#btngrDrp').on("click", function (e) {
-
         var id = prdid.GetValue();
         var type = $("#type").val();
         if (type === 12 || type === 13) {
             //    $("#grProducts option:selected").val();
             //if (id === null || id === undefined || id === "") {
-
             //id = $("#wrProducts option:selected").val();
         }
         ModelGoodsReturn.Show();
-
     });
-
 
     $('.bsDrp').change(function (e) {
         var id = $("#products option:selected").val();
 
         ModelBS.Show();
-
     });
 
     $('#grOrderNumber').bind("keyup", function (e) {
@@ -984,7 +973,6 @@ $(function () {
                 url: "/InventoryTransaction/_IsOrderValid/",
                 data: { order: orderid },
 
-
                 success: function (data) {
                     LoadingPanel.Hide();
                     if (!data) {
@@ -993,7 +981,6 @@ $(function () {
                             content: "Not valid order number. Do you still want to return?",
                             buttons: {
                                 cancel: function () {
-
                                 },
                                 Return: function () {
                                     prdid.SetEnabled(true);
@@ -1003,7 +990,6 @@ $(function () {
                         });
                         //alert("Not valid order number");
                         // prdid.SetEnabled(false);
-
                     }
                     else {
                         prdid.SetEnabled(true);
@@ -1028,18 +1014,13 @@ $(function () {
                             $('#lblgrAccount').val(data.accountId);
                         }
                     }
-
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     // alert(xhr.status);
                     LoadingPanel.Hide();
                     alert('Error' + textStatus + "/" + errorThrown);
-
                 }
-
             });
-
-
         }
     });
 
@@ -1051,14 +1032,11 @@ $(function () {
         }
     });
     $('.cComplete').click(function (e) {
-
         if (confirm("Are you sure want to complete this order ?")) {
             return;
         }
         e.preventDefault();
-
     });
-
 
     // draggable-route initialize Start
     $(".draggable-route").draggable({
@@ -1093,16 +1071,12 @@ $(function () {
     });
 
     $('.orderSaveAndComplete').click(function (e) {
-
         var Req_url = window.location.href;
         if (Req_url.indexOf("PurchaseOrders/Create") !== -1 || Req_url.indexOf("PurchaseOrders/Edit") !== -1) {
-
             var value = $('#radioShipToWarehouse').prop("checked");
             if (!value) {
-
                 var res = confirm("Are you sure to deilvery other than warehouse address?");
                 if (!res) {
-
                     e.preventDefault();
                     return;
                 }
@@ -1112,12 +1086,10 @@ $(function () {
     });
 
     $('.orderSaveAndProcess').click(function (e) {
-
         $("input[name='orderSaveAndProcess'").val('1');
     });
 
     // end draggable-route
-
 
     //only single checkbox allowed wihtin parent div
     $('.single-check-select .checkbox').click(function () {
@@ -1126,14 +1098,11 @@ $(function () {
         $(this).prop("checked", checkedState);
         var checkboxId = this.id;
         if (checkboxId == "GroupedProduct") {
-
             $("#ProductKit").val("");
             $("#dvgrp").show();
             $("#dvkit").hide();
-
         }
         else if (checkboxId == "chkkit") {
-
             $("#ProductKit").val("");
             $("#dvkit").show();
             $("#dvgrp").hide();
@@ -1142,12 +1111,8 @@ $(function () {
             $("#dvkit").hide();
             $("#dvgrp").hide();
         }
-
     });
-
-
 }); //// end of main function which fires upon DOM parse completion
-
 
 function resizeChosen() {
     $(".chosen-container").each(function () {
@@ -1155,13 +1120,11 @@ function resizeChosen() {
     });
 }
 
-
 $(document).ajaxSuccess(
     function (event, xhr, settings) {
         $(".chosen-select").chosen();
     }
 );
-
 
 var GetDevexControlByName = function (name) {
     var controls = ASPxClientControl.GetControlCollection();
@@ -1191,7 +1154,6 @@ generateNextOrderNumber = function (txtOrderNumberId) {
     });
     return orderNumber;
 };
-
 
 function DeleteTranserOrders(orderId, type) {
     if (orderId == null || orderId < 1) return;
@@ -1226,9 +1188,7 @@ function GetRowKeyByDxGridName(GridName) {
 
 // navigation toggle betwwen narrow and wide (functions)
 function navToggleView() {
-
     if ($("#btn-toggleApptView").hasClass('fa-caret-left')) {
-
         navToggleNarrow();
     }
     else {
@@ -1265,14 +1225,11 @@ function navToggleWide() {
     $.cookie('toggle_index', toggleIndex, { path: '/' });
 }
 
-
 String.prototype.replaceAll = function (search, replacement) {
     if (search == null || search.length == 0) return '';
     var target = this;
     return target.replace(new RegExp(search, 'g'), replacement);
 };
-
-
 
 function AccountContactChange(e) {
     SetContactEmail();
@@ -1298,8 +1255,6 @@ function EditAccount() {
     window.location = "/Account/edit?id=" + value + "&MarketId=" + MarketId;
 }
 
-
-
 //funtions to create GUID in Javascript
 function guid() {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
@@ -1312,9 +1267,7 @@ function s4() {
         .substring(1);
 }
 
-
 function fillProductDepartment(id) {
-
     var id = $("#AccountID option:selected").val();
     if (id === null || id === "" || id === 0) { return; }
     LoadingPanel.Show();
@@ -1326,7 +1279,6 @@ function fillProductDepartment(id) {
         type: "GET",
         url: "/PurchaseOrders/_GetProductDepartment/",
         data: { accountId: id },
-
 
         success: function (data) {
             var options = "";
@@ -1343,7 +1295,6 @@ function fillProductDepartment(id) {
             LoadingPanel.Hide();
             alert('Error' + textStatus + "/" + errorThrown);
         }
-
     });
 }
 

@@ -1,17 +1,17 @@
 ﻿using AutoMapper;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
+using Ganedata.Core.Entities.Helpers;
+using Ganedata.Core.Models;
 using Ganedata.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using WMS.Helpers;
-using Ganedata.Core.Entities.Helpers;
-using System.Globalization;
-using Ganedata.Core.Models;
-using System.Threading.Tasks;
 
 namespace WMS.Controllers
 {
@@ -42,6 +42,7 @@ namespace WMS.Controllers
             _commonDbServices = commonDbServices;
             _mapper = mapper;
         }
+
         // GET: PurchaseOrders
         public ActionResult Index()
         {
@@ -54,7 +55,6 @@ namespace WMS.Controllers
         {
             return GenerateNextOrderNumber((InventoryTransactionTypeEnum)inventoryTranstionType);
         }
-
 
         public ActionResult Create(int? Id, string pageToken = null)
         {
@@ -88,13 +88,13 @@ namespace WMS.Controllers
 
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(Order Order, OrderRecipientInfo shipmentAndRecipientInfo, int EmailTemplate)
         {
             try
             {
-
                 if (ModelState.IsValid)
                 {
                     if (shipmentAndRecipientInfo.ShipmentDestination == null ||
@@ -107,14 +107,10 @@ namespace WMS.Controllers
                         var orderDetails = GaneOrderDetailsSessionHelper.GetOrderDetailSession(shipmentAndRecipientInfo.PageSessionToken);
                         var orderNotes = GaneOrderNotesSessionHelper.GetOrderNotesSession(shipmentAndRecipientInfo.PageSessionToken);
 
-
-
-
                         OrderService.CreatePurchaseOrder(Order, shipmentAndRecipientInfo, CurrentTenantId, CurrentWarehouseId, CurrentUserId, _mapper.Map(orderDetails, new List<OrderDetail>()), orderNotes);
 
                         if (shipmentAndRecipientInfo.SendEmailWithAttachment)
                         {
-
                             var report = CreatePurchaseOrderPrint(Order.OrderID);
                             PrepareDirectory("~/UploadedFiles/reports/po/");
                             var reportPath = "~/UploadedFiles/reports/po/" + Order.OrderNumber + ".pdf";
@@ -213,7 +209,6 @@ namespace WMS.Controllers
                 if (list.Any())
                 {
                     ViewBag.accountShip = true;
-
                 }
             }
 
@@ -246,10 +241,8 @@ namespace WMS.Controllers
                 ViewBag.IsAccountAddressId = true;
                 ViewBag.AccountAddressId = Order.AccountAddressId;
             }
-
             else if (Order.IsShippedToTenantMainLocation || Order.ShipmentWarehouseId != null)
             {
-
                 ViewBag.IsShipmentToWarehouse = true;
             }
             else if (Order.IsCollectionFromCustomerSide)
@@ -264,6 +257,7 @@ namespace WMS.Controllers
         }
 
         #region Pallet Tracking
+
         public JsonResult _VerifyPallete(string serial, int? pid)
         {
             bool status = false;
@@ -326,7 +320,6 @@ namespace WMS.Controllers
                             ViewBag.MoYy = date.Value.Day + "/" + date.Value.Month + "/" + date.Value.Year;
                             ViewBag.expDate = date;
                         }
-
                     }
                     if (palletTrackingIds == 4)
                     {
@@ -341,16 +334,13 @@ namespace WMS.Controllers
                     {
                         ViewBag.Serial = _salesServices.GetSerialByPalletTrackingScheme(prodId, palletTrackingIds, CurrentTenantId, CurrentWarehouseId)?.PalletSerial;
                     }
-
                 }
-
             }
-
 
             ViewBag.product = _productServices.GetProductMasterById(prodId);
             return PartialView();
-
         }
+
         public JsonResult _SubmitPalleteSerials(List<string> serialList, int? pid, int? orderId, string DeliveryNo, int OrderDetailID)
         {
             GoodsReturnRequestSync goodsReturnRequestSync = new GoodsReturnRequestSync();
@@ -393,12 +383,12 @@ namespace WMS.Controllers
             return Json(result < 0 ? false : true, JsonRequestBehavior.AllowGet);
         }
 
-        #endregion
+        #endregion Pallet Tracking
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "OrderID,OrderNumber,DirectShip,ExpectedDate,Note,AccountID,OrderTypeID,LoanID,OrderStatusID,AccountContactId,Posted,PPropertyId,DepartmentId,InvoiceNo,InvoiceDetails,OrderCost,IsCollectionFromCustomerSide,ShipmentAccountAddressId,BaseOrderId")] Order Order, OrderRecipientInfo shipmentAndRecipientInfo, string orderSaveAndProcess, int EmailTemplate)
         {
-
             if (ModelState.IsValid)
             {
                 var items = GaneOrderDetailsSessionHelper.GetOrderDetailSession(shipmentAndRecipientInfo.PageSessionToken);
@@ -418,7 +408,6 @@ namespace WMS.Controllers
                     {
                         TempData["Error"] = result;
                     }
-
                 }
 
                 GaneOrderDetailsSessionHelper.ClearSessionTokenData(shipmentAndRecipientInfo.PageSessionToken);
@@ -441,12 +430,13 @@ namespace WMS.Controllers
             ViewBag.SupplierID = new SelectList(AccountServices.GetAllValidAccounts(CurrentTenantId, EnumAccountType.Supplier), "SupplierID", "CompanyName", Order.AccountID);
             return View(Order);
         }
+
         public ActionResult _PurchaseOrders()
         {
             var model = OrderService.GetAllPurchaseOrders(CurrentTenantId);
             return PartialView("_PurchaseOrders", model.ToList());
-
         }
+
         public ActionResult _OrderDetails(string pageSessionToken)
         {
             ViewBag.setName = "gridViewOrdDet";
@@ -489,11 +479,11 @@ namespace WMS.Controllers
             ViewBag.route = new { Controller = "PurchaseOrders", Action = "_PODetails", Id = ViewBag.orderid };
             return PartialView("_PODetails", OrderService.GetPurchaseOrderDetailsById(Id, CurrentTenantId));
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ReceivePO(Order model)
         {
-
             return View();
         }
 
@@ -501,8 +491,8 @@ namespace WMS.Controllers
         {
             ViewBag.Locations = new SelectList(_productLookupService.GetAllValidProductLocations(CurrentTenantId, CurrentWarehouseId), "LocationId", "LocationCode");
             return PartialView();
-
         }
+
         /// <summary>
         /// This is for non serialized products.
         /// </summary>
@@ -528,6 +518,7 @@ namespace WMS.Controllers
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             return View();
         }
+
         public ActionResult _Deliveries()
         {
             var data = OrderService.GetAllPurchaseOrderProcesses(CurrentTenantId, CurrentWarehouseId).OrderByDescending(x => x.DateCreated).Select(ops => new
@@ -561,10 +552,8 @@ namespace WMS.Controllers
                 opd.DateCreated,
                 opd.OrderProcessDetailID,
                 count = _productServices.GetInventroyTransactionCountbyOrderProcessDetailId(opd.OrderProcessDetailID, CurrentTenantId),
-
             }).ToList();
             return PartialView(data);
-
         }
 
         public ActionResult GoodsReceiveNote()
@@ -572,6 +561,7 @@ namespace WMS.Controllers
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             return View();
         }
+
         public ActionResult _GoodsReceiveNote()
         {
             var data = OrderService.GetAllGoodsReceiveNotes(CurrentTenantId, CurrentWarehouseId).OrderByDescending(x => x.DateCreated).Select(ops => new
@@ -604,10 +594,10 @@ namespace WMS.Controllers
             }).ToList();
 
             return PartialView(data);
-
         }
 
         #region BlindShipment
+
         public ActionResult BlindShipment(bool? delivery)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
@@ -633,7 +623,6 @@ namespace WMS.Controllers
                          {
                              TaxId = gtax.TaxID,
                              TaxName = gtax.TaxName + " - " + gtax.PercentageOfAmount + " %"
-
                          }).ToList();
             ViewBag.GlobalTaxes = new SelectList(taxes, "TaxId", "TaxName");
             ViewBag.DeliveryNo = GaneStaticAppExtensions.GenerateDateRandomNo();
@@ -650,6 +639,7 @@ namespace WMS.Controllers
             ViewBag.type = (int)InventoryTransactionTypeEnum.PurchaseOrder;
             return View();
         }
+
         public ActionResult _BlindShipment()
         {
             var pid = Request.Params["pid"];
@@ -658,7 +648,6 @@ namespace WMS.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             if (!string.IsNullOrEmpty(pid))
             {
-
                 int number;
                 bool success = Int32.TryParse(pid, out number);
                 if (success)
@@ -682,7 +671,6 @@ namespace WMS.Controllers
                             ViewBag.palletTrackingId = (int)palletTracking.PalletTrackingScheme;
                         }
 
-
                         return PartialView("_AddPalletes");
                     }
                     else
@@ -700,8 +688,6 @@ namespace WMS.Controllers
                             ViewBag.fscpercent = itemtoedit.FscPercent;
                             ViewBag.prodID = itemtoedit.ProductDesc;
                             ViewBag.Key = key;
-
-
                         }
                         return PartialView("_RecProduct");
                     }
@@ -722,7 +708,6 @@ namespace WMS.Controllers
                     itemtoedit.ProductDesc = product.ProductDesc;
                     itemtoedit.FscPercent = product.FscPercent;
                     itemtoedit.Quantity = product.Quantity;
-
                 }
             }
             else
@@ -736,7 +721,6 @@ namespace WMS.Controllers
                 }
                 else
                 {
-
                     product.GroupProduct = model?.ProductGroup?.ProductGroup;
                 }
                 product.ProductDesc = product.ProductDesc;
@@ -754,6 +738,7 @@ namespace WMS.Controllers
             }
             return null;
         }
+
         public JsonResult _SubmitSerial(List<BSDto> products)
         {
             var model = _productServices.GetProductMasterById(products.FirstOrDefault()?.ProductId ?? 0);
@@ -783,17 +768,12 @@ namespace WMS.Controllers
                 var products = StockTakeApiService.CreateProductOnStockTake(productDetailRequest);
                 if (!string.IsNullOrEmpty(products?.Result?.FailureMessage))
                 {
-
                     return Json(products.Result.FailureMessage);
                 }
                 product.ProductId = products.Result.ProductId;
                 product.ProductName = product.ProductName;
                 product.SKU = products.Result.ProductCode;
                 product.GroupProduct = products.Result.ProductGroup;
-
-
-
-
             }
             product.Quantity = product.Quantity ?? 1;
             product.Price = product.Price ?? 0;
@@ -813,26 +793,19 @@ namespace WMS.Controllers
 
         public ActionResult _BSList()
         {
-
             var model = Session["bsList"] as List<BSDto>;
             ViewBag.Groups = _tenantServices.GetAllTenantConfig(CurrentTenantId)?.FirstOrDefault(u => u.EnableTimberProperties)?.EnableTimberProperties;
-
 
             return PartialView(model.OrderByDescending(m => m.Id).ToList());
         }
 
         public JsonResult ProductType()
         {
-
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
-
-
-
         public JsonResult _ConfirmBS(int account, string delivery, InventoryTransactionTypeEnum type, AccountShipmentInfo accountShipmentInfo)
         {
-
             try
             {
                 var bsList = Session["bsList"] as List<BSDto>;
@@ -843,7 +816,6 @@ namespace WMS.Controllers
             }
             catch (Exception exp)
             {
-
                 return Json(new { error = true, msg = exp.Message });
             }
         }
@@ -855,14 +827,15 @@ namespace WMS.Controllers
             bsList.Remove(itemtoRemove);
             return null;
         }
+
         public JsonResult _EditItem(int Id)
         {
             var bsList = Session["bsList"] as List<BSDto>;
             var itemtoedit = bsList.Find(a => a.Id == Id);
             return Json(itemtoedit, JsonRequestBehavior.AllowGet);
-
         }
-        #endregion
+
+        #endregion BlindShipment
 
         public JsonResult _GetAccountAddress(int accountId, int orderId)
         {
@@ -872,14 +845,12 @@ namespace WMS.Controllers
             {
                 if (orderId > 0)
                 {
-
                     var secondryAddress = _accountServices.GetAllValidAccountContactsByAccountId(accountId, CurrentTenantId);
                     var list = OrderService.GetAccountContactId(orderId).ToList();
                     foreach (var item in secondryAddress)
                     {
                         if (!string.IsNullOrEmpty(item.ContactEmail))
                         {
-
                             addresses.Add(new Tuple<string, string>(item.AccountContactId.ToString(), item.ContactEmail));
                         }
                     }
@@ -887,9 +858,6 @@ namespace WMS.Controllers
                     string[] selected = checkedIds.Select(p => p.ToString()).ToArray();
                     var obj = new MultiSelectList(addresses, "Item1", "Item2", selected);
                     return Json(obj, JsonRequestBehavior.AllowGet);
-
-
-
                 }
                 else
                 {
@@ -900,23 +868,18 @@ namespace WMS.Controllers
                         {
                             addresses.Add(new Tuple<string, string>(item.AccountContactId.ToString(), item.ContactEmail));
                         }
-
                     }
                     var selected = AccountServices.GetAllValidAccountContactsByAccountContactId(accountId).Select(u => u.AccountContactId).ToList();
                     var obj = new MultiSelectList(addresses, "Item1", "Item2", selected);
 
                     return Json(obj, JsonRequestBehavior.AllowGet);
-
                 }
-
             }
             catch
             {
                 return Json(new { error = true });
-
             }
         }
-
 
         public JsonResult _GetAccountShipmentAddress(int accountId)
         {
@@ -926,7 +889,6 @@ namespace WMS.Controllers
                 return null;
             }
             return Json(new { AddressLine1 = accountAdress.AddressLine1, AddressLine2 = accountAdress.AddressLine2, AddressLine3 = accountAdress.AddressLine3, AddressLine4 = accountAdress.Town, ShipmentAddressPostcode = accountAdress.PostCode }, JsonRequestBehavior.AllowGet);
-
         }
 
         public JsonResult _GetOrderDetail(int OrderId, int accounId, string PageSession)
@@ -955,6 +917,7 @@ namespace WMS.Controllers
             var model = LookupServices.GetProductDepartments(accountId);
             return Json(model, JsonRequestBehavior.AllowGet);
         }
+
         public JsonResult _GetProductGroup(int DepartmentId)
         {
             var model = LookupServices.GetProductGroups(DepartmentId);
@@ -966,7 +929,6 @@ namespace WMS.Controllers
             var model = LookupServices.GetProductCategory(GroupId);
             return Json(model, JsonRequestBehavior.AllowGet);
         }
-
 
         public JsonResult RefreshProductGroupAndDepartment(string value)
         {
@@ -980,7 +942,6 @@ namespace WMS.Controllers
                 var Departments = new SelectList(LookupServices.GetAllValidTenantDepartments(CurrentTenantId), "DepartmentId", "DepartmentName");
                 return Json(Departments, JsonRequestBehavior.AllowGet);
             }
-
         }
 
         public JsonResult GetAccountAddressByAccountId(int id)
@@ -989,14 +950,8 @@ namespace WMS.Controllers
             {
                 AccountAddressId = u.AddressID,
                 AccountAddress = u.FullAddressValue
-
             });
             return Json(accountaddress, JsonRequestBehavior.AllowGet);
         }
-
     }
-
-
-
 }
-

@@ -23,7 +23,6 @@
         var name = s.name;
         if (name.indexOf("gridViewOrdDet") >= 0) {
 
-
             $('#selkeyhdPrddet').val(s.GetRowKey(s.GetFocusedRowIndex()));
         }
     }
@@ -66,7 +65,6 @@
                              }
                              ).GetHtml()
                     @Html.ValidationMessageFor(model => model.IssueDate)
-
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">
@@ -87,7 +85,6 @@
                              }
                              ).GetHtml()
                     @Html.ValidationMessageFor(model => model.ExpectedDate)
-
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">
@@ -97,7 +94,6 @@
                         <b class="fa fa-file-o"></b>
                         <a href="#" style="cursor:pointer" onclick="javaScript: ModelOrderNotes.Show();">Notes</a>
                     </div>
-
                 </div>
             </div>
 
@@ -137,7 +133,6 @@
                 @Html.LabelFor(model => model.InvoiceNo, htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
                     @Html.EditorFor(model => model.InvoiceNo)
-
                 </div>
             </div>
 
@@ -145,7 +140,6 @@
                 @Html.LabelFor(model => model.InvoiceDetails, htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
                     @Html.EditorFor(model => model.InvoiceDetails)
-
                 </div>
             </div>
 
@@ -167,7 +161,6 @@
                 @Html.LabelFor(model => model.DirectShip, htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
                     @Html.EditorFor(model => model.DirectShip)
-
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center" style="display:none" id="directShipdd">
@@ -177,7 +170,6 @@
                         <div class="col-11 p-0 mt-1 pull-left">
 
                             @Html.DropDownListFor(model => model.BaseOrderID, ViewBag.DirectOrderList as SelectList, "Select Orders", new { @class = "chosen-select" })
-
                         </div>
                         <div class="col-1 p-0 pull-left">
                             <a href="javascript:;" onclick="GetOrderDetail();" id="AccountAddress" class="btn btn-primary"><i class="fa fa-circle-o-notch" style="font-size:24px"></i></a>
@@ -185,7 +177,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
         <div class="col-md-7 p-0 pull-left mb-2">
             <div class="col-md-12 report-date-header">
@@ -194,15 +185,12 @@
                     <input type="button" id="OrderDetailUpdate" class="btn btn-primary orddet" value="Update">
                     <input type="button" id="OrderDetailDelete" class="btn btn-primary orddet" value="Delete">
                 </div>
-
             </div>
             <div class="col-md-12 pull-left p-0">
                 @Html.Action("_OrderDetails", "OrderDetail")
             </div>
-
         </div>
     </div>
-
 
     <div class="col-md-12 pull-left">
         <div class="card">
@@ -238,7 +226,6 @@
         $("form :input").change(function () {
             formmodified = 1;
         });
-
 
         window.onbeforeunload = confirmExit;
         function confirmExit() {

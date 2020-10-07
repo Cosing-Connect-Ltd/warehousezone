@@ -29,8 +29,8 @@ namespace Ganedata.Core.Services
             _userService = userService;
             _mapper = mapper;
             _dataImportFactory = new DataImportFactory();
-
         }
+
         public PalletProduct AddFulFillmentPalletProduct(PalletProductAddViewModel model)
         {
             var orderProcessDetail = _currentDbContext.OrderProcessDetail.First(m => m.OrderProcessDetailID == model.OrderProcessDetailID);
@@ -57,7 +57,8 @@ namespace Ganedata.Core.Services
 
             var previousAssignedProductsToPallets = _currentDbContext.PalletProducts.Where(i => orderProcessDetails.Select(p => p.ProductId).Contains(i.ProductID)).ToList();
 
-            previousAssignedProductsToPallets.ForEach(i => {
+            previousAssignedProductsToPallets.ForEach(i =>
+            {
                 i.IsDeleted = true;
             });
 
@@ -83,6 +84,7 @@ namespace Ganedata.Core.Services
         {
             return _currentDbContext.PalletProducts.Where(m => m.PalletID == palletId && m.IsDeleted != true).ToList();
         }
+
         public List<PalletProductsSync> GetAllPalletProductsForSync(DateTime? afterDate)
         {
             var palletProducts = _currentDbContext.PalletProducts.AsNoTracking().Where(m => (!afterDate.HasValue || (m.DateUpdated ?? m.DateCreated) >= afterDate) && m.IsDeleted != true);
@@ -98,6 +100,7 @@ namespace Ganedata.Core.Services
             }).ToList();
             return result;
         }
+
         public PalletDispatchInfoViewModel GetPalletDispatchDetailByPallet(int palletId)
         {
             var pallet = GetFulfillmentPalletById(palletId);
@@ -125,10 +128,11 @@ namespace Ganedata.Core.Services
             return Enum.GetValues(typeof(DeliveryMethods)).Cast<DeliveryMethods>().ToList();
         }
 
-        public IEnumerable<TenantDeliveryService> GetAllDpdServices()
+        public IEnumerable<TenantDeliveryService> GetAllTenantDeliveryServices(int tenantId, DeliveryMethods? deliveryMethod = null)
         {
-            return _currentDbContext.TenantDeliveryServices.Where(u => u.IsDeleted != true);
+            return _currentDbContext.TenantDeliveryServices.Where(u => u.IsDeleted != true && (!deliveryMethod.HasValue || u.DeliveryMethod == deliveryMethod));
         }
+
         public Pallet CreateNewPallet(int orderProcessId, int userId)
         {
             var orderProcess = _currentDbContext.OrderProcess.Find(orderProcessId);
@@ -149,7 +153,6 @@ namespace Ganedata.Core.Services
             string result = "";
             if (dispatch.PalletDispatchId > 0)
             {
-
                 var item = _currentDbContext.PalletsDispatches.FirstOrDefault(u => u.PalletsDispatchID == dispatch.PalletDispatchId);
                 if (item != null)
                 {
@@ -175,12 +178,10 @@ namespace Ganedata.Core.Services
                             var pallet = _currentDbContext.Pallets.Find(palletId.PalletID);
                             if (pallet != null && pallet.PalletProducts.Count > 0)
                             {
-
                                 pallet.DateCompleted = DateTime.UtcNow;
                                 pallet.DateUpdated = DateTime.UtcNow;
                                 pallet.CompletedBy = userId;
                                 pallet.PalletsDispatch = item;
-
 
                                 _currentDbContext.Entry(pallet).State = pallet.PalletsDispatchID > 0 ? EntityState.Modified : EntityState.Added;
                             }
@@ -201,7 +202,6 @@ namespace Ganedata.Core.Services
                     result = _dataImportFactory.PostShipmentData(item.PalletsDispatchID, model);
                 }
                 return result;
-
             }
             else
             {
@@ -234,12 +234,10 @@ namespace Ganedata.Core.Services
                         var pallet = _currentDbContext.Pallets.Find(palletId.PalletID);
                         if (pallet != null && pallet.PalletProducts.Count > 0)
                         {
-
                             pallet.DateCompleted = DateTime.UtcNow;
                             pallet.DateUpdated = DateTime.UtcNow;
                             pallet.CompletedBy = userId;
                             pallet.PalletsDispatch = item;
-
 
                             _currentDbContext.Entry(pallet).State = EntityState.Modified;
                         }
@@ -260,7 +258,6 @@ namespace Ganedata.Core.Services
                 }
                 return result;
             }
-
         }
 
         public Pallet UpdatePalletProof(string palletNumber, byte[][] palletProofImages)
@@ -324,7 +321,6 @@ namespace Ganedata.Core.Services
             return _currentDbContext.Pallets.FirstOrDefault(m => m.PalletNumber.Equals(palletNumber));
         }
 
-
         public List<PalletsDispatch> GetAllPalletsDispatch(int? dispatchId, DateTime? reqDate, int? orderProcessID = null)
         {
             return _currentDbContext.PalletsDispatches.Where(u => u.DateCompleted.HasValue && (!orderProcessID.HasValue || u.OrderProcessID == orderProcessID) && (!reqDate.HasValue || (u.DateUpdated ?? u.DateCreated) >= reqDate) && (!dispatchId.HasValue || u.PalletsDispatchID == dispatchId)).OrderByDescending(x => x.DateCreated).ToList();
@@ -378,7 +374,6 @@ namespace Ganedata.Core.Services
                 ScannedOnDelivered = m.ScannedOnDelivered,
                 DeliveredScanTime = m.DeliveredScanTime,
                 DispatchStatus = m.PalletsDispatchID
-
             });
         }
 
@@ -460,7 +455,6 @@ namespace Ganedata.Core.Services
 
                     UpdatePalletProof(pallet.PalletNumber, currentDispatch.ProofOfLoadingImageBytes);
                 }
-
             }
 
             currentDispatch.IsDispatched = true;
@@ -502,11 +496,9 @@ namespace Ganedata.Core.Services
                     _currentDbContext.SaveChanges();
                     return true;
                 }
-
             }
 
             return false;
-
         }
 
         public PalletDispatchProgress UpdateDispatchProgress(PalletDispatchProgress currentDispatch, int userId)
@@ -520,7 +512,6 @@ namespace Ganedata.Core.Services
             dispatch.DateUpdated = DateTime.UtcNow;
             dispatch.UpdatedBy = userId;
             dispatch.ReceiverName = currentDispatch.ReceiverName;
-
 
             if (currentDispatch.ReceiverSign != null && currentDispatch.DispatchStatus == PalletDispatchStatusEnum.Delivered)
             {
@@ -559,7 +550,6 @@ namespace Ganedata.Core.Services
 
                     _currentDbContext.SaveChanges();
                 }
-
             }
 
             //update order process status
@@ -588,7 +578,6 @@ namespace Ganedata.Core.Services
             {
                 try
                 {
-
                     palletproduct.IsDeleted = true;
                     palletproduct.DateUpdated = DateTime.UtcNow;
                     palletproduct.UpdatedBy = userId;
@@ -596,13 +585,11 @@ namespace Ganedata.Core.Services
                     _currentDbContext.Entry(palletproduct).State = EntityState.Modified;
                     _currentDbContext.SaveChanges();
                     palletId = palletproduct.PalletID;
-
                 }
                 catch (Exception)
                 {
                     return palletId;
                 }
-
             }
             return palletId;
         }
@@ -619,7 +606,6 @@ namespace Ganedata.Core.Services
             _currentDbContext.SaveChanges();
             return true;
         }
-
 
         public PalletsDispatch GetPalletsDispatchByDispatchId(int palletDispatchId)
         {
@@ -729,7 +715,6 @@ namespace Ganedata.Core.Services
                 result.ShipmentId = palletDispatch.ShipmentId;
             }
 
-
             return result;
         }
 
@@ -743,7 +728,6 @@ namespace Ganedata.Core.Services
             }
 
             _currentDbContext.SaveChanges();
-
 
             return true;
         }

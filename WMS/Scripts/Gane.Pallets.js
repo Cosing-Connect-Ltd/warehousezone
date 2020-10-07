@@ -231,7 +231,6 @@ function EditPalletDispatch(palletDispatchId) {
         LoadingPanel.Hide();
         Gane.Helpers.ShowPopupMessage('Dispatch Pallets Error', xhr.responseText, PopupTypes.Warning);
     });
-
 }
 
 function SaveEditPallets() {
@@ -243,11 +242,7 @@ function SaveEditPallets() {
         LoadingPanel.Show();
         UploadControl.UploadFile();
     }
-
 }
-
-
-
 
 function OnPalletSelected(s, e) {
     var selectedPallets = PalletsListGridView1.GetSelectedKeysOnPage();
@@ -273,7 +268,6 @@ $(document).ready(function () {
     $("#btnDispatchPallets").on("click", function () {
         openDispatchPopup()
     });
-
 });
 
 function openDispatchPopup() {
@@ -313,15 +307,49 @@ function OnSubmitFormvalidate() {
 
 
 }
+
 function DeliveryMethodChange(e) {
+    prepareTenantDeliveryServicesDropDown();
     if ($("#DeliveryMethod :selected").val() == "3") {
         $(".data-detail").hide();
-        $(".data-ddp").show();
     }
     else {
         $(".data-detail").show();
-        $(".data-ddp").hide();
     }
+}
+
+function prepareTenantDeliveryServicesDropDown() {
+    var deliveryMethod = $("#DeliveryMethod option:selected").val();
+    if (deliveryMethod === null || deliveryMethod === "" || deliveryMethod === 0) { return; }
+    LoadingPanel.Show();
+
+    //var pid = $("#prdid option:selected").val();
+    $('#NetworkCode').empty();
+    $("#NetworkCode").trigger("chosen:updated");
+    $.ajax({
+        type: "GET",
+        url: "/Order/_GetTenantDeliveryServices/",
+        data: { deliveryMethod: deliveryMethod },
+        success: function (data) {
+            if (!!data && data.length > 0) {
+                $("#delivery-service__selector").show();
+                $.each(data, function (i, item) {
+                    $('#NetworkCode').append($('<option></option>').val(item.NetworkCode).html(item.NetworkDescription));
+                });
+                $("#NetworkCode").trigger("chosen:updated");
+            }
+            else {
+                $("#delivery-service__selector").hide();
+            }
+
+            LoadingPanel.Hide();
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            // alert(xhr.status);
+            LoadingPanel.Hide();
+            alert('Error' + textStatus + "/" + errorThrown);
+        }
+    });
 }
 
 function DeletePalletProduct(PalletProductId) {

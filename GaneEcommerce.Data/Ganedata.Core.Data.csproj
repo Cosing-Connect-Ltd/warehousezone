@@ -1099,6 +1099,10 @@
     <Compile Include="Migrations\202010061534327_added-BaseOrderId-to-Orders-table.designer.cs">
       <DependentUpon>202010061534327_added-BaseOrderId-to-Orders-table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202010070815394_added-IsAutoShipment-field-to-ProductMaster-table.cs" />
+    <Compile Include="Migrations\202010070815394_added-IsAutoShipment-field-to-ProductMaster-table.designer.cs">
+      <DependentUpon>202010070815394_added-IsAutoShipment-field-to-ProductMaster-table.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2243,6 +2247,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202010061534327_added-BaseOrderId-to-Orders-table.resx">
       <DependentUpon>202010061534327_added-BaseOrderId-to-Orders-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010070815394_added-IsAutoShipment-field-to-ProductMaster-table.resx">
+      <DependentUpon>202010070815394_added-IsAutoShipment-field-to-ProductMaster-table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

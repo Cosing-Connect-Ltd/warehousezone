@@ -22,27 +22,17 @@ function VerifyQunatity() {
     var Req_url = window.location.href;
     var hash = window.location.hash;
     if (Req_url.indexOf("fragment=TO") !== -1 || Req_url.indexOf("SalesOrders/Edit") !== -1 || Req_url.indexOf("WorksOrders/Edit") !== -1) {
-
-
-
         if (qty !== null && qty !== "" && qty > 0) {
-
-
-
             $.post({
                 url: "/OrderDetail/IsQunatityProcessed",
                 data: { "Qty": qty, "OrderDetailID": orderdetailId, "isdeleted": checkIsdeleted },
                 success: function (e) {
-
-
                     if (!e) {
-
                         $("#Qty_I").val(0);
 
                         alert("Quantity is already Processed");
                         return;
                     }
-
                 }
             });
         }
@@ -52,7 +42,6 @@ function updateDetails(id, recqty) {
     $('#selkeyhdPrddet').val(id);
     $('#rec_qty').val(recqty);
     ModelOrdDetail.Show();
-
 }
 function deleteDetails(id) {
     if (confirm("Are you sure want to remove product ?")) {
@@ -71,7 +60,6 @@ function deleteDetails(id) {
             }
         });
     }
-
 }
 function addDetail(action) {
     var postProductValidationProcess = function (confirmedAck) {
@@ -124,7 +112,6 @@ function addDetail(action) {
                 data,
                 function (result) {
                     var callBack = function () {
-
                         if (window.location.href.indexOf("ProcessOrder") >= 0) {
                             if ($("#gvODetail").length > 0) {
                                 gvODetail.Refresh();
@@ -153,9 +140,7 @@ function addDetail(action) {
                     };
 
                     if (!confirmedAck) {
-
                         if (result.Threshold != null && !result.Threshold.Success && !result.Threshold.CanProceed) {
-
                             $("#vldOrdDet").addClass("validation-summary-errors");
                             $("#vldOrdDet").html(result.Threshold.FailureMessage);
                             LoadingPanel.Hide();
@@ -167,7 +152,6 @@ function addDetail(action) {
                             result.Threshold.CanProceed &&
                             result.Threshold.ShowWarning) {
                             return postProductValidationProcess(true);
-
                         }
                         else {
                             callBack();
@@ -204,7 +188,6 @@ function addDetail(action) {
 }
 function removeDetail(id) {
     if (confirm("Are you sure want to remove product ?")) {
-
         $.post({
             url: "/OrderDetail/_RemoveProduct",
             data: { "Id": id, "pageSessionToken": sessionStorage["PageSessionToken"] },
@@ -220,7 +203,6 @@ function removeDetail(id) {
                 if ($("#gridViewOrdDet").length > 0) {
                     gridViewOrdDet.Refresh();
                 }
-
             }
         });
     }
@@ -234,7 +216,6 @@ function ClearPageSessionData() {
 }
 
 function UpdateAccountDDForOrderDetails() {
-
     if ($("#gridViewOrdDet").length > 0) {
         if (gridViewOrdDet.cpRowCount > 0) {
             DisableChosenDropdown('AccountID', true);
@@ -263,7 +244,6 @@ function DisableChosenDropdown(dropdownId, disable) {
 }
 
 function loadProdAccounts() {
-
     var acid = $("#AccountID option:selected").val();
     var pid = prdid.GetValue();
     //$("#prdid option:selected").val();
@@ -277,7 +257,6 @@ function loadProdAccounts() {
         dataType: 'json',
 
         success: function (data) {
-
             $('#drpPrdAccount').empty();
 
             if (data.length > 0) {
@@ -296,7 +275,6 @@ function loadProdAccounts() {
 }
 
 function GetOrderingNotes() {
-
     var productAccountCodeId = $("#drpPrdAccount").val();
     if (productAccountCodeId > 0 && productAccountCodeId !== undefined && productAccountCodeId !== null && productAccountCodeId !== "") {
         $.ajax({
@@ -310,31 +288,20 @@ function GetOrderingNotes() {
                 else {
                     $('.ordering-notes').show();
                     $('#OrderingNotes').text(result);
-
-
-
                 }
-
-
-
             }
         });
     }
-
 }
 $("#drpPrdAccount").change(function () {
-
     GetOrderingNotes();
 });
-
-
 
 function beginCallbackWithPageSessionToken(s, e) {
     e.customArgs["pageSessionToken"] = sessionStorage["PageSessionToken"];
 }
 
 function beginorderDetCallBack(s, e) {
-
     formmodified = 1;
 
     e.customArgs["did"] = $('#selkeyhdPrddet').val();
@@ -373,7 +340,6 @@ function beginorderDetCallBack(s, e) {
 var productpercase = 0;
 var pricealert;
 function endOrderDetailCallback() {
-
     var callback = function (result) {
         var prices = result.Price;
         percentageValue = result.percentageMargin;
@@ -387,9 +353,7 @@ function endOrderDetailCallback() {
             $(".WarrantyDetail").hide();
         }
         if (prices !== null && typeof Price !== 'undefined') {
-
             if (prices <= 0) {
-
                 Price.SetValue("");
                 $(".financialAnalysisMainDiv").hide();
             }
@@ -408,12 +372,10 @@ function endOrderDetailCallback() {
                     PriceAnalysis();
                 }
             }
-
         }
         if (prices !== null && typeof Price !== 'undefined' && !result.AllowModifyPrice && (result.AllowZeroSale == null || !result.AllowZeroSale) && result.AllowModifyPrice != undefined) {
             Price.GetInputElement().readOnly = true;
         }
-
 
         $("#frmorddetails #ProductsPerCase").val(result.ProductsPerCase);
         if (result.ProductsPerCase > 0) {
@@ -438,13 +400,11 @@ function endOrderDetailCallback() {
             $(".quantityor").hide();
             $(".casequantity").show();
             $("#processcase").val(result.ProductsPerCase);
-
         }
 
         if (result.ProcessByPallet) {
             $("#ProcessBy[value=Pallet]").prop("checked", true);
         }
-
 
         updateProcessByValue();
         LoadingPanel.Hide();
@@ -469,7 +429,6 @@ function endOrderDetailCallback() {
         Gane.Helpers.AjaxPost('/orderdetail/_productpricedetail', data, null, callback, false);
     }
 
-
     loadProdAccounts();
 }
 
@@ -482,7 +441,6 @@ var updateProcessByValue = function () {
 };
 
 $("#frmorddetails input[type=radio]").on("click", function () { updateProcessByValue(); });
-
 
 function beginPriceHistoryCallBack(s, e) {
     var Req_url = window.location.href;
@@ -505,7 +463,6 @@ function beginPriceHistoryCallBack(s, e) {
     e.customArgs["product"] = pid;
     e.customArgs["ordertype"] = ordertype;
     e.customArgs["account"] = acid;
-
 }
 function getPrice() {
     var price = $('input[name="HPrice"]:checked').val();
@@ -521,7 +478,6 @@ function VerifySerial(e, cnt) {
     var serialRange;
     var qty = parseInt($('#qty').val(), 10);
     type = parseInt($('#type').val(), 10);
-
 
     data = { serial: $(cnt).val(), pid: $('#prodId').val(), orderid: $('#order').val(), del: $('#delivery').val(), type: type };
 
@@ -597,7 +553,6 @@ function VerifySerial(e, cnt) {
 
 var failedSerials = [];
 var ValidateSerialSequence = function (serialNumbers) {
-
     var type;
     var data = {};
     var serialNumber = '';
@@ -616,7 +571,6 @@ var ValidateSerialSequence = function (serialNumbers) {
                     failedSerials.push(s.Serial);
                 } else {
                     $('#serialWrapper').append(GetSerialInputForProduct('', s.Serial));
-
                 }
             });
 
@@ -642,7 +596,6 @@ var ValidateSerialSequence = function (serialNumbers) {
         success: function (result) {
             $.each(serialNumbers, function (i, s) {
                 if (s.Serial == serialNumber) {
-
                     s.Result = result == true;
                     s.RequestComplete = true;
                     if (result == true && serialArray.indexOf(serialNumber) < 0) {
@@ -658,7 +611,6 @@ var ValidateSerialSequence = function (serialNumbers) {
 };
 
 var initialiseSeriesGenerateActions = function (s, e) {
-
     var toggleSeriesButton = function () {
         if ($(".serial-range:visible").length > 0) {
             $(".serial-range").slideUp();
@@ -690,9 +642,6 @@ var initialiseSeriesGenerateActions = function (s, e) {
             var qty = $(".serial-range").find('.serial-range-qty').val();
             var lastSerial = $('.serial-enter-box').val();
             if (confirm("You Require " + qty + " serials?")) {
-
-
-
                 var results = [];
                 if (lastSerial !== "") {
                     results.push({ Serial: lastSerial, Result: false, RequestComplete: false });
@@ -714,7 +663,6 @@ var initialiseSeriesGenerateActions = function (s, e) {
                         lastSerialLength = value.length;
                     }
 
-
                     var prefixLength = prefix.length;
                     var nextSerial = prefix + suffix;
                     if (nextSerial.length > lastSerialLength) {
@@ -727,17 +675,14 @@ var initialiseSeriesGenerateActions = function (s, e) {
                 }
 
                 ValidateSerialSequence(results);
-
             }
             toggleSeriesButton();
             $('.serial-enter-box').val("");
             $('.serial-enter-box').focus();
-
         });
 };
 
 var GetSerialInputForProduct = function (addHtml, tValue) {
-
     var serialTextBox = "<input placeholder='Scan or enter serial number and press enter' class='serial pull-left col-md-10 p-0' onkeypress='VerifySerial(event,this)' type='text' value='" + (tValue !== null ? tValue : '') + "' disabled />";
     var removeButton = "<a href='#' class='pull-left col-md-2' onclick='RemoveSerials(event,this)'>Remove</a>";
     return $("<div class='form-group col-md-12 p-0 serial-range-init pull-left'>" + serialTextBox + removeButton + addHtml + "</div>");
@@ -749,7 +694,6 @@ var GetSerialInputForPallete = function (addHtml, tValue) {
     return $("<div class='form-group'><div class='col-md-10  col-md-offset-1'> " + serialTextBox + removeButton + addHtml + "</div></div>");
 };
 
-
 function RemoveSerials(e, c) {
     e.preventDefault();
 
@@ -760,13 +704,11 @@ function RemoveSerials(e, c) {
     $($("#serialWrapper").find("input:last")).focus();
 }
 
-
 function PickLocations(id) {
     Gane.Helpers.LoadPickLocationsReceiveProduct(id);
 }
 
 function submitProduct() {
-
     if ($("#divProcessButtons #ProcessBatchNumber").length > 0) {
         var batchNumber = $("#ProcessBatchNumber").val();
         if (batchNumber == null || batchNumber.trim().length < 1) {
@@ -791,8 +733,6 @@ function submitProduct() {
     var rec_qty = parseInt($('#rec_qty').val(), 10);
     type = $('#type').val();
 
-
-
     if (val + rec_qty > qty && (type == 8 || type == 9 || type == 1)) {
         if (confirm('Items exceeds number of items for this product, Press OK to continue') == false) {
             return;
@@ -807,7 +747,6 @@ function submitProduct() {
 
     if ($("#tblSOProductLocations").length > 0) {
         $("#divLocationsPicker .txt-pick-qty").each(function () {
-
             var maxAvailable = parseInt($(this).closest("tr").attr("data-qty"));
             var location = $(this).closest("tr").attr("data-id");
             if ($(this).val() != null && $(this).val().length > 0) {
@@ -854,7 +793,6 @@ function submitProduct() {
             .fail(function (error) {
                 alert(error.Message);
             });
-
     }
 }
 
@@ -880,7 +818,6 @@ function RefreshOrderDetailGrids() {
 }
 
 function ProcessCallbackFromProcessPost(result) {
-
     var invTypeId = parseInt($("#frmProcessOrder #InventoryTransactionTypeId").val());
     if (invTypeId == 1) {
         gvPODetail.Refresh();
@@ -948,10 +885,8 @@ function CollectSerials() {
         ordid = $('#grorderid').val();
         prid = prdid.GetValue();
         delivery = $("#deliveryNumber").val();
-
     }
     if (type === "14") {
-
         ordid = $('#grorderid').val();
         prid = $("#wrProducts option:selected").val();
         delivery = $("#deliveryNumber").val();
@@ -998,13 +933,11 @@ function CollectSerials() {
             ModelGoodsReturn.Hide();
             $("#infoMsg").html(info).show();
             $('#infoMsg').delay(2000).fadeOut();
-
         });
     }
 }
 
 function addSerial(detid, orderid, pid, ser, qty, rec_qty, type) {
-
     $('#prodId').val(pid);
     $('#ser').val(ser);
     $('#delivery').val($('#DeliveryNumber').val());
@@ -1027,7 +960,6 @@ function addSerial(detid, orderid, pid, ser, qty, rec_qty, type) {
 }
 
 function beginAddSeriesCallBack(s, e) {
-
     e.customArgs["pid"] = $('#prodId').val();
     e.customArgs["ser"] = $('#ser').val();
     e.customArgs["delivery"] = $('#delivery').val();
@@ -1038,8 +970,6 @@ function beginAddSeriesCallBack(s, e) {
     e.customArgs["line_id"] = $('#line_id').val();
     e.customArgs["rec_qty"] = $('#rec_qty').val();
 
-
-
     e.customArgs["ShipmentAddressLine1"] = $('#ShipmentAddressLine1').val();
     e.customArgs["ShipmentAddressLine2"] = $('#ShipmentAddressLine2').val();
     e.customArgs["ShipmentAddressLine3"] = $('#ShipmentAddressLine3').val();
@@ -1049,7 +979,6 @@ function beginAddSeriesCallBack(s, e) {
     serialArray = [];
 }
 function beginAddSeriesCallBackPalletes(s, e) {
-
     var type = $('#InventoryTransactionTypeId').val();
     var Req_url = window.location.href;
     if (type === "6" || type === "7") {
@@ -1059,7 +988,6 @@ function beginAddSeriesCallBackPalletes(s, e) {
         e.customArgs["qty"] = $('#Quantity').val();
     }
     else {
-
         e.customArgs["pid"] = $('#prodId').val();
         e.customArgs["ser"] = $('#ser').val();
         e.customArgs["delivery"] = $('#delivery').val();
@@ -1072,9 +1000,7 @@ function beginAddSeriesCallBackPalletes(s, e) {
     }
 
     serialArray = [];
-
 }
-
 
 function submitProperty() {
     if (IsValidForm('#frmproperty')) {
@@ -1084,7 +1010,6 @@ function submitProperty() {
         var frmdata = $("#frmproperty").serializeArray();
         $.post('/WorksOrders/_PropertySubmit', frmdata, function (result) {
             if (result.error == false) {
-
                 $('#PPropertyId').append('<option selected value=' + result.id + '>' + result.code + '</option>');
                 $("#PPropertyId").trigger("chosen:updated");
                 LoadingPanel.Hide();
@@ -1099,10 +1024,8 @@ function submitProperty() {
                 LoadingPanel.Hide();
             }
             updatePropertyTenantsList();
-
         });
     }
-
 }
 function submitLandlord() {
     if (IsValidForm('#frmlandlord')) {
@@ -1149,14 +1072,11 @@ function submitPTenent() {
                 ul.append("<li> " + result.errormessage + "</li>");
                 LoadingPanel.Hide();
             }
-
         });
     }
-
 }
 
 function getCurrentUKDate() {
-
     var day = new Date().getDate() + 1;
     var month = new Date().getMonth() + 1;
     var year = new Date().getFullYear();
@@ -1169,7 +1089,6 @@ function getCurrentUKDate() {
 
 var noteCnt = 0;
 function saveNotes() {
-
     if (IsValidForm('#frmOrderNotes')) {
         LoadingPanel.Show();
         noteCnt--;
@@ -1288,7 +1207,6 @@ function OnEndCallbackBulkOrdersGrid(s, e) {
 
         $("#worksorders-bulkform select").each(function () { if ($(this).val() != null) { $(this).closest("form").append("<input type='hidden' name='" + $(this).attr("name") + "' value='" + $(this).val() + "'>"); } });
 
-
         $("#worksorders-bulkform select").prop("disabled", true);
 
         $("#worksorders-bulkform .btn").prop("disabled", true);
@@ -1306,9 +1224,7 @@ function OnBeginCallbackEditSingleOrder(s, e) {
 }
 
 function loadOrderDetailCommonEvents() {
-
     $('.orddet').click(function (e) {
-
         var id = e.target.id;
         if (id == 'OrderDetailadd') {
             var accounId = $(".orderactcnts :selected").val();
@@ -1324,7 +1240,6 @@ function loadOrderDetailCommonEvents() {
                 if (accounId === "" || accounId === null) {
                     return alert("Please select account first!");
                 }
-
             }
 
             $('#selkeyhdPrddet').val(0);
@@ -1332,15 +1247,11 @@ function loadOrderDetailCommonEvents() {
         } else if ($('#selkeyhdPrddet').val() != 0 && id != 'OrderDetailDelete') {
             ModelOrdDetail.Show();
         } else if (id == 'OrderDetailDelete' && $('#selkeyhdPrddet').val() != 0 && $('#selkeyhdPrddet').val() != "") {
-
             removeDetail($('#selkeyhdPrddet').val());
         }
-
     });
 
     $("#ProcessBarcode").unbind("keyup").on("keyup", function (e) {
-
-
         if (e.keyCode === 13) {
             var textEmptyCheck = $("#ProcessBarcode").val();
             if (textEmptyCheck === "" || textEmptyCheck === null) { return; }
@@ -1350,12 +1261,10 @@ function loadOrderDetailCommonEvents() {
             var directPostAllowed = false;
             var iscaseQty = false;
             $("div.sales-detail-actions").each(function () {
-
                 var rowCodes = $(this).data("codes").toLowerCase().split(',');
                 if (matchedProduct) return;
 
                 if (rowCodes.indexOf($("#ProcessBarcode").val().toLowerCase()) >= 0) {
-
                     directPostAllowed = $(this).attr("data-direct-post") === "True";
 
                     if (directPostAllowed) {
@@ -1374,25 +1283,20 @@ function loadOrderDetailCommonEvents() {
                 }
             });
             if (!matchedProduct) {
-
-
                 Gane.Helpers.ShowPopupMessage("Invalid code for this order",
                     "There are no products matching this code found in this order.");
             } else {
                 if (directPostAllowed) {
-
                     submitProductProcessing(productId, orderDetailId, iscaseQty);
                 }
             }
             $('#ProcessBarcode').val('');
             $('#ProcessBarcode').focus();
-
         }
     });
 }
 
 function submitProductProcessing(productId, orderDetailId, iscaseQty) {
-
     if (productId === null || productId.length < 1) {
         submitProduct();
         return;
@@ -1420,14 +1324,12 @@ function submitProductProcessing(productId, orderDetailId, iscaseQty) {
                 alert(result.Message);
                 LoadingPanel.Hide();
             } else {
-
                 ProcessCallbackFromProcessPost(result);
             }
         });
 }
 
 var completeConfirmed = function (isWorksOrder, suffix) {
-
     var deliverynumber = $('#DeliveryNumber').val();
     isWorksOrder = isWorksOrder || false;
     suffix = suffix || '';
@@ -1438,7 +1340,6 @@ var completeConfirmed = function (isWorksOrder, suffix) {
     var returnUrl = "/PurchaseOrders/Index";
 
     if (confirm('Are you sure to complete this order?')) {
-
         LoadingPanel.SetText('Please wait while trying to complete the order...');
         LoadingPanel.Show();
 
@@ -1450,22 +1351,18 @@ var completeConfirmed = function (isWorksOrder, suffix) {
             if (!result.Success) {
                 var processUrl = '/PurchaseOrders/ReceivePO/' + frmdata.OrderID;
                 if (result.Suffix === 'SO') {
-
                     processUrl = '/SalesOrders/ProcessOrder/' + frmdata.OrderID;
                     returnUrl = "/SalesOrders/Index";
                 }
                 if (result.Suffix === 'WO') {
-
                     processUrl = '/WorksOrders/ProcessOrder/' + frmdata.OrderID;
                     returnUrl = "/WorksOrders/Index";
                 }
                 if (result.Suffix === 'TI' || result.Suffix === 'T0') {
-
                     processUrl = '/WorksOrders/ProcessOrder/' + frmdata.OrderID;
                     returnUrl = "/WorksOrders/Index";
                 }
                 if (result.Suffix === 'TO') {
-
                     processUrl = '/TransferOrders/ProcessOrder/' + frmdata.OrderID;
                     returnUrl = "/TransferOrders/Index";
                 }
@@ -1487,11 +1384,9 @@ var completeConfirmed = function (isWorksOrder, suffix) {
                 }, 200);
 
                 Gane.Helpers.ShowPopupMessage('Order is being verified', $popupContent);
-
             }
             else {
                 if (result.Suffix === 'WO') {
-
                     returnUrl = "/WorksOrders/Index";
 
                     if ($("#_WorksOrderListGridView").length > 0) {
@@ -1506,7 +1401,6 @@ var completeConfirmed = function (isWorksOrder, suffix) {
 
                     LoadingPanel.Hide();
                     location.href = location.origin + returnUrl + '#' + result.Suffix;
-
                 }
                 else if (result.Suffix === "TO" || result.Suffix === null || result.Suffix.length < 1) {
                     result.Suffix = "TO";
@@ -1542,7 +1436,6 @@ function autoCompleteOrder(orderId, includeProcessing, forceComplete, deliverynu
         IncludeProcessing: includeProcessing,
         ForceComplete: forceComplete,
         DeliveryNumber: deliverynumber
-
     };
     LoadingPanel.Show();
     $.post('/Order/AutoCompleteOrder/',
@@ -1595,7 +1488,6 @@ function completeOrder(isWorksOrder, suffix) {
     }
 }
 
-
 function loadOrderDetailProcessPickEvents() {
     if ($("#PickLocationsProductId").length > 0) {
         PickLocations($("#PickLocationsProductId").val());
@@ -1615,12 +1507,6 @@ function RowsCount() {
     }
 }
 
-
-
-
-
-
-
 //---------------- product  dropdown-------------------------------------
 
 function OnchangeDropdown(s, e) {
@@ -1631,7 +1517,6 @@ function OnchangeDropdown(s, e) {
         s.SetValue(null);
     }
     else {
-
         var tule = $("#ProductAllowance").val();
         if (type === "6" || type === "7") {
             if (prdid.GetValue() < 1) return false;
@@ -1696,7 +1581,6 @@ function OnchangeDropdown(s, e) {
             });
         }
         else if (blindshipment == "True") {
-
             var id = prdid.GetValue();
             if (jQuery.isNumeric(prdId)) {
                 ModelBS.Show();
@@ -1707,7 +1591,6 @@ function OnchangeDropdown(s, e) {
             $("#ProductId").val(prdid.GetValue());
         }
         else {
-
             prdId = prdid.GetValue();
             var item = s.GetSelectedItem();
             availableProduct = parseFloat(item.GetColumnText('InventoryStocks'));
@@ -1725,24 +1608,18 @@ function OnStartCallback(s, e) {
         var orderId = $("#grorderid").val();
         e.customArgs["OrderId"] = $("#grorderid").val();
     }
-
-
 }
 function OnEndCallbackDS(s, e) {
-
     //var inventoryTransaction = $("#InventoryTransactionTypeId").val();
     //if (inventoryTransaction == "15" || inventoryTransaction == "100") {
     //    if (GProductId > 0) {
     //        prdid.SetValue(GProductId);
     //    }
     //}
-
 }
-
 
 //------------------------------------------------------------------------
 function updatePageSessionToken(newPageGuid, forceRegenerate) {
-
     if (sessionStorage["PageSessionToken"] == null || forceRegenerate) {
         sessionStorage["PageSessionToken"] = newPageGuid;
         $("form").each(function () {
@@ -1756,7 +1633,6 @@ function updatePageSessionToken(newPageGuid, forceRegenerate) {
 }
 
 function WorksOrderBulkGUID(e) {
-
     // force to generate new GUID
     var newGuid = guid();
     updatePageSessionToken(newGuid, true);
@@ -1764,7 +1640,6 @@ function WorksOrderBulkGUID(e) {
         e.customArgs["PageSessionToken"] = newGuid;
     }
 }
-
 
 $(document).ready(function () {
     loadOrderDetailCommonEvents();
@@ -1784,8 +1659,6 @@ $(document).ready(function () {
     });
 
     function DeleteOrder(orderId, type) {
-
-
         if (orderId == null || orderId < 1) return;
 
         var confirmedAction = function () {
@@ -1814,7 +1687,6 @@ $(document).ready(function () {
             confirmedAction();
         }
     }
-
 });
 
 function LoadSOAccountAddresses() {
@@ -1844,13 +1716,11 @@ function LoadSOAccountAddresses() {
                 if ($("#radioShipToCollection:checked").length > 0) {
                     populateShipmentAddress($("#ShipmentAccountAddressId").find("option:selected").text());
                 }
-
             }
         });
     }
 
     else {
-
         $.get("/Order/GetAccountAddresses/" + $("#AccountID").val(),
             function (data) {
                 var options = "<option value='0'>Select Address</option>";
@@ -1899,7 +1769,6 @@ var updateSOShipmentInfo = function () {
 };
 
 function InitialiseSalesOrderShipmentEvents() {
-
     $("input[name='SOShipmentDestination']").click(function () {
         var value = parseInt($(this).val());
         if (value === 1) {
@@ -1915,28 +1784,10 @@ function InitialiseSalesOrderShipmentEvents() {
         }
     });
 
-
-
-    $("#DeliveryMethod").on("change", function () {
-        updateSOShipmentInfo();
-
-        if ($("#DeliveryMethod").val() === '3') {
-            $("#delivery-service__selector").show();
-        }
-        else {
-            $("#delivery-service__selector").hide();
-        }
-    });
-
     $("#ShipmentAccountAddressId").on("change", function () {
-
         updateSOShipmentInfo();
     });
-
-
-
 }
-
 
 function LoadPriceGroupEditForm(priceGroupId) {
     $("#SelectedPriceGroupID").val(priceGroupId);
@@ -1980,7 +1831,6 @@ function DeletePriceGroup(id) {
     }
 }
 
-
 // update order status
 $(document).ready(function () {
     $('body').on('click', '.unlock-order', function () {
@@ -1992,8 +1842,6 @@ $(document).ready(function () {
             result = UpdateOrderStatus(orderId, statusId, type);
         }
     });
-
-
 });
 
 $(document).ready(function () {
@@ -2013,11 +1861,9 @@ $(document).ready(function () {
                         LoadingPanel.Hide();
                         if (data) {
                             consignmentgridview.Refresh();
-
                         }
                     }
                 });
-
             }
         }
 
@@ -2084,11 +1930,9 @@ var populateShipmentAddress = function (selectedAddress) {
     $("#ShipmentAddressLine3").val(addressLines[2].trim());
     if (addressLines.length < 5) return;
     $("#ShipmentAddressTown").val(addressLines[3].trim());
-
 };
 
 function VerifyPallete(e, cnt) {
-
     var Req_url = window.location.href;
     var type;
     var data = {};
@@ -2101,7 +1945,6 @@ function VerifyPallete(e, cnt) {
             pid = prdid.GetValue();
         }
         else {
-
             var qty = parseInt(QuantityP.GetValue());
             var rec_qty = parseInt($('#rec_qty').val());
         }
@@ -2147,17 +1990,13 @@ function VerifyPallete(e, cnt) {
                         var markup = "<tr><td>" + data[1] + "</td><td  class='pallettracking' hidden>" + data[0] + "</td><td contenteditable='true' class='quantity'>" + data[2] + "</td></tr>";
                         $(".tableSerial tbody").append(markup);
                         $(".scaned").val("").focus();
-
                     }
 
                     else {
-
-
                         if (items > qty) {
                             var cases = qty / palletpercase;
                             var res = confirm("Items are exceeding? Do you still want to process");
                             if (res) {
-
                                 if (QuantityP.GetValue() === 0) { return; }
                                 serialArray.push(data[1]);
                                 var markups = "<tr><td class='ser'>" + data[1] + "</td><td  class='pallettracking' hidden>" + data[0] + "</td><td class='quantity'>" + data[2] + "</td></tr>";
@@ -2165,7 +2004,6 @@ function VerifyPallete(e, cnt) {
                                 $(".tableSerial tbody").append(markups);
                                 var req = qty - qty;
                                 QuantityP.SetValue(parseInt(req));
-
 
                                 $(".cases").val((req / palletpercase).toFixed(2));
                                 updateRecored();
@@ -2180,7 +2018,6 @@ function VerifyPallete(e, cnt) {
 
                                 var updatedcase = recal / palletpercase;
                                 $(".cases").val(updatedcase.toFixed(2));
-
                             }
                         }
                         else {
@@ -2196,18 +2033,13 @@ function VerifyPallete(e, cnt) {
                         $(".tableSerial tbody").append(markup);
                         $(".scaned").val("").focus();
                     }
-
-
                 }
-
-
             });
         }
     }
     else {
         VerifyPalletSalesOrder(e, cnt);
     }
-
 }
 function CloseModel() {
     if ($(".tableSerial > tbody > tr").length > 0) {
@@ -2221,7 +2053,6 @@ function CloseModel() {
             return;
         }
         return;
-
     }
     ModelAddPallete.Hide();
     ModelGoodsReturn.Hide();
@@ -2238,14 +2069,10 @@ function SaveSerials() {
     var cases = [];
     var ordid = $('#order').val();
 
-
     var prid = $('#prodId').val();
     var DeliveryNo = $('#delivery').val();
     var orderDetailId = $("#OrderDetailID").val();
     var type = $('#type').val();
-
-
-
 
     var url = "/PurchaseOrders/_SubmitPalleteSerials/";
     $(".quantity").each(function () {
@@ -2289,9 +2116,7 @@ function SaveSerials() {
         $("#infoMsg").html(info).show();
         $('#infoMsg').delay(2000).fadeOut();
     });
-
 }
-
 
 function VerifyPalletSalesOrder(e, cnt) {
     var Req_url = window.location.href;
@@ -2306,7 +2131,6 @@ function VerifyPalletSalesOrder(e, cnt) {
     else {
         var qty = parseInt(QuantityP.GetValue());
         var rec_qty = parseInt($('#rec_qty').val());
-
     }
     type = $('#type').val();
     var palletTrackingId = $("#palletTrackingId").val();
@@ -2316,7 +2140,6 @@ function VerifyPalletSalesOrder(e, cnt) {
     if (e.keyCode === 13) {
         var date = $(".palletserial").text();
         if (palletTrackingId === "3" || palletTrackingId === "4") {
-
             data = { serial: $(cnt).val(), pid: pid, orderId: orderId, type: type, palletTrackingId: palletTrackingId, date: date };
         }
         else {
@@ -2369,7 +2192,6 @@ function VerifyPalletSalesOrder(e, cnt) {
                     alert("Items exceeds number of items for this product");
                     $(".scaned").val("").focus();
                     return;
-
                 }
 
                 var items = parseInt(data[2]) * palletpercase;
@@ -2378,15 +2200,9 @@ function VerifyPalletSalesOrder(e, cnt) {
                     var markup = "<tr><td>" + data[1] + "</td><td  class='pallettracking' hidden>" + data[0] + "</td><td contenteditable='true' class='quantity'>" + data[2] + "</td></tr>";
                     $(".tableSerial tbody").append(markup);
                     $(".scaned").val("").focus();
-
                 }
                 else {
-
-
-
-
                     if (items > qty) {
-
                         var cases = qty / palletpercase;
                         var req = qty - qty;
                         var res = alert("items exceding only take " + cases.toFixed(2) + " cases in grid");
@@ -2401,10 +2217,7 @@ function VerifyPalletSalesOrder(e, cnt) {
                         updateRecored();
                         $(".scaned").val("").focus();
                         return;
-
                     }
-
-
 
                     else {
                         $('#qty').val(qty);
@@ -2413,8 +2226,6 @@ function VerifyPalletSalesOrder(e, cnt) {
 
                         QuantityP.SetValue(parseInt(reqs));
                         $(".cases").val(updatecases.toFixed(2));
-
-
                     }
 
                     serialArray.push(data[1]);
@@ -2422,19 +2233,12 @@ function VerifyPalletSalesOrder(e, cnt) {
                     markup = "<tr><td class='ser'>" + data[1] + "</td><td  class='pallettracking' hidden>" + data[0] + "</td><td class='quantity'>" + data[2] + "</td></tr>";
                     $(".tableSerial tbody").append(markup);
 
-
                     updateRecored();
                     $(".scaned").val("").focus();
-
                 }
             }
-
-
-
         });
     }
-
-
 }
 
 var totalCase;
@@ -2450,30 +2254,24 @@ function VerifyPalletReturns(e, cnt) {
     var data = {};
     type = $("#type").val();
     if (type === null || type === undefined || type === "") {
-
         type = $("#InventoryTransactionTypeId").val();
-
     }
     var qty = $(".casesReturns").val();
     if (qty === "" || qty === 0 || qty === null) {
-
         alert("Please enter quantity / cases you want to return!");
         QuantityP.SetFocus();
 
         return;
     }
     if (type === "6" || type === "7") {
-
         data = { serial: $(cnt).val(), pid: prdid.GetValue(), type: type };
     }
     else {
-
         data = { serial: $(cnt).val(), pid: prdid.GetValue(), type: type };
     }
     $(cnt).css("border-color", "lightgray");
 
     if (e.keyCode === 13) {
-
         var palletpercase = parseInt($('#palletpercase').val());
         var chekval = $('.serial').val();
         if ($.inArray(chekval, serialArray) >= 0) {
@@ -2520,7 +2318,6 @@ function VerifyPalletReturns(e, cnt) {
                 }
 
                 if (type !== "6" && type !== "7") {
-
                     if (type == "12") {
                         var items = parseInt(data[3]) - parseInt(data[2]);
                     }
@@ -2533,14 +2330,12 @@ function VerifyPalletReturns(e, cnt) {
                     }
 
                     if (qty > items) {
-
                         qty = qty - items;
                         QuantityP.SetValue(parseInt(qty * palletpercase));
                         //var res = alert("Cases are exceeding");
 
                         $('.casesReturns').val(qty.toFixed(2));
                         $(".scaned").val("").focus();
-
                     }
                     else {
                         items = qty;
@@ -2555,7 +2350,6 @@ function VerifyPalletReturns(e, cnt) {
                     var markup = "<tr><td>" + data[1] + "</td><td  class='pallettracking' hidden>" + data[0] + "</td><td contenteditable='true' class='quantity' onkeyup='checkTotCase(event,this)'>" + items + "</td></tr>";
                     $(".tableSerial tbody").append(markup);
                     $(".scaned").val("").focus();
-
                 }
 
                 else {
@@ -2591,24 +2385,17 @@ function VerifyPalletReturns(e, cnt) {
                         items = $('.casesReturns').val();
                         QuantityP.SetValue(0);
                         $('.casesReturns').val(0);
-
                     }
 
                     markup = "<tr><td>" + data[1] + "</td><td  class='pallettracking' hidden>" + data[0] + "</td><td contenteditable='true' class='quantity'>" + items + "</td></tr>";
                     $(".tableSerial tbody").append(markup);
                     $(".scaned").val("").focus();
-
-
                 }
             }
-
         });
     }
-
-
 }
 function SavePalletReturns() {
-
     var Req_url = window.location.href;
     var sellable = $(".sellableCondition").prop("checked");
     if ($(".tableSerial > tbody > tr").length <= 0) {
@@ -2631,7 +2418,6 @@ function SavePalletReturns() {
         type = "17";
     }
     if (type === null || type === undefined || type === "") {
-
         type = $('#InventoryTransactionTypeId').val();
         prid = prdid.GetValue();
     }
@@ -2640,7 +2426,6 @@ function SavePalletReturns() {
 
     LoadingPanel.Show();
     $.post(url, data, function (result) {
-
         ordernumber = result.orderNumber;
         productId = result.productId;
         orderId = result.orderid;
@@ -2654,7 +2439,6 @@ function SavePalletReturns() {
         }
 
         else if (type === "6" || type === "7") {
-
             ModelAddPallete.Hide();
         }
         else {
@@ -2692,7 +2476,6 @@ function returnnon_ser_Product() {
             data: { order: $('#grorderid').val(), product: pid, quantity: qty },
 
             success: function (data) {
-
                 if (data.error) {
                     if (data.errorcode === 1) {
                         if (confirm("Product " + sku + " was not sold against order " + ordernumber + ", do you still want to proceed with Return ?")) {
@@ -2706,7 +2489,6 @@ function returnnon_ser_Product() {
                         }
                     }
                     else if (data.errorcode === 2) {
-
                         if (confirm("Quantity exceeds with shipped quantity for order " + ordernumber + "for product " + sku + ", do you still want to proceed with Return ?")) {
                             //Proceed with return
                             addNonSerProduct_Inventory($('#grorderid').val(), pid, qty);
@@ -2732,7 +2514,6 @@ function returnnon_ser_Product() {
     }
 }
 function addNonSerProduct_Inventory(orderid, pid, qty) {
-
     var location = $("#LocationId option:selected").val();
     var type = $("#type").val();
     var groupToken = $("#groupToken").val();
@@ -2766,10 +2547,8 @@ function addNonSerProduct_Inventory(orderid, pid, qty) {
             ModelGoodsReturn.Hide();
             LoadingPanel.Hide();
 
-
             $("#infoMsg").html("Return Succeeded!").show();
             $('#infoMsg').delay(2000).fadeOut();
-
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             // alert(xhr.status);
@@ -2790,7 +2569,6 @@ function CasestoQunatity() {
     var cases = $(".casesReturns").val();
     var palletpercase = parseInt($('#palletpercase').val());
     QuantityP.SetValue(cases * palletpercase);
-
 }
 
 function OnImageClick(url) {
@@ -2806,9 +2584,7 @@ function showattachment(url) {
 }
 /////////////////////////////////////////////////////////
 
-
 function updateRecored() {
-
     var palletTrackingId = $("#palletTrackingId").val();
     var palletpercase = parseInt($('#palletpercase').val());
     var qty = parseInt($('#qty').val());
@@ -2823,14 +2599,11 @@ function updateRecored() {
             data: data,
             dataType: 'json',
             success: function (data) {
-
                 LoadingPanel.Hide();
                 $('.updatedate').text(data[0]);
                 $(".palletserial").text(data[0]);
-
             }
         });
-
     }
 }
 
@@ -2841,28 +2614,21 @@ function checkTotCase(event, e) {
     }
 }
 
-
 function calculateQuantity(e, res) {
-
     var cases = e.currentTarget.value;
     if (cases <= 0 || cases == null || cases === undefined) {
-
         cases = 1;
     }
 
-
     if (res) {
-
         var prodcase = $("#processcase").val();
         if (prodcase <= 0 || prodcase === null || prodcase === undefined) {
             prodcase = 1;
         }
         var qty = prodcase * cases;
         Quantity.SetValue(qty);
-
     }
     else {
-
         prodcase = $("#processcase").val();
         if (prodcase <= 0 || prodcase === null || prodcase === undefined) {
             prodcase = 1;
@@ -2870,7 +2636,6 @@ function calculateQuantity(e, res) {
         qty = prodcase * cases;
         Qty.SetValue(qty);
     }
-
 }
 
 function OnBeginGrCallBack(s, e) {
@@ -2892,7 +2657,6 @@ var type;
 var productType;
 var palletTrackingIds = 0;
 function UpdateProcessDetails(OrderprDetID, remove, so) {
-
     if (remove == true) {
         if (so == 1) {
             type = true;
@@ -2900,7 +2664,6 @@ function UpdateProcessDetails(OrderprDetID, remove, so) {
         productType = remove;
         ordersProcessDetailId = OrderprDetID;
         ModalPopupEditSerializedProduct.Show();
-
     }
     else if (remove == false) {
         productType = remove
@@ -2917,16 +2680,11 @@ function UpdateProcessDetails(OrderprDetID, remove, so) {
         productType = remove;
         ModalPopupEditDelivery.Show();
     }
-
-
-
 }
 function BeginEditDliveryPopUp(s, e) {
-
     e.customArgs["OrderprocessDetailId"] = ordersProcessDetailId;
     e.customArgs["ProductType"] = productType;
     e.customArgs["PalletTrackingId"] = palletTrackingIds;
-
 }
 
 function UpdateInventoryDetails(id) {
@@ -2954,12 +2712,7 @@ function SaveOrderProcessDetail() {
         }
         ModalPopupEditInventory.Hide();
         alert(result);
-
-
     });
-
-
-
 }
 function RemoveSerial(serialId, remove) {
     var data = {
@@ -2982,24 +2735,17 @@ function RemoveSerial(serialId, remove) {
         ModalPopupEditSerializedProduct.Hide();
 
         alert(result);
-
-
     });
-
 }
 function InventoryTransactionBeginCallBack(s, e) {
-
     e.customArgs["OrderprocessDetailId"] = ordersProcessDetailId;
     e.customArgs["type"] = type;
 }
 
 function UpdateRemoveDetails(id) {
-
     $("#InventoryTransactionId").val(id);
     SaveOrderProcessDetail();
 }
-
-
 
 var ordersIdEmail;
 var invoicemasterIds;
@@ -3010,14 +2756,11 @@ function showEmails(orderid, templateIds) {
     ModelShowEmail.Show();
 }
 function beginshowemailCallBack(s, e) {
-
     e.customArgs["orderId"] = ordersIdEmail;
     e.customArgs["TemplateId"] = templateId;
     if (invoicemasterIds !== undefined) {
-
         e.customArgs["InvoiceMasterId"] = invoicemasterIds;
     }
-
 }
 
 function showEmailsInvoice(invoicemasterId) {
@@ -3040,8 +2783,6 @@ function ApproveOrder(orderId) {
             });
         return;
     }
-
-
 }
 
 function EditAwOrder(orderId) {
@@ -3058,10 +2799,8 @@ function UnathorizeOrder(orderId) {
             });
         return;
     }
-
 }
 function UpdateDate(orderId) {
-
     $.post({
         url: "/Order/SyncDate",
         data: { "OrderId": orderId },
@@ -3069,7 +2808,6 @@ function UpdateDate(orderId) {
             AwaitingAuthGridview.Refresh();
         }
     });
-
 }
 
 function PriceAnalysis() {
@@ -3088,7 +2826,6 @@ function PriceAnalysis() {
         PriceValue = Price.GetValue();
     }
 
-
     var profitMargin = PriceValue - buyPrice;
     var profitPercentage = (profitMargin / PriceValue) * 100;
     profitMargin = profitMargin.toFixed(2);
@@ -3098,7 +2835,6 @@ function PriceAnalysis() {
     }
 
     if (profitPercentage <= 0) {
-
     }
     else {
         profitPercentage = +profitPercentage + +percentageValue;
@@ -3110,14 +2846,10 @@ function PriceAnalysis() {
     }
 
     if (profitPercentage >= percentageValue) {
-
         priceAnalysisColorChange('green', 'white', profitPercentage, profitMargin);
-
     }
     else if (profitPercentage >= 0 && profitPercentage <= percentageValue) {
-
         priceAnalysisColorChange('yellow', 'red', profitPercentage, profitMargin);
-
     }
     else {
         priceAnalysisColorChange('red', 'white', profitPercentage, profitMargin);
@@ -3125,7 +2857,6 @@ function PriceAnalysis() {
 }
 
 function priceAnalysisColorChange(backgroundColor, fontColor, profitPercentage, profitMargin) {
-
     $(".financialAnalysisMainDiv").show();
     $("#profitPercentage").val(profitPercentage + ' %');
     $("#profitPercentage").css("border-color", backgroundColor);
@@ -3138,9 +2869,7 @@ function priceAnalysisColorChange(backgroundColor, fontColor, profitPercentage, 
     $("#profitMargin").css("color", fontColor);
 }
 
-
 function IsAllowZeroSale() {
-
     var ProductId = prdid.GetValue();
     var allowZPrice = true;
     var DirectSalestranstype = $("#InventoryTransactionTypeId").val();
@@ -3156,7 +2885,6 @@ function IsAllowZeroSale() {
     var inventoryTypes = $('#inventoryType').val();
 
     if (inventoryTypes !== "PurchaseOrder") {
-
         LoadingPanel.Show();
         $.ajax({
             type: "GET",
@@ -3183,15 +2911,12 @@ function IsAllowZeroSale() {
                 alert('Error' + textStatus + "/" + errorThrown);
             }
         });
-
     }
 
     if (inventoryTypes !== "PurchaseOrder") {
         if (!allowZPrice || PriceValue > 0) {
             if ((buyPrice > PriceValue) && pricealert) {
-
                 alert("Selling price is less than buying price " + buyPrice);
-
             }
         }
     }
@@ -3203,7 +2928,6 @@ function IsAllowZeroSale() {
 }
 
 function suggestedPrice() {
-
     var buyPrice = 0;
     var margin = 0;
     var landedCost = 0;
@@ -3239,7 +2963,6 @@ function suggestedPrice() {
 
     var suggestedSellPrice = 0;
 
-
     if (buyPrice == null || buyPrice == 0) {
         $("#alertDivBP").show();
     }
@@ -3274,11 +2997,9 @@ function suggestedPrice() {
     if (SellPrice.GetValue() == null || SellPrice.GetValue() == 0) {
         SellPrice.SetValue(suggestedSellPrice);
     }
-
 }
 
 function setPrice() {
-
     var suggestedSellPrice = $("#suggestedSellPrice").val();
     SellPrice.SetValue(suggestedSellPrice);
 }

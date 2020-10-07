@@ -1,12 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Runtime.InteropServices;
 using AutoMapper;
 using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 
 namespace Ganedata.Core.Services
 {
@@ -27,10 +26,10 @@ namespace Ganedata.Core.Services
             _context = context;
             _mapper = mapper;
         }
+
         public ProductSaleQueryResponse GetProductSalePriceById(int productId)
         {
             return GetProductMasterWithSpecialPrice(productId, 0);
-
         }
 
         public ProductSaleQueryResponse GetProductPriceThresholdByAccountId(int productId, int? accountId = null)
@@ -42,10 +41,7 @@ namespace Ganedata.Core.Services
             }
 
             return GetProductMasterWithSpecialPrice(productId, accountId ?? 0);
-
-
         }
-
 
         public ProductSaleQueryResponse CanTheProductBeSoldAtPriceToAccount(int productId, int accountId, decimal sellingPrice)
         {
@@ -100,7 +96,6 @@ namespace Ganedata.Core.Services
 
         public decimal GetLastProductPriceForAccount(int productId, int accountid, InventoryTransactionTypeEnum transactionType)
         {
-
             if (transactionType == InventoryTransactionTypeEnum.PurchaseOrder)
             {
                 var product = _productService.GetProductMasterById(productId);
@@ -141,6 +136,7 @@ namespace Ganedata.Core.Services
 
             return price.Value - ((price.Value / 100) * customDiscountPercent);
         }
+
         public decimal GetPercentageMarginPrice(decimal? price, decimal customMarginPercent)
         {
             if (!price.HasValue) return 0;
@@ -166,7 +162,6 @@ namespace Ganedata.Core.Services
                     {
                         product.SellPrice = Math.Round((specialPrice.SpecialPrice - ((specialPrice.SpecialPrice * account.TenantPriceGroups.Percent) / 100)), 2);
                     }
-
                     else
                     {
                         product.SellPrice = specialPrice.SpecialPrice;
@@ -259,7 +254,6 @@ namespace Ganedata.Core.Services
             }
         }
 
-
         public ProductSpecialPriceViewModel SaveSpecialProductPrice(int productId, decimal price, int priceGroupId, DateTime? startDate = null, DateTime? endDate = null, int currentTenantId = 0, int userId = 0)
         {
             TenantPriceGroupDetail productPrice = _context.ProductSpecialPrices.FirstOrDefault(x => x.ProductID == productId && x.PriceGroupID == priceGroupId);
@@ -312,7 +306,6 @@ namespace Ganedata.Core.Services
             }
             return false;
         }
-
 
         public List<ProductSpecialPriceViewModel> GetAllSpecialProductPrices(int tenantId, int priceGroupId)
         {
@@ -377,6 +370,7 @@ namespace Ganedata.Core.Services
             _context.SaveChanges();
             return pg;
         }
+
         public bool DeleteProductGroupById(int priceGroupId, int userId)
         {
             var priceGroup = _context.TenantPriceGroups.FirstOrDefault(m => m.PriceGroupID == priceGroupId);
@@ -400,7 +394,6 @@ namespace Ganedata.Core.Services
             return _context.TenantPriceGroups.FirstOrDefault(x => x.PriceGroupID == priceGroupId);
         }
 
-
         public IQueryable<TenantPriceGroups> GetAllTenantPriceGroups(int tenantId, bool includeIsDeleted = false)
         {
             return _context.TenantPriceGroups.Where(x => x.TenantId == tenantId && (includeIsDeleted || x.IsDeleted != true));
@@ -415,8 +408,6 @@ namespace Ganedata.Core.Services
         {
             var product = _context.ProductMaster.FirstOrDefault(u => u.ProductId == productId && u.IsDeleted != true);
 
-
-
             var targetDate = invoiceDetail?.DateCreated;
             var targetOrderId = invoiceDetail?.OrderDetail?.OrderID;
 
@@ -429,7 +420,8 @@ namespace Ganedata.Core.Services
 
             OrderDetail targetOrderDetail = null;
 
-            if (targetOrderDetailQuery.Any(u => u.Order.BaseOrderID == targetOrderId && targetOrderId != null)){
+            if (targetOrderDetailQuery.Any(u => u.Order.BaseOrderID == targetOrderId && targetOrderId != null))
+            {
                 targetOrderDetailQuery = targetOrderDetailQuery.Where(u => u.Order.BaseOrderID == targetOrderId && targetOrderId != null);
             }
             else
@@ -476,7 +468,6 @@ namespace Ganedata.Core.Services
             buyPrice += (product.LandedCost ?? 0);
 
             return buyPrice;
-
         }
     }
 }

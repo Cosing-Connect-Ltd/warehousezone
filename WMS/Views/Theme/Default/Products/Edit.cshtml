@@ -178,8 +178,6 @@
             <li><a href="#product-inventory">Inventory</a></li>
             <li><a href="#related-product">Related Product</a></li>
             <li><a href="#product-associated-items" class="associated-items" style=@(Model.ProductType != ProductKitTypeEnum.Simple?"":"display:none")>Associated Items</a></li>
-
-
         </ul>
         <div id="product-detail">
             <div class="col-md-6 pull-left">
@@ -271,6 +269,13 @@
                             @Html.ValidationMessageFor(model => model.IsPreOrderAccepted)
                         </div>
                     </div>
+                    <div class="input-group h-100 justify-content-center align-items-center">
+                        @Html.LabelFor(model => model.IsAutoShipment, htmlAttributes: new { @class = "col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(m => m.IsAutoShipment, new { @class = "checkbox" })
+                            @Html.ValidationMessageFor(model => model.IsAutoShipment)
+                        </div>
+                    </div>
                     <div class="input-group h-100 justify-content-center align-items-center" id="min-dispatch-days" style=@(Model.IsPreOrderAccepted == true?"":"display:none")>
                         @Html.LabelFor(m => m.MinDispatchDays, htmlAttributes: new { @class = "col-md-4" })
                         <div class="col-md-8">
@@ -317,7 +322,6 @@
                     </div>
                 </div>
 
-
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.LabelFor(model => model.IsStockItem, htmlAttributes: new { @class = "col-md-4" })
                     <div class="col-md-8">
@@ -325,7 +329,6 @@
                         @Html.ValidationMessageFor(model => model.IsStockItem)
                     </div>
                 </div>
-
 
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.LabelFor(model => model.LotOption, htmlAttributes: new { @class = "col-md-4" })
@@ -437,15 +440,12 @@
                     <div class="col-md-8">
                         @Html.DropDownListFor(u => u.SiteId, new SelectList(ViewBag.WebsiteIds, "SiteID", "SiteName", Model.SiteId), "Select Site", new { @class = "chosen-select" })
                         @Html.ValidationMessageFor(model => model.SiteId)
-
-
                     </div>
                 </div>
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.Label("Choose Tags", htmlAttributes: new { @class = "col-md-4" })
                     <div class="col-md-8">
                         @Html.ListBox("SiteIds", new MultiSelectList(ViewBag.ProductTag, "Id", "TagName", ViewBag.linksiteIds), new { Multiple = "multiple", @class = "chosen-select", data_placeholder = "Choose Tags" })
-
                     </div>
                 </div>
                 <div class="input-group h-100 justify-content-center align-items-center">
@@ -462,10 +462,8 @@
                         @Html.ValidationMessageFor(model => model.ManufacturerPartNo)
                     </div>
                 </div>
-
             </div>
             <div class="col-md-6 pull-left">
-
 
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.LabelFor(model => model.EnableTax, htmlAttributes: new { @class = "col-md-4" })
@@ -526,7 +524,6 @@
                         @Html.EditorFor(model => model.AllowModifyPrice)
                     </div>
                 </div>
-
 
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.LabelFor(m => m.BuyPrice, htmlAttributes: new { @class = "col-md-4" })
@@ -600,7 +597,6 @@
                         @Html.ValidationMessageFor(model => model.SellPrice)
                     </div>
                 </div>
-
 
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.LabelFor(m => m.PurchaseNominalCode, htmlAttributes: new { @class = "col-md-4" })
@@ -755,7 +751,6 @@
                         <div class="col-12 p-0 mt-1 pull-left">
                             @Html.DropDownListFor(m => m.PalletTypeId, ViewBag.PalletType as SelectList, "Select Pallet Type", new { @class = "chosen-select" })
                         </div>
-
                     </div>
                 </div>
                 <div class="input-group h-100 justify-content-center align-items-center">
@@ -789,7 +784,6 @@
                     </div>
                 </div>
 
-
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.Label("Product Locations", htmlAttributes: new { @class = "col-md-4" })
                     <div class="col-md-8">
@@ -810,7 +804,6 @@
                         <div class="col-1 p-0 pull-left">
                             <input type="button" onclick="javascript: pcModalAttributesValues.Show();" id="ProdAttributeAdd" class="btn btn-primary" value="+">
                         </div>
-
                     </div>
                 </div>
                 <div class="input-group h-100 justify-content-center align-items-center">
@@ -851,7 +844,6 @@
                     <b>Account Code</b>
                 </div>
                 @Html.Action("_AccountCodes", new { productId = Model.ProductId })
-
             </div>
         </div>
         <div id="product-attributes">
@@ -870,14 +862,10 @@
             </div>
         </div>
 
-
         <div id="product-associated-items" style=@(Model.ProductType!=Ganedata.Core.Entities.Enums.ProductKitTypeEnum.Simple?"":"display:none")>
             <div class="input-group h-100 justify-content-center align-items-center associatedItems">
-
-
             </div>
         </div>
-
 
         <div id="product-inventory">
             <div class="input-group h-100 justify-content-center align-items-center">
@@ -889,12 +877,8 @@
                     <b>Transactions</b>
                 </div>
                 @Html.Action("_InventoryTransactions", new { productId = Model.ProductId })
-
             </div>
         </div>
-
-
-
     </div>
 }
 <script>
@@ -920,6 +904,4 @@
         taxDivToggle();
 
     });
-
-
 </script>
