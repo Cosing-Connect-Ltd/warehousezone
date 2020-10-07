@@ -4,7 +4,6 @@ namespace Ganedata.Core.Entities.Enums
 {
     public enum EnumAttStatusType
     {
-
         Shift = 1,
         Break = 2,
         Lunch = 3,
@@ -12,13 +11,12 @@ namespace Ganedata.Core.Entities.Enums
         In = 5,
         Out = 6
     }
+
     public enum EnumProcessOrderType
     {
         Normal = 1,
         Serialize = 2,
         PalleteProcess = 3,
-
-
     }
 
     public enum EnumAccountType
@@ -45,7 +43,6 @@ namespace Ganedata.Core.Entities.Enums
 
     public enum MailMergeVariableEnum
     {
-
         CompanyName = 1,
         AccountCode = 2,
         AccountRemittancesContactName = 3,
@@ -76,31 +73,45 @@ namespace Ganedata.Core.Entities.Enums
     {
         [Display(Name = "Works Order Log Template")]
         WorksOrderLogTemplate = 1,
+
         [Display(Name = "Works Order Scheduled Template")]
         WorksOrderScheduledTemplate = 2,
+
         [Display(Name = "Works Order Completed Template")]
         WorksOrderCompletedTemplate = 3,
+
         [Display(Name = "Purchase Order Template")]
         PurchaseOrderTemplate = 4,
+
         [Display(Name = "Sales Order Template")]
         SalesOrderTemplate = 5,
+
         [Display(Name = "Works Order Blank List")]
         WorksOrderBlankList = 6,
+
         Standard = 7,
+
         [Display(Name = "Sales Order Update Template")]
         SalesOrderUpdateTemplate = 8,
+
         [Display(Name = "Product Group Template")]
         ProductGroupTemplate = 9,
+
         [Display(Name = "Awaiting Order Template")]
         AwaitingOrderTemplate = 10,
+
         [Display(Name = "Invoice Template")]
         InvoiceTemplate = 11,
+
         [Display(Name = "Account Statement Template")]
         AccountStatementTemplate = 12,
+
         [Display(Name = "Direct Sales Order Invoice Template")]
         DirectSalesOrderReportTemplate = 13,
+
         [Display(Name = "Email Confirmation")]
         EmailConfirmation = 14,
+
         [Display(Name = "Website Order Confirmation")]
         WebsiteOrderConfirmation = 15,
     }
@@ -109,8 +120,10 @@ namespace Ganedata.Core.Entities.Enums
     {
         [Display(Name = "Goods In / Purchase Order")]
         PurchaseOrder = 1,
+
         [Display(Name = "Goods Out / Sales Order")]
         SalesOrder = 2,
+
         TransferIn = 3,
         TransferOut = 4,
         Allocated = 5,
@@ -139,14 +152,18 @@ namespace Ganedata.Core.Entities.Enums
         NotScheduled = 5,
         Scheduled = 6,
         ReAllocationRequired = 7,
+
         [Display(Name = "Awaiting Authorisation")]
         AwaitingAuthorisation = 8,
+
         Cancelled = 9,
         BeingPicked = 10,
         AwaitingArrival = 11,
         Approved = 12,
+
         [Display(Name = "Posted To Accounts")]
         PostedToAccounts = 13,
+
         Invoiced = 14,
         Preparing = 15,
         QualityChecks = 16,
@@ -197,9 +214,12 @@ namespace Ganedata.Core.Entities.Enums
     {
         [Display(Name = "Annual Holiday")]
         AnnualHoliday = 1,
+
         Meeting = 2,
+
         [Display(Name = "Sick Leave")]
         SickLeave = 3,
+
         Casual = 4
     }
 
@@ -276,7 +296,6 @@ namespace Ganedata.Core.Entities.Enums
         TenantLocationsSyncLog = 35,
         UserAccountsSync = 36,
         AccountAddressesSync = 37
-
     }
 
     public enum OrderProcessStatusEnum
@@ -289,6 +308,7 @@ namespace Ganedata.Core.Entities.Enums
         Invoiced = 6,
         PostedToAccounts = 7
     }
+
     public enum AccountTransactionTypeEnum
     {
         InvoicedToAccount = 1,
@@ -344,6 +364,7 @@ namespace Ganedata.Core.Entities.Enums
         Monthly = 4,
         ThreeWeekly = 5
     }
+
     public enum ConsignmentTypeEnum
     {
         Standard = 1,
@@ -367,16 +388,21 @@ namespace Ganedata.Core.Entities.Enums
         SerialCode = 2,
         PalletCode = 3
     }
+
     public enum SortProductTypeEnum
     {
         [Display(Name = "Recommended")]
         Recommended = 0,
+
         [Display(Name = "Name (A-Z)")]
         NameByAsc = 1,
+
         [Display(Name = "Name (Z-A)")]
         NameByDesc = 2,
+
         [Display(Name = "Price (High > Low)")]
         PriceByDesc = 3,
+
         [Display(Name = "Price (Low > High)")]
         PriceByAsc = 4
     }
@@ -409,6 +435,7 @@ namespace Ganedata.Core.Entities.Enums
         DHL = 4,
         ParcelForce = 5
     }
+
     public enum ApiTypes
     {
         Meraki = 1,
@@ -418,15 +445,19 @@ namespace Ganedata.Core.Entities.Enums
         SagePay = 5,
         GetAddress = 6
     }
+
     public enum ProductKitTypeEnum
     {
         Kit = 1,
         Grouped = 2,
         Recipe = 3,
         Simple = 4,
+
         [Display(Name = "Product By Attribute")]
         ProductByAttribute = 5,
-        RelatedProduct = 6
+
+        RelatedProduct = 6,
+        Virtual = 7
     }
 
     public enum WarehouseThemeEnum
@@ -454,8 +485,10 @@ namespace Ganedata.Core.Entities.Enums
     {
         [Display(Name = "All In Basket")]
         AllInBasket = 1,
+
         [Display(Name = "Any In Basket")]
         AnyInBasket = 2,
+
         [Display(Name = "Apply On Cheapest")]
         ApplyOnCheapest = 3
     }
@@ -464,8 +497,10 @@ namespace Ganedata.Core.Entities.Enums
     {
         [Display(Name = "Size Issue")]
         SizeIssue = 1,
+
         [Display(Name = "Incorrectly Ordered")]
         IncorrectlyOrdered = 2,
+
         Other = 3
     }
 

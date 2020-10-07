@@ -27,7 +27,6 @@ namespace Ganedata.Core.Services
         private readonly IProductPriceService _productPriceService;
         private readonly IMapper _mapper;
 
-
         public OrderService(IApplicationContext currentDbContext, IProductServices productService, IAccountServices accountServices, IInvoiceService invoiceService, IUserService userService, ILookupServices lookupServices,
             ITenantsServices tenantServices, IProductPriceService productPriceService, IMapper mapper)
         {
@@ -54,6 +53,7 @@ namespace Ganedata.Core.Services
                 case InventoryTransactionTypeEnum.PurchaseOrder:
                     prefix = "PO-";
                     break;
+
                 case InventoryTransactionTypeEnum.SalesOrder:
                 case InventoryTransactionTypeEnum.Proforma:
                 case InventoryTransactionTypeEnum.Quotation:
@@ -67,12 +67,15 @@ namespace Ganedata.Core.Services
                     ).OrderByDescending(m => m.OrderNumber)
                      .FirstOrDefault();
                     break;
+
                 case InventoryTransactionTypeEnum.WorksOrder:
                     prefix = "MO-";
                     break;
+
                 case InventoryTransactionTypeEnum.DirectSales:
                     prefix = "DO-";
                     break;
+
                 case InventoryTransactionTypeEnum.TransferIn:
                 case InventoryTransactionTypeEnum.TransferOut:
                     lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferIn ||
@@ -81,16 +84,19 @@ namespace Ganedata.Core.Services
                     .FirstOrDefault();
                     prefix = "TO-";
                     break;
+
                 case InventoryTransactionTypeEnum.Returns:
                     lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Returns && p.OrderNumber.Length == 11)
                    .OrderByDescending(m => m.OrderNumber).FirstOrDefault();
                     prefix = "RO-";
                     break;
+
                 case InventoryTransactionTypeEnum.Wastage:
                     lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Wastage && p.OrderNumber.Length == 11)
                   .OrderByDescending(m => m.OrderNumber).FirstOrDefault();
                     prefix = "WO-";
                     break;
+
                 case InventoryTransactionTypeEnum.AdjustmentIn:
                 case InventoryTransactionTypeEnum.AdjustmentOut:
                     lastOrder = _currentDbContext.Order.Where(p => p.InventoryTransactionTypeId == InventoryTransactionTypeEnum.AdjustmentIn ||
@@ -100,6 +106,7 @@ namespace Ganedata.Core.Services
                     prefix = "AO-";
 
                     break;
+
                 case InventoryTransactionTypeEnum.Exchange:
                     prefix = "EO-";
                     break;
@@ -107,7 +114,6 @@ namespace Ganedata.Core.Services
 
             if (lastOrder != null)
             {
-
                 var lastNumber = lastOrder.OrderNumber.Replace("PO-", string.Empty);
                 lastNumber = lastNumber.Replace("SO-", string.Empty);
                 lastNumber = lastNumber.Replace("MO-", string.Empty);
@@ -156,7 +162,6 @@ namespace Ganedata.Core.Services
 
         public IEnumerable<JobSubType> GetAllValidJobSubTypes(int tenantId)
         {
-
             return _currentDbContext.JobSubTypes.Where(a => a.TenantId == tenantId).OrderBy(m => m.Name);
         }
 
@@ -198,6 +203,7 @@ namespace Ganedata.Core.Services
 
             return order;
         }
+
         public Order FinishinghOrder(int orderId, int userId, int warehouseId)
         {
             var order = _currentDbContext.Order.FirstOrDefault(u => u.OrderID == orderId);
@@ -234,12 +240,7 @@ namespace Ganedata.Core.Services
                 };
 
                 _currentDbContext.Entry(orderProcess).State = EntityState.Added;
-
-
-
             }
-
-
 
             order.UpdatedBy = userId;
             order.DateUpdated = DateTime.UtcNow;
@@ -304,7 +305,6 @@ namespace Ganedata.Core.Services
                     order.OrderCost = (decimal)ordTotal;
                     order.OrderTotal = (decimal)ordTotal;
                 }
-
             }
             if (orderNotes != null)
             {
@@ -377,7 +377,6 @@ namespace Ganedata.Core.Services
                     pentry.Property(e => e.TotalAmount).IsModified = true;
                     total = total + item.TotalAmount;
                 }
-
             }
             else
             {
@@ -385,7 +384,6 @@ namespace Ganedata.Core.Services
                 {
                     item.IsDeleted = true;
                 }
-
             }
             order.OrderTotal = total;
             if (order.OrderID > 0)
@@ -428,10 +426,13 @@ namespace Ganedata.Core.Services
             {
                 case "PO":
                     return GenerateNextOrderNumber(InventoryTransactionTypeEnum.PurchaseOrder, tenantId);
+
                 case "SO":
                     return GenerateNextOrderNumber(InventoryTransactionTypeEnum.SalesOrder, tenantId);
+
                 case "WO":
                     return GenerateNextOrderNumber(InventoryTransactionTypeEnum.WorksOrder, tenantId);
+
                 case "TO":
                     return GenerateNextOrderNumber(InventoryTransactionTypeEnum.TransferIn, tenantId);
             }
@@ -448,7 +449,6 @@ namespace Ganedata.Core.Services
             if (string.IsNullOrEmpty(orderNumber))
             {
                 orderNumber = GenerateNextOrderNumber(transType, tenantId);
-
             }
             order.OrderNumber = orderNumber.Trim();
 
@@ -497,17 +497,11 @@ namespace Ganedata.Core.Services
 
             context.SaveChanges();
 
-
-
             return order;
-
-
-
         }
 
         public List<OrderDetailsViewModel> GetSalesOrderDetails(int id, int tenantId)
         {
-
             var model = _currentDbContext.OrderDetail.Where(a => a.OrderID == id && a.IsDeleted != true && a.TenentId == tenantId).ToList();
 
             var results = model.Select(ord => new OrderDetailsViewModel()
@@ -543,7 +537,6 @@ namespace Ganedata.Core.Services
 
         public List<OrderDetailsViewModel> GetDirectSalesOrderDetails(int id, int tenantId)
         {
-
             var model = _currentDbContext.OrderDetail.Where(a => a.OrderID == id && a.IsDeleted != true && a.TenentId == tenantId).ToList();
 
             var results = model.Select(ord => new OrderDetailsViewModel()
@@ -568,31 +561,32 @@ namespace Ganedata.Core.Services
 
             return results;
         }
+
         public List<OrderDetailsViewModel> GetPalletOrdersDetails(int id, int tenantId, bool excludeProcessed = false)
         {
-
             var model = _currentDbContext.OrderProcessDetail.Where(a => a.OrderProcessId == id && a.IsDeleted != true && a.TenentId == tenantId).ToList();
             if (model.Count > 0)
             {
-
-                var results = model.Where(x => x.QtyProcessed > 0).Select(ord => new OrderDetailsViewModel()
-                {
-                    OrderID = ord.OrderProcess.OrderID ?? 0,
-                    ProductId = ord.ProductId,
-                    ProductMaster = ord.ProductMaster,
-                    ProductGroups = ord.OrderDetail.ProductGroups,
-                    OrderDetailID = ord.OrderProcessDetailID,
-                    Product = ord?.ProductMaster?.Name,
-                    Qty = ord.QtyProcessed,
-                    OrderNumber = ord.OrderProcess.Order.OrderNumber,
-                    DateCreated = ord.DateCreated ?? DateTime.UtcNow,
-                    QtyProcessed = ord.PalletedQuantity,
-                    ProductGroup = ord.ID,
-                    orderProcessstatusId = ord.OrderProcess.OrderProcessStatusId,
-                    orderstatusId = ord.OrderProcess?.Order?.OrderStatusID,
-
-
-                }).ToList();
+                var results = model.Where(x => x.QtyProcessed > 0 &&
+                                               x.ProductMaster.IsAutoShipment != true &&
+                                               x.ProductMaster.ProductType != ProductKitTypeEnum.Virtual)
+                                   .Select(ord => new OrderDetailsViewModel()
+                                                    {
+                                                        OrderID = ord.OrderProcess.OrderID ?? 0,
+                                                        ProductId = ord.ProductId,
+                                                        ProductMaster = ord.ProductMaster,
+                                                        ProductGroups = ord.OrderDetail.ProductGroups,
+                                                        OrderDetailID = ord.OrderProcessDetailID,
+                                                        Product = ord?.ProductMaster?.Name,
+                                                        Qty = ord.QtyProcessed,
+                                                        OrderNumber = ord.OrderProcess.Order.OrderNumber,
+                                                        DateCreated = ord.DateCreated ?? DateTime.UtcNow,
+                                                        QtyProcessed = ord.PalletedQuantity,
+                                                        ProductGroup = ord.ID,
+                                                        orderProcessstatusId = ord.OrderProcess.OrderProcessStatusId,
+                                                        orderstatusId = ord.OrderProcess?.Order?.OrderStatusID,
+                                                    })
+                                   .ToList();
 
                 return results;
             }
@@ -625,7 +619,6 @@ namespace Ganedata.Core.Services
                 TransType = ord.Order.InventoryTransactionTypeId,
                 QtyProcessed = ord.ProcessedQty,
                 DirectPostAllowed = !ord.ProductMaster.Serialisable && !ord.ProductMaster.ProcessByPallet && ord.ProductMaster.RequiresBatchNumberOnReceipt != true && ord.ProductMaster.RequiresExpiryDateOnReceipt != true && !_currentDbContext.ProductLocationsMap.Any(m => m.ProductId == ord.ProductId && m.IsDeleted != true)
-
             }).ToList();
 
             return results;
@@ -654,7 +647,6 @@ namespace Ganedata.Core.Services
                 TransType = ord.Order.InventoryTransactionTypeId,
                 QtyProcessed = ord.ProcessedQty,
                 DirectPostAllowed = !ord.ProductMaster.Serialisable && !ord.ProductMaster.ProcessByPallet && ord.ProductMaster.RequiresBatchNumberOnReceipt != true && ord.ProductMaster.RequiresExpiryDateOnReceipt != true && !_currentDbContext.ProductLocationsMap.Any(m => m.ProductId == ord.ProductId && m.IsDeleted != true)
-
             }).ToList();
 
             return results;
@@ -669,9 +661,7 @@ namespace Ganedata.Core.Services
                 return deliveryProof;
             }
             return null;
-
         }
-
 
         public IQueryable<TransferOrderViewModel> GetTransferInOrderViewModelDetails(int toWarehouseId, int tenantId, OrderStatusEnum? type = null)
         {
@@ -693,7 +683,6 @@ namespace Ganedata.Core.Services
                       OrderType = ((InventoryTransactionTypeEnum)(p.InventoryTransactionTypeId)).ToString(),
                       TransType = p.InventoryTransactionTypeId
                   });
-
 
             return result;
         }
@@ -720,14 +709,12 @@ namespace Ganedata.Core.Services
             return result;
         }
 
-
         public List<OrderProcessDetail> GetOrderProcessDetailsByProcessId(int processId)
         {
             return _currentDbContext.OrderProcessDetail
                 .Where(o => o.OrderProcessId == processId && o.IsDeleted != true)
                 .Include(o => o.ProductMaster)
                 .ToList();
-
         }
 
         public List<OrderProcess> GetOrderProcesssDeliveriesForWarehouse(int warehouseId, int tenantId)
@@ -736,6 +723,7 @@ namespace Ganedata.Core.Services
                                                              a.Order.WarehouseId == warehouseId &&
                                                              a.TenentId == tenantId && a.IsDeleted != true).ToList();
         }
+
         public List<OrderProcess> GetOrderProcessConsignmentsForWarehouse(int warehouseId, int tenantId)
         {
             return _currentDbContext.OrderProcess.Where(a => a.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferOut
@@ -813,7 +801,6 @@ namespace Ganedata.Core.Services
             bool status = false;
             try
             {
-
                 var orderprocess = _currentDbContext.OrderProcess.Find(orderProcessId);
                 orderprocess.OrderProcessStatusId = OrderProcessStatusEnum.Complete;
                 orderprocess.UpdatedBy = UserId;
@@ -823,11 +810,9 @@ namespace Ganedata.Core.Services
                 _currentDbContext.SaveChanges();
                 status = true;
                 return status;
-
             }
             catch (Exception)
             {
-
                 return status;
             }
         }
@@ -843,11 +828,13 @@ namespace Ganedata.Core.Services
             return _currentDbContext.Order.Where(a => a.OrderNumber == orderNumber && a.IsDeleted != true && (a.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder ||
             a.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder) && a.TenentId == tenantId);
         }
+
         public IQueryable<Order> GetValidSalesOrder(int tenantId, int warehouseId)
         {
             return _currentDbContext.Order.Where(a => a.IsDeleted != true && (a.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder ||
             a.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WorksOrder) && a.TenentId == tenantId && a.WarehouseId == warehouseId && a.OrderStatusID != OrderStatusEnum.Complete);
         }
+
         public IQueryable<ProductMaster> GetAllValidProduct(int tenantId)
         {
             return _currentDbContext.ProductMaster.Where(a => a.IsDeleted != true && a.TenantId == tenantId);
@@ -860,8 +847,6 @@ namespace Ganedata.Core.Services
 
         public OrderDetail SaveOrderDetail(OrderDetail podetail, int tenantId, int userId)
         {
-
-
             podetail.DateUpdated = DateTime.UtcNow;
             podetail.TenentId = tenantId;
             podetail.UpdatedBy = userId;
@@ -884,7 +869,6 @@ namespace Ganedata.Core.Services
                     detail.DateUpdated = DateTime.UtcNow;
                     detail.TaxAmount = podetail.TaxAmount;
                     detail.TotalAmount = podetail.TotalAmount;
-
                 }
 
                 _currentDbContext.Entry(detail).State = EntityState.Modified;
@@ -1000,15 +984,12 @@ namespace Ganedata.Core.Services
                 _currentDbContext.Entry(receivepo).State = EntityState.Added;
                 _currentDbContext.SaveChanges();
             }
-
             else
             {
                 receivepo.DateUpdated = DateTime.UtcNow;
                 _currentDbContext.Entry(receivepo).State = EntityState.Modified;
                 _currentDbContext.SaveChanges();
-
             }
-
 
             return receivepo;
         }
@@ -1041,7 +1022,6 @@ namespace Ganedata.Core.Services
                         ShipmentAddressTown = po.ShipmentAddressTown,
                         ShipmentAddressPostcode = po.ShipmentAddressPostcode,
                         ShipmentCountryId = po.ShipmentCountryId
-
                     };
                     _currentDbContext.OrderProcess.Add(receivepo);
                 }
@@ -1093,18 +1073,15 @@ namespace Ganedata.Core.Services
                 return receivepo;
             }
             return null;
-
         }
 
         public OrderProcess SaveOrderProcess(int orderProcessId, int[] product, decimal[] qty, decimal[] qtyReceived,
             int[] lines, int currentUserId, int currentTenantId, int warehouseId)
         {
-
             OrderProcess receivepo = GetOrderProcessByOrderProcessId(orderProcessId);
 
             if (qtyReceived.Length > 0)
             {
-
                 for (int i = 0; i < product.Length; i++)
                 {
                     var pdetail = lines[i];
@@ -1115,7 +1092,6 @@ namespace Ganedata.Core.Services
                     {
                         if (qtyReceived[i] < 1)
                         {
-
                             receviceline.QtyProcessed = 0;
                             receviceline.IsDeleted = true;
                             receviceline.DateUpdated = DateTime.UtcNow;
@@ -1139,11 +1115,8 @@ namespace Ganedata.Core.Services
                             entry.Property(e => e.QtyProcessed).IsModified = true;
                             entry.Property(e => e.DateUpdated).IsModified = true;
                             entry.Property(e => e.UpdatedBy).IsModified = true;
-
                         }
-
                     }
-
                     else
                     {
                         if (qtyReceived[i] > 0)
@@ -1167,7 +1140,6 @@ namespace Ganedata.Core.Services
 
                             ProductStockTransactionRecord(product[i], typeId, qtyReceived[i], OrderID, currentTenantId,
                                 currentUserId, warehouseId);
-
                         }
                     }
                 }
@@ -1213,15 +1185,12 @@ namespace Ganedata.Core.Services
                         _currentDbContext.MarketRouteProgresses.Add(progressInfo);
                         _currentDbContext.SaveChanges();
                         return new OrdersSync() { RequestSuccess = true, RequestStatus = "No order information provided. But tracking information recorded successfully." };
-
                     }
                     catch (Exception e)
                     {
                         return new OrdersSync() { RequestSuccess = false, RequestStatus = "No order information provided. Progress info also not well formed. Request failed. Error : " + e.Message };
                     }
-
                 }
-
             }
 
             if (item.OrderToken.HasValue && (!item.OrderID.HasValue || item.OrderID == 0))
@@ -1305,7 +1274,6 @@ namespace Ganedata.Core.Services
                     _currentDbContext.OrderProcess.Add(process);
                     _currentDbContext.SaveChanges();
 
-
                     foreach (var op in item.OrderProcessDetails)
                     {
                         if (op.Serials != null && op.Serials.Count > 0)
@@ -1362,7 +1330,6 @@ namespace Ganedata.Core.Services
 
                     item.OrderID = order.OrderID;
 
-
                     item.InventoryTransactionTypeId = (item.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferIn) ? InventoryTransactionTypeEnum.TransferOut : InventoryTransactionTypeEnum.TransferIn;
 
                     var outOrder = new Order
@@ -1407,7 +1374,6 @@ namespace Ganedata.Core.Services
                         CreatedBy = m.CreatedBy
                     }).ToList();
 
-
                     outOrder = CreateOrder(outOrder, terminal.TenantId, terminal.TenantWarehous.ParentWarehouseId ?? terminal.WarehouseId, 0, outOrderDetails);
                 }
 
@@ -1429,8 +1395,6 @@ namespace Ganedata.Core.Services
                 {
                     foreach (var orderprocessIds in order.OrderProcess)
                     {
-
-
                         OrderProofOfDelivery orderProofOfDelivery = new OrderProofOfDelivery();
                         orderProofOfDelivery.DateCreated = DateTime.UtcNow;
                         orderProofOfDelivery.DateUpdated = DateTime.UtcNow;
@@ -1440,14 +1404,10 @@ namespace Ganedata.Core.Services
                         orderProofOfDelivery.TenantId = item.TenentId;
                         orderProofOfDelivery.NoOfCases = item.OrderProofOfDeliverySync?.NoOfCases ?? 0;
                         _currentDbContext.OrderProofOfDelivery.Add(orderProofOfDelivery);
-
                     }
 
                     _currentDbContext.SaveChanges();
-
-
                 }
-
 
                 _currentDbContext.SaveChanges();
                 var result = _mapper.Map(order, new OrdersSync());
@@ -1474,7 +1434,6 @@ namespace Ganedata.Core.Services
 
                     if (item.InventoryTransactionTypeId == InventoryTransactionTypeEnum.DirectSales)
                     {
-
                         // create a paid transaction for the amount customer paid if paid amount is greater then zero
                         var transaction = UpdateAccountTransactionInfo(item, terminal.TenantId, AccountTransactionTypeEnum.PaidByAccount, order.OrderID);
 
@@ -1487,11 +1446,9 @@ namespace Ganedata.Core.Services
                             }
                         }
                     }
-
                 }
                 return result;
             }
-
             else if (!item.OrderToken.HasValue && item.OrderID > 0)
             {
                 var order = GetOrderById(item.OrderID.Value);
@@ -1564,8 +1521,6 @@ namespace Ganedata.Core.Services
                                         error.ErrorAction = "PostOrder";
                                         error.SimpleErrorLogWriter();
                                     }
-
-
                                 }
                                 else if (item.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder)
                                 {
@@ -1579,7 +1534,6 @@ namespace Ganedata.Core.Services
                                         Inventory.StockTransactionApi(o.ProductId, item.InventoryTransactionTypeId, quantity, o.OrderProcess.OrderID, terminal.TenantId, terminal.WarehouseId, op.CreatedBy,
                                             null, pallet.PalletTrackingId, terminal.TerminalId, orderProcessId: (o.OrderProcess?.OrderProcessID), OrderProcessDetialId: (o?.OrderProcessDetailID));
                                     }
-
                                     else
                                     {
                                         caError error = new caError();
@@ -1594,17 +1548,13 @@ namespace Ganedata.Core.Services
                                 }
                             }
                         }
-
                         else
                         {
                             _currentDbContext.SaveChanges();
                             Inventory.StockTransactionApi(o.ProductId, item.InventoryTransactionTypeId, o.QtyProcessed, o.OrderProcess.OrderID, terminal.TenantId, terminal.WarehouseId, op.CreatedBy, null, null, terminal.TerminalId, orderProcessId: (o.OrderProcess?.OrderProcessID), OrderProcessDetialId: (o?.OrderProcessDetailID));
                         }
-
                     }
                 }
-
-
 
                 // if Warehouse AutotransferOrder flag is true then process other related Transfer order automatically
 
@@ -1651,11 +1601,9 @@ namespace Ganedata.Core.Services
                                 _currentDbContext.SaveChanges();
                                 Inventory.StockTransactionApi(o.ProductId, reverseOrder.InventoryTransactionTypeId, o.QtyProcessed, reverseOrder.OrderID, terminal.TenantId, (reverseOrder.WarehouseId ?? terminal.WarehouseId),
                                     op.CreatedBy, null, null, terminal.TerminalId, orderProcessId: (reverseOrderProcess?.OrderProcessID), OrderProcessDetialId: (o?.OrderProcessDetailID));
-
                             }
                         }
                     }
-
                 }
 
                 _currentDbContext.SaveChanges();
@@ -1808,7 +1756,6 @@ namespace Ganedata.Core.Services
                     _currentDbContext.Entry(account).State = EntityState.Modified;
                     _currentDbContext.SaveChanges();
                     _currentDbContext.Entry(account).State = EntityState.Detached;
-
                 }
                 else if (type == AccountTransactionTypeEnum.PaidByAccount || type == AccountTransactionTypeEnum.Refund ||
                     type == AccountTransactionTypeEnum.Discount || type == AccountTransactionTypeEnum.CreditNote)
@@ -1823,7 +1770,6 @@ namespace Ganedata.Core.Services
                     account.FinalBalance = transaction.FinalBalance;
                     account.DateUpdated = DateTime.UtcNow;
 
-
                     _currentDbContext.Account.Attach(account);
                     var entry = _currentDbContext.Entry(account);
                     entry.Property(e => e.FinalBalance).IsModified = true;
@@ -1831,9 +1777,7 @@ namespace Ganedata.Core.Services
                     _currentDbContext.Entry(account).State = EntityState.Modified;
                     _currentDbContext.SaveChanges();
                     _currentDbContext.Entry(account).State = EntityState.Detached;
-
                 }
-
             }
             else
             {
@@ -1914,7 +1858,6 @@ namespace Ganedata.Core.Services
                     {
                         serialList.RemoveAll(item => item == s);
                     }
-
                 }
                 var existingSerialsNotInStock = serialList.Where(m => serialsNotInstock.Contains(m)).ToList();
                 if (existingSerialsNotInStock.Count > 0)
@@ -1925,7 +1868,6 @@ namespace Ganedata.Core.Services
                     {
                         serialList.RemoveAll(item => item == s);
                     }
-
                 }
             }
 
@@ -1970,7 +1912,6 @@ namespace Ganedata.Core.Services
                     QtyProcessed = serialList.Count,
                     OrderDetailID = orderDetailId,
                     TerminalId = terminalId
-
                 };
                 _currentDbContext.OrderProcessDetail.Add(odet);
             }
@@ -1978,7 +1919,6 @@ namespace Ganedata.Core.Services
             var orderDetail = _currentDbContext.OrderDetail.FirstOrDefault(m => (orderDetailId > 0 && m.OrderDetailID == orderDetailId) || (m.OrderID == order && m.ProductId == product));
 
             TenantWarranty warrantyInfo = null;
-
 
             if (orderDetail != null)
             {
@@ -2035,14 +1975,12 @@ namespace Ganedata.Core.Services
                 if (serial.LocationId == 0)
                 {
                     serial.LocationId = (int?)null;
-
                 }
 
                 try
                 {
                     _currentDbContext.SaveChanges();
                     serialProcessStatus.ProcessedSerials.Add(serial.SerialNo);
-
                 }
                 catch (Exception)
                 {
@@ -2057,7 +1995,6 @@ namespace Ganedata.Core.Services
             tenantId, warehouseId, userId, oprocess.OrderProcessID, OrderProcessDetialId: (oprocess?.OrderProcessDetail?.FirstOrDefault(u => u.ProductId == product)?.OrderProcessDetailID));
             return serialProcessStatus;
         }
-
 
         public OrderProcess GetOrderProcessByOrderProcessId(int orderProcessid)
         {
@@ -2116,7 +2053,6 @@ namespace Ganedata.Core.Services
 
         private bool ProductStockTransactionRecord(int productId, InventoryTransactionTypeEnum transType, decimal quantity, int orderId, int tenantId, int userId, int warehouseId, int? OrderprocessId = null, int? OrderProcessDetailId = null)
         {
-
             var status = false;
 
             if (quantity < 0) { return false; }
@@ -2158,6 +2094,7 @@ namespace Ganedata.Core.Services
             }
             return cItem;
         }
+
         public Order DeleteOrderById(int orderId, int userId)
         {
             var cItem = _currentDbContext.Order.Find(orderId);
@@ -2180,7 +2117,6 @@ namespace Ganedata.Core.Services
                 }
 
                 Inventory.StockRecalculateByOrderId(orderId, caCurrent.CurrentWarehouse().WarehouseId, caCurrent.CurrentTenant().TenantId, caCurrent.CurrentUser().UserId, true);
-
             }
             return cItem;
         }
@@ -2227,6 +2163,7 @@ namespace Ganedata.Core.Services
 
             return cItem;
         }
+
         public Order CreateDirectSalesOrder(DirectSalesViewModel model, int tenantId, int userId, int warehouseId)
         {
             Account account;
@@ -2258,20 +2195,14 @@ namespace Ganedata.Core.Services
                 AccountCurrencyID = account != null ? account.CurrencyID : 1,
                 DateUpdated = DateTime.UtcNow,
                 OrderCost = model.NetAmount,
-
             };
-
 
             order.OrderDiscount = GetDiscountOnTotalCost(order.AccountID ?? 0, model.NetAmount);
             order.OrderTotal = model.NetAmount - order.OrderDiscount;
 
-
-
-
             order.InvoiceNo = GaneStaticAppExtensions.GenerateDateRandomNo();
             _currentDbContext.Order.Add(order);
             _currentDbContext.SaveChanges();
-
 
             var process = new OrderProcess()
             {
@@ -2324,7 +2255,6 @@ namespace Ganedata.Core.Services
                 _currentDbContext.Entry(order).State = EntityState.Modified;
                 _currentDbContext.SaveChanges();
                 ProductStockTransactionRecord(m.ProductId, order.InventoryTransactionTypeId, m.QtyProcessed, order.OrderID, tenantId, userId, order.WarehouseId ?? 0, process.OrderProcessID, orderProcessDetail.OrderProcessDetailID);
-
             }
 
             _invoiceService.AddAccountTransaction(AccountTransactionTypeEnum.InvoicedToAccount, model.InvoiceTotal, ("Invoiced for Direct Sales Order #" + order.OrderNumber).Trim(), account.AccountID, tenantId, userId, AccountPaymentModeEnum.Cash);
@@ -2336,6 +2266,7 @@ namespace Ganedata.Core.Services
 
             return order;
         }
+
         public Order SaveDirectSalesOrder(Order order, int tenantId, int warehouseId,
           int userId, List<OrderDetail> orderDetails = null, List<OrderNotes> orderNotes = null)
         {
@@ -2405,15 +2336,11 @@ namespace Ganedata.Core.Services
                         _currentDbContext.OrderDetail.Add(item);
                     }
                     _currentDbContext.SaveChanges();
-
-
-
                 }
 
                 foreach (var item in cItems)
                 {
                     var orderDetail = _currentDbContext.OrderDetail.Find(item.OrderDetailID);
-
 
                     orderDetail.ProductId = item.ProductId;
                     orderDetail.ExpectedDate = item.ExpectedDate;
@@ -2432,19 +2359,13 @@ namespace Ganedata.Core.Services
                 }
 
                 _currentDbContext.SaveChanges();
-
             }
-
             else
             {
                 foreach (var item in _currentDbContext.OrderDetail.Where(a => a.OrderID == order.OrderID && a.IsDeleted != true))
                 {
                     item.IsDeleted = true;
-
-
                 }
-
-
             }
             if (orderNotes != null)
             {
@@ -2472,7 +2393,6 @@ namespace Ganedata.Core.Services
                 }
             }
 
-
             obj.OrderCost = total;
             obj.OrderDiscount = GetDiscountOnTotalCost(order.AccountID ?? 0, total);
             obj.OrderTotal = (decimal)total - obj.OrderDiscount;
@@ -2482,7 +2402,6 @@ namespace Ganedata.Core.Services
             _currentDbContext.SaveChanges();
             Inventory.StockRecalculateByOrderId(order.OrderID, obj.WarehouseId ?? warehouseId, tenantId, caCurrent.CurrentUser().UserId);
             return obj;
-
         }
 
         public DirectSalesViewModel GetDirectSalesModelByOrderId(int orderId)
@@ -2510,6 +2429,7 @@ namespace Ganedata.Core.Services
             }).ToList();
             return model;
         }
+
         public Order OrderProcessAutoComplete(int orderId, string deliveryNumber, int userId, bool includeProcessing, bool forceComplete)
         {
             var order = GetOrderById(orderId);
@@ -2525,7 +2445,7 @@ namespace Ganedata.Core.Services
                 foreach (var orderDetail in orderDetailsToProcess)
                 {
                     invalidForDirectProcessing = orderDetail.ProductMaster.Serialisable || orderDetail.ProductMaster.ProductLocationsMap.Count() > 1;
-                    if (!invalidForDirectProcessing || directshipment == true)
+                    if (!invalidForDirectProcessing || directshipment == true || orderDetail.ProductMaster.IsAutoShipment == true || orderDetail.ProductMaster.ProductType == ProductKitTypeEnum.Virtual)
                     {
                         var qtyDifference = orderDetail.Qty - orderDetail.ProcessedQty;
                         var model = new InventoryTransaction() { OrderID = orderId, ProductId = orderDetail.ProductId, Quantity = qtyDifference };
@@ -2548,7 +2468,7 @@ namespace Ganedata.Core.Services
             {
                 order = GetOrderById(orderId);
                 var OrderProcess = _currentDbContext.OrderProcess.Where(u => u.OrderID == orderId && u.IsDeleted != true).ToList();
-                OrderProcess.ForEach(u => u.OrderProcessStatusId = OrderProcessStatusEnum.Complete);
+                OrderProcess.ForEach(u => u.OrderProcessStatusId = (u.OrderProcessDetail.All(p => p.ProductMaster.IsAutoShipment == true || p.ProductMaster.ProductType == ProductKitTypeEnum.Virtual) ? OrderProcessStatusEnum.Dispatched : OrderProcessStatusEnum.Complete));
                 order.OrderStatusID = OrderStatusEnum.Complete;
 
                 order.UpdatedBy = userId;
@@ -2579,11 +2499,10 @@ namespace Ganedata.Core.Services
             }
 
             return order;
-
         }
+
         public List<AwaitingAuthorisationOrdersViewModel> GetAllOrdersAwaitingAuthorisation(int tenantId, int warehouseId, OrderStatusEnum? OrderStatusId = null)
         {
-
             IQueryable<TenantLocations> childWarehouseIds = _currentDbContext.TenantWarehouses.Where(x => x.ParentWarehouseId == warehouseId);
 
             return _currentDbContext.Order.Where(o => o.TenentId == tenantId &&
@@ -2619,7 +2538,6 @@ namespace Ganedata.Core.Services
                 }).ToList();
         }
 
-
         public IQueryable<OrderReceiveCount> GetAllOrderReceiveCounts(int tenantId, int warehouseId, DateTime? dateUpdated)
         {
             var res = _currentDbContext.OrderReceiveCount.Where(x => x.TenantId == tenantId && x.WarehouseId == warehouseId && (!dateUpdated.HasValue || (x.DateUpdated ?? x.DateCreated) >= dateUpdated));
@@ -2647,9 +2565,9 @@ namespace Ganedata.Core.Services
             _mapper.Map(newCountRecord, countRecord);
             return countRecord;
         }
+
         public InventoryTransaction AddGoodsReturnPallet(List<string> serials, string orderNumber, int prodId, InventoryTransactionTypeEnum transactionTypeId, decimal quantity, int? OrderId, int tenantId, int currentWarehouseId, int UserId, int palletTrackigId = 0)
         {
-
             var products = _currentDbContext.ProductMaster.Find(prodId);
             decimal totalqunatity = 0;
             if ((!OrderId.HasValue && transactionTypeId == InventoryTransactionTypeEnum.Wastage) || transactionTypeId == InventoryTransactionTypeEnum.AdjustmentIn || transactionTypeId == InventoryTransactionTypeEnum.AdjustmentOut)
@@ -2670,8 +2588,6 @@ namespace Ganedata.Core.Services
                         _currentDbContext.Entry(newpallet).State = EntityState.Modified;
                         _currentDbContext.SaveChanges();
                         Inventory.StockTransactionApi(newpallet.ProductId, transactionTypeId, (newpallet.RemainingCases * (product.ProductsPerCase ?? 1)), OrderId, caCurrent.CurrentTenant().TenantId, currentWarehouseId, caCurrent.CurrentUser().UserId, null, palletTrackigId);
-
-
                     }
                     return _currentDbContext.InventoryTransactions.FirstOrDefault(u => u.OrderID == 0);
                 }
@@ -2711,10 +2627,7 @@ namespace Ganedata.Core.Services
                             {
                                 newpallet.RemainingCases = newpallet.RemainingCases - qty;
 
-
                                 newpallet.Status = PalletTrackingStatusEnum.Active;
-
-
                             }
                             else
                             {
@@ -2728,13 +2641,11 @@ namespace Ganedata.Core.Services
                         _currentDbContext.Entry(newpallet).State = EntityState.Modified;
                         _currentDbContext.SaveChanges();
                         Inventory.StockTransactionApi(prodId, transactionTypeId, (qty * (products.ProductsPerCase ?? 1)), OrderId, caCurrent.CurrentTenant().TenantId, currentWarehouseId, caCurrent.CurrentUser().UserId, null, PalletTrackingId);
-
                     }
                 }
 
                 return _currentDbContext.InventoryTransactions.FirstOrDefault(u => u.OrderID == 0);
             }
-
             else
             {
                 int? lineId = 0;
@@ -2783,7 +2694,6 @@ namespace Ganedata.Core.Services
                             _currentDbContext.Entry(newpallet).State = EntityState.Modified;
                             _currentDbContext.SaveChanges();
                             Inventory.StockTransactionApi(prodId, transactionTypeId, (qty * (products.ProductsPerCase ?? 1)), OrderId, caCurrent.CurrentTenant().TenantId, currentWarehouseId, caCurrent.CurrentUser().UserId, null, PalletTrackingId);
-
                         }
                     }
 
@@ -2792,7 +2702,6 @@ namespace Ganedata.Core.Services
                         quantity = totalqunatity * products.ProductsPerCase ?? 1;
                     }
                     else { quantity = totalqunatity; }
-
 
                     if (lineId == null || lineId < 1)
                     {
@@ -2873,8 +2782,6 @@ namespace Ganedata.Core.Services
                     _currentDbContext.OrderNotes.Add(orderNotes);
                     _currentDbContext.SaveChanges();
 
-
-
                     var cOrder = _currentDbContext.Order.Find(order.OrderID);
                     foreach (var pallet in serials)
                     {
@@ -2900,8 +2807,6 @@ namespace Ganedata.Core.Services
                                 newpallet.RemainingCases = newpallet.RemainingCases + qty;
                             }
 
-
-
                             totalqunatity += qty;
 
                             newpallet.DateUpdated = DateTime.UtcNow;
@@ -2909,7 +2814,6 @@ namespace Ganedata.Core.Services
                             _currentDbContext.Entry(newpallet).State = EntityState.Modified;
                             _currentDbContext.SaveChanges();
                             Inventory.StockTransactionApi(prodId, transactionTypeId, (qty * (products.ProductsPerCase ?? 1)), order.OrderID, caCurrent.CurrentTenant().TenantId, currentWarehouseId, caCurrent.CurrentUser().UserId, null, PalletTrackingId);
-
                         }
                     }
                     if (products != null)
@@ -2950,7 +2854,6 @@ namespace Ganedata.Core.Services
                     OrderId = order.OrderID;
 
                     return _currentDbContext.InventoryTransactions.Where(u => u.OrderID == OrderId).OrderByDescending(u => u.DateCreated).FirstOrDefault();
-
                 }
             }
         }
@@ -2980,8 +2883,8 @@ namespace Ganedata.Core.Services
                 return true;
             }
             return false;
-
         }
+
         public decimal QunatityForOrderDetail(int orderDetailId)
         {
             decimal quantity = 0;
@@ -3021,17 +2924,16 @@ namespace Ganedata.Core.Services
                 {
                     newQty = (Quantity - inventorytranscation?.OrderProcessDetail?.QtyProcessed ?? 0);
                     Inventory.StockTransactionApi(inventorytranscation.ProductId, InventoryTransactionTypeEnum.WastedReturn, newQty, inventorytranscation.OrderID, TenantId, caCurrent.CurrentWarehouse().WarehouseId, CurrentUserId, null, null, null, null, inventorytranscation.OrderProcessId, inventorytranscation.OrderProcessDetailId);
-
                 }
                 else
                 {
                     newQty = (inventorytranscation?.OrderProcessDetail?.QtyProcessed ?? 0) - Quantity;
                     Inventory.StockTransactionApi(inventorytranscation.ProductId, InventoryTransactionTypeEnum.WastedReturn, newQty, inventorytranscation.OrderID, TenantId, caCurrent.CurrentWarehouse().WarehouseId, CurrentUserId, null, null, null, null, inventorytranscation.OrderProcessId, inventorytranscation.OrderProcessDetailId);
-
-
                 }
             }
+
             #region Serialized Product
+
             else if (inventorytranscation.SerialID != null)
             {
                 var productSerialis = _currentDbContext.ProductSerialization
@@ -3045,7 +2947,6 @@ namespace Ganedata.Core.Services
                     {
                         productSerialis.CurrentStatus = InventoryTransactionTypeEnum.SalesOrder;
                         Inventory.StockTransaction(inventorytranscation.ProductId, InventoryTransactionTypeEnum.AdjustmentOut, 1, inventorytranscation.OrderID, null, null, inventorytranscation.SerialID, null, inventorytranscation.OrderProcessId, inventorytranscation.OrderProcessDetailId);
-
                     }
                     else
                     {
@@ -3055,13 +2956,13 @@ namespace Ganedata.Core.Services
                     Quantity = orderProcessDetails.QtyProcessed - 1;
                     _currentDbContext.ProductSerialization.Attach(productSerialis);
                     _currentDbContext.Entry(productSerialis).State = EntityState.Modified;
-
-
                 }
-
             }
-            #endregion
+
+            #endregion Serialized Product
+
             #region PalletProduct
+
             else if (inventorytranscation.PalletTrackingId != null)
             {
                 var product = _currentDbContext.ProductMaster.FirstOrDefault(u => u.ProductId == inventorytranscation.ProductId);
@@ -3087,7 +2988,6 @@ namespace Ganedata.Core.Services
                             pallet.RemainingCases = (pallet.RemainingCases + newQty);
                             Inventory.StockTransactionApi(inventorytranscation.ProductId, InventoryTransactionTypeEnum.AdjustmentIn, Math.Round((newQty * (product?.ProductsPerCase ?? 1)), 2), inventorytranscation.OrderID, TenantId, caCurrent.CurrentWarehouse().WarehouseId, CurrentUserId, null, inventorytranscation.PalletTrackingId, null, null, inventorytranscation.OrderProcessId, inventorytranscation.OrderProcessDetailId);
                             Quantity = orderProcessDetails.QtyProcessed + newQty;
-
                         }
                     }
                     else
@@ -3107,7 +3007,6 @@ namespace Ganedata.Core.Services
                             Quantity = orderProcessDetails.QtyProcessed + newQty;
                         }
                     }
-
                 }
                 else
                 {
@@ -3123,19 +3022,13 @@ namespace Ganedata.Core.Services
                         else if (pallet.RemainingCases < newQty)
                         {
                             return "Remaining cases is not enough to modify this order process";
-
                         }
                         else
                         {
                             pallet.RemainingCases = pallet.RemainingCases - newQty;
                             Quantity = orderProcessDetails.QtyProcessed - newQty;
                             Inventory.StockTransactionApi(inventorytranscation.ProductId, InventoryTransactionTypeEnum.AdjustmentOut, Math.Round((newQty * (product?.ProductsPerCase ?? 1)), 2), inventorytranscation.OrderID, TenantId, caCurrent.CurrentWarehouse().WarehouseId, CurrentUserId, null, inventorytranscation.PalletTrackingId, null, null, inventorytranscation.OrderProcessId, inventorytranscation.OrderProcessDetailId);
-
                         }
-
-
-
-
                     }
                     else
                     {
@@ -3151,18 +3044,18 @@ namespace Ganedata.Core.Services
                         pallet.RemainingCases = (pallet.RemainingCases + newQty);
                         Quantity = orderProcessDetails.QtyProcessed - newQty;
                         Inventory.StockTransactionApi(inventorytranscation.ProductId, InventoryTransactionTypeEnum.AdjustmentIn, Math.Round((newQty * (product?.ProductsPerCase ?? 1)), 2), inventorytranscation.OrderID, TenantId, caCurrent.CurrentWarehouse().WarehouseId, CurrentUserId, null, inventorytranscation.PalletTrackingId, null, null, inventorytranscation.OrderProcessId, inventorytranscation.OrderProcessDetailId);
-
                     }
-
                 }
 
                 pallet.DateUpdated = DateTime.UtcNow;
                 _currentDbContext.PalletTracking.Attach(pallet);
                 _currentDbContext.Entry(pallet).State = EntityState.Modified;
-
             }
-            #endregion
+
+            #endregion PalletProduct
+
             #region NormalProduct
+
             else
             {
                 if (inventorytranscation?.OrderProcessDetail?.QtyProcessed < Quantity)
@@ -3172,14 +3065,11 @@ namespace Ganedata.Core.Services
                     if (inventorytranscation.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder)
                     {
                         Inventory.StockTransactionApi(inventorytranscation.ProductId, InventoryTransactionTypeEnum.AdjustmentIn, newQty, inventorytranscation.OrderID, TenantId, caCurrent.CurrentWarehouse().WarehouseId, CurrentUserId, null, inventorytranscation.PalletTrackingId, null, null, inventorytranscation.OrderProcessId, inventorytranscation.OrderProcessDetailId);
-
                     }
                     else
                     {
                         Inventory.StockTransactionApi(inventorytranscation.ProductId, InventoryTransactionTypeEnum.AdjustmentOut, newQty, inventorytranscation.OrderID, TenantId, caCurrent.CurrentWarehouse().WarehouseId, CurrentUserId, null, inventorytranscation.PalletTrackingId, null, null, inventorytranscation.OrderProcessId, inventorytranscation.OrderProcessDetailId);
                     }
-
-
                 }
                 else
                 {
@@ -3191,11 +3081,12 @@ namespace Ganedata.Core.Services
                     else
                     {
                         Inventory.StockTransactionApi(inventorytranscation.ProductId, InventoryTransactionTypeEnum.AdjustmentIn, newQty, inventorytranscation.OrderID, TenantId, caCurrent.CurrentWarehouse().WarehouseId, CurrentUserId, null, inventorytranscation.PalletTrackingId, null, null, inventorytranscation.OrderProcessId, inventorytranscation.OrderProcessDetailId);
-
                     }
                 }
             }
-            #endregion
+
+            #endregion NormalProduct
+
             #region orderProcessEdit
 
             if (orderProcessDetails != null)
@@ -3207,9 +3098,10 @@ namespace Ganedata.Core.Services
                 _currentDbContext.Entry(orderProcessDetails).State = EntityState.Modified;
                 _currentDbContext.SaveChanges();
                 return "Order Process Updated";
-
             }
-            #endregion
+
+            #endregion orderProcessEdit
+
             return status;
         }
 
@@ -3240,7 +3132,6 @@ namespace Ganedata.Core.Services
                 }
 
                 return status;
-
             }
             return false;
         }
@@ -3249,6 +3140,7 @@ namespace Ganedata.Core.Services
         {
             return _currentDbContext.OrderProcess.Where(u => u.OrderID == OrderId && u.IsDeleted != true).Select(u => u.OrderProcessID).ToArray();
         }
+
         public string ByteToFile(byte[] filebytes)
         {
             string filename = "";
@@ -3268,7 +3160,6 @@ namespace Ganedata.Core.Services
                 }
             }
             return filename;
-
         }
 
         public bool CheckOrdersAuthroization(decimal OrderTotal, InventoryTransactionTypeEnum InventoryTransactionType, int UserId, int TenantId, double? CreditLimit = null)
@@ -3297,6 +3188,7 @@ namespace Ganedata.Core.Services
 
             return false;
         }
+
         public decimal GetDiscountOnTotalCost(int accountId, decimal OrdersTotal)
         {
             decimal discount = 0;
@@ -3307,7 +3199,6 @@ namespace Ganedata.Core.Services
                 {
                     discount = Math.Round(((OrdersTotal * account.TenantPriceGroups.Percent) / 100), 2);
                 }
-
             }
             return discount;
         }
@@ -3386,12 +3277,10 @@ namespace Ganedata.Core.Services
                     FinalBalance = total,
                     OrderId = order.OrderID,
                     PaymentTransactionId = orderDetails.SagePayPaymentResponse.transactionId
-
                 };
 
                 _currentDbContext.AccountTransactions.Add(accountTransaction);
                 _currentDbContext.SaveChanges();
-
             }
 
             return order;
@@ -3402,6 +3291,7 @@ namespace Ganedata.Core.Services
             var order = _currentDbContext.Order.FirstOrDefault(u => u.OrderID == OrderId);
             if (order != null)
             {
+                order.OrderStatusID = OrderStatusEnum.Active;
                 order.PickerId = pickerId;
                 order.ExpectedDate = DateTime.Today;
                 order.UpdatedBy = userId;
@@ -3420,6 +3310,7 @@ namespace Ganedata.Core.Services
                 var order = _currentDbContext.Order.FirstOrDefault(u => u.OrderID == orderId);
                 if (order != null)
                 {
+                    order.OrderStatusID = OrderStatusEnum.Active;
                     order.PickerId = pickerId;
                     order.ExpectedDate = DateTime.Today;
                     order.UpdatedBy = userId;

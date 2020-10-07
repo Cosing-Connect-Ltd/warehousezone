@@ -34,9 +34,7 @@ $(document).ready(function () {
         else {
             $('#directShipdd').hide();
         }
-
     });
-
 
     function updateAccountEmails() {
         var orderId = $("#OrderID").val();
@@ -47,13 +45,11 @@ $(document).ready(function () {
                 url: "/PurchaseOrders/_GetAccountAddress",
                 data: { accountId: accountId, orderId: orderId },
 
-
                 success: function (data) {
                     var j = 0;
                     $.each(data, function (i, item) {
                         if (item.Selected) {
                             $('#emailWithaccount').append('<option selected value=' + item.Value + '>' + item.Text + '</option>');
-
                         }
                         else {
                             $('#emailWithaccount').append('<option value=' + item.Value + '>' + item.Text + '</option>');
@@ -67,26 +63,19 @@ $(document).ready(function () {
                         //    $("#emailWithaccount").val($("#emailWithaccount option:first").val());
                         //
                         //}
-
                     });
-
-
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     // alert(xhr.status);
                     LoadingPanel.Hide();
                     alert('Error' + textStatus + "/" + errorThrown);
-
                 }
-
             });
         }
-
     }
 
     var updateAccountContactDetails = function () {
-
-        if (!$("#AccountContactId").val() > 0) {
+        if ($("#AccountContactId").val() <= 0) {
             var accountId = $("#AccountID").val();
             if (accountId == null || accountId < 1) {
                 return;
@@ -131,7 +120,6 @@ $(document).ready(function () {
             });
 
         var updateShipmentInfoVisibility = function () {
-
             if ($("#radioShipToWarehouse").prop('checked')) {
                 $("#divDisplayTenantAddresses").css("visibility", "visible").slideDown();
                 $("#divDisplayPropertyAddresses").css("visibility", "hidden").slideUp();
@@ -163,7 +151,6 @@ $(document).ready(function () {
                 $("#divDisplayAccountAddresses").css("visibility", "hidden").slideUp();
                 $("#divFinalShipmentAddress").slideDown();
                 $("#divDisplaySupplierAddresses").css("visibility", "visible").slideDown();
-
             }
 
             if ($("#radioShipToAccountAddress").prop('checked')) {
@@ -248,129 +235,115 @@ $(document).ready(function () {
         }, 200);
 
         $("div.order-shipmentinfo-panes[style='visibility: hidden']").slideUp();
+    };
+});
 
+function UpdatePalletDate(id) {
+    LoadingPanel.Show();
+    $.post({
+        url: "/PalletTracking/SyncDate",
+        data: { "palletTrackingId": id },
+        success: function (e) {
+            _PalletTrackingListGridView.Refresh();
+            LoadingPanel.Hide();
+        }
+    });
+}
+
+var palletId;
+var type;
+function SearchSalesOrderPopup(id) {
+    palletId = id;
+    OrderAuthorizationModel.Show();
+}
+
+function EndOrderAuthCallBack() {
+    var callback = function (result) {
+        if (result == 4) {
+            $(".hold-pallet").hide();
+            $(".unhold-pallet").show()
+        }
+
+        type = "";
+    }
+
+    var data = {
+        "palletTrackingId": palletId
     };
 
-    function UpdatePalletDate(id) {
+    Gane.Helpers.AjaxPost('/PalletTracking/GetPalletbyPalletId', data, null, callback, false);
+}
+
+function togglecomboxBox(e) {
+    if (e.target.value === "1" || e.target.value === "3") {
+        type = parseInt(e.target.value);
+        $(".search-box").hide();
+    }
+    else { $(".search-box").show(); }
+}
+
+function addOrderId() {
+    var orderId = OrderAuth.GetValue();
+    var palletTrackingId = palletId;
+    var types = type;
+    if ((orderId !== "" && orderId !== null) || (type !== "" && type !== null && type !== undefined)) {
         LoadingPanel.Show();
         $.post({
-            url: "/PalletTracking/SyncDate",
-            data: { "palletTrackingId": id },
+            url: "/PalletTracking/AddOrderId",
+            data: { "OrderId": orderId, "palletTrackingId": palletTrackingId, type: types },
             success: function (e) {
-                _PalletTrackingListGridView.Refresh();
                 LoadingPanel.Hide();
+                _PalletTrackingListGridView.Refresh();
+                OrderAuthorizationModel.Hide();
             }
         });
     }
-
-    var palletId;
-    var type;
-    function SearchSalesOrderPopup(id) {
-        palletId = id;
-        OrderAuthorizationModel.Show();
+    else {
+        alert("Please select any action to performed");
     }
+}
 
-    function EndOrderAuthCallBack() {
-        var callback = function (result) {
-            if (result == 4) {
-                $(".hold-pallet").hide();
-                $(".unhold-pallet").show()
-            }
-
-            type = "";
-
-        }
-
-        var data = {
-            "palletTrackingId": palletId
-        };
-
-        Gane.Helpers.AjaxPost('/PalletTracking/GetPalletbyPalletId', data, null, callback, false);
-
+function GetOrderDetail() {
+    var accounId = $(".orderactcnts :selected").val();
+    var orderId = $("#DirectShipOrders :selected").val();
+    if (accounId == null || accounId == "") {
+        alert("Please Select Account First");
+        return;
     }
-
-
-    function togglecomboxBox(e) {
-        if (e.target.value === "1" || e.target.value === "3") {
-            type = parseInt(e.target.value);
-            $(".search-box").hide();
-
-        }
-        else { $(".search-box").show(); }
+    if (orderId == null || orderId == "") {
+        alert("Please Select Order");
+        return;
     }
-
-    function addOrderId() {
-        var orderId = OrderAuth.GetValue();
-        var palletTrackingId = palletId;
-        var types = type;
-        if ((orderId !== "" && orderId !== null) || (type !== "" && type !== null && type !== undefined)) {
-            LoadingPanel.Show();
-            $.post({
-                url: "/PalletTracking/AddOrderId",
-                data: { "OrderId": orderId, "palletTrackingId": palletTrackingId, type: types },
-                success: function (e) {
-                    LoadingPanel.Hide();
-                    _PalletTrackingListGridView.Refresh();
-                    OrderAuthorizationModel.Hide();
-                }
-
-            });
-        }
-        else {
-            alert("Please select any action to performed");
-        }
-
-    }
-
-    function GetOrderDetail() {
-        var accounId = $(".orderactcnts :selected").val();
-        var orderId = $("#DirectShipOrders :selected").val();
-        if (accounId == null || accounId == "") {
-            alert("Please Select Account First");
-            return;
-        }
-        if (orderId == null || orderId == "") {
-            alert("Please Select Order");
-            return;
-        }
-        if (gridViewOrdDet.cpRowCount > 0) {
-
-            if (confirm("Your Current added product will be removed! Do you want to continue? ")) {
-
-                LoadingPanel.Show();
-                $.post({
-                    url: "/PurchaseOrders/_GetOrderDetail",
-                    data: { "OrderId": orderId, "accounId": accounId, "PageSession": sessionStorage["PageSessionToken"] },
-                    success: function (e) {
-                        gridViewOrdDet.Refresh();
-                        // _PalletTrackingListGridView.Refresh();
-
-                        LoadingPanel.Hide();
-                    }
-                });
-            }
-
-        }
-        else {
-
+    if (gridViewOrdDet.cpRowCount > 0) {
+        if (confirm("Your Current added product will be removed! Do you want to continue? ")) {
             LoadingPanel.Show();
             $.post({
                 url: "/PurchaseOrders/_GetOrderDetail",
                 data: { "OrderId": orderId, "accounId": accounId, "PageSession": sessionStorage["PageSessionToken"] },
                 success: function (e) {
-                    orderDetailGrid.Refresh();
+                    gridViewOrdDet.Refresh();
                     // _PalletTrackingListGridView.Refresh();
 
                     LoadingPanel.Hide();
                 }
             });
-
         }
-
     }
+    else {
+        LoadingPanel.Show();
+        $.post({
+            url: "/PurchaseOrders/_GetOrderDetail",
+            data: { "OrderId": orderId, "accounId": accounId, "PageSession": sessionStorage["PageSessionToken"] },
+            success: function (e) {
+                orderDetailGrid.Refresh();
+                // _PalletTrackingListGridView.Refresh();
 
-    function OnEndCallbackProductKit(s, e) {
-        comboBox.SetValue(2);
+                LoadingPanel.Hide();
+            }
+        });
     }
+}
 
-
+function OnEndCallbackProductKit(s, e) {
+    comboBox.SetValue(2);
+}

@@ -1,5 +1,4 @@
 ﻿using DevExpress.Data.Filtering;
-using DevExpress.Data.Helpers;
 using DevExpress.Data.Linq.Helpers;
 using DevExpress.Web.Mvc;
 using Ganedata.Core.Data;
@@ -23,14 +22,13 @@ namespace WMS.CustomBindings
             var transactions = purchaseServices.GetAllPurchaseOrdersInProgress(CurrentTenantId, CurrentWarehouseId);
             return transactions;
         }
+
         public static void PurchaseOrdersInProgressGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId)
         {
-
             var transactions = GetPurchaseOrdersInProgressDataset(tenantId, warehouseId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
-
                 string sortString = "";
 
                 foreach (var column in e.State.SortedColumns)
@@ -52,16 +50,14 @@ namespace WMS.CustomBindings
             }
 
             e.DataRowCount = transactions.Count();
-
         }
+
         public static void PurchaseOrdersInProgressGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId)
         {
-
             var transactions = GetPurchaseOrdersInProgressDataset(tenantId, warehouseId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
-
                 string sortString = "";
 
                 foreach (var column in e.State.SortedColumns)
@@ -75,7 +71,6 @@ namespace WMS.CustomBindings
                 transactions = transactions.OrderBy("OrderID Descending");
             }
 
-
             if (e.FilterExpression != string.Empty)
             {
                 CriteriaOperator op = CriteriaOperator.Parse(e.FilterExpression);
@@ -83,7 +78,6 @@ namespace WMS.CustomBindings
                 string filterString = CriteriaToWhereClauseHelper.GetDynamicLinqWhere(op);
 
                 transactions = transactions.Where(filterString);
-
             }
 
             transactions = transactions.Skip(e.StartDataRowIndex).Take(e.DataRowCount);
@@ -101,6 +95,7 @@ namespace WMS.CustomBindings
 
             e.Data = podata;
         }
+
         public static IQueryable<PurchaseOrderViewModel> GetPurchaseOrdersDataset(int CurrentTenantId, int CurrentWarehouseId)
         {
             OrderStatusEnum? type = OrderStatusEnum.Complete;
@@ -120,15 +115,13 @@ namespace WMS.CustomBindings
             var transactions = purchaseServices.GetAllPurchaseOrdersCompleted(CurrentTenantId, CurrentWarehouseId, type);
             return transactions;
         }
+
         public static void PurchaseOrdersGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId)
         {
-
-
             var transactions = GetPurchaseOrdersDataset(tenantId, warehouseId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
-
                 string sortString = "";
 
                 foreach (var column in e.State.SortedColumns)
@@ -150,16 +143,14 @@ namespace WMS.CustomBindings
             }
 
             e.DataRowCount = transactions.Count();
-
         }
+
         public static void PurchaseOrdersGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId)
         {
-
             var transactions = GetPurchaseOrdersDataset(tenantId, warehouseId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
-
                 string sortString = "";
 
                 foreach (var column in e.State.SortedColumns)
@@ -173,7 +164,6 @@ namespace WMS.CustomBindings
                 transactions = transactions.OrderBy("OrderID Descending");
             }
 
-
             if (e.FilterExpression != string.Empty)
             {
                 CriteriaOperator op = CriteriaOperator.Parse(e.FilterExpression);
@@ -181,7 +171,6 @@ namespace WMS.CustomBindings
                 string filterString = CriteriaToWhereClauseHelper.GetDynamicLinqWhere(op);
 
                 transactions = transactions.Where(filterString);
-
             }
 
             transactions = transactions.Skip(e.StartDataRowIndex).Take(e.DataRowCount);
@@ -199,6 +188,7 @@ namespace WMS.CustomBindings
 
             e.Data = podata;
         }
+
         public static GridViewModel CreatePurchaseOrdersGridViewModel()
         {
             var viewModel = new GridViewModel();
@@ -231,6 +221,7 @@ namespace WMS.CustomBindings
             viewModel.Pager.PageSize = 10;
             return viewModel;
         }
+
         private static IQueryable<SalesOrderViewModel> GetSalesOrderCompletedDataset(int CurrentTenantId, int CurrentWarehouseId)
         {
             OrderStatusEnum? type = OrderStatusEnum.Complete;
@@ -253,18 +244,15 @@ namespace WMS.CustomBindings
 
         public static void SalesOrderCompletedGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId)
         {
-
             var transactions = GetSalesOrderCompletedDataset(tenantId, warehouseId);
 
             SortFilterAndSetDataCount(e, transactions);
-
         }
 
         private static void SortFilterAndSetDataCount(GridViewCustomBindingGetDataRowCountArgs e, IQueryable<SalesOrderViewModel> transactions)
         {
             if (e.State.SortedColumns.Count() > 0)
             {
-
                 string sortString = "";
 
                 foreach (var column in e.State.SortedColumns)
@@ -290,7 +278,6 @@ namespace WMS.CustomBindings
 
         public static void SalesOrderCompletedGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId)
         {
-
             var transactions = GetSalesOrderCompletedDataset(tenantId, warehouseId);
 
             SortFilterAndSetData(e, transactions);
@@ -298,16 +285,13 @@ namespace WMS.CustomBindings
 
         public static void SalesOrderPickerAssignedGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId)
         {
-
             var transactions = GetSalesOrderPickerAssignedDataset(tenantId, warehouseId);
 
             SortFilterAndSetDataCount(e, transactions);
-
         }
 
         public static void SalesOrderPickerAssignedGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId)
         {
-
             var transactions = GetSalesOrderPickerAssignedDataset(tenantId, warehouseId);
 
             SortFilterAndSetData(e, transactions);
@@ -315,35 +299,29 @@ namespace WMS.CustomBindings
 
         private static IQueryable<SalesOrderViewModel> GetSalesOrderPickerAssignedDataset(int CurrentTenantId, int CurrentWarehouseId)
         {
-            OrderStatusEnum? type = OrderStatusEnum.Active;
-
             var orderServices = DependencyResolver.Current.GetService<ISalesOrderService>();
-            var transactions = orderServices.GetAllPickerAssignedSalesOrders(CurrentTenantId, CurrentWarehouseId, type);
+            var transactions = orderServices.GetAllPickerAssignedSalesOrders(CurrentTenantId, CurrentWarehouseId, new List<OrderStatusEnum> { OrderStatusEnum.Active });
 
             return transactions;
         }
 
         private static IQueryable<SalesOrderViewModel> GetSalesOrderPickerUnassignedDataset(int CurrentTenantId, int CurrentWarehouseId)
         {
-            OrderStatusEnum? type = OrderStatusEnum.Active;
             var orderServices = DependencyResolver.Current.GetService<ISalesOrderService>();
-            var transactions = orderServices.GetAllPickerUnassignedSalesOrders(CurrentTenantId, CurrentWarehouseId, type);
+            var transactions = orderServices.GetAllPickerUnassignedSalesOrders(CurrentTenantId, CurrentWarehouseId, new List<OrderStatusEnum> { OrderStatusEnum.Active, OrderStatusEnum.Hold });
 
             return transactions;
         }
 
         public static void SalesOrderPickerUnassignedGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId)
         {
-
             var transactions = GetSalesOrderPickerUnassignedDataset(tenantId, warehouseId);
 
             SortFilterAndSetDataCount(e, transactions);
-
         }
 
         public static void SalesOrderPickerUnassignedGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId)
         {
-
             var transactions = GetSalesOrderPickerUnassignedDataset(tenantId, warehouseId);
 
             SortFilterAndSetData(e, transactions);
@@ -353,7 +331,6 @@ namespace WMS.CustomBindings
         {
             if (e.State.SortedColumns.Count() > 0)
             {
-
                 string sortString = "";
 
                 foreach (var column in e.State.SortedColumns)
@@ -366,7 +343,6 @@ namespace WMS.CustomBindings
             {
                 transactions = transactions.OrderBy("OrderID Descending");
             }
-
 
             if (e.FilterExpression != string.Empty)
             {
@@ -394,26 +370,24 @@ namespace WMS.CustomBindings
         private static IQueryable<SalesOrderViewModel> GetSalesOrderAwaitingDataset(int CurrentTenantId, int CurrentWarehouseId)
         {
             var orderServices = DependencyResolver.Current.GetService<ISalesOrderService>();
-            var transactions = orderServices.GetAllActiveSalesOrdersIq(CurrentTenantId, CurrentWarehouseId, OrderStatusEnum.AwaitingAuthorisation);
+            var transactions = orderServices.GetAllActiveSalesOrdersIq(CurrentTenantId, CurrentWarehouseId, new List<OrderStatusEnum> { OrderStatusEnum.AwaitingAuthorisation });
 
             return transactions;
         }
+
         public static void SalesOrderAwaitingGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId)
         {
-
             var transactions = GetSalesOrderAwaitingDataset(tenantId, warehouseId);
 
             SortFilterAndSetDataCount(e, transactions);
-
         }
+
         public static void SalesOrderAwaitingGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId)
         {
-
             var transactions = GetSalesOrderAwaitingDataset(tenantId, warehouseId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
-
                 string sortString = "";
 
                 foreach (var column in e.State.SortedColumns)
@@ -427,7 +401,6 @@ namespace WMS.CustomBindings
                 transactions = transactions.OrderBy("OrderID Descending");
             }
 
-
             if (e.FilterExpression != string.Empty)
             {
                 CriteriaOperator op = CriteriaOperator.Parse(e.FilterExpression);
@@ -435,50 +408,47 @@ namespace WMS.CustomBindings
                 string filterString = CriteriaToWhereClauseHelper.GetDynamicLinqWhere(op);
 
                 transactions = transactions.Where(filterString);
-
             }
 
             transactions = transactions.Skip(e.StartDataRowIndex).Take(e.DataRowCount);
             e.Data = transactions.ToList();
         }
+
         private static IQueryable<SalesOrderViewModel> GetSalesOrderActiveDataset(int CurrentTenantId, int CurrentWarehouseId)
         {
             var orderServices = DependencyResolver.Current.GetService<ISalesOrderService>();
             var transactions = orderServices.GetAllActiveSalesOrdersIq(CurrentTenantId, CurrentWarehouseId);
             return transactions;
         }
+
         public static void SalesOrderActiveGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId)
         {
-
             var transactions = GetSalesOrderActiveDataset(tenantId, warehouseId);
 
             SortFilterAndSetDataCount(e, transactions);
-
         }
 
         public static void SalesOrderActiveGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId)
         {
-
             var transactions = GetSalesOrderActiveDataset(tenantId, warehouseId);
 
             SortFilterAndSetData(e, transactions);
         }
+
         private static IQueryable<object> GetDirectSalesOrderDataset(int CurrentTenantId, int CurrentWarehouseId)
         {
-
             var orderServices = DependencyResolver.Current.GetService<ICoreOrderService>();
             var transactions = orderServices.GetAllPaidDirectSalesOrdersIq(CurrentTenantId, CurrentWarehouseId);
 
             return transactions;
         }
+
         public static void DirectSalesOrderGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId)
         {
-
             var transactions = GetDirectSalesOrderDataset(tenantId, warehouseId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
-
                 string sortString = "";
 
                 foreach (var column in e.State.SortedColumns)
@@ -500,16 +470,14 @@ namespace WMS.CustomBindings
             }
 
             e.DataRowCount = transactions.Count();
-
         }
+
         public static void DirectSalesOrderGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId)
         {
-
             var transactions = GetDirectSalesOrderDataset(tenantId, warehouseId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
-
                 string sortString = "";
 
                 foreach (var column in e.State.SortedColumns)
@@ -523,7 +491,6 @@ namespace WMS.CustomBindings
                 transactions = transactions.OrderBy("OrderID Descending");
             }
 
-
             if (e.FilterExpression != string.Empty)
             {
                 CriteriaOperator op = CriteriaOperator.Parse(e.FilterExpression);
@@ -531,7 +498,6 @@ namespace WMS.CustomBindings
                 string filterString = CriteriaToWhereClauseHelper.GetDynamicLinqWhere(op);
 
                 transactions = transactions.Where(filterString);
-
             }
 
             transactions = transactions.Skip(e.StartDataRowIndex).Take(e.DataRowCount);
@@ -542,7 +508,6 @@ namespace WMS.CustomBindings
 
         private static IQueryable<object> GetReturnOrderDataset(int CurrentTenantId, int CurrentWarehouseId)
         {
-
             var orderServices = DependencyResolver.Current.GetService<ICoreOrderService>();
             var transactions = orderServices.GetAllReturnOrders(CurrentTenantId, CurrentWarehouseId);
 
@@ -551,12 +516,10 @@ namespace WMS.CustomBindings
 
         public static void ReturnOrderGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId)
         {
-
             var transactions = GetReturnOrderDataset(tenantId, warehouseId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
-
                 string sortString = "";
 
                 foreach (var column in e.State.SortedColumns)
@@ -578,16 +541,14 @@ namespace WMS.CustomBindings
             }
 
             e.DataRowCount = transactions.Count();
-
         }
+
         public static void ReturnOrderGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId)
         {
-
             var transactions = GetReturnOrderDataset(tenantId, warehouseId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
-
                 string sortString = "";
 
                 foreach (var column in e.State.SortedColumns)
@@ -601,7 +562,6 @@ namespace WMS.CustomBindings
                 transactions = transactions.OrderBy("OrderID Descending");
             }
 
-
             if (e.FilterExpression != string.Empty)
             {
                 CriteriaOperator op = CriteriaOperator.Parse(e.FilterExpression);
@@ -609,22 +569,13 @@ namespace WMS.CustomBindings
                 string filterString = CriteriaToWhereClauseHelper.GetDynamicLinqWhere(op);
 
                 transactions = transactions.Where(filterString);
-
             }
 
             transactions = transactions.Skip(e.StartDataRowIndex).Take(e.DataRowCount);
             e.Data = transactions.ToList();
         }
 
-
-
         //---------------------------------------------------------------------------------------------------
-
-
-
-
-
-
 
         public static GridViewModel CreateSalesOrdersGridViewModel()
         {
@@ -661,6 +612,7 @@ namespace WMS.CustomBindings
             viewModel.Pager.PageSize = 10;
             return viewModel;
         }
+
         private static IQueryable<TransferOrderViewModel> GetTransferOutDataset(int CurrentTenantId, int CurrentWarehouseId)
         {
             OrderStatusEnum? type = OrderStatusEnum.Active;
@@ -681,14 +633,13 @@ namespace WMS.CustomBindings
 
             return transactions;
         }
+
         public static void TransferOutGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId)
         {
-
             var transactions = GetTransferOutDataset(tenantId, warehouseId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
-
                 string sortString = "";
 
                 foreach (var column in e.State.SortedColumns)
@@ -710,16 +661,14 @@ namespace WMS.CustomBindings
             }
 
             e.DataRowCount = transactions.Count();
-
         }
+
         public static void TransferOutGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId)
         {
-
             var transactions = GetTransferOutDataset(tenantId, warehouseId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
-
                 string sortString = "";
 
                 foreach (var column in e.State.SortedColumns)
@@ -733,7 +682,6 @@ namespace WMS.CustomBindings
                 transactions = transactions.OrderBy("OrderID Descending");
             }
 
-
             if (e.FilterExpression != string.Empty)
             {
                 CriteriaOperator op = CriteriaOperator.Parse(e.FilterExpression);
@@ -741,25 +689,25 @@ namespace WMS.CustomBindings
                 string filterString = CriteriaToWhereClauseHelper.GetDynamicLinqWhere(op);
 
                 transactions = transactions.Where(filterString);
-
             }
 
             transactions = transactions.Skip(e.StartDataRowIndex).Take(e.DataRowCount);
             e.Data = transactions.ToList();
         }
+
         public static IQueryable<WorksOrderViewModel> GetWorksOrdersDataset(int CurrentTenantId, int? propertyId)
         {
             var workOrderService = DependencyResolver.Current.GetService<IWorksOrderService>();
             var transactions = workOrderService.GetAllPendingWorksOrdersIq(CurrentTenantId, null, propertyId);
             return transactions;
         }
+
         public static void WorksOrdersGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int? propertyId)
         {
             var transactions = GetWorksOrdersDataset(tenantId, propertyId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
-
                 string sortString = "";
 
                 foreach (var column in e.State.SortedColumns)
@@ -781,16 +729,14 @@ namespace WMS.CustomBindings
             }
 
             e.DataRowCount = transactions.Count();
-
         }
+
         public static void WorksOrdersGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int? propertyId)
         {
-
             var transactions = GetWorksOrdersDataset(tenantId, propertyId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
-
                 string sortString = "";
 
                 foreach (var column in e.State.SortedColumns)
@@ -804,7 +750,6 @@ namespace WMS.CustomBindings
                 transactions = transactions.OrderBy("OrderID Descending");
             }
 
-
             if (e.FilterExpression != string.Empty)
             {
                 CriteriaOperator op = CriteriaOperator.Parse(e.FilterExpression);
@@ -812,12 +757,12 @@ namespace WMS.CustomBindings
                 string filterString = CriteriaToWhereClauseHelper.GetDynamicLinqWhere(op);
 
                 transactions = transactions.Where(filterString);
-
             }
 
             transactions = transactions.Skip(e.StartDataRowIndex).Take(e.DataRowCount);
             e.Data = transactions.ToList();
         }
+
         public static IQueryable<WorksOrderViewModel> GetWorksOrdersCompletedDataset(int CurrentTenantId, int? propertyId)
         {
             int? type = 2;
@@ -836,14 +781,13 @@ namespace WMS.CustomBindings
             var transactions = workOrderService.GetAllCompletedWorksOrdersIq(CurrentTenantId, propertyId, type);
             return transactions;
         }
+
         public static void WorksOrdersCompletedGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int? propertyId)
         {
-
             var transactions = GetWorksOrdersCompletedDataset(tenantId, propertyId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
-
                 string sortString = "";
 
                 foreach (var column in e.State.SortedColumns)
@@ -865,16 +809,14 @@ namespace WMS.CustomBindings
             }
 
             e.DataRowCount = transactions.Count();
-
         }
+
         public static void WorksOrdersCompletedGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int? propertyId)
         {
-
             var transactions = GetWorksOrdersCompletedDataset(tenantId, propertyId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
-
                 string sortString = "";
 
                 foreach (var column in e.State.SortedColumns)
@@ -888,7 +830,6 @@ namespace WMS.CustomBindings
                 transactions = transactions.OrderBy("OrderID Descending");
             }
 
-
             if (e.FilterExpression != string.Empty)
             {
                 CriteriaOperator op = CriteriaOperator.Parse(e.FilterExpression);
@@ -896,12 +837,12 @@ namespace WMS.CustomBindings
                 string filterString = CriteriaToWhereClauseHelper.GetDynamicLinqWhere(op);
 
                 transactions = transactions.Where(filterString);
-
             }
 
             transactions = transactions.Skip(e.StartDataRowIndex).Take(e.DataRowCount);
             e.Data = transactions.ToList();
         }
+
         private static IQueryable<TransferOrderViewModel> GetTransferInDataset(int CurrentTenantId, int CurrentWarehouseId)
         {
             var orderServices = DependencyResolver.Current.GetService<ICoreOrderService>();
@@ -921,14 +862,13 @@ namespace WMS.CustomBindings
             var transactions = orderServices.GetTransferInOrderViewModelDetails(CurrentWarehouseId, CurrentTenantId, type);
             return transactions;
         }
+
         public static void TransferInGetDataRowCount(GridViewCustomBindingGetDataRowCountArgs e, int tenantId, int warehouseId)
         {
-
             var transactions = GetTransferInDataset(tenantId, warehouseId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
-
                 string sortString = "";
 
                 foreach (var column in e.State.SortedColumns)
@@ -950,16 +890,14 @@ namespace WMS.CustomBindings
             }
 
             e.DataRowCount = transactions.Count();
-
         }
+
         public static void TransferInGetData(GridViewCustomBindingGetDataArgs e, int tenantId, int warehouseId)
         {
-
             var transactions = GetTransferInDataset(tenantId, warehouseId);
 
             if (e.State.SortedColumns.Count() > 0)
             {
-
                 string sortString = "";
 
                 foreach (var column in e.State.SortedColumns)
@@ -973,7 +911,6 @@ namespace WMS.CustomBindings
                 transactions = transactions.OrderBy("OrderID Descending");
             }
 
-
             if (e.FilterExpression != string.Empty)
             {
                 CriteriaOperator op = CriteriaOperator.Parse(e.FilterExpression);
@@ -981,12 +918,12 @@ namespace WMS.CustomBindings
                 string filterString = CriteriaToWhereClauseHelper.GetDynamicLinqWhere(op);
 
                 transactions = transactions.Where(filterString);
-
             }
 
             transactions = transactions.Skip(e.StartDataRowIndex).Take(e.DataRowCount);
             e.Data = transactions.ToList();
         }
+
         public static GridViewModel CreateTransferInGridViewModel()
         {
             var viewModel = new GridViewModel();
@@ -1001,7 +938,5 @@ namespace WMS.CustomBindings
             viewModel.Pager.PageSize = 10;
             return viewModel;
         }
-
-
     }
 }

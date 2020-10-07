@@ -1,9 +1,8 @@
+using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Enums;
+using Ganedata.Core.Models;
 using System;
 using System.Collections.Generic;
-using Ganedata.Core.Entities.Domain;
-using Ganedata.Core.Models;
-using Ganedata.Core.Entities.Enums;
-using WMS.VModels;
 using System.Linq;
 
 namespace Ganedata.Core.Services
@@ -24,19 +23,22 @@ namespace Ganedata.Core.Services
             WorksOrderService = worksOrderService;
             SalesOrderService = salesOrderService;
         }
+
         public string GenerateNextOrderNumber(InventoryTransactionTypeEnum type, int tenantId)
         {
             return OrderService.GenerateNextOrderNumber(type, tenantId);
         }
+
         public Order CreateOrderByOrderNumber(string orderNumber, int productId, int tenantId, int warehouseId, InventoryTransactionTypeEnum transType, int userId, decimal quantity)
         {
             return OrderService.CreateOrderByOrderNumber(orderNumber, productId, tenantId, warehouseId, transType, userId, quantity);
-
         }
+
         public IQueryable<Order> GetValidSalesOrderByOrderNumber(string orderNumber, int tenantId, int? warehouseId = null)
         {
             return OrderService.GetValidSalesOrderByOrderNumber(orderNumber, tenantId, warehouseId);
         }
+
         public string GetAuthorisedUserNameById(int userId)
         {
             return OrderService.GetAuthorisedUserNameById(userId);
@@ -71,10 +73,12 @@ namespace Ganedata.Core.Services
         {
             return OrderService.CompleteOrder(orderId, userId);
         }
+
         public Order FinishinghOrder(int orderId, int userId, int wareHouseId)
         {
             return OrderService.FinishinghOrder(orderId, userId, wareHouseId);
         }
+
         public List<Order> GetDirectSaleOrders(int? orderId)
         {
             return SalesOrderService.GetDirectSaleOrders(orderId);
@@ -96,6 +100,7 @@ namespace Ganedata.Core.Services
         {
             return OrderService.GetAllValidOrderDetailsByOrderId(orderId);
         }
+
         public IQueryable<ProductMaster> GetAllValidProduct(int currentTenantId)
         {
             return OrderService.GetAllValidProduct(currentTenantId);
@@ -105,6 +110,7 @@ namespace Ganedata.Core.Services
         {
             return OrderService.GetDirectSalesOrderDetails(id, tenantId);
         }
+
         public List<OrderProofOfDelivery> GetOrderProofsByOrderProcessId(int Orderid, int TenantId)
         {
             return OrderService.GetOrderProofsByOrderProcessId(Orderid, TenantId);
@@ -220,7 +226,6 @@ namespace Ganedata.Core.Services
             OrderService.RemoveOrderDetail(orderDetailId, tenantId, userId);
         }
 
-
         public OrderDetail GetOrderDetailsById(int orderDetailId)
         {
             return OrderService.GetOrderDetailsById(orderDetailId);
@@ -330,16 +335,16 @@ namespace Ganedata.Core.Services
             return OrderService.GetDirectSalesModelByOrderId(orderId);
         }
 
-
         public List<PurchaseOrderViewModel> GetAllPurchaseOrders(int tenantId)
         {
             return PurchaseOrderService.GetAllPurchaseOrders(tenantId);
         }
+
         public IEnumerable<OrderPTenantEmailRecipient> GetAccountContactId(int OrderId)
         {
-
             return PurchaseOrderService.GetAccountContactId(OrderId);
         }
+
         public Order CreatePurchaseOrder(Order order, OrderRecipientInfo shipmentAndRecipientInfo, int tenantId, int warehouseId,
             int userId, List<OrderDetail> orderDetails = null, List<OrderNotes> orderNotes = null)
         {
@@ -383,13 +388,11 @@ namespace Ganedata.Core.Services
             return PurchaseOrderService.UpdatePurchaseOrderStatus(orderId, orderStatusId, userId);
         }
 
-
-
-
         public IQueryable<PurchaseOrderViewModel> GetAllPurchaseOrdersCompleted(int tenantId, int warehouseId, OrderStatusEnum? type = null)
         {
             return PurchaseOrderService.GetAllPurchaseOrdersCompleted(tenantId, warehouseId, type);
         }
+
         public IQueryable<PurchaseOrderViewModel> GetAllPurchaseOrdersInProgress(int tenantId, int warehouseId)
         {
             return PurchaseOrderService.GetAllPurchaseOrdersInProgress(tenantId, warehouseId);
@@ -416,6 +419,7 @@ namespace Ganedata.Core.Services
         {
             return WorksOrderService.SaveWorksOrder(order, shipmentAndRecipientInfo, tenantId, warehouseId, userId, isOrderComplete, orderDetails, orderNotes);
         }
+
         public Order UpdateWorksOrderBulkSingle(Order order, OrderRecipientInfo shipmentAndRecipientInfo, int tenantId,
             int warehouseId, int userId, List<OrderDetail> orderDetails = null, List<OrderNotes> orderNotes = null)
         {
@@ -441,6 +445,7 @@ namespace Ganedata.Core.Services
         {
             return WorksOrderService.GetAllCompletedWorksOrdersIq(tenantId, propertyId, type);
         }
+
         public List<WorksOrderViewModel> GetAllPendingWorksOrders(int tenantId)
         {
             return WorksOrderService.GetAllPendingWorksOrders(tenantId);
@@ -455,6 +460,7 @@ namespace Ganedata.Core.Services
         {
             return TransferOrderService.CreateTransferOrder(order, orderDetails, tenantId, warehouseId, userId);
         }
+
         public Order SaveTransferOrder(Order order, List<OrderDetail> orderDetails, int tenantId, int warehouseId, int userId)
         {
             return TransferOrderService.SaveTransferOrder(order, orderDetails, tenantId, warehouseId, userId);
@@ -487,9 +493,9 @@ namespace Ganedata.Core.Services
             return SalesOrderService.GetAllSalesConsignments(tenantId, warehouseId, InventoryTransactionId, orderstatusId);
         }
 
-        public IQueryable<SalesOrderViewModel> GetAllActiveSalesOrdersIq(int tenantId, int warehouseId, OrderStatusEnum? statusId = null)
+        public IQueryable<SalesOrderViewModel> GetAllActiveSalesOrdersIq(int tenantId, int warehouseId, IEnumerable<OrderStatusEnum> statusIds = null)
         {
-            return SalesOrderService.GetAllActiveSalesOrdersIq(tenantId, warehouseId, statusId);
+            return SalesOrderService.GetAllActiveSalesOrdersIq(tenantId, warehouseId, statusIds);
         }
 
         public IQueryable<SalesOrderViewModel> GetAllCompletedSalesOrdersIq(int tenantId, int warehouseId, OrderStatusEnum? type = null)
@@ -497,25 +503,25 @@ namespace Ganedata.Core.Services
             return SalesOrderService.GetAllCompletedSalesOrdersIq(tenantId, warehouseId, type);
         }
 
-        public IQueryable<SalesOrderViewModel> GetAllPickerAssignedSalesOrders(int tenantId, int warehouseId, OrderStatusEnum? status = null)
+        public IQueryable<SalesOrderViewModel> GetAllPickerAssignedSalesOrders(int tenantId, int warehouseId, IEnumerable<OrderStatusEnum> statusIds = null)
         {
-            return SalesOrderService.GetAllPickerAssignedSalesOrders(tenantId, warehouseId, status);
+            return SalesOrderService.GetAllPickerAssignedSalesOrders(tenantId, warehouseId, statusIds);
         }
 
-        public IQueryable<SalesOrderViewModel> GetAllPickerUnassignedSalesOrders(int tenantId, int warehouseId, OrderStatusEnum? status = null)
+        public IQueryable<SalesOrderViewModel> GetAllPickerUnassignedSalesOrders(int tenantId, int warehouseId, IEnumerable<OrderStatusEnum> statusIds = null)
         {
-            return SalesOrderService.GetAllPickerUnassignedSalesOrders(tenantId, warehouseId, status);
+            return SalesOrderService.GetAllPickerUnassignedSalesOrders(tenantId, warehouseId, statusIds);
         }
 
         public IQueryable<SalesOrderViewModel> GetAllPaidDirectSalesOrdersIq(int tenantId, int warehouseId, OrderStatusEnum? statusId = null)
         {
             return SalesOrderService.GetAllPaidDirectSalesOrdersIq(tenantId, warehouseId, statusId);
         }
+
         public IQueryable<SalesOrderViewModel> GetAllReturnOrders(int tenantId, int warehouseId, OrderStatusEnum? statusId = null)
         {
             return SalesOrderService.GetAllReturnOrders(tenantId, warehouseId, statusId);
         }
-
 
         public bool AuthoriseSalesOrder(int orderId, int userId, string notes, bool unauthorize = false)
         {
@@ -526,6 +532,7 @@ namespace Ganedata.Core.Services
         {
             return SalesOrderService.GetAllSalesOrdersForPalletsByAccount(tenantId, accountId);
         }
+
         public Order OrderProcessAutoComplete(int orderId, string deliveryNumber, int userId, bool includeProcessing, bool acknowledged)
         {
             return OrderService.OrderProcessAutoComplete(orderId, deliveryNumber, userId, includeProcessing, acknowledged);
@@ -570,6 +577,7 @@ namespace Ganedata.Core.Services
         {
             return PurchaseOrderService.GetVerifedPallet(serial, productId, tenantId, warehouseId, type, palletTrackingId, dates, orderId);
         }
+
         public int ProcessPalletTrackingSerial(GoodsReturnRequestSync serials, string groupToken = null, bool process = false)
         {
             return PurchaseOrderService.ProcessPalletTrackingSerial(serials, groupToken, process);
@@ -577,50 +585,52 @@ namespace Ganedata.Core.Services
 
         public PalletTracking GetSerialByPalletTrackingScheme(int productId, int palletTrackingSchemeId, int teanantId, int warehouseId)
         {
-
             return SalesOrderService.GetSerialByPalletTrackingScheme(productId, palletTrackingSchemeId, teanantId, warehouseId);
         }
+
         public PalletTracking GetUpdatedSerial(int productId, int palletTrackingSchemeId, int tenantId, int warehouseId, List<string> serial)
         {
-
             return SalesOrderService.GetUpdatedSerial(productId, palletTrackingSchemeId, tenantId, warehouseId, serial);
         }
+
         public Order DeleteTransferOrder(int orderId, int tenantId, int warehouseId, int userId)
         {
-
             return TransferOrderService.DeleteTransferOrder(orderId, tenantId, warehouseId, userId);
         }
+
         public InventoryTransaction AddGoodsReturnPallet(List<string> serials, string orderNumber, int prodId, InventoryTransactionTypeEnum transactionTypeId, decimal quantity, int? OrderId, int tenantId, int currentWarehouseId, int UserId, int palletTrackingId = 0)
         {
             return OrderService.AddGoodsReturnPallet(serials, orderNumber, prodId, transactionTypeId, quantity, OrderId, tenantId, currentWarehouseId, UserId, palletTrackingId);
         }
+
         public decimal QunatityForOrderDetail(int orderDetailId)
         {
             return OrderService.QunatityForOrderDetail(orderDetailId);
-
-
         }
+
         public string UpdateOrderProcessDetail(int OrderProcessDetailId, decimal Quantity, int CurrentUserId, int CurrentTenantId, int? SerialId, int? PalletTrackingId, bool? wastedReturn = false)
         {
             return OrderService.UpdateOrderProcessDetail(OrderProcessDetailId, Quantity, CurrentUserId, CurrentTenantId, SerialId, PalletTrackingId, wastedReturn);
         }
+
         public bool UpdateOrderInvoiceNumber(int orderProcessId, string InvoiceNumber, DateTime? InvoiceDate)
         {
             return OrderService.UpdateOrderInvoiceNumber(orderProcessId, InvoiceNumber, InvoiceDate);
         }
+
         public Order SaveDirectSalesOrder(Order order, int tenantId, int warehouseId,
          int userId, List<OrderDetail> orderDetails = null, List<OrderNotes> orderNotes = null)
         {
             return OrderService.SaveDirectSalesOrder(order, tenantId, warehouseId, userId, orderDetails, orderNotes);
         }
+
         public List<OrderProcess> GetALLOrderProcessByOrderProcessId(int orderProcessid)
         {
             return OrderService.GetALLOrderProcessByOrderProcessId(orderProcessid);
         }
+
         public bool UpdateDeliveryAddress(AccountShipmentInfo accountShipmentInfo)
         {
-
-
             return OrderService.UpdateDeliveryAddress(accountShipmentInfo);
         }
 
@@ -628,10 +638,12 @@ namespace Ganedata.Core.Services
         {
             return OrderService.UpdateDateInOrder(OrderId);
         }
+
         public int[] GetOrderProcessbyOrderId(int OrderId)
         {
             return OrderService.GetOrderProcessbyOrderId(OrderId);
         }
+
         public bool CheckOrdersAuthroization(decimal OrderTotal, InventoryTransactionTypeEnum InventoryTransactionType, int TenantId, int UserId, double? CreditLimit = null)
         {
             return OrderService.CheckOrdersAuthroization(OrderTotal, InventoryTransactionType, TenantId, UserId, CreditLimit);
@@ -645,8 +657,6 @@ namespace Ganedata.Core.Services
         public Order CreateShopOrder(CheckoutViewModel orderDetail, int tenantId, int UserId, int warehouseId, int SiteId)
         {
             return OrderService.CreateShopOrder(orderDetail, tenantId, UserId, warehouseId, SiteId);
-
-
         }
 
         public IQueryable<Order> GetOrdersHistory(int UserId, int SiteId)

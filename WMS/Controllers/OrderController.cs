@@ -26,10 +26,10 @@ namespace WMS.Controllers
         private readonly IProductPriceService _productPriceService;
         private readonly ICommonDbServices _commonDbServices;
         private readonly IEmailServices _emailServices;
+        private readonly IPalletingService _palletingService;
         private readonly IMapper _mapper;
 
-
-        public OrderController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IAppointmentsService appointmentsService,
+        public OrderController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IAppointmentsService appointmentsService, IPalletingService palletingService,
             IProductLookupService productLookupService, IProductServices productServices, ITenantLocationServices tenantLocationServices, IProductPriceService productPriceService, IGaneConfigurationsHelper ganeConfigurationsHelper,
             IEmailServices emailServices, ICommonDbServices commonDbServices, ITenantLocationServices tenantLocationservices, ITenantsServices tenantsServices, IMapper mapper)
             : base(orderService, propertyService, accountServices, lookupServices, appointmentsService, ganeConfigurationsHelper, emailServices, tenantLocationservices, tenantsServices)
@@ -40,8 +40,10 @@ namespace WMS.Controllers
             _productPriceService = productPriceService;
             _commonDbServices = commonDbServices;
             _emailServices = emailServices;
+            _palletingService = palletingService;
             _mapper = mapper;
         }
+
         // GET: /PO/
         public ActionResult Index(int? Id)
         {
@@ -51,10 +53,9 @@ namespace WMS.Controllers
                 var Order = OrderService.FinishinghOrder(Id.Value, CurrentUserId, CurrentTenantId);
             }
 
-
-
             return View();
         }
+
         public async Task<ActionResult> Complete(int? id, string frag, string referrerController = null)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
@@ -77,7 +78,6 @@ namespace WMS.Controllers
                 {
                     TempData["Error"] = result;
                 }
-
             }
 
             string controller = "PurchaseOrders";
@@ -92,16 +92,29 @@ namespace WMS.Controllers
             return Redirect(Url.Action("Index", controller) + frag);
         }
 
-        public JsonResult CanAutoCompleteOrder(int id)
+        public async Task<JsonResult> CanAutoCompleteOrder(int id)
         {
             var suffix = "SO";
             try
             {
                 var order = OrderService.GetOrderById(id);
                 suffix = GetAnchorForInventoryTransactionTypeId(order.InventoryTransactionTypeId);
-                if (order != null && order.OrderDetails.Where(u => u.IsDeleted != true).All(m => m.ProcessedQty >= m.Qty))
+                var orderDetails = order.OrderDetails.Where(u => u.IsDeleted != true);
+                if (order != null && orderDetails.All(m => m.ProcessedQty >= m.Qty || m.ProductMaster.IsAutoShipment == true || m.ProductMaster.ProductType == ProductKitTypeEnum.Virtual))
                 {
-                    OrderService.OrderProcessAutoComplete(id, string.Empty, CurrentUserId, false, true);
+                    if (orderDetails.All(m => m.ProcessedQty >= m.Qty)){
+                        OrderService.OrderProcessAutoComplete(id, string.Empty, CurrentUserId, false, true);
+                    }
+                    else
+                    {
+                        await AutoCompleteOrder(new AutoCompleteOrderViewModel {
+                            OrderID = id,
+                            ForceComplete = true,
+                            IncludeProcessing = true,
+                            DeliveryNumber = GaneStaticAppExtensions.GenerateDateRandomNo()
+                        });
+                    }
+
                     return Json(new { Success = true, Suffix = suffix }, JsonRequestBehavior.AllowGet);
                 }
                 else
@@ -208,7 +221,6 @@ namespace WMS.Controllers
 
                 default:
                     throw new Exception("Report type not supported. Type ID : + " + orderTypeId);
-
             }
 
             report.ExportToPdf(Server.MapPath(reportPath));
@@ -232,7 +244,6 @@ namespace WMS.Controllers
         public string GeneratePO()
         {
             return GenerateNextOrderNumber(InventoryTransactionTypeEnum.PurchaseOrder);
-
         }
 
         public JsonResult IsPONumberAvailable(string PONumber, int POID = 0)
@@ -243,6 +254,7 @@ namespace WMS.Controllers
 
             return Json(po == null || po.OrderID == POID, JsonRequestBehavior.AllowGet);
         }
+
         [HttpGet]
         public ActionResult PrintPO(int id = 0)
         {
@@ -253,11 +265,8 @@ namespace WMS.Controllers
 
             Order po = OrderService.GetOrderById(id);
 
-
             return View(po);
-
         }
-
 
         public ActionResult GetNextOrderNumber(string id)
         {
@@ -266,7 +275,6 @@ namespace WMS.Controllers
 
         public ActionResult _PurchaseOrders(int? type)
         {
-
             ViewBag.type = type;
 
             if (type == 1)
@@ -281,7 +289,6 @@ namespace WMS.Controllers
             }
             else
             {
-
                 ViewBag.name = "_PurchaseOrderListGridView_Completed";
                 var viewModel = GridViewExtension.GetViewModel("_PurchaseOrderListGridView_Completed");
 
@@ -310,7 +317,6 @@ namespace WMS.Controllers
                 viewModel.Pager.Assign(pager);
                 return _PurchaseOrdersGridActionCore(viewModel);
             }
-
         }
 
         public ActionResult _PurchaseOrdersFiltering(GridViewFilteringState filteringState, int? type)
@@ -335,7 +341,6 @@ namespace WMS.Controllers
 
         public ActionResult _PurchaseOrdersSorting(GridViewColumnState column, bool reset, int? type)
         {
-
             if (type == 1)
             {
                 ViewBag.type = type;
@@ -353,8 +358,6 @@ namespace WMS.Controllers
                 return _PurchaseOrdersGridActionCore(viewModel);
             }
         }
-
-
 
         public ActionResult _PurchaseOrdersGridActionCore(GridViewModel gridViewModel)
         {
@@ -387,10 +390,9 @@ namespace WMS.Controllers
             );
             return PartialView("_PurchaseOrders", gridViewModel);
         }
+
         public ActionResult _WorksOrders(int? id)
         {
-
-
             ViewBag.PropertyId = id;
             var viewModel = GridViewExtension.GetViewModel("_WorksOrderListGridView");
 
@@ -398,15 +400,14 @@ namespace WMS.Controllers
                 viewModel = OrdersCustomBinding.CreatePurchaseOrdersGridViewModel();
 
             return _WorksOrdersGridActionCore(viewModel, id);
-
         }
+
         public ActionResult _WorksOrdersPaging(GridViewPagerState pager, int? id)
         {
             ViewBag.PropertyId = id;
             var viewModel = GridViewExtension.GetViewModel("_WorksOrderListGridView");
             viewModel.Pager.Assign(pager);
             return _WorksOrdersGridActionCore(viewModel, id);
-
         }
 
         public ActionResult _WorksOrdersFiltering(GridViewFilteringState filteringState, int? id)
@@ -415,7 +416,6 @@ namespace WMS.Controllers
             var viewModel = GridViewExtension.GetViewModel("_WorksOrderListGridView");
             viewModel.ApplyFilteringState(filteringState);
             return _WorksOrdersGridActionCore(viewModel, id);
-
         }
 
         public ActionResult _WorksOrdersSorting(GridViewColumnState column, bool reset, int? id)
@@ -424,8 +424,8 @@ namespace WMS.Controllers
             var viewModel = GridViewExtension.GetViewModel("_WorksOrderListGridView");
             viewModel.ApplySortingState(column, reset);
             return _WorksOrdersGridActionCore(viewModel, id);
-
         }
+
         public ActionResult _WorksOrdersGridActionCore(GridViewModel gridViewModel, int? id = null)
         {
             gridViewModel.ProcessCustomBinding(
@@ -458,15 +458,14 @@ namespace WMS.Controllers
                 viewModel = OrdersCustomBinding.CreatePurchaseOrdersGridViewModel();
 
             return _WorksOrdersCompletedGridActionCore(viewModel, propertyId);
-
         }
+
         public ActionResult _WorksOrdersCompletedPaging(GridViewPagerState pager, int? id)
         {
             ViewBag.PropertyId = id;
             var viewModel = GridViewExtension.GetViewModel("_WorksOrderCompletedListGridView");
             viewModel.Pager.Assign(pager);
             return _WorksOrdersCompletedGridActionCore(viewModel, id);
-
         }
 
         public ActionResult _WorksOrdersCompletedFiltering(GridViewFilteringState filteringState, int? id)
@@ -475,7 +474,6 @@ namespace WMS.Controllers
             var viewModel = GridViewExtension.GetViewModel("_WorksOrderCompletedListGridView");
             viewModel.ApplyFilteringState(filteringState);
             return _WorksOrdersCompletedGridActionCore(viewModel, id);
-
         }
 
         public ActionResult _WorksOrdersCompletedSorting(GridViewColumnState column, bool reset, int? id)
@@ -501,6 +499,7 @@ namespace WMS.Controllers
             );
             return PartialView("_WorksOrdersCompleted", gridViewModel);
         }
+
         public ActionResult _WorksOrderDetails(int Id)
         {
             //setname and routevalues are required to reuse order detail list.
@@ -510,6 +509,7 @@ namespace WMS.Controllers
             ViewBag.orderid = Id;
             return PartialView("_WorksOrderDetails", OrderService.GetWorksOrderDetails(Id, CurrentTenantId));
         }
+
         public ActionResult _SalesOrders(int? type)
         {
             var viewModel = GetSalesOrdersListViewModel(type);
@@ -522,6 +522,7 @@ namespace WMS.Controllers
             viewModel.Pager.Assign(pager);
             return PrepareSalesOrdersListActionResult(viewModel, type);
         }
+
         public ActionResult _SalesOrdersFiltering(GridViewFilteringState filteringState, int? type)
         {
             var viewModel = GetSalesOrdersListViewModel(type);
@@ -544,12 +545,15 @@ namespace WMS.Controllers
                 case 1:
                     gridControlName = "_SalesOrderListGridView_Active";
                     break;
+
                 case 2:
                     gridControlName = "_SalesOrderListGridView_Completed";
                     break;
+
                 case 3:
                     gridControlName = "_SalesOrderListGridView_PickerAssigned";
                     break;
+
                 case 4:
                     gridControlName = "_SalesOrderListGridView_PickerUnassigned";
                     break;
@@ -571,12 +575,16 @@ namespace WMS.Controllers
             {
                 case 1:
                     return _SalesOrdersActiveGridActionCore(viewModel, type);
+
                 case 2:
                     return _SalesOrdersCompletedGridActionCore(viewModel, type);
+
                 case 3:
                     return _SalesOrdersPickerAssignedGridActionCore(viewModel);
+
                 case 4:
                     return _SalesOrdersPickerUnassignedGridActionCore(viewModel);
+
                 default:
                     return _SalesOrdersAwaitingGridActionCore(viewModel, type);
             }
@@ -661,6 +669,7 @@ namespace WMS.Controllers
             );
             return PartialView("_SalesOrders", gridViewModel);
         }
+
         public async Task<ActionResult> AuthoriseOrder(AuthoriseSalesOrderModel model)
         {
             var authorised = OrderService.AuthoriseSalesOrder(model.OrderID, CurrentUserId, model.AuthorisedNotes, model.UnAuthorise);
@@ -682,8 +691,8 @@ namespace WMS.Controllers
             }
 
             return Json(false, JsonRequestBehavior.AllowGet);
-
         }
+
         public ActionResult AwaitingAuthorisation()
         {
             if (TempData["ErrorAwaitingAuthorization"] != null)
@@ -706,7 +715,6 @@ namespace WMS.Controllers
                 if (!string.IsNullOrEmpty(Request.Params["selectedStatus"].ToString()))
                 {
                     OrderStatusid = (OrderStatusEnum)int.Parse(Request.Params["selectedStatus"].ToString());
-
                 }
             }
 
@@ -725,9 +733,8 @@ namespace WMS.Controllers
                 viewModel = OrdersCustomBinding.CreateSalesOrdersGridViewModel();
 
             return _DirectSalesOrdersGridActionCore(viewModel);
-
-
         }
+
         public ActionResult _DirectSalesOrdersPaging(GridViewPagerState pager, int? type)
         {
             ViewBag.Type = type;
@@ -753,6 +760,7 @@ namespace WMS.Controllers
             viewModel.ApplySortingState(column, reset);
             return _DirectSalesOrdersGridActionCore(viewModel);
         }
+
         public ActionResult _DirectSalesOrdersGridActionCore(GridViewModel gridViewModel)
         {
             gridViewModel.ProcessCustomBinding(
@@ -777,6 +785,7 @@ namespace WMS.Controllers
             ViewBag.route = new { Controller = "Order", Action = "_PODetails", Id = ViewBag.orderid };
             return PartialView("_PODetails", OrderService.GetPurchaseOrderDetailsById(Id, CurrentTenantId));
         }
+
         public ActionResult _SalesOrderDetails(int Id)
         {
             //setname and routevalues are required to reuse order detail list.
@@ -786,6 +795,7 @@ namespace WMS.Controllers
             ViewBag.orderid = Id;
             return PartialView("_SalesOrderDetails", OrderService.GetSalesOrderDetails(Id, CurrentTenantId));
         }
+
         public ActionResult _DirectSalesOrderDetails(int Id)
         {
             //setname and routevalues are required to reuse order detail list.
@@ -798,12 +808,9 @@ namespace WMS.Controllers
 
         public ActionResult _DeliveryProof(int id)
         {
-
             var orderProof = OrderService.GetOrderProofsByOrderProcessId(id, CurrentTenantId);
             return PartialView("_deliveryProof", orderProof);
         }
-
-
 
         public ActionResult _TransferOrderDetails(int Id)
         {
@@ -871,6 +878,7 @@ namespace WMS.Controllers
 
             return _TransferOutGridActionCore(viewModel);
         }
+
         public ActionResult _TransferOutPaging(GridViewPagerState pager)
         {
             var viewModel = GridViewExtension.GetViewModel("_TransferOutOrderListGridView");
@@ -907,17 +915,19 @@ namespace WMS.Controllers
             );
             return PartialView("_TransferOutOrders", gridViewModel);
         }
+
         public ActionResult ProcessPO(int? id)
         {
-
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ProcessPO(Order model)
         {
             return RedirectToAction("Index");
         }
+
         public PartialViewResult _AddSerial()
         {
             int receivedQty = int.Parse(Request.Params["rec_qty"]);
@@ -950,7 +960,6 @@ namespace WMS.Controllers
                    lastTransaction.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Allocated
                    && lastTransaction.WarehouseId == warehouseId)
                 {
-
                     stockStatus = VerifySerilaStockStatusEnum.InStock;
                 }
                 else
@@ -964,11 +973,13 @@ namespace WMS.Controllers
                 case (int)InventoryTransactionTypeEnum.PurchaseOrder:
                     status = (stockStatus == VerifySerilaStockStatusEnum.NotExist) ? status = true : false;
                     break;
+
                 case (int)InventoryTransactionTypeEnum.SalesOrder:
                 case (int)InventoryTransactionTypeEnum.WorksOrder:
                 case (int)InventoryTransactionTypeEnum.Samples:
                     status = (stockStatus == VerifySerilaStockStatusEnum.InStock) ? status = true : false;
                     break;
+
                 case (int)InventoryTransactionTypeEnum.Returns:
                 case (int)InventoryTransactionTypeEnum.WastedReturn:
                 case (int)InventoryTransactionTypeEnum.Wastage:
@@ -986,12 +997,15 @@ namespace WMS.Controllers
                     else if (stockStatus == VerifySerilaStockStatusEnum.NotExist) { status = false; }
                     else { status = true; }
                     break;
+
                 case (int)InventoryTransactionTypeEnum.TransferIn:
                     status = (stockStatus == VerifySerilaStockStatusEnum.OutofStock && lastTransaction.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferOut) ? status = true : false;
                     break;
+
                 case (int)InventoryTransactionTypeEnum.TransferOut:
                     status = (stockStatus == VerifySerilaStockStatusEnum.InStock) ? status = true : false;
                     break;
+
                 default:
                     break;
             }
@@ -1020,7 +1034,6 @@ namespace WMS.Controllers
                     goodsReturnRequestSync.deliveryNumber = delivery;
                     Inventory.StockTransaction(goodsReturnRequestSync, cons_Type, groupToken, shipmentInfo);
                 }
-
                 else
                 {
                     orderNumber = GenerateNextOrderNumber((InventoryTransactionTypeEnum)type);
@@ -1042,7 +1055,6 @@ namespace WMS.Controllers
                 if (type == InventoryTransactionTypeEnum.Returns || type == InventoryTransactionTypeEnum.Wastage || type == InventoryTransactionTypeEnum.WastedReturn)
                 {
                     return Json(new { orderid = order ?? 0, productId = product, orderNumber = orderNumber, groupToken = groupToken }, JsonRequestBehavior.AllowGet);
-
                 }
 
                 return Json(new { error = false });
@@ -1115,14 +1127,11 @@ namespace WMS.Controllers
             if (data.Count() > 0)
             {
                 ViewBag.Locations = new SelectList(data, "LocationId", "LocationCode");
-
             }
             else
             {
                 ViewBag.Locations = new SelectList(_productLookupService.GetAllValidProductLocations(CurrentTenantId, CurrentWarehouseId), "LocationId", "LocationCode");
             }
-
-
 
             if (pid > 0)
             {
@@ -1145,7 +1154,6 @@ namespace WMS.Controllers
 
         public JsonResult _SubmitRecProduct(InventoryTransaction model, FormCollection form, AccountShipmentInfo shipmentInfo)
         {
-
             try
             {
                 int type = (int)model.InventoryTransactionTypeId;
@@ -1190,7 +1198,6 @@ namespace WMS.Controllers
 
                 return Json(new { error = false }, JsonRequestBehavior.AllowGet);
             }
-
             catch (Exception exp)
             {
                 throw exp;
@@ -1250,7 +1257,6 @@ namespace WMS.Controllers
 
                 return Json(new { error = false }, JsonRequestBehavior.AllowGet);
             }
-
             catch (Exception exp)
             {
                 throw exp;
@@ -1259,7 +1265,6 @@ namespace WMS.Controllers
 
         public ActionResult _PriceHistory()
         {
-
             var product = int.Parse(Request.Params["product"]);
             var account = 0;
             if (!string.IsNullOrEmpty(Request.Params["account"]))
@@ -1275,14 +1280,12 @@ namespace WMS.Controllers
 
         public ActionResult _PriceHistoryList()
         {
-
             var product = int.Parse(Request.Params["product"]);
             var account = int.Parse(Request.Params["account"]);
             var ordertype = int.Parse(Request.Params["ordertype"]);
             var model = _productPriceService.GetProductPriceHistoryForAccount(product, account);
 
             return PartialView("_PriceHistoryList", model);
-
         }
 
         public ActionResult _PendingProcessList()
@@ -1319,7 +1322,6 @@ namespace WMS.Controllers
             return _PickListGridActionCore(viewModel);
         }
 
-
         public ActionResult _PickListFiltering(GridViewFilteringState filteringState)
         {
             var viewModel = GridViewExtension.GetViewModel("_PendingListGridView");
@@ -1334,7 +1336,6 @@ namespace WMS.Controllers
             viewModel.ApplySortingState(column, reset);
             return _PickListGridActionCore(viewModel);
         }
-
 
         public ActionResult _PickListGridActionCore(GridViewModel gridViewModel)
         {
@@ -1360,7 +1361,6 @@ namespace WMS.Controllers
                 var processedQty = (from op in OrderService.GetAllOrderProcessesByOrderDetailId(item.OrderDetailID, CurrentWarehouseId)
                                     select (int?)op.QtyProcessed).Sum() ?? 0;
 
-
                 var available = _productServices.GetAllInventoryStocksByProductId(item.ProductId).First().Available;
                 if (available == 0) return false;
                 if ((item.Qty - processedQty)
@@ -1368,10 +1368,8 @@ namespace WMS.Controllers
                     continue;
                 else
                 {
-
                     return false;
                 }
-
             }
             return true;
         }
@@ -1383,7 +1381,6 @@ namespace WMS.Controllers
                          {
                              m.AccountContactId,
                              m.ContactName
-
                          }).ToList();
 
             return Json(model, JsonRequestBehavior.AllowGet);
@@ -1394,6 +1391,7 @@ namespace WMS.Controllers
             ViewBag.OrderID = Request.Params["OrderID"];
             return PartialView();
         }
+
         public ActionResult _OrderNotesList(string id, string PageSessionToken)
         {
             var nList = GaneOrderNotesSessionHelper.GetOrderNotesSession(PageSessionToken);
@@ -1460,6 +1458,7 @@ namespace WMS.Controllers
             }
             return Json(true);
         }
+
         public JsonResult GetAccountAddresses(int id)
         {
             var account = AccountServices.GetAccountsById(id);
@@ -1469,10 +1468,8 @@ namespace WMS.Controllers
             return Json(list, JsonRequestBehavior.AllowGet);
         }
 
-
         public ActionResult ShowEmail()
         {
-
             int orderId = int.Parse(!string.IsNullOrEmpty(Request.Params["orderId"]) ? Request.Params["orderId"] : "0");
             int invoicemasterId = int.Parse(!string.IsNullOrEmpty(Request.Params["invoicemasterId"]) ? Request.Params["invoicemasterId"] : "0");
             int TemplateId = int.Parse(!string.IsNullOrEmpty(Request.Params["TemplateId"]) ? Request.Params["TemplateId"] : "0");
@@ -1481,6 +1478,7 @@ namespace WMS.Controllers
             ViewBag.templateId = TemplateId;
             return View();
         }
+
         public PartialViewResult _ShowEmailPartial(int Id, int InvoiceMasterId, int? TemplateId)
         {
             ViewBag.orderId = Id;
@@ -1493,8 +1491,19 @@ namespace WMS.Controllers
         public bool SyncDate(int OrderId)
         {
             return OrderService.UpdateDateInOrder(OrderId);
-
         }
 
+        public JsonResult _GetTenantDeliveryServices(DeliveryMethods deliveryMethod)
+        {
+            var model = _palletingService.GetAllTenantDeliveryServices(CurrentTenantId, deliveryMethod)
+                         .Select(m => new
+                         {
+                             m.Id,
+                             m.NetworkDescription,
+                             m.NetworkCode
+                         }).ToList();
+
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
-
 namespace Ganedata.Core.Services
 {
     public class InvoiceService : IInvoiceService
@@ -26,21 +25,17 @@ namespace Ganedata.Core.Services
 
         public IQueryable<InvoiceMaster> GetAllInvoiceMasters(int TenantId)
         {
-
             return _currentDbContext.InvoiceMasters.Where(u => u.InvoiceStatus != InvoiceStatusEnum.PostedToAccounts && u.IsDeleted != true && u.TenantId == TenantId);
-
         }
+
         public IQueryable<InvoiceMaster> GetAllInvoiceMastersWithAllStatus(int TenantId, int? AccountId)
         {
-
             return _currentDbContext.InvoiceMasters.Where(u => u.IsDeleted != true && u.TenantId == TenantId && (!AccountId.HasValue || u.AccountId == AccountId));
-
         }
+
         public IQueryable<InvoiceMaster> GetAllInvoiceViews(int TenantId)
         {
-
             return _currentDbContext.InvoiceMasters.Where(u => u.InvoiceStatus == InvoiceStatusEnum.PostedToAccounts && u.IsDeleted != true && u.TenantId == TenantId);
-
         }
 
         public InvoiceViewModel GetInvoiceMasterByOrderProcessId(int orderProcessId)
@@ -107,7 +102,6 @@ namespace Ganedata.Core.Services
             };
             invoice.InvoiceNumber = GenerateNextInvoiceNumber(tenantId);
 
-
             invoice.InvoiceDetails = invoiceData.AllInvoiceProducts.Select(m => new InvoiceDetail()
             {
                 ProductId = m.ProductId,
@@ -125,7 +119,6 @@ namespace Ganedata.Core.Services
                 TaxId = m.TaxId,
                 OrderDetailId = m.OrderDetailId,
                 WarrantyId = m.WarrantyId
-
             }).ToList();
             _currentDbContext.Entry(invoice).State = EntityState.Added;
 
@@ -141,7 +134,6 @@ namespace Ganedata.Core.Services
                 _currentDbContext.Entry(process).State = EntityState.Modified;
             }
 
-
             var accountTransaction = new AccountTransaction()
             {
                 AccountId = account.AccountID,
@@ -151,7 +143,6 @@ namespace Ganedata.Core.Services
                 DateCreated = DateTime.UtcNow,
                 Amount = invoice.InvoiceTotal,
                 TenantId = tenantId
-
             };
 
             _currentDbContext.Entry(account).State = EntityState.Modified;
@@ -199,7 +190,6 @@ namespace Ganedata.Core.Services
                 invoiceDelete.ForEach(u => { u.IsDeleted = true; u.DateUpdated = DateTime.UtcNow; });
                 foreach (var item in invoiceData.AllInvoiceProducts)
                 {
-
                     var invoiceDetail = _currentDbContext.InvoiceDetails.FirstOrDefault(u => u.ProductId == item.ProductId && u.InvoiceMasterId == invoiceMaster.InvoiceMasterId && u.IsDeleted != true);
                     if (invoiceDetail == null)
                     {
@@ -221,13 +211,10 @@ namespace Ganedata.Core.Services
                             TenantId = tenantId,
                             TaxId = item.TaxId,
                             OrderDetailId = item.OrderDetailId
-
-
                         };
                         _currentDbContext.InvoiceDetails.Add(invoiceDetail);
                         _currentDbContext.Entry(invoiceDetail).State = EntityState.Added;
                     }
-
                     else
                     {
                         invoiceDetail.ProductId = item.ProductId;
@@ -250,7 +237,6 @@ namespace Ganedata.Core.Services
                 var process = _currentDbContext.OrderProcess.Find(invoiceData.OrderProcessId);
                 if (process != null)
                 {
-
                     process.DateUpdated = DateTime.UtcNow;
                     process.UpdatedBy = userId;
                     _currentDbContext.Entry(process).State = EntityState.Modified;
@@ -263,7 +249,6 @@ namespace Ganedata.Core.Services
                 else
                 {
                     amount = (invoiceData.InvoiceTotal - amount);
-
                 }
                 if (amount > 0)
                 {
@@ -276,7 +261,6 @@ namespace Ganedata.Core.Services
                         DateCreated = DateTime.UtcNow,
                         Amount = amount,
                         TenantId = tenantId
-
                     };
                     _currentDbContext.Entry(invoiceMaster).State = EntityState.Modified;
 
@@ -376,7 +360,6 @@ namespace Ganedata.Core.Services
             var prefix = "IN-";
             if (lastOrder != null)
             {
-
                 var lastNumber = lastOrder.InvoiceNumber.Replace("IN-", string.Empty);
                 int n;
                 bool isNumeric = int.TryParse(lastNumber, out n);
@@ -395,7 +378,6 @@ namespace Ganedata.Core.Services
             {
                 return prefix + "00000001";
             }
-
         }
 
         public InvoiceViewModel LoadInvoiceProductValuesByOrderProcessId(int orderProcessId, int? inventoryTransctionType = null)
@@ -455,8 +437,6 @@ namespace Ganedata.Core.Services
                     model.AllInvoiceProducts[index].QtyProcessed += x.QtyProcessed;
                     model.AllInvoiceProducts[index].TaxAmountsInvoice += Math.Round((((x?.OrderDetail?.Price ?? 0) * x.QtyProcessed) / 100) * (x.OrderDetail.TaxName?.PercentageOfAmount ?? 0), 2);
                 }
-
-
             }
             model.TaxAmount = model.AllInvoiceProducts.Select(I => I.TaxAmount).DefaultIfEmpty(0).Sum();
             var amount = model.AllInvoiceProducts.Select(u => u.NetAmount).DefaultIfEmpty(0).Sum();
@@ -484,7 +464,6 @@ namespace Ganedata.Core.Services
             }
 
             return netAmountBuying;
-
         }
 
         public decimal GetNetAmtSelling(int InvoiceMasterId)

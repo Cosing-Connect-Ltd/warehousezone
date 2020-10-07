@@ -37,6 +37,7 @@ namespace WMS.Controllers
             _userService = userService;
             _palletingService = palletingService;
         }
+
         // GET: SalesOrders
         public ActionResult Index()
         {
@@ -113,7 +114,6 @@ namespace WMS.Controllers
 
             int result = OrderService.ProcessPalletTrackingSerial(goodsReturnRequestSync);
 
-
             return Json(result < 0 ? false : true, JsonRequestBehavior.AllowGet);
         }
 
@@ -133,7 +133,6 @@ namespace WMS.Controllers
                          {
                              LoanID = ln.LoanID,
                              LoanName = ln.LoanName + "  -  Loan Days= " + ln.LoanDays
-
                          }).ToList();
             ViewBag.TenantLoanTypes = new SelectList(loans, "LoanID", "LoanName");
 
@@ -141,10 +140,12 @@ namespace WMS.Controllers
             ViewBag.Departments = new SelectList(LookupServices.GetAllValidTenantDepartments(CurrentTenantId), "DepartmentId", "DepartmentName");
             ViewBag.AccountContacts = new SelectList(AccountServices.GetAllValidAccountContactsByAccountId(order?.AccountID ?? 0, CurrentTenantId), "AccountContactId", "ContactName", order?.AccountContactId);
         }
+
         public string GeneratePO()
         {
             return GenerateNextOrderNumber(InventoryTransactionTypeEnum.SalesOrder);
         }
+
         public ActionResult Create(int? Id, string pageToken)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
@@ -171,8 +172,7 @@ namespace WMS.Controllers
                 ViewBag.AccountAddresses = new List<SelectListItem>() { new SelectListItem() { Text = "Select", Value = "0" } };
                 ViewBag.ShipmentAccountAddressId = 0;
                 ViewBag.IsShipmentToCustomAddress = false;
-                ViewBag.TenantsDeliveryServices = new SelectList(_palletingService.GetAllDpdServices(), "Id", "NetworkDescription");
-
+                ViewBag.TenantsDeliveryServices = new SelectList(_palletingService.GetAllTenantDeliveryServices(CurrentTenantId, DeliveryMethods.Collection), "Id", "NetworkDescription");
 
                 if (string.IsNullOrEmpty(pageToken))
                 {
@@ -197,7 +197,6 @@ namespace WMS.Controllers
             {
                 if (ModelState.IsValid)
                 {
-
                     var tempNotesList = GaneOrderNotesSessionHelper.GetOrderNotesSession(shipmentAndRecipientInfo.PageSessionToken);
                     var tempList = GaneOrderDetailsSessionHelper.GetOrderDetailSession(shipmentAndRecipientInfo.PageSessionToken);
                     Order = OrderService.CreateSalesOrder(Order, shipmentAndRecipientInfo, CurrentTenantId, CurrentWarehouseId, CurrentUserId, _mapper.Map(tempList, new List<OrderDetail>()), tempNotesList);
@@ -296,6 +295,7 @@ namespace WMS.Controllers
                 return View(Order);
             }
         }
+
         public ActionResult Edit(int? id, string pageToken)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
@@ -317,7 +317,6 @@ namespace WMS.Controllers
                 if (list.Any())
                 {
                     ViewBag.accountShip = true;
-
                 }
             }
 
@@ -330,7 +329,7 @@ namespace WMS.Controllers
 
             GaneOrderDetailsSessionHelper.SetOrderDetailSessions(ViewBag.ForceRegeneratedPageToken, _mapper.Map(odList, new List<OrderDetailSessionViewModel>()));
 
-            ViewBag.TenantsDeliveryServices = new SelectList(_palletingService.GetAllDpdServices(), "Id", "NetworkDescription", Order.TenantDeliveryServiceId);
+            ViewBag.TenantsDeliveryServices = new SelectList(_palletingService.GetAllTenantDeliveryServices(CurrentTenantId, Order.DeliveryMethod), "Id", "NetworkDescription", Order.TenantDeliveryServiceId);
 
             SetViewBagItems(tenant, EnumAccountType.Customer, Order);
 
@@ -369,16 +368,13 @@ namespace WMS.Controllers
                 }
             }
 
-
             return View(Order);
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(Order Order, FormCollection formCollection, OrderRecipientInfo shipmentAndRecipientInfo, string orderSaveAndProcess, int EmailTemplate)
         {
-
             if (ModelState.IsValid)
             {
                 Order.OrderNumber = Order.OrderNumber.Trim();
@@ -396,7 +392,6 @@ namespace WMS.Controllers
 
                 Order = OrderService.SaveSalesOrder(Order, shipmentAndRecipientInfo, CurrentTenantId, CurrentWarehouseId, CurrentUserId, _mapper.Map(items, new List<OrderDetail>()), nItems);
 
-
                 if (shipmentAndRecipientInfo.SendEmailWithAttachment)
                 {
                     var report = CreateSalesOrderPrint(Order.OrderID);
@@ -410,7 +405,6 @@ namespace WMS.Controllers
                     {
                         TempData["Error"] = result;
                     }
-
                 }
 
                 if (Order.OrderStatusID == OrderStatusEnum.AwaitingAuthorisation)
@@ -460,11 +454,8 @@ namespace WMS.Controllers
                     ViewBag.IsShipmentToCustomAddress = true;
                 }
             }
-
-
             return View(Order);
         }
-
 
         private void VerifyOrderAccountStatus(Order order)
         {
@@ -477,9 +468,11 @@ namespace WMS.Controllers
                     case AccountStatusEnum.InActive:
                         ViewBag.Error = "The Account is inactive. This order cannot be processed";
                         break;
+
                     case AccountStatusEnum.OnHold:
                         ViewBag.Error = "The Account is on Hold. This order cannot be processed";
                         break;
+
                     case AccountStatusEnum.OnStop:
                         ViewBag.Error = "The Account is on Stop. This order cannot be processed";
                         break;
@@ -511,13 +504,13 @@ namespace WMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order Order = OrderService.GetOrderById(id.Value);
+            var Order = OrderService.GetOrderById(id.Value);
             if (Order == null)
             {
                 return HttpNotFound();
             }
 
-            ViewBag.TenantsDeliveryServices = new SelectList(_palletingService.GetAllDpdServices(), "Id", "NetworkDescription", Order.TenantDeliveryServiceId);
+            ViewBag.TenantsDeliveryServices = new SelectList(_palletingService.GetAllTenantDeliveryServices(CurrentTenantId, Order.DeliveryMethod), "Id", "NetworkDescription", Order.TenantDeliveryServiceId);
             ViewBag.Countries = new SelectList(LookupServices.GetAllGlobalCountries(), "CountryID", "CountryName");
             VerifyOrderAccountStatus(Order);
 
@@ -582,6 +575,7 @@ namespace WMS.Controllers
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             return View();
         }
+
         //public ActionResult _Consignments()
         //{
         //    var data = OrderService.GetAllSalesConsignments(CurrentTenantId, CurrentWarehouseId).OrderByDescending(x => x.DateCreated)
@@ -599,7 +593,6 @@ namespace WMS.Controllers
         //    return PartialView(data);
         //}
 
-
         public ActionResult _Consignments(OrderProcessStatusEnum? consignmentId)
         {
             var viewModel = GridViewExtension.GetViewModel(ViewBag.productId + "consignmentgridview");
@@ -607,10 +600,7 @@ namespace WMS.Controllers
                 viewModel = ConsignmentCustomBinding.CreateConsignmentGridViewModel();
             ViewBag.ConsignmentId = consignmentId;
             return _ConsignmentsGridActionCore(viewModel, consignmentId);
-
-
         }
-
 
         public ActionResult _ConsignmentsPaging(GridViewPagerState pager, OrderProcessStatusEnum? id)
         {
@@ -650,11 +640,6 @@ namespace WMS.Controllers
             return PartialView("_Consignments", gridViewModel);
         }
 
-
-
-
-
-
         public ActionResult _ConsignmentDetails(int ProcessId)
         {
             ViewBag.processId = ProcessId;
@@ -670,10 +655,8 @@ namespace WMS.Controllers
                             opd.QtyProcessed,
                             opd.DateCreated,
                             opd.OrderProcessDetailID
-
                         }).ToList();
             return PartialView(data);
-
         }
 
         public ActionResult _ConsignmentAddressDetails(int ProcessId)
@@ -692,7 +675,6 @@ namespace WMS.Controllers
                         }).ToList();
 
             return PartialView(data);
-
         }
 
         public JsonResult _deleteProduct(int id)
@@ -729,8 +711,6 @@ namespace WMS.Controllers
             return Json(status, JsonRequestBehavior.AllowGet);
         }
 
-
-
         public JsonResult _GetNextSerials(List<string> serial, int pid, int palletTrackingId)
         {
             if (palletTrackingId == 3)
@@ -745,7 +725,6 @@ namespace WMS.Controllers
                 }
 
                 return Json(dates, JsonRequestBehavior.AllowGet);
-
             }
             if (palletTrackingId == 4)
             {
@@ -773,11 +752,8 @@ namespace WMS.Controllers
             }
         }
 
-
-
         public ActionResult _EmailRecipientsPartial()
         {
-
             if (!string.IsNullOrEmpty(Request.Params["orderId"]) && string.IsNullOrEmpty(Request.Params["PORStatus"]))
             {
                 int? orderId = int.Parse(Request.Params["orderId"]);
@@ -803,9 +779,7 @@ namespace WMS.Controllers
                         {
                             email.Add(new Tuple<string, string>(item?.AccountContactId.ToString(), item?.ContactEmail));
                         }
-
                     }
-
                 }
                 var accountContactId = AccountServices.GetAllValidAccountContactsByAccountContactId(order?.AccountID ?? 0).Select(u => u.AccountContactId).ToList();
                 var list = OrderService.GetAccountContactId(order.OrderID).ToList();
@@ -817,7 +791,6 @@ namespace WMS.Controllers
                 }
                 else
                 {
-
                     ViewBag.AccountResult = new MultiSelectList(email, "Item1", "Item2", accountContactId);
                 }
                 ViewBag.OrdersId = order.OrderID;
@@ -855,7 +828,6 @@ namespace WMS.Controllers
                     {
                         AccountContactId = u.AccountContactId,
                         ContactEmail = u.ContactEmail
-
                     }).ToList();
                     ViewBag.AccountResult = new MultiSelectList(email, "AccountContactId", "ContactEmail", selected);
                 }
@@ -878,7 +850,6 @@ namespace WMS.Controllers
                     {
                         AccountContactId = u.AccountContactId,
                         ContactEmail = u.ContactEmail
-
                     }).ToList();
                     ViewBag.AccountResult = new MultiSelectList(email, "AccountContactId", "ContactEmail", selected);
                 }
@@ -886,18 +857,14 @@ namespace WMS.Controllers
                 {
                     ViewBag.AccountResult = new MultiSelectList(accountContact.ToList(), "AccountContactId", "ContactEmail", accountContact?.FirstOrDefault()?.AccountContactId.ToString());
                 }
-
             }
 
             return PartialView();
-
         }
-
 
         public async Task<JsonResult> SaveCustomEmails(OrderRecipientInfo shipmentAndRecipientInfo)
 
         {
-
             if (string.IsNullOrEmpty(shipmentAndRecipientInfo.CustomRecipients) && shipmentAndRecipientInfo.AccountEmailContacts == null)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
@@ -914,8 +881,6 @@ namespace WMS.Controllers
 
                 if (shipmentAndRecipientInfo.InventoryTransactionType == 8)
                 {
-
-
                     var report = CreateDeliveryNotePrint(shipmentAndRecipientInfo.orderId ?? 0, null);
                     PrepareDirectory("~/UploadedFiles/reports/dn/");
                     var reportPath = "~/UploadedFiles/reports/dn/" + Order.OrderNumber + ".pdf";
@@ -946,16 +911,15 @@ namespace WMS.Controllers
                 }
             }
         }
+
         public async Task<JsonResult> SendEmailReport(OrderRecipientInfo shipmentAndRecipientInfo)
         {
-
             if (string.IsNullOrEmpty(shipmentAndRecipientInfo.CustomRecipients) && shipmentAndRecipientInfo.AccountEmailContacts == null)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
             else
             {
-
                 if (shipmentAndRecipientInfo.AccountEmailContacts != null)
                 {
                     var accountContact = _accountServices.GetAllValidAccountContactsByAccountContactIds(shipmentAndRecipientInfo.AccountEmailContacts).ToList();
@@ -984,13 +948,9 @@ namespace WMS.Controllers
                     var result = await GaneConfigurationsHelper.CreateTenantEmailNotificationQueue($"Account Statement Report ", null, reportPath, shipmentAndRecipientInfo: shipmentAndRecipientInfo,
                         worksOrderNotificationType: WorksOrderNotificationTypeEnum.AccountStatementTemplate, TenantId: CurrentTenantId, accountId: shipmentAndRecipientInfo.AccountId);
                     return Json(result, JsonRequestBehavior.AllowGet);
-
                 }
-
-
             }
         }
-
 
         public ActionResult UpdateDeliveryStatus(int? orderProcessId)
         {
@@ -1004,12 +964,8 @@ namespace WMS.Controllers
             else
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
-
             }
-
-
         }
-
 
         public ActionResult _EditDelivery()
         {
@@ -1031,8 +987,6 @@ namespace WMS.Controllers
                 }
             }
             return View();
-
-
         }
 
         public ActionResult InventoryTransactionEdit(int OrderprocessDetailId)
@@ -1056,14 +1010,11 @@ namespace WMS.Controllers
                     u.DateCreated
                 });
             return PartialView("_SerialEdit", orderProcessDetail);
-
         }
 
         public JsonResult UpdateOrderProcessDetail(int OrderProcessDetailId, decimal Quantity, int? serialId, int? PalletTrackingId, bool? wastedReturn)
         {
-
             string status = OrderService.UpdateOrderProcessDetail(OrderProcessDetailId, Quantity, CurrentUserId, CurrentTenantId, serialId, PalletTrackingId, wastedReturn);
-
 
             return Json(status, JsonRequestBehavior.AllowGet);
         }
@@ -1076,13 +1027,13 @@ namespace WMS.Controllers
             var data = OrderService.GetOrderProcessByOrderProcessId(ProcessId);
             return View(data);
         }
+
         public JsonResult UpdateDeliveryAddress(AccountShipmentInfo accountShipmentInfo)
         {
             accountShipmentInfo.UserId = CurrentUserId;
             var status = OrderService.UpdateDeliveryAddress(accountShipmentInfo);
             return Json(status);
         }
-
 
         public ActionResult _AssignPicker(int OrderId)
         {
@@ -1104,6 +1055,5 @@ namespace WMS.Controllers
             var status = OrderService.UpdateOrdersPicker(orderIds, PickerId, CurrentUserId);
             return Json(status, JsonRequestBehavior.AllowGet);
         }
-
     }
 }

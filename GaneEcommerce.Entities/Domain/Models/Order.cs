@@ -20,7 +20,6 @@ namespace Ganedata.Core.Entities.Domain
 
         [Key]
         [Display(Name = "Order Id")]
-
         public int OrderID { get; set; }
 
         [Remote("IsOrderNumberAvailable", "Order", AdditionalFields = "OrderID", ErrorMessage = "Order No already taken, please regenerate")]
@@ -28,7 +27,6 @@ namespace Ganedata.Core.Entities.Domain
         //[RegularExpression("^.{3}[0-9]{8}$", ErrorMessage = "Order No must be 11 characters long and last eight digits should be numeric")]
         // order number sent from customer
         [Display(Name = "Order No.")]
-
         public string OrderNumber { get; set; }
 
         [Column(TypeName = "date")]
@@ -47,7 +45,6 @@ namespace Ganedata.Core.Entities.Domain
 
         [Display(Name = "Account")]
         public int? AccountID { get; set; }
-
 
         [Display(Name = "Job Type")]
         public int? JobTypeId { get; set; }
@@ -94,7 +91,6 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Direct Ship")]
         public bool? DirectShip { get; set; }
 
-
         [Display(Name = "Order Status")]
         public OrderStatusEnum OrderStatusID { get; set; }
 
@@ -104,8 +100,10 @@ namespace Ganedata.Core.Entities.Domain
         // Account contact person for this specific order
         [Display(Name = "Account Contact")]
         public int? AccountContactId { get; set; }
+
         [Display(Name = "Discount")]
         public decimal OrderDiscount { get; set; }
+
         [Display(Name = "Order Total")]
         public decimal OrderTotal { get; set; }
 
@@ -133,6 +131,7 @@ namespace Ganedata.Core.Entities.Domain
 
         [Display(Name = "Transfer Warehouse")]
         public int? TransferWarehouseId { get; set; }
+
         [Display(Name = "Department")]
         public int? DepartmentId { get; set; }
 
@@ -156,9 +155,9 @@ namespace Ganedata.Core.Entities.Domain
 
         public int? WarehouseId { get; set; }
 
-
         [ForeignKey("WarehouseId")]
         public virtual TenantLocations Warehouse { get; set; }
+
         public virtual AccountContacts AccountContacts { get; set; }
         public string ShipmentAddressLine1 { get; set; }
         public string ShipmentAddressLine2 { get; set; }
@@ -166,6 +165,7 @@ namespace Ganedata.Core.Entities.Domain
         public string ShipmentAddressTown { get; set; }
         public string ShipmentAddressPostcode { get; set; }
         public int? ShipmentCountryId { get; set; }
+
         [ForeignKey("ShipmentCountryId")]
         public virtual GlobalCountry ShipmentCountry { get; set; }
 
@@ -173,12 +173,14 @@ namespace Ganedata.Core.Entities.Domain
         public int? PPropertyId { get; set; }
 
         public int? ShipmentPropertyId { get; set; }
+
         [ForeignKey("ShipmentPropertyId")]
         public virtual PProperty ShipmentProperty { get; set; }
 
         public Guid? OrderGroupToken { get; set; }
 
         public int? ShipmentWarehouseId { get; set; }
+
         [ForeignKey("ShipmentWarehouseId")]
         public virtual TenantLocations ShipmentWarehouse { get; set; }
 
@@ -191,21 +193,27 @@ namespace Ganedata.Core.Entities.Domain
         public string CustomBCCEmailRecipient { get; set; }
 
         public int? AccountCurrencyID { get; set; }
+
         [ForeignKey("AccountCurrencyID")]
         public virtual GlobalCurrency AccountCurrency { get; set; }
+
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
         public virtual ICollection<OrderProcess> OrderProcess { get; set; }
         public virtual ICollection<InventoryTransaction> InventoryTransaction { get; set; }
+
         [ForeignKey("TransferWarehouseId")]
         public virtual TenantLocations TransferWarehouse { get; set; }
+
         [ForeignKey("PPropertyId")]
         public virtual PProperty PProperties { get; set; }
+
         public virtual JobType JobType { get; set; }
         public virtual TenantDepartments Department { get; set; }
         public virtual SLAPriorit SLAPriority { get; set; }
         public virtual ICollection<Appointments> Appointmentses { get; set; }
 
         public int? JobSubTypeId { get; set; }
+
         [ForeignKey("JobSubTypeId")]
         public virtual JobSubType JobSubType { get; set; }
 
@@ -214,34 +222,42 @@ namespace Ganedata.Core.Entities.Domain
         public virtual ReportType Report_Type { get; set; }
 
         public int? ShipmentAccountAddressId { get; set; }
+
         [ForeignKey("ShipmentAccountAddressId")]
         public virtual AccountAddresses ShipmentAccountAddress { get; set; }
+
         public DeliveryMethods? DeliveryMethod { get; set; }
+
         [Display(Name = "Delivery Service")]
         public int? TenantDeliveryServiceId { get; set; }
+
         [ForeignKey("TenantDeliveryServiceId")]
         public virtual TenantDeliveryService TenantDeliveryService { get; set; }
+
         public decimal? AmountPaidByAccount { get; set; }
         public decimal? AccountBalanceBeforePayment { get; set; }
         public decimal? AccountBalanceOnPayment { get; set; }
+
         [Display(Name = "Prestashop Id")]
         public int? PrestaShopOrderId { get; set; }
+
         [Display(Name = "Site Id")]
         public int? SiteID { get; set; }
+
         public AccountPaymentModeEnum? AccountPaymentModeId { get; set; }
         public bool EndOfDayGenerated { get; set; }
         public int? VanSalesDailyCashId { get; set; }
+
         [ForeignKey("VanSalesDailyCashId")]
         public virtual VanSalesDailyCash VanSalesDailyCash { get; set; }
 
         public Guid? OrderToken { get; set; }
 
         public int? BaseOrderID { get; set; }
+
         [ForeignKey("BaseOrderID")]
         public virtual Order BaseOrder { get; set; }
+
         public virtual IEnumerable<Order> RelatedOrders { get; set; }
-
     }
-
-
 }

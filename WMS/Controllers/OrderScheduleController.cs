@@ -1,12 +1,6 @@
 ﻿using AutoMapper;
-using DevExpress.Web.Mvc;
-using Ganedata.Core.Entities.Domain;
-using Ganedata.Core.Entities.Enums;
-using Ganedata.Core.Models;
 using Ganedata.Core.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using WMS.CustomBindings;
@@ -31,31 +25,24 @@ namespace WMS.Controllers
             _emailNotificationsHelper = emailNotificationsHelper;
             _palletingService = palletingService;
             _mapper = mapper;
-
         }
+
         // GET: OrderSchedule
         public ActionResult Index()
         {
-
             return View();
-
         }
 
         public ActionResult _PalletToDispatch()
         {
-
-
             var allOrders = _palletingService.GetAllPalletsDispatch();
-
 
             return PartialView(allOrders);
         }
 
-
         public ActionResult SchedulerPartial()
         {
             return PartialView("_SchedulerPartial", OrderSchedulerSettings.DataObject);
-
         }
 
         public ActionResult SchedulerPartialEditAppointment()
@@ -69,10 +56,8 @@ namespace WMS.Controllers
                 ViewData["SchedulerErrorText"] = e.Message;
             }
 
-
             return PartialView("_SchedulerPartial", OrderSchedulerSettings.DataObject);
         }
-
 
         public async Task<ActionResult> CreateAppointment(string start, string end, string subject, string resourceId, int? orderId, int? joblabel, int tenantId, int dispatchId)
         {
@@ -82,7 +67,6 @@ namespace WMS.Controllers
             if (appointment != null)
             {
                 var order = _palletingService.UpdatePalletsDispatchStatus(dispatchId, Convert.ToInt32(string.IsNullOrEmpty(resourceId) ? "0" : resourceId), CurrentUserId);
-
             }
 
             // send resources as per filter values
@@ -94,6 +78,5 @@ namespace WMS.Controllers
             _appointmentsService.UpdateAllAppointmentSubjects();
             return RedirectToAction("Index", "Appointments");
         }
-
     }
 }
