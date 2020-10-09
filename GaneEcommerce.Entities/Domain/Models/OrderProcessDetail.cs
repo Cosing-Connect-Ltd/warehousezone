@@ -63,5 +63,6 @@ namespace Ganedata.Core.Entities.Domain
         // to store product combined IDs // timber properties
         public string ID { get; set; }
         public string FscPercent { get; set; }
+        public string Notes { get; set; }
     }
 }
