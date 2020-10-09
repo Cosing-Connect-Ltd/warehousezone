@@ -1430,7 +1430,7 @@ namespace WMS.Controllers
 
         #region ProductSalesReportbySKU
 
-        public ActionResult ProductPurchasedReportBySku()
+        public ActionResult ProductPurchaseReportBySku()
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
             ProductOrdersHistoryReport report = CreateProductOrdersHistoryReport(InventoryTransactionTypeEnum.PurchaseOrder);
