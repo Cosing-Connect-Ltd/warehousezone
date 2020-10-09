@@ -571,21 +571,21 @@ namespace Ganedata.Core.Services
                                                x.ProductMaster.IsAutoShipment != true &&
                                                x.ProductMaster.ProductType != ProductKitTypeEnum.Virtual)
                                    .Select(ord => new OrderDetailsViewModel()
-                                                    {
-                                                        OrderID = ord.OrderProcess.OrderID ?? 0,
-                                                        ProductId = ord.ProductId,
-                                                        ProductMaster = ord.ProductMaster,
-                                                        ProductGroups = ord.OrderDetail.ProductGroups,
-                                                        OrderDetailID = ord.OrderProcessDetailID,
-                                                        Product = ord?.ProductMaster?.Name,
-                                                        Qty = ord.QtyProcessed,
-                                                        OrderNumber = ord.OrderProcess.Order.OrderNumber,
-                                                        DateCreated = ord.DateCreated ?? DateTime.UtcNow,
-                                                        QtyProcessed = ord.PalletedQuantity,
-                                                        ProductGroup = ord.ID,
-                                                        orderProcessstatusId = ord.OrderProcess.OrderProcessStatusId,
-                                                        orderstatusId = ord.OrderProcess?.Order?.OrderStatusID,
-                                                    })
+                                   {
+                                       OrderID = ord.OrderProcess.OrderID ?? 0,
+                                       ProductId = ord.ProductId,
+                                       ProductMaster = ord.ProductMaster,
+                                       ProductGroups = ord.OrderDetail.ProductGroups,
+                                       OrderDetailID = ord.OrderProcessDetailID,
+                                       Product = ord?.ProductMaster?.Name,
+                                       Qty = ord.QtyProcessed,
+                                       OrderNumber = ord.OrderProcess.Order.OrderNumber,
+                                       DateCreated = ord.DateCreated ?? DateTime.UtcNow,
+                                       QtyProcessed = ord.PalletedQuantity,
+                                       ProductGroup = ord.ID,
+                                       orderProcessstatusId = ord.OrderProcess.OrderProcessStatusId,
+                                       orderstatusId = ord.OrderProcess?.Order?.OrderStatusID,
+                                   })
                                    .ToList();
 
                 return results;
@@ -1234,7 +1234,8 @@ namespace Ganedata.Core.Services
                     WarrantyID = m.WarrantyID,
                     WarrantyAmount = m.WarrantyAmount,
                     TaxID = m.TaxID,
-                    TaxAmount = m.TaxAmount
+                    TaxAmount = m.TaxAmount,
+                    Notes = m.Notes
                 }).ToList();
 
                 order = CreateOrder(order, terminal.TenantId, terminal.WarehouseId, order.CreatedBy, orderDetails);
@@ -1298,7 +1299,9 @@ namespace Ganedata.Core.Services
                                 BatchNumber = op.BatchNumber,
                                 ExpiryDate = op.ExpiryDate,
                                 OrderProcessId = process.OrderProcessID,
-                                TerminalId = terminal.TerminalId
+                                TerminalId = terminal.TerminalId,
+                                Notes = op.Notes
+
                             };
 
                             _currentDbContext.OrderProcessDetail.Add(o);
@@ -1371,7 +1374,8 @@ namespace Ganedata.Core.Services
                         WarrantyAmount = m.WarrantyAmount,
                         TaxID = m.TaxID,
                         TaxAmount = m.TaxAmount,
-                        CreatedBy = m.CreatedBy
+                        CreatedBy = m.CreatedBy,
+                        Notes = m.Notes
                     }).ToList();
 
                     outOrder = CreateOrder(outOrder, terminal.TenantId, terminal.TenantWarehous.ParentWarehouseId ?? terminal.WarehouseId, 0, outOrderDetails);
@@ -1479,7 +1483,8 @@ namespace Ganedata.Core.Services
                             BatchNumber = op.BatchNumber,
                             ExpiryDate = op.ExpiryDate,
                             OrderProcessId = orderProcess.OrderProcessID,
-                            TerminalId = terminal.TerminalId
+                            TerminalId = terminal.TerminalId,
+                            Notes = op.Notes
                         };
 
                         orderProcess.DateUpdated = DateTime.UtcNow;
@@ -1594,7 +1599,8 @@ namespace Ganedata.Core.Services
                                     BatchNumber = op.BatchNumber,
                                     ExpiryDate = op.ExpiryDate,
                                     OrderProcessId = reverseOrderProcess.OrderProcessID,
-                                    TerminalId = terminal.TerminalId
+                                    TerminalId = terminal.TerminalId,
+                                    Notes = op.Notes
                                 };
 
                                 _currentDbContext.OrderProcessDetail.Add(o);

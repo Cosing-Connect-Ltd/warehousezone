@@ -50,7 +50,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CsvHelper, Version=15.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
-      <HintPath>..\packages\CsvHelper.15.0.5\lib\net47\CsvHelper.dll</HintPath>
+      <HintPath>..\packages\CsvHelper.15.0.6\lib\net47\CsvHelper.dll</HintPath>
     </Reference>
     <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
@@ -1102,6 +1102,10 @@
     <Compile Include="Migrations\202010070815394_added-IsAutoShipment-field-to-ProductMaster-table.cs" />
     <Compile Include="Migrations\202010070815394_added-IsAutoShipment-field-to-ProductMaster-table.designer.cs">
       <DependentUpon>202010070815394_added-IsAutoShipment-field-to-ProductMaster-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010091552246_Notes-field-added-in-OrderProcessDetails.cs" />
+    <Compile Include="Migrations\202010091552246_Notes-field-added-in-OrderProcessDetails.designer.cs">
+      <DependentUpon>202010091552246_Notes-field-added-in-OrderProcessDetails.cs</DependentUpon>
     </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
@@ -2250,6 +2254,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202010070815394_added-IsAutoShipment-field-to-ProductMaster-table.resx">
       <DependentUpon>202010070815394_added-IsAutoShipment-field-to-ProductMaster-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010091552246_Notes-field-added-in-OrderProcessDetails.resx">
+      <DependentUpon>202010091552246_Notes-field-added-in-OrderProcessDetails.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
