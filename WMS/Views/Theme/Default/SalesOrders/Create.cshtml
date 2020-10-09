@@ -107,6 +107,12 @@
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.ExternalOrderNumber, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(m => m.ExternalOrderNumber, new { htmlattributes = new { @class = " form-control" } })
+                </div>
+            </div>
+            <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
                     <div class="notes-holder-box">
@@ -122,15 +128,9 @@
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">
-                @Html.LabelFor(model => model.ExternalOrderNumber, htmlAttributes: new { @class = "col-md-4" })
-                <div class="col-md-8">
-                    @Html.EditorFor(m => m.ExternalOrderNumber, new { htmlattributes = new { @class = " form-control" } })
-                </div>
-            </div>
-            <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.AccountContactId, htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
-                    @Html.DropDownListFor(m => m.AccountContactId, ViewBag.AccountContacts as IEnumerable<SelectListItem>, new { @class = "chosen-select", onchange = "AccountContactChange();" })
+                    @Html.DropDownListFor(m => m.AccountContactId, ViewBag.AccountContacts as IEnumerable<SelectListItem>, "Select Account Contact", new { @class = "chosen-select", onchange = "AccountContactChange();" })
                 </div>
             </div>
             <div class="input-group h-100 justify-content-center align-items-center">
