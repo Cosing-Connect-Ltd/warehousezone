@@ -93,8 +93,8 @@
     <Reference Include="EUCookies, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EUCookies.NET.1.0.4\lib\net40\EUCookies.dll</HintPath>
     </Reference>
-    <Reference Include="LazyCache, Version=2.0.4.140, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\LazyCache.2.0.4\lib\netstandard2.0\LazyCache.dll</HintPath>
+    <Reference Include="LazyCache, Version=2.1.2.160, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LazyCache.2.1.2\lib\netstandard2.0\LazyCache.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.TelemetryCorrelation, Version=1.0.8.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.TelemetryCorrelation.1.0.8\lib\net45\Microsoft.AspNet.TelemetryCorrelation.dll</HintPath>

@@ -70,8 +70,8 @@
     <Reference Include="ExCSS, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ExCSS.3.0.0\lib\netstandard1.1\ExCSS.dll</HintPath>
     </Reference>
-    <Reference Include="LazyCache, Version=2.0.4.140, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\LazyCache.2.0.4\lib\netstandard2.0\LazyCache.dll</HintPath>
+    <Reference Include="LazyCache, Version=2.1.2.160, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LazyCache.2.1.2\lib\netstandard2.0\LazyCache.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=3.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
