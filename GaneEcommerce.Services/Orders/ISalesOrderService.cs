@@ -1,5 +1,6 @@
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,6 +29,8 @@ namespace Ganedata.Core.Services
         IQueryable<SalesOrderViewModel> GetAllPaidDirectSalesOrdersIq(int tenantId, int warehouseId, OrderStatusEnum? statusId = null);
 
         IQueryable<SalesOrderViewModel> GetAllReturnOrders(int tenantId, int warehouseId, OrderStatusEnum? statusId = null);
+
+        List<ProductOrdersDetailViewModel> GetAllOrdersByProductId(InventoryTransactionTypeEnum inventoryTransactionType, int productId, DateTime startDate, DateTime endDate, int tenantId, int warehouseId, int? accountId, int? ownerId, int? marketId);
 
         bool AuthoriseSalesOrder(int orderId, int userId, string notes, bool unauthorize = false);
 

@@ -15,13 +15,15 @@ namespace Ganedata.Core.Services
         private readonly IGaneConfigurationsHelper _configHelper;
         private readonly IAccountServices _accountServices;
         private readonly IOrderService _orderService;
+        private readonly IProductPriceService _productPriceService;
 
-        public SalesOrderService(IApplicationContext currentDbContext, IGaneConfigurationsHelper configHelper, IAccountServices accountServices, OrderService orderService)
+        public SalesOrderService(IApplicationContext currentDbContext, IGaneConfigurationsHelper configHelper, IAccountServices accountServices, OrderService orderService, IProductPriceService productPriceService)
         {
             _currentDbContext = currentDbContext;
             _configHelper = configHelper;
             _accountServices = accountServices;
             _orderService = orderService;
+            _productPriceService = productPriceService;
         }
 
         public Order CreateSalesOrder(Order order, OrderRecipientInfo shipmentAndRecipientInfo, int tenantId, int warehouseId,
@@ -698,6 +700,45 @@ namespace Ganedata.Core.Services
         public List<Order> GetDirectSaleOrders(int? orderId)
         {
             return _currentDbContext.Order.Where(u => ((!orderId.HasValue) || (u.OrderID == orderId)) && u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder && u.DirectShip == true && u.IsDeleted != true).ToList();
+        }
+
+        public List<ProductOrdersDetailViewModel> GetAllOrdersByProductId(InventoryTransactionTypeEnum inventoryTransactionType, int productId, DateTime startDate, DateTime endDate, int tenantId, int warehouseId, int? accountId, int? ownerId, int? marketId)
+        {
+            var orderDetails = _currentDbContext.OrderProcessDetail.Where(o => o.ProductId == productId &&
+                                                                                 o.DateCreated >= startDate &&
+                                                                                 o.DateCreated < endDate &&
+                                                                                 o.TenentId == tenantId &&
+                                                                                 o.IsDeleted != true &&
+                                                                                 o.OrderDetail.Order.InventoryTransactionTypeId == inventoryTransactionType &&
+                                                                                 (o.OrderDetail.WarehouseId == warehouseId || o.OrderDetail.TenantWarehouse.WarehouseId == warehouseId) &&
+                                                                                 (o.OrderDetail.Order.Account.AccountID == accountId || accountId == null || accountId == 0) &&
+                                                                                 (o.OrderDetail.Order.Account.OwnerUserId == ownerId || ownerId == null || ownerId == 0));
+
+            var productOrdersDetails= orderDetails.Select(o => new ProductOrdersDetailViewModel
+            {
+                OrderId = o.OrderDetail.OrderID,
+                AccountCompanyName = o.OrderDetail.Order.Account.CompanyName,
+                AccountCode = o.OrderDetail.Order.Account.AccountCode,
+                OrderNumber = o.OrderDetail.Order.OrderNumber,
+                Date = o.DateCreated ?? o.OrderDetail.DateCreated,
+                Qty = o.QtyProcessed,
+                TaxAmount = o.OrderDetail.TaxAmount,
+                SellPrice = o.OrderDetail.Price,
+                BuyPrice = o.OrderDetail.Price,
+                TotalAmount = o.OrderDetail.TotalAmount,
+                WarrantyAmount = o.OrderDetail.WarrantyAmount,
+            }).ToList();
+
+            if (inventoryTransactionType == InventoryTransactionTypeEnum.SalesOrder)
+            {
+                productOrdersDetails.ForEach(p =>
+                {
+                    p.BuyPrice = _productPriceService.GetPurchasePrice(productId, p.Date, p.OrderId) ?? 0;
+                });
+            }
+
+
+            return productOrdersDetails;
         }
     }
 }

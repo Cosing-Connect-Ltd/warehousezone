@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Linq.Dynamic;
 using System.Net;
 using System.Web.Mvc;
 using WMS.Reports;
@@ -1429,34 +1430,43 @@ namespace WMS.Controllers
 
         #region ProductSalesReportbySKU
 
+        public ActionResult ProductPurchasedReportBySku()
+        {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+            ProductOrdersHistoryReport report = CreateProductOrdersHistoryReport(InventoryTransactionTypeEnum.PurchaseOrder);
+            ViewBag.Title = "Product Purchase History";
+            return View("ProductOrdersHistoryReport", report);
+        }
+
         public ActionResult ProductSaleReportBySku()
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
-            ProductSoldBySkuPrint report = CreateProductSoldBySkuPrint();
-            //report.xrLabel18.BeforePrint += XrLabel18_BeforePrint;
-            return View(report);
+            ProductOrdersHistoryReport report = CreateProductOrdersHistoryReport(InventoryTransactionTypeEnum.SalesOrder);
+            ViewBag.Title = "Product Sale History";
+            return View("ProductOrdersHistoryReport", report);
         }
 
-        public ProductSoldBySkuPrint CreateProductSoldBySkuPrint()
+        private ProductOrdersHistoryReport CreateProductOrdersHistoryReport(InventoryTransactionTypeEnum ordersType)
         {
-            ProductSoldBySkuPrint productSoldBySkuPrint = new ProductSoldBySkuPrint();
-            productSoldBySkuPrint.StartDate.Value = DateTime.Today.AddMonths(-1);
-            productSoldBySkuPrint.EndDate.Value = DateTime.Today;
-            productSoldBySkuPrint.lbldate.Text = DateTime.UtcNow.ToShortDateString();
-            productSoldBySkuPrint.TenantId.Value = CurrentTenantId;
-            productSoldBySkuPrint.WarehouseId.Value = CurrentWarehouseId;
+            var productOrdersHistoryReport = new ProductOrdersHistoryReport();
+            productOrdersHistoryReport.StartDate.Value = DateTime.Today.AddMonths(-1);
+            productOrdersHistoryReport.EndDate.Value = DateTime.Today;
+            productOrdersHistoryReport.lbldate.Text = DateTime.UtcNow.ToShortDateString();
+            productOrdersHistoryReport.TenantId.Value = CurrentTenantId;
+            productOrdersHistoryReport.WarehouseId.Value = CurrentWarehouseId;
+            productOrdersHistoryReport.InventoryTransactionTypeId.Value = (int)ordersType;
             var markets = _marketServices.GetAllValidMarkets(CurrentTenantId);
-            StaticListLookUpSettings marketSettings = (StaticListLookUpSettings)productSoldBySkuPrint.MarketId.LookUpSettings;
+            StaticListLookUpSettings marketSettings = (StaticListLookUpSettings)productOrdersHistoryReport.MarketId.LookUpSettings;
             marketSettings.LookUpValues.AddRange(markets.Markets.Select(m => new LookUpValue(m.Id, m.Name)));
 
             var accounts = _accountServices.GetAllValidAccounts(CurrentTenantId).ToList();
-            StaticListLookUpSettings accountSettings = (StaticListLookUpSettings)productSoldBySkuPrint.AccountId.LookUpSettings;
+            StaticListLookUpSettings accountSettings = (StaticListLookUpSettings)productOrdersHistoryReport.AccountId.LookUpSettings;
             accountSettings.LookUpValues.AddRange(accounts.Select(m => new LookUpValue(m.AccountID, m.CompanyName)));
             var users = OrderService.GetAllAuthorisedUsers(CurrentTenantId, true);
-            StaticListLookUpSettings ownerSettings = (StaticListLookUpSettings)productSoldBySkuPrint.paramOwnerID.LookUpSettings;
+            StaticListLookUpSettings ownerSettings = (StaticListLookUpSettings)productOrdersHistoryReport.paramOwnerID.LookUpSettings;
             ownerSettings.LookUpValues.AddRange(users.Select(m => new LookUpValue(m.UserId, m.DisplayName)));
             IEnumerable<ProductMaster> products = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList();
-            StaticListLookUpSettings setting = (StaticListLookUpSettings)productSoldBySkuPrint.ProductsIds.LookUpSettings;
+            StaticListLookUpSettings setting = (StaticListLookUpSettings)productOrdersHistoryReport.ProductsIds.LookUpSettings;
             foreach (var item in products)
             {
                 LookUpValue product = new LookUpValue();
@@ -1466,7 +1476,7 @@ namespace WMS.Controllers
             }
 
             IEnumerable<ProductGroups> groups = LookupServices.GetAllValidProductGroups(CurrentTenantId).ToList();
-            StaticListLookUpSettings groupSettings = (StaticListLookUpSettings)productSoldBySkuPrint.paramProductGroups.LookUpSettings;
+            StaticListLookUpSettings groupSettings = (StaticListLookUpSettings)productOrdersHistoryReport.paramProductGroups.LookUpSettings;
 
             foreach (var grp in groups)
             {
@@ -1476,7 +1486,7 @@ namespace WMS.Controllers
                 groupSettings.LookUpValues.Add(group);
             }
             IEnumerable<TenantDepartments> tenantDepartments = LookupServices.GetAllValidTenantDepartments(CurrentTenantId).ToList();
-            StaticListLookUpSettings tenantDepartmentsSettings = (StaticListLookUpSettings)productSoldBySkuPrint.paramProductDepartment.LookUpSettings;
+            StaticListLookUpSettings tenantDepartmentsSettings = (StaticListLookUpSettings)productOrdersHistoryReport.paramProductDepartment.LookUpSettings;
 
             foreach (var dep in tenantDepartments)
             {
@@ -1486,7 +1496,63 @@ namespace WMS.Controllers
                 tenantDepartmentsSettings.LookUpValues.Add(group);
             }
 
-            return productSoldBySkuPrint;
+            var productOrdersHistoryDetailReport = new ProductOrdersHistoryDetailReport();
+            productOrdersHistoryDetailReport.DataSourceDemanded += CreateproductOrdersHistoryReport_DataSourceDemanded;
+            productOrdersHistoryDetailReport.OrderNumber.DataBindings.AddRange(new XRBinding[] {
+                new XRBinding("Text", productOrdersHistoryDetailReport.DataSource, ".OrderNumber")});
+
+            productOrdersHistoryDetailReport.Qty.DataBindings.AddRange(new XRBinding[] {
+                new XRBinding("Text", productOrdersHistoryDetailReport.DataSource, ".Qty")});
+
+            productOrdersHistoryDetailReport.BuyPrice.DataBindings.AddRange(new XRBinding[] {
+                new XRBinding("Text", productOrdersHistoryDetailReport.DataSource, ".BuyPrice")});
+
+            if (ordersType == InventoryTransactionTypeEnum.SalesOrder)
+            {
+                productOrdersHistoryDetailReport.SellPrice.DataBindings.AddRange(new XRBinding[] {
+                new XRBinding("Text", productOrdersHistoryDetailReport.DataSource, ".SellPrice")});
+            }
+            else
+            {
+                productOrdersHistoryDetailReport.SellPriceTitle.Visible = false;
+            }
+
+            productOrdersHistoryDetailReport.TaxAmount.DataBindings.AddRange(new XRBinding[] {
+                new XRBinding("Text", productOrdersHistoryDetailReport.DataSource, ".TaxAmount")});
+
+            productOrdersHistoryDetailReport.AccountName.DataBindings.AddRange(new XRBinding[] {
+                new XRBinding("Text", productOrdersHistoryDetailReport.DataSource, ".AccountNameCode")});
+
+            productOrdersHistoryDetailReport.TotalAmount.DataBindings.AddRange(new XRBinding[] {
+                new XRBinding("Text", productOrdersHistoryDetailReport.DataSource, ".TotalAmount")});
+
+            productOrdersHistoryDetailReport.ExpectedDate.DataBindings.AddRange(new XRBinding[] {
+                new XRBinding("Text", productOrdersHistoryDetailReport.DataSource, ".Date")});
+
+
+            productOrdersHistoryReport.xrSubreport1.ReportSource = productOrdersHistoryDetailReport;
+
+            return productOrdersHistoryReport;
+        }
+
+        public void CreateproductOrdersHistoryReport_DataSourceDemanded(object sender, EventArgs e)
+        {
+            var report = (ProductOrdersHistoryDetailReport)sender;
+
+            DateTime startDate = (DateTime)report.Parameters["StartDate"].Value;
+            DateTime endDate = (DateTime)report.Parameters["EndDate"].Value;
+            endDate = endDate.AddHours(24);
+            var accountId = (int?)report.Parameters["AccountId"].Value;
+            var productId = (int)report.Parameters["ProductId"].Value;
+            var ownerId = (int?)report.Parameters["OwnerId"].Value;
+            var marketId = (int?)report.Parameters["MarketId"].Value;
+            var tenantId = (int)report.Parameters["TenantId"].Value;
+            var warehouseId = (int)report.Parameters["WarehouseId"].Value;
+            var inventoryTransactionTypeId = (InventoryTransactionTypeEnum)report.Parameters["InventoryTransactionTypeId"].Value;
+
+
+            report.DataSource = OrderService.GetAllOrdersByProductId(inventoryTransactionTypeId, productId, startDate, endDate, tenantId, warehouseId, accountId, ownerId, marketId);
+
         }
 
         #endregion ProductSalesReportbySKU

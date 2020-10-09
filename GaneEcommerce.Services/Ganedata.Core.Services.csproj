@@ -372,6 +372,7 @@
     <Compile Include="Orders\IInvoiceService.cs" />
     <Compile Include="Orders\IMarketRouteScheduleService.cs" />
     <Compile Include="Orders\InvoiceService.cs" />
+    <Compile Include="Orders\Public.cs" />
     <Compile Include="Orders\TransferOrderService.cs" />
     <Compile Include="Pallets\IPalletingService.cs" />
     <Compile Include="Pallets\PalletingService.cs" />
