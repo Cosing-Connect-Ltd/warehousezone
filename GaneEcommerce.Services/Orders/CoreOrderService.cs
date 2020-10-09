@@ -673,5 +673,9 @@ namespace Ganedata.Core.Services
         {
             return OrderService.UpdateOrdersPicker(orderIds, pickerId, userId);
         }
+
+        public List<ProductOrdersDetailViewModel> GetAllOrdersByProductId(InventoryTransactionTypeEnum inventoryTransactionType, int productId, DateTime startDate, DateTime endDate, int tenantId, int warehouseId, int? accountId, int? ownerId, int? marketId) {
+            return SalesOrderService.GetAllOrdersByProductId(inventoryTransactionType, productId, startDate, endDate, tenantId, warehouseId, accountId, ownerId, marketId);
+        }
     }
 }

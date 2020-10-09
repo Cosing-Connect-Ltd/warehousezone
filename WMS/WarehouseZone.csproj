@@ -812,11 +812,17 @@
     <Compile Include="Reports\Designs\ProductSoldByPalletType.Designer.cs">
       <DependentUpon>ProductSoldByPalletType.cs</DependentUpon>
     </Compile>
-    <Compile Include="Reports\Designs\ProductSoldBySkuPrint.cs">
+    <Compile Include="Reports\Designs\ProductOrdersHistoryDetailReport.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Reports\Designs\ProductSoldBySkuPrint.Designer.cs">
-      <DependentUpon>ProductSoldBySkuPrint.cs</DependentUpon>
+    <Compile Include="Reports\Designs\ProductOrdersHistoryDetailReport.Designer.cs">
+      <DependentUpon>ProductOrdersHistoryDetailReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Designs\ProductOrdersHistoryReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Designs\ProductOrdersHistoryReport.Designer.cs">
+      <DependentUpon>ProductOrdersHistoryReport.cs</DependentUpon>
     </Compile>
     <Compile Include="Reports\Designs\ProductSoldReport.cs">
       <SubType>Component</SubType>
@@ -1920,7 +1926,7 @@
     <Content Include="Views\Theme\Default\SalesOrders\EditDeliveryAddress.cshtml" />
     <Content Include="Views\Theme\Default\Reports\ProductMovementReport.cshtml" />
     <Content Include="Views\Theme\Default\Reports\ProductSaleReport.cshtml" />
-    <Content Include="Views\Theme\Default\Reports\ProductSaleReportBySku.cshtml" />
+    <Content Include="Views\Theme\Default\Reports\ProductOrdersHistoryReport.cshtml" />
     <Content Include="Views\Theme\Default\Reports\InvoiceProfitReport.cshtml" />
     <Content Include="Views\Theme\Default\TenantEmailNotificationQueues\Create.cshtml" />
     <Content Include="Views\Theme\Default\TenantEmailNotificationQueues\Delete.cshtml" />
@@ -2819,8 +2825,11 @@
     <EmbeddedResource Include="Reports\Designs\ProductSoldByPalletType.resx">
       <DependentUpon>ProductSoldByPalletType.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\Designs\ProductSoldBySkuPrint.resx">
-      <DependentUpon>ProductSoldBySkuPrint.cs</DependentUpon>
+    <EmbeddedResource Include="Reports\Designs\ProductOrdersHistoryDetailReport.resx">
+      <DependentUpon>ProductOrdersHistoryDetailReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Designs\ProductOrdersHistoryReport.resx">
+      <DependentUpon>ProductOrdersHistoryReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\Designs\ProductSoldReport.resx">
       <DependentUpon>ProductSoldReport.cs</DependentUpon>

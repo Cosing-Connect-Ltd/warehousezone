@@ -354,7 +354,25 @@ namespace Ganedata.Core.Entities.Domain
         public OrderStatusEnum? orderstatus { get; set; }
         public int? EmailCount { get; set; }
         public string PickContainerCode { get; set; }
+    }
 
+    public class ProductOrdersDetailViewModel
+    {
+        public int OrderId { get; set; }
+        public string OrderNumber { get; set; }
+        public string AccountCompanyName { get; set; }
+        public string AccountCode { get; set; }
+        public string AccountNameCode
+        {
+            get { return AccountCompanyName + " (" + AccountCode + ")"; }
+        }
+        public DateTime Date { get; set; }
+        public decimal BuyPrice { get; set; }
+        public decimal SellPrice { get; set; }
+        public decimal WarrantyAmount { get; set; }
+        public decimal TaxAmount { get; set; }
+        public decimal TotalAmount { get; set; }
+        public decimal Qty { get; set; }
     }
 
 }

@@ -459,7 +459,7 @@ namespace Ganedata.Core.Services
 
             foreach (var item in InvocieDetaildata)
             {
-                var buyPrice = _productPriceService.GetPurchasePrice(item.ProductId, item);
+                var buyPrice = _productPriceService.GetPurchasePrice(item.ProductId, item.DateCreated, item.OrderDetail?.OrderID);
                 netAmountBuying += buyPrice != null ? (item.Quantity * buyPrice.Value) : 0;
             }
 

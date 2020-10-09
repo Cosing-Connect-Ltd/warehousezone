@@ -404,14 +404,11 @@ namespace Ganedata.Core.Services
             return _context.ProductSpecialPrices.Where(x => x.TenantId == tenantId && (includeIsDeleted || x.IsDeleted != true));
         }
 
-        public decimal? GetPurchasePrice(int productId, InvoiceDetail invoiceDetail = null)
+        public decimal? GetPurchasePrice(int productId, DateTime? date = null, int? orderId = null)
         {
             var product = _context.ProductMaster.FirstOrDefault(u => u.ProductId == productId && u.IsDeleted != true);
 
-            var targetDate = invoiceDetail?.DateCreated;
-            var targetOrderId = invoiceDetail?.OrderDetail?.OrderID;
-
-            var targetOrderDetailQuery = _context.OrderDetail.Where(u => (u.DateCreated < targetDate || targetDate == null) &&
+            var targetOrderDetailQuery = _context.OrderDetail.Where(u => (u.DateCreated < date || date == null) &&
                                                                     u.ProductId == productId &&
                                                                     u.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder &&
                                                                     u.Order.OrderStatusID == OrderStatusEnum.Complete &&
@@ -420,13 +417,13 @@ namespace Ganedata.Core.Services
 
             OrderDetail targetOrderDetail = null;
 
-            if (targetOrderDetailQuery.Any(u => u.Order.BaseOrderID == targetOrderId && targetOrderId != null))
+            if (targetOrderDetailQuery.Any(u => u.Order.BaseOrderID == orderId && orderId != null))
             {
-                targetOrderDetailQuery = targetOrderDetailQuery.Where(u => u.Order.BaseOrderID == targetOrderId && targetOrderId != null);
+                targetOrderDetailQuery = targetOrderDetailQuery.Where(u => u.Order.BaseOrderID == orderId && orderId != null);
             }
             else
             {
-                var palletTrackingId = _context.InventoryTransactions.FirstOrDefault(p => p.OrderID == targetOrderId && p.ProductId == productId)?.PalletTrackingId;
+                var palletTrackingId = _context.InventoryTransactions.FirstOrDefault(p => p.OrderID == orderId && p.ProductId == productId)?.PalletTrackingId;
 
                 if (palletTrackingId != null)
                 {
