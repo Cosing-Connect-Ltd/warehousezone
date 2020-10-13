@@ -1673,6 +1673,53 @@ namespace WMS.Controllers
 
         #endregion InvoiceByProduct
 
+        #region InvoiceByProduct
+
+        public ActionResult InvoiceDetailReport()
+        {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+            var report = new InvoiceDetailReport();
+
+            report.TenantID.Value = CurrentTenantId;
+
+            var invoices = _invoiceService.GetAllInvoiceMasters(CurrentTenantId).Select(i => new { i.InvoiceMasterId, i.InvoiceNumber}).ToList();
+
+            var invoiceSelector = (StaticListLookUpSettings)report.InvoiceId.LookUpSettings;
+
+            invoiceSelector.LookUpValues.AddRange(invoices.Select(m => new LookUpValue(m.InvoiceMasterId, m.InvoiceNumber)));
+
+            report.DataSourceDemanded += InvoiceDetailReport_DataSourceDemanded;
+
+            // binding
+
+            report.SkuCode.DataBindings.AddRange(new XRBinding[] { new XRBinding("Text", report.DataSource, ".SkuCode")});
+            report.ProductName.DataBindings.AddRange(new XRBinding[] { new XRBinding("Text", report.DataSource, ".ProductName")});
+            report.Quantity.DataBindings.AddRange(new XRBinding[] { new XRBinding("Text", report.DataSource, ".Quantity") });
+            report.PalletNumber.DataBindings.AddRange(new XRBinding[] { new XRBinding("Text", report.DataSource, ".PalletNumber")});
+            report.SaleOrderNumber.DataBindings.AddRange(new XRBinding[] { new XRBinding("Text", report.DataSource, ".SaleOrderNumber")});
+            report.DeliveryNote.DataBindings.AddRange(new XRBinding[] { new XRBinding("Text", report.DataSource, ".DeliveryNote")});
+            report.PurchaseOrderNumber.DataBindings.AddRange(new XRBinding[] { new XRBinding("Text", report.DataSource, ".PurchaseOrderNumber") });
+            report.SupplierName.DataBindings.AddRange(new XRBinding[] { new XRBinding("Text", report.DataSource, ".SupplierName") });
+            report.SupplierInvoiceNumber.DataBindings.AddRange(new XRBinding[] { new XRBinding("Text", report.DataSource, ".SupplierInvoiceNumber") });
+
+            return View(report);
+        }
+
+        private void InvoiceDetailReport_DataSourceDemanded(object sender, EventArgs e)
+        {
+            var report = (InvoiceDetailReport)sender;
+            var invoiceId = (int)report.Parameters["InvoiceId"].Value;
+
+            var invoice = _invoiceService.GetInvoiceMasterById(invoiceId);
+
+            report.InvoiceNumber.Value = invoice?.InvoiceNumber;
+            report.InvoiceDate.Value = invoice?.InvoiceDate;
+
+            report.DataSource = _invoiceService.GetAllInvoiceDetailReportData(invoiceId);
+        }
+
+        #endregion InvoiceByProduct
+
         #region PalletTrackingLabelReport
 
         public ActionResult PrintLabelReport(string PalletTrackingIds)

@@ -21,7 +21,7 @@ namespace Ganedata.Core.Entities.Domain
         public int InvoiceDetailId { get; set; }
 
         public int InvoiceId { get; set; }
-         
+
         public int ProductId { get; set; }
 
         public int OrderProcessDetailId { get; set; }
@@ -45,12 +45,21 @@ namespace Ganedata.Core.Entities.Domain
         public int? WarrantyId { get; set; }
 
         public int? Percentage { get; set; }
-           
-
-        
-        
-
     }
+
+    public class InvoiceDetailReportViewModel
+    {
+        public string SkuCode { get; set; }
+        public decimal Quantity { get; set; }
+        public string ProductName { get; set; }
+        public string PalletNumber { get; set; }
+        public string SaleOrderNumber { get; set; }
+        public string DeliveryNote { get; set; }
+        public string PurchaseOrderNumber { get; set; }
+        public string SupplierName { get; set; }
+        public string SupplierInvoiceNumber { get; set; }
+    }
+
     public class InvoiceViewModel : BaseAuditInfo
     {
         public InvoiceViewModel()
@@ -105,6 +114,6 @@ namespace Ganedata.Core.Entities.Domain
         public int TenantId { get; set; }
         public int? EmailCount { get; set; }
         public string Emails { get; set; }
-      
+
     }
 }

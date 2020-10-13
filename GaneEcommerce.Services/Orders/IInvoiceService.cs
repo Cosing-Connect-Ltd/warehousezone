@@ -14,6 +14,7 @@ namespace Ganedata.Core.Services
 
 
         List<InvoiceDetailViewModel> GetAllInvoiceDetailByInvoiceId(int invoiceId);
+        List<InvoiceDetailReportViewModel> GetAllInvoiceDetailReportData(int invoiceId);
 
         AccountTransaction AddAccountTransaction(AccountTransactionTypeEnum type, decimal amount, string notes, int accountId, int tenantId, int userId, AccountPaymentModeEnum? accountPaymentModeId = null);
 
