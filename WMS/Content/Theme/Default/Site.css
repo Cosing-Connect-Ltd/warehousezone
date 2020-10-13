@@ -1094,6 +1094,10 @@ footer p {
     margin-top: 2px;
 }
 
+    .order-shipmentinfo-panes .address-detail {
+        display: flex;
+    }
+
 .order-forms .panel-heading {
     font-weight: bold;
 }

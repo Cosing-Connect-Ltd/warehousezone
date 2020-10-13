@@ -1787,6 +1787,10 @@ function InitialiseSalesOrderShipmentEvents() {
     $("#ShipmentAccountAddressId").on("change", function () {
         updateSOShipmentInfo();
     });
+
+    $("#DeliveryMethod").on("change", function () {
+        updateSOShipmentInfo();
+    });
 }
 
 function LoadPriceGroupEditForm(priceGroupId) {

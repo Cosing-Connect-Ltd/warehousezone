@@ -44,7 +44,7 @@
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.LabelFor(model => model.OrderNumber, htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">
-                    @Html.EditorFor(model => model.OrderNumber)
+                    @Html.EditorFor(model => model.OrderNumber, new { @required = "required" })
                     <b id="btnGenerateNewOrderNumber" class="fa fa-retweet" title="Generate new order Number"></b>
                     @Html.ValidationMessageFor(model => model.OrderNumber)
                 </div>
