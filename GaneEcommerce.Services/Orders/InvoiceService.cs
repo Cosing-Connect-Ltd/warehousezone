@@ -76,6 +76,60 @@ namespace Ganedata.Core.Services
             return results;
         }
 
+        public List<InvoiceDetailReportViewModel> GetAllInvoiceDetailReportData(int invoiceId)
+        {
+            var invoiceDetails = _currentDbContext.InvoiceDetails.Where(x => x.InvoiceMasterId == invoiceId && x.IsDeleted != true).ToList();
+            var results = new List<InvoiceDetailReportViewModel>();
+
+            var OrderIds = invoiceDetails.Select(i => i.OrderDetail.OrderID).Distinct();
+
+            var directSalesPurchaseOrders = _currentDbContext.Order.Where(u => u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder &&
+                                                                                u.OrderStatusID == OrderStatusEnum.Complete &&
+                                                                                u.IsDeleted != true &&
+                                                                                OrderIds.Contains(u.OrderID));
+
+            var relatedInventoryTransactions = _currentDbContext.InventoryTransactions.Where(p => p.OrderID != null && OrderIds.Contains(p.OrderID ?? 0));
+
+            var palletPurchaseOrders = _currentDbContext.InventoryTransactions.Where(p => p.PalletTrackingId != null &&
+                                                                                          relatedInventoryTransactions.Select(i => i.PalletTrackingId).Distinct().Contains(p.PalletTrackingId) &&
+                                                                                          p.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder);
+
+            invoiceDetails.ForEach(m =>
+            {
+                var item = new InvoiceDetailReportViewModel();
+                item.SkuCode = m.Product.SKUCode;
+                item.ProductName = m.Product.Name;
+                item.Quantity = m.Quantity;
+                item.SaleOrderNumber = m.OrderDetail.Order.OrderNumber;
+
+                var palletTracking = relatedInventoryTransactions.FirstOrDefault(i => i.OrderID == m.OrderDetail.OrderID && i.ProductId == m.ProductId)?.PalletTracking;
+                item.PalletNumber = palletTracking?.PalletSerial;
+
+                if (palletTracking?.PalletSerial != null)
+                {
+                    item.DeliveryNote = _currentDbContext.Pallets.FirstOrDefault(p => p.PalletNumber == palletTracking.PalletSerial)?.PalletsDispatch?.DispatchNotes;
+                }
+
+                var purchaseOrderService = directSalesPurchaseOrders.FirstOrDefault(p => p.BaseOrderID == m.OrderDetail.OrderID);
+
+                if (purchaseOrderService == null && palletTracking != null)
+                {
+                    purchaseOrderService = palletPurchaseOrders.FirstOrDefault(p => p.PalletTrackingId == palletTracking.PalletTrackingId &&
+                                                                                    p.ProductId == m.ProductId)?.Order;
+                }
+
+                if (purchaseOrderService != null)
+                {
+                    item.PurchaseOrderNumber = purchaseOrderService?.OrderNumber;
+                    item.SupplierName = purchaseOrderService?.Account.CompanyName;
+                    item.SupplierInvoiceNumber = purchaseOrderService?.ExternalOrderNumber;
+                }
+
+                results.Add(item);
+            });
+            return results.OrderBy(p => p.ProductName).ToList();
+        }
+
         public InvoiceMaster CreateInvoiceForSalesOrder(InvoiceViewModel invoiceData, int tenantId, int userId)
         {
             var account = _currentDbContext.Account.Find(invoiceData.AccountId);

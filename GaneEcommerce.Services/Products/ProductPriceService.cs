@@ -428,8 +428,8 @@ namespace Ganedata.Core.Services
                 if (palletTrackingId != null)
                 {
                     var relatedPurchaseOrder = _context.InventoryTransactions.FirstOrDefault(p => p.PalletTrackingId == palletTrackingId &&
-                                                                                                        p.ProductId == productId &&
-                                                                                                        p.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder)?.Order;
+                                                                                                  p.ProductId == productId &&
+                                                                                                  p.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder)?.Order;
 
                     if (relatedPurchaseOrder != null)
                     {

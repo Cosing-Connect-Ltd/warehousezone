@@ -749,6 +749,9 @@
       <DependentUpon>InventoryReport.cs</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reports\Designs\InvoiceDetailReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reports\Designs\InvoiceByProductReport.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -2754,6 +2757,7 @@
     <Content Include="Scripts\jquery-3.5.1.min.map" />
     <Content Include="Views\Theme\Default\SalesOrders\BatchPickersAssignment.cshtml" />
     <Content Include="Views\Theme\Default\Reports\PickersOrdersReport.cshtml" />
+    <Content Include="Views\Theme\Default\Reports\InvoiceDetailReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -2785,6 +2789,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\Designs\InventoryReport.resx">
       <DependentUpon>InventoryReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Designs\InvoiceDetailReport.resx">
+      <DependentUpon>InvoiceDetailReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\Designs\InvoiceByProductReport.resx">
       <DependentUpon>InvoiceByProductReport.cs</DependentUpon>
