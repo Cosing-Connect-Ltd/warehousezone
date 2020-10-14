@@ -207,6 +207,7 @@
     <Compile Include="Domain\ImportModels\ProductAttributeImportModel.cs" />
     <Compile Include="Domain\Models\ApiCredentials.cs" />
     <Compile Include="Domain\Models\ProductAttributeMap.cs" />
+    <Compile Include="Domain\Models\AccountSector.cs" />
     <Compile Include="Domain\Models\ProductAvailabilityNotifyQueue.cs" />
     <Compile Include="Domain\Models\ProductTagMap .cs" />
     <Compile Include="Domain\Models\ProductTag.cs" />

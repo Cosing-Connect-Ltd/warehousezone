@@ -262,6 +262,13 @@
                         @Html.DropDownListFor(m => m.PriceGroupID, ViewBag.PriceGroups as IEnumerable<SelectListItem>, new { @class = "chosen-select" })
                     </div>
                 </div>
+
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.Label("Sector", htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(m => m.AccountSectorId, ViewBag.AccountSectors as SelectList, "Select Sector", new { @class = "chosen-select" })
+                    </div>
+                </div>
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.Label("Owner User", htmlAttributes: new { @class = "col-md-4" })
                     <div class="col-md-8">

@@ -41,6 +41,7 @@
             DevExpress.DataAccess.Sql.QueryParameter queryParameter9 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter10 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter11 = new DevExpress.DataAccess.Sql.QueryParameter();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter12 = new DevExpress.DataAccess.Sql.QueryParameter();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProductOrdersHistoryReport));
             DevExpress.XtraReports.UI.XRSummary xrSummary1 = new DevExpress.XtraReports.UI.XRSummary();
             DevExpress.XtraReports.UI.XRSummary xrSummary2 = new DevExpress.XtraReports.UI.XRSummary();
@@ -51,6 +52,7 @@
             DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings4 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
             DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings5 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
             DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings6 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
+            DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings7 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
             this.sqlDataSource1 = new DevExpress.DataAccess.Sql.SqlDataSource(this.components);
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
@@ -92,19 +94,20 @@
             this.xrLabel15 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel14 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLine2 = new DevExpress.XtraReports.UI.XRLine();
+            this.xrPageInfo1 = new DevExpress.XtraReports.UI.XRPageInfo();
             this.ProductsIds = new DevExpress.XtraReports.Parameters.Parameter();
             this.paramProductGroups = new DevExpress.XtraReports.Parameters.Parameter();
             this.TenantId = new DevExpress.XtraReports.Parameters.Parameter();
             this.WarehouseId = new DevExpress.XtraReports.Parameters.Parameter();
             this.paramProductDepartment = new DevExpress.XtraReports.Parameters.Parameter();
-            this.paramOwnerID = new DevExpress.XtraReports.Parameters.Parameter();
-            this.AccountId = new DevExpress.XtraReports.Parameters.Parameter();
+            this.OwnerIds = new DevExpress.XtraReports.Parameters.Parameter();
+            this.AccountIds = new DevExpress.XtraReports.Parameters.Parameter();
             this.MarketId = new DevExpress.XtraReports.Parameters.Parameter();
             this.InventoryTransactionTypeId = new DevExpress.XtraReports.Parameters.Parameter();
             this.DetailReport = new DevExpress.XtraReports.UI.DetailReportBand();
             this.Detail1 = new DevExpress.XtraReports.UI.DetailBand();
             this.xrSubreport1 = new DevExpress.XtraReports.UI.XRSubreport();
-            this.xrPageInfo1 = new DevExpress.XtraReports.UI.XRPageInfo();
+            this.AccountSectorIds = new DevExpress.XtraReports.Parameters.Parameter();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // sqlDataSource1
@@ -136,16 +139,19 @@
             queryParameter7.Value = new DevExpress.DataAccess.Expression("JOIN(?paramProductDepartment)", typeof(string));
             queryParameter8.Name = "sqlAccountId";
             queryParameter8.Type = typeof(DevExpress.DataAccess.Expression);
-            queryParameter8.Value = new DevExpress.DataAccess.Expression("?AccountId", typeof(int));
+            queryParameter8.Value = new DevExpress.DataAccess.Expression("JOIN(?AccountIds)", typeof(string));
             queryParameter9.Name = "sqlOwnerId";
             queryParameter9.Type = typeof(DevExpress.DataAccess.Expression);
-            queryParameter9.Value = new DevExpress.DataAccess.Expression("?paramOwnerID", typeof(int));
+            queryParameter9.Value = new DevExpress.DataAccess.Expression("JOIN(?OwnerIds)", typeof(string));
             queryParameter10.Name = "sqlMarketId";
             queryParameter10.Type = typeof(DevExpress.DataAccess.Expression);
             queryParameter10.Value = new DevExpress.DataAccess.Expression("?MarketId", typeof(int));
             queryParameter11.Name = "sqlInventoryTransactionTypeId";
             queryParameter11.Type = typeof(DevExpress.DataAccess.Expression);
             queryParameter11.Value = new DevExpress.DataAccess.Expression("?InventoryTransactionTypeId", typeof(int));
+            queryParameter12.Name = "sqlAccountSectorId";
+            queryParameter12.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter12.Value = new DevExpress.DataAccess.Expression("JOIN(?AccountSectorIds)", typeof(string));
             customSqlQuery1.Parameters.Add(queryParameter1);
             customSqlQuery1.Parameters.Add(queryParameter2);
             customSqlQuery1.Parameters.Add(queryParameter3);
@@ -157,6 +163,7 @@
             customSqlQuery1.Parameters.Add(queryParameter9);
             customSqlQuery1.Parameters.Add(queryParameter10);
             customSqlQuery1.Parameters.Add(queryParameter11);
+            customSqlQuery1.Parameters.Add(queryParameter12);
             customSqlQuery1.Sql = resources.GetString("customSqlQuery1.Sql");
             this.sqlDataSource1.Queries.AddRange(new DevExpress.DataAccess.Sql.SqlQuery[] {
             customSqlQuery1});
@@ -393,7 +400,7 @@
             this.lblOwner.StylePriority.UseFont = false;
             this.lblOwner.StylePriority.UseForeColor = false;
             this.lblOwner.StylePriority.UseTextAlignment = false;
-            this.lblOwner.Text = "Owner:";
+            this.lblOwner.Text = "Owners:";
             this.lblOwner.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             this.lblOwner.Visible = false;
             // 
@@ -411,7 +418,7 @@
             this.lblAcount.StylePriority.UseFont = false;
             this.lblAcount.StylePriority.UseForeColor = false;
             this.lblAcount.StylePriority.UseTextAlignment = false;
-            this.lblAcount.Text = "Account:";
+            this.lblAcount.Text = "Accounts:";
             this.lblAcount.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             this.lblAcount.Visible = false;
             // 
@@ -722,6 +729,18 @@
             this.xrLine2.Name = "xrLine2";
             this.xrLine2.SizeF = new System.Drawing.SizeF(1122F, 4.666646F);
             // 
+            // xrPageInfo1
+            // 
+            this.xrPageInfo1.Font = new System.Drawing.Font("Verdana", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrPageInfo1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 4.666646F);
+            this.xrPageInfo1.Name = "xrPageInfo1";
+            this.xrPageInfo1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrPageInfo1.SizeF = new System.Drawing.SizeF(355.3334F, 23F);
+            this.xrPageInfo1.StylePriority.UseFont = false;
+            this.xrPageInfo1.StylePriority.UseTextAlignment = false;
+            this.xrPageInfo1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            this.xrPageInfo1.TextFormatString = "Page {0} of {1}";
+            // 
             // ProductsIds
             // 
             this.ProductsIds.AllowNull = true;
@@ -765,26 +784,28 @@
             this.paramProductDepartment.Type = typeof(int);
             this.paramProductDepartment.ValueSourceSettings = staticListLookUpSettings3;
             // 
-            // paramOwnerID
+            // OwnerIds
             // 
-            this.paramOwnerID.AllowNull = true;
-            this.paramOwnerID.Description = "Owner";
-            this.paramOwnerID.Name = "paramOwnerID";
-            this.paramOwnerID.Type = typeof(int);
-            this.paramOwnerID.ValueSourceSettings = staticListLookUpSettings4;
+            this.OwnerIds.AllowNull = true;
+            this.OwnerIds.Description = "Select Owners";
+            this.OwnerIds.MultiValue = true;
+            this.OwnerIds.Name = "OwnerIds";
+            this.OwnerIds.Type = typeof(int);
+            this.OwnerIds.ValueSourceSettings = staticListLookUpSettings4;
             // 
-            // AccountId
+            // AccountIds
             // 
-            this.AccountId.AllowNull = true;
-            this.AccountId.Description = "Account";
-            this.AccountId.Name = "AccountId";
-            this.AccountId.Type = typeof(int);
-            this.AccountId.ValueSourceSettings = staticListLookUpSettings5;
+            this.AccountIds.AllowNull = true;
+            this.AccountIds.Description = "Select Accounts";
+            this.AccountIds.MultiValue = true;
+            this.AccountIds.Name = "AccountIds";
+            this.AccountIds.Type = typeof(int);
+            this.AccountIds.ValueSourceSettings = staticListLookUpSettings5;
             // 
             // MarketId
             // 
             this.MarketId.AllowNull = true;
-            this.MarketId.Description = "MarketId";
+            this.MarketId.Description = "Select Market";
             this.MarketId.Name = "MarketId";
             this.MarketId.Type = typeof(int);
             this.MarketId.ValueInfo = "0";
@@ -818,28 +839,26 @@
             this.xrSubreport1.CanShrink = true;
             this.xrSubreport1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
             this.xrSubreport1.Name = "xrSubreport1";
-            this.xrSubreport1.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("AccountId", this.AccountId));
+            this.xrSubreport1.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("AccountIds", this.AccountIds));
             this.xrSubreport1.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("EndDate", this.EndDate));
             this.xrSubreport1.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("StartDate", this.StartDate));
             this.xrSubreport1.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("ProductId", null, "Products.PRODUCTID"));
             this.xrSubreport1.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("TenantId", this.TenantId));
             this.xrSubreport1.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("WarehouseId", this.WarehouseId));
-            this.xrSubreport1.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("OwnerId", this.paramOwnerID));
+            this.xrSubreport1.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("OwnerIds", this.OwnerIds));
             this.xrSubreport1.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("MarketId", this.MarketId));
             this.xrSubreport1.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("InventoryTransactionTypeId", this.InventoryTransactionTypeId));
+            this.xrSubreport1.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("AccountSectorIds", this.AccountSectorIds));
             this.xrSubreport1.SizeF = new System.Drawing.SizeF(1122F, 26.38881F);
             // 
-            // xrPageInfo1
+            // AccountSectorIds
             // 
-            this.xrPageInfo1.Font = new System.Drawing.Font("Verdana", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrPageInfo1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 4.666646F);
-            this.xrPageInfo1.Name = "xrPageInfo1";
-            this.xrPageInfo1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrPageInfo1.SizeF = new System.Drawing.SizeF(355.3334F, 23F);
-            this.xrPageInfo1.StylePriority.UseFont = false;
-            this.xrPageInfo1.StylePriority.UseTextAlignment = false;
-            this.xrPageInfo1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            this.xrPageInfo1.TextFormatString = "Page {0} of {1}";
+            this.AccountSectorIds.AllowNull = true;
+            this.AccountSectorIds.Description = "Account Sectors";
+            this.AccountSectorIds.MultiValue = true;
+            this.AccountSectorIds.Name = "AccountSectorIds";
+            this.AccountSectorIds.Type = typeof(int);
+            this.AccountSectorIds.ValueSourceSettings = staticListLookUpSettings7;
             // 
             // ProductOrdersHistoryReport
             // 
@@ -871,8 +890,9 @@
             this.TenantId,
             this.WarehouseId,
             this.paramProductDepartment,
-            this.AccountId,
-            this.paramOwnerID,
+            this.AccountSectorIds,
+            this.AccountIds,
+            this.OwnerIds,
             this.MarketId,
             this.InventoryTransactionTypeId});
             this.Version = "20.1";
@@ -914,8 +934,8 @@
         public DevExpress.XtraReports.Parameters.Parameter TenantId;
         public DevExpress.XtraReports.Parameters.Parameter WarehouseId;
         public DevExpress.XtraReports.Parameters.Parameter paramProductDepartment;
-        public DevExpress.XtraReports.Parameters.Parameter paramOwnerID;
-        public DevExpress.XtraReports.Parameters.Parameter AccountId;
+        public DevExpress.XtraReports.Parameters.Parameter OwnerIds;
+        public DevExpress.XtraReports.Parameters.Parameter AccountIds;
         public DevExpress.XtraReports.UI.XRLabel username;
         public DevExpress.XtraReports.UI.XRLabel ComanyName;
         public DevExpress.XtraReports.UI.XRLabel lblOwner;
@@ -937,5 +957,6 @@
         private DevExpress.XtraReports.UI.XRLabel xrLabel17;
         private DevExpress.XtraReports.UI.XRLabel xrLabel18;
         private DevExpress.XtraReports.UI.XRPageInfo xrPageInfo1;
+        public DevExpress.XtraReports.Parameters.Parameter AccountSectorIds;
     }
 }

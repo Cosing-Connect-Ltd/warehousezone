@@ -18,14 +18,23 @@ namespace WMS.Controllers
         private readonly IInvoiceService _invoiceService;
         private readonly ILookupServices _lookupServices;
         private readonly IMarketServices _marketServices;
+        private readonly IAccountSectorService _accountSectorService;
 
-        public AccountController(ICoreOrderService orderService, IMarketServices marketServices, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IUserService userService, IInvoiceService invoiceService)
+        public AccountController(ICoreOrderService orderService,
+                                IMarketServices marketServices,
+                                IPropertyService propertyService,
+                                IAccountServices accountServices,
+                                ILookupServices lookupServices,
+                                IUserService userService,
+                                IInvoiceService invoiceService,
+                                IAccountSectorService accountSectorService)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
             _marketServices = marketServices;
             _userService = userService;
             _invoiceService = invoiceService;
             _lookupServices = lookupServices;
+            _accountSectorService = accountSectorService;
         }
         public ActionResult Index()
         {
@@ -71,6 +80,7 @@ namespace WMS.Controllers
 
             AccountAddressSessionInit();
             ViewBag.AccountAddresses = new List<AccountAddresses>();
+            ViewBag.AccountSectors = new SelectList(_accountSectorService.GetAll(), "Id", "Name");
             ViewBag.AccountContacts = new List<AccountContacts>();
             var taxes = _lookupServices.GetAllValidGlobalTaxes().ToList();
             ViewBag.TaxID = new SelectList(taxes, "TaxID", "TaxName", taxes.Select(x => x.TaxID).FirstOrDefault());
@@ -85,7 +95,7 @@ namespace WMS.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Account model, List<int> AccountAddressIds, List<int> AccountContactIds, int GlobalCountryIds, int GlobalCurrencyIds, int PriceGroupId, int OwnerUserId, string StopComment,int[] CustomersMarketIds = null)
+        public ActionResult Create(Account model, List<int> AccountAddressIds, List<int> AccountContactIds, int GlobalCountryIds, int GlobalCurrencyIds, int PriceGroupId, int accountSectorId, int OwnerUserId, string StopComment,int[] CustomersMarketIds = null)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
@@ -93,7 +103,7 @@ namespace WMS.Controllers
             {
                 var newContacts = Session["contacts"] as List<AccountContacts>;
                 var newAddresses = Session["addresses"] as List<AccountAddresses>;
-                AccountServices.SaveAccount(model, AccountAddressIds, AccountContactIds, GlobalCountryIds, GlobalCurrencyIds, PriceGroupId, OwnerUserId, newAddresses, newContacts, CurrentUserId, CurrentTenantId, StopComment, CustomersMarketIds);
+                AccountServices.SaveAccount(model, AccountAddressIds, AccountContactIds, GlobalCountryIds, GlobalCurrencyIds, PriceGroupId, accountSectorId, OwnerUserId, newAddresses, newContacts, CurrentUserId, CurrentTenantId, StopComment, CustomersMarketIds);
                 return RedirectToAction("Index");
             }
 
@@ -124,6 +134,7 @@ namespace WMS.Controllers
 
             AccountAddressSessionInit(customer.OwnerUserId);
             Session["account"] = id;
+            ViewBag.AccountSectors = new SelectList(_accountSectorService.GetAll(), "Id", "Name");
             ViewBag.AccountAddresses = AccountServices.GetAllValidAccountAddressesByAccountId((int)id);
             ViewBag.AccountContacts = AccountServices.GetAllValidAccountContactsByAccountId((int)id, CurrentTenantId);
             ViewBag.LatestStopComment = AccountServices.GetLatestAuditComment(id.Value, CurrentTenantId);
@@ -155,7 +166,7 @@ namespace WMS.Controllers
 
                 var newAddresses = Session["addresses"] as List<AccountAddresses>;
 
-                AccountServices.SaveAccount(model, AccountAddressIds, AccountContactIds, 0, 0, 0, model.OwnerUserId, newAddresses, newContacts, CurrentUserId, CurrentTenantId, StopComment, CustomersMarketIds);
+                AccountServices.SaveAccount(model, AccountAddressIds, AccountContactIds, 0, 0, 0, model.AccountSectorId, model.OwnerUserId, newAddresses, newContacts, CurrentUserId, CurrentTenantId, StopComment, CustomersMarketIds);
                 Session["MarketId"] = MarketIds ?? 0;
                 return RedirectToAction("Index");
             }

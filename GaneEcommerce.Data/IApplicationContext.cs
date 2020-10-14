@@ -35,6 +35,7 @@ namespace Ganedata.Core.Data
         DbSet<AttLogsStamps> AttLogsStamps { get; set; }
         DbSet<OperLogs> OperLogs { get; set; }
         DbSet<Account> Account { get; set; }
+        DbSet<AccountSector> AccountSectors { get; set; }
         DbSet<AccountAddresses> AccountAddresses { get; set; }
         DbSet<AccountStatusAudit> AccountStatusAudits { get; set; }
         DbSet<AccountContacts> AccountContacts { get; set; }

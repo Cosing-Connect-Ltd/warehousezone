@@ -154,11 +154,13 @@ AND ((@sqlProductIds='' or @sqlProductIds is null) or PM.PRODUCTID IN (SELECT It
 AND((@sqlProductGroups='' or @sqlProductGroups is null) or PM.ProductGroupId In (SELECT Item FROM dbo.SplitString(@sqlProductGroups)))
 AND((@sqlProductDept='' or @sqlProductDept is null) or PM.DepartmentId In (SELECT Item
 FROM dbo.SplitString(@sqlProductDept)))
-AND ((@sqlAccountId='' or @sqlAccountId is null) or (ACCT.AccountID in (@sqlAccountId)))
-AND ((@sqlOwnerId='' or @sqlOwnerId is null) or (ACCT.OwnerUserId in (@sqlOwnerId)))
+AND ((@sqlAccountId='' or @sqlAccountId is null) or (ACCT.AccountID in (SELECT Item FROM dbo.SplitString(@sqlAccountId))))
+AND ((@sqlOwnerId='' or @sqlOwnerId is null) or (ACCT.OwnerUserId in (SELECT Item FROM dbo.SplitString(@sqlOwnerId))))
+AND ((@sqlAccountSectorId='' or @sqlAccountSectorId is null) or (ACCT.AccountSectorId in (SELECT Item FROM dbo.SplitString(@sqlAccountSectorId))))
 AND ((@sqlMarketId='' or @sqlMarketId is null) or (MRKT.Id in (@sqlMarketId)))
 GROUP BY PM.PRODUCTID,PM.Name, SKUCODE, PM.ProductGroupId,PM.DepartmentId 
-Order by SKUCODE</value>
+Order by SKUCODE
+</value>
   </data>
   <data name="sqlDataSource1.ResultSchemaSerializable" xml:space="preserve">
     <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9IlByb2R1Y3RzIj48RmllbGQgTmFtZT0iQlVZSU5HUFJJQ0UiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IlNFTExJTkdQUklDRSIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0iVG90YWxBbW91bnQiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IlRvdGFsVGF4QW1vdW50IiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJOQU1FIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlNLVUNPREUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iUFJPRFVDVElEIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iUHJvZHVjdEdyb3VwSWQiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJEZXBhcnRtZW50SWQiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJTaG93Q2FzZVF0eUluUmVwb3J0cyIgVHlwZT0iQm9vbGVhbiIgLz48RmllbGQgTmFtZT0iVG90YWxRdHkiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IkRBVEVDUkVBVEVEIiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iT1JERVJQUk9DRVNTSUQiIFR5cGU9IkludDMyIiAvPjwvVmlldz48L0RhdGFTZXQ+</value>

@@ -95,6 +95,8 @@ namespace Ganedata.Core.Entities.Domain
 
         [Display(Name = "Account Owner")]
         public int OwnerUserId { get; set; }
+        [Display(Name = "Account Sector")]
+        public int? AccountSectorId { get; set; }
 
         [Display(Name = "Accepted Shelf Life")]
         [Range(1, Int32.MaxValue, ErrorMessage = "Value should be greater than or equal to 1")]
@@ -111,6 +113,8 @@ namespace Ganedata.Core.Entities.Domain
         public virtual GlobalTax GlobalTax { get; set; }
         [ForeignKey("OwnerUserId")]
         public virtual AuthUser AccountOwner { get; set; }
+        [ForeignKey("AccountSectorId")]
+        public virtual AccountSector AccountSector { get; set; }
 
         [Display(Name = "Account Name")]
         public string AccountNameCode
