@@ -33,8 +33,9 @@ namespace Ganedata.Core.Services
         AccountAddresses DeleteAccountAddress(int addressId, int currentUserId);
         int CreateNewAccountForEcommerceUser(string accountCode, int currentUserId, int tenantId);
         Account SaveAccount(Account model, List<int> accountAddressIds, List<int> accountContactIds,
-            int globalCountryIds, int globalCurrencyIds, int priceGroupId, int ownerUserId,
-            List<AccountAddresses> addresses, List<AccountContacts> contacts, int userId, int tenantId, string stopReason = null, int[] MarketId = null);
+                            int globalCountryIds, int globalCurrencyIds, int priceGroupId, int? accountSectorId,
+                            int ownerUserId, List<AccountAddresses> addresses, List<AccountContacts> contacts,
+                            int userId, int tenantId, string stopReason = null, int[] MarketId = null);
 
         void DeleteAccount(int accountId, int userId);
         AccountContacts GetAccountContactById(int id);
@@ -60,6 +61,7 @@ namespace Ganedata.Core.Services
 
         IEnumerable<AccountContacts> GetAllValidAccountContactsByAccountContactId(int accountId);
         IEnumerable<AccountContacts> GetAllValidAccountContactsByAccountContactIds(int?[] accountContactIds);
+        IEnumerable<Account> GetAllValidAccountsByAccountIds(int[] accountIds);
         IQueryable<Account> GetAllValidAccountsCustom(int tenantId, EnumAccountType customerType = EnumAccountType.All, string searchString = null, DateTime? lastUpdated = null);
 
         bool UpdateOrderPTenantEmailRecipients(int?[] accountContactId, int OrderId, int UserId);

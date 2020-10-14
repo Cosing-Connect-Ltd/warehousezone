@@ -6,6 +6,7 @@ using Ganedata.Core.Entities.Enums;
 using Ganedata.Core.Entities.Helpers;
 using Ganedata.Core.Models;
 using Ganedata.Core.Services;
+using MoreLinq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -28,6 +29,7 @@ namespace WMS.Controllers
         private readonly IProductServices _productServices;
         private readonly IAccountServices _accountServices;
         private readonly IMarketServices _marketServices;
+        private readonly IAccountSectorService _accountSectorServices;
         private readonly IPalletingService _palletingService;
         private readonly IInvoiceService _invoiceService;
         private readonly ILookupServices _lookupService;
@@ -35,7 +37,8 @@ namespace WMS.Controllers
 
         public ReportsController(ITenantLocationServices tenantLocationsServices, IShiftsServices shiftsServices, IEmployeeShiftsServices employeeShiftsServices, IEmployeeServices employeeServices, ICoreOrderService orderService,
             IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IAppointmentsService appointmentsService, IGaneConfigurationsHelper ganeConfigurationsHelper, IEmailServices emailServices, IInvoiceService invoiceService,
-            ITenantLocationServices tenantLocationservices, IProductServices productServices, ITenantsServices tenantsServices, IPalletingService palleteServices, IMarketServices marketServices, IUserService userService)
+            ITenantLocationServices tenantLocationservices, IProductServices productServices, ITenantsServices tenantsServices, IPalletingService palleteServices, IMarketServices marketServices, IUserService userService,
+            IAccountSectorService accountSectorService)
             : base(orderService, propertyService, accountServices, lookupServices, appointmentsService, ganeConfigurationsHelper, emailServices, tenantLocationservices, tenantsServices)
         {
             _tenantLocationsServices = tenantLocationsServices;
@@ -46,6 +49,7 @@ namespace WMS.Controllers
             _accountServices = accountServices;
             _palletingService = palleteServices;
             _marketServices = marketServices;
+            _accountSectorServices = accountSectorService;
             _invoiceService = invoiceService;
             _lookupService = lookupServices;
             _userService = userService;
@@ -1460,10 +1464,16 @@ namespace WMS.Controllers
             marketSettings.LookUpValues.AddRange(markets.Markets.Select(m => new LookUpValue(m.Id, m.Name)));
 
             var accounts = _accountServices.GetAllValidAccounts(CurrentTenantId).ToList();
-            StaticListLookUpSettings accountSettings = (StaticListLookUpSettings)productOrdersHistoryReport.AccountId.LookUpSettings;
+            StaticListLookUpSettings accountSettings = (StaticListLookUpSettings)productOrdersHistoryReport.AccountIds.LookUpSettings;
             accountSettings.LookUpValues.AddRange(accounts.Select(m => new LookUpValue(m.AccountID, m.CompanyName)));
+
+            var accountSectors = _accountSectorServices.GetAll();
+            StaticListLookUpSettings accountSectorsSettings = (StaticListLookUpSettings)productOrdersHistoryReport.AccountSectorIds.LookUpSettings;
+            accountSectorsSettings.LookUpValues.AddRange(accountSectors.Select(m => new LookUpValue(m.Id, m.Name)));
+
+
             var users = OrderService.GetAllAuthorisedUsers(CurrentTenantId, true);
-            StaticListLookUpSettings ownerSettings = (StaticListLookUpSettings)productOrdersHistoryReport.paramOwnerID.LookUpSettings;
+            StaticListLookUpSettings ownerSettings = (StaticListLookUpSettings)productOrdersHistoryReport.OwnerIds.LookUpSettings;
             ownerSettings.LookUpValues.AddRange(users.Select(m => new LookUpValue(m.UserId, m.DisplayName)));
             IEnumerable<ProductMaster> products = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList();
             StaticListLookUpSettings setting = (StaticListLookUpSettings)productOrdersHistoryReport.ProductsIds.LookUpSettings;
@@ -1542,16 +1552,17 @@ namespace WMS.Controllers
             DateTime startDate = (DateTime)report.Parameters["StartDate"].Value;
             DateTime endDate = (DateTime)report.Parameters["EndDate"].Value;
             endDate = endDate.AddHours(24);
-            var accountId = (int?)report.Parameters["AccountId"].Value;
+            var accountIds = (int[])report.Parameters["AccountIds"].Value;
+            var accountSectorIds = (int[])report.Parameters["AccountSectorIds"].Value;
             var productId = (int)report.Parameters["ProductId"].Value;
-            var ownerId = (int?)report.Parameters["OwnerId"].Value;
+            var ownerIds = (int[])report.Parameters["OwnerIds"].Value;
             var marketId = (int?)report.Parameters["MarketId"].Value;
             var tenantId = (int)report.Parameters["TenantId"].Value;
             var warehouseId = (int)report.Parameters["WarehouseId"].Value;
             var inventoryTransactionTypeId = (InventoryTransactionTypeEnum)report.Parameters["InventoryTransactionTypeId"].Value;
 
 
-            report.DataSource = OrderService.GetAllOrdersByProductId(inventoryTransactionTypeId, productId, startDate, endDate, tenantId, warehouseId, accountId, ownerId, marketId);
+            report.DataSource = OrderService.GetAllOrdersByProductId(inventoryTransactionTypeId, productId, startDate, endDate, tenantId, warehouseId, accountIds, ownerIds, accountSectorIds, marketId);
 
         }
 

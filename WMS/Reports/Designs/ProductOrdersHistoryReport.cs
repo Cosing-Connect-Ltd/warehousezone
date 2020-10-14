@@ -1,10 +1,7 @@
-﻿using System;
-using System.Drawing;
-using System.Collections;
-using System.ComponentModel;
-using DevExpress.XtraReports.UI;
+﻿using Ganedata.Core.Services;
+using System;
+using System.Linq;
 using System.Web.Mvc;
-using Ganedata.Core.Services;
 
 namespace WMS.Reports.Designs
 {
@@ -21,25 +18,25 @@ namespace WMS.Reports.Designs
             DateTime endDate = (DateTime)report.Parameters["EndDate"].Value;
             endDate = endDate.AddHours(24);
             report.Parameters["EndDate"].Value = endDate;
-            int? accountId = (int?)report.Parameters["AccountId"].Value;
-            int? UserId = (int?)report.Parameters["paramOwnerID"].Value;
+            var accountIds = (int[])report.Parameters["AccountIds"].Value;
+            var ownerIds = (int[])report.Parameters["OwnerIds"].Value;
             username.Visible = false;
             ComanyName.Visible = false;
             lblAcount.Visible = false;
             lblOwner.Visible = false;
-            if (accountId.HasValue)
+            if ((accountIds?.Length ?? 0) >= 1)
             {
                 var account = DependencyResolver.Current.GetService<IAccountServices>();
                 ComanyName.Visible = true;
-                ComanyName.Text = account.GetAccountsById(accountId??0)?.CompanyName;
+                ComanyName.Text = string.Join(", ",  account.GetAllValidAccountsByAccountIds(accountIds)?.Select(a => a.CompanyName));
                 lblAcount.Visible = true;
             }
-            if (UserId.HasValue)
+            if (ownerIds?.Length >= 1)
             {
                 var users = DependencyResolver.Current.GetService<IUserService>();
                 username.Visible = true;
                 lblOwner.Visible = true;
-                username.Text = users.GetAuthUserById(UserId ?? 0)?.DisplayName;
+                username.Text = string.Join(", ", users.GetAuthUserByIds(ownerIds)?.Select(a => a.DisplayName)) ;
             }
         }
     }

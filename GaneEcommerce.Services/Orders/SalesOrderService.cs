@@ -702,8 +702,12 @@ namespace Ganedata.Core.Services
             return _currentDbContext.Order.Where(u => ((!orderId.HasValue) || (u.OrderID == orderId)) && u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder && u.DirectShip == true && u.IsDeleted != true).ToList();
         }
 
-        public List<ProductOrdersDetailViewModel> GetAllOrdersByProductId(InventoryTransactionTypeEnum inventoryTransactionType, int productId, DateTime startDate, DateTime endDate, int tenantId, int warehouseId, int? accountId, int? ownerId, int? marketId)
+        public List<ProductOrdersDetailViewModel> GetAllOrdersByProductId(InventoryTransactionTypeEnum inventoryTransactionType, int productId, DateTime startDate, DateTime endDate, int tenantId, int warehouseId, int[] accountIds, int[] ownerIds, int[] accountSectorIds, int? marketId)
         {
+            accountIds = accountIds ?? new int[] { };
+            ownerIds = ownerIds ?? new int[] { };
+            accountSectorIds = accountSectorIds ?? new int[] { };
+
             var orderDetails = _currentDbContext.OrderProcessDetail.Where(o => o.ProductId == productId &&
                                                                                  o.DateCreated >= startDate &&
                                                                                  o.DateCreated < endDate &&
@@ -711,8 +715,9 @@ namespace Ganedata.Core.Services
                                                                                  o.IsDeleted != true &&
                                                                                  o.OrderDetail.Order.InventoryTransactionTypeId == inventoryTransactionType &&
                                                                                  (o.OrderDetail.WarehouseId == warehouseId || o.OrderDetail.TenantWarehouse.WarehouseId == warehouseId) &&
-                                                                                 (o.OrderDetail.Order.Account.AccountID == accountId || accountId == null || accountId == 0) &&
-                                                                                 (o.OrderDetail.Order.Account.OwnerUserId == ownerId || ownerId == null || ownerId == 0));
+                                                                                 (accountIds.Contains(o.OrderDetail.Order.Account.AccountID) || accountIds.Count() <= 0) &&
+                                                                                 (accountSectorIds.Contains(o.OrderDetail.Order.Account.AccountSectorId ?? 0) || accountSectorIds.Count() <= 0) &&
+                                                                                 (ownerIds.Contains(o.OrderDetail.Order.Account.OwnerUserId) || ownerIds.Count() <= 0));
 
             var productOrdersDetails= orderDetails.Select(o => new ProductOrdersDetailViewModel
             {

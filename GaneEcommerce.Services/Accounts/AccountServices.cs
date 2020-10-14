@@ -236,11 +236,11 @@ namespace Ganedata.Core.Services
                 VATNo = "",
                 AccountStatusID = AccountStatusEnum.Active,
             };
-            var accountModel = SaveAccount(account, null, null, 1, 1, 1, 1, null, null, currentUserId, tenantId, null);
+            var accountModel = SaveAccount(account, null, null, 1, 1, 1, null, 1, null, null, currentUserId, tenantId, null);
             return accountModel.AccountID;
         }
 
-        public Account SaveAccount(Account model, List<int> accountAddressIds, List<int> accountContactIds, int globalCountryIds, int globalCurrencyIds, int priceGroupId, int ownerUserId, List<AccountAddresses> addresses, List<AccountContacts> contacts, int userId, int tenantId, string stopReason = null, int[] MarketId = null)
+        public Account SaveAccount(Account model, List<int> accountAddressIds, List<int> accountContactIds, int globalCountryIds, int globalCurrencyIds, int priceGroupId, int? accountSectorId, int ownerUserId, List<AccountAddresses> addresses, List<AccountContacts> contacts, int userId, int tenantId, string stopReason = null, int[] MarketId = null)
         {
             var account = _currentDbContext.Account.FirstOrDefault(m => m.AccountID == model.AccountID);
 
@@ -253,6 +253,7 @@ namespace Ganedata.Core.Services
                 model.CurrencyID = globalCurrencyIds;
                 model.OwnerUserId = ownerUserId;
                 model.PriceGroupID = priceGroupId;
+                model.AccountSectorId = accountSectorId;
                 model.TaxID = (model.TaxID == 0 ? 1 : model.TaxID);
                 _currentDbContext.Account.Add(model);
                 _currentDbContext.SaveChanges();
@@ -353,6 +354,7 @@ namespace Ganedata.Core.Services
                 account.CreditLimit = model.CreditLimit;
                 account.CountryID = model.CountryID;
                 account.PriceGroupID = model.PriceGroupID;
+                account.AccountSectorId = model.AccountSectorId;
                 account.TaxID = model.TaxID;
                 account.CreditTerms = model.CreditTerms;
                 account.OwnerUserId = model.OwnerUserId;
@@ -746,5 +748,9 @@ namespace Ganedata.Core.Services
 
         }
 
+        public IEnumerable<Account> GetAllValidAccountsByAccountIds(int[] accountIds)
+        {
+            return _currentDbContext.Account.AsNoTracking().Where(x => accountIds.Contains(x.AccountID) && x.IsDeleted != true).ToList();
+        }
     }
 }

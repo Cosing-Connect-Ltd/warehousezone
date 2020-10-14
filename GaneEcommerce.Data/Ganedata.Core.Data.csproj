@@ -1107,6 +1107,10 @@
     <Compile Include="Migrations\202010091552246_Notes-field-added-in-OrderProcessDetails.designer.cs">
       <DependentUpon>202010091552246_Notes-field-added-in-OrderProcessDetails.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202010141615404_added-AccountSectors-table.cs" />
+    <Compile Include="Migrations\202010141615404_added-AccountSectors-table.designer.cs">
+      <DependentUpon>202010141615404_added-AccountSectors-table.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2257,6 +2261,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202010091552246_Notes-field-added-in-OrderProcessDetails.resx">
       <DependentUpon>202010091552246_Notes-field-added-in-OrderProcessDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010141615404_added-AccountSectors-table.resx">
+      <DependentUpon>202010141615404_added-AccountSectors-table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

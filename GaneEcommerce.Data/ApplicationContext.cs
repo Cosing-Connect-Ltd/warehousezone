@@ -58,6 +58,7 @@ namespace Ganedata.Core.Data
 
         //#region "WMS Entities"
         public DbSet<Account> Account { get; set; }
+        public DbSet<AccountSector> AccountSectors { get; set; }
         public DbSet<AccountAddresses> AccountAddresses { get; set; }
         public DbSet<AccountStatusAudit> AccountStatusAudits { get; set; }
         public DbSet<AccountContacts> AccountContacts { get; set; }

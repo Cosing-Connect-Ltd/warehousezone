@@ -530,6 +530,7 @@
     <Compile Include="Controllers\ApiCredentialsController.cs" />
     <Compile Include="Controllers\MarketJobController.cs" />
     <Compile Include="Controllers\MarketsVehicleController.cs" />
+    <Compile Include="Controllers\AccountSectorsController.cs" />
     <Compile Include="Controllers\ProductAttributeValuesController.cs" />
     <Compile Include="Controllers\WebAPI\ApiTenantLocationsSyncController.cs" />
     <Compile Include="Controllers\WebAPI\ApiWebsitesController.cs" />
@@ -2758,6 +2759,10 @@
     <Content Include="Views\Theme\Default\SalesOrders\BatchPickersAssignment.cshtml" />
     <Content Include="Views\Theme\Default\Reports\PickersOrdersReport.cshtml" />
     <Content Include="Views\Theme\Default\Reports\InvoiceDetailReport.cshtml" />
+    <Content Include="Views\Theme\Default\AccountSectors\_AccountSectors.cshtml" />
+    <Content Include="Views\Theme\Default\AccountSectors\Create.cshtml" />
+    <Content Include="Views\Theme\Default\AccountSectors\Edit.cshtml" />
+    <Content Include="Views\Theme\Default\AccountSectors\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

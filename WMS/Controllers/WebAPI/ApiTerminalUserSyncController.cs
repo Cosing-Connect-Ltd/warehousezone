@@ -306,7 +306,7 @@ namespace WMS.Controllers.WebAPI
                 account.RegNo = "";
                 account.VATNo = "";
                 account.AccountStatusID = AccountStatusEnum.Active;
-                var accountModel = _accountServices.SaveAccount(account, null, null, 1, 1, 1, 1, null, null, 0, user.TenantId, null);
+                var accountModel = _accountServices.SaveAccount(account, null, null, 1, 1, 1, null, 1, null, null, 0, user.TenantId, null);
 
                 authUser.UserEmail = user.UserEmail;
                 authUser.UserFirstName = user.UserFirstName;

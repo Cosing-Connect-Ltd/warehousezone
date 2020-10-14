@@ -374,5 +374,10 @@ namespace Ganedata.Core.Services
             Random _random = new Random();
             return _random.Next(0, 999999).ToString("D6");
         }
+
+        public IEnumerable<AuthUser> GetAuthUserByIds(int[] userIds)
+        {
+            return _currentDbContext.AuthUsers.Where(m => userIds.Contains(m.UserId) && m.IsDeleted != true).ToList();
+        }
     }
 }

@@ -32,7 +32,6 @@
             DevExpress.DataAccess.Sql.MasterDetailInfo masterDetailInfo1 = new DevExpress.DataAccess.Sql.MasterDetailInfo();
             DevExpress.DataAccess.Sql.RelationColumnInfo relationColumnInfo1 = new DevExpress.DataAccess.Sql.RelationColumnInfo();
             DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings1 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
-            DevExpress.XtraReports.Parameters.StaticListLookUpSettings staticListLookUpSettings2 = new DevExpress.XtraReports.Parameters.StaticListLookUpSettings();
             this.sqlDataSource1 = new DevExpress.DataAccess.Sql.SqlDataSource(this.components);
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
@@ -45,7 +44,7 @@
             this.SellPrice = new DevExpress.XtraReports.UI.XRLabel();
             this.TaxAmount = new DevExpress.XtraReports.UI.XRLabel();
             this.TotalAmount = new DevExpress.XtraReports.UI.XRLabel();
-            this.AccountId = new DevExpress.XtraReports.Parameters.Parameter();
+            this.AccountIds = new DevExpress.XtraReports.Parameters.Parameter();
             this.EndDate = new DevExpress.XtraReports.Parameters.Parameter();
             this.StartDate = new DevExpress.XtraReports.Parameters.Parameter();
             this.PageHeader = new DevExpress.XtraReports.UI.PageHeaderBand();
@@ -60,11 +59,12 @@
             this.ProductId = new DevExpress.XtraReports.Parameters.Parameter();
             this.TenantId = new DevExpress.XtraReports.Parameters.Parameter();
             this.WarehouseId = new DevExpress.XtraReports.Parameters.Parameter();
-            this.OwnerId = new DevExpress.XtraReports.Parameters.Parameter();
+            this.OwnerIds = new DevExpress.XtraReports.Parameters.Parameter();
             this.MarketId = new DevExpress.XtraReports.Parameters.Parameter();
             this.InventoryTransactionTypeId = new DevExpress.XtraReports.Parameters.Parameter();
             this.ReportFooter = new DevExpress.XtraReports.UI.ReportFooterBand();
             this.xrLine1 = new DevExpress.XtraReports.UI.XRLine();
+            this.AccountSectorIds = new DevExpress.XtraReports.Parameters.Parameter();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // sqlDataSource1
@@ -200,13 +200,13 @@
             this.TotalAmount.StylePriority.UseTextAlignment = false;
             this.TotalAmount.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
             // 
-            // AccountId
+            // AccountIds
             // 
-            this.AccountId.AllowNull = true;
-            this.AccountId.Name = "AccountId";
-            this.AccountId.Type = typeof(int);
-            this.AccountId.ValueSourceSettings = staticListLookUpSettings1;
-            this.AccountId.Visible = false;
+            this.AccountIds.AllowNull = true;
+            this.AccountIds.MultiValue = true;
+            this.AccountIds.Name = "AccountIds";
+            this.AccountIds.Type = typeof(int);
+            this.AccountIds.Visible = false;
             // 
             // EndDate
             // 
@@ -352,7 +352,7 @@
             this.ProductId.AllowNull = true;
             this.ProductId.Name = "ProductId";
             this.ProductId.Type = typeof(int);
-            this.ProductId.ValueSourceSettings = staticListLookUpSettings2;
+            this.ProductId.ValueSourceSettings = staticListLookUpSettings1;
             this.ProductId.Visible = false;
             // 
             // TenantId
@@ -371,13 +371,14 @@
             this.WarehouseId.ValueInfo = "0";
             this.WarehouseId.Visible = false;
             // 
-            // OwnerId
+            // OwnerIds
             // 
-            this.OwnerId.AllowNull = true;
-            this.OwnerId.Description = "Owner";
-            this.OwnerId.Name = "OwnerId";
-            this.OwnerId.Type = typeof(int);
-            this.OwnerId.Visible = false;
+            this.OwnerIds.AllowNull = true;
+            this.OwnerIds.Description = "Owner";
+            this.OwnerIds.MultiValue = true;
+            this.OwnerIds.Name = "OwnerIds";
+            this.OwnerIds.Type = typeof(int);
+            this.OwnerIds.Visible = false;
             // 
             // MarketId
             // 
@@ -409,6 +410,14 @@
             this.xrLine1.SizeF = new System.Drawing.SizeF(1102F, 9.527779F);
             this.xrLine1.StylePriority.UseForeColor = false;
             // 
+            // AccountSectorIds
+            // 
+            this.AccountSectorIds.AllowNull = true;
+            this.AccountSectorIds.MultiValue = true;
+            this.AccountSectorIds.Name = "AccountSectorIds";
+            this.AccountSectorIds.Type = typeof(int);
+            this.AccountSectorIds.Visible = false;
+            // 
             // ProductOrdersHistoryDetailReport
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -432,10 +441,11 @@
             this.ProductId,
             this.TenantId,
             this.WarehouseId,
-            this.AccountId,
-            this.OwnerId,
+            this.AccountIds,
+            this.OwnerIds,
             this.MarketId,
-            this.InventoryTransactionTypeId});
+            this.InventoryTransactionTypeId,
+            this.AccountSectorIds});
             this.Version = "20.1";
             this.DataSourceDemanded += new System.EventHandler<System.EventArgs>(this.ProductSoldBySkuDetailPrint_DataSourceDemanded);
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
@@ -454,8 +464,8 @@
         public DevExpress.DataAccess.Sql.SqlDataSource sqlDataSource1;
         public DevExpress.XtraReports.Parameters.Parameter TenantId;
         public DevExpress.XtraReports.Parameters.Parameter WarehouseId;
-        public DevExpress.XtraReports.Parameters.Parameter OwnerId;
-        public DevExpress.XtraReports.Parameters.Parameter AccountId;
+        public DevExpress.XtraReports.Parameters.Parameter OwnerIds;
+        public DevExpress.XtraReports.Parameters.Parameter AccountIds;
         public DevExpress.XtraReports.Parameters.Parameter MarketId;
         public DevExpress.XtraReports.Parameters.Parameter InventoryTransactionTypeId;
         private DevExpress.XtraReports.UI.XRLabel xrLabel2;
@@ -476,5 +486,6 @@
         public DevExpress.XtraReports.UI.XRLabel TaxAmountTitle;
         public DevExpress.XtraReports.UI.XRLabel AccountName;
         private DevExpress.XtraReports.UI.XRLabel xrLabel4;
+        private DevExpress.XtraReports.Parameters.Parameter AccountSectorIds;
     }
 }
