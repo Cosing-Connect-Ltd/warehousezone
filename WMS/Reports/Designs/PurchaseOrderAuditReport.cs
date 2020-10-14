@@ -8,11 +8,5 @@ namespace WMS.Reports.Designs
         {
             InitializeComponent();
         }
-
-        private void InventoryTransType_BeforePrint(object sender, System.Drawing.Printing.PrintEventArgs e)
-        {
-            
-
-        }
     }
 }
