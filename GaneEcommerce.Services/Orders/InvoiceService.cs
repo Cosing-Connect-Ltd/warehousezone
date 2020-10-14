@@ -101,14 +101,10 @@ namespace Ganedata.Core.Services
                 item.ProductName = m.Product.Name;
                 item.Quantity = m.Quantity;
                 item.SaleOrderNumber = m.OrderDetail.Order.OrderNumber;
+                item.DeliveryNote = _currentDbContext.OrderProcessDetail.FirstOrDefault(o => o.OrderDetailID == m.OrderDetailId && o.ProductId == m.ProductId)?.OrderProcess.DeliveryNO;
 
                 var palletTracking = relatedInventoryTransactions.FirstOrDefault(i => i.OrderID == m.OrderDetail.OrderID && i.ProductId == m.ProductId)?.PalletTracking;
                 item.PalletNumber = palletTracking?.PalletSerial;
-
-                if (palletTracking?.PalletSerial != null)
-                {
-                    item.DeliveryNote = _currentDbContext.Pallets.FirstOrDefault(p => p.PalletNumber == palletTracking.PalletSerial)?.PalletsDispatch?.DispatchNotes;
-                }
 
                 var purchaseOrderService = directSalesPurchaseOrders.FirstOrDefault(p => p.BaseOrderID == m.OrderDetail.OrderID);
 
