@@ -141,31 +141,36 @@ and ("ProductMaster"."IsDeleted"=0 or "ProductMaster"."IsDeleted" is null)
 </value>
   </data>
   <data name="customSqlQuery2.Sql" xml:space="preserve">
-    <value>select "Account"."CompanyName" as "CompanyName",
-       "Orders"."OrderNumber" as "OrderNumber",
-       "InventoryTransactions"."Quantity" as "Quantity",
-       "InventoryTransactions"."PalletTrackingId",
-       "InventoryTransactions"."ProductId" as "ProductId",
-       "InventoryTransactions"."DateCreated" as "DateCreated",
-       "ProductMaster"."ProductsPerCase",
-       "InventoryTransactions"."InventoryTransactionTypeId"
-  from ((("dbo"."InventoryTransactions" "InventoryTransactions"
-  left
-  join "dbo"."Orders" "Orders"
-       on ("Orders"."OrderID" = "InventoryTransactions"."OrderID"))
-  left
-  join "dbo"."Account" "Account"
-       on ("Account"."AccountID" = "Orders"."AccountID"))
-  inner join "dbo"."ProductMaster" "ProductMaster"
-       on ("ProductMaster"."ProductId" = "InventoryTransactions"."ProductId"))
- where (not ("InventoryTransactions"."PalletTrackingId" is null)
-       and (("InventoryTransactions"."InventoryTransactionTypeId" = 2)
-       or ("InventoryTransactions"."InventoryTransactionTypeId" = 7)
-       or ("InventoryTransactions"."InventoryTransactionTypeId" = 17))
-       and ("Orders"."OrderNumber" = @OrderNumber))
+    <value>SELECT Account.CompanyName AS CompanyName, 
+       Orders.OrderNumber AS OrderNumber, 
+       InventoryTransactions.Quantity AS Quantity, 
+       InventoryTransactions.PalletTrackingId, 
+       InventoryTransactions.ProductId AS ProductId, 
+       InventoryTransactions.DateCreated AS DateCreated, 
+       ProductMaster.ProductsPerCase, 
+	   InvoiceMaster.InvoiceNumber, 
+       InventoryTransactions.InventoryTransactionTypeId
+FROM dbo.InventoryTransactions InventoryTransactions
+     LEFT JOIN dbo.PalletTrackings PalletTrackings ON PalletTrackings.PalletTrackingId = InventoryTransactions.PalletTrackingId
+     LEFT JOIN dbo.Orders Orders ON Orders.OrderID = InventoryTransactions.OrderID
+     LEFT JOIN dbo.OrderProcesses OrderProcesses ON Orders.OrderID = OrderProcesses.OrderID
+     LEFT JOIN dbo.InvoiceMaster InvoiceMaster ON OrderProcesses.OrderProcessId = InvoiceMaster.OrderProcessId
+     LEFT JOIN dbo.Account Account ON Account.AccountID = Orders.AccountID
+     INNER JOIN dbo.ProductMaster ProductMaster ON ProductMaster.ProductId = InventoryTransactions.ProductId 
+WHERE "InventoryTransactions"."PalletTrackingId" IS NOT NULL
+      AND ("InventoryTransactions"."InventoryTransactionTypeId" = 2
+           OR "InventoryTransactions"."InventoryTransactionTypeId" = 7
+           OR "InventoryTransactions"."InventoryTransactionTypeId" = 17)
+      AND "PalletTrackings"."PalletSerial" IN
+(
+    SELECT "PalletSerial"
+    FROM "dbo"."PalletTrackings" pt
+         INNER JOIN "dbo"."InventoryTransactions" it ON pt."PalletTrackingId" = it."PalletTrackingId"
+		 LEFT JOIN "dbo"."Orders" o ON o."OrderID" = it."OrderID"
+    WHERE o.OrderNumber = @OrderNumber)
 </value>
   </data>
   <data name="sqlDataSource1.ResultSchemaSerializable" xml:space="preserve">
-    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9Ik1haW5RdWVyeXdpdGhGaWx0ZXJzIj48RmllbGQgTmFtZT0iUHJvZHVjdElkIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJOYW1lIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJPcmRlcklEIiBUeXBlPSJVbmtub3duIiAvPjwvVmlldz48VmlldyBOYW1lPSJJbnZlbnRvcnlUcmFuc2FjdGlvbnNGb3JQTyI+PEZpZWxkIE5hbWU9IlBhbGxldFRyYWNraW5nSWQiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJPcmRlcklEIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iVG90YWxDYXNlcyIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0iUmVtYWluaW5nQ2FzZXMiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IlBhbGxldFNlcmlhbCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJEYXRlQ3JlYXRlZCIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9Ik1heF9Qcm9kdWN0SWQiIFR5cGU9IkludDMyIiAvPjwvVmlldz48VmlldyBOYW1lPSJJbnZlbnRvcnlUcmFuc2FjdGlvbnNGb3JTTyI+PEZpZWxkIE5hbWU9IkNvbXBhbnlOYW1lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9yZGVyTnVtYmVyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlF1YW50aXR5IiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJQYWxsZXRUcmFja2luZ0lkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iUHJvZHVjdElkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iRGF0ZUNyZWF0ZWQiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJQcm9kdWN0c1BlckNhc2UiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJJbnZlbnRvcnlUcmFuc2FjdGlvblR5cGVJZCIgVHlwZT0iSW50MzIiIC8+PC9WaWV3PjxSZWxhdGlvbiBNYXN0ZXI9Ik1haW5RdWVyeXdpdGhGaWx0ZXJzIiBEZXRhaWw9IkludmVudG9yeVRyYW5zYWN0aW9uc0ZvclBPIj48S2V5Q29sdW1uIE1hc3Rlcj0iT3JkZXJJRCIgRGV0YWlsPSJPcmRlcklEIiAvPjxLZXlDb2x1bW4gTWFzdGVyPSJQcm9kdWN0SWQiIERldGFpbD0iTWF4X1Byb2R1Y3RJZCIgLz48L1JlbGF0aW9uPjxSZWxhdGlvbiBNYXN0ZXI9IkludmVudG9yeVRyYW5zYWN0aW9uc0ZvclBPIiBEZXRhaWw9IkludmVudG9yeVRyYW5zYWN0aW9uc0ZvclNPIj48S2V5Q29sdW1uIE1hc3Rlcj0iUGFsbGV0VHJhY2tpbmdJZCIgRGV0YWlsPSJQYWxsZXRUcmFja2luZ0lkIiAvPjxLZXlDb2x1bW4gTWFzdGVyPSJNYXhfUHJvZHVjdElkIiBEZXRhaWw9IlByb2R1Y3RJZCIgLz48L1JlbGF0aW9uPjwvRGF0YVNldD4=</value>
+    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9Ik1haW5RdWVyeXdpdGhGaWx0ZXJzIj48RmllbGQgTmFtZT0iUHJvZHVjdElkIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJOYW1lIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJPcmRlcklEIiBUeXBlPSJVbmtub3duIiAvPjwvVmlldz48VmlldyBOYW1lPSJJbnZlbnRvcnlUcmFuc2FjdGlvbnNGb3JQTyI+PEZpZWxkIE5hbWU9IlBhbGxldFRyYWNraW5nSWQiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJPcmRlcklEIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iVG90YWxDYXNlcyIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0iUmVtYWluaW5nQ2FzZXMiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IlBhbGxldFNlcmlhbCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJEYXRlQ3JlYXRlZCIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9Ik1heF9Qcm9kdWN0SWQiIFR5cGU9IkludDMyIiAvPjwvVmlldz48VmlldyBOYW1lPSJJbnZlbnRvcnlUcmFuc2FjdGlvbnNGb3JTTyI+PEZpZWxkIE5hbWU9IkNvbXBhbnlOYW1lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9yZGVyTnVtYmVyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlF1YW50aXR5IiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJQYWxsZXRUcmFja2luZ0lkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iUHJvZHVjdElkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iRGF0ZUNyZWF0ZWQiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJQcm9kdWN0c1BlckNhc2UiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJJbnZvaWNlTnVtYmVyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkludmVudG9yeVRyYW5zYWN0aW9uVHlwZUlkIiBUeXBlPSJJbnQzMiIgLz48L1ZpZXc+PFJlbGF0aW9uIE1hc3Rlcj0iTWFpblF1ZXJ5d2l0aEZpbHRlcnMiIERldGFpbD0iSW52ZW50b3J5VHJhbnNhY3Rpb25zRm9yUE8iPjxLZXlDb2x1bW4gTWFzdGVyPSJPcmRlcklEIiBEZXRhaWw9Ik9yZGVySUQiIC8+PEtleUNvbHVtbiBNYXN0ZXI9IlByb2R1Y3RJZCIgRGV0YWlsPSJNYXhfUHJvZHVjdElkIiAvPjwvUmVsYXRpb24+PFJlbGF0aW9uIE1hc3Rlcj0iSW52ZW50b3J5VHJhbnNhY3Rpb25zRm9yUE8iIERldGFpbD0iSW52ZW50b3J5VHJhbnNhY3Rpb25zRm9yU08iPjxLZXlDb2x1bW4gTWFzdGVyPSJQYWxsZXRUcmFja2luZ0lkIiBEZXRhaWw9IlBhbGxldFRyYWNraW5nSWQiIC8+PEtleUNvbHVtbiBNYXN0ZXI9Ik1heF9Qcm9kdWN0SWQiIERldGFpbD0iUHJvZHVjdElkIiAvPjwvUmVsYXRpb24+PC9EYXRhU2V0Pg==</value>
   </data>
 </root>
