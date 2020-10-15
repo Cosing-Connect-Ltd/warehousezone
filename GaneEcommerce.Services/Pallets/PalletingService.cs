@@ -82,7 +82,15 @@ namespace Ganedata.Core.Services
 
         public List<PalletProduct> GetFulFillmentPalletProductsForPallet(int palletId)
         {
-            return _currentDbContext.PalletProducts.Where(m => m.PalletID == palletId && m.IsDeleted != true).ToList();
+            return _currentDbContext.PalletProducts.Where(m => m.PalletID == palletId && m.IsDeleted != true)
+                                         .ToList()
+                                         .GroupBy(p => p.ProductID)
+                                         .Select(p => {
+                                             var palletProduct = p.FirstOrDefault();
+                                             palletProduct.Quantity = p.Sum(q => q.Quantity);
+                                             return palletProduct;
+                                         })
+                                         .ToList();
         }
 
         public List<PalletProductsSync> GetAllPalletProductsForSync(DateTime? afterDate)
