@@ -1111,6 +1111,10 @@
     <Compile Include="Migrations\202010141615404_added-AccountSectors-table.designer.cs">
       <DependentUpon>202010141615404_added-AccountSectors-table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202010151109481_added-ArchivableItemsAgeDays-to-TenantConfigs-table.cs" />
+    <Compile Include="Migrations\202010151109481_added-ArchivableItemsAgeDays-to-TenantConfigs-table.designer.cs">
+      <DependentUpon>202010151109481_added-ArchivableItemsAgeDays-to-TenantConfigs-table.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2264,6 +2268,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202010141615404_added-AccountSectors-table.resx">
       <DependentUpon>202010141615404_added-AccountSectors-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010151109481_added-ArchivableItemsAgeDays-to-TenantConfigs-table.resx">
+      <DependentUpon>202010151109481_added-ArchivableItemsAgeDays-to-TenantConfigs-table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
