@@ -54,6 +54,7 @@ namespace Ganedata.Core.Entities.Domain
         public string DefaultCustomMessage { get; set; }
         public bool ShowDecimalPoint { get; set; }
         public int TerminalSyncDays { get; set; }
+        public int ArchivableItemsAgeDays { get; set; }
         public string IvReportFooterMsg1 { get; set; }
         public bool EmailAutoCheckedOnEdit { get; set; }
         public bool AllowDuplicateProductName { get; set; }

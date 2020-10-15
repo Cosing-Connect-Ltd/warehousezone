@@ -357,18 +357,31 @@ namespace WMS.Controllers
             return View();
         }
 
-        public ActionResult ArchiveOldPallets()
+        public ActionResult ArchiveOrRemoveOldPallets()
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
-            var archiveDate = DateTime.UtcNow.AddDays(-60);
-            var pallets = _currentDbContext.PalletTracking.Where(x => x.TenantId == CurrentTenantId && x.WarehouseId == CurrentWarehouseId && x.RemainingCases == 0
-            && (x.DateUpdated ?? x.DateCreated) < archiveDate).ToList();
+            var archivableItemsAgeDays = _currentDbContext.TenantConfigs.FirstOrDefault(x => x.TenantId == CurrentTenantId).ArchivableItemsAgeDays;
+
+            if (archivableItemsAgeDays <= 0)
+            {
+                ViewBag.Title = "Operation was Not Successful!";
+                ViewBag.Message = "Operation was Not Successful!";
+                ViewBag.Detail = "ArchivableItemsAgeDays is not configured in TenantConfigs table";
+
+                return View("AdminUtilities");
+            }
+
+            var archiveDate = DateTime.UtcNow.AddDays(-1 * (_currentDbContext.TenantConfigs.FirstOrDefault(x => x.TenantId == CurrentTenantId).ArchivableItemsAgeDays));
+            var archivablePallets = _currentDbContext.PalletTracking.Where(x => x.TenantId == CurrentTenantId &&
+                                                                                x.WarehouseId == CurrentWarehouseId &&
+                                                                                x.RemainingCases == 0 &&
+                                                                                (x.DateUpdated ?? x.DateCreated) < archiveDate).ToList();
 
             int counter = 0;
-            int remaining = pallets.Count();
+            int remaining = archivablePallets.Count();
 
-            foreach (var pallet in pallets)
+            foreach (var pallet in archivablePallets)
             {
                 counter++;
                 remaining--;
@@ -382,9 +395,31 @@ namespace WMS.Controllers
                 }
             }
 
+            var unusedPallets = _currentDbContext.PalletTracking.Where(x => x.TenantId == CurrentTenantId &&
+                                                                            !_currentDbContext.InventoryTransactions.Any(i => i.PalletTrackingId == x.PalletTrackingId) &&
+                                                                            !_currentDbContext.StockTakePalletsSnapshot.Any(i => i.PalletTrackingId == x.PalletTrackingId) &&
+                                                                            x.WarehouseId == CurrentWarehouseId &&
+                                                                            x.Status == PalletTrackingStatusEnum.Created &&
+                                                                            (x.DateUpdated ?? x.DateCreated) < archiveDate).ToList();
+            counter = 0;
+            remaining = unusedPallets.Count();
+
+            foreach (var pallet in unusedPallets)
+            {
+                counter++;
+                remaining--;
+                _currentDbContext.PalletTracking.Remove(pallet);
+
+                if (counter == 50 || remaining < 50)
+                {
+                    _currentDbContext.SaveChanges();
+                    counter = 0;
+                }
+            }
+
             ViewBag.Title = "Operation was Successful";
             ViewBag.Message = "Operation was Successful";
-            ViewBag.Detail = "Archiving old pallets operation was Completed Successfully";
+            ViewBag.Detail = $"Archiving {archivablePallets.Count()} and Removing {unusedPallets.Count()} old pallets operation was Completed Successfully; ";
 
             return View("AdminUtilities");
 
