@@ -27,9 +27,9 @@ namespace Ganedata.Core.Services
             return _currentDbContext.GlobalUOM.Where(m => uomType == EnumUomType.All || m.UOMTypeId == (int)(uomType));
         }
 
-        public IEnumerable<GlobalTax> GetAllValidGlobalTaxes(int? countryId = null)
+        public IEnumerable<GlobalTax> GetAllValidGlobalTaxes(int? countryId = null, TaxTypeEnum? taxType = null)
         {
-            return _currentDbContext.GlobalTax.Where(m => !countryId.HasValue || m.CountryID == countryId);
+            return _currentDbContext.GlobalTax.Where(m => (!countryId.HasValue || m.CountryID == countryId) && (!taxType.HasValue || m.TaxType == TaxTypeEnum.All || m.TaxType == taxType));
         }
 
         public IEnumerable<TenantLoanTypes> GetAllValidTenantLoanTypes(int tenantId)

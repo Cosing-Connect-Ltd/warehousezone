@@ -9,8 +9,8 @@ namespace Ganedata.Core.Services
 {
     public interface ILookupServices
     {
-        IEnumerable<GlobalUOM> GetAllValidGlobalUoms(EnumUomType uomType= EnumUomType.All);
-        IEnumerable<GlobalTax> GetAllValidGlobalTaxes(int? countryId = null);
+        IEnumerable<GlobalUOM> GetAllValidGlobalUoms(EnumUomType uomType = EnumUomType.All);
+        IEnumerable<GlobalTax> GetAllValidGlobalTaxes(int? countryId = null, TaxTypeEnum? taxType = null);
         IEnumerable<TenantLoanTypes> GetAllValidTenantLoanTypes(int tenantId);
         IEnumerable<TenantDepartments> GetAllValidTenantDepartments(int tenantId);
         IEnumerable<GlobalWeightGroups> GetAllValidGlobalWeightGroups();
@@ -18,13 +18,13 @@ namespace Ganedata.Core.Services
 
         IEnumerable<LocationTypes> GetAllValidLocationTypes(int tenantId);
         IEnumerable<LocationGroup> GetAllValidLocationGroups(int tenantId);
-        IEnumerable<ProductGroups> GetAllValidProductGroups(int tenantId, int numberofproduct=0);
+        IEnumerable<ProductGroups> GetAllValidProductGroups(int tenantId, int numberofproduct = 0);
         IEnumerable<PalletType> GetAllValidPalletTypes(int tenantId);
-        IEnumerable<ProductManufacturer> GetAllValidProductManufacturer(int tenantId,int? Id=null);
+        IEnumerable<ProductManufacturer> GetAllValidProductManufacturer(int tenantId, int? Id = null);
         bool RemoveProductManufacturer(int Id);
         IEnumerable<ReportType> GetAllReportTypes(int tenantId);
         TenantDepartments GetTenantDepartmentById(int departmentId);
-        TenantDepartments SaveTenantDepartment(string departmentName,int? accountID, int userId, int tenantId);
+        TenantDepartments SaveTenantDepartment(string departmentName, int? accountID, int userId, int tenantId);
         TenantDepartments UpdateTenantDepartment(TenantDepartments tenantDepartments);
         TenantDepartments RemoveTenantDepartment(int departmentId, int currentUserId);
         List<TenantLocations> GetAllWarehousesForTenant(int tenantId, int? excludeWarehouseId = null, bool? excludeMobileLocations = false);
@@ -44,9 +44,9 @@ namespace Ganedata.Core.Services
 
         Locations CreateLocation(Locations location, List<int> productIds, int userId, int tenantId, int warehouseId);
         Locations BulkCreateProductsLocation(Locations location, List<int> productIds, int? startValue, int? endValue, int tenantId, int warehouseId, int userId);
-        Locations BulkEditProductsLocation(Locations location, List<int> productIds , int tenantId, int warehouseId, int userId);
+        Locations BulkEditProductsLocation(Locations location, List<int> productIds, int tenantId, int warehouseId, int userId);
 
-        LocationTypes GetLocationTypeByName(string locationTypeName, int tenantId, int? excludeLocationTypeId=null);
+        LocationTypes GetLocationTypeByName(string locationTypeName, int tenantId, int? excludeLocationTypeId = null);
         JobType CreateJobType(JobType jobtype, int tenantId, int userId, List<int> resourceIds);
         JobType GetJobTypeById(int jobTypeId, int tenantId);
         JobType SaveJobType(JobType jobtype, int tenantId, int userId, List<int> resourceIds);
@@ -74,15 +74,15 @@ namespace Ganedata.Core.Services
 
         IQueryable<TenantEmailNotificationQueue> GetEmailNotifcationQueue(int tenantId);
 
-        bool CheckStockIssue(int ProductId, decimal InStock,bool serialize, bool palletsPrdocut);
+        bool CheckStockIssue(int ProductId, decimal InStock, bool serialize, bool palletsPrdocut);
 
-       ProductManufacturer SaveAndUpdateProductManufacturer(ProductManufacturer productManufacturer,int UserId);
+        ProductManufacturer SaveAndUpdateProductManufacturer(ProductManufacturer productManufacturer, int UserId);
 
         IEnumerable<ProductCategory> GetAllValidProductCategories(int tenantId, int numberofproduct = 0, int? ProductGroupId = null);
 
         IEnumerable<ProductKitType> GetAllValidProductKitType(int tenantId);
 
         bool UpdateStockMovement(StockMovementCollectionViewModel data);
-        Guid CreateStockMovement(int userId, int TenantId,int warehouseId);
+        Guid CreateStockMovement(int userId, int TenantId, int warehouseId);
     }
 }

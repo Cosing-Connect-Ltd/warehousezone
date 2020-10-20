@@ -4588,3 +4588,33 @@ Error Message: Sorry, system is unable to validate client
 Error Detail: Either client is not registered, inactive or ambiguous, please contact support
 -----------------------------------------------
 
+Date/Time: 12/10/2020 11:44:34
+Tenant Name: ( Teanant Id: 0)
+User: ( Id: 0)
+Controller: user
+Action: login
+Error Title: Client not validated
+Error Message: Sorry, system is unable to validate client
+Error Detail: Either client is not registered, inactive or ambiguous, please contact support
+-----------------------------------------------
+
+Date/Time: 12/10/2020 11:51:31
+Tenant Name: ( Teanant Id: 0)
+User: ( Id: 0)
+Controller: Home
+Action: Index
+Error Title: Client not validated
+Error Message: Sorry, system is unable to validate client
+Error Detail: Either client is not registered, inactive or ambiguous, please contact support
+-----------------------------------------------
+
+Date/Time: 12/10/2020 11:51:33
+Tenant Name: ( Teanant Id: 0)
+User: ( Id: 0)
+Controller: Home
+Action: Index
+Error Title: Client not validated
+Error Message: Sorry, system is unable to validate client
+Error Detail: Either client is not registered, inactive or ambiguous, please contact support
+-----------------------------------------------
+

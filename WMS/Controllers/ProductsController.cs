@@ -67,7 +67,7 @@ namespace WMS.Controllers
             Session["ProductKitModelItems"] = null;
             var weightUoms = _lookupServices.GetAllValidGlobalUoms(EnumUomType.Weight).ToList();
             var dimensionUoms = _lookupServices.GetAllValidGlobalUoms(EnumUomType.Dimensions).ToList();
-            var taxes = _lookupServices.GetAllValidGlobalTaxes().ToList();
+            var taxes = _lookupServices.GetAllValidGlobalTaxes(taxType: TaxTypeEnum.Products).ToList();
             var weightGroups = _lookupServices.GetAllValidGlobalWeightGroups().ToList();
             var lotOptionCodes = _productLookupService.GetAllValidProductLotOptionsCodes().ToList();
             var lotProcessTypeCodes = _productLookupService.GetAllValidProductLotProcessTypeCodes().ToList();
@@ -125,7 +125,7 @@ namespace WMS.Controllers
 
             var weightUoms = _lookupServices.GetAllValidGlobalUoms(EnumUomType.Weight);
             var dimensionUoms = _lookupServices.GetAllValidGlobalUoms(EnumUomType.Dimensions);
-            var taxes = _lookupServices.GetAllValidGlobalTaxes();
+            var taxes = _lookupServices.GetAllValidGlobalTaxes(taxType: TaxTypeEnum.Products).ToList();
             var weightGroups = _lookupServices.GetAllValidGlobalWeightGroups();
             var lotOptionCodes = _productLookupService.GetAllValidProductLotOptionsCodes();
             var lotProcessTypeCodes = _productLookupService.GetAllValidProductLotProcessTypeCodes();
@@ -868,7 +868,7 @@ namespace WMS.Controllers
             return PartialView("_EditableProductGrid", gridViewModel);
         }
         public ActionResult SaveProductEdit(int productId, MVCxGridViewBatchUpdateValues<ProductMasterViewModel, int> updateValues)
-            {
+        {
             if (productId > 0)
             {
                 foreach (var value in updateValues.Update)

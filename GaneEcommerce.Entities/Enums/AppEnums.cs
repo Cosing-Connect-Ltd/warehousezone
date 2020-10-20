@@ -591,4 +591,11 @@ namespace Ganedata.Core.Entities.Enums
         Mobile = 1,
         Email = 2
     }
+
+    public enum TaxTypeEnum
+    {
+        All = 0,
+        Products = 1,
+        Accounts = 2
+    }
 }

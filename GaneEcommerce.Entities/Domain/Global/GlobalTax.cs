@@ -1,5 +1,6 @@
 namespace Ganedata.Core.Entities.Domain
 {
+    using Ganedata.Core.Entities.Enums;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -14,7 +15,7 @@ namespace Ganedata.Core.Entities.Domain
             ProductMaster = new HashSet<ProductMaster>();
             OrderDetail = new HashSet<OrderDetail>();
         }
-          
+
         [Key]
         [Display(Name = "Tax Id")]
         public int TaxID { get; set; }
@@ -27,6 +28,7 @@ namespace Ganedata.Core.Entities.Domain
         public int PercentageOfAmount { get; set; }
         [Display(Name = "Country")]
         public int CountryID { get; set; }
+        public TaxTypeEnum TaxType { get; set; }
         [ForeignKey("CountryID")]
         public virtual GlobalCountry Country { get; set; }
         public virtual ICollection<ProductMaster> ProductMaster { get; set; }
