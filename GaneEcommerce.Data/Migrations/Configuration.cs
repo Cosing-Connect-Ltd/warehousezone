@@ -236,7 +236,7 @@ namespace Ganedata.Core.Data.Migrations
                 new GlobalTax
                 {
                     TaxID = 4,
-                    TaxName = "Exampt Transactions (T2)",
+                    TaxName = "Exempt Transactions (T2)",
                     TaxDescription = "Zero-rated goods and services, eg most food and children’s clothes",
                     PercentageOfAmount = 0,
                     CountryID = 1

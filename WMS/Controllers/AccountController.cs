@@ -82,7 +82,7 @@ namespace WMS.Controllers
             ViewBag.AccountAddresses = new List<AccountAddresses>();
             ViewBag.AccountSectors = new SelectList(_accountSectorService.GetAll(), "Id", "Name");
             ViewBag.AccountContacts = new List<AccountContacts>();
-            var taxes = _lookupServices.GetAllValidGlobalTaxes().ToList();
+            var taxes = _lookupServices.GetAllValidGlobalTaxes(taxType: TaxTypeEnum.Accounts).ToList();
             ViewBag.TaxID = new SelectList(taxes, "TaxID", "TaxName", taxes.Select(x => x.TaxID).FirstOrDefault());
             ViewBag.MarketDetailId = new MultiSelectList(_marketServices.GetAllValidMarkets(CurrentTenantId, CurrentWarehouseId), "MarketId", "MarketName");
             Account account = new Account();
@@ -95,7 +95,7 @@ namespace WMS.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Account model, List<int> AccountAddressIds, List<int> AccountContactIds, int GlobalCountryIds, int GlobalCurrencyIds, int PriceGroupId, int accountSectorId, int OwnerUserId, string StopComment,int[] CustomersMarketIds = null)
+        public ActionResult Create(Account model, List<int> AccountAddressIds, List<int> AccountContactIds, int GlobalCountryIds, int GlobalCurrencyIds, int PriceGroupId, int accountSectorId, int OwnerUserId, string StopComment, int[] CustomersMarketIds = null)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
@@ -111,7 +111,7 @@ namespace WMS.Controllers
             ViewBag.AccountAddresses = new List<AccountAddresses>();
             ViewBag.AccountContacts = new List<AccountContacts>();
             ViewBag.MarketDetailId = new MultiSelectList(_marketServices.GetAllValidMarkets(CurrentTenantId, CurrentWarehouseId), "MarketId", "MarketName", CustomersMarketIds);
-            var taxes = _lookupServices.GetAllValidGlobalTaxes().ToList();
+            var taxes = _lookupServices.GetAllValidGlobalTaxes(taxType: TaxTypeEnum.Accounts).ToList();
             ViewBag.TaxID = new SelectList(taxes, "TaxID", "TaxName", taxes.Select(x => x.TaxID).FirstOrDefault());
             return View(model);
         }
@@ -141,7 +141,7 @@ namespace WMS.Controllers
             ViewBag.SelectedAddresses = AccountServices.GetAllValidAccountAddressesByAccountId((int)id).Select(a => a.AddressID).ToList();
             ViewBag.SelectedContacts = AccountServices.GetAllValidAccountContactsByAccountId((int)id, CurrentTenantId).Select(a => a.AccountContactId).ToList();
 
-            var taxes = _lookupServices.GetAllValidGlobalTaxes().ToList();
+            var taxes = _lookupServices.GetAllValidGlobalTaxes(taxType: TaxTypeEnum.Accounts).ToList();
             ViewBag.TaxID = new SelectList(taxes, "TaxID", "TaxName", customer.TaxID);
             ViewBag.MarketDetailId = new MultiSelectList(_marketServices.GetAllValidMarkets(CurrentTenantId, CurrentWarehouseId), "MarketId", "MarketName", _marketServices.GetMarketCustomerByAccountId(customer.AccountID, CurrentTenantId));
 
@@ -155,7 +155,7 @@ namespace WMS.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public ActionResult Edit(Account model, List<int> AccountAddressIds, List<int> AccountContactIds, string StopComment, int? MarketIds, int[] CustomersMarketIds=null)
+        public ActionResult Edit(Account model, List<int> AccountAddressIds, List<int> AccountContactIds, string StopComment, int? MarketIds, int[] CustomersMarketIds = null)
 
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
@@ -181,7 +181,7 @@ namespace WMS.Controllers
             ViewBag.LatestStopComment = AccountServices.GetLatestAuditComment(model.AccountID, CurrentTenantId);
             ViewBag.SelectedAddresses = AccountServices.GetAllValidAccountAddressesByAccountId(model.AccountID).Select(a => a.AddressID).ToList();
             ViewBag.SelectedContacts = AccountServices.GetAllValidAccountContactsByAccountId(model.AccountID, CurrentTenantId).Select(a => a.AccountContactId).ToList();
-            var taxes = _lookupServices.GetAllValidGlobalTaxes().ToList();
+            var taxes = _lookupServices.GetAllValidGlobalTaxes(taxType: TaxTypeEnum.Accounts).ToList();
             ViewBag.TaxID = new SelectList(taxes, "TaxID", "TaxName", customer.TaxID);
             ViewBag.MarketDetailId = new MultiSelectList(_marketServices.GetAllValidMarkets(CurrentTenantId, CurrentWarehouseId), "MarketId", "MarketName", CustomersMarketIds);
             ViewBag.MarketId = MarketIds ?? 0;
