@@ -22,7 +22,7 @@ namespace Ganedata.Core.Services
             string TenantSubDomain = FilterSubDomain(url);
             if (string.IsNullOrWhiteSpace(TenantSubDomain) || TenantSubDomain == "ganedev") { TenantSubDomain = "ganedev"; }
 
-            var Tenants = context.Tenants.AsNoTracking().Where(e => e.TenantSubDmoain == TenantSubDomain.Trim().ToLower() && e.IsActive == true && e.IsDeleted != true)
+            var Tenants = context.Tenants.AsNoTracking().Where(e => e.TenantSubDmoain.Contains(TenantSubDomain.Trim().ToLower()) && e.IsActive == true && e.IsDeleted != true)
                 .Include(x => x.TenantLocations)
                 .Include(x => x.TenantModules)
                 .ToList();
