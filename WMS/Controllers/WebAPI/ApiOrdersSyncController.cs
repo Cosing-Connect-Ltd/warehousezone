@@ -166,7 +166,7 @@ namespace WMS.Controllers.WebAPI
 
         private async Task NotifyOrderStatusChange(OrderStatusEnum statusId, Order order)
         {
-            if (!order.Warehouse.SelectedNotifiableOrderStatuses.Contains(statusId))
+            if (order.Warehouse?.SelectedNotifiableOrderStatuses == null || !order.Warehouse.SelectedNotifiableOrderStatuses.Contains(order.OrderStatusID))
             {
                 return;
             }
