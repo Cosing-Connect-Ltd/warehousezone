@@ -72,6 +72,10 @@
             this.xrLabel9 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel10 = new DevExpress.XtraReports.UI.XRLabel();
             this.detailsToggle = new DevExpress.XtraReports.UI.XRLabel();
+            this.ReportHeader1 = new DevExpress.XtraReports.UI.ReportHeaderBand();
+            this.ReportFooter1 = new DevExpress.XtraReports.UI.ReportFooterBand();
+            this.xrLine2 = new DevExpress.XtraReports.UI.XRLine();
+            this.xrLine3 = new DevExpress.XtraReports.UI.XRLine();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // TopMargin
@@ -490,10 +494,11 @@
             // DetailReport
             // 
             this.DetailReport.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
-            this.Detail1});
+            this.Detail1,
+            this.ReportHeader1,
+            this.ReportFooter1});
             this.DetailReport.DataMember = "ProductsDetail";
             this.DetailReport.DrillDownControl = this.detailsToggle;
-            this.DetailReport.DrillDownExpanded = false;
             this.DetailReport.Level = 0;
             this.DetailReport.Name = "DetailReport";
             this.DetailReport.ReportPrintOptions.DetailCountOnEmptyDataSource = 0;
@@ -506,7 +511,7 @@
             this.xrLabel9,
             this.xrLabel6,
             this.xrLabel2});
-            this.Detail1.HeightF = 26.29445F;
+            this.Detail1.HeightF = 23.0111F;
             this.Detail1.Name = "Detail1";
             // 
             // xrLabel2
@@ -581,6 +586,36 @@
             this.detailsToggle.Text = "+";
             this.detailsToggle.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
+            // ReportHeader1
+            // 
+            this.ReportHeader1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrLine3});
+            this.ReportHeader1.HeightF = 6.666692F;
+            this.ReportHeader1.Name = "ReportHeader1";
+            // 
+            // ReportFooter1
+            // 
+            this.ReportFooter1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrLine2});
+            this.ReportFooter1.HeightF = 11.99443F;
+            this.ReportFooter1.Name = "ReportFooter1";
+            // 
+            // xrLine2
+            // 
+            this.xrLine2.ForeColor = System.Drawing.Color.Silver;
+            this.xrLine2.LocationFloat = new DevExpress.Utils.PointFloat(26.04158F, 0F);
+            this.xrLine2.Name = "xrLine2";
+            this.xrLine2.SizeF = new System.Drawing.SizeF(756.2087F, 3.888914F);
+            this.xrLine2.StylePriority.UseForeColor = false;
+            // 
+            // xrLine3
+            // 
+            this.xrLine3.ForeColor = System.Drawing.Color.Gray;
+            this.xrLine3.LocationFloat = new DevExpress.Utils.PointFloat(26.04158F, 0F);
+            this.xrLine3.Name = "xrLine3";
+            this.xrLine3.SizeF = new System.Drawing.SizeF(756.2087F, 6.666692F);
+            this.xrLine3.StylePriority.UseForeColor = false;
+            // 
             // InvoiceProfitPrint
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -647,5 +682,9 @@
         public DevExpress.XtraReports.UI.XRLabel xrLabel9;
         public DevExpress.XtraReports.UI.XRLabel xrLabel6;
         private DevExpress.XtraReports.UI.XRLabel detailsToggle;
+        private DevExpress.XtraReports.UI.ReportHeaderBand ReportHeader1;
+        private DevExpress.XtraReports.UI.XRLine xrLine3;
+        private DevExpress.XtraReports.UI.ReportFooterBand ReportFooter1;
+        private DevExpress.XtraReports.UI.XRLine xrLine2;
     }
 }
