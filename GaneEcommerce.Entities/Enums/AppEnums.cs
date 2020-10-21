@@ -114,6 +114,8 @@ namespace Ganedata.Core.Entities.Enums
 
         [Display(Name = "Website Order Confirmation")]
         WebsiteOrderConfirmation = 15,
+        [Display(Name = "Order Status Notification")]
+        OrderStatusNotification = 16,
     }
 
     public enum InventoryTransactionTypeEnum

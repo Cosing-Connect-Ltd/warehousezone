@@ -328,7 +328,6 @@ namespace Ganedata.Core.Services
             }
 
             return "Success";
-
         }
 
         public async Task<string> SendStandardMailNotification(int tenantId, string subject, string bodyHtml, string footerHtml, string recipients, bool salesRequiresAuthorisation = true)

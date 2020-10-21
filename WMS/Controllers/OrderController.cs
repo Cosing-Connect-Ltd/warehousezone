@@ -27,11 +27,12 @@ namespace WMS.Controllers
         private readonly ICommonDbServices _commonDbServices;
         private readonly IEmailServices _emailServices;
         private readonly IPalletingService _palletingService;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
         public OrderController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IAppointmentsService appointmentsService, IPalletingService palletingService,
             IProductLookupService productLookupService, IProductServices productServices, ITenantLocationServices tenantLocationServices, IProductPriceService productPriceService, IGaneConfigurationsHelper ganeConfigurationsHelper,
-            IEmailServices emailServices, ICommonDbServices commonDbServices, ITenantLocationServices tenantLocationservices, ITenantsServices tenantsServices, IMapper mapper)
+            IEmailServices emailServices, ICommonDbServices commonDbServices, ITenantLocationServices tenantLocationservices, ITenantsServices tenantsServices, IUserService userService, IMapper mapper)
             : base(orderService, propertyService, accountServices, lookupServices, appointmentsService, ganeConfigurationsHelper, emailServices, tenantLocationservices, tenantsServices)
         {
             _productLookupService = productLookupService;
@@ -41,6 +42,7 @@ namespace WMS.Controllers
             _commonDbServices = commonDbServices;
             _emailServices = emailServices;
             _palletingService = palletingService;
+            _userService = userService;
             _mapper = mapper;
         }
 
@@ -1429,20 +1431,59 @@ namespace WMS.Controllers
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult UpdateOrderStatus(int orderId, OrderStatusEnum statusId)
+        public async Task<ActionResult> UpdateOrderStatus(int orderId, OrderStatusEnum statusId)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
-            var result = OrderService.UpdateOrderStatus(orderId, statusId, CurrentUserId);
+            var order = OrderService.UpdateOrderStatus(orderId, statusId, CurrentUserId);
 
-            if (result != null && result.OrderStatusID == statusId)
+            if (order != null && order.OrderStatusID == statusId)
             {
-                return Json(true, JsonRequestBehavior.AllowGet);
+                var notificationSendResult = await NotifyOrderStatusChange(order);
+
+                if (string.IsNullOrEmpty(notificationSendResult))
+                {
+                    return Json(true, JsonRequestBehavior.AllowGet);
+                }
+
+                return Json(notificationSendResult, JsonRequestBehavior.AllowGet);
             }
             else
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        private async Task<string> NotifyOrderStatusChange(Order order)
+        {
+            if (!order.Warehouse.SelectedNotifiableOrderStatuses.Contains(order.OrderStatusID))
+            {
+                return null;
+            }
+
+            var results = string.Empty;
+
+            if (order.SendOrderStatusByEmail)
+            {
+                var result = await GaneConfigurationsHelper.CreateTenantEmailNotificationQueue($"#{order.OrderNumber} - Order status updated to {order.OrderStatusID}", _mapper.Map(order, new OrderViewModel()), worksOrderNotificationType: WorksOrderNotificationTypeEnum.OrderStatusNotification);
+
+                if (result != "Success")
+                {
+                    results = result;
+                }
+            }
+
+            if (order.SendOrderStatusBySms)
+            {
+                var result = await _userService.SendSmsBroadcast(order.Account.AccountOwner.UserMobileNumber, order.Tenant.TenantName, order.Account.OwnerUserId.ToString(), $"#{order.OrderNumber} - Order status updated to {order.OrderStatusID}");
+
+                if (result != true)
+                {
+                    results += "Failed to send SMS Notification!";
+                }
+            }
+
+            return results;
         }
 
         public ActionResult _updateNote(int id, string note, string PageSessionToken)

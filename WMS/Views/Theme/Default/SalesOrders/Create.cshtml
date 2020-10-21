@@ -190,6 +190,23 @@
                     @Html.ValidationMessageFor(model => model.OrderCost)
                 </div>
             </div>
+            @if ((bool)ViewBag.AllowOrderStatusEmailConfigChange){
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.SendOrderStatusByEmail, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.SendOrderStatusByEmail)
+                </div>
+            </div>
+            }
+            @if ((bool)ViewBag.AllowOrderStatusSmsConfigChange)
+            {
+            <div class="input-group h-100 justify-content-center align-items-center">
+                @Html.LabelFor(model => model.SendOrderStatusBySms, htmlAttributes: new { @class = "col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.SendOrderStatusBySms)
+                </div>
+            </div>
+            }
             <div class="input-group h-100 justify-content-center align-items-center">
                 @Html.Label("Delivery Method", htmlAttributes: new { @class = "col-md-4" })
                 <div class="col-md-8">

@@ -100,11 +100,26 @@
     </div>
 
     <div class="input-group h-100 justify-content-center align-items-center">
-
-        @Html.LabelFor(model => model.IsMobile, new { @class = "col-md-4" })
+        @Html.LabelFor(model => model.SendOrderStatusByEmail, new { @class = "col-md-4" })
         <div class="col-md-8">
-            @Html.EditorFor(model => model.IsMobile)
-            @Html.ValidationMessageFor(model => model.IsMobile)
+            @Html.EditorFor(model => model.SendOrderStatusByEmail)
+            @Html.ValidationMessageFor(model => model.SendOrderStatusByEmail)
+        </div>
+    </div>
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.SendOrderStatusBySms, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.SendOrderStatusBySms)
+            @Html.ValidationMessageFor(model => model.SendOrderStatusBySms)
+        </div>
+    </div>
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.NotifiableOrderStatuses, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.DropDownListFor(u => u.NotifiableOrderStatuses, new SelectList(Enum.GetValues(typeof(Ganedata.Core.Entities.Enums.OrderStatusEnum)).Cast<Ganedata.Core.Entities.Enums.OrderStatusEnum>().Select(
+                enu => new SelectListItem() { Text = enu.ToString(), Value = enu.ToString() })).ToList(), "Select Statuses", new { @class = "chosen-select" })
         </div>
     </div>
 
@@ -186,7 +201,14 @@
         </div>
     </div>
 
+    <div class="input-group h-100 justify-content-center align-items-center">
 
+        @Html.LabelFor(model => model.IsMobile, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.IsMobile)
+            @Html.ValidationMessageFor(model => model.IsMobile)
+        </div>
+    </div>
 
 
     <div class="input-group h-100 justify-content-center align-items-center">
@@ -196,6 +218,7 @@
             @Html.ValidationMessageFor(model => model.IsActive)
         </div>
     </div>
+
 
 </div>
     <div class="" id="divMobileLocation" style="visibility: hidden">
@@ -246,7 +269,7 @@
             </div>
 
         </div>
-   
+
     <div class="clearfix"></div>
     </div>
 

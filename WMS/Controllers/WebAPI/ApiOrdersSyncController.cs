@@ -19,17 +19,19 @@ namespace WMS.Controllers.WebAPI
         private readonly IPurchaseOrderService _purchaseOrderService;
         private readonly IProductServices _productService;
         private readonly IAccountServices _accountServices;
+        private readonly IGaneConfigurationsHelper _configurationHelper;
         private readonly IMapper _mapper;
 
         public ApiOrdersSyncController(ITerminalServices terminalServices, IPurchaseOrderService purchaseOrderService,
             ITenantLocationServices tenantLocationServices, IOrderService orderService,
-            IProductServices productServices, IUserService userService, ILookupServices lookupService, IProductServices productService, IMapper mapper, IAccountServices accountServices) :
+            IProductServices productServices, IUserService userService, ILookupServices lookupService, IProductServices productService, IMapper mapper, IAccountServices accountServices, IGaneConfigurationsHelper configurationHelper) :
             base(terminalServices, tenantLocationServices, orderService, productServices, userService)
         {
             _lookupService = lookupService;
             _purchaseOrderService = purchaseOrderService;
             _productService = productService;
             _accountServices = accountServices;
+            _configurationHelper = configurationHelper;
             _mapper = mapper;
         }
 
@@ -130,7 +132,7 @@ namespace WMS.Controllers.WebAPI
 
         // POST http://ganetest.qsrtime.net/api/sync/order-status
         [HttpPost]
-        public IHttpActionResult UpdateOrderStatus(UpdateOrderStatusViewModel model)
+        public async Task<IHttpActionResult> UpdateOrderStatus(UpdateOrderStatusViewModel model)
         {
             model.SerialNo = model.SerialNo.Trim().ToLower();
 
@@ -156,7 +158,28 @@ namespace WMS.Controllers.WebAPI
             }
 
             var result = OrderService.UpdateOrderStatus(model.OrderId, model.StatusId, model.UserId);
+
+            await NotifyOrderStatusChange(result.OrderStatusID, order);
+
             return Ok(_mapper.Map(result, new OrdersSync()));
+        }
+
+        private async Task NotifyOrderStatusChange(OrderStatusEnum statusId, Order order)
+        {
+            if (!order.Warehouse.SelectedNotifiableOrderStatuses.Contains(statusId))
+            {
+                return;
+            }
+
+            if (order.SendOrderStatusByEmail)
+            {
+                var result = await _configurationHelper.CreateTenantEmailNotificationQueue($"#{order.OrderNumber} - Order status updated to {statusId}", _mapper.Map(order, new OrderViewModel()), worksOrderNotificationType: WorksOrderNotificationTypeEnum.OrderStatusNotification);
+            }
+
+            if (order.SendOrderStatusBySms)
+            {
+                var result = await UserService.SendSmsBroadcast(order.Account.AccountOwner.UserMobileNumber, order.Tenant.TenantName, order.Account.OwnerUserId.ToString(), $"#{order.OrderNumber} - Order status updated to {statusId}");
+            }
         }
 
         [HttpPost]

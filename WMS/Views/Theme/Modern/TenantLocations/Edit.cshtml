@@ -31,90 +31,97 @@
     @Html.HiddenFor(model => model.DateCreated)
 
 
-    <div class="col-md-6 pull-left">
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.WarehouseName, new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.WarehouseName)
-                @Html.ValidationMessageFor(model => model.WarehouseName)
-            </div>
+<div class="col-md-6 pull-left">
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.WarehouseName, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.WarehouseName)
+            @Html.ValidationMessageFor(model => model.WarehouseName)
         </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.AddressLine1, new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.AddressLine1)
-                @Html.ValidationMessageFor(model => model.AddressLine1)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.AddressLine2, new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.AddressLine2)
-                @Html.ValidationMessageFor(model => model.AddressLine2)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.AddressLine3, new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.AddressLine3)
-                @Html.ValidationMessageFor(model => model.AddressLine3)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.AddressLine4, new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.AddressLine4)
-                @Html.ValidationMessageFor(model => model.AddressLine4)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            <label class= "col-md-4"> Pallet Tracking Scheme</label>
-        
-            <div class="col-md-8">
-
-                @Html.EnumDropDownListFor(m => m.PalletTrackingScheme, new { @class = "chosen-select" })
-                @Html.ValidationMessageFor(model => model.PalletTrackingScheme)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.AllowStocktakeAddNew, new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.AllowStocktakeAddNew)
-                @Html.ValidationMessageFor(model => model.AllowStocktakeAddNew)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.ConsolidateOrderProcesses, new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.ConsolidateOrderProcesses)
-                @Html.ValidationMessageFor(model => model.ConsolidateOrderProcesses)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.AutoAllowProcess, new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.AutoAllowProcess)
-                @Html.ValidationMessageFor(model => model.AutoAllowProcess)
-            </div>
-        </div>
-        <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.AllowShipToAccountAddress, new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.AllowShipToAccountAddress)
-                @Html.ValidationMessageFor(model => model.AllowShipToAccountAddress)
-            </div>
-        </div>
-
-        <div class="input-group h-100 justify-content-center align-items-center">
-
-            @Html.LabelFor(model => model.IsMobile, new { @class = "col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.IsMobile)
-                @Html.ValidationMessageFor(model => model.IsMobile)
-            </div>
-        </div>
-
     </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.AddressLine1, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.AddressLine1)
+            @Html.ValidationMessageFor(model => model.AddressLine1)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.AddressLine2, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.AddressLine2)
+            @Html.ValidationMessageFor(model => model.AddressLine2)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.AddressLine3, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.AddressLine3)
+            @Html.ValidationMessageFor(model => model.AddressLine3)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.AddressLine4, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.AddressLine4)
+            @Html.ValidationMessageFor(model => model.AddressLine4)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        <label class="col-md-4"> Pallet Tracking Scheme</label>
+
+        <div class="col-md-8">
+
+            @Html.EnumDropDownListFor(m => m.PalletTrackingScheme, new { @class = "chosen-select" })
+            @Html.ValidationMessageFor(model => model.PalletTrackingScheme)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.AllowStocktakeAddNew, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.AllowStocktakeAddNew)
+            @Html.ValidationMessageFor(model => model.AllowStocktakeAddNew)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.ConsolidateOrderProcesses, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.ConsolidateOrderProcesses)
+            @Html.ValidationMessageFor(model => model.ConsolidateOrderProcesses)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.AutoAllowProcess, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.AutoAllowProcess)
+            @Html.ValidationMessageFor(model => model.AutoAllowProcess)
+        </div>
+    </div>
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.AllowShipToAccountAddress, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.AllowShipToAccountAddress)
+            @Html.ValidationMessageFor(model => model.AllowShipToAccountAddress)
+        </div>
+    </div>
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.SendOrderStatusByEmail, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.SendOrderStatusByEmail)
+            @Html.ValidationMessageFor(model => model.SendOrderStatusByEmail)
+        </div>
+    </div>
+
+    <div class="input-group h-100 justify-content-center align-items-center">
+        @Html.LabelFor(model => model.SendOrderStatusBySms, new { @class = "col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.SendOrderStatusBySms)
+            @Html.ValidationMessageFor(model => model.SendOrderStatusBySms)
+        </div>
+    </div>
+
+</div>
     <div class="col-md-6 pull-left">
         <div class="input-group h-100 justify-content-center align-items-center">
             @Html.LabelFor(model => model.CountyState, new { @class = "col-md-4" })
@@ -192,8 +199,14 @@
             </div>
         </div>
 
+        <div class="input-group h-100 justify-content-center align-items-center">
 
-
+            @Html.LabelFor(model => model.IsMobile, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.IsMobile)
+                @Html.ValidationMessageFor(model => model.IsMobile)
+            </div>
+        </div>
 
         <div class="input-group h-100 justify-content-center align-items-center">
             @Html.LabelFor(model => model.IsActive, new { @class = "col-md-4" })
@@ -204,7 +217,7 @@
         </div>
 
     </div>
-  
+
 
     <div class="col-md-12 pull-left" id="divMobileLocation" style="visibility: hidden">
         <div class="col-md-6 pull-left">

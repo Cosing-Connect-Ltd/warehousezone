@@ -191,6 +191,10 @@ namespace Ganedata.Core.Entities.Domain
         public string CustomEmailRecipient { get; set; }
         public string CustomCCEmailRecipient { get; set; }
         public string CustomBCCEmailRecipient { get; set; }
+        [Display(Name = "Notify Status Changes By Email")]
+        public bool SendOrderStatusByEmail { get; set; }
+        [Display(Name = "Notify Status Changes By SMS")]
+        public bool SendOrderStatusBySms { get; set; }
 
         public int? AccountCurrencyID { get; set; }
 

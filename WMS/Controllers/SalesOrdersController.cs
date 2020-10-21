@@ -149,7 +149,7 @@ namespace WMS.Controllers
         public ActionResult Create(int? Id, string pageToken)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
-            caTenant tenant = caCurrent.CurrentTenant();
+            var tenant = caCurrent.CurrentTenant();
 
             if (Id == null)
             {
@@ -159,9 +159,11 @@ namespace WMS.Controllers
 
                 ViewBag.Countries = new SelectList(LookupServices.GetAllGlobalCountries(), "CountryID", "CountryName");
 
-                Order NewOrder = new Order();
+                var NewOrder = new Order();
                 NewOrder.OrderNumber = GeneratePO();
                 NewOrder.IssueDate = DateTime.Today;
+                NewOrder.SendOrderStatusByEmail = CurrentWarehouse.SendOrderStatusByEmail;
+                NewOrder.SendOrderStatusBySms = CurrentWarehouse.SendOrderStatusBySms;
                 SetViewBagItems(tenant, EnumAccountType.Customer);
                 ViewBag.AccountContacts = new SelectList(
                 AccountServices.GetAllTopAccountContactsByTenantId(CurrentTenantId), "AccountContactId", "ContactName");
@@ -169,6 +171,9 @@ namespace WMS.Controllers
                 ViewBag.OrderProcesses = new List<OrderProcess>();
 
                 ViewBag.IsShipmentToAccountAddress = true;
+                var tenantConfig = _tenantServices.GetTenantConfigById(CurrentTenantId);
+                ViewBag.AllowOrderStatusEmailConfigChange = tenantConfig.AllowOrderStatusEmailConfigChange;
+                ViewBag.AllowOrderStatusSmsConfigChange = tenantConfig.AllowOrderStatusSmsConfigChange;
                 ViewBag.AccountAddresses = new List<SelectListItem>() { new SelectListItem() { Text = "Select", Value = "0" } };
                 ViewBag.ShipmentAccountAddressId = 0;
                 ViewBag.IsShipmentToCustomAddress = false;
@@ -305,20 +310,23 @@ namespace WMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order Order = OrderService.GetOrderById(id.Value);
+            var Order = OrderService.GetOrderById(id.Value);
             if (Order == null)
             {
                 return HttpNotFound();
             }
             var list = OrderService.GetAccountContactId(id ?? 0).ToList();
-            var EmailAutoCheckedOnEdit = _tenantServices.GetTenantConfigById(CurrentTenantId).EmailAutoCheckedOnEdit;
-            if (EmailAutoCheckedOnEdit)
+            var tenantConfig = _tenantServices.GetTenantConfigById(CurrentTenantId);
+            if (tenantConfig.EmailAutoCheckedOnEdit)
             {
                 if (list.Any())
                 {
                     ViewBag.accountShip = true;
                 }
             }
+
+            ViewBag.AllowOrderStatusEmailConfigChange = tenantConfig.AllowOrderStatusEmailConfigChange;
+            ViewBag.AllowOrderStatusSmsConfigChange = tenantConfig.AllowOrderStatusSmsConfigChange;
 
             if (string.IsNullOrEmpty(pageToken))
             {
@@ -377,6 +385,7 @@ namespace WMS.Controllers
         {
             if (ModelState.IsValid)
             {
+                var previousStatus = OrderService.GetOrderById(Order.OrderID).OrderStatusID;
                 Order.OrderNumber = Order.OrderNumber.Trim();
 
                 // get properties of user
@@ -421,6 +430,11 @@ namespace WMS.Controllers
                 GaneOrderDetailsSessionHelper.ClearSessionTokenData(shipmentAndRecipientInfo.PageSessionToken);
                 GaneOrderNotesSessionHelper.ClearSessionTokenData(shipmentAndRecipientInfo.PageSessionToken);
 
+                if (previousStatus != Order.OrderStatusID)
+                {
+                    await NotifyOrderStatusChange(Order);
+                }
+
                 ViewBag.Fragment = Request.Form["fragment"];
 
                 if (orderSaveAndProcess == "1")
@@ -454,9 +468,37 @@ namespace WMS.Controllers
                     ViewBag.IsShipmentToCustomAddress = true;
                 }
             }
+
             return View(Order);
         }
 
+        private async Task NotifyOrderStatusChange(Order order)
+        {
+            if (!order.Warehouse.SelectedNotifiableOrderStatuses.Contains(order.OrderStatusID))
+            {
+                return;
+            }
+
+            if (order.SendOrderStatusByEmail)
+            {
+                var result = await GaneConfigurationsHelper.CreateTenantEmailNotificationQueue($"#{order.OrderNumber} - Order status updated to {order.OrderStatusID}", _mapper.Map(order, new OrderViewModel()), worksOrderNotificationType: WorksOrderNotificationTypeEnum.OrderStatusNotification);
+
+                if (result != "Success")
+                {
+                    TempData["Error"] = result;
+                }
+            }
+
+            if (order.SendOrderStatusBySms)
+            {
+                var result = await _userService.SendSmsBroadcast(order.Account.AccountOwner.UserMobileNumber, order.Tenant.TenantName, order.Account.OwnerUserId.ToString(), $"#{order.OrderNumber} - Order status updated to {order.OrderStatusID}");
+
+                if (result != true)
+                {
+                    TempData["Error"] = (TempData["Error"] ?? string.Empty) + "Failed to send SMS Notification!";
+                }
+            }
+        }
         private void VerifyOrderAccountStatus(Order order)
         {
             if (order.Account != null && order.Account.AccountStatusID != AccountStatusEnum.Active)
