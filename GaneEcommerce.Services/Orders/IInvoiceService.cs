@@ -10,7 +10,7 @@ namespace Ganedata.Core.Services
         InvoiceMaster CreateInvoiceForSalesOrder(InvoiceViewModel invoiceData, int tenantId, int userId);
         IQueryable<InvoiceMaster> GetAllInvoiceMasters(int TenantId);
         IQueryable<InvoiceMaster> GetAllInvoiceViews(int TenantId);
-        IQueryable<InvoiceMaster> GetAllInvoiceMastersWithAllStatus(int TenantId,int?AccountId);
+        IQueryable<InvoiceMaster> GetAllInvoiceMastersWithAllStatus(int tenantId,int[] accountIds);
 
 
         List<InvoiceDetailViewModel> GetAllInvoiceDetailByInvoiceId(int invoiceId);
@@ -30,9 +30,7 @@ namespace Ganedata.Core.Services
 
         InvoiceMaster SaveInvoiceForSalesOrder(InvoiceViewModel invoiceData, int tenantId, int userId);
 
-        decimal GetNetAmtBuying(int InvoiceMasterId);
-
-        decimal GetNetAmtSelling(int InvoiceMasterId);
+        List<InvoiceProductPriceModel> GetInvoiceProductsPrices(int InvoiceMasterId, int[] productIds);
 
     }
 }
