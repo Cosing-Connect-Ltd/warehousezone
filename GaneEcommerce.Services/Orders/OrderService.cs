@@ -577,7 +577,7 @@ namespace Ganedata.Core.Services
                                        ProductGroups = ord.FirstOrDefault().OrderDetail.ProductGroups,
                                        OrderDetailID = ord.FirstOrDefault().OrderProcessDetailID,
                                        Product = ord?.FirstOrDefault().ProductMaster?.Name,
-                                       Qty = ord.Sum(q => q. QtyProcessed),
+                                       Qty = ord.Sum(q => q.QtyProcessed),
                                        OrderNumber = ord.FirstOrDefault().OrderProcess.Order.OrderNumber,
                                        DateCreated = ord.FirstOrDefault().DateCreated ?? DateTime.UtcNow,
                                        QtyProcessed = ord.Sum(q => q.PalletedQuantity),
@@ -750,9 +750,7 @@ namespace Ganedata.Core.Services
             }
 
             return _currentDbContext.Order.Where(m => m.TenentId == tenantId
-            && m.WarehouseId == warehouseId && (warehouseId == 0 || (warehouse.IsMobile != true && m.InventoryTransactionTypeId != InventoryTransactionTypeEnum.DirectSales)
-                || (warehouse.IsMobile == true && parentWarehouseId > 0 && (m.InventoryTransactionTypeId == InventoryTransactionTypeEnum.DirectSales || m.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder)))
-            && (!excludeProforma || m.InventoryTransactionTypeId != InventoryTransactionTypeEnum.Proforma) && (m.IsDeleted != true || includeDeleted == true) && (!reqDate.HasValue || (m.DateUpdated ?? m.DateCreated) >= reqDate));
+            && m.WarehouseId == warehouseId && (!excludeProforma || m.InventoryTransactionTypeId != InventoryTransactionTypeEnum.Proforma) && (m.IsDeleted != true || includeDeleted == true) && (!reqDate.HasValue || (m.DateUpdated ?? m.DateCreated) >= reqDate));
         }
 
         public IQueryable<Order> GetAllDirectSalesOrdersByAccount(int tenantId, int accountId, DateTime? reqDate = null, bool includeDeleted = false)
