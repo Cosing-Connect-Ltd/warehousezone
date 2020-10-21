@@ -16,6 +16,15 @@ namespace Ganedata.Core.Entities.Domain
         public string OrderProcessIds { get; set; }
     }
 
+    public class InvoiceProductPriceModel
+    {
+        public int InvoiceId { get; set; }
+        public int ProductId { get; set; }
+        public string ProductName { get; set; }
+        public decimal BuyingPrice { get; set; }
+        public decimal SellingPrice { get; set; }
+    }
+
     public class InvoiceDetailViewModel : BaseAuditInfo
     {
         public int InvoiceDetailId { get; set; }

@@ -1575,62 +1575,73 @@ namespace WMS.Controllers
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
             // get properties of tenant
-            caTenant tenant = caCurrent.CurrentTenant();
-            InvoiceProfitPrint report = new InvoiceProfitPrint();
+            var tenant = caCurrent.CurrentTenant();
+            var report = new InvoiceProfitPrint();
             report.paramStartDate.Value = DateTime.Today.AddMonths(-1);
             report.paramEndDate.Value = DateTime.Today;
-            StaticListLookUpSettings accountsSettings = (StaticListLookUpSettings)report.paramAccountId.LookUpSettings;
+            var accountsSettings = (StaticListLookUpSettings)report.paramAccountIds.LookUpSettings;
             var accounts = _accountServices.GetAllValidAccounts(CurrentTenantId).ToList();
             accountsSettings.LookUpValues.AddRange(accounts.Select(m => new LookUpValue(m.AccountID, m.CompanyName)));
+
+            var productsSettings = (StaticListLookUpSettings)report.paramProductIds.LookUpSettings;
+            var products = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList();
+            productsSettings.LookUpValues.AddRange(products.Select(m => new LookUpValue(m.ProductId, m.NameWithCode)));
+
+            var marketsSettings = (StaticListLookUpSettings)report.paramMarketId.LookUpSettings;
+            var markets = _marketServices.GetAllValidMarkets(CurrentTenantId).Markets;
+            marketsSettings.LookUpValues.AddRange(markets.Select(m => new LookUpValue(m.Id, m.Name)));
+
             report.DataSourceDemanded += ProfitInvoiceReport_DataSourceDemanded;
-
-            // binding
-
-            report.InvoiceNumber.DataBindings.AddRange(new XRBinding[] {
-                new XRBinding("Text", report.DataSource, ".InvoiceNumber")});
-
-            report.CompanyName.DataBindings.AddRange(new XRBinding[] {
-                new XRBinding("Text", report.DataSource, ".CompanyName")});
-
-            report.Date.DataBindings.AddRange(new XRBinding[] {
-                new XRBinding("Text", report.DataSource, ".Date")});
-
-            report.NetAmtB.DataBindings.AddRange(new XRBinding[] {
-                new XRBinding("Text", report.DataSource, ".NetAmtB")});
-
-            report.NetAmtS.DataBindings.AddRange(new XRBinding[] {
-                new XRBinding("Text", report.DataSource, ".NetAmtS")});
-
-            report.Profit.DataBindings.AddRange(new XRBinding[] {
-                new XRBinding("Text", report.DataSource, ".Profit")});
 
             return View(report);
         }
 
         private void ProfitInvoiceReport_DataSourceDemanded(object sender, EventArgs e)
         {
-            InvoiceProfitPrint report = (InvoiceProfitPrint)sender;
-            DateTime startDate = (DateTime)report.Parameters["paramStartDate"].Value;
-            DateTime endDate = (DateTime)report.Parameters["paramEndDate"].Value;
+            var report = (InvoiceProfitPrint)sender;
+            var startDate = (DateTime)report.paramStartDate.Value;
+            var endDate = (DateTime)report.paramEndDate.Value;
             endDate = endDate.AddHours(24);
-            var accountId = (int?)report.Parameters["paramAccountId"].Value;
-            var invoices = _invoiceService.GetAllInvoiceMastersWithAllStatus(CurrentTenantId, accountId).Where(x => x.InvoiceDate >= startDate && x.InvoiceDate < endDate).ToList();
+            var accountIds = (int[])report.paramAccountIds.Value;
+            var productIds = (int[])report.paramProductIds.Value;
+            var marketId = (int?)report.paramMarketId.Value;
+            var invoices = _invoiceService.GetAllInvoiceMastersWithAllStatus(CurrentTenantId, accountIds).Where(x => x.InvoiceDate >= startDate && x.InvoiceDate < endDate);
+
+            if (marketId != null && marketId != 0)
+            {
+                invoices = invoices.Where(i => i.Account.MarketCustomers.Any(m => m.MarketId == marketId));
+            }
+
+            if (productIds != null && productIds.Count() > 0)
+            {
+                invoices = invoices.Where(i => i.OrderProcess.OrderProcessDetail.Any(m => productIds.Contains(m.ProductId)));
+            }
 
             var dataSource = new List<InvoiceProfitReportViewModel>();
-            foreach (var invoice in invoices)
+            var detailsDataSource = new List<InvoiceProfitReportProductsViewModel>();
+            foreach (var invoice in invoices.ToList())
             {
-                var netAmountBuying = _invoiceService.GetNetAmtBuying(invoice.InvoiceMasterId);
-                var netAmountSelling = _invoiceService.GetNetAmtSelling(invoice.InvoiceMasterId);
-                var sourceItem = new InvoiceProfitReportViewModel
+                var invoiceProductsPrices = _invoiceService.GetInvoiceProductsPrices(invoice.InvoiceMasterId, productIds);
+                var buyingNetAmount = invoiceProductsPrices.Sum(p => p.BuyingPrice);
+                var sellingNetAmount = invoiceProductsPrices.Sum(p => p.SellingPrice);
+                dataSource.Add(new InvoiceProfitReportViewModel
                 {
+                    InvoiceId = invoice.InvoiceMasterId,
                     InvoiceNumber = invoice.InvoiceNumber,
                     CompanyName = invoice.Account?.CompanyName ?? "",
                     Date = invoice.DateCreated,
-                    NetAmtB = netAmountBuying,
-                    NetAmtS = netAmountSelling,
-                    Profit = (netAmountSelling - netAmountBuying)
-                };
-                dataSource.Add(sourceItem);
+                    NetAmtB = invoiceProductsPrices.Sum(p => p.BuyingPrice),
+                    NetAmtS = invoiceProductsPrices.Sum(p => p.SellingPrice),
+                    Profit = sellingNetAmount - buyingNetAmount,
+                    ProductsDetail = invoiceProductsPrices.Select(p => new InvoiceProfitReportProductsViewModel
+                    {
+                        InvoiceId = p.InvoiceId,
+                        ProductName = p.ProductName,
+                        BuyingPrice = p.BuyingPrice,
+                        SellingPrice = p.SellingPrice,
+                        Profit = p.SellingPrice - p.BuyingPrice
+                    }).ToList()
+                });
             }
 
             report.TotalNetAmtB.Text = string.Format("{0:0.00}", dataSource.Sum(u => u.NetAmtB));
@@ -1647,33 +1658,33 @@ namespace WMS.Controllers
         public ActionResult InvoiceByProductReport()
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
-            InvoiceByProductReport report = InvoiceByProductReportPrint();
+            var report = InvoiceByProductReportPrint();
             return View(report);
         }
 
         public InvoiceByProductReport InvoiceByProductReportPrint()
         {
-            InvoiceByProductReport InvoiceByProductReport = new InvoiceByProductReport();
+            var InvoiceByProductReport = new InvoiceByProductReport();
             InvoiceByProductReport.paramStartDate.Value = DateTime.Today.AddMonths(-1);
             InvoiceByProductReport.paramEndDate.Value = DateTime.Today;
             InvoiceByProductReport.TenantID.Value = CurrentTenantId;
-            IEnumerable<ProductMaster> products = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList();
-            StaticListLookUpSettings setting = (StaticListLookUpSettings)InvoiceByProductReport.paramProductsIds.LookUpSettings;
+            var products = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList();
+            var setting = (StaticListLookUpSettings)InvoiceByProductReport.paramProductsIds.LookUpSettings;
 
             foreach (var item in products)
             {
-                LookUpValue product = new LookUpValue();
+                var product = new LookUpValue();
                 product.Description = item.NameWithCode;
                 product.Value = item.ProductId;
                 setting.LookUpValues.Add(product);
             }
 
-            IEnumerable<ProductGroups> groups = LookupServices.GetAllValidProductGroups(CurrentTenantId).ToList();
+            var groups = LookupServices.GetAllValidProductGroups(CurrentTenantId).ToList();
             StaticListLookUpSettings groupSettings = (StaticListLookUpSettings)InvoiceByProductReport.paramProductGroups.LookUpSettings;
 
             foreach (var grp in groups)
             {
-                LookUpValue group = new LookUpValue();
+                var group = new LookUpValue();
                 group.Description = grp.ProductGroup;
                 group.Value = grp.ProductGroupId;
                 groupSettings.LookUpValues.Add(group);

@@ -28,9 +28,10 @@ namespace Ganedata.Core.Services
             return _currentDbContext.InvoiceMasters.Where(u => u.InvoiceStatus != InvoiceStatusEnum.PostedToAccounts && u.IsDeleted != true && u.TenantId == TenantId);
         }
 
-        public IQueryable<InvoiceMaster> GetAllInvoiceMastersWithAllStatus(int TenantId, int? AccountId)
+        public IQueryable<InvoiceMaster> GetAllInvoiceMastersWithAllStatus(int tenantId, int[] accountIds)
         {
-            return _currentDbContext.InvoiceMasters.Where(u => u.IsDeleted != true && u.TenantId == TenantId && (!AccountId.HasValue || u.AccountId == AccountId));
+            accountIds = accountIds ?? new int[] { };
+            return _currentDbContext.InvoiceMasters.Where(u => u.IsDeleted != true && u.TenantId == tenantId && (accountIds.Count() == 0 || accountIds.Contains(u.AccountId)));
         }
 
         public IQueryable<InvoiceMaster> GetAllInvoiceViews(int TenantId)
@@ -499,34 +500,27 @@ namespace Ganedata.Core.Services
             return model;
         }
 
-        public decimal GetNetAmtBuying(int InvoiceMasterId)
+        public List<InvoiceProductPriceModel> GetInvoiceProductsPrices(int InvoiceMasterId, int[] productIds)
         {
-            decimal netAmountBuying = 0;
+            productIds = productIds ?? new int[] { };
 
             var InvocieDetaildata = _currentDbContext.InvoiceDetails.Include(i => i.OrderDetail)
-                                                                    .Where(u => u.InvoiceMasterId == InvoiceMasterId && u.IsDeleted != true)
+                                                                    .Where(u => u.InvoiceMasterId == InvoiceMasterId &&
+                                                                                u.IsDeleted != true &&
+                                                                                (productIds.Contains(u.ProductId) || productIds.Count() == 0))
                                                                     .ToList();
 
-            foreach (var item in InvocieDetaildata)
-            {
-                var buyPrice = _productPriceService.GetPurchasePrice(item.ProductId, item.DateCreated, item.OrderDetail?.OrderID);
-                netAmountBuying += buyPrice != null ? (item.Quantity * buyPrice.Value) : 0;
-            }
+            return InvocieDetaildata.Select(i => {
+                var buyPrice = _productPriceService.GetPurchasePrice(i.ProductId, i.DateCreated, i.OrderDetail?.OrderID);
 
-            return netAmountBuying;
-        }
-
-        public decimal GetNetAmtSelling(int InvoiceMasterId)
-        {
-            decimal netAmountSelling = 0;
-
-            var InvocieDetaildata = _currentDbContext.InvoiceDetails.Where(u => u.InvoiceMasterId == InvoiceMasterId && u.IsDeleted != true).ToList();
-            foreach (var item in InvocieDetaildata)
-            {
-                var amount = (decimal?)(item.Quantity * item.Price);
-                netAmountSelling += amount ?? 0;
-            }
-            return netAmountSelling;
+                return new InvoiceProductPriceModel {
+                    InvoiceId = i.InvoiceMasterId,
+                    ProductId = i.ProductId,
+                    ProductName = i.Product.NameWithCode,
+                    BuyingPrice = buyPrice != null ? (i.Quantity * buyPrice.Value) : 0,
+                    SellingPrice = (decimal?)(i.Quantity * i.Price) ?? 0
+                };
+            }).ToList();
         }
     }
 }

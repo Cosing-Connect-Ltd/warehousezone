@@ -36,15 +36,26 @@ namespace Ganedata.Core.Models
     }
     public class InvoiceProfitReportViewModel
     {
+        public int InvoiceId { get; set; }
         public string InvoiceNumber { get; set; }
         public string CompanyName { get; set; }
         public DateTime? Date { get; set; }
         public decimal? NetAmtB { get; set; }
         public decimal? NetAmtS { get; set; }
         public decimal? Profit { get; set; }
+        public List<InvoiceProfitReportProductsViewModel> ProductsDetail { get; set; }
         public decimal? TotalNetAmtB { get; set; }
         public decimal? TotalNetAmtS { get; set; }
         public decimal? TotalProfit { get; set; }
+    }
+
+    public class InvoiceProfitReportProductsViewModel
+    {
+        public int InvoiceId { get; set; }
+        public string ProductName { get; set; }
+        public decimal? BuyingPrice { get; set; }
+        public decimal? SellingPrice { get; set; }
+        public decimal? Profit { get; set; }
     }
 
     public class HolidayReportViewModel

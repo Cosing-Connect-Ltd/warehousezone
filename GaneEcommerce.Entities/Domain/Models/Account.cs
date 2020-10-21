@@ -15,6 +15,7 @@ namespace Ganedata.Core.Entities.Domain
         public Account()
         {
             AccountAddresses = new HashSet<AccountAddresses>();
+            MarketCustomers = new HashSet<MarketCustomer>();
             AccountContacts = new HashSet<AccountContacts>();
             Orders = new HashSet<Order>();
             ProductAccountCodes = new HashSet<ProductAccountCodes>();
@@ -105,6 +106,7 @@ namespace Ganedata.Core.Entities.Domain
         public virtual GlobalCountry GlobalCountry { get; set; }
         public virtual GlobalCurrency GlobalCurrency { get; set; }
         public virtual ICollection<AccountAddresses> AccountAddresses { get; set; }
+        public virtual ICollection<MarketCustomer> MarketCustomers { get; set; }
         public virtual ICollection<AccountContacts> AccountContacts { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<ProductAccountCodes> ProductAccountCodes { get; set; }
