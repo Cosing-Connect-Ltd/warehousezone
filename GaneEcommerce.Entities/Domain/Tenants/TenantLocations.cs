@@ -126,6 +126,14 @@ namespace Ganedata.Core.Entities.Domain
         public decimal EatInCharges { get; set; }
         [Display(Name = "Delivery RadiusMiles in Miles")]
         public decimal DeliveryRadiusMiles { get; set; }
+        [Display(Name = "Send Order Status By Email")]
+        public bool SendOrderStatusByEmail { get; set; }
+        [Display(Name = "Send Order Status By SMS")]
+        public bool SendOrderStatusBySms { get; set; }
+        [Display(Name = "Orders Statuses To Be Notified")]
+        public string NotifiableOrderStatuses { get; set; }
+        [NotMapped]
+        public OrderStatusEnum[] SelectedNotifiableOrderStatuses { get => NotifiableOrderStatuses?.Split(',').Select(a => (OrderStatusEnum)Convert.ToInt32(a)).ToArray(); set => NotifiableOrderStatuses = string.Join(",", value.Select(v => ((int)v).ToString())); }
         public int? DeliveryPriceGroupId { get; set; }
         public int? CollectionPriceGroupId { get; set; }
         public int? EatInPriceGroupId { get; set; }

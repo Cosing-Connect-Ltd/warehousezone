@@ -1883,11 +1883,15 @@ function UpdateOrderStatus(orderId, statusId, type) {
     $.get("/Order/UpdateOrderStatus/" + orderId + "/" + statusId,
         function (data) {
             UpdateOrderStatusSuccess(data, type);
+
+            if (data != false && data != true) {
+                alert(data);
+            }
         });
 }
 
 function UpdateOrderStatusSuccess(data, type) {
-    if (data) {
+    if (data != false) {
         switch (type) {
             case 'PO':
                 _PurchaseOrderListGridView.Refresh();

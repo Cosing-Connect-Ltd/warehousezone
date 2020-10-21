@@ -1,8 +1,8 @@
+using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Enums;
+using Ganedata.Core.Models;
 using System;
 using System.Collections.Generic;
-using Ganedata.Core.Entities.Domain;
-using Ganedata.Core.Models;
-using Ganedata.Core.Entities.Enums;
 using System.Linq;
 
 namespace Ganedata.Core.Services

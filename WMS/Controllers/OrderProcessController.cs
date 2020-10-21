@@ -3,6 +3,7 @@ using Ganedata.Core.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace WMS.Controllers
@@ -48,14 +49,14 @@ namespace WMS.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            //find PO of given id  
+            //find PO of given id
             Order NewOrder = OrderService.GetOrderById(id);
             if (NewOrder == null)
             {
                 return HttpNotFound();
             }
-             
-            //1 get all podetail of given po           
+
+            //1 get all podetail of given po
             var podetail = NewOrder.OrderDetails.Where(x => x.WarehouseId == CurrentWarehouseId && x.IsDeleted != true);
             // 2 get all receive po detail
             //var receivepodetail = po.ReceivePOs.Select(x=>x.ReceivePODetails);
@@ -84,7 +85,7 @@ namespace WMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(int POID, string DeliveryNO, int[] product, decimal[] qty, decimal[] qtyrec, int[] line, string Serialstemp)
         {
-          
+
             if (qty.Any(m => m >= 0))
             {
                 //TODO: inventory type should be passed to create order process
@@ -98,7 +99,7 @@ namespace WMS.Controllers
 
             return RedirectToAction("Index");
 
-        }   
+        }
 
         public ActionResult Edit(int id = 0)
         {
@@ -116,10 +117,10 @@ namespace WMS.Controllers
             {
                 return HttpNotFound();
             }
-             
+
             var recevivepodetail = rp.OrderProcessDetail.Where(x => x.IsDeleted != true);
 
-            
+
             List<OrderProcessDetail> ReceivePOLine = new List<OrderProcessDetail>();
 
             foreach (var item in recevivepodetail)
@@ -128,7 +129,7 @@ namespace WMS.Controllers
                 line.OrderProcessDetailID = item.OrderProcessDetailID;
                 line.ProductId = item.ProductId;
                 line.QtyProcessed = item.QtyProcessed;
-                 
+
                 if (line != null)
                     ReceivePOLine.Add(line);
 
@@ -153,7 +154,7 @@ namespace WMS.Controllers
                 line.ProductId = item.ProductId;
                 line.QtyProcessed = OrderService.GetAllOrderProcessesByOrderDetailId(item.OrderDetailID, CurrentWarehouseId).Sum(x => (decimal?)x.QtyProcessed) ?? 0;
             }
-             
+
             ViewBag.rpodetail = ReceivePOLine;
             ViewBag.pdetail = PDLine;
 
@@ -168,9 +169,9 @@ namespace WMS.Controllers
         {
            var orderProcess = OrderService.SaveOrderProcess(OrderProcessId, product, qty, qtyrec, line, CurrentUserId, CurrentTenantId,
                 CurrentWarehouseId);
-             
+
             _ganeConfigurationsHelper.IsPOComplete(orderProcess.OrderID, CurrentUserId, CurrentWarehouseId);
-             
+
             return RedirectToAction("Index");
         }
 

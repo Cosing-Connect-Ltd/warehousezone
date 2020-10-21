@@ -22,12 +22,11 @@ namespace Ganedata.Core.Services
         private readonly IAccountServices _accountServices;
         private readonly IInvoiceService _invoiceService;
         private readonly IUserService _userService;
-        private readonly ILookupServices _lookupServices;
         private readonly ITenantsServices _tenantServices;
         private readonly IProductPriceService _productPriceService;
         private readonly IMapper _mapper;
 
-        public OrderService(IApplicationContext currentDbContext, IProductServices productService, IAccountServices accountServices, IInvoiceService invoiceService, IUserService userService, ILookupServices lookupServices,
+        public OrderService(IApplicationContext currentDbContext, IProductServices productService, IAccountServices accountServices, IInvoiceService invoiceService, IUserService userService,
             ITenantsServices tenantServices, IProductPriceService productPriceService, IMapper mapper)
         {
             _currentDbContext = currentDbContext;
@@ -35,7 +34,6 @@ namespace Ganedata.Core.Services
             _accountServices = accountServices;
             _invoiceService = invoiceService;
             _userService = userService;
-            _lookupServices = lookupServices;
             _tenantServices = tenantServices;
             _productPriceService = productPriceService;
             _mapper = mapper;
@@ -788,6 +786,7 @@ namespace Ganedata.Core.Services
             schOrder.OrderStatusID = statusId;
             schOrder.UpdatedBy = userId;
             schOrder.DateUpdated = DateTime.UtcNow;
+
 
             _currentDbContext.Order.Attach(schOrder);
             var entry = _currentDbContext.Entry<Order>(schOrder);

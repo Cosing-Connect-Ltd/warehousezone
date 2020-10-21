@@ -300,13 +300,11 @@ namespace Ganedata.Core.Services
             var res = false;
             var code = GenerateVerifyRandomNo();
             var user = GetAuthUserById(userId);
-            var smsBraodcastUser = ConfigurationManager.AppSettings["SMSBroadcastUser"];
-            var smsBraodcastPassword = ConfigurationManager.AppSettings["SMSBroadcastPassword"];
             var tenant = _tenantServices.GetByClientId(tenantId);
 
             if (type == UserVerifyTypes.Mobile)
             {
-                res = await SendSmsBroadcast(smsBraodcastUser, smsBraodcastPassword, user.UserMobileNumber, tenant.TenantName, user.UserId.ToString(), String.Format("{0} is your verification code", code));
+                res = await SendSmsBroadcast(user.UserMobileNumber, tenant.TenantName, user.UserId.ToString(), $"{code} is your verification code");
             }
             else if (type == UserVerifyTypes.Email)
             {
@@ -349,21 +347,23 @@ namespace Ganedata.Core.Services
             }
         }
 
-        public async Task<bool> SendSmsBroadcast(string user, string password, string to, string from, string reference, string message)
+        public async Task<bool> SendSmsBroadcast(string to, string from, string reference, string message)
         {
-            WebClient client = new WebClient();
+            var smsBraodcastUser = ConfigurationManager.AppSettings["SMSBroadcastUser"];
+            var smsBraodcastPassword = ConfigurationManager.AppSettings["SMSBroadcastPassword"];
+            var client = new WebClient();
             client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
-            client.QueryString.Add("username", user);
-            client.QueryString.Add("password", password);
+            client.QueryString.Add("username", smsBraodcastUser);
+            client.QueryString.Add("password", smsBraodcastPassword);
             client.QueryString.Add("to", to);
             client.QueryString.Add("from", from);
             client.QueryString.Add("message", message);
             client.QueryString.Add("ref", reference);
             client.QueryString.Add("maxsplit", "1");
-            Uri baseurl = new Uri("https://www.smsbroadcast.co.uk/api-adv.php");
-            Stream data = client.OpenRead(baseurl);
-            StreamReader reader = new StreamReader(data);
-            string s = await reader.ReadToEndAsync();
+            var baseurl = new Uri("https://www.smsbroadcast.co.uk/api-adv.php");
+            var data = client.OpenRead(baseurl);
+            var reader = new StreamReader(data);
+            await reader.ReadToEndAsync();
             data.Close();
             reader.Close();
             return true;

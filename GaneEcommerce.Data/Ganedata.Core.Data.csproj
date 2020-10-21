@@ -1119,6 +1119,10 @@
     <Compile Include="Migrations\202010201313229_Tax-type-in-global-tax.designer.cs">
       <DependentUpon>202010201313229_Tax-type-in-global-tax.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202010201639171_added-order-update-notification-related-fields.cs" />
+    <Compile Include="Migrations\202010201639171_added-order-update-notification-related-fields.designer.cs">
+      <DependentUpon>202010201639171_added-order-update-notification-related-fields.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2278,6 +2282,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202010201313229_Tax-type-in-global-tax.resx">
       <DependentUpon>202010201313229_Tax-type-in-global-tax.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010201639171_added-order-update-notification-related-fields.resx">
+      <DependentUpon>202010201639171_added-order-update-notification-related-fields.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,6 @@
 ﻿@model Ganedata.Core.Entities.Domain.TenantLocations
 @using Ganedata.Core.Entities.Helpers
+@using Ganedata.Core.Entities.Enums
 
 @section scripts {
 
@@ -97,13 +98,32 @@
                 @Html.ValidationMessageFor(model => model.AllowShipToAccountAddress)
             </div>
         </div>
+
         <div class="input-group h-100 justify-content-center align-items-center">
-            @Html.LabelFor(model => model.IsMobile, new { @class = "col-md-4" })
+            @Html.LabelFor(model => model.SendOrderStatusByEmail, new { @class = "col-md-4" })
             <div class="col-md-8">
-                @Html.EditorFor(model => model.IsMobile)
-                @Html.ValidationMessageFor(model => model.IsMobile)
+                @Html.EditorFor(model => model.SendOrderStatusByEmail)
+                @Html.ValidationMessageFor(model => model.SendOrderStatusByEmail)
             </div>
         </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.SendOrderStatusBySms, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.SendOrderStatusBySms)
+                @Html.ValidationMessageFor(model => model.SendOrderStatusBySms)
+            </div>
+        </div>
+
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.NotifiableOrderStatuses, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.ListBox("SelectedNotifiableOrderStatuses",
+                                           new MultiSelectList(Enum.GetValues(typeof(OrderStatusEnum)).Cast<OrderStatusEnum>().Select(v => new { Id = (int)v, Value = v.ToString() }).ToList(), "Id", "Value"),
+                                           new { @class = "chosen-select", Multiple = "multiple" })
+            </div>
+        </div>
+
     </div>
     <div class="col-md-6 pull-left">
         <div class="input-group h-100 justify-content-center align-items-center">
@@ -174,6 +194,13 @@
             <div class="col-md-8">
                 @Html.EditorFor(model => model.ShowQtyInBlindShipment)
                 @Html.ValidationMessageFor(model => model.ShowQtyInBlindShipment)
+            </div>
+        </div>
+        <div class="input-group h-100 justify-content-center align-items-center">
+            @Html.LabelFor(model => model.IsMobile, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.IsMobile)
+                @Html.ValidationMessageFor(model => model.IsMobile)
             </div>
         </div>
         <div class="input-group h-100 justify-content-center align-items-center">
