@@ -95,7 +95,7 @@ namespace WMS.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Account model, List<int> AccountAddressIds, List<int> AccountContactIds, int GlobalCountryIds, int GlobalCurrencyIds, int PriceGroupId, int accountSectorId, int OwnerUserId, string StopComment, int[] CustomersMarketIds = null)
+        public ActionResult Create(Account model, List<int> AccountAddressIds, List<int> AccountContactIds, int GlobalCountryIds, int GlobalCurrencyIds, int PriceGroupId, int? accountSectorId, int OwnerUserId, string StopComment, int[] CustomersMarketIds = null)
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 

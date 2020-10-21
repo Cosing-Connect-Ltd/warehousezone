@@ -160,7 +160,7 @@ order by "ProductMaster".SKUCode</value>
        "OrderProcesses"."ShipmentAddressPostcode",
        "Account"."CreditTerms", "TenantConfigs"."IvReportFooterMsg1",
        "InvoiceMaster"."InvoiceTotal","InvoiceMaster"."WarrantyAmount", "OrderProcesses"."DeliveryNO",
-       "Tenants"."TenantRegNo", "AccountAddresses"."AddressLine4",
+       "Tenants"."TenantRegNo",
        "Account"."CompanyName", "Orders"."ExternalOrderNumber",
        "GlobalCurrency"."Symbol", "GlobalCurrency"."CurrencyName"
   from "dbo"."InvoiceMaster" "InvoiceMaster"

@@ -112,7 +112,7 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
         InitializeComponent();
     }
 
-    /// <summary> 
+    /// <summary>
     /// Clean up any resources being used.
     /// </summary>
     /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
@@ -237,32 +237,32 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.calculatedField2 = new DevExpress.XtraReports.UI.CalculatedField();
             this.xrPageInfo1 = new DevExpress.XtraReports.UI.XRPageInfo();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
-            // 
+            //
             // Detail
-            // 
+            //
             this.Detail.HeightF = 2.135404F;
             this.Detail.Name = "Detail";
             this.Detail.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.Detail.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
-            // 
+            //
             // TopMargin
-            // 
+            //
             this.TopMargin.HeightF = 20F;
             this.TopMargin.Name = "TopMargin";
             this.TopMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.TopMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
-            // 
+            //
             // BottomMargin
-            // 
+            //
             this.BottomMargin.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrPageInfo1});
             this.BottomMargin.HeightF = 26.71661F;
             this.BottomMargin.Name = "BottomMargin";
             this.BottomMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.BottomMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
-            // 
+            //
             // DetailReport
-            // 
+            //
             this.DetailReport.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
             this.Detail1,
             this.GroupFooter1});
@@ -270,9 +270,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.DetailReport.DataSource = this.sqlDataSource1;
             this.DetailReport.Level = 0;
             this.DetailReport.Name = "DetailReport";
-            // 
+            //
             // Detail1
-            // 
+            //
             this.Detail1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.lblQuantity,
             this.xrLabel11,
@@ -283,9 +283,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel8});
             this.Detail1.HeightF = 23.04579F;
             this.Detail1.Name = "Detail1";
-            // 
+            //
             // lblQuantity
-            // 
+            //
             this.lblQuantity.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[Quantity]")});
             this.lblQuantity.Font = new System.Drawing.Font("Tahoma", 9F);
@@ -298,9 +298,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.lblQuantity.StylePriority.UseTextAlignment = false;
             this.lblQuantity.Text = "lblQuantity";
             this.lblQuantity.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            // 
+            //
             // xrLabel11
-            // 
+            //
             this.xrLabel11.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[SKUCode]")});
             this.xrLabel11.Font = new System.Drawing.Font("Tahoma", 9F);
@@ -313,9 +313,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel11.StylePriority.UseTextAlignment = false;
             this.xrLabel11.Text = "xrLabel11";
             this.xrLabel11.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel9
-            // 
+            //
             this.xrLabel9.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[Rate]")});
             this.xrLabel9.Font = new System.Drawing.Font("Tahoma", 9F);
@@ -329,9 +329,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel9.Text = "xrLabel9";
             this.xrLabel9.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             this.xrLabel9.TextFormatString = "{0:#.00}";
-            // 
+            //
             // xrLabel27
-            // 
+            //
             this.xrLabel27.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InNetAmount]")});
             this.xrLabel27.Font = new System.Drawing.Font("Tahoma", 9F);
@@ -345,9 +345,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel27.Text = "xrLabel27";
             this.xrLabel27.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             this.xrLabel27.TextFormatString = "{0:#.00}";
-            // 
+            //
             // xrLabel25
-            // 
+            //
             this.xrLabel25.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[Tax]")});
             this.xrLabel25.Font = new System.Drawing.Font("Tahoma", 9F);
@@ -360,9 +360,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel25.StylePriority.UseTextAlignment = false;
             this.xrLabel25.Text = "xrLabel25";
             this.xrLabel25.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            // 
+            //
             // xrLabel10
-            // 
+            //
             this.xrLabel10.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[Price]")});
             this.xrLabel10.Font = new System.Drawing.Font("Tahoma", 9F);
@@ -375,9 +375,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel10.StylePriority.UseTextAlignment = false;
             this.xrLabel10.Text = "xrLabel10";
             this.xrLabel10.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            // 
+            //
             // xrLabel8
-            // 
+            //
             this.xrLabel8.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[Name]")});
             this.xrLabel8.Font = new System.Drawing.Font("Tahoma", 9F);
@@ -390,9 +390,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel8.StylePriority.UseTextAlignment = false;
             this.xrLabel8.Text = "xrLabel8";
             this.xrLabel8.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // GroupFooter1
-            // 
+            //
             this.GroupFooter1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrPanel4,
             this.FooterMsg1,
@@ -406,12 +406,12 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.GroupFooter1.Name = "GroupFooter1";
             this.GroupFooter1.PageBreak = DevExpress.XtraReports.UI.PageBreak.AfterBand;
             this.GroupFooter1.PrintAtBottom = true;
-            // 
+            //
             // xrPanel4
-            // 
+            //
             this.xrPanel4.BorderColor = System.Drawing.Color.Transparent;
-            this.xrPanel4.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top) 
-            | DevExpress.XtraPrinting.BorderSide.Right) 
+            this.xrPanel4.Borders = ((DevExpress.XtraPrinting.BorderSide)((((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Top)
+            | DevExpress.XtraPrinting.BorderSide.Right)
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.xrPanel4.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrLabel64,
@@ -434,9 +434,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrPanel4.SizeF = new System.Drawing.SizeF(323.9286F, 133.4977F);
             this.xrPanel4.StylePriority.UseBorderColor = false;
             this.xrPanel4.StylePriority.UseBorders = false;
-            // 
+            //
             // xrLabel64
-            // 
+            //
             this.xrLabel64.BorderColor = System.Drawing.Color.Transparent;
             this.xrLabel64.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
             this.xrLabel64.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -450,9 +450,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel64.StylePriority.UseTextAlignment = false;
             this.xrLabel64.Text = "TOTAL WARR. AMOUNT";
             this.xrLabel64.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel65
-            // 
+            //
             this.xrLabel65.AutoWidth = true;
             this.xrLabel65.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[Symbol]")});
@@ -467,9 +467,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel65.StylePriority.UseTextAlignment = false;
             this.xrLabel65.Text = "xrLabel62";
             this.xrLabel65.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
-            // 
+            //
             // xrLabel66
-            // 
+            //
             this.xrLabel66.AutoWidth = true;
             this.xrLabel66.BorderColor = System.Drawing.Color.Transparent;
             this.xrLabel66.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
@@ -485,9 +485,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel66.StylePriority.UseFont = false;
             this.xrLabel66.StylePriority.UseTextAlignment = false;
             this.xrLabel66.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel63
-            // 
+            //
             this.xrLabel63.AutoWidth = true;
             this.xrLabel63.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[Symbol]")});
@@ -502,9 +502,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel63.StylePriority.UseTextAlignment = false;
             this.xrLabel63.Text = "xrLabel62";
             this.xrLabel63.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
-            // 
+            //
             // xrLabel61
-            // 
+            //
             this.xrLabel61.AutoWidth = true;
             this.xrLabel61.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[Symbol]")});
@@ -519,9 +519,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel61.StylePriority.UseTextAlignment = false;
             this.xrLabel61.Text = "xrLabel62";
             this.xrLabel61.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
-            // 
+            //
             // xrLabel62
-            // 
+            //
             this.xrLabel62.AutoWidth = true;
             this.xrLabel62.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[Symbol]")});
@@ -536,9 +536,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel62.StylePriority.UseTextAlignment = false;
             this.xrLabel62.Text = "xrLabel62";
             this.xrLabel62.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
-            // 
+            //
             // xrLabel15
-            // 
+            //
             this.xrLabel15.BorderColor = System.Drawing.Color.Transparent;
             this.xrLabel15.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
             this.xrLabel15.CanShrink = true;
@@ -554,9 +554,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel15.StylePriority.UseFont = false;
             this.xrLabel15.StylePriority.UseTextAlignment = false;
             this.xrLabel15.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
-            // 
+            //
             // xrLabel12
-            // 
+            //
             this.xrLabel12.BorderColor = System.Drawing.Color.Transparent;
             this.xrLabel12.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
             this.xrLabel12.CanShrink = true;
@@ -574,9 +574,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel12.StylePriority.UseTextAlignment = false;
             this.xrLabel12.Text = "Payments Terms :";
             this.xrLabel12.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel13
-            // 
+            //
             this.xrLabel13.BorderColor = System.Drawing.Color.Transparent;
             this.xrLabel13.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
             this.xrLabel13.CanShrink = true;
@@ -595,9 +595,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel13.Text = "DAYS FROM INVOICE";
             this.xrLabel13.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             this.xrLabel13.TextFormatString = "{0:#.00}";
-            // 
+            //
             // xrLabel29
-            // 
+            //
             this.xrLabel29.BorderColor = System.Drawing.Color.Transparent;
             this.xrLabel29.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
             this.xrLabel29.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -611,9 +611,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel29.StylePriority.UseTextAlignment = false;
             this.xrLabel29.Text = "INVOICE TOTAL";
             this.xrLabel29.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel30
-            // 
+            //
             this.xrLabel30.AutoWidth = true;
             this.xrLabel30.BorderColor = System.Drawing.Color.Transparent;
             this.xrLabel30.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
@@ -629,9 +629,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel30.StylePriority.UseFont = false;
             this.xrLabel30.StylePriority.UseTextAlignment = false;
             this.xrLabel30.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel21
-            // 
+            //
             this.xrLabel21.AutoWidth = true;
             this.xrLabel21.BorderColor = System.Drawing.Color.Transparent;
             this.xrLabel21.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
@@ -647,9 +647,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel21.StylePriority.UseFont = false;
             this.xrLabel21.StylePriority.UseTextAlignment = false;
             this.xrLabel21.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel22
-            // 
+            //
             this.xrLabel22.AutoWidth = true;
             this.xrLabel22.BorderColor = System.Drawing.Color.Transparent;
             this.xrLabel22.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
@@ -666,9 +666,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel22.StylePriority.UseTextAlignment = false;
             this.xrLabel22.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             this.xrLabel22.TextFormatString = "{0:#.00}";
-            // 
+            //
             // xrLabel24
-            // 
+            //
             this.xrLabel24.BorderColor = System.Drawing.Color.Transparent;
             this.xrLabel24.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
             this.xrLabel24.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -682,9 +682,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel24.StylePriority.UseTextAlignment = false;
             this.xrLabel24.Text = "TOTAL VAT AMOUNT";
             this.xrLabel24.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel28
-            // 
+            //
             this.xrLabel28.BorderColor = System.Drawing.Color.Transparent;
             this.xrLabel28.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
             this.xrLabel28.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -698,9 +698,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel28.StylePriority.UseTextAlignment = false;
             this.xrLabel28.Text = "TOTAL NET AMOUNT";
             this.xrLabel28.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // FooterMsg1
-            // 
+            //
             this.FooterMsg1.BorderColor = System.Drawing.Color.Gray;
             this.FooterMsg1.Borders = DevExpress.XtraPrinting.BorderSide.None;
             this.FooterMsg1.BorderWidth = 2F;
@@ -717,9 +717,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.FooterMsg1.StylePriority.UseFont = false;
             this.FooterMsg1.StylePriority.UseTextAlignment = false;
             this.FooterMsg1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            // 
+            //
             // xrPanel3
-            // 
+            //
             this.xrPanel3.CanShrink = true;
             this.xrPanel3.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrLabel54,
@@ -731,9 +731,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrPanel3.LocationFloat = new DevExpress.Utils.PointFloat(0.5208333F, 45.66374F);
             this.xrPanel3.Name = "xrPanel3";
             this.xrPanel3.SizeF = new System.Drawing.SizeF(324.375F, 123.4979F);
-            // 
+            //
             // xrLabel54
-            // 
+            //
             this.xrLabel54.CanShrink = true;
             this.xrLabel54.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[CompanyName]")});
@@ -746,9 +746,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel54.StylePriority.UseFont = false;
             this.xrLabel54.StylePriority.UseTextAlignment = false;
             this.xrLabel54.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
-            // 
+            //
             // xrLabel19
-            // 
+            //
             this.xrLabel19.CanShrink = true;
             this.xrLabel19.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[ShipmentAddressTown]")});
@@ -761,9 +761,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel19.StylePriority.UseFont = false;
             this.xrLabel19.StylePriority.UseTextAlignment = false;
             this.xrLabel19.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
-            // 
+            //
             // xrLabel20
-            // 
+            //
             this.xrLabel20.CanShrink = true;
             this.xrLabel20.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[ShipmentAddressLine1]")});
@@ -776,9 +776,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel20.StylePriority.UseFont = false;
             this.xrLabel20.StylePriority.UseTextAlignment = false;
             this.xrLabel20.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
-            // 
+            //
             // xrLabel26
-            // 
+            //
             this.xrLabel26.CanShrink = true;
             this.xrLabel26.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[ShipmentAddressPostcode]")});
@@ -791,9 +791,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel26.StylePriority.UseFont = false;
             this.xrLabel26.StylePriority.UseTextAlignment = false;
             this.xrLabel26.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
-            // 
+            //
             // xrLabel49
-            // 
+            //
             this.xrLabel49.CanShrink = true;
             this.xrLabel49.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[ShipmentAddressLine2]")});
@@ -806,9 +806,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel49.StylePriority.UseFont = false;
             this.xrLabel49.StylePriority.UseTextAlignment = false;
             this.xrLabel49.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
-            // 
+            //
             // xrLabel50
-            // 
+            //
             this.xrLabel50.CanShrink = true;
             this.xrLabel50.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[ShipmentAddressLine3]")});
@@ -821,9 +821,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel50.StylePriority.UseFont = false;
             this.xrLabel50.StylePriority.UseTextAlignment = false;
             this.xrLabel50.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
-            // 
+            //
             // FooterMsg2
-            // 
+            //
             this.FooterMsg2.BorderColor = System.Drawing.Color.Gray;
             this.FooterMsg2.Borders = DevExpress.XtraPrinting.BorderSide.None;
             this.FooterMsg2.BorderWidth = 2F;
@@ -840,9 +840,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.FooterMsg2.Text = "Registered Company Number:  [InvoiceHeader.TenantRegNo]                   V.A.T N" +
     "umber: [InvoiceHeader.TenantVatNo]";
             this.FooterMsg2.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            // 
+            //
             // xrLabel14
-            // 
+            //
             this.xrLabel14.BorderColor = System.Drawing.Color.Transparent;
             this.xrLabel14.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
             this.xrLabel14.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -856,9 +856,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel14.StylePriority.UseTextAlignment = false;
             this.xrLabel14.Text = "DELIVERY ADDRESS";
             this.xrLabel14.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel2
-            // 
+            //
             this.xrLabel2.BorderColor = System.Drawing.Color.Transparent;
             this.xrLabel2.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
             this.xrLabel2.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
@@ -873,9 +873,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel2.StylePriority.UseFont = false;
             this.xrLabel2.StylePriority.UseTextAlignment = false;
             this.xrLabel2.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel1
-            // 
+            //
             this.xrLabel1.BorderColor = System.Drawing.Color.Transparent;
             this.xrLabel1.Borders = DevExpress.XtraPrinting.BorderSide.Bottom;
             this.xrLabel1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -889,9 +889,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel1.StylePriority.UseTextAlignment = false;
             this.xrLabel1.Text = "Number of Items";
             this.xrLabel1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // sqlDataSource1
-            // 
+            //
             this.sqlDataSource1.ConnectionName = "ApplicationContext";
             this.sqlDataSource1.Name = "sqlDataSource1";
             customSqlQuery1.MetaSerializable = "<Meta X=\"450\" Y=\"120\" Width=\"119\" Height=\"190\" />";
@@ -925,33 +925,33 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             masterDetailInfo1,
             masterDetailInfo2});
             this.sqlDataSource1.ResultSchemaSerializable = resources.GetString("sqlDataSource1.ResultSchemaSerializable");
-            // 
+            //
             // invoiceMasterId
-            // 
+            //
             this.invoiceMasterId.MultiValue = true;
             this.invoiceMasterId.Name = "invoiceMasterId";
             this.invoiceMasterId.Type = typeof(int);
-            // 
+            //
             // NetAmount
-            // 
+            //
             this.NetAmount.DataMember = "InvoiceDetail";
             this.NetAmount.Expression = "[Price]*[Quantity]";
             this.NetAmount.Name = "NetAmount";
-            // 
+            //
             // TotalNet
-            // 
+            //
             this.TotalNet.DataMember = "InvoiceDetail";
             this.TotalNet.Expression = "Sum([InNetAmount])";
             this.TotalNet.Name = "TotalNet";
-            // 
+            //
             // TotalQuantity
-            // 
+            //
             this.TotalQuantity.DataMember = "InvoiceDetail";
             this.TotalQuantity.Expression = "Sum([Quantity])";
             this.TotalQuantity.Name = "TotalQuantity";
-            // 
+            //
             // PageHeader
-            // 
+            //
             this.PageHeader.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrLabel58,
             this.xrLabel59,
@@ -971,9 +971,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel23});
             this.PageHeader.HeightF = 322.7603F;
             this.PageHeader.Name = "PageHeader";
-            // 
+            //
             // xrLabel58
-            // 
+            //
             this.xrLabel58.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold);
             this.xrLabel58.LocationFloat = new DevExpress.Utils.PointFloat(565.0926F, 282.0747F);
             this.xrLabel58.Multiline = true;
@@ -984,9 +984,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel58.StylePriority.UseTextAlignment = false;
             this.xrLabel58.Text = "CURRENCY: ";
             this.xrLabel58.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel59
-            // 
+            //
             this.xrLabel59.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[CurrencyName]")});
             this.xrLabel59.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold);
@@ -1000,9 +1000,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel59.Text = "xrLabel23";
             this.xrLabel59.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             this.xrLabel59.TextFormatString = "{0:dd/MM/yyyy}";
-            // 
+            //
             // xrLabel56
-            // 
+            //
             this.xrLabel56.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[ExternalOrderNumber]")});
             this.xrLabel56.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold);
@@ -1015,9 +1015,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel56.StylePriority.UseTextAlignment = false;
             this.xrLabel56.Text = "xrLabel23";
             this.xrLabel56.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel55
-            // 
+            //
             this.xrLabel55.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold);
             this.xrLabel55.LocationFloat = new DevExpress.Utils.PointFloat(3.783671F, 282.0747F);
             this.xrLabel55.Multiline = true;
@@ -1028,9 +1028,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel55.StylePriority.UseTextAlignment = false;
             this.xrLabel55.Text = "YOUR ORDER NUMBER: ";
             this.xrLabel55.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrBarCode1
-            // 
+            //
             this.xrBarCode1.Alignment = DevExpress.XtraPrinting.TextAlignment.TopRight;
             this.xrBarCode1.AutoModule = true;
             this.xrBarCode1.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
@@ -1045,17 +1045,17 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrBarCode1.StylePriority.UseTextAlignment = false;
             this.xrBarCode1.Symbology = code128Generator1;
             this.xrBarCode1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.BottomCenter;
-            // 
+            //
             // xrPictureBox1
-            // 
+            //
             this.xrPictureBox1.ImageAlignment = DevExpress.XtraPrinting.ImageAlignment.TopLeft;
             this.xrPictureBox1.LocationFloat = new DevExpress.Utils.PointFloat(2.738317F, 0F);
             this.xrPictureBox1.Name = "xrPictureBox1";
             this.xrPictureBox1.SizeF = new System.Drawing.SizeF(398.47F, 98.09F);
             this.xrPictureBox1.Sizing = DevExpress.XtraPrinting.ImageSizeMode.Squeeze;
-            // 
+            //
             // xrLabel52
-            // 
+            //
             this.xrLabel52.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[OrderNumber]")});
             this.xrLabel52.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold);
@@ -1068,9 +1068,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel52.StylePriority.UseTextAlignment = false;
             this.xrLabel52.Text = "xrLabel23";
             this.xrLabel52.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel53
-            // 
+            //
             this.xrLabel53.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold);
             this.xrLabel53.LocationFloat = new DevExpress.Utils.PointFloat(1.69665F, 259.0748F);
             this.xrLabel53.Multiline = true;
@@ -1081,9 +1081,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel53.StylePriority.UseTextAlignment = false;
             this.xrLabel53.Text = "OUR ORDER NO: ";
             this.xrLabel53.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel48
-            // 
+            //
             this.xrLabel48.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold);
             this.xrLabel48.LocationFloat = new DevExpress.Utils.PointFloat(1.69665F, 236.0749F);
             this.xrLabel48.Multiline = true;
@@ -1094,9 +1094,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel48.StylePriority.UseTextAlignment = false;
             this.xrLabel48.Text = "OUR DELIVERY NOTE:";
             this.xrLabel48.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel51
-            // 
+            //
             this.xrLabel51.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[DeliveryNO]")});
             this.xrLabel51.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold);
@@ -1109,9 +1109,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel51.StylePriority.UseTextAlignment = false;
             this.xrLabel51.Text = "xrLabel23";
             this.xrLabel51.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel18
-            // 
+            //
             this.xrLabel18.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[InvoiceDate]")});
             this.xrLabel18.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold);
@@ -1125,9 +1125,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel18.Text = "xrLabel23";
             this.xrLabel18.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             this.xrLabel18.TextFormatString = "{0:dd/MM/yyyy}";
-            // 
+            //
             // xrLabel45
-            // 
+            //
             this.xrLabel45.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold);
             this.xrLabel45.LocationFloat = new DevExpress.Utils.PointFloat(565.0926F, 259.0749F);
             this.xrLabel45.Multiline = true;
@@ -1138,9 +1138,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel45.StylePriority.UseTextAlignment = false;
             this.xrLabel45.Text = "DATE: ";
             this.xrLabel45.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrPanel2
-            // 
+            //
             this.xrPanel2.CanShrink = true;
             this.xrPanel2.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrLabel60,
@@ -1157,9 +1157,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrPanel2.LocationFloat = new DevExpress.Utils.PointFloat(458.9583F, 52.50899F);
             this.xrPanel2.Name = "xrPanel2";
             this.xrPanel2.SizeF = new System.Drawing.SizeF(324.375F, 183.5659F);
-            // 
+            //
             // xrLabel60
-            // 
+            //
             this.xrLabel60.CanShrink = true;
             this.xrLabel60.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[TenantWebsite]")});
@@ -1172,9 +1172,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel60.StylePriority.UseFont = false;
             this.xrLabel60.StylePriority.UseTextAlignment = false;
             this.xrLabel60.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel57
-            // 
+            //
             this.xrLabel57.CanShrink = true;
             this.xrLabel57.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.xrLabel57.LocationFloat = new DevExpress.Utils.PointFloat(117.6667F, 103.7502F);
@@ -1186,9 +1186,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel57.StylePriority.UseTextAlignment = false;
             this.xrLabel57.Text = "T:";
             this.xrLabel57.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel3
-            // 
+            //
             this.xrLabel3.CanShrink = true;
             this.xrLabel3.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[TenantPostalCode]")});
@@ -1201,9 +1201,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel3.StylePriority.UseFont = false;
             this.xrLabel3.StylePriority.UseTextAlignment = false;
             this.xrLabel3.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel4
-            // 
+            //
             this.xrLabel4.CanShrink = true;
             this.xrLabel4.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[TenantAddress1]")});
@@ -1216,9 +1216,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel4.StylePriority.UseFont = false;
             this.xrLabel4.StylePriority.UseTextAlignment = false;
             this.xrLabel4.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel31
-            // 
+            //
             this.xrLabel31.CanShrink = true;
             this.xrLabel31.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[TenantFax]")});
@@ -1231,9 +1231,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel31.StylePriority.UseFont = false;
             this.xrLabel31.StylePriority.UseTextAlignment = false;
             this.xrLabel31.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel32
-            // 
+            //
             this.xrLabel32.CanShrink = true;
             this.xrLabel32.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[TenantDayPhone]")});
@@ -1246,9 +1246,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel32.StylePriority.UseFont = false;
             this.xrLabel32.StylePriority.UseTextAlignment = false;
             this.xrLabel32.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel33
-            // 
+            //
             this.xrLabel33.CanShrink = true;
             this.xrLabel33.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.xrLabel33.LocationFloat = new DevExpress.Utils.PointFloat(117.6667F, 123.3332F);
@@ -1260,9 +1260,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel33.StylePriority.UseTextAlignment = false;
             this.xrLabel33.Text = "F:";
             this.xrLabel33.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel40
-            // 
+            //
             this.xrLabel40.CanShrink = true;
             this.xrLabel40.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[TenantEmail]")});
@@ -1275,9 +1275,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel40.StylePriority.UseFont = false;
             this.xrLabel40.StylePriority.UseTextAlignment = false;
             this.xrLabel40.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel46
-            // 
+            //
             this.xrLabel46.CanShrink = true;
             this.xrLabel46.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[TenantAddress3]")});
@@ -1290,9 +1290,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel46.StylePriority.UseFont = false;
             this.xrLabel46.StylePriority.UseTextAlignment = false;
             this.xrLabel46.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel47
-            // 
+            //
             this.xrLabel47.CanShrink = true;
             this.xrLabel47.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[TenantAddress2]")});
@@ -1305,9 +1305,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel47.StylePriority.UseFont = false;
             this.xrLabel47.StylePriority.UseTextAlignment = false;
             this.xrLabel47.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel43
-            // 
+            //
             this.xrLabel43.CanShrink = true;
             this.xrLabel43.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[TenantStateCounty]")});
@@ -1320,9 +1320,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel43.StylePriority.UseFont = false;
             this.xrLabel43.StylePriority.UseTextAlignment = false;
             this.xrLabel43.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrPanel1
-            // 
+            //
             this.xrPanel1.CanShrink = true;
             this.xrPanel1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrLabel42,
@@ -1334,9 +1334,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrPanel1.LocationFloat = new DevExpress.Utils.PointFloat(1.7F, 106F);
             this.xrPanel1.Name = "xrPanel1";
             this.xrPanel1.SizeF = new System.Drawing.SizeF(324.375F, 115F);
-            // 
+            //
             // xrLabel42
-            // 
+            //
             this.xrLabel42.CanShrink = true;
             this.xrLabel42.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[CompanyName]")});
@@ -1349,9 +1349,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel42.StylePriority.UseFont = false;
             this.xrLabel42.StylePriority.UseTextAlignment = false;
             this.xrLabel42.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
-            // 
+            //
             // xrLabel5
-            // 
+            //
             this.xrLabel5.CanShrink = true;
             this.xrLabel5.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[PostCode]")});
@@ -1364,9 +1364,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel5.StylePriority.UseFont = false;
             this.xrLabel5.StylePriority.UseTextAlignment = false;
             this.xrLabel5.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
-            // 
+            //
             // xrLabel6
-            // 
+            //
             this.xrLabel6.CanShrink = true;
             this.xrLabel6.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[AddressLine1]")});
@@ -1379,9 +1379,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel6.StylePriority.UseFont = false;
             this.xrLabel6.StylePriority.UseTextAlignment = false;
             this.xrLabel6.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
-            // 
+            //
             // xrLabel16
-            // 
+            //
             this.xrLabel16.CanShrink = true;
             this.xrLabel16.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[AddressLine3]")});
@@ -1394,9 +1394,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel16.StylePriority.UseFont = false;
             this.xrLabel16.StylePriority.UseTextAlignment = false;
             this.xrLabel16.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
-            // 
+            //
             // xrLabel17
-            // 
+            //
             this.xrLabel17.CanShrink = true;
             this.xrLabel17.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[AddressLine2]")});
@@ -1409,12 +1409,12 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel17.StylePriority.UseFont = false;
             this.xrLabel17.StylePriority.UseTextAlignment = false;
             this.xrLabel17.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
-            // 
+            //
             // xrLabel39
-            // 
+            //
             this.xrLabel39.CanShrink = true;
             this.xrLabel39.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[AddressLine4]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[Town]")});
             this.xrLabel39.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.xrLabel39.LocationFloat = new DevExpress.Utils.PointFloat(2.083496F, 77.50006F);
             this.xrLabel39.Name = "xrLabel39";
@@ -1424,9 +1424,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel39.StylePriority.UseFont = false;
             this.xrLabel39.StylePriority.UseTextAlignment = false;
             this.xrLabel39.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
-            // 
+            //
             // xrLabel44
-            // 
+            //
             this.xrLabel44.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold);
             this.xrLabel44.LocationFloat = new DevExpress.Utils.PointFloat(565.0926F, 236.0749F);
             this.xrLabel44.Multiline = true;
@@ -1437,9 +1437,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel44.StylePriority.UseTextAlignment = false;
             this.xrLabel44.Text = "INVOICE : ";
             this.xrLabel44.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel23
-            // 
+            //
             this.xrLabel23.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[InvoiceHeader].[InvoiceNumber]")});
             this.xrLabel23.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold);
@@ -1452,9 +1452,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel23.StylePriority.UseTextAlignment = false;
             this.xrLabel23.Text = "xrLabel23";
             this.xrLabel23.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // GroupHeader1
-            // 
+            //
             this.GroupHeader1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrLabel34,
             this.xrLabel35,
@@ -1466,9 +1466,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.GroupHeader1.HeightF = 28.07299F;
             this.GroupHeader1.Name = "GroupHeader1";
             this.GroupHeader1.RepeatEveryPage = true;
-            // 
+            //
             // xrLabel34
-            // 
+            //
             this.xrLabel34.BackColor = System.Drawing.Color.Transparent;
             this.xrLabel34.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold);
             this.xrLabel34.ForeColor = System.Drawing.Color.Black;
@@ -1482,9 +1482,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel34.StylePriority.UseTextAlignment = false;
             this.xrLabel34.Text = "Code";
             this.xrLabel34.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel35
-            // 
+            //
             this.xrLabel35.BackColor = System.Drawing.Color.Transparent;
             this.xrLabel35.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold);
             this.xrLabel35.ForeColor = System.Drawing.Color.Black;
@@ -1499,9 +1499,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel35.StylePriority.UseTextAlignment = false;
             this.xrLabel35.Text = "Product\r\n";
             this.xrLabel35.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
+            //
             // xrLabel36
-            // 
+            //
             this.xrLabel36.BackColor = System.Drawing.Color.Transparent;
             this.xrLabel36.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold);
             this.xrLabel36.ForeColor = System.Drawing.Color.Black;
@@ -1516,9 +1516,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel36.StylePriority.UseTextAlignment = false;
             this.xrLabel36.Text = "Qty";
             this.xrLabel36.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            // 
+            //
             // xrLabel7
-            // 
+            //
             this.xrLabel7.BackColor = System.Drawing.Color.Transparent;
             this.xrLabel7.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold);
             this.xrLabel7.ForeColor = System.Drawing.Color.Black;
@@ -1532,9 +1532,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel7.StylePriority.UseTextAlignment = false;
             this.xrLabel7.Text = "Unit Price";
             this.xrLabel7.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            // 
+            //
             // xrLabel41
-            // 
+            //
             this.xrLabel41.BackColor = System.Drawing.Color.Transparent;
             this.xrLabel41.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold);
             this.xrLabel41.ForeColor = System.Drawing.Color.Black;
@@ -1548,9 +1548,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel41.StylePriority.UseTextAlignment = false;
             this.xrLabel41.Text = "Net Amnt";
             this.xrLabel41.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            // 
+            //
             // xrLabel37
-            // 
+            //
             this.xrLabel37.BackColor = System.Drawing.Color.Transparent;
             this.xrLabel37.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold);
             this.xrLabel37.ForeColor = System.Drawing.Color.Black;
@@ -1564,9 +1564,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel37.StylePriority.UseTextAlignment = false;
             this.xrLabel37.Text = "VAT(%)";
             this.xrLabel37.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            // 
+            //
             // xrLabel38
-            // 
+            //
             this.xrLabel38.BackColor = System.Drawing.Color.Transparent;
             this.xrLabel38.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold);
             this.xrLabel38.ForeColor = System.Drawing.Color.Black;
@@ -1581,25 +1581,25 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel38.StylePriority.UseTextAlignment = false;
             this.xrLabel38.Text = "VAT";
             this.xrLabel38.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            // 
+            //
             // PageFooter
-            // 
+            //
             this.PageFooter.HeightF = 2.960078F;
             this.PageFooter.Name = "PageFooter";
-            // 
+            //
             // calculatedField1
-            // 
+            //
             this.calculatedField1.DataMember = "InvoiceDetail";
             this.calculatedField1.Name = "calculatedField1";
-            // 
+            //
             // calculatedField2
-            // 
+            //
             this.calculatedField2.DataMember = "InvoiceHeader.InvoiceHeaderInvoiceDetail";
             this.calculatedField2.Expression = "Iif([EnableTax],[Rate],0)";
             this.calculatedField2.Name = "calculatedField2";
-            // 
+            //
             // xrPageInfo1
-            // 
+            //
             this.xrPageInfo1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.xrPageInfo1.LocationFloat = new DevExpress.Utils.PointFloat(0.5208334F, 0F);
             this.xrPageInfo1.Name = "xrPageInfo1";
@@ -1610,9 +1610,9 @@ public class InvoicePrint : DevExpress.XtraReports.UI.XtraReport
             this.xrPageInfo1.StylePriority.UseTextAlignment = false;
             this.xrPageInfo1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             this.xrPageInfo1.TextFormatString = "Page {0} of {1}";
-            // 
+            //
             // InvoicePrint
-            // 
+            //
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
             this.Detail,
             this.TopMargin,

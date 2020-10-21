@@ -786,7 +786,7 @@
             this.xrLabel48.CanShrink = true;
             this.xrLabel48.Dpi = 96F;
             this.xrLabel48.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[AcAddressLine4]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[AcTown]")});
             this.xrLabel48.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.xrLabel48.LocationFloat = new DevExpress.Utils.PointFloat(0.4998474F, 98.39999F);
             this.xrLabel48.Name = "xrLabel48";
