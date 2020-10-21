@@ -1456,7 +1456,7 @@ namespace WMS.Controllers
 
         private async Task<string> NotifyOrderStatusChange(Order order)
         {
-            if (!order.Warehouse.SelectedNotifiableOrderStatuses.Contains(order.OrderStatusID))
+            if (order.Warehouse?.SelectedNotifiableOrderStatuses == null || !order.Warehouse.SelectedNotifiableOrderStatuses.Contains(order.OrderStatusID))
             {
                 return null;
             }

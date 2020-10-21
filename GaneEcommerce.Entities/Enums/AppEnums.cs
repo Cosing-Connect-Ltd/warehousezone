@@ -151,24 +151,26 @@ namespace Ganedata.Core.Entities.Enums
         Complete = 2,
         Hold = 3,
         Pending = 4,
+        [Display(Name = "Not Scheduled")]
         NotScheduled = 5,
         Scheduled = 6,
+        [Display(Name = "Reallocation Required")]
         ReAllocationRequired = 7,
-
         [Display(Name = "Awaiting Authorisation")]
         AwaitingAuthorisation = 8,
-
         Cancelled = 9,
+        [Display(Name = "Being Picked")]
         BeingPicked = 10,
+        [Display(Name = "Awaiting Arrival")]
         AwaitingArrival = 11,
         Approved = 12,
-
         [Display(Name = "Posted To Accounts")]
         PostedToAccounts = 13,
-
         Invoiced = 14,
         Preparing = 15,
+        [Display(Name = "Quality Checks")]
         QualityChecks = 16,
+        [Display(Name = "Out For Delivery")]
         OutForDelivery = 17,
         Delivered = 18
     }
