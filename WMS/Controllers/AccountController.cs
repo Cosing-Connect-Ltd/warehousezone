@@ -380,8 +380,7 @@ namespace WMS.Controllers
         [HttpPost]
         public ActionResult SaveAccountAddress(AccountAddresses model)
         {
-            caUser user = caCurrent.CurrentUser();
-            if (model.AccountID == 0)
+            if (model.AccountID == null || model.AccountID == 0)
             {
                 model.AccountID = int.Parse(Session["account"].ToString());
             }

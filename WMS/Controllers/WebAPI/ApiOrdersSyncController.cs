@@ -166,19 +166,22 @@ namespace WMS.Controllers.WebAPI
 
         private async Task NotifyOrderStatusChange(OrderStatusEnum statusId, Order order)
         {
-            if (order.Warehouse?.SelectedNotifiableOrderStatuses == null || !order.Warehouse.SelectedNotifiableOrderStatuses.Contains(order.OrderStatusID))
+            if (order.InventoryTransactionTypeId != InventoryTransactionTypeEnum.SalesOrder ||
+                order.InventoryTransactionTypeId != InventoryTransactionTypeEnum.DirectSales ||
+                order.Warehouse?.SelectedNotifiableOrderStatuses == null ||
+                !order.Warehouse.SelectedNotifiableOrderStatuses.Contains(order.OrderStatusID))
             {
                 return;
             }
 
             if (order.SendOrderStatusByEmail)
             {
-                var result = await _configurationHelper.CreateTenantEmailNotificationQueue($"#{order.OrderNumber} - Order status updated to {statusId}", _mapper.Map(order, new OrderViewModel()), worksOrderNotificationType: WorksOrderNotificationTypeEnum.OrderStatusNotification);
+                await _configurationHelper.CreateTenantEmailNotificationQueue($"#{order.OrderNumber} - Order status updated to {statusId}", _mapper.Map(order, new OrderViewModel()), worksOrderNotificationType: WorksOrderNotificationTypeEnum.OrderStatusNotification);
             }
 
             if (order.SendOrderStatusBySms)
             {
-                var result = await UserService.SendSmsBroadcast(order.Account.AccountOwner.UserMobileNumber, order.Tenant.TenantName, order.Account.OwnerUserId.ToString(), $"#{order.OrderNumber} - Order status updated to {statusId}");
+                await UserService.SendSmsBroadcast(order.Account.AccountOwner.UserMobileNumber, order.Tenant.TenantName, order.Account.OwnerUserId.ToString(), $"#{order.OrderNumber} - Order status updated to {statusId}");
             }
         }
 
