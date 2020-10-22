@@ -633,6 +633,7 @@ namespace Ganedata.Core.Services
         {
             if (productMaster.ProductId > 0)
             {
+                productMaster.ProductCategoryId = productMaster.ProductCategoryId > 0 ? productMaster.ProductCategoryId : null;
                 productMaster.UpdateCreatedInfo(userId);
                 productMaster.UpdateUpdatedInfo(userId);
                 productMaster.TenantId = tenantId;

@@ -261,53 +261,7 @@
                             @Html.ValidationMessageFor(model => model.DontMonitorStock)
                         </div>
                     </div>
-                    <div class="input-group h-100 justify-content-center align-items-center">
-                        @Html.LabelFor(model => model.IsPreOrderAccepted, htmlAttributes: new { @class = "col-md-4" })
-                        <div class="col-md-8">
-                            @Html.EditorFor(m => m.IsPreOrderAccepted)
-
-                            @Html.ValidationMessageFor(model => model.IsPreOrderAccepted)
-                        </div>
-                    </div>
-                    <div class="input-group h-100 justify-content-center align-items-center">
-                        @Html.LabelFor(model => model.IsAutoShipment, htmlAttributes: new { @class = "col-md-4" })
-                        <div class="col-md-8">
-                            @Html.EditorFor(m => m.IsAutoShipment, new { @class = "checkbox" })
-                            @Html.ValidationMessageFor(model => model.IsAutoShipment)
-                        </div>
-                    </div>
-                    <div class="input-group h-100 justify-content-center align-items-center" id="min-dispatch-days" style=@(Model.IsPreOrderAccepted == true?"":"display:none")>
-                        @Html.LabelFor(m => m.MinDispatchDays, htmlAttributes: new { @class = "col-md-4" })
-                        <div class="col-md-8">
-                            @Html.DevExpress().SpinEditFor(m => m.MinDispatchDays,
-                            settings =>
-                            {
-                                settings.Name = "MinDispatchDays";
-                                settings.ClientVisible = true;
-                                settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
-                                settings.ControlStyle.CssClass = "form-control";
-                            }
-                            ).GetHtml()
-                            @Html.ValidationMessageFor(model => model.MinDispatchDays)
-                        </div>
-                    </div>
-                    <div class="input-group h-100 justify-content-center align-items-center" id="max-dispatch-days" style=@(Model.IsPreOrderAccepted == true?"":"display:none")>
-                        @Html.LabelFor(m => m.MaxDispatchDays, htmlAttributes: new { @class = "col-md-4" })
-                        <div class="col-md-8">
-                            @Html.DevExpress().SpinEditFor(m => m.MaxDispatchDays,
-                            settings =>
-                            {
-                                settings.Name = "MaxDispatchDays";
-                                settings.ClientVisible = true;
-                                settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
-                                settings.ControlStyle.CssClass = "form-control";
-                            }
-                            ).GetHtml()
-                            @Html.ValidationMessageFor(model => model.MaxDispatchDays)
-                        </div>
-                    </div>
                 </div>
-
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.LabelFor(model => model.ProductType, htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
@@ -646,34 +600,6 @@
                         @Html.ValidationMessageFor(model => model.ProdStartDate)
                     </div>
                 </div>
-                <div class="input-group h-100 justify-content-center align-items-center">
-                    @Html.Label("Files", htmlAttributes: new { @class = "col-md-4" })
-                    <div class="col-md-8">
-                        @Html.Partial("_Uploader")<br />
-                        <div id="dvfiles">
-                            <strong>Uploaded Files</strong>
-                            @if (ViewBag.Files != null)
-                            {
-                                foreach (KeyValuePair<string, UploadedFileViewModel> file in ViewBag.Files)
-                                {
-                                    <table>
-                                        <tr>
-                                            <td id="tdfileName">@file.Key</td>
-                                            <td>
-                                                <p>&nbsp;</p>
-                                            </td>
-                                            <td><a class="LRemove" onclick="removeFile('@file.Key')">Remove</a></td>
-                                            <td>
-                                                <p>&nbsp;</p>
-                                            </td>
-                                            <td><a class="LRemove" onclick="downloadFile('@file.Key')">Download</a></td>
-                                        </tr>
-                                    </table>
-                                }
-                            }
-                        </div>
-                    </div>
-                </div>
 
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.LabelFor(model => model.Discontinued, htmlAttributes: new { @class = "col-md-4" })
@@ -735,6 +661,79 @@
                         @Html.EditorFor(m => m.RequiresExpiryDateOnReceipt)
 
                         @Html.ValidationMessageFor(model => model.RequiresExpiryDateOnReceipt)
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.IsPreOrderAccepted, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(m => m.IsPreOrderAccepted)
+
+                        @Html.ValidationMessageFor(model => model.IsPreOrderAccepted)
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center" id="min-dispatch-days" style=@(Model.IsPreOrderAccepted == true?"":"display:none")>
+                    @Html.LabelFor(m => m.MinDispatchDays, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DevExpress().SpinEditFor(m => m.MinDispatchDays,
+                        settings =>
+                        {
+                            settings.Name = "MinDispatchDays";
+                            settings.ClientVisible = true;
+                            settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                            settings.ControlStyle.CssClass = "form-control";
+                        }
+                        ).GetHtml()
+                        @Html.ValidationMessageFor(model => model.MinDispatchDays)
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center" id="max-dispatch-days" style=@(Model.IsPreOrderAccepted == true?"":"display:none")>
+                    @Html.LabelFor(m => m.MaxDispatchDays, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DevExpress().SpinEditFor(m => m.MaxDispatchDays,
+                        settings =>
+                        {
+                            settings.Name = "MaxDispatchDays";
+                            settings.ClientVisible = true;
+                            settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                            settings.ControlStyle.CssClass = "form-control";
+                        }
+                        ).GetHtml()
+                        @Html.ValidationMessageFor(model => model.MaxDispatchDays)
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.IsAutoShipment, htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(m => m.IsAutoShipment, new { @class = "checkbox" })
+                        @Html.ValidationMessageFor(model => model.IsAutoShipment)
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.Label("Files", htmlAttributes: new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.Partial("_Uploader")<br />
+                        <div id="dvfiles">
+                            <strong>Uploaded Files</strong>
+                            @if (ViewBag.Files != null)
+                            {
+                                foreach (KeyValuePair<string, UploadedFileViewModel> file in ViewBag.Files)
+                                {
+                                    <table>
+                                        <tr>
+                                            <td id="tdfileName">@file.Key</td>
+                                            <td>
+                                                <p>&nbsp;</p>
+                                            </td>
+                                            <td><a class="LRemove" onclick="removeFile('@file.Key')">Remove</a></td>
+                                            <td>
+                                                <p>&nbsp;</p>
+                                            </td>
+                                            <td><a class="LRemove" onclick="downloadFile('@file.Key')">Download</a></td>
+                                        </tr>
+                                    </table>
+                                }
+                            }
+                        </div>
                     </div>
                 </div>
                 <div class="input-group h-100 justify-content-center align-items-center">
