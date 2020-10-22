@@ -81,161 +81,161 @@ $(document).ready(function () {
                 return;
             }
         }
+    }
 
-        $("#frmPurchaseOrderCreate #AccountID").on("change", function () {
-            $("#divEmailNotifications input[type=text]").val("");
-            updateAccountContactDetails();
-        });
+    $("#frmPurchaseOrderCreate #AccountID").on("change", function () {
+        $("#divEmailNotifications input[type=text]").val("");
+        updateAccountContactDetails();
+    });
 
-        $(".frmOrders").unbind().on("submit",
-            function () {
-                var allEmailsValid = true;
-                var notifyEnabled = $("#SendEmailWithAttachment").prop('checked');
+    $(".frmOrders").unbind().on("submit",
+        function () {
+            var allEmailsValid = true;
+            var notifyEnabled = $("#SendEmailWithAttachment").prop('checked');
 
-                if (notifyEnabled && $("#CustomRecipients").val().length < 1 && $("#emailWithaccount").val() <= 0) {
-                    alert('Please add atleast one recipient to send out email confirmation.');
+            if (notifyEnabled && $("#CustomRecipients").val().length < 1 && $("#emailWithaccount").val() <= 0) {
+                alert('Please add atleast one recipient to send out email confirmation.');
+                return false;
+            }
+
+            if (notifyEnabled) {
+                $("#emailsection input[type=text]").each(function () {
+                    var emails = $(this).val().split(';');
+                    for (var i = 0; i < emails.length; i++) {
+                        if (emails[i] === null || emails[i].length < 1) {
+                            continue;
+                        }
+                        if (!IsValidEmail(emails[i])) {
+                            allEmailsValid = false;
+                            return false;
+                        }
+                    }
+                    if (!allEmailsValid) return false;
+                });
+
+                if (!allEmailsValid) {
+                    alert('Please enter valid email address for recipients.');
                     return false;
                 }
-
-                if (notifyEnabled) {
-                    $("#emailsection input[type=text]").each(function () {
-                        var emails = $(this).val().split(';');
-                        for (var i = 0; i < emails.length; i++) {
-                            if (emails[i] === null || emails[i].length < 1) {
-                                continue;
-                            }
-                            if (!IsValidEmail(emails[i])) {
-                                allEmailsValid = false;
-                                return false;
-                            }
-                        }
-                        if (!allEmailsValid) return false;
-                    });
-
-                    if (!allEmailsValid) {
-                        alert('Please enter valid email address for recipients.');
-                        return false;
-                    }
-                }
-            });
-
-        var updateShipmentInfoVisibility = function () {
-            if ($("#radioShipToWarehouse").prop('checked')) {
-                $("#divDisplayTenantAddresses").css("visibility", "visible").slideDown();
-                $("#divDisplayPropertyAddresses").css("visibility", "hidden").slideUp();
-                $("#divDisplayAccountAddresses").css("visibility", "hidden").slideUp();
-                $("#divDisplaySupplierAddresses").css("visibility", "hidden").slideUp();
-                $("#IsCollectionFromCustomerSide").val(false);
             }
-
-            if ($("#radioShipToWorkProperty").prop('checked')) {
-                $("#divDisplayTenantAddresses").css("visibility", "hidden").slideUp();
-                $("#divDisplayAccountAddresses").css("visibility", "hidden").slideUp();
-                $("#divDisplayPropertyAddresses").css("visibility", "visible").slideDown();
-                $("#divDisplaySupplierAddresses").css("visibility", "hidden").slideUp();
-                $("#IsCollectionFromCustomerSide").val(false);
-            }
-
-            if ($("#radioShipToCustomProperty").prop('checked')) {
-                $("#divDisplayTenantAddresses").css("visibility", "hidden").slideUp();
-                $("#divDisplayPropertyAddresses").css("visibility", "hidden").slideUp();
-                $("#divDisplayAccountAddresses").css("visibility", "hidden").slideUp();
-                $("#divFinalShipmentAddress").slideDown();
-                $("#IsCollectionFromCustomerSide").val(false);
-                $("#divDisplaySupplierAddresses").css("visibility", "hidden").slideUp();
-            }
-
-            if ($("#radioShipToCollection").prop('checked')) {
-                $("#divDisplayTenantAddresses").css("visibility", "hidden").slideUp();
-                $("#divDisplayPropertyAddresses").css("visibility", "hidden").slideUp();
-                $("#divDisplayAccountAddresses").css("visibility", "hidden").slideUp();
-                $("#divFinalShipmentAddress").slideDown();
-                $("#divDisplaySupplierAddresses").css("visibility", "visible").slideDown();
-            }
-
-            if ($("#radioShipToAccountAddress").prop('checked')) {
-                $("#divDisplayTenantAddresses").css("visibility", "hidden").slideUp();
-                $("#divDisplayPropertyAddresses").css("visibility", "hidden").slideUp();
-                $("#divDisplayAccountAddresses").css("visibility", "visible").slideDown();
-                $("#IsCollectionFromCustomerSide").val(false);
-                $("#divDisplaySupplierAddresses").css("visibility", "hidden").slideUp();
-            }
-
-            if ($("#radioShipToWarehouse:checked").length > 0) {
-                populateShipmentAddress($("#TenantAddressID").find("option:selected").text());
-            }
-            if ($("#radioShipToWorkProperty:checked").length > 0) {
-                populateShipmentAddress($("#PPropertyId").find("option:selected").text());
-            }
-            if ($("#radioShipToAccountAddress:checked").length > 0) {
-                populateShipmentAddress($("#AccountAddressId").find("option:selected").text());
-            }
-            if ($("#radioShipToCollection:checked").length > 0) {
-                populateShipmentAddress($("#ShipmentAccountAddressId").find("option:selected").text());
-            }
-        };
-
-        $("#radioShipToWarehouse,#radioShipToWorkProperty,#radioShipToCustomProperty,#radioShipToAccountAddress,#radioShipToCollection").on("click", function () {
-            updateShipmentInfoVisibility();
         });
 
-        $("#radioShipToWarehouse").on("click", function () {
+    var updateShipmentInfoVisibility = function () {
+        if ($("#radioShipToWarehouse").prop('checked')) {
+            $("#divDisplayTenantAddresses").css("visibility", "visible").slideDown();
+            $("#divDisplayPropertyAddresses").css("visibility", "hidden").slideUp();
+            $("#divDisplayAccountAddresses").css("visibility", "hidden").slideUp();
+            $("#divDisplaySupplierAddresses").css("visibility", "hidden").slideUp();
+            $("#IsCollectionFromCustomerSide").val(false);
+        }
+
+        if ($("#radioShipToWorkProperty").prop('checked')) {
+            $("#divDisplayTenantAddresses").css("visibility", "hidden").slideUp();
+            $("#divDisplayAccountAddresses").css("visibility", "hidden").slideUp();
+            $("#divDisplayPropertyAddresses").css("visibility", "visible").slideDown();
+            $("#divDisplaySupplierAddresses").css("visibility", "hidden").slideUp();
+            $("#IsCollectionFromCustomerSide").val(false);
+        }
+
+        if ($("#radioShipToCustomProperty").prop('checked')) {
+            $("#divDisplayTenantAddresses").css("visibility", "hidden").slideUp();
+            $("#divDisplayPropertyAddresses").css("visibility", "hidden").slideUp();
+            $("#divDisplayAccountAddresses").css("visibility", "hidden").slideUp();
+            $("#divFinalShipmentAddress").slideDown();
+            $("#IsCollectionFromCustomerSide").val(false);
+            $("#divDisplaySupplierAddresses").css("visibility", "hidden").slideUp();
+        }
+
+        if ($("#radioShipToCollection").prop('checked')) {
+            $("#divDisplayTenantAddresses").css("visibility", "hidden").slideUp();
+            $("#divDisplayPropertyAddresses").css("visibility", "hidden").slideUp();
+            $("#divDisplayAccountAddresses").css("visibility", "hidden").slideUp();
+            $("#divFinalShipmentAddress").slideDown();
+            $("#divDisplaySupplierAddresses").css("visibility", "visible").slideDown();
+        }
+
+        if ($("#radioShipToAccountAddress").prop('checked')) {
+            $("#divDisplayTenantAddresses").css("visibility", "hidden").slideUp();
+            $("#divDisplayPropertyAddresses").css("visibility", "hidden").slideUp();
+            $("#divDisplayAccountAddresses").css("visibility", "visible").slideDown();
+            $("#IsCollectionFromCustomerSide").val(false);
+            $("#divDisplaySupplierAddresses").css("visibility", "hidden").slideUp();
+        }
+
+        if ($("#radioShipToWarehouse:checked").length > 0) {
+            populateShipmentAddress($("#TenantAddressID").find("option:selected").text());
+        }
+        if ($("#radioShipToWorkProperty:checked").length > 0) {
+            populateShipmentAddress($("#PPropertyId").find("option:selected").text());
+        }
+        if ($("#radioShipToAccountAddress:checked").length > 0) {
+            populateShipmentAddress($("#AccountAddressId").find("option:selected").text());
+        }
+        if ($("#radioShipToCollection:checked").length > 0) {
+            populateShipmentAddress($("#ShipmentAccountAddressId").find("option:selected").text());
+        }
+    };
+
+    $("#radioShipToWarehouse,#radioShipToWorkProperty,#radioShipToCustomProperty,#radioShipToAccountAddress,#radioShipToCollection").on("click", function () {
+        updateShipmentInfoVisibility();
+    });
+
+    $("#radioShipToWarehouse").on("click", function () {
+        populateShipmentAddress($("#TenantAddressID").find("option:selected").text());
+    });
+
+    $("#radioShipToAccountAddress").on("click", function () {
+        populateShipmentAddress($("#AccountAddressId").find("option:selected").text());
+    });
+
+    $("#radioShipToWorkProperty").on("click", function () {
+        populateShipmentAddress($("#PPropertyId").find("option:selected").text());
+    });
+
+    $("#radioShipToCustomProperty").on("click", function () {
+        $("#divFinalShipmentAddress input[type=text]").val('');
+    });
+
+    $("#radioShipToCollection").on("click", function () {
+        $("#divFinalShipmentAddress input[type=text]").val('');
+        $("#ShipmentAddressPostcode").val("");
+        populateShipmentAddress($("#ShipmentAccountAddressId").find("option:selected").text());
+        $("#IsCollectionFromCustomerSide").val(true);
+    });
+
+    $("#TenantAddressID_chosen").on("click",
+        function () {
             populateShipmentAddress($("#TenantAddressID").find("option:selected").text());
         });
 
-        $("#radioShipToAccountAddress").on("click", function () {
+    $("#TenantAddressID").on("change",
+        function () {
+            populateShipmentAddress($(this).find("option:selected").text());
+        });
+
+    $("#AccountAddressId").on("change",
+        function () {
             populateShipmentAddress($("#AccountAddressId").find("option:selected").text());
         });
 
-        $("#radioShipToWorkProperty").on("click", function () {
-            populateShipmentAddress($("#PPropertyId").find("option:selected").text());
+    $("#PPropertyId").on("change",
+        function () {
+            populateShipmentAddress($(this).find("option:selected").text());
         });
 
-        $("#radioShipToCustomProperty").on("click", function () {
-            $("#divFinalShipmentAddress input[type=text]").val('');
-        });
-
-        $("#radioShipToCollection").on("click", function () {
-            $("#divFinalShipmentAddress input[type=text]").val('');
-            $("#ShipmentAddressPostcode").val("");
+    $("#ShipmentAccountAddressId").on("change",
+        function () {
             populateShipmentAddress($("#ShipmentAccountAddressId").find("option:selected").text());
-            $("#IsCollectionFromCustomerSide").val(true);
         });
 
-        $("#TenantAddressID_chosen").on("click",
-            function () {
-                populateShipmentAddress($("#TenantAddressID").find("option:selected").text());
-            });
+    setTimeout(function () {
+        if ($("#divEmailNotifications").length > 0) {
+            updateShipmentInfoVisibility();
+            updateAccountContactDetails();
+        }
+    }, 200);
 
-        $("#TenantAddressID").on("change",
-            function () {
-                populateShipmentAddress($(this).find("option:selected").text());
-            });
-
-        $("#AccountAddressId").on("change",
-            function () {
-                populateShipmentAddress($("#AccountAddressId").find("option:selected").text());
-            });
-
-        $("#PPropertyId").on("change",
-            function () {
-                populateShipmentAddress($(this).find("option:selected").text());
-            });
-
-        $("#ShipmentAccountAddressId").on("change",
-            function () {
-                populateShipmentAddress($("#ShipmentAccountAddressId").find("option:selected").text());
-            });
-
-        setTimeout(function () {
-            if ($("#divEmailNotifications").length > 0) {
-                updateShipmentInfoVisibility();
-                updateAccountContactDetails();
-            }
-        }, 200);
-
-        $("div.order-shipmentinfo-panes[style='visibility: hidden']").slideUp();
-    };
+    $("div.order-shipmentinfo-panes[style='visibility: hidden']").slideUp();
 });
 
 function UpdatePalletDate(id) {
