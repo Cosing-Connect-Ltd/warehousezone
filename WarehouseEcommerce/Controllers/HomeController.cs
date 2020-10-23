@@ -171,7 +171,7 @@ namespace WarehouseEcommerce.Controllers
 
             };
 
-            specialProduct.productMasterList.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID) ?? 0, 2));
+            specialProduct.productMasterList.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID, CurrentUser?.AccountId) ?? 0, 2));
             specialProduct.FeaturedText = tenantWebsite?.HomeFeaturedProductText;
 
             return PartialView(specialProduct);
@@ -198,7 +198,7 @@ namespace WarehouseEcommerce.Controllers
             {
                 productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID, (CurrentTenantId), 12, "TopProduct").ToList(),
             };
-            topProduct.productMasterList.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID) ?? 0, 2));
+            topProduct.productMasterList.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID, CurrentUser?.AccountId) ?? 0, 2));
 
             if (topProduct.productMasterList != null)
             {
@@ -214,7 +214,7 @@ namespace WarehouseEcommerce.Controllers
             {
                 productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID, CurrentTenantId, 6, "OnSaleProduct").ToList(),
             };
-            onSale.productMasterList.ForEach(u => u.SellPrice = (Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID) ?? 0, 2)));
+            onSale.productMasterList.ForEach(u => u.SellPrice = (Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID, CurrentUser?.AccountId) ?? 0, 2)));
 
             if (onSale.productMasterList != null)
             {
@@ -241,7 +241,7 @@ namespace WarehouseEcommerce.Controllers
             {
                 productMasterList = _productServices.GetProductByCategory(CurrentTenantWebsite.SiteID, (CurrentTenantId), 2, "BestSellerProduct").ToList()
             };
-            BestSellerProduct.productMasterList.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID) ?? 0, 2));
+            BestSellerProduct.productMasterList.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID, CurrentUser?.AccountId) ?? 0, 2));
 
             if (BestSellerProduct.productMasterList != null)
             {

@@ -105,7 +105,7 @@ namespace WMS.Controllers
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
-            var result = _productPriceService.DeleteProductGroupById(id ?? 0, CurrentUserId);
+            var result = _productPriceService.DeletePriceGroupById(id ?? 0, CurrentUserId);
 
             return Json(new { Success = result, Message = result ? "Success" : "Please make sure the price group is not used by any accounts." }, JsonRequestBehavior.AllowGet);
         }

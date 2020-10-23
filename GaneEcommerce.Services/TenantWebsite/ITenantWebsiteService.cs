@@ -100,7 +100,7 @@ namespace Ganedata.Core.Services
         IQueryable<ProductMaster> GetWebsiteProducts(int siteId, string category = "", string ProductName = "", int? categoryId = null);
         IQueryable<ProductMaster> GetAllValidProductForDynamicFilter(int siteId, List<int> productIds);
         Dictionary<ProductAttributes, List<ProductAttributeValues>> GetAllValidProductAttributeValuesByProductIds(IQueryable<ProductMaster> products);
-        Tuple<string, string> GetAvailablePricesRange(List<int> products,int siteId);
+        Tuple<string, string> GetAvailablePricesRange(List<int> products,int siteId, int? accountId);
         Dictionary<int, string> GetAllValidProductManufacturers(List<int> productIds);
         WebsiteNavigation GetProductCategoryByProductId(int siteId, int productId);
 
@@ -110,9 +110,6 @@ namespace Ganedata.Core.Services
         IEnumerable<KitProductCartSession> GetAllValidKitCartItemsList(int KitProductId);
         IEnumerable<WebsiteWishListItem> GetAllValidWishListItemsList(int siteId, int UserId);
         int GetAllValidWishListItemsCount(int siteId, int UserId);
-
-
-        OrderDetailSessionViewModel SetCartItem(int productId, decimal quantity, decimal? currencyRate, int? currencyId);
 
         int AddOrUpdateCartItem(int siteId, int? userId, int tenantId, string sessionKey, int productId, decimal quantity, List<KitProductCartSession> kitProductCartItems = null);
         bool UpdateCartItemQuantity(int siteId, int? userId, int tenantId, string sessionKey, int cartId, decimal quantity);
@@ -140,9 +137,9 @@ namespace Ganedata.Core.Services
         WebsiteDeliveryNavigation CreateOrUpdateWebsiteDeliveryNavigation(WebsiteDeliveryNavigation websiteDeliveryNavigation, int userId, int tenantId);
         int RemoveWebsiteDeliveryNavigation(int id, int userId);
 
-        decimal? GetPriceForProduct(int productId, int siteId);
+        decimal? GetPriceForProduct(int productId, int siteId, int? accountId);
 
-        List<ProductPriceViewModel> GetPricesForProducts(List<int> productIds, int siteId);
+        List<ProductPriceViewModel> GetPricesForProducts(List<int> productIds, int siteId, int? accountId);
 
         decimal? GetProductByAttributeAvailableCount(int productId, List<int> warehouseIds);
         List<ProductManufacturer> GetWebsiteProductManufacturers(int siteId);

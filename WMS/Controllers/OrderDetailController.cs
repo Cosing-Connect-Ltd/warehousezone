@@ -390,7 +390,9 @@ namespace WMS.Controllers
 
             var price = new
             {
-                Price = Request.UrlReferrer.AbsoluteUri.Contains("PurchaseOrder") ? _productPriceService.GetLastPurchaseProductPriceForAccount(productId, accountId) : _productPriceService.GetLastSoldProductPriceForAccount(productId, accountId),
+                Price = Request.UrlReferrer.AbsoluteUri.Contains("PurchaseOrder") ?
+                            _productPriceService.GetProductLastPurchasePriceForAccount(productId, accountId) :
+                            _productPriceService.GetProductLastSellPriceForAccount(productId, accountId),
                 product.ProcessByCase,
                 product.ProcessByPallet,
                 product.CasesPerPallet,

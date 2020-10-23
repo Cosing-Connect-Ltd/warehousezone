@@ -27,12 +27,7 @@ namespace Ganedata.Core.Services
             _mapper = mapper;
         }
 
-        public ProductSaleQueryResponse GetProductSalePriceById(int productId)
-        {
-            return GetProductMasterWithSpecialPrice(productId, 0);
-        }
-
-        public ProductSaleQueryResponse GetProductPriceThresholdByAccountId(int productId, int? accountId = null)
+        public ProductSaleQueryResponse GetProductPriceThresholdByAccountId(int productId, int? accountId = null, int siteId = 0)
         {
             if (productId == 0)
             {
@@ -40,43 +35,7 @@ namespace Ganedata.Core.Services
                 return thresholdInfos;
             }
 
-            return GetProductMasterWithSpecialPrice(productId, accountId ?? 0);
-        }
-
-        public ProductSaleQueryResponse CanTheProductBeSoldAtPriceToAccount(int productId, int accountId, decimal sellingPrice)
-        {
-            var thresholdInfo = GetProductPriceThresholdByAccountId(productId, accountId);
-
-            return GetProductMasterWithSpecialPrice(productId, accountId);
-            //var product
-            //var result = sellingPrice > minSellprice && (product.AllowZeroSale == true || sellingPrice > 0);
-
-            //if (!result)
-            //{
-            //    thresholdInfo.Success = false;
-            //    thresholdInfo.FailureMessage = (product.AllowZeroSale != true && sellingPrice <= 0) ? "Zero price sale not permitted for this product. Contact administrator." : "Selling Price cannot be less than the minimum threshold price.";
-            //}
-
-            //return LoadThresholdInfo(thresholdInfo, product);
-        }
-
-        public ProductSaleQueryResponse CanTheProductBeSoldAtPercentageDiscountToAccount(int productId, int accountId, decimal customDiscountPercent)
-        {
-            var thresholdInfo = GetProductPriceThresholdByAccountId(productId, accountId);
-
-            var minSellprice = thresholdInfo.MinimumThresholdPrice;
-
-            return GetProductMasterWithSpecialPrice(productId, accountId);
-
-            //var sellingPrice = GetPercentageDiscountedPrice(product.SellPrice, customDiscountPercent);
-
-            //var result = sellingPrice > minSellprice && (product.AllowZeroSale == true || sellingPrice > 0);
-            //if (!result)
-            //{
-            //    thresholdInfo.Success = false;
-            //    thresholdInfo.FailureMessage = (product.AllowZeroSale != true && sellingPrice <= 0) ? "Zero price sale not permitted for this product. Contact administrator." : "Selling Price cannot be less than the minimum threshold price.";
-            //}
-            //return LoadThresholdInfo(thresholdInfo, product);
+            return GetProductMasterWithSpecialPrice(productId, accountId ?? 0, siteId);
         }
 
         public List<ProductPriceHistoryModel> GetProductPriceHistoryForAccount(int productId, int accountid)
@@ -94,47 +53,15 @@ namespace Ganedata.Core.Services
                     }).Take(5).ToList();
         }
 
-        public decimal GetLastProductPriceForAccount(int productId, int accountid, InventoryTransactionTypeEnum transactionType)
+        public decimal GetProductLastPurchasePriceForAccount(int productId, int accountId)
         {
-            if (transactionType == InventoryTransactionTypeEnum.PurchaseOrder)
-            {
-                var product = _productService.GetProductMasterById(productId);
-                return ConvertBaseRates(accountid, (product.BuyPrice ?? 0));
-            }
-
-            if (transactionType == InventoryTransactionTypeEnum.SalesOrder)
-            {
-                return GetProductMasterWithSpecialPrice(productId, accountid).SellPrice;
-            }
-            return 0.0m;
+            var product = _productService.GetProductMasterById(productId);
+            return ConvertPriceBaseRates(accountId, (product.BuyPrice ?? 0));
         }
 
-        public decimal GetLastSoldProductPriceForAccount(int productId, int accountid)
+        public decimal GetProductLastSellPriceForAccount(int productId, int accountId)
         {
-            return GetLastProductPriceForAccount(productId, accountid, InventoryTransactionTypeEnum.SalesOrder);
-        }
-
-        public decimal GetLastPurchaseProductPriceForAccount(int productId, int accountId)
-        {
-            return GetLastProductPriceForAccount(productId, accountId, InventoryTransactionTypeEnum.PurchaseOrder);
-        }
-
-        public decimal GetTaxAmountProductPriceForAccount(int productId, int accountId)
-        {
-            return GetLastProductPriceForAccount(productId, accountId, InventoryTransactionTypeEnum.SalesOrder);
-            //var product = GetProductMasterWithSpecialPrice(productId, accountId);
-            //if (product.GlobalTax == null || product.GlobalTax.PercentageOfAmount == 0) return 0;
-
-            //return (lastProductPrice / 100) * product.GlobalTax.PercentageOfAmount;
-        }
-
-        private static decimal GetPercentageDiscountedPrice(decimal? price, decimal customDiscountPercent)
-        {
-            if (!price.HasValue) return 0;
-
-            if (customDiscountPercent == 0) return price.Value;
-
-            return price.Value - ((price.Value / 100) * customDiscountPercent);
+            return GetProductMasterWithSpecialPrice(productId, accountId).SellPrice;
         }
 
         public decimal GetPercentageMarginPrice(decimal? price, decimal customMarginPercent)
@@ -146,72 +73,62 @@ namespace Ganedata.Core.Services
             return price.Value + ((price.Value / 100) * customMarginPercent);
         }
 
-        private ProductSaleQueryResponse GetProductMasterWithSpecialPrice(int productId, int? accountId)
+        private ProductSaleQueryResponse GetProductMasterWithSpecialPrice(int productId, int? accountId, int siteId = 0)
         {
             var product = _productService.GetProductMasterById(productId);
-            var priceGroupId = 0;
-            var account = _accountServices.GetAccountsById(accountId ?? 0);
-            if (account != null && account.PriceGroupID > 0)
-            {
-                priceGroupId = account.PriceGroupID;
+            var accountPriceGroup = _accountServices.GetAccountsById(accountId ?? 0)?.TenantPriceGroups;
+            var siteDefaultPriceGroup = _context.TenantWebsites.FirstOrDefault(u => u.IsDeleted != true && u.SiteID == siteId && u.IsActive == true)?.DefaultPriceGroup;
 
-                var specialPrice = _context.ProductSpecialPrices.FirstOrDefault(m => m.ProductID == productId && priceGroupId == m.PriceGroupID && (!m.StartDate.HasValue || m.StartDate < DateTime.UtcNow) && (!m.EndDate.HasValue || m.EndDate > DateTime.UtcNow));
-                if (specialPrice != null && specialPrice.SpecialPrice > 0)
+            if (accountPriceGroup != null)
+            {
+                var specialPrice = _context.ProductSpecialPrices.FirstOrDefault(m => m.ProductID == productId && accountPriceGroup.PriceGroupID == m.PriceGroupID && (!m.StartDate.HasValue || m.StartDate < DateTime.UtcNow) && (!m.EndDate.HasValue || m.EndDate > DateTime.UtcNow));
+                if (specialPrice != null && specialPrice?.SpecialPrice > 0)
                 {
-                    if (account.TenantPriceGroups.ApplyDiscountOnSpecialPrice && account.TenantPriceGroups.Percent > 0)
+                    if (siteDefaultPriceGroup.ApplyDiscountOnSpecialPrice && siteDefaultPriceGroup.Percent > 0)
                     {
-                        product.SellPrice = Math.Round((specialPrice.SpecialPrice - ((specialPrice.SpecialPrice * account.TenantPriceGroups.Percent) / 100)), 2);
+                        specialPrice.SpecialPrice = Math.Round(specialPrice.SpecialPrice - ((specialPrice.SpecialPrice * siteDefaultPriceGroup.Percent) / 100), 2);
                     }
-                    else
+                    else if (accountPriceGroup.ApplyDiscountOnSpecialPrice && accountPriceGroup.Percent > 0)
                     {
-                        product.SellPrice = specialPrice.SpecialPrice;
+                        specialPrice.SpecialPrice = Math.Round(specialPrice.SpecialPrice - ((specialPrice.SpecialPrice * accountPriceGroup.Percent) / 100), 2);
                     }
+
+                    product.SellPrice = specialPrice.SpecialPrice;
                 }
                 else
                 {
-                    if (account.TenantPriceGroups.ApplyDiscountOnTotal && !account.TenantPriceGroups.ApplyDiscountOnTotal)
-                        if (account.TenantPriceGroups.Percent > 0)
-                        {
-                            product.SellPrice = Math.Round(((product.SellPrice ?? 0) - (((product.SellPrice ?? 0) * account.TenantPriceGroups.Percent) / 100)), 2);
-                        }
+                    if (siteDefaultPriceGroup.ApplyDiscountOnTotal && siteDefaultPriceGroup.Percent > 0)
+                    {
+                        product.SellPrice = Math.Round((product.SellPrice ?? 0) - (((product.SellPrice ?? 0) * siteDefaultPriceGroup.Percent) / 100), 2);
+                    }
+                    else if (accountPriceGroup.ApplyDiscountOnTotal && accountPriceGroup.Percent > 0)
+                    {
+                        product.SellPrice = Math.Round((product.SellPrice ?? 0) - (((product.SellPrice ?? 0) * accountPriceGroup.Percent) / 100), 2);
+                    }
                 }
             }
-            decimal? SellPrice = ConvertBaseRates(accountId ?? 0, product.SellPrice ?? 0) > 0 ? ConvertBaseRates(accountId ?? 0, product.SellPrice ?? 0) : 0;
-            var minSellPrice = ConvertBaseRates(accountId ?? 0, (GetPercentageMarginPrice(product.BuyPrice, product.PercentMargin) + (product.LandedCost ?? 0)));
+            decimal? SellPrice = ConvertPriceBaseRates(accountId ?? 0, product.SellPrice ?? 0) > 0 ? ConvertPriceBaseRates(accountId ?? 0, product.SellPrice ?? 0) : 0;
+            var minSellPrice = ConvertPriceBaseRates(accountId ?? 0, (GetPercentageMarginPrice(product.BuyPrice, product.PercentMargin) + (product.LandedCost ?? 0)));
             var minThresholdPrice = product.MinThresholdPrice ?? (minSellPrice <= 0 ? SellPrice : minSellPrice) ?? 0;
             var finalThresholdPrice = new[] { minThresholdPrice, minSellPrice }.Min();
-            finalThresholdPrice = ConvertBaseRates(accountId ?? 0, finalThresholdPrice);
-            var LandingCost = ConvertBaseRates(accountId ?? 0, product.LandedCost ?? 0);
+            finalThresholdPrice = ConvertPriceBaseRates(accountId ?? 0, finalThresholdPrice);
+            var LandingCost = ConvertPriceBaseRates(accountId ?? 0, product.LandedCost ?? 0);
             var thresholdInfo = new ProductSaleQueryResponse()
             {
                 MinimumThresholdPrice = finalThresholdPrice,
                 SellPrice = (SellPrice ?? 0),
-                LandingCost = ConvertBaseRates(accountId ?? 0, product.LandedCost ?? 0),
+                LandingCost = ConvertPriceBaseRates(accountId ?? 0, product.LandedCost ?? 0),
                 LandingCostWithMargin = minSellPrice,
-                PriceGroupID = account?.PriceGroupID ?? 0,
-                PriceGroupPercent = account?.TenantPriceGroups?.Percent ?? 0,
+                PriceGroupID = accountPriceGroup?.PriceGroupID ?? siteDefaultPriceGroup?.PriceGroupID ?? 0,
+                PriceGroupPercent = accountPriceGroup?.Percent ?? siteDefaultPriceGroup?.Percent ?? 0,
                 ProfitMargin = product.PercentMargin,
                 MinimumSellPrice = minSellPrice
             };
-            return LoadThresholdInfo(thresholdInfo, product);
+
+            return SetThresholdInfo(thresholdInfo, product);
         }
 
-        private decimal GetProductPriceByAccountId(int productId, int? accountId = null)
-        {
-            if (!accountId.HasValue || accountId == 0)
-            {
-                return GetProductSalePriceById(productId).SellPrice;
-            }
-            var product = GetProductMasterWithSpecialPrice(productId, accountId ?? 0);
-
-            var account = _accountServices.GetAccountsById(accountId.Value);
-
-            var sellPrice = GetPercentageDiscountedPrice(ConvertBaseRates(accountId ?? 0, product.SellPrice), account.TenantPriceGroups.Percent);
-
-            return sellPrice;
-        }
-
-        private ProductSaleQueryResponse LoadThresholdInfo(ProductSaleQueryResponse thresholdInfo, ProductMaster product)
+        private ProductSaleQueryResponse SetThresholdInfo(ProductSaleQueryResponse thresholdInfo, ProductMaster product)
         {
             var tenantConfig = _context.TenantConfigs.FirstOrDefault(m => m.TenantId == product.TenantId);
             if (tenantConfig != null)
@@ -224,7 +141,7 @@ namespace Ganedata.Core.Services
             return thresholdInfo;
         }
 
-        private decimal ConvertBaseRates(int accountId, decimal price)
+        private decimal ConvertPriceBaseRates(int accountId, decimal price)
         {
             if (accountId == 0) return price;
             var account = _context.Account.FirstOrDefault(a => a.AccountID == accountId);
@@ -371,7 +288,7 @@ namespace Ganedata.Core.Services
             return pg;
         }
 
-        public bool DeleteProductGroupById(int priceGroupId, int userId)
+        public bool DeletePriceGroupById(int priceGroupId, int userId)
         {
             var priceGroup = _context.TenantPriceGroups.FirstOrDefault(m => m.PriceGroupID == priceGroupId);
             if (priceGroup != null)
