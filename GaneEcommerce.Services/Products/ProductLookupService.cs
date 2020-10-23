@@ -183,7 +183,7 @@ namespace Ganedata.Core.Services
             return _currentDbContext.ProductLocationsMap.Where(
                 a => a.Locations.IsDeleted != true && a.IsDeleted != true && a.ProductId == productId);
         }
-        public IQueryable<ProductMaster> ApplyFixedFilters(IQueryable<ProductMaster> products, string filterString, int siteId)
+        public IQueryable<ProductMaster> ApplyFixedFilters(IQueryable<ProductMaster> products, string filterString, int siteId, int? accountId)
         {
             try
             {
@@ -217,7 +217,7 @@ namespace Ganedata.Core.Services
                         var filteredProductsIds = selectedProducts
                                                             .Select(u =>
                                                             {
-                                                                var sellPrice = _tenantWebsiteService.GetPriceForProduct(u.ProductId, siteId);
+                                                                var sellPrice = _tenantWebsiteService.GetPriceForProduct(u.ProductId, siteId, accountId);
                                                                 return (sellPrice == null || (sellPrice >= prices.Min() && sellPrice <= prices.Max())) ? u.ProductId : (int?)null;
                                                             })
                                                             .Where(p => p != null)

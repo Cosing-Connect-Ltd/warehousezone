@@ -113,7 +113,7 @@ namespace WarehouseEcommerce.Controllers
                         products = products.Where(s => s.SKUCode.Contains(search) || s.Name.Contains(search));
                     }
 
-                    products = _productlookupServices.ApplyFixedFilters(products, filters, CurrentTenantWebsite.SiteID);
+                    products = _productlookupServices.ApplyFixedFilters(products, filters, CurrentTenantWebsite.SiteID, CurrentUser?.AccountId);
 
                     if (categoryId == null)
                     {
@@ -150,7 +150,7 @@ namespace WarehouseEcommerce.Controllers
                     var pagedProductsList = products.ToPagedList((pageNumber == 0 ? 1 : pageNumber), pageSize.Value);
                     if (pagedProductsList.Count > 0)
                     {
-                        pagedProductsList.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID) ?? 0, 2));
+                        pagedProductsList.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID, CurrentUser?.AccountId) ?? 0, 2));
                     }
 
                     model.DynamicFilters.FilteredCount = products.Count();
@@ -235,13 +235,13 @@ namespace WarehouseEcommerce.Controllers
 
             SetProductViewModelCategoryInfo(baseProduct, model);
 
-            model.Prices = _tenantWebsiteService.GetPricesForProducts(new List<int> { model.Product.ProductId }, CurrentTenantWebsite.SiteID).FirstOrDefault();
+            model.Prices = _tenantWebsiteService.GetPricesForProducts(new List<int> { model.Product.ProductId }, CurrentTenantWebsite.SiteID, CurrentUser?.AccountId).FirstOrDefault();
 
             model.AvailableProductCount = Inventory.GetAvailableProductCount(model.Product, CurrentTenantWebsite.SiteID);
 
             model.RelatedProducts = _productServices.GetRelatedProductsByProductId(model.Product.ProductId, CurrentTenantId, CurrentTenantWebsite.SiteID, baseProduct.ProductId);
 
-            model.RelatedProducts.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID) ?? 0, 2));
+            model.RelatedProducts.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID, CurrentUser?.AccountId) ?? 0, 2));
 
             return View(model);
         }
@@ -286,7 +286,7 @@ namespace WarehouseEcommerce.Controllers
 
                     if (isFirstTab)
                     {
-                        var filteredKitProducts = _productlookupServices.ApplyFixedFilters(kitProducts.AsQueryable(), filters, CurrentTenantWebsite.SiteID);
+                        var filteredKitProducts = _productlookupServices.ApplyFixedFilters(kitProducts.AsQueryable(), filters, CurrentTenantWebsite.SiteID, CurrentUser?.AccountId);
 
                         model.DynamicFilters.Attributes = _tenantWebsiteService.GetAllValidProductAttributeValuesByProductIds(filteredKitProducts);
 
@@ -312,7 +312,7 @@ namespace WarehouseEcommerce.Controllers
                     {
                         Products = finalKitProducts.Select(p => p.Product).ToList(),
                         ProductsAvailableCounts = finalKitProducts.ToDictionary(p => p.Product.ProductId, p => p.AvailableProductCount),
-                        Prices = _tenantWebsiteService.GetPricesForProducts(finalKitProducts.Select(p => p.Product.ProductId).ToList(), CurrentTenantWebsite.SiteID)
+                        Prices = _tenantWebsiteService.GetPricesForProducts(finalKitProducts.Select(p => p.Product.ProductId).ToList(), CurrentTenantWebsite.SiteID, CurrentUser?.AccountId)
                                                       .GroupBy(p => p.ProductId)
                                                       .ToDictionary(p => p.Key, p => p.First()),
                         ProductKitType = ProductKitType
@@ -326,7 +326,7 @@ namespace WarehouseEcommerce.Controllers
 
             model.RelatedProducts = _productServices.GetRelatedProductsByProductId(model.Product.ProductId, CurrentTenantId, CurrentTenantWebsite.SiteID);
 
-            model.RelatedProducts.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID) ?? 0, 2));
+            model.RelatedProducts.ForEach(u => u.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(u.ProductId, CurrentTenantWebsite.SiteID, CurrentUser?.AccountId) ?? 0, 2));
 
             return View(model);
         }
@@ -334,7 +334,7 @@ namespace WarehouseEcommerce.Controllers
         public ActionResult KitProductDetail(string sku)
         {
             var product = _productServices.GetProductMasterByProductCode(sku, CurrentTenantId);
-            product.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(product.ProductId, CurrentTenantWebsite.SiteID) ?? 0, 2);
+            product.SellPrice = Math.Round(_tenantWebsiteService.GetPriceForProduct(product.ProductId, CurrentTenantWebsite.SiteID, CurrentUser?.AccountId) ?? 0, 2);
             return View(product);
         }
 
@@ -560,7 +560,7 @@ namespace WarehouseEcommerce.Controllers
             {
                 productFiltering.Brands = _tenantWebsiteService.GetAllValidProductManufacturers(productIds);
                 productFiltering.Types = _productlookupServices.GetAllValidSubCategoriesByDepartmentAndGroup(productIds);
-                (productFiltering.MinPrice, productFiltering.MaxPrice) = _tenantWebsiteService.GetAvailablePricesRange(productIds, CurrentTenantWebsite.SiteID);
+                (productFiltering.MinPrice, productFiltering.MaxPrice) = _tenantWebsiteService.GetAvailablePricesRange(productIds, CurrentTenantWebsite.SiteID, CurrentUser?.AccountId);
 
                 productFiltering.TotalCount = !isProductChildsFilter ? productIds.Count() : 0;
             }
@@ -735,7 +735,7 @@ namespace WarehouseEcommerce.Controllers
                 model.Product = baseProduct;
             }
 
-            model.Prices = _tenantWebsiteService.GetPricesForProducts(new List<int> { model.Product.ProductId }, CurrentTenantWebsite.SiteID).FirstOrDefault();
+            model.Prices = _tenantWebsiteService.GetPricesForProducts(new List<int> { model.Product.ProductId }, CurrentTenantWebsite.SiteID, CurrentUser?.AccountId).FirstOrDefault();
             model.ParentProductId = baseProduct.ProductId;
             model.ParentProductType = baseProduct.ProductType;
             model.ParentProductSKUCode = baseProduct.SKUCode;

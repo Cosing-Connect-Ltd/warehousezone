@@ -20,7 +20,6 @@ namespace Ganedata.Core.Services
         private readonly IMapper _mapper;
         private readonly IEmailServices _emailServices;
         private readonly IProductServices _productServices;
-        private readonly ICommonDbServices _commonDbServices;
         private readonly IProductPriceService _productPriceService;
         private readonly ITenantsCurrencyRateServices _tenantsCurrencyRateServices;
         private readonly IAccountServices _accountServices;
@@ -29,7 +28,6 @@ namespace Ganedata.Core.Services
                                     IMapper mapper,
                                     IEmailServices emailServices,
                                     IProductServices productServices,
-                                    ICommonDbServices commonDbServices,
                                     IProductPriceService productPriceService,
                                     ITenantsCurrencyRateServices tenantsCurrencyRateServices, IAccountServices accountServices)
         {
@@ -37,7 +35,6 @@ namespace Ganedata.Core.Services
             _mapper = mapper;
             _emailServices = emailServices;
             _productPriceService = productPriceService;
-            _commonDbServices = commonDbServices;
             _productServices = productServices;
             _tenantsCurrencyRateServices = tenantsCurrencyRateServices;
             _accountServices = accountServices;
@@ -1087,9 +1084,9 @@ namespace Ganedata.Core.Services
                               .ToList());
         }
 
-        public Tuple<string, string> GetAvailablePricesRange(List<int> productIds, int siteId)
+        public Tuple<string, string> GetAvailablePricesRange(List<int> productIds, int siteId, int? accountId)
         {
-            var productsPrices = productIds.Select(u => GetPriceForProduct(u, siteId)).Where(p => p != null).ToList();
+            var productsPrices = productIds.Select(u => GetPriceForProduct(u, siteId, accountId)).Where(p => p != null).ToList();
 
             return new Tuple<string, string>(productsPrices.Min(u => u).ToString(), productsPrices.Max(u => u).ToString());
         }
@@ -1225,10 +1222,11 @@ namespace Ganedata.Core.Services
                                                                          (u.UserId == userId || u.SessionKey.Equals(sessionKey, StringComparison.InvariantCultureIgnoreCase)));
             if (cartProduct == null)
             {
+                var accountId = _currentDbContext.Account.FirstOrDefault(a => a.OwnerUserId == userId).AccountID;
                 cartProduct = new WebsiteCartItem();
                 cartProduct.ProductId = productId;
                 cartProduct.Quantity = quantity;
-                cartProduct.UnitPrice = Math.Round(GetPriceForProduct(productId, siteId) ?? 0, 2);
+                cartProduct.UnitPrice = Math.Round(GetPriceForProduct(productId, siteId, accountId) ?? 0, 2);
                 cartProduct.UserId = userId == 0 ? null : userId;
                 cartProduct.TenantId = tenantId;
                 cartProduct.SiteID = siteId;
@@ -1420,21 +1418,6 @@ namespace Ganedata.Core.Services
             }
 
             return true;
-        }
-
-        public OrderDetailSessionViewModel SetCartItem(int productId, decimal quantity, decimal? currencyRate, int? currencyId)
-        {
-            var model = new OrderDetail();
-            var product = _productServices.GetProductMasterById(productId);
-            model.ProductMaster = product;
-            model.Qty = quantity;
-            model.ProductId = productId;
-            model.Price = Math.Round(((_productPriceService.GetProductPriceThresholdByAccountId(model.ProductId, null).SellPrice) * ((!currencyRate.HasValue || currencyRate <= 0) ? 1 : currencyRate.Value)), 2);
-            model = _commonDbServices.SetDetails(model, null, "SalesOrders", "");
-            var cartItem = _mapper.Map(model, new OrderDetailSessionViewModel());
-            cartItem.Price = Math.Round(((cartItem.Price) * ((!currencyRate.HasValue || currencyRate <= 0) ? 1 : currencyRate.Value)), 2);
-            cartItem.CurrencyId = currencyId;
-            return cartItem;
         }
 
         public int RemoveWishListItem(int ProductId, int siteId, int userId)
@@ -1690,14 +1673,14 @@ namespace Ganedata.Core.Services
             {
                 updatedRecored.IsDeleted = true;
                 updatedRecored.UpdateUpdatedInfo(userId);
-                _currentDbContext.Entry(updatedRecored).State = System.Data.Entity.EntityState.Modified;
+                _currentDbContext.Entry(updatedRecored).State = EntityState.Modified;
                 _currentDbContext.SaveChanges();
             }
 
             return updatedRecored.SiteId;
         }
 
-        public decimal? GetPriceForProduct(int productId, int siteId)
+        public decimal? GetPriceForProduct(int productId, int siteId, int? accountId = null)
         {
             var product = _currentDbContext.ProductMaster.AsNoTracking().FirstOrDefault(u => u.ProductId == productId);
 
@@ -1714,10 +1697,10 @@ namespace Ganedata.Core.Services
             }
 
             if (product.SellPrice == null)
-                return (decimal?)null;
+                return null;
 
             var calculateTax = GetTenantWebSiteBySiteId(siteId).ShowPricesIncludingTax;
-            var sellPrice = _productPriceService.GetProductPriceThresholdByAccountId(product.ProductId, null).SellPrice;
+            var sellPrice = _productPriceService.GetProductPriceThresholdByAccountId(product.ProductId, accountId, siteId).SellPrice;
             if (calculateTax)
             {
                 if (product != null && product.TaxID > 0 && product.EnableTax == true)
@@ -1736,14 +1719,14 @@ namespace Ganedata.Core.Services
             return sellPrice;
         }
 
-        public List<ProductPriceViewModel> GetPricesForProducts(List<int> productIds, int siteId)
+        public List<ProductPriceViewModel> GetPricesForProducts(List<int> productIds, int siteId, int? accountId)
         {
             return productIds.Select(productId =>
             {
                 var calculateTax = GetTenantWebSiteBySiteId(siteId).ShowPricesIncludingTax;
                 var productPrice = new ProductPriceViewModel
                 {
-                    FinalSellPrice = _productPriceService.GetProductPriceThresholdByAccountId(productId, null).SellPrice,
+                    FinalSellPrice = _productPriceService.GetProductPriceThresholdByAccountId(productId, accountId, siteId).SellPrice,
                     ProductId = productId
                 };
                 if (calculateTax)

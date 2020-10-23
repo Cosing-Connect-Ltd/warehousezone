@@ -72,6 +72,7 @@ namespace WMS.Controllers
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
             ViewBag.ProductTags = new SelectList(_productLookupService.GetAllValidProductTag(CurrentTenantId),"Id","TagName");
+            ViewBag.PriceGroups = new MultiSelectList(LookupServices.GetAllPriceGroups(CurrentTenantId), "PriceGroupID", "Name");
             Session["UploadTenantWebsiteLogo"] = null;
             Session["UploadTenantWebsiteSmallLogo"] = null;
             Session["UploadTenantWebsiteFavicon"] = null;
@@ -136,6 +137,7 @@ namespace WMS.Controllers
             Session["UploadTenantWebsiteFavicon"] = !string.IsNullOrEmpty(tenantWebsites.Favicon) ? new DirectoryInfo(tenantWebsites.Favicon).Name : null;
 
             ViewBag.ProductTag = new SelectList(_productLookupService.GetAllValidProductTag(CurrentTenantId), "Id", "TagName");
+            ViewBag.PriceGroups = new MultiSelectList(LookupServices.GetAllPriceGroups(CurrentTenantId), "PriceGroupID", "Name");
             return View(tenantWebsites);
         }
 
