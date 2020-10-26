@@ -97,11 +97,11 @@ namespace Ganedata.Core.Services
                 }
                 else
                 {
-                    if (siteDefaultPriceGroup.ApplyDiscountOnTotal && siteDefaultPriceGroup.Percent > 0)
+                    if (siteDefaultPriceGroup != null && siteDefaultPriceGroup.ApplyDiscountOnTotal && siteDefaultPriceGroup.Percent > 0)
                     {
                         product.SellPrice = Math.Round((product.SellPrice ?? 0) - (((product.SellPrice ?? 0) * siteDefaultPriceGroup.Percent) / 100), 2);
                     }
-                    else if (accountPriceGroup.ApplyDiscountOnTotal && accountPriceGroup.Percent > 0)
+                    else if (accountPriceGroup != null && accountPriceGroup.ApplyDiscountOnTotal && accountPriceGroup.Percent > 0)
                     {
                         product.SellPrice = Math.Round((product.SellPrice ?? 0) - (((product.SellPrice ?? 0) * accountPriceGroup.Percent) / 100), 2);
                     }
