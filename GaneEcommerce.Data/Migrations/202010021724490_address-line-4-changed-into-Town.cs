@@ -11,6 +11,7 @@
             AddColumn("dbo.OrderProcesses", "ShipmentAddressTown", c => c.String());
             Sql("UPDATE dbo.Orders SET ShipmentAddressTown = ShipmentAddressLine4");
             Sql("UPDATE dbo.OrderProcesses SET ShipmentAddressTown = ShipmentAddressLine4");
+            Sql("UPDATE dbo.AccountAddresses SET County = AddressLine4");
             DropColumn("dbo.AccountAddresses", "AddressLine4");
             DropColumn("dbo.Orders", "ShipmentAddressLine4");
             DropColumn("dbo.OrderProcesses", "ShipmentAddressLine4");
@@ -23,6 +24,7 @@
             AddColumn("dbo.AccountAddresses", "AddressLine4", c => c.String(maxLength: 200));
             Sql("UPDATE dbo.Orders SET ShipmentAddressLine4 = ShipmentAddressTown");
             Sql("UPDATE dbo.OrderProcesses SET ShipmentAddressLine4 = ShipmentAddressTown");
+            Sql("UPDATE dbo.AccountAddresses SET AddressLine4 = County");
             DropColumn("dbo.OrderProcesses", "ShipmentAddressTown");
             DropColumn("dbo.Orders", "ShipmentAddressTown");
         }

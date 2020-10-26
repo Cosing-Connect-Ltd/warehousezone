@@ -130,6 +130,25 @@ namespace WMS.Controllers.WebAPI
             return Ok(_mapper.Map(result, new OrdersSyncCollection()));
         }
 
+        // GET http://ganetest.qsrtime.net/api/sync/order-status/{serialNo}
+        // GET http://ganetest.qsrtime.net/api/sync/order-status/920013c000814
+        //TODO: UserId should be passed to this method rather than using 0 as user id
+        [HttpGet]
+        [Obsolete("Use Post UpdateOrderStatus instead")]
+        public IHttpActionResult UpdateOrderStatus(string serialNo, int orderId, OrderStatusEnum statusId)
+        {
+            serialNo = serialNo.Trim().ToLower();
+
+            var terminal = TerminalServices.GetTerminalBySerial(serialNo);
+
+            if (terminal == null)
+            {
+                return Unauthorized();
+            }
+            var result = OrderService.UpdateOrderStatus(orderId, statusId, 0);
+            return Ok(_mapper.Map(result, new OrdersSync()));
+        }
+
         // POST http://ganetest.qsrtime.net/api/sync/order-status
         [HttpPost]
         public async Task<IHttpActionResult> UpdateOrderStatus(UpdateOrderStatusViewModel model)

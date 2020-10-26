@@ -567,9 +567,6 @@ namespace Ganedata.Core.Services
                 entry2.Property(e => e.IsDeleted).IsModified = true;
             }
 
-            customeraddresses.Name = customeraddresses?.Name?.Trim();
-            if (customeraddresses.Name == null) { customeraddresses.Name = "No Name"; }
-
             customeraddresses.DateCreated = DateTime.UtcNow;
             customeraddresses.DateUpdated = DateTime.UtcNow;
             customeraddresses.CreatedBy = currentUserId;

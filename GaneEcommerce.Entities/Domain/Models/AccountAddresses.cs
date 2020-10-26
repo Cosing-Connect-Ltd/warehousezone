@@ -11,7 +11,6 @@ namespace Ganedata.Core.Entities.Domain
         [Key]
         [Display(Name = "Address Id")]
         public int AddressID { get; set; }
-        [Required]
         [Display(Name = "Contact Name")]
         public string Name { get; set; }
         [Required]

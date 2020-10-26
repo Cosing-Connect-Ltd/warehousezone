@@ -1127,6 +1127,10 @@
     <Compile Include="Migrations\202010231254567_added-PriceGroup-to-TenantWebsites-table.designer.cs">
       <DependentUpon>202010231254567_added-PriceGroup-to-TenantWebsites-table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202010260115343_null-allowed-in-account-addresses.cs" />
+    <Compile Include="Migrations\202010260115343_null-allowed-in-account-addresses.designer.cs">
+      <DependentUpon>202010260115343_null-allowed-in-account-addresses.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2292,6 +2296,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202010231254567_added-PriceGroup-to-TenantWebsites-table.resx">
       <DependentUpon>202010231254567_added-PriceGroup-to-TenantWebsites-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010260115343_null-allowed-in-account-addresses.resx">
+      <DependentUpon>202010260115343_null-allowed-in-account-addresses.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
