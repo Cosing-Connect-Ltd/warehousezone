@@ -84,11 +84,11 @@ namespace Ganedata.Core.Services
                 var specialPrice = _context.ProductSpecialPrices.FirstOrDefault(m => m.ProductID == productId && accountPriceGroup.PriceGroupID == m.PriceGroupID && (!m.StartDate.HasValue || m.StartDate < DateTime.UtcNow) && (!m.EndDate.HasValue || m.EndDate > DateTime.UtcNow));
                 if (specialPrice != null && specialPrice?.SpecialPrice > 0)
                 {
-                    if (siteDefaultPriceGroup.ApplyDiscountOnSpecialPrice && siteDefaultPriceGroup.Percent > 0)
+                    if (siteDefaultPriceGroup != null && siteDefaultPriceGroup.ApplyDiscountOnSpecialPrice && siteDefaultPriceGroup.Percent > 0)
                     {
                         specialPrice.SpecialPrice = Math.Round(specialPrice.SpecialPrice - ((specialPrice.SpecialPrice * siteDefaultPriceGroup.Percent) / 100), 2);
                     }
-                    else if (accountPriceGroup.ApplyDiscountOnSpecialPrice && accountPriceGroup.Percent > 0)
+                    else if (accountPriceGroup != null && accountPriceGroup.ApplyDiscountOnSpecialPrice && accountPriceGroup.Percent > 0)
                     {
                         specialPrice.SpecialPrice = Math.Round(specialPrice.SpecialPrice - ((specialPrice.SpecialPrice * accountPriceGroup.Percent) / 100), 2);
                     }

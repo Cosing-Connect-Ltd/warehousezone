@@ -568,22 +568,21 @@ namespace Ganedata.Core.Services
                 var results = model.Where(x => x.QtyProcessed > 0 &&
                                                x.ProductMaster.IsAutoShipment != true &&
                                                x.ProductMaster.ProductType != ProductKitTypeEnum.Virtual)
-                                   .GroupBy(p => p.ProductId)
                                    .Select(ord => new OrderDetailsViewModel()
                                    {
-                                       OrderID = ord.FirstOrDefault().OrderProcess.OrderID ?? 0,
-                                       ProductId = ord.Key,
-                                       ProductMaster = ord.FirstOrDefault().ProductMaster,
-                                       ProductGroups = ord.FirstOrDefault().OrderDetail.ProductGroups,
-                                       OrderDetailID = ord.FirstOrDefault().OrderProcessDetailID,
-                                       Product = ord?.FirstOrDefault().ProductMaster?.Name,
-                                       Qty = ord.Sum(q => q.QtyProcessed),
-                                       OrderNumber = ord.FirstOrDefault().OrderProcess.Order.OrderNumber,
-                                       DateCreated = ord.FirstOrDefault().DateCreated ?? DateTime.UtcNow,
-                                       QtyProcessed = ord.Sum(q => q.PalletedQuantity),
-                                       ProductGroup = ord.FirstOrDefault().ID,
-                                       orderProcessstatusId = ord.FirstOrDefault().OrderProcess.OrderProcessStatusId,
-                                       orderstatusId = ord.FirstOrDefault().OrderProcess?.Order?.OrderStatusID,
+                                       OrderID = ord.OrderProcess.OrderID ?? 0,
+                                       ProductId = ord.ProductId,
+                                       ProductMaster = ord.ProductMaster,
+                                       ProductGroups = ord.OrderDetail.ProductGroups,
+                                       OrderDetailID = ord.OrderProcessDetailID,
+                                       Product = ord?.ProductMaster?.Name,
+                                       Qty = ord.QtyProcessed,
+                                       OrderNumber = ord.OrderProcess.Order.OrderNumber,
+                                       DateCreated = ord.DateCreated ?? DateTime.UtcNow,
+                                       QtyProcessed = ord.PalletedQuantity,
+                                       ProductGroup = ord.ID,
+                                       orderProcessstatusId = ord.OrderProcess.OrderProcessStatusId,
+                                       orderstatusId = ord.OrderProcess?.Order?.OrderStatusID,
                                    })
                                    .ToList();
 
