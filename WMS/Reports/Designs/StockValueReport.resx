@@ -117,13 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="sqlDataSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <data name="selectQuery1.FilterString" xml:space="preserve">
-    <value>[ProductMaster.ProductId] In (?sqlProductId) And [ProductMaster.TenantId] = ?sqlTenantId And [InventoryStocks.WarehouseId] = ?sqlWarehouseId And [InventoryStocks.InStock] &gt; 0.0m And ([ProductMaster.IsDeleted] = False Or [ProductMaster.IsDeleted] Is Null)</value>
-  </data>
-  <data name="sqlDataSource1.ResultSchemaSerializable" xml:space="preserve">
-    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9IlByb2R1Y3RNYXN0ZXIiPjxGaWVsZCBOYW1lPSJTS1VDb2RlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iSW5TdG9jayIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0iQnV5UHJpY2UiIFR5cGU9IkRlY2ltYWwiIC8+PC9WaWV3PjwvRGF0YVNldD4=</value>
-  </data>
 </root>
