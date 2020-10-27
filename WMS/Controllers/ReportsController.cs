@@ -1637,8 +1637,11 @@ namespace WMS.Controllers
                     {
                         InvoiceId = p.InvoiceId,
                         ProductName = p.ProductName,
-                        BuyingPrice = p.TotalBuyPrice,
-                        SellingPrice = p.TotalSellPrice,
+                        Quantity = p.Quantity,
+                        BuyPrice = p.BuyPrice,
+                        SellPrice = p.SellPrice,
+                        TotalBuyPrice = p.TotalBuyPrice,
+                        TotalSellPrice = p.TotalSellPrice,
                         Profit = p.TotalSellPrice - p.TotalBuyPrice
                     }).ToList()
                 });
