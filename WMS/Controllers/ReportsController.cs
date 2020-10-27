@@ -1622,24 +1622,27 @@ namespace WMS.Controllers
             foreach (var invoice in invoices.ToList())
             {
                 var invoiceProductsPrices = _invoiceService.GetInvoiceProductsPrices(invoice.InvoiceMasterId, productIds);
-                var buyingNetAmount = invoiceProductsPrices.Sum(p => p.BuyingPrice);
-                var sellingNetAmount = invoiceProductsPrices.Sum(p => p.SellingPrice);
+                var buyingNetAmount = invoiceProductsPrices.Sum(p => p.TotalBuyPrice);
+                var sellingNetAmount = invoiceProductsPrices.Sum(p => p.TotalSellPrice);
                 dataSource.Add(new InvoiceProfitReportViewModel
                 {
                     InvoiceId = invoice.InvoiceMasterId,
                     InvoiceNumber = invoice.InvoiceNumber,
                     CompanyName = invoice.Account?.CompanyName ?? "",
                     Date = invoice.DateCreated,
-                    NetAmtB = invoiceProductsPrices.Sum(p => p.BuyingPrice),
-                    NetAmtS = invoiceProductsPrices.Sum(p => p.SellingPrice),
+                    NetAmtB = invoiceProductsPrices.Sum(p => p.TotalBuyPrice),
+                    NetAmtS = invoiceProductsPrices.Sum(p => p.TotalSellPrice),
                     Profit = sellingNetAmount - buyingNetAmount,
                     ProductsDetail = invoiceProductsPrices.Select(p => new InvoiceProfitReportProductsViewModel
                     {
                         InvoiceId = p.InvoiceId,
                         ProductName = p.ProductName,
-                        BuyingPrice = p.BuyingPrice,
-                        SellingPrice = p.SellingPrice,
-                        Profit = p.SellingPrice - p.BuyingPrice
+                        Quantity = p.Quantity,
+                        BuyPrice = p.BuyPrice,
+                        SellPrice = p.SellPrice,
+                        TotalBuyPrice = p.TotalBuyPrice,
+                        TotalSellPrice = p.TotalSellPrice,
+                        Profit = p.TotalSellPrice - p.TotalBuyPrice
                     }).ToList()
                 });
             }

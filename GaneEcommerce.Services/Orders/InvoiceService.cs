@@ -510,17 +510,7 @@ namespace Ganedata.Core.Services
                                                                                 (productIds.Contains(u.ProductId) || productIds.Count() == 0))
                                                                     .ToList();
 
-            return InvocieDetaildata.Select(i => {
-                var buyPrice = _productPriceService.GetPurchasePrice(i.ProductId, i.DateCreated, i.OrderDetail?.OrderID);
-
-                return new InvoiceProductPriceModel {
-                    InvoiceId = i.InvoiceMasterId,
-                    ProductId = i.ProductId,
-                    ProductName = i.Product.NameWithCode,
-                    BuyingPrice = buyPrice != null ? (i.Quantity * buyPrice.Value) : 0,
-                    SellingPrice = (decimal?)(i.Quantity * i.Price) ?? 0
-                };
-            }).ToList();
+            return _productPriceService.GetInvoiceDetailsProductPrices(InvocieDetaildata);
         }
     }
 }

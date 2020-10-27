@@ -53,8 +53,11 @@ namespace Ganedata.Core.Models
     {
         public int InvoiceId { get; set; }
         public string ProductName { get; set; }
-        public decimal? BuyingPrice { get; set; }
-        public decimal? SellingPrice { get; set; }
+        public decimal Quantity { get; set; }
+        public decimal BuyPrice { get; set; }
+        public decimal SellPrice { get; set; }
+        public decimal TotalBuyPrice { get; set; }
+        public decimal TotalSellPrice { get; set; }
         public decimal? Profit { get; set; }
     }
 
