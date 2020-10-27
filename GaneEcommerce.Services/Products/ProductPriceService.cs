@@ -368,17 +368,17 @@ namespace Ganedata.Core.Services
                                         .FirstOrDefault();
             }
 
-            var rebatePercentage = targetOrderDetail != null ? (_context.ProductAccountCodes.FirstOrDefault(u => u.AccountID == targetOrderDetail.Order.AccountID &&
-                                                                                    (u.RebatePercentage ?? 0) > 0 &&
-                                                                                    (u.ProductId ?? 0) == productId &&
-                                                                                    u.IsDeleted != true)?.RebatePercentage ?? 0) : 0;
-
             var buyPrice = targetOrderDetail?.Price ?? product?.BuyPrice;
 
             if (buyPrice == null)
             {
                 return null;
             }
+
+            var rebatePercentage = targetOrderDetail != null ? (_context.ProductAccountCodes.FirstOrDefault(u => u.AccountID == targetOrderDetail.Order.AccountID &&
+                                                                        (u.RebatePercentage ?? 0) > 0 &&
+                                                                        (u.ProductId ?? 0) == productId &&
+                                                                        u.IsDeleted != true)?.RebatePercentage ?? 0) : 0;
 
             buyPrice -= Math.Round((buyPrice.Value / 100) * (rebatePercentage), 2);
 
@@ -457,9 +457,26 @@ namespace Ganedata.Core.Services
 
             productsPrices = productsPrices.OrderByDescending(p => p.OrderId).ToList();
 
+            var tempAccoutIds = invoiceDetails.Select(i => i.OrderDetail.Order.AccountID).ToList();
+            var rebatePercentages = _context.ProductAccountCodes.Where(u => tempAccoutIds.Contains(u.AccountID) &&
+                                                                        (u.RebatePercentage ?? 0) > 0 &&
+                                                                        productIds.Contains(u.ProductId ?? 0) &&
+                                                                        u.IsDeleted != true)
+                                                                .ToList();
+
             return invoiceDetails.Select(i => {
                 var buyPrice = productsPrices.FirstOrDefault(p => p.ProductId == i.ProductId && p.OrderId == i.OrderDetail.OrderID)?.Price ??
                                productsPrices.FirstOrDefault(p => p.ProductId == i.ProductId)?.Price ?? 0;
+
+                if (buyPrice > 0)
+                {
+                    var rebatePercentage = rebatePercentages.FirstOrDefault(r => r.ProductId == i.ProductId && r.AccountID == i.OrderDetail?.Order?.AccountID)?.RebatePercentage ?? 1;
+
+                    buyPrice -= Math.Round((buyPrice / 100) * (rebatePercentage), 2);
+
+                    buyPrice += (i.Product.LandedCost ?? 0);
+                }
+
                 return new InvoiceProductPriceModel
                 {
                     InvoiceId = i.InvoiceMasterId,
