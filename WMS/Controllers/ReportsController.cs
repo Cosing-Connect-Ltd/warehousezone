@@ -34,11 +34,12 @@ namespace WMS.Controllers
         private readonly IInvoiceService _invoiceService;
         private readonly ILookupServices _lookupService;
         private readonly IUserService _userService;
+        private readonly IProductPriceService _productPriceService;
 
         public ReportsController(ITenantLocationServices tenantLocationsServices, IShiftsServices shiftsServices, IEmployeeShiftsServices employeeShiftsServices, IEmployeeServices employeeServices, ICoreOrderService orderService,
             IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IAppointmentsService appointmentsService, IGaneConfigurationsHelper ganeConfigurationsHelper, IEmailServices emailServices, IInvoiceService invoiceService,
             ITenantLocationServices tenantLocationservices, IProductServices productServices, ITenantsServices tenantsServices, IPalletingService palleteServices, IMarketServices marketServices, IUserService userService,
-            IAccountSectorService accountSectorService)
+            IAccountSectorService accountSectorService, IProductPriceService productPriceService)
             : base(orderService, propertyService, accountServices, lookupServices, appointmentsService, ganeConfigurationsHelper, emailServices, tenantLocationservices, tenantsServices)
         {
             _tenantLocationsServices = tenantLocationsServices;
@@ -53,6 +54,7 @@ namespace WMS.Controllers
             _invoiceService = invoiceService;
             _lookupService = lookupServices;
             _userService = userService;
+            _productPriceService = productPriceService;
         }
 
         public float JobProgressOutSum = 0;
@@ -110,12 +112,12 @@ namespace WMS.Controllers
 
         public StockValueReport CreateStockValueReport()
         {
-            StockValueReport StockValueReport = new StockValueReport();
-            StockValueReport.paramsTenantId.Value = CurrentTenantId;
-            StockValueReport.paramWarehouseId.Value = CurrentWarehouseId;
+            var report = new StockValueReport();
+            report.paramsTenantId.Value = CurrentTenantId;
+            report.paramWarehouseId.Value = CurrentWarehouseId;
 
             IEnumerable<ProductMaster> products = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList();
-            StaticListLookUpSettings setting = (StaticListLookUpSettings)StockValueReport.paramProductId.LookUpSettings;
+            StaticListLookUpSettings setting = (StaticListLookUpSettings)report.paramProductId.LookUpSettings;
 
             foreach (var item in products)
             {
@@ -125,7 +127,36 @@ namespace WMS.Controllers
                 setting.LookUpValues.Add(product);
             }
 
-            return StockValueReport;
+            report.DataSourceDemanded += StockValueReport_DataSourceDemanded;
+
+            return report;
+        }
+
+        private void StockValueReport_DataSourceDemanded(object sender, EventArgs e)
+        {
+            var report = (StockValueReport)sender;
+            var productIds = (int[])report.paramProductId.Value;
+            var tenantId = (int?)report.paramsTenantId.Value;
+            var warehouseId = (int?)report.paramWarehouseId.Value;
+
+            var products = _productServices.GetAllValidProductMasters(CurrentTenantId).Where(p => productIds.Contains(p.ProductId)).ToList();
+
+            var inventoryStocks = products.SelectMany(p => p.InventoryStocks.Where(i => i.WarehouseId == warehouseId &&
+                                                                     i.TenantId == tenantId &&
+                                                                     i.InStock > 0).ToList());
+
+            report.DataSource = inventoryStocks.Select(i =>
+            {
+                var buyPrice = _productPriceService.GetPurchasePrice(i.ProductId, i.DateCreated);
+                return new
+                {
+                    ProductSkuCode = i.ProductMaster.SKUCode,
+                    ProductName = i.ProductMaster.NameWithCode,
+                    i.InStock,
+                    BuyPrice = buyPrice,
+                    TotalPrice = (buyPrice ?? 0) * i.InStock
+                };
+            });
         }
 
         #endregion StockValueReport
@@ -1707,7 +1738,7 @@ namespace WMS.Controllers
 
             report.TenantID.Value = CurrentTenantId;
 
-            var invoices = _invoiceService.GetAllInvoiceMasters(CurrentTenantId).Select(i => new { i.InvoiceMasterId, i.InvoiceNumber}).ToList();
+            var invoices = _invoiceService.GetAllInvoiceMasters(CurrentTenantId).Select(i => new { i.InvoiceMasterId, i.InvoiceNumber }).ToList();
 
             var invoiceSelector = (StaticListLookUpSettings)report.InvoiceId.LookUpSettings;
 
@@ -1717,12 +1748,12 @@ namespace WMS.Controllers
 
             // binding
 
-            report.SkuCode.DataBindings.AddRange(new XRBinding[] { new XRBinding("Text", report.DataSource, ".SkuCode")});
-            report.ProductName.DataBindings.AddRange(new XRBinding[] { new XRBinding("Text", report.DataSource, ".ProductName")});
+            report.SkuCode.DataBindings.AddRange(new XRBinding[] { new XRBinding("Text", report.DataSource, ".SkuCode") });
+            report.ProductName.DataBindings.AddRange(new XRBinding[] { new XRBinding("Text", report.DataSource, ".ProductName") });
             report.Quantity.DataBindings.AddRange(new XRBinding[] { new XRBinding("Text", report.DataSource, ".Quantity") });
-            report.PalletNumber.DataBindings.AddRange(new XRBinding[] { new XRBinding("Text", report.DataSource, ".PalletNumber")});
-            report.SaleOrderNumber.DataBindings.AddRange(new XRBinding[] { new XRBinding("Text", report.DataSource, ".SaleOrderNumber")});
-            report.DeliveryNote.DataBindings.AddRange(new XRBinding[] { new XRBinding("Text", report.DataSource, ".DeliveryNote")});
+            report.PalletNumber.DataBindings.AddRange(new XRBinding[] { new XRBinding("Text", report.DataSource, ".PalletNumber") });
+            report.SaleOrderNumber.DataBindings.AddRange(new XRBinding[] { new XRBinding("Text", report.DataSource, ".SaleOrderNumber") });
+            report.DeliveryNote.DataBindings.AddRange(new XRBinding[] { new XRBinding("Text", report.DataSource, ".DeliveryNote") });
             report.PurchaseOrderNumber.DataBindings.AddRange(new XRBinding[] { new XRBinding("Text", report.DataSource, ".PurchaseOrderNumber") });
             report.SupplierName.DataBindings.AddRange(new XRBinding[] { new XRBinding("Text", report.DataSource, ".SupplierName") });
             report.SupplierInvoiceNumber.DataBindings.AddRange(new XRBinding[] { new XRBinding("Text", report.DataSource, ".SupplierInvoiceNumber") });

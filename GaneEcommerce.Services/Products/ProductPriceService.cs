@@ -329,7 +329,9 @@ namespace Ganedata.Core.Services
             var targetOrderDetailQuery = _context.OrderDetail.Where(u => (u.DateCreated < date || date == null) &&
                                                                     u.ProductId == productId &&
                                                                     u.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder &&
-                                                                    u.Order.OrderStatusID == OrderStatusEnum.Complete &&
+                                                                    (u.Order.OrderStatusID == OrderStatusEnum.Complete ||
+                                                                      u.Order.OrderStatusID == OrderStatusEnum.PostedToAccounts ||
+                                                                      u.Order.OrderStatusID == OrderStatusEnum.Invoiced) &&
                                                                     u.Order.IsDeleted != true &&
                                                                     u.IsDeleted != true);
 
@@ -389,11 +391,13 @@ namespace Ganedata.Core.Services
         {
             var invoiceProductsPrices = new List<InvoiceProductPriceModel>();
             var productIds = invoiceDetails.Select(i => i.ProductId).ToList();
-            var products = _context.ProductMaster.Where(u => productIds.Contains(u.ProductId) && u.IsDeleted != true).Select(p => new { p.BuyPrice, p.LandedCost}).ToList();
+            var products = _context.ProductMaster.Where(u => productIds.Contains(u.ProductId) && u.IsDeleted != true).Select(p => new { p.BuyPrice, p.LandedCost }).ToList();
 
             var targetOrderDetails = _context.OrderDetail.Where(u => productIds.Contains(u.ProductId) &&
                                                                      u.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder &&
-                                                                     u.Order.OrderStatusID == OrderStatusEnum.Complete &&
+                                                                     (u.Order.OrderStatusID == OrderStatusEnum.Complete ||
+                                                                      u.Order.OrderStatusID == OrderStatusEnum.PostedToAccounts ||
+                                                                      u.Order.OrderStatusID == OrderStatusEnum.Invoiced) &&
                                                                      u.Order.IsDeleted != true &&
                                                                      u.IsDeleted != true)
                                                          .ToList();
@@ -438,7 +442,7 @@ namespace Ganedata.Core.Services
                                                                                                            .OrderByDescending(u => u.OrderDetailID)
                                                                                                            .FirstOrDefault().Price
                                      });
-            });
+                                 });
 
             remainingInvoices = invoiceDetails.Where(i => !productsPrices.Any(p => p.ProductId == i.ProductId && p.OrderId == i.OrderDetail.OrderID));
 
@@ -447,12 +451,15 @@ namespace Ganedata.Core.Services
                                                       .Select(a => new InvoiceProductPrice { ProductId = a.ProductId, Price = a.Price, OrderId = a.Order?.BaseOrder?.OrderID })
                                                       .ToList());
 
-            remainingInvoices = invoiceDetails.Where(i => !productsPrices.Any(p => p.ProductId == i.ProductId && p.OrderId == i.OrderDetail?.OrderID));
+            remainingInvoices = invoiceDetails.Where(i => !productsPrices.Any(p => p.ProductId == i.ProductId));
 
             productsPrices.AddRange(remainingInvoices.Select(a => new InvoiceProductPrice { ProductId = a.ProductId, Price = a.Product.BuyPrice, OrderId = a.OrderDetail?.OrderID }));
 
+            productsPrices = productsPrices.OrderByDescending(p => p.OrderId).ToList();
+
             return invoiceDetails.Select(i => {
-                var buyPrice = productsPrices.FirstOrDefault(p => p.ProductId == i.ProductId && p.OrderId == i.OrderDetail.OrderID)?.Price ?? 0;
+                var buyPrice = productsPrices.FirstOrDefault(p => p.ProductId == i.ProductId && p.OrderId == i.OrderDetail.OrderID)?.Price ??
+                               productsPrices.FirstOrDefault(p => p.ProductId == i.ProductId)?.Price ?? 0;
                 return new InvoiceProductPriceModel
                 {
                     InvoiceId = i.InvoiceMasterId,
