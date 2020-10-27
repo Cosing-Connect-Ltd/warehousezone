@@ -2,6 +2,7 @@ using AutoMapper;
 using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
 using Ganedata.Core.Entities.Enums;
+using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -382,6 +383,96 @@ namespace Ganedata.Core.Services
             buyPrice += (product.LandedCost ?? 0);
 
             return buyPrice;
+        }
+
+        public List<InvoiceProductPriceModel> GetInvoiceDetailsProductPrices(List<InvoiceDetail> invoiceDetails)
+        {
+            var invoiceProductsPrices = new List<InvoiceProductPriceModel>();
+            var productIds = invoiceDetails.Select(i => i.ProductId).ToList();
+            var products = _context.ProductMaster.Where(u => productIds.Contains(u.ProductId) && u.IsDeleted != true).Select(p => new { p.BuyPrice, p.LandedCost}).ToList();
+
+            var targetOrderDetails = _context.OrderDetail.Where(u => productIds.Contains(u.ProductId) &&
+                                                                     u.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder &&
+                                                                     u.Order.OrderStatusID == OrderStatusEnum.Complete &&
+                                                                     u.Order.IsDeleted != true &&
+                                                                     u.IsDeleted != true)
+                                                         .ToList();
+
+            var productsPrices = targetOrderDetails.Where(u => invoiceDetails.Any(i => i.ProductId == u.ProductId && i.OrderDetail.OrderID == u.Order?.BaseOrder?.OrderID && u.DateCreated <= i.DateCreated))
+                                                   .Select(a => new InvoiceProductPrice { ProductId = a.ProductId, Price = a.Price, OrderId = a.Order?.BaseOrder?.OrderID })
+                                                   .ToList();
+
+            var remainingInvoices = invoiceDetails.Where(i => !productsPrices.Any(p => p.ProductId == i.ProductId && p.OrderId == i.OrderDetail.OrderID));
+
+            var tempProductIds = remainingInvoices.Select(r => r.ProductId).ToList();
+            var tempOrderIds = remainingInvoices.Select(r => r.OrderDetail.OrderID).ToList();
+
+            var inventoryTransactions = _context.InventoryTransactions.Where(p => tempProductIds.Contains(p.ProductId) &&
+                                                                                  tempOrderIds.Contains(p.OrderID ?? 0) &&
+                                                                                  p.IsDeleted != true)
+                                                                      .ToList()?
+                                                                      .Where(p => remainingInvoices.Any(i => i.ProductId == p.ProductId && p.OrderID == i.OrderDetail.OrderID))
+                                                                      .ToList();
+
+            tempProductIds = inventoryTransactions.Select(r => r.ProductId).ToList();
+            var tempPalletTrackingIds = inventoryTransactions.Select(r => r.PalletTrackingId).ToList();
+
+            var relatedPurchaseOrdersByPallet = _context.InventoryTransactions.Where(p => tempProductIds.Contains(p.ProductId) &&
+                                                                                          tempPalletTrackingIds.Contains(p.PalletTrackingId) &&
+                                                                                          p.IsDeleted != true &&
+                                                                                          p.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.PurchaseOrder)
+                                                                              .ToList()?
+                                                                              .Where(p => inventoryTransactions.Any(i => p.PalletTrackingId == i.PalletTrackingId && p.ProductId == i.ProductId))
+                                                                              .ToList();
+
+            inventoryTransactions.Where(i => relatedPurchaseOrdersByPallet.Any(p => p.PalletTrackingId == i.PalletTrackingId && p.ProductId == i.ProductId))
+                                 .ToList()
+                                 .ForEach(i => {
+                                     productsPrices.Add(new InvoiceProductPrice
+                                     {
+                                         ProductId = i.ProductId,
+                                         OrderId = i.OrderID,
+                                         Price = relatedPurchaseOrdersByPallet.First(p => p.PalletTrackingId == i.PalletTrackingId && p.ProductId == i.ProductId)
+                                                                                                           .Order.OrderDetails
+                                                                                                           .Where(u => u.ProductId == i.ProductId && u.IsDeleted != true)
+                                                                                                           .OrderByDescending(u => u.OrderDetailID)
+                                                                                                           .FirstOrDefault().Price
+                                     });
+            });
+
+            remainingInvoices = invoiceDetails.Where(i => !productsPrices.Any(p => p.ProductId == i.ProductId && p.OrderId == i.OrderDetail.OrderID));
+
+
+            productsPrices.AddRange(targetOrderDetails.Where(u => remainingInvoices.Any(i => i.ProductId == u.ProductId && u.DateCreated <= i.DateCreated))
+                                                      .Select(a => new InvoiceProductPrice { ProductId = a.ProductId, Price = a.Price, OrderId = a.Order?.BaseOrder?.OrderID })
+                                                      .ToList());
+
+            remainingInvoices = invoiceDetails.Where(i => !productsPrices.Any(p => p.ProductId == i.ProductId && p.OrderId == i.OrderDetail?.OrderID));
+
+            productsPrices.AddRange(remainingInvoices.Select(a => new InvoiceProductPrice { ProductId = a.ProductId, Price = a.Product.BuyPrice, OrderId = a.OrderDetail?.OrderID }));
+
+            return invoiceDetails.Select(i => {
+                var buyPrice = productsPrices.FirstOrDefault(p => p.ProductId == i.ProductId && p.OrderId == i.OrderDetail.OrderID)?.Price ?? 0;
+                return new InvoiceProductPriceModel
+                {
+                    InvoiceId = i.InvoiceMasterId,
+                    ProductId = i.ProductId,
+                    ProductName = i.Product.NameWithCode,
+                    Quantity = i.Quantity,
+                    BuyPrice = buyPrice,
+                    SellPrice = i.Price,
+                    TotalBuyPrice = buyPrice * i.Quantity,
+                    TotalSellPrice = i.Price * i.Quantity
+
+                };
+            }).ToList();
+        }
+
+        private class InvoiceProductPrice
+        {
+            public int ProductId { get; set; }
+            public int? OrderId { get; set; }
+            public decimal? Price { get; set; }
         }
     }
 }
