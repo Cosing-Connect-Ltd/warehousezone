@@ -295,32 +295,52 @@
                         @Html.ValidationMessageFor(model => model.DeliveryRadiusMiles)
                     </div>
                 </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.DefaultDeliveryTimeMinutes, new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.DefaultDeliveryTimeMinutes)
+                        @Html.ValidationMessageFor(model => model.DefaultDeliveryTimeMinutes)
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.DefaultCollectionTimeMinutes, new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.DefaultCollectionTimeMinutes)
+                        @Html.ValidationMessageFor(model => model.DefaultCollectionTimeMinutes)
+                    </div>
+                </div>
             </div>
-            <div class="col-md-6 pull-left">
+            <div class="col-md-6 pull-left">  
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.DefaultEatInTimeMinutes, new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.DefaultEatInTimeMinutes)
+                        @Html.ValidationMessageFor(model => model.DefaultEatInTimeMinutes)
+                    </div>
+                </div>
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.LabelFor(model => model.DeliveryPriceGroupId, new { @class = "col-md-4" })
                     <div class="col-md-8">
                         @Html.DropDownListFor(m => m.DeliveryPriceGroupId, new SelectList(ViewBag.PriceGroups, "Value", "Text"), "Select Price Group", new { @class = "chosen-select" })
                         @Html.ValidationMessageFor(model => model.DeliveryPriceGroupId)
                     </div>
-                    <div class="input-group h-100 justify-content-center align-items-center">
-                        @Html.LabelFor(model => model.CollectionPriceGroupId, new { @class = "col-md-4" })
-                        <div class="col-md-8">
-                            @Html.DropDownListFor(m => m.CollectionPriceGroupId, new SelectList(ViewBag.PriceGroups, "Value", "Text"), "Select Price Group", new { @class = "chosen-select" })
-                            @Html.ValidationMessageFor(model => model.CollectionPriceGroupId)
-                        </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.CollectionPriceGroupId, new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(m => m.CollectionPriceGroupId, new SelectList(ViewBag.PriceGroups, "Value", "Text"), "Select Price Group", new { @class = "chosen-select" })
+                        @Html.ValidationMessageFor(model => model.CollectionPriceGroupId)
                     </div>
-                    <div class="input-group h-100 justify-content-center align-items-center">
-                        @Html.LabelFor(model => model.EatInPriceGroupId, new { @class = "col-md-4" })
-                        <div class="col-md-8">
-                            @Html.DropDownListFor(m => m.EatInPriceGroupId, new SelectList(ViewBag.PriceGroups, "Value", "Text"), "Select Price Group", new { @class = "chosen-select" })
-                            @Html.ValidationMessageFor(model => model.EatInPriceGroupId)
-                        </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.EatInPriceGroupId, new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(m => m.EatInPriceGroupId, new SelectList(ViewBag.PriceGroups, "Value", "Text"), "Select Price Group", new { @class = "chosen-select" })
+                        @Html.ValidationMessageFor(model => model.EatInPriceGroupId)
                     </div>
                 </div>
             </div>
         </div>
-
     }
 
     <div class="col-md-offset-2 col-md-10 bottom-right">

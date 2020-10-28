@@ -140,11 +140,11 @@ namespace Ganedata.Core.Entities.Domain
         public int? CollectionPriceGroupId { get; set; }
         [Display(Name = "EatIn Price Group")]
         public int? EatInPriceGroupId { get; set; }
-        [Display(Name = "Delivery Order Time in Minutes")]
+        [Display(Name = "Delivery Time in Minutes")]
         public int? DefaultDeliveryTimeMinutes { get; set; }
-        [Display(Name = "Collection Order Time in Minutes")]
+        [Display(Name = "Collection Time in Minutes")]
         public int? DefaultCollectionTimeMinutes { get; set; }
-        [Display(Name = "EatIn Order Time in Minutes")]
+        [Display(Name = "EatIn Time in Minutes")]
         public int? DefaultEatInTimeMinutes { get; set; }
 
         [ForeignKey("DeliveryPriceGroupId")]
