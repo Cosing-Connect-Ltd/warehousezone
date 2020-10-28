@@ -124,7 +124,7 @@ namespace Ganedata.Core.Entities.Domain
         [Display(Name = "Collection Charges")]
         public decimal CollectionCharges { get; set; }
         public decimal EatInCharges { get; set; }
-        [Display(Name = "Delivery RadiusMiles in Miles")]
+        [Display(Name = "Delivery Radius in Miles")]
         public decimal DeliveryRadiusMiles { get; set; }
         [Display(Name = "Send Order Status By Email")]
         public bool SendOrderStatusByEmail { get; set; }
@@ -134,9 +134,19 @@ namespace Ganedata.Core.Entities.Domain
         public string NotifiableOrderStatuses { get; set; }
         [NotMapped]
         public OrderStatusEnum[] SelectedNotifiableOrderStatuses { get => NotifiableOrderStatuses?.Split(',').Select(a => (OrderStatusEnum)Convert.ToInt32(a)).ToArray(); set => NotifiableOrderStatuses = string.Join(",", value.Select(v => ((int)v).ToString())); }
+        [Display(Name = "Delivery Price Group")]
         public int? DeliveryPriceGroupId { get; set; }
+        [Display(Name = "Collection Price Group")]
         public int? CollectionPriceGroupId { get; set; }
+        [Display(Name = "EatIn Price Group")]
         public int? EatInPriceGroupId { get; set; }
+        [Display(Name = "Delivery Order Time in Minutes")]
+        public int? DefaultDeliveryTimeMinutes { get; set; }
+        [Display(Name = "Collection Order Time in Minutes")]
+        public int? DefaultCollectionTimeMinutes { get; set; }
+        [Display(Name = "EatIn Order Time in Minutes")]
+        public int? DefaultEatInTimeMinutes { get; set; }
+
         [ForeignKey("DeliveryPriceGroupId")]
         public virtual TenantPriceGroups DeliveryPriceGroup { get; set; }
         [ForeignKey("CollectionPriceGroupId")]

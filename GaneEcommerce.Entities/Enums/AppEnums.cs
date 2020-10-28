@@ -369,12 +369,11 @@ namespace Ganedata.Core.Entities.Enums
         ThreeWeekly = 5
     }
 
-    public enum ConsignmentTypeEnum
+    public enum FoodOrderTypeEnum
     {
-        Standard = 1,
-        Priority = 2,
-        PreTen = 3,
-        Collection = 4
+        Delivery = 1,
+        Collection = 2,
+        EatIn = 3
     }
 
     public enum PalletTrackingSchemeEnum

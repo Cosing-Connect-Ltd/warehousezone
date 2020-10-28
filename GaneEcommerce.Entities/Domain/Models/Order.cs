@@ -241,6 +241,8 @@ namespace Ganedata.Core.Entities.Domain
         public decimal? AmountPaidByAccount { get; set; }
         public decimal? AccountBalanceBeforePayment { get; set; }
         public decimal? AccountBalanceOnPayment { get; set; }
+        public bool OrderPaid { get; set; }
+        public FoodOrderTypeEnum FoodOrderType { get; set; }
 
         [Display(Name = "Prestashop Id")]
         public int? PrestaShopOrderId { get; set; }

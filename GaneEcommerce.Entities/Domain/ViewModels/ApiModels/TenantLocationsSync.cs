@@ -72,6 +72,9 @@ namespace Ganedata.Core.Models
         public int? DeliveryPriceGroupId { get; set; }
         public int? CollectionPriceGroupId { get; set; }
         public int? EatInPriceGroupId { get; set; }
+        public int? DefaultDeliveryTimeMinutes { get; set; }
+        public int? DefaultCollectionTimeMinutes { get; set; }
+        public int? DefaultEatInTimeMinutes { get; set; }
         public int TenantId { get; set; }
         public bool? IsDeleted { get; set; }
     }
