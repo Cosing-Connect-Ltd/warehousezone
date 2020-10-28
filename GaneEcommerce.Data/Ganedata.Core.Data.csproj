@@ -1131,6 +1131,14 @@
     <Compile Include="Migrations\202010260115343_null-allowed-in-account-addresses.designer.cs">
       <DependentUpon>202010260115343_null-allowed-in-account-addresses.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202010281214104_default-order-times-and-ignore-warehouse-against-terminal.cs" />
+    <Compile Include="Migrations\202010281214104_default-order-times-and-ignore-warehouse-against-terminal.designer.cs">
+      <DependentUpon>202010281214104_default-order-times-and-ignore-warehouse-against-terminal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010281434422_order-paid-flag-added-and-food-order-type-enum-added.cs" />
+    <Compile Include="Migrations\202010281434422_order-paid-flag-added-and-food-order-type-enum-added.designer.cs">
+      <DependentUpon>202010281434422_order-paid-flag-added-and-food-order-type-enum-added.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2299,6 +2307,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202010260115343_null-allowed-in-account-addresses.resx">
       <DependentUpon>202010260115343_null-allowed-in-account-addresses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010281214104_default-order-times-and-ignore-warehouse-against-terminal.resx">
+      <DependentUpon>202010281214104_default-order-times-and-ignore-warehouse-against-terminal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010281434422_order-paid-flag-added-and-food-order-type-enum-added.resx">
+      <DependentUpon>202010281434422_order-paid-flag-added-and-food-order-type-enum-added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

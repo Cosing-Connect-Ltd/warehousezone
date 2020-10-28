@@ -50,6 +50,7 @@ namespace Ganedata.Core.Entities.Domain
         public bool AllowExportDatabase { get; set; }
         public bool ShowCasePrices { get; set; }
         public bool ScanVehicleLicensePlate { get; set; }
+        public bool IgnoreWarehouseForOrderPost { get; set; }
         public int WarehouseId { get; set; }
         [ForeignKey("WarehouseId")]
         public virtual TenantLocations TenantWarehous { get; set; }

@@ -83,6 +83,8 @@ namespace Ganedata.Core.Models
         public decimal? AccountBalanceBeforePayment { get; set; }
         public decimal? AccountBalanceOnPayment { get; set; }
         public int? AccountPaymentModeId { get; set; }
+        public bool OrderPaid { get; set; }
+        public FoodOrderTypeEnum FoodOrderType { get; set; }
         public bool EndOfDayGenerated { get; set; }
         public int? VanSalesDailyCashId { get; set; }
         public decimal OrderDiscount { get; set; }
