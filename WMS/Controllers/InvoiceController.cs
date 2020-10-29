@@ -266,12 +266,12 @@ namespace WMS.Controllers
                 QtyProcessed = x.QtyProcessed,
                 ProductName = x.ProductMaster.Name,
                 ProductCode = x.ProductMaster.SKUCode,
-                TaxPercent = x.OrderDetail.TaxName != null ? x.OrderDetail.TaxName.PercentageOfAmount : 0,
+                TaxPercent = x?.OrderDetail?.TaxName != null ? x.OrderDetail.TaxName.PercentageOfAmount : 0,
                 ProductId = x.ProductId,
                 OrderProcessId = x.OrderProcessId,
-                Price = x.OrderDetail.Price,
+                Price = x?.OrderDetail?.Price ?? 0,
                 OrderProcessDetailId = x.OrderProcessDetailID,
-                WarrantyAmount = x.OrderDetail?.Warranty != null ? x.OrderDetail.WarrantyAmount : 0
+                WarrantyAmount = x?.OrderDetail?.Warranty != null ? x.OrderDetail.WarrantyAmount : 0
             }).ToList();
             ViewBag.OrderProcessID = id;
             return PartialView("_OrderProcessDetailsGridPartial", model);

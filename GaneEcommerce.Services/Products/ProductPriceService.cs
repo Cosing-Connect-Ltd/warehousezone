@@ -402,20 +402,20 @@ namespace Ganedata.Core.Services
                                                                      u.IsDeleted != true)
                                                          .ToList();
 
-            var productsPrices = targetOrderDetails.Where(u => invoiceDetails.Any(i => i.ProductId == u.ProductId && i.OrderDetail.OrderID == u.Order?.BaseOrder?.OrderID && u.DateCreated <= i.DateCreated))
+            var productsPrices = targetOrderDetails.Where(u => invoiceDetails.Any(i => i.ProductId == u.ProductId && i?.OrderDetail?.OrderID == u.Order?.BaseOrder?.OrderID && u.DateCreated <= i.DateCreated))
                                                    .Select(a => new InvoiceProductPrice { ProductId = a.ProductId, Price = a.Price, OrderId = a.Order?.BaseOrder?.OrderID })
                                                    .ToList();
 
-            var remainingInvoices = invoiceDetails.Where(i => !productsPrices.Any(p => p.ProductId == i.ProductId && p.OrderId == i.OrderDetail.OrderID));
+            var remainingInvoices = invoiceDetails.Where(i => !productsPrices.Any(p => p.ProductId == i.ProductId && p.OrderId == i?.OrderDetail?.OrderID));
 
             var tempProductIds = remainingInvoices.Select(r => r.ProductId).ToList();
-            var tempOrderIds = remainingInvoices.Select(r => r.OrderDetail.OrderID).ToList();
+            var tempOrderIds = remainingInvoices.Select(r => r?.OrderDetail?.OrderID).ToList();
 
             var inventoryTransactions = _context.InventoryTransactions.Where(p => tempProductIds.Contains(p.ProductId) &&
                                                                                   tempOrderIds.Contains(p.OrderID ?? 0) &&
                                                                                   p.IsDeleted != true)
                                                                       .ToList()?
-                                                                      .Where(p => remainingInvoices.Any(i => i.ProductId == p.ProductId && p.OrderID == i.OrderDetail.OrderID))
+                                                                      .Where(p => remainingInvoices.Any(i => i.ProductId == p.ProductId && p.OrderID == i?.OrderDetail?.OrderID))
                                                                       .ToList();
 
             tempProductIds = inventoryTransactions.Select(r => r.ProductId).ToList();
@@ -431,7 +431,8 @@ namespace Ganedata.Core.Services
 
             inventoryTransactions.Where(i => relatedPurchaseOrdersByPallet.Any(p => p.PalletTrackingId == i.PalletTrackingId && p.ProductId == i.ProductId))
                                  .ToList()
-                                 .ForEach(i => {
+                                 .ForEach(i =>
+                                 {
                                      productsPrices.Add(new InvoiceProductPrice
                                      {
                                          ProductId = i.ProductId,
@@ -444,7 +445,7 @@ namespace Ganedata.Core.Services
                                      });
                                  });
 
-            remainingInvoices = invoiceDetails.Where(i => !productsPrices.Any(p => p.ProductId == i.ProductId && p.OrderId == i.OrderDetail.OrderID));
+            remainingInvoices = invoiceDetails.Where(i => !productsPrices.Any(p => p.ProductId == i.ProductId && p.OrderId == i?.OrderDetail?.OrderID));
 
 
             productsPrices.AddRange(targetOrderDetails.Where(u => remainingInvoices.Any(i => i.ProductId == u.ProductId && u.DateCreated <= i.DateCreated))
@@ -453,24 +454,25 @@ namespace Ganedata.Core.Services
 
             remainingInvoices = invoiceDetails.Where(i => !productsPrices.Any(p => p.ProductId == i.ProductId));
 
-            productsPrices.AddRange(remainingInvoices.Select(a => new InvoiceProductPrice { ProductId = a.ProductId, Price = a.Product.BuyPrice, OrderId = a.OrderDetail?.OrderID }));
+            productsPrices.AddRange(remainingInvoices.Select(a => new InvoiceProductPrice { ProductId = a.ProductId, Price = a.Product.BuyPrice, OrderId = a?.OrderDetail?.OrderID }));
 
             productsPrices = productsPrices.OrderByDescending(p => p.OrderId).ToList();
 
-            var tempAccoutIds = invoiceDetails.Select(i => i.OrderDetail.Order.AccountID).ToList();
+            var tempAccoutIds = invoiceDetails.Select(i => i?.OrderDetail?.Order?.AccountID).ToList();
             var rebatePercentages = _context.ProductAccountCodes.Where(u => tempAccoutIds.Contains(u.AccountID) &&
                                                                         (u.RebatePercentage ?? 0) > 0 &&
                                                                         productIds.Contains(u.ProductId ?? 0) &&
                                                                         u.IsDeleted != true)
                                                                 .ToList();
 
-            return invoiceDetails.Select(i => {
-                var buyPrice = productsPrices.FirstOrDefault(p => p.ProductId == i.ProductId && p.OrderId == i.OrderDetail.OrderID)?.Price ??
+            return invoiceDetails.Select(i =>
+            {
+                var buyPrice = productsPrices.FirstOrDefault(p => p.ProductId == i.ProductId && p.OrderId == i?.OrderDetail?.OrderID)?.Price ??
                                productsPrices.FirstOrDefault(p => p.ProductId == i.ProductId)?.Price ?? 0;
 
                 if (buyPrice > 0)
                 {
-                    var rebatePercentage = rebatePercentages.FirstOrDefault(r => r.ProductId == i.ProductId && r.AccountID == i.OrderDetail?.Order?.AccountID)?.RebatePercentage ?? 1;
+                    var rebatePercentage = rebatePercentages.FirstOrDefault(r => r.ProductId == i.ProductId && r.AccountID == i?.OrderDetail?.Order?.AccountID)?.RebatePercentage ?? 1;
 
                     buyPrice -= Math.Round((buyPrice / 100) * (rebatePercentage), 2);
 
