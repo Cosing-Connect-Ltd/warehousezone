@@ -425,6 +425,52 @@ namespace WMS.Controllers
 
         }
 
+        public ActionResult CorrectOrderDetailIdInOrderProcessDetail()
+        {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+
+            for (var i = 0; i < 200; i++)
+            {
+
+                var items = _currentDbContext.OrderProcessDetail.Where(x => x.OrderDetailID == null).Take(100).ToList();
+                List<int?> itemIds = items.Select(x => x.OrderProcess.OrderID).ToList();
+                var orderDetails = _currentDbContext.OrderDetail.Where(x => itemIds.Contains(x.OrderID)).ToList();
+
+                int counter = 0;
+                int remaining = items.Count();
+
+                foreach (var item in items)
+                {
+                    counter++;
+                    remaining--;
+
+                    var orderDetail = orderDetails.Where(x => x.OrderID == item.OrderProcess.OrderID && x.ProductId == item.ProductId).Select(y => y.OrderDetailID).FirstOrDefault();
+                    if (orderDetail != 0)
+                    {
+                        item.DateUpdated = DateTime.UtcNow;
+                        item.OrderDetailID = orderDetail;
+                    }
+
+
+                    if (counter == 50 || remaining < 50)
+                    {
+                        _currentDbContext.SaveChanges();
+                        counter = 0;
+                    }
+
+
+                }
+
+            }
+
+            ViewBag.Title = "Operation was Successful";
+            ViewBag.Message = "Operation was Successful";
+            ViewBag.Detail = "Active Pallet was Completed Successfully";
+
+            return View("AdminUtilities");
+
+        }
+
 
         public ActionResult ExplicitGC()
         {
