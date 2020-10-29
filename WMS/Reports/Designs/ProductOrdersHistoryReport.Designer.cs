@@ -176,7 +176,7 @@
             // 
             // BottomMargin
             // 
-            this.BottomMargin.HeightF = 0F;
+            this.BottomMargin.HeightF = 12.51383F;
             this.BottomMargin.Name = "BottomMargin";
             // 
             // Detail
@@ -823,7 +823,6 @@
             this.DetailReport.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
             this.Detail1});
             this.DetailReport.DrillDownControl = this.detailedOrdersToggle;
-            this.DetailReport.DrillDownExpanded = false;
             this.DetailReport.Level = 0;
             this.DetailReport.Name = "DetailReport";
             // 
@@ -878,7 +877,7 @@
     "partmentId] In (?paramProductDepartment)";
             this.Font = new System.Drawing.Font("Arial", 9.75F);
             this.Landscape = true;
-            this.Margins = new System.Drawing.Printing.Margins(22, 25, 0, 0);
+            this.Margins = new System.Drawing.Printing.Margins(22, 25, 0, 13);
             this.PageHeight = 827;
             this.PageWidth = 1169;
             this.PaperKind = System.Drawing.Printing.PaperKind.A4;
