@@ -439,9 +439,9 @@ namespace Ganedata.Core.Services
             {
                 model.OrderNumber = orderProcess.Order.OrderNumber;
                 model.OrderProcessId = orderProcess.OrderProcessID;
-                model.InvoiceCurrency = orderProcess.Order.Account.GlobalCurrency.CurrencyName;
-                model.InvoiceAddress = orderProcess.Order.Account.FullAddressWithNameHtml;
-                model.AccountId = orderProcess.Order.AccountID ?? 0;
+                model.InvoiceCurrency = orderProcess.Order?.Account?.GlobalCurrency?.CurrencyName;
+                model.InvoiceAddress = orderProcess.Order?.Account?.FullAddressWithNameHtml;
+                model.AccountId = orderProcess.Order?.AccountID ?? 0;
                 model.InvoiceDate = orderProcess.InvoiceDate ?? DateTime.UtcNow;
                 //model.TenantName = CurrentTenant.TenantName;
             }
@@ -466,10 +466,10 @@ namespace Ganedata.Core.Services
                         //Remove methods from here
                         Price = x?.OrderDetail?.Price ?? 0,
                         OrderProcessDetailId = x.OrderProcessDetailID,
-                        OrderDetailId = x.OrderDetailID,
+                        OrderDetailId = x?.OrderDetailID,
                         TaxId = x?.OrderDetail?.TaxID,
                         WarrantyId = x?.OrderDetail?.WarrantyID,
-                        TaxAmountsInvoice = Math.Round((((x?.OrderDetail?.Price ?? 0) * x.QtyProcessed) / 100) * (x.OrderDetail.TaxName?.PercentageOfAmount ?? 0), 2)
+                        TaxAmountsInvoice = Math.Round((((x?.OrderDetail?.Price ?? 0) * x.QtyProcessed) / 100) * (x?.OrderDetail?.TaxName?.PercentageOfAmount ?? 0), 2)
                     };
                     if (x?.OrderDetail?.Warranty != null)
                     {

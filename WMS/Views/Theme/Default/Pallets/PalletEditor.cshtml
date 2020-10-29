@@ -72,7 +72,10 @@
 <div class="col-md-12 p-0 pull-left" style="display: none" id="divPalletGenerator"></div>
 <div class="col-md-12 pull-left">
     <div class="col-md-offset-2 col-md-10 bottom-right">
-        <a class="btn btn-success" id="btnQuickDispatchPallets">Quick Dispatch</a>
+        @if (WMS.Helpers.LayoutHelpers.ActivityValidator("Pallets", "AddAllProcessedProductsToPallet"))
+        {
+            <a class="btn btn-success" id="btnQuickDispatchPallets">Quick Dispatch</a>
+        }
         <a class="btn btn-success" id="btnDispatchPallets" style="display:none">Dispatch Selected Pallets</a>
         @Html.ActionLink("Back to List", "Index", "SalesOrders", new { @class = "btn btn-primary" })
     </div>
