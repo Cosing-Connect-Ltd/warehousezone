@@ -41,7 +41,7 @@ namespace Ganedata.Core.Services
 
         public TenantLocations GetMobileLocationByTerminalId(int terminalId)
         {
-            return _currentDbContext.TenantWarehouses.FirstOrDefault(x => x.SalesTerminalId == terminalId && x.IsDeleted != true);
+            return _currentDbContext.TenantWarehouses.FirstOrDefault(x => x.SalesTerminalId == terminalId && x.IsMobile == true && x.IsDeleted != true);
         }
 
         public IQueryable<Terminals> GetAllTerminalsForGrid(int tenantId, int WarehouseId)
@@ -102,7 +102,7 @@ namespace Ganedata.Core.Services
 
         public Terminals GetTerminalBySerial(string serialNo)
         {
-            return _currentDbContext.Terminals.FirstOrDefault(e => e.TermainlSerial.Trim().ToLower() == serialNo && e.IsActive == true && e.IsDeleted != true
+            return _currentDbContext.Terminals.AsNoTracking().FirstOrDefault(e => e.TermainlSerial.Trim().ToLower() == serialNo && e.IsActive == true && e.IsDeleted != true
             && e.TenantWarehous.IsDeleted != true && e.TenantWarehous.IsActive == true);
         }
 
