@@ -1139,6 +1139,10 @@
     <Compile Include="Migrations\202010281434422_order-paid-flag-added-and-food-order-type-enum-added.designer.cs">
       <DependentUpon>202010281434422_order-paid-flag-added-and-food-order-type-enum-added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202010282251544_FoodOrderType-nullable-in-Orders.cs" />
+    <Compile Include="Migrations\202010282251544_FoodOrderType-nullable-in-Orders.designer.cs">
+      <DependentUpon>202010282251544_FoodOrderType-nullable-in-Orders.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2313,6 +2317,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202010281434422_order-paid-flag-added-and-food-order-type-enum-added.resx">
       <DependentUpon>202010281434422_order-paid-flag-added-and-food-order-type-enum-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010282251544_FoodOrderType-nullable-in-Orders.resx">
+      <DependentUpon>202010282251544_FoodOrderType-nullable-in-Orders.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

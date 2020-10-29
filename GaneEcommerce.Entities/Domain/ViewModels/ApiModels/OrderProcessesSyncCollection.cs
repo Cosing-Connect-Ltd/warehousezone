@@ -57,6 +57,7 @@ namespace Ganedata.Core.Models
         public string ShipmentAddressLine1 { get; set; }
         public string ShipmentAddressPostcode { get; set; }
         public string PickContainerCode { get; set; }
+        public FoodOrderTypeEnum? FoodOrderType { get; set; }
     }
 
     public class MarketRouteProgressSync

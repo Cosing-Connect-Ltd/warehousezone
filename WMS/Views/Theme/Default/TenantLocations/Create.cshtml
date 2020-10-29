@@ -295,8 +295,29 @@
                         @Html.ValidationMessageFor(model => model.DeliveryRadiusMiles)
                     </div>
                 </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.DefaultDeliveryTimeMinutes, new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(model => model.DefaultDeliveryTimeMinutes, new { @Value = "0.00" })
+                        @Html.ValidationMessageFor(model => model.DefaultDeliveryTimeMinutes)
+                    </div>
+                </div>
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.DefaultCollectionTimeMinutes, new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(model => model.DefaultCollectionTimeMinutes, new { @Value = "0.00" })
+                        @Html.ValidationMessageFor(model => model.DefaultCollectionTimeMinutes)
+                    </div>
+                </div>
             </div>
             <div class="col-md-6 pull-left">
+                <div class="input-group h-100 justify-content-center align-items-center">
+                    @Html.LabelFor(model => model.DefaultEatInTimeMinutes, new { @class = "col-md-4" })
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(model => model.DefaultEatInTimeMinutes, new { @Value = "0.00" })
+                        @Html.ValidationMessageFor(model => model.DefaultEatInTimeMinutes)
+                    </div>
+                </div>
                 <div class="input-group h-100 justify-content-center align-items-center">
                     @Html.LabelFor(model => model.DeliveryPriceGroupId, new { @class = "col-md-4" })
                     <div class="col-md-8">

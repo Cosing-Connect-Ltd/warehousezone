@@ -25,9 +25,10 @@ namespace Ganedata.Core.Services
         private readonly ITenantsServices _tenantServices;
         private readonly IProductPriceService _productPriceService;
         private readonly IMapper _mapper;
+        private readonly ITenantLocationServices _tenantLocationServices;
 
         public OrderService(IApplicationContext currentDbContext, IProductServices productService, IAccountServices accountServices, IInvoiceService invoiceService, IUserService userService,
-            ITenantsServices tenantServices, IProductPriceService productPriceService, IMapper mapper)
+            ITenantsServices tenantServices, IProductPriceService productPriceService, IMapper mapper, TenantLocationServices tenantLocationServices)
         {
             _currentDbContext = currentDbContext;
             _productService = productService;
@@ -37,6 +38,7 @@ namespace Ganedata.Core.Services
             _tenantServices = tenantServices;
             _productPriceService = productPriceService;
             _mapper = mapper;
+            _tenantLocationServices = tenantLocationServices;
         }
 
         public string GenerateNextOrderNumber(InventoryTransactionTypeEnum type, int tenantId)
@@ -253,7 +255,7 @@ namespace Ganedata.Core.Services
             order.OrderNumber = order.OrderNumber.Trim();
             order.IssueDate = DateTime.UtcNow;
             order.OrderStatusID = order.OrderStatusID > 0 ? order.OrderStatusID : OrderStatusEnum.Active;
-            order.DateCreated = DateTime.UtcNow;
+            order.DateCreated = order.DateCreated == DateTime.MinValue ? DateTime.UtcNow : order.DateCreated;
             order.DateUpdated = DateTime.UtcNow;
             order.TenentId = tenantId;
             order.CreatedBy = userId;
@@ -1155,8 +1157,33 @@ namespace Ganedata.Core.Services
 
         public OrdersSync SaveOrderProcessSync(OrderProcessesSync item, Terminals terminal)
         {
+            //TODO: Refectoring required for this method
             var groupToken = Guid.NewGuid();
             var serialProcessStatus = new SerialProcessStatus();
+            DateTime? expectedDate = null;
+            int defaultTimeMinutes = 30;
+            var warehouse = _tenantLocationServices.GetActiveTenantLocationById(terminal.WarehouseId);
+
+            if (terminal.IgnoreWarehouseForOrderPost)
+            {
+                warehouse = _tenantLocationServices.GetActiveTenantLocationById(item.WarehouseId);
+            }
+
+            if (item.FoodOrderType != null)
+            {
+                switch (item.FoodOrderType)
+                {
+                    case FoodOrderTypeEnum.Delivery:
+                        expectedDate = item.DateCreated.AddMinutes(warehouse.DefaultDeliveryTimeMinutes ?? defaultTimeMinutes);
+                        break;
+                    case FoodOrderTypeEnum.Collection:
+                        expectedDate = item.DateCreated.AddMinutes(warehouse.DefaultCollectionTimeMinutes ?? defaultTimeMinutes);
+                        break;
+                    case FoodOrderTypeEnum.EatIn:
+                        expectedDate = item.DateCreated.AddMinutes(warehouse.DefaultEatInTimeMinutes ?? defaultTimeMinutes);
+                        break;
+                }
+            }
 
             if (item.SaleMade && (item.OrderProcessDetails == null || item.OrderProcessDetails.Count < 1))
             {
@@ -1207,13 +1234,15 @@ namespace Ganedata.Core.Services
                     Posted = false,
                     IsShippedToTenantMainLocation = false,
                     TenentId = terminal.TenantId,
-                    WarehouseId = terminal.WarehouseId,
+                    WarehouseId = warehouse.WarehouseId,
                     OrderDiscount = item.OrderProcessDiscount,
                     InvoiceNo = item.TerminalInvoiceNumber,
                     OrderToken = item.OrderToken,
                     DeliveryMethod = item.DeliveryMethod,
                     ShipmentAddressLine1 = item.ShipmentAddressLine1,
-                    ShipmentAddressPostcode = item.ShipmentAddressPostcode
+                    ShipmentAddressPostcode = item.ShipmentAddressPostcode,
+                    ExpectedDate = expectedDate,
+                    FoodOrderType = item.FoodOrderType
                 };
 
                 var orderDetails = item.OrderProcessDetails.Select(m => new OrderDetail()
@@ -1235,7 +1264,7 @@ namespace Ganedata.Core.Services
                     Notes = m.Notes
                 }).ToList();
 
-                order = CreateOrder(order, terminal.TenantId, terminal.WarehouseId, order.CreatedBy, orderDetails);
+                order = CreateOrder(order, terminal.TenantId, warehouse.WarehouseId, order.CreatedBy, orderDetails);
 
                 //Order has to be created and processed immediately
                 // If OrderStatus is AwaitingAuthorisation then dont process the items
@@ -1247,7 +1276,7 @@ namespace Ganedata.Core.Services
                         DateUpdated = item.DateUpdated,
                         DeliveryNO = string.IsNullOrEmpty(item.DeliveryNo) ? "T-" + terminal.TermainlSerial + "-" + Guid.NewGuid().ToString().Replace("-", "").ToUpper().Substring(0, 15) : item.DeliveryNo,
                         TenentId = terminal.TenantId,
-                        WarehouseId = terminal.WarehouseId,
+                        WarehouseId = warehouse.WarehouseId,
                         IsActive = true,
                         OrderProcessStatusId = OrderProcessStatusEnum.Complete,
                         InventoryTransactionTypeId = item.InventoryTransactionTypeId,
@@ -1267,6 +1296,7 @@ namespace Ganedata.Core.Services
                         order.AccountBalanceOnPayment = item.AccountTransactionInfo.FinalAccountBalance;
                         order.AccountPaymentModeId = item.AccountTransactionInfo?.AccountPaymentModeId;
                         order.AccountBalanceBeforePayment = item.AccountTransactionInfo.OpeningAccountBalance;
+                        order.OrderPaid = true;
                     }
 
                     _currentDbContext.OrderProcess.Add(process);
@@ -1277,7 +1307,7 @@ namespace Ganedata.Core.Services
                         if (op.Serials != null && op.Serials.Count > 0)
                         {
                             var serialResult = UpdateSerialStockStatus(op.Serials, op.ProductId, item.DeliveryNo, item.OrderID ?? 0, op.OrderDetailID ?? 0, 0, item.InventoryTransactionTypeId, item.CreatedBy,
-                                terminal.TenantId, terminal.WarehouseId, terminal.TerminalId);
+                                terminal.TenantId, warehouse.WarehouseId, terminal.TerminalId);
                             serialProcessStatus.ProcessedSerials.AddRange(serialResult.ProcessedSerials);
                             serialProcessStatus.RejectedSerials.AddRange(serialResult.RejectedSerials);
                         }
@@ -1305,7 +1335,7 @@ namespace Ganedata.Core.Services
 
                             _currentDbContext.SaveChanges();
                             Inventory.StockTransactionApi(o.ProductId, item.InventoryTransactionTypeId,
-                                o.QtyProcessed, o.OrderProcess.OrderID, terminal.TenantId, terminal.WarehouseId,
+                                o.QtyProcessed, o.OrderProcess.OrderID, terminal.TenantId, warehouse.WarehouseId,
                                 op.CreatedBy, null, null, terminal.TerminalId,
                                 orderProcessId: (o?.OrderProcess?.OrderProcessID),
                                 OrderProcessDetialId: o?.OrderDetailID);
@@ -1320,7 +1350,7 @@ namespace Ganedata.Core.Services
                 if (item.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferIn || item.InventoryTransactionTypeId == InventoryTransactionTypeEnum.TransferOut)
                 {
                     order.OrderGroupToken = groupToken;
-                    order.WarehouseId = terminal.WarehouseId;
+                    order.WarehouseId = warehouse.WarehouseId;
                     order.OrderStatusID = OrderStatusEnum.Active;
                     order.TransferWarehouseId = terminal.TenantWarehous.ParentWarehouseId;
                     if (order.DateCreated == null || order.DateCreated == DateTime.MinValue)
@@ -1349,7 +1379,7 @@ namespace Ganedata.Core.Services
                         TenentId = terminal.TenantId,
                         WarehouseId = terminal.TenantWarehous.ParentWarehouseId,
                         OrderGroupToken = groupToken,
-                        TransferWarehouseId = terminal.WarehouseId
+                        TransferWarehouseId = warehouse.WarehouseId
                     };
 
                     if (order.DateCreated == null || order.DateCreated == DateTime.MinValue)
@@ -1375,7 +1405,7 @@ namespace Ganedata.Core.Services
                         Notes = m.Notes
                     }).ToList();
 
-                    outOrder = CreateOrder(outOrder, terminal.TenantId, terminal.TenantWarehous.ParentWarehouseId ?? terminal.WarehouseId, 0, outOrderDetails);
+                    outOrder = CreateOrder(outOrder, terminal.TenantId, terminal.TenantWarehous.ParentWarehouseId ?? warehouse.WarehouseId, 0, outOrderDetails);
                 }
 
                 if (item.ProgressInfo != null)
@@ -1448,6 +1478,7 @@ namespace Ganedata.Core.Services
                         }
                     }
                 }
+
                 return result;
             }
             else if (!item.OrderToken.HasValue && item.OrderID > 0)
@@ -1455,13 +1486,13 @@ namespace Ganedata.Core.Services
                 var order = GetOrderById(item.OrderID.Value);
 
                 var orderProcess = GetOrderProcessByDeliveryNumber(item.OrderID.Value, item.InventoryTransactionTypeId, string.IsNullOrEmpty(item.DeliveryNo) ? "T-" + terminal.TermainlSerial + "-"
-                    + Guid.NewGuid().ToString().Replace("-", "").ToUpper().Substring(0, 15) : item.DeliveryNo, item.CreatedBy, null, terminal.WarehouseId);
+                    + Guid.NewGuid().ToString().Replace("-", "").ToUpper().Substring(0, 15) : item.DeliveryNo, item.CreatedBy, null, warehouse.WarehouseId);
                 foreach (var op in item.OrderProcessDetails)
                 {
                     if (op.Serials != null && op.Serials.Count > 0)
                     {
                         var serialResult = UpdateSerialStockStatus(op.Serials, op.ProductId, item.DeliveryNo, item.OrderID ?? 0, op.OrderDetailID ?? 0, 0, item.InventoryTransactionTypeId, item.CreatedBy,
-                            terminal.TenantId, terminal.WarehouseId, terminal.TerminalId);
+                            terminal.TenantId, warehouse.WarehouseId, terminal.TerminalId);
                         serialProcessStatus.ProcessedSerials.AddRange(serialResult.ProcessedSerials);
                         serialProcessStatus.RejectedSerials.AddRange(serialResult.RejectedSerials);
                     }
@@ -1509,7 +1540,7 @@ namespace Ganedata.Core.Services
 
                                         decimal quantity = pallet.ProcessedQuantity * productsPerCase;
 
-                                        Inventory.StockTransactionApi(o.ProductId, item.InventoryTransactionTypeId, quantity, o.OrderProcess.OrderID, terminal.TenantId, terminal.WarehouseId, op.CreatedBy,
+                                        Inventory.StockTransactionApi(o.ProductId, item.InventoryTransactionTypeId, quantity, o.OrderProcess.OrderID, terminal.TenantId, warehouse.WarehouseId, op.CreatedBy,
                                             null, pallet.PalletTrackingId, terminal.TerminalId, orderProcessId: (o.OrderProcess?.OrderProcessID), OrderProcessDetialId: (o?.OrderProcessDetailID));
                                     }
                                     else
@@ -1533,7 +1564,7 @@ namespace Ganedata.Core.Services
                                         newpallet.DateUpdated = DateTime.UtcNow;
                                         decimal quantity = pallet.ProcessedQuantity * productsPerCase;
 
-                                        Inventory.StockTransactionApi(o.ProductId, item.InventoryTransactionTypeId, quantity, o.OrderProcess.OrderID, terminal.TenantId, terminal.WarehouseId, op.CreatedBy,
+                                        Inventory.StockTransactionApi(o.ProductId, item.InventoryTransactionTypeId, quantity, o.OrderProcess.OrderID, terminal.TenantId, warehouse.WarehouseId, op.CreatedBy,
                                             null, pallet.PalletTrackingId, terminal.TerminalId, orderProcessId: (o.OrderProcess?.OrderProcessID), OrderProcessDetialId: (o?.OrderProcessDetailID));
                                     }
                                     else
@@ -1553,7 +1584,7 @@ namespace Ganedata.Core.Services
                         else
                         {
                             _currentDbContext.SaveChanges();
-                            Inventory.StockTransactionApi(o.ProductId, item.InventoryTransactionTypeId, o.QtyProcessed, o.OrderProcess.OrderID, terminal.TenantId, terminal.WarehouseId, op.CreatedBy, null, null, terminal.TerminalId, orderProcessId: (o.OrderProcess?.OrderProcessID), OrderProcessDetialId: (o?.OrderProcessDetailID));
+                            Inventory.StockTransactionApi(o.ProductId, item.InventoryTransactionTypeId, o.QtyProcessed, o.OrderProcess.OrderID, terminal.TenantId, warehouse.WarehouseId, op.CreatedBy, null, null, terminal.TerminalId, orderProcessId: (o.OrderProcess?.OrderProcessID), OrderProcessDetialId: (o?.OrderProcessDetailID));
                         }
                     }
                 }
@@ -1576,7 +1607,7 @@ namespace Ganedata.Core.Services
                             if (op.Serials != null && op.Serials.Count > 0)
                             {
                                 var serialResult = UpdateSerialStockStatus(op.Serials, op.ProductId, item.DeliveryNo, reverseOrder.OrderID, reverseOrderdetail.OrderDetailID, 0,
-                                    reverseOrder.InventoryTransactionTypeId, item.CreatedBy, terminal.TenantId, reverseOrder.WarehouseId ?? terminal.WarehouseId, terminal.TerminalId);
+                                    reverseOrder.InventoryTransactionTypeId, item.CreatedBy, terminal.TenantId, reverseOrder.WarehouseId ?? warehouse.WarehouseId, terminal.TerminalId);
 
                                 serialProcessStatus.ProcessedSerials.AddRange(serialResult.ProcessedSerials);
                                 serialProcessStatus.RejectedSerials.AddRange(serialResult.RejectedSerials);
@@ -1602,7 +1633,7 @@ namespace Ganedata.Core.Services
 
                                 _currentDbContext.OrderProcessDetail.Add(o);
                                 _currentDbContext.SaveChanges();
-                                Inventory.StockTransactionApi(o.ProductId, reverseOrder.InventoryTransactionTypeId, o.QtyProcessed, reverseOrder.OrderID, terminal.TenantId, (reverseOrder.WarehouseId ?? terminal.WarehouseId),
+                                Inventory.StockTransactionApi(o.ProductId, reverseOrder.InventoryTransactionTypeId, o.QtyProcessed, reverseOrder.OrderID, terminal.TenantId, (reverseOrder.WarehouseId ?? warehouse.WarehouseId),
                                     op.CreatedBy, null, null, terminal.TerminalId, orderProcessId: (reverseOrderProcess?.OrderProcessID), OrderProcessDetialId: (o?.OrderProcessDetailID));
                             }
                         }
@@ -1692,6 +1723,7 @@ namespace Ganedata.Core.Services
                         order.AccountBalanceOnPayment = item.AccountTransactionInfo.FinalAccountBalance;
                         order.AccountPaymentModeId = item.AccountTransactionInfo?.AccountPaymentModeId;
                         order.AccountBalanceBeforePayment = item.AccountTransactionInfo.OpeningAccountBalance;
+                        order.OrderPaid = true;
                     }
 
                     order.OrderStatusID = OrderStatusEnum.Complete;
