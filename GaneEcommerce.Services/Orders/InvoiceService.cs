@@ -130,6 +130,13 @@ namespace Ganedata.Core.Services
         public InvoiceMaster CreateInvoiceForSalesOrder(InvoiceViewModel invoiceData, int tenantId, int userId)
         {
             var account = _currentDbContext.Account.Find(invoiceData.AccountId);
+            if (account == null)
+            {
+                account = _currentDbContext.Account.Where(x => x.AccountCode == "DCA").FirstOrDefault();
+            }
+            var tenant = _currentDbContext.Tenants.Find(tenantId);
+            var process = _currentDbContext.OrderProcess.Find(invoiceData.OrderProcessId);
+            InventoryTransactionTypeEnum inventoryTransactionType = InventoryTransactionTypeEnum.SalesOrder;
 
             var invoice = new InvoiceMaster
             {
@@ -138,20 +145,22 @@ namespace Ganedata.Core.Services
                 DateCreated = DateTime.UtcNow,
                 CreatedBy = userId,
                 InvoiceDate = invoiceData.InvoiceDate,
-                AccountId = invoiceData.AccountId,
+                AccountId = account.AccountID,
                 CardCharges = invoiceData.CardCharges,
-                InvoiceAddress = account.FullAddress,
-                InvoiceCurrency = account.GlobalCurrency.CurrencyName,
+                InvoiceAddress = account?.FullAddress,
+                InvoiceCurrency = account?.GlobalCurrency?.CurrencyName ?? tenant.Currency.CurrencyName,
                 DateUpdated = DateTime.UtcNow,
                 InvoiceTotal = invoiceData.InvoiceTotal,
-                NetAmount = ((invoiceData.InvoiceTotal - invoiceData.TaxAmount) - (invoiceData.WarrantyAmount)),
+                NetAmount = invoiceData.NetAmount,
                 PostageCharges = invoiceData.PostageCharges,
                 TaxAmount = invoiceData.TaxAmount,
                 WarrantyAmount = invoiceData.WarrantyAmount,
+                OrderDiscount = invoiceData.OrderDiscount,
                 UpdatedBy = userId,
-                CurrencyId = account.CurrencyID
+                CurrencyId = account?.CurrencyID ?? tenant.CurrencyID,
             };
-            invoice.InvoiceNumber = GenerateNextInvoiceNumber(tenantId);
+
+            invoice.InvoiceNumber = invoice.InvoiceNumber = process?.Order?.InvoiceNo != null ? process.Order.InvoiceNo : GenerateNextInvoiceNumber(tenantId);
 
             invoice.InvoiceDetails = invoiceData.AllInvoiceProducts.Select(m => new InvoiceDetail()
             {
@@ -171,11 +180,13 @@ namespace Ganedata.Core.Services
                 OrderDetailId = m.OrderDetailId,
                 WarrantyId = m.WarrantyId
             }).ToList();
+
             _currentDbContext.Entry(invoice).State = EntityState.Added;
 
-            var process = _currentDbContext.OrderProcess.Find(invoiceData.OrderProcessId);
+
             if (process != null)
             {
+                inventoryTransactionType = process.Order.InventoryTransactionTypeId;
                 process.InvoiceNo = invoice.InvoiceNumber;
                 process.OrderProcessStatusId = OrderProcessStatusEnum.Invoiced;
                 process.DateUpdated = DateTime.UtcNow;
@@ -185,19 +196,8 @@ namespace Ganedata.Core.Services
                 _currentDbContext.Entry(process).State = EntityState.Modified;
             }
 
-            var accountTransaction = new AccountTransaction()
-            {
-                AccountId = account.AccountID,
-                AccountTransactionTypeId = AccountTransactionTypeEnum.InvoicedToAccount,
-                CreatedBy = userId,
-                Notes = ("Invoiced : " + (process != null ? process.Order.OrderNumber : "")).Trim(),
-                DateCreated = DateTime.UtcNow,
-                Amount = invoice.InvoiceTotal,
-                TenantId = tenantId
-            };
-
-            _currentDbContext.Entry(account).State = EntityState.Modified;
             _currentDbContext.SaveChanges();
+
             if (process != null)
             {
                 var orderPorcessCount = _currentDbContext.OrderProcess.Count(u => u.OrderID == process.OrderID && (u.OrderProcessStatusId != OrderProcessStatusEnum.Invoiced && u.OrderProcessStatusId != OrderProcessStatusEnum.PostedToAccounts));
@@ -208,7 +208,22 @@ namespace Ganedata.Core.Services
                 }
             }
 
-            SaveAccountTransaction(accountTransaction, tenantId, userId);
+            if (inventoryTransactionType != InventoryTransactionTypeEnum.DirectSales)
+            {
+                var accountTransaction = new AccountTransaction()
+                {
+                    AccountId = account?.AccountID,
+                    AccountTransactionTypeId = AccountTransactionTypeEnum.InvoicedToAccount,
+                    CreatedBy = userId,
+                    Notes = ("Invoiced : " + (process != null ? process.Order.OrderNumber : "")).Trim(),
+                    DateCreated = DateTime.UtcNow,
+                    Amount = invoice.InvoiceTotal,
+                    TenantId = tenantId
+                };
+
+                SaveAccountTransaction(accountTransaction, tenantId, userId);
+            }
+
             return invoice;
         }
 
@@ -233,6 +248,7 @@ namespace Ganedata.Core.Services
                 invoiceMaster.PostageCharges = invoiceData.PostageCharges;
                 invoiceMaster.TaxAmount = invoiceData.TaxAmount;
                 invoiceMaster.WarrantyAmount = invoiceData.WarrantyAmount;
+                invoiceMaster.OrderDiscount = invoiceData.OrderDiscount;
                 invoiceMaster.UpdatedBy = userId;
                 invoiceMaster.CurrencyId = account.CurrencyID;
                 invoiceMaster.InvoiceNumber = invoiceMaster.InvoiceNumber;
@@ -382,13 +398,8 @@ namespace Ganedata.Core.Services
             }
             else
             {
-                // _currentDbContext.Entry(trans).State = EntityState.Modified;
                 trans.DateUpdated = DateTime.UtcNow;
                 trans.UpdatedBy = userId;
-                // AMOUNT CANNOT BE UPDATED AT ALL
-                //trans.Amount = amount;
-                //trans.AccountTransactionTypeId = accountTransaction.AccountTransactionTypeId;
-                //trans.FinalBalance = accountBalance;
             }
 
             trans.Notes = accountTransaction.Notes;
@@ -443,7 +454,7 @@ namespace Ganedata.Core.Services
                 model.InvoiceAddress = orderProcess.Order?.Account?.FullAddressWithNameHtml;
                 model.AccountId = orderProcess.Order?.AccountID ?? 0;
                 model.InvoiceDate = orderProcess.InvoiceDate ?? DateTime.UtcNow;
-                //model.TenantName = CurrentTenant.TenantName;
+                model.OrderDiscount = orderProcess.Order.OrderDiscount;
             }
 
             var orderProcesses = _currentDbContext.OrderProcessDetail
@@ -489,13 +500,14 @@ namespace Ganedata.Core.Services
                     model.AllInvoiceProducts[index].TaxAmountsInvoice += Math.Round((((x?.OrderDetail?.Price ?? 0) * x.QtyProcessed) / 100) * (x.OrderDetail.TaxName?.PercentageOfAmount ?? 0), 2);
                 }
             }
+
             model.TaxAmount = model.AllInvoiceProducts.Select(I => I.TaxAmount).DefaultIfEmpty(0).Sum();
             var amount = model.AllInvoiceProducts.Select(u => u.NetAmount).DefaultIfEmpty(0).Sum();
             model.WarrantyAmount += model.AllInvoiceProducts.Select(u => u.WarrantyAmount).DefaultIfEmpty(0).Sum();
             var taxAmount = model.TaxAmount;
             var warrantyAmount = model.WarrantyAmount;
             model.NetAmount = ((amount - taxAmount) - warrantyAmount);
-            model.InvoiceTotal = Math.Round(model.NetAmount + model.TaxAmount + model.WarrantyAmount, 2);
+            model.InvoiceTotal = Math.Round(model.NetAmount + model.TaxAmount + model.WarrantyAmount - model.OrderDiscount, 2);
 
             return model;
         }
@@ -511,6 +523,21 @@ namespace Ganedata.Core.Services
                                                                     .ToList();
 
             return _productPriceService.GetInvoiceDetailsProductPrices(InvocieDetaildata);
+        }
+
+        public InvoiceViewModel GetInvoicePreviewModelByOrderProcessId(int orderProcessId, caTenant tenant)
+        {
+            var model = LoadInvoiceProductValuesByOrderProcessId(orderProcessId);
+
+            var invoice = GetInvoiceMasterByOrderProcessId(orderProcessId);
+            if (invoice != null)
+            {
+                model.InvoiceNumber = invoice.InvoiceNumber;
+                model.InvoiceDate = invoice.InvoiceDate;
+            }
+
+            model.TenantName = tenant.TenantName;
+            return model;
         }
     }
 }

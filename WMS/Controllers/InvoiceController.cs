@@ -294,7 +294,6 @@ namespace WMS.Controllers
                 InvoiceMasterId = id ?? 0,
                 OrderProcessId = orderProcessId ?? 0,
                 AllAccounts = AccountServices.GetAllValidAccounts(CurrentTenantId, EnumAccountType.Customer).Select(m => new SelectListItem { Text = m.CompanyName, Value = m.AccountID.ToString(), Selected = m.AccountID == accountId ? true : false }).ToList(),
-                //AllProducts = _productServices.GetAllValidProductMasters(CurrentTenantId).Select(m => new SelectListItem { Text = m.NameWithCode, Value = m.ProductId.ToString(), Selected = m.ProductId == productId ? true : false }).ToList(),
                 AllTaxes = allTaxes.Select(m => new SelectListItem { Text = m.TaxName, Value = m.TaxID.ToString() }).ToList(),
                 TaxDataHelper = Newtonsoft.Json.JsonConvert.SerializeObject(allTaxes.Select(m => new { m.TaxID, m.PercentageOfAmount })),
                 AllWarranties = allWarranties.Select(m => new SelectListItem { Text = m.WarrantyName, Value = m.WarrantyID.ToString() }).ToList(),
@@ -344,16 +343,13 @@ namespace WMS.Controllers
             var processIds = model.OrderProcessIds.Split(',');
             foreach (var item in processIds)
             {
-                var invoice = GetInvoicePreviewModelByOrderProcessId(item.AsInt());
+                var invoice = _invoiceService.GetInvoicePreviewModelByOrderProcessId(item.AsInt(), CurrentTenant);
                 var invoiceMaster = _invoiceService.CreateInvoiceForSalesOrder(invoice, CurrentTenantId, CurrentUserId);
                 invoice.InvoiceMasterId = invoiceMaster.InvoiceMasterId;
-                //ExportInvoiceByModel(invoice);
             }
 
             return Json(true, JsonRequestBehavior.AllowGet);
         }
-
-
 
         [HttpPost]
         public ActionResult GenerateBulkInvoicePrint(InvoiceExportModel model)
@@ -361,7 +357,7 @@ namespace WMS.Controllers
             var processIds = model.OrderProcessIds.Split(',');
             foreach (var item in processIds)
             {
-                var invoice = GetInvoicePreviewModelByOrderProcessId(item.AsInt());
+                var invoice = _invoiceService.GetInvoicePreviewModelByOrderProcessId(item.AsInt(), CurrentTenant);
                 var invoiceMaster = _invoiceService.CreateInvoiceForSalesOrder(invoice, CurrentTenantId, CurrentUserId);
                 invoice.InvoiceMasterId = invoiceMaster.InvoiceMasterId;
                 //ExportInvoiceByModel(invoice);
@@ -521,22 +517,7 @@ namespace WMS.Controllers
             DevexHtmlToPdfExport(content, model.InvoiceMasterId);
         }
 
-        public InvoiceViewModel GetInvoicePreviewModelByOrderProcessId(int orderProcessId)
-        {
-            //var model = new InvoiceViewModel() { OrderProcessId = orderProcessId, AllAccounts = AccountServices.GetAllValidAccounts(CurrentTenantId, EnumAccountType.Customer).Select(m => new SelectListItem { Text = m.CompanyName, Value = m.AccountID.ToString() }).ToList() };
 
-            var model = _invoiceService.LoadInvoiceProductValuesByOrderProcessId(orderProcessId);
-
-
-            var invoice = _invoiceService.GetInvoiceMasterByOrderProcessId(orderProcessId);
-            if (invoice != null)
-            {
-                model.InvoiceNumber = invoice.InvoiceNumber;
-                model.InvoiceDate = invoice.InvoiceDate;
-            }
-            model.TenantName = CurrentTenant.TenantName;
-            return model;
-        }
 
         public InvoiceViewModel GetInvoicePreviewModelByInvoiceId(int invoiceId)
         {

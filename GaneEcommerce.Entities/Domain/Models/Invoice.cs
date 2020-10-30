@@ -17,6 +17,7 @@ namespace Ganedata.Core.Entities.Domain
         public decimal CardCharges { get; set; }
         public decimal PostageCharges { get; set; }
         public decimal WarrantyAmount { get; set; }
+        public decimal OrderDiscount { get; set; }
         public decimal InvoiceTotal { get; set; }
         public string InvoiceNumber { get; set; }
         public string InvoiceAddress { get; set; }
