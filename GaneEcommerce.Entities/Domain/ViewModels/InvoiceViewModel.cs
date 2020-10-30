@@ -93,7 +93,7 @@ namespace Ganedata.Core.Entities.Domain
         public decimal TaxAmount { get; set; }
         [Display(Name = "War Amt")]
         public decimal WarrantyAmount { get; set; }
-
+        public decimal OrderDiscount { get; set; }
         public decimal CardCharges { get; set; }
         [Display(Name = "Postage")]
         public decimal PostageCharges { get; set; }

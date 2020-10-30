@@ -9,6 +9,7 @@ using Ganedata.Core.Data;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using AutoMapper;
+using ClosedXML.Report.Utils;
 
 namespace WMS.Controllers
 {
@@ -19,9 +20,10 @@ namespace WMS.Controllers
         private readonly IApplicationContext _currentDbContext;
         private readonly IEmployeeShiftsServices _employShiftServices;
         private readonly IMapper _mapper;
+        private readonly IInvoiceService _invoiceServices;
 
         public AdminUtilitiesController(ICoreOrderService orderService, IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IAdminServices adminServices,
-            IProductServices productServices, IApplicationContext currentDbContext, IEmployeeShiftsServices employeeShiftsServices, IMapper mapper)
+            IProductServices productServices, IApplicationContext currentDbContext, IEmployeeShiftsServices employeeShiftsServices, IMapper mapper, IInvoiceService invoiceServices)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
             _adminServices = adminServices;
@@ -29,6 +31,7 @@ namespace WMS.Controllers
             _currentDbContext = currentDbContext;
             _employShiftServices = employeeShiftsServices;
             _mapper = mapper;
+            _invoiceServices = invoiceServices;
         }
         // GET: AdminUtilities/RecalculateStockAll
         /// <summary>
@@ -429,12 +432,12 @@ namespace WMS.Controllers
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
-            for (var i = 0; i < 200; i++)
+            for (var i = 0; i < 10000; i++)
             {
 
                 var items = _currentDbContext.OrderProcessDetail.Where(x => x.OrderDetailID == null).Take(100).ToList();
-                List<int?> itemIds = items.Select(x => x.OrderProcess.OrderID).ToList();
-                var orderDetails = _currentDbContext.OrderDetail.Where(x => itemIds.Contains(x.OrderID)).ToList();
+
+                if (items == null) { break; }
 
                 int counter = 0;
                 int remaining = items.Count();
@@ -444,11 +447,12 @@ namespace WMS.Controllers
                     counter++;
                     remaining--;
 
-                    var orderDetail = orderDetails.Where(x => x.OrderID == item.OrderProcess.OrderID && x.ProductId == item.ProductId).Select(y => y.OrderDetailID).FirstOrDefault();
-                    if (orderDetail != 0)
+                    var orderDetail = _currentDbContext.OrderDetail.Where(x => x.OrderID == item.OrderProcess.OrderID && x.ProductId == item.ProductId).FirstOrDefault();
+                    orderDetail.TaxID = orderDetail.ProductMaster.EnableTax == true ? orderDetail.ProductMaster.TaxID : (int?)null;
+                    if (orderDetail != null)
                     {
                         item.DateUpdated = DateTime.UtcNow;
-                        item.OrderDetailID = orderDetail;
+                        item.OrderDetailID = orderDetail.OrderDetailID;
                     }
 
 
@@ -458,14 +462,40 @@ namespace WMS.Controllers
                         counter = 0;
                     }
 
+                }
+            }
 
+            ViewBag.Title = "Operation was Successful";
+            ViewBag.Message = "Operation was Successful";
+            ViewBag.Detail = "Operation was Completed Successfully";
+
+            return View("AdminUtilities");
+
+        }
+
+        public ActionResult CreateInvoicesforDispatchedOrders()
+        {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+
+            for (var i = 0; i < 2000; i++)
+            {
+
+                var items = _currentDbContext.OrderProcess.Where(x => x.OrderProcessStatusId == OrderProcessStatusEnum.Dispatched && x.InvoiceNo == null && x.IsDeleted != true).Select(y => y.OrderProcessID).Take(50).ToList();
+
+                if (items == null) { break; }
+
+                foreach (var item in items)
+                {
+                    var invoice = _invoiceServices.GetInvoicePreviewModelByOrderProcessId(item, CurrentTenant);
+                    var invoiceMaster = _invoiceServices.CreateInvoiceForSalesOrder(invoice, CurrentTenantId, CurrentUserId);
+                    invoice.InvoiceMasterId = invoiceMaster.InvoiceMasterId;
                 }
 
             }
 
             ViewBag.Title = "Operation was Successful";
             ViewBag.Message = "Operation was Successful";
-            ViewBag.Detail = "Active Pallet was Completed Successfully";
+            ViewBag.Detail = "Operation was Completed Successfully";
 
             return View("AdminUtilities");
 
