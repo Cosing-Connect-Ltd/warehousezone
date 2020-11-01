@@ -432,37 +432,31 @@ namespace WMS.Controllers
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
-            for (var i = 0; i < 10000; i++)
+            var items = _currentDbContext.OrderProcessDetail.Where(x => x.OrderDetailID == null).Take(100).ToList();
+
+            int counter = 0;
+            int remaining = items.Count();
+
+            foreach (var item in items)
             {
+                counter++;
+                remaining--;
 
-                var items = _currentDbContext.OrderProcessDetail.Where(x => x.OrderDetailID == null).Take(100).ToList();
-
-                if (items == null) { break; }
-
-                int counter = 0;
-                int remaining = items.Count();
-
-                foreach (var item in items)
+                var orderDetail = _currentDbContext.OrderDetail.Where(x => x.OrderID == item.OrderProcess.OrderID && x.ProductId == item.ProductId).FirstOrDefault();
+                orderDetail.TaxID = orderDetail.ProductMaster.EnableTax == true ? orderDetail.ProductMaster.TaxID : (int?)null;
+                if (orderDetail != null)
                 {
-                    counter++;
-                    remaining--;
-
-                    var orderDetail = _currentDbContext.OrderDetail.Where(x => x.OrderID == item.OrderProcess.OrderID && x.ProductId == item.ProductId).FirstOrDefault();
-                    orderDetail.TaxID = orderDetail.ProductMaster.EnableTax == true ? orderDetail.ProductMaster.TaxID : (int?)null;
-                    if (orderDetail != null)
-                    {
-                        item.DateUpdated = DateTime.UtcNow;
-                        item.OrderDetailID = orderDetail.OrderDetailID;
-                    }
-
-
-                    if (counter == 50 || remaining < 50)
-                    {
-                        _currentDbContext.SaveChanges();
-                        counter = 0;
-                    }
-
+                    item.DateUpdated = DateTime.UtcNow;
+                    item.OrderDetailID = orderDetail.OrderDetailID;
                 }
+
+
+                if (counter == 50 || remaining < 50)
+                {
+                    _currentDbContext.SaveChanges();
+                    counter = 0;
+                }
+
             }
 
             ViewBag.Title = "Operation was Successful";
@@ -475,23 +469,18 @@ namespace WMS.Controllers
 
         public ActionResult CreateInvoicesforDispatchedOrders()
         {
-            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+            //if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
-            for (var i = 0; i < 2000; i++)
+            var items = _currentDbContext.OrderProcess.AsNoTracking().Where(x => x.OrderProcessStatusId == OrderProcessStatusEnum.Dispatched && x.InvoiceNo == null && x.IsDeleted != true)
+                .Select(y => y.OrderProcessID).Take(100).ToList();
+
+            foreach (var item in items)
             {
-
-                var items = _currentDbContext.OrderProcess.Where(x => x.OrderProcessStatusId == OrderProcessStatusEnum.Dispatched && x.InvoiceNo == null && x.IsDeleted != true).Select(y => y.OrderProcessID).Take(50).ToList();
-
-                if (items == null) { break; }
-
-                foreach (var item in items)
-                {
-                    var invoice = _invoiceServices.GetInvoicePreviewModelByOrderProcessId(item, CurrentTenant);
-                    var invoiceMaster = _invoiceServices.CreateInvoiceForSalesOrder(invoice, CurrentTenantId, CurrentUserId);
-                    invoice.InvoiceMasterId = invoiceMaster.InvoiceMasterId;
-                }
-
+                var invoice = _invoiceServices.GetInvoicePreviewModelByOrderProcessId(item, CurrentTenant);
+                var invoiceMaster = _invoiceServices.CreateInvoiceForSalesOrder(invoice, CurrentTenantId, CurrentUserId, true);
+                invoice.InvoiceMasterId = invoiceMaster.InvoiceMasterId;
             }
+
 
             ViewBag.Title = "Operation was Successful";
             ViewBag.Message = "Operation was Successful";

@@ -7,10 +7,10 @@ namespace Ganedata.Core.Services
 {
     public interface IInvoiceService
     {
-        InvoiceMaster CreateInvoiceForSalesOrder(InvoiceViewModel invoiceData, int tenantId, int userId);
+        InvoiceMaster CreateInvoiceForSalesOrder(InvoiceViewModel invoiceData, int tenantId, int userId, bool useOrderProcessDate = false);
         IQueryable<InvoiceMaster> GetAllInvoiceMasters(int TenantId);
         IQueryable<InvoiceMaster> GetAllInvoiceViews(int TenantId);
-        IQueryable<InvoiceMaster> GetAllInvoiceMastersWithAllStatus(int tenantId,int[] accountIds);
+        IQueryable<InvoiceMaster> GetAllInvoiceMastersWithAllStatus(int tenantId, int[] accountIds);
         List<InvoiceDetailViewModel> GetAllInvoiceDetailByInvoiceId(int invoiceId);
         List<InvoiceDetailReportViewModel> GetAllInvoiceDetailReportData(int invoiceId);
         AccountTransaction AddAccountTransaction(AccountTransactionTypeEnum type, decimal amount, string notes, int accountId, int tenantId, int userId, AccountPaymentModeEnum? accountPaymentModeId = null);

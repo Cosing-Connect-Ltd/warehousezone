@@ -87,11 +87,11 @@ namespace WMS.CustomBindings
 
             podata.ForEach(u =>
                u.ProcessedQty = context.OrderProcess.Where(d => d.OrderID == u.OrderID && d.IsDeleted != true && d.InventoryTransactionTypeId != InventoryTransactionTypeEnum.Returns && d.InventoryTransactionTypeId != InventoryTransactionTypeEnum.Wastage
-                && d.InventoryTransactionTypeId != InventoryTransactionTypeEnum.WastedReturn)?.SelectMany(h => h.OrderProcessDetail)?.Where(d => d.IsDeleted != true).Select(c => c.QtyProcessed).DefaultIfEmpty(0).Sum());
+                && d.InventoryTransactionTypeId != InventoryTransactionTypeEnum.WastedReturn)?.SelectMany(h => h.OrderProcessDetail)?.Where(d => d.IsDeleted != true && d.OrderDetail.IsDeleted != true).Select(c => c.QtyProcessed).DefaultIfEmpty(0).Sum());
 
             podata.ForEach(u =>
                 u.ReturnQty = context.OrderProcess.Where(d => d.OrderID == u.OrderID && d.IsDeleted != true && (d.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Returns || d.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Wastage
-                || d.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WastedReturn))?.SelectMany(m => m.OrderProcessDetail).Where(d => d.IsDeleted != true).Select(c => c.QtyProcessed).DefaultIfEmpty(0).Sum());
+                || d.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WastedReturn))?.SelectMany(m => m.OrderProcessDetail).Where(d => d.IsDeleted != true && d.OrderDetail.IsDeleted != true).Select(c => c.QtyProcessed).DefaultIfEmpty(0).Sum());
 
             e.Data = podata;
         }
@@ -180,11 +180,11 @@ namespace WMS.CustomBindings
 
             podata.ForEach(u =>
                u.ProcessedQty = context.OrderProcess.Where(d => d.OrderID == u.OrderID && d.IsDeleted != true && d.InventoryTransactionTypeId != InventoryTransactionTypeEnum.Returns && d.InventoryTransactionTypeId != InventoryTransactionTypeEnum.Wastage
-                && d.InventoryTransactionTypeId != InventoryTransactionTypeEnum.WastedReturn)?.SelectMany(h => h.OrderProcessDetail)?.Where(d => d.IsDeleted != true).Select(c => c.QtyProcessed).DefaultIfEmpty(0).Sum());
+                && d.InventoryTransactionTypeId != InventoryTransactionTypeEnum.WastedReturn)?.SelectMany(h => h.OrderProcessDetail)?.Where(d => d.IsDeleted != true && d.OrderDetail.IsDeleted != true).Select(c => c.QtyProcessed).DefaultIfEmpty(0).Sum());
 
             podata.ForEach(u =>
                 u.ReturnQty = context.OrderProcess.Where(d => d.OrderID == u.OrderID && d.IsDeleted != true && (d.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Returns || d.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Wastage
-                || d.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WastedReturn))?.SelectMany(m => m.OrderProcessDetail).Where(d => d.IsDeleted != true).Select(c => c.QtyProcessed).DefaultIfEmpty(0).Sum());
+                || d.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WastedReturn))?.SelectMany(m => m.OrderProcessDetail).Where(d => d.IsDeleted != true && d.OrderDetail.IsDeleted != true).Select(c => c.QtyProcessed).DefaultIfEmpty(0).Sum());
 
             e.Data = podata;
         }
@@ -358,11 +358,11 @@ namespace WMS.CustomBindings
 
             sodata.ForEach(u =>
                u.ProcessedQty = context.OrderProcess.Where(d => d.OrderID == u.OrderID && d.IsDeleted != true && d.InventoryTransactionTypeId != InventoryTransactionTypeEnum.Returns && d.InventoryTransactionTypeId != InventoryTransactionTypeEnum.Wastage
-                && d.InventoryTransactionTypeId != InventoryTransactionTypeEnum.WastedReturn)?.SelectMany(h => h.OrderProcessDetail)?.Where(d => d.IsDeleted != true).Select(c => c.QtyProcessed).DefaultIfEmpty(0).Sum());
+                && d.InventoryTransactionTypeId != InventoryTransactionTypeEnum.WastedReturn)?.SelectMany(h => h.OrderProcessDetail)?.Where(d => d.IsDeleted != true && d.OrderDetail.IsDeleted != true).Select(c => c.QtyProcessed).DefaultIfEmpty(0).Sum());
 
             sodata.ForEach(u =>
                 u.ReturnQty = context.OrderProcess.Where(d => d.OrderID == u.OrderID && d.IsDeleted != true && (d.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Returns || d.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Wastage
-                || d.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WastedReturn))?.SelectMany(m => m.OrderProcessDetail).Where(d => d.IsDeleted != true).Select(c => c.QtyProcessed).DefaultIfEmpty(0).Sum());
+                || d.InventoryTransactionTypeId == InventoryTransactionTypeEnum.WastedReturn))?.SelectMany(m => m.OrderProcessDetail).Where(d => d.IsDeleted != true && d.OrderDetail.IsDeleted != true).Select(c => c.QtyProcessed).DefaultIfEmpty(0).Sum());
 
             e.Data = sodata;
         }

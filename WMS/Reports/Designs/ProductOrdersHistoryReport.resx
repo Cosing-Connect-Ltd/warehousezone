@@ -148,7 +148,7 @@ LEFT JOIN TenantLocations TL ON TL.WarehouseId=OP.WarehouseId
 WHERE ((OP.ISDELETED = 0 OR OP.ISDELETED IS NULL)  OR (OPD.ISDELETED = 0 OR OPD.ISDELETED IS NULL)) 
 AND OPD.DATECREATED &gt;= @sqlStartDate  AND OPD.DATECREATED &lt; @sqlEndDate
 AND OPD.TenentId=@sqlTenantId
-AND ORD.InventoryTransactionTypeId = @sqlInventoryTransactionTypeId
+AND ORD.InventoryTransactionTypeId in (SELECT Item FROM dbo.SplitString(@sqlInventoryTransactionTypeIds))
 And (OP.WarehouseId=@sqlWarehouseId or TL.ParentWarehouseId = @sqlWarehouseId) 
 AND ((@sqlProductIds='' or @sqlProductIds is null) or PM.PRODUCTID IN (SELECT Item FROM dbo.SplitString(@sqlProductIds)))
 AND((@sqlProductGroups='' or @sqlProductGroups is null) or PM.ProductGroupId In (SELECT Item FROM dbo.SplitString(@sqlProductGroups)))
@@ -159,8 +159,7 @@ AND ((@sqlOwnerId='' or @sqlOwnerId is null) or (ACCT.OwnerUserId in (SELECT Ite
 AND ((@sqlAccountSectorId='' or @sqlAccountSectorId is null) or (ACCT.AccountSectorId in (SELECT Item FROM dbo.SplitString(@sqlAccountSectorId))))
 AND ((@sqlMarketId='' or @sqlMarketId is null) or (MRKT.Id in (@sqlMarketId)))
 GROUP BY PM.PRODUCTID,PM.Name, SKUCODE, PM.ProductGroupId,PM.DepartmentId 
-Order by SKUCODE
-</value>
+Order by SKUCODE</value>
   </data>
   <data name="sqlDataSource1.ResultSchemaSerializable" xml:space="preserve">
     <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9IlByb2R1Y3RzIj48RmllbGQgTmFtZT0iQlVZSU5HUFJJQ0UiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IlNFTExJTkdQUklDRSIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0iVG90YWxBbW91bnQiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IlRvdGFsVGF4QW1vdW50IiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJOQU1FIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlNLVUNPREUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iUFJPRFVDVElEIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iUHJvZHVjdEdyb3VwSWQiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJEZXBhcnRtZW50SWQiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJTaG93Q2FzZVF0eUluUmVwb3J0cyIgVHlwZT0iQm9vbGVhbiIgLz48RmllbGQgTmFtZT0iVG90YWxRdHkiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IkRBVEVDUkVBVEVEIiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iT1JERVJQUk9DRVNTSUQiIFR5cGU9IkludDMyIiAvPjwvVmlldz48L0RhdGFTZXQ+</value>
