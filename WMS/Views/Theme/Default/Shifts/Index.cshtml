@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Ganedata.Core.Entities.Domain.Appointments>
+@using Ganedata.Core.Entities.Helpers
+
+@{
+    /**/
+
+    ViewBag.Title = "Shifts Scheduler";
+}
+
+@section scripts {
+
+    @Html.DevExpress().GetStyleSheets(
+                new StyleSheet { ExtensionType = ExtensionType.GridView, Theme = GaneStaticAppExtensions.DevexTheme },
+                new StyleSheet { ExtensionType = ExtensionType.Scheduler, Theme = GaneStaticAppExtensions.DevexTheme },
+                new StyleSheet { ExtensionType = ExtensionType.DateEdit, Theme = GaneStaticAppExtensions.DevexTheme }
+                )
+
+    @Html.DevExpress().GetScripts(
+                new Script { ExtensionType = ExtensionType.GridView },
+                new Script { ExtensionType = ExtensionType.Scheduler },
+                new Script { ExtensionType = ExtensionType.DateEdit }
+                )
+}
+
+<h2><span>Shifts Scheduler</span></h2>
+
+<script type="text/javascript">
+    function OnAppointmentFormSave(s, e) {
+        if (IsValidAppointment())
+            scheduler.AppointmentFormSave();
+    }
+    function IsValidAppointment() {
+        $.validator.unobtrusive.parse('form');
+        return $("form").valid();
+    }
+    function OnTimeBeforeStartComboBoxInit(s, e) {
+        s.SetEnabled(HasReminder.GetChecked());
+    }
+    function OnHasReminderCheckedChanged(s, e) {
+        var reminderCB = ASPxClientComboBox.Cast("Reminder.TimeBeforeStart");
+        reminderCB.SetEnabled(HasReminder.GetChecked());
+    }
+</script>
+
+<div class="droppable col-md-12 p-0">
+    @Html.Action("SchedulerPartial")
+</div>
+
+
+
+
+
+

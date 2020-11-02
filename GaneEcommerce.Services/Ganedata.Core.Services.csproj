@@ -55,6 +55,8 @@
     <Reference Include="AutoMapper, Version=10.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.10.0.0\lib\net461\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.Data.v20.1, Version=20.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraScheduler.v20.1.Core, Version=20.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
@@ -456,8 +458,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Roles\IRolesServices.cs" />
     <Compile Include="Roles\RolesServices.cs" />
-    <Compile Include="Shifts\IShiftsServices.cs" />
-    <Compile Include="Shifts\ShiftsServices.cs" />
+    <Compile Include="Shifts\IShiftScheduleService.cs" />
+    <Compile Include="Shifts\ShiftScheduleService.cs" />
     <Compile Include="Terminal\ITerminalServices.cs" />
     <Compile Include="Terminal\TerminalServices.cs" />
     <Compile Include="WarehouseSync\IWarehouseSyncService.cs" />

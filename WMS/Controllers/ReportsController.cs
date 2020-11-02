@@ -23,7 +23,7 @@ namespace WMS.Controllers
     public class ReportsController : BaseReportsController
     {
         private readonly ITenantLocationServices _tenantLocationsServices;
-        private readonly IShiftsServices _shiftsServices;
+        private readonly IShiftScheduleService _shiftScheduleService;
         private readonly IEmployeeShiftsServices _employeeShiftsServices;
         private readonly IEmployeeServices _employeeServices;
         private readonly IProductServices _productServices;
@@ -36,14 +36,14 @@ namespace WMS.Controllers
         private readonly IUserService _userService;
         private readonly IProductPriceService _productPriceService;
 
-        public ReportsController(ITenantLocationServices tenantLocationsServices, IShiftsServices shiftsServices, IEmployeeShiftsServices employeeShiftsServices, IEmployeeServices employeeServices, ICoreOrderService orderService,
+        public ReportsController(ITenantLocationServices tenantLocationsServices, IShiftScheduleService shiftScheduleService, IEmployeeShiftsServices employeeShiftsServices, IEmployeeServices employeeServices, ICoreOrderService orderService,
             IPropertyService propertyService, IAccountServices accountServices, ILookupServices lookupServices, IAppointmentsService appointmentsService, IGaneConfigurationsHelper ganeConfigurationsHelper, IEmailServices emailServices, IInvoiceService invoiceService,
             ITenantLocationServices tenantLocationservices, IProductServices productServices, ITenantsServices tenantsServices, IPalletingService palleteServices, IMarketServices marketServices, IUserService userService,
             IAccountSectorService accountSectorService, IProductPriceService productPriceService)
             : base(orderService, propertyService, accountServices, lookupServices, appointmentsService, ganeConfigurationsHelper, emailServices, tenantLocationservices, tenantsServices)
         {
             _tenantLocationsServices = tenantLocationsServices;
-            _shiftsServices = shiftsServices;
+            _shiftScheduleService = shiftScheduleService;
             _employeeShiftsServices = employeeShiftsServices;
             _employeeServices = employeeServices;
             _productServices = productServices;
@@ -624,7 +624,7 @@ namespace WMS.Controllers
             List<ReportViewModel> model = new List<ReportViewModel>();
 
             //get Shifts by LocationId and Date
-            var shiftInfo = _shiftsServices.GetShiftsByLocationIdAndBetweenDates(locationId, fromDate, toDate);
+            var shiftInfo = _shiftScheduleService.GetShiftSchedules(locationId, fromDate, toDate);
 
             if (shiftInfo != null && shiftInfo.Count() >= 1)
             {
@@ -634,13 +634,13 @@ namespace WMS.Controllers
                 foreach (var itemShift in shiftInfo)
                 {
                     //get EmployeeShifts by EmployeeId and Date
-                    var employeeShifts = _employeeShiftsServices.SearchByEmployeeIdAndDate(itemShift.EmployeeId, (DateTime)itemShift.Date, CurrentTenantId);
+                    var employeeShifts = _employeeShiftsServices.SearchByEmployeeIdAndDate(itemShift.EmployeeId, itemShift.Date, CurrentTenantId);
 
                     if (employeeShifts != null && employeeShifts.Count() >= 1)
                     {
                         //get first stamp
-                        DateTime? stampFirstIn = employeeShifts.FirstOrDefault()?.TimeStamp;
-                        DateTime? stampLastOut = employeeShifts.LastOrDefault()?.TimeStamp;
+                        var stampFirstIn = employeeShifts.FirstOrDefault()?.TimeStamp;
+                        var stampLastOut = employeeShifts.LastOrDefault()?.TimeStamp;
 
                         if (stampFirstIn.Value.Equals(stampLastOut)) //not equal
                         {
@@ -653,8 +653,8 @@ namespace WMS.Controllers
                             if (itemEmployeeShifts.StatusType == "In")
                             {
                                 //compare Shifts StartTime with EmployeeShifts TimeStamp
-                                DateTime startTime = (DateTime)itemShift.StartTime;
-                                DateTime timeStamp = (DateTime)itemEmployeeShifts.TimeStamp;
+                                var startTime = itemShift.StartTime;
+                                var timeStamp = itemEmployeeShifts.TimeStamp;
 
                                 switch (gracePeriod)
                                 {
@@ -781,7 +781,7 @@ namespace WMS.Controllers
             List<ReportViewModel> model = new List<ReportViewModel>();
 
             //get Shifts by LocationId and Date
-            var shiftInfo = _shiftsServices.GetShiftsByLocationIdAndBetweenDates(locationId, fromDate, toDate);
+            var shiftInfo = _shiftScheduleService.GetShiftSchedules(locationId, fromDate, toDate);
 
             if (shiftInfo != null && shiftInfo.Count() >= 1)
             {
@@ -804,12 +804,12 @@ namespace WMS.Controllers
             return model;
         }
 
-        private ReportViewModel ReportTypeModel(int id, DateTime? timeStamp, DateTime? stampFirstIn, DateTime? stampLastOut, Shifts itemShift)
+        private ReportViewModel ReportTypeModel(int id, DateTime? timeStamp, DateTime? stampFirstIn, DateTime? stampLastOut, ShiftScheduleViewModel itemShift)
         {
             return new ReportViewModel()
             {
                 Id = id,
-                Employee = itemShift.Resources.Name,
+                Employee = itemShift.EmployeeName,
                 Date = itemShift.Date,
                 ShiftStartTime = itemShift.StartTime,
                 ShiftEndTime = itemShift.EndTime,

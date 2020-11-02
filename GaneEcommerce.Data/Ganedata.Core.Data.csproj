@@ -1147,6 +1147,14 @@
     <Compile Include="Migrations\202010292213467_order-discount-added-in-invoice.designer.cs">
       <DependentUpon>202010292213467_order-discount-added-in-invoice.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202010310250024_added-ShiftSchedules-table.cs" />
+    <Compile Include="Migrations\202010310250024_added-ShiftSchedules-table.designer.cs">
+      <DependentUpon>202010310250024_added-ShiftSchedules-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011020957019_removed-Shifts-table.cs" />
+    <Compile Include="Migrations\202011020957019_removed-Shifts-table.designer.cs">
+      <DependentUpon>202011020957019_removed-Shifts-table.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2327,6 +2335,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202010292213467_order-discount-added-in-invoice.resx">
       <DependentUpon>202010292213467_order-discount-added-in-invoice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010310250024_added-ShiftSchedules-table.resx">
+      <DependentUpon>202010310250024_added-ShiftSchedules-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011020957019_removed-Shifts-table.resx">
+      <DependentUpon>202011020957019_removed-Shifts-table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
