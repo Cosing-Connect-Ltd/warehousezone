@@ -577,6 +577,7 @@
     <Compile Include="Controllers\WebsiteVouchersController.cs" />
     <Compile Include="Controllers\WebsiteShippingRulesController.cs" />
     <Compile Include="Controllers\WebsiteSlidersController.cs" />
+    <Compile Include="CustomBindings\ShiftsSchedulerSettings.cs" />
     <Compile Include="CustomBindings\ConsignmentCustomBinding.cs" />
     <Compile Include="CustomBindings\CurrencyExRateCustomBinding.cs" />
     <Compile Include="CustomBindings\PalletsCustomBinding.cs" />
@@ -1715,8 +1716,6 @@
     <Content Include="Views\Theme\Default\EmployeeShifts\EmployeesShiftsDetails.cshtml" />
     <Content Include="Views\Theme\Default\Roles\_CreateEdit.cshtml" />
     <Content Include="Views\Theme\Default\Roles\_Listing.cshtml" />
-    <Content Include="Views\Theme\Default\Shifts\_CreateEdit.cshtml" />
-    <Content Include="Views\Theme\Default\Shifts\_Listing.cshtml" />
     <Content Include="Views\Theme\Default\TimeLog\Tindex.cshtml" />
     <Content Include="Views\Theme\Default\TimeLog\TimeLogReport.cshtml" />
     <Content Include="Views\Theme\Default\TimeLog\_GridDetailsViewPartial.cshtml" />
@@ -1822,7 +1821,6 @@
     <Content Include="Views\Theme\Default\SalesOrders\_SOShippingDetails.cshtml" />
     <Content Include="Views\Theme\Default\ProductSpecialPrice\_CreateEditPriceGroup.cshtml" />
     <Content Include="Views\Theme\Default\Reports\WorksOrderKpiReport.cshtml" />
-    <Content Include="Views\Theme\Default\Shifts\_ShiftsGridViewPartial.cshtml" />
     <Content Include="Views\Theme\Default\AdminUtilities\UpdateDontMonitorStock.cshtml" />
     <Content Include="Views\Theme\Default\Reports\DeliveryNotePrint.cshtml" />
     <Content Include="Views\Theme\Default\PurchaseOrders\GoodsReceiveNote.cshtml" />
@@ -2763,6 +2761,9 @@
     <Content Include="Views\Theme\Default\AccountSectors\Create.cshtml" />
     <Content Include="Views\Theme\Default\AccountSectors\Edit.cshtml" />
     <Content Include="Views\Theme\Default\AccountSectors\Index.cshtml" />
+    <Content Include="Views\Theme\Default\Shifts\_SchedulerPartial.cshtml" />
+    <Content Include="Views\Theme\Default\Shifts\Index.cshtml" />
+    <Content Include="Views\Theme\Default\Shifts\_ShiftScheduleFormPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

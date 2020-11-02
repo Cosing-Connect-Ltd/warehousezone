@@ -17,8 +17,8 @@ namespace WMS.CustomBindings
 {
     public class AppointmentsSchedulerSettings
     {
-        static DevExpress.Web.Mvc.MVCxAppointmentStorage appointmentStorage;
-        public static DevExpress.Web.Mvc.MVCxAppointmentStorage AppointmentStorage
+        static MVCxAppointmentStorage appointmentStorage;
+        public static MVCxAppointmentStorage AppointmentStorage
         {
             get
             {

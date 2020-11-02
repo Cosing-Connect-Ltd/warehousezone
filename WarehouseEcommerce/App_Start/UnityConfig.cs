@@ -61,7 +61,7 @@ namespace WarehouseEcommerce
             container.RegisterType<IEmployeeShiftsStoresServices, EmployeeShiftsStoresServices>();
             container.RegisterType<IAttLogsServices, AttLogsServices>();
             container.RegisterType<ITenantsServices, TenantsServices>();
-            container.RegisterType<IShiftsServices, ShiftsServices>();
+            container.RegisterType<IShiftScheduleService, ShiftScheduleService>();
             container.RegisterType<IRolesServices, RolesServices>();
             container.RegisterType<IGroupsServices, GroupsServices>();
             container.RegisterType<IEmployeeRolesServices, EmployeeRolesServices>();

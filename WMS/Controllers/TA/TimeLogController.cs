@@ -22,20 +22,20 @@ namespace WMS.Controllers.TA
         readonly IEmployeeShiftsStoresServices _employeeShiftsStoresServices;
         readonly IEmployeeServices _employeeServices;
         readonly ITenantLocationServices _tenantLocationsServices;
-        readonly IShiftsServices _shiftsServices;
+        readonly IShiftScheduleService _shiftScheduleService;
         readonly IActivityServices _activityServices;
         private readonly IMapper _mapper;
 
         public TimeLogController(IEmployeeShiftsServices employeeShiftsServices, IEmployeeShiftsStoresServices employeeShiftsStoresServices,
-            IEmployeeServices employeeServices, ITenantLocationServices tenantLocationsServices, IShiftsServices shiftsServices, ICoreOrderService orderService, IPropertyService propertyService,
-            IAccountServices accountServices, ILookupServices lookupServices, IActivityServices activityServices, IMapper mapper) 
+            IEmployeeServices employeeServices, ITenantLocationServices tenantLocationsServices, IShiftScheduleService shiftScheduleService, ICoreOrderService orderService, IPropertyService propertyService,
+            IAccountServices accountServices, ILookupServices lookupServices, IActivityServices activityServices, IMapper mapper)
             : base(orderService, propertyService, accountServices, lookupServices)
         {
             _employeeShiftsServices = employeeShiftsServices;
             _employeeShiftsStoresServices = employeeShiftsStoresServices;
             _employeeServices = employeeServices;
             _tenantLocationsServices = tenantLocationsServices;
-            _shiftsServices = shiftsServices;
+            _shiftScheduleService = shiftScheduleService;
             _activityServices = activityServices;
             _mapper = mapper;
         }
@@ -83,7 +83,7 @@ namespace WMS.Controllers.TA
 
 
                 List<SelectListItem> weeks = GetWeeks(currentYear);
-               
+
 
                 ViewData["WeekDaysList"] = new SelectList(weeks, "Value", "Text", weekNumber);
                 ViewData["YearsList"] = new SelectList(years.OrderByDescending(u => u.Value), "Value", "Text", YearsList);
@@ -318,7 +318,7 @@ namespace WMS.Controllers.TA
 
 
 
-            foreach (var date in weekDates) //loop through days of week. 
+            foreach (var date in weekDates) //loop through days of week.
             {
                 bool hasValue = false;
                 var timeIn = new DateTime?();
@@ -377,7 +377,7 @@ namespace WMS.Controllers.TA
 
 
                         //get shifts info
-                        var shiftsInfo = _shiftsServices.GetShiftsByEmployeeIdAndWeekDayAndWeekNumber(employeeId, date, weekNumber).FirstOrDefault();
+                        var shiftsInfo = _shiftScheduleService.GetShiftSchedule(employeeId, date, CurrentTenantId);
                         var employeeInfo = _employeeServices.GetByEmployeeId(employeeId);
                         double totalSalary = 0f;
                         TimeSpan? expectedHours = TimeSpan.ParseExact("00:00", @"hh\:mm", CultureInfo.InvariantCulture);
@@ -812,7 +812,7 @@ namespace WMS.Controllers.TA
         {
             List<SelectListItem> Weeks = GetWeeks(year);
             return Json(Weeks,JsonRequestBehavior.AllowGet);
-            
+
         }
         #endregion
     }

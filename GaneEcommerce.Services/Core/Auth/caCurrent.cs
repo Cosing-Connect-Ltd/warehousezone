@@ -1,6 +1,5 @@
 ﻿using Ganedata.Core.Data;
 using Ganedata.Core.Entities.Domain;
-using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;

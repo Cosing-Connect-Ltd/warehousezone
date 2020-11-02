@@ -19,7 +19,6 @@ namespace WarehouseEcommerce
                 cfg.CreateMap<TenantLocations, LocationsViewModel>().ReverseMap();
                 cfg.CreateMap<AttLogs, AttLogsViewModel>().ReverseMap();
                 cfg.CreateMap<Tenant, TenantsViewModel>().ReverseMap();
-                cfg.CreateMap<Shifts, ShiftsViewModel>().ReverseMap();
                 cfg.CreateMap<Roles, RolesViewModel>().ReverseMap();
                 cfg.CreateMap<Groups, GroupsViewModel>().ReverseMap();
                 cfg.CreateMap<EmployeeRoles, EmployeeRolesViewModel>().ReverseMap();

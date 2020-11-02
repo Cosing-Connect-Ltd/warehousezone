@@ -47,7 +47,7 @@ namespace Ganedata.Core.Data
         public DbSet<ResourceRequests> ResourceHolidays { get; set; }
         public DbSet<EmployeeShifts_Stores> EmployeeShifts_Stores { get; set; }
         public DbSet<AttLogs> AttLogs { get; set; }
-        public DbSet<Shifts> Shifts { get; set; }
+        public DbSet<ShiftSchedule> ShiftSchedules { get; set; }
         public DbSet<EmployeeRoles> EmployeeRoles { get; set; }
         public DbSet<Roles> Roles { get; set; }
         public DbSet<EmployeeGroups> EmployeeGroups { get; set; }

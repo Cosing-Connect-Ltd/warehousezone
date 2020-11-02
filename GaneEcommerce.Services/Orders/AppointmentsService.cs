@@ -1,11 +1,10 @@
+using Ganedata.Core.Data;
+using Ganedata.Core.Entities.Domain;
+using Ganedata.Core.Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Security.Policy;
-using Ganedata.Core.Data;
-using Ganedata.Core.Entities.Domain;
-using Ganedata.Core.Entities.Enums;
 
 namespace Ganedata.Core.Services
 {

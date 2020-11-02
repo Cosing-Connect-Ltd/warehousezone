@@ -200,6 +200,7 @@
     <Compile Include="Domain\Auth\AuthUserLoginActivity.cs" />
     <Compile Include="Domain\Auth\AuthUserprofile.cs" />
     <Compile Include="Domain\Auth\Module.cs" />
+    <Compile Include="Domain\Shifts\ShiftSchedule.cs" />
     <Compile Include="Domain\ImportModels\ParentChildProductsAssociationsImportModel.cs" />
     <Compile Include="Domain\ImportModels\ProductImportModel.cs" />
     <Compile Include="Domain\ImportModels\SortedProductCategoriesAssociationsImportModel.cs" />
@@ -243,6 +244,7 @@
     <Compile Include="Domain\ViewModels\ApiCredentialsViewModel.cs" />
     <Compile Include="Domain\ViewModels\ApiModels\TenantLocationsSync.cs" />
     <Compile Include="Domain\ViewModels\FileUploaderViewModel.cs" />
+    <Compile Include="Domain\ViewModels\ShiftScheduleViewModel.cs" />
     <Compile Include="Domain\ViewModels\WebsiteCartItemViewModel.cs" />
     <Compile Include="Domain\ViewModels\WebsiteShippingRulesViewModel.cs" />
     <Compile Include="Domain\ViewModels\CollectionPointViewModel.cs" />
@@ -282,7 +284,6 @@
     <Compile Include="Domain\Models\AssetLog.cs" />
     <Compile Include="Domain\Models\TerminalsTransactionsLog.cs" />
     <Compile Include="Domain\Models\Translations.cs" />
-    <Compile Include="Domain\Shifts\Shifts.cs" />
     <Compile Include="Domain\Tenants\TenantDepartments.cs" />
     <Compile Include="Domain\Models\Pallets.cs" />
     <Compile Include="Domain\Models\ProductGroups.cs" />
@@ -426,7 +427,6 @@
     <Compile Include="Domain\ViewModels\RolesViewModel.cs" />
     <Compile Include="Domain\ViewModels\ShiftStatusViewModel.cs" />
     <Compile Include="Domain\ViewModels\SlaWorksOrderListViewModel.cs" />
-    <Compile Include="Domain\ViewModels\ShiftsViewModel.cs" />
     <Compile Include="Domain\ViewModels\StockApiHelpersViewModels.cs" />
     <Compile Include="Domain\ViewModels\ApiModels\StockTakeSyncCollection.cs" />
     <Compile Include="Domain\ViewModels\TenantEmailNotificationQueueViewModel.cs" />
