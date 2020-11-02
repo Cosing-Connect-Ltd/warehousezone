@@ -702,7 +702,7 @@ namespace Ganedata.Core.Services
             return _currentDbContext.Order.Where(u => ((!orderId.HasValue) || (u.OrderID == orderId)) && u.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder && u.DirectShip == true && u.IsDeleted != true).ToList();
         }
 
-        public List<ProductOrdersDetailViewModel> GetAllOrdersByProductId(InventoryTransactionTypeEnum inventoryTransactionType, int productId, DateTime startDate, DateTime endDate, int tenantId, int warehouseId, int[] accountIds, int[] ownerIds, int[] accountSectorIds, int? marketId)
+        public List<ProductOrdersDetailViewModel> GetAllOrdersByProductId(InventoryTransactionTypeEnum[] inventoryTransactionTypes, int productId, DateTime startDate, DateTime endDate, int tenantId, int warehouseId, int[] accountIds, int[] ownerIds, int[] accountSectorIds, int? marketId)
         {
             accountIds = accountIds ?? new int[] { };
             ownerIds = ownerIds ?? new int[] { };
@@ -713,17 +713,26 @@ namespace Ganedata.Core.Services
                                                                                  o.DateCreated < endDate &&
                                                                                  o.TenentId == tenantId &&
                                                                                  o.IsDeleted != true &&
-                                                                                 o.OrderDetail.Order.InventoryTransactionTypeId == inventoryTransactionType &&
-                                                                                 (o.OrderDetail.WarehouseId == warehouseId || o.OrderDetail.TenantWarehouse.WarehouseId == warehouseId) &&
+                                                                                 (o.OrderDetail.WarehouseId == warehouseId || o.OrderDetail.TenantWarehouse.WarehouseId == warehouseId || o.OrderDetail.TenantWarehouse.ParentWarehouseId == warehouseId) &&
                                                                                  (accountIds.Contains(o.OrderDetail.Order.Account.AccountID) || accountIds.Count() <= 0) &&
                                                                                  (accountSectorIds.Contains(o.OrderDetail.Order.Account.AccountSectorId ?? 0) || accountSectorIds.Count() <= 0) &&
                                                                                  (ownerIds.Contains(o.OrderDetail.Order.Account.OwnerUserId) || ownerIds.Count() <= 0));
 
-            var productOrdersDetails= orderDetails.Select(o => new ProductOrdersDetailViewModel
+            if (inventoryTransactionTypes.Contains(InventoryTransactionTypeEnum.SalesOrder) || inventoryTransactionTypes.Contains(InventoryTransactionTypeEnum.DirectSales))
+            {
+                orderDetails = orderDetails.Where(o => o.OrderDetail.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder || o.OrderDetail.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.DirectSales);
+            }
+            else
+            {
+                var inventoryType = inventoryTransactionTypes[0];
+                orderDetails = orderDetails.Where(o => o.OrderDetail.Order.InventoryTransactionTypeId == inventoryType);
+            }
+
+            var productOrdersDetails = orderDetails.Select(o => new ProductOrdersDetailViewModel
             {
                 OrderId = o.OrderDetail.OrderID,
-                AccountCompanyName = o.OrderDetail.Order.Account.CompanyName,
-                AccountCode = o.OrderDetail.Order.Account.AccountCode,
+                AccountCompanyName = o.OrderDetail.Order.Account != null ? o.OrderDetail.Order.Account.CompanyName : "",
+                AccountCode = o.OrderDetail.Order.Account != null ? o.OrderDetail.Order.Account.AccountCode : "",
                 OrderNumber = o.OrderDetail.Order.OrderNumber,
                 Date = o.DateCreated ?? o.OrderDetail.DateCreated,
                 Qty = o.QtyProcessed,
@@ -734,7 +743,7 @@ namespace Ganedata.Core.Services
                 WarrantyAmount = o.OrderDetail.WarrantyAmount,
             }).ToList();
 
-            if (inventoryTransactionType == InventoryTransactionTypeEnum.SalesOrder)
+            if (inventoryTransactionTypes.Contains(InventoryTransactionTypeEnum.SalesOrder) || inventoryTransactionTypes.Contains(InventoryTransactionTypeEnum.DirectSales))
             {
                 productOrdersDetails.ForEach(p =>
                 {

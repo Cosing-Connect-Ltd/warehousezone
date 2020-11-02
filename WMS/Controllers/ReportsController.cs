@@ -1489,7 +1489,18 @@ namespace WMS.Controllers
             productOrdersHistoryReport.lbldate.Text = DateTime.UtcNow.ToShortDateString();
             productOrdersHistoryReport.TenantId.Value = CurrentTenantId;
             productOrdersHistoryReport.WarehouseId.Value = CurrentWarehouseId;
-            productOrdersHistoryReport.InventoryTransactionTypeId.Value = (int)ordersType;
+
+            if (ordersType == InventoryTransactionTypeEnum.SalesOrder)
+            {
+                int[] inventoryTypes = { (int)InventoryTransactionTypeEnum.SalesOrder, (int)InventoryTransactionTypeEnum.DirectSales };
+                productOrdersHistoryReport.InventoryTransactionTypeIds.Value = inventoryTypes;
+            }
+            else
+            {
+                int[] inventoryTypes = { (int)ordersType };
+                productOrdersHistoryReport.InventoryTransactionTypeIds.Value = inventoryTypes;
+            }
+
             var markets = _marketServices.GetAllValidMarkets(CurrentTenantId);
             StaticListLookUpSettings marketSettings = (StaticListLookUpSettings)productOrdersHistoryReport.MarketId.LookUpSettings;
             marketSettings.LookUpValues.AddRange(markets.Markets.Select(m => new LookUpValue(m.Id, m.Name)));
@@ -1585,15 +1596,15 @@ namespace WMS.Controllers
             endDate = endDate.AddHours(24);
             var accountIds = (int[])report.Parameters["AccountIds"].Value;
             var accountSectorIds = (int[])report.Parameters["AccountSectorIds"].Value;
-            var productId = (int)report.Parameters["ProductId"].Value;
+            var productId = (int?)report.Parameters["ProductId"].Value;
             var ownerIds = (int[])report.Parameters["OwnerIds"].Value;
             var marketId = (int?)report.Parameters["MarketId"].Value;
             var tenantId = (int)report.Parameters["TenantId"].Value;
             var warehouseId = (int)report.Parameters["WarehouseId"].Value;
-            var inventoryTransactionTypeId = (InventoryTransactionTypeEnum)report.Parameters["InventoryTransactionTypeId"].Value;
+            var inventoryTransactionTypeIds = (InventoryTransactionTypeEnum[])report.Parameters["InventoryTransactionTypeIds"].Value;
 
 
-            report.DataSource = OrderService.GetAllOrdersByProductId(inventoryTransactionTypeId, productId, startDate, endDate, tenantId, warehouseId, accountIds, ownerIds, accountSectorIds, marketId);
+            report.DataSource = OrderService.GetAllOrdersByProductId(inventoryTransactionTypeIds, productId ?? 0, startDate, endDate, tenantId, warehouseId, accountIds, ownerIds, accountSectorIds, marketId);
 
         }
 

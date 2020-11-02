@@ -127,14 +127,14 @@ namespace Ganedata.Core.Services
             return results.OrderBy(p => p.ProductName).ToList();
         }
 
-        public InvoiceMaster CreateInvoiceForSalesOrder(InvoiceViewModel invoiceData, int tenantId, int userId)
+        public InvoiceMaster CreateInvoiceForSalesOrder(InvoiceViewModel invoiceData, int tenantId, int userId, bool useOrderProcessDate = false)
         {
-            var account = _currentDbContext.Account.Find(invoiceData.AccountId);
+            var account = _currentDbContext.Account.AsNoTracking().Where(x => x.AccountID == invoiceData.AccountId).FirstOrDefault();
             if (account == null)
             {
-                account = _currentDbContext.Account.Where(x => x.AccountCode == "DCA").FirstOrDefault();
+                account = _currentDbContext.Account.AsNoTracking().Where(x => x.AccountCode == "DCA").FirstOrDefault();
             }
-            var tenant = _currentDbContext.Tenants.Find(tenantId);
+            var tenant = _currentDbContext.Tenants.AsNoTracking().Where(x => x.TenantId == tenantId).FirstOrDefault();
             var process = _currentDbContext.OrderProcess.Find(invoiceData.OrderProcessId);
             InventoryTransactionTypeEnum inventoryTransactionType = InventoryTransactionTypeEnum.SalesOrder;
 
@@ -142,9 +142,9 @@ namespace Ganedata.Core.Services
             {
                 OrderProcessId = invoiceData.OrderProcessId < 1 ? (int?)null : invoiceData.OrderProcessId,
                 TenantId = tenantId,
-                DateCreated = DateTime.UtcNow,
+                DateCreated = (process != null && useOrderProcessDate) ? process.DateCreated : DateTime.UtcNow,
                 CreatedBy = userId,
-                InvoiceDate = invoiceData.InvoiceDate,
+                InvoiceDate = (process != null && useOrderProcessDate) ? process.DateCreated : invoiceData.InvoiceDate,
                 AccountId = account.AccountID,
                 CardCharges = invoiceData.CardCharges,
                 InvoiceAddress = account?.FullAddress,

@@ -103,7 +103,7 @@
             this.OwnerIds = new DevExpress.XtraReports.Parameters.Parameter();
             this.AccountIds = new DevExpress.XtraReports.Parameters.Parameter();
             this.MarketId = new DevExpress.XtraReports.Parameters.Parameter();
-            this.InventoryTransactionTypeId = new DevExpress.XtraReports.Parameters.Parameter();
+            this.InventoryTransactionTypeIds = new DevExpress.XtraReports.Parameters.Parameter();
             this.DetailReport = new DevExpress.XtraReports.UI.DetailReportBand();
             this.Detail1 = new DevExpress.XtraReports.UI.DetailBand();
             this.xrSubreport1 = new DevExpress.XtraReports.UI.XRSubreport();
@@ -146,9 +146,9 @@
             queryParameter10.Name = "sqlMarketId";
             queryParameter10.Type = typeof(DevExpress.DataAccess.Expression);
             queryParameter10.Value = new DevExpress.DataAccess.Expression("?MarketId", typeof(int));
-            queryParameter11.Name = "sqlInventoryTransactionTypeId";
+            queryParameter11.Name = "sqlInventoryTransactionTypeIds";
             queryParameter11.Type = typeof(DevExpress.DataAccess.Expression);
-            queryParameter11.Value = new DevExpress.DataAccess.Expression("?InventoryTransactionTypeId", typeof(int));
+            queryParameter11.Value = new DevExpress.DataAccess.Expression("JOIN(?InventoryTransactionTypeIds)", typeof(string));
             queryParameter12.Name = "sqlAccountSectorId";
             queryParameter12.Type = typeof(DevExpress.DataAccess.Expression);
             queryParameter12.Value = new DevExpress.DataAccess.Expression("JOIN(?AccountSectorIds)", typeof(string));
@@ -453,7 +453,8 @@
             this.xrLabel22.BackColor = System.Drawing.Color.Transparent;
             this.xrLabel22.Borders = DevExpress.XtraPrinting.BorderSide.None;
             this.xrLabel22.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif(?InventoryTransactionTypeId == 2, \'Sales History\', \'Purchases History\')")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif(?InventoryTransactionTypeId == 2 || ?InventoryTransactionTypeId == 15, \'Sales" +
+                    " History\', \'Purchases History\')")});
             this.xrLabel22.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.xrLabel22.LocationFloat = new DevExpress.Utils.PointFloat(247.9166F, 0F);
             this.xrLabel22.Name = "xrLabel22";
@@ -811,12 +812,13 @@
             this.MarketId.ValueInfo = "0";
             this.MarketId.ValueSourceSettings = staticListLookUpSettings6;
             // 
-            // InventoryTransactionTypeId
+            // InventoryTransactionTypeIds
             // 
-            this.InventoryTransactionTypeId.Name = "InventoryTransactionTypeId";
-            this.InventoryTransactionTypeId.Type = typeof(int);
-            this.InventoryTransactionTypeId.ValueInfo = "2";
-            this.InventoryTransactionTypeId.Visible = false;
+            this.InventoryTransactionTypeIds.MultiValue = true;
+            this.InventoryTransactionTypeIds.Name = "InventoryTransactionTypeIds";
+            this.InventoryTransactionTypeIds.Type = typeof(int);
+            this.InventoryTransactionTypeIds.ValueInfo = "2|15";
+            this.InventoryTransactionTypeIds.Visible = false;
             // 
             // DetailReport
             // 
@@ -846,7 +848,7 @@
             this.xrSubreport1.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("WarehouseId", this.WarehouseId));
             this.xrSubreport1.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("OwnerIds", this.OwnerIds));
             this.xrSubreport1.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("MarketId", this.MarketId));
-            this.xrSubreport1.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("InventoryTransactionTypeId", this.InventoryTransactionTypeId));
+            this.xrSubreport1.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("InventoryTransactionTypeIds", this.InventoryTransactionTypeIds));
             this.xrSubreport1.ParameterBindings.Add(new DevExpress.XtraReports.UI.ParameterBinding("AccountSectorIds", this.AccountSectorIds));
             this.xrSubreport1.SizeF = new System.Drawing.SizeF(1122F, 26.38881F);
             // 
@@ -893,7 +895,7 @@
             this.AccountIds,
             this.OwnerIds,
             this.MarketId,
-            this.InventoryTransactionTypeId});
+            this.InventoryTransactionTypeIds});
             this.Version = "20.1";
             this.DataSourceDemanded += new System.EventHandler<System.EventArgs>(this.ProductSoldBySkuPrint_DataSourceDemanded);
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
@@ -940,7 +942,7 @@
         public DevExpress.XtraReports.UI.XRLabel lblOwner;
         public DevExpress.XtraReports.UI.XRLabel lblAcount;
         public DevExpress.XtraReports.Parameters.Parameter MarketId;
-        public DevExpress.XtraReports.Parameters.Parameter InventoryTransactionTypeId;
+        public DevExpress.XtraReports.Parameters.Parameter InventoryTransactionTypeIds;
         private DevExpress.XtraReports.UI.XRLabel detailedOrdersToggle;
         private DevExpress.XtraReports.UI.DetailReportBand DetailReport;
         private DevExpress.XtraReports.UI.DetailBand Detail1;

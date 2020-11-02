@@ -61,7 +61,7 @@
             this.WarehouseId = new DevExpress.XtraReports.Parameters.Parameter();
             this.OwnerIds = new DevExpress.XtraReports.Parameters.Parameter();
             this.MarketId = new DevExpress.XtraReports.Parameters.Parameter();
-            this.InventoryTransactionTypeId = new DevExpress.XtraReports.Parameters.Parameter();
+            this.InventoryTransactionTypeIds = new DevExpress.XtraReports.Parameters.Parameter();
             this.ReportFooter = new DevExpress.XtraReports.UI.ReportFooterBand();
             this.xrLine1 = new DevExpress.XtraReports.UI.XRLine();
             this.AccountSectorIds = new DevExpress.XtraReports.Parameters.Parameter();
@@ -388,12 +388,12 @@
             this.MarketId.ValueInfo = "0";
             this.MarketId.Visible = false;
             // 
-            // InventoryTransactionTypeId
+            // InventoryTransactionTypeIds
             // 
-            this.InventoryTransactionTypeId.Name = "InventoryTransactionTypeId";
-            this.InventoryTransactionTypeId.Type = typeof(int);
-            this.InventoryTransactionTypeId.ValueInfo = "2";
-            this.InventoryTransactionTypeId.Visible = false;
+            this.InventoryTransactionTypeIds.MultiValue = true;
+            this.InventoryTransactionTypeIds.Name = "InventoryTransactionTypeIds";
+            this.InventoryTransactionTypeIds.Type = typeof(int);
+            this.InventoryTransactionTypeIds.Visible = false;
             // 
             // ReportFooter
             // 
@@ -444,7 +444,7 @@
             this.AccountIds,
             this.OwnerIds,
             this.MarketId,
-            this.InventoryTransactionTypeId,
+            this.InventoryTransactionTypeIds,
             this.AccountSectorIds});
             this.Version = "20.1";
             this.DataSourceDemanded += new System.EventHandler<System.EventArgs>(this.ProductSoldBySkuDetailPrint_DataSourceDemanded);
@@ -467,7 +467,7 @@
         public DevExpress.XtraReports.Parameters.Parameter OwnerIds;
         public DevExpress.XtraReports.Parameters.Parameter AccountIds;
         public DevExpress.XtraReports.Parameters.Parameter MarketId;
-        public DevExpress.XtraReports.Parameters.Parameter InventoryTransactionTypeId;
+        public DevExpress.XtraReports.Parameters.Parameter InventoryTransactionTypeIds;
         private DevExpress.XtraReports.UI.XRLabel xrLabel2;
         private DevExpress.XtraReports.UI.XRLabel xrLabel3;
         private DevExpress.XtraReports.UI.XRLabel xrLabel6;
