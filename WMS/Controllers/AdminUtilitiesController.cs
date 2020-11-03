@@ -472,7 +472,8 @@ namespace WMS.Controllers
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
-            var items = _currentDbContext.OrderProcess.AsNoTracking().Where(x => x.OrderProcessStatusId == OrderProcessStatusEnum.Dispatched && x.InvoiceNo == null && x.IsDeleted != true)
+            var items = _currentDbContext.OrderProcess.AsNoTracking().Where(x => x.OrderProcessStatusId == OrderProcessStatusEnum.Dispatched && x.InvoiceNo == null && x.IsDeleted != true
+                && (x.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.DirectSales || x.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder))
                 .Select(y => y.OrderProcessID).Take(100).ToList();
 
             foreach (var item in items)
