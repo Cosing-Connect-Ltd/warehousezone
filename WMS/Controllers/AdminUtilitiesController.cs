@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using AutoMapper;
 using ClosedXML.Report.Utils;
+using System.Data.Entity;
 
 namespace WMS.Controllers
 {
@@ -469,13 +470,9 @@ namespace WMS.Controllers
 
         public ActionResult CreateInvoicesforDispatchedOrders()
         {
-            //if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
-            var items = _currentDbContext.OrderProcess.AsNoTracking().Where(x => x.OrderProcessStatusId == OrderProcessStatusEnum.Dispatched &&
-                                                                                 x.InvoiceNo == null &&
-                                                                                 x.IsDeleted != true &&
-                                                                                (x.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.DirectSales ||
-                                                                                 x.Order.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder))
+            var items = _currentDbContext.OrderProcess.AsNoTracking().Where(x => x.OrderProcessStatusId == OrderProcessStatusEnum.Dispatched && x.InvoiceNo == null && x.IsDeleted != true)
                 .Select(y => y.OrderProcessID).Take(100).ToList();
 
             foreach (var item in items)
@@ -494,6 +491,99 @@ namespace WMS.Controllers
 
         }
 
+        public ActionResult CorrectAccountBalances(string accountCode = null)
+        {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+
+            var accounts = _currentDbContext.Account.Where(x => x.IsDeleted != true && x.AccountCode.ToLower() == accountCode.ToLower() || accountCode == null).ToList();
+
+
+            int counter = 0;
+            int remaining = accounts.Count();
+            List<string> notMatched = new List<string>();
+
+            foreach (var account in accounts)
+            {
+                counter++;
+                remaining--;
+
+                decimal? balance = Financials.CalcAccountBalance(account.AccountID);
+                var lastTransaction = _currentDbContext.AccountTransactions.Where(x => x.AccountId == account.AccountID && x.IsDeleted != true).OrderByDescending(x => x.AccountTransactionId).FirstOrDefault();
+
+                if (balance != account.FinalBalance || (account.FinalBalance != lastTransaction?.FinalBalance && lastTransaction != null))
+                {
+                    notMatched.Add(account.AccountCode);
+                    account.FinalBalance = balance;
+                    account.DateUpdated = DateTime.Now;
+                    account.UpdatedBy = 2;
+
+                }
+
+                if (counter == 50 || remaining < 50)
+                {
+                    _currentDbContext.SaveChanges();
+                    counter = 0;
+                }
+
+            }
+
+            ViewBag.Data = notMatched;
+            ViewBag.Title = "Operation was Successful";
+            ViewBag.Message = "Operation was Successful";
+            ViewBag.Detail = "Operation was Completed Successfully";
+
+
+            return View("AdminUtilities");
+
+        }
+
+        public ActionResult CorrectAccountTransactions(string accountCode = null, int numberOfLastTransactions = 12)
+        {
+            if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
+
+            var accounts = _currentDbContext.Account.Where(x => x.IsDeleted != true && x.AccountCode.ToLower() == accountCode.ToLower() || accountCode == null).ToList();
+            List<string> modified = new List<string>();
+            int counter = 0;
+
+            foreach (var account in accounts)
+            {
+                counter++;
+                decimal? balance = Financials.CalcAccountBalance(account.AccountID);
+                var transactions = _currentDbContext.AccountTransactions.Where(x => x.AccountId == account.AccountID && x.IsDeleted != true).OrderByDescending(x => x.AccountTransactionId).Take(numberOfLastTransactions).ToList();
+
+                transactions = transactions.OrderBy(x => x.AccountTransactionId).ToList();
+
+                for (int i = 1; i < transactions.Count(); i++)
+                {
+                    var expectedBalance = 0m;
+                    if (transactions[i].AccountTransactionTypeId == AccountTransactionTypeEnum.InvoicedToAccount)
+                    {
+                        expectedBalance = transactions[i - 1].FinalBalance + transactions[i].Amount;
+                    }
+                    else
+                    {
+                        expectedBalance = transactions[i - 1].FinalBalance - transactions[i].Amount;
+                    }
+
+                    if (expectedBalance != transactions[i].FinalBalance)
+                    {
+                        transactions[i].FinalBalance = expectedBalance;
+                        transactions[i].DateUpdated = DateTime.Now;
+                        transactions[i].UpdatedBy = 2;
+                        modified.Add(transactions[i].AccountTransactionId.ToString());
+                        _currentDbContext.SaveChanges();
+                    }
+                }
+            }
+
+            ViewBag.Data = modified;
+            ViewBag.Title = "Operation was Successful";
+            ViewBag.Message = "Operation was Successful";
+            ViewBag.Detail = "Operation was Completed Successfully";
+
+            return View("AdminUtilities");
+
+        }
 
         public ActionResult ExplicitGC()
         {
