@@ -495,7 +495,7 @@ namespace WMS.Controllers
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
-            var accounts = _currentDbContext.Account.Where(x => x.IsDeleted != true && x.AccountCode.ToLower() == accountCode.ToLower() || accountCode == null).ToList();
+            var accounts = _currentDbContext.Account.Where(x => x.IsDeleted != true && (x.AccountCode.ToLower() == accountCode.ToLower() || accountCode == null)).ToList();
 
 
             int counter = 0;
@@ -541,7 +541,7 @@ namespace WMS.Controllers
         {
             if (!caSession.AuthoriseSession()) { return Redirect((string)Session["ErrorUrl"]); }
 
-            var accounts = _currentDbContext.Account.Where(x => x.IsDeleted != true && x.AccountCode.ToLower() == accountCode.ToLower() || accountCode == null).ToList();
+            var accounts = _currentDbContext.Account.Where(x => x.IsDeleted != true && (x.AccountCode.ToLower() == accountCode.ToLower() || accountCode == null)).ToList();
             List<string> modified = new List<string>();
             int counter = 0;
 
