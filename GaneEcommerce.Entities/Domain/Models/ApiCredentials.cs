@@ -5,10 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ganedata.Core.Entities.Domain
 {
+    [Serializable]
     public class ApiCredentials : PersistableEntity<int>
     {
         public int Id { get; set; }
         public string UserName { get; set; }
+        public string SiteTitle { get; set; }
         public string Password { get; set; }
         [DisplayName("Api URL")]
         public string ApiUrl { get; set; }
@@ -28,7 +30,5 @@ namespace Ganedata.Core.Entities.Domain
         public virtual TenantWebsites TenantWebsites { get; set; }
         [ForeignKey("DefaultWarehouseId")]
         public virtual TenantLocations Warehouse { get; set; }
-
-
     }
 }

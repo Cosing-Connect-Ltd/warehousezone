@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace Ganedata.Core.Entities.Domain
 {
     [Serializable]
-    public class SLAPriorit:PersistableEntity<int>
+    public class SLAPriorit : PersistableEntity<int>
     {
         [Key]
         [Display(Name = "Priority Id")]
@@ -19,5 +16,6 @@ namespace Ganedata.Core.Entities.Domain
         public string  Description { get; set; }
 
         public string Colour { get; set; }
+        public int? SortOrder { get; set; }
     }
 }
