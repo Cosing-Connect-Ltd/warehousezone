@@ -753,7 +753,7 @@ namespace Ganedata.Core.Services
             {
                 productOrdersDetails.ForEach(p =>
                 {
-                    p.BuyPrice = _productPriceService.GetPurchasePrice(productId, p.Date, p.OrderId) ?? 0;
+                    p.BuyPrice = _productPriceService.GetPurchasePrice(productId, tenantId, p.Date, p.OrderId) ?? 0;
                 });
             }
 

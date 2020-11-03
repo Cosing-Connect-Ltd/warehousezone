@@ -512,7 +512,7 @@ namespace Ganedata.Core.Services
             return model;
         }
 
-        public List<InvoiceProductPriceModel> GetInvoiceProductsPrices(int InvoiceMasterId, int[] productIds)
+        public List<InvoiceProductPriceModel> GetInvoiceProductsPrices(int InvoiceMasterId, int[] productIds, int tenantId)
         {
             productIds = productIds ?? new int[] { };
 
@@ -522,7 +522,7 @@ namespace Ganedata.Core.Services
                                                                                 (productIds.Contains(u.ProductId) || productIds.Count() == 0))
                                                                     .ToList();
 
-            return _productPriceService.GetInvoiceDetailsProductPrices(InvocieDetaildata);
+            return _productPriceService.GetInvoiceDetailsProductPrices(InvocieDetaildata, tenantId);
         }
 
         public InvoiceViewModel GetInvoicePreviewModelByOrderProcessId(int orderProcessId, caTenant tenant)

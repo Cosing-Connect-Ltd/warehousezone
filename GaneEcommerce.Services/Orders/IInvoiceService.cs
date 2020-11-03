@@ -21,7 +21,7 @@ namespace Ganedata.Core.Services
         string GenerateNextInvoiceNumber(int tenantId);
         InvoiceViewModel LoadInvoiceProductValuesByOrderProcessId(int orderProcessId, int? inventoryTransctionType = null);
         InvoiceMaster SaveInvoiceForSalesOrder(InvoiceViewModel invoiceData, int tenantId, int userId);
-        List<InvoiceProductPriceModel> GetInvoiceProductsPrices(int InvoiceMasterId, int[] productIds);
+        List<InvoiceProductPriceModel> GetInvoiceProductsPrices(int InvoiceMasterId, int[] productIds, int tenantId);
         InvoiceViewModel GetInvoicePreviewModelByOrderProcessId(int orderProcessId, caTenant tenant);
     }
 }
