@@ -513,6 +513,7 @@ namespace Ganedata.Core.Services
                 InvoiceNo = p.InvoiceNo,
                 InvoiceDetails = p.InvoiceDetails,
                 OrderCost = p.OrderCost,
+                OrderDiscount = p.OrderDiscount,
                 OrderTypeId = p.InventoryTransactionTypeId,
                 OrderType = p.InventoryTransactionTypeId,
                 AccountName = p.Account.CompanyName,

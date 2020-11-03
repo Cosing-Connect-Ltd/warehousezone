@@ -35,14 +35,12 @@
 @Html.DevExpress().WebDocumentViewer(settings =>
 {
     settings.Name = "SalesOrderPrintDocumentViewer";
-    if (ViewBag.DirectSalesOrder != null && ((bool)ViewBag.DirectSalesOrder == true))
-    {
+
         settings.MenuItems.Add(new DevExpress.XtraReports.Web.WebDocumentViewer.WebDocumentViewerMenuItem
         {
             Text = "Send Email",
             ImageClassName = "Email",
             JSClickAction = "SendEmail"
         });
-    }
 
 }).Bind(Model).GetHtml()
