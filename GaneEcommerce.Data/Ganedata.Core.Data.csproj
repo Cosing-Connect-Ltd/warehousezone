@@ -1167,6 +1167,10 @@
     <Compile Include="Migrations\202011031403039_added-new-configs-to-TenantConfigs-table.designer.cs">
       <DependentUpon>202011031403039_added-new-configs-to-TenantConfigs-table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202011031458485_added-price-calculation-configs-to-TenantConfigs-table.cs" />
+    <Compile Include="Migrations\202011031458485_added-price-calculation-configs-to-TenantConfigs-table.designer.cs">
+      <DependentUpon>202011031458485_added-price-calculation-configs-to-TenantConfigs-table.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2362,6 +2366,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202011031403039_added-new-configs-to-TenantConfigs-table.resx">
       <DependentUpon>202011031403039_added-new-configs-to-TenantConfigs-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011031458485_added-price-calculation-configs-to-TenantConfigs-table.resx">
+      <DependentUpon>202011031458485_added-price-calculation-configs-to-TenantConfigs-table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

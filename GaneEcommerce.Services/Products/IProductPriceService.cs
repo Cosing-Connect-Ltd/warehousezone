@@ -36,7 +36,7 @@ namespace Ganedata.Core.Services
 
         IQueryable<TenantPriceGroupDetail> GetAllTenantPriceGroupDetails(int tenantId, bool includeIsDeleted = false);
 
-        decimal? GetPurchasePrice(int productId, DateTime? date = null, int? orderId = null);
-        List<InvoiceProductPriceModel> GetInvoiceDetailsProductPrices(List<InvoiceDetail> invoiceDetails);
+        decimal? GetPurchasePrice(int productId, int tenantId, DateTime? date = null, int? orderId = null);
+        List<InvoiceProductPriceModel> GetInvoiceDetailsProductPrices(List<InvoiceDetail> invoiceDetails, int tenantId);
     }
 }

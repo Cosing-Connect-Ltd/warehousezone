@@ -147,7 +147,7 @@ namespace WMS.Controllers
 
             report.DataSource = inventoryStocks.Select(i =>
             {
-                var buyPrice = _productPriceService.GetPurchasePrice(i.ProductId, i.DateCreated);
+                var buyPrice = _productPriceService.GetPurchasePrice(i.ProductId, CurrentTenantId, i.DateCreated);
                 return new
                 {
                     ProductSkuCode = i.ProductMaster.SKUCode,
@@ -1463,7 +1463,7 @@ namespace WMS.Controllers
 
         #endregion ProductSalesReportbyAccount
 
-        #region ProductSalesReportbySKU
+        #region ProductPurchase/SaleHistoryReport
 
         public ActionResult ProductPurchaseReportBySku()
         {
@@ -1483,7 +1483,12 @@ namespace WMS.Controllers
 
         private ProductOrdersHistoryReport CreateProductOrdersHistoryReport(InventoryTransactionTypeEnum ordersType)
         {
+            var tenantConfig = _tenantServices.GetTenantConfigById(CurrentTenantId);
+
             var productOrdersHistoryReport = new ProductOrdersHistoryReport();
+            productOrdersHistoryReport.detailedOrdersToggle.Visible = tenantConfig.EnableOrdersHistoryReportDetails;
+            productOrdersHistoryReport.DetailReport.Visible = tenantConfig.EnableOrdersHistoryReportDetails;
+            productOrdersHistoryReport.ProductsIds.Visible = tenantConfig.EnableOrdersHistoryReportDetails;
             productOrdersHistoryReport.StartDate.Value = DateTime.Today.AddMonths(-1);
             productOrdersHistoryReport.EndDate.Value = DateTime.Today;
             productOrdersHistoryReport.lbldate.Text = DateTime.UtcNow.ToShortDateString();
@@ -1517,15 +1522,6 @@ namespace WMS.Controllers
             var users = OrderService.GetAllAuthorisedUsers(CurrentTenantId, true);
             StaticListLookUpSettings ownerSettings = (StaticListLookUpSettings)productOrdersHistoryReport.OwnerIds.LookUpSettings;
             ownerSettings.LookUpValues.AddRange(users.Select(m => new LookUpValue(m.UserId, m.DisplayName)));
-            IEnumerable<ProductMaster> products = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList();
-            StaticListLookUpSettings setting = (StaticListLookUpSettings)productOrdersHistoryReport.ProductsIds.LookUpSettings;
-            foreach (var item in products)
-            {
-                LookUpValue product = new LookUpValue();
-                product.Description = item.NameWithCode;
-                product.Value = item.ProductId;
-                setting.LookUpValues.Add(product);
-            }
 
             IEnumerable<ProductGroups> groups = LookupServices.GetAllValidProductGroups(CurrentTenantId).ToList();
             StaticListLookUpSettings groupSettings = (StaticListLookUpSettings)productOrdersHistoryReport.paramProductGroups.LookUpSettings;
@@ -1548,42 +1544,54 @@ namespace WMS.Controllers
                 tenantDepartmentsSettings.LookUpValues.Add(group);
             }
 
-            var productOrdersHistoryDetailReport = new ProductOrdersHistoryDetailReport();
-            productOrdersHistoryDetailReport.DataSourceDemanded += CreateproductOrdersHistoryReport_DataSourceDemanded;
-            productOrdersHistoryDetailReport.OrderNumber.DataBindings.AddRange(new XRBinding[] {
+            if (tenantConfig.EnableOrdersHistoryReportDetails)
+            {
+                var products = _productServices.GetAllValidProductMasters(CurrentTenantId).ToList();
+                StaticListLookUpSettings setting = (StaticListLookUpSettings)productOrdersHistoryReport.ProductsIds.LookUpSettings;
+                foreach (var item in products)
+                {
+                    LookUpValue product = new LookUpValue();
+                    product.Description = item.NameWithCode;
+                    product.Value = item.ProductId;
+                    setting.LookUpValues.Add(product);
+                }
+
+                var productOrdersHistoryDetailReport = new ProductOrdersHistoryDetailReport();
+                productOrdersHistoryDetailReport.DataSourceDemanded += CreateproductOrdersHistoryReport_DataSourceDemanded;
+                productOrdersHistoryDetailReport.OrderNumber.DataBindings.AddRange(new XRBinding[] {
                 new XRBinding("Text", productOrdersHistoryDetailReport.DataSource, ".OrderNumber")});
 
-            productOrdersHistoryDetailReport.Qty.DataBindings.AddRange(new XRBinding[] {
+                productOrdersHistoryDetailReport.Qty.DataBindings.AddRange(new XRBinding[] {
                 new XRBinding("Text", productOrdersHistoryDetailReport.DataSource, ".Qty")});
 
-            productOrdersHistoryDetailReport.BuyPrice.DataBindings.AddRange(new XRBinding[] {
+                productOrdersHistoryDetailReport.BuyPrice.DataBindings.AddRange(new XRBinding[] {
                 new XRBinding("Text", productOrdersHistoryDetailReport.DataSource, ".BuyPrice")});
 
-            if (ordersType == InventoryTransactionTypeEnum.SalesOrder)
-            {
-                productOrdersHistoryDetailReport.SellPrice.DataBindings.AddRange(new XRBinding[] {
+                if (ordersType == InventoryTransactionTypeEnum.SalesOrder)
+                {
+                    productOrdersHistoryDetailReport.SellPrice.DataBindings.AddRange(new XRBinding[] {
                 new XRBinding("Text", productOrdersHistoryDetailReport.DataSource, ".SellPrice")});
-            }
-            else
-            {
-                productOrdersHistoryDetailReport.SellPriceTitle.Visible = false;
-            }
+                }
+                else
+                {
+                    productOrdersHistoryDetailReport.SellPriceTitle.Visible = false;
+                }
 
-            productOrdersHistoryDetailReport.TaxAmount.DataBindings.AddRange(new XRBinding[] {
+                productOrdersHistoryDetailReport.TaxAmount.DataBindings.AddRange(new XRBinding[] {
                 new XRBinding("Text", productOrdersHistoryDetailReport.DataSource, ".TaxAmount")});
 
-            productOrdersHistoryDetailReport.AccountName.DataBindings.AddRange(new XRBinding[] {
+                productOrdersHistoryDetailReport.AccountName.DataBindings.AddRange(new XRBinding[] {
                 new XRBinding("Text", productOrdersHistoryDetailReport.DataSource, ".AccountNameCode")});
 
-            productOrdersHistoryDetailReport.TotalAmount.DataBindings.AddRange(new XRBinding[] {
+                productOrdersHistoryDetailReport.TotalAmount.DataBindings.AddRange(new XRBinding[] {
                 new XRBinding("Text", productOrdersHistoryDetailReport.DataSource, ".TotalAmount")});
 
-            productOrdersHistoryDetailReport.ExpectedDate.DataBindings.AddRange(new XRBinding[] {
+                productOrdersHistoryDetailReport.ExpectedDate.DataBindings.AddRange(new XRBinding[] {
                 new XRBinding("Text", productOrdersHistoryDetailReport.DataSource, ".Date")});
 
 
-            productOrdersHistoryReport.xrSubreport1.ReportSource = productOrdersHistoryDetailReport;
-
+                productOrdersHistoryReport.xrSubreport1.ReportSource = productOrdersHistoryDetailReport;
+            }
             return productOrdersHistoryReport;
         }
 
@@ -1663,7 +1671,7 @@ namespace WMS.Controllers
             var detailsDataSource = new List<InvoiceProfitReportProductsViewModel>();
             foreach (var invoice in invoices.ToList())
             {
-                var invoiceProductsPrices = _invoiceService.GetInvoiceProductsPrices(invoice.InvoiceMasterId, productIds);
+                var invoiceProductsPrices = _invoiceService.GetInvoiceProductsPrices(invoice.InvoiceMasterId, productIds, CurrentTenantId);
                 var buyingNetAmount = invoiceProductsPrices.Sum(p => p.TotalBuyPrice);
                 var sellingNetAmount = invoiceProductsPrices.Sum(p => p.TotalSellPrice);
                 dataSource.Add(new InvoiceProfitReportViewModel

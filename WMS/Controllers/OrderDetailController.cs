@@ -364,7 +364,7 @@ namespace WMS.Controllers
                     products.ProductsPerCase,
                     products.AllowModifyPrice,
                     products.AllowZeroSale,
-                    BuyPrice = _productPriceService.GetPurchasePrice(prodId),
+                    BuyPrice = _productPriceService.GetPurchasePrice(prodId, CurrentTenantId),
                     products.EnableWarranty,
                     percentageMargin = products.PercentMargin,
                     //Converting LandedCost into percentage and adding it into PercentMargin
@@ -400,7 +400,7 @@ namespace WMS.Controllers
                 product.AllowModifyPrice,
                 product.AllowZeroSale,
                 ProductsPerPallet = product.CasesPerPallet * product.ProductsPerCase,
-                BuyPrice = _productPriceService.GetPurchasePrice(productId),
+                BuyPrice = _productPriceService.GetPurchasePrice(productId, CurrentTenantId),
                 product.EnableWarranty,
                 percentageMargin = product.PercentMargin,
                 //Converting LandedCost into percentage and adding it into PercentMargin

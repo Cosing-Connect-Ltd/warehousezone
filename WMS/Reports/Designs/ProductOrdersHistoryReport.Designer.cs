@@ -943,8 +943,6 @@
         public DevExpress.XtraReports.UI.XRLabel lblAcount;
         public DevExpress.XtraReports.Parameters.Parameter MarketId;
         public DevExpress.XtraReports.Parameters.Parameter InventoryTransactionTypeIds;
-        private DevExpress.XtraReports.UI.XRLabel detailedOrdersToggle;
-        private DevExpress.XtraReports.UI.DetailReportBand DetailReport;
         private DevExpress.XtraReports.UI.DetailBand Detail1;
         public DevExpress.XtraReports.UI.XRSubreport xrSubreport1;
         private DevExpress.XtraReports.UI.XRLabel xrLabel4;
@@ -959,5 +957,7 @@
         private DevExpress.XtraReports.UI.XRLabel xrLabel18;
         private DevExpress.XtraReports.UI.XRPageInfo xrPageInfo1;
         public DevExpress.XtraReports.Parameters.Parameter AccountSectorIds;
+        public DevExpress.XtraReports.UI.XRLabel detailedOrdersToggle;
+        public DevExpress.XtraReports.UI.DetailReportBand DetailReport;
     }
 }

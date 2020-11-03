@@ -72,5 +72,8 @@ namespace Ganedata.Core.Entities.Domain
         public int? DefaultPurchaseNominalCode { get; set; }
         public bool ShowDeliveryServiceInOrdersList { get; set; }
         public bool ShowExternalShopSiteNameInOrdersList { get; set; }
+        public bool EnableDynamicPriceCalculation { get; set; }
+        public bool EnableRebateCalculation { get; set; }
+        public bool EnableOrdersHistoryReportDetails { get; set; }
     }
 }
