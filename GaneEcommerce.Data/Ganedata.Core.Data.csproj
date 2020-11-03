@@ -1155,6 +1155,18 @@
     <Compile Include="Migrations\202011020957019_removed-Shifts-table.designer.cs">
       <DependentUpon>202011020957019_removed-Shifts-table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202011021642005_added-SortOrder-to-SLAPrioriries-table.cs" />
+    <Compile Include="Migrations\202011021642005_added-SortOrder-to-SLAPrioriries-table.designer.cs">
+      <DependentUpon>202011021642005_added-SortOrder-to-SLAPrioriries-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011031257262_fixed-ApiCredentials-and-Orders-relation.cs" />
+    <Compile Include="Migrations\202011031257262_fixed-ApiCredentials-and-Orders-relation.designer.cs">
+      <DependentUpon>202011031257262_fixed-ApiCredentials-and-Orders-relation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011031403039_added-new-configs-to-TenantConfigs-table.cs" />
+    <Compile Include="Migrations\202011031403039_added-new-configs-to-TenantConfigs-table.designer.cs">
+      <DependentUpon>202011031403039_added-new-configs-to-TenantConfigs-table.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbConfiguration.cs" />
     <Compile Include="Helpers\DataImportFactory.cs" />
     <Compile Include="IApplicationContext.cs" />
@@ -2341,6 +2353,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202011020957019_removed-Shifts-table.resx">
       <DependentUpon>202011020957019_removed-Shifts-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011021642005_added-SortOrder-to-SLAPrioriries-table.resx">
+      <DependentUpon>202011021642005_added-SortOrder-to-SLAPrioriries-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011031257262_fixed-ApiCredentials-and-Orders-relation.resx">
+      <DependentUpon>202011031257262_fixed-ApiCredentials-and-Orders-relation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011031403039_added-new-configs-to-TenantConfigs-table.resx">
+      <DependentUpon>202011031403039_added-new-configs-to-TenantConfigs-table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -19,7 +19,10 @@ namespace WMS.CustomBindings
         {
             var orderServices = DependencyResolver.Current.GetService<ICoreOrderService>();
 
-            var transactions = orderServices.GetAllSalesConsignments(tenantId, warehouseId, orderstatusId: orderStatusId).OrderByDescending(x => x.DateCreated)
+            var transactions = orderServices.GetAllSalesConsignments(tenantId, warehouseId, orderstatusId: orderStatusId)
+                                            .OrderBy(u => u.Order.SLAPriorityId != null)
+                                            .ThenBy(u => u.Order.SLAPriority.SortOrder)
+                                            .ThenByDescending(x => x.DateCreated)
                         .Select(ops => new DelieveryViewModel
                         {
                             DeliveryNO = ops.DeliveryNO,
@@ -31,7 +34,8 @@ namespace WMS.CustomBindings
                             CompanyName = ops.Order.Account.CompanyName,
                             Status = ops.OrderProcessStatusId,
                             orderstatus = ops.Order.OrderStatusID,
-                            PickContainerCode = ops.PickContainerCode
+                            PickContainerCode = ops.PickContainerCode,
+                            SLAPrioritySortOrder = ops.Order.SLAPriorityId != null ? (ops.Order.SLAPriority.SortOrder != null ? ops.Order.SLAPriority.SortOrder.Value : 999) : 999,
                         });
 
             return transactions;
@@ -60,8 +64,8 @@ namespace WMS.CustomBindings
             }
             if (e.FilterExpression != string.Empty)
             {
-                CriteriaOperator op = CriteriaOperator.Parse(e.FilterExpression);
-                string filterString = CriteriaToWhereClauseHelper.GetDynamicLinqWhere(op);
+                var op = CriteriaOperator.Parse(e.FilterExpression);
+                var filterString = CriteriaToWhereClauseHelper.GetDynamicLinqWhere(op);
                 transactions = transactions.Where(filterString);
             }
 
@@ -80,21 +84,21 @@ namespace WMS.CustomBindings
 
                 foreach (var column in e.State.SortedColumns)
                 {
-                    sortString += column.FieldName + " " + column.SortOrder;
+                    sortString += "SLAPrioritySortOrder," + column.FieldName + " " + column.SortOrder;
                 }
                 transactions = transactions.OrderBy(sortString);
             }
             else
             {
-                transactions = transactions.OrderBy("DateCreated Desc");
+                transactions = transactions.OrderBy("SLAPrioritySortOrder,DateCreated Desc");
             }
 
 
             if (e.FilterExpression != string.Empty)
             {
-                CriteriaOperator op = CriteriaOperator.Parse(e.FilterExpression);
+                var op = CriteriaOperator.Parse(e.FilterExpression);
 
-                string filterString = CriteriaToWhereClauseHelper.GetDynamicLinqWhere(op);
+                var filterString = CriteriaToWhereClauseHelper.GetDynamicLinqWhere(op);
 
                 transactions = transactions.Where(filterString);
 

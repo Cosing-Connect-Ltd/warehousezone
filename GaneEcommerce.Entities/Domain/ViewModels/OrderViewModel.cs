@@ -144,12 +144,16 @@ namespace Ganedata.Core.Entities.Domain
         public string Property { get; set; }
         public string SaleNotes { get; set; }
         public string PickerName { get; set; }
+        public DeliveryMethods? DeliveryMethod { get; set; }
+        public string TenantDeliveryServiceDescription { get; set; }
+        public string Delivery {
+            get => DeliveryMethod?.ToString() + (TenantDeliveryServiceDescription != null ? $" ({TenantDeliveryServiceDescription})" : string.Empty);
+        }
+        public string ApiSiteTitle { get; set; }
         public int? PickerId { get; set; }
         public string ConsignmentType { get; set; }
+        public int SLAPrioritySortOrder { get; set; }
         public List<OrderNotesViewModel> OrderNotesList { get; set; }
-
-
-
 
 
         public string OrderNotesListText
@@ -354,6 +358,7 @@ namespace Ganedata.Core.Entities.Domain
         public OrderStatusEnum? orderstatus { get; set; }
         public int? EmailCount { get; set; }
         public string PickContainerCode { get; set; }
+        public int SLAPrioritySortOrder { get; set; }
     }
 
     public class ProductOrdersDetailViewModel

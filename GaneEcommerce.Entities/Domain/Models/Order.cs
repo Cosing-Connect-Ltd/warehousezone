@@ -249,6 +249,7 @@ namespace Ganedata.Core.Entities.Domain
 
         [Display(Name = "Site Id")]
         public int? SiteID { get; set; }
+        public int? ApiCredentialId { get; set; }
 
         public AccountPaymentModeEnum? AccountPaymentModeId { get; set; }
         public bool EndOfDayGenerated { get; set; }
@@ -256,6 +257,10 @@ namespace Ganedata.Core.Entities.Domain
 
         [ForeignKey("VanSalesDailyCashId")]
         public virtual VanSalesDailyCash VanSalesDailyCash { get; set; }
+        [ForeignKey("SiteID")]
+        public virtual TenantWebsites TenantWebsite { get; set; }
+        [ForeignKey("ApiCredentialId")]
+        public virtual ApiCredentials ApiCredential { get; set; }
 
         public Guid? OrderToken { get; set; }
 

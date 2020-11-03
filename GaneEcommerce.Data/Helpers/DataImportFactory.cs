@@ -3479,7 +3479,7 @@ namespace Ganedata.Core.Data.Helpers
                     order.OrderTotal = (decimal)ordTotal;
                     order.OrderCost = (decimal)ordTotal;
                     order.PrestaShopOrderId = item.Id;
-                    order.SiteID = ApiId;
+                    order.ApiCredentialId = ApiId;
                     _currentDbContext.SaveChanges();
                 }
             }

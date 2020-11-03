@@ -331,6 +331,7 @@ namespace Ganedata.Core.Services
             {
                 _currentDbContext.Entry(obj).State = EntityState.Detached;
                 order.CreatedBy = obj.CreatedBy;
+                order.PickerId = obj.PickerId;
                 order.DateCreated = obj.DateCreated;
                 order.TenentId = obj.TenentId;
                 order.WarehouseId = obj.WarehouseId;
@@ -480,7 +481,7 @@ namespace Ganedata.Core.Services
                     o.TenentId == tenantId && o.WarehouseId == warehouseId && (orderStatusIds.Count() == 0 || orderStatusIds.Contains((int)o.OrderStatusID)) && (o.OrderStatusID == OrderStatusEnum.Active || o.OrderStatusID == OrderStatusEnum.Hold || o.OrderStatusID == OrderStatusEnum.BeingPicked || o.OrderStatusID == OrderStatusEnum.AwaitingAuthorisation) && (o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.SalesOrder
                             || o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Proforma || o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Quotation ||
                             o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Samples || o.InventoryTransactionTypeId == InventoryTransactionTypeEnum.Loan) && o.IsDeleted != true)
-                .OrderBy(u => u.SLAPriorityId).ThenByDescending(x => x.DateCreated)
+                .OrderBy(u => u.SLAPriorityId != null).ThenBy(u => u.SLAPriority.SortOrder).ThenByDescending(x => x.DateCreated)
                 .Select(ToSalesOrderViewModel());
 
             return result;
@@ -522,6 +523,10 @@ namespace Ganedata.Core.Services
                 PickerId = p.PickerId,
                 PickerName = p.Picker == null ? "" : p.Picker.UserLastName + ", " + p.Picker.UserFirstName,
                 EmailCount = _currentDbContext.TenantEmailNotificationQueues.Count(u => u.OrderId == p.OrderID),
+                SLAPrioritySortOrder = p.SLAPriorityId != null ? (p.SLAPriority.SortOrder != null ? p.SLAPriority.SortOrder.Value : 999) : 999,
+                ApiSiteTitle = p.ApiCredential.SiteTitle,
+                TenantDeliveryServiceDescription = p.TenantDeliveryService.NetworkDescription,
+                DeliveryMethod = p.DeliveryMethod,
                 OrderNotesList = p.OrderNotes.Where(m => m.IsDeleted != true).Select(s => new OrderNotesViewModel()
                 {
                     OrderNoteId = s.OrderNoteId,

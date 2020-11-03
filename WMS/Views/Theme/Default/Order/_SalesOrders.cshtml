@@ -145,7 +145,31 @@
             {
                 c.FieldName = "PickerName";
                 c.Caption = "Picker Name";
-                c.Width = Unit.Percentage(20);
+                c.Width = Unit.Percentage(10);
+                c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+                c.Settings.AllowSort = DefaultBoolean.True;
+            });
+        }
+
+        if (ViewBag.ShowDeliveryService)
+        {
+            settings.Columns.Add(c =>
+            {
+                c.FieldName = "Delivery";
+                c.Caption = "Delivery Service";
+                c.Width = Unit.Percentage(10);
+                c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+                c.Settings.AllowSort = DefaultBoolean.True;
+            });
+        }
+
+        if (ViewBag.ShowShopSiteName)
+        {
+            settings.Columns.Add(c =>
+            {
+                c.FieldName = "ApiSiteTitle";
+                c.Caption = "Shop Site";
+                c.Width = Unit.Pixel(100);
                 c.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
                 c.Settings.AllowSort = DefaultBoolean.True;
             });
@@ -155,7 +179,7 @@
         {
             c.FieldName = "OrderNotesListText";
             c.Caption = "Notes";
-            c.Width = Unit.Percentage(20);
+            c.Width = Unit.Percentage(10);
             c.PropertiesEdit.EncodeHtml = false;
             c.Settings.AllowAutoFilter = DefaultBoolean.False;
             c.Settings.AllowSort = DefaultBoolean.False;
@@ -167,6 +191,7 @@
             {
                 c.FieldName = "InvoiceNo";
                 c.Caption = "Invoice";
+                c.Width = Unit.Percentage(10);
                 c.SetDataItemTemplateContent(m =>
                 {
                     var invoiceNumber = DataBinder.Eval(m.DataItem, "InvoiceNo") ?? "";
@@ -191,6 +216,7 @@
             {
                 column.Width = System.Web.UI.WebControls.Unit.Percentage(15);
                 column.Caption = "Actions";
+                column.Width = Unit.Pixel(170);
                 column.SetDataItemTemplateContent(m =>
                 {
                     var orderId = (int)DataBinder.Eval(m.DataItem, "OrderID");

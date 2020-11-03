@@ -514,6 +514,9 @@ namespace WMS.Controllers
 
         public ActionResult _SalesOrders(int? type)
         {
+            var tenantConfig = _tenantServices.GetTenantConfigById(CurrentTenantId);
+            ViewBag.ShowDeliveryService = tenantConfig.ShowDeliveryServiceInOrdersList;
+            ViewBag.ShowShopSiteName = tenantConfig.ShowExternalShopSiteNameInOrdersList;
             var viewModel = GetSalesOrdersListViewModel(type);
             return PrepareSalesOrdersListActionResult(viewModel, type);
         }
@@ -1457,8 +1460,8 @@ namespace WMS.Controllers
         private async Task<string> NotifyOrderStatusChange(Order order)
         {
             if (order.InventoryTransactionTypeId != InventoryTransactionTypeEnum.SalesOrder ||
-                order.InventoryTransactionTypeId != InventoryTransactionTypeEnum.DirectSales || 
-                order.Warehouse?.SelectedNotifiableOrderStatuses == null || 
+                order.InventoryTransactionTypeId != InventoryTransactionTypeEnum.DirectSales ||
+                order.Warehouse?.SelectedNotifiableOrderStatuses == null ||
                 !order.Warehouse.SelectedNotifiableOrderStatuses.Contains(order.OrderStatusID))
             {
                 return null;
