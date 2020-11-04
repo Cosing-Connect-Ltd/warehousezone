@@ -6,6 +6,7 @@ using Ganedata.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 
 namespace Ganedata.Core.Services
@@ -25,9 +26,9 @@ namespace Ganedata.Core.Services
             var shiftSchedules = _currentDbContext.ShiftSchedules.Where(s => s.IsCanceled != true &&
                                                                              s.ResourceId == employeeId &&
                                                                              s.TenantId == tenantId &&
-                                                                             s.StartTime.Date <= date.Date).ToList();
+                                                                             EntityFunctions.TruncateTime(s.StartTime) <= date.Date).ToList();
 
-            var shiftSchedule = shiftSchedules.FirstOrDefault(s => (s.StartTime == date || (s.StartTime.Date < date && s.EndTime.Date >= date)) && s.Type == 0);
+            var shiftSchedule = shiftSchedules.FirstOrDefault(s => (s.StartTime.Date == date.Date || (s.StartTime.Date < date.Date && s.EndTime.Date >= date.Date)) && s.Type == 0);
 
             if (shiftSchedule != null)
             {
@@ -48,16 +49,17 @@ namespace Ganedata.Core.Services
                                                                             };
             });
 
-            shiftSchedule = shiftSchedulesRecurrenceInfos.Where(s => s.OccurrenceCalculator.FindNextOccurrenceTimeAfter(date, schedule).Date == date.Date).Select(s => s.ShiftSchedule).FirstOrDefault();
+            shiftSchedule = shiftSchedulesRecurrenceInfos.Where(s => s.OccurrenceCalculator.FindNextOccurrenceTimeAfter(date.Date, schedule).Date == date.Date).Select(s => s.ShiftSchedule).FirstOrDefault();
 
             return shiftSchedule;
         }
 
+        [Obsolete]
         public IEnumerable<ShiftScheduleViewModel> GetShiftSchedules(int locationId, DateTime fromDate, DateTime toDate)
         {
             var shiftSchedules = _currentDbContext.ShiftSchedules.Where(s => s.IsCanceled != true &&
                                                                              s.LocationsId == locationId &&
-                                                                             s.StartTime.Date <= toDate.Date).ToList();
+                                                                             EntityFunctions.TruncateTime(s.StartTime) <= toDate.Date).ToList();
 
             var shiftScheduleViewModels = shiftSchedules.Where(s => s.StartTime.Date >= fromDate.Date && s.Type == 0)
                                                         .Select(s => new ShiftScheduleViewModel
@@ -83,7 +85,7 @@ namespace Ganedata.Core.Services
                                                                   schedule.End = s.EndTime;
                                                                   var occurrenceCalculator = OccurrenceCalculator.CreateInstance(schedule.RecurrenceInfo);
 
-                                                                  var occurences = occurrenceCalculator.CalcOccurrences(new TimeInterval { Start = fromDate, End = toDate }, schedule.RecurrencePattern);
+                                                                  var occurences = occurrenceCalculator.CalcOccurrences(new TimeInterval { Start = fromDate.Date, End = toDate.Date.AddDays(1) }, schedule);
 
                                                                   return occurences.Select(o => new ShiftScheduleViewModel {
                                                                     EmployeeId = s.ResourceId,

@@ -69,7 +69,7 @@ namespace Ganedata.Core.Services
         }
 
         /// <summary>
-        /// Get by group    
+        /// Get by group
         /// </summary>
         /// <returns></returns>
         public IEnumerable<IGrouping<DateTime, ResourceShifts>> GetByGroupDate()
@@ -161,7 +161,7 @@ namespace Ganedata.Core.Services
 
         public IEnumerable<ResourceShifts> SearchByEmployeeIdAndDate(int employeeId, DateTime dateStamp, int TenantId)
         {
-            return _currentDbContext.ResourceShifts.Where(s => s.ResourceId == employeeId && s.Date.Day == dateStamp.Day && s.IsDeleted != true && s.TenantId==TenantId);
+            return _currentDbContext.ResourceShifts.Where(s => s.ResourceId == employeeId && EntityFunctions.TruncateTime(s.Date) == dateStamp.Date && s.IsDeleted != true && s.TenantId==TenantId);
         }
 
         public ResourceShifts SearchLastStampByDateAndEmployee(int employeeId, DateTime dateStamp)

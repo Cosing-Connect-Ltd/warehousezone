@@ -126,7 +126,7 @@ namespace WMS.CustomBindings
         {
             var _currentDbContext = DependencyResolver.Current.GetService<IApplicationContext>();
             int currentTenantId = caCurrent.CurrentTenant().TenantId;
-            var resources = _currentDbContext.Resources.AsNoTracking().Where(a => a.IsDeleted != true && a.TenantId == currentTenantId).ToList();
+            var resources = _currentDbContext.Resources.AsNoTracking().Where(a => a.IsDeleted != true && a.IsActive && a.TenantId == currentTenantId).OrderBy(a => a.FirstName).ThenBy(a => a.SurName).ToList();
             return resources;
         }
 
