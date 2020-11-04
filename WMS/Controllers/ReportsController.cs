@@ -582,56 +582,55 @@ namespace WMS.Controllers
 
         private void Report_DataSourceDemanded(object sender, EventArgs e)
         {
-            TimeAttendanceStatusReport report = (TimeAttendanceStatusReport)sender;
+            var report = (TimeAttendanceStatusReport)sender;
 
             int reportTypeId = (!String.IsNullOrEmpty(report.Parameters["ReportTypeId"].Value.ToString()) ? (int)(report.Parameters["ReportTypeId"].Value.ToString() == "Lateness" ? 1 : Convert.ToInt32(report.Parameters["ReportTypeId"].Value)) : 1); //1=Lateness
             int locationId = (!String.IsNullOrEmpty(report.Parameters["WarehouseId"].Value.ToString()) ? (int)(report.Parameters["WarehouseId"].Value.ToString() == "Select a Location" ? 0 : Convert.ToInt32(report.Parameters["WarehouseId"].Value)) : 0);
-            DateTime startDate = (DateTime)report.Parameters["StartDate"].Value;
-            DateTime endDate = (DateTime)report.Parameters["EndDate"].Value;
+            var startDate = (DateTime)report.Parameters["StartDate"].Value;
+            var endDate = (DateTime)report.Parameters["EndDate"].Value;
             int tenantId = (int)report.Parameters["tenantId"].Value;
             int gracePeriodId = (!String.IsNullOrEmpty(report.Parameters["GracePeriodId"].Value.ToString()) ? (int)(report.Parameters["GracePeriodId"].Value.ToString() == "Select All" ? 0 : Convert.ToInt32(report.Parameters["GracePeriodId"].Value)) : 0);
 
             report.FindControl("xrLabel2", true).Text = _tenantLocationsServices.GetTenantLocationById(locationId)?.WarehouseName;
             report.FindControl("xrLabel3", true).Text = $"{startDate.ToShortDateString()} - {endDate.ToShortDateString()}";
 
+            var shiftSchedules = _shiftScheduleService.GetShiftSchedules(locationId, startDate, endDate);
+
             if (reportTypeId == 1)
             {//1=Lateness
                 report.FindControl("xrLabel1", true).Text = "Lateness";
-                report.DataSource = Lateness(locationId, startDate, endDate, gracePeriodId);
+                report.DataSource = Lateness(gracePeriodId, shiftSchedules);
             }
 
             if (reportTypeId == 2)
             { //2=On Site
                 report.FindControl("xrLabel1", true).Text = "On Site";
 
-                report.DataSource = OnSite(locationId, startDate, endDate, tenantId);
+                report.DataSource = OnSite(locationId, startDate, tenantId, shiftSchedules.FirstOrDefault(s => s.Date == startDate.Date));
             }
             if (reportTypeId == 3)
             { //3=Off Site
                 report.FindControl("xrLabel1", true).Text = "Off Site";
-                report.DataSource = OffSite(locationId, startDate, endDate, tenantId);
+                report.DataSource = OffSite(locationId, startDate, tenantId, shiftSchedules.FirstOrDefault(s => s.Date == startDate.Date));
             }
 
             if (reportTypeId == 4)
             { //4=Absence
                 report.FindControl("xrLabel1", true).Text = "Absence";
-                report.DataSource = Absence(locationId, startDate, endDate);
+                report.DataSource = Absence(shiftSchedules);
             }
         }
 
-        public List<ReportViewModel> Lateness(int locationId, DateTime fromDate, DateTime toDate, int gracePeriod)
+        public List<ReportViewModel> Lateness(int gracePeriod, IEnumerable<ShiftScheduleViewModel> shiftSchedules)
         {
             List<ReportViewModel> model = new List<ReportViewModel>();
 
-            //get Shifts by LocationId and Date
-            var shiftInfo = _shiftScheduleService.GetShiftSchedules(locationId, fromDate, toDate);
-
-            if (shiftInfo != null && shiftInfo.Count() >= 1)
+            if (shiftSchedules != null && shiftSchedules.Count() >= 1)
             {
                 int id = 1;
 
                 //foreach employeeId
-                foreach (var itemShift in shiftInfo)
+                foreach (var itemShift in shiftSchedules)
                 {
                     //get EmployeeShifts by EmployeeId and Date
                     var employeeShifts = _employeeShiftsServices.SearchByEmployeeIdAndDate(itemShift.EmployeeId, itemShift.Date, CurrentTenantId);
@@ -648,13 +647,13 @@ namespace WMS.Controllers
                         }
 
                         //get last stamp
-                        foreach (var itemEmployeeShifts in employeeShifts)
+                        foreach (var employeeShift in employeeShifts)
                         {
-                            if (itemEmployeeShifts.StatusType == "In")
+                            if (employeeShift.StatusType == "In")
                             {
                                 //compare Shifts StartTime with EmployeeShifts TimeStamp
                                 var startTime = itemShift.StartTime;
-                                var timeStamp = itemEmployeeShifts.TimeStamp;
+                                var timeStamp = employeeShift.TimeStamp;
 
                                 switch (gracePeriod)
                                 {
@@ -700,21 +699,19 @@ namespace WMS.Controllers
             return model;
         }
 
-        public List<ReportViewModel> OnSite(int locationId, DateTime fromDate, DateTime toDate, int tenantId)
+        public List<ReportViewModel> OnSite(int locationId, DateTime date, int tenantId, ShiftScheduleViewModel shiftSchedule)
         {
             List<ReportViewModel> model = new List<ReportViewModel>();
 
             //get all employees at the location
             var employeeList = _employeeServices.GetAllEmployeesByLocation(tenantId, locationId);
 
-            // get days from date to fromDate
-
             //foreach employeeId
             foreach (var employee in employeeList)
             {
                 int id = 1;
                 //get EmployeeShifts by EmployeeId and Date
-                var employeeShifts = _employeeShiftsServices.SearchByEmployeeIdAndDate(employee.ResourceId, fromDate, CurrentTenantId);
+                var employeeShifts = _employeeShiftsServices.SearchByEmployeeIdAndDate(employee.ResourceId, date, CurrentTenantId);
 
                 if (employeeShifts != null && employeeShifts.Count() >= 1)
                 {
@@ -728,7 +725,7 @@ namespace WMS.Controllers
                         //only get the ODD scheme, w/c means missing Stamp Out or Employee is still On Site
                         if (employeeShifts.Count() % 2 != 0) //ODD
                         {
-                            model.Add(ReportTypeModel(id, null, lastStamp, null, employeeShifts.LastOrDefault()));
+                            model.Add(ReportTypeModel(id, lastStamp, null, employeeShifts.LastOrDefault(), shiftSchedule));
                             id = id + 1;
                         }
                     }
@@ -738,21 +735,19 @@ namespace WMS.Controllers
             return model;
         }
 
-        public List<ReportViewModel> OffSite(int locationId, DateTime fromDate, DateTime toDate, int tenantId)
+        public List<ReportViewModel> OffSite(int locationId, DateTime date, int tenantId, ShiftScheduleViewModel shiftSchedule)
         {
             List<ReportViewModel> model = new List<ReportViewModel>();
 
             //get all employees at the location
             var employeeList = _employeeServices.GetAllEmployeesByLocation(tenantId, locationId);
 
-            // get days from date to fromDate
-
             //foreach employeeId
             foreach (var employee in employeeList)
             {
                 int id = 1;
                 //get EmployeeShifts by EmployeeId and Date
-                var employeeShifts = _employeeShiftsServices.SearchByEmployeeIdAndDate(employee.ResourceId, fromDate, CurrentTenantId);
+                var employeeShifts = _employeeShiftsServices.SearchByEmployeeIdAndDate(employee.ResourceId, date, CurrentTenantId);
 
                 if (employeeShifts != null && employeeShifts.Count() >= 1)
                 {
@@ -766,7 +761,7 @@ namespace WMS.Controllers
                         //only get the EVEN scheme, w/c means employee is out from site.
                         if (employeeShifts.Count() % 2 != 1) //ODD
                         {
-                            model.Add(ReportTypeModel(id, null, null, lastStamp, employeeShifts.LastOrDefault()));
+                            model.Add(ReportTypeModel(id, null, lastStamp, employeeShifts.LastOrDefault(), shiftSchedule));
                             id = id + 1;
                         }
                     }
@@ -776,27 +771,24 @@ namespace WMS.Controllers
             return model;
         }
 
-        public List<ReportViewModel> Absence(int locationId, DateTime fromDate, DateTime toDate)
+        public List<ReportViewModel> Absence(IEnumerable<ShiftScheduleViewModel> shiftSchedules)
         {
-            List<ReportViewModel> model = new List<ReportViewModel>();
+            var model = new List<ReportViewModel>();
 
-            //get Shifts by LocationId and Date
-            var shiftInfo = _shiftScheduleService.GetShiftSchedules(locationId, fromDate, toDate);
-
-            if (shiftInfo != null && shiftInfo.Count() >= 1)
+            if (shiftSchedules != null && shiftSchedules.Count() >= 1)
             {
                 int id = 1;
 
                 //foreach employeeId
-                foreach (var itemShift in shiftInfo)
+                foreach (var shiftSchedule in shiftSchedules)
                 {
                     //get EmployeeShifts by EmployeeId and Date
-                    var employeeShifts = _employeeShiftsServices.SearchByEmployeeIdAndDate(itemShift.EmployeeId, (DateTime)itemShift.Date, CurrentTenantId);
+                    var employeeShifts = _employeeShiftsServices.SearchByEmployeeIdAndDate(shiftSchedule.EmployeeId, (DateTime)shiftSchedule.Date, CurrentTenantId);
 
                     //if no employeeShifts TimeStamp
                     if (employeeShifts.Count() == 0)
                     {
-                        model.Add(ReportTypeModel(id, null, null, null, itemShift));
+                        model.Add(ReportTypeModel(id, timeStamp: null, null, null, shiftSchedule));
                     }
                 }
             }
@@ -804,30 +796,30 @@ namespace WMS.Controllers
             return model;
         }
 
-        private ReportViewModel ReportTypeModel(int id, DateTime? timeStamp, DateTime? stampFirstIn, DateTime? stampLastOut, ShiftScheduleViewModel itemShift)
+        private ReportViewModel ReportTypeModel(int id, DateTime? timeStamp, DateTime? stampFirstIn, DateTime? stampLastOut, ShiftScheduleViewModel shiftSchedule)
         {
             return new ReportViewModel()
             {
                 Id = id,
-                Employee = itemShift.EmployeeName,
-                Date = itemShift.Date,
-                ShiftStartTime = itemShift.StartTime,
-                ShiftEndTime = itemShift.EndTime,
+                Employee = shiftSchedule.EmployeeName,
+                Date = shiftSchedule.Date,
+                ShiftStartTime = shiftSchedule.StartTime,
+                ShiftEndTime = shiftSchedule.EndTime,
                 StampIn = stampFirstIn,
                 StampOut = stampLastOut,
-                LateTime = (timeStamp != null ? (timeStamp - itemShift.StartTime).Value.TotalMinutes : 0f),
+                LateTime = (timeStamp != null ? (timeStamp - shiftSchedule.StartTime).Value.TotalMinutes : 0f),
             };
         }
 
-        private ReportViewModel ReportTypeModel(int id, DateTime? timeStamp, DateTime? stampFirstIn, DateTime? stampLastOut, ResourceShifts shift)
+        private ReportViewModel ReportTypeModel(int id, DateTime? stampFirstIn, DateTime? stampLastOut, ResourceShifts resourceShift, ShiftScheduleViewModel shiftSchedule)
         {
             return new ReportViewModel()
             {
                 Id = id,
-                Employee = shift.Resources.Name,
-                Date = shift.Date,
-                ShiftStartTime = null,
-                ShiftEndTime = null,
+                Employee = resourceShift.Resources.Name,
+                Date = resourceShift.Date,
+                ShiftStartTime = shiftSchedule.StartTime,
+                ShiftEndTime = shiftSchedule.EndTime,
                 StampIn = stampFirstIn,
                 StampOut = stampLastOut
             };
