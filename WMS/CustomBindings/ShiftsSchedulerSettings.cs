@@ -185,19 +185,25 @@ namespace WMS.CustomBindings
 
             // event handler for Availabilities
             settings.Views.TimelineView.Enabled = false;
-            settings.Views.WeekView.Enabled = false;
+            settings.Views.WeekView.Enabled = true;
+            settings.Views.WeekView.ResourcesPerPage = 1;
+
+            settings.Views.AgendaView.AppointmentDisplayOptions.ShowResource = true;
+            settings.Views.AgendaView.AppointmentDisplayOptions.ShowRecurrence = true;
+            settings.Views.AgendaView.DisplayName = "Shifts Agenda";
+
             // Day View
             settings.Views.DayView.Styles.ScrollAreaHeight = 500;
             settings.Views.DayView.WorkTime.Start = new TimeSpan(7, 0, 0);
             settings.Views.DayView.WorkTime.End = new TimeSpan(20, 0, 0);
-            settings.Views.DayView.ShowWorkTimeOnly = true;
+            settings.Views.DayView.ShowWorkTimeOnly = false;
             settings.Views.DayView.ResourcesPerPage = 7;
             // Work Days View
             settings.WorkDays.Add(WeekDays.Saturday);
             settings.Views.WorkWeekView.Styles.ScrollAreaHeight = 500;
             settings.Views.WorkWeekView.WorkTime.Start = new TimeSpan(7, 0, 0);
             settings.Views.WorkWeekView.WorkTime.End = new TimeSpan(20, 0, 0);
-            settings.Views.WorkWeekView.ShowWorkTimeOnly = true;
+            settings.Views.WorkWeekView.ShowWorkTimeOnly = false;
             settings.Views.WorkWeekView.ResourcesPerPage = 1;
             // Month View
             settings.Views.MonthView.ResourcesPerPage = 1;
