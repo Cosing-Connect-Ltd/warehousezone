@@ -126,7 +126,15 @@ namespace WMS.CustomBindings
         {
             var _currentDbContext = DependencyResolver.Current.GetService<IApplicationContext>();
             int currentTenantId = caCurrent.CurrentTenant().TenantId;
-            var resources = _currentDbContext.Resources.AsNoTracking().Where(a => a.IsDeleted != true && a.IsActive && a.TenantId == currentTenantId).OrderBy(a => a.FirstName).ThenBy(a => a.SurName).ToList();
+            var warehouseId = caCurrent.CurrentWarehouse().WarehouseId;
+            var resources = _currentDbContext.EmployeeShifts_Stores.AsNoTracking().Where(a => a.Resources.IsDeleted != true &&
+                                                                                  a.Resources.IsActive &&
+                                                                                  a.TenantLocations.WarehouseId == warehouseId &&
+                                                                                  a.Resources.TenantId == currentTenantId)
+                                                                                 .Select(r => r.Resources)
+                                                                                 .OrderBy(a => a.FirstName)
+                                                                                 .ThenBy(a => a.SurName)
+                                                                                 .ToList();
             return resources;
         }
 
